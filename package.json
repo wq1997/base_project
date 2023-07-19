@@ -1,0 +1,26 @@
+{
+  "private": true,
+  "author": "wangqing <2957009914@qq.com>",
+  "scripts": {
+    "dev": "umi dev",
+    "build": "umi build",
+    "postinstall": "umi setup",
+    "setup": "umi setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^5.1.4",
+    "ahooks": "^3.7.8",
+    "antd": "^5.6.4",
+    "axios": "^1.4.0",
+    "classnames": "^2.3.2",
+    "moment": "^2.29.4",
+    "umi": "^4.0.72"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.2.6",
+    "@umijs/plugins": "^4.0.72",
+    "typescript": "^5.1.6"
+  }
+}

@@ -1,0 +1,75 @@
+import axios from "axios";
+
+const getToken = () => localStorage.getItem("Token");
+
+const instance = axios.create({
+    baseURL: 'https://www.baidu.com',
+    timeout: 10000,
+    headers: {
+        Authorization: getToken()
+    }
+})
+
+instance.interceptors.request.use(config => {
+    config.headers.Authorization = 'Bearer ' + getToken()
+    return config;
+}, error => {
+    return Promise.reject(error);
+});
+
+instance.interceptors.response.use(response => {
+    if (response.status === 200) {
+        return Promise.resolve(response);
+    } else {
+        return Promise.reject(response);
+    }
+}, error => {
+    const { config, code, request, response, isAxiosError, toJSON } = error;
+    if (response) {
+        errorHandle(response.status, response.data.message);
+        return Promise.reject(response);
+    }else {
+        if(error.message.includes('timeout')){
+            console.log('请求超时')
+            return Promise.reject(error);
+        }
+
+        if (!window.navigator.onLine) {
+            console.log('断网了...')
+        } else {
+            return Promise.reject(error);
+        }
+    }
+});
+
+const errorHandle = (status,message) => {
+    switch (status) {
+        case 400:
+            console.log("请求错误");
+            break;
+        case 401:
+            loginOut();
+            break;
+        case 403:
+            console.log("权限不足，拒绝访问")
+            break;
+        case 404:
+            console.log("请求的资源不存在或请求地址出错")
+            break;
+        // 500: 服务器错误
+        case 500:
+            console.log("服务器错误")
+            break;
+        case 1000001:
+            console.log("token 异常，请联系管理员")
+            break;
+        default:
+            console.log(message);
+    }
+}
+
+const loginOut = () => {
+    console.log("loginOut")
+}
+
+export default instance;
