@@ -1,4 +1,5 @@
 import { login } from "@/services/user"
+import { history } from "umi";
 
 export default {
     namespace: 'user',
@@ -21,8 +22,8 @@ export default {
         }
       },
 
-      *loginOut({ payload }, { call, put }) {
-        console.log("loginOut")
+      *logout({ payload }, { call, put }) {
+        history.push("/login")
       }
     },
    

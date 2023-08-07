@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getDvaApp } from "umi";
 
 const getToken = () => localStorage.getItem("Token");
 
@@ -48,7 +49,7 @@ const errorHandle = (status,message) => {
             console.log("请求错误");
             break;
         case 401:
-            loginOut();
+            logout();
             break;
         case 403:
             console.log("权限不足，拒绝访问")
@@ -68,8 +69,10 @@ const errorHandle = (status,message) => {
     }
 }
 
-const loginOut = () => {
-    console.log("loginOut")
+const logout = () => {
+    getDvaApp()._store.dispatch({
+        type: 'user/logout'
+    })
 }
 
 export default instance;
