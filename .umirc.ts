@@ -9,6 +9,7 @@ export default defineConfig({
   plugins: ['@umijs/plugins/dist/dva'],
   dva:{},
   alias: {
-    '@/layouts': path.resolve(__dirname, '.', 'src/layouts')
+    '@/permissions': path.resolve(__dirname,'src/permissions'),
+    '@/hooks': path.resolve(__dirname,'src/hooks'),
   }
 });

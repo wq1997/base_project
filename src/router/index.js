@@ -1,15 +1,8 @@
-import AccountRoute from "./account";
-import BaseDataRoute from "./baseData";
-
 const App = "@/pages/App";
 const Layout = "@/layouts/baseLayout";
-console.log({
-  path: '/cet',
-  component: Layout,
-  routes: [
-    ...BaseDataRoute
-  ]
-})
+
+const Login = "@/pages/account/login";
+
 export default Routes = [
    {
      path: "/", 
@@ -19,10 +12,10 @@ export default Routes = [
         path: '/cet',
         component: Layout,
         routes: [
-          ...BaseDataRoute
+          
         ]
       },
-      ...AccountRoute
+      { path: "/login", component: Login }
      ]
    },
 ]
