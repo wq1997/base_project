@@ -22,6 +22,15 @@
         .sider{
             background: linear-gradient(2.16deg, #E2F0FF 0.52%, #F6FBFF 98.18%);
             padding: 24px 0;
+
+            .siderContent{
+                height: 100%;
+                width: 100%;
+                overflow-y: scroll;
+                &::-webkit-scrollbar{
+                    display: none;
+                }
+            }
         }
 
         .content{

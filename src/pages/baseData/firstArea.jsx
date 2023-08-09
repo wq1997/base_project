@@ -151,7 +151,7 @@ const FirstArea = () => {
                     onCancel={onCancel}
                     okText="确定"
                     cancelText="取消"
-                    width={600}
+                    width={700}
                 >
                     <Form
                         form={form}
