@@ -20,11 +20,11 @@ export default Routes = [
           { path: '/cet/home', component: Home },
         ]
       },
-      { path: "/login", component: Login }
+      { path: "/login", component: Login },
+      {
+        path: '/test',
+        component: Test
+       }
      ]
-   },
-   {
-    path: '/test',
-    component: Test
    }
 ]

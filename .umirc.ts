@@ -8,8 +8,11 @@ const CompressionWebpackPlugin = require('compression-webpack-plugin');
 export default defineConfig({
   routes,
   npmClient: 'pnpm',
-  plugins: ['@umijs/plugins/dist/dva'],
+  plugins: ['@umijs/plugins/dist/dva', '@umijs/plugins/dist/locale'],
   dva:{},
+  locale: {
+    default: "zh-CN"
+  },
   alias: {
     '@/permissions': path.resolve(__dirname,'src/permissions'),
     '@/hooks': path.resolve(__dirname,'src/hooks'),
@@ -20,7 +23,7 @@ export default defineConfig({
       .plugin('replace')
       .use(require('webpack').ContextReplacementPlugin)
       .tap(() => {
-        return [/moment[/\\]locale$/, /zh-cn/];
+        return [/moment[/\\]locales$/, /zh-cn/];
       });
     config.merge({
       optimization: {

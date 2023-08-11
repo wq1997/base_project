@@ -1,27 +1,35 @@
-import { theme, Table } from "antd";
-import { ThemeBtn } from "@/components"
+import { theme, Table, DatePicker } from "antd";
+import { ThemeBtn, LocaleBtn } from "@/components";
+import { useIntl } from "umi";
 
 const Test = () => {
-  const { token } = theme.useToken()
+  const { token } = theme.useToken();
+  const intl = useIntl();
   return (
     <div 
       style={{
-        height: 500,
         background: token.colorPrimary,
         color: token.colorText
       }}
     >
       <ThemeBtn />
-
+      <LocaleBtn />
+      <p>{intl.formatMessage({id: 'handsome'})}</p>
+      <DatePicker />
       <Table 
         columns={[{
-          title: "name",
+          title: 'name',
           dataIndex: 'name',
           key: "name"
         }]}
         dataSource={[{
           name: 'wq'
         }]}
+        pagination={{
+          total: 20,
+          pageSize: 1,
+          showQuickJumper: true
+        }}
       />
     </div>
   )
