@@ -6,7 +6,9 @@ const ThemeBtn = () => {
         {
             key: 'dark',
             label: (
-                <span onClick={()=>changeTheme("dark")}>黑色</span>
+                <span onClick={()=>{
+                    changeTheme("dark");
+                }}>黑色</span>
             )
         },
         {

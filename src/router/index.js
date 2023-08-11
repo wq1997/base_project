@@ -19,6 +19,7 @@ const Notify = "@/pages/commentManage/notify";
 const Feedback = "@/pages/commentManage/feedback";
 
 const Login = "@/pages/account/login";
+const Test = "@/pages/test"
 
 export default Routes = [
    {
@@ -48,7 +49,11 @@ export default Routes = [
           { path: "/cet/commentManage/feedback", component: Feedback }
         ]
       },
-      { path: "/login", component: Login }
+      { path: "/login", component: Login },
+      {
+        path: '/test',
+        component: Test
+       }
      ]
-   },
+   }
 ]
