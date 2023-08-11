@@ -1,5 +1,6 @@
 const theme = {
     dark: {
+        colorPrimary: 'black'
     },
     default: {
     }

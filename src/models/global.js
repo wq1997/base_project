@@ -7,6 +7,7 @@ export default {
    
     effects: {
       *changeTheme({ payload }, { call, put }) {
+        console.log("theme", payload)
         const { theme } = payload;
         yield put({
             type: 'updateState',

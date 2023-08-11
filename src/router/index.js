@@ -5,6 +5,7 @@ const Home = "@/pages/home";
 
 
 const Login = "@/pages/account/login";
+const Test = "@/pages/test"
 
 export default Routes = [
    {
@@ -22,4 +23,8 @@ export default Routes = [
       { path: "/login", component: Login }
      ]
    },
+   {
+    path: '/test',
+    component: Test
+   }
 ]
