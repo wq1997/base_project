@@ -1,5 +1,7 @@
 import { Outlet, useDispatch } from 'umi'
-import { Layout, Row, Avatar, Typography, Dropdown, Space } from 'antd';
+import { useState } from "react";
+import { Layout, Row, Avatar, Typography, Dropdown, Space, Form } from 'antd';
+import { ChangePasswordModal } from "@/components";
 import MyMenu from "@/permissions/menu";
 import styles from "./baseLayout.less";
 import useIcon from "@/hooks/useIcon"
@@ -9,6 +11,24 @@ const { Header, Sider, Content } = Layout;
 const BaseLayout = () => {
     const Icon = useIcon();
     const dispatch = useDispatch();
+
+    const [changePasswordForm] = Form.useForm();
+    const [changePasswordVisible, setChangePasswordVisible] = useState(false);
+
+    const onResetPassword = async () => {
+        try {
+            const values = await changePasswordForm.validateFields();
+            console.log('Success:', values);
+          } catch (errorInfo) {
+            console.log('Failed:', errorInfo);
+          }
+    }
+
+    const onCancel = () => {
+        setChangePasswordVisible(false);
+        changePasswordForm.resetFields();
+    }
+
     return (
         <div className={styles.baseLayout}>
             <Layout className={styles.layout}>
@@ -17,6 +37,28 @@ const BaseLayout = () => {
                     <Dropdown 
                         menu={{ 
                             items: [
+                                {
+                                    key: 'changePassword',
+                                    label: (
+                                        <Space 
+                                            size={10} 
+                                            align="baseline"
+                                            onClick={()=>{
+                                                setChangePasswordVisible(true)
+                                            }}
+                                        >
+                                            <Icon 
+                                                type="icon-xiugaimima" 
+                                                style={{
+                                                    fontSize: 20,
+                                                    position: 'relative',
+                                                    top: 3
+                                                }}
+                                            />
+                                            <span>修改密码</span>
+                                        </Space>
+                                    )
+                                },
                                 {
                                     key: 'logout',
                                     label: (
@@ -28,9 +70,11 @@ const BaseLayout = () => {
                                             <Icon 
                                                 type="icon-dengchu" 
                                                 style={{
-                                                    fontSize: 20
+                                                    fontSize: 20,
+                                                    position: 'relative',
+                                                    top: 3
                                                 }}
-                                             />
+                                            />
                                             <span>登出</span>
                                         </Space>
                                     )
@@ -63,6 +107,16 @@ const BaseLayout = () => {
                     </Content>
                 </Layout>
             </Layout>
+            {
+                changePasswordVisible&&
+                <ChangePasswordModal 
+                    title="修改密码"
+                    form={changePasswordForm}
+                    visible={changePasswordVisible}
+                    onOk={onResetPassword}
+                    onCancel={onCancel}
+                />
+            }
         </div>
     )
 }

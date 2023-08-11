@@ -1,16 +1,16 @@
-import { PageTitle, Search } from "@/components";
-import { Row, Button, Form, Table, Modal, Input } from "antd";
+import { PageTitle, Search, ChangePasswordModal } from "@/components";
+import { Row, Button, Form, Table, Modal, Input, Select } from "antd";
 import { useState } from "react";
-import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE } from "@/utils/constants";
+import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE, TELPHONE_NUMBER_REG } from "@/utils/constants";
 import { useDebounceEffect } from "ahooks";
 
 const UserList = () => {
     const [form] = Form.useForm();
-    const [resetPasswordForm] = Form.useForm();
+    const [changePasswordForm] = Form.useForm();
     const [keyword, setKeyword] = useState("");
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [editVisible, setEditVisible] = useState(false);
-    const [resetPasswordVisible, setResetPasswordVisible] = useState(false);
+    const [changePasswordVisible, setChangePasswordVisible] = useState(false);
     const [type, setType] = useState("")
     
     const columns = [
@@ -28,19 +28,24 @@ const UserList = () => {
             key: 'name',
         },
         {
-            title: '账号',
+            title: '手机号',
             dataIndex: 'account',
             key: 'account',
         },
         {
-            title: '密码',
-            dataIndex: 'password',
-            key: 'password',
+            title: '公司',
+            dataIndex: 'company',
+            key: 'company',
         },
         {
-            title: '手机号',
-            dataIndex: 'phone',
-            key: 'phone',
+            title: '职务',
+            dataIndex: 'site',
+            key: 'site',
+        },
+        {
+            title: '合作意向',
+            dataIndex: 'yes',
+            key: 'yes',
         },
         {
             title: '备注',
@@ -90,10 +95,10 @@ const UserList = () => {
                         <Button 
                             type="link"
                             onClick={()=>{
-                                resetPasswordForm.setFieldsValue({
+                                changePasswordForm.setFieldsValue({
                                     ...record
                                 })
-                                setResetPasswordVisible(true);
+                                setChangePasswordVisible(true);
                             }}
                         >
                             重置密码
@@ -115,7 +120,7 @@ const UserList = () => {
 
     const onResetPassword = async () => {
         try {
-            const values = await resetPasswordForm.validateFields();
+            const values = await changePasswordForm.validateFields();
             console.log('Success:', values);
           } catch (errorInfo) {
             console.log('Failed:', errorInfo);
@@ -124,9 +129,9 @@ const UserList = () => {
 
     const onCancel = () => {
         setEditVisible(false);
-        setResetPasswordVisible(false);
+        setChangePasswordVisible(false);
         form.resetFields();
-        resetPasswordForm.resetFields();
+        changePasswordForm.resetFields();
     }
 
     const getList = async () => {
@@ -143,14 +148,24 @@ const UserList = () => {
         <div>
             <PageTitle title="用户列表" type="page" />
             <Row justify="space-between">
-                <Search 
-                    style={{width: 200, marginBottom: 15}} 
-                    placeholder="请输入关键字" 
-                    onChange={e=>{
-                        setKeyword(e.target.value);
-                        setPagination(DEFAULT_PAGINATION);
-                    }} 
-                />
+                <div>
+                    <Search 
+                        style={{width: 200, marginBottom: 16, marginRight: 16}} 
+                        placeholder="请输入姓名/手机号" 
+                        onChange={e=>{
+                            setKeyword(e.target.value);
+                            setPagination(DEFAULT_PAGINATION);
+                        }} 
+                    />
+                    <Select 
+                        style={{width: 200,marginRight: 16}} 
+                        placeholder="请选择公司" 
+                    />
+                    <Select 
+                        style={{width: 200}} 
+                        placeholder="请选择职务" 
+                    />
+                </div>
                 <Button 
                     type="primary"
                     onClick={()=>{
@@ -178,7 +193,7 @@ const UserList = () => {
             {
                 editVisible&&
                 <Modal 
-                    title={type==="Add"?"新增电压等级":"编辑电压等级"}
+                    title={type==="Add"?"新增用户":"编辑用户"}
                     open={editVisible} 
                     onOk={onSubmit} 
                     onCancel={onCancel}
@@ -195,8 +210,21 @@ const UserList = () => {
                         <Form.Item label="姓名" name="name" rules={[{...FORM_REQUIRED_RULE}]}> 
                             <Input placeholder="请输入姓名" />
                         </Form.Item>
-                        <Form.Item label="账号" name="account" rules={[{...FORM_REQUIRED_RULE}]}> 
-                            <Input placeholder="请输入账号" />
+                        <Form.Item 
+                            label="手机号" 
+                            name="account" 
+                            rules={[
+                                {...FORM_REQUIRED_RULE},
+                                {validator(_,value,callback){
+                                    if(TELPHONE_NUMBER_REG.test(value)){
+                                       return Promise.resolve();
+                                    }else{
+                                       return Promise.reject("不符合手机号规则，请输入手机号");
+                                    }
+                                }}
+                            ]}
+                        > 
+                            <Input placeholder="请输入手机号" />
                         </Form.Item>
                         <Form.Item 
                             label="密码" 
@@ -205,17 +233,23 @@ const UserList = () => {
                                 {...FORM_REQUIRED_RULE},
                                 {validator(_,value,callback){
                                     if(value?.length<8){
-                                        callback("密码长度必须大于或等于8位");
+                                       return Promise.reject("密码长度必须大于或等于8位");
                                     }else{
-                                        callback()
+                                       return Promise.resolve();
                                     }
                                 }}
                             ]}
                         > 
                             <Input placeholder="请输入密码" />
                         </Form.Item>
-                        <Form.Item label="手机号" name="phone"> 
-                            <Input placeholder="请输入手机号" />
+                        <Form.Item label="公司" name="company"> 
+                            <Input placeholder="请输入公司" />
+                        </Form.Item>
+                        <Form.Item label="职务" name="site"> 
+                            <Input placeholder="请输入职务" />
+                        </Form.Item>
+                        <Form.Item label="合作意向" name="yes"> 
+                            <Input.TextArea placeholder="请输入合作意向" />
                         </Form.Item>
                         <Form.Item label="备注" name="comment">
                             <Input.TextArea placeholder="请输入备注" />
@@ -224,63 +258,13 @@ const UserList = () => {
                 </Modal>
             }
             {
-                resetPasswordVisible&&
-                <Modal 
-                    title={"重置密码"}
-                    open={resetPasswordVisible} 
-                    onOk={onResetPassword} 
+                changePasswordVisible&&
+                <ChangePasswordModal 
+                    form={changePasswordForm}
+                    visible={changePasswordVisible}
+                    onOk={onResetPassword}
                     onCancel={onCancel}
-                    okText="确定"
-                    cancelText="取消"
-                    width={700}
-                >
-                    <Form
-                        form={resetPasswordForm}
-                        style={{marginTop: 24}}
-                        autoComplete="off"
-                        labelCol={{span: 4}}
-                    >
-                        <Form.Item label="旧密码" name="password" rules={[{...FORM_REQUIRED_RULE}]}> 
-                            <Input placeholder="请输入旧密码" minLength={8} />
-                        </Form.Item>
-                        <Form.Item 
-                            label="新密码" 
-                            name="newPassword" 
-                            rules={[
-                                {...FORM_REQUIRED_RULE},
-                                {validator: async(_,value,callback) => {
-                                    const { password } = await resetPasswordForm.getFieldsValue(["password"]);
-                                    if(value?.length<8){
-                                        return Promise.reject("密码长度必须大于或等于8位");
-                                    }else if(value===password){
-                                        return Promise.reject("新密码和旧密码须不一致");
-                                    }else{
-                                        return Promise.resolve()
-                                    }
-                                }}
-                            ]}
-                        > 
-                            <Input placeholder="请输入新密码" minLength={8} />
-                        </Form.Item>
-                        <Form.Item 
-                            label="确认新密码" 
-                            name="sureNewPassword" 
-                            rules={[
-                                {...FORM_REQUIRED_RULE},
-                                {validator: async(_,value,callback)=>{
-                                   const { newPassword } = await resetPasswordForm.getFieldsValue(["newPassword"]);
-                                   if(value !== newPassword){
-                                        return Promise.reject("确认新密码应与新密码保持一致")
-                                   }else{
-                                        return Promise.resolve()
-                                   }
-                                }}
-                            ]}
-                        > 
-                            <Input placeholder="请输入确认新密码" minLength={8} />
-                        </Form.Item>
-                    </Form>
-                </Modal>
+                />
             }
         </div>
     )
