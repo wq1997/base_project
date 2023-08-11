@@ -1,8 +1,9 @@
 const theme = {
     dark: {
-        colorPrimary: '#255AAA'
+        colorPrimary: 'black'
     },
     default: {
+        colorPrimary: '#255AAA'
     }
 }
 export default theme;
