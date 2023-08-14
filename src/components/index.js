@@ -4,6 +4,7 @@ import PageTitle from "./PageTitle";
 import Search from "./Search";
 import ChangePasswordModal from "./ChangePasswordModal";
 import LocaleBtn from "./LocaleBtn";
+import MobileSelectInput from "./mobile/SelectInput";
 
 export {
     ThemeBtn,
@@ -11,5 +12,6 @@ export {
     PageTitle,
     Search,
     ChangePasswordModal,
-    LocaleBtn
+    LocaleBtn,
+    MobileSelectInput
 }

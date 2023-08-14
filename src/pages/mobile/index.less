@@ -1,0 +1,78 @@
+.investmentFill{
+    .form{
+        .formItem{
+            margin-bottom: 10px;
+        }
+    }
+    :global{
+        .adm-list-body{
+            border: none;
+        }
+        .adm-list-item-content{
+            border: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .adm-form-item-child-position-normal{
+            position: relative;
+            left: -10px;
+        }
+        .adm-input-element{
+            border-bottom: 1px solid #D0D0D0;
+        }
+    }
+}
+
+.investmentResult{
+    .resultList{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        text-align: center;
+        border-bottom: 1px solid #d3cfcf;
+        margin-bottom: 30px;
+        .resultListItem{
+            padding: 15px 20px;
+            border: 1px solid #d3cfcf;
+            &:nth-child(even){
+                border-bottom: none;
+                border-left: none;
+            }
+            &:nth-child(odd){
+                border-bottom: none;
+            }
+        }
+    }
+
+    .estimateData{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        text-align: center;
+        gap: 30px;
+        margin-bottom: 20px;
+
+        .estimateDataItem{
+            padding: 10px 15px;
+            border: 1px solid #d3cfcf;
+        }
+    }
+
+    .estimateResult{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        text-align: center;
+        border-bottom: 1px solid #d3cfcf;
+        margin-bottom: 30px;
+        .estimateResultItem{
+            padding: 15px 20px;
+            border: 1px solid #d3cfcf;
+            &:nth-child(even){
+                border-bottom: none;
+                border-left: none;
+            }
+            &:nth-child(odd){
+                border-bottom: none;
+            }
+        }
+    }
+}

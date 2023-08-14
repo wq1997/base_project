@@ -19,6 +19,11 @@ const Notify = "@/pages/commentManage/notify";
 const Feedback = "@/pages/commentManage/feedback";
 
 const Login = "@/pages/account/login";
+
+// webview
+const mobileInvestmentFill = "@/pages/mobile/investmentFill";
+const mobileInvestmentResult = "@/pages/mobile/investmentResult";
+
 const Test = "@/pages/test"
 
 export default Routes = [
@@ -50,6 +55,19 @@ export default Routes = [
         ]
       },
       { path: "/login", component: Login },
+      {
+        path: '/mobile',
+        routes: [
+          {
+            path: '/mobile/investment/fill',
+            component: mobileInvestmentFill
+          },
+          {
+            path: '/mobile/investment/result',
+            component: mobileInvestmentResult
+          }
+        ]
+      },
       {
         path: '/test',
         component: Test
