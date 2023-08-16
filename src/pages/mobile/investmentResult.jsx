@@ -27,7 +27,7 @@ const InvestmentResult = () => {
                     <div className={styles.resultListItem}>1</div>
                 </div>
                 <div style={{textAlign: 'center'}}>
-                    <PageTitle title="收益估值" type="page" level={4} style={{color: token.colorPrimary}} />
+                    <PageTitle title="收益估算" type="page" level={4} style={{color: token.colorPrimary}} />
                 </div>
                 <div className={styles.estimateData}>
                     <div className={styles.estimateDataItem}>测算周期 20年</div>
