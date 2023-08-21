@@ -154,7 +154,7 @@ const ElectricityType = () => {
                         labelCol={{span: 4}}
                     >
                         <Form.Item label="用电类型名称" name="name" rules={[{...FORM_REQUIRED_RULE}]}> 
-                            <Input placeholder="请输入二级区域" />
+                            <Input placeholder="请输入用电类型名称" />
                         </Form.Item>
                         <Form.Item label="备注" name="comment">
                             <Input.TextArea placeholder="请输入备注" />

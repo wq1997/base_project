@@ -153,10 +153,10 @@ const Notify = () => {
                         autoComplete="off"
                         labelCol={{span: 4}}
                     >
-                        <Form.Item label="名称" name="type" rules={[{...FORM_REQUIRED_RULE}]}> 
+                        <Form.Item label="通知类型" name="type" rules={[{...FORM_REQUIRED_RULE}]}> 
                             <Input placeholder="请输入消息通知类型" />
                         </Form.Item>
-                        <Form.Item label="备注" name="content">
+                        <Form.Item label="通知内容" name="content">
                             <Input.TextArea placeholder="请输入消息通知内容" />
                         </Form.Item>
                     </Form>
