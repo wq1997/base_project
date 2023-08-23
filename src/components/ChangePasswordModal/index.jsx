@@ -24,7 +24,7 @@ const ChangePasswordModal = ({
                 labelCol={{span: 4}}
                 style={{marginTop: 16}}
             >
-                <Form.Item label="旧密码" name="password" rules={[{...FORM_REQUIRED_RULE}]}> 
+                <Form.Item label="旧密码" name="oldPassword" rules={[{...FORM_REQUIRED_RULE}]}> 
                     <Input placeholder="请输入旧密码" minLength={8} />
                 </Form.Item>
                 <Form.Item 
@@ -33,10 +33,10 @@ const ChangePasswordModal = ({
                     rules={[
                         {...FORM_REQUIRED_RULE},
                         {validator: async(_,value,callback) => {
-                            const { password } = await form.getFieldsValue(["password"]);
+                            const { oldPassword } = await form.getFieldsValue(["oldPassword"]);
                             if(value?.length<8){
                                 return Promise.reject("密码长度必须大于或等于8位");
-                            }else if(value===password){
+                            }else if(value===oldPassword){
                                 return Promise.reject("新密码和旧密码须不一致");
                             }else{
                                 return Promise.resolve()
@@ -48,7 +48,7 @@ const ChangePasswordModal = ({
                 </Form.Item>
                 <Form.Item 
                     label="确认新密码" 
-                    name="sureNewPassword" 
+                    name="confirmPassword" 
                     rules={[
                         {...FORM_REQUIRED_RULE},
                         {validator: async(_,value,callback)=>{

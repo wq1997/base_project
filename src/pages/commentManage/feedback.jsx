@@ -77,8 +77,8 @@ const Feedback = () => {
 
     useDebounceEffect(()=>{
         getList();
-    }, [keyword, pagination], {
-        wait: 300
+    }, [keyword], {
+        wait: 500
     });
 
     return (
@@ -92,6 +92,7 @@ const Feedback = () => {
                         setKeyword(e.target.value);
                         setPagination(DEFAULT_PAGINATION);
                     }} 
+                    allowClear
                 />
             </Row>
             <Table 

@@ -1,9 +1,16 @@
 
 import { PageTitle, Search } from "@/components";
 import { useDebounceEffect } from "ahooks";
-import { Table, Row, Button, Modal, Form, Input } from "antd";
-import { useState } from "react";
+import { Table, Row, Button, Modal, Form, Input, Tooltip } from "antd";
+import { useState, useRef } from "react";
 import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE } from "@/utils/constants";
+import { 
+    getInvestmentList as getInvestmentListServe,
+    getInvestmentListByName as getInvestmentListByNameServe,
+    deleteInvestment as deleteInvestmentServe,
+    addInvestment as addInvestmentServe,
+    updateInvestment as updateInvestmentServe
+} from "@/services/serve"; 
 
 const Investment = () => {
     const [form] = Form.useForm();
@@ -11,6 +18,10 @@ const Investment = () => {
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [visible, setVisible] = useState(false);
     const [type, setType] = useState("")
+    const [dataSource, setDataSource] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [currentRecord, setCurrentRecord] = useState(null);
+    const paginationRef = useRef(DEFAULT_PAGINATION);
 
     const columns = [
         {
@@ -23,18 +34,36 @@ const Investment = () => {
         },
         {
             title: '名称',
-            dataIndex: 'name',
-            key: 'name',
+            dataIndex: 'keyName',
+            key: 'keyName',
         },
         {
             title: '数值',
-            dataIndex: 'count',
-            key: 'count',
+            dataIndex: 'total',
+            key: 'total',
         },
         {
             title: '备注',
-            dataIndex: 'comment',
-            key: 'comment',
+            dataIndex: 'remark',
+            key: 'remark',
+            ellipsis: true,
+            width: 400,
+            render(value){
+                return (
+                    <Tooltip title={value}>
+                        <div 
+                            style={{
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                                width: 400,
+                            }}
+                        >
+                            {value}
+                        </div>
+                    </Tooltip>
+                )
+            }
         },
         {
             title: '创建时间',
@@ -56,6 +85,7 @@ const Investment = () => {
                                 })
                                 setType("Edit");
                                 setVisible(true);
+                                setCurrentRecord(record);
                             }}
                         >
                             编辑
@@ -68,8 +98,11 @@ const Investment = () => {
                                  content: "数据删除后将无法恢复，是否确认删除该条数据？",
                                  okText: '确定',
                                  cancelText: '取消',
-                                 onOk(){
-                                    console.log("删除")
+                                 onOk: async () => {
+                                    const res = await deleteInvestmentServe({id: record?.id});
+                                    if(res?.data){
+                                        getList();
+                                    }
                                  }
                                });
                             }}
@@ -83,13 +116,48 @@ const Investment = () => {
     ]
 
     const getList = async () => {
-        console.log("投资测算", keyword, pagination)
+        setLoading(true);
+        let res = null;
+        const { current, pageSize } = paginationRef.current;
+        if(!keyword){
+            res = await getInvestmentListServe({
+                current, 
+                size: pageSize
+            })
+        }else{
+            res = await getInvestmentListByNameServe({
+                current, 
+                size: pageSize,
+                name: keyword
+            })
+        }
+        if(res?.data?.records){
+            setDataSource(res?.data?.records);
+            setPagination({
+                ...paginationRef.current,
+                total: res?.data?.total
+            })
+        }
+        setLoading(false);
     }
 
     const onSubmit = async () => {
+        let res = null;
         try {
             const values = await form.validateFields();
-            console.log('Success:', values);
+            if(type==="Edit"){
+                res = await updateInvestmentServe({
+                    ...values,
+                    id: currentRecord?.id
+                })
+            }else{
+                res = await addInvestmentServe(values);
+            }
+            if(res?.data){
+                getList();
+                onCancel();
+            }
+
           } catch (errorInfo) {
             console.log('Failed:', errorInfo);
           }
@@ -98,12 +166,13 @@ const Investment = () => {
     const onCancel = () => {
         setVisible(false);
         form.resetFields();
+        setCurrentRecord(null);
     }
 
     useDebounceEffect(()=>{
         getList();
-    }, [keyword, pagination], {
-        wait: 300
+    }, [keyword], {
+        wait: 500
     });
 
     return (
@@ -114,9 +183,10 @@ const Investment = () => {
                     style={{width: 200, marginBottom: 15}} 
                     placeholder="请输入关键字" 
                     onChange={e=>{
+                        paginationRef.current = DEFAULT_PAGINATION
                         setKeyword(e.target.value);
-                        setPagination(DEFAULT_PAGINATION);
                     }} 
+                    allowClear
                 />
                 <Button 
                     type="primary"
@@ -131,15 +201,12 @@ const Investment = () => {
             <Table 
                 columns={columns}
                 pagination={pagination}
-                dataSource={[
-                    {
-                        id: '1',
-                        name: '更换电芯流出单价'
-                    }
-                ]}
+                dataSource={dataSource}
                 onChange={(pagination)=>{
-                    setPagination({...pagination})
+                    paginationRef.current = pagination;
+                    getList();
                 }}
+                loading={loading}
             />
             {
                 visible&&
@@ -158,13 +225,13 @@ const Investment = () => {
                         autoComplete="off"
                         labelCol={{span: 4}}
                     >
-                        <Form.Item label="名称" name="name" rules={[{...FORM_REQUIRED_RULE}]}>
+                        <Form.Item label="名称" name="keyName" rules={[{...FORM_REQUIRED_RULE}]}>
                             <Input placeholder="请输入名称"/>
                         </Form.Item>
-                        <Form.Item label="数值" name="count" rules={[{...FORM_REQUIRED_RULE}]}>
+                        <Form.Item label="数值" name="total" rules={[{...FORM_REQUIRED_RULE}]}>
                             <Input placeholder="请输入数值" />
                         </Form.Item>
-                        <Form.Item label="备注" name="comment">
+                        <Form.Item label="备注" name="remark">
                             <Input.TextArea placeholder="请输入备注" />
                         </Form.Item>
                     </Form>

@@ -1,15 +1,29 @@
 import { PageTitle, Search } from "@/components";
 import { useDebounceEffect } from "ahooks";
-import { Table, Row, Button, Modal, Form, Input, Select } from "antd";
-import { useState } from "react";
+import { Table, Row, Button, Modal, Form, Input, Select, Tooltip } from "antd";
+import { useState, useRef } from "react";
 import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE } from "@/utils/constants";
+import { 
+    getSecondArea as getSecondAreaServe,
+    getSecondAreaByName as getSecondAreaByNameServe,
+    updateArea as updateAreaServe,
+    addArea as addAreaServe,
+    deleteArea as deleteAreaServe,
+    getAllFirstArea as getAllFirstAreaServe
+} from "@/services/serve"; 
+import { useEffect } from "react";
 
 const SecondArea = () => {
     const [form] = Form.useForm();
     const [keyword, setKeyword] = useState("");
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [visible, setVisible] = useState(false);
-    const [type, setType] = useState("")
+    const [type, setType] = useState("");
+    const [dataSource, setDataSource] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [currentRecord, setCurrentRecord] = useState(null);
+    const [firstArea, setFirstArea] = useState([]);
+    const paginationRef = useRef(DEFAULT_PAGINATION);
 
     const columns = [
         {
@@ -22,18 +36,36 @@ const SecondArea = () => {
         },
         {
             title: '二级区域名称',
-            dataIndex: 'secondArea',
-            key: 'secondArea',
+            dataIndex: 'name',
+            key: 'name',
         },
         {
             title: '所属一级区域',
-            dataIndex: 'firstArea',
-            key: 'firstArea',
+            dataIndex: 'parentName',
+            key: 'parentName',
         },
         {
             title: '备注',
-            dataIndex: 'comment',
-            key: 'comment',
+            dataIndex: 'remark',
+            key: 'remark',
+            ellipsis: true,
+            width: 400,
+            render(value){
+                return (
+                    <Tooltip title={value}>
+                        <div 
+                            style={{
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                                width: 400,
+                            }}
+                        >
+                            {value}
+                        </div>
+                    </Tooltip>
+                )
+            }
         },
         {
             title: '创建时间',
@@ -55,6 +87,7 @@ const SecondArea = () => {
                                 })
                                 setType("Edit");
                                 setVisible(true);
+                                setCurrentRecord(record);
                             }}
                         >
                             编辑
@@ -67,8 +100,11 @@ const SecondArea = () => {
                                  content: "数据删除后将无法恢复，是否确认删除该条数据？",
                                  okText: '确定',
                                  cancelText: '取消',
-                                 onOk(){
-                                    console.log("删除")
+                                 onOk: async() =>{
+                                    const res = await deleteAreaServe({id: record?.id});
+                                    if(res?.data){
+                                        getList();
+                                    }
                                  }
                                });
                             }}
@@ -82,28 +118,75 @@ const SecondArea = () => {
     ]
 
     const getList = async () => {
-        console.log("二级区域", keyword, pagination)
+        setLoading(true);
+        let res = null;
+        const { current, pageSize } = paginationRef.current;
+        if(!keyword){
+            res = await getSecondAreaServe({
+                current, 
+                size: pageSize
+            })
+        }else{
+            res = await getSecondAreaByNameServe({
+                current, 
+                size: pageSize,
+                name: keyword
+            })
+        }
+        if(res?.data?.records){
+            setDataSource(res?.data?.records);
+            setPagination({
+                ...paginationRef.current,
+                total: res?.data?.total
+            })
+        }
+        setLoading(false);
     }
 
     const onSubmit = async () => {
+        let res = null;
         try {
             const values = await form.validateFields();
-            console.log('Success:', values);
+            if(type==="Edit"){
+                res = await updateAreaServe({
+                    ...values,
+                    id: currentRecord?.id
+                })
+            }else{
+                res = await addAreaServe(values);
+            }
+            if(res?.data){
+                getList();
+                onCancel();
+            }
+
           } catch (errorInfo) {
             console.log('Failed:', errorInfo);
-          }
+        }
     }
 
     const onCancel = () => {
         setVisible(false);
+        setCurrentRecord(null);
         form.resetFields();
+    }
+
+    const getAllFirstArea = async () => {
+        const res = await getAllFirstAreaServe();
+        if(res?.data){
+            setFirstArea(res?.data);
+        }
     }
 
     useDebounceEffect(()=>{
         getList();
-    }, [keyword, pagination], {
-        wait: 300
+    }, [keyword], {
+        wait: 500
     });
+
+    useEffect(()=>{
+        getAllFirstArea();
+    }, [])
 
     return (
         <div>
@@ -113,9 +196,10 @@ const SecondArea = () => {
                     style={{width: 200, marginBottom: 15}} 
                     placeholder="请输入关键字" 
                     onChange={e=>{
+                        paginationRef.current = DEFAULT_PAGINATION
                         setKeyword(e.target.value);
-                        setPagination(DEFAULT_PAGINATION);
                     }} 
+                    allowClear
                 />
                 <Button 
                     type="primary"
@@ -130,17 +214,12 @@ const SecondArea = () => {
             <Table 
                 columns={columns}
                 pagination={pagination}
-                dataSource={[
-                    {
-                        id: '1',
-                        firstArea: '中国',
-                        secondArea: '上海',
-                        comment: '哈哈哈哈哈哈'
-                    }
-                ]}
+                dataSource={dataSource}
                 onChange={(pagination)=>{
-                    setPagination({...pagination})
+                    paginationRef.current = pagination;
+                    getList();
                 }}
+                loading={loading}
             />
             {
                 visible&&
@@ -159,19 +238,21 @@ const SecondArea = () => {
                         autoComplete="off"
                         labelCol={{span: 4}}
                     >
-                        <Form.Item label="所属一级区域" name="firstArea" rules={[{...FORM_REQUIRED_RULE}]}>
+                        <Form.Item label="所属一级区域" name="parentId" rules={[{...FORM_REQUIRED_RULE}]}>
                             <Select 
                                 placeholder="请选择一级区域" 
-                                options={[{
-                                    value: '中国',
-                                    label: '中国'
-                                }]}
+                                options={firstArea?.map(item => {
+                                    return {
+                                        value: item.id,
+                                        label: item.name
+                                    }
+                                })}
                             />
                         </Form.Item>
-                        <Form.Item label="二级区域" name="secondArea" rules={[{...FORM_REQUIRED_RULE}]}> 
+                        <Form.Item label="二级区域" name="name" rules={[{...FORM_REQUIRED_RULE}]}> 
                             <Input placeholder="请输入二级区域" />
                         </Form.Item>
-                        <Form.Item label="备注" name="comment">
+                        <Form.Item label="备注" name="remark">
                             <Input.TextArea placeholder="请输入备注" />
                         </Form.Item>
                     </Form>

@@ -1,9 +1,21 @@
 import { PageTitle, Search } from "@/components";
-import { Row, Button, Form, Table, Modal, Input, DatePicker, Col, Upload, Typography } from "antd";
-import { useState } from "react";
+import { Row, Button, Form, Table, Modal, Input, DatePicker, Col, Upload, Typography, Tooltip, message } from "antd";
+import { useState, useRef } from "react";
 import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE } from "@/utils/constants";
 import { useDebounceEffect } from "ahooks";
 import { InboxOutlined } from '@ant-design/icons';
+import { 
+    getPolicyInformationList as getPolicyInformationListServe,
+    getPolicyInformationListByParams as getPolicyInformationListByParamsServe,
+    deletePolicyInformation as deletePolicyInformationServe,
+    addPolicyInformation as addPolicyInformationServe,
+    updatePolicyInformation as updatePolicyInformationServe,
+    downloadPolicyTemplate as downloadPolicyTemplateServe
+} from "@/services/serve"; 
+import { splitString, downloadFile } from "@/utils/utils"
+import dayjs from "dayjs";
+import moment from "moment";
+import { getBaseUrl } from "@/services/request";
 
 const PolicyInformation = () => {
     const [form] = Form.useForm();
@@ -13,6 +25,10 @@ const PolicyInformation = () => {
     const [uploadVisible, setUploadVisible] = useState(false);
     const [type, setType] = useState("");
     const [date, setDate] = useState("");
+    const [dataSource, setDataSource] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [currentRecord, setCurrentRecord] = useState(null);
+    const paginationRef = useRef(DEFAULT_PAGINATION);
 
     const columns = [
         {
@@ -24,34 +40,58 @@ const PolicyInformation = () => {
             }
         },
         {
-            title: '时间',
-            dataIndex: 'time',
-            key: 'time',
+            title: '发布时间',
+            dataIndex: 'releaseTime',
+            key: 'releaseTime',
+            render(value){
+                return moment(value).format("YYYY-MM-DD")
+            }
         },
         {
             title: '发布单位',
-            dataIndex: 'publisher',
-            key: 'publisher',
+            dataIndex: 'issueUnit',
+            key: 'issueUnit',
         },
         {
             title: '发布名称',
-            dataIndex: 'publishName',
-            key: 'publishName',
+            dataIndex: 'policyName',
+            key: 'policyName',
         },
         {
             title: '政策要点',
-            dataIndex: 'importance',
-            key: 'importance',
+            dataIndex: 'policyPoints',
+            key: 'policyPoints',
+            width: 400,
+            render(value){
+                return (
+                    <Tooltip title={value}>
+                        <div>{splitString(value, 200)}</div>
+                    </Tooltip>
+                )
+            }
         },
         {
             title: '政策解读',
-            dataIndex: 'read',
-            key: 'read',
+            dataIndex: 'policyAnalyse',
+            key: 'policyAnalyse',
+            width: 400,
+            render(value){
+                return (
+                    <Tooltip title={value}>
+                        <div>{splitString(value, 200)}</div>
+                    </Tooltip>
+                )
+            }
         },
         {
             title: '原文链接',
-            dataIndex: 'link',
-            key: 'link',
+            dataIndex: 'originalLink',
+            key: 'originalLink',
+        },
+        {
+            title: '创建时间',
+            dataIndex: 'createTime',
+            key: 'createTime',
         },
         {
             title: '操作',
@@ -64,10 +104,12 @@ const PolicyInformation = () => {
                             type="link"
                             onClick={()=>{
                                 form.setFieldsValue({
-                                    ...record
+                                    ...record,
+                                    releaseTime: dayjs(record?.releaseTime)
                                 })
                                 setType("Edit");
                                 setVisible(true);
+                                setCurrentRecord(record)
                             }}
                         >
                             编辑
@@ -80,8 +122,11 @@ const PolicyInformation = () => {
                                  content: "数据删除后将无法恢复，是否确认删除该条数据？",
                                  okText: '确定',
                                  cancelText: '取消',
-                                 onOk(){
-                                    console.log("删除")
+                                 onOk: async () => {
+                                    const res = await deletePolicyInformationServe({id: record?.id});
+                                    if(res?.data){
+                                        getList();
+                                    }
                                  }
                                });
                             }}
@@ -95,9 +140,27 @@ const PolicyInformation = () => {
     ]
 
     const onSubmit = async () => {
+        let res = null;
         try {
             const values = await form.validateFields();
-            console.log('Success:', values);
+            const releaseTime = moment(new Date(values?.releaseTime)).format("YYYY-MM-DD");
+            if(type==="Edit"){
+                res = await updatePolicyInformationServe({
+                    ...values,
+                    id: currentRecord?.id,
+                    releaseTime
+                })
+            }else{
+                res = await addPolicyInformationServe({
+                    ...values,
+                    releaseTime
+                });
+            }
+            if(res?.data){
+                getList();
+                onCancel();
+            }
+
           } catch (errorInfo) {
             console.log('Failed:', errorInfo);
           }
@@ -107,21 +170,45 @@ const PolicyInformation = () => {
         setVisible(false);
         setUploadVisible(false);
         form.resetFields();
+        setCurrentRecord(null)
     }
 
     const getList = async () => {
-        console.log("政策信息", keyword, pagination, date)
+        setLoading(true);
+        let res = null;
+        const { current, pageSize } = paginationRef.current;
+        if(!keyword&&!date){
+            res = await getPolicyInformationListServe({
+                current, 
+                size: pageSize
+            })
+        }else{
+            res = await getPolicyInformationListByParamsServe({
+                current, 
+                size: pageSize,
+                name: keyword,
+                date
+            })
+        }
+        if(res?.data?.records){
+            setDataSource(res?.data?.records);
+            setPagination({
+                ...paginationRef.current,
+                total: res?.data?.total
+            })
+        }
+        setLoading(false);
     }
 
     const onChangeDatePicker = (date, dateString) => {
+        paginationRef.current = DEFAULT_PAGINATION
         setDate(dateString);
-        setPagination(DEFAULT_PAGINATION);
     }
 
     useDebounceEffect(()=>{
         getList();
-    }, [keyword, pagination, date], {
-        wait: 300
+    }, [keyword, date], {
+        wait: 500
     });
     
     return (
@@ -133,9 +220,10 @@ const PolicyInformation = () => {
                         style={{width: 200, marginBottom: 16, marginRight: 16}} 
                         placeholder="请输入关键字" 
                         onChange={e=>{
+                            paginationRef.current = DEFAULT_PAGINATION
                             setKeyword(e.target.value);
-                            setPagination(DEFAULT_PAGINATION);
                         }} 
+                        allowClear
                     />
                     <DatePicker placeholder="请选择时间" onChange={onChangeDatePicker} />
                 </Col>
@@ -163,15 +251,12 @@ const PolicyInformation = () => {
             <Table 
                 columns={columns}
                 pagination={pagination}
-                dataSource={[
-                    {
-                        id: '1',
-                        publisher: '中华人民共和国国务院',
-                    }
-                ]}
+                dataSource={dataSource}
                 onChange={(pagination)=>{
-                    setPagination({...pagination})
+                    paginationRef.current = pagination;
+                    getList();
                 }}
+                loading={loading}
             />
             {
                 visible&&
@@ -190,22 +275,22 @@ const PolicyInformation = () => {
                         autoComplete="off"
                         labelCol={{span: 4}}
                     >
-                        <Form.Item label="时间" name="time" rules={[{...FORM_REQUIRED_RULE}]}> 
+                        <Form.Item label="时间" name="releaseTime" rules={[{...FORM_REQUIRED_RULE}]}> 
                             <DatePicker placeholder="请选择时间" />
                         </Form.Item>
-                        <Form.Item label="发布单位" name="publisher" rules={[{...FORM_REQUIRED_RULE}]}>
+                        <Form.Item label="发布单位" name="issueUnit" rules={[{...FORM_REQUIRED_RULE}]}>
                             <Input placeholder="请输入发布单位" />
                         </Form.Item>
-                        <Form.Item label="发布名称" name="publishName" rules={[{...FORM_REQUIRED_RULE}]}>
+                        <Form.Item label="发布名称" name="policyName" rules={[{...FORM_REQUIRED_RULE}]}>
                             <Input placeholder="请输入发布名称" />
                         </Form.Item>
-                        <Form.Item label="政策要点" name="importance" rules={[{...FORM_REQUIRED_RULE}]}>
+                        <Form.Item label="政策要点" name="policyPoints" rules={[{...FORM_REQUIRED_RULE}]}>
                             <Input.TextArea placeholder="请输入政策要点" />
                         </Form.Item>
-                        <Form.Item label="政策解读" name="read" rules={[{...FORM_REQUIRED_RULE}]}>
+                        <Form.Item label="政策解读" name="policyAnalyse" rules={[{...FORM_REQUIRED_RULE}]}>
                             <Input.TextArea placeholder="请输入政策解读" />
                         </Form.Item>
-                        <Form.Item label="原文链接" name="link" rules={[{...FORM_REQUIRED_RULE}]}>
+                        <Form.Item label="原文链接" name="originalLink" rules={[{...FORM_REQUIRED_RULE}]}>
                             <Input placeholder="请输入原文链接" />
                         </Form.Item>
                     </Form>
@@ -224,8 +309,16 @@ const PolicyInformation = () => {
                     <div style={{padding: 24}}>
                         <Upload.Dragger
                             accept=".xlsx,.xls"
-                            customRequest={(file)=>{
-                                console.log(file)
+                            action={`${getBaseUrl()}/policy/addPolicyByTemplate`}
+                            onChange={(info)=>{
+                                const { status } = info.file;
+                                if (status === 'done') {
+                                   message.success("上传成功");
+                                   paginationRef.current=DEFAULT_PAGINATION;
+                                   getList();
+                                } else if (status === 'error') {
+                                  message.error('上传失败');
+                                }
                             }}
                         >
                             <p className="ant-upload-drag-icon">
@@ -239,7 +332,16 @@ const PolicyInformation = () => {
                         <p>
                             <Typography.Text type="secondary">上传之前请下载模版，按照格式填入数据</Typography.Text>
                         </p>
-                        <a>模版下载</a>
+                        <a 
+                            onClick={async () => {
+                                const res = await downloadPolicyTemplateServe();
+                                if(res){
+                                    downloadFile({
+                                        content: res,
+                                        fileName: '政策信息模板.xlsx'
+                                    })
+                                }
+                            }}>模版下载</a>
                     </div>
                 </Modal>
             }

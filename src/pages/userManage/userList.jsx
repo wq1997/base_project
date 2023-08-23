@@ -1,8 +1,15 @@
 import { PageTitle, Search, ChangePasswordModal } from "@/components";
 import { Row, Button, Form, Table, Modal, Input, Select } from "antd";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE, TELPHONE_NUMBER_REG } from "@/utils/constants";
 import { useDebounceEffect } from "ahooks";
+import { 
+    getUserList as getUserListServe,
+    getUserListByParams as getUserListByParamsServe,
+    updateUserList as updateUserListServe,
+    addUserList as addUserListServe,
+    deleteUserList as deleteUserListServe
+} from "@/services/serve";
 
 const UserList = () => {
     const [form] = Form.useForm();
@@ -11,8 +18,12 @@ const UserList = () => {
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [editVisible, setEditVisible] = useState(false);
     const [changePasswordVisible, setChangePasswordVisible] = useState(false);
-    const [type, setType] = useState("")
-    
+    const [type, setType] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [currentRecord, setCurrentRecord] = useState(null);
+    const [dataSource, setDataSource] = useState([]);
+    const paginationRef = useRef(DEFAULT_PAGINATION);
+
     const columns = [
         {
             title: '序号',
@@ -24,13 +35,13 @@ const UserList = () => {
         },
         {
             title: '姓名',
-            dataIndex: 'name',
-            key: 'name',
+            dataIndex: 'userName',
+            key: 'userName',
         },
         {
             title: '手机号',
-            dataIndex: 'account',
-            key: 'account',
+            dataIndex: 'phoneNumber',
+            key: 'phoneNumber',
         },
         {
             title: '公司',
@@ -39,18 +50,18 @@ const UserList = () => {
         },
         {
             title: '职务',
-            dataIndex: 'site',
-            key: 'site',
+            dataIndex: 'post',
+            key: 'post',
         },
         {
             title: '合作意向',
-            dataIndex: 'yes',
-            key: 'yes',
+            dataIndex: 'intention',
+            key: 'intention',
         },
         {
             title: '备注',
-            dataIndex: 'comment',
-            key: 'comment',
+            dataIndex: 'remark',
+            key: 'remark',
         },
         {
             title: '创建时间',
@@ -72,6 +83,7 @@ const UserList = () => {
                                 })
                                 setType("Edit");
                                 setEditVisible(true);
+                                setCurrentRecord(record);
                             }}
                         >
                             编辑
@@ -84,17 +96,21 @@ const UserList = () => {
                                  content: "数据删除后将无法恢复，是否确认删除该条数据？",
                                  okText: '确定',
                                  cancelText: '取消',
-                                 onOk(){
-                                    console.log("删除")
+                                 onOk: async () => {
+                                    const res = await deleteUserListServe({id: record?.id});
+                                    if(res?.data){
+                                        getList();
+                                    }
                                  }
                                });
                             }}
                         >
                             删除
                         </Button>
-                        <Button 
+                        {/* <Button 
                             type="link"
                             onClick={()=>{
+                                setCurrentRecord(record);
                                 changePasswordForm.setFieldsValue({
                                     ...record
                                 })
@@ -102,7 +118,7 @@ const UserList = () => {
                             }}
                         >
                             重置密码
-                        </Button>
+                        </Button> */}
                     </Row>
                 )
             }
@@ -110,18 +126,37 @@ const UserList = () => {
     ]
 
     const onSubmit = async () => {
+        let res = null;
         try {
             const values = await form.validateFields();
-            console.log('Success:', values);
+            if(type==="Edit"){
+                res = await updateUserListServe({
+                    ...values,
+                    id: currentRecord?.id
+                })
+            }else{
+                res = await addUserListServe(values);
+            }
+            if(res?.data){
+                getList();
+                onCancel();
+            }
+
           } catch (errorInfo) {
             console.log('Failed:', errorInfo);
-          }
+        }
     }
 
     const onResetPassword = async () => {
         try {
             const values = await changePasswordForm.validateFields();
-            console.log('Success:', values);
+            const res = await changeUserListPasswordServe({
+                ...values,
+                id: currentRecord?.id
+            })
+            if(res){
+                onCancel();
+            }
           } catch (errorInfo) {
             console.log('Failed:', errorInfo);
           }
@@ -130,18 +165,41 @@ const UserList = () => {
     const onCancel = () => {
         setEditVisible(false);
         setChangePasswordVisible(false);
+        setCurrentRecord(null);
         form.resetFields();
         changePasswordForm.resetFields();
     }
 
     const getList = async () => {
-        console.log("用户列表", keyword, pagination)
+        setLoading(true);
+        let res = null;
+        const { current, pageSize } = paginationRef.current;
+        if(!keyword){
+            res = await getUserListServe({
+                current, 
+                size: pageSize
+            })
+        }else{
+            res = await getUserListByParamsServe({
+                current, 
+                size: pageSize,
+                name: keyword
+            })
+        }
+        if(res?.data?.records){
+            setDataSource(res?.data?.records);
+            setPagination({
+                ...paginationRef.current,
+                total: res?.data?.total
+            })
+        }
+        setLoading(false);
     }
 
     useDebounceEffect(()=>{
         getList();
-    }, [keyword, pagination], {
-        wait: 300
+    }, [keyword], {
+        wait: 500
     });
 
     return (
@@ -153,8 +211,8 @@ const UserList = () => {
                         style={{width: 200, marginBottom: 16, marginRight: 16}} 
                         placeholder="请输入姓名/手机号" 
                         onChange={e=>{
+                            paginationRef.current = DEFAULT_PAGINATION
                             setKeyword(e.target.value);
-                            setPagination(DEFAULT_PAGINATION);
                         }} 
                     />
                     <Select 
@@ -179,15 +237,10 @@ const UserList = () => {
             <Table 
                 columns={columns}
                 pagination={pagination}
-                dataSource={[
-                    {
-                        id: '1',
-                        name: '1k伏',
-                        comment: '哈哈哈哈哈哈'
-                    }
-                ]}
+                dataSource={dataSource}
                 onChange={(pagination)=>{
-                    setPagination({...pagination})
+                    paginationRef.current = pagination;
+                    getList();
                 }}
             />
             {
@@ -207,12 +260,12 @@ const UserList = () => {
                         autoComplete="off"
                         labelCol={{span: 4}}
                     >
-                        <Form.Item label="姓名" name="name" rules={[{...FORM_REQUIRED_RULE}]}> 
+                        <Form.Item label="姓名" name="userName" rules={[{...FORM_REQUIRED_RULE}]}> 
                             <Input placeholder="请输入姓名" />
                         </Form.Item>
                         <Form.Item 
                             label="手机号" 
-                            name="account" 
+                            name="phoneNumber" 
                             rules={[
                                 {...FORM_REQUIRED_RULE},
                                 {validator(_,value,callback){
@@ -245,19 +298,19 @@ const UserList = () => {
                         <Form.Item label="公司" name="company"> 
                             <Input placeholder="请输入公司" />
                         </Form.Item>
-                        <Form.Item label="职务" name="site"> 
+                        <Form.Item label="职务" name="post"> 
                             <Input placeholder="请输入职务" />
                         </Form.Item>
-                        <Form.Item label="合作意向" name="yes"> 
+                        <Form.Item label="合作意向" name="intention"> 
                             <Input.TextArea placeholder="请输入合作意向" />
                         </Form.Item>
-                        <Form.Item label="备注" name="comment">
+                        <Form.Item label="备注" name="remark">
                             <Input.TextArea placeholder="请输入备注" />
                         </Form.Item>
                     </Form>
                 </Modal>
             }
-            {
+            {/* {
                 changePasswordVisible&&
                 <ChangePasswordModal 
                     form={changePasswordForm}
@@ -265,7 +318,7 @@ const UserList = () => {
                     onOk={onResetPassword}
                     onCancel={onCancel}
                 />
-            }
+            } */}
         </div>
     )
 }

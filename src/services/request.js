@@ -1,18 +1,31 @@
 import axios from "axios";
 import { getDvaApp } from "umi";
+import { getLocalStorage } from "@/utils/utils";
+import { message } from "antd";
 
-const getToken = () => localStorage.getItem("Token");
+const getToken = () => getLocalStorage("Token");
+
+export const getBaseUrl = () => {
+    let API_BASE_URL = '';
+    console.log("NODE_ENV", process.env.NODE_ENV);
+    if (process.env.NODE_ENV == 'production') {
+      API_BASE_URL = 'http://192.168.0.108:1888';
+    } else {
+      API_BASE_URL = 'http://dasgnq.natappfree.cc';
+    }
+    return API_BASE_URL;
+};
 
 const instance = axios.create({
-    baseURL: 'https://www.baidu.com',
+    baseURL: getBaseUrl(),
     timeout: 10000,
     headers: {
-        Authorization: getToken()
+        token: getToken()
     }
 })
 
 instance.interceptors.request.use(config => {
-    config.headers.Authorization = 'Bearer ' + getToken()
+    config.headers.token = getToken();
     return config;
 }, error => {
     return Promise.reject(error);
@@ -20,53 +33,59 @@ instance.interceptors.request.use(config => {
 
 instance.interceptors.response.use(response => {
     if (response.status === 200) {
-        return Promise.resolve(response);
+        // 如果后端返回了code，但是code不是200那就将错误返回到page
+        if(response?.data?.code&&response?.data?.code!==200){
+            if(response?.data?.code===403){
+                logout();
+            }
+            errorHandle(response.status, response.data?.msg || response.data?.message);
+            return Promise.reject(response);
+        }
+        return Promise.resolve(response?.data);
     } else {
+        errorHandle(response.status, response.data?.msg || response.data?.message);
         return Promise.reject(response);
     }
 }, error => {
-    const { config, code, request, response, isAxiosError, toJSON } = error;
+    const { response } = error;
     if (response) {
-        errorHandle(response.status, response.data.message);
+        errorHandle(response.status, response.data?.msg || response.data?.message);
         return Promise.reject(response);
     }else {
         if(error.message.includes('timeout')){
-            console.log('请求超时')
             return Promise.reject(error);
         }
 
         if (!window.navigator.onLine) {
-            console.log('断网了...')
+            message.error('断网了...');
         } else {
             return Promise.reject(error);
         }
     }
 });
 
-const errorHandle = (status,message) => {
+const errorHandle = (status,info) => {
     switch (status) {
         case 400:
-            console.log("请求错误");
+            info = "请求错误"
             break;
         case 401:
             logout();
             break;
         case 403:
-            console.log("权限不足，拒绝访问")
+            info = "权限不足，拒绝访问";
             break;
         case 404:
-            console.log("请求的资源不存在或请求地址出错")
+            info = "请求的资源不存在或请求地址出错";
             break;
-        // 500: 服务器错误
         case 500:
-            console.log("服务器错误")
+            info = "服务器错误"
             break;
         case 1000001:
-            console.log("token 异常，请联系管理员")
+            info = "token 异常，请联系管理员";
             break;
-        default:
-            console.log(message);
     }
+    message.error(info);
 }
 
 const logout = () => {

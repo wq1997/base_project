@@ -1,15 +1,26 @@
 import { PageTitle, Search } from "@/components";
-import { Row, Button, Form, Table, Modal, Input } from "antd";
-import { useState } from "react";
+import { Row, Button, Form, Table, Modal, Input, Tooltip } from "antd";
+import { useState, useRef } from "react";
 import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE } from "@/utils/constants";
 import { useDebounceEffect } from "ahooks";
+import { 
+    getVoltageLevel as getVoltageLevelServe,
+    getVoltageLevelByName as getVoltageLevelByNameServe,
+    updateBaseDataByType as updateBaseDataByTypeServe,
+    deleteBaseData as deleteBaseDataServe,
+    addVoltageLevel as addVoltageLevelServe
+} from "@/services/serve"; 
 
 const VoltageLevel = () => {
     const [form] = Form.useForm();
     const [keyword, setKeyword] = useState("");
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [visible, setVisible] = useState(false);
-    const [type, setType] = useState("")
+    const [type, setType] = useState("");
+    const [dataSource, setDataSource] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [currentRecord, setCurrentRecord] = useState(null);
+    const paginationRef = useRef(DEFAULT_PAGINATION);
 
     const columns = [
         {
@@ -27,8 +38,26 @@ const VoltageLevel = () => {
         },
         {
             title: '备注',
-            dataIndex: 'comment',
-            key: 'comment',
+            dataIndex: 'remark',
+            key: 'remark',
+            ellipsis: true,
+            width: 400,
+            render(value){
+                return (
+                    <Tooltip title={value}>
+                        <div 
+                            style={{
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                                width: 400,
+                            }}
+                        >
+                            {value}
+                        </div>
+                    </Tooltip>
+                )
+            }
         },
         {
             title: '创建时间',
@@ -50,6 +79,7 @@ const VoltageLevel = () => {
                                 })
                                 setType("Edit");
                                 setVisible(true);
+                                setCurrentRecord(record);
                             }}
                         >
                             编辑
@@ -62,8 +92,14 @@ const VoltageLevel = () => {
                                  content: "数据删除后将无法恢复，是否确认删除该条数据？",
                                  okText: '确定',
                                  cancelText: '取消',
-                                 onOk(){
-                                    console.log("删除")
+                                 onOk: async() =>{
+                                    const res = await deleteBaseDataServe({
+                                        id: record?.id
+                                    })
+                                    if(res?.data){
+                                        getList();
+                                        setVisible(false);
+                                    }
                                  }
                                });
                             }}
@@ -77,12 +113,26 @@ const VoltageLevel = () => {
     ]
 
     const onSubmit = async () => {
+        let res = null;
         try {
             const values = await form.validateFields();
-            console.log('Success:', values);
+            if(type==="Edit"){
+                res = await updateBaseDataByTypeServe({
+                    ...values,
+                    id: currentRecord?.id,
+                    type: 3
+                })
+            }else{
+                res = await addVoltageLevelServe(values);
+            }
+            if(res?.data){
+                getList();
+                onCancel();
+            }
+
           } catch (errorInfo) {
             console.log('Failed:', errorInfo);
-          }
+        }
     }
 
     const onCancel = () => {
@@ -91,13 +141,35 @@ const VoltageLevel = () => {
     }
 
     const getList = async () => {
-        console.log("电压等级", keyword, pagination)
+        setLoading(true);
+        let res = null;
+        const { current, pageSize } = paginationRef.current;
+        if(!keyword){
+            res = await getVoltageLevelServe({
+                current, 
+                size: pageSize,
+            })
+        }else{
+            res = await getVoltageLevelByNameServe({
+                current, 
+                size: pageSize,
+                name: keyword
+            })
+        }
+        if(res?.data?.records){
+            setDataSource(res?.data?.records);
+            setPagination({
+                ...paginationRef.current,
+                total: res?.data?.total
+            })
+        }
+        setLoading(false);
     }
 
     useDebounceEffect(()=>{
         getList();
-    }, [keyword, pagination], {
-        wait: 300
+    }, [keyword], {
+        wait: 500
     });
 
     return (
@@ -108,9 +180,10 @@ const VoltageLevel = () => {
                     style={{width: 200, marginBottom: 15}} 
                     placeholder="请输入关键字" 
                     onChange={e=>{
+                        paginationRef.current = DEFAULT_PAGINATION
                         setKeyword(e.target.value);
-                        setPagination(DEFAULT_PAGINATION);
                     }} 
+                    allowClear
                 />
                 <Button 
                     type="primary"
@@ -125,16 +198,12 @@ const VoltageLevel = () => {
             <Table 
                 columns={columns}
                 pagination={pagination}
-                dataSource={[
-                    {
-                        id: '1',
-                        name: '1k伏',
-                        comment: '哈哈哈哈哈哈'
-                    }
-                ]}
+                dataSource={dataSource}
                 onChange={(pagination)=>{
-                    setPagination({...pagination})
+                    paginationRef.current = pagination;
+                    getList();
                 }}
+                loading={loading}
             />
             {
                 visible&&
@@ -156,7 +225,7 @@ const VoltageLevel = () => {
                         <Form.Item label="名称" name="name" rules={[{...FORM_REQUIRED_RULE}]}> 
                             <Input placeholder="请输入电压等级名称" />
                         </Form.Item>
-                        <Form.Item label="备注" name="comment">
+                        <Form.Item label="备注" name="remark">
                             <Input.TextArea placeholder="请输入备注" />
                         </Form.Item>
                     </Form>

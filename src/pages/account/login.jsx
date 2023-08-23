@@ -2,16 +2,52 @@ import { Form, Input, Checkbox, Button, Typography, theme } from "antd";
 import { FORM_REQUIRED_RULE } from "@/utils/constants";
 import backgroundImage from "@/assets/background.jpg";
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { 
+  getPublicKey as getPublicKeySever,
+  login as loginSever,
+} from "@/services/user";
+import { getEncrypt, setLocalStorage } from "@/utils/utils";
 import styles from "./index.less";
-import { history } from "umi";
+import { history, useDispatch } from "umi";
+import { useEffect, useState } from "react";
 const { Title } = Typography;
 
 const Login = () => {
-  const { token } = theme.useToken()
-  const onFinish = (values) => {
-    console.log(values);
-    history.push("/cet/home")
+  const { token } = theme.useToken();
+  const dispatch = useDispatch();
+  const [publicKey, setPublicKey] = useState('');
+
+  const onFinish = async (values) => {
+    const res = await loginSever({
+      ...values,
+      password: getEncrypt(publicKey, values.password)
+    });
+    if(res?.data?.token){
+      const data = res?.data;
+      setLocalStorage("Token", data?.token);
+      setLocalStorage("userName", data?.username);
+      dispatch({
+        type: 'user/updateState',
+        payload: {
+            user: {
+              userName: data?.username
+            }
+        }
+      })
+      history.push("/cet/home")
+    }
   }
+
+  const getPublicKey = async () => {
+    const res = await getPublicKeySever();
+    if(res?.data){
+      setPublicKey(res?.data)
+    }
+  }
+
+  useEffect(()=>{
+    getPublicKey();
+  }, [])
   return (
     <div
       style={{
@@ -51,13 +87,13 @@ const Login = () => {
             }}
           >
             <Form.Item
-              name="username"
+              name="phoneNumber"
               rules={[{...FORM_REQUIRED_RULE}]}
               style={{marginBottom: 40}}
             >
               <Input 
                 prefix={<UserOutlined style={{ fontSize: 15, color: '#73787F'}}/>} 
-                placeholder="请输入用户名"
+                placeholder="请输入手机号"
                 style={{height: 40}} 
               />
             </Form.Item>

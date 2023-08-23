@@ -1,15 +1,29 @@
 import { PageTitle, Search } from "@/components";
-import { Row, Button, Form, Table, Modal, Input } from "antd";
-import { useState } from "react";
+import { Row, Button, Form, Table, Modal, Input, Tooltip, Select } from "antd";
+import { useState, useRef } from "react";
 import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE } from "@/utils/constants";
 import { useDebounceEffect } from "ahooks";
+import { 
+    getNotify as getNotifyServe,
+    getNotifyByName as getNotifyByNameServe,
+    addNotify as addNotifyServe,
+    updateNotify as updateNotifyServe,
+    deleteNotify as deleteNotifyServe,
+    getNotifyType as getNotifyTypeServe
+} from "@/services/serve";
+import { useEffect } from "react";
 
 const Notify = () => {
     const [form] = Form.useForm();
     const [keyword, setKeyword] = useState("");
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [visible, setVisible] = useState(false);
-    const [type, setType] = useState("")
+    const [type, setType] = useState("");
+    const [dataSource, setDataSource] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [currentRecord, setCurrentRecord] = useState(null);
+    const [notifyTypeList, setNotifyTypeList] = useState([]);
+    const paginationRef = useRef(DEFAULT_PAGINATION);
 
     const columns = [
         {
@@ -22,13 +36,31 @@ const Notify = () => {
         },
         {
             title: '通知类型',
-            dataIndex: 'type',
-            key: 'type',
+            dataIndex: 'informType',
+            key: 'informType',
         },
         {
             title: '通知内容',
-            dataIndex: 'content',
-            key: 'content',
+            dataIndex: 'text',
+            key: 'text',
+            ellipsis: true,
+            width: 400,
+            render(value){
+                return (
+                    <Tooltip title={value}>
+                        <div 
+                            style={{
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                                width: 400,
+                            }}
+                        >
+                            {value}
+                        </div>
+                    </Tooltip>
+                )
+            }
         },
         {
             title: '创建时间',
@@ -50,6 +82,7 @@ const Notify = () => {
                                 })
                                 setType("Edit");
                                 setVisible(true);
+                                setCurrentRecord(record);
                             }}
                         >
                             编辑
@@ -62,8 +95,11 @@ const Notify = () => {
                                  content: "数据删除后将无法恢复，是否确认删除该条数据？",
                                  okText: '确定',
                                  cancelText: '取消',
-                                 onOk(){
-                                    console.log("删除")
+                                 onOk: async () => {
+                                    const res = await deleteNotifyServe({id: record?.id});
+                                    if(res?.data){
+                                        getList();
+                                    }
                                  }
                                });
                             }}
@@ -77,28 +113,75 @@ const Notify = () => {
     ]
 
     const onSubmit = async () => {
+        let res = null;
         try {
             const values = await form.validateFields();
-            console.log('Success:', values);
+            if(type==="Edit"){
+                res = await updateNotifyServe({
+                    ...values,
+                    id: currentRecord?.id
+                })
+            }else{
+                res = await addNotifyServe(values);
+            }
+            if(res?.data){
+                getList();
+                onCancel();
+            }
+
           } catch (errorInfo) {
             console.log('Failed:', errorInfo);
-          }
+        }
     }
 
     const onCancel = () => {
         setVisible(false);
         form.resetFields();
+        setCurrentRecord(null);
     }
 
     const getList = async () => {
-        console.log("消息通知", keyword, pagination)
+        setLoading(true);
+        let res = null;
+        const { current, pageSize } = paginationRef.current;
+        if(!keyword){
+            res = await getNotifyServe({
+                current, 
+                size: pageSize
+            })
+        }else{
+            res = await getNotifyByNameServe({
+                current, 
+                size: pageSize,
+                name: keyword
+            })
+        }
+        if(res?.data?.records){
+            setDataSource(res?.data?.records);
+            setPagination({
+                ...paginationRef.current,
+                total: res?.data?.total
+            })
+        }
+        setLoading(false);
+    }
+
+    const getNotifyType = async () => {
+        const res = await getNotifyTypeServe();
+        if(res?.data){
+            setNotifyTypeList(res?.data)
+        }
     }
 
     useDebounceEffect(()=>{
         getList();
-    }, [keyword, pagination], {
-        wait: 300
+    }, [keyword], {
+        wait: 500
     });
+
+    useEffect(()=>{
+        getNotifyType();
+    }, [])
 
     return (
         <div>
@@ -108,9 +191,10 @@ const Notify = () => {
                     style={{width: 200, marginBottom: 15}} 
                     placeholder="请输入关键字" 
                     onChange={e=>{
+                        paginationRef.current = DEFAULT_PAGINATION
                         setKeyword(e.target.value);
-                        setPagination(DEFAULT_PAGINATION);
                     }} 
+                    allowClear
                 />
                 <Button 
                     type="primary"
@@ -125,16 +209,12 @@ const Notify = () => {
             <Table 
                 columns={columns}
                 pagination={pagination}
-                dataSource={[
-                    {
-                        id: '1',
-                        type: '政策',
-                        content: '哈哈哈哈哈哈'
-                    }
-                ]}
+                dataSource={dataSource}
                 onChange={(pagination)=>{
-                    setPagination({...pagination})
+                    paginationRef.current = pagination;
+                    getList();
                 }}
+                loading={loading}
             />
             {
                 visible&&
@@ -153,10 +233,18 @@ const Notify = () => {
                         autoComplete="off"
                         labelCol={{span: 4}}
                     >
-                        <Form.Item label="通知类型" name="type" rules={[{...FORM_REQUIRED_RULE}]}> 
-                            <Input placeholder="请输入消息通知类型" />
+                        <Form.Item label="通知类型" name="informType" rules={[{...FORM_REQUIRED_RULE}]}> 
+                            <Select 
+                                placeholder="请选择通知类型" 
+                                options={notifyTypeList?.map(item => {
+                                    return {
+                                        value: item.value,
+                                        label: item.name
+                                    }
+                                })}
+                            />
                         </Form.Item>
-                        <Form.Item label="通知内容" name="content">
+                        <Form.Item label="通知内容" name="text">
                             <Input.TextArea placeholder="请输入消息通知内容" />
                         </Form.Item>
                     </Form>
