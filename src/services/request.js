@@ -11,7 +11,7 @@ export const getBaseUrl = () => {
     if (process.env.NODE_ENV == 'production') {
       API_BASE_URL = 'http://192.168.0.108:1888';
     } else {
-      API_BASE_URL = 'http://dasgnq.natappfree.cc';
+      API_BASE_URL = 'http://aeb7wq.natappfree.cc';
     }
     return API_BASE_URL;
 };
@@ -37,6 +37,7 @@ instance.interceptors.response.use(response => {
         if(response?.data?.code&&response?.data?.code!==200){
             if(response?.data?.code===403){
                 logout();
+                return;
             }
             errorHandle(response.status, response.data?.msg || response.data?.message);
             return Promise.reject(response);
@@ -52,14 +53,8 @@ instance.interceptors.response.use(response => {
         errorHandle(response.status, response.data?.msg || response.data?.message);
         return Promise.reject(response);
     }else {
-        if(error.message.includes('timeout')){
-            return Promise.reject(error);
-        }
-
-        if (!window.navigator.onLine) {
-            message.error('断网了...');
-        } else {
-            return Promise.reject(error);
+        if(error.code==="ERR_NETWORK"){
+            errorHandle(502, '服务器错误');
         }
     }
 });

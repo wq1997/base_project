@@ -4,6 +4,10 @@ import { useState } from "react";
 import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE } from "@/utils/constants";
 import { useDebounceEffect } from "ahooks";
 import { InboxOutlined } from '@ant-design/icons';
+import { 
+    getAllFirstArea as getAllFirstAreaServe
+} from "@/services/serve";
+import { useEffect } from "react";
 
 const ElectricityPrice = () => {
     const [form] = Form.useForm();
@@ -11,6 +15,10 @@ const ElectricityPrice = () => {
     const [visible, setVisible] = useState(false);
     const [uploadVisible, setUploadVisible] = useState(false);
     const [type, setType] = useState("");
+    const [firstArea, setFirstArea] = useState([]);
+    const [secondArea, serSecondArea] = useState([]);
+    const [electricityType, setElectricityType] = useState([]);
+    const [billingSystem, setBillingSystem] = useState([]);
 
     const columns = [
         {
@@ -157,6 +165,17 @@ const ElectricityPrice = () => {
         form.resetFields();
     }
 
+    const getAllFirstArea = async () => {
+        const res = await getAllFirstAreaServe();
+        if(res?.data){
+            setFirstArea(res?.data);
+        }
+    }
+
+    useEffect(()=>{
+        getAllFirstArea();
+    }, [])
+
     return (
         <div>
             <PageTitle title="电价列表" type="page" />
@@ -168,10 +187,46 @@ const ElectricityPrice = () => {
                         gap: 16
                     }}
                 >
-                    <Select placeholder="请选择一级区域" style={{width: 200}} />
-                    <Select placeholder="请选择二级区域" style={{width: 200}} />
-                    <Select placeholder="请选择用电类型" style={{width: 200}} />
-                    <Select placeholder="请选择计费制度" style={{width: 200}} />
+                    <Select 
+                        placeholder="请选择一级区域" 
+                        style={{width: 200}} 
+                        options={firstArea?.map(item => {
+                            return {
+                                value: item.id,
+                                label: item.name
+                            }
+                        })}
+                    />
+                    <Select 
+                        placeholder="请选择二级区域"
+                        style={{width: 200}} 
+                        options={secondArea?.map(item => {
+                            return {
+                                value: item.id,
+                                label: item.name
+                            }
+                        })}
+                     />
+                    <Select 
+                        placeholder="请选择用电类型" 
+                        style={{width: 200}} 
+                        options={electricityType?.map(item => {
+                            return {
+                                value: item.id,
+                                label: item.name
+                            }
+                        })}
+                    />
+                    <Select 
+                        placeholder="请选择计费制度" 
+                        style={{width: 200}} 
+                        options={billingSystem?.map(item => {
+                            return {
+                                value: item.id,
+                                label: item.name
+                            }
+                        })}
+                    />
                 </div>
                 <Col gutter={[16,16]}>
                     <Button 

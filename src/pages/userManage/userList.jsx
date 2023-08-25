@@ -1,6 +1,6 @@
 import { PageTitle, Search, ChangePasswordModal } from "@/components";
-import { Row, Button, Form, Table, Modal, Input, Select } from "antd";
-import { useState, useRef } from "react";
+import { Row, Button, Form, Table, Modal, Input, Select, Tooltip } from "antd";
+import { useState, useRef, useEffect } from "react";
 import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE, TELPHONE_NUMBER_REG } from "@/utils/constants";
 import { useDebounceEffect } from "ahooks";
 import { 
@@ -10,6 +10,10 @@ import {
     addUserList as addUserListServe,
     deleteUserList as deleteUserListServe
 } from "@/services/serve";
+import { 
+    getPublicKey as getPublicKeySever,
+  } from "@/services/user";
+import { getEncrypt } from "@/utils/utils";
 
 const UserList = () => {
     const [form] = Form.useForm();
@@ -22,6 +26,7 @@ const UserList = () => {
     const [loading, setLoading] = useState(false);
     const [currentRecord, setCurrentRecord] = useState(null);
     const [dataSource, setDataSource] = useState([]);
+    const [publicKey, setPublicKey] = useState('');
     const paginationRef = useRef(DEFAULT_PAGINATION);
 
     const columns = [
@@ -57,11 +62,47 @@ const UserList = () => {
             title: '合作意向',
             dataIndex: 'intention',
             key: 'intention',
+            ellipsis: true,
+            width: 300,
+            render(value){
+                return (
+                    <Tooltip title={value}>
+                        <div 
+                            style={{
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                                width: 400,
+                            }}
+                        >
+                            {value}
+                        </div>
+                    </Tooltip>
+                )
+            }
         },
         {
             title: '备注',
             dataIndex: 'remark',
             key: 'remark',
+            ellipsis: true,
+            width: 300,
+            render(value){
+                return (
+                    <Tooltip title={value}>
+                        <div 
+                            style={{
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                                width: 400,
+                            }}
+                        >
+                            {value}
+                        </div>
+                    </Tooltip>
+                )
+            }
         },
         {
             title: '创建时间',
@@ -129,13 +170,18 @@ const UserList = () => {
         let res = null;
         try {
             const values = await form.validateFields();
+            const password = getEncrypt(publicKey, values.password);
             if(type==="Edit"){
                 res = await updateUserListServe({
                     ...values,
-                    id: currentRecord?.id
+                    id: currentRecord?.id,
+                    password
                 })
             }else{
-                res = await addUserListServe(values);
+                res = await addUserListServe({
+                    ...values,
+                    password
+                });
             }
             if(res?.data){
                 getList();
@@ -196,11 +242,22 @@ const UserList = () => {
         setLoading(false);
     }
 
+    const getPublicKey = async () => {
+        const res = await getPublicKeySever();
+        if(res?.data){
+          setPublicKey(res?.data)
+        }
+    }
+
     useDebounceEffect(()=>{
         getList();
     }, [keyword], {
         wait: 500
     });
+
+    useEffect(()=>{
+        getPublicKey()
+    }, [])
 
     return (
         <div>
@@ -214,6 +271,7 @@ const UserList = () => {
                             paginationRef.current = DEFAULT_PAGINATION
                             setKeyword(e.target.value);
                         }} 
+                        allowClear
                     />
                     <Select 
                         style={{width: 200,marginRight: 16}} 
@@ -242,6 +300,7 @@ const UserList = () => {
                     paginationRef.current = pagination;
                     getList();
                 }}
+                loading={loading}
             />
             {
                 editVisible&&
@@ -282,8 +341,8 @@ const UserList = () => {
                         <Form.Item 
                             label="密码" 
                             name="password" 
+                            hidden={type==="Edit"}
                             rules={[
-                                {...FORM_REQUIRED_RULE},
                                 {validator(_,value,callback){
                                     if(value?.length<8){
                                        return Promise.reject("密码长度必须大于或等于8位");

@@ -43,7 +43,7 @@ export const getAllFirstArea = () => {
 }
 
 export const getElectricType = (payload) => {
-   return axiosInstance.get('/dataType/obtainedElectricType', {
+   return axiosInstance.get('/dataType/obtainedElectricTypePage', {
       params: payload
    })
 }
@@ -69,7 +69,7 @@ export const deleteBaseData = (payload) => {
 }
 
 export const getBillingSystem = (payload) => {
-   return axiosInstance.get('/dataType/ObtainedBillingSystem', {
+   return axiosInstance.get('/dataType/obtainedBillingSystemPage', {
       params: payload
    })
 }
@@ -85,7 +85,7 @@ export const addBillingSystem = (payload) => {
 }
 
 export const getVoltageLevel = (payload) => {
-   return axiosInstance.get('/dataType/obtainedVoltageLevel', {
+   return axiosInstance.get('/dataType/obtainedVoltageLevelPage', {
       params: payload
    })
 }
@@ -137,21 +137,19 @@ export const getUserList = (payload) => {
 }
 
 export const getUserListByParams = (payload) => {
-   return axiosInstance.get('/user/obtainedUserListPage', {
-      params: payload
-   })
+   return axiosInstance.post('/user/obtainedUserListPageBy', payload)
 }
 
 export const updateUserList = (payload) => {
-   return axiosInstance.post('', payload)
+   return axiosInstance.post('/user/updateUser', payload)
 }
 
 export const addUserList = (payload) => {
-   return axiosInstance.post('', payload)
+   return axiosInstance.post('/user/addUser', payload)
 }
 
 export const deleteUserList = (payload) => {
-   return axiosInstance.get('', {
+   return axiosInstance.get('/user/delUser', {
       params: payload
    })
 }
