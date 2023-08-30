@@ -1,12 +1,20 @@
 import { PageTitle, Search } from "@/components";
-import { Row, Button, Table, Modal } from "antd";
-import { useState } from "react";
+import { Row, Button, Table, Modal, Image } from "antd";
+import { useState, useRef } from "react";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import { useDebounceEffect } from "ahooks";
+import { 
+    getFeedback as getFeedbackServe,
+    getFeedbackByName as getFeedbackByNameServe,
+    deleteFeedback as deleteFeedbackServe
+} from "@/services/serve"; 
 
 const Feedback = () => {
     const [keyword, setKeyword] = useState("");
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
+    const [dataSource, setDataSource] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const paginationRef = useRef(DEFAULT_PAGINATION);
 
     const columns = [
         {
@@ -19,23 +27,39 @@ const Feedback = () => {
         },
         {
             title: '账号',
-            dataIndex: 'account',
-            key: 'account',
+            dataIndex: 'userName',
+            key: 'userName',
         },
         {
             title: '反馈类型',
-            dataIndex: 'type',
-            key: 'type',
+            dataIndex: 'feedbackType',
+            key: 'feedbackType',
         },
         {
             title: '反馈内容',
-            dataIndex: 'content',
-            key: 'content',
+            dataIndex: 'text',
+            key: 'text',
         },
         {
             title: '图片',
-            dataIndex: 'pic',
-            key: 'pic',
+            dataIndex: 'imgPath',
+            key: 'imgPath',
+            render(value){
+                const imgList = value?JSON.parse(value):[];
+                return (
+                    <div
+                        style={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(3, 50px)',
+                            gap: 10
+                        }}
+                    >
+                        {
+                            imgList?.map(url => <Image src={url} />)
+                        }
+                    </div>
+                )
+            }
         },
         {
             title: '反馈时间',
@@ -57,8 +81,11 @@ const Feedback = () => {
                                  content: "数据删除后将无法恢复，是否确认删除该条数据？",
                                  okText: '确定',
                                  cancelText: '取消',
-                                 onOk(){
-                                    console.log("删除")
+                                 onOk: async () => {
+                                    const res = await deleteFeedbackServe({id: record?.id});
+                                    if(res?.data){
+                                        getList();
+                                    }
                                  }
                                });
                             }}
@@ -72,7 +99,29 @@ const Feedback = () => {
     ]
 
     const getList = async () => {
-        console.log("意见反馈", keyword, pagination)
+        setLoading(true);
+        let res = null;
+        const { current, pageSize } = paginationRef.current;
+        if(!keyword){
+            res = await getFeedbackServe({
+                current, 
+                size: pageSize
+            })
+        }else{
+            res = await getFeedbackByNameServe({
+                current, 
+                size: pageSize,
+                name: keyword
+            })
+        }
+        if(res?.data?.records){
+            setDataSource(res?.data?.records);
+            setPagination({
+                ...paginationRef.current,
+                total: res?.data?.total
+            })
+        }
+        setLoading(false);
     }
 
     useDebounceEffect(()=>{
@@ -89,8 +138,8 @@ const Feedback = () => {
                     style={{width: 200, marginBottom: 15}} 
                     placeholder="请输入关键字" 
                     onChange={e=>{
+                        paginationRef.current = DEFAULT_PAGINATION
                         setKeyword(e.target.value);
-                        setPagination(DEFAULT_PAGINATION);
                     }} 
                     allowClear
                 />
@@ -98,16 +147,12 @@ const Feedback = () => {
             <Table 
                 columns={columns}
                 pagination={pagination}
-                dataSource={[
-                    {
-                        id: '1',
-                        type: '政策',
-                        content: '哈哈哈哈哈哈'
-                    }
-                ]}
+                dataSource={dataSource}
                 onChange={(pagination)=>{
-                    setPagination({...pagination})
+                    paginationRef.current = pagination;
+                    getList();
                 }}
+                loading={loading}
             />
         </div>
     )

@@ -215,3 +215,101 @@ export const addInvestment = (payload) => {
 export const updateInvestment = (payload) => {
    return axiosInstance.post('/keyword/updateParameterPage', payload)
 }
+
+export const getPeakMonth = (payload) => {
+   return axiosInstance.get('', {
+      params: payload
+   })
+}
+
+export const getPeakMonthByName = (payload) => {
+   return axiosInstance.get('', {
+      params: payload
+   })
+}
+
+export const updatePeakMonth = (payload) => {
+   return axiosInstance.post('', payload)
+}
+
+export const addPeakMonth = (payload) => {
+   return axiosInstance.post('', payload)
+}
+
+export const deletePeakMonth = (payload) => {
+   return axiosInstance.get('', {
+      params: payload
+   })
+}
+
+export const getFeedback = (payload) => {
+   return axiosInstance.get('/feedback/obtainedFeedbackPage', {
+      params: payload
+   })
+}
+
+export const getFeedbackByName = (payload) => {
+   return axiosInstance.get('/feedback/obtainedFeedbackPageByName', {
+      params: payload
+   })
+}
+
+export const deleteFeedback = (payload) => {
+   return axiosInstance.get('/feedback/delFeedback', {
+      params: payload
+   })
+}
+
+export const getSecondAreaByFirstArea = (payload) => {
+   return axiosInstance.get('/district/obtainedSecondDistrictListByParentId', {
+      params: payload
+   })
+}
+
+export const getAllElectricityType = (payload) => {
+   return axiosInstance.get('/dataType/obtainedElectricTypeList', {
+      params: payload
+   })
+}
+
+export const getAllBillingSystem = (payload) => {
+   return axiosInstance.get('/dataType/obtainedBillingSystemList', {
+      params: payload
+   })
+}
+
+export const getElectricityPrice = (payload) => {
+   return axiosInstance.get('/electricityPrice/obtainedElectricityByPage', {
+      params: payload
+   })
+}
+
+export const getElectricityPriceByParams = (payload) => {
+   return axiosInstance.post('/electricityPrice/obtainedElectricityByName', payload)
+}
+
+export const getAllVoltageLevel = (payload) => {
+   return axiosInstance.get('/dataType/obtainedVoltageLevelList', {
+      params: payload
+   })
+}
+
+export const updateElectricityPrice = (payload) => {
+   return axiosInstance.post('/electricityPrice/updateElectricityPrice', payload)
+}
+
+export const addElectricityPrice = (payload) => {
+   return axiosInstance.post('/electricityPrice/addElectricityPrice', payload)
+}
+
+export const deleteElectricityPrice = (payload) => {
+   return axiosInstance.get('/electricityPrice/delElectricityPrice', {
+      params: payload
+   })
+}
+
+export const downloadElectricityPriceTemplate = () => {
+   return axiosInstance.get('', {
+      responseType: 'blob'
+   })
+}

@@ -273,14 +273,14 @@ const UserList = () => {
                         }} 
                         allowClear
                     />
-                    <Select 
+                    {/* <Select 
                         style={{width: 200,marginRight: 16}} 
                         placeholder="请选择公司" 
                     />
                     <Select 
                         style={{width: 200}} 
                         placeholder="请选择职务" 
-                    />
+                    /> */}
                 </div>
                 <Button 
                     type="primary"

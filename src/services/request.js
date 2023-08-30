@@ -11,7 +11,7 @@ export const getBaseUrl = () => {
     if (process.env.NODE_ENV == 'production') {
       API_BASE_URL = 'http://192.168.0.108:1888';
     } else {
-      API_BASE_URL = 'http://aeb7wq.natappfree.cc';
+      API_BASE_URL = ' http://5a9bmu.natappfree.cc';
     }
     return API_BASE_URL;
 };

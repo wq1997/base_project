@@ -12,6 +12,7 @@ const SecondArea = "@/pages/baseData/secondArea";
 const ElectricityType = "@/pages/baseData/electricityType";
 const BillingSystem = "@/pages/baseData/billingSystem";
 const voltageLevel = "@/pages/baseData/voltageLevel";
+const PeakMonth = "@/pages/baseData/peakMonth";
 
 const UserList = "@/pages/userManage/userList";
 
@@ -47,6 +48,7 @@ export default Routes = [
           { path: "/cet/baseInfo/electricityType", component: ElectricityType },
           { path: "/cet/baseInfo/billingSystem", component: BillingSystem },
           { path: "/cet/baseInfo/voltageLevel", component: voltageLevel },
+          { path: "/cet/baseInfo/peakMonth", component: PeakMonth },
           // 用户管理
           { path: "/cet/userManage/userList", component: UserList},
           // 留言管理
