@@ -51,10 +51,10 @@ const MenuList = [
                 key: '/cet/baseInfo/voltageLevel',
                 label: '电压等级',
             },
-            {   
-                key: "/cet/baseInfo/peakMonth", 
-                label: "高峰月" 
-            },
+            // {   
+            //     key: "/cet/baseInfo/peakMonth", 
+            //     label: "高峰月" 
+            // },
         ]
     },
     {

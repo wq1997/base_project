@@ -7,9 +7,8 @@ const getToken = () => getLocalStorage("Token");
 
 export const getBaseUrl = () => {
     let API_BASE_URL = '';
-    console.log("NODE_ENV", process.env.NODE_ENV);
     if (process.env.NODE_ENV == 'production') {
-      API_BASE_URL = 'http://192.168.0.108:1888';
+      API_BASE_URL = 'https://energy.sermatec-cloud.com/api';
     } else {
       API_BASE_URL = ' http://5a9bmu.natappfree.cc';
     }

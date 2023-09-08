@@ -73,7 +73,7 @@ export default Routes = [
       {
         path: '/test',
         component: Test
-       }
+      },
      ]
-   }
+   },
 ]

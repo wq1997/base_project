@@ -97,6 +97,8 @@ const PolicyInformation = () => {
             title: '操作',
             dataIndex: 'Actions',
             key: 'Actions',
+            fixed: 'right',
+            width: 200,
             render(text,record){
                 return (
                     <Row>
@@ -255,6 +257,9 @@ const PolicyInformation = () => {
                 onChange={(pagination)=>{
                     paginationRef.current = pagination;
                     getList();
+                }}
+                scroll={{
+                    x: 2000
                 }}
                 loading={loading}
             />

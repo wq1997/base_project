@@ -1,8 +1,7 @@
 import { PageTitle } from "@/components";
-import { Row, Button, Form, Table, Modal, Input, Tooltip, Col, Upload, Typography, Select } from "antd";
+import { Row, Button, Form, Table, Modal, Input, Tooltip, Col, Upload, Typography, Select, InputNumber } from "antd";
 import { useState, useRef } from "react";
 import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE } from "@/utils/constants";
-import { useDebounceEffect } from "ahooks";
 import { InboxOutlined } from '@ant-design/icons';
 import { 
     getAllFirstArea as getAllFirstAreaServe,
@@ -19,6 +18,7 @@ import {
 } from "@/services/serve";
 import { useEffect } from "react";
 import { downloadFile } from "@/utils/utils"
+import { getBaseUrl } from "@/services/request";
 
 const ElectricityPrice = () => {
     const [form] = Form.useForm();
@@ -120,6 +120,12 @@ const ElectricityPrice = () => {
             title: '基本电费按容价格',
             dataIndex: 'needPrice',
             key: 'needPrice',
+            width: 200
+        },
+        {
+            title: '高峰月',
+            dataIndex: 'peakMonth',
+            key: 'peakMonth',
             width: 200
         },
         {
@@ -495,6 +501,9 @@ const ElectricityPrice = () => {
                         </Form.Item>
                         <Form.Item label="基本电费按容价格" name="needPrice" rules={[{...FORM_REQUIRED_RULE}]}>
                             <Input placeholder="请输入基本电费按容价格" />
+                        </Form.Item>
+                        <Form.Item label="高峰月" name="peekMonth" rules={[{...FORM_REQUIRED_RULE}]}>
+                            <InputNumber min={1} />
                         </Form.Item>
                         <Form.Item label="备注时段" name="remarkDate">
                             <Input.TextArea placeholder="请输入备注时段" />

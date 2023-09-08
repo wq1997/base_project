@@ -64,7 +64,7 @@ const Login = () => {
           position: 'absolute',
           top: '50%',
           transform: 'translateY(-50%)',
-          right: 200
+          right: '10%'
         }}
       > 
         <div

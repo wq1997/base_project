@@ -249,7 +249,7 @@ const PeakMonth = () => {
                             />
                         </Form.Item>
                         <Form.Item label="高峰月" name="peakMonth" rules={[{...FORM_REQUIRED_RULE}]}> 
-                            <InputNumber min={1} max={12} defaultValue={1} />
+                            <InputNumber min={1} defaultValue={1} />
                         </Form.Item>
                         <Form.Item label="备注" name="remark">
                             <Input.TextArea placeholder="请输入备注" />

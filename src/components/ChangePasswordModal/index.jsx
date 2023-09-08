@@ -25,7 +25,7 @@ const ChangePasswordModal = ({
                 style={{marginTop: 16}}
             >
                 <Form.Item label="旧密码" name="oldPassword" rules={[{...FORM_REQUIRED_RULE}]}> 
-                    <Input placeholder="请输入旧密码" minLength={8} />
+                    <Input.Password placeholder="请输入旧密码" minLength={8} />
                 </Form.Item>
                 <Form.Item 
                     label="新密码" 
@@ -44,7 +44,7 @@ const ChangePasswordModal = ({
                         }}
                     ]}
                 > 
-                    <Input placeholder="请输入新密码" minLength={8} />
+                    <Input.Password placeholder="请输入新密码" minLength={8} />
                 </Form.Item>
                 <Form.Item 
                     label="确认新密码" 
@@ -61,7 +61,7 @@ const ChangePasswordModal = ({
                         }}
                     ]}
                 > 
-                    <Input placeholder="请输入确认新密码" minLength={8} />
+                    <Input.Password placeholder="请输入确认新密码" minLength={8} />
                 </Form.Item>
             </Form>
         </Modal>
