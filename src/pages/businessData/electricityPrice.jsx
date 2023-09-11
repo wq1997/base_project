@@ -502,7 +502,7 @@ const ElectricityPrice = () => {
                         <Form.Item label="基本电费按容价格" name="needPrice" rules={[{...FORM_REQUIRED_RULE}]}>
                             <Input placeholder="请输入基本电费按容价格" />
                         </Form.Item>
-                        <Form.Item label="高峰月" name="peekMonth" rules={[{...FORM_REQUIRED_RULE}]}>
+                        <Form.Item label="高峰月" name="peakMonth" rules={[{...FORM_REQUIRED_RULE}]}>
                             <InputNumber min={1} />
                         </Form.Item>
                         <Form.Item label="备注时段" name="remarkDate">
