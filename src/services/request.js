@@ -10,7 +10,7 @@ export const getBaseUrl = () => {
     if (process.env.NODE_ENV == 'production') {
       API_BASE_URL = 'https://energy.sermatec-cloud.com/api';
     } else {
-      API_BASE_URL = ' http://5a9bmu.natappfree.cc';
+      API_BASE_URL = 'https://energy.sermatec-cloud.com/api';
     }
     return API_BASE_URL;
 };
