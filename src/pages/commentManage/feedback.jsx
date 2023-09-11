@@ -1,7 +1,7 @@
 import { PageTitle, Search } from "@/components";
 import { Row, Button, Table, Modal, Image } from "antd";
 import { useState, useRef } from "react";
-import { DEFAULT_PAGINATION, FEEDBACK_IMG_BASE_URL } from "@/utils/constants";
+import { DEFAULT_PAGINATION } from "@/utils/constants";
 import { useDebounceEffect } from "ahooks";
 import { 
     getFeedback as getFeedbackServe,
@@ -60,7 +60,7 @@ const Feedback = () => {
                     >
                         {
                             imgList?.map(url => {
-                                return <Image src={`${FEEDBACK_IMG_BASE_URL}/${url}`} />
+                                return <Image src={`https://energy.sermatec-cloud.com/file/${url}`} />
                             })
                         }
                     </div>
