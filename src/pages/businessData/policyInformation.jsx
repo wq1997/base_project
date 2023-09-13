@@ -64,7 +64,7 @@ const PolicyInformation = () => {
             width: 400,
             render(value){
                 return (
-                    <Tooltip title={value}>
+                    <Tooltip title={value} overlayStyle={{ maxWidth: 550 }}>
                         <div>{splitString(value, 200)}</div>
                     </Tooltip>
                 )
@@ -77,7 +77,7 @@ const PolicyInformation = () => {
             width: 400,
             render(value){
                 return (
-                    <Tooltip title={value}>
+                    <Tooltip title={value} overlayStyle={{ maxWidth: 550 }}>
                         <div>{splitString(value, 200)}</div>
                     </Tooltip>
                 )
