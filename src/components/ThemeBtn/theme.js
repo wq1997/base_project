@@ -3,7 +3,7 @@ const theme = {
         colorPrimary: 'black'
     },
     default: {
-        colorPrimary: '#255AAA'
+        colorPrimary: '#3560EA'
     }
 }
 export default theme;
