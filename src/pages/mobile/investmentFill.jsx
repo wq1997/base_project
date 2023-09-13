@@ -168,7 +168,7 @@ const InvestmentFill = () => {
                     </Form.Item>
                     {
                         showSecondArea &&
-                        <Form.Item name="secondArea" label="二级区域" rules={showSecondArea&&[{required: true, message: '请选择一级区域'}]}> 
+                        <Form.Item name="secondArea" label="二级区域" rules={showSecondArea&&[{required: true, message: '请选择二级区域'}]}> 
                             <MobileSelectInput 
                                 placeholder="请选择二级区域"
                                 onClick={()=>onSelect("secondArea")} 
