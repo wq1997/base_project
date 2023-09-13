@@ -1,10 +1,19 @@
 import { Helmet } from 'react-helmet';
 import { theme } from 'antd';
 import { PageTitle } from "@/components";
+import { useSearchParams } from 'umi';
 import styles from "./index.less";
 
 const InvestmentResult = () => {
     const { token } = theme.useToken();
+    const [searchParams] = useSearchParams();
+    const firstArea = searchParams.get('firstArea')
+    const secondArea = searchParams.get('secondArea')
+    const billingSystem = searchParams.get('billingSystem')
+    const electricType = searchParams.get('electricType')
+    const voltageLevel = searchParams.get('voltageLevel')
+    const installedCapacity = searchParams.get('installedCapacity')
+    console.log(secondArea==="undefined")
     return (
         <div
             style={{

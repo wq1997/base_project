@@ -313,3 +313,33 @@ export const deleteElectricityPrice = (payload) => {
       params: payload
    })
 }
+
+export const getAllOpenFirstLevelDistrictList = (payload) => {
+   return axiosInstance.get('/open/obtainedFirstLevelDistrictList', {
+      params: payload
+   })
+}
+
+export const getAllOpenSecondLevelDistrictListByFirstLevel = (payload) => {
+   return axiosInstance.get('/open/obtainedSecondDistrictListByParentId', {
+      params: payload
+   })
+}
+
+export const getOpenObtainedElectricTypeList = (payload) => {
+   return axiosInstance.get('/open/obtainedElectricTypeList', {
+      params: payload
+   })
+}
+
+export const getOpenBillingSystemList = (payload) => {
+   return axiosInstance.get('/open/obtainedBillingSystemList', {
+      params: payload
+   })
+}
+
+export const getOpenVoltageLevelList = (payload) => {
+   return axiosInstance.get('/open/obtainedVoltageLevelList', {
+      params: payload
+   })
+}
