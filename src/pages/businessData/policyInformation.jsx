@@ -310,6 +310,7 @@ const PolicyInformation = () => {
                     width={700}
                     open={uploadVisible}
                     onCancel={onCancel}
+                    onOk={onCancel}
                 >
                     <div style={{padding: 24}}>
                         <Upload.Dragger

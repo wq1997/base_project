@@ -1,5 +1,11 @@
 import axiosInstance from "./request";
 
+export const downloadElectricityPriceTemplate = () => {
+   return axiosInstance.get('/electricityPrice/downloadElectricityPriceTemplate', {
+      responseType: 'blob'
+   })
+}
+
 export const getFirstArea = (payload) => {
    return axiosInstance.get('/district/obtainedFirstLevelDistrictPage', {
       params: payload
@@ -305,11 +311,5 @@ export const addElectricityPrice = (payload) => {
 export const deleteElectricityPrice = (payload) => {
    return axiosInstance.get('/electricityPrice/delElectricityPrice', {
       params: payload
-   })
-}
-
-export const downloadElectricityPriceTemplate = () => {
-   return axiosInstance.get('', {
-      responseType: 'blob'
    })
 }

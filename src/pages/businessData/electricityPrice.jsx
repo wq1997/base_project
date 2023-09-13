@@ -1,5 +1,5 @@
 import { PageTitle } from "@/components";
-import { Row, Button, Form, Table, Modal, Input, Tooltip, Col, Upload, Typography, Select, InputNumber } from "antd";
+import { Row, Button, Form, Table, Modal, Input, Tooltip, Col, Upload, Typography, Select, InputNumber, message } from "antd";
 import { useState, useRef } from "react";
 import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE } from "@/utils/constants";
 import { InboxOutlined } from '@ant-design/icons';
@@ -520,11 +520,12 @@ const ElectricityPrice = () => {
                     width={700}
                     open={uploadVisible}
                     onCancel={onCancel}
+                    onOk={onCancel}
                 >
                     <div style={{padding: 24}}>
                     <Upload.Dragger
                             accept=".xlsx,.xls"
-                            action={`${getBaseUrl()}`}
+                            action={`${getBaseUrl()}/electricityPrice/addElectricityPriceByTemplate`}
                             onChange={(info)=>{
                                 const { status } = info.file;
                                 if (status === 'done') {
