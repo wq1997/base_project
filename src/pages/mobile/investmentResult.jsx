@@ -30,9 +30,15 @@ const InvestmentResult = () => {
                 <div className={styles.resultList}>
                     <div className={styles.resultListItem}>全生命周期收益</div>
                     <div className={styles.resultListItem}>1</div>
-                    <div className={styles.resultListItem}>全生命周期收益</div>
+                    <div className={styles.resultListItem}>初始投资回收期</div>
                     <div className={styles.resultListItem}>1</div>
-                    <div className={styles.resultListItem}>全生命周期收益</div>
+                    <div className={styles.resultListItem}>收益率（IRR）</div>
+                    <div className={styles.resultListItem}>1</div>
+                    <div className={styles.resultListItem}>动态单位造价</div>
+                    <div className={styles.resultListItem}>1</div>
+                    <div className={styles.resultListItem}>动态总造价</div>
+                    <div className={styles.resultListItem}>1</div>
+                    <div className={styles.resultListItem}>占地面积</div>
                     <div className={styles.resultListItem}>1</div>
                 </div>
                 <div style={{textAlign: 'center'}}>
@@ -45,6 +51,8 @@ const InvestmentResult = () => {
                 <div className={styles.estimateResult}>
                     <div className={styles.estimateResultItem}>年数</div>
                     <div className={styles.estimateResultItem}>总收益</div>
+                    <div className={styles.estimateResultItem}>初期投资</div>
+                    <div className={styles.estimateResultItem}>-320.34</div>
                 </div>
             </div>
         </div>
