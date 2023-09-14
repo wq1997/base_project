@@ -343,3 +343,9 @@ export const getOpenVoltageLevelList = (payload) => {
       params: payload
    })
 }
+
+export const getObtainedParameterGroup = (payload) => {
+   return axiosInstance.get('/keyword/obtainedParameterGroup', {
+      params: payload
+   })
+}

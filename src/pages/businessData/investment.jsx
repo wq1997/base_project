@@ -1,7 +1,7 @@
 
 import { PageTitle, Search } from "@/components";
 import { useDebounceEffect } from "ahooks";
-import { Table, Row, Button, Modal, Form, Input, Tooltip } from "antd";
+import { Table, Row, Button, Modal, Form, Input, Tooltip, Select } from "antd";
 import { useState, useRef } from "react";
 import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE } from "@/utils/constants";
 import { 
@@ -9,8 +9,10 @@ import {
     getInvestmentListByName as getInvestmentListByNameServe,
     deleteInvestment as deleteInvestmentServe,
     addInvestment as addInvestmentServe,
-    updateInvestment as updateInvestmentServe
+    updateInvestment as updateInvestmentServe,
+    getObtainedParameterGroup as getObtainedParameterGroupServe
 } from "@/services/serve"; 
+import { useEffect } from "react";
 
 const Investment = () => {
     const [form] = Form.useForm();
@@ -21,6 +23,7 @@ const Investment = () => {
     const [dataSource, setDataSource] = useState([]);
     const [loading, setLoading] = useState(false);
     const [currentRecord, setCurrentRecord] = useState(null);
+    const [groupData, setGroupData] = useState([]);
     const paginationRef = useRef(DEFAULT_PAGINATION);
 
     const columns = [
@@ -41,6 +44,16 @@ const Investment = () => {
             title: '数值',
             dataIndex: 'total',
             key: 'total',
+        },
+        {
+            title: '单位',
+            dataIndex: 'unit',
+            key: 'unit',
+        },
+        {
+            title: '分组',
+            dataIndex: 'keyGroup',
+            key: 'keyGroup',
         },
         {
             title: '备注',
@@ -169,12 +182,28 @@ const Investment = () => {
         setCurrentRecord(null);
     }
 
+    const getObtainedParameterGroup = async () => {
+        const res = await getObtainedParameterGroupServe();
+        if(res?.data){
+            const data = res?.data?.map(item => {
+                return {
+                    label: item?.name,
+                    value: item?.value
+                }
+            })
+            setGroupData(data)
+        }
+    }
+
     useDebounceEffect(()=>{
         getList();
     }, [keyword], {
         wait: 500
     });
 
+    useEffect(()=>{
+        getObtainedParameterGroup();
+    }, [])
     return (
         <div>
             <PageTitle title="投资测算" type="page" />
@@ -230,6 +259,12 @@ const Investment = () => {
                         </Form.Item>
                         <Form.Item label="数值" name="total" rules={[{...FORM_REQUIRED_RULE}]}>
                             <Input placeholder="请输入数值" />
+                        </Form.Item>
+                        <Form.Item label="单位" name="unit" rules={[{...FORM_REQUIRED_RULE}]}>
+                            <Input placeholder="请输入单位" />
+                        </Form.Item>
+                        <Form.Item label="分组" name="keyGroup" rules={[{...FORM_REQUIRED_RULE}]}>
+                            <Select placeholder="请选择分组" options={groupData} />
                         </Form.Item>
                         <Form.Item label="备注" name="remark">
                             <Input.TextArea placeholder="请输入备注" />
