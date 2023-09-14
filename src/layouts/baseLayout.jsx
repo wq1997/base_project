@@ -52,9 +52,15 @@ const BaseLayout = () => {
                 </Header>
                 <Layout hasSider>
                     <Sider className={styles.sider} width={240}>
-                        <MyMenu />
+                        <div className={styles.siderContent}>
+                            <MyMenu />
+                        </div>
                     </Sider>
-                    <Content className={styles.content}><Outlet /></Content>
+                    <Content className={styles.content}>
+                        <div className={styles.inContent}>
+                            <Outlet />
+                        </div>
+                    </Content>
                 </Layout>
             </Layout>
         </div>
