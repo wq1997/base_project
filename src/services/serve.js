@@ -349,3 +349,7 @@ export const getObtainedParameterGroup = (payload) => {
       params: payload
    })
 }
+
+export const postInvestmentCalculation = (payload) => {
+   return axiosInstance.post('/open/investmentCalculation', payload)
+}
