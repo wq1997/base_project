@@ -151,6 +151,7 @@ const InvestmentFill = () => {
                     <PageTitle title="投资测算" type="page" level={4} style={{color: token.colorPrimary}} />
                 </div>
                 <Form
+                    layout='horizontal'
                     autoComplete="off"
                     form={form}
                     initialValues={{

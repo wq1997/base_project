@@ -13,24 +13,35 @@ const SelectInput = (props) => {
         <div
             style={{
                 height: '40px',
-                background: '#f1f0f0',
                 borderRadius: 8,
                 paddingLeft: 10,
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'space-between',
+                justifyContent: 'end',
                 fontSize: 12,
                 ...style
             }}
             onClick={onClick}
         >
-            {
-                label?
-                <span>{label}</span>
-                :
-                <span style={{color: '#b1b1b1'}}>{placeholder}</span>
-            }
-            <RightOutlined style={{position: 'relative', right: 10}} />
+            <div
+                style={{
+                    fontSize: '17px',
+                    whiteSpace: 'nowrap',
+                    textOverflow: 'ellipsis',
+                    overflow: 'hidden',
+                    display: 'block',
+                    width: '150px',
+                    textAlign: 'right'
+                }}
+            >
+                {
+                    label?
+                    <span style={{color: '#666666'}}>{label}</span>
+                    :
+                    <span style={{color: '#ccc'}}>{placeholder}</span>
+                }
+            </div>
+            <RightOutlined style={{marginLeft: 10, fontSize: 17}} />
         </div>
     )
 }
