@@ -1,6 +1,5 @@
 import { Form, Input, Checkbox, Button, Typography, theme } from "antd";
-import { FORM_REQUIRED_RULE } from "@/utils/constants";
-import backgroundImage from "@/assets/background.jpg";
+import { FORM_REQUIRED_RULE, PUBLIC_FILE_PATH } from "@/utils/constants";
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { 
   getPublicKey as getPublicKeySever,
@@ -57,7 +56,7 @@ const Login = () => {
       }}
       className={styles.login}
     >
-      <img src={backgroundImage} style={{width: '100%', height: '100%', objectFit: 'cover', verticalAlign: 'middle' }} />
+      <img src={`${PUBLIC_FILE_PATH}background.jpg`} style={{width: '100%', height: '100%', objectFit: 'cover', verticalAlign: 'middle' }} />
       <div
         style={{
           width: 600,
