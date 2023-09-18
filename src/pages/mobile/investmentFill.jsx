@@ -330,7 +330,7 @@ const InvestmentFill = () => {
                 </Form>
                 <Button 
                     style={{
-                        background: token.colorPrimary, 
+                        background: 'linear-gradient(to bottom, #27E0CE 20%, #32B9CD 80%)',
                         color: 'white', 
                         width: '100%',
                         borderRadius: 8,

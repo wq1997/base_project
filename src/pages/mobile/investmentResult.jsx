@@ -39,7 +39,7 @@ const InvestmentResult = () => {
         <div
             style={{
                 width: '100%',
-                height: 'calc(100vh)'
+                height: 'calc(100vh)',
             }}
             className={styles.investmentResult}
         >
@@ -66,8 +66,8 @@ const InvestmentResult = () => {
                     <PageTitle title="收益估算" type="page" level={4} style={{color: token.colorPrimary}} />
                 </div>
                 <div className={styles.estimateData}>
-                    <div className={styles.estimateDataItem}>测算周期 {result?.cycle}年</div>
-                    <div className={styles.estimateDataItem}>年运营天数 {result?.annualOperatingDays||''}天</div>
+                    <div className={styles.estimateDataItem} style={{background: token.colorPrimary, color: 'white'}}>测算周期 {result?.cycle}年</div>
+                    <div className={styles.estimateDataItem} style={{background: '#fbb03b', color: 'white'}}>年运营天数 {result?.annualOperatingDays||''}天</div>
                 </div>
                 <div className={styles.estimateResult}>
                     <div className={styles.estimateResultItem}>年数</div>
