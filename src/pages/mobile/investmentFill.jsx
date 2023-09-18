@@ -61,12 +61,14 @@ const InvestmentFill = () => {
                     }
                 })
             ])
+        }else{
+            setFirstAreaColumns([])
         }
     }
 
     const getAllOpenSecondLevelDistrictListByFirstLevel = async (parentId) => {
         const res = await getAllOpenSecondLevelDistrictListByFirstLevelServe({parentId});
-        if(res?.data){
+        if(res?.data?.length>0){
             setSecondAreaColumns([
                 res?.data?.map(item => {
                     return {
@@ -75,12 +77,14 @@ const InvestmentFill = () => {
                     }
                 })
             ])
+        }else{
+            setSecondAreaColumns([]);
         }
     }
 
-    const getOpenObtainedElectricTypeList = async () => {
-        const res = await getOpenObtainedElectricTypeListServe();
-        if(res?.data){
+    const getOpenObtainedElectricTypeList = async (params) => {
+        const res = await getOpenObtainedElectricTypeListServe(params);
+        if(res?.data?.length>0){
             setElectricTypeColumns([
                 res?.data?.map(item => {
                     return {
@@ -89,12 +93,14 @@ const InvestmentFill = () => {
                     }
                 })
             ])
+        }else{
+            setElectricTypeColumns([]);
         }
     }
 
-    const getOpenBillingSystemList = async () => {
-        const res = await getOpenBillingSystemListServe();
-        if(res?.data){
+    const getOpenBillingSystemList = async (params) => {
+        const res = await getOpenBillingSystemListServe(params);
+        if(res?.data?.length){
             setBillingSystemColumns([
                 res?.data?.map(item => {
                     return {
@@ -103,12 +109,14 @@ const InvestmentFill = () => {
                     }
                 })
             ])
+        }else{
+            setBillingSystemColumns([])
         }
     }
 
-    const getOpenVoltageLevelList = async () => {
-        const res = await getOpenVoltageLevelListServe();
-        if(res?.data){
+    const getOpenVoltageLevelList = async (params) => {
+        const res = await getOpenVoltageLevelListServe(params);
+        if(res?.data?.length>0){
             setVoltageLevelColumns([
                 res?.data?.map(item => {
                     return {
@@ -117,14 +125,13 @@ const InvestmentFill = () => {
                     }
                 })
             ])
+        }else{
+            setVoltageLevelColumns([])
         }
     }
 
     const initData = () => {
         getAllOpenFirstLevelDistrictList();
-        getOpenObtainedElectricTypeList();
-        getOpenBillingSystemList();
-        getOpenVoltageLevelList()
     }
 
     useEffect(()=>{
@@ -132,8 +139,116 @@ const InvestmentFill = () => {
     }, [])
 
     useEffect(()=>{
-        getAllOpenSecondLevelDistrictListByFirstLevel(value.firstArea?.[0])
-    }, [value.firstArea])
+        if(!value.firstArea?.[0]){
+            return;
+        }
+        getAllOpenSecondLevelDistrictListByFirstLevel(value.firstArea?.[0]);
+        setValue({
+            ...value,
+            secondArea: [],
+            electricType: [],
+            billingSystem: [],
+            voltageLevel: []
+        })
+        setLabel({
+            ...label,
+            secondArea: '',
+            electricType: '',
+            billingSystem: '',
+            voltageLevel: ''
+        })
+        form.setFieldsValue({
+            secondArea: undefined,
+            electricType: undefined,
+            billingSystem: undefined,
+            voltageLevel: undefined
+        })
+        setSecondAreaColumns([]);
+        setElectricTypeColumns([]);
+        setBillingSystemColumns([]);
+        setVoltageLevelColumns([]);
+    }, [value.firstArea]);
+
+    useEffect(()=>{
+        if(!value.firstArea?.[0] || !value.secondArea?.[0]){
+            return;
+        }
+        getOpenObtainedElectricTypeList({
+            districtOneId: value.firstArea?.[0],
+            districtTwoId: value.secondArea?.[0]
+        });
+        setValue({
+            ...value,
+            electricType: [],
+            billingSystem: [],
+            voltageLevel: []
+        })
+        setLabel({
+            ...label,
+            electricType: '',
+            billingSystem: '',
+            voltageLevel: ''
+        })
+        form.setFieldsValue({
+            electricType: undefined,
+            billingSystem: undefined,
+            voltageLevel: undefined
+        })
+        setElectricTypeColumns([]);
+        setBillingSystemColumns([]);
+        setVoltageLevelColumns([]);
+    }, [value.secondArea])
+
+    useEffect(()=>{
+        if(!value.firstArea?.[0] || !value.secondArea?.[0] || !value.electricType?.[0]){
+            return;
+        }
+        getOpenBillingSystemList({
+            districtOneId: value.firstArea?.[0],
+            districtTwoId: value.secondArea?.[0],
+            electricityTypeId: value.electricType?.[0]
+        });
+        setValue({
+            ...value,
+            billingSystem: [],
+            voltageLevel: []
+        })
+        setLabel({
+            ...label,
+            billingSystem: '',
+            voltageLevel: ''
+        })
+        form.setFieldsValue({
+            billingSystem: undefined,
+            voltageLevel: undefined
+        })
+        setBillingSystemColumns([]);
+        setVoltageLevelColumns([]);
+    }, [value.electricType])
+
+    useEffect(()=>{
+        if(!value.firstArea?.[0] || !value.secondArea?.[0] || !value.electricType?.[0] ||!value.billingSystem?.[0]){
+            return;
+        }
+        getOpenVoltageLevelList({
+            districtOneId: value.firstArea?.[0],
+            districtTwoId: value.secondArea?.[0],
+            electricityTypeId: value.electricType?.[0],
+            costId: value.billingSystem?.[0]
+        });
+        setValue({
+            ...value,
+            voltageLevel: []
+        })
+        setLabel({
+            ...label,
+            voltageLevel: ''
+        })
+        form.setFieldsValue({
+            voltageLevel: undefined
+        })
+        setVoltageLevelColumns([]);
+    }, [value.billingSystem])
 
     const showSecondArea = (value.firstArea?.[0]&&secondAreaColumns[0]?.length>0 || !value.firstArea?.[0]);
 
@@ -163,7 +278,9 @@ const InvestmentFill = () => {
                     <Form.Item name="firstArea" label="一级区域"  rules={[{required: true, message: '请选择一级区域'}]}> 
                         <MobileSelectInput 
                             placeholder="请选择一级区域" 
-                            onClick={()=>onSelect("firstArea")}
+                            onClick={()=>{
+                                onSelect("firstArea");
+                            }}
                             label={label["firstArea"]}
                         />
                     </Form.Item>

@@ -327,21 +327,15 @@ export const getAllOpenSecondLevelDistrictListByFirstLevel = (payload) => {
 }
 
 export const getOpenObtainedElectricTypeList = (payload) => {
-   return axiosInstance.get('/open/obtainedElectricTypeList', {
-      params: payload
-   })
+   return axiosInstance.post('/open/obtainedElectricTypeBy', payload)
 }
 
 export const getOpenBillingSystemList = (payload) => {
-   return axiosInstance.get('/open/obtainedBillingSystemList', {
-      params: payload
-   })
+   return axiosInstance.post('/open/obtainedBillingSystemBy', payload)
 }
 
 export const getOpenVoltageLevelList = (payload) => {
-   return axiosInstance.get('/open/obtainedVoltageLevelList', {
-      params: payload
-   })
+   return axiosInstance.post('/open/obtainedVoltageLevelListBy', payload)
 }
 
 export const getObtainedParameterGroup = (payload) => {
