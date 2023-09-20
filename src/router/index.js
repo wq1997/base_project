@@ -24,6 +24,7 @@ const Login = "@/pages/account/login";
 // webview
 const mobileInvestmentFill = "@/pages/mobile/investmentFill";
 const mobileInvestmentResult = "@/pages/mobile/investmentResult";
+const mobileWebview = "@/pages/mobile/webview";
 
 const Test = "@/pages/test"
 
@@ -67,6 +68,10 @@ export default Routes = [
           {
             path: '/mobile/investment/result',
             component: mobileInvestmentResult
+          },
+          {
+            path: '/mobile/webview',
+            component: mobileWebview
           }
         ]
       },
