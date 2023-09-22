@@ -240,7 +240,7 @@ const Investment = () => {
             {
                 visible&&
                 <Modal 
-                    title={type==="Add"?"新增投资测算":"编辑投资测算"}
+                    title={type==="Add"?"新增投资测算数据":"编辑投资测算数据"}
                     open={visible} 
                     onOk={onSubmit} 
                     onCancel={onCancel}

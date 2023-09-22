@@ -295,7 +295,7 @@ const PolicyInformation = () => {
                         <Form.Item label="政策解读" name="policyAnalyse" rules={[{...FORM_REQUIRED_RULE}]}>
                             <Input.TextArea placeholder="请输入政策解读" />
                         </Form.Item>
-                        <Form.Item label="原文链接" name="originalLink" rules={[{...FORM_REQUIRED_RULE}]}>
+                        <Form.Item label="原文链接" name="originalLink">
                             <Input placeholder="请输入原文链接" />
                         </Form.Item>
                     </Form>

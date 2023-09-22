@@ -244,7 +244,7 @@ const Notify = () => {
                                 })}
                             />
                         </Form.Item>
-                        <Form.Item label="通知内容" name="text">
+                        <Form.Item label="通知内容" name="text" rules={[{...FORM_REQUIRED_RULE}]}>
                             <Input.TextArea placeholder="请输入消息通知内容" />
                         </Form.Item>
                     </Form>

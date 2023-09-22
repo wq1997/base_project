@@ -349,6 +349,7 @@ const ElectricityPrice = () => {
                                 label: item.name
                             }
                         })}
+                        allowClear
                         onChange={(value)=>setElectricityTypeValue(value)}
                     />
                     <Select 
@@ -361,6 +362,7 @@ const ElectricityPrice = () => {
                                 label: item.name
                             }
                         })}
+                        allowClear
                         onChange={(value)=>setBillingSystemValue(value)}
                     />
                 </div>

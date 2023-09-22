@@ -1,7 +1,7 @@
 import { PageTitle, Search, ChangePasswordModal } from "@/components";
 import { Row, Button, Form, Table, Modal, Input, Select, Tooltip } from "antd";
 import { useState, useRef, useEffect } from "react";
-import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE, TELPHONE_NUMBER_REG } from "@/utils/constants";
+import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE, TELPHONE_NUMBER_REG, FORM_FORBIDDEN_SPACE } from "@/utils/constants";
 import { useDebounceEffect } from "ahooks";
 import { 
     getUserList as getUserListServe,
@@ -324,13 +324,21 @@ const UserList = () => {
                         autoComplete="off"
                         labelCol={{span: 4}}
                     >
-                        <Form.Item label="姓名" name="userName" rules={[{...FORM_REQUIRED_RULE}]}> 
+                        <Form.Item 
+                            label="姓名" 
+                            name="userName" 
+                            rules={[
+                                {...FORM_FORBIDDEN_SPACE},                          
+                                {...FORM_REQUIRED_RULE}
+                            ]}
+                        > 
                             <Input placeholder="请输入姓名" />
                         </Form.Item>
                         <Form.Item 
                             label="手机号" 
                             name="phoneNumber" 
                             rules={[
+                                {...FORM_FORBIDDEN_SPACE},
                                 {...FORM_REQUIRED_RULE},
                                 {validator(_,value,callback){
                                     if(TELPHONE_NUMBER_REG.test(value)){
@@ -348,6 +356,8 @@ const UserList = () => {
                             name="password" 
                             hidden={type==="Edit"}
                             rules={[
+                                type==="Add"&&{...FORM_REQUIRED_RULE},
+                                {...FORM_FORBIDDEN_SPACE},       
                                 {validator(_,value,callback){
                                     if(value?.length<8){
                                        return Promise.reject("密码长度必须大于或等于8位");
