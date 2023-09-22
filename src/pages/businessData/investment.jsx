@@ -52,8 +52,8 @@ const Investment = () => {
         },
         {
             title: '分组',
-            dataIndex: 'keyGroup',
-            key: 'keyGroup',
+            dataIndex: 'groupName',
+            key: 'groupName',
         },
         {
             title: '备注',

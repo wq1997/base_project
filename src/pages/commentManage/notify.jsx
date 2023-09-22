@@ -36,8 +36,8 @@ const Notify = () => {
         },
         {
             title: '通知类型',
-            dataIndex: 'informType',
-            key: 'informType',
+            dataIndex: 'informTypeName',
+            key: 'informTypeName',
         },
         {
             title: '通知内容',
