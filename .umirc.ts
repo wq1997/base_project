@@ -8,6 +8,7 @@ const CompressionWebpackPlugin = require('compression-webpack-plugin');
 export default defineConfig({
   routes,
   npmClient: 'pnpm',
+  title: '采日VPP虚拟电厂',
   plugins: ['@umijs/plugins/dist/dva', '@umijs/plugins/dist/locale'],
   dva:{},
   locale: {
