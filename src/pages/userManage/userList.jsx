@@ -40,8 +40,8 @@ const UserList = () => {
         },
         {
             title: '姓名',
-            dataIndex: 'userName',
-            key: 'userName',
+            dataIndex: 'nickName',
+            key: 'nickName',
         },
         {
             title: '手机号',
@@ -326,7 +326,7 @@ const UserList = () => {
                     >
                         <Form.Item 
                             label="姓名" 
-                            name="userName" 
+                            name="nickName" 
                             rules={[
                                 {...FORM_FORBIDDEN_SPACE},                          
                                 {...FORM_REQUIRED_RULE}
