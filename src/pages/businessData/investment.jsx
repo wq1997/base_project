@@ -51,7 +51,7 @@ const Investment = () => {
             key: 'unit',
         },
         {
-            title: '分组',
+            title: '组描述',
             dataIndex: 'groupName',
             key: 'groupName',
         },

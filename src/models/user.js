@@ -11,11 +11,8 @@ export default {
    
     effects: {
       *logout({ payload }, { call, put }) {
-        const res = yield call(logoutServe)
-        if(res){
-          removeLocalStorage("Token");
-          history.push("/login");
-        }
+        removeLocalStorage("Token");
+        history.push("/login");
       }
     },
    
