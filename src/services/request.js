@@ -8,10 +8,10 @@ const getToken = () => getLocalStorage("Token");
 export const getBaseUrl = () => {
     let API_BASE_URL = '';
     if (process.env.NODE_ENV == 'production') {
-    //   API_BASE_URL = 'http://47.99.206.26:8484/api';   // 测试环境
-      API_BASE_URL = 'https://energy.sermatec-cloud.com/api';  //正式环境
+      API_BASE_URL = 'http://47.99.206.26:8484/';   // 测试环境
+    //   API_BASE_URL = 'https://energy.sermatec-cloud.com/api';  //正式环境
     } else {
-      API_BASE_URL = 'https://energy.sermatec-cloud.com/api';
+      API_BASE_URL = 'http://47.99.206.26:8484/';
     }
     return API_BASE_URL;
 };
