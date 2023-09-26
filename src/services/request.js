@@ -8,6 +8,7 @@ const getToken = () => getLocalStorage("Token");
 export const getBaseUrl = () => {
     let API_BASE_URL = '';
     if (process.env.NODE_ENV == 'production') {
+    //   API_BASE_URL = 'http://47.99.206.26:8484/api';
       API_BASE_URL = 'https://energy.sermatec-cloud.com/api';
     } else {
       API_BASE_URL = 'https://energy.sermatec-cloud.com/api';
