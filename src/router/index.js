@@ -1,8 +1,13 @@
 const App = "@/pages/App";
 const Layout = "@/layouts/baseLayout";
 
-const Home = "@/pages/home";
+// 资源管理
+const Polymerization = "@/pages/resourceManage/polymerization";
 
+// 需求侧响应
+const AwardIssuance = "@/pages/demandResponse/awardIssuance";
+const ResponseEvaluation = "@/pages/demandResponse/responseEvaluation";
+const TransactionDeclaration = "@/pages/demandResponse/transactionDeclaration";
 
 const Login = "@/pages/account/login";
 const Test = "@/pages/test"
@@ -13,11 +18,13 @@ export default Routes = [
      component: App,
      routes: [
       {
-        path: '/cet',
+        path: '/vpp',
         component: Layout,
         routes: [
-          // 首页
-          { path: '/cet/home', component: Home },
+          { path: '/vpp/resourceManage/polymerization', component: Polymerization },
+          { path: '/vpp/demandResponse/awardIssuance', component: AwardIssuance },
+          { path: '/vpp/demandResponse/responseEvaluation', component: ResponseEvaluation },
+          { path: '/vpp/demandResponse/transactionDeclaration', component: TransactionDeclaration },
         ]
       },
       { path: "/login", component: Login },

@@ -1,19 +1,29 @@
 import { Outlet, useDispatch } from 'umi'
-import { Layout, Row, Avatar, Typography, Dropdown, Space } from 'antd';
+import { Layout, Row, Avatar, Typography, Dropdown, Space, theme } from 'antd';
 import MyMenu from "@/permissions/menu";
 import styles from "./baseLayout.less";
-import useIcon from "@/hooks/useIcon"
+import useIcon from "@/hooks/useIcon";
 
 const { Header, Sider, Content } = Layout;
 
 const BaseLayout = () => {
+    const { token } = theme.useToken();
+
     const Icon = useIcon();
     const dispatch = useDispatch();
     return (
         <div className={styles.baseLayout}>
             <Layout className={styles.layout}>
                 <Header className={styles.header}>
-                    <Typography.Title level={3} className={styles.title}>采e通后台管理系统</Typography.Title>
+                    <Typography.Title 
+                        level={3} 
+                        className={styles.title}
+                        style={{
+                            color: token.colorPrimary
+                        }}
+                    >
+                        虚拟电厂VPP
+                    </Typography.Title>
                     <Dropdown 
                         menu={{ 
                             items: [
@@ -22,13 +32,13 @@ const BaseLayout = () => {
                                     label: (
                                         <Space 
                                             size={10} 
-                                            align="baseline"
+                                            align="center"
                                             onClick={()=>dispatch({type: 'user/logout'})}
                                         >
                                             <Icon 
                                                 type="icon-dengchu" 
                                                 style={{
-                                                    fontSize: 20
+                                                    fontSize: 15
                                                 }}
                                              />
                                             <span>登出</span>
@@ -41,12 +51,16 @@ const BaseLayout = () => {
                     >
                         <Row align="middle">
                             <Avatar 
-                                style={{ backgroundColor: "#F56A00", verticalAlign: 'middle' }} 
+                                style={{ 
+                                    backgroundColor: token.colorPrimary, 
+                                    verticalAlign: 'middle',
+                                    fontWeight: 700
+                                }} 
                                 size="large" 
                             >
-                                C
+                                VPP
                             </Avatar>
-                            <span style={{fontSize: 20, color: 'white', marginLeft: 10}}>用户名</span>
+                            <span style={{fontSize: 20, color: token.colorPrimary, marginLeft: 10}}>VPP</span>
                         </Row>
                     </Dropdown>
                 </Header>
