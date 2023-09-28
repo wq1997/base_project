@@ -1,6 +1,7 @@
 import { Title } from "@/components";
 import styles from "./index.less";
 import { useState } from "react";
+import Topology from "./topology";
 import { theme } from "antd";
 
 const Polymerization = (props) => {
@@ -37,6 +38,59 @@ const Polymerization = (props) => {
             unit: 'kW'
         }
     ])
+
+    const [topologyData, setTopologyData] = useState({
+        id: 'root',
+        label: '采日VPP',
+        subLabel1: '虚拟电厂数量',
+        subValue1: '3',
+        subLabel2: '调度资源数',
+        subValue2: '89',
+        ratio: 3,
+        children: [
+          {
+            id: 'child-a',
+            label: '嘉定园区',
+            subLabel1: '最大响应能力(kW)',
+            subValue1: '20099',
+            subLabel2: '最小响应能力(kW)',
+            subValue2: '1',
+          }, 
+          {
+            id: 'child-b',
+            label: '长宁园区',
+            subLabel1: '最大响应能力(kW)',
+            subValue1: '2099',
+            subLabel2: '最小响应能力(kW)',
+            subValue2: '1',
+            children: [{
+              id: 'child-b-a',
+              label: '储能A1',
+              subLabel1: '额定功率(kW)',
+              subValue1: '800',
+              subLabel2: '额定容量(MWh)',
+              subValue2: '1680',
+            }, {
+              id: 'child-b-b',
+              label: '光伏A1',
+              subLabel1: '额定功率(kW)',
+              subValue1: '110',
+              subLabel2: '额定容量(MWh)',
+              subValue2: '160',
+            }
+            ]
+          }, 
+          {
+            id: 'child-c',
+            label: '徐汇园区',
+            subLabel1: '最大响应能力(kW)',
+            subValue1: '109009',
+            subLabel2: '最小响应能力(kW)',
+            subValue2: '5',
+          }
+        ]
+      });
+
     return (
         <div>
             <Title.PageTitle title={"资源聚合管理"} style={{marginTop: 0}} />
@@ -66,7 +120,7 @@ const Polymerization = (props) => {
                 </div>
             </div>
             <div className={styles.topology}>
-
+                <Topology data={topologyData} />
             </div>
         </div>
     )
