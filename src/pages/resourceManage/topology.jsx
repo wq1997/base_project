@@ -6,7 +6,7 @@ const Topology = ({data}) => {
     const initG6 = () => {
         G6.registerNode('root', {
             draw: (cfg, group) => {
-              const size = [80, 30];
+              const size = [60, 30];
               const keyShape = group.addShape('rect', {
                 attrs: {
                   width: size[0],
@@ -80,7 +80,7 @@ const Topology = ({data}) => {
           
         G6.registerNode('level1node', {
           draw: (cfg, group) => {
-            const size = [60, 40]
+            const size = [70, 40];
             const keyShape = group.addShape('rect', {
               attrs: {
                 width: size[0],
@@ -149,22 +149,12 @@ const Topology = ({data}) => {
               draggable: true,
               name: 'sublabel-shape5'
             });
-            group.addShape('line', {
-              attrs: {
-                x1: -size[0] / 2,
-                x2: -size[0] / 2 + 6,
-                y1: 0,
-                y2: 0,
-                lineWidth: 1,
-                stroke: 'rgb(19, 33, 92)',
-              }
-            });
             group.addShape('circle', {
               attrs: {
                 r: 2,
-                x: -size[0] / 2 + 6,
-                y: 0,
-                fill: 'rgb(19, 33, 92)',
+                x: 0,
+                y: -size[1] / 2,
+                fill: '#ededed',
               }
             })
             return keyShape;
@@ -174,7 +164,7 @@ const Topology = ({data}) => {
         
         G6.registerNode('othernode', {
           draw: (cfg, group) => {
-            const size = [100, 30];
+            const size = [70, 40];
             const keyShape = group.addShape('rect', {
               attrs: {
                 width: size[0],
@@ -243,22 +233,12 @@ const Topology = ({data}) => {
               draggable: true,
               name: 'sublabel-shape5'
             });
-            group.addShape('line', {
-              attrs: {
-                x1: -size[0] / 2,
-                x2: -size[0] / 2 + 6,
-                y1: 0,
-                y2: 0,
-                lineWidth: 1,
-                stroke: 'rgb(19, 33, 92)',
-              }
-            });
             group.addShape('circle', {
               attrs: {
                 r: 2,
-                x: -size[0] / 2 + 6,
-                y: 0,
-                fill: 'rgb(19, 33, 92)',
+                x: 0,
+                y: -size[1] / 2,
+                fill: '#ededed',
               }
             })
             return keyShape;
@@ -267,18 +247,25 @@ const Topology = ({data}) => {
         }, 'rect')
         
         G6.registerEdge('round-poly', {
-          getControlPoints: (cfg) => {
-            const { startPoint, endPoint } = cfg;
-            return [
-              startPoint,
-              {
-                x: startPoint.x,
-                y: endPoint.y
+          draw(cfg, group) {
+            const startPoint = cfg.startPoint;
+            const endPoint = cfg.endPoint;
+            const { style } = cfg;
+            const shape = group.addShape("path", {
+              attrs: {
+                stroke: style.stroke,
+                endArrow: style.endArrow,
+                path: [
+                  ["M", startPoint.x, startPoint.y],
+                  ["L", startPoint.x, (startPoint.y + endPoint.y) / 2],
+                  ["L", endPoint.x, (startPoint.y + endPoint.y) / 2],
+                  ["L", endPoint.x, endPoint.y],
+                ],
               },
-              endPoint
-            ];
-          }
-      }, 'polyline')
+            });
+            return shape;
+          },
+      })
       G6.Util.traverseTree(data, subtree => {
           if (subtree.level === undefined) subtree.level = 0;
           subtree.children?.forEach(child => child.level = subtree.level + 1);
@@ -300,26 +287,26 @@ const Topology = ({data}) => {
         width,
         height,
         fitView: true,
+        linkCenter: true,
+        animate: true,
         layout: {
           type: 'compactBox',
-          direction: 'LR',
+          direction: 'TB',
           getHGap: function getVGap() {
             return 5;
           },
         },
         defaultEdge: {
           type: 'round-poly',
-          sourceAnchor: 0,
-          targetAnchor: 1,
           style: {
             radius: 8,
-            stroke: 'rgb(19, 33, 92)'
+            stroke: '#ededed',
           }
         },
         defaultNode: {
           anchorPoints: [
-            [0.9, 0.5],
-            [0, 0.5]
+            [0.5, 1],
+            [0.5, 0]
           ]
         },
         nodeStateStyles: {

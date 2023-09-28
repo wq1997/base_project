@@ -55,6 +55,24 @@ const Polymerization = (props) => {
             subValue1: '20099',
             subLabel2: '最小响应能力(kW)',
             subValue2: '1',
+            children: [
+                {
+                    id: 'child-a-a',
+                    label: '储能A1',
+                    subLabel1: '额定功率(kW)',
+                    subValue1: '800',
+                    subLabel2: '额定容量(MWh)',
+                    subValue2: '1680',
+                }, 
+                {
+                    id: 'child-a-b',
+                    label: '光伏A1',
+                    subLabel1: '额定功率(kW)',
+                    subValue1: '110',
+                    subLabel2: '额定容量(MWh)',
+                    subValue2: '160',
+                }
+            ]
           }, 
           {
             id: 'child-b',
@@ -63,26 +81,52 @@ const Polymerization = (props) => {
             subValue1: '2099',
             subLabel2: '最小响应能力(kW)',
             subValue2: '1',
-            children: [{
-              id: 'child-b-a',
-              label: '储能A1',
-              subLabel1: '额定功率(kW)',
-              subValue1: '800',
-              subLabel2: '额定容量(MWh)',
-              subValue2: '1680',
-            }, {
-              id: 'child-b-b',
-              label: '光伏A1',
-              subLabel1: '额定功率(kW)',
-              subValue1: '110',
-              subLabel2: '额定容量(MWh)',
-              subValue2: '160',
-            }
-            ]
           }, 
           {
             id: 'child-c',
             label: '徐汇园区',
+            subLabel1: '最大响应能力(kW)',
+            subValue1: '109009',
+            subLabel2: '最小响应能力(kW)',
+            subValue2: '5',
+          },
+          {
+            id: 'child-d',
+            label: '黄埔园区',
+            subLabel1: '最大响应能力(kW)',
+            subValue1: '109009',
+            subLabel2: '最小响应能力(kW)',
+            subValue2: '5',
+            children: [
+                {
+                    id: 'child-d-a',
+                    label: '储能A1',
+                    subLabel1: '额定功率(kW)',
+                    subValue1: '800',
+                    subLabel2: '额定容量(MWh)',
+                    subValue2: '1680',
+                }, 
+                {
+                    id: 'child-d-b',
+                    label: '光伏A1',
+                    subLabel1: '额定功率(kW)',
+                    subValue1: '110',
+                    subLabel2: '额定容量(MWh)',
+                    subValue2: '160',
+                },
+                {
+                    id: 'child-d-c',
+                    label: '充电桩A1',
+                    subLabel1: '额定功率(kW)',
+                    subValue1: '11000',
+                    subLabel2: '额定容量(MWh)',
+                    subValue2: '1600',
+                }
+            ]
+          },
+          {
+            id: 'child-e',
+            label: '虹口园区',
             subLabel1: '最大响应能力(kW)',
             subValue1: '109009',
             subLabel2: '最小响应能力(kW)',
