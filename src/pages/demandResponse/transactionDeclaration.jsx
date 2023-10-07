@@ -2,6 +2,8 @@ import { Title, InvitationCard, StatisticalCard } from "@/components";
 import { DatePicker, Space, Select, Row, Button } from "antd";
 import styles from "./index.less";
 import { useState } from "react";
+import Assessment from "./components/assessment";
+import Strategy from "./components/strategy";
 
 const TransactionDeclaration = () => {
     const [invitationData, setInvitationData] = useState([
@@ -108,6 +110,17 @@ const TransactionDeclaration = () => {
                 <Button type="primary">提交申报</Button>
             </Row>
             <StatisticalCard dataSource={declarationData} />
+            <div className={styles.dataForEcharts}>
+                <div className={styles.left}>
+                    <Title.PageSubTitle title={"总体申报策略"} style={{marginBottom: '10px'}}/>
+                    <Strategy />
+                </div>
+                <div className={styles.right}>
+                    <Title.PageSubTitle title={"能力评估"} style={{marginBottom: '10px'}}/>
+                    <Assessment />
+                </div>
+            </div>
+            <Title.PageSubTitle title={"申报详情"} style={{marginBottom: '10px'}}/>
         </div>
     )
 }
