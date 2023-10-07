@@ -45,6 +45,7 @@ const Strategy = () => {
               {
                 name: '长宁园区',
                 type: 'bar',
+                barWidth: 30,
                 stack: 'total',
                 emphasis: {
                   focus: 'series'
@@ -54,6 +55,7 @@ const Strategy = () => {
               {
                 name: '徐汇园区',
                 type: 'bar',
+                barWidth: 30,
                 stack: 'total',
                 emphasis: {
                   focus: 'series'
@@ -63,6 +65,7 @@ const Strategy = () => {
               {
                 name: '黄埔园区',
                 type: 'bar',
+                barWidth: 30,
                 stack: 'total',
                 emphasis: {
                   focus: 'series'
@@ -72,6 +75,7 @@ const Strategy = () => {
               {
                 name: '虹口园区',
                 type: 'bar',
+                barWidth: 30,
                 stack: 'total',
                 emphasis: {
                   focus: 'series'
