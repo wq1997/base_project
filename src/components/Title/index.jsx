@@ -25,7 +25,7 @@ const PageSubTitle = (props) => {
         }
     })
     return (
-        <div className={pageSubTitleStyle}>{title}</div>
+        <div className={pageSubTitleStyle} {...props}>{title}</div>
     )
 }
 

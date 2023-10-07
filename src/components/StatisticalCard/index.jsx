@@ -10,9 +10,12 @@ const StatisticalCard = ({
 
     return (
         <div className={styles.card}>
-            <div className={styles.cardTitle}>
-                <Title.PageSubTitle title={title} />
-            </div>
+            {
+                title&&
+                <div className={styles.cardTitle}>
+                    <Title.PageSubTitle title={title} />
+                </div>
+            }
             <div className={styles.cardBottom}>
                 {
                     dataSource?.map(data => {
