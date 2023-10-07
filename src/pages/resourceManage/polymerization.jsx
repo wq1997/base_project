@@ -1,11 +1,9 @@
-import { Title } from "@/components";
+import { Title, StatisticalCard } from "@/components";
 import styles from "./index.less";
 import { useState } from "react";
 import Topology from "./topology";
-import { theme } from "antd";
 
 const Polymerization = (props) => {
-    const { token } = theme.useToken();
     const [dataInfo, setDataInfo] = useState([
         {
             label: '聚合虚拟电厂',
@@ -139,29 +137,7 @@ const Polymerization = (props) => {
         <div>
             <Title.PageTitle title={"资源聚合管理"} style={{marginTop: 0}} />
             <div className={styles.dataInfo}>
-                <div className={styles.dataInfoTop}>
-                    <Title.PageSubTitle title={'资源概览'} />
-                </div>
-                <div className={styles.dataInfoBottom}>
-                    {
-                        dataInfo?.map(data => {
-                            return (
-                                <div className={styles.dataInfoBottomItem}>
-                                    <div className={styles.dataInfoBottomItemTop}>{data?.label}</div>
-                                    <div className={styles.dataInfoBottomItemBottom}>
-                                        <span 
-                                            className={styles.dataInfoBottomItemBottomValue}
-                                            style={{color: token.colorPrimary}}
-                                        >
-                                            {data?.value}
-                                        </span>
-                                        <span className={styles.dataInfoBottomItemBottomUnit}>{data?.unit}</span>
-                                    </div>
-                                </div>
-                            )
-                        })
-                    }
-                </div>
+                <StatisticalCard title="资源概览" dataSource={dataInfo} />
             </div>
             <div className={styles.topology}>
                 <Topology data={topologyData} />
