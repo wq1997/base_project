@@ -1,5 +1,5 @@
 import { Title, InvitationCard, StatisticalCard } from "@/components";
-import { DatePicker, Space, Select, Row, Button } from "antd";
+import { DatePicker, Space, Select, Row, Button, Table, InputNumber, Typography } from "antd";
 import styles from "./index.less";
 import { useState } from "react";
 import Assessment from "./components/assessment";
@@ -120,7 +120,76 @@ const TransactionDeclaration = () => {
                     <Assessment />
                 </div>
             </div>
-            <Title.PageSubTitle title={"申报详情"} style={{marginBottom: '10px'}}/>
+            <Row justify="space-between" align="middle" style={{marginBottom: 10}}>
+                <Title.PageSubTitle title={"申报详情"} style={{marginBottom: '10px'}}/>
+                <Button type="primary">确定</Button>
+            </Row>
+            <Table
+                pagination={false}
+                columns={[
+                    {
+                        title: '代理用户名称',
+                        dataIndex: 'name',
+                        key: 'name',
+                    },
+                    {
+                        title: '响应时段',
+                        dataIndex: 'time',
+                        key: 'time',
+                    },
+                    {
+                        title: '响应容量(MW)',
+                        dataIndex: 'capacity',
+                        key: 'capacity',
+                    },
+                    {
+                        title: '响应价格(元/MWh)',
+                        dataIndex: 'price',
+                        key: 'price',
+                        render(value){
+                            return <InputNumber defaultValue={value} />
+                        }
+                    },
+                    {
+                        title: '操作',
+                        dataIndex: "Action",
+                        key: 'Action',
+                        render(){
+                            return (
+                                <Space>
+                                    <Typography.Link>跳转目标负荷</Typography.Link>
+                                </Space>
+                            )
+                        }
+                    }
+                ]}
+                dataSource={[
+                    {
+                        name: '江苏海四达动力科技有限公司',
+                        time: '11:00 ~ 12:00',
+                        capacity: 2,
+                        price: 2000
+                    },
+                    {
+                        name: '江苏海四达新能源有限公司',
+                        time: '11:00 ~ 12:00',
+                        capacity: 1,
+                        price: 2000
+                    },
+                    {
+                        name: '连云港华乐不锈钢有限公司',
+                        time: '11:00 ~ 12:00',
+                        capacity: 1,
+                        price: 2000
+                    },
+                    {
+                        name: '苏州京浜光电科技有限公司',
+                        time: '11:00 ~ 12:00',
+                        capacity: 2,
+                        price: 4000
+                    }
+                ]}
+            />
         </div>
     )
 }
