@@ -8,7 +8,7 @@ export const getBaseUrl = () => {
     console.log("API_URL", API_URL)
     return API_URL;
 };
-const getToken = () => localStorage.getItem("Token");
+const getToken = () => getLocalStorage("Token");
 
 const instance = axios.create({
     baseURL: getBaseUrl(),
