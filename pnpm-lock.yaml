@@ -20,6 +20,9 @@ dependencies:
   classnames:
     specifier: ^2.3.2
     version: registry.npmjs.org/classnames@2.3.2
+  cross-env:
+    specifier: ^7.0.3
+    version: registry.npmjs.org/cross-env@7.0.3
   moment:
     specifier: ^2.29.4
     version: registry.npmjs.org/moment@2.29.4
@@ -2081,7 +2084,6 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       regenerator-runtime: registry.npmjs.org/regenerator-runtime@0.13.11
-    dev: false
 
   registry.npmjs.org/@babel/runtime@7.22.10:
     resolution: {integrity: sha512-21t/fkKLMZI4pqP2wlmsQAWnYW1PDyKyyUV4vCi+B25ydmdaYTKXPwCj0BzSUnZf4seIiYvSA3jcZ3gdsMFkLQ==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@babel/runtime/-/runtime-7.22.10.tgz}
@@ -3529,7 +3531,7 @@ packages:
     version: 5.0.0
     deprecated: This is a stub types definition. history provides its own type definitions, so you do not need this installed.
     dependencies:
-      history: registry.npmjs.org/history@4.10.1
+      history: registry.npmjs.org/history@5.3.0
     dev: true
 
   registry.npmjs.org/@types/hoist-non-react-statics@3.3.1:
@@ -3646,7 +3648,7 @@ packages:
       '@types/history': registry.npmjs.org/@types/history@4.7.11
       '@types/react': registry.npmjs.org/@types/react@18.2.20
       '@types/react-router': registry.npmjs.org/@types/react-router@5.1.20
-      redux: registry.npmjs.org/redux@3.7.2
+      redux: registry.npmjs.org/redux@4.2.1
     dev: true
 
   registry.npmjs.org/@types/react-router@5.1.20:
@@ -4291,7 +4293,7 @@ packages:
       axios: registry.npmjs.org/axios@0.27.2
       babel-plugin-import: registry.npmjs.org/babel-plugin-import@1.13.8
       dayjs: registry.npmjs.org/dayjs@1.11.9
-      dva-core: registry.npmjs.org/dva-core@2.0.4(redux@3.7.2)
+      dva-core: registry.npmjs.org/dva-core@2.0.4(redux@4.2.1)
       dva-immer: registry.npmjs.org/dva-immer@1.0.1(dva@2.5.0-beta.2)
       dva-loading: registry.npmjs.org/dva-loading@3.0.24(dva-core@2.0.4)
       event-emitter: registry.npmjs.org/event-emitter@0.3.5
@@ -5848,6 +5850,16 @@ packages:
       sha.js: registry.npmjs.org/sha.js@2.4.11
     dev: false
 
+  registry.npmjs.org/cross-env@7.0.3:
+    resolution: {integrity: sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/cross-env/-/cross-env-7.0.3.tgz}
+    name: cross-env
+    version: 7.0.3
+    engines: {node: '>=10.14', npm: '>=6', yarn: '>=1'}
+    hasBin: true
+    dependencies:
+      cross-spawn: registry.npmjs.org/cross-spawn@7.0.3
+    dev: false
+
   registry.npmjs.org/cross-spawn@7.0.3:
     resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/cross-spawn/-/cross-spawn-7.0.3.tgz}
     name: cross-spawn
@@ -6048,6 +6060,7 @@ packages:
     resolution: {integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/debug/-/debug-3.2.7.tgz}
     name: debug
     version: 3.2.7
+    requiresBuild: true
     peerDependencies:
       supports-color: '*'
     peerDependenciesMeta:
@@ -6331,7 +6344,7 @@ packages:
       warning: registry.npmjs.org/warning@3.0.0
     dev: true
 
-  registry.npmjs.org/dva-core@2.0.4(redux@3.7.2):
+  registry.npmjs.org/dva-core@2.0.4(redux@4.2.1):
     resolution: {integrity: sha512-Zh39llFyItu9HKXKfCZVf9UFtDTcypdAjGBew1S+wK8BGVzFpm1GPTdd6uIMeg7O6STtCvt2Qv+RwUut1GFynA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/dva-core/-/dva-core-2.0.4.tgz}
     id: registry.npmjs.org/dva-core/2.0.4
     name: dva-core
@@ -6344,7 +6357,7 @@ packages:
       global: registry.npmjs.org/global@4.4.0
       invariant: registry.npmjs.org/invariant@2.2.4
       is-plain-object: registry.npmjs.org/is-plain-object@2.0.4
-      redux: registry.npmjs.org/redux@3.7.2
+      redux: registry.npmjs.org/redux@4.2.1
       redux-saga: registry.npmjs.org/redux-saga@0.16.2
       warning: registry.npmjs.org/warning@3.0.0
     dev: true
@@ -6371,7 +6384,7 @@ packages:
       dva-core: ^1.1.0 || ^1.5.0-0 || ^1.6.0-0
     dependencies:
       '@babel/runtime': registry.npmjs.org/@babel/runtime@7.22.10
-      dva-core: registry.npmjs.org/dva-core@2.0.4(redux@3.7.2)
+      dva-core: registry.npmjs.org/dva-core@2.0.4(redux@4.2.1)
     dev: true
 
   registry.npmjs.org/dva@2.5.0-beta.2(react-dom@18.2.0)(react@18.2.0):
@@ -7567,7 +7580,6 @@ packages:
     version: 5.3.0
     dependencies:
       '@babel/runtime': registry.npmjs.org/@babel/runtime@7.21.0
-    dev: false
 
   registry.npmjs.org/hmac-drbg@1.0.1:
     resolution: {integrity: sha512-Tti3gMqLdZfhOQY1Mzf/AanLiqh1WTiJgEj26ZuYQ9fbkLomzGchCws4FyrSd4VkpBfiNhaE1On+lOz894jvXg==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/hmac-drbg/-/hmac-drbg-1.0.1.tgz}
@@ -8986,6 +8998,7 @@ packages:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/ms/-/ms-2.1.3.tgz}
     name: ms
     version: 2.1.3
+    requiresBuild: true
     dev: false
     optional: true
 
@@ -10262,6 +10275,7 @@ packages:
     resolution: {integrity: sha512-yPw4Sng1gWghHQWj0B3ZggWUm4qVbPwPFcRG8KyxiU7J2OHFSoEHKS+EZ3fv5l1t9CyCiop6l/ZYeWbrgoQejw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/prr/-/prr-1.0.1.tgz}
     name: prr
     version: 1.0.1
+    requiresBuild: true
     dev: false
     optional: true
 
@@ -11455,7 +11469,6 @@ packages:
     resolution: {integrity: sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.13.11.tgz}
     name: regenerator-runtime
     version: 0.13.11
-    dev: false
 
   registry.npmjs.org/regenerator-runtime@0.14.0:
     resolution: {integrity: sha512-srw17NI0TUWHuGa5CFGGmhfNIeja30WMBfbslPNhf6JrqQlLN5gcrvig1oqPxiVaXb0oW0XRKtH6Nngs5lKCIA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.14.0.tgz}
@@ -11715,6 +11728,7 @@ packages:
     resolution: {integrity: sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/sax/-/sax-1.2.4.tgz}
     name: sax
     version: 1.2.4
+    requiresBuild: true
     dev: false
     optional: true
 

@@ -1,9 +1,19 @@
 import { defineConfig } from "umi";
 import routes from "./src/router"
+import apiUrl from "./apiUrl";
 
 const path = require('path');
 const prodGzipList = ['js', 'css', 'jsx', 'less'];
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
+const { UMI_ENV = '' } = process.env;
+
+function OutputPathName(env: string) {
+  if (env) {
+    return `${env}-dist`
+
+  }
+  return 'dist'
+}
 
 export default defineConfig({
   routes,
@@ -12,6 +22,10 @@ export default defineConfig({
   dva:{},
   locale: {
     default: "zh-CN"
+  },
+  outputPath: OutputPathName(UMI_ENV),
+  define: {
+    "process.env.API_URL": apiUrl[UMI_ENV||'test'],
   },
   alias: {
     '@/permissions': path.resolve(__dirname,'src/permissions'),
