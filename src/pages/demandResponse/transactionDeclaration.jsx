@@ -1,5 +1,5 @@
 import { Title, InvitationCard, StatisticalCard } from "@/components";
-import { DatePicker, Space, Select, Row, Button, Table, InputNumber, Typography } from "antd";
+import { DatePicker, Space, Select, Row, Button, Table, InputNumber, Typography, Drawer } from "antd";
 import styles from "./index.less";
 import { useState } from "react";
 import Assessment from "./components/assessment";
@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 const dateFormat = 'YYYY-MM-DD';
 
 const TransactionDeclaration = () => {
+    const [open, setOpen] = useState(false);
     const [invitationData, setInvitationData] = useState([
         {
             time: '09-17 18:00~22:00',
@@ -74,7 +75,7 @@ const TransactionDeclaration = () => {
             unit: '万元'
         },
         {
-            label: '代理用户收益',
+            label: '用户收益',
             value: 6.496,
             unit: '万元'
         },
@@ -128,7 +129,7 @@ const TransactionDeclaration = () => {
                 pagination={false}
                 columns={[
                     {
-                        title: '代理用户名称',
+                        title: '用户名称',
                         dataIndex: 'name',
                         key: 'name',
                     },
@@ -157,7 +158,7 @@ const TransactionDeclaration = () => {
                         render(){
                             return (
                                 <Space>
-                                    <Typography.Link>跳转目标负荷</Typography.Link>
+                                    <Typography.Link onClick={()=>setOpen(true)}>调整目标负荷</Typography.Link>
                                 </Space>
                             )
                         }
@@ -190,6 +191,44 @@ const TransactionDeclaration = () => {
                     }
                 ]}
             />
+            <Drawer 
+                title="调整申报" 
+                placement="right"
+                open={open}
+                width={800}
+                onClose={()=>setOpen(false)}
+            >
+                <Space direction="vertical" size={20}>
+                    <div>
+                        <Typography.Title level={5} style={{marginTop: 0}}>调整用户</Typography.Title>
+                        <Select    
+                            defaultValue={1}
+                            style={{width: 280}}
+                            options={[
+                                {
+                                    label: '江苏海四达动力科技有限公司',
+                                    value: 1
+                                },
+                                {
+                                    label: '江苏海四达新能源有限公司',
+                                    value: 2
+                                },
+                                {
+                                    label: '连云港华乐不锈钢有限公司',
+                                    value: 3
+                                },
+                                {
+                                    label: '苏州京浜光电科技有限公司',
+                                    value: 4
+                                }
+                            ]}
+                        />
+                    </div>
+                    <div>
+                        <Typography.Title level={5} style={{marginTop: 0}}>目标负荷</Typography.Title>
+                    </div>
+                </Space>
+            </Drawer>
         </div>
     )
 }
