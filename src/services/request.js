@@ -3,13 +3,12 @@ import { getDvaApp } from "umi";
 import { getLocalStorage } from "@/utils/utils";
 import { message } from "antd";
 
-const getToken = () => getLocalStorage("Token");
-
 export const getBaseUrl = () => {
     const { API_URL = '' } = process.env;
     console.log("API_URL", API_URL)
     return API_URL;
 };
+const getToken = () => localStorage.getItem("Token");
 
 const instance = axios.create({
     baseURL: getBaseUrl(),

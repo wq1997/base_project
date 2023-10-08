@@ -1,5 +1,5 @@
 import { defineConfig } from "umi";
-import routes from "./src/router";
+import routes from "./src/router"
 import apiUrl from "./apiUrl";
 
 const path = require('path');
