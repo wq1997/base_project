@@ -71,7 +71,7 @@ const Polymerization = (props) => {
             subValue2: '30MW/10WMh'
           },
           {
-            id: 'child-e',
+            id: 'child-d',
             label: '苏州京浜光电科技有限公司',
             subLabel1: '合同容量(kVA)',
             subValue1: '4950',

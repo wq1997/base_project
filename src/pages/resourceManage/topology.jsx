@@ -6,13 +6,13 @@ const Topology = ({data}) => {
     const initG6 = () => {
         G6.registerNode('root', {
             draw: (cfg, group) => {
-              const size = [90, 40];
+              const size = [120, 60];
               const keyShape = group.addShape('rect', {
                 attrs: {
                   width: size[0],
                   height: size[1],
                   x: -size[0] / 2,
-                  y: -size[1] / 2,
+                  y: -size[1] / 2 - 100,
                   fill: 'rgb(19, 33, 92)',
                   radius: 5
                 },
@@ -23,9 +23,9 @@ const Topology = ({data}) => {
                 attrs: {
                   text: `${cfg.label}`,
                   fill: 'rgba(255, 255, 255, 0.85)',
-                  fontSize: 7,
+                  fontSize: 9,
                   x: -size[0] / 2 + 10,
-                  y: -2,
+                  y: -8 - 100,
                 },
                 draggable: true,
                 name: 'label-shape1'
@@ -34,9 +34,9 @@ const Topology = ({data}) => {
                 attrs: {
                   text: `${cfg.subLabel1}`,
                   fill: 'rgba(255, 255, 255, 0.65)',
-                  fontSize: 4,
+                  fontSize: 7,
                   x: -size[0] / 2 + 10,
-                  y: 6,
+                  y: 8 - 100,
                 },
                 draggable: true,
                 name: 'sublabel-shape2'
@@ -45,9 +45,9 @@ const Topology = ({data}) => {
                 attrs: {
                   text: `${cfg.subValue1}`,
                   fill: '#ff6a00',
-                  fontSize: 4,
-                  x: -size[0] / 2 + 40,
-                  y: 6,
+                  fontSize: 7,
+                  x: -size[0] / 2 + 80,
+                  y: 8 - 100,
                 },
                 draggable: true,
                 name: 'sublabel-shape3'
@@ -56,9 +56,9 @@ const Topology = ({data}) => {
                 attrs: {
                   text: `${cfg.subLabel2}`,
                   fill: 'rgba(255, 255, 255, 0.65)',
-                  fontSize: 4,
+                  fontSize: 7,
                   x: -size[0] / 2 + 10,
-                  y: 12,
+                  y: 20 - 100,
                 },
                 draggable: true,
                 name: 'sublabel-shape4'
@@ -67,9 +67,9 @@ const Topology = ({data}) => {
                 attrs: {
                   text: `${cfg.subValue2}`,
                   fill: '#ff6a00',
-                  fontSize: 4,
-                  x: -size[0] / 2 + 40,
-                  y: 12,
+                  fontSize: 7,
+                  x: -size[0] / 2 + 80,
+                  y: 20 - 100,
                 },
                 draggable: true,
                 name: 'sublabel-shape5'
@@ -80,7 +80,7 @@ const Topology = ({data}) => {
           
         G6.registerNode('level1node', {
           draw: (cfg, group) => {
-            const size = [110, 40];
+            const size = [180, 60];
             const keyShape = group.addShape('rect', {
               attrs: {
                 width: size[0],
@@ -97,9 +97,9 @@ const Topology = ({data}) => {
               attrs: {
                 text: `${cfg.label}`,
                 fill: 'rgba(19, 33, 92, 0.85)',
-                fontSize: 6,
+                fontSize: 8,
                 x: 0,
-                y: -6,
+                y: -8,
                 textAlign: 'center'
               },
               draggable: true,
@@ -109,9 +109,9 @@ const Topology = ({data}) => {
               attrs: {
                 text: `${cfg.subLabel1}`,
                 fill: 'rgba(19, 33, 92, 0.75)',
-                fontSize: 3,
-                x: -size[0] / 2 + 10,
-                y: 2,
+                fontSize: 6,
+                x: -size[0] / 2 + 20,
+                y: 5,
               },
               draggable: true,
               name: 'sublabel-shape2'
@@ -120,9 +120,9 @@ const Topology = ({data}) => {
               attrs: {
                 text: `${cfg.subValue1}`,
                 fill: '#ff6a00',
-                fontSize: 3,
-                x: -size[0] / 2 + 40,
-                y: 2,
+                fontSize: 6,
+                x: -size[0] / 2 + 90,
+                y: 5,
               },
               draggable: true,
               name: 'sublabel-shape3'
@@ -131,9 +131,9 @@ const Topology = ({data}) => {
               attrs: {
                 text: `${cfg.subLabel2}`,
                 fill: 'rgba(19, 33, 92, 0.75)',
-                fontSize: 3,
-                x: -size[0] / 2 + 10,
-                y: 10,
+                fontSize: 6,
+                x: -size[0] / 2 + 20,
+                y: 15,
               },
               draggable: true,
               name: 'sublabel-shape4'
@@ -142,9 +142,9 @@ const Topology = ({data}) => {
               attrs: {
                 text: `${cfg.subValue2}`,
                 fill: '#ff6a00',
-                fontSize: 3,
-                x: -size[0] / 2 + 40,
-                y: 10,
+                fontSize: 6,
+                x: -size[0] / 2 + 90,
+                y: 15,
               },
               draggable: true,
               name: 'sublabel-shape5'
@@ -289,6 +289,8 @@ const Topology = ({data}) => {
         fitView: true,
         linkCenter: true,
         animate: true,
+        maxZoom: 2,
+        minZoom: 2,
         layout: {
           type: 'compactBox',
           direction: 'TB',
