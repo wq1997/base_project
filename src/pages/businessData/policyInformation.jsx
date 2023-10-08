@@ -15,7 +15,7 @@ import {
 import { splitString, downloadFile } from "@/utils/utils"
 import dayjs from "dayjs";
 import moment from "moment";
-import { getBaseUrl } from "@/services/request";
+import { getBaseUrl, getToken } from "@/services/request";
 
 const PolicyInformation = () => {
     const [form] = Form.useForm();
@@ -317,7 +317,8 @@ const PolicyInformation = () => {
                             accept=".xlsx,.xls"
                             action={`${getBaseUrl()}/policy/addPolicyByTemplate`}
                             headers={{
-                                "Content-Type": "multipart/form-data"
+                                "Content-Type": "multipart/form-data",
+                                "Token": getToken()
                             }}
                             onChange={(info)=>{
                                 const { status } = info.file;

@@ -18,7 +18,7 @@ import {
 } from "@/services/serve";
 import { useEffect } from "react";
 import { downloadFile } from "@/utils/utils"
-import { getBaseUrl } from "@/services/request";
+import { getBaseUrl, getToken } from "@/services/request";
 
 const ElectricityPrice = () => {
     const [form] = Form.useForm();
@@ -529,7 +529,8 @@ const ElectricityPrice = () => {
                             accept=".xlsx,.xls"
                             action={`${getBaseUrl()}/electricityPrice/addElectricityPriceByTemplate`}
                             headers={{
-                                "Content-Type": "multipart/form-data"
+                                "Content-Type": "multipart/form-data",
+                                "Token": getToken()
                             }}
                             onChange={(info)=>{
                                 const { status } = info.file;
