@@ -6,14 +6,9 @@ import { message } from "antd";
 const getToken = () => getLocalStorage("Token");
 
 export const getBaseUrl = () => {
-    let API_BASE_URL = '';
-    if (process.env.NODE_ENV == 'production') {
-      API_BASE_URL = 'http://47.99.206.26:8484/';   // 测试环境
-    //   API_BASE_URL = 'https://energy.sermatec-cloud.com/api';  //正式环境
-    } else {
-      API_BASE_URL = 'http://47.99.206.26:8484/';
-    }
-    return API_BASE_URL;
+    const { API_URL = '' } = process.env;
+    console.log("API_URL", API_URL)
+    return API_URL;
 };
 
 const instance = axios.create({

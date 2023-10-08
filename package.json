@@ -4,6 +4,8 @@
   "scripts": {
     "dev": "umi dev",
     "build": "umi build",
+    "build:test": "cross-env UMI_ENV=test umi build",
+    "build:prod": "cross-env UMI_ENV=prod umi build",
     "postinstall": "umi setup",
     "setup": "umi setup",
     "start": "npm run dev"
@@ -15,6 +17,7 @@
     "antd-mobile": "^5.32.0",
     "axios": "^1.4.0",
     "classnames": "^2.3.2",
+    "cross-env": "^7.0.3",
     "dayjs": "^1.11.9",
     "jsencrypt": "^3.3.2",
     "moment": "^2.29.4",

@@ -316,6 +316,9 @@ const PolicyInformation = () => {
                         <Upload.Dragger
                             accept=".xlsx,.xls"
                             action={`${getBaseUrl()}/policy/addPolicyByTemplate`}
+                            headers={{
+                                "Content-Type": "multipart/form-data"
+                            }}
                             onChange={(info)=>{
                                 const { status } = info.file;
                                 if (status === 'done') {

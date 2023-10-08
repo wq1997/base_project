@@ -528,6 +528,9 @@ const ElectricityPrice = () => {
                     <Upload.Dragger
                             accept=".xlsx,.xls"
                             action={`${getBaseUrl()}/electricityPrice/addElectricityPriceByTemplate`}
+                            headers={{
+                                "Content-Type": "multipart/form-data"
+                            }}
                             onChange={(info)=>{
                                 const { status } = info.file;
                                 if (status === 'done') {
