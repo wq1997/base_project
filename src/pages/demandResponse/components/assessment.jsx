@@ -13,9 +13,12 @@ const Assessment = () => {
               emphasis: {
                 focus: 'adjacency'
               },
+              label: {
+                fontSize: 15
+              },
               data: [
                 {
-                  name: '总',
+                  name: '采日江苏VPP聚合平台(MWh)',
                   depth: 0,
                   itemStyle: {
                     color: '#5AABFF',
@@ -23,7 +26,7 @@ const Assessment = () => {
                   }
                 },
                 {
-                  name: '嘉定园区',
+                  name: '海四达动力(10)',
                   depth: 1,
                   itemStyle: {
                     color: '#5AABFF',
@@ -31,7 +34,7 @@ const Assessment = () => {
                   }
                 },
                 {
-                  name: '长宁园区',
+                  name: '海四达新能源(10)',
                   depth: 1,
                   itemStyle: {
                     color: '#5AABFF',
@@ -39,7 +42,7 @@ const Assessment = () => {
                   }
                 },
                 {
-                  name: '徐汇园区',
+                  name: '华乐不锈钢(100)',
                   depth: 1,
                   itemStyle: {
                     color: '#5AABFF',
@@ -47,141 +50,35 @@ const Assessment = () => {
                   }
                 },
                 {
-                  name: '黄埔园区',
+                  name: '京浜光电(5)',
                   depth: 1,
                   itemStyle: {
                     color: '#5AABFF',
                     borderColor: '#5AABFF'
-                  }
-                },
-                {
-                  name: '虹口园区',
-                  depth: 1,
-                  itemStyle: {
-                    color: '#5AABFF',
-                    borderColor: '#5AABFF'
-                  }
-                },
-                {
-                  name: '储能A1',
-                  depth: 2,
-                  itemStyle: {
-                    color: '#1E8DFF',
-                    borderColor: '#1E8DFF'
-                  }
-                },
-                {
-                  name: '光伏A1',
-                  depth: 2,
-                  itemStyle: {
-                    color: '#1E8DFF',
-                    borderColor: '#1E8DFF'
-                  }
-                },
-                {
-                  name: '充电桩A1',
-                  depth: 2,
-                  itemStyle: {
-                    color: '#1E8DFF',
-                    borderColor: '#1E8DFF'
-                  }
-                },
-                {
-                  name: '储能A2',
-                  depth: 2,
-                  itemStyle: {
-                    color: '#1E8DFF',
-                    borderColor: '#1E8DFF'
-                  }
-                },
-                {
-                  name: '光伏A2',
-                  depth: 2,
-                  itemStyle: {
-                    color: '#1E8DFF',
-                    borderColor: '#1E8DFF'
-                  }
-                },
-                {
-                  name: '充电桩A2',
-                  depth: 2,
-                  itemStyle: {
-                    color: '#1E8DFF',
-                    borderColor: '#1E8DFF'
                   }
                 }
               ],
               links: [
                 {
-                  source: '总',
-                  target: '嘉定园区',
-                  value: 20,
+                  source: '采日江苏VPP聚合平台(MWh)',
+                  target: '海四达动力(10)',
+                  value: 10,
                 },
                 {
-                  source: '总',
-                  target: '长宁园区',
-                  value: 20
+                  source: '采日江苏VPP聚合平台(MWh)',
+                  target: '海四达新能源(10)',
+                  value: 10
                 },
                 {
-                  source: '总',
-                  target: '徐汇园区',
-                  value: 20
+                  source: '采日江苏VPP聚合平台(MWh)',
+                  target: '华乐不锈钢(100)',
+                  value: 100
                 },
                 {
-                  source: '总',
-                  target: '黄埔园区',
-                  value: 20
-                },
-                {
-                  source: '总',
-                  target: '虹口园区',
-                  value: 20
-                },
-                {
-                  source: '嘉定园区',
-                  target: '储能A1',
-                  value: 30
-                },
-                {
-                  source: '嘉定园区',
-                  target: '光伏A1',
-                  value: 30
-                },
-                 {
-                  source: '嘉定园区',
-                  target: '充电桩A1',
-                  value: 30
-                },
-                 {
-                  source: '徐汇园区',
-                  target: '储能A1',
-                  value: 30
-                },
-                {
-                  source: '徐汇园区',
-                  target: '光伏A1',
-                  value: 30
-                },
-                 {
-                  source: '徐汇园区',
-                  target: '充电桩A1',
-                  value: 30
-                },
-                {
-                    source: '虹口园区',
-                    target: '储能A2',
-                    value: 30
-                  },
-                  {
-                    source: '虹口园区',
-                    target: '光伏A2',
-                    value: 30
-                  },
-                   {
-                    source: '虹口园区',
-                    target: '充电桩A2',
-                    value: 30
-                  },
+                  source: '采日江苏VPP聚合平台(MWh)',
+                  target: '京浜光电(5)',
+                  value: 5
+                }
               ]
             }
           })

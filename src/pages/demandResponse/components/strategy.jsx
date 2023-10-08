@@ -25,7 +25,7 @@ const Strategy = () => {
             },
             xAxis: {
               type: 'category',
-              data: ['08:00', '09:00', '10:00']
+              data: ['11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00']
             },
             yAxis: {
               type: 'value',
@@ -33,54 +33,44 @@ const Strategy = () => {
             },
             series: [
               {
-                name: '嘉定园区',
+                name: '江苏海四达动力科技有限公司',
                 type: 'bar',
                 barWidth: 30,
                 stack: 'total',
                 emphasis: {
                   focus: 'series'
                 },
-                data: [10, 5, 5]
+                data: [2, 0, 0, 1, 2, 1, 1, 1]
               },
               {
-                name: '长宁园区',
+                name: '江苏海四达新能源有限公司',
                 type: 'bar',
                 barWidth: 30,
                 stack: 'total',
                 emphasis: {
                   focus: 'series'
                 },
-                data: [5, 10, 10]
+                data: [0, 2, 2, 1, 2, 1, 1, 0]
               },
               {
-                name: '徐汇园区',
+                name: '连云港华乐不锈钢有限公司',
                 type: 'bar',
                 barWidth: 30,
                 stack: 'total',
                 emphasis: {
                   focus: 'series'
                 },
-                data: [10, 5, 10]
+                data: [0, 1, 1, 2, 1, 1, 0, 2]
               },
               {
-                name: '黄埔园区',
+                name: '苏州京浜光电科技有限公司',
                 type: 'bar',
                 barWidth: 30,
                 stack: 'total',
                 emphasis: {
                   focus: 'series'
                 },
-                data: [5, 10, 5]
-              },
-              {
-                name: '虹口园区',
-                type: 'bar',
-                barWidth: 30,
-                stack: 'total',
-                emphasis: {
-                  focus: 'series'
-                },
-                data: [10, 5, 10]
+                data: [1, 0, 1, 2, 1, 1, 0, 2]
               }
             ]
           })

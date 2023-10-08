@@ -6,7 +6,7 @@ const Topology = ({data}) => {
     const initG6 = () => {
         G6.registerNode('root', {
             draw: (cfg, group) => {
-              const size = [60, 30];
+              const size = [90, 40];
               const keyShape = group.addShape('rect', {
                 attrs: {
                   width: size[0],
@@ -34,9 +34,9 @@ const Topology = ({data}) => {
                 attrs: {
                   text: `${cfg.subLabel1}`,
                   fill: 'rgba(255, 255, 255, 0.65)',
-                  fontSize: 3,
+                  fontSize: 4,
                   x: -size[0] / 2 + 10,
-                  y: 4,
+                  y: 6,
                 },
                 draggable: true,
                 name: 'sublabel-shape2'
@@ -45,9 +45,9 @@ const Topology = ({data}) => {
                 attrs: {
                   text: `${cfg.subValue1}`,
                   fill: '#ff6a00',
-                  fontSize: 3,
+                  fontSize: 4,
                   x: -size[0] / 2 + 40,
-                  y: 4,
+                  y: 6,
                 },
                 draggable: true,
                 name: 'sublabel-shape3'
@@ -56,9 +56,9 @@ const Topology = ({data}) => {
                 attrs: {
                   text: `${cfg.subLabel2}`,
                   fill: 'rgba(255, 255, 255, 0.65)',
-                  fontSize: 3,
+                  fontSize: 4,
                   x: -size[0] / 2 + 10,
-                  y: 10,
+                  y: 12,
                 },
                 draggable: true,
                 name: 'sublabel-shape4'
@@ -67,9 +67,9 @@ const Topology = ({data}) => {
                 attrs: {
                   text: `${cfg.subValue2}`,
                   fill: '#ff6a00',
-                  fontSize: 3,
+                  fontSize: 4,
                   x: -size[0] / 2 + 40,
-                  y: 10,
+                  y: 12,
                 },
                 draggable: true,
                 name: 'sublabel-shape5'
@@ -80,7 +80,7 @@ const Topology = ({data}) => {
           
         G6.registerNode('level1node', {
           draw: (cfg, group) => {
-            const size = [70, 40];
+            const size = [110, 40];
             const keyShape = group.addShape('rect', {
               attrs: {
                 width: size[0],

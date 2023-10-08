@@ -22,7 +22,7 @@ const BaseLayout = () => {
                             color: token.colorPrimary
                         }}
                     >
-                        虚拟电厂VPP
+                        采日VPP聚合平台
                     </Typography.Title>
                     <Dropdown 
                         menu={{ 
@@ -58,9 +58,9 @@ const BaseLayout = () => {
                                 }} 
                                 size="large" 
                             >
-                                VPP
+                                A
                             </Avatar>
-                            <span style={{fontSize: 20, color: token.colorPrimary, marginLeft: 10}}>VPP</span>
+                            <span style={{fontSize: 20, color: token.colorPrimary, marginLeft: 10}}>Admin</span>
                         </Row>
                     </Dropdown>
                 </Header>

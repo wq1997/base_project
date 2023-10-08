@@ -4,47 +4,50 @@ import styles from "./index.less";
 import { useState } from "react";
 import Assessment from "./components/assessment";
 import Strategy from "./components/strategy";
+import dayjs from "dayjs";
+
+const dateFormat = 'YYYY-MM-DD';
 
 const TransactionDeclaration = () => {
     const [invitationData, setInvitationData] = useState([
         {
-            time: '10-08 08:00~10:00',
+            time: '09-17 18:00~22:00',
             isDeclaration: false,
             declarationType: '削峰',
-            declarationCount: '100000',
-            market: '上海现货市场',
+            declarationCount: '20',
+            market: '江苏现货市场',
             area: '全域',
-            invitationCode: '2023100801',
+            invitationCode: '202309171800',
             price: '3000'
         },
         {
-            time: '10-08 08:00~10:00',
+            time: '08-14 11:00~18:00',
             isDeclaration: true,
             declarationType: '削峰',
-            declarationCount: '100000',
-            market: '上海现货市场',
+            declarationCount: '30',
+            market: '江苏现货市场',
             area: '全域',
-            invitationCode: '2023100802',
+            invitationCode: '202308141100',
             price: '3000'
         },
         {
-            time: '10-08 10:00~12:00',
+            time: '07-14 11:00~18:00',
             isDeclaration: true,
             declarationType: '削峰',
-            declarationCount: '100000',
-            market: '上海现货市场',
+            declarationCount: '40',
+            market: '江苏现货市场',
             area: '全域',
-            invitationCode: '2023100803',
+            invitationCode: '202307141100',
             price: '3000'
         },
         {
-            time: '10-09 09:00~11:00',
+            time: '06-14 11:00~18:00',
             isDeclaration: true,
             declarationType: '削峰',
-            declarationCount: '100000',
-            market: '上海现货市场',
+            declarationCount: '20',
+            market: '江苏现货市场',
             area: '全域',
-            invitationCode: '2023100804',
+            invitationCode: '202306141100',
             price: '3000'
         }
     ])
@@ -52,32 +55,32 @@ const TransactionDeclaration = () => {
     const [declarationData, setDeclarationData] = useState([
         {
             label: '预估响应总量',
-            value: 34.41,
+            value: 110,
             unit: 'MWh'
         },
         {
             label: '可响应资源',
-            value: 18,
+            value: 4,
             unit: '个'
         },
         {
             label: '申报总量',
-            value: 29.75,
+            value: 90,
             unit: 'MWh'
         },
         {
             label: '预估响应收益',
-            value: 8.92,
+            value: 9.28,
             unit: '万元'
         },
         {
             label: '代理用户收益',
-            value: 6.25,
+            value: 6.496,
             unit: '万元'
         },
         {
             label: '聚合商收益',
-            value: 2.68,
+            value: 2.784,
             unit: '万元'
         },
     ])
@@ -85,16 +88,16 @@ const TransactionDeclaration = () => {
     return (
         <div className={styles.transactionDeclaration}>
             <Title.PageTitle title={"交易申报"} style={{marginTop: 0}} />
-            <Space style={{margin: '10px 0'}}>
-                <DatePicker style={{width: 280}} />
+            <div className={styles.invitation}>
+                <InvitationCard dataSource={invitationData} />
+            </div>
+            <Space size={20} style={{marginBottom: 10}}>
+                <DatePicker style={{width: 300}} defaultValue={dayjs('2023-08-14', dateFormat)} format={dateFormat} />
                 <Select 
+                    defaultValue={"JS"}
                     placeholder="请选择现货市场"
-                    style={{width: 280}} 
+                    style={{width: 300}} 
                     options={[
-                        {
-                            label: '上海现货市场',
-                            value: 'SH'
-                        },
                         {
                             label: '江苏现货市场',
                             value: 'JS'
@@ -102,9 +105,6 @@ const TransactionDeclaration = () => {
                     ]}
                 />
             </Space>
-            <div className={styles.invitation}>
-                <InvitationCard dataSource={invitationData} />
-            </div>
             <Row justify="space-between" align="middle" style={{marginBottom: 10}}>
                 <Title.PageSubTitle title={"申报方案"} style={{marginBottom: '10px'}}/>
                 <Button type="primary">提交申报</Button>
