@@ -4,6 +4,7 @@ import { ThemeEnum } from "@/components";
 import dayjs from 'dayjs';
 import en_US from 'antd/locale/en_US';
 import zh_CN from 'antd/locale/zh_CN';
+import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 import localeData from "dayjs/plugin/localeData";
 import 'dayjs/locale/zh-cn';
