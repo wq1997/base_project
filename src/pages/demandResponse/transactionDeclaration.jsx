@@ -4,6 +4,7 @@ import styles from "./index.less";
 import { useState } from "react";
 import Assessment from "./components/assessment";
 import Strategy from "./components/strategy";
+import TargetLoad from "./components/targetLoad";
 import dayjs from "dayjs";
 
 const dateFormat = 'YYYY-MM-DD';
@@ -197,8 +198,9 @@ const TransactionDeclaration = () => {
                 open={open}
                 width={800}
                 onClose={()=>setOpen(false)}
+                destroyOnClose
             >
-                <Space direction="vertical" size={20}>
+                <Space direction="vertical" size={20} style={{width: '100%'}}>
                     <div>
                         <Typography.Title level={5} style={{marginTop: 0}}>调整用户</Typography.Title>
                         <Select    
@@ -226,6 +228,104 @@ const TransactionDeclaration = () => {
                     </div>
                     <div>
                         <Typography.Title level={5} style={{marginTop: 0}}>目标负荷</Typography.Title>
+                        <TargetLoad />
+                    </div>
+                    <div>
+                        <Typography.Title level={5} style={{marginTop: 0}}>响应容量和目标负荷</Typography.Title>
+                        <Table
+                            pagination={false}
+                            dataSource={[
+                                {
+                                    key: 1,
+                                    time: '08:00~09:00',
+                                    a: 0,
+                                    b: 2.323,
+                                    c: 1.826,
+                                    subDataSource: [
+                                        {
+                                            key: 1,
+                                            time: '08:00~09:00',
+                                            a: 0,
+                                            b: 2.323,
+                                            c: 1.826,
+                                        }
+                                    ]
+                                },
+                                {
+                                    key: 2,
+                                    time: '09:00~10:00',
+                                    a: 1,
+                                    b: 2,
+                                    c: 1,
+                                    subDataSource: [
+                                        {
+                                            key: 2,
+                                            time: '09:00~10:00',
+                                            a: 1,
+                                            b: 2,
+                                            c: 1,
+                                        }
+                                    ]
+                                }
+                            ]}
+                            columns={[
+                                {
+                                    title: '时段',
+                                    dataIndex: 'time',
+                                    key: 'time',
+                                },
+                                {
+                                    title: '最小响应容量(MW)',
+                                    dataIndex: 'a',
+                                    key: 'a',
+                                },
+                                {
+                                    title: '最大响应容量(MW)',
+                                    dataIndex: 'b',
+                                    key: 'b',
+                                },
+                                {
+                                    title: '最终申报(MW)',
+                                    dataIndex: 'c',
+                                    key: 'c',
+                                },
+                            ]}
+                            expandable={{
+                                expandedRowRender:(record)=>{
+                                   return (
+                                        <Table 
+                                            pagination={false}
+                                            dataSource={record?.subDataSource}
+                                            columns={[
+                                                {
+                                                    title: '时间',
+                                                    dataIndex: 'time',
+                                                    key: 'time',
+                                                },
+                                                {
+                                                    title: '基线负荷(MW)',
+                                                    dataIndex: 'a',
+                                                    key: 'a',
+                                                },
+                                                {
+                                                    title: '运行日预测负荷(MW)',
+                                                    dataIndex: 'b',
+                                                    key: 'b',
+                                                },
+                                                {
+                                                    title: '目标负荷(MW)',
+                                                    dataIndex: 'c',
+                                                    key: 'c',
+                                                    render(value){
+                                                        return <InputNumber defaultValue={value} />
+                                                    }
+                                                },
+                                            ]}
+                                        />
+                                   )
+                                },
+                            }}
+                        />
                     </div>
                 </Space>
             </Drawer>
