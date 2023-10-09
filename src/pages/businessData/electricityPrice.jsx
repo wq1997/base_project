@@ -529,7 +529,6 @@ const ElectricityPrice = () => {
                             accept=".xlsx,.xls"
                             action={`${getBaseUrl()}/electricityPrice/addElectricityPriceByTemplate`}
                             headers={{
-                                "Content-Type": "multipart/form-data",
                                 "Token": getToken()
                             }}
                             onChange={(info)=>{

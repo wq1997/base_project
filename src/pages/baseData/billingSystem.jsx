@@ -1,7 +1,7 @@
 import { PageTitle, Search } from "@/components";
 import { Row, Button, Form, Table, Modal, Input, Tooltip } from "antd";
 import { useState, useRef } from "react";
-import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE } from "@/utils/constants";
+import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE, FORM_FORBIDDEN_SPACE } from "@/utils/constants";
 import { useDebounceEffect } from "ahooks";
 import { 
     getBillingSystem as getBillingSystemServe,
@@ -224,7 +224,7 @@ const BillingSystem = () => {
                         autoComplete="off"
                         labelCol={{span: 4}}
                     >
-                        <Form.Item label="名称" name="name" rules={[{...FORM_REQUIRED_RULE}]}> 
+                        <Form.Item label="名称" name="name" rules={[{...FORM_FORBIDDEN_SPACE}, {...FORM_REQUIRED_RULE}]}> 
                             <Input placeholder="请输入计费制度名称" />
                         </Form.Item>
                         <Form.Item label="备注" name="remark">

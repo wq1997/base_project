@@ -317,7 +317,6 @@ const PolicyInformation = () => {
                             accept=".xlsx,.xls"
                             action={`${getBaseUrl()}/policy/addPolicyByTemplate`}
                             headers={{
-                                "Content-Type": "multipart/form-data",
                                 "Token": getToken()
                             }}
                             onChange={(info)=>{
