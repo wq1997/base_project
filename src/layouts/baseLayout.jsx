@@ -44,7 +44,7 @@ const BaseLayout = () => {
                                 style={{ backgroundColor: "#F56A00", verticalAlign: 'middle' }} 
                                 size="large" 
                             >
-                                C
+                                wq
                             </Avatar>
                             <span style={{fontSize: 20, color: 'white', marginLeft: 10}}>用户名</span>
                         </Row>

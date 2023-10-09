@@ -6,18 +6,17 @@ const Home = "@/pages/home";
 
 const Login = "@/pages/account/login";
 const Test = "@/pages/test"
-
+import menuRoutes from '../router/menuRoute'
 export default Routes = [
    {
      path: "/", 
      component: App,
      routes: [
       {
-        path: '/cet',
+        path: '/index',
         component: Layout,
         routes: [
-          // 首页
-          { path: '/cet/home', component: Home },
+          ...menuRoutes
         ]
       },
       { path: "/login", component: Login },

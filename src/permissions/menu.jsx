@@ -1,26 +1,23 @@
 import { Menu } from 'antd';
 import { Link, useLocation } from 'umi';
-
+import menu from '../router/menuRoute'
 const { SubMenu } = Menu;
 
 const MenuList = [
-    {
-        key: '/cet/home',
-        label: '首页'
-    }
+   ...menu
 ]
 
 const getMenu = (menuList) => {
     return menuList.map(menu=>{
-        if(menu.children){
+        if(menu.routes){
             return (
-                <SubMenu key={menu.key} title={menu.label} >
-                    {getMenu(menu.children)}
+                <SubMenu key={menu.path} title={menu.name} >
+                    {getMenu(menu.routes)}
                 </SubMenu>
             )
         }else{
-            return <Menu.Item key={menu.key}>
-                <Link to={menu.key}>{menu.label}</Link>
+            return <Menu.Item key={menu.path}>
+                <Link to={menu.path}>{menu.name}</Link>
             </Menu.Item>
         }
     });
@@ -29,6 +26,7 @@ const getMenu = (menuList) => {
 const MyMenu = () => {
     const location = useLocation();
     const { pathname } = location;
+    console.log(location);
     const getDefaultOpenKeys = () => {
         const pathList = pathname.split("/");
         if(pathList.length<4){
