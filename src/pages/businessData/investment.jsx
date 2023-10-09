@@ -1,7 +1,7 @@
 
 import { PageTitle, Search } from "@/components";
 import { useDebounceEffect } from "ahooks";
-import { Table, Row, Button, Modal, Form, Input, Tooltip, Select } from "antd";
+import { Table, Row, Button, Modal, Form, Input, Tooltip, Select, InputNumber } from "antd";
 import { useState, useRef } from "react";
 import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE } from "@/utils/constants";
 import { 
@@ -258,7 +258,7 @@ const Investment = () => {
                             <Input placeholder="请输入名称"/>
                         </Form.Item>
                         <Form.Item label="数值" name="total" rules={[{...FORM_REQUIRED_RULE}]}>
-                            <Input placeholder="请输入数值" />
+                            <InputNumber placeholder="请输入数值" style={{width: '100%'}} />
                         </Form.Item>
                         <Form.Item label="单位" name="unit" rules={[{...FORM_REQUIRED_RULE}]}>
                             <Input placeholder="请输入单位" />

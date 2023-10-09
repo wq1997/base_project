@@ -24,12 +24,12 @@ const Login = () => {
     if(res?.data?.token){
       const data = res?.data;
       setLocalStorage("Token", data?.token);
-      setLocalStorage("userName", data?.username);
+      setLocalStorage("userName", data?.nickName);
       dispatch({
         type: 'user/updateState',
         payload: {
             user: {
-              userName: data?.username
+              userName: data?.nickName
             }
         }
       })

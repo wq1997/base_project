@@ -2,7 +2,7 @@ import { PageTitle, Search } from "@/components";
 import { useDebounceEffect } from "ahooks";
 import { Table, Row, Button, Modal, Form, Input, Select, Tooltip } from "antd";
 import { useState, useRef } from "react";
-import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE } from "@/utils/constants";
+import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE, FORM_FORBIDDEN_SPACE } from "@/utils/constants";
 import { 
     getSecondArea as getSecondAreaServe,
     getSecondAreaByName as getSecondAreaByNameServe,
@@ -249,7 +249,7 @@ const SecondArea = () => {
                                 })}
                             />
                         </Form.Item>
-                        <Form.Item label="二级区域" name="name" rules={[{...FORM_REQUIRED_RULE}]}> 
+                        <Form.Item label="二级区域" name="name" rules={[{...FORM_FORBIDDEN_SPACE}, {...FORM_REQUIRED_RULE}]}> 
                             <Input placeholder="请输入二级区域" />
                         </Form.Item>
                         <Form.Item label="备注" name="remark">

@@ -1,7 +1,7 @@
 import { PageTitle, Search } from "@/components";
 import { Row, Button, Form, Table, Modal, Input, DatePicker, Col, Upload, Typography, Tooltip, message } from "antd";
 import { useState, useRef } from "react";
-import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE } from "@/utils/constants";
+import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE, FORM_FORBIDDEN_SPACE } from "@/utils/constants";
 import { useDebounceEffect } from "ahooks";
 import { InboxOutlined } from '@ant-design/icons';
 import { 
@@ -283,10 +283,10 @@ const PolicyInformation = () => {
                         <Form.Item label="时间" name="releaseTime" rules={[{...FORM_REQUIRED_RULE}]}> 
                             <DatePicker placeholder="请选择时间" />
                         </Form.Item>
-                        <Form.Item label="发布单位" name="issueUnit" rules={[{...FORM_REQUIRED_RULE}]}>
+                        <Form.Item label="发布单位" name="issueUnit" rules={[{...FORM_FORBIDDEN_SPACE}, {...FORM_REQUIRED_RULE}]}>
                             <Input placeholder="请输入发布单位" />
                         </Form.Item>
-                        <Form.Item label="发布名称" name="policyName" rules={[{...FORM_REQUIRED_RULE}]}>
+                        <Form.Item label="发布名称" name="policyName" rules={[{...FORM_FORBIDDEN_SPACE}, {...FORM_REQUIRED_RULE}]}>
                             <Input placeholder="请输入发布名称" />
                         </Form.Item>
                         <Form.Item label="政策要点" name="policyPoints" rules={[{...FORM_REQUIRED_RULE}]}>

@@ -1,5 +1,5 @@
 import { PageTitle, Search } from "@/components";
-import { Row, Button, Table, Modal, Image } from "antd";
+import { Row, Button, Table, Modal, Image, Tooltip } from "antd";
 import { useState, useRef } from "react";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import { useDebounceEffect } from "ahooks";
@@ -39,6 +39,12 @@ const Feedback = () => {
             title: '反馈内容',
             dataIndex: 'text',
             key: 'text',
+            width: 400,
+            render: (text) => (
+                <Tooltip placement="topLeft" title={text} overlayStyle={{ maxWidth: 550 }}>
+                    {text}
+                </Tooltip>
+            ),
         },
         {
             title: '图片',

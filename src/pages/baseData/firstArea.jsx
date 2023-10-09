@@ -2,7 +2,7 @@ import { PageTitle, Search } from "@/components";
 import { useDebounceEffect } from "ahooks";
 import { Table, Row, Button, Modal, Form, Input, Tooltip } from "antd";
 import { useState, useRef } from "react";
-import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE } from "@/utils/constants";
+import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE, FORM_FORBIDDEN_SPACE } from "@/utils/constants";
 import { 
     getFirstArea as getFirstAreaServe,
     getFirstAreaByName as getFirstAreaByNameServe,
@@ -227,7 +227,7 @@ const FirstArea = () => {
                             country: '中国'
                         }}
                     >
-                        <Form.Item label="区域名称" name="name" rules={[{...FORM_REQUIRED_RULE}]}>
+                        <Form.Item label="区域名称" name="name" rules={[{...FORM_FORBIDDEN_SPACE}, {...FORM_REQUIRED_RULE}]}>
                             <Input placeholder="请输入区域名称"/>
                         </Form.Item>
                         <Form.Item label="所属国家" name="country">

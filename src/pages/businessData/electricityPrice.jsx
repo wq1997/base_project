@@ -1,7 +1,7 @@
 import { PageTitle } from "@/components";
 import { Row, Button, Form, Table, Modal, Input, Tooltip, Col, Upload, Typography, Select, InputNumber, message } from "antd";
 import { useState, useRef } from "react";
-import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE } from "@/utils/constants";
+import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE, FORM_ONLY_NUMBER } from "@/utils/constants";
 import { InboxOutlined } from '@ant-design/icons';
 import { 
     getAllFirstArea as getAllFirstAreaServe,
@@ -338,6 +338,7 @@ const ElectricityPrice = () => {
                             }
                         })}
                         onChange={(value)=>setSecondAreaValue(value)}
+                        allowClear
                      />
                     <Select 
                         value={electricityTypeValue}
@@ -487,25 +488,25 @@ const ElectricityPrice = () => {
                             />
                         </Form.Item>
                         <Form.Item label="尖峰电价" name="cuspPrice" rules={[{...FORM_REQUIRED_RULE}]}>
-                            <Input placeholder="请输入尖峰电价" />
+                            <InputNumber placeholder="请输入尖峰电价" style={{width: '100%'}}/>
                         </Form.Item>
                         <Form.Item label="高峰电价" name="highPrice" rules={[{...FORM_REQUIRED_RULE}]}>
-                            <Input placeholder="请输入高峰电价" />
+                            <InputNumber placeholder="请输入高峰电价" style={{width: '100%'}} />
                         </Form.Item>
                         <Form.Item label="平段电价" name="flatPrice" rules={[{...FORM_REQUIRED_RULE}]}>
-                            <Input placeholder="请输入平段电价" />
+                            <InputNumber placeholder="请输入平段电价" style={{width: '100%'}}/>
                         </Form.Item>
                         <Form.Item label="谷段电价" name="lowPrice" rules={[{...FORM_REQUIRED_RULE}]}>
                             <Input placeholder="低谷/深谷" />
                         </Form.Item>
                         <Form.Item label="基本电费按需价格" name="capacityPrice" rules={[{...FORM_REQUIRED_RULE}]}>
-                            <Input placeholder="请输入基本电费按需价格" />
+                            <InputNumber placeholder="请输入基本电费按需价格" style={{width: '100%'}}/>
                         </Form.Item>
                         <Form.Item label="基本电费按容价格" name="needPrice" rules={[{...FORM_REQUIRED_RULE}]}>
-                            <Input placeholder="请输入基本电费按容价格" />
+                            <InputNumber placeholder="请输入基本电费按容价格" style={{width: '100%'}}/>
                         </Form.Item>
                         <Form.Item label="高峰月" name="peakMonth" rules={[{...FORM_REQUIRED_RULE}]}>
-                            <InputNumber min={1} />
+                            <InputNumber min={1} style={{width: '100%'}}/>
                         </Form.Item>
                         <Form.Item label="备注时段" name="remarkDate">
                             <Input.TextArea placeholder="请输入备注时段" />
@@ -532,13 +533,15 @@ const ElectricityPrice = () => {
                                 "Token": getToken()
                             }}
                             onChange={(info)=>{
-                                const { status } = info.file;
-                                if (status === 'done') {
-                                   message.success("上传成功");
-                                   paginationRef.current=DEFAULT_PAGINATION;
-                                   getList();
-                                } else if (status === 'error') {
-                                  message.error('上传失败');
+                                const { response, status } = info.file;
+                                if(response && status==="done"){
+                                    if (response.code === 200) {
+                                        message.success("上传成功");
+                                        paginationRef.current=DEFAULT_PAGINATION;
+                                        getList();
+                                     } else{
+                                       message.error(response.msg);
+                                     }
                                 }
                             }}
                         >
