@@ -4,7 +4,8 @@ import { theme } from "antd";
 
 const StatisticalCard = ({
     title,
-    dataSource
+    dataSource,
+    statisticalStyle
 }) => {
     const { token } = theme.useToken();
 
@@ -16,7 +17,7 @@ const StatisticalCard = ({
                     <Title.PageSubTitle title={title} />
                 </div>
             }
-            <div className={styles.cardBottom}>
+            <div className={styles.cardBottom} style={statisticalStyle}>
                 {
                     dataSource?.map(data => {
                         return (

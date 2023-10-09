@@ -87,6 +87,10 @@ const TransactionDeclaration = () => {
         },
     ])
 
+    const onClose = () => {
+        setOpen(false);
+    }
+
     return (
         <div className={styles.transactionDeclaration}>
             <Title.PageTitle title={"交易申报"} style={{marginTop: 0}} />
@@ -197,12 +201,20 @@ const TransactionDeclaration = () => {
                 placement="right"
                 open={open}
                 width={800}
-                onClose={()=>setOpen(false)}
+                onClose={onClose}
                 destroyOnClose
             >
                 <Space direction="vertical" size={20} style={{width: '100%'}}>
                     <div>
-                        <Typography.Title level={5} style={{marginTop: 0}}>调整用户</Typography.Title>
+                        <Row justify="space-between" align="middle">
+                            <Typography.Title level={5} style={{marginTop: 0}}>调整用户</Typography.Title>
+                            <Space>
+                                <Button onClick={onClose}>取消</Button>
+                                <Button onClick={onClose} type="primary">
+                                    确定
+                                </Button>
+                            </Space>
+                        </Row>
                         <Select    
                             defaultValue={1}
                             style={{width: 280}}
