@@ -238,7 +238,7 @@ const Notify = () => {
                                 placeholder="请选择通知类型" 
                                 options={notifyTypeList?.map(item => {
                                     return {
-                                        value: item.value,
+                                        value: String(item.value),
                                         label: item.name
                                     }
                                 })}
