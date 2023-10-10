@@ -5,12 +5,13 @@ import { theme } from "antd";
 const StatisticalCard = ({
     title,
     dataSource,
+    cardStyle,
     statisticalStyle
 }) => {
     const { token } = theme.useToken();
 
     return (
-        <div className={styles.card}>
+        <div className={styles.card} style={cardStyle}>
             {
                 title&&
                 <div className={styles.cardTitle}>

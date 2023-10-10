@@ -6,13 +6,8 @@ import Topology from "./topology";
 const Polymerization = (props) => {
     const [dataInfo, setDataInfo] = useState([
         {
-            label: '聚合虚拟电厂',
-            value: 10,
-            unit: '个'
-        },
-        {
-            label: '聚合场站',
-            value: 13,
+            label: '聚合子用户',
+            value: 4,
             unit: '个'
         },
         {

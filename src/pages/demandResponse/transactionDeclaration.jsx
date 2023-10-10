@@ -76,7 +76,7 @@ const TransactionDeclaration = () => {
             unit: '万元'
         },
         {
-            label: '用户收益',
+            label: '子用户收益',
             value: 6.496,
             unit: '万元'
         },
@@ -111,7 +111,7 @@ const TransactionDeclaration = () => {
                     ]}
                 />
             </Space>
-            <Row justify="space-between" align="middle" style={{marginBottom: 10}}>
+            <Row justify="space-between" align="middle" style={{margin: '10px 0'}}>
                 <Title.PageSubTitle title={"申报方案"} style={{marginBottom: '10px'}}/>
                 <Button type="primary">提交申报</Button>
             </Row>
@@ -134,7 +134,7 @@ const TransactionDeclaration = () => {
                 pagination={false}
                 columns={[
                     {
-                        title: '用户名称',
+                        title: '子用户名称',
                         dataIndex: 'name',
                         key: 'name',
                     },
@@ -207,7 +207,7 @@ const TransactionDeclaration = () => {
                 <Space direction="vertical" size={20} style={{width: '100%'}}>
                     <div>
                         <Row justify="space-between" align="middle">
-                            <Typography.Title level={5} style={{marginTop: 0}}>调整用户</Typography.Title>
+                            <Title.PageSubTitle title={"调整子用户"} style={{marginBottom: '10px'}}/>
                             <Space>
                                 <Button onClick={onClose}>取消</Button>
                                 <Button onClick={onClose} type="primary">
@@ -239,11 +239,11 @@ const TransactionDeclaration = () => {
                         />
                     </div>
                     <div>
-                        <Typography.Title level={5} style={{marginTop: 0}}>目标负荷</Typography.Title>
+                        <Title.PageSubTitle title={"目标负荷"} style={{marginBottom: '10px'}}/>
                         <TargetLoad />
                     </div>
                     <div>
-                        <Typography.Title level={5} style={{marginTop: 0}}>响应容量和目标负荷</Typography.Title>
+                        <Title.PageSubTitle title={"响应容量和目标负荷"} style={{marginBottom: '10px'}}/>
                         <Table
                             pagination={false}
                             dataSource={[
