@@ -206,15 +206,7 @@ const TransactionDeclaration = () => {
             >
                 <Space direction="vertical" size={20} style={{width: '100%'}}>
                     <div>
-                        <Row justify="space-between" align="middle">
-                            <Title.PageSubTitle title={"调整子用户"} style={{marginBottom: '10px'}}/>
-                            <Space>
-                                <Button onClick={onClose}>取消</Button>
-                                <Button onClick={onClose} type="primary">
-                                    确定
-                                </Button>
-                            </Space>
-                        </Row>
+                        <Title.PageSubTitle title={"调整子用户"} style={{marginBottom: '10px'}}/>
                         <Select    
                             defaultValue={1}
                             style={{width: 280}}
@@ -243,7 +235,15 @@ const TransactionDeclaration = () => {
                         <TargetLoad />
                     </div>
                     <div>
-                        <Title.PageSubTitle title={"响应容量和目标负荷"} style={{marginBottom: '10px'}}/>
+                        <Row justify="space-between" align="middle" style={{marginBottom: 10}}>
+                            <Title.PageSubTitle title={"响应容量和目标负荷"} style={{marginBottom: '10px'}}/>
+                            <Space>
+                                <Button onClick={onClose}>取消</Button>
+                                <Button onClick={onClose} type="primary">
+                                    确定
+                                </Button>
+                            </Space>
+                        </Row>
                         <Table
                             pagination={false}
                             dataSource={[

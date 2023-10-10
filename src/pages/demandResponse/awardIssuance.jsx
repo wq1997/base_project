@@ -135,8 +135,26 @@ const AwardIssuance = () => {
                             e: 1.21
                         },
                         {
-                            key: 1,
+                            key: 2,
                             name: '江苏海四达新能源有限公司',
+                            a: '09:00~10:00',
+                            b: 2,
+                            c: 1.8,
+                            d: 3.112,
+                            e: 1.21
+                        },
+                        {
+                            key: 3,
+                            name: '连云港华乐不锈钢有限公司',
+                            a: '09:00~10:00',
+                            b: 2,
+                            c: 1.8,
+                            d: 3.112,
+                            e: 1.21
+                        },
+                        {
+                            key: 4,
+                            name: '苏州京浜光电科技有限公司',
                             a: '09:00~10:00',
                             b: 2,
                             c: 1.8,
@@ -198,7 +216,77 @@ const AwardIssuance = () => {
                 onClose={onClose}
                 destroyOnClose
             >
-
+                <div style={{marginBottom: 20}}>
+                    <Title.PageSubTitle title={"调整子用户"} style={{marginBottom: 10}}/>
+                    <Select    
+                        defaultValue={1}
+                        style={{width: 280}}
+                        options={[
+                            {
+                                label: '江苏海四达动力科技有限公司',
+                                value: 1
+                            },
+                            {
+                                label: '江苏海四达新能源有限公司',
+                                value: 2
+                            },
+                            {
+                                label: '连云港华乐不锈钢有限公司',
+                                value: 3
+                            },
+                            {
+                                label: '苏州京浜光电科技有限公司',
+                                value: 4
+                            }
+                        ]}
+                    />
+                </div>
+                <Row justify="space-between" align="middle" style={{margin: '10px 0'}}>
+                    <Title.PageSubTitle title={"调度负荷分解(MW)"}/>
+                    <Button type="primary">更新运行策略</Button>
+                </Row>
+                <Table 
+                    pagination={false}
+                    columns={[
+                        {
+                            title: '时段',
+                            dataIndex: 'a',
+                            key: 'a',
+                        },
+                        {
+                            title: '用户中标容量',
+                            dataIndex: 'b',
+                            key: 'b',
+                        },
+                        {
+                            title: '储能负荷',
+                            dataIndex: 'c',
+                            key: 'c',
+                            render(value){
+                                return <InputNumber defaultValue={value} />
+                            }
+                        },
+                        {
+                            title: '可调负荷',
+                            dataIndex: 'd',
+                            key: 'd',
+                        }
+                    ]}
+                    dataSource={[
+                        {
+                            a: '08:00~09:00',
+                            b: 5.240,
+                            c: 4.35,
+                            d: 0.262
+                        },
+                        {
+                            a: '09:00~10:00',
+                            b: 5.240,
+                            c: 4.35,
+                            d: 0.262
+                        }
+                    ]}
+                />
             </Drawer>
             <Drawer
                 title="申报方案" 
