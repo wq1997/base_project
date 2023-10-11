@@ -506,7 +506,7 @@ const ElectricityPrice = () => {
                             <InputNumber placeholder="请输入基本电费按容价格" style={{width: '100%'}}/>
                         </Form.Item>
                         <Form.Item label="高峰月" name="peakMonth" rules={[{...FORM_REQUIRED_RULE}]}>
-                            <InputNumber min={1} style={{width: '100%'}}/>
+                            <InputNumber min={0} style={{width: '100%'}}/>
                         </Form.Item>
                         <Form.Item label="备注时段" name="remarkDate">
                             <Input.TextArea placeholder="请输入备注时段" />
