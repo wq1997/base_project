@@ -1,12 +1,14 @@
 import ReactECharts from 'echarts-for-react';
 import { useState, useEffect } from 'react';
 import styles from "./index.less";
+import { echartsColor } from "@/utils/constants";
 
 const SuccessfulBidder = () => {
     const [options, setOptions] = useState({});
 
     const getOptions = () => {
         setOptions({
+            color: echartsColor,
             tooltip: {
               trigger: 'axis',
               axisPointer: {

@@ -1,5 +1,6 @@
 import ReactECharts from 'echarts-for-react';
 import { useState, useEffect } from 'react';
+import { echartsColor } from "@/utils/constants";
 import styles from "./index.less";
 
 const Strategy = () => {
@@ -7,6 +8,7 @@ const Strategy = () => {
 
     const getOptions = () => {
         setOptions({
+            color: echartsColor,
             tooltip: {
               trigger: 'axis',
               axisPointer: {

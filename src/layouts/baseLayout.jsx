@@ -22,7 +22,7 @@ const BaseLayout = () => {
                             color: token.colorPrimary
                         }}
                     >
-                        采日VPP聚合平台
+                        采日Nebula VPP智慧平台
                     </Typography.Title>
                     <Dropdown 
                         menu={{ 

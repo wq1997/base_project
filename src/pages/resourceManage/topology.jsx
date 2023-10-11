@@ -1,8 +1,12 @@
 import G6 from '@antv/g6';
 import { useEffect, useRef } from "react";
+import { theme } from 'antd';
+
+const ValueColor = "white";
 
 const Topology = ({data}) => {
     const ref = useRef();
+    const { token } = theme.useToken();
     const initG6 = () => {
         G6.registerNode('root', {
             draw: (cfg, group) => {
@@ -44,7 +48,7 @@ const Topology = ({data}) => {
               group.addShape('text', {
                 attrs: {
                   text: `${cfg.subValue1}`,
-                  fill: '#ff6a00',
+                  fill: ValueColor,
                   fontSize: 7,
                   x: -size[0] / 2 + 80,
                   y: 8 - 100,
@@ -66,7 +70,7 @@ const Topology = ({data}) => {
               group.addShape('text', {
                 attrs: {
                   text: `${cfg.subValue2}`,
-                  fill: '#ff6a00',
+                  fill: ValueColor,
                   fontSize: 7,
                   x: -size[0] / 2 + 80,
                   y: 20 - 100,
@@ -119,7 +123,7 @@ const Topology = ({data}) => {
             group.addShape('text', {
               attrs: {
                 text: `${cfg.subValue1}`,
-                fill: '#ff6a00',
+                fill: token.colorPrimary,
                 fontSize: 6,
                 x: -size[0] / 2 + 90,
                 y: 5,
@@ -141,7 +145,7 @@ const Topology = ({data}) => {
             group.addShape('text', {
               attrs: {
                 text: `${cfg.subValue2}`,
-                fill: '#ff6a00',
+                fill: token.colorPrimary,
                 fontSize: 6,
                 x: -size[0] / 2 + 90,
                 y: 15,
