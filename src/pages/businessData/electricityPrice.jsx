@@ -53,7 +53,8 @@ const ElectricityPrice = () => {
             key: 'index',
             width: 100,
             render(text,record,index){
-                return index+1;
+                const { current, pageSize } = pagination;
+                return pageSize*(current - 1) + index + 1;
             }
         },
         {

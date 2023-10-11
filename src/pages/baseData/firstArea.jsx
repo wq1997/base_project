@@ -28,7 +28,8 @@ const FirstArea = () => {
             dataIndex: 'index',
             key: 'index',
             render(text,record,index){
-                return index+1;
+                const { current, pageSize } = pagination;
+                return pageSize*(current - 1) + index + 1;
             }
         },
         {
