@@ -1,15 +1,26 @@
-import { Title } from "@/components";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { theme } from "antd";
-
-const statusEnum = {
-    'Created': '已创建'
-}
+import { theme, Avatar, Dropdown } from "antd";
+import useIcon from "@/hooks/useIcon";
 
 const DemandCard = ({
     dataSource
 }) => {
+    const Icon = useIcon();
     const { token } = theme.useToken();
+
+    const statusEnum = {
+        'Created': '已创建',
+        'Declared': '已发布',
+        'Winning': '已中标',
+        'Lose': '未中标'
+    }
+    
+    const statusColor = {
+        'Created': '#1677ff',
+        'Declared': '#389e0d',
+        'Winning': token.colorPrimary,
+        'Lose': '#000'
+    }
 
     const card = useEmotionCss(({token})=>{
         return {
@@ -45,6 +56,11 @@ const DemandCard = ({
                 '&:nth-last-child(1)': {
                     marginBottom: 0
                 },
+                '.icon': {
+                    color: token.colorPrimary,
+                    fontSize: 18,
+                    cursor: 'pointer'
+                }
             },
             '.cardItemRowTitleStyle': {
                 color: '#969696'
@@ -67,17 +83,65 @@ const DemandCard = ({
         >
             <div className={card}>
                 {
-                    dataSource?.map(data => {
+                    dataSource?.map((data, index) => {
                         return (
-                            <div className={cardItemStyle}>
+                            <div className={cardItemStyle} key={index}>
+                                <div className={"cardItemRowStyle"}>
+                                    <Avatar 
+                                        style={{ 
+                                            backgroundColor: token.colorPrimary, 
+                                            width: 25,
+                                            height: 25,
+                                            lineHeight: '25px',
+                                            opacity: 0.8
+                                        }} 
+                                        size="large" 
+                                    >
+                                        A
+                                    </Avatar>
+                                    <Dropdown 
+                                        menu={{ items: [
+                                            {
+                                                key: '1',
+                                                label:(
+                                                    <a>发布</a>
+                                                )   
+                                            },
+                                            {
+                                                key: '2',
+                                                label:(
+                                                    <a>审核</a>
+                                                )   
+                                            },
+                                            {
+                                                key: '3',
+                                                label:(
+                                                    <a>编辑</a>
+                                                )   
+                                            },
+                                            {
+                                                key: '4',
+                                                label:(
+                                                    <a>删除</a>
+                                                )   
+                                            },
+                                        ] }} 
+                                        placement="bottom"
+                                    >
+                                        <Icon 
+                                            type="icon-caozuo"
+                                            className="icon"
+                                        />
+                                    </Dropdown>
+                                </div>
                                 <div className={'cardItemRowStyle'}>
                                     <div>{data?.time}</div>
                                     <div 
                                         style={{
                                             padding: '3px 10px',
-                                            border: `1px solid ${data?.isDeclaration?token.colorPrimary:'#58CC60'}`,
+                                            border: `1px solid ${statusColor[data?.status]}`,
                                             borderRadius: '5px',
-                                            color: `${data?.isDeclaration?token.colorPrimary:'#58CC60'}`,
+                                            color: `${statusColor[data?.status]}`,
                                             fontSize: '10px'
                                         }}
                                     >
@@ -85,20 +149,20 @@ const DemandCard = ({
                                     </div>
                                 </div>
                                 <div className={'cardItemRowStyle'}>
-                                    <div className={'cardItemRowTitleStyle'}>{data?.declarationType}</div>
-                                    <div className={'cardItemRowDataStyle'}>{data?.declarationCount}MWh</div>
+                                    <div className={'cardItemRowTitleStyle'}>{data?.demandType}</div>
+                                    <div className={'cardItemRowDataStyle'}>{data?.demandCount}KW</div>
                                 </div>
                                 <div className={'cardItemRowStyle'}>
-                                    <div className={'cardItemRowTitleStyle'}>市场</div>
-                                    <div className={'cardItemRowDataStyle'}>{data?.market}</div>
+                                    <div className={'cardItemRowTitleStyle'}>响应价格</div>
+                                    <div className={'cardItemRowDataStyle'}>{data?.price}(元/KWh)</div>
                                 </div>
                                 <div className={'cardItemRowStyle'}>
-                                    <div className={'cardItemRowTitleStyle'}>相应区域</div>
-                                    <div className={'cardItemRowDataStyle'}>{data?.area}</div>
+                                    <div className={'cardItemRowTitleStyle'}>响应运行商</div>
+                                    <div className={'cardItemRowDataStyle'}>{data?.creator}</div>
                                 </div>
                                 <div className={'cardItemRowStyle'}>
-                                    <div className={'cardItemRowTitleStyle'}>邀约编号</div>
-                                    <div className={'cardItemRowDataStyle'}>{data?.invitationCode}</div>
+                                    <div className={'cardItemRowTitleStyle'}>响应编号</div>
+                                    <div className={'cardItemRowDataStyle'}>{data?.demandCode}</div>
                                 </div>
                                 <div className={'cardItemRowStyle'}>
                                     <div className={'cardItemRowTitleStyle'}>限价</div>

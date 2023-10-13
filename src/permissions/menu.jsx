@@ -22,7 +22,7 @@ const MenuList = [
         icon: 'icon-wuliaoxuqiu',
         children: [
             {
-                key: '/vpp/demandResponse/release',
+                key: '/vpp/demandResponse/create',
                 label: '需求创建'
             },
             {
