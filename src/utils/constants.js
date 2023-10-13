@@ -1,1 +1,1 @@
-export const echartsColor = ['#5470C6', '#5AABFF', '#FAC858', '#91CC75'];
+export const echartsColor = undefined && ['#5470C6', '#5AABFF', '#FAC858', '#91CC75'];

@@ -8,6 +8,7 @@ const Polymerization = "@/pages/resourceManage/polymerization";
 const AwardIssuance = "@/pages/demandResponse/awardIssuance";
 const ResponseEvaluation = "@/pages/demandResponse/responseEvaluation";
 const TransactionDeclaration = "@/pages/demandResponse/transactionDeclaration";
+const DemandRelease = "@/pages/demandResponse/release";
 
 const Login = "@/pages/account/login";
 const Test = "@/pages/test"
@@ -25,6 +26,7 @@ export default Routes = [
           { path: '/vpp/demandResponse/awardIssuance', component: AwardIssuance },
           { path: '/vpp/demandResponse/responseEvaluation', component: ResponseEvaluation },
           { path: '/vpp/demandResponse/transactionDeclaration', component: TransactionDeclaration },
+          { path: '/vpp/demandResponse/release', component: DemandRelease }
         ]
       },
       { path: "/login", component: Login },

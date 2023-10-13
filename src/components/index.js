@@ -4,6 +4,9 @@ import LocaleBtn from "./LocaleBtn";
 import Title from "./Title";
 import StatisticalCard from "./StatisticalCard";
 import InvitationCard from "./InvitationCard";
+import DemandCard from "./DemandCard";
+import Header from "./Header";
+import Search from "./Search";
 
 export {
     ThemeBtn,
@@ -11,5 +14,8 @@ export {
     LocaleBtn,
     Title,
     StatisticalCard,
-    InvitationCard
+    InvitationCard,
+    DemandCard,
+    Header,
+    Search
 }
