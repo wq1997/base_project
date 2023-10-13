@@ -1,7 +1,7 @@
 import axiosInstance from "./request";
 
 export const login = (payload) => {
-   return axiosInstance.post('/open/login', payload)
+   return axiosInstance.post('/open/pcLogin', payload)
 }
 
 export const getPublicKey = ()=>{

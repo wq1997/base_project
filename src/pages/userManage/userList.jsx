@@ -45,6 +45,17 @@ const UserList = () => {
             key: 'nickName',
         },
         {
+            title: '类型',
+            dataIndex: 'userType',
+            key: 'userType',
+            render(value){
+                return {
+                    0: '管理员',
+                    1: '普通用户'
+                }[value]
+            }
+        },
+        {
             title: '手机号',
             dataIndex: 'phoneNumber',
             key: 'phoneNumber',
@@ -334,6 +345,26 @@ const UserList = () => {
                             ]}
                         > 
                             <Input placeholder="请输入姓名" />
+                        </Form.Item>
+                        <Form.Item 
+                            label="用户类型" 
+                            name="userType" 
+                            rules={[
+                                {...FORM_REQUIRED_RULE}
+                            ]}
+                        > 
+                            <Select 
+                                options={[
+                                    {
+                                        value: '0',
+                                        label: '管理员'
+                                    },
+                                    {
+                                        value: '1',
+                                        label: '普通用户'
+                                    }
+                                ]}
+                            />
                         </Form.Item>
                         <Form.Item 
                             label="手机号" 
