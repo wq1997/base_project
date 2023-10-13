@@ -26,16 +26,19 @@ const DemandCard = ({
         return {
             display: 'grid',
             gap: 20,
-            "@media screen and (min-width: 2000px)": {
-                gridTemplateColumns: 'repeat(6, 1fr)',
+            "@media screen and (min-width: 2500px)": {
+                gridTemplateColumns: 'repeat(5, 1fr)',
             },
-            "@media screen and (min-width: 1000px) and (max-width: 2000px)": {
+            "@media screen and (min-width: 2000px) and (max-width: 2500px)": {
                 gridTemplateColumns: 'repeat(4, 1fr)',
             },
-            "@media screen and (min-width: 479px) and (max-width: 1000px)": {
+            "@media screen and (min-width: 1500px) and (max-width: 2000px)": {
+                gridTemplateColumns: 'repeat(3, 1fr)',
+            },
+            "@media screen and (min-width: 1000px) and (max-width: 1500px)": {
                 gridTemplateColumns: 'repeat(2, 1fr)',
             },
-            "@media screen and (max-width: 479px)": {
+            "@media screen and (max-width: 1000px)": {
                 gridTemplateColumns: 'repeat(1, 1fr)',
             }
         }
