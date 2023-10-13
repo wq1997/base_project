@@ -29,19 +29,31 @@ const getMenu = (menuList) => {
 const MyMenu = () => {
     const location = useLocation();
     const { pathname } = location;
-    const getDefaultOpenKeys = () => {
+    const [openKeys, setOpenKeys] = useState([]);
+    const getOpenKeys = () => {
         const pathList = pathname.split("/");
+        let newOpenKeys = [...openKeys];
         if(pathList.length<4){
-            return [pathname];
+            newOpenKeys = newOpenKeys.concat([pathname]);
         }else{
-            return [pathList.splice(0, 3).join("/")]
+            newOpenKeys = newOpenKeys.concat([pathList.splice(0, 3).join("/")]);
         }
+        setOpenKeys(newOpenKeys);
     }
+
+    const onOpenChange = (openKeys) => {
+        setOpenKeys(openKeys)
+    }   
+
+    useEffect(()=>{
+        getOpenKeys() 
+    }, [pathname])
     return (
         <Menu 
             mode="inline"
-            defaultOpenKeys={getDefaultOpenKeys()}
-            defaultSelectedKeys={[pathname]}
+            openKeys={openKeys}
+            onOpenChange={onOpenChange}
+            selectedKeys={[pathname]}
         >
             {getMenu(MenuList)}
         </Menu>
