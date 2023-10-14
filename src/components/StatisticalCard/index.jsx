@@ -4,14 +4,25 @@ import { theme } from "antd";
 
 const StatisticalCard = ({
     title,
+    showBorder,
     dataSource,
-    cardStyle,
+    cardStyle={},
     statisticalStyle
 }) => {
     const { token } = theme.useToken();
 
+    if(showBorder){
+        cardStyle={
+            ...cardStyle,
+            border: showBorder && `1px solid ${token.colorBorder}`
+        }
+    }
+
     return (
-        <div className={styles.card} style={cardStyle}>
+        <div 
+            className={styles.card} 
+            style={cardStyle}
+        >
             {
                 title&&
                 <div className={styles.cardTitle}>

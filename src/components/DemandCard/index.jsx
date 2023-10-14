@@ -9,7 +9,7 @@ const DemandCard = ({
     const { token } = theme.useToken();
 
     const statusEnum = {
-        'Created': '已创建',
+        'Created': '未发布',
         'Declared': '已发布',
         'Winning': '已中标',
         'Lose': '未中标'

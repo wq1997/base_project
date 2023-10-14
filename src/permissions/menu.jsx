@@ -24,7 +24,7 @@ const MenuList = [
         children: [
             {
                 key: '/vpp/demandResponse/create',
-                label: '需求创建'
+                label: '申报创建'
             },
             {
                 key: '/vpp/demandResponse/transactionDeclaration',

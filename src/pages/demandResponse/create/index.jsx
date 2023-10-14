@@ -6,11 +6,12 @@ import { FORM_REQUIRED_RULE } from "@/utils/constants";
 import { useState, useEffect } from "react";
 import styles from "./index.less";
 import List from "./components/List";
+import Review from "./components/Review";
 
 const defaultPageType = 'LIST';
 const PageTypeList = [
-  { label: "需求列表", key: 'LIST' },
-  { label: "需求信息", key: 'INFO' }
+  { label: "申报列表", key: 'LIST' },
+  { label: "申报总览", key: 'INFO' }
 ];
 
 const Create = () => {
@@ -177,12 +178,12 @@ const Create = () => {
     return (
         <div className={styles.create}>
             <Header 
-                title={'需求申报'}
-                description={"分布式能源运行商向虚拟电厂运行商申报，由虚拟电厂运行商综合申报"}
+                title={'申报创建'}
+                description={"分布式能源运行商向采日VPP聚合平台申报，由采日VPP聚合平台综合申报"}
                 actions={
                     [
                         {
-                            title: '+ 创建需求',
+                            title: '+ 创建申报',
                             onClick: () => {
                                 setVisible(true)
                             }
@@ -198,6 +199,7 @@ const Create = () => {
                 />
                 <div className={styles.contentData}>
                     {type==="LIST"&&<List data={data} />}
+                    {type==="INFO"&&<Review />}
                 </div>
             </div>
             <Modal
