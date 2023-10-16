@@ -54,7 +54,7 @@ const MenuList = [
     {
         key: '/vpp/setting',
         label: '系统设置',
-        icon: 'icon-shezhi',
+        icon: 'icon-icon_shezhi',
         children: [
             {
                 key: '/vpp/setting/polymerization',
