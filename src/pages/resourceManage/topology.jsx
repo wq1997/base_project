@@ -48,7 +48,7 @@ const Topology = ({data}) => {
               group.addShape('text', {
                 attrs: {
                   text: `${cfg.subValue1}`,
-                  fill: token.colorPrimary,
+                  fill: ValueColor,
                   fontSize: 7,
                   x: -size[0] / 2 + 80,
                   y: 8 - 100,
@@ -70,7 +70,7 @@ const Topology = ({data}) => {
               group.addShape('text', {
                 attrs: {
                   text: `${cfg.subValue2}`,
-                  fill: token.colorPrimary,
+                  fill: ValueColor,
                   fontSize: 7,
                   x: -size[0] / 2 + 80,
                   y: 20 - 100,
