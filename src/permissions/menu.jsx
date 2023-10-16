@@ -26,16 +26,12 @@ const MenuList = [
                 key: '/vpp/demandResponse/create',
                 label: '申报信息'
             },
-            // {
-            //     key: '/vpp/demandResponse/transactionDeclaration',
-            //     label: '交易申报',
-            // },
             {
-                key: '/vpp/demandResponse/awardIssuance',
+                key: '/vpp/demandResponse/toExamine',
                 label: '中标下发',
             },
             {
-                key: '/vpp/demandResponse/responseEvaluation',
+                key: '/vpp/demandResponse/result',
                 label: '响应评价',
             }
         ]
@@ -46,8 +42,8 @@ const MenuList = [
         icon: 'icon-jiaoyiguanli',
         children: [
             {
-                key: '/vpp/spotTrading/polymerization',
-                label: '资源聚合管理',
+                key: '',
+                label: '现货交易市场',
             }
         ]
     },
@@ -57,8 +53,8 @@ const MenuList = [
         icon: 'icon-icon_shezhi',
         children: [
             {
-                key: '/vpp/setting/polymerization',
-                label: '资源聚合管理',
+                key: '',
+                label: '账号设置',
             }
         ]
     },

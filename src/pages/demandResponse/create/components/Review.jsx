@@ -2,8 +2,8 @@ import { StatisticalCard, Search, Title } from "@/components";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { useState } from "react";
 import { Row, Space, DatePicker, Table } from "antd";
-import BarStatistical from "./barStatistical";
-import StatusPie from "./statusPie";
+import LoadCurve from "./LoadCurve";
+import StatusPie from "./StatusPie";
 
 const Review = () => {
     const [statistical, setStatistical] = useState([
@@ -73,7 +73,7 @@ const Review = () => {
             <div className={echarts}>
                 <div className="left">
                     <Title.PageSubTitle title={"负荷曲线预测"} style={{marginBottom: '10px'}}/>
-                    <BarStatistical />
+                    <LoadCurve />
                 </div>
                 <div className="right">
                     <Title.PageSubTitle title={"申报状态"} style={{marginBottom: '10px'}}/>

@@ -3,6 +3,7 @@ import { theme, Avatar, Dropdown } from "antd";
 import useIcon from "@/hooks/useIcon";
 
 const DemandCard = ({
+    showAction,
     dataSource
 }) => {
     const Icon = useIcon();
@@ -75,7 +76,7 @@ const DemandCard = ({
             }
         }
     });
-
+    console.log("showAction", showAction)
     return (
         <div 
             style={{
@@ -101,22 +102,25 @@ const DemandCard = ({
                                     >
                                         A
                                     </Avatar>
-                                    <Dropdown 
-                                        menu={{ items: [
-                                            {
-                                                key: '1',
-                                                label:(
-                                                    <a>审核</a>
-                                                )   
-                                            },
-                                        ] }} 
-                                        placement="bottom"
-                                    >
-                                        <Icon 
-                                            type="icon-caozuo"
-                                            className="icon"
-                                        />
-                                    </Dropdown>
+                                    {
+                                        showAction&&
+                                        <Dropdown 
+                                            menu={{ items: [
+                                                {
+                                                    key: '1',
+                                                    label:(
+                                                        <a>审核</a>
+                                                    )   
+                                                },
+                                            ] }} 
+                                            placement="bottom"
+                                        >
+                                            <Icon 
+                                                type="icon-caozuo"
+                                                className="icon"
+                                            />
+                                        </Dropdown>
+                                    }
                                 </div>
                                 <div className={'cardItemRowStyle'}>
                                     <div>{data?.time}</div>
