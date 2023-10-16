@@ -9,16 +9,15 @@ const DemandCard = ({
     const { token } = theme.useToken();
 
     const statusEnum = {
-        'Created': '未发布',
-        'Declared': '已发布',
+        'Declared': '待审核',
         'Winning': '已中标',
         'Lose': '未中标'
     }
     
     const statusColor = {
         'Created': '#1677ff',
-        'Declared': '#389e0d',
-        'Winning': token.colorPrimary,
+        'Declared': token.colorPrimary,
+        'Winning': '#389e0d',
         'Lose': '#000'
     }
 
@@ -156,15 +155,15 @@ const DemandCard = ({
                                     <div className={'cardItemRowDataStyle'}>{data?.demandCount}KW</div>
                                 </div>
                                 <div className={'cardItemRowStyle'}>
-                                    <div className={'cardItemRowTitleStyle'}>响应价格</div>
+                                    <div className={'cardItemRowTitleStyle'}>申报价格</div>
                                     <div className={'cardItemRowDataStyle'}>{data?.price}(元/KWh)</div>
                                 </div>
                                 <div className={'cardItemRowStyle'}>
-                                    <div className={'cardItemRowTitleStyle'}>响应运行商</div>
+                                    <div className={'cardItemRowTitleStyle'}>申报运行商</div>
                                     <div className={'cardItemRowDataStyle'}>{data?.creator}</div>
                                 </div>
                                 <div className={'cardItemRowStyle'}>
-                                    <div className={'cardItemRowTitleStyle'}>响应编号</div>
+                                    <div className={'cardItemRowTitleStyle'}>申报编号</div>
                                     <div className={'cardItemRowDataStyle'}>{data?.demandCode}</div>
                                 </div>
                                 <div className={'cardItemRowStyle'}>

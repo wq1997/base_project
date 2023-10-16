@@ -8,12 +8,12 @@ import StatusPie from "./statusPie";
 const Review = () => {
     const [statistical, setStatistical] = useState([
         {
-            label: '未发布响应总量',
+            label: '已申报响应总量',
             value: 200,
             unit: 'MWh'
         },
         {
-            label: '已发布响应总量',
+            label: '待审核响应总量',
             value: 50,
             unit: 'MWh'
         },
@@ -33,7 +33,7 @@ const Review = () => {
             unit: '万元'
         },
         {
-            label: '子用户收益',
+            label: '实际响应收益',
             value: 6.496,
             unit: '万元'
         },
@@ -72,7 +72,7 @@ const Review = () => {
             />
             <div className={echarts}>
                 <div className="left">
-                    <Title.PageSubTitle title={"申报策略"} style={{marginBottom: '10px'}}/>
+                    <Title.PageSubTitle title={"负荷曲线预测"} style={{marginBottom: '10px'}}/>
                     <BarStatistical />
                 </div>
                 <div className="right">
@@ -86,62 +86,84 @@ const Review = () => {
                     pagination={false}
                     columns={[
                         {
-                            title: '响应时段',
+                            title: '申报编号',
+                            dataIndex: 'code',
+                            key: 'code',
+                        },
+                        {
+                            title: '申报时段',
                             dataIndex: 'time',
                             key: 'time',
                         },
                         {
-                            title: '响应容量(MWh)',
+                            title: '申报容量(MWh)',
                             dataIndex: 'capacity',
                             key: 'capacity',
                         },
                         {
-                            title: '响应类型',
+                            title: '申报类型',
                             dataIndex: 'type',
                             key: 'type',
                         },
                         {
-                            title: '响应价格(元/MWh)',
+                            title: '预估响应价格(元/MWh)',
                             dataIndex: 'price',
                             key: 'price'
+                        },
+                        {
+                            title: '限价(元/MWh)',
+                            dataIndex: 'price1',
+                            key: 'price1'
                         }
                     ]}
                     dataSource={[
                         {
+                            code: '202309171800',
                             time: '06:00 ~ 08:00',
                             capacity: 8,
                             type: '放电',
-                            price: 2000
+                            price: 2000,
+                            price1: 3000
                         },
                         {
+                            code: '202309171801',
                             time: '08:00 ~ 09:00',
                             capacity: 6,
                             type: '用电',
-                            price: 2000
+                            price: 2000,
+                            price1: 3000
                         },
                         {
+                            code: '202309171802',
                             time: '09:00 ~ 11:00',
                             capacity: 10,
                             type: '放电',
-                            price: 2000
+                            price: 2000,
+                            price1: 3000
                         },
                         {
+                            code: '202309171803',
                             time: '11:00 ~ 13:00',
                             capacity: 10,
                             type: '放电',
-                            price: 2000
+                            price: 2000,
+                            price1: 3000
                         },
                         {
+                            code: '202309171804',
                             time: '13:00 ~ 15:00',
                             capacity: 10,
                             type: '用电',
-                            price: 2000
+                            price: 2000,
+                            price1: 3000
                         },
                         {
+                            code: '202309171805',
                             time: '15:00 ~ 18:00',
                             capacity: 8,
                             type: '放电',
-                            price: 4000
+                            price: 4000,
+                            price1: 3000
                         }
                     ]}
                 />

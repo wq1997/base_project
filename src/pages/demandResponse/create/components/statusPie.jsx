@@ -9,7 +9,7 @@ const StatusPie = () => {
     const [options, setOptions] = useState({});
     const getOptions = () => {
         setOptions({
-            color: [addColorAlpha('#5C7BD9', 0.8),'#91CC75', '#FAC858', token.colorPrimary],
+            color: [addColorAlpha('#5C7BD9', 0.8),'#91CC75', token.colorPrimary],
             tooltip: {
               trigger: 'item'
             },
@@ -43,8 +43,7 @@ const StatusPie = () => {
                   show: false
                 },
                 data: [
-                  { value: 50, name: '未发布' },
-                  { value: 50, name: '已发布' },
+                  { value: 50, name: '待审核' },
                   { value: 80, name: '已中标' },
                   { value: 70, name: '未中标' }
                 ]

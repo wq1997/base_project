@@ -31,7 +31,7 @@ const Create = () => {
         setData([
             {
                 time: '09-17 18:00~22:00',
-                status: "Created",
+                status: "Declared",
                 demandType: '用电',
                 demandCount: '20',
                 creator: '江苏海四达动力科技有限公司',
@@ -178,18 +178,8 @@ const Create = () => {
     return (
         <div className={styles.create}>
             <Header 
-                title={'申报创建'}
-                description={"分布式能源运行商向采日VPP聚合平台申报，由采日VPP聚合平台综合申报"}
-                actions={
-                    [
-                        {
-                            title: '+ 创建申报',
-                            onClick: () => {
-                                setVisible(true)
-                            }
-                        }
-                    ]
-                }
+                title={'申报信息'}
+                description={"分布式能源运营商在采日EMS申报，由采日VPP聚合平台“AI”决策"}
             />
             <div className={styles.content}>
                 <Tabs

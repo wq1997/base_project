@@ -24,12 +24,12 @@ const MenuList = [
         children: [
             {
                 key: '/vpp/demandResponse/create',
-                label: '申报创建'
+                label: '申报信息'
             },
-            {
-                key: '/vpp/demandResponse/transactionDeclaration',
-                label: '交易申报',
-            },
+            // {
+            //     key: '/vpp/demandResponse/transactionDeclaration',
+            //     label: '交易申报',
+            // },
             {
                 key: '/vpp/demandResponse/awardIssuance',
                 label: '中标下发',
@@ -39,7 +39,29 @@ const MenuList = [
                 label: '响应评价',
             }
         ]
-    }
+    },
+    {
+        key: '/vpp/spotTrading',
+        label: '现货交易',
+        icon: 'icon-jiaoyiguanli',
+        children: [
+            {
+                key: '/vpp/spotTrading/polymerization',
+                label: '资源聚合管理',
+            }
+        ]
+    },
+    {
+        key: '/vpp/setting',
+        label: '系统设置',
+        icon: 'icon-shezhi',
+        children: [
+            {
+                key: '/vpp/setting/polymerization',
+                label: '资源聚合管理',
+            }
+        ]
+    },
 ]
 
 const MyMenu = () => {
