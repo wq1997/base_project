@@ -323,6 +323,7 @@ const ElectricityPrice = () => {
                                     setSecondArea(res?.data)
                                 }
                             }
+                            paginationRef.current = DEFAULT_PAGINATION;
                             setFirstAreaValue(value);
                             setSecondAreaValue(undefined);
                         }}
@@ -338,7 +339,10 @@ const ElectricityPrice = () => {
                                 label: item.name
                             }
                         })}
-                        onChange={(value)=>setSecondAreaValue(value)}
+                        onChange={(value)=> {
+                            paginationRef.current = DEFAULT_PAGINATION; 
+                            setSecondAreaValue(value)
+                        }}
                         allowClear
                      />
                     <Select 
@@ -352,7 +356,10 @@ const ElectricityPrice = () => {
                             }
                         })}
                         allowClear
-                        onChange={(value)=>setElectricityTypeValue(value)}
+                        onChange={(value)=> {
+                            paginationRef.current = DEFAULT_PAGINATION; 
+                            setElectricityTypeValue(value)
+                        }}
                     />
                     <Select 
                         value={billingSystemValue}
@@ -365,7 +372,10 @@ const ElectricityPrice = () => {
                             }
                         })}
                         allowClear
-                        onChange={(value)=>setBillingSystemValue(value)}
+                        onChange={(value)=> {
+                            paginationRef.current = DEFAULT_PAGINATION; 
+                            setBillingSystemValue(value)
+                        }}
                     />
                 </div>
                 <Col gutter={[16,16]}>
