@@ -106,25 +106,7 @@ const DemandCard = ({
                                             {
                                                 key: '1',
                                                 label:(
-                                                    <a>发布</a>
-                                                )   
-                                            },
-                                            {
-                                                key: '2',
-                                                label:(
                                                     <a>审核</a>
-                                                )   
-                                            },
-                                            {
-                                                key: '3',
-                                                label:(
-                                                    <a>编辑</a>
-                                                )   
-                                            },
-                                            {
-                                                key: '4',
-                                                label:(
-                                                    <a>删除</a>
                                                 )   
                                             },
                                         ] }} 
