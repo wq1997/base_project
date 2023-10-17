@@ -179,7 +179,15 @@ const Create = () => {
         <div className={styles.create}>
             <Header 
                 title={'申报信息'}
-                description={"分布式能源运营商在采日EMS申报，由采日VPP聚合平台“AI”决策"}
+                description={"分布式能源运营商在采日VPP聚合平台申报，由采日VPP聚合平台“AI”决策"}
+                actions={[
+                    {
+                        title: '+ 信息申报',
+                        onClick: () => {
+                            setVisible(true);
+                        }
+                    }
+                ]}
             />
             <div className={styles.content}>
                 <Tabs
@@ -195,7 +203,7 @@ const Create = () => {
             <Modal
                 width={700}
                 open={visible}
-                title="创建需求"
+                title="信息申报"
                 onOk={()=>{
                     setVisible(false)
                 }}

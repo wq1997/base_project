@@ -18,7 +18,7 @@ const List = ({data}) => {
                 </Space>
                 <Pagination simple defaultCurrent={1} total={50} />
             </Row>
-            <DemandCard showAction={false} dataSource={dataSource}/>
+            <DemandCard showAction={true} dataSource={dataSource}/>
         </div>
     )
 }
