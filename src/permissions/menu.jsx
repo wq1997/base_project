@@ -16,9 +16,10 @@ const getMenu = (menuList) => {
                 </SubMenu>
             )
         }else{
-            return <Menu.Item key={menu.path}>
+            return( <Menu.Item key={menu.path}>
                 <Link to={menu.path}>{menu.name}</Link>
-            </Menu.Item>
+            </Menu.Item>)
+           
         }
     });
 }
@@ -26,7 +27,6 @@ const getMenu = (menuList) => {
 const MyMenu = () => {
     const location = useLocation();
     const { pathname } = location;
-    console.log(location);
     const getDefaultOpenKeys = () => {
         const pathList = pathname.split("/");
         if(pathList.length<4){

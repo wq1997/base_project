@@ -1,5 +1,5 @@
 import { theme, Table, DatePicker } from "antd";
-import { ThemeBtn, LocaleBtn } from "@/components";
+import { ThemeBtn, LocaleBtn,BigScreen } from "@/components";
 import { useIntl } from "umi";
 
 const Test = () => {
@@ -12,6 +12,7 @@ const Test = () => {
         color: token.colorText
       }}
     >
+      <BigScreen/>
       <ThemeBtn />
       <LocaleBtn />
       <p>{intl.formatMessage({id: 'handsome'})}</p>

@@ -19,6 +19,7 @@
     "cross-env": "^7.0.3",
     "dayjs": "^1.11.10",
     "moment": "^2.29.4",
+    "react-amap": "^1.2.8",
     "umi": "^4.0.72"
   },
   "devDependencies": {

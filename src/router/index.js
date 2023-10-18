@@ -20,6 +20,7 @@ export default Routes = [
         ]
       },
       { path: "/login", component: Login },
+      
       {
         path: '/test',
         component: Test
