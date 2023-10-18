@@ -49,12 +49,12 @@ const MenuList = [
     },
     {
         key: '/vpp/setting',
-        label: '系统设置',
+        label: '系统管理',
         icon: 'icon-icon_shezhi',
         children: [
             {
-                key: '',
-                label: '账号设置',
+                key: '/vpp/setting/user',
+                label: '用户管理',
             }
         ]
     },
