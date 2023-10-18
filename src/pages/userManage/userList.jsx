@@ -186,10 +186,10 @@ const UserList = () => {
             const values = await form.validateFields();
             const password = getEncrypt(publicKey, values.password);
             if(type==="Edit"){
+                delete values.password;
                 res = await updateUserListServe({
                     ...values,
                     id: currentRecord?.id,
-                    password
                 })
             }else{
                 res = await addUserListServe({
