@@ -103,7 +103,7 @@ const Create = () => {
             },
             {
                 time: '09-17 18:00~22:00',
-                status: "Created",
+                status: "Declared",
                 demandType: '放电',
                 demandCount: '20',
                 creator: '江苏海四达动力科技有限公司',
