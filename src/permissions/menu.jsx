@@ -35,11 +35,14 @@ const MyMenu = () => {
             return [pathList.splice(0, 3).join("/")]
         }
     }
+    console.log(getDefaultOpenKeys(),123,pathname);
+
     return (
         <Menu 
             mode="inline"
             defaultOpenKeys={getDefaultOpenKeys()}
             defaultSelectedKeys={[pathname]}
+            selectedKeys={[pathname]}
         >
             {getMenu(MenuList)}
         </Menu>

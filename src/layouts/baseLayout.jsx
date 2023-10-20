@@ -2,7 +2,9 @@ import { Outlet, useDispatch } from 'umi'
 import { Layout, Row, Avatar, Typography, Dropdown, Space } from 'antd';
 import MyMenu from "@/permissions/menu";
 import styles from "./baseLayout.less";
-import useIcon from "@/hooks/useIcon"
+import useIcon from "@/hooks/useIcon";
+import { SYSTEM_NAME } from "@/utils/constants";
+
 
 const { Header, Sider, Content } = Layout;
 
@@ -13,7 +15,7 @@ const BaseLayout = () => {
         <div className={styles.baseLayout}>
             <Layout className={styles.layout}>
                 <Header className={styles.header}>
-                    <Typography.Title level={3} className={styles.title}>采e通后台管理系统</Typography.Title>
+                    <Typography.Title level={3} className={styles.title}>{`${SYSTEM_NAME}`}</Typography.Title>
                     <Dropdown 
                         menu={{ 
                             items: [
@@ -44,9 +46,9 @@ const BaseLayout = () => {
                                 style={{ backgroundColor: "#F56A00", verticalAlign: 'middle' }} 
                                 size="large" 
                             >
-                                wq
+                                aaa
                             </Avatar>
-                            <span style={{fontSize: 20, color: 'white', marginLeft: 10}}>用户名</span>
+                            <span style={{fontSize: 20, color: 'white', marginLeft: 10}}>aaa</span>
                         </Row>
                     </Dropdown>
                 </Header>
