@@ -1,0 +1,24 @@
+.create {
+    .abilityCurve{
+        background-color: #fff;
+    }
+    .content {
+        background-color: white;
+        border-radius: 10px;
+        width: 100%;
+        height: calc(100vh - 330px);
+        margin-top: 20px;
+        .contentData {
+            height: calc(100% - 60px);
+            padding: 20px;
+            overflow-y: scroll;
+            &::-webkit-scrollbar {
+                display: none;
+            }
+            .pagination {
+                margin-top: 20px;
+                text-align: right;
+            }
+        }
+    }
+}
