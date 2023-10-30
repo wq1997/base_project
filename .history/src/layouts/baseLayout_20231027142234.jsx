@@ -11,7 +11,6 @@ const BaseLayout = () => {
     const { token } = theme.useToken();
     const Icon = useIcon();
     const dispatch = useDispatch();
-
     return (
         <div className={styles.baseLayout}>
             <Layout className={styles.layout}>
@@ -26,6 +25,7 @@ const BaseLayout = () => {
                                 fontSize: "20px",
                             }}
                         >
+                            
                             采日VPP聚合平台
                         </Typography.Title>
                     </div>

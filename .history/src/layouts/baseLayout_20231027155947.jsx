@@ -11,7 +11,7 @@ const BaseLayout = () => {
     const { token } = theme.useToken();
     const Icon = useIcon();
     const dispatch = useDispatch();
-
+    const wangqingissb = useWangQingIsSb()
     return (
         <div className={styles.baseLayout}>
             <Layout className={styles.layout}>
