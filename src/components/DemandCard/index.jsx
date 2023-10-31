@@ -163,7 +163,7 @@ const DemandCard = ({
                                     <div className={'cardItemRowDataStyle'}>{data?.price}(元/KWh)</div>
                                 </div>
                                 <div className={'cardItemRowStyle'}>
-                                    <div className={'cardItemRowTitleStyle'}>申报运行商</div>
+                                    <div className={'cardItemRowTitleStyle'}>申报运营商</div>
                                     <div className={'cardItemRowDataStyle'}>{data?.creator}</div>
                                 </div>
                                 <div className={'cardItemRowStyle'}>

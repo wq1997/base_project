@@ -4,7 +4,7 @@ import { Header, Search } from "@/components";
 const User = () => {
     return (
         <div>
-            <Header 
+            <Header
                 title={'用户管理'}
                 description={"采日VPP聚合平台管理对当前平台所有用户统一管理"}
                 actions={[
@@ -20,14 +20,14 @@ const User = () => {
                     width: '100%',
                     'margin-top': '20px',
                     height: 'calc(100vh - 190px)',
-                    padding:'20px'
-                }}  
+                    padding: '20px'
+                }}
             >
-                <Space style={{marginBottom: 20}}>
+                <Space style={{ marginBottom: 20 }}>
                     <Search placeholder="请输入关键字" />
                     <DatePicker placeholder="请输入创建时间" />
                 </Space>
-                <Table 
+                <Table
                     dataSource={[
                         {
                             a: 'CR202310181037',
@@ -97,7 +97,7 @@ const User = () => {
                             title: '操作',
                             dataIndex: 'Action',
                             key: 'Action',
-                            render(){
+                            render() {
                                 return (
                                     <Space>
                                         <Typography.Link>禁用</Typography.Link>

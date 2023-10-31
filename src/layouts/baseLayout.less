@@ -1,48 +1,52 @@
-.baseLayout{
+.baseLayout {
     width: calc(100vw);
     height: calc(100vh);
 
-    .layout{
+    .layout {
         width: 100%;
         height: 100%;
-
-        .header{
+        .header {
             padding: 24px;
             background-color: white;
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: white;
-            box-shadow: 0 4px 8px 0 hsla(0,0%,68.2%,.2);
+            box-shadow: 0 4px 8px 0 hsla(0, 0%, 68.2%, 0.2);
             z-index: 1;
-            .title{
+            .logo {
+                width: 143px;
+                height: 15px;
+                margin-right: 20px;
+            }
+            .title {
                 margin: 0;
             }
         }
 
-        .sider{
+        .sider {
             background: white;
             padding: 24px 0;
 
-            .siderContent{
+            .siderContent {
                 height: 100%;
                 width: 100%;
                 overflow-y: scroll;
-                &::-webkit-scrollbar{
+                &::-webkit-scrollbar {
                     display: none;
                 }
             }
         }
 
-        .content{
+        .content {
             padding: 16px;
 
-            .inContent{
+            .inContent {
                 border-radius: 15px;
                 width: 100%;
                 height: 100%;
                 overflow-y: scroll;
-                &::-webkit-scrollbar{
+                &::-webkit-scrollbar {
                     display: none;
                 }
             }

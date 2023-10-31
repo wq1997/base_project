@@ -6,25 +6,25 @@ const StatisticalCard = ({
     title,
     showBorder,
     dataSource,
-    cardStyle={},
+    cardStyle = {},
     statisticalStyle
 }) => {
     const { token } = theme.useToken();
 
-    if(showBorder){
-        cardStyle={
+    if (showBorder) {
+        cardStyle = {
+            border: showBorder && `1px solid ${token.colorBorder}`,
             ...cardStyle,
-            border: showBorder && `1px solid ${token.colorBorder}`
         }
     }
 
     return (
-        <div 
-            className={styles.card} 
+        <div
+            className={styles.card}
             style={cardStyle}
         >
             {
-                title&&
+                title &&
                 <div className={styles.cardTitle}>
                     <Title.PageSubTitle title={title} />
                 </div>
@@ -36,9 +36,9 @@ const StatisticalCard = ({
                             <div className={styles.cardBottomItem}>
                                 <div className={styles.cardBottomItemTop}>{data?.label}</div>
                                 <div className={styles.cardBottomItemBottom}>
-                                    <span 
+                                    <span
                                         className={styles.cardBottomItemBottomValue}
-                                        style={{color: token.colorPrimary}}
+                                        style={{ color: token.colorPrimary }}
                                     >
                                         {data?.value}
                                     </span>

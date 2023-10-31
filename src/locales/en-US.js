@@ -1,3 +1,3 @@
 export default {
-    handsome: 'wangqing is a handsome man'
-}
+    ugly: "wangqing is a ugly man",
+};

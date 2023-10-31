@@ -1,3 +1,3 @@
 export default {
-    handsome: '王清最帅'
+    ugly: '王清最丑'
 }
