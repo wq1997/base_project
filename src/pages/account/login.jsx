@@ -1,6 +1,6 @@
-import { Form, Input, Checkbox, Button, Typography, theme } from "antd";
-import { FORM_REQUIRED_RULE, PUBLIC_FILE_PATH,SYSTEM_NAME} from "@/utils/constants";
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { Form, Input, message, Checkbox, Button, Typography, theme } from "antd";
+import { FORM_REQUIRED_RULE, PUBLIC_FILE_PATH, SYSTEM_NAME } from "@/utils/constants";
+import { UserOutlined, LockOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import {
   getPublicKey as getPublicKeySever,
   login as loginSever,
@@ -9,34 +9,50 @@ import { getEncrypt, setLocalStorage } from "@/utils/utils";
 import styles from "./index.less";
 import { history, useDispatch } from "umi";
 import { useEffect, useState } from "react";
+import { getBaseUrl } from '@/services/request'
 const { Title } = Typography;
 
 const Login = () => {
   const { token } = theme.useToken();
   const dispatch = useDispatch();
   const [publicKey, setPublicKey] = useState('');
+  const [codeImgUrl, setCodeImgUrl] = useState(`${getBaseUrl()}/user/getKaptchaImage`);
+  const [showImg, setShowImg] = useState(false);
 
+  const changeCodeImgUrl = () => {
+    setCodeImgUrl('');
+    setTimeout(_ => (setCodeImgUrl(`${getBaseUrl()}/user/getKaptchaImage`)
+    ), 0);
+  }
   const onFinish = async (values) => {
-    history.push("/index/home");
-
-    return;
     const res = await loginSever({
       ...values,
-      password: getEncrypt(publicKey, values.password)
+      password: getEncrypt(publicKey, values.password),
+      clientType: 3,
+      remember: false,
+      language: 1,
     });
-    if (res?.data?.token) {
+    console.log(values, 222222);
+    if (res?.data?.data?.token) {
       const data = res?.data;
       setLocalStorage("Token", data?.token);
-      setLocalStorage("userName", data?.nickName);
+      setLocalStorage("userName", data?.userName);
+      message.success('登录成功');
+      history.push("/index/home");
       dispatch({
         type: 'user/updateState',
         payload: {
           user: {
-            userName: data?.nickName
+         ...res.data.data
           }
         }
       })
-      history.push("/cet/home")
+    } else {
+      message.error(res.data.msg);
+      if (res?.data.code === '407') {
+        setShowImg(true)
+      } else {
+      }
     }
   }
 
@@ -48,7 +64,7 @@ const Login = () => {
   }
 
   useEffect(() => {
-    // getPublicKey();
+    getPublicKey();
   }, [])
   return (
     <div
@@ -77,7 +93,7 @@ const Login = () => {
             transform: 'translate(-50%,-50%)',
             background: '#ffffff40',
             padding: '70px 30px',
-            borderRadius: 8
+            borderRadius: 8,
           }}
         >
           <Title level={2} style={{ marginBottom: 50, color: token.colorPrimary }}>{`${SYSTEM_NAME}`}</Title>
@@ -89,13 +105,13 @@ const Login = () => {
             }}
           >
             <Form.Item
-              name="phoneNumber"
+              name="userName"
               rules={[{ ...FORM_REQUIRED_RULE }]}
               style={{ marginBottom: 40 }}
             >
               <Input
                 prefix={<UserOutlined style={{ fontSize: 15, color: '#73787F' }} />}
-                placeholder="请输入手机号"
+                placeholder="请输入账号"
                 style={{ height: 40 }}
               />
             </Form.Item>
@@ -110,6 +126,26 @@ const Login = () => {
                 style={{ height: 40 }}
               />
             </Form.Item>
+            {showImg && <Form.Item
+            style={{  position: 'relative' }}>
+              <Form.Item 
+               name="keywords"
+              // rules={[{ ...FORM_REQUIRED_RULE }]}
+              >
+              <Input
+                prefix={<ExclamationCircleOutlined style={{ fontSize: 15, color: '#73787F' }} />}
+                placeholder="请输入验证码"
+                style={{ height: 40, width: 300 }}
+              />
+              </Form.Item>
+              <img
+                style={{ height: 38, width: 100, position: 'absolute', top: 1, right: 0 }}
+                src={codeImgUrl}
+                onClick={changeCodeImgUrl} /> 
+            </Form.Item>
+             
+            }
+              
             <Form.Item
               name="remember"
               valuePropName="checked"

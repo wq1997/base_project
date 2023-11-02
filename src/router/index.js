@@ -16,11 +16,10 @@ export default Routes = [
         path: '/index',
         component: Layout,
         routes: [
-          ...menuRoutes
+          ...menuRoutes 
         ]
       },
       { path: "/login", component: Login },
-      
       {
         path: '/test',
         component: Test

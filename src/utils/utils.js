@@ -2,12 +2,13 @@ export const setLocalStorage = (key, value) => localStorage.setItem(key, value);
 export const getLocalStorage = key => localStorage.getItem(key);
 export const MAP_KEY = '2dca0cb2ced6ced6030c26376186faee';
 export const removeLocalStorage = key => localStorage.removeItem(key);
+import JSEncrypt from 'jsencrypt'
 
-
-export const getEncrypt = (key, str) => {
-    const jsencrypt = new JSEncrypt();
-    jsencrypt.setPublicKey(key);
-    return jsencrypt.encrypt(str);
+export const getEncrypt=(key,data) =>{
+  let encrypt = new JSEncrypt()
+  // 设置公钥
+  encrypt.setPublicKey(key)
+  return encrypt.encrypt(data)
 };
 
 export const splitString = (value, length) => {

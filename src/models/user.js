@@ -9,7 +9,7 @@ export default {
       user: null,
     },
    
-    effects: {
+    effects: {  
       *logout({ payload }, { call, put }) {
         removeLocalStorage("Token");
         history.push("/login");
@@ -18,6 +18,7 @@ export default {
    
     reducers: {
       updateState(state, { payload }) {
+        console.log(payload);
         return {
           ...state,
           ...payload,
