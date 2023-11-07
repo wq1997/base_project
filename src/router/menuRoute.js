@@ -2,7 +2,7 @@ export default [
     {
         name: '总览',
         path: '/index/home',
-        component: "@/pages/home"
+        component: "@/pages/home",
     },
     {
         name: '设备',
@@ -17,7 +17,7 @@ export default [
         name: '报表',
         path: '/index/statement',
         routes: [
-            { name: '统计数据', path: '/index/statement/statisticalData', component: "@/pages/statement/statisticalData" },
+            { name: '  统计数据', path: '/index/statement/statisticalData', component: "@/pages/statement/statisticalData" },
             { name: '数据对比', path: '/index/statement/dataComparison', component: "@/pages/statement/dataComparison" },
             { name: '报表导出', path: '/index/statement/reportExport', component: "@/pages/statement/reportExport" },
         ]

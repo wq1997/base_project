@@ -5,13 +5,14 @@ const Home = "@/pages/home";
 
 
 const Login = "@/pages/account/login";
-const Test = "@/pages/test"
+const deviceMap = "@/pages/deviceMap"
 import menuRoutes from '../router/menuRoute'
 export default Routes = [
    {
      path: "/", 
      component: App,
      routes: [
+      { path: "/login", component: Login },
       {
         path: '/index',
         component: Layout,
@@ -19,10 +20,9 @@ export default Routes = [
           ...menuRoutes 
         ]
       },
-      { path: "/login", component: Login },
       {
-        path: '/test',
-        component: Test
+        path: '/deviceMap',
+        component: deviceMap
        }
      ]
    }

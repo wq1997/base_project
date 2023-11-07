@@ -32,18 +32,17 @@ const Login = () => {
       remember: false,
       language: 1,
     });
-    console.log(values, 222222);
     if (res?.data?.data?.token) {
-      const data = res?.data;
+      const data = res?.data.data;
       setLocalStorage("Token", data?.token);
       setLocalStorage("userName", data?.userName);
       message.success('登录成功');
-      history.push("/index/home");
+      history.push("/deviceMap");
       dispatch({
         type: 'user/updateState',
         payload: {
           user: {
-         ...res.data.data
+            ...res.data.data
           }
         }
       })
@@ -127,25 +126,25 @@ const Login = () => {
               />
             </Form.Item>
             {showImg && <Form.Item
-            style={{  position: 'relative' }}>
-              <Form.Item 
-               name="keywords"
+              style={{ position: 'relative' }}>
+              <Form.Item
+                name="keywords"
               // rules={[{ ...FORM_REQUIRED_RULE }]}
               >
-              <Input
-                prefix={<ExclamationCircleOutlined style={{ fontSize: 15, color: '#73787F' }} />}
-                placeholder="请输入验证码"
-                style={{ height: 40, width: 300 }}
-              />
+                <Input
+                  prefix={<ExclamationCircleOutlined style={{ fontSize: 15, color: '#73787F' }} />}
+                  placeholder="请输入验证码"
+                  style={{ height: 40, width: 300 }}
+                />
               </Form.Item>
               <img
                 style={{ height: 38, width: 100, position: 'absolute', top: 1, right: 0 }}
                 src={codeImgUrl}
-                onClick={changeCodeImgUrl} /> 
+                onClick={changeCodeImgUrl} />
             </Form.Item>
-             
+
             }
-              
+
             <Form.Item
               name="remember"
               valuePropName="checked"

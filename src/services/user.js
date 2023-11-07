@@ -8,6 +8,7 @@ export const getPublicKey = ()=>{
   return axiosInstance.get("/user/getPublicKey");
 }
 
+
 export const logout = ()=>{
   return axiosInstance.get("/user/logout");
 }
