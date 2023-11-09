@@ -15,7 +15,7 @@ export default {
         setLocalStorage('allPlant',[
             ...(JSON.parse(data.data.data))
         ])
-        yield put ({
+        yield put({
             type:'updateState',
             payload:{
                 allPlant:[

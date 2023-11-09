@@ -1,6 +1,6 @@
 export const setLocalStorage = (key, value) => localStorage.setItem(key, value);
 export const getLocalStorage = key => localStorage.getItem(key);
-export const MAP_KEY = '2dca0cb2ced6ced6030c26376186faee';
+export const MAP_KEY = 'b6b9b071ea496e3aa5c1e2e068275f42';
 export const removeLocalStorage = key => localStorage.removeItem(key);
 import JSEncrypt from 'jsencrypt'
 
