@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import AdvancedMap from '../BigScreen/map'
+import Ma from '../BigScreen/mapOr'
+
 function Map(props) {
     const [mapData, setMapData] = useState({
         mapCenter: { longitude: 120, latitude: 35 },
@@ -11,14 +12,12 @@ function Map(props) {
     })
 
     useEffect(() => {
-        console.log('函数组件来咯')
+        // console.log('函数组件来咯')
     }, [])
 
     return (
         <div className='content'>
-            <AdvancedMap
-                mapData={mapData}
-            />
+            <Ma/>
         </div>
     )
 }
