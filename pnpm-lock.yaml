@@ -26,6 +26,12 @@ dependencies:
   dayjs:
     specifier: ^1.11.10
     version: registry.npmjs.org/dayjs@1.11.10
+  echarts:
+    specifier: ^5.4.3
+    version: registry.npmjs.org/echarts@5.4.3
+  echarts-for-react:
+    specifier: ^3.0.2
+    version: registry.npmjs.org/echarts-for-react@3.0.2(echarts@5.4.3)(react@18.2.0)
   moment:
     specifier: ^2.29.4
     version: registry.npmjs.org/moment@2.29.4
@@ -6416,6 +6422,30 @@ packages:
       redux: registry.npmjs.org/redux@3.7.2
     dev: true
 
+  registry.npmjs.org/echarts-for-react@3.0.2(echarts@5.4.3)(react@18.2.0):
+    resolution: {integrity: sha512-DRwIiTzx8JfwPOVgGttDytBqdp5VzCSyMRIxubgU/g2n9y3VLUmF2FK7Icmg/sNVkv4+rktmrLN9w22U2yy3fA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/echarts-for-react/-/echarts-for-react-3.0.2.tgz}
+    id: registry.npmjs.org/echarts-for-react/3.0.2
+    name: echarts-for-react
+    version: 3.0.2
+    peerDependencies:
+      echarts: ^3.0.0 || ^4.0.0 || ^5.0.0
+      react: ^15.0.0 || >=16.0.0
+    dependencies:
+      echarts: registry.npmjs.org/echarts@5.4.3
+      fast-deep-equal: registry.npmjs.org/fast-deep-equal@3.1.3
+      react: registry.npmjs.org/react@18.2.0
+      size-sensor: registry.npmjs.org/size-sensor@1.0.2
+    dev: false
+
+  registry.npmjs.org/echarts@5.4.3:
+    resolution: {integrity: sha512-mYKxLxhzy6zyTi/FaEbJMOZU1ULGEQHaeIeuMR5L+JnJTpz+YR03mnnpBhbR4+UYJAgiXgpyTVLffPAjOTLkZA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/echarts/-/echarts-5.4.3.tgz}
+    name: echarts
+    version: 5.4.3
+    dependencies:
+      tslib: registry.npmjs.org/tslib@2.3.0
+      zrender: registry.npmjs.org/zrender@5.4.4
+    dev: false
+
   registry.npmjs.org/electron-to-chromium@1.4.490:
     resolution: {integrity: sha512-6s7NVJz+sATdYnIwhdshx/N/9O6rvMxmhVoDSDFdj6iA45gHR8EQje70+RYsF4GeB+k0IeNSBnP7yG9ZXJFr7A==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.490.tgz}
     name: electron-to-chromium
@@ -11885,6 +11915,12 @@ packages:
     version: 5.9.5
     dev: true
 
+  registry.npmjs.org/size-sensor@1.0.2:
+    resolution: {integrity: sha512-2NCmWxY7A9pYKGXNBfteo4hy14gWu47rg5692peVMst6lQLPKrVjhY+UTEsPI5ceFRJSl3gVgMYaUi/hKuaiKw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/size-sensor/-/size-sensor-1.0.2.tgz}
+    name: size-sensor
+    version: 1.0.2
+    dev: false
+
   registry.npmjs.org/slash@2.0.0:
     resolution: {integrity: sha512-ZYKh3Wh2z1PpEXWr0MpSBZ0V6mZHAQfYevttO11c51CaWjGTaadiKZ+wVt1PbMlDV5qhMFslpZCemhwOK7C89A==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/slash/-/slash-2.0.0.tgz}
     name: slash
@@ -12647,6 +12683,12 @@ packages:
     version: 1.14.1
     dev: false
 
+  registry.npmjs.org/tslib@2.3.0:
+    resolution: {integrity: sha512-N82ooyxVNm6h1riLCoyS9e3fuJ3AMG2zIZs2Gd1ATcSFjSA23Q0fzjjZeh0jbJvWVDZ0cJT8yaNNaaXHzueNjg==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/tslib/-/tslib-2.3.0.tgz}
+    name: tslib
+    version: 2.3.0
+    dev: false
+
   registry.npmjs.org/tslib@2.6.1:
     resolution: {integrity: sha512-t0hLfiEKfMUoqhG+U1oid7Pva4bbDPHYfJNiB7BiIjRkj1pyC++4N3huJfqY6aRH6VTB0rvtzQwjM4K6qpfOig==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/tslib/-/tslib-2.6.1.tgz}
     name: tslib
@@ -13347,4 +13389,12 @@ packages:
     name: yocto-queue
     version: 0.1.0
     engines: {node: '>=10'}
+    dev: false
+
+  registry.npmjs.org/zrender@5.4.4:
+    resolution: {integrity: sha512-0VxCNJ7AGOMCWeHVyTrGzUgrK4asT4ml9PEkeGirAkKNYXYzoPJCLvmyfdoOXcjTHPs10OZVMfD1Rwg16AZyYw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/zrender/-/zrender-5.4.4.tgz}
+    name: zrender
+    version: 5.4.4
+    dependencies:
+      tslib: registry.npmjs.org/tslib@2.3.0
     dev: false
