@@ -20,6 +20,7 @@ export default defineConfig({
   npmClient: 'pnpm',
   plugins: ['@umijs/plugins/dist/dva', '@umijs/plugins/dist/locale'],
   dva:{},
+  title: 'MOFS',
   locale: {
     default: "zh-CN"
   },
