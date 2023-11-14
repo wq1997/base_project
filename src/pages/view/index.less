@@ -32,7 +32,7 @@
     height: calc(100vh - 150px);
     display: flex;
     .contentLeft{
-        width: 33%;
+        width: 30%;
         margin-right: 30px;
         height: 100%;
 
@@ -102,7 +102,170 @@
     }
 
     .contentRight{
-        width: calc(67% - 30px);
+        width: calc(70% - 30px);
         height: 100%;
+        display: grid;
+        grid-template-rows: 70% 30%;
+        grid-gap: 20px;
+
+        .contentRightTop{
+            display: grid;
+            grid-template-columns: 60% 40%;
+            grid-template-rows: 28.571429% 70%;
+            grid-gap: 20px;
+            .contentRightTopOne{
+                background-color: rgba(6,48,109,.5);
+                padding: 10px;
+                box-sizing: border-box;
+
+                .contentRightTopOneContent{
+                    height: calc(100% - 40px);
+                    margin-top: 10px;
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    justify-content: center;
+                    align-items: center;
+
+                    .contentRightTopOneContentItem{
+                        .contentRightTopOneContentItemTop{
+                            color: #c5ccff;
+                            font-size: 50px;
+                            font-family: electronicFont;
+                            text-align: center;
+                            margin-bottom: 2px;
+                        }
+                        .contentRightTopOneContentItemBottom{
+                            color: white;
+                            opacity: 0.5;
+                            text-align: center;
+                        }
+                    }
+                }
+            }
+            .contentRightTopTwo{
+                background-color: rgba(6,48,109,.5);
+                padding: 10px;
+                box-sizing: border-box;
+                .contentRightTopTwoContent{
+                    height: calc(100% - 40px);
+                    margin-top: 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    .contentRightTopTwoContentTop{
+                        font-size: 30px;
+                        color: white;
+                        margin-bottom: 10px;
+                    }
+                    .contentRightTopTwoContentBottom{
+                        color: rgb(82, 82, 235);
+                        font-size: 25px;
+                        text-align: center;
+                    }
+                }
+            }
+            .contentRightTopThree{
+                background-color: rgba(6,48,109,.5);
+                padding: 10px;
+                box-sizing: border-box;
+                .contentRightTopThreeContent{
+                    height: calc(100% - 40px);
+                    margin-top: 10px;
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    grid-template-rows: repeat(3, 1fr);
+                    gap: 20px;
+                    align-items: center;
+                    justify-content: center;
+                    .contentRightTopThreeContentItem{
+                        position: relative;
+                        .contentRightTopThreeContentItemTop{
+                            color: #c5ccff;
+                            font-size: 30px;
+                            text-align: center;
+                            margin-bottom: 2px;
+                            font-weight: 700;
+                        }
+                        .contentRightTopThreeContentItemBottom{
+                            color: white;
+                            opacity: 0.5;
+                            text-align: center;
+                        }
+                        &:nth-child(even):before {
+                            display: inline-block;
+                            position: absolute;
+                            height: 40px;
+                            width: 1px;
+                            background: rgba(255, 255, 255, .2);
+                            border-radius: 5px;
+                            content: "";
+                            margin-right: 10px;
+                            top: 20px;
+                        }
+                    }
+                }
+            }
+            .contentRightTopFour{
+                background-color: rgba(6,48,109,.5);
+                padding: 10px;
+                box-sizing: border-box;
+                .contentRightTopFourContent{
+                    height: calc(100% - 40px);
+                    margin-top: 10px;
+                    display: grid;
+                    grid-template-rows: repeat(3, 1fr);
+                    gap: 10px;
+                    .contentRightTopFourContentItem{
+                        display: grid;
+                        border-bottom: 1px solid #fff;
+                        grid-template-columns: repeat(2, 1fr);
+                        align-items: center;
+                        justify-content: center;
+                        &:nth-last-child(1){
+                            border-bottom: none;
+                        }
+
+                        .contentRightTopFourContentItemLeft{
+                            .contentRightTopFourContentItemLeftTop{
+                                color: white;
+                                font-size: 15px;
+                                margin-bottom: 5px;
+                                text-align: center;
+                            }
+                            .contentRightTopFourContentItemLeftBottom{
+                                color: white;
+                                font-size: 25px;
+                                text-align: center;
+                            }
+                        }
+                        .contentRightTopFourContentItemRight{
+                            .contentRightTopFourContentItemRightTop{
+                                color: white;
+                                font-size: 15px;
+                                margin-bottom: 5px;
+                                text-align: center;
+                            }
+                            .contentRightTopFourContentItemRightBottom{
+                                color: white;
+                                font-size: 25px;
+                                text-align: center;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .contentRightBottom{
+            width: calc(100% - 20px);
+            height: calc(100% - 20px);
+            padding: 10px;
+            background-color: rgba(6,48,109,.5);
+            box-sizing: border-box;
+            .contentRightBottomTable{
+                height: calc(100% - 50px);
+                margin-top: 10px;
+            }
+        }
     }
 }
