@@ -5,8 +5,6 @@ import { MAP_KEY } from '@/utils/utils'
 import styles from "./map.less";
 import { useDispatch, useSelector,history } from "umi";
 
-
-
 function MapContainer() {
     let map = null // 地图实例
     const dispatch = useDispatch();
@@ -76,7 +74,7 @@ function MapContainer() {
         })
     }
     return (
-        <div id='containerParent' style={{ position: 'relative', width: '100%', height: 'calc(100vh - 64px)' }}>
+        <div id='containerParent' style={{ position: 'relative', width: '100%', height: '100%' }}>
             <div className={styles.container} id="container" style={{ width: '100%', height: '100%' }}></div>
         </div>
 

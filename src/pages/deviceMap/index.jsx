@@ -8,12 +8,11 @@ const Test = () => {
   return (
     <div 
       style={{
-        background: token.colorPrimary,
         color: token.colorText
       }}
     >
-   <BigScreen/>
-   <Strategy/>
+      <BigScreen/>
+      {/* <Strategy/> */}
     </div>
   )
 }
