@@ -1,84 +1,114 @@
 
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { Map, Markers, InfoWindow } from 'react-amap';
-import { MAP_KEY } from '@/utils/utils'
 import styles from "./map.less";
 import { useDispatch, useSelector } from "umi";
-import { UserOutlined, LockOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import ReactECharts from "echarts-for-react";
+import worldGeo from '../../../public/mapJson/maoJson'
+import * as echarts from "echarts";
 
 function MapCom(props) {
-
-    useEffect(() => {
-        dispatch({ type: 'device/getAllPlants' });
-    }, [])
-
+    const [options, setOptions] = useState({});
     const dispatch = useDispatch();
     const { allPlant } = useSelector(function (state) {
         return state.device
     });
-    const { user } = useSelector(function (state) {
-        return state.user
-    });
-    const [visible, setVisible] = useState(false);
-    const content = [
-        "<div",
-        "<div ><b>高德软件有限公司</b>",
-        "电话 : 010-84107000   邮编 : 100102",
-        "地址 : 北京市望京阜通东大街方恒国际中心A座16层</div></div>"
-    ];
-
-
-    const markerList = allPlant?.map(it => {
-        return {
-            position: {
-                longitude: it.longitude,
-                latitude: it.latitude
-            },
-
-
-        }
-    });
-    const markerStyle = {
-        padding: '5px',
-        border: '1px solid #ddd',
-        background: '#fff',
+    const convertData = function() {
+        const markerList = allPlant?.map(it => {
+            return {
+                name:it.name,
+                value: [it.longitude,it.latitude,100],
+            }
+        });
+        return markerList;
     };
 
-    const renderMarkerFn = () => {
-        return <div style={markerStyle}>A</div>
+
+    const getOptions = () => {
+    echarts.registerMap('world', worldGeo);
+        setOptions({
+            backgroundColor: "transparent",
+            tooltip: {
+                trigger: 'item',
+                trigger: 'item',
+                showDelay: 0,
+                transitionDuration: 0.5,
+                formatter: function (params) {
+                    if (typeof params.value[2] == 'undefined') {
+                        return params.name + ' : ' + params.value;
+                    } else {
+                        return params.name + ' : ' + params.value[0]+','+params.value[1];
+                    }
+                },
+            },
+            geo: {
+                id: "bb",
+                show: true,
+                map: "world",
+                roam: true,
+                center: [115.7,39.4],
+                itemStyle: {
+                    normal: {
+                        areaColor: 'rgb(12,54,83)',
+                        borderColor:  'rgb(25,188,236)',
+                    },
+                    emphasis: {
+                        areaColor: '#4499d0',
+                    }
+                },
+                bottom: 0,
+                aspectScale: 0.6,
+                zoom: 10
+    
+            },
+            series: [{
+                type: 'map',
+                map: 'world',
+                geoIndex: 0,
+                roam: true,
+                // data: data
+            }, {
+                name: '电站',
+                type: 'scatter',
+                coordinateSystem: 'geo',
+                data: convertData(),
+                symbol: 'pin', //气泡
+                symbolSize: function(val) {
+                    return val[2] / 5;
+                },
+                label: {
+                    normal: {
+                        formatter: '{b}',
+                        position: 'right',
+                        show: true
+                    },
+                    emphasis: {
+                        show: true
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: '#ffed00'
+                    }
+                }
+            }]
+        });
     }
-        ;
-    const markersEvents = {
-        click(e, marker) {
-            setVisible((pre)=>{
-                return !pre
-            });
-            console.log(visible,11111111111);
-        }
-    }
+  
+    useEffect(() => {
+        dispatch({ type: 'device/getAllPlants' });
+    }, [])
+    useEffect(()=>{
+        getOptions();
+
+    },[allPlant])
+
+
+    
     return (
         <div className={styles.container}>
-            <Map
-                amapkey={MAP_KEY}
-                zoom={4}
-                center={props.mapData.mapCenter}
-                mapStyle='amap://styles/fresh'
-            >
-                <Markers
-                    markers={markerList}
-                    render={renderMarkerFn}
-                    useCluster
-                    events={markersEvents}
-                >
-                </Markers>
-                <InfoWindow
-                    position={markerList}
-                    visible={visible}
-                />
-            </Map>
-            <button onClick={() => { setVisible(()=>!visible) }}>Show Window 1</button>
+            <ReactECharts option={options}></ReactECharts>
         </div>
-    
+
     )
 }
 

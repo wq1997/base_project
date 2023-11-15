@@ -1,6 +1,6 @@
 import React, { useState, useEffect, } from 'react';
 import styles from "./index.less";
-import Map from '../BigScreen/mapOr'
+import Map from '../BigScreen/map'
 import moment from "moment";
 import { Select, Space } from "antd";
 import ElectricityQuantity from "./component/electricityQuantity";
