@@ -15,7 +15,9 @@ const MenuList = [
         key: '/index/device',
         icon: <ToolOutlined />,
         children: [
-            { label: '储能系统', key: '/index/device/energy', type: 'big' },
+            { label: 'PCS舱', key: '/index/device/energyPcs', type: 'big' },
+            { label: 'BMS舱', key: '/index/device/energyBms', type: 'big' },
+            { label: '户外柜', key: '/index/device/energyOut', type: 'small' },
             { label: '光伏', key: '/index/device/photovoltaic', type: 'guang'},
             { label: '充电桩', key: '/index/device/chargingStation', type: 'chong' },
         ]
@@ -60,7 +62,7 @@ const MenuList = [
         ]
     },
 ]
-const currentDivice = "chong";
+const currentDivice = ['big','small','guang'];
 
 const getMenu = menuList => {
     return menuList.map(menu => {
@@ -76,7 +78,7 @@ const getMenu = menuList => {
             );
         } else {
             if(menu.type){
-                if(menu.type===currentDivice){
+                if(currentDivice?.find(it=>it===menu.type)){
                     return (
                         <Menu.Item key={menu.key}>
                             <Link to={menu.key}>{menu.label}</Link>

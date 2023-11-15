@@ -1,6 +1,5 @@
 const App = "@/pages/App";
 const Layout = "@/layouts/baseLayout";
-
 const Home = "@/pages/home";
 
 

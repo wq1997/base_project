@@ -8,7 +8,9 @@ export default [
         name: '设备',
         path: '/index/device',
         routes: [
-            { name: '储能系统', path: '/index/device/energy', component: "@/pages/device/energy" },
+            { name: 'PCS舱', path: '/index/device/energyPcs', component: "@/pages/device/energyPcs" },
+            { name: 'BMS舱', path: '/index/device/energyBms', component: "@/pages/device/energyBms" },
+            { name: '户外柜', path: '/index/device/energyOut', component: "@/pages/device/energyOut" },
             { name: '光伏', path: '/index/device/photovoltaic', component: "@/pages/device/photovoltaic" },
             { name: '充电桩', path: '/index/device/chargingStation', component: "@/pages/device/chargingStation" },
         ]

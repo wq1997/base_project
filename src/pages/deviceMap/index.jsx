@@ -13,7 +13,7 @@ const Test = () => {
       }}
     >
    <BigScreen/>
-   <Strategy/>
+   {/* <Strategy/> */}
     </div>
   )
 }

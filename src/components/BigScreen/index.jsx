@@ -1,14 +1,11 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import Ma from '../BigScreen/mapOr'
+import MaE from '../BigScreen/mapEchart'
 
 function Map(props) {
     const [mapData, setMapData] = useState({
         mapCenter: { longitude: 120, latitude: 35 },
-        markers: [
-            { position: { longitude: -90, latitude: -66 } },
-            { position: { longitude: 90, latitude: 66 } },
-            { position: { longitude: 99, latitude: 66 } }
-        ]
+      
     })
 
     useEffect(() => {
@@ -18,6 +15,7 @@ function Map(props) {
     return (
         <div className='content'>
             <Ma/>
+            <MaE/>
         </div>
     )
 }
