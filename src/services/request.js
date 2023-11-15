@@ -11,7 +11,7 @@ const instance = axios.create({
     baseURL: getBaseUrl(),
     timeout: 10000,
     headers: {
-        Authorization: getToken()
+        // Authorization: getToken()
     }
 })
 

@@ -11,8 +11,13 @@ const Test = () => {
         color: token.colorText
       }}
     >
+<<<<<<< HEAD
+   <BigScreen/>
+   {/* <Strategy/> */}
+=======
       <BigScreen/>
       {/* <Strategy/> */}
+>>>>>>> 29b35501d0588ab985a9fc69510592d34d1164c5
     </div>
   )
 }
