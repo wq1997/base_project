@@ -3,6 +3,8 @@ import styles from "./index.less";
 import Map from '../BigScreen/mapOr'
 import moment from "moment";
 import { Select, Space } from "antd";
+import ElectricityQuantity from "./component/electricityQuantity";
+import Efficiency from './component/efficiency';
 
 function BigScreen() {
     const [currentTime, setCurrentTime] = useState(moment().format("YYYY/MM/DD HH:mm:ss"));
@@ -88,15 +90,18 @@ function BigScreen() {
                         </div>
                     </div>
                     <div className={styles.contentBottomLeftCenter}>
-                        <div className={styles.contentBottomLeftCenterTitle}>近七日充放电电量统计</div>
+                        <div className={styles.contentBottomLeftCenterTitle}>近七日充放电电量</div>
                         <div className={styles.contentBottomLeftCenterDivider}/>
                         <div className={styles.contentBottomLeftCenterContent}>
-                            
+                            <ElectricityQuantity />
                         </div>
                     </div>
                     <div className={styles.contentBottomLeftBottom}>
-                        <div className={styles.contentBottomLeftBottomTitle}>近七日充放电效率统计</div>
+                        <div className={styles.contentBottomLeftBottomTitle}>近七日充放电效率</div>
                         <div className={styles.contentBottomLeftBottomDivider}/>
+                        <div className={styles.contentBottomLeftBottomContent}>
+                            <Efficiency />
+                        </div>
                     </div>
                 </div>
                 <div className={styles.contentBottomCenter}>
