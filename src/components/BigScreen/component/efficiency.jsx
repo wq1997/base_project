@@ -9,6 +9,10 @@ const Efficiency = () => {
     const getOptions = () => {
       const data = [200,400,500,400,300,100,400]
         setOptions({
+            grid: {
+                top: 10,
+                bottom: 50
+            },
             xAxis: {
                 type: 'category',
                 data: ['11/10', '11/11', '11/12', '11/13', '11/14', '11/15', '11/16'],

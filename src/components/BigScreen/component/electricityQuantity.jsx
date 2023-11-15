@@ -9,6 +9,11 @@ const ElectricityQuantity = () => {
     const getOptions = () => {
       const yData = [200,400,500,400,300,100,400]
         setOptions({
+            grid: {
+                top: 30,
+                bottom: 50,
+                right: 0
+            },
             xAxis: {
               type: 'category',
               data: ['11/10', '11/11', '11/12', '11/13', '11/14', '11/15', '11/16'],
@@ -41,7 +46,7 @@ const ElectricityQuantity = () => {
                   type: "pictorialBar",
                   label: {
                       show: true, 
-                      position: ['20', '-30'],
+                      position: ['17', '-30'],
                       color: '#01E4FF',
                       fontSize: 14
                   },
