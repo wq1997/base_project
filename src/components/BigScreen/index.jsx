@@ -90,6 +90,9 @@ function BigScreen() {
                     <div className={styles.contentBottomLeftCenter}>
                         <div className={styles.contentBottomLeftCenterTitle}>近七日充放电电量统计</div>
                         <div className={styles.contentBottomLeftCenterDivider}/>
+                        <div className={styles.contentBottomLeftCenterContent}>
+                            
+                        </div>
                     </div>
                     <div className={styles.contentBottomLeftBottom}>
                         <div className={styles.contentBottomLeftBottomTitle}>近七日充放电效率统计</div>
