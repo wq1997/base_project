@@ -59,18 +59,6 @@ function MapCom(props) {
                     seriesIndex: 2 //第几条series
                 });
                 history.push('/index/home')
-                // // 显示指定data 的tooltip
-                // ref.current.getEchartsInstance().dispatchAction({
-                //     type: "showTip",
-                //     seriesIndex: 0, //第几条series
-                //     dataIndex: index //第几个tooltip
-                // });
-                // // 高亮指定的散点
-                // ref.current.getEchartsInstance().dispatchAction({
-                //     type: "highlight",
-                //     seriesIndex: 0, //第几条series
-                //     dataIndex: index //第几个tooltip
-                // });
             }
           console.log(params,"0000000");
         });

@@ -48,7 +48,7 @@ function BigScreen() {
         //     unit: '%'
         // }
     ]
-
+    const [position,setPosition]=useState([]);
     const rightData = [
         {
             title: '总收益',
@@ -96,14 +96,54 @@ function BigScreen() {
             setCurrentTime(moment().format("YYYY/MM/DD HH:mm:ss"));
         }, 1000)
     }
-
+   const getWeather= async()=>{
+    const weather="https://devapi.qweather.com/v7/weather/3d?";
+    const key='4e50b674eed8402c8a70c8155690a0e1'
+    const url=`${weather}location=${position[1]},${position[0]}&key=${key}`;
+    let {
+        code,
+        daily
+       } = await (await fetch(url)).json();
+       console.log(code,daily);
+   }
+useEffect(()=>{
+    console.log(position,66666666);
+    position.length>0? getWeather():null;
+},[position])
     const getCurrentCity = ()=>{
         AMapLoader.load({
             key: MAP_KEY, // 高德地图Web端开发者Key
             version: '2.0',
             plugins: [] // 需要使用 的的插件列表(必填项)
         }).then((AMap) => {
-           
+              AMap.plugin('AMap.Geolocation', function() {
+                var geolocation = new AMap.Geolocation({
+                  enableHighAccuracy: true, // 是否使用高精度定位，默认：true
+                  timeout: 10000, // 设置定位超时时间，默认：无穷大
+                  offset: [10, 20],  // 定位按钮的停靠位置的偏移量
+                  zoomToAccuracy: true,  //  定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+                  position: 'RB' //  定位按钮的排放位置,  RB表示右下
+                })
+              
+                geolocation.getCurrentPosition(function(status,result){
+                      if(status=='complete'){
+                          onComplete(result)
+                      }else{
+                          onError(result)
+                      }
+                });
+              
+                function onComplete (data) {
+                  // data是具体的定位信息
+                  setPosition(()=>{
+                    return [data.position.lat?.toFixed(2),data.position.lng?.toFixed(2)]
+                  })
+                }
+              
+                function onError (data) {
+                  // 定位出错
+                }
+              })  
         }).catch(e => {
             console.log(e);
         })
@@ -117,6 +157,7 @@ function BigScreen() {
     return (
         <div className={styles.content}>
             <div className={styles.contentTop}>
+                <div className={styles.weather}></div>
                 <div className={styles.title}>采日能源储能管理系统</div>
                 <div className={styles.time}>{currentTime}</div>
             </div>
