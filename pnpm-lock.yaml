@@ -65,6 +65,9 @@ dependencies:
   moment:
     specifier: ^2.29.4
     version: registry.npmjs.org/moment@2.29.4
+  qweather-icons:
+    specifier: ^1.6.0
+    version: registry.npmjs.org/qweather-icons@1.6.0
   react-amap:
     specifier: ^1.2.8
     version: registry.npmjs.org/react-amap@1.2.8
@@ -10639,6 +10642,13 @@ packages:
     name: quick-lru
     version: 4.0.1
     engines: {node: '>=8'}
+    dev: false
+
+  registry.npmjs.org/qweather-icons@1.6.0:
+    resolution: {integrity: sha512-uINrSOteHHarEeHRpP37aBnuuwYnWc1eyZ2gbnujoEqOVabIPDiEseF7a9eIOnBn7GZBlo5nYj29eOEfLH/bEA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/qweather-icons/-/qweather-icons-1.6.0.tgz}
+    name: qweather-icons
+    version: 1.6.0
+    engines: {node: '>=10'}
     dev: false
 
   registry.npmjs.org/randombytes@2.1.0:
