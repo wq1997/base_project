@@ -1,11 +1,12 @@
 
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import styles from "./map.less";
-import { useDispatch, useSelector } from "umi";
+import { useDispatch, useSelector,history } from "umi";
 import ReactECharts from "echarts-for-react";
 import worldGeo from '../../../public/mapJson/maoJson'
-import china from '../../../public/mapJson/china'
+import china from '../../../public/mapJson/chinaB'
 import * as echarts from "echarts";
+import 'default-passive-events'
 
 function MapCom(props) {
     const [options, setOptions] = useState({});
@@ -13,19 +14,77 @@ function MapCom(props) {
     const { allPlant } = useSelector(function (state) {
         return state.device
     });
-    const convertData = function() {
+    const convertData = function () {
         const markerList = allPlant?.map(it => {
             return {
-                name:it.name,
-                value: [it.longitude,it.latitude,100],
+                name: it.name,
+                value: [it.longitude, it.latitude, 100],
             }
         });
         return markerList;
     };
+    const chartInstance= React.createRef();
+    let onEvents = {
+        click:params => {
+           console.log(params); // params 包含点击的节点属性，比如name，data等数据，可根据获取到的数据进行后续操作
+           if (params.componentType === "series" && params.componentSubType === "scatter") {
+            const index = params.dataIndex;
+            // 取消所有散点高亮
+            ref.current.getEchartsInstance().dispatchAction({
+                type: "downplay",
+                seriesIndex: 0 //第几条series
+            });
+            // 显示指定data 的tooltip
+            ref.current.getEchartsInstance().dispatchAction({
+                type: "showTip",
+                seriesIndex: 0, //第几条series
+                dataIndex: index //第几个tooltip
+            });
+            // 高亮指定的散点
+            ref.current.getEchartsInstance().dispatchAction({
+                type: "highlight",
+                seriesIndex: 0, //第几条series
+                dataIndex: index //第几个tooltip
+            });
+        }
 
+        }
+    }
+    const bind = useCallback((ref) => {
+        if (!ref) return;
+        ref.on('click', params => {
+            if (params.componentType === "series" && params.componentSubType === "scatter") {
+                const index = params.dataIndex;
+                // 取消所有散点高亮
+                ref.dispatchAction({
+                    type: "downplay",
+                    seriesIndex: 2 //第几条series
+                });
+                history.push('/index')
+                // // 显示指定data 的tooltip
+                // ref.current.getEchartsInstance().dispatchAction({
+                //     type: "showTip",
+                //     seriesIndex: 0, //第几条series
+                //     dataIndex: index //第几个tooltip
+                // });
+                // // 高亮指定的散点
+                // ref.current.getEchartsInstance().dispatchAction({
+                //     type: "highlight",
+                //     seriesIndex: 0, //第几条series
+                //     dataIndex: index //第几个tooltip
+                // });
+            }
+          console.log(params,"0000000");
+        });
+      }, []);
+    const onChartReady = useCallback((ref) => {
+        chartInstance.current = ref;
+        bind(ref);
+      }, [bind]);
 
     const getOptions = () => {
-    echarts.registerMap('world', china);
+     let a= echarts.registerMap('world', china);
+     console.log(a,11111111);
         setOptions({
             backgroundColor: "transparent",
             tooltip: {
@@ -35,9 +94,9 @@ function MapCom(props) {
                 transitionDuration: 0.5,
                 formatter: function (params) {
                     if (typeof params.value[2] == 'undefined') {
-                        return params.name ;
+                        return params.name;
                     } else {
-                        return params.name + ' : ' + params.value[0]+','+params.value[1];
+                        return params.name + ' : ' + params.value[0] + ',' + params.value[1];
                     }
                 },
             },
@@ -46,20 +105,26 @@ function MapCom(props) {
                 show: true,
                 map: "world",
                 roam: true,
-                center: [103,39.4],
+                center: [103, 39.4],
+                selectedMode: 'single',
+                layoutCenter: ['50%', '50%'],
+                layoutSize: "85%",
                 itemStyle: {
                     normal: {
-                        areaColor: 'rgb(12,54,83)',
-                        borderColor:  'rgb(25,188,236)',
+                        areaColor: '#00177B',
+                        borderColor: '#0073DA',
+                        borderWidth: 1,
+                        shadowColor: 'rgba(3,221,255,0.5)',
+                        // shadowBlur: 30
                     },
                     emphasis: {
                         areaColor: '#4499d0',
                     }
                 },
                 bottom: 0,
-                aspectScale: 0.6,
+                aspectScale: 0.75,
                 zoom: 1.3
-    
+
             },
             series: [{
                 type: 'map',
@@ -73,7 +138,7 @@ function MapCom(props) {
                 coordinateSystem: 'geo',
                 data: convertData(),
                 symbol: 'pin', //气泡
-                symbolSize: function(val) {
+                symbolSize: function (val) {
                     return val[2] / 5;
                 },
                 label: {
@@ -88,26 +153,38 @@ function MapCom(props) {
                 },
                 itemStyle: {
                     normal: {
-                        color: '#ffed00'
+                        areaColor: '#00177B',
+                        borderColor: '#0073DA',
+                        borderWidth: 1
+                    },
+                    emphasis: {
+                        label: {
+                            show: false
+                        },
+                        areaColor: '#00177B'
                     }
                 }
             }]
         });
     }
-  
+
     useEffect(() => {
         dispatch({ type: 'device/getAllPlants' });
     }, [])
-    useEffect(()=>{
+    useEffect(() => {
         getOptions();
 
-    },[allPlant])
+    }, [allPlant])
 
 
-    
+
     return (
         <div className={styles.container}>
-            <ReactECharts option={options} style={{height:'100%'}}></ReactECharts>
+            <ReactECharts  option={options} 
+            // onEvents={onEvents}
+            ref={chartInstance}
+            onChartReady={onChartReady}
+             style={{ height: '100%' }}></ReactECharts>
         </div>
 
     )
