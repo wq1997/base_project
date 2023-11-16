@@ -60,7 +60,7 @@ function MapCom(props) {
                     type: "downplay",
                     seriesIndex: 2 //第几条series
                 });
-                history.push('/index')
+                history.push('/index/home')
                 // // 显示指定data 的tooltip
                 // ref.current.getEchartsInstance().dispatchAction({
                 //     type: "showTip",
