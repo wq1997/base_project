@@ -109,6 +109,7 @@ function BigScreen() {
     }
 
     const refreshWeather = () => {
+        getCurrentCity();
         setInterval(()=>{
             getCurrentCity();
         }, 1000 * 60 * 60)
