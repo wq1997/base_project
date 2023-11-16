@@ -7,6 +7,9 @@ import ElectricityQuantity from "./component/electricityQuantity";
 import Efficiency from './component/efficiency';
 import Prediction from './component/prediction';
 import Emission from './component/emission';
+import Load from './component/load';
+import SOC from './component/soc';
+import HOC from './component/hoc';
 
 function BigScreen() {
     const [currentTime, setCurrentTime] = useState(moment().format("YYYY/MM/DD HH:mm:ss"));
@@ -31,26 +34,16 @@ function BigScreen() {
             data: '1000',
             unit: 'kw'
         },
-        {
-            title: '总充电量',
-            data: '1000',
-            unit: 'kwh'
-        },
-        {
-            title: '总放电量',
-            data: '800',
-            unit: 'kwh'
-        },
-        {
-            title: 'SOC',
-            data: '80',
-            unit: '%'
-        },
-        {
-            title: 'HOC',
-            data: '90',
-            unit: '%'
-        }
+        // {
+        //     title: 'SOC',
+        //     data: '80',
+        //     unit: '%'
+        // },
+        // {
+        //     title: 'HOC',
+        //     data: '90',
+        //     unit: '%'
+        // }
     ]
 
     const rightData = [
@@ -115,33 +108,43 @@ function BigScreen() {
                 <div className={styles.contentBottomLeft}>
                     <div className={styles.contentBottomLeftTop}>
                         <div className={styles.bigTitle}>电量统计</div>
-                        <div className={styles.contentBottomLeftTopDivider}/>
+                        {/* <div className={styles.contentBottomLeftTopDivider}/> */}
                         <div className={styles.contentBottomLeftTopContent}>
-                            {
-                                leftData?.map(item => {
-                                    return (
-                                        <div className={styles.contentBottomLeftTopItem}>
-                                            <div className={styles.subTitle}>{item?.title}</div>
-                                            <div className={styles.contentBottomLeftTopItemContent}>
-                                                <div className={styles.contentBottomLeftTopItemData}>{item?.data}</div>
-                                                <div className={styles.contentBottomLeftTopItemUnit}>{item?.unit}</div>
+                            <div className={styles.contentBottomLeftTopContentLeft}>
+                                {
+                                    leftData?.map(item => {
+                                        return (
+                                            <div className={styles.contentBottomLeftTopContentLeftItem}>
+                                                <div className={styles.subTitle}>{item?.title}</div>
+                                                <div className={styles.contentBottomLeftTopContentLeftItemContent}>
+                                                    <div className={styles.contentBottomLeftTopContentLeftItemContentData}>{item?.data}</div>
+                                                    <div className={styles.contentBottomLeftTopContentLeftItemContentUnit}>{item?.unit}</div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    )
-                                })
-                            }
+                                        )
+                                    })
+                                }
+                            </div>
+                            <div className={styles.contentBottomLeftTopContentRight}>
+                                <div className={styles.contentBottomLeftTopContentRightItem}>
+                                    <SOC />
+                                </div>
+                                <div className={styles.contentBottomLeftTopContentRightItem}>
+                                    <HOC />
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div className={styles.contentBottomLeftCenter}>
                         <div className={styles.bigTitle}>近七日充放电电量</div>
-                        <div className={styles.contentBottomLeftCenterDivider}/>
+                        {/* <div className={styles.contentBottomLeftCenterDivider}/> */}
                         <div className={styles.contentBottomLeftCenterContent}>
                             <ElectricityQuantity />
                         </div>
                     </div>
                     <div className={styles.contentBottomLeftBottom}>
                         <div className={styles.bigTitle}>近七日充放电效率</div>
-                        <div className={styles.contentBottomLeftBottomDivider}/>
+                        {/* <div className={styles.contentBottomLeftBottomDivider}/> */}
                         <div className={styles.contentBottomLeftBottomContent}>
                             <Efficiency />
                         </div>
@@ -168,14 +171,18 @@ function BigScreen() {
                             ]}
                         />
                     </div>
-                    <div className={styles.contentBottomCenterMap}>
-                        <Map/>
+                    <div className={styles.contentBottomCenterBottom}>
+                        <div className={styles.bigTitle}>节能减排统计</div>
+                        {/* <div className={styles.contentBottomCenterBottomDivider}/> */}
+                        <div className={styles.contentBottomCenterBottomContent}>
+                            <Emission/>
+                        </div>
                     </div>
                 </div>
                 <div className={styles.contentBottomRight}>
                     <div className={styles.contentBottomRightTop}>
                         <div className={styles.bigTitle}>电站设备统计</div>
-                        <div className={styles.contentBottomRightTopDivider}/>
+                        {/* <div className={styles.contentBottomRightTopDivider}/> */}
                         <div className={styles.contentBottomRightTopContent}>
                             {
                                 rightData?.map(item => {
@@ -194,18 +201,21 @@ function BigScreen() {
                     </div>
                     <div className={styles.contentBottomRightCenter}>
                         <div className={styles.bigTitle}>储能充放电功率预测曲线</div>
-                        <div className={styles.contentBottomRightCenterDivider}/>
+                        {/* <div className={styles.contentBottomRightCenterDivider}/> */}
                         <div className={styles.contentBottomRightCenterContent}>
                             <Prediction />
                         </div>
                     </div>
                     <div className={styles.contentBottomRightBottom}>
-                        <div className={styles.bigTitle}>节能减排统计</div>
-                        <div className={styles.contentBottomRightBottomDivider}/>
+                        <div className={styles.bigTitle}>负荷预测曲线</div>
+                        {/* <div className={styles.contentBottomRightBottomDivider}/> */}
                         <div className={styles.contentBottomRightBottomContent}>
-                            <Emission/>
+                            <Load/>
                         </div>
                     </div>
+                </div>
+                <div className={styles.contentBottomMap}>
+                    <Map/>
                 </div>
             </div>
         </div>

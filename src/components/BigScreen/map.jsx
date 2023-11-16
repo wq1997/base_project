@@ -1,9 +1,7 @@
 
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import styles from "./map.less";
+import React, { useState, useEffect, } from 'react';
 import { useDispatch, useSelector } from "umi";
 import ReactECharts from "echarts-for-react";
-import worldGeo from '../../../public/mapJson/maoJson'
 import china from '../../../public/mapJson/china'
 import * as echarts from "echarts";
 
@@ -25,8 +23,11 @@ function MapCom(props) {
 
 
     const getOptions = () => {
-    echarts.registerMap('world', china);
+        echarts.registerMap('world', china);
         setOptions({
+            grid: {
+              top: 0,
+            },
             backgroundColor: "transparent",
             tooltip: {
                 trigger: 'item',
@@ -49,8 +50,8 @@ function MapCom(props) {
                 center: [103,39.4],
                 itemStyle: {
                     normal: {
-                        areaColor: 'rgb(12,54,83)',
-                        borderColor:  'rgb(25,188,236)',
+                        areaColor: '#418FE4',
+                        borderColor:  '#2560CF',
                     },
                     emphasis: {
                         areaColor: '#4499d0',
@@ -58,7 +59,7 @@ function MapCom(props) {
                 },
                 bottom: 0,
                 aspectScale: 0.6,
-                zoom: 1.3
+                zoom: 1.9
     
             },
             series: [{
@@ -106,10 +107,7 @@ function MapCom(props) {
 
     
     return (
-        <div className={styles.container}>
-            <ReactECharts option={options} style={{height:'100%'}}></ReactECharts>
-        </div>
-
+        <ReactECharts option={options} style={{height:'100%'}} />
     )
 }
 
