@@ -28,14 +28,14 @@ function BigScreen() {
             unit: 'kwh'
         },
         {
-            title: '负载实时功率',
-            data: '65',
-            unit: 'kw'
+            title: '总充电量',
+            data: '1000',
+            unit: 'kwh'
         },
         {
-            title: '储能实时功率',
-            data: '1000',
-            unit: 'kw'
+            title: '总放电量',
+            data: '800',
+            unit: 'kwh'
         },
         // {
         //     title: 'SOC',
@@ -71,14 +71,14 @@ function BigScreen() {
             unit: '台'
         },
         {
-            title: '总充电量',
-            data: '1000',
-            unit: 'kwh'
+            title: '负载实时功率',
+            data: '65',
+            unit: 'kw'
         },
         {
-            title: '总放电量',
-            data: '800',
-            unit: 'kwh'
+            title: '储能实时功率',
+            data: '1000',
+            unit: 'kw'
         },
         {
             title: '设备离线数量',
