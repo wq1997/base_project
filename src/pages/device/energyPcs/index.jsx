@@ -11,12 +11,13 @@ function Com(props) {
       {label:'实时告警',key:'实时告警',children:'实时告警'},
   ]
     useEffect(() => {
-        console.log('函数组件来咯')
+        // console.log('函数组件来咯')
     }, [])
 
     return (
         <div className='content'>
             <Tab TabItem={{tabName}}/>
+            11
         </div>
     )
 }
