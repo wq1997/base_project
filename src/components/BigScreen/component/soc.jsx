@@ -16,7 +16,7 @@ const SOC = () => {
             },
             series: [
               {
-                name: 'SOC',
+                name: 'SOH',
                 type: 'gauge',
                 axisLine: {
                     lineStyle: {
@@ -69,12 +69,12 @@ const SOC = () => {
                 style={{
                     color: 'white', 
                     position: 'absolute', 
-                    bottom: 20, 
+                    bottom: 10, 
                     left: '50%',
                     transform: 'translateX(-50%)'
                 }}
             >
-                SOC
+                SOH
             </div>
         </div>
     );

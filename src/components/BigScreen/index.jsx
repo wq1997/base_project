@@ -10,6 +10,9 @@ import Emission from './component/emission';
 import Load from './component/load';
 import SOC from './component/soc';
 import HOC from './component/hoc';
+import NextBar from './component/nextBar';
+import AMapLoader from '@amap/amap-jsapi-loader'
+import { MAP_KEY } from '@/utils/utils'
 
 function BigScreen() {
     const [currentTime, setCurrentTime] = useState(moment().format("YYYY/MM/DD HH:mm:ss"));
@@ -94,8 +97,21 @@ function BigScreen() {
         }, 1000)
     }
 
+    const getCurrentCity = ()=>{
+        AMapLoader.load({
+            key: MAP_KEY, // 高德地图Web端开发者Key
+            version: '2.0',
+            plugins: [] // 需要使用 的的插件列表(必填项)
+        }).then((AMap) => {
+           
+        }).catch(e => {
+            console.log(e);
+        })
+     }
+
     useEffect(()=>{
         refreshCurrentTime();
+        getCurrentCity();
     }, []);
 
     return (
@@ -172,10 +188,18 @@ function BigScreen() {
                         />
                     </div>
                     <div className={styles.contentBottomCenterBottom}>
-                        <div className={styles.bigTitle}>节能减排统计</div>
-                        {/* <div className={styles.contentBottomCenterBottomDivider}/> */}
-                        <div className={styles.contentBottomCenterBottomContent}>
-                            <Emission/>
+                        <div className={styles.contentBottomCenterBottomLeft}>
+                            <div className={styles.bigTitle}>数量统计</div>
+                            <div className={styles.contentBottomCenterBottomContent}>
+                                <NextBar />
+                            </div>
+                        </div>
+                        <div className={styles.contentBottomCenterBottomRight}>
+                            <div className={styles.bigTitle}>节能减排</div>
+                            {/* <div className={styles.contentBottomCenterBottomDivider}/> */}
+                            <div className={styles.contentBottomCenterBottomContent}>
+                                <Emission/>
+                            </div>
                         </div>
                     </div>
                 </div>

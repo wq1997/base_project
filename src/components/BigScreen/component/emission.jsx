@@ -13,7 +13,7 @@ const Emission = () => {
                 trigger: 'item'
               },
               legend: {
-                right: 10,
+                bottom: 0,
                 textStyle: {
                     color: 'white'
                 }
@@ -21,7 +21,7 @@ const Emission = () => {
               series: [
                 {
                   type: 'pie',
-                  radius: ['40%', '70%'],
+                  radius: ['30%', '60%'],
                   avoidLabelOverlap: false,
                   itemStyle: {
                     borderRadius: 10,
