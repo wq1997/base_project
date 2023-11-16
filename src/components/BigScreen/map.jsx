@@ -1,9 +1,7 @@
 
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import styles from "./map.less";
 import { useDispatch, useSelector,history } from "umi";
 import ReactECharts from "echarts-for-react";
-import worldGeo from '../../../public/mapJson/maoJson'
 import china from '../../../public/mapJson/chinaB'
 import * as echarts from "echarts";
 import 'default-passive-events'
@@ -83,9 +81,11 @@ function MapCom(props) {
       }, [bind]);
 
     const getOptions = () => {
-     let a= echarts.registerMap('world', china);
-     console.log(a,11111111);
+       echarts.registerMap('world', china);
         setOptions({
+            grid: {
+              top: 0,
+            },
             backgroundColor: "transparent",
             tooltip: {
                 trigger: 'item',
@@ -124,7 +124,6 @@ function MapCom(props) {
                 bottom: 0,
                 aspectScale: 0.75,
                 zoom: 1.3
-
             },
             series: [{
                 type: 'map',
@@ -179,14 +178,12 @@ function MapCom(props) {
 
 
     return (
-        <div className={styles.container}>
-            <ReactECharts  option={options} 
-            // onEvents={onEvents}
+        <ReactECharts  
+            option={options} 
             ref={chartInstance}
             onChartReady={onChartReady}
-             style={{ height: '100%' }}></ReactECharts>
-        </div>
-
+            style={{ height: '100%' }} 
+        />
     )
 }
 

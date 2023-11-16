@@ -46,12 +46,14 @@
         padding: 0 10px 10px 10px;
         height: calc(100vh - 120px);
         box-sizing: border-box;
-        display: grid;
-        grid-template-columns: 35% calc(30% - 40px) 35%;
-        grid-column-gap: 20px;
+        position: relative;
 
         .contentBottomLeft{
-            width: calc(100% - 20px);
+            width: 35%;
+            height: 100%;
+            position: absolute;
+            left: 10px;
+            z-index: 100;
             display: grid;
             grid-template-rows: calc(30% - 10px) calc(34.5% - 10px) calc(34.5% - 10px);
             grid-gap: 10px;
@@ -68,33 +70,45 @@
                 }
                 .contentBottomLeftTopContent{
                     display: grid;
-                    grid-template-columns: calc(25% - 10px) calc(25% - 10px) calc(25% - 10px) calc(25% - 10px);
-                    grid-template-rows: calc(50% - 10px) calc(50% - 10px);
+                    grid-template-columns: calc(50% - 10px) calc(50% - 10px);
                     grid-gap: 20px;
-                    justify-content: center;
-                    align-items: center;
                     height: calc(100% - 130px);
-                    .contentBottomLeftTopItem{
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-
-                        .contentBottomLeftTopItemContent{
+                    .contentBottomLeftTopContentLeft{
+                        display: grid;
+                        grid-template-columns: calc(50% - 10px) calc(50% - 10px);
+                        grid-template-rows: calc(50% - 10px) calc(50% - 10px);
+                        grid-gap: 20px;
+                        .contentBottomLeftTopContentLeftItem{
                             display: flex;
-                            align-items: baseline;
-                            .contentBottomLeftTopItemData{
-                                color: white;
-                                opacity: 0.8;
-                                font-weight: 600;
-                                font-size: 30px;
+                            flex-direction: column;
+                            align-items: center;
+    
+                            .contentBottomLeftTopContentLeftItemContent{
+                                display: flex;
+                                align-items: baseline;
+                                .contentBottomLeftTopContentLeftItemContentData{
+                                    color: white;
+                                    opacity: 0.8;
+                                    font-weight: 600;
+                                    font-size: 30px;
+                                }
+            
+                                .contentBottomLeftTopContentLeftItemContentUnit{
+                                    color: white;
+                                    opacity: 0.8;
+                                    font-weight: 600;
+                                    font-size: 20px;
+                                }
                             }
-        
-                            .contentBottomLeftTopItemUnit{
-                                color: white;
-                                opacity: 0.8;
-                                font-weight: 600;
-                                font-size: 20px;
-                            }
+                        }
+                    }
+                    .contentBottomLeftTopContentRight{
+                        display: grid;
+                        grid-template-columns: calc(50% - 5px) calc(50% - 5px);
+                        grid-gap: 10px;
+                        position: relative;
+                        .contentBottomLeftTopContentRightItem{
+                            position: relative;
                         }
                     }
                 }
@@ -136,7 +150,14 @@
         .contentBottomCenter{
             display: flex;
             flex-direction: column;
+            position: absolute;
+            width: 30%;
+            height: 100%;
+            left: 50%;
+            transform: translateX(-50%);
             .contentBottomCenterSelect{
+                position: absolute;
+                top: 10px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -161,14 +182,39 @@
                     }
                 }
             }
-            .contentBottomCenterMap{
-                margin-top: 10px;
-                flex: 1;
+            .contentBottomCenterBottom{
+                width: 100%;
+                height: 30%;
+                position: absolute;
+                bottom: 10px;
+                display: flex;
+                justify-content: space-between;
+                .contentBottomCenterBottomLeft{
+                    width: 60%;
+                }
+                .contentBottomCenterBottomRight{
+                    width: 50%;
+                    .contentBottomCenterBottomDivider{
+                        width: calc(100% - 20px);
+                        height: 2px;
+                        background-color:#749FBA ;
+                        opacity: 0.4;
+                        margin: auto;
+                        margin-bottom: 20px;
+                    }
+                }
+                .contentBottomCenterBottomContent{
+                    height: calc(100% - 120px);
+                }
             }
         }
 
         .contentBottomRight{
-            width: calc(100% - 20px);
+            width: 35%;
+            height: 100%;
+            position: absolute;
+            right: 10px;
+            z-index: 100;
             display: grid;
             grid-template-rows: calc(30% - 10px) calc(34.5% - 10px) calc(34.5% - 10px);
             grid-gap: 10px;
@@ -247,6 +293,14 @@
                     height: calc(100% - 100px);
                 }
             }
+        }
+
+        .contentBottomMap{
+            width: 60%;
+            height: 70%;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
         }
     }
 }

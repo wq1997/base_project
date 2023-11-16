@@ -50,6 +50,9 @@ dependencies:
   dayjs:
     specifier: ^1.11.10
     version: registry.npmjs.org/dayjs@1.11.10
+  default-passive-events:
+    specifier: ^2.0.0
+    version: registry.npmjs.org/default-passive-events@2.0.0
   echarts:
     specifier: ^5.4.3
     version: registry.npmjs.org/echarts@5.4.3
@@ -6360,6 +6363,12 @@ packages:
       default-browser-id: registry.npmjs.org/default-browser-id@3.0.0
       execa: registry.npmjs.org/execa@7.2.0
       titleize: registry.npmjs.org/titleize@3.0.0
+    dev: false
+
+  registry.npmjs.org/default-passive-events@2.0.0:
+    resolution: {integrity: sha512-eMtt76GpDVngZQ3ocgvRcNCklUMwID1PaNbCNxfpDXuiOXttSh0HzBbda1HU9SIUsDc02vb7g9+3I5tlqe/qMQ==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/default-passive-events/-/default-passive-events-2.0.0.tgz}
+    name: default-passive-events
+    version: 2.0.0
     dev: false
 
   registry.npmjs.org/define-lazy-prop@2.0.0:
