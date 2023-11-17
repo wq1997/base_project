@@ -16,13 +16,13 @@ import { MAP_KEY } from '@/utils/utils';
 import { WETHER_API, WETHER_KEY } from "@/utils/constants";
 
 const dayEnum = {
-    0: '一',
-    1: '二',
-    2: '三',
-    3: '四',
-    4: '五',
-    5: '六',
-    6: '日'
+    0: '日',
+    1: '一',
+    2: '二',
+    3: '三',
+    4: '四',
+    5: '五',
+    6: '六'
 }
 function BigScreen() {
     const [currentTime, setCurrentTime] = useState(moment().format("YYYY/MM/DD HH:mm:ss"));
@@ -180,7 +180,7 @@ function BigScreen() {
             <div className={styles.contentTop}>
                 <div className={styles.time}>
                     <div className={styles.timeTop}>{currentTime}</div>
-                    <div className={styles.timeBottom}>星期{dayEnum[moment().startOf('month').day()]}</div>
+                    <div className={styles.timeBottom}>星期{dayEnum[moment().day()]}</div>
                 </div>
                 <div className={styles.title}>采日能源储能管理系统</div>
                 {
