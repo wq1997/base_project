@@ -188,7 +188,7 @@ function BigScreen() {
                     <div className={styles.weather}>
                         <i class={`qi-${wether?.iconDay}`} style={{fontSize: 40, color: 'white'}}/>
                         <div className={styles.weatherText}>
-                            <div>{wether?.textDay}转{wether?.textNight}</div>
+                            <div>{wether?.textDay===wether?.textNight?`${wether?.textDay}`: `${wether?.textDay}转${wether?.textNight}`}</div>
                             <div>{wether?.tempMin}℃ ~ {wether?.tempMax}℃</div>
                         </div>
                     </div>
