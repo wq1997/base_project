@@ -173,7 +173,6 @@
             height: 100%;
             left: 50%;
             transform: translateX(-50%);
-            z-index: 100;
             .contentBottomCenterSelect{
                 position: absolute;
                 top: 10px;
@@ -316,10 +315,11 @@
 
         .contentBottomMap{
             width: 60%;
-            height: 70%;
+            height: calc(70% - 40px);
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
+            top: 40px;
         }
     }
 }
