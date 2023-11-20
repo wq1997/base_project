@@ -96,7 +96,7 @@ function MapCom(props) {
                 center: [103, 39.4],
                 selectedMode: 'single',
                 layoutCenter: ['50%', '50%'],
-                layoutSize: "85%",
+                layoutSize: "100%",
                 itemStyle: {
                     normal: {
                         areaColor: '#00177B',
@@ -109,15 +109,16 @@ function MapCom(props) {
                         areaColor: '#4499d0',
                     }
                 },
-                bottom: 0,
+                top: 5,
                 aspectScale: 0.75,
-                zoom: 1.3
+                zoom: 1.2
             },
             series: [{
                 type: 'map',
                 map: 'world',
                 geoIndex: 0,
                 roam: true,
+                top: 5
                 // data: data
             }, {
                 name: '电站',
