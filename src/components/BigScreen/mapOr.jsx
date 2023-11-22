@@ -8,11 +8,9 @@ import { useDispatch, useSelector,history } from "umi";
 function MapContainer() {
     let map = null // 地图实例
     const dispatch = useDispatch();
-
     const { allPlant } = useSelector(function (state) {
         return state.device
     });
-
     const getAllPlants = async () => {
         await dispatch({ type: 'device/getAllPlants' });
     }
@@ -22,7 +20,6 @@ function MapContainer() {
     useEffect(() => {
         initMap();
     }, [allPlant])
-
     const initMap = () => {
         const markerList = allPlant?.map(it => {
             return {

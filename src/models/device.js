@@ -1,4 +1,4 @@
-import { apiGetAllPlants} from "@/services/device"
+import { apiGetAllPlants,apiGetDtuList} from "@/services/total"
 import { setLocalStorage, getLocalStorage } from "@/utils/utils";
 
 export default {
@@ -6,29 +6,38 @@ export default {
 
     state: {
       allPlant: null,
+      plantDetails:null
     },
    
     effects: {  
       *getAllPlants({ payload }, { call, put }) {
         const data= yield call(apiGetAllPlants);
-        console.log(JSON.parse(data.data.data));
-        setLocalStorage('allPlant',[
-            ...(JSON.parse(data.data.data))
-        ])
         yield put({
             type:'updateState',
             payload:{
-                allPlant:[
-                    ...(JSON.parse(data.data.data))
+                allPlant:[  
+                    ...(data.data.data)
                 ]
             },
         })
+      },
+      *getAllPlantDetails({ payload }, { call, put }) {
+        const data= yield call(apiGetDtuList,payload);
+     
+        yield put({
+            type:'updateState',
+            payload:{
+              plantDetails:[  
+                    ...(JSON.parse(data.data.data))
+                ]
+            },
+        });
+
       }
     },
    
     reducers: {
       updateState(state, { payload }) {
-        console.log(state,payload);
         console.log( {
             ...state,
             ...payload,

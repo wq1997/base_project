@@ -17,10 +17,12 @@ function MapCom(props) {
             return {
                 name: it.name,
                 value: [it.longitude, it.latitude, 100],
+                id:it.id
             }
         });
         return markerList;
     };
+
     const chartInstance= React.createRef();
     let onEvents = {
         click:params => {
@@ -53,14 +55,13 @@ function MapCom(props) {
         ref.on('click', params => {
             if (params.componentType === "series" && params.componentSubType === "scatter") {
                 const index = params.dataIndex;
-                // 取消所有散点高亮
-                ref.dispatchAction({
-                    type: "downplay",
-                    seriesIndex: 2 //第几条series
-                });
+            
+                dispatch({ type: 'device/getAllPlantDetails',payload:{
+                    plantId:params.data.id
+                } });
+                console.log(params,0);
                 history.push('/index/home')
             }
-          console.log(params,"0000000");
         });
       }, []);
     const onChartReady = useCallback((ref) => {

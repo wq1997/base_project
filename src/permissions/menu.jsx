@@ -2,6 +2,8 @@ import { Menu } from 'antd';
 import { Link, useLocation } from 'umi';
 import menu from '../router/menuRoute'
 import { AppstoreOutlined, ToolOutlined, AlertOutlined, LineChartOutlined, AccountBookOutlined, SettingOutlined } from '@ant-design/icons';
+import { useEffect } from 'react';
+
 const { SubMenu } = Menu;
 
 const MenuList = [
@@ -62,9 +64,10 @@ const MenuList = [
         ]
     },
 ]
-const currentDivice = ['big','small','guang'];
+const currentDivice = ['big','small','guang','chong'];
 
 const getMenu = menuList => {
+  
     return menuList.map(menu => {
         if (menu.children) {
             return (
@@ -107,6 +110,7 @@ const MyMenu = () => {
             return [pathList.splice(0, 3).join("/")]
         }
     }
+   
     console.log(getDefaultOpenKeys(), 123, pathname);
 
     return (
