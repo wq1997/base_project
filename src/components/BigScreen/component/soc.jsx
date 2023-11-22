@@ -46,7 +46,7 @@ const SOC = () => {
                   valueAnimation: true,
                   formatter: '{value}',
                   color: 'white',
-                  offsetCenter: [0, '60%']
+                  offsetCenter: [0, '50%']
                 },
                 data: [
                   {

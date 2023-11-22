@@ -12,8 +12,18 @@ import SOC from './component/soc';
 import HOC from './component/hoc';
 import NextBar from './component/nextBar';
 import AMapLoader from '@amap/amap-jsapi-loader'
-import { MAP_KEY } from '@/utils/utils'
+import { MAP_KEY } from '@/utils/utils';
+import { WETHER_API, WETHER_KEY } from "@/utils/constants";
 
+const dayEnum = {
+    0: '日',
+    1: '一',
+    2: '二',
+    3: '三',
+    4: '四',
+    5: '五',
+    6: '六'
+}
 function BigScreen() {
     const [currentTime, setCurrentTime] = useState(moment().format("YYYY/MM/DD HH:mm:ss"));
     const leftData = [
@@ -28,17 +38,18 @@ function BigScreen() {
             unit: 'kwh'
         },
         {
-            title: '负载实时功率',
-            data: '65',
-            unit: 'kw'
+            title: '总充电量',
+            data: '1000',
+            unit: 'kwh'
         },
         {
-            title: '储能实时功率',
-            data: '1000',
-            unit: 'kw'
+            title: '总放电量',
+            data: '800',
+            unit: 'kwh'
         },
     ]
     const [position,setPosition]=useState([]);
+    const [wether, setWether] = useState(null);
     const rightData = [
         {
             title: '总收益',
@@ -61,14 +72,14 @@ function BigScreen() {
             unit: '台'
         },
         {
-            title: '总充电量',
-            data: '1000',
-            unit: 'kwh'
+            title: '负载实时功率',
+            data: '65',
+            unit: 'kw'
         },
         {
-            title: '总放电量',
-            data: '800',
-            unit: 'kwh'
+            title: '储能实时功率',
+            data: '1000',
+            unit: 'kw'
         },
         {
             title: '设备离线数量',
@@ -86,19 +97,27 @@ function BigScreen() {
             setCurrentTime(moment().format("YYYY/MM/DD HH:mm:ss"));
         }, 1000)
     }
-   const getWeather= async()=>{
-    const weather="https://devapi.qweather.com/v7/weather/3d?";
-    const key='4e50b674eed8402c8a70c8155690a0e1'
-    const url=`${weather}location=${position[1]},${position[0]}&key=${key}`;
-    let {
-        code,
-        daily
-       } = await (await fetch(url)).json();
-       console.log(code,daily);
-   }
-useEffect(()=>{
-    position.length>0? getWeather():null;
-},[position])
+
+    const refreshWeather = () => {
+        getCurrentCity();
+        setInterval(()=>{
+            getCurrentCity();
+        }, 1000 * 60 * 60)
+    }
+
+
+    const getWeather= async()=>{
+            const url=`${WETHER_API}location=${position[1]},${position[0]}&key=${WETHER_KEY}`;
+            const { daily } = await (await fetch(url)).json();
+            if(daily?.length>0){
+                setWether(daily[0]||{})
+            }
+    }
+
+    useEffect(()=>{
+        position.length>0? getWeather():null;
+    },[position])
+    
     const getCurrentCity = ()=>{
         AMapLoader.load({
             key: MAP_KEY, // 高德地图Web端开发者Key
@@ -122,32 +141,47 @@ useEffect(()=>{
                 });
               
                 function onComplete (data) {
-                  // data是具体的定位信息
                   setPosition(()=>{
                     return [data.position.lat?.toFixed(2),data.position.lng?.toFixed(2)]
                   })
                 }
               
                 function onError (data) {
-                  // 定位出错
+                    setPosition(()=>{
+                      return [31.22, 121.47]
+                    })
                 }
               })  
         }).catch(e => {
-            console.log(e);
+            setPosition(()=>{
+                return [31.22, 121.47]
+            })
         })
      }
 
     useEffect(()=>{
         refreshCurrentTime();
-        getCurrentCity();
+        refreshWeather();
     }, []);
 
     return (
         <div className={styles.content}>
             <div className={styles.contentTop}>
-                <div className={styles.weather}></div>
+                <div className={styles.time}>
+                    <div className={styles.timeTop}>{currentTime}</div>
+                    <div className={styles.timeBottom}>星期{dayEnum[moment().day()]}</div>
+                </div>
                 <div className={styles.title}>采日能源储能管理系统</div>
-                <div className={styles.time}>{currentTime}</div>
+                {
+                    wether&&
+                    <div className={styles.weather}>
+                        <i class={`qi-${wether?.iconDay}`} style={{fontSize: 40, color: 'white'}}/>
+                        <div className={styles.weatherText}>
+                            <div>{wether?.textDay===wether?.textNight?`${wether?.textDay}`: `${wether?.textDay}转${wether?.textNight}`}</div>
+                            <div>{wether?.tempMin}℃ ~ {wether?.tempMax}℃</div>
+                        </div>
+                    </div>
+                }
             </div>
             <div className={styles.contentBottom}>
                 <div className={styles.contentBottomLeft}>

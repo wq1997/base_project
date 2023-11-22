@@ -28,17 +28,35 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        .weather{
+            color:rgba(255,255,255,.7); 
+            position: absolute;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            .weatherText{
+                margin-left: 10px;
+                font-size: 20px;
+            }
+        }
         .title{
             color: white;
             font-size: 50px;
             font-weight: 1000;
         }
         .time{
-            font-family:electronicFont;
-            color:rgba(255,255,255,.7); 
-            font-size: 30px;
             position: absolute;
-            right: 20px;
+            left: 20px;
+            .timeTop{
+                font-family:electronicFont;
+                color:rgba(255,255,255,.7); 
+                font-size: 30px;
+            }
+            .timeBottom{
+                color:rgba(255,255,255,.7); 
+                margin-top: 5px;
+                font-size: 20px;
+            }
         }
     }
 
@@ -297,10 +315,11 @@
 
         .contentBottomMap{
             width: 60%;
-            height: 70%;
+            height: calc(70% - 40px);
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
+            top: 40px;
         }
     }
 }

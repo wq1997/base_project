@@ -7,6 +7,7 @@ import * as echarts from "echarts";
 import 'default-passive-events'
 
 function MapCom(props) {
+    const chartInstance= React.createRef();
     const [options, setOptions] = useState({});
     const dispatch = useDispatch();
     const { allPlant } = useSelector(function (state) {
@@ -22,34 +23,7 @@ function MapCom(props) {
         });
         return markerList;
     };
-
-    const chartInstance= React.createRef();
-    let onEvents = {
-        click:params => {
-           console.log(params); // params 包含点击的节点属性，比如name，data等数据，可根据获取到的数据进行后续操作
-           if (params.componentType === "series" && params.componentSubType === "scatter") {
-            const index = params.dataIndex;
-            // 取消所有散点高亮
-            ref.current.getEchartsInstance().dispatchAction({
-                type: "downplay",
-                seriesIndex: 0 //第几条series
-            });
-            // 显示指定data 的tooltip
-            ref.current.getEchartsInstance().dispatchAction({
-                type: "showTip",
-                seriesIndex: 0, //第几条series
-                dataIndex: index //第几个tooltip
-            });
-            // 高亮指定的散点
-            ref.current.getEchartsInstance().dispatchAction({
-                type: "highlight",
-                seriesIndex: 0, //第几条series
-                dataIndex: index //第几个tooltip
-            });
-        }
-
-        }
-    }
+    
     const bind = useCallback((ref) => {
         if (!ref) return;
         ref.on('click', params => {
@@ -64,6 +38,7 @@ function MapCom(props) {
             }
         });
       }, []);
+      
     const onChartReady = useCallback((ref) => {
         chartInstance.current = ref;
         bind(ref);
@@ -97,7 +72,7 @@ function MapCom(props) {
                 center: [103, 39.4],
                 selectedMode: 'single',
                 layoutCenter: ['50%', '50%'],
-                layoutSize: "85%",
+                layoutSize: "100%",
                 itemStyle: {
                     normal: {
                         areaColor: '#00177B',
@@ -110,49 +85,80 @@ function MapCom(props) {
                         areaColor: '#4499d0',
                     }
                 },
-                bottom: 0,
+                top: 5,
                 aspectScale: 0.75,
-                zoom: 1.3
+                zoom: 1.2
             },
-            series: [{
-                type: 'map',
-                map: 'world',
-                geoIndex: 0,
-                roam: true,
-                // data: data
-            }, {
-                name: '电站',
-                type: 'scatter',
-                coordinateSystem: 'geo',
-                data: convertData(),
-                symbol: 'pin', //气泡
-                symbolSize: function (val) {
-                    return val[2] / 5;
+            series: [
+                {
+                    type: 'map',
+                    map: 'world',
+                    geoIndex: 0,
+                    roam: true,
+                    top: 5
                 },
-                label: {
-                    normal: {
-                        formatter: '{b}',
-                        position: 'right',
-                        show: true
+                {
+                    type: "effectScatter",
+                    coordinateSystem: "geo",
+                    data:convertData(),//传入的地图点数据
+                    symbolSize: 6,//涟漪大小
+                    showEffectOn: "render",
+                    //涟漪效应
+                    rippleEffect: {
+                        brushType: "stroke",
+                        color: "#f13434",
+                        period: 10,//周期
+                        scale: 10//规模
                     },
-                    emphasis: {
-                        show: true
-                    }
+                    hoverAnimation: true,//悬停动画
+                    //地图点样式
+                    label: {
+                        formatter: "{b}",
+                        position: "top",
+                        show: true,
+                        fontSize: "10",
+                    },
+                    itemStyle: {
+                        color: "#f13434",
+                        shadowBlur: 2,
+                        shadowColor: "#333"
+                    },
+                    zlevel: 1
                 },
-                itemStyle: {
-                    normal: {
-                        areaColor: '#00177B',
-                        borderColor: '#0073DA',
-                        borderWidth: 1
-                    },
-                    emphasis: {
-                        label: {
-                            show: false
+                {
+                    name: '电站',
+                    type: 'scatter',
+                    coordinateSystem: 'geo',
+                    data: convertData(),
+                    // symbol: 'pin', //气泡
+                    // symbolSize: function (val) {
+                    //     return val[2] / 5;
+                    // },
+                    // label: {
+                    //     normal: {
+                    //         formatter: '{b}',
+                    //         position: 'right',
+                    //         show: true
+                    //     },
+                    //     emphasis: {
+                    //         show: true
+                    //     }
+                    // },
+                    itemStyle: {
+                        normal: {
+                            areaColor: '#00177B',
+                            borderColor: '#0073DA',
+                            borderWidth: 1
                         },
-                        areaColor: '#00177B'
+                        emphasis: {
+                            label: {
+                                show: false
+                            },
+                            areaColor: '#00177B'
+                        }
                     }
                 }
-            }]
+            ]
         });
     }
 
