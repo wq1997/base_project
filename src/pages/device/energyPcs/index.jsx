@@ -3,6 +3,10 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import Tab from '../components/Tab'
 import { getLocalStorage, getQueryString } from "@/utils/utils";
 import { history, useLocation } from "umi";
+import Overview from "./components/Overview";
+import RealtimeData from './components/RealtimeData';
+import HistoryData from './components/HistoryData';
+import RealtimeAlarm from './components/RealtimeAlarm';
 
 const PageTypeList = [
     {label:'总览',key:'Overview'},
@@ -32,6 +36,10 @@ function Com(props) {
     return (
         <div className='content'>
             <Tab activeKey={activeKey} TabItem={PageTypeList} onChange={onChangeTab}/>
+            {activeKey==="Overview"&&<Overview />}
+            {activeKey==="RealtimeData"&&<RealtimeData />}
+            {activeKey==="HistoryData"&&<HistoryData />}
+            {activeKey==="RealtimeAlarm"&&<RealtimeAlarm />}
         </div>
     )
 }
