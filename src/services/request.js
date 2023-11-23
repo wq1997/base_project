@@ -11,12 +11,12 @@ const instance = axios.create({
     baseURL: getBaseUrl(),
     timeout: 10000,
     headers: {
-        // Authorization: getToken()
+        Authorization: getToken()
     }
 })
 
 instance.interceptors.request.use(config => {
-    // config.headers.Authorization = 'Bearer ' + getToken();
+    config.headers.Authorization = 'Bearer ' + getToken();
     config.headers.Token =  getToken();
     return config;
 }, error => {
