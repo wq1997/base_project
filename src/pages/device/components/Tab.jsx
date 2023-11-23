@@ -10,11 +10,12 @@ function Com(props) {
     return (
         <div className='content'>
         <Tabs
-                defaultActiveKey="0"
-                type="card"
-                size='small'
-                items={tabItem}
-            />
+            type="card"
+            size='small'
+            items={tabItem}
+            onChange={props.onChange}
+            activeKey={props.activeKey}
+        />
         </div>
     )
 }
