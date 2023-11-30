@@ -12,6 +12,7 @@ const Battery = () => {
                 SOC
             </div>
             <div className={styles.battery} >
+                <span>80%</span>
             </div>
             <div className={styles.batteryCopy}>
                 <div className={styles.gWave}></div>

@@ -435,11 +435,14 @@
                         width: calc(30% - 10px);
                         height: 100%;
                         display: grid;
-                        grid-template-columns: calc(50% - 5px) calc(50% - 5px);
+                        grid-template-rows: 1fr 1fr;
                         grid-gap: 10px;
                         position: relative;
                         .contentBottomLeftTopContentRightItem{
                             position: relative;
+                            display: flex;
+                            align-items: center;
+                            flex: 1;
                         }
                     }
                 }

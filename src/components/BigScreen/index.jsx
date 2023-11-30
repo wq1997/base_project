@@ -8,6 +8,7 @@ import Efficiency from './component/efficiency';
 import Prediction from './component/prediction';
 import Load from './component/load';
 import SOC from './component/soc';
+import   Battery from './component/battery';
 import HOC from './component/hoc';
 import ScrollTable from "./component/ScorllTable";
 import AMapLoader from '@amap/amap-jsapi-loader'
@@ -242,10 +243,11 @@ function BigScreen() {
                             </div>
                             <div className={styles.contentBottomLeftTopContentRight}>
                                 <div className={styles.contentBottomLeftTopContentRightItem}>
-                                    <SOC />
+                                <Battery />
                                 </div>
                                 <div className={styles.contentBottomLeftTopContentRightItem}>
-                                    <Battery />
+                                <SOC />
+                                
                                 </div>
                             </div>
                         </div>
