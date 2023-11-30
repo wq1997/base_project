@@ -9,4 +9,32 @@ export const SYSTEM_NAME='采日工商业微网孪生平台'
 export const MAP_KEY = '2dca0cb2ced6ced6030c26376186faee';
 export const WETHER_API = 'https://devapi.qweather.com/v7/weather/3d?';
 export const WETHER_KEY = '4e50b674eed8402c8a70c8155690a0e1';
+export const alarmTableColums=[
+    {
+        title: '设备编码',
+        dataIndex: 'deviceId',
+        key: 'deviceId',
+    },
+    {
+        title: '设备名称',
+        dataIndex: 'deviceName',
+        key: 'deviceName',
+    },   
+     {
+        title: '告警描述',
+        dataIndex: 'deviceDes',
+        key: 'deviceDes',
+    },
+    {
+        title: '告警等级',
+        dataIndex: 'deviceLevel',
+        key: 'deviceLevel',
+    },
+    {
+        title: '开始时间',
+        dataIndex: 'startT',
+        key: 'startT',
+    },
+];
 
+ 

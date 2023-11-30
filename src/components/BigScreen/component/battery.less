@@ -1,0 +1,87 @@
+
+
+.container {
+    position: relative;
+    width: 140px;
+    margin: auto;
+}
+
+.header {
+    position: absolute;
+    width: 50%;
+    height: 10%;
+    left: 50%;
+    top: -5%;
+    transform: translate(-50%, -10px);
+    border-radius: 5px 5px 0 0;
+    text-align: center;
+    background-image: linear-gradient(rgba(9, 198, 169,1),rgba(0, 19, 97,0.5));
+    color: #fff;
+}
+
+.batteryCopy {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 180px;
+    width: 140px;
+    border-radius: 18px  18px  18px  18px;
+    overflow: hidden;
+    background-image: url(../../../../public//images//bgcB.svg);
+
+}
+
+.battery {
+    position: relative;
+    height: 180px;
+    box-sizing: border-box;
+    border-radius: 18px  18px  18px  18px;
+    box-shadow: 0 0 5px 2px rgba(255, 255, 255, 0);
+    background: rgba(0, 150, 136, 0);
+    background-image: url(../../../../public//images//bgcB.svg);
+
+    z-index: 1;
+    
+    &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 80%;
+        border-radius: 20px  20px  20px  20px;
+        filter: hue-rotate(90deg);
+    }
+}
+
+.gWave {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: rgba(9, 198, 169, .03);
+    border-radius: 45% 47% 44% 42%;
+    bottom: 25px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    z-index: 1;
+    border: 3px solid rgba(9, 198, 169, .3);
+    animation: move 10s linear infinite;
+    box-shadow: rgba(9, 198, 169, 0.09) 0px 2px 1px, rgba(9, 198, 169, 0.09) 0px 4px 2px, rgba(9, 198, 169, 0.09) 0px 8px 4px, rgba(9, 198, 169, 0.09) 0px 16px 8px, rgba(9, 198, 169,0.09) 0px 32px 16px;
+}
+
+.gWave:nth-child(2) {
+    border-radius: 38% 46% 43% 47%;
+    transform: translate(-50%, 0) rotate(-135deg);
+}
+
+.gWave:nth-child(3) {
+    border-radius: 42% 46% 37% 40%;
+    transform: translate(-50%, 0) rotate(135deg);
+}
+
+
+@keyframes move {
+    100% {
+        transform: translate(-50%, -160px) rotate(720deg);
+    }
+}

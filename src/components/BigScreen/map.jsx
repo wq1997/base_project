@@ -27,13 +27,11 @@ function MapCom(props) {
     const bind = useCallback((ref) => {
         if (!ref) return;
         ref.on('click', params => {
-            if (params.componentType === "series" && params.componentSubType === "scatter") {
+            if (params.componentType === "series" ) {
                 const index = params.dataIndex;
-            
                 dispatch({ type: 'device/getAllPlantDetails',payload:{
                     plantId:params.data.id
                 } });
-                console.log(params,0);
                 history.push('/index/home')
             }
         });

@@ -29,6 +29,7 @@
     "default-passive-events": "^2.0.0",
     "echarts": "^5.4.3",
     "echarts-for-react": "^3.0.2",
+    "echarts-liquidfill": "^3.1.0",
     "jsencrypt": "^3.3.2",
     "moment": "^2.29.4",
     "qweather-icons": "^1.6.0",

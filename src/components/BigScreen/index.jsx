@@ -11,6 +11,7 @@ import Load from './component/load';
 import SOC from './component/soc';
 import HOC from './component/hoc';
 import NextBar from './component/nextBar';
+import Battery from './component/battery'
 import AMapLoader from '@amap/amap-jsapi-loader'
 import { MAP_KEY } from '@/utils/utils';
 import { WETHER_API, WETHER_KEY } from "@/utils/constants";
@@ -139,7 +140,7 @@ function BigScreen() {
                           onError(result)
                       }
                 });
-              
+                
                 function onComplete (data) {
                   setPosition(()=>{
                     return [data.position.lat?.toFixed(2),data.position.lng?.toFixed(2)]
@@ -209,7 +210,7 @@ function BigScreen() {
                                     <SOC />
                                 </div>
                                 <div className={styles.contentBottomLeftTopContentRightItem}>
-                                    <HOC />
+                                    <Battery />
                                 </div>
                             </div>
                         </div>

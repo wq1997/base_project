@@ -1,8 +1,9 @@
 import { Menu } from 'antd';
-import { Link, useLocation } from 'umi';
-import menu from '../router/menuRoute'
+import { Link, useLocation, useSelector } from 'umi';
+// import menu from '../router/menuRoute'
 import { AppstoreOutlined, ToolOutlined, AlertOutlined, LineChartOutlined, AccountBookOutlined, SettingOutlined } from '@ant-design/icons';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useSetState } from 'ahooks';
 
 const { SubMenu } = Menu;
 
@@ -17,11 +18,11 @@ const MenuList = [
         key: '/index/device',
         icon: <ToolOutlined />,
         children: [
-            { label: 'PCS舱', key: '/index/device/energyPcs', type: 'big' },
-            { label: 'BMS舱', key: '/index/device/energyBms', type: 'big' },
-            { label: '户外柜', key: '/index/device/energyOut', type: 'small' },
-            { label: '光伏', key: '/index/device/photovoltaic', type: 'guang'},
-            { label: '充电桩', key: '/index/device/chargingStation', type: 'chong' },
+            { label: 'PCS舱', key: '/index/device/energyPcs', type: "PCS" },
+            { label: 'BMS舱', key: '/index/device/energyBms', type: "BMS" },
+            { label: '户外柜', key: '/index/device/energyOut', type: "OC" },
+            { label: '光伏', key: '/index/device/photovoltaic', type: "PV" },
+            { label: '充电桩', key: '/index/device/chargingStation', type: "C" },
         ]
     },
     {
@@ -46,7 +47,7 @@ const MenuList = [
     {
         label: '告警',
         key: '/index/alarm',
-        icon: <AlertOutlined/>,
+        icon: <AlertOutlined />,
         children: [
             { label: '实时告警', key: '/index/alarm/realtimeAlarm', },
             { label: '历史告警', key: '/index/alarm/historyAlarm', },
@@ -56,7 +57,7 @@ const MenuList = [
     {
         label: '系统管理',
         key: '/index/systemManagement',
-        icon: <SettingOutlined/>,
+        icon: <SettingOutlined />,
         children: [
             { label: '策略配置', key: '/index/systemManagement/policyConfiguration', },
             { label: '用户管理', key: '/index/systemManagement/user', },
@@ -64,10 +65,16 @@ const MenuList = [
         ]
     },
 ]
-const currentDivice = ['big','small','guang','chong'];
 
 const getMenu = menuList => {
-  
+    const { plantDetails } = useSelector(function (state) {
+        return state.device
+    });
+    const [currentDivice, setCurrentDivice] = useState(plantDetails.model);
+    useEffect(() => {
+        setCurrentDivice(plantDetails.model)
+    }, [plantDetails])
+
     return menuList.map(menu => {
         if (menu.children) {
             return (
@@ -80,15 +87,15 @@ const getMenu = menuList => {
                 </SubMenu>
             );
         } else {
-            if(menu.type){
-                if(currentDivice?.find(it=>it===menu.type)){
+            if (menu.type) {
+                if (currentDivice?.find(it => it === menu.type)) {
                     return (
                         <Menu.Item key={menu.key}>
                             <Link to={menu.key}>{menu.label}</Link>
                         </Menu.Item>
                     );
                 }
-                return 
+                return
             }
             return (
                 <Menu.Item key={menu.key} icon={menu.icon}>
@@ -110,9 +117,6 @@ const MyMenu = () => {
             return [pathList.splice(0, 3).join("/")]
         }
     }
-   
-    console.log(getDefaultOpenKeys(), 123, pathname);
-
     return (
         <Menu
             mode="inline"
