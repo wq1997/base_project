@@ -2,12 +2,11 @@ import React, { useState, useEffect, } from 'react';
 import styles from "./index.less";
 import Map from '../BigScreen/map'
 import moment from "moment";
-import { Select, Space } from "antd";
 import ElectricityQuantity from "./component/electricityQuantity";
 import Efficiency from './component/efficiency';
 import Prediction from './component/prediction';
 import Load from './component/load';
-import SOC from './component/soc';
+import SOH from './component/soh';
 import HOC from './component/hoc';
 import ScrollTable from "./component/ScorllTable";
 import AMapLoader from '@amap/amap-jsapi-loader'
@@ -18,6 +17,13 @@ import ElectricTopLeftImg from "../../../public/images/electric_top_left.png";
 import ElectricTopRightImg from "../../../public/images/electric_top_right.png";
 import ElectricBottomLeftImg from "../../../public/images/electric_bottom_left.png";
 import ElectricBottomRightImg from "../../../public/images/electric_bottom_right.png";
+import ALLMoneyImg from "../../../public/images/all_money.svg";
+import DayMoneyImg from "../../../public/images/day_money.svg";
+import Shebei1Img from "../../../public/images/shebei1.svg";
+import Shebei2Img from "../../../public/images/shebei2.svg";
+import Shebei3Img from "../../../public/images/shebei3.svg";
+import Shebei4Img from "../../../public/images/shebei4.svg";
+import AreaSubTitle from './component/areaSubTitle';
 
 const dayEnum = {
     0: '日',
@@ -32,48 +38,6 @@ function BigScreen() {
     const [currentTime, setCurrentTime] = useState(moment().format("YYYY/MM/DD HH:mm:ss"));
     const [position,setPosition]=useState([]);
     const [wether, setWether] = useState(null);
-    const rightData = [
-        {
-            title: '总收益',
-            data: '10000',
-            unit: '万元'
-        },
-        {
-            title: '日收益',
-            data: '100',
-            unit: '万元'
-        },
-        {
-            title: '总设备',
-            data: '1000',
-            unit: '台'
-        },
-        {
-            title: '设备在线数量',
-            data: '900',
-            unit: '台'
-        },
-        {
-            title: '负载实时功率',
-            data: '65',
-            unit: 'kw'
-        },
-        {
-            title: '储能实时功率',
-            data: '1000',
-            unit: 'kw'
-        },
-        {
-            title: '设备离线数量',
-            data: '80',
-            unit: '台'
-        },
-        {
-            title: '设备告警数量',
-            data: '0',
-            unit: '台'
-        }
-    ]
     const refreshCurrentTime = () => {
         setInterval(()=>{
             setCurrentTime(moment().format("YYYY/MM/DD HH:mm:ss"));
@@ -242,10 +206,10 @@ function BigScreen() {
                             </div>
                             <div className={styles.contentBottomLeftTopContentRight}>
                                 <div className={styles.contentBottomLeftTopContentRightItem}>
-                                    <SOC />
+                                    <HOC />
                                 </div>
                                 <div className={styles.contentBottomLeftTopContentRightItem}>
-                                    <HOC />
+                                    <SOH />
                                 </div>
                             </div>
                         </div>
@@ -331,19 +295,72 @@ function BigScreen() {
                     <div className={styles.contentBottomRightTop}>
                         <AreaTitle title={"电站设备统计"} />
                         <div className={styles.contentBottomRightTopContent}>
-                            {
-                                rightData?.map(item => {
-                                    return (
-                                        <div className={styles.contentBottomRightTopItem}>
-                                            <div className={styles.subTitle}>{item?.title}</div>
-                                            <div className={styles.contentBottomRightTopItemContent}>
-                                                <div className={styles.contentBottomRightTopItemData}>{item?.data}</div>
-                                                <div className={styles.contentBottomRightTopItemUnit}>{item?.unit}</div>
-                                            </div>
+                            <div className={styles.contentBottomRightTopContentLeft}>
+                                <div className={styles.contentBottomRightTopContentLeftTitle}><AreaSubTitle title={"收益统计"} /></div>
+                                <div className={styles.contentBottomRightTopContentLeftContent}>
+                                    <div className={styles.contentBottomRightTopContentLeftContentItem}>
+                                        <img src={ALLMoneyImg} />
+                                        <div className={styles.contentBottomRightTopContentLeftContentTopBottom}>
+                                            <div className={styles.contentBottomRightTopContentLeftContentTopBottom1} style={{color: '#D3BC22'}}>10000</div>
+                                            <div className={styles.contentBottomRightTopContentLeftContentTopBottom2}>万元</div>
+                                            <div className={styles.contentBottomRightTopContentLeftContentTopBottom3}>总收益</div>
                                         </div>
-                                    )
-                                })
-                            }
+                                    </div>
+                                    <div className={styles.contentBottomRightTopContentLeftContentItem}>
+                                        <img src={DayMoneyImg} />
+                                        <div className={styles.contentBottomRightTopContentLeftContentTopBottom}>
+                                            <div className={styles.contentBottomRightTopContentLeftContentTopBottom1} style={{color: '#1A77D9'}}>10000</div>
+                                            <div className={styles.contentBottomRightTopContentLeftContentTopBottom2}>万元</div>
+                                            <div className={styles.contentBottomRightTopContentLeftContentTopBottom3}>日收益</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className={styles.contentBottomRightTopContentRight}>
+                                <div className={styles.contentBottomRightTopContentRightTitle}><AreaSubTitle title={"电站设备统计"} /></div>
+                                <div className={styles.contentBottomRightTopContentRightContent}>
+                                    <div className={styles.contentBottomRightTopContentRightContent1Item}>
+                                        <img src={Shebei1Img} />
+                                        <div className={styles.contentBottomRightTopContentRightContent1ItemContent}>
+                                            <div>
+                                                <span className={styles.contentBottomRightTopContentRightContent1ItemContentData}>1000</span>
+                                                <span className={styles.contentBottomRightTopContentRightContent1ItemContentUnit}>台</span>
+                                            </div>
+                                            <div className={styles.contentBottomRightTopContentRightContent1ItemContentName}>总设备</div>
+                                        </div>
+                                    </div>
+                                    <div className={styles.contentBottomRightTopContentRightContent1Item}>
+                                        <img src={Shebei2Img} />
+                                        <div className={styles.contentBottomRightTopContentRightContent1ItemContent}>
+                                            <div>
+                                                <span className={styles.contentBottomRightTopContentRightContent1ItemContentData}  style={{color: '#05FE51'}}>1000</span>
+                                                <span className={styles.contentBottomRightTopContentRightContent1ItemContentUnit}>台</span>
+                                            </div>
+                                            <div className={styles.contentBottomRightTopContentRightContent1ItemContentName}>设备在线</div>
+                                        </div>
+                                    </div>
+                                    <div className={styles.contentBottomRightTopContentRightContent1Item}>
+                                        <img src={Shebei3Img} />
+                                        <div className={styles.contentBottomRightTopContentRightContent1ItemContent}>
+                                            <div>
+                                                <span className={styles.contentBottomRightTopContentRightContent1ItemContentData}>1000</span>
+                                                <span className={styles.contentBottomRightTopContentRightContent1ItemContentUnit}>台</span>
+                                            </div>
+                                            <div className={styles.contentBottomRightTopContentRightContent1ItemContentName}>设备离线</div>
+                                        </div>
+                                    </div>
+                                    <div className={styles.contentBottomRightTopContentRightContent1Item}>
+                                        <img src={Shebei4Img} />
+                                        <div className={styles.contentBottomRightTopContentRightContent1ItemContent}>
+                                            <div>
+                                                <span className={styles.contentBottomRightTopContentRightContent1ItemContentData} style={{color: '#DE3521'}}>1000</span>
+                                                <span className={styles.contentBottomRightTopContentRightContent1ItemContentUnit}>台</span>
+                                            </div>
+                                            <div className={styles.contentBottomRightTopContentRightContent1ItemContentName}>设备告警</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div className={styles.contentBottomRightCenter}>
