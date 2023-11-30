@@ -24,6 +24,7 @@ import Shebei2Img from "../../../public/images/shebei2.svg";
 import Shebei3Img from "../../../public/images/shebei3.svg";
 import Shebei4Img from "../../../public/images/shebei4.svg";
 import AreaSubTitle from './component/areaSubTitle';
+import Battery from "./component/battery";
 
 const dayEnum = {
     0: '日',
@@ -85,7 +86,7 @@ function BigScreen() {
                           onError(result)
                       }
                 });
-              
+                
                 function onComplete (data) {
                   setPosition(()=>{
                     return [data.position.lat?.toFixed(2),data.position.lng?.toFixed(2)]
@@ -206,7 +207,7 @@ function BigScreen() {
                             </div>
                             <div className={styles.contentBottomLeftTopContentRight}>
                                 <div className={styles.contentBottomLeftTopContentRightItem}>
-                                    <HOC />
+                                    <Battery />
                                 </div>
                                 <div className={styles.contentBottomLeftTopContentRightItem}>
                                     <SOH />

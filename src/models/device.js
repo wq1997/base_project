@@ -6,7 +6,10 @@ export default {
 
     state: {
       allPlant: null,
-      plantDetails:null
+      plantDetails:{
+        model:['PCS', 'BMS', 'C', 'PV', 'OC'],
+        info:[]
+      }
     },
    
     effects: {  
@@ -23,29 +26,43 @@ export default {
       },
       *getAllPlantDetails({ payload }, { call, put }) {
         const data= yield call(apiGetDtuList,payload);
-     
         yield put({
             type:'updateState',
             payload:{
-              plantDetails:[  
-                    ...(JSON.parse(data.data.data))
-                ]
+              plantDetails:{
+                ...(data.data.data)
+              }
             },
         });
 
-      }
+      },
+      *saveData({payload}, {put, select}) {
+        yield put({type: "updateState", payload});
+        const data = yield select((state) => state.device);
+        sessionStorage.setItem("counterData", JSON.stringify(data));
+      },
+
     },
    
     reducers: {
       updateState(state, { payload }) {
-        console.log( {
-            ...state,
-            ...payload,
-          });
         return {
           ...state,
           ...payload,
         };
       },
-    }
+    },
+    subscriptions: {
+      setup({dispatch, history}) {
+        const data = sessionStorage.getItem("counterData");
+        if (data) {
+          dispatch({type: "saveData", payload: JSON.parse(data)});
+        }
+        // 监听 window.beforeunload 事件
+        window.addEventListener("beforeunload", () => {
+          dispatch({type: "saveData"});
+        });
+      },
+    },
+
   };

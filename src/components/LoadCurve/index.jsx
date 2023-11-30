@@ -21,7 +21,7 @@ const BarStatistical = () => {
               right: 10,
               top: 10
             },
-            grid: {
+            grid: { 
               left: '3%',
               right: '4%',
               bottom: 10,

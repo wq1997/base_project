@@ -29,11 +29,9 @@ function MapCom(props) {
         ref.on('click', params => {
             if (params.componentType === "series" && params.componentSubType === "effectScatter") {
                 const index = params.dataIndex;
-            
                 dispatch({ type: 'device/getAllPlantDetails',payload:{
                     plantId:params.data.id
                 } });
-                console.log(params,0);
                 history.push('/index/home')
             }
         });
