@@ -12,7 +12,7 @@ const Prediction = () => {
         setOptions({
             grid: {
                 top: 20,
-                bottom: 45,
+                bottom: 50,
                 right: 0
             },
             legend: {
