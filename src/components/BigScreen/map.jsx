@@ -27,7 +27,7 @@ function MapCom(props) {
     const bind = useCallback((ref) => {
         if (!ref) return;
         ref.on('click', params => {
-            if (params.componentType === "series" && params.componentSubType === "scatter") {
+            if (params.componentType === "series" && params.componentSubType === "effectScatter") {
                 const index = params.dataIndex;
             
                 dispatch({ type: 'device/getAllPlantDetails',payload:{
