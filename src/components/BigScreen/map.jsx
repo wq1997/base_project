@@ -27,7 +27,7 @@ function MapCom(props) {
     const bind = useCallback((ref) => {
         if (!ref) return;
         ref.on('click', params => {
-            if (params.componentType === "series" ) {
+            if (params.componentType === "series" && params.componentSubType === "effectScatter") {
                 const index = params.dataIndex;
                 dispatch({ type: 'device/getAllPlantDetails',payload:{
                     plantId:params.data.id
@@ -69,8 +69,8 @@ function MapCom(props) {
                 roam: true,
                 center: [103, 39.4],
                 selectedMode: 'single',
-                layoutCenter: ['50%', '50%'],
-                layoutSize: "100%",
+                layoutCenter: ['50%', '25%'],
+                layoutSize: "70%",
                 itemStyle: {
                     normal: {
                         areaColor: '#00177B',
@@ -99,7 +99,7 @@ function MapCom(props) {
                     type: "effectScatter",
                     coordinateSystem: "geo",
                     data:convertData(),//传入的地图点数据
-                    symbolSize: 6,//涟漪大小
+                    symbolSize: 15,//涟漪大小
                     showEffectOn: "render",
                     //涟漪效应
                     rippleEffect: {
@@ -109,16 +109,17 @@ function MapCom(props) {
                         scale: 10//规模
                     },
                     hoverAnimation: true,//悬停动画
+                    legendHoverLink: true,
                     //地图点样式
                     label: {
                         formatter: "{b}",
                         position: "top",
                         show: true,
-                        fontSize: "10",
+                        fontSize: "15",
                     },
                     itemStyle: {
                         color: "#f13434",
-                        shadowBlur: 2,
+                        shadowBlur: 4,
                         shadowColor: "#333"
                     },
                     zlevel: 1

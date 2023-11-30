@@ -7,12 +7,33 @@ const Prediction = () => {
     const { token } = theme.useToken();
     const [options, setOptions] = useState({});
     const getOptions = () => {
-      const data = [200,400,500,400,300,100,400]
+        const cData = [200,400,500,600,500,300,200];
+        const fData = [300,400,600,700,600,200,100];
         setOptions({
             grid: {
-                top: 10,
+                top: 20,
                 bottom: 50,
                 right: 0
+            },
+            legend: {
+                top: 0,
+                right: 5,
+                data: [
+                    {
+                        name: '充电',
+                        itemStyle: 'rgb(39, 46, 160)',
+                        textStyle: {
+                            color: 'rgba(0,0,0,0)'
+                        }
+                    },
+                    {
+                        name: '放电',
+                        itemStyle: 'rgb(202, 212, 54)',
+                        textStyle: {
+                            color: 'rgba(0,0,0,0)'
+                        }
+                    }
+                ]
             },
             xAxis: {
                 type: 'category',
@@ -38,42 +59,20 @@ const Prediction = () => {
                   color: 'white'
                 },
                 splitLine: {
-                  show: false
+                  show: true,
+                  lineStyle: {
+                    type: 'dashed',
+                    color: '#646CA9'
+                  }
                 }
               },
             series: [
                 {
-                    smooth: true,
-                    showSymbol: false,
+                    name: '充电',
                     lineStyle: {
                         normal: {
-                        width: 4,
-                        color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [ // 颜色渐变
-                            {
-                                offset: 0,
-                                color: 'rgb(0, 255, 255, 80)'
-                            },
-                            {
-                                offset: 0.2,
-                                color: 'rgb(0, 255, 255, 80)'
-                            },
-                            {
-                                offset: 0.4,
-                                color: 'rgb(0, 200, 200, 80)'
-                            },
-                            {
-                                offset: 0.6,
-                                color: 'rgb(0, 200, 200, 80)'
-                            },
-                            {
-                                offset: 0.8,
-                                color: 'rgb(0, 255, 255, 80)'
-                            },
-                            {
-                                offset: 1,
-                                color: 'rgb(0, 255, 255, 80)'
-                            }
-                        ])
+                            width: 4,
+                            color: 'rgb(39, 46, 160)'
                         }
                     },
                     areaStyle: { // 区域面积
@@ -86,54 +85,40 @@ const Prediction = () => {
                             colorStops: [
                                 {
                                     offset: 0,
-                                    color: 'rgb(0, 255, 255)' // 0% 处的颜色
+                                    color: 'rgb(39, 46, 160)'
                                 },
                                 {
                                     offset: 0.2,
-                                    color: 'rgb(0, 255, 255, 50)' // 50% 处的颜色
+                                    color: 'rgba(39, 46, 160, 0.8)'
+                                },
+                                {
+                                    offset: 0.4,
+                                    color: 'rgba(39, 46, 160, 0.6)'
+                                },
+                                {
+                                    offset: 0.6,
+                                    color: 'rgba(39, 46, 160, 0.4)'
+                                },
+                                {
+                                    offset: 0.8,
+                                    color: 'rgba(39, 46, 160, 0.2)'
                                 },
                                 {
                                     offset: 1,
-                                    color: 'rgb(0, 255, 255, 0)' // 100% 处的颜色
+                                    color: 'rgba(39, 46, 160, 0)'
                                 }
                             ]
                         }
                     },
-                data,
+                data: cData,
                 type: 'line'
               },
               {
-                smooth: true,
-                showSymbol: false,
+                name: '放电',
                 lineStyle: {
-                    normal: {
+                        normal: {
                             width: 4,
-                            color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [ // 颜色渐变
-                                {
-                                    offset: 0,
-                                    color: '#018F0F'
-                                },
-                                {
-                                    offset: 0.2,
-                                    color: '#018F0F'
-                                },
-                                {
-                                    offset: 0.4,
-                                    color: '#018F0F'
-                                },
-                                {
-                                    offset: 0.6,
-                                    color: '#018F0F'
-                                },
-                                {
-                                    offset: 0.8,
-                                    color: '#018F0F'
-                                },
-                                {
-                                    offset: 1,
-                                    color: '#018F0F'
-                                }
-                            ])
+                            color: 'rgb(202, 212, 54)'
                             }
                         },
                         areaStyle: { // 区域面积
@@ -146,20 +131,32 @@ const Prediction = () => {
                                 colorStops: [
                                     {
                                         offset: 0,
-                                        color: 'rgb(1, 157, 16)' // 0% 处的颜色
+                                        color: 'rgb(202, 212, 54)' // 0% 处的颜色
                                     },
                                     {
                                         offset: 0.2,
-                                        color: 'rgb(1, 157, 16, 50)' // 50% 处的颜色
+                                        color: 'rgba(202, 212, 54, 0.8)' // 50% 处的颜色
+                                    },
+                                    {
+                                        offset: 0.4,
+                                        color: 'rgba(202, 212, 54, 0.6)' // 50% 处的颜色
+                                    },
+                                    {
+                                        offset: 0.6,
+                                        color: 'rgba(202, 212, 54, 0.4)' // 50% 处的颜色
+                                    },
+                                    {
+                                        offset: 0.8,
+                                        color: 'rgba(202, 212, 54, 0.2)' // 50% 处的颜色
                                     },
                                     {
                                         offset: 1,
-                                        color: 'rgb(1, 157, 16, 0)' // 100% 处的颜色
+                                        color: 'rgba(202, 212, 54, 0)' // 100% 处的颜色
                                     }
                                 ]
                             }
                         },
-                    data: [400, 300, 200,500,300,200,100],
+                    data: fData,
                     type: 'line'
                 }
             ]

@@ -7,12 +7,59 @@ const ElectricityQuantity = () => {
     const { token } = theme.useToken();
     const [options, setOptions] = useState({});
     const getOptions = () => {
-      const yData = [200,400,500,400,300,100,400]
+        const cData = [300,400,500,400,300,100,400];
+        const fData = [200,300,400,300,200,200,300]
         setOptions({
             grid: {
-                top: 30,
-                bottom: 50,
-                right: 0
+                left: 40,
+                top: 10,
+                bottom: 60,
+                right: 5
+            },
+            legend: {
+                icon: "rect",
+                itemWidth: 30,
+                itemHeight: 20,
+                top: 0,
+                right: 5,
+                data: [
+                    {
+                        name: '充电',
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                {
+                                    offset: 0,
+                                    color: "#01B4F0"
+                                },
+                                {
+                                    offset: 1,
+                                    color: "rgba(0,0,0,0)"
+                                }
+                            ], false)
+                        },
+                        textStyle: {
+                            color: 'rgba(0,0,0,0)'
+                        }
+                    },
+                    {
+                        name: '放电',
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                {
+                                    offset: 0,
+                                    color: "#DDC72C"
+                                },
+                                {
+                                    offset: 1,
+                                    color: "rgba(0,0,0,0)"
+                                }
+                            ], false)
+                        },
+                        textStyle: {
+                            color: 'rgba(0,0,0,0)'
+                        }
+                    }
+                ]
             },
             xAxis: {
               type: 'category',
@@ -43,75 +90,45 @@ const ElectricityQuantity = () => {
             },
             series: [
               {
-                  type: "pictorialBar",
-                  label: {
-                      show: true, 
-                      position: ['17', '-30'],
-                      color: '#01E4FF',
-                      fontSize: 14
-                  },
-                  symbolSize: [40, 20],
-                  symbolOffset: [0, 10],
-                  z: 12,
-                  itemStyle: { 
-                      color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                          {
-                              offset: 0,
-                              color: "rgba(31,155,255,1)"
-                          },
-                          {
-                              offset: 1,
-                              color: "rgba(0,229,255,1)"
-                          }
-                      ])
-                  },
-                  data: yData
-              },
-              {
-                  type: 'bar',
-                  barWidth: 40,
-                  barGap: '0%',
-                  itemStyle: { 
-                      color: {
-                          "x": 0,
-                          "y": 0,
-                          "x2": 0,
-                          "y2": 1,
-                          "type": "linear",
-                          "global": false,
-                          "colorStops": [{
-                              "offset": 0, 
-                              "color": "rgba(0,229,255,0.5)"
-                          }, {
-                              "offset": 1, 
-                              "color": "#1F9BFF"
-                          }]
-                      }
-                  },
-                  data: yData
-              },
-              {
-                  type: "pictorialBar",
-                  symbolSize: [40, 20],
-                  symbolOffset: [0, -10],
-                  z: 12,
-                  symbolPosition: "end",
+                  name: '充电',
+                  type: "bar",
+                  barWidth: 30,
+                  barGap: 0,
                   itemStyle: {
                       color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                           {
                               offset: 0,
-                              color: "rgba(31,155,255,1)"
+                              color: "#01B4F0"
                           },
                           {
                               offset: 1,
-                              color: "rgba(0,229,255,1)"
+                              color: "rgba(0,0,0,0)"
                           }
                       ], false)
                   },
-                  data: yData
-              }
+                  data: cData
+              },
+              {
+                name: '放电',
+                type: "bar",
+                barWidth: 30,
+                barGap: 0,
+                itemStyle: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        {
+                            offset: 0,
+                            color: "#DDC72C"
+                        },
+                        {
+                            offset: 1,
+                            color: "rgba(0,0,0,0)"
+                        }
+                    ], false)
+                },
+                data: fData
+            }
           ]
-          });
+        });
     };
 
     useEffect(() => {

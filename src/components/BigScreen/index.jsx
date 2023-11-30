@@ -6,15 +6,18 @@ import { Select, Space } from "antd";
 import ElectricityQuantity from "./component/electricityQuantity";
 import Efficiency from './component/efficiency';
 import Prediction from './component/prediction';
-import Emission from './component/emission';
 import Load from './component/load';
 import SOC from './component/soc';
 import HOC from './component/hoc';
-import NextBar from './component/nextBar';
-import Battery from './component/battery'
+import ScrollTable from "./component/ScorllTable";
 import AMapLoader from '@amap/amap-jsapi-loader'
 import { MAP_KEY } from '@/utils/utils';
 import { WETHER_API, WETHER_KEY } from "@/utils/constants";
+import AreaTitle from './component/areaTitle';
+import ElectricTopLeftImg from "../../../public/images/electric_top_left.png";
+import ElectricTopRightImg from "../../../public/images/electric_top_right.png";
+import ElectricBottomLeftImg from "../../../public/images/electric_bottom_left.png";
+import ElectricBottomRightImg from "../../../public/images/electric_bottom_right.png";
 
 const dayEnum = {
     0: '日',
@@ -27,28 +30,6 @@ const dayEnum = {
 }
 function BigScreen() {
     const [currentTime, setCurrentTime] = useState(moment().format("YYYY/MM/DD HH:mm:ss"));
-    const leftData = [
-        {
-            title: '今日充电量',
-            data: '75',
-            unit: 'kwh'
-        },
-        {
-            title: '今日放电量',
-            data: '65',
-            unit: 'kwh'
-        },
-        {
-            title: '总充电量',
-            data: '1000',
-            unit: 'kwh'
-        },
-        {
-            title: '总放电量',
-            data: '800',
-            unit: 'kwh'
-        },
-    ]
     const [position,setPosition]=useState([]);
     const [wether, setWether] = useState(null);
     const rightData = [
@@ -168,12 +149,12 @@ function BigScreen() {
     return (
         <div className={styles.content}>
             <div className={styles.contentTop}>
-                <div className={styles.time}>
+                {/* <div className={styles.time}>
                     <div className={styles.timeTop}>{currentTime}</div>
                     <div className={styles.timeBottom}>星期{dayEnum[moment().day()]}</div>
-                </div>
+                </div> */}
                 <div className={styles.title}>采日能源储能管理系统</div>
-                {
+                {/* {
                     wether&&
                     <div className={styles.weather}>
                         <i class={`qi-${wether?.iconDay}`} style={{fontSize: 40, color: 'white'}}/>
@@ -182,28 +163,82 @@ function BigScreen() {
                             <div>{wether?.tempMin}℃ ~ {wether?.tempMax}℃</div>
                         </div>
                     </div>
-                }
+                } */}
             </div>
             <div className={styles.contentBottom}>
                 <div className={styles.contentBottomLeft}>
                     <div className={styles.contentBottomLeftTop}>
-                        <div className={styles.bigTitle}>电量统计</div>
-                        {/* <div className={styles.contentBottomLeftTopDivider}/> */}
+                        <AreaTitle title={"电量统计"} />
                         <div className={styles.contentBottomLeftTopContent}>
                             <div className={styles.contentBottomLeftTopContentLeft}>
-                                {
-                                    leftData?.map(item => {
-                                        return (
-                                            <div className={styles.contentBottomLeftTopContentLeftItem}>
-                                                <div className={styles.subTitle}>{item?.title}</div>
-                                                <div className={styles.contentBottomLeftTopContentLeftItemContent}>
-                                                    <div className={styles.contentBottomLeftTopContentLeftItemContentData}>{item?.data}</div>
-                                                    <div className={styles.contentBottomLeftTopContentLeftItemContentUnit}>{item?.unit}</div>
+                                <div className={styles.contentBottomLeftTopContentLeftTop}>
+                                    <div className={styles.contentBottomLeftTopContentLeftTopLeft}>
+                                        <img src={ElectricTopLeftImg} />
+                                        <div className={styles.contentBottomLeftTopContentLeftTopLeftContent}>
+                                            <div className={styles.contentBottomLeftTopContentLeftTopLeftContentTop}>
+                                                <div className={styles.contentBottomLeftTopContentLeftTopLeftContentTopData}>
+                                                    750000
+                                                </div>
+                                                <div className={styles.contentBottomLeftTopContentLeftTopLeftContentTopUnit}>
+                                                    kwh
                                                 </div>
                                             </div>
-                                        )
-                                    })
-                                }
+                                            <div className={styles.contentBottomLeftTopContentLeftTopLeftContentBottom}>
+                                                今日充电量
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className={styles.contentBottomLeftTopContentLeftTopRight}>
+                                        <img src={ElectricTopRightImg} />
+                                        <div className={styles.contentBottomLeftTopContentLeftTopRightContent}>
+                                            <div className={styles.contentBottomLeftTopContentLeftTopRightContentTop}>
+                                                <div className={styles.contentBottomLeftTopContentLeftTopRightContentTopData}>
+                                                   750000
+                                                </div>
+                                                <div className={styles.contentBottomLeftTopContentLeftTopRightContentTopUnit}>
+                                                    kwh
+                                                </div>
+                                            </div>
+                                            <div className={styles.contentBottomLeftTopContentLeftTopRightContentBottom}>
+                                                今日充电量
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className={styles.contentBottomLeftTopContentLeftBottom}>
+                                    <div className={styles.contentBottomLeftTopContentLeftBottomLeft}>
+                                        <img src={ElectricBottomLeftImg} />
+                                        <div className={styles.contentBottomLeftTopContentLeftBottomLeftContent}>
+                                            <div className={styles.contentBottomLeftTopContentLeftBottomLeftContentTop}>
+                                                <div className={styles.contentBottomLeftTopContentLeftBottomLeftContentTopData}>
+                                                   75000
+                                                </div>
+                                                <div className={styles.contentBottomLeftTopContentLeftBottomLeftContentTopUnit}>
+                                                    kwh
+                                                </div>
+                                            </div>
+                                            <div className={styles.contentBottomLeftTopContentLeftTopLeftContentBottom}>
+                                                总充电量
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className={styles.contentBottomLeftBottomContentLeftTopRight}>
+                                        <img src={ElectricBottomRightImg} />
+                                        <div className={styles.contentBottomLeftBottomContentLeftTopRightContent}>
+                                            <div className={styles.contentBottomLeftBottomContentLeftTopRightContentTop}>
+                                                <div className={styles.contentBottomLeftBottomContentLeftTopRightContentTopData}>
+                                                   75000
+                                                </div>
+                                                <div className={styles.contentBottomLeftBottomContentLeftTopRightContentTopUnit}>
+                                                    kwh
+                                                </div>
+                                            </div>
+                                            <div className={styles.contentBottomLeftBottomContentLeftTopRightContentBottom}>
+                                                总充电量
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div className={styles.contentBottomLeftTopContentRight}>
                                 <div className={styles.contentBottomLeftTopContentRightItem}>
@@ -216,61 +251,85 @@ function BigScreen() {
                         </div>
                     </div>
                     <div className={styles.contentBottomLeftCenter}>
-                        <div className={styles.bigTitle}>近七日充放电电量</div>
-                        {/* <div className={styles.contentBottomLeftCenterDivider}/> */}
+                        <AreaTitle title={"近七日充放电电量"} />
                         <div className={styles.contentBottomLeftCenterContent}>
                             <ElectricityQuantity />
                         </div>
                     </div>
                     <div className={styles.contentBottomLeftBottom}>
-                        <div className={styles.bigTitle}>近七日充放电效率</div>
-                        {/* <div className={styles.contentBottomLeftBottomDivider}/> */}
+                        <AreaTitle title={"近七日充放电效率"} />
                         <div className={styles.contentBottomLeftBottomContent}>
                             <Efficiency />
                         </div>
                     </div>
                 </div>
                 <div className={styles.contentBottomCenter}>
-                    <div className={styles.contentBottomCenterSelect}>
-                        <Select 
-                            placeholder="请选择电站类型" 
-                            options={[
+                    <AreaTitle title={"故障检测"} />
+                    <div className={styles.contentBottomCenterContent}>
+                        <ScrollTable 
+                            headerLineColor="#6974C1"
+                            columns={[
                                 {
-                                    value: 'ALL',
-                                    label: '全部'
+                                    title: '故障时间',
+                                    key: 'time'
+                                },
+                                {
+                                    title: '故障描述',
+                                    key: 'description'
+                                },
+                                {
+                                    title: '故障等级',
+                                    key: 'level'
+                                }
+                            ]}
+                            dataSource={[
+                                {
+                                    time: '2023-11-11',
+                                    description: '失败警告',
+                                    level: 1
+                                },
+                                {
+                                    time: '2023-11-11',
+                                    description: '失败警告',
+                                    level: 1
+                                },
+                                {
+                                    time: '2023-11-11',
+                                    description: '失败警告',
+                                    level: 1
+                                },
+                                {
+                                    time: '2023-11-11',
+                                    description: '失败警告',
+                                    level: 1
+                                },
+                                {
+                                    time: '2023-11-11',
+                                    description: '失败警告',
+                                    level: 1
+                                },
+                                {
+                                    time: '2023-11-11',
+                                    description: '失败警告',
+                                    level: 1
+                                },
+                                {
+                                    time: '2023-11-11',
+                                    description: '失败警告',
+                                    level: 1
+                                },
+                                {
+                                    time: '2023-11-11',
+                                    description: '失败警告',
+                                    level: 1
                                 }
                             ]}
                         />
-                        <Select 
-                            placeholder="请选择电站" 
-                            options={[
-                                {
-                                    value: 'ALL',
-                                    label: '全部'
-                                }
-                            ]}
-                        />
-                    </div>
-                    <div className={styles.contentBottomCenterBottom}>
-                        <div className={styles.contentBottomCenterBottomLeft}>
-                            <div className={styles.bigTitle}>数量统计</div>
-                            <div className={styles.contentBottomCenterBottomContent}>
-                                <NextBar />
-                            </div>
-                        </div>
-                        <div className={styles.contentBottomCenterBottomRight}>
-                            <div className={styles.bigTitle}>节能减排</div>
-                            {/* <div className={styles.contentBottomCenterBottomDivider}/> */}
-                            <div className={styles.contentBottomCenterBottomContent}>
-                                <Emission/>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div className={styles.contentBottomRight}>
                     <div className={styles.contentBottomRightTop}>
-                        <div className={styles.bigTitle}>电站设备统计</div>
-                        {/* <div className={styles.contentBottomRightTopDivider}/> */}
+                        <AreaTitle title={"电站设备统计"} />
                         <div className={styles.contentBottomRightTopContent}>
                             {
                                 rightData?.map(item => {
@@ -288,15 +347,13 @@ function BigScreen() {
                         </div>
                     </div>
                     <div className={styles.contentBottomRightCenter}>
-                        <div className={styles.bigTitle}>储能充放电功率预测曲线</div>
-                        {/* <div className={styles.contentBottomRightCenterDivider}/> */}
+                        <AreaTitle title={"储能充放电功率预测曲线"} />
                         <div className={styles.contentBottomRightCenterContent}>
                             <Prediction />
                         </div>
                     </div>
                     <div className={styles.contentBottomRightBottom}>
-                        <div className={styles.bigTitle}>负荷预测曲线</div>
-                        {/* <div className={styles.contentBottomRightBottomDivider}/> */}
+                        <AreaTitle title={"负荷预测曲线"} />
                         <div className={styles.contentBottomRightBottomContent}>
                             <Load/>
                         </div>

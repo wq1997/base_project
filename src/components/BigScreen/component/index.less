@@ -1,0 +1,40 @@
+
+.areaTitle{
+    display: flex;
+    align-items: center;
+    margin: 0 0 30px 40px;
+    img{
+        margin-right: 10px;
+    }
+
+    .areaTitleText{
+        color: #DDE6FF;
+        font-family: DingTalkSansFont;
+        letter-spacing: 3px;
+    }
+
+    @media screen and (min-width: 2000px){
+        img{
+            width: 15px;
+        }
+        .areaTitleText{
+            font-size: 30px;
+        }
+    }
+    @media screen and (min-width: 1000px) and (max-width: 2000px){
+        img{
+            width: 10px;
+        }
+        .areaTitleText{
+            font-size: 20px;
+        }
+    }
+    @media screen and (max-width: 1000px){
+        img{
+            width: 5px;
+        }
+        .areaTitleText{
+            font-size: 10px;
+        }
+    }
+}
