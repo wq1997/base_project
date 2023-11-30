@@ -7,11 +7,13 @@ const Load = () => {
     const { token } = theme.useToken();
     const [options, setOptions] = useState({});
     const getOptions = () => {
-      const data = [400,700,300,400,500,300,200]
+      const data = [200,400,500,800,700,500,400]
         setOptions({
             grid: {
-                top: 10,
-                bottom: 50
+                left: 40,
+                top: 25,
+                bottom: 50,
+                right: 0,
             },
             xAxis: {
                 type: 'category',
@@ -42,39 +44,39 @@ const Load = () => {
               },
             series: [
                 {
-                smooth: true,
-                showSymbol: false,
-                lineStyle: {
-                    normal: {
-                        width: 4,
-                        color: '#4F9CED'
+                    smooth: true,
+                    // showSymbol: false,
+                    lineStyle: {
+                        normal: {
+                            width: 4,
+                            color: "#244FD3"
+                        }
+                    },
+                    areaStyle: { // 区域面积
+                        color: {
+                            type: 'linear',
+                            x: 0,
+                            y: 0,
+                            x2: 0,
+                            y2: 1,
+                            colorStops: [
+                                {
+                                    offset: 0,
+                                    color: '#174AF4' // 0% 处的颜色
+                                },
+                                {
+                                    offset: 1,
+                                    color: '#05043D' // 100% 处的颜色
+                                }
+                            ]
+                        }
+                    },
+                    data,
+                    type: 'line',
+                    label: {
+                        show: true,
+                        position: 'top'
                     }
-                },
-                areaStyle: { // 区域面积
-                    color: {
-                        type: 'linear',
-                        x: 0,
-                        y: 0,
-                        x2: 0,
-                        y2: 1,
-                        colorStops: [
-                            {
-                                offset: 0,
-                                color: 'rgb(78, 158, 242)' // 0% 处的颜色
-                            },
-                            {
-                                offset: 0.2,
-                                color: 'rgba(78, 158, 242, 50)' // 50% 处的颜色
-                            },
-                            {
-                                offset: 1,
-                                color: 'rgba(78, 158, 242, 0)' // 100% 处的颜色
-                            }
-                        ]
-                    }
-                },
-                data,
-                type: 'line'
               }
             ]
         });
