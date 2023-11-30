@@ -6,13 +6,7 @@ import ElectricityQuantity from "./component/electricityQuantity";
 import Efficiency from './component/efficiency';
 import Prediction from './component/prediction';
 import Load from './component/load';
-<<<<<<< HEAD
-import SOC from './component/soc';
-import   Battery from './component/battery';
-=======
 import SOH from './component/soh';
->>>>>>> 2e75b80e785b6249cc73b2f31e3e9b30d1367d3f
-import HOC from './component/hoc';
 import ScrollTable from "./component/ScorllTable";
 import AMapLoader from '@amap/amap-jsapi-loader'
 import { MAP_KEY } from '@/utils/utils';
@@ -212,18 +206,10 @@ function BigScreen() {
                             </div>
                             <div className={styles.contentBottomLeftTopContentRight}>
                                 <div className={styles.contentBottomLeftTopContentRightItem}>
-<<<<<<< HEAD
-                                <Battery />
-                                </div>
-                                <div className={styles.contentBottomLeftTopContentRightItem}>
-                                <SOC />
-                                
-=======
                                     <Battery />
                                 </div>
                                 <div className={styles.contentBottomLeftTopContentRightItem}>
                                     <SOH />
->>>>>>> 2e75b80e785b6249cc73b2f31e3e9b30d1367d3f
                                 </div>
                             </div>
                         </div>
