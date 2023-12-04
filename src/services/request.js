@@ -1,9 +1,9 @@
 import axios from "axios";
-import { getDvaApp } from "umi";
+import { getDvaApp,history } from "umi";
+import {  message } from 'antd';
 
 export const getBaseUrl = () => {
     const { API_URL = '' } = process.env;
-    console.log("API_URL", API_URL)
     return API_URL;
 };
 const getToken = () => localStorage.getItem("Token");
@@ -17,7 +17,8 @@ const instance = axios.create({
 })
 
 instance.interceptors.request.use(config => {
-    config.headers.Authorization = 'Bearer ' + getToken()
+    config.headers.Authorization = 'Bearer ' + getToken();
+    config.headers.Token =  getToken();
     return config;
 }, error => {
     return Promise.reject(error);
@@ -25,6 +26,13 @@ instance.interceptors.request.use(config => {
 
 instance.interceptors.response.use(response => {
     if (response.status === 200) {
+        console.log(response,101010);
+        let {data}=response;
+        if (data.msg==="Please login！") {
+            message.error(data.msg);
+            logout();
+            // history.push('/login')
+        }
         return Promise.resolve(response);
     } else {
         return Promise.reject(response);

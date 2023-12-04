@@ -5,7 +5,7 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import { INITIAL_EVENTS, createEventId } from '../../utils/event-utils'
 import { useState } from "react"
-const ThemeBtn = () => {
+const Strategy = () => {
 
     const initialDate = '2021-06-10'
     function renderEventContent(eventInfo) {
@@ -136,4 +136,4 @@ const ThemeBtn = () => {
 
 }
 
-export default ThemeBtn
+export default Strategy

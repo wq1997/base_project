@@ -18,7 +18,7 @@ const ThemeBtn = () => {
     ]
     const changeTheme=(theme)=>{
         dispatch({
-            type: 'global/changeTheme',
+            type: 'global/changeTheme', 
             payload:{
                 theme
             }
@@ -27,7 +27,7 @@ const ThemeBtn = () => {
     return (
         <Dropdown menu={{ items }} placement="bottom">
             <Button>切换主题</Button>
-        </Dropdown>
+        </Dropdown> 
     )
 }
 

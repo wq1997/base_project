@@ -1,5 +1,6 @@
-import { login } from "@/services/user"
+import { logout as logoutServe } from "@/services/user"
 import { history } from "umi";
+import { removeLocalStorage } from "@/utils/utils";
 
 export default {
     namespace: 'user',
@@ -8,22 +9,10 @@ export default {
       user: null,
     },
    
-    effects: {
-      *queryUser({ payload }, { call, put }) {
-        const userInfo = yield call(login, { username: 'wangqing', password: '123456' });
-        console.log("queryUser", userInfo)
-        if(userInfo){
-          yield put({
-            type: 'updateState',
-            payload: {
-                user: userInfo
-            }
-          })
-        }
-      },
-
+    effects: {  
       *logout({ payload }, { call, put }) {
-        history.push("/login")
+        removeLocalStorage("Token");
+        history.push("/login");
       }
     },
    

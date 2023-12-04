@@ -1,29 +1,27 @@
 const App = "@/pages/App";
 const Layout = "@/layouts/baseLayout";
-
 const Home = "@/pages/home";
 
 
 const Login = "@/pages/account/login";
-const Test = "@/pages/test"
-
+const deviceMap = "@/pages/deviceMap"
+import menuRoutes from '../router/menuRoute'
 export default Routes = [
    {
      path: "/", 
      component: App,
      routes: [
-      {
-        path: '/cet',
-        component: Layout,
-        routes: [
-          // 首页
-          { path: '/cet/home', component: Home },
-        ]
-      },
       { path: "/login", component: Login },
       {
-        path: '/test',
-        component: Test
+        path: '/index',
+        component: Layout,
+        routes: [
+          ...menuRoutes 
+        ]
+      },
+      {
+        path: '/deviceMap',
+        component: deviceMap
        }
      ]
    }
