@@ -17,7 +17,7 @@ const Income = () => {
                 left: 0,
                 right: 20,
                 bottom: 0,
-                top: 0,
+                top: 10,
                 containLabel: true
             },
             tooltip: {
@@ -157,7 +157,7 @@ const Income = () => {
             <div>收益情况示意</div>
             <div>排行</div>
         </div>
-        <ReactECharts option={options} style={{height: 'calc(100% - 10px)'}} />
+        <ReactECharts option={options} style={{height: '100%'}} />
       </div>
     );
 }
