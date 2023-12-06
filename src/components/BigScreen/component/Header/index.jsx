@@ -135,7 +135,7 @@ const Header = ({
                     }
                 </div>
             </div>
-            <div className={styles.title}>能源数智话解决方案大屏({currentDeviceTypeTitle} / {currentAreaTypeTitle})</div>
+            <div className={styles.title}>能源数智化解决方案大屏({currentDeviceTypeTitle} / {currentAreaTypeTitle})</div>
             <div className={styles.headerRight}>
                 <div className={styles.headerRightLeft}>
                     <div>{moment(currentTime).format("MM 月 DD 日")}</div>

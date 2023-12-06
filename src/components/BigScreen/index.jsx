@@ -1,10 +1,11 @@
 import styles from "./index.less";
 import Map from '../BigScreen/map'
 import ScrollTable from "./component/ScorllTable";
-import AreaTitle from './component/areaTitle';
 import Header from './component/Header';
 import AreaTemplate from "./component/AreaTemplate";
 import { useState } from "react";
+import Carbon from "./component/carbon";
+import Income from "./component/income";
 const deviceTypeList = [
     {
         key: 'LargeEnergy',
@@ -65,14 +66,16 @@ function BigScreen() {
                     <AreaTemplate 
                         title="减碳曲线展示"
                     >
+                        <Carbon />
                     </AreaTemplate>
                     <AreaTemplate 
                         title="项目收益排行"
                     >
+                        <Income />
                     </AreaTemplate>
                 </div>
                 <div className={styles.contentBottomCenterTop}>
-                    
+
                 </div>
                 <div className={styles.contentBottomCenterBottom}>
                     <AreaTemplate 
