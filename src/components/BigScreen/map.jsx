@@ -69,14 +69,14 @@ function MapCom(props) {
                 roam: true,
                 center: [103, 39.4],
                 selectedMode: 'single',
-                layoutCenter: ['50%', '25%'],
+                layoutCenter: ['50%', '35%'],
                 layoutSize: "70%",
                 itemStyle: {
                     normal: {
-                        areaColor: '#00177B',
-                        borderColor: '#0073DA',
-                        borderWidth: 1,
-                        shadowColor: 'rgba(3,221,255,0.5)',
+                        areaColor: '#001530',
+                        borderColor: '#3294B0',
+                        borderWidth: 2,
+                        shadowColor: '#2DCFDA',
                         // shadowBlur: 30
                     },
                     emphasis: {

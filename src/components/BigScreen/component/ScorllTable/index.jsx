@@ -43,7 +43,7 @@ const Table = ({
 
     return (
         <div className={styles.table} ref={tableRef}>
-            <div className={styles.tableHeader} style={{borderBottom: `3px solid ${headerLineColor}`}} ref={tableHeaderRef}>
+            <div className={styles.tableHeader} ref={tableHeaderRef}>
                 {
                     columns?.map(column => {
                         return (
