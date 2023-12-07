@@ -48,6 +48,7 @@ const IncomeCurve = ({
                     textStyle: {
                         color: 'white',
                         margin:15,
+                        fontSize: 7
                     },
                 },
                 axisTick: { show: false,},
@@ -69,7 +70,7 @@ const IncomeCurve = ({
                     margin:20,
                     textStyle: {
                         color: 'white',
-                        
+                        fontSize: 7
                     },
                 },
                 axisTick: { show: false,},  

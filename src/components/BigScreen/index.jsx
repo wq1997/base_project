@@ -10,6 +10,9 @@ import IncomeCurve from "./component/incomeCurve";
 import MaintenanceList from "./component/maintenanceList";
 import CenterTopData from "./component/centerTopData";
 import Efficiency from "./component/efficiency";
+import OperationAll from "./component/operationAll";
+import AlarmData from "./component/alarmData";
+import OperationRecord from "./component/operationRecord";
 
 const deviceTypeList = [
     {
@@ -94,14 +97,17 @@ function BigScreen() {
                     <AreaTemplate 
                         title="智慧运维汇总"
                     >
+                        <OperationAll />
                     </AreaTemplate>
                     <AreaTemplate 
                         title="智慧告警设备"
                     >
+                        <AlarmData />
                     </AreaTemplate>
                     <AreaTemplate 
                         title="运维记录展示"
                     >
+                        <OperationRecord />
                     </AreaTemplate>
                     <AreaTemplate 
                         title="运维工单汇总"
