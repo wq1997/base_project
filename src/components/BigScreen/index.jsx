@@ -9,6 +9,7 @@ import IncomeRanking from "./component/incomeRanking";
 import IncomeCurve from "./component/incomeCurve";
 import MaintenanceList from "./component/maintenanceList";
 import CenterTopData from "./component/centerTopData";
+import Efficiency from "./component/efficiency";
 
 const deviceTypeList = [
     {
@@ -66,6 +67,7 @@ function BigScreen() {
                     <AreaTemplate 
                         title="设备充放电效率排行"
                     >
+                        <Efficiency />
                     </AreaTemplate>
                     <AreaTemplate 
                         title="减碳曲线展示"
