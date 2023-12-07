@@ -36,16 +36,16 @@ const SOH = () => {
                 lineStyle: {
                   width: 6,
                   color: [
-                    [0.25, '#FF6E76'],
-                    [0.5, '#FDDD60'],
-                    [0.75, '#58D9F9'],
-                    [1, '#7CFFB2']
+                    [0.25, '#CB522C'],
+                    [0.5, '#F8E50D'],
+                    [0.75, '#C2F50C'],
+                    [1, '#05F55E']
                   ]
                 }
               },
               pointer: {
                 length: '50%',
-                offsetCenter: [0, '-10%'],
+                offsetCenter: ['-10%', '-10%'],
               },
               title: {
                 offsetCenter: [0, '20%'],

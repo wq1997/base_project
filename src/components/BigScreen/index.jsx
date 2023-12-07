@@ -7,7 +7,6 @@ import Efficiency from './component/efficiency';
 import Prediction from './component/prediction';
 import Load from './component/load';
 import SOH from './component/soh';
-import HOC from './component/hoc';
 import ScrollTable from "./component/ScorllTable";
 import AMapLoader from '@amap/amap-jsapi-loader'
 import { MAP_KEY } from '@/utils/utils';
