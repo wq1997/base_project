@@ -5,7 +5,11 @@ import Header from './component/Header';
 import AreaTemplate from "./component/AreaTemplate";
 import { useState } from "react";
 import Carbon from "./component/carbon";
-import Income from "./component/income";
+import IncomeRanking from "./component/incomeRanking";
+import IncomeCurve from "./component/incomeCurve";
+import MaintenanceList from "./component/maintenanceList";
+import CenterTopData from "./component/centerTopData";
+
 const deviceTypeList = [
     {
         key: 'LargeEnergy',
@@ -71,16 +75,17 @@ function BigScreen() {
                     <AreaTemplate 
                         title="项目收益排行"
                     >
-                        <Income />
+                        <IncomeRanking />
                     </AreaTemplate>
                 </div>
                 <div className={styles.contentBottomCenterTop}>
-
+                    <CenterTopData />
                 </div>
                 <div className={styles.contentBottomCenterBottom}>
                     <AreaTemplate 
                         title="储能系统收益统计曲线图"
                     >
+                        <IncomeCurve currentAreaType={areaType}/>
                     </AreaTemplate>
                 </div>
                 <div className={styles.contentBottomRight}>
@@ -99,6 +104,7 @@ function BigScreen() {
                     <AreaTemplate 
                         title="运维工单汇总"
                     >
+                        <MaintenanceList />
                     </AreaTemplate>
                     <AreaTemplate 
                         title="运维运动列表"

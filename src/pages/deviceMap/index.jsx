@@ -1,5 +1,5 @@
 import { theme, Table, DatePicker } from "antd";
-import { ThemeBtn, LocaleBtn,BigScreen,Strategy } from "@/components";
+import { ThemeBtn, LocaleBtn,BigScreen } from "@/components";
 import { useIntl } from "umi";
 
 const Test = () => {
@@ -12,7 +12,6 @@ const Test = () => {
       }}
     >
       <BigScreen/>
-      {/* <Strategy/> */}
     </div>
   )
 }
