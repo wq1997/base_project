@@ -12,23 +12,17 @@ import CenterTopData from "./component/centerTopData";
 import Efficiency from "./component/efficiency";
 import OperationAll from "./component/operationAll";
 import AlarmData from "./component/alarmData";
-import OperationRecord from "./component/operationRecord";
 
 const deviceTypeList = [
     {
         key: 'LargeEnergy',
-        label: '大储(源网侧)',
-        title: '大储'
-    },
-    {
-        key: 'IndustryCommerce',
-        label: '工商业',
-        title: '工商业'
+        label: '系统储能',
+        title: '系统储能'
     },
     {
         key: 'IntegratedMachine',
-        label: '一体机',
-        title: '一体机'
+        label: '光储一体机',
+        title: '光储一体机'
     }
 ]
 const areaTypeList = [
@@ -105,9 +99,68 @@ function BigScreen() {
                         <AlarmData />
                     </AreaTemplate>
                     <AreaTemplate 
-                        title="运维记录展示"
+                        title="告警列表"
                     >
-                        <OperationRecord />
+                        <div style={{padding: '0 30px', height: '100%'}}>
+                            <ScrollTable 
+                                columns={[
+                                    {
+                                        title: '故障时间',
+                                        key: 'time'
+                                    },
+                                    {
+                                        title: '故障描述',
+                                        key: 'description'
+                                    },
+                                    {
+                                        title: '故障等级',
+                                        key: 'level'
+                                    }
+                                ]}
+                                dataSource={[
+                                    {
+                                        time: '2023-11-11',
+                                        description: '失败警告',
+                                        level: 1
+                                    },
+                                    {
+                                        time: '2023-11-11',
+                                        description: '失败警告',
+                                        level: 1
+                                    },
+                                    {
+                                        time: '2023-11-11',
+                                        description: '失败警告',
+                                        level: 1
+                                    },
+                                    {
+                                        time: '2023-11-11',
+                                        description: '失败警告',
+                                        level: 1
+                                    },
+                                    {
+                                        time: '2023-11-11',
+                                        description: '失败警告',
+                                        level: 1
+                                    },
+                                    {
+                                        time: '2023-11-11',
+                                        description: '失败警告',
+                                        level: 1
+                                    },
+                                    {
+                                        time: '2023-11-11',
+                                        description: '失败警告',
+                                        level: 1
+                                    },
+                                    {
+                                        time: '2023-11-11',
+                                        description: '失败警告',
+                                        level: 1
+                                    }
+                                ]}
+                            />
+                        </div>
                     </AreaTemplate>
                     <AreaTemplate 
                         title="运维工单汇总"
@@ -115,7 +168,7 @@ function BigScreen() {
                         <MaintenanceList />
                     </AreaTemplate>
                     <AreaTemplate 
-                        title="运维运动列表"
+                        title="运维工单列表"
                     >
                         <div style={{padding: '0 30px', height: '100%'}}>
                             <ScrollTable 
