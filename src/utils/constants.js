@@ -36,5 +36,6 @@ export const alarmTableColums=[
         key: 'startT',
     },
 ];
+export const RealtimeData=[]
 
  

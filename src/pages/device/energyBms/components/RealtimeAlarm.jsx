@@ -1,7 +1,16 @@
 import Table from '@/components/Table.jsx'
 import { alarmTableColums } from '@/utils/constants'
-
+import {
+    getNowAlarmsByContainerIdWithPage,
+  } from "@/services/alarm";
 const RealtimeAlarm = () => {
+
+const getAlarmData=async()=>{
+    const res = await loginSever({
+       
+      });
+}
+    
     const data = [
         {
           key:1,

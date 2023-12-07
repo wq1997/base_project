@@ -26,7 +26,7 @@ instance.interceptors.request.use(config => {
 
 instance.interceptors.response.use(response => {
     if (response.status === 200) {
-        console.log(response,101010);
+        // console.log(response,101010);
         let {data}=response;
         if (data.msg==="Please login！") {
             message.error(data.msg);
