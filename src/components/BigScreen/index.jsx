@@ -1,5 +1,7 @@
 import styles from "./index.less";
-import Map from '../BigScreen/map'
+import MapChina from '../BigScreen/map'
+import MapWorld from '../BigScreen/wordMap'
+
 import ScrollTable from "./component/ScorllTable";
 import Header from './component/Header';
 import AreaTemplate from "./component/AreaTemplate";
@@ -217,7 +219,8 @@ function BigScreen() {
                     </AreaTemplate>
                 </div>
                 <div className={styles.contentBottomMap}>
-                    <Map/>
+                    {areaType=='domestic'&&<MapChina  key={areaType}/>}
+                    {areaType=='overseas'&& <MapWorld key={areaType}/>}
                 </div>
             </div>
         </div>

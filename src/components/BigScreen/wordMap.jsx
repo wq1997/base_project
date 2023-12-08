@@ -2,9 +2,7 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useDispatch, useSelector,history } from "umi";
 import ReactECharts from "echarts-for-react";
-import china from '../../../public/mapJson/chinaB'
 import world from '../../../public/mapJson/maoJson'
-import chinaOutLine from '../../../public/mapJson/chinaOutLine'
 import * as echarts from "echarts";
 import 'default-passive-events'
 
@@ -45,8 +43,7 @@ function MapCom(props) {
       }, [bind]);
 
     const getOptions = () => {
-            echarts.registerMap('map', china);
-            echarts.registerMap('mapOutLine', chinaOutLine);
+            echarts.registerMap('map', world);
         setOptions({
             grid: {
               top: 0,
@@ -69,8 +66,8 @@ function MapCom(props) {
                 id: "bb",
                 show: true,
                 map: "map",
-                roam: false,
-                center: [103, 39.4],
+                roam: true,
+                center: [0,35],
                 selectedMode: 'single',
                 layoutCenter: ['50%', '35%'],
                 layoutSize: "70%",
@@ -79,10 +76,10 @@ function MapCom(props) {
                         areaColor:'rgba(0,255,255,.02)',
                         borderColor: '#3294B0',
                         borderWidth: 1,
-                        // shadowColor: '#2DCFDA',
-                        // shadowOffsetX: 0,
-                        // shadowOffsetY: 4,
-                        // shadowBlur: 20
+                        shadowColor: '#2DCFDA',
+                        shadowOffsetX: 0,
+                        shadowOffsetY: 2,
+                        shadowBlur: 5
                     },
                   
                 },
@@ -91,48 +88,7 @@ function MapCom(props) {
                 zoom: 1.2
             },
             series: [
-                {
-                    map: 'mapOutLine',
-                    silent: false,
-                    type: 'map',
-                    zoom:0.7,
-                    roam: false,
-                    label: {
-                        normal: {
-                            show: false,
-                            textStyle: {
-                                color: '#fff'
-                            }
-                        },
-                        emphasis: {
-                            textStyle: {
-                                color: '#fff'
-                            }
-                        }
-                    },
-                    top: -7,
-                    left:630,
-                    roam: true,
-                    itemStyle: {
-                        normal: {
-                            areaColor: 'rgba(0,255,255,.02)',
-                            borderColor: '#00ffff',
-                            borderWidth: 3,
-                            shadowColor: '#00ffff',
-                            shadowOffsetX: 0,
-                            shadowOffsetY: 0,
-                            shadowBlur: 15,
-                        },
-                        emphasis: {
-                            areaColor: 'transparent', //悬浮背景
-                            textStyle: {
-                                color: '#fff'
-                            }
-                        }
-                    },
-                    zlevel: -1
-
-                },
+                
                 {
                     type: "effectScatter",
                     coordinateSystem: "geo",
