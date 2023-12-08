@@ -1,9 +1,8 @@
 import { useRef } from "react";
 import styles from "./index.less";
 import { useEffect, useState } from "react";
-let timer = null;
+
 const Table = ({
-    headerLineColor='white',
     color="white",
     columns,
     dataSource
@@ -16,8 +15,7 @@ const Table = ({
     const startScroll = () => {
         const tableContentScrollHeight = tableContentRef?.current?.scrollHeight;
         let scrollTop = 0;
-        clearInterval(timer);
-        timer = setInterval(()=>{
+        setInterval(()=>{
             tableContentRef.current.style.top = `-${scrollTop}px`;
             if(scrollTop>=tableContentScrollHeight-5){
                 scrollTop=0;
@@ -38,7 +36,6 @@ const Table = ({
 
     useEffect(()=>{
         init();
-        window.addEventListener("resize", init);
     }, []);
 
     return (
