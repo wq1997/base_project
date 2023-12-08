@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_图层_1" data-name="图层 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 114.5 120">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#_未命名的渐变_205);
+      }
+
+      .cls-2 {
+        fill: url(#_未命名的渐变_155);
+        filter: url(#outer-glow-4);
+      }
+
+      .cls-3 {
+        fill: url(#_未命名的渐变_155-3);
+        filter: url(#outer-glow-6);
+      }
+
+      .cls-4 {
+        fill: url(#_未命名的渐变_155-2);
+        filter: url(#outer-glow-5);
+      }
+
+      .cls-5 {
+        mask: url(#mask);
+      }
+
+      .cls-6 {
+        filter: url(#luminosity-invert);
+      }
+
+      .cls-7 {
+        fill: #f7f366;
+      }
+
+      .cls-8 {
+        fill: url(#_未命名的渐变_205-2);
+      }
+
+      .cls-9 {
+        fill: url(#_未命名的渐变_205-3);
+      }
+
+      .cls-10 {
+        fill: url(#_未命名的渐变_155-5);
+      }
+
+      .cls-11 {
+        fill: url(#_未命名的渐变_155-4);
+      }
+
+      .cls-12 {
+        filter: url(#outer-glow-7);
+      }
+    </style>
+    <linearGradient id="_未命名的渐变_155" data-name="未命名的渐变 155" x1="110.21" y1="26.52" x2="114.21" y2="26.52" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f7f78b"/>
+      <stop offset="1" stop-color="#f4ee31"/>
+    </linearGradient>
+    <filter id="outer-glow-4" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="0"/>
+      <feGaussianBlur result="blur" stdDeviation="4"/>
+      <feFlood flood-color="#f2e719" flood-opacity=".5"/>
+      <feComposite in2="blur" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="_未命名的渐变_155-2" data-name="未命名的渐变 155" x1="1281.28" y1="-1192.2" x2="1283.28" y2="-1192.2" gradientTransform="translate(917.28 1536.44) rotate(-78.61)" xlink:href="#_未命名的渐变_155"/>
+    <filter id="outer-glow-5" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="0"/>
+      <feGaussianBlur result="blur-2" stdDeviation="4"/>
+      <feFlood flood-color="#edf219" flood-opacity=".8"/>
+      <feComposite in2="blur-2" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="_未命名的渐变_155-3" data-name="未命名的渐变 155" x1="1285.93" y1="-1088.07" x2="1287.93" y2="-1088.07" gradientTransform="translate(917.28 1536.44) rotate(-78.61)" xlink:href="#_未命名的渐变_155"/>
+    <filter id="outer-glow-6" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="0"/>
+      <feGaussianBlur result="blur-3" stdDeviation="4"/>
+      <feFlood flood-color="#f2e219" flood-opacity=".8"/>
+      <feComposite in2="blur-3" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="outer-glow-7" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="0"/>
+      <feGaussianBlur result="blur-4" stdDeviation="5"/>
+      <feFlood flood-color="#f2f264" flood-opacity=".5"/>
+      <feComposite in2="blur-4" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="_未命名的渐变_155-4" data-name="未命名的渐变 155" x1="22" y1="35.82" x2="88.08" y2="35.82" xlink:href="#_未命名的渐变_155"/>
+    <linearGradient id="_未命名的渐变_155-5" data-name="未命名的渐变 155" x1="28.82" y1="60.4" x2="47.11" y2="60.4" xlink:href="#_未命名的渐变_155"/>
+    <linearGradient id="_未命名的渐变_205" data-name="未命名的渐变 205" x1="56.5" y1="100" x2="56.5" y2="80" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f7f78b"/>
+      <stop offset="1" stop-color="#999211"/>
+    </linearGradient>
+    <linearGradient id="_未命名的渐变_205-2" data-name="未命名的渐变 205" x1="55.3" y1="97.05" x2="43.17" y2="104.05" xlink:href="#_未命名的渐变_205"/>
+    <linearGradient id="_未命名的渐变_205-3" data-name="未命名的渐变 205" x1="52.29" y1="112.42" x2="84.49" y2="93.82" xlink:href="#_未命名的渐变_205"/>
+    <filter id="luminosity-invert" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feColorMatrix values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0"/>
+    </filter>
+    <mask id="mask" x="54" y="84" width="29" height="38" maskUnits="userSpaceOnUse">
+      <g class="cls-6">
+        <image width="29" height="38" transform="translate(54 84)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAmCAYAAAA4LpBhAAAACXBIWXMAAAsSAAALEgHS3X78AAADo0lEQVRYhcXYSU8ySxSA4RdQxIigIsRETTvghLpQSEw00bDQpf5Uh7iSGI26ICwIMgSDSBAjg4a5kaFF7+bq/bgoTuB3ttWnnpzqrqFLBjzzyyH/bRCgrdVAd3c3AKVSCUmSgBZXajAY0Gq1AK8gtKhSQRBQq9XI5XKy2Sz5fL6mvano9PQ0Op2Onp4eyuUyqVSqpsKmo0tLS0xMTKBWqymVSiQSCbLZLLFYrPno8vIyo6OjDA0NodFoKJfLxGIxCoUCV1dXb+Z8G11dXcVoNDI5OYlOp6Ozs5NisUgikaBYLJJMJt/N/Ra6ubnJysoK4+Pj9Pf3o1QqKRQKRKNRMpkMwWAQn8/XHHR9fR2TycTi4iJTU1Po9Xo6OjoQRZFyuUwulyMSiWC32xv28ynUarUyMzOD2WxmbGwMQRBqhlQURZLJJOFwmEgk8mF/H6JbW1usra0xOzvLyMgIer0ejUaDQqEAIJfLkUgkCAQCuN3uD6tsiG5sbDA3N4fZbMZkMjE4OEhvby9tbf+llMtl7u/vCQQC2O12bDbbh+CbqNVqxWQysbCwgNFoRBAE9Ho9XV1ddcmZTIZwOIzb7WZvb+9TYA06NzfH/Pw8FosFk8nEyMgIAwMDaDQa5PL6JTqfz3N7e4vf78fr9X4arEEFQcBisWA2mzEajej1epRK5ZtJkiRxd3eH1+vl5OSEo6Oj76F9fX0MDw8zNDSEwWCgvb393aR0Os3l5SUOh4OdnZ0vgfDH1qZSqeju7kar1TYERVEkHA7j9Xq5uLj4MliDKpVKVCpVQ7BSqRCNRvH5fJydnXF4ePgzVC6Xo1AoXuffW5FKpQiHw7hcLnZ3d78F1qAAMpkMmUz25oPpdJrr62s8Hg8ej+fbYA3aCBRFkZubG5xOJ8fHx1/+Wt9FAZ6f60+jlUqFeDzO+fk5NpuN/f39H4E16Av4fzidThMIBHA4HGxvb/8YrEOr1SpPT0+vjdlsllAohNvtxu/3NwWEPxaHarWKJElUKhUeHx8pFotEIhE8Hg92u/3b06MhWqlUKBaL5HI5qtUqmUyGQCDw4+nREJUk6XUzfjnF+f3+pg5rHVoqlchkMsTjcSRJ4vLyktPTU46Pj1uHvpzgZDIZ6XQal8vFwcFB08Ea9OHhgWQyST6fJxaLEQwGWwLWoIVCgVgsRrVaJRQK4XQ6W4+Kosjd3R25XK6lYB368j5bHTL+/f3XarUoFApSqdTvob8Zf+XO4R88OMJ0AyH/sgAAAABJRU5ErkJggg=="/>
+      </g>
+    </mask>
+  </defs>
+  <circle class="cls-2" cx="112.21" cy="26.52" r="2"/>
+  <circle class="cls-4" cx="1.71" cy="44.02" r="1"/>
+  <circle class="cls-3" cx="104.71" cy="60.02" r="1"/>
+  <g class="cls-12">
+    <path class="cls-11" d="M86.72,4.04c-.47-3.23-2.52-3.93-5.45-4.02-15.94-.42-28.37,5.93-37.66,18.86-1.42,1.97-3.49,3.76-5.66,4.84-7.05,3.53-12.3,8.71-15.69,15.76-.42,.89-.3,2.49,.26,3.26,.41,.56,2.03,.56,2.98,.31,2.78-.75,5.46-1.92,8.27-2.54,.99-.22,2.44,.44,3.31,1.16,4.64,3.81,8.72,8.55,13.84,11.46,6.49,3.69,7.94,8.33,6.11,14.97-.28,1.03,.23,2.96,.97,3.38,.78,.43,2.57-.13,3.45-.84,5.78-4.54,9.66-10.49,11.31-17.62,.79-3.43,2.48-5.96,4.73-8.53,4.36-4.99,7.19-9.51,8.78-15.09,0,0,0-.02,.02-.02,3.75-10.98,.42-25.35,.42-25.35Zm-20.29,23.54l7.11,4.75-26.07,4.74,11.85-7.9-7.9-3.95,19.6-11.84,10.42,10.27-15.01,3.94Z"/>
+    <path class="cls-10" d="M46.13,61.5c1.96-2.42,.82-7.19-1.89-9.38,0,0-.02-.01-.03-.02l-.03-.03c-2.71-2.19-7.61-2.3-9.57,.12-2.15,2.66-4.39,9.2-5.69,14.11-.7,2.65,2.24,5,4.67,3.75,4.57-2.35,10.5-6.02,12.54-8.55h0Z"/>
+  </g>
+  <polygon class="cls-1" points="80.11 86.24 58 80 32.89 86.24 57 100 80.11 86.24"/>
+  <polygon class="cls-8" points="56.67 120 32.89 86.24 57 100 56.67 120"/>
+  <g>
+    <polygon class="cls-9" points="80.11 86.24 57 100 56.67 120 80.11 86.24"/>
+    <g class="cls-5">
+      <polygon class="cls-7" points="80.11 86.24 57 100 56.67 120 80.11 86.24"/>
+    </g>
+  </g>
+</svg>

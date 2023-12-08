@@ -14,6 +14,7 @@ import CenterTopData from "./component/centerTopData";
 import Efficiency from "./component/efficiency";
 import OperationAll from "./component/operationAll";
 import AlarmData from "./component/alarmData";
+import RunningView from "./component/runningView";
 
 const deviceTypeList = [
     {
@@ -62,6 +63,7 @@ function BigScreen() {
                     <AreaTemplate 
                         title="储能设备运行概念"
                     >
+                        <RunningView />
                     </AreaTemplate>
                     <AreaTemplate 
                         title="设备充放电效率排行"
