@@ -46,7 +46,7 @@ function MapCom(props) {
 
     const getOptions = () => {
             echarts.registerMap('map', china);
-            echarts.registerMap('mapOutLine', chinaOutLine);
+            // echarts.registerMap('mapOutLine', chinaOutLine);
         setOptions({
             grid: {
               top: 0,
@@ -69,19 +69,19 @@ function MapCom(props) {
                 id: "bb",
                 show: true,
                 map: "map",
-                roam: false,
+                roam: true,
                 center: [103, 39.4],
                 selectedMode: 'single',
                 layoutCenter: ['50%', '35%'],
                 layoutSize: "70%",
                 itemStyle: {
                     normal: {
-                        areaColor:'rgba(0,255,255,.02)',
+                        areaColor:'rgba(0,17,41,1)',
                         borderColor: '#3294B0',
-                        borderWidth: 1,
-                        // shadowColor: '#2DCFDA',
+                        borderWidth: 1.5,
+                        shadowColor: '#2DCFDA',
                         // shadowOffsetX: 0,
-                        // shadowOffsetY: 4,
+                        // shadowOffsetY: 0,
                         // shadowBlur: 20
                     },
                   
@@ -92,11 +92,17 @@ function MapCom(props) {
             },
             series: [
                 {
-                    map: 'mapOutLine',
+                    map: 'map',
                     silent: false,
                     type: 'map',
-                    zoom:0.7,
-                    roam: false,
+                    showLegendSymbol: true, // 存在legend时显示
+                    center: [103, 39.4],
+                    layoutCenter: ['50%', '35%'],
+                    layoutSize: "70%",
+                    zoom:1.2,
+                aspectScale: 0.75,
+
+                    roam: true,
                     label: {
                         normal: {
                             show: false,
@@ -110,18 +116,16 @@ function MapCom(props) {
                             }
                         }
                     },
-                    top: -7,
-                    left:630,
-                    roam: true,
+                    top: 5,
                     itemStyle: {
                         normal: {
                             areaColor: 'rgba(0,255,255,.02)',
                             borderColor: '#00ffff',
-                            borderWidth: 3,
+                            borderWidth: 5,
                             shadowColor: '#00ffff',
                             shadowOffsetX: 0,
                             shadowOffsetY: 0,
-                            shadowBlur: 15,
+                            shadowBlur: 20,
                         },
                         emphasis: {
                             areaColor: 'transparent', //悬浮背景
