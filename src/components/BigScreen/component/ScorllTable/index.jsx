@@ -29,7 +29,6 @@ const Table = ({
         const tableHeaderHeight = tableHeaderRef?.current?.clientHeight;
         const tableContentScrollHeight = tableContentRef?.current?.scrollHeight;
         setTableContentHeight(parentHeight-tableHeaderHeight);
-        console.log("AAAA", tableContentScrollHeight, tableContentHeight)
         if(tableContentScrollHeight>tableContentHeight){
             startScroll();
         }
@@ -37,7 +36,6 @@ const Table = ({
 
     useEffect(()=>{
         init();
-        window.addEventListener("resize", init);
     }, []);
 
     return (
