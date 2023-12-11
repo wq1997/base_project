@@ -49,8 +49,7 @@ const CenterTopData = () => {
                     return (
                         <div
                             style={{
-                                background: `#00102B url(/images/centerTopBg.png) center center`,
-                                backgroundSize: '100% 100%',
+                                background: `#001435`,
                                 padding: '10px 20px',
                                 boxSizing: 'border-box',
                                 display: 'flex',

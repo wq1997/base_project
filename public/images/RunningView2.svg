@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg id="_图层_1" data-name="图层 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 114.5 125">
+<svg id="_图层_1" data-name="图层 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 114.5 75">
   <defs>
     <style>
       .cls-1 {
@@ -21,30 +21,6 @@
         fill: url(#_未命名的渐变_318-4);
         filter: url(#outer-glow-7);
       }
-
-      .cls-5 {
-        mask: url(#mask);
-      }
-
-      .cls-6 {
-        filter: url(#luminosity-invert);
-      }
-
-      .cls-7 {
-        fill: #4c32ea;
-      }
-
-      .cls-8 {
-        fill: url(#_未命名的渐变_318-6);
-      }
-
-      .cls-9 {
-        fill: url(#_未命名的渐变_318-5);
-      }
-
-      .cls-10 {
-        fill: url(#_未命名的渐变_318-7);
-      }
     </style>
     <linearGradient id="_未命名的渐变_318" data-name="未命名的渐变 318" x1="21.95" y1="37.2" x2="102" y2="37.2" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#a867f4"/>
@@ -65,7 +41,7 @@
       <feComposite in2="blur-2" operator="in"/>
       <feComposite in="SourceGraphic"/>
     </filter>
-    <linearGradient id="_未命名的渐变_318-3" data-name="未命名的渐变 318" x1="1281.35" y1="-1186.92" x2="1283.35" y2="-1186.92" gradientTransform="translate(912.38 1540.45) rotate(-78.61)" xlink:href="#_未命名的渐变_318"/>
+    <linearGradient id="_未命名的渐变_318-3" data-name="未命名的渐变 318" x1="1283.31" y1="-1185.32" x2="1285.31" y2="-1185.32" gradientTransform="translate(910.42 1542.05) rotate(-78.61)" xlink:href="#_未命名的渐变_318"/>
     <filter id="outer-glow-6" filterUnits="userSpaceOnUse">
       <feOffset dx="0" dy="0"/>
       <feGaussianBlur result="blur-3" stdDeviation="4"/>
@@ -73,7 +49,7 @@
       <feComposite in2="blur-3" operator="in"/>
       <feComposite in="SourceGraphic"/>
     </filter>
-    <linearGradient id="_未命名的渐变_318-4" data-name="未命名的渐变 318" x1="1286" y1="-1082.79" x2="1288" y2="-1082.79" gradientTransform="translate(912.38 1540.45) rotate(-78.61)" xlink:href="#_未命名的渐变_318"/>
+    <linearGradient id="_未命名的渐变_318-4" data-name="未命名的渐变 318" x1="1287.96" y1="-1081.18" x2="1289.96" y2="-1081.18" gradientTransform="translate(910.42 1542.05) rotate(-78.61)" xlink:href="#_未命名的渐变_318"/>
     <filter id="outer-glow-7" filterUnits="userSpaceOnUse">
       <feOffset dx="0" dy="0"/>
       <feGaussianBlur result="blur-4" stdDeviation="4"/>
@@ -81,28 +57,9 @@
       <feComposite in2="blur-4" operator="in"/>
       <feComposite in="SourceGraphic"/>
     </filter>
-    <linearGradient id="_未命名的渐变_318-5" data-name="未命名的渐变 318" x1="49.5" y1="105" x2="49.5" y2="85" xlink:href="#_未命名的渐变_318"/>
-    <linearGradient id="_未命名的渐变_318-6" data-name="未命名的渐变 318" x1="48.3" y1="102.05" x2="36.17" y2="109.05" xlink:href="#_未命名的渐变_318"/>
-    <linearGradient id="_未命名的渐变_318-7" data-name="未命名的渐变 318" x1="51.5" y1="102.41" x2="62.87" y2="108.97" xlink:href="#_未命名的渐变_318"/>
-    <filter id="luminosity-invert" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
-      <feColorMatrix values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0"/>
-    </filter>
-    <mask id="mask" x="47" y="89" width="29" height="38" maskUnits="userSpaceOnUse">
-      <g class="cls-6">
-        <image width="29" height="38" transform="translate(47 89)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAmCAYAAAA4LpBhAAAACXBIWXMAAAsSAAALEgHS3X78AAADo0lEQVRYhcXYSU8ySxSA4RdQxIigIsRETTvghLpQSEw00bDQpf5Uh7iSGI26ICwIMgSDSBAjg4a5kaFF7+bq/bgoTuB3ttWnnpzqrqFLBjzzyyH/bRCgrdVAd3c3AKVSCUmSgBZXajAY0Gq1AK8gtKhSQRBQq9XI5XKy2Sz5fL6mvano9PQ0Op2Onp4eyuUyqVSqpsKmo0tLS0xMTKBWqymVSiQSCbLZLLFYrPno8vIyo6OjDA0NodFoKJfLxGIxCoUCV1dXb+Z8G11dXcVoNDI5OYlOp6Ozs5NisUgikaBYLJJMJt/N/Ra6ubnJysoK4+Pj9Pf3o1QqKRQKRKNRMpkMwWAQn8/XHHR9fR2TycTi4iJTU1Po9Xo6OjoQRZFyuUwulyMSiWC32xv28ynUarUyMzOD2WxmbGwMQRBqhlQURZLJJOFwmEgk8mF/H6JbW1usra0xOzvLyMgIer0ejUaDQqEAIJfLkUgkCAQCuN3uD6tsiG5sbDA3N4fZbMZkMjE4OEhvby9tbf+llMtl7u/vCQQC2O12bDbbh+CbqNVqxWQysbCwgNFoRBAE9Ho9XV1ddcmZTIZwOIzb7WZvb+9TYA06NzfH/Pw8FosFk8nEyMgIAwMDaDQa5PL6JTqfz3N7e4vf78fr9X4arEEFQcBisWA2mzEajej1epRK5ZtJkiRxd3eH1+vl5OSEo6Oj76F9fX0MDw8zNDSEwWCgvb393aR0Os3l5SUOh4OdnZ0vgfDH1qZSqeju7kar1TYERVEkHA7j9Xq5uLj4MliDKpVKVCpVQ7BSqRCNRvH5fJydnXF4ePgzVC6Xo1AoXuffW5FKpQiHw7hcLnZ3d78F1qAAMpkMmUz25oPpdJrr62s8Hg8ej+fbYA3aCBRFkZubG5xOJ8fHx1/+Wt9FAZ6f60+jlUqFeDzO+fk5NpuN/f39H4E16Av4fzidThMIBHA4HGxvb/8YrEOr1SpPT0+vjdlsllAohNvtxu/3NwWEPxaHarWKJElUKhUeHx8pFotEIhE8Hg92u/3b06MhWqlUKBaL5HI5qtUqmUyGQCDw4+nREJUk6XUzfjnF+f3+pg5rHVoqlchkMsTjcSRJ4vLyktPTU46Pj1uHvpzgZDIZ6XQal8vFwcFB08Ea9OHhgWQyST6fJxaLEQwGWwLWoIVCgVgsRrVaJRQK4XQ6W4+Kosjd3R25XK6lYB368j5bHTL+/f3XarUoFApSqdTvob8Zf+XO4R88OMJ0AyH/sgAAAABJRU5ErkJggg=="/>
-      </g>
-    </mask>
   </defs>
   <path class="cls-1" d="M98.92,12.55v-1.54c0-.85-.69-1.54-1.54-1.54s-1.54,.69-1.54,1.54v1.54h-6.11v-1.54c0-.85-.69-1.54-1.54-1.54s-1.54,.69-1.54,1.54v1.54c-1.7,0-3.07,1.38-3.08,3.08v6.16c0,1.7,1.38,3.08,3.08,3.08h3.08v29.26c0,2.55-2.07,4.62-4.62,4.62s-4.62-2.07-4.62-4.62V21.79c-.02-5.09-4.14-9.22-9.23-9.23V6.39c0-3.41-2.78-6.16-6.18-6.16,0,0,0,0-.01,0h-30.8c-3.4,0-6.15,2.76-6.16,6.16v61.62h-6.16v6.16h55.42v-6.16h-6.16V18.71c1.7,0,3.07,1.38,3.08,3.08V54.12c0,5.95,4.82,10.77,10.77,10.77s10.77-4.82,10.77-10.77h0V24.86h3.08c1.69,0,3.07-1.36,3.08-3.05,0,0,0-.02,0-.03v-6.16c0-1.7-1.38-3.08-3.08-3.08h0ZM45.05,63.78l4.6-13.82h-13.81l13.81-18.36v13.81h13.82l-18.43,18.37Zm20.01-35.84h-30.8V9.47h30.8V27.94Zm30.78-6.16h-6.11c-1.7,0-3.08-1.38-3.08-3.08s1.38-3.08,3.08-3.08h6.16c1.7,0,3.08,1.38,3.08,3.08s-1.38,3.08-3.08,3.08h-.04Z"/>
   <circle class="cls-2" cx="112.5" cy="31.5" r="2"/>
   <circle class="cls-3" cx="2" cy="49" r="1"/>
   <circle class="cls-4" cx="105" cy="65" r="1"/>
-  <polygon class="cls-9" points="73.11 91.24 51 85 25.89 91.24 50 105 73.11 91.24"/>
-  <polygon class="cls-8" points="49.67 125 25.89 91.24 50 105 49.67 125"/>
-  <g>
-    <polygon class="cls-10" points="73.11 91.24 50 105 49.67 125 73.11 91.24"/>
-    <g class="cls-5">
-      <polygon class="cls-7" points="73.11 91.24 50 105 49.67 125 73.11 91.24"/>
-    </g>
-  </g>
 </svg>

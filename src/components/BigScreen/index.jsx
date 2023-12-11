@@ -19,8 +19,8 @@ import RunningView from "./component/runningView";
 const deviceTypeList = [
     {
         key: 'LargeEnergy',
-        label: '系统储能',
-        title: '系统储能'
+        label: '储能系统',
+        title: '储能系统'
     },
     {
         key: 'IntegratedMachine',
@@ -61,7 +61,7 @@ function BigScreen() {
             <div className={styles.contentBottom}>
                 <div className={styles.contentBottomLeft}>
                     <AreaTemplate 
-                        title="储能设备运行概念"
+                        title="储能设备运行概览"
                     >
                         <RunningView />
                     </AreaTemplate>

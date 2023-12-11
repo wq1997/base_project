@@ -56,7 +56,7 @@ const OperationAll = () => {
                                 height: '100%'
                             }}
                         >
-                            <img src={item?.imgUrl} style={{width: 40}}/>
+                            <img src={item?.imgUrl} style={{width: 45}}/>
                             <div
                                 style={{
                                     marginLeft: 15,

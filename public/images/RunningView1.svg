@@ -1,53 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg id="_图层_1" data-name="图层 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 114.5 129">
+<svg id="_图层_1" data-name="图层 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 114.5 79">
   <defs>
     <style>
       .cls-1 {
-        fill: url(#_未命名的渐变_182);
-      }
-
-      .cls-2 {
-        fill: url(#_未命名的渐变_178);
-      }
-
-      .cls-3 {
         fill: url(#_未命名的渐变_148);
         filter: url(#outer-glow-4);
       }
 
-      .cls-4 {
+      .cls-2 {
         fill: url(#_未命名的渐变_148-2);
         filter: url(#outer-glow-5);
       }
 
-      .cls-5 {
+      .cls-3 {
         fill: url(#_未命名的渐变_148-3);
         filter: url(#outer-glow-6);
       }
 
-      .cls-6 {
+      .cls-4 {
         fill: url(#_未命名的渐变_148-4);
         filter: url(#outer-glow-7);
       }
 
-      .cls-7 {
-        mask: url(#mask);
-      }
-
-      .cls-8 {
-        filter: url(#luminosity-invert);
-      }
-
-      .cls-9 {
+      .cls-5 {
         fill: #1ceab4;
-      }
-
-      .cls-10 {
-        fill: #50f9d9;
-      }
-
-      .cls-11 {
-        fill: url(#_未命名的渐变_178-2);
       }
     </style>
     <linearGradient id="_未命名的渐变_148" data-name="未命名的渐变 148" x1="53.37" y1=".73" x2="53.37" y2="78" gradientUnits="userSpaceOnUse">
@@ -69,7 +45,7 @@
       <feComposite in2="blur-2" operator="in"/>
       <feComposite in="SourceGraphic"/>
     </filter>
-    <linearGradient id="_未命名的渐变_148-3" data-name="未命名的渐变 148" x1="1282.33" y1="-1183.12" x2="1284.33" y2="-1183.12" gradientTransform="translate(908.46 1543.66) rotate(-78.61)" xlink:href="#_未命名的渐变_148"/>
+    <linearGradient id="_未命名的渐变_148-3" data-name="未命名的渐变 148" x1="1279.39" y1="-1185.53" x2="1281.39" y2="-1185.53" gradientTransform="translate(911.4 1541.25) rotate(-78.61)" xlink:href="#_未命名的渐变_148"/>
     <filter id="outer-glow-6" filterUnits="userSpaceOnUse">
       <feOffset dx="0" dy="0"/>
       <feGaussianBlur result="blur-3" stdDeviation="4"/>
@@ -77,7 +53,7 @@
       <feComposite in2="blur-3" operator="in"/>
       <feComposite in="SourceGraphic"/>
     </filter>
-    <linearGradient id="_未命名的渐变_148-4" data-name="未命名的渐变 148" x1="1286.98" y1="-1078.99" x2="1288.98" y2="-1078.99" gradientTransform="translate(908.46 1543.66) rotate(-78.61)" xlink:href="#_未命名的渐变_148"/>
+    <linearGradient id="_未命名的渐变_148-4" data-name="未命名的渐变 148" x1="1284.04" y1="-1081.39" x2="1286.04" y2="-1081.39" gradientTransform="translate(911.4 1541.25) rotate(-78.61)" xlink:href="#_未命名的渐变_148"/>
     <filter id="outer-glow-7" filterUnits="userSpaceOnUse">
       <feOffset dx="0" dy="0"/>
       <feGaussianBlur result="blur-4" stdDeviation="4"/>
@@ -85,37 +61,12 @@
       <feComposite in2="blur-4" operator="in"/>
       <feComposite in="SourceGraphic"/>
     </filter>
-    <linearGradient id="_未命名的渐变_178" data-name="未命名的渐变 178" x1="53.5" y1="109" x2="53.5" y2="89" gradientUnits="userSpaceOnUse">
-      <stop offset=".14" stop-color="#3bfef0"/>
-      <stop offset="1" stop-color="#0c8c6b" stop-opacity=".8"/>
-    </linearGradient>
-    <linearGradient id="_未命名的渐变_182" data-name="未命名的渐变 182" x1="40.17" y1="113.05" x2="52.3" y2="106.05" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#00af96"/>
-      <stop offset=".89" stop-color="#3bfef0"/>
-    </linearGradient>
-    <linearGradient id="_未命名的渐变_178-2" data-name="未命名的渐变 178" x1="49.29" y1="121.42" x2="81.49" y2="102.82" xlink:href="#_未命名的渐变_178"/>
-    <filter id="luminosity-invert" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
-      <feColorMatrix values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0"/>
-    </filter>
-    <mask id="mask" x="51" y="93" width="29" height="38" maskUnits="userSpaceOnUse">
-      <g class="cls-8">
-        <image width="29" height="38" transform="translate(51 93)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAmCAYAAAA4LpBhAAAACXBIWXMAAAsSAAALEgHS3X78AAADo0lEQVRYhcXYSU8ySxSA4RdQxIigIsRETTvghLpQSEw00bDQpf5Uh7iSGI26ICwIMgSDSBAjg4a5kaFF7+bq/bgoTuB3ttWnnpzqrqFLBjzzyyH/bRCgrdVAd3c3AKVSCUmSgBZXajAY0Gq1AK8gtKhSQRBQq9XI5XKy2Sz5fL6mvano9PQ0Op2Onp4eyuUyqVSqpsKmo0tLS0xMTKBWqymVSiQSCbLZLLFYrPno8vIyo6OjDA0NodFoKJfLxGIxCoUCV1dXb+Z8G11dXcVoNDI5OYlOp6Ozs5NisUgikaBYLJJMJt/N/Ra6ubnJysoK4+Pj9Pf3o1QqKRQKRKNRMpkMwWAQn8/XHHR9fR2TycTi4iJTU1Po9Xo6OjoQRZFyuUwulyMSiWC32xv28ynUarUyMzOD2WxmbGwMQRBqhlQURZLJJOFwmEgk8mF/H6JbW1usra0xOzvLyMgIer0ejUaDQqEAIJfLkUgkCAQCuN3uD6tsiG5sbDA3N4fZbMZkMjE4OEhvby9tbf+llMtl7u/vCQQC2O12bDbbh+CbqNVqxWQysbCwgNFoRBAE9Ho9XV1ddcmZTIZwOIzb7WZvb+9TYA06NzfH/Pw8FosFk8nEyMgIAwMDaDQa5PL6JTqfz3N7e4vf78fr9X4arEEFQcBisWA2mzEajej1epRK5ZtJkiRxd3eH1+vl5OSEo6Oj76F9fX0MDw8zNDSEwWCgvb393aR0Os3l5SUOh4OdnZ0vgfDH1qZSqeju7kar1TYERVEkHA7j9Xq5uLj4MliDKpVKVCpVQ7BSqRCNRvH5fJydnXF4ePgzVC6Xo1AoXuffW5FKpQiHw7hcLnZ3d78F1qAAMpkMmUz25oPpdJrr62s8Hg8ej+fbYA3aCBRFkZubG5xOJ8fHx1/+Wt9FAZ6f60+jlUqFeDzO+fk5NpuN/f39H4E16Av4fzidThMIBHA4HGxvb/8YrEOr1SpPT0+vjdlsllAohNvtxu/3NwWEPxaHarWKJElUKhUeHx8pFotEIhE8Hg92u/3b06MhWqlUKBaL5HI5qtUqmUyGQCDw4+nREJUk6XUzfjnF+f3+pg5rHVoqlchkMsTjcSRJ4vLyktPTU46Pj1uHvpzgZDIZ6XQal8vFwcFB08Ea9OHhgWQyST6fJxaLEQwGWwLWoIVCgVgsRrVaJRQK4XQ6W4+Kosjd3R25XK6lYB368j5bHTL+/f3XarUoFApSqdTvob8Zf+XO4R88OMJ0AyH/sgAAAABJRU5ErkJggg=="/>
-      </g>
-    </mask>
   </defs>
   <g>
-    <path class="cls-3" d="M86.78,37.57c-4.34-2.66-5.71-8.32-3.06-12.67,.96-1.57,2.32-2.74,3.85-3.48-.24-.46-.48-.92-.74-1.37-3.52-6.1-8.47-10.87-14.16-14.15-.84,1.57-2.13,2.91-3.82,3.81-4.5,2.38-10.08,.67-12.46-3.82-.86-1.62-1.18-3.39-1.03-5.1-7.2-.38-14.6,1.24-21.31,5.12-.64,.37-1.25,.76-1.86,1.15,1.03,1.45,1.64,3.22,1.68,5.13,.1,5.09-3.94,9.3-9.03,9.4-1.84,.04-3.57-.47-5.02-1.37-3.62,6.34-5.37,13.6-5.05,20.91,1.77-.14,3.6,.23,5.26,1.17,4.43,2.51,6,8.13,3.49,12.56-.91,1.6-2.23,2.83-3.74,3.62,.04,.08,.08,.15,.12,.23,3.75,6.5,9.11,11.49,15.29,14.78,.78-1.59,2.03-2.98,3.69-3.93,4.41-2.53,10.04-1.02,12.58,3.4,.92,1.6,1.3,3.36,1.21,5.07,6.8,.13,13.71-1.53,20.02-5.17,.25-.14,.49-.3,.75-.46-.98-1.49-1.53-3.26-1.5-5.17,.07-5.09,4.25-9.16,9.34-9.09,1.84,.03,3.55,.6,4.97,1.55,3.83-6.22,5.82-13.43,5.74-20.73-1.77,.08-3.59-.35-5.22-1.35Zm-15.85,15.51l-2.79,3.01c-.92,1-2.47,1.05-3.45,.13l-12.92-11.98c-.06-.05-.09-.1-.14-.16-4.15,1.89-9.2,1.23-12.75-2.05-3.29-3.07-4.41-7.58-3.29-11.64l7.53,6.98,7.27-7.85-7.53-6.98c3.97-1.42,8.56-.65,11.85,2.41,3.55,3.29,4.58,8.29,3.01,12.56,.06,.05,.11,.08,.17,.13l12.92,11.97c.99,.92,1.04,2.47,.12,3.46Z"/>
-    <path class="cls-9" d="M64.31,46.78l5.16,4.72-.98,1.07-5.16-4.72,.98-1.07Z"/>
+    <path class="cls-1" d="M86.78,37.57c-4.34-2.66-5.71-8.32-3.06-12.67,.96-1.57,2.32-2.74,3.85-3.48-.24-.46-.48-.92-.74-1.37-3.52-6.1-8.47-10.87-14.16-14.15-.84,1.57-2.13,2.91-3.82,3.81-4.5,2.38-10.08,.67-12.46-3.82-.86-1.62-1.18-3.39-1.03-5.1-7.2-.38-14.6,1.24-21.31,5.12-.64,.37-1.25,.76-1.86,1.15,1.03,1.45,1.64,3.22,1.68,5.13,.1,5.09-3.94,9.3-9.03,9.4-1.84,.04-3.57-.47-5.02-1.37-3.62,6.34-5.37,13.6-5.05,20.91,1.77-.14,3.6,.23,5.26,1.17,4.43,2.51,6,8.13,3.49,12.56-.91,1.6-2.23,2.83-3.74,3.62,.04,.08,.08,.15,.12,.23,3.75,6.5,9.11,11.49,15.29,14.78,.78-1.59,2.03-2.98,3.69-3.93,4.41-2.53,10.04-1.02,12.58,3.4,.92,1.6,1.3,3.36,1.21,5.07,6.8,.13,13.71-1.53,20.02-5.17,.25-.14,.49-.3,.75-.46-.98-1.49-1.53-3.26-1.5-5.17,.07-5.09,4.25-9.16,9.34-9.09,1.84,.03,3.55,.6,4.97,1.55,3.83-6.22,5.82-13.43,5.74-20.73-1.77,.08-3.59-.35-5.22-1.35Zm-15.85,15.51l-2.79,3.01c-.92,1-2.47,1.05-3.45,.13l-12.92-11.98c-.06-.05-.09-.1-.14-.16-4.15,1.89-9.2,1.23-12.75-2.05-3.29-3.07-4.41-7.58-3.29-11.64l7.53,6.98,7.27-7.85-7.53-6.98c3.97-1.42,8.56-.65,11.85,2.41,3.55,3.29,4.58,8.29,3.01,12.56,.06,.05,.11,.08,.17,.13l12.92,11.97c.99,.92,1.04,2.47,.12,3.46Z"/>
+    <path class="cls-5" d="M64.31,46.78l5.16,4.72-.98,1.07-5.16-4.72,.98-1.07Z"/>
   </g>
-  <circle class="cls-4" cx="112.5" cy="34.5" r="2"/>
-  <circle class="cls-5" cx="2" cy="52" r="1"/>
-  <circle class="cls-6" cx="105" cy="68" r="1"/>
-  <polygon class="cls-2" points="77.11 95.24 55 89 29.89 95.24 54 109 77.11 95.24"/>
-  <polygon class="cls-1" points="53.67 129 29.89 95.24 54 109 53.67 129"/>
-  <g>
-    <polygon class="cls-11" points="77.11 95.24 54 109 53.67 129 77.11 95.24"/>
-    <g class="cls-7">
-      <polygon class="cls-10" points="77.11 95.24 54 109 53.67 129 77.11 95.24"/>
-    </g>
-  </g>
+  <circle class="cls-2" cx="112.5" cy="34.5" r="2"/>
+  <circle class="cls-3" cx="2" cy="52" r="1"/>
+  <circle class="cls-4" cx="105" cy="68" r="1"/>
 </svg>

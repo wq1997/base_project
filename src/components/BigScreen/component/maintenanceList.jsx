@@ -28,7 +28,8 @@ const MaintenanceList = () => {
                 padding: '5px 10px 0 10px',
                 boxSizing: 'border-box',
                 display: 'flex',
-                justifyContent: 'space-between'
+                justifyContent: 'space-between',
+                gap: '10px',
             }}
         >
             {
@@ -38,14 +39,15 @@ const MaintenanceList = () => {
                             style={{
                                 width: '100%',
                                 height: '100%',
-                                position: 'relative'
+                                position: 'relative',
                             }}
                         >
                             <div
                                 style={{
                                     height: 'calc(100% - 20px)',
-                                    background: `#00102B url(${item?.imgUrl}) center center`,
-                                    backgroundSize: '100% 100%',
+                                    background: `#013E5D url(${item?.imgUrl}) center center`,
+                                    backgroundSize: '100% 90%',
+                                    backgroundRepeat: 'no-repeat',
                                     color: 'white',
                                     display: 'flex',
                                     alignItems: 'center',
@@ -63,9 +65,7 @@ const MaintenanceList = () => {
                                     textAlign: 'center',
                                     lineHeight: '20px',
                                     fontSize: '10px',
-                                    background: '#00102B url(/images/maintenanceListBg.png) center center',
-                                    backgroundSize: '80% 100%',
-                                    backgroundRepeat: 'no-repeat'
+                                    background: '#013E5D'
                                 }}
                             >
                                 {item?.description}
