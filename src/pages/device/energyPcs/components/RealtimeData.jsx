@@ -5,18 +5,25 @@ import { Select } from 'antd';
 import CardData from '../../components/CardData'
 function RealtimeData(props) {
     const [option, setOption] = useState([]);
+    const [currentOpt, setCurrentOpt] = useState();
     const [data, setData] = useState([])
     const dispatch = useDispatch();
     const { plantDetails, realData } = useSelector(function (state) {
         return state.device
     });
     useEffect(() => {
-        console.log('plantDetails', plantDetails, realData)
         dealSeletData(plantDetails.info.PCS);
     }, [plantDetails])
     useEffect(() => {
+        let time = setInterval(() => {
+            initData();
+            console.log(currentOpt,3333333);
+        }, 24000);
+        return () => clearInterval(time)
+    }, [currentOpt])
+    useEffect(() => {
         initData();
-    })
+    }, [currentOpt])
     useEffect(() => {
         realData?.map(it => {
             if (it.title === 'PCS') {
@@ -25,23 +32,15 @@ function RealtimeData(props) {
         })
     }, [realData])
     const changeData = (value) => {
+        setCurrentOpt(value)
+    }
+    const initData = () => {
         dispatch({
             type: 'device/getALLContainer', payload: {
-                containerId: value
+                containerId: currentOpt
             }
         });
 
-    }
-    const initData = () => {
-        clearInterval(time);
-        let time = setInterval(() => {
-            dispatch({
-                type: 'device/getALLContainer', payload: {
-                    containerId: option[0]?.value
-                }
-            });
-        }, 24000);
-        return () => clearInterval(time)
     }
 
     const dealSeletData = (data) => {
@@ -53,7 +52,7 @@ function RealtimeData(props) {
             })
         });
         setOption(arr);
-
+        setCurrentOpt(arr[0]?.value);
     }
     return (
         <div className='content'>

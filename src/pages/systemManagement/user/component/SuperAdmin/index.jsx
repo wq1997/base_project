@@ -12,51 +12,20 @@ const RealtimeAlarm = () => {
   const [level,setLevel]=useState();
   const [field,setField]=useState("sn");
   const [textLike,setTextLike]=useState();
-  // const []
-  const dataItems = [
-    {
-      label: '设备编码',
-      value: 'sn'
-    },
-    {
-      label: '设备名称',
-      value: 'dtuName'
-    },
-    {
-      label: '告警描述',
-      value: 'desc'
-    },
-  ];
-  const alarmLevel = [{
-    label: '一级',
-    value: '1',
-    key: '一级',
 
+  const alarmLevel = [{
+    label: 'User',
+    value: '1',
+    key: 'User',
   },
   {
-    label: '二级',
-    value: '2',
-    key: '二级',
-  },
-  {
-    label: '三级',
-    value: '3',
-    key: '三级',
-  },
-  {
-    label: '四级',
+    label: 'Admin',
     value: '4',
-    key: '四级',
+    key: 'Admin',
   },
+  
 
 ]
-  const selectBefore = (
-    <Select defaultValue={dataItems[0].value} onChange={(e)=>{setField(e)}}>
-      {dataItems.map((item) => {
-        return (<Option value={item.value} key={item.value}>{item.label}</Option>)
-      })}
-    </Select>
-  );
 
   useEffect(() => {
     getData(current);
@@ -96,11 +65,11 @@ const RealtimeAlarm = () => {
             onChange={changeLevel}
             options={alarmLevel}
             allowClear
-            placeholder='告警等级'
+            placeholder='用户角色'
           />
         </div>
         <div className={styles.dataItem}>
-        <Search addonBefore={selectBefore} placeholder="input search text" onSearch={onSearch} enterButton />
+        <Search  placeholder="用户名搜索" onSearch={onSearch} enterButton />
         </div>
       </div>
       <Table

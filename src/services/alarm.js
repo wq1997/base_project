@@ -1,14 +1,17 @@
 import axiosInstance from "./request";
-// 集装箱实时告警
-export const getNowAlarmsByContainerIdWithPage = (payload) => {
-   return axiosInstance.get('/getNowAlarmsByContainerIdWithPage', payload)
+const path='/total'
+// 根据电站id分页查询实时告警
+export const getNowAlarmsByPlantIdWithPage = (payload) => {
+    return axiosInstance.post(`${path}/alarm/getNowAlarmsByPlantIdWithPage`, payload );
 }
-// 首页 电站所有实时告警
-export const getNowAlarmsByPlantIdWithPage = ()=>{
-  return axiosInstance.get("/getNowAlarmsByPlantIdWithPage");
+// 根据电站分页查询历史告警
+export const getHistoryAlarmsByPlantIdWithPage = (payload)=>{
+    return axiosInstance.post(`${path}/alarm/getHistoryAlarmsByPlantIdWithPage`, payload );
+
 }
 
+// 根据电站和设备类型分页查询实时告警
+export const getNowAlarmsByDeviceTypeWithPage = (payload)=>{
+    return axiosInstance.post(`${path}/alarm/getNowAlarmsByDeviceTypeWithPage`, payload );
 
-export const getHistoryAlarmsByPlantIdWithPage = ()=>{
-  return axiosInstance.post("/getHistoryAlarmsByPlantIdWithPage");
 }

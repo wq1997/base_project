@@ -12,6 +12,7 @@ export default {
       info: []
     },
     realData: [],
+    currentPlantId:''
   },
 
   effects: {
@@ -28,12 +29,14 @@ export default {
     },
     *getAllPlantDetails({ payload }, { call, put }) {
       const data = yield call(apiGetDtuList, payload);
+      let id=payload.plantId;
       yield put({
         type: 'updateState',
         payload: {
           plantDetails: {
             ...(data.data.data)
-          }
+          },
+          currentPlantId:id,
         },
       });
     },

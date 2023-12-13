@@ -7,7 +7,7 @@ import {
 } from "@/services/user";
 import { getEncrypt, setLocalStorage } from "@/utils/utils";
 import styles from "./index.less";
-import { history, useDispatch } from "umi";
+import { history, useDispatch,FormattedMessage } from "umi";
 import { useEffect, useState } from "react";
 import { getBaseUrl } from '@/services/request'
 const { Title } = Typography;
@@ -95,7 +95,7 @@ const Login = () => {
             borderRadius: 8,
           }}
         >
-          <Title level={2} style={{ marginBottom: 50, color: token.colorPrimary }}>{`${SYSTEM_NAME}`}</Title>
+          <Title level={2} style={{ marginBottom: 50, color: token.colorPrimary }}><FormattedMessage id="handsome" />{`${SYSTEM_NAME}`}</Title>
           <Form
             onFinish={onFinish}
             autoComplete="off"

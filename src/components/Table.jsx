@@ -1,16 +1,15 @@
-import { Button, Dropdown,Table  } from "antd"
-import { useDispatch } from "umi"
+import {  Table } from "antd"
 const Tables = (props) => {
-    const dispatch = useDispatch()
-    console.log(props,11111111111);
-    const {columns,data}=props;
-    
-     
+    const { columns, data } = props;
     return (
-        <Table
-            columns={columns}
-            dataSource={data}
-        />
+        <div>
+            <Table
+                columns={columns}
+                dataSource={data}
+                pagination={false}
+            />
+        </div>
+
     )
 }
 

@@ -5,7 +5,6 @@ import styles from "./cardData.less"
 function Com(props) {
 
     useEffect(() => {
-        console.log(props, 0);
     }, [props])
 
     return (

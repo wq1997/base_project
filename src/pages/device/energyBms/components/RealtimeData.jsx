@@ -11,7 +11,6 @@ function RealtimeData(props) {
         return state.device
     });
     useEffect(() => {
-        console.log('plantDetails', plantDetails, realData)
         dealSeletData(plantDetails.info.PCS);
     }, [plantDetails])
     useEffect(() => {

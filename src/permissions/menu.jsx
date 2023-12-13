@@ -18,8 +18,8 @@ const MenuList = [
         key: '/index/device',
         icon: <ToolOutlined />,
         children: [
-            { label: 'PCS舱', key: '/index/device/energyPcs', type: "PCS" },
-            { label: 'BMS舱', key: '/index/device/energyBms', type: "BMS" },
+            { label: 'PCS', key: '/index/device/energyPcs', type: "PCS" },
+            { label: 'BMS', key: '/index/device/energyBms', type: "BMS" },
             { label: '户外柜', key: '/index/device/energyOut', type: "OC" },
             { label: '光伏', key: '/index/device/photovoltaic', type: "PV" },
             { label: '充电桩', key: '/index/device/chargingStation', type: "C" },

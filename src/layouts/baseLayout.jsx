@@ -1,4 +1,4 @@
-import { Outlet, useDispatch } from 'umi'
+import { Outlet, useDispatch,useSelector } from 'umi'
 import { theme, Layout, Row, Avatar, Typography, Dropdown, Space } from 'antd';
 import MyMenu from "@/permissions/menu";
 import styles from "./baseLayout.less";
@@ -12,7 +12,9 @@ const BaseLayout = () => {
     const Icon = useIcon();
     const dispatch = useDispatch();
     const { token } = theme.useToken();
-
+    const {user}=useSelector(function (state) {
+        return state.user
+    })
     return (
         <div className={styles.baseLayout}>
             <Layout className={styles.layout}>
@@ -53,7 +55,7 @@ const BaseLayout = () => {
                                 style={{ backgroundColor: "#F56A00", verticalAlign: 'middle' }}
                                 size="large"
                             >
-                                aaa
+                                {user.name}
                             </Avatar>
                             <span style={{ fontSize: 20, color: 'white', marginLeft: 10 }}>aaa</span>
                         </Row>

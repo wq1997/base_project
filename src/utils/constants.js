@@ -12,28 +12,28 @@ export const WETHER_KEY = '4e50b674eed8402c8a70c8155690a0e1';
 export const alarmTableColums=[
     {
         title: '设备编码',
-        dataIndex: 'deviceId',
-        key: 'deviceId',
+        dataIndex: 'sn',
+        key: 'sn',
     },
     {
         title: '设备名称',
-        dataIndex: 'deviceName',
-        key: 'deviceName',
+        dataIndex: 'name',
+        key: 'name',
     },   
      {
         title: '告警描述',
-        dataIndex: 'deviceDes',
-        key: 'deviceDes',
+        dataIndex: 'desc',
+        key: 'desc',
     },
     {
         title: '告警等级',
-        dataIndex: 'deviceLevel',
-        key: 'deviceLevel',
+        dataIndex: 'prior',
+        key: 'prior',
     },
     {
         title: '开始时间',
-        dataIndex: 'startT',
-        key: 'startT',
+        dataIndex: 'startTime',
+        key: 'startTime',
     },
 ];
 export const RealtimeData=[]

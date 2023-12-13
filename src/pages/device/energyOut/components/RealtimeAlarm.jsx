@@ -1,48 +1,46 @@
 import Table from '@/components/Table.jsx'
 import { alarmTableColums } from '@/utils/constants'
-
+import { useEffect, useState } from 'react'
+import { useSelector, } from "umi";
+import { Pagination } from "antd"
+import { getNowAlarmsByDeviceTypeWithPage } from "@/services/alarm"
 const RealtimeAlarm = () => {
-    const data = [
-        {
-          key:1,
-          deviceId: 1,
-          deviceName: 'Joh Brown',
-          deviceDes: 32,
-          deviceLevel: 'New York No. 1 Lake Park',
-          startT: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.',
-        },
-        {
-          key:2,
+    const [data, setData] = useState([]);
+    const [current, setCurrent] = useState(1);
 
-            deviceId: 2,
-            deviceName: 'Jim Green',
-            deviceDes: 42,
-            deviceLevel: 'London No. 1 Lake Park',
-            startT: 'My name is Jim Green, I am 42 years old, living in London No. 1 Lake Park.',
-        },
-        {
-          key:3,
-            deviceId: 3,
-            deviceName: 'Not Expandable',
-            deviceDes: 29,
-            deviceLevel: 'Jiangsu No. 1 Lake Park',
-            startT: 'This not expandable',
-        },
-        {
-          key:4,
-            deviceId: 4,
-            deviceName: 'Joe Black',
-            deviceDes: 32,
-            deviceLevel: 'Sydney No. 1 Lake Park',
-            startT: 'My name is Joe Black, I am 32 years old, living in Sydney No. 1 Lake Park.',
-        },
-      ];
+    useEffect(() => {
+        getData();
+    }, []);
+    useEffect(() => {
+        let timer = setInterval(() => {
+            getData();
+        }, 24000);
+        return () => clearInterval(timer)
+    }, [])
+    const { currentPlantId } = useSelector(function (state) {
+        return state.device
+    });
+    const getData = async (page) => {
+        const { data } = await getNowAlarmsByDeviceTypeWithPage({
+            plantId: currentPlantId,
+            type: 'OC',
+            currentPage: page || 1,
+            pageSize: 10,
+        });
+        setData(data.data);
+    }
+    const changPage = (page) => {
+        setCurrent(page);
+        getData(page);
+    }
+
     return (
         <div>
             <Table
-                columns={alarmTableColums }
-                data={data}
+                columns={alarmTableColums}
+                data={data.records}
             />
+            <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} total={data.total} onChange={changPage} />
         </div>
     )
 }

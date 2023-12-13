@@ -6,6 +6,7 @@ import { apiLiveSummary } from "@/services/device";
 import CardData from '../../components/CardDataOut'
 function RealtimeData(props) {
     const [option, setOption] = useState([]);
+    const [currentOpt,setCurrentOpt]=useState();
     const [data, setData] = useState([])
     const dispatch = useDispatch();
     const [orignData, setOrignData] = useState({
@@ -199,16 +200,15 @@ function RealtimeData(props) {
         return state.device
     });
     useEffect(() => {
-        console.log('plantDetails', plantDetails, realData)
         dealSeletData(plantDetails.info.OC);
-    }, [plantDetails])
+    }, [])
     useEffect(() => {
-        initData(option[0]?.value);
-    }, [option[0]?.value, orignData])
+        initData();
+    }, [currentOpt,option])
 
-    const initData = async (value) => {
+    const initData = async () => {
         const res = await apiLiveSummary({
-            dtuId: value
+            dtuId: currentOpt
         }).then(({ data }) => {
             let { Status, bms, cell, gmeter, pcs, tmeter } = data?.data;
             setOrignData(val => {
@@ -241,18 +241,14 @@ function RealtimeData(props) {
                     },
 
                 }
-                console.log(orignData, 3333333);
             });
-            // initValue(orignData.pcsValue, pcs);
-            // initValue(orignData.pcsValue, tmeter);
-            //             setOrignData((val)=>{
-            // console.log(val,11111111);
-            //             })
+           
         })
     };
 
     const changeData = (value) => {
-        initData(value);
+        // initData(value);
+        setCurrentOpt(value)
     }
     const initValue = (baseData, resData) => {
         let arr = []
@@ -273,7 +269,7 @@ function RealtimeData(props) {
             })
         });
         setOption(arr);
-
+setCurrentOpt(arr[0]?.value)
     }
     return (
         <div className='content'>
