@@ -48,7 +48,8 @@ const AlarmData = () => {
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                background: `#012755`,
+                                background: `#002955`,
+                                borderRadius: 16,
                                 height: '100%'
                             }}
                         >

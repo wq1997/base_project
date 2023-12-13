@@ -45,7 +45,7 @@ const MaintenanceList = () => {
                             <div
                                 style={{
                                     height: 'calc(100% - 20px)',
-                                    background: `#013E5D url(${item?.imgUrl}) center center`,
+                                    background: `transparent url(${item?.imgUrl}) center center`,
                                     backgroundSize: '100% 90%',
                                     backgroundRepeat: 'no-repeat',
                                     color: 'white',
@@ -65,7 +65,6 @@ const MaintenanceList = () => {
                                     textAlign: 'center',
                                     lineHeight: '20px',
                                     fontSize: '10px',
-                                    background: '#013E5D'
                                 }}
                             >
                                 {item?.description}

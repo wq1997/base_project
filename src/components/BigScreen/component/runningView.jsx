@@ -48,7 +48,7 @@ const RunningView = () => {
                 height: '100%',
                 display: 'grid',
                 gridTemplateColumns: 'repeat(4, 1fr)',
-                gap: '5px'
+                gap: '5px',
             }}
         >
             {
