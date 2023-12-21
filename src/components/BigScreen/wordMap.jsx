@@ -4,7 +4,7 @@ import { useDispatch, useSelector,history } from "umi";
 import ReactECharts from "echarts-for-react";
 import world from '../../../public/mapJson/maoJson'
 import * as echarts from "echarts";
-import 'default-passive-events'
+// import 'default-passive-events'
 
 function MapCom(props) {
     const chartInstance= React.createRef();

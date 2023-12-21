@@ -59,6 +59,9 @@ dependencies:
   echarts-for-react:
     specifier: ^3.0.2
     version: registry.npmjs.org/echarts-for-react@3.0.2(echarts@5.4.3)(react@18.2.0)
+  echarts-liquidfill:
+    specifier: ^3.1.0
+    version: registry.npmjs.org/echarts-liquidfill@3.1.0(echarts@5.4.3)
   jsencrypt:
     specifier: ^3.3.2
     version: registry.npmjs.org/jsencrypt@3.3.2
@@ -6657,6 +6660,17 @@ packages:
       fast-deep-equal: registry.npmjs.org/fast-deep-equal@3.1.3
       react: registry.npmjs.org/react@18.2.0
       size-sensor: registry.npmjs.org/size-sensor@1.0.2
+    dev: false
+
+  registry.npmjs.org/echarts-liquidfill@3.1.0(echarts@5.4.3):
+    resolution: {integrity: sha512-5Dlqs/jTsdTUAsd+K5LPLLTgrbbNORUSBQyk8PSy1Mg2zgHDWm83FmvA4s0ooNepCJojFYRITTQ4GU1UUSKYLw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/echarts-liquidfill/-/echarts-liquidfill-3.1.0.tgz}
+    id: registry.npmjs.org/echarts-liquidfill/3.1.0
+    name: echarts-liquidfill
+    version: 3.1.0
+    peerDependencies:
+      echarts: ^5.0.1
+    dependencies:
+      echarts: registry.npmjs.org/echarts@5.4.3
     dev: false
 
   registry.npmjs.org/echarts@5.4.3:

@@ -6,7 +6,7 @@ import china from '../../../public/mapJson/chinaB'
 import world from '../../../public/mapJson/maoJson'
 import chinaOutLine from '../../../public/mapJson/chinaOutLine'
 import * as echarts from "echarts";
-import 'default-passive-events'
+// import 'default-passive-events'
 
 function MapCom(props) {
     const chartInstance= React.createRef();
