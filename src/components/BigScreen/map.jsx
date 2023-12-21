@@ -4,7 +4,7 @@ import { useDispatch, useSelector,history } from "umi";
 import ReactECharts from "echarts-for-react";
 import china from '../../../public/mapJson/chinaB'
 import * as echarts from "echarts";
-import 'default-passive-events'
+// import 'default-passive-events'
 
 function MapCom(props) {
     const chartInstance= React.createRef();
