@@ -6,7 +6,7 @@ import { useEmotionCss } from '@ant-design/use-emotion-css';
 import styles from "./baseLayout.less";
 import useIcon from "@/hooks/useIcon";
 import { SYSTEM_NAME } from "@/utils/constants";
-
+import { useEmotionCss } from '@ant-design/use-emotion-css';
 
 const { Header, Sider, Content } = Layout;
 
@@ -17,13 +17,22 @@ const BaseLayout = () => {
     const {user}=useSelector(function (state) {
         return state.user
     })
-    const siderContentStyle=useEmotionCss(({token})=>{
-        return{
-            '.ant-menu-sub':{
-                background:`${token.bgcColorl_B} !important`,
+
+    const siderContentStyle = useEmotionCss(({token})=>{
+        return {
+            height: '100%',
+            width: '100%',
+            overflowY: 'scroll',
+            '&::-webkit-scrollbar': {
+                display: 'none'
+            },
+            '.ant-menu-sub': {
+                backgroundColor: `${token.colorPrimary} !important`,
+                margin: '0 20px'
             }
         }
-    })
+    });
+
     return (
         <div className={styles.baseLayout}>
             <Layout className={styles.layout}>
