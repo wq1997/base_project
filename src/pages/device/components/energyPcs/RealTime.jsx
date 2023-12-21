@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import Tab from '../components/Tab'
+import Tab from '../Tab'
 function Com(props) {
     const tabName=[
       

@@ -12,3 +12,8 @@ export const getPublicKey = ()=>{
 export const logout = ()=>{
   return axiosInstance.get("/user/logout");
 }
+
+// 获取用户信息列表
+export const apiGetAllUserAndInfos = ()=>{
+  return axiosInstance.get(`/user/getAllUserAndInfos` );
+}

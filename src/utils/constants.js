@@ -1,3 +1,5 @@
+import { Space } from "antd"
+
 export const DEFAULT_PAGINATION = {current: 1, pageSize: 10, total: 0, showQuickJumper: true};
 export const FORM_REQUIRED_RULE = {required: true, message: '请输入必填字段'};
 export const FORM_FORBIDDEN_SPACE = {pattern: /^[^\s]*$/, message: '禁止输入空格'};
@@ -15,7 +17,7 @@ export const alarmTableColums=[
         dataIndex: 'sn',
         key: 'sn',
     },
-    {
+    {       
         title: '设备名称',
         dataIndex: 'name',
         key: 'name',
@@ -36,6 +38,55 @@ export const alarmTableColums=[
         key: 'startTime',
     },
 ];
-export const RealtimeData=[]
+export const RealtimeData=[];
 
+export const userTable=[  
+    {
+    title: '用户名',
+    dataIndex: 'name',
+    key: 'name',
+},
+{
+    title: '角色',
+    dataIndex: 'roleName',
+    key: 'roleName',
+},
+{
+    title: '手机号',
+    dataIndex: 'phone',
+    key: 'phone',
+},
+{
+    title: '邮箱',
+    dataIndex: 'mail',
+    key: 'mail',
+},
+{
+    title: '公司',
+    dataIndex: 'company',
+    key: 'company',
+    width:200
+
+},
+{
+    title: '备注',
+    dataIndex: 'desc',
+    key: 'desc',
+    width:200
+},
+{
+    title: '操作',
+    dataIndex: 'operation',
+    key: 'operation',
+    render:(text,record)=>{
+        return (
+            <Space>
+                <a type="text">编辑</a>
+                <a type="text">删除</a>
+                <a type="text">重置密码</a>
+            </Space>
+        )
+    }
+}
+]
  

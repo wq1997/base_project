@@ -1,6 +1,6 @@
 const Login = () => {
     return (
-      <div>收益明细</div>
+      <div>场站配置</div>
     )
   }
   

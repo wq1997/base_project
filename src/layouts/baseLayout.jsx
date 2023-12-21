@@ -1,6 +1,8 @@
-import { Outlet, useDispatch,useSelector } from 'umi'
+import { Outlet, useDispatch,useSelector, } from 'umi'
+import React from 'react';
 import { theme, Layout, Row, Avatar, Typography, Dropdown, Space } from 'antd';
 import MyMenu from "@/permissions/menu";
+import { useEmotionCss } from '@ant-design/use-emotion-css';
 import styles from "./baseLayout.less";
 import useIcon from "@/hooks/useIcon";
 import { SYSTEM_NAME } from "@/utils/constants";
@@ -15,16 +17,24 @@ const BaseLayout = () => {
     const {user}=useSelector(function (state) {
         return state.user
     })
+    const siderContentStyle=useEmotionCss(({token})=>{
+        return{
+            '.ant-menu-sub':{
+                background:`${token.bgcColorl_B} !important`,
+            }
+        }
+    })
     return (
         <div className={styles.baseLayout}>
             <Layout className={styles.layout}>
                 <Header className={styles.header}
+                style={{background:token.bgcColorB_l}}
                 >
-                    <Typography.Title 
+                    <div
                     style={{
-                        color: token.colorPrimary
+                        color: token.titleColor
                     }} 
-                    level={3} className={styles.title}>{`${SYSTEM_NAME}`}</Typography.Title>
+                    level={3} className={styles.title}>{`${SYSTEM_NAME}`}</div>
                     <Dropdown
                         menu={{
                             items: [
@@ -52,22 +62,24 @@ const BaseLayout = () => {
                     >
                         <Row align="middle">
                             <Avatar
-                                style={{ backgroundColor: "#F56A00", verticalAlign: 'middle' }}
+                                style={{ background: "url(https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/36ff3767198541a288770220fe886819_mergeImage.png)", verticalAlign: 'middle',width:'64px',height:'64px' }}
                                 size="large"
                             >
-                                {user.name}
                             </Avatar>
-                            <span style={{ fontSize: 20, color: 'white', marginLeft: 10 }}>aaa</span>
+                            {/* <span style={{ fontSize: 20, color: 'white', marginLeft: 10 }}>aaa</span> */}
                         </Row>
                     </Dropdown>
                 </Header>
                 <Layout hasSider>
-                    <Sider className={styles.sider} width={240}>
+                    <Sider className={styles.sider}
+                    style={{background:token.bgcColorB_l}}
+                    width={240}>
                         <div className={styles.siderContent}>
                             <MyMenu />
                         </div>
                     </Sider>
-                    <Content className={styles.content}>
+                    <Content className={styles.content}
+                     style={{background:token.bgcColorl_B}}>
                         <div className={styles.inContent}>
                             <Outlet />
                         </div>

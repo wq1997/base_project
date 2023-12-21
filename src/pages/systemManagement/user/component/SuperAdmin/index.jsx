@@ -1,18 +1,17 @@
-import Table from '@/components/Table.jsx'
-import { alarmTableColums } from '@/utils/constants'
+import { userTable } from '@/utils/constants'
 import { useEffect, useState } from 'react'
 import { useSelector, } from "umi";
 import styles from "./index.less";
-import { Pagination, Select, Input } from "antd"
-import { getHistoryAlarmsByPlantIdWithPage } from "@/services/alarm"
+import { Table, Select, Input, Button } from "antd"
+import { apiGetAllUserAndInfos } from "@/services/user"
+import AddUser from '../AddUserModal'
 const RealtimeAlarm = () => {
   const { Search } = Input;
   const [data, setData] = useState([]);
-  const [current, setCurrent] = useState(1);
-  const [level,setLevel]=useState();
-  const [field,setField]=useState("sn");
-  const [textLike,setTextLike]=useState();
-
+  const [level, setLevel] = useState();
+  const [textLike, setTextLike] = useState();
+  const [isOpen, setIsOpen] = useState(false);
+  const [title, setTitle] = useState('新增用户')
   const alarmLevel = [{
     label: 'User',
     value: '1',
@@ -23,42 +22,29 @@ const RealtimeAlarm = () => {
     value: '4',
     key: 'Admin',
   },
-  
 
-]
+  ]
 
   useEffect(() => {
-    getData(current);
-  }, [current,level,field,textLike]);
+    getData();
+  }, [level, textLike]);
 
-  const { currentPlantId } = useSelector(function (state) {
-    return state.device
-  });
-  const getData = async (page) => {
-    const { data } = await getHistoryAlarmsByPlantIdWithPage({
-      plantId: currentPlantId,
-      currentPage: page || 1,
-      pageSize: 10,
-      level,
-      field,
-      textLike,
-    });
-    setData(data.data);
+  const getData = async () => {
+    const { data } = await apiGetAllUserAndInfos();
+    setData(JSON.parse(data.data));
   }
-  const changPage = (page) => {
-    setCurrent(page);
+  const changIsOpen = () => {
+    setIsOpen(!isOpen);
   }
-  const changeLevel=(value)=>{
+  const changeLevel = (value) => {
     setLevel(value);
-    console.log(level,111111111111);
   }
-  const onSearch = async(value, _e, info) => {
+  const onSearch = async (value, _e, info) => {
     setTextLike(value);
-    console.log(info, value)};
+  };
   return (
     <div className={styles.content}>
       <div className={styles.title}>
-     
         <div className={styles.level}>
           <Select
             style={{ width: 150 }}
@@ -67,17 +53,17 @@ const RealtimeAlarm = () => {
             allowClear
             placeholder='用户角色'
           />
+          <Search placeholder="用户名搜索" onSearch={onSearch} enterButton />
         </div>
         <div className={styles.dataItem}>
-        <Search  placeholder="用户名搜索" onSearch={onSearch} enterButton />
+          <Button type='primary' onClick={changIsOpen} >新增</Button>
         </div>
       </div>
       <Table
-        columns={alarmTableColums}
-        data={data.records}
+        columns={userTable}
+        dataSource={data}
       />
-      <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} total={data.total} onChange={changPage} />
-
+      <AddUser isOpen={isOpen} title={title} onRef={changIsOpen} />
     </div>
   )
 }

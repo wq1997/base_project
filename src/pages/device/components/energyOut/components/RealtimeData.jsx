@@ -3,7 +3,7 @@ import { useDispatch, useSelector, history } from "umi";
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { Select } from 'antd';
 import { apiLiveSummary } from "@/services/device";
-import CardData from '../../components/CardDataOut'
+import CardData from '../../CardDataOut'
 function RealtimeData(props) {
     const [option, setOption] = useState([]);
     const [currentOpt,setCurrentOpt]=useState();

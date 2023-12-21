@@ -1,9 +1,10 @@
-import { Menu } from 'antd';
+import { Menu,theme } from 'antd';
 import { Link, useLocation, useSelector } from 'umi';
 // import menu from '../router/menuRoute'
-import { AppstoreOutlined, ToolOutlined, AlertOutlined, LineChartOutlined, AccountBookOutlined, SettingOutlined } from '@ant-design/icons';
+import { AppstoreOutlined, ToolOutlined, AlertOutlined, LineChartOutlined, ControlOutlined, SettingOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import { useSetState } from 'ahooks';
+// const { token } = theme.useToken();
 
 const { SubMenu } = Menu;
 
@@ -18,32 +19,34 @@ const MenuList = [
         key: '/index/device',
         icon: <ToolOutlined />,
         children: [
-            { label: 'PCS', key: '/index/device/energyPcs', type: "PCS" },
-            { label: 'BMS', key: '/index/device/energyBms', type: "BMS" },
-            { label: '户外柜', key: '/index/device/energyOut', type: "OC" },
+            // { label: 'PCS', key: '/index/device/energyPcs', type: "PCS" },
+            // { label: 'BMS', key: '/index/device/energyBms', type: "BMS" },
+            // { label: '户外柜', key: '/index/device/energyOut', type: "OC" },
+            { label: '储能', key: '/index/device/energyStorage', type: "PV" },
             { label: '光伏', key: '/index/device/photovoltaic', type: "PV" },
             { label: '充电桩', key: '/index/device/chargingStation', type: "C" },
         ]
     },
     {
-        label: '报表',
-        key: '/index/statement',
+        label: '统计',
+        key: '/index/statistics',
         icon: <LineChartOutlined />,
         children: [
-            { label: '  统计数据', key: '/index/statement/statisticalData', },
-            { label: '数据对比', key: '/index/statement/dataComparison', },
-            { label: '报表导出', key: '/index/statement/reportExport', },
+            { label: '电量统计', key: '/index/statistics/electricityStatistics', component: "@/pages/statistics/electricityStatistics" },
+            { label: '收益统计', key: '/index/statistics/revenueStatistics', component: "@/pages/statistics/revenueStatistics" },
+            { label: '数据对比', key: '/index/statistics/dataComparison', component: "@/pages/statistics/dataComparison" },
+            { label: '报表导出', key: '/index/statistics/reportExport', component: "@/pages/statistics/reportExport" },
         ]
     },
-    {
-        label: '收益',
-        key: '/index/profit',
-        icon: <AccountBookOutlined />,
-        children: [
-            { label: '收益明细', key: '/index/profit/revenueDetails', },
-            { label: '收益统计', key: '/index/profit/revenueStatistics', },
-        ]
-    },
+    // {
+    //     label: '收益',
+    //     key: '/index/profit',
+    //     icon: <AccountBookOutlined />,
+    //     children: [
+    //         { label: '收益明细', key: '/index/profit/revenueDetails', },
+    //         { label: '收益统计', key: '/index/profit/revenueStatistics', },
+    //     ]
+    // },
     {
         label: '告警',
         key: '/index/alarm',
@@ -55,11 +58,20 @@ const MenuList = [
         ]
     },
     {
+        label: '场站设置',
+        key: '/index/depotSettings',
+        icon: <ControlOutlined />,
+        children: [
+            { label: '策略配置', key: '/index/depotSettings/policyConfiguration', component: "@/pages/depotSettings/policyConfiguration" },
+            { label: '电站配置', key: '/index/depotSettings/powerStationConfig', component: "@/pages/depotSettings/powerStationConfig" },
+        ]
+    },
+    {
         label: '系统管理',
         key: '/index/systemManagement',
         icon: <SettingOutlined />,
         children: [
-            { label: '策略配置', key: '/index/systemManagement/policyConfiguration', },
+            // { label: '策略配置', key: '/index/systemManagement/policyConfiguration', },
             { label: '用户管理', key: '/index/systemManagement/user', },
             { label: '操作记录', key: '/index/systemManagement/operationRecords', },
         ]
@@ -82,6 +94,7 @@ const getMenu = menuList => {
                     key={menu.key}
                     title={menu.label}
                     icon={menu.icon}
+                    style={{ fontSize: '18px', }}
                 >
                     {getMenu(menu.children)}
                 </SubMenu>
@@ -98,7 +111,10 @@ const getMenu = menuList => {
                 return
             }
             return (
-                <Menu.Item key={menu.key} icon={menu.icon}>
+                <Menu.Item key={menu.key} icon={menu.icon} 
+                style={{ fontSize: '18px' }}
+
+                >
                     <Link to={menu.key}>{menu.label}</Link>
                 </Menu.Item>
             );
