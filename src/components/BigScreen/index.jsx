@@ -39,7 +39,7 @@ const areaTypeList = [
     }
 ]
 function BigScreen() {
-    const [deviceType, setDeviceType] = useState('IntegratedMachine');
+    const [deviceType, setDeviceType] = useState('LargeEnergy');
     const [areaType, setAreaType] = useState('domestic');
 
     return (
@@ -50,11 +50,11 @@ function BigScreen() {
                 deviceTypeList={deviceTypeList}
                 areaTypeList={areaTypeList}
                 onChangedDeviceType={(newDeviceType)=>{
-                    if(deviceType===newDeviceType) return;
+                    if(deviceType===newDeviceType||(areaType==="overseas"&&newDeviceType==="LargeEnergy")) return;
                     setDeviceType(newDeviceType);
                 }}
                 onChangedAreaType={(newAreaType)=>{
-                    if(areaType===newAreaType) return;
+                    if(areaType===newAreaType||(deviceType==="LargeEnergy"&&newAreaType==="overseas")) return;
                     setAreaType(newAreaType);
                 }}
             />
