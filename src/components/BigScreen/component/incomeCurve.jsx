@@ -14,7 +14,7 @@ const modeList = [
     }
 ]
 const IncomeCurve = ({
-    currentAreaType
+    areaType
 }) => {
     const [options, setOptions] = useState({});
     const [mode, setMode] = useState('Month');
@@ -137,7 +137,7 @@ const IncomeCurve = ({
                         }
                     </div>
                     {
-                        currentAreaType==="overseas"&&
+                        areaType==="overseas"&&
                         <Select 
                             defaultValue={'1'}
                             style={{width: 100}}

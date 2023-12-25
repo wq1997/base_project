@@ -3,12 +3,17 @@ import RunningView1Img from "../../../../public/images/RunningView1.svg";
 import RunningView2Img from "../../../../public/images/RunningView2.svg";
 import RunningView3Img from "../../../../public/images/RunningView3.svg";
 import RunningView4Img from "../../../../public/images/RunningView4.svg";
+import { useEffect } from "react";
+import { useRequest } from "ahooks";
+import {
+    getAllDtuRunStatusServe
+} from "@/services/bigScreen";
 
 const dataSource = [
     {
         imgUrl: RunningView1Img,
         description: '当前运行设备',
-        data: 668,
+        data: 1,
         unit: '台',
         bgImgUrl: '/images/leftTopOne_1.png',
         color:'#36FEE8'
@@ -16,31 +21,57 @@ const dataSource = [
     {
         imgUrl: RunningView2Img,
         description: '累计充电电量',
-        data: 10000,
-        unit: 'kw',
+        data: 0,
+        unit: 'MW',
         bgImgUrl: '/images/leftTopOne_2.png',
         color:'#934CEA'
     },
     {
         imgUrl: RunningView3Img,
         description: '累计放电电量',
-        data: 1000,
-        unit: 'kw',
+        data: 0,
+        unit: 'MW',
         bgImgUrl: '/images/leftTopOne_3.png',
         color:'#38ACF6'
     },
     {
         imgUrl: RunningView4Img,
         description: '平均充放电效率',
-        data: '100%',
-        unit: '',
+        data: '0',
+        unit: '%',
         bgImgUrl: '/images/leftTopOne_4.png',
         color:'#F0F466'
     },
 ]
 
-const RunningView = () => {
-    const [data, setData] = useState(dataSource);
+const RunningView = ({
+    deviceType,
+    areaType
+}) => {
+    const [myData, setMyData] = useState(dataSource);
+    const { data, run } = useRequest(getAllDtuRunStatusServe, {
+        pollingInterval: 1000*60*60*12, //12小时轮询一次
+        manual: true,
+    });
+    
+    useEffect(()=>{
+        run({
+            db: areaType==="domestic",
+            isMin: deviceType==="IntegratedMachine"
+        });
+    }, [deviceType, areaType]);
+
+    useEffect(()=>{
+        if(data?.data?.data){
+            const result = data?.data?.data;
+            const cloneData = JSON.parse(JSON.stringify(myData));
+            cloneData[0].data = parseInt(result?.nowCount);
+            cloneData[1].data = parseInt(result?.totalCharge);
+            cloneData[2].data = parseInt(result?.totalDisCharge);
+            cloneData[3].data = parseInt(result?.nowCount);
+            setMyData(cloneData);
+        }
+    }, [data])
 
     return (
         <div 
@@ -52,7 +83,7 @@ const RunningView = () => {
             }}
         >
             {
-                data?.map(item => {
+                myData?.map(item => {
                     return (
                         <div
                             style={{
@@ -68,8 +99,8 @@ const RunningView = () => {
                         >   
                             <div>
                                 <div style={{display: 'flex', alignItems: 'baseline', textAlign: 'center', justifyContent: 'center'}}>
-                                    <div style={{color: item?.color, fontSize: 25}}>{item?.data}</div>
-                                    <div style={{fontSize: 15, color: 'white'}}>{item?.unit}</div>
+                                    <div style={{color: item?.color, fontSize: 20}}>{item?.data}</div>
+                                    <div style={{fontSize: 10, color: 'white'}}>{item?.unit}</div>
                                 </div>
                                 <div style={{color: 'white', margin: '5px 0', fontSize: 12}}>{item?.description}</div>
                                 <img src={item?.imgUrl} style={{width: 45}} />

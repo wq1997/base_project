@@ -27,15 +27,11 @@ const Login = () => {
   const onFinish = async (values) => {
     const res = await loginSever({
       ...values,
-      password: getEncrypt(publicKey, values.password),
-      clientType: 3,
-      remember: false,
-      language: 1,
+      password: values.password||getEncrypt(publicKey, values.password),
     });
-    if (res?.data?.data?.token) {
-      const data = res?.data.data;
-      setLocalStorage("Token", data?.token);
-      setLocalStorage("userName", data?.userName);
+    if (res?.data?.data) {
+      const data = res?.data;
+      setLocalStorage("Token", data?.data);
       message.success('登录成功');
       history.push("/deviceMap");
       dispatch({

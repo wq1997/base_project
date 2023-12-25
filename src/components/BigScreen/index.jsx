@@ -39,7 +39,7 @@ const areaTypeList = [
     }
 ]
 function BigScreen() {
-    const [deviceType, setDeviceType] = useState('LargeEnergy');
+    const [deviceType, setDeviceType] = useState('IntegratedMachine');
     const [areaType, setAreaType] = useState('domestic');
 
     return (
@@ -63,32 +63,32 @@ function BigScreen() {
                     <AreaTemplate 
                         title="储能设备运行概览"
                     >
-                        <RunningView />
+                        <RunningView deviceType={deviceType} areaType={areaType}  />
                     </AreaTemplate>
                     <AreaTemplate 
                         title="设备充放电效率排行"
                     >
-                        <Efficiency />
+                        <Efficiency deviceType={deviceType} areaType={areaType}/>
                     </AreaTemplate>
                     <AreaTemplate 
                         title="减碳曲线展示"
                     >
-                        <Carbon />
+                        <Carbon deviceType={deviceType} areaType={areaType}/>
                     </AreaTemplate>
                     <AreaTemplate 
                         title="项目收益排行"
                     >
-                        <IncomeRanking />
+                        <IncomeRanking deviceType={deviceType} areaType={areaType}/>
                     </AreaTemplate>
                 </div>
                 <div className={styles.contentBottomCenterTop}>
-                    <CenterTopData />
+                    <CenterTopData deviceType={deviceType} areaType={areaType}/>
                 </div>
                 <div className={styles.contentBottomCenterBottom}>
                     <AreaTemplate 
                         title="储能系统收益统计曲线图"
                     >
-                        <IncomeCurve currentAreaType={areaType}/>
+                        <IncomeCurve deviceType={deviceType} areaType={areaType}/>
                     </AreaTemplate>
                 </div>
                 <div className={styles.contentBottomRight}>

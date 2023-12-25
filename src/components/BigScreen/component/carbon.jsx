@@ -1,12 +1,44 @@
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect } from "react";
+import { useRequest } from "ahooks";
+import {
+    getDayCarbonServe
+} from "@/services/bigScreen";
+import moment from "moment";
 
-const Carbon = () => {
+const Carbon = ({
+    deviceType,
+    areaType
+}) => {
     const [options, setOptions] = useState({});
+
+    const [myData, setMyData] = useState();
+    const { data, run } = useRequest(getDayCarbonServe, {
+        pollingInterval: 1000*60*60*12, //12小时轮询一次
+        manual: true,
+    });
+
+    const getAWeekDate = () => {
+        const date1 = moment().format("YYYY-MM-DD");
+        const date2 = moment().subtract(1, 'day').format("YYYY-MM-DD");
+        const date3 = moment().subtract(2, 'day').format("YYYY-MM-DD");
+        const date4 = moment().subtract(3, 'day').format("YYYY-MM-DD");
+        const date5 = moment().subtract(4, 'day').format("YYYY-MM-DD");
+        const date6 = moment().subtract(5, 'day').format("YYYY-MM-DD");
+        const date7 = moment().subtract(6, 'day').format("YYYY-MM-DD");
+        return [date7,date6,date5,date4,date3,date2,date1];
+    }
+
     const getOptions = () => {
-        const xData = ['12/06',"12/07","12/08","12/09","12/10", '12/11', '12/12'];
-        const data = [200,100,200,200,100,300,500];
-        const backData = [500,500,500,500,500, 500, 500];
+        let xData = getAWeekDate();
+        let data = new Array(7).fill(0);
+        let backData = new Array(7).fill(2);
+        if(myData&&myData?.length>0){
+            xData = myData?.map(item => item.date);
+            data = myData?.map(item => item.totalEnergy||0);
+            backData = new Array(7).fill(Math.max(...data)+2);
+        }
+        
         setOptions({
           tooltip: {
               trigger: 'item',
@@ -139,9 +171,24 @@ const Carbon = () => {
       });
     };
 
+    useEffect(()=>{
+        run({
+            db: areaType==="domestic",
+            isMin: deviceType==="IntegratedMachine"
+        });
+    }, [deviceType, areaType]);
+
+    useEffect(()=>{
+        if(data?.data?.data){
+            const result = data?.data?.data;
+            const resultData = result?.splice(0,7)?.reverse();
+            setMyData(resultData);
+        }
+    }, [data])
+
     useEffect(() => {
         getOptions();
-    }, []);
+    }, [myData]);
 
     return (
       <ReactECharts option={options} style={{height: '100%'}} />

@@ -1,12 +1,26 @@
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect } from "react";
 import * as echarts from "echarts";
+import {
+    getAllDtuEfficiencyServe
+} from "@/services/bigScreen";
+import { useRequest } from "ahooks";
 
-const Efficiency = () => {
+const Efficiency = ({
+    deviceType,
+    areaType
+}) => {
     const [options, setOptions] = useState({});
+
+    const [myData, setMyData] = useState();
+    const { data, run } = useRequest(getAllDtuEfficiencyServe, {
+        pollingInterval: 1000*60*60*12, //12小时轮询一次
+        manual: true,
+    });
+    
     const getOptions = () => {
-        const data = [50, 40, 30, 20, 10];
-        const xData = ['设备型号1', '设备型号2', '设备型号3', '设备型号4', '设备型号5'];
+        const data = myData?.map(item => item?.efficiency*100);
+        const xData = myData?.map(item => item?.name?.length>5?item?.name?.slice(0,5)+'...':item?.name);
         setOptions({
             grid: {
                 left: '10',
@@ -104,9 +118,24 @@ const Efficiency = () => {
         });
     };
 
+    useEffect(()=>{
+        run({
+            db: areaType==="domestic",
+            isMin: deviceType==="IntegratedMachine"
+        });
+    }, [deviceType, areaType]);
+
+    useEffect(()=>{
+        if(data?.data?.data){
+            const result = data?.data?.data;
+            const resultData = result?.splice(0,5);
+            setMyData(resultData||[])
+        }
+    }, [data])
+
     useEffect(() => {
         getOptions();
-    }, []);
+    }, [myData]);
 
     return (
         <ReactECharts option={options} style={{height: '100%'}} />

@@ -1,17 +1,29 @@
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect } from "react";
 import * as echarts from "echarts";
+import { useRequest } from "ahooks";
+import {
+    getAllPlantFeeListServe
+} from "@/services/bigScreen";
 
-const Income = () => {
+const Income = ({
+    deviceType,
+    areaType
+}) => {
     const [options, setOptions] = useState({});
-    const getOptions = () => {
-        const deviceName =[
-            "设备项目1",
-            "设备项目2",
-            "设备项目3",
-        ];
-        const data =[60,50,40];
+    const [myData, setMyData] = useState();
+    const { data, run } = useRequest(getAllPlantFeeListServe, {
+        pollingInterval: 1000*60*60*12, //12小时轮询一次
+        manual: true,
+    });
 
+    const getOptions = () => {
+        let deviceName = [];
+        let data = [0,0,0];
+        if(myData&&myData?.length>0){
+            deviceName = myData?.map(item =>item?.name?.length>5?item?.name?.slice(0,5)+'...':item?.name);
+            data= myData?.map(item => item?.totalFee);
+        }
         setOptions({
             grid: {
                 left: 0,
@@ -139,9 +151,24 @@ const Income = () => {
         });
     };
 
+    useEffect(()=>{
+        run({
+            db: areaType==="domestic",
+            isMin: deviceType==="IntegratedMachine"
+        });
+    }, [deviceType, areaType]);
+
+    useEffect(()=>{
+        if(data?.data?.data){
+            const result = data?.data?.data;
+            const resultData = result?.splice(0,3);
+            setMyData(resultData);
+        }
+    }, [data])
+
     useEffect(() => {
         getOptions();
-    }, []);
+    }, [myData]);
 
     return (
       <div style={{height: '100%', padding: '20px', boxSizing: 'border-box'}}>
