@@ -41,3 +41,15 @@ export const getOMOverviewServe = (params)=>{
         params
     });
 }
+
+export const getAllPlantList = (params)=>{
+    return axiosInstance.get(`/plant/getAllPlantList`,{
+        params
+    });
+}
+
+export const sysDb = (params)=>{
+    return axiosInstance.get(`/plant/sysDb`,{
+        params
+    });
+}

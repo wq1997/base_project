@@ -3,24 +3,19 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { useDispatch, useSelector,history } from "umi";
 import ReactECharts from "echarts-for-react";
 import china from '../../../public/mapJson/chinaB'
-import world from '../../../public/mapJson/maoJson'
-import chinaOutLine from '../../../public/mapJson/chinaOutLine'
 import * as echarts from "echarts";
-// import 'default-passive-events'
 
 function MapCom(props) {
     const chartInstance= React.createRef();
     const [options, setOptions] = useState({});
     const dispatch = useDispatch();
-    const { allPlant } = useSelector(function (state) {
-        return state.device
-    });
+   
     const convertData = function () {
-        const markerList = allPlant?.map(it => {
+        const markerList = props.allPlant?.map(it => {
             return {
                 name: it.name,
                 value: [it.longitude, it.latitude, 100],
-                id:it.id
+                id:it.plantId
             }
         });
         return markerList;
@@ -204,13 +199,11 @@ function MapCom(props) {
         });
     }
 
-    useEffect(() => {
-        dispatch({ type: 'device/getAllPlants' });
-    }, [])
+
     useEffect(() => {
         getOptions();
-
-    }, [allPlant])
+        console.log(props,2222222222222);
+    }, [props.allPlant])
 
 
 
