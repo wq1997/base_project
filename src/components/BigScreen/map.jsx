@@ -147,13 +147,13 @@ function MapCom(props) {
                     },
                     hoverAnimation: true,//悬停动画
                     legendHoverLink: true,
-                    //地图点样式
-                    label: {
-                        formatter: "{b}",
-                        position: "top",
-                        show: true,
-                        fontSize: "15",
-                    },
+                    // //地图点样式
+                    // label: {
+                    //     formatter: "{b}",
+                    //     position: "top",
+                    //     show: true,
+                    //     fontSize: "15",
+                    // },
                     itemStyle: {
                         color: "#f13434",
                         shadowBlur: 4,
