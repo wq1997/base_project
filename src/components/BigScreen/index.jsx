@@ -95,12 +95,12 @@ function BigScreen() {
                     <AreaTemplate 
                         title="智慧运维汇总"
                     >
-                        <OperationAll />
+                        <OperationAll deviceType={deviceType} areaType={areaType}/>
                     </AreaTemplate>
                     <AreaTemplate 
                         title="智慧告警设备"
                     >
-                        <AlarmData />
+                        <AlarmData deviceType={deviceType} areaType={areaType}/>
                     </AreaTemplate>
                     <AreaTemplate 
                         title="告警列表"
@@ -169,7 +169,7 @@ function BigScreen() {
                     <AreaTemplate 
                         title="运维工单汇总"
                     >
-                        <MaintenanceList />
+                        <MaintenanceList deviceType={deviceType} areaType={areaType}/>
                     </AreaTemplate>
                     <AreaTemplate 
                         title="运维工单列表"

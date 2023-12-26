@@ -1,26 +1,54 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import {
+    getOMOverviewServe
+} from "@/services/bigScreen";
+import { useRequest } from "ahooks";
 
 const dataSource = [
     {
         imgUrl: '/images/maintenanceList1.svg',
         description: '当日总工单',
-        data: 998
+        data: 0
     },
     {
         imgUrl: '/images/maintenanceList2.svg',
         description: '总工单',
-        data: 9998
+        data: 0
     },
     {
         imgUrl: '/images/maintenanceList3.svg',
         description: '未处理工单',
-        data: 10
+        data: 0
     }
 ]
 
-const MaintenanceList = () => {
-    const [data, setData] = useState(dataSource);
+const MaintenanceList = ({
+    deviceType,
+    areaType
+}) => {
+    const [myData, setMyData] = useState(dataSource);
+    const { data, run } = useRequest(getOMOverviewServe, {
+        pollingInterval: 1000*60*60*12, //12小时轮询一次
+        manual: true,
+    });
 
+    useEffect(()=>{
+        run({
+            db: areaType==="domestic",
+            isMin: deviceType==="IntegratedMachine"
+        });
+    }, [deviceType, areaType]);
+
+    useEffect(()=>{
+        if(data?.data?.data){
+            const result = data?.data?.data;
+            const cloneData = JSON.parse(JSON.stringify(myData));
+            cloneData[0].data = parseInt(result?.NowCount);
+            cloneData[1].data = parseInt(result?.count);
+            cloneData[2].data = parseInt(result?.riskCount);
+            setMyData(cloneData);
+        }
+    }, [data])
     return(
         <div 
             style={{
@@ -33,7 +61,7 @@ const MaintenanceList = () => {
             }}
         >
             {
-                data?.map(item => {
+                myData?.map(item => {
                     return(
                         <div
                             style={{
@@ -53,7 +81,7 @@ const MaintenanceList = () => {
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     fontWeight: 600,
-                                    fontSize: 20
+                                    fontSize: 18
                                 }}
                             >
                                 {item?.data}

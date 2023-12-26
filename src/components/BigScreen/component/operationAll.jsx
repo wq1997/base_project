@@ -1,34 +1,63 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import rightOne1Img from "../../../../public/images/rightOne_1.svg";
 import rightOne2Img from "../../../../public/images/rightOne_2.svg";
 import rightOne3Img from "../../../../public/images/rightOne_3.svg";
+import {
+    getOMInfoServe
+} from "@/services/bigScreen";
+import { useRequest } from "ahooks";
 
 const dataSource = [
     {
         imgUrl: rightOne1Img,
         description: '运行监督天数',
-        data: 998,
+        data: 0,
         color: '#C58CFB',
         unit: '天'
     },
     {
         imgUrl: rightOne2Img,
         description: '运行安全率',
-        data: 100,
+        data: 0,
         color: '#37B0F9',
         unit: '%'
     },
     {
         imgUrl: rightOne3Img,
         description: '无事故天数',
-        data: 1000,
+        data: 0,
         color: '#2CF5D7',
         unit: '天'
     }
 ]
 
-const OperationAll = () => {
-    const [data, setData] = useState(dataSource);
+const OperationAll = ({
+    deviceType,
+    areaType
+}) => {
+    const [myData, setMyData] = useState(dataSource);
+    const { data, run } = useRequest(getOMInfoServe, {
+        pollingInterval: 1000*60*60*12, //12小时轮询一次
+        manual: true,
+    });
+
+    useEffect(()=>{
+        run({
+            db: areaType==="domestic",
+            isMin: deviceType==="IntegratedMachine"
+        });
+    }, [deviceType, areaType]);
+
+    useEffect(()=>{
+        if(data?.data?.data){
+            const result = data?.data?.data;
+            const cloneData = JSON.parse(JSON.stringify(myData));
+            cloneData[0].data = parseInt(result?.runDays);
+            cloneData[1].data = parseInt(result?.safetyRate);
+            cloneData[2].data = parseInt(result?.NoAccidentsDays);
+            setMyData(cloneData);
+        }
+    }, [data])
 
     return (
         <div
@@ -44,7 +73,7 @@ const OperationAll = () => {
             }}
         >
             {
-                data?.map(item => {
+                myData?.map(item => {
                     return(
                         <div 
                             style={{
@@ -70,7 +99,7 @@ const OperationAll = () => {
                                         justifyContent: 'center'
                                     }}
                                 >
-                                    <div style={{color: item?.color, fontSize: 25, fontFamily: 'electronicFont'}}>{item?.data}</div>
+                                    <div style={{color: item?.color, fontSize: 20, fontFamily: 'electronicFont'}}>{item?.data}</div>
                                     <div style={{color: 'white', fontSize: 10, marginLeft: 5}}>{item?.unit}</div>
                                 </div>
                                 <div style={{color: 'white', fontSize: 12}}>{item?.description}</div>

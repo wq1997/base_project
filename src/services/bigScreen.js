@@ -23,3 +23,21 @@ export const getAllPlantFeeListServe = (params)=>{
         params
     });
 }
+
+export const getOMInfoServe = (params)=>{
+    return axiosInstance.get(`/getOMInfo`,{
+        params
+    });
+}
+
+export const getAlmCountServe = (params)=>{
+    return axiosInstance.get(`/getAlmCount`,{
+        params
+    });
+}
+
+export const getOMOverviewServe = (params)=>{
+    return axiosInstance.get(`/getOMOverview`,{
+        params
+    });
+}

@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import RunningView1Img from "../../../../public/images/RunningView1.svg";
 import RunningView2Img from "../../../../public/images/RunningView2.svg";
 import RunningView3Img from "../../../../public/images/RunningView3.svg";
 import RunningView4Img from "../../../../public/images/RunningView4.svg";
-import { useEffect } from "react";
 import { useRequest } from "ahooks";
 import {
     getAllDtuRunStatusServe
@@ -13,7 +12,7 @@ const dataSource = [
     {
         imgUrl: RunningView1Img,
         description: '当前运行设备',
-        data: 1,
+        data: 0,
         unit: '台',
         bgImgUrl: '/images/leftTopOne_1.png',
         color:'#36FEE8'

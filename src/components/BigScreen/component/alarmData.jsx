@@ -1,7 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import rightTwo1Img from "../../../../public/images/rightTwo_1.svg";
 import rightTwo2Img from "../../../../public/images/rightTwo_2.svg";
 import rightTwo3Img from "../../../../public/images/rightTwo_3.svg";
+import {
+    getAlmCountServe
+} from "@/services/bigScreen";
+import { useRequest } from "ahooks";
 
 const dataSource = [
     {
@@ -13,19 +17,44 @@ const dataSource = [
     {
         imgUrl: rightTwo2Img,
         description: '历史报警总数',
-        data: 100,
+        data: 0,
         color: '#FB0017',
     },
     {
         imgUrl: rightTwo3Img,
         description: '风险设备数',
-        data: 3,
+        data: 0,
         color: '#F6F8A9',
     }
 ]
 
-const AlarmData = () => {
-    const [data, setData] = useState(dataSource);
+const AlarmData = ({
+    deviceType,
+    areaType
+}) => {
+    const [myData, setMyData] = useState(dataSource);
+    const { data, run } = useRequest(getAlmCountServe, {
+        pollingInterval: 1000*60*60*12, //12小时轮询一次
+        manual: true,
+    });
+
+    useEffect(()=>{
+        run({
+            db: areaType==="domestic",
+            isMin: deviceType==="IntegratedMachine"
+        });
+    }, [deviceType, areaType]);
+
+    useEffect(()=>{
+        if(data?.data?.data){
+            const result = data?.data?.data;
+            const cloneData = JSON.parse(JSON.stringify(myData));
+            cloneData[0].data = parseInt(result?.NowCount);
+            cloneData[1].data = parseInt(result?.count);
+            cloneData[2].data = parseInt(result?.riskCount);
+            setMyData(cloneData);
+        }
+    }, [data])
 
     return (
         <div
@@ -41,7 +70,7 @@ const AlarmData = () => {
             }}
         >
             {
-                data?.map(item => {
+                myData?.map(item => {
                     return(
                         <div 
                             style={{
@@ -67,7 +96,7 @@ const AlarmData = () => {
                                         justifyContent: 'center'
                                     }}
                                 >
-                                    <div style={{color: item?.color, fontSize: 25, fontFamily: 'electronicFont'}}>{item?.data}</div>
+                                    <div style={{color: item?.color, fontSize: 20, fontFamily: 'electronicFont'}}>{item?.data}</div>
                                 </div>
                                 <div style={{color: 'white', fontSize: 12}}>{item?.description}</div>
                             </div>
