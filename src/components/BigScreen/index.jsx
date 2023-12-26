@@ -180,9 +180,10 @@ function BigScreen() {
                                     return {
                                         ...item,
                                         prior: {
-                                            1: '普通',
-                                            2: '中等',
-                                            3: '严重'
+                                            1: '一级',
+                                            2: '二级',
+                                            3: '三级',
+                                            4: '四级'
                                         }[item?.prior]
                                     }
                                 })}
