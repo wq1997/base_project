@@ -173,7 +173,7 @@ function BigScreen() {
                                     },
                                     {
                                         title: '故障等级',
-                                        key: 'level'
+                                        key: 'prior'
                                     }
                                 ]}
                                 dataSource={myAlmListData?.map(item => {
