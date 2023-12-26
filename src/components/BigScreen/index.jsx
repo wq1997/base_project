@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import styles from "./index.less";
 import MapChina from '../BigScreen/map'
 import MapWorld from '../BigScreen/wordMap'
@@ -5,7 +6,6 @@ import MapWorld from '../BigScreen/wordMap'
 import ScrollTable from "./component/ScorllTable";
 import Header from './component/Header';
 import AreaTemplate from "./component/AreaTemplate";
-import { useState } from "react";
 import Carbon from "./component/carbon";
 import IncomeRanking from "./component/incomeRanking";
 import IncomeCurve from "./component/incomeCurve";
@@ -15,6 +15,13 @@ import Efficiency from "./component/efficiency";
 import OperationAll from "./component/operationAll";
 import AlarmData from "./component/alarmData";
 import RunningView from "./component/runningView";
+
+import {
+    getOMOverviewServe,
+    getAlmListServe
+} from "@/services/bigScreen";
+import { useRequest } from "ahooks";
+import moment from "moment";
 
 const deviceTypeList = [
     {
@@ -41,6 +48,43 @@ const areaTypeList = [
 function BigScreen() {
     const [deviceType, setDeviceType] = useState('LargeEnergy');
     const [areaType, setAreaType] = useState('domestic');
+
+    const [myMaintenanceListData, setMyMaintenanceListData] = useState([]);
+    const { data: maintenanceListData, run } = useRequest(getOMOverviewServe, {
+        pollingInterval: 1000*60*60*12, //12小时轮询一次
+        manual: true,
+    });
+
+    const [myAlmListData, setMyAlmListData] = useState([]);
+    const { data: almListData, run: runAlm } = useRequest(getAlmListServe, {
+        pollingInterval: 1000*60*60*12, //12小时轮询一次
+        manual: true,
+    });
+
+    useEffect(()=>{
+        run({
+            db: areaType==="domestic",
+            isMin: deviceType==="IntegratedMachine"
+        });
+        runAlm({
+            db: areaType==="domestic",
+            isMin: deviceType==="IntegratedMachine"
+        });
+    }, [deviceType, areaType]);
+
+    useEffect(()=>{
+        if(maintenanceListData?.data?.data){
+            const result = maintenanceListData?.data?.data?.list;
+            setMyMaintenanceListData(result);
+        }
+    }, [maintenanceListData])
+
+    useEffect(()=>{
+        if(almListData?.data?.data){
+            const result = almListData?.data?.data;
+            setMyAlmListData(result);
+        }
+    }, [almListData])
 
     return (
         <div className={styles.content}>
@@ -110,59 +154,27 @@ function BigScreen() {
                                 columns={[
                                     {
                                         title: '故障时间',
-                                        key: 'time'
+                                        key: 'begin'
                                     },
                                     {
                                         title: '故障描述',
-                                        key: 'description'
+                                        key: 'descs'
                                     },
                                     {
                                         title: '故障等级',
-                                        key: 'level'
+                                        key: 'prior'
                                     }
                                 ]}
-                                dataSource={[
-                                    {
-                                        time: '2023-11-11',
-                                        description: '失败警告',
-                                        level: 1
-                                    },
-                                    {
-                                        time: '2023-11-11',
-                                        description: '失败警告',
-                                        level: 1
-                                    },
-                                    {
-                                        time: '2023-11-11',
-                                        description: '失败警告',
-                                        level: 1
-                                    },
-                                    {
-                                        time: '2023-11-11',
-                                        description: '失败警告',
-                                        level: 1
-                                    },
-                                    {
-                                        time: '2023-11-11',
-                                        description: '失败警告',
-                                        level: 1
-                                    },
-                                    {
-                                        time: '2023-11-11',
-                                        description: '失败警告',
-                                        level: 1
-                                    },
-                                    {
-                                        time: '2023-11-11',
-                                        description: '失败警告',
-                                        level: 1
-                                    },
-                                    {
-                                        time: '2023-11-11',
-                                        description: '失败警告',
-                                        level: 1
+                                dataSource={myAlmListData?.map(item => {
+                                    return {
+                                        ...item,
+                                        prior: {
+                                            1: '普通',
+                                            2: '中等',
+                                            3: '严重'
+                                        }[item?.prior]
                                     }
-                                ]}
+                                })}
                             />
                         </div>
                     </AreaTemplate>
@@ -180,95 +192,35 @@ function BigScreen() {
                                 columns={[
                                     {
                                         title: '序号',
-                                        key: '1'
+                                        key: 'id'
                                     },
                                     {
                                         title: '工单编号',
-                                        key: '2'
+                                        key: 'no'
                                     },
                                     {
                                         title: '工单类型',
-                                        key: '3'
+                                        key: 'type'
                                     },
                                     {
                                         title: '发布时间',
-                                        key: '4'
+                                        key: 'publishTime'
                                     },
                                     {
                                         title: '处理状态',
-                                        key: '5'
+                                        key: 'status'
                                     },
                                     {
-                                        title: '处理市场',
-                                        key: '6'
+                                        title: '处理时长',
+                                        key: 'period'
                                     }
                                 ]}
-                                dataSource={[
-                                    {
-                                        1: '1',
-                                        2: 'XJ1254',
-                                        3: '计划任务',
-                                        4: '2023.11.30',
-                                        5: '待处理',
-                                        6: '12H'
-                                    },
-                                    {
-                                        1: '2',
-                                        2: 'XJ1254',
-                                        3: '计划任务',
-                                        4: '2023.11.30',
-                                        5: '待处理',
-                                        6: '12H'
-                                    },
-                                    {
-                                        1: '3',
-                                        2: 'XJ1254',
-                                        3: '计划任务',
-                                        4: '2023.11.30',
-                                        5: '待处理',
-                                        6: '12H'
-                                    },
-                                    {
-                                        1: '4',
-                                        2: 'XJ1254',
-                                        3: '计划任务',
-                                        4: '2023.11.30',
-                                        5: '待处理',
-                                        6: '12H'
-                                    },
-                                    {
-                                        1: '5',
-                                        2: 'XJ1254',
-                                        3: '计划任务',
-                                        4: '2023.11.30',
-                                        5: '待处理',
-                                        6: '12H'
-                                    },
-                                    {
-                                        1: '6',
-                                        2: 'XJ1254',
-                                        3: '计划任务',
-                                        4: '2023.11.30',
-                                        5: '待处理',
-                                        6: '12H'
-                                    },
-                                    {
-                                        1: '7',
-                                        2: 'XJ1254',
-                                        3: '计划任务',
-                                        4: '2023.11.30',
-                                        5: '待处理',
-                                        6: '12H'
-                                    },
-                                    {
-                                        1: '8',
-                                        2: 'XJ1254',
-                                        3: '计划任务',
-                                        4: '2023.11.30',
-                                        5: '待处理',
-                                        6: '12H'
-                                    },
-                                ]}
+                                dataSource={myMaintenanceListData?.map(item => {
+                                    return {
+                                        ...item,
+                                        publishTime: moment(item?.publishTime).format("YYYY-MM-DD")
+                                    }
+                                })}
                             />
                         </div>
                     </AreaTemplate>

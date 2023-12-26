@@ -41,3 +41,21 @@ export const getOMOverviewServe = (params)=>{
         params
     });
 }
+
+export const getAlmListServe = (params)=>{
+    return axiosInstance.get(`/getAlmList`,{
+        params
+    });
+}
+
+export const getAllDtuIdsServe = (params)=>{
+    return axiosInstance.get(`/dtu/getAllDtuIds`,{
+        params
+    });
+}
+
+export const getTotalDayFeeServe = (params)=>{
+    return axiosInstance.get(`/getTotalDayFee`,{
+        params
+    });
+}

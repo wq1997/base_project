@@ -1,12 +1,12 @@
 import { useRef } from "react";
 import styles from "./index.less";
 import { useEffect, useState } from "react";
-
 const Table = ({
     color="white",
     columns,
     dataSource
 }) => {
+    const [timer, setTimer] = useState(null);
     const tableRef = useRef(null);
     const tableHeaderRef = useRef(null);
     const tableContentRef = useRef(null);
@@ -15,13 +15,15 @@ const Table = ({
     const startScroll = () => {
         const tableContentScrollHeight = tableContentRef?.current?.scrollHeight;
         let scrollTop = 0;
-        setInterval(()=>{
+        let newTimer = null
+        newTimer = setInterval(()=>{
             tableContentRef.current.style.top = `-${scrollTop}px`;
             if(scrollTop>=tableContentScrollHeight-5){
                 scrollTop=0;
             }
             scrollTop++;
         }, 50)
+        setTimer(newTimer);
     }
 
     const init = () => {
@@ -35,8 +37,12 @@ const Table = ({
     }
 
     useEffect(()=>{
+        if(timer){
+            clearInterval(timer);
+            setTimer(null);
+        }
         init();
-    }, []);
+    }, [dataSource]);
 
     return (
         <div className={styles.table} ref={tableRef}>
