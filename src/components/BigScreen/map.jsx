@@ -202,7 +202,7 @@ function MapCom(props) {
 
     useEffect(() => {
         getOptions();
-        console.log(props,2222222222222);
+        console.log(props,1);
     }, [props.allPlant])
 
 
