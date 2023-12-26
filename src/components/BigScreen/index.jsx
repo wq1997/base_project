@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import styles from "./index.less";
 import MapChina from '../BigScreen/map'
 import MapWorld from '../BigScreen/wordMap'
+
 import ScrollTable from "./component/ScorllTable";
 import Header from './component/Header';
 import AreaTemplate from "./component/AreaTemplate";
@@ -14,11 +15,11 @@ import Efficiency from "./component/efficiency";
 import OperationAll from "./component/operationAll";
 import AlarmData from "./component/alarmData";
 import RunningView from "./component/runningView";
-import { getAllPlantList, sysDb } from "@/services/bigScreen"
-import { useEffect } from "react";
+
 import {
     getOMOverviewServe,
-    getAlmListServe
+    getAlmListServe,
+    getAllPlantList
 } from "@/services/bigScreen";
 import { useRequest } from "ahooks";
 import moment from "moment";
@@ -46,88 +47,121 @@ const areaTypeList = [
     }
 ]
 function BigScreen() {
-
     const [deviceType, setDeviceType] = useState('LargeEnergy');
     const [areaType, setAreaType] = useState('domestic');
-    const [plantsPosition, setPlantsPosition] = useState()
+    const [plantsPosition, setPlantsPosition] = useState();
+
+    const [myMaintenanceListData, setMyMaintenanceListData] = useState([]);
+    const { data: maintenanceListData, run } = useRequest(getOMOverviewServe, {
+        pollingInterval: 1000*60*60*12, //12小时轮询一次
+        manual: true,
+    });
+
+    const [myAlmListData, setMyAlmListData] = useState([]);
+    const { data: almListData, run: runAlm } = useRequest(getAlmListServe, {
+        pollingInterval: 1000*60*60*12, //12小时轮询一次
+        manual: true,
+    });
+
     const getPlantPosition = async () => {
         const { data } = await getAllPlantList({
             db: areaType === 'domestic' ? true : false,
             isMin: deviceType === 'IntegratedMachine' ? true : false
         })
         setPlantsPosition(data.data)
-        console.log(plantsPosition, 11111111111);
     };
-    useEffect(() => {
+
+    useEffect(()=>{
+        run({
+            db: areaType==="domestic",
+            isMin: deviceType==="IntegratedMachine"
+        });
+        runAlm({
+            db: areaType==="domestic",
+            isMin: deviceType==="IntegratedMachine"
+        });
         getPlantPosition();
-        console.log(areaType,deviceType,44444444444444444);
-    }, [areaType, deviceType])
+    }, [deviceType, areaType]);
+
+    useEffect(()=>{
+        if(maintenanceListData?.data?.data){
+            const result = maintenanceListData?.data?.data?.list;
+            setMyMaintenanceListData(result);
+        }
+    }, [maintenanceListData])
+
+    useEffect(()=>{
+        if(almListData?.data?.data){
+            const result = almListData?.data?.data;
+            setMyAlmListData(result);
+        }
+    }, [almListData])
+
     return (
         <div className={styles.content}>
-            <Header
+            <Header 
                 currentDeviceType={deviceType}
                 currentAreaType={areaType}
                 deviceTypeList={deviceTypeList}
                 areaTypeList={areaTypeList}
-                onChangedDeviceType={(newDeviceType) => {
-                    if (deviceType === newDeviceType || (areaType === "overseas" && newDeviceType === "LargeEnergy")) return;
+                onChangedDeviceType={(newDeviceType)=>{
+                    if(deviceType===newDeviceType||(areaType==="overseas"&&newDeviceType==="LargeEnergy")) return;
                     setDeviceType(newDeviceType);
                 }}
-                onChangedAreaType={(newAreaType) => {
-                    if (areaType === newAreaType || (deviceType === "LargeEnergy" && newAreaType === "overseas")) return;
+                onChangedAreaType={(newAreaType)=>{
+                    if(areaType===newAreaType||(deviceType==="LargeEnergy"&&newAreaType==="overseas")) return;
                     setAreaType(newAreaType);
-                    console.log(areaType,3333333333333);
                 }}
             />
             <div className={styles.contentBottom}>
                 <div className={styles.contentBottomLeft}>
-                    <AreaTemplate
+                    <AreaTemplate 
                         title="储能设备运行概览"
                     >
-                        <RunningView deviceType={deviceType} areaType={areaType} />
+                        <RunningView deviceType={deviceType} areaType={areaType}  />
                     </AreaTemplate>
-                    <AreaTemplate
+                    <AreaTemplate 
                         title="设备充放电效率排行"
                     >
-                        <Efficiency deviceType={deviceType} areaType={areaType} />
+                        <Efficiency deviceType={deviceType} areaType={areaType}/>
                     </AreaTemplate>
-                    <AreaTemplate
+                    <AreaTemplate 
                         title="减碳曲线展示"
                     >
-                        <Carbon deviceType={deviceType} areaType={areaType} />
+                        <Carbon deviceType={deviceType} areaType={areaType}/>
                     </AreaTemplate>
-                    <AreaTemplate
+                    <AreaTemplate 
                         title="项目收益排行"
                     >
-                        <IncomeRanking deviceType={deviceType} areaType={areaType} />
+                        <IncomeRanking deviceType={deviceType} areaType={areaType}/>
                     </AreaTemplate>
                 </div>
                 <div className={styles.contentBottomCenterTop}>
-                    <CenterTopData deviceType={deviceType} areaType={areaType} />
+                    <CenterTopData deviceType={deviceType} areaType={areaType}/>
                 </div>
                 <div className={styles.contentBottomCenterBottom}>
-                    <AreaTemplate
+                    <AreaTemplate 
                         title="储能系统收益统计曲线图"
                     >
-                        <IncomeCurve deviceType={deviceType} areaType={areaType} />
+                        <IncomeCurve deviceType={deviceType} areaType={areaType}/>
                     </AreaTemplate>
                 </div>
                 <div className={styles.contentBottomRight}>
-                    <AreaTemplate
+                    <AreaTemplate 
                         title="智慧运维汇总"
                     >
-                        <OperationAll deviceType={deviceType} areaType={areaType} />
+                        <OperationAll deviceType={deviceType} areaType={areaType}/>
                     </AreaTemplate>
-                    <AreaTemplate
+                    <AreaTemplate 
                         title="智慧告警设备"
                     >
-                        <AlarmData deviceType={deviceType} areaType={areaType} />
+                        <AlarmData deviceType={deviceType} areaType={areaType}/>
                     </AreaTemplate>
-                    <AreaTemplate
+                    <AreaTemplate 
                         title="告警列表"
                     >
-                        <div style={{ padding: '0 30px', height: '100%' }}>
-                            <ScrollTable
+                        <div style={{padding: '0 30px', height: '100%'}}>
+                            <ScrollTable 
                                 columns={[
                                     {
                                         title: '故障时间',
@@ -139,7 +173,7 @@ function BigScreen() {
                                     },
                                     {
                                         title: '故障等级',
-                                        key: 'prior'
+                                        key: 'level'
                                     }
                                 ]}
                                 dataSource={myAlmListData?.map(item => {
@@ -155,16 +189,16 @@ function BigScreen() {
                             />
                         </div>
                     </AreaTemplate>
-                    <AreaTemplate
+                    <AreaTemplate 
                         title="运维工单汇总"
                     >
-                        <MaintenanceList deviceType={deviceType} areaType={areaType} />
+                        <MaintenanceList deviceType={deviceType} areaType={areaType}/>
                     </AreaTemplate>
-                    <AreaTemplate
+                    <AreaTemplate 
                         title="运维工单列表"
                     >
-                        <div style={{ padding: '0 30px', height: '100%' }}>
-                            <ScrollTable
+                        <div style={{padding: '0 30px', height: '100%'}}>
+                            <ScrollTable 
                                 headerLineColor="#6974C1"
                                 columns={[
                                     {
