@@ -1,0 +1,47 @@
+.contents{
+    width: 100%;
+    height: 100%;
+    display: grid; 
+    padding-bottom: 10px;
+    grid-template-columns: 1fr 1fr 1fr 1fr; 
+    grid-template-rows: 1fr 1fr 1fr 1fr; 
+    gap: 8px 8px; 
+    grid-template-areas: 
+      "chargStaus chargStaus chargStaus chargTypesDirect"
+      "chargStaus chargStaus chargStaus chargTypesAlternating"
+      "listOfCharg listOfCharg listOfCharg listOfCharg"
+      "listOfCharg listOfCharg listOfCharg listOfCharg"; 
+      .leftImage{
+        width:  calc(50% ) ;
+        height: calc(100% ) ;
+    }
+    .rightData{
+        width:  calc(50% ) ;
+        height: calc(100%) ;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .chargingItems{
+            max-width: 110px;
+            display: flex;
+            justify-content: space-between;
+            span{
+                display: inline-block;
+            }
+        }
+    }
+  }
+  .chargStaus { grid-area: chargStaus; }
+  .chargTypesDirect { grid-area: chargTypesDirect;
+    display: flex;
+    padding: 20px 20px;
+ 
+   background-color: #fff;
+}
+  .chargTypesAlternating { grid-area: chargTypesAlternating;
+    display: flex;
+    padding: 20px 20px; 
+   background-color: #fff;
+
+}
+  .listOfCharg { grid-area: listOfCharg; }

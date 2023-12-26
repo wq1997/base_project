@@ -1,0 +1,47 @@
+.content {
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+
+    .wrap {
+        display: flex;
+        width: 100%;
+        height: 100%;
+
+        .echartsPie {
+            width: 80%;
+            height: 100%;
+        }
+
+        .cardData {
+            width: calc(100% - 10px);
+            height: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            background: #FFFFFF;
+
+            .cardItem {
+                // width: 194px;
+                // height: 116px;
+                padding: 16px;
+                box-shadow: 0px 2px 4px 0px rgba(214, 214, 214, 0.5);
+
+                .cardItemTitle {
+                    height: 24px;
+                    line-height: 24px;
+                }
+
+                .cardItemVaue {
+                    height: calc(100% - 24px);
+                    font-size: 36px;
+                    font-weight: 500;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+        }
+    }
+
+}

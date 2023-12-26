@@ -1,0 +1,28 @@
+.contents {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 8px 8px;
+    grid-template-areas:
+        "operationIndex operationIndex operationIndex operationIndex operationIndex operationIndex alarmInfo alarmInfo alarmInfo alarmInfo"
+        "electricityGenerationStatistics electricityGenerationStatistics electricityGenerationStatistics electricityGenerationStatistics electricityGenerationStatistics realPower realPower realPower realPower realPower";
+
+    // background-color: #fff;
+    .operationIndex {
+        grid-area: operationIndex;
+    }
+
+    .alarmInfo {
+        grid-area: alarmInfo;
+    }
+
+    .electricityGenerationStatistics {
+        grid-area: electricityGenerationStatistics;
+    }
+
+    .realPower {
+        grid-area: realPower;
+    }
+}

@@ -1,34 +1,69 @@
 
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import Tab from '../components/Tab';
-import { getLocalStorage, getQueryString } from "@/utils/utils";
-import { history, useLocation } from "umi";
-import Overview from "./components/Overview";
-import HistoryData from './components/HistoryData';
-
-const PageTypeList = [
-    {label:'总览',key:'Overview'},
-    {label:'历史数据',key:'HistoryData'},
-];
-const defaultPageType = "Overview";
+import styles from './index.less'
+import StatusStatistics from "./components/statusStatistics";
+import ListofChargingStations from './components/listofChargingStations';
 
 function Com(props) {
-    const location = useLocation();
-    const { pathname } = location;
-    const [activeKey, setActiveKey] = useState(getQueryString("activeKey") || defaultPageType);
-
-    const onChangeTab = key => {
-        setActiveKey(key);
-        history.push(`${pathname}?activeKey=${key}`);
-    };
-
-    useEffect(() => {
-    }, [])
+    const dataOfCharges=[
+        {
+        name:'充电中',
+        key:'charging',
+        value:'1/10'
+    },
+    {
+        name:'已插枪',
+        key:'inserted',
+        value:'1/10'
+    },
+    {
+        name:'空闲中',
+        key:'Idle',
+        value:'1/10'
+    },
+    {
+        name:'故障中',
+        key:'Failing',
+        value:'1/10'
+    },
+    {
+        name:'日充电量',
+        key:'dailyCharge',
+        value:'1/10'
+    },
+]
     return (
-        <div className='content'>
-            <Tab activeKey={activeKey} TabItem={PageTypeList} onChange={onChangeTab}/>
-            {activeKey==="Overview"&&<Overview />}
-            {activeKey==="HistoryData"&&<HistoryData />}
+        <div className={styles.contents}>
+           <div className={styles.chargStaus}><StatusStatistics/></div>
+           <div className={styles.chargTypesDirect}>
+            <div className={styles.leftImage}></div>
+            <div className={styles.rightData}>
+                {dataOfCharges.map(it=>{
+                    return(
+                        <div className={styles.chargingItems}>
+                            <span>{it.name}</span>
+                            <span>:</span>
+                            <span>{it.value}</span>
+                        </div>
+                    )
+                })}
+            </div>
+           </div>
+           <div className={styles.chargTypesAlternating }>
+           <div className={styles.leftImage}></div>
+            <div className={styles.rightData}>
+            {dataOfCharges.map(it=>{
+                    return(
+                        <div className={styles.chargingItems}>
+                            <span>{it.name}</span>
+                            <span>:</span>
+                            <span>{it.value}</span>
+                        </div>
+                    )
+                })}
+            </div>
+           </div>
+           <div className={styles.listOfCharg}><ListofChargingStations/></div>
         </div>
     )
 }

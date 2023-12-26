@@ -12,7 +12,6 @@ const RealtimeAlarm = () => {
   const [level,setLevel]=useState();
   const [field,setField]=useState("sn");
   const [textLike,setTextLike]=useState();
-  // const []
   const dataItems = [
     {
       label: '设备编码',

@@ -6,7 +6,6 @@ import { useEmotionCss } from '@ant-design/use-emotion-css';
 import styles from "./baseLayout.less";
 import useIcon from "@/hooks/useIcon";
 import { SYSTEM_NAME } from "@/utils/constants";
-import { useEmotionCss } from '@ant-design/use-emotion-css';
 
 const { Header, Sider, Content } = Layout;
 
@@ -27,9 +26,16 @@ const BaseLayout = () => {
                 display: 'none'
             },
             '.ant-menu-sub': {
-                backgroundColor: `${token.colorPrimary} !important`,
-                margin: '0 20px'
+                backgroundColor: `${token.sub_innerBgc} !important`,
+                margin: '0 20px',
+                borderRadius: '4px !important',
+                fontSize:'16px !important'
+            },
+            '.ant-menu-item-icon':{
+                fontSize:'18px !important'
+                
             }
+
         }
     });
 
@@ -80,7 +86,7 @@ const BaseLayout = () => {
                     </Dropdown>
                 </Header>
                 <Layout hasSider>
-                    <Sider className={styles.sider}
+                    <Sider className={siderContentStyle}
                     style={{background:token.bgcColorB_l}}
                     width={240}>
                         <div className={styles.siderContent}>

@@ -1,4 +1,4 @@
-import { Menu,theme } from 'antd';
+import { Menu, theme } from 'antd';
 import { Link, useLocation, useSelector } from 'umi';
 // import menu from '../router/menuRoute'
 import { AppstoreOutlined, ToolOutlined, AlertOutlined, LineChartOutlined, ControlOutlined, SettingOutlined } from '@ant-design/icons';
@@ -94,7 +94,8 @@ const getMenu = menuList => {
                     key={menu.key}
                     title={menu.label}
                     icon={menu.icon}
-                    style={{ fontSize: '18px', }}
+                    style={{ fontSize: '18px' }}
+
                 >
                     {getMenu(menu.children)}
                 </SubMenu>
@@ -103,7 +104,9 @@ const getMenu = menuList => {
             if (menu.type) {
                 if (currentDivice?.find(it => it === menu.type)) {
                     return (
-                        <Menu.Item key={menu.key}>
+                        <Menu.Item key={menu.key}
+                            style={{ fontSize: '16px' }}
+                        >
                             <Link to={menu.key}>{menu.label}</Link>
                         </Menu.Item>
                     );
@@ -111,8 +114,8 @@ const getMenu = menuList => {
                 return
             }
             return (
-                <Menu.Item key={menu.key} icon={menu.icon} 
-                style={{ fontSize: '18px' }}
+                <Menu.Item key={menu.key} icon={menu.icon}
+                style={{ fontSize:menu.icon?'18px': '16px' }}
 
                 >
                     <Link to={menu.key}>{menu.label}</Link>
