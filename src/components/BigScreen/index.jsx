@@ -16,7 +16,6 @@ import AlarmData from "./component/alarmData";
 import RunningView from "./component/runningView";
 import { getAllPlantList, sysDb } from "@/services/bigScreen"
 import { useEffect } from "react";
-
 import {
     getOMOverviewServe,
     getAlmListServe
