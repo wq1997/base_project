@@ -1,38 +1,68 @@
-import { useState } from 'react';
+import { useState, useEffect } from "react";
 import centerTop1Img from "../../../../public/images/centerTop1.svg";
 import centerTop2Img from "../../../../public/images/centerTop2.svg";
 import centerTop3Img from "../../../../public/images/centerTop3.svg";
 import centerTop4Img from "../../../../public/images/centerTop4.svg";
+import { useRequest } from "ahooks";
+import {
+    getAllDtuIdsServe
+} from "@/services/bigScreen";
 
 const dataSource = [
     {
         imgUrl: centerTop1Img,
         description: '分布省份',
-        data: 16,
+        data: 0,
         color: '#42F8E6'
     },
     {
         imgUrl: centerTop2Img,
         description: '总装机容量',
-        data: 10000,
+        data: 0,
         color: '#3AAFFF'
     },
     {
         imgUrl: centerTop3Img,
         description: '设备落地总数',
-        data: 10,
+        data: 0,
         color: '#C08BF1'
     },
     {
         imgUrl: centerTop4Img,
         description: '运维员工数量',
-        data: 1000,
+        data: 0,
         color: '#F3F5A6'
     }
 ]
 
-const CenterTopData = () => {
-    const [data, setData] = useState(dataSource);
+const CenterTopData = ({
+    deviceType,
+    areaType
+}) => {
+    const [myData, setMyData] = useState(dataSource);
+    const { data, run } = useRequest(getAllDtuIdsServe, {
+        pollingInterval: 1000*60*60*12, //12小时轮询一次
+        manual: true,
+    });
+    
+    useEffect(()=>{
+        run({
+            db: areaType==="domestic",
+            isMin: deviceType==="IntegratedMachine"
+        });
+    }, [deviceType, areaType]);
+
+    useEffect(()=>{
+        if(data?.data?.data){
+            const result = data?.data?.data;
+            const cloneData = JSON.parse(JSON.stringify(myData));
+            cloneData[0].data = parseInt(result?.province);
+            cloneData[1].data = parseInt(result?.Installed);
+            cloneData[2].data = parseInt(result?.dtuCount);
+            cloneData[3].data = parseInt(result?.employee);
+            setMyData(cloneData);
+        }
+    }, [data])
 
     return (
         <div
@@ -45,7 +75,7 @@ const CenterTopData = () => {
             }}
         >
             {
-                data?.map(item => {
+                myData?.map(item => {
                     return (
                         <div
                             style={{
@@ -71,7 +101,7 @@ const CenterTopData = () => {
                                         marginLeft: 15
                                     }}
                                 >
-                                    <div style={{color: item?.color, fontSize: 30}}>{item?.data}</div>
+                                    <div style={{color: item?.color, fontSize: 25}}>{item?.data}</div>
                                     <div style={{color: 'white', fontSize: 12}}>{item?.description}</div>
                                 </div>
                             </div>

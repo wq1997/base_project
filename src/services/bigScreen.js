@@ -45,11 +45,25 @@ export const getOMOverviewServe = (params)=>{
 export const getAllPlantList = (params)=>{
     return axiosInstance.get(`/plant/getAllPlantList`,{
         params
-    });
-}
+})
 
-export const sysDb = (params)=>{
-    return axiosInstance.get(`/plant/sysDb`,{
+}
+export const getAlmListServe = (params)=>{
+    return axiosInstance.get(`/getAlmList`,{
         params
     });
 }
+    
+export const sysDb = (params)=>{
+    return axiosInstance.get(`/plant/sysDb`,{params})}
+
+export const getTotalDayFeeServe = (params)=>{
+    return axiosInstance.get(`/getTotalDayFee`,{
+        params
+    });
+}
+
+export const getAllDtuIdsServe = (params)=>{
+    return axiosInstance.get(`/dtu/getAllDtuIds`,{
+        params
+    });

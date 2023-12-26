@@ -43,9 +43,9 @@ const MaintenanceList = ({
         if(data?.data?.data){
             const result = data?.data?.data;
             const cloneData = JSON.parse(JSON.stringify(myData));
-            cloneData[0].data = parseInt(result?.NowCount);
-            cloneData[1].data = parseInt(result?.count);
-            cloneData[2].data = parseInt(result?.riskCount);
+            cloneData[0].data = parseInt(result?.todayOrderCounts);
+            cloneData[1].data = parseInt(result?.totalOrderCounts);
+            cloneData[2].data = parseInt(result?.unFinishedOrderCounts);
             setMyData(cloneData);
         }
     }, [data])

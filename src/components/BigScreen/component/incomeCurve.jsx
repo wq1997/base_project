@@ -1,6 +1,10 @@
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect } from "react";
 import * as echarts from "echarts";
+import {
+    getTotalDayFeeServe
+} from "@/services/bigScreen";
+import { useRequest } from "ahooks";
 import { Select, Space, Radio } from "antd"
 
 const modeList = [
@@ -14,6 +18,7 @@ const modeList = [
     }
 ]
 const IncomeCurve = ({
+    deviceType,
     areaType
 }) => {
     const [options, setOptions] = useState({});
@@ -23,15 +28,20 @@ const IncomeCurve = ({
       setMode(value);
     };
 
-    const getOptions = () => {
-        const xData = ['12/01', '12/02', '12/03', '12/04', '12/05', '12/06', '12/07']
-        const data = [90, 105, 84, 125, 110, 92, 98];
+    const [myData, setMyData] = useState([]);
+    const { data, run } = useRequest(getTotalDayFeeServe, {
+        pollingInterval: 1000*60*60*12, //12小时轮询一次
+        manual: true,
+    });
 
+    const getOptions = () => {
+        const xData = myData?.map(item => item?.date)
+        const data =  myData?.map(item => item?.totalFee)
         setOptions({
             grid: {
                 top: '10',
                 left: '20',
-                right: '20',
+                right: '25',
                 bottom: '0',
                 containLabel: true,
             },
@@ -48,7 +58,7 @@ const IncomeCurve = ({
                     textStyle: {
                         color: 'white',
                         margin:15,
-                        fontSize: 7
+                        fontSize: 10
                     },
                 },
                 axisTick: { show: false,},
@@ -56,9 +66,7 @@ const IncomeCurve = ({
             }],
             yAxis: [{
                 type: 'value',
-                min: 0,
-                max:140,
-                splitNumber: 7,
+                splitNumber: 5,
                 splitLine: {
                     show: true,
                     lineStyle: {
@@ -70,7 +78,7 @@ const IncomeCurve = ({
                     margin:20,
                     textStyle: {
                         color: 'white',
-                        fontSize: 7
+                        fontSize: 9
                     },
                 },
                 axisTick: { show: false,},  
@@ -102,16 +110,31 @@ const IncomeCurve = ({
         })
     }
 
+    useEffect(()=>{
+        run({
+            db: areaType==="domestic",
+            isMin: deviceType==="IntegratedMachine"
+        });
+    }, [deviceType, areaType]);
+
+    useEffect(()=>{
+        if(data?.data?.data){
+            const result = data?.data?.data;
+            const resultData = result?.splice(0,12);
+            setMyData(resultData||[])
+        }
+    }, [data])
+
     useEffect(() => {
         getOptions();
-    }, []);
+    }, [myData]);
 
     return (
         <div style={{height: '100%',display: 'flex'}}>
             <div style={{flex: 1, height: '100%'}}>
                 <ReactECharts option={options} style={{height: '100%'}} />
             </div>
-            <div style={{width: 100}}>
+            {/* <div style={{width: 100}}>
                 <Space direction="vertical" size={10}>
                     <div style={{display: 'flex', alignItems: 'center', borderRadius: '6px', overflow: 'hidden', width: '100px'}}>
                         {
@@ -158,7 +181,7 @@ const IncomeCurve = ({
                         />
                     }
                 </Space>
-            </div>
+            </div> */}
         </div>
     )
 }
