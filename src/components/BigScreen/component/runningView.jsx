@@ -67,7 +67,7 @@ const RunningView = ({
             cloneData[0].data = parseInt(result?.nowCount);
             cloneData[1].data = parseInt(result?.totalCharge);
             cloneData[2].data = parseInt(result?.totalDisCharge);
-            cloneData[3].data = parseInt(result?.nowCount);
+            cloneData[3].data = parseInt(result?.efficiencyAvg * 100);
             setMyData(cloneData);
         }
     }, [data])
