@@ -4,6 +4,9 @@ import { useDispatch, useSelector,history } from "umi";
 import ReactECharts from "echarts-for-react";
 import china from '../../../public/mapJson/chinaB'
 import * as echarts from "echarts";
+import { getLocalStorage } from "@/utils/utils";
+
+
 
 function MapCom(props) {
     const chartInstance= React.createRef();
@@ -20,19 +23,24 @@ function MapCom(props) {
         });
         return markerList;
     };
+    useEffect(()=>{
     
+      console.log(props);
+    },[props.deviceType])
     const bind = useCallback((ref) => {
         if (!ref) return;
         ref.on('click', params => {
             if (params.componentType === "series" && params.componentSubType === "effectScatter") {
-                const index = params.dataIndex;
-                dispatch({ type: 'device/getAllPlantDetails',payload:{
-                    plantId:params.data.id
-                } });
-                history.push('/index/home')
+              if (props.deviceType==='LargeEnergy') {
+                console.log('big',props.deviceType);
+                history.push(`http://localhost:8080/authorization?token=${getLocalStorage("Token")}`)
+              }else{
+                console.log('small');
+                history.push(`http://localhost:8081/authorization?token=${getLocalStorage("Token")}`)
+              }
             }
         });
-      }, []);
+      }, [props]);
       
     const onChartReady = useCallback((ref) => {
         chartInstance.current = ref;
@@ -202,7 +210,6 @@ function MapCom(props) {
 
     useEffect(() => {
         getOptions();
-        console.log(props,1);
     }, [props.allPlant])
 
 

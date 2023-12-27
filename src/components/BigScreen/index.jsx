@@ -19,7 +19,8 @@ import RunningView from "./component/runningView";
 import {
     getOMOverviewServe,
     getAlmListServe,
-    getAllPlantList
+    getAllPlantList,
+    sysDb
 } from "@/services/bigScreen";
 import { useRequest } from "ahooks";
 import moment from "moment";
@@ -64,6 +65,10 @@ function BigScreen() {
     });
 
     const getPlantPosition = async () => {
+        const sys=await sysDb({
+            db: areaType === 'domestic' ? true : false,
+            isMin: deviceType === 'IntegratedMachine' ? true : false
+        })
         const { data } = await getAllPlantList({
             db: areaType === 'domestic' ? true : false,
             isMin: deviceType === 'IntegratedMachine' ? true : false
@@ -238,7 +243,7 @@ function BigScreen() {
                     </AreaTemplate>
                 </div>
                 <div className={styles.contentBottomMap}>
-                    {areaType == 'domestic' && <MapChina key={areaType} allPlant={plantsPosition} />}
+                    {areaType == 'domestic' && <MapChina key={deviceType} allPlant={plantsPosition} deviceType={deviceType}/>}
                     {areaType == 'overseas' && <MapWorld key={areaType} allPlant={plantsPosition} />}
                 </div>
             </div>

@@ -10,15 +10,15 @@ function MapCom(props) {
     const chartInstance= React.createRef();
     const [options, setOptions] = useState({});
     const dispatch = useDispatch();
-    const { allPlant } = useSelector(function (state) {
-        return state.device
-    });
+    // const { allPlant } = useSelector(function (state) {
+    //     return state.device
+    // });
     const convertData = function () {
-        const markerList = allPlant?.map(it => {
+        const markerList = props.allPlant?.map(it => {
             return {
                 name: it.name,
                 value: [it.longitude, it.latitude, 100],
-                id:it.id
+                id:it.plantId
             }
         });
         return markerList;
@@ -207,7 +207,7 @@ function MapCom(props) {
     useEffect(() => {
         getOptions();
 
-    }, [allPlant])
+    }, [props.allPlant])
 
 
 
