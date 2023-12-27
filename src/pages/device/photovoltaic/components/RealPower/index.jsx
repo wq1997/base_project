@@ -17,7 +17,6 @@ function Com(props) {
     const { token } = theme.useToken();
     const [options, setOptions] = useState({});
     const getOptions = () => {
-      const data = [200,400,500,800,700,500,400]
         setOptions({
             tooltip: {
               trigger: 'axis',

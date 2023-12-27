@@ -70,7 +70,7 @@ function Com(props) {
     };
     return (
         <div className={styles.content}>
-            <div className={styles.heard} style={{ backgroundColor: token.cardBgc }}>
+            <div className={styles.heard} style={{ backgroundColor: token.titleCardBgc }}>
                 <div>
                     <RangePicker disabledDate={disabledDate} />
                 </div>
@@ -95,11 +95,11 @@ function Com(props) {
                     }
                 />
                 </div>
-                <div className={styles.rightCardData} style={{backgroundColor:token.cardBgc}}></div>
+                <div className={styles.rightCardData} style={{backgroundColor:token.titleCardBgc}}></div>
         
             </div>
             <div className={styles.profitList}>
-                
+
             </div>
         </div>
     )

@@ -25,7 +25,6 @@ function Com(props) {
     const { token } = theme.useToken();
     const [options, setOptions] = useState({});
     const getOptions = () => {
-      const data = [200,400,500,800,700,500,400]
         setOptions({
             title: {
                 text: '80',
@@ -35,10 +34,10 @@ function Com(props) {
                 textStyle: {
                     fontSize:'30px',
                     fontWeight:500,
-                    color: '#333'
+                    color: token.titleColor
                 },
                 subtextStyle: {
-                    color: '#666',
+                    color:token.titleColor,
                     fontSize: '12px',
                 },
             },
@@ -51,16 +50,17 @@ function Com(props) {
                 padding: [0, 5],
                 itemGap: 25,
                 textStyle: {
+                    color:token.smallTitleColor,
                     rich: {
                         title: {
                             fontSize: 16,
                             lineHeight: 15,
-                            color: "rgb(0, 178, 246)"
+                            color: token.smallTitleColor
                         },
                         value: {
                             fontSize: 18,
                             lineHeight: 20,
-                            color: "#fff"
+                            color: token.smallTitleColor
                         }
                     }
                 },
@@ -84,11 +84,11 @@ function Com(props) {
                                 length: 5,
                                 length2: 12,
                                 lineStyle: {
-                                    color: '#d3d3d3'
+                                    color: token.smallTitleColor
                                 },
                                 align: 'right'
                             },
-                            color: "#000",
+                            color: token.smallTitleColor,
                             emphasis: {
                                 show: true
                             }
@@ -108,12 +108,12 @@ function Com(props) {
                                 rich: {
                                     nameStyle: {
                                         fontSize: 12,
-                                        color: "#555",
+                                        color: token.smallTitleColor,
                                         align: 'left'
                                     },
                                     rate: {
                                         fontSize: 12,
-                                        color: "#555",
+                                        color: token.smallTitleColor,
                                         align: 'left'
                                     }
                                 }
@@ -175,7 +175,7 @@ function Com(props) {
     ]
     useEffect(() => {
         getOptions();
-    }, []);
+    }, [token]);
     return (
         <div className={styles.content}>
             <CardModel
@@ -190,14 +190,14 @@ function Com(props) {
                         <div className={styles.cardData}>
                             {cardData.map(it => {
                                 return (
-                                    <div className={styles.cardItem} style={{ color: it.color }}>
+                                    <div className={styles.cardItem} style={{ color: it.color,backgroundColor:token.cardBgc, boxShadow:token.cardShadow }}>
                                         <div className={styles.cardItemTitle}>
                                             {it.icon}
-                                            <span style={{ color: '#666666', fontWeight: 500, fontSize: '16px', marginLeft: '3px' }}>{it.name}</span>
+                                            <span style={{color: token.smallTitleColor, fontWeight: 500, fontSize: '16px', marginLeft: '3px' }}>{it.name}</span>
                                         </div>
-                                        <div className={styles.cardItemVaue} style={{ color: '#333333' }}>
+                                        <div className={styles.cardItemVaue} style={{color:token.titleColor}}>
                                             {it.value}
-                                            <span style={{ fontSize: '16px', fontWeight: 400, marginLeft: '10px' }}>{it.unit}</span>
+                                            <span style={{color: token.smallTitleColor, fontSize: '16px', fontWeight: 400, marginLeft: '10px' }}>{it.unit}</span>
                                         </div>
                                     </div>
                                 )

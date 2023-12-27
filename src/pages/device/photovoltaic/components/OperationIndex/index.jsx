@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { CardModel } from "@/components";
 import styles from './index.less'
+import { theme } from "antd";
+
 import {
     ToolOutlined,
     CalendarOutlined,
@@ -12,6 +14,7 @@ import {
 } from '@ant-design/icons';
 function Com(props) {
     const [xxx, setXxx] = useState('')
+    const { token } = theme.useToken();
 
     useEffect(() => {
         console.log('函数组件来咯')
@@ -82,14 +85,14 @@ function Com(props) {
                         <div className={styles.topContent}>
                             {topData.map(it => {
                                 return (
-                                    <div className={styles.topItem} style={{ color: it.color }}>
+                                    <div className={styles.topItem} style={{ color: it.color,backgroundColor:token.cardBgc, boxShadow:token.cardShadow}}>
                                         <div className={styles.topItemTitle}>
                                             {it.icon}
-                                            <span style={{ color: '#666666', fontWeight: 500, fontSize: '16px', marginLeft: '3px' }}>{it.name}</span>
+                                            <span style={{ color: token.smallTitleColor, fontWeight: 500, fontSize: '16px', marginLeft: '3px' }}>{it.name}</span>
                                         </div>
-                                        <div className={styles.topVaue}>
+                                        <div className={styles.topVaue} style={{color:token.titleColor}}>
                                             {it.value}
-                                            <span style={{ fontSize: '16px', fontWeight: 400, marginLeft: '10px' }}>{it.unit}</span>
+                                            <span style={{color: token.smallTitleColor, fontSize: '16px', fontWeight: 400, marginLeft: '10px' }}>{it.unit}</span>
                                         </div>
                                     </div>
                                 )
@@ -98,14 +101,14 @@ function Com(props) {
                         <div className={styles.bottomContent}>
                             {bottomData.map(it => {
                                 return (
-                                    <div className={styles.bottomItem} style={{ color: it.color }}>
+                                    <div className={styles.bottomItem} style={{ color: it.color,backgroundColor:token.cardBgc , boxShadow:token.cardShadow}}>
                                         <div className={styles.bottomItemTitle}>
                                             {it.icon}
-                                            <span style={{ color: '#666666', fontWeight: 500, fontSize: '16px', marginLeft: '3px' }}>{it.name}</span>
+                                            <span style={{color: token.smallTitleColor, fontWeight: 500, fontSize: '16px', marginLeft: '3px' }}>{it.name}</span>
                                         </div>
-                                        <div className={styles.bottomVaue} style={{ color: '#333333' }}>
+                                        <div className={styles.bottomVaue} style={{color:token.titleColor}}>
                                             {it.value}
-                                            <span style={{ fontSize: '16px', fontWeight: 400, marginLeft: '10px' }}>{it.unit}</span>
+                                            <span style={{ color: token.smallTitleColor,fontSize: '16px', fontWeight: 400, marginLeft: '10px' }}>{it.unit}</span>
                                         </div>
                                     </div>
                                 )

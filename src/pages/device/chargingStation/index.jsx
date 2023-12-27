@@ -3,8 +3,11 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import styles from './index.less'
 import StatusStatistics from "./components/statusStatistics";
 import ListofChargingStations from './components/listofChargingStations';
+import { theme } from "antd";
 
 function Com(props) {
+    const { token } = theme.useToken();
+
     const dataOfCharges=[
         {
         name:'充电中',
@@ -35,7 +38,7 @@ function Com(props) {
     return (
         <div className={styles.contents}>
            <div className={styles.chargStaus}><StatusStatistics/></div>
-           <div className={styles.chargTypesDirect}>
+           <div className={styles.chargTypesDirect} style={{backgroundColor:token.titleCardBgc,color:token.smallTitleColor}}>
             <div className={styles.leftImage}></div>
             <div className={styles.rightData}>
                 {dataOfCharges.map(it=>{
@@ -49,7 +52,7 @@ function Com(props) {
                 })}
             </div>
            </div>
-           <div className={styles.chargTypesAlternating }>
+           <div className={styles.chargTypesAlternating } style={{backgroundColor:token.titleCardBgc,color:token.smallTitleColor}}>
            <div className={styles.leftImage}></div>
             <div className={styles.rightData}>
             {dataOfCharges.map(it=>{

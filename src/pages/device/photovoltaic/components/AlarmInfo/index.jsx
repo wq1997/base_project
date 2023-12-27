@@ -3,9 +3,11 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import ScrollTable from "../../../components/ScorllTable/index";
 import { CardModel } from "@/components";
 import styles from './index.less'
+import { theme } from "antd";
 
 function Com(props) {
     const [xxx, setXxx] = useState('')
+    const { token } = theme.useToken();
 
     useEffect(() => {
         console.log('函数组件来咯')
@@ -19,7 +21,8 @@ function Com(props) {
             }
                 content={
                     <ScrollTable
-                        color='#333333'
+                        color={token.smallTitleColor}
+                        headerLineColor={token.tableHead}
                         columns={[
                             {
                                 title: '故障时间',
