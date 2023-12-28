@@ -4,7 +4,7 @@ import { useDispatch, useSelector,history } from "umi";
 import ReactECharts from "echarts-for-react";
 import world from '../../../public/mapJson/maoJson'
 import * as echarts from "echarts";
-// import 'default-passive-events'
+import { getLocalStorage } from "@/utils/utils";
 
 function MapCom(props) {
     const chartInstance= React.createRef();
@@ -28,11 +28,7 @@ function MapCom(props) {
         if (!ref) return;
         ref.on('click', params => {
             if (params.componentType === "series" && params.componentSubType === "effectScatter") {
-                const index = params.dataIndex;
-                dispatch({ type: 'device/getAllPlantDetails',payload:{
-                    plantId:params.data.id
-                } });
-                history.push('/index/home')
+                history.push(`https://eur.sermatec-cloud.com/authorization?token=${getLocalStorage("Token")}`)
             }
         });
       }, []);

@@ -32,11 +32,9 @@ function MapCom(props) {
         ref.on('click', params => {
             if (params.componentType === "series" && params.componentSubType === "effectScatter") {
               if (props.deviceType==='LargeEnergy') {
-                console.log('big',props.deviceType);
-                history.push(`http://localhost:8080/authorization?token=${getLocalStorage("Token")}`)
+                history.push(`https://www.sermatec-cloud.com/authorization?token=${getLocalStorage("Token")}`)
               }else{
-                console.log('small');
-                history.push(`http://localhost:8081/authorization?token=${getLocalStorage("Token")}`)
+                history.push(`https://ess.sermatec-cloud.com/authorization?token=${getLocalStorage("Token")}`)
               }
             }
         });
