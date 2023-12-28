@@ -95,7 +95,9 @@ function Com(props) {
                     }
                 />
                 </div>
-                <div className={styles.rightCardData} style={{backgroundColor:token.titleCardBgc}}></div>
+                <div className={styles.rightCardData} style={{backgroundColor:token.titleCardBgc}}>
+                    
+                </div>
         
             </div>
             <div className={styles.profitList}>
