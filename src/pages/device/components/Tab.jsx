@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Tabs } from 'antd';
 
 function Com(props) {

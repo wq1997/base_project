@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import styles from './index.less'
 import { theme } from "antd";
+import Title from '../Title';
 
 function Com(props) {
     const [xxx, setXxx] = useState('')
@@ -13,9 +14,7 @@ function Com(props) {
     return (
         <div className={styles.card} style={{ backgroundColor: token.titleCardBgc }}>
             <div className={styles.header}>
-                <div className={styles.title} style={{ color: token.titleColor }}>
-                    {props.title}
-                </div>
+                <Title title={props.title} />
                 <div className={styles.filterPart}>
                     {props.filterPart}
                 </div>

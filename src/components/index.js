@@ -4,7 +4,7 @@ import LocaleBtn from "./LocaleBtn";
 import BigScreen  from "./BigScreen";
 import Strategy  from "./FullCalendar";
 import CardModel  from "./CardModel";
-
+import Title from "./Title";
 
 export {
     BigScreen,
@@ -12,5 +12,6 @@ export {
     ThemeEnum,
     LocaleBtn,
     Strategy,
-    CardModel
+    CardModel,
+    Title
 }
