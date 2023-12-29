@@ -27,7 +27,7 @@ const Login = () => {
   const onFinish = async (values) => {
     const res = await loginSever({
       ...values,
-      password: values.password||getEncrypt(publicKey, values.password),
+      password: getEncrypt(publicKey, values.password),
     });
     if (res?.data?.data) {
       const data = res?.data;
@@ -53,8 +53,8 @@ const Login = () => {
 
   const getPublicKey = async () => {
     const res = await getPublicKeySever();
-    if (res?.data) {
-      setPublicKey(res?.data)
+    if (res?.data?.data) {
+      setPublicKey(res?.data?.data)
     }
   }
 

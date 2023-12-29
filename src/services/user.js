@@ -5,7 +5,7 @@ export const login = (payload) => {
 }
 
 export const getPublicKey = ()=>{
-  return axiosInstance.get("/user/getPublicKey");
+  return axiosInstance.get("/getPublicKey");
 }
 
 
