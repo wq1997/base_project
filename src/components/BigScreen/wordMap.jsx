@@ -28,7 +28,7 @@ function MapCom(props) {
         if (!ref) return;
         ref.on('click', params => {
             if (params.componentType === "series" && params.componentSubType === "effectScatter") {
-                history.push(`https://eur.sermatec-cloud.com/authorization?token=${getLocalStorage("Token")}`)
+                window.open(`https://eur.sermatec-cloud.com/authorization?token=${getLocalStorage("Token")}`, "_blank");
             }
         });
       }, []);
@@ -93,8 +93,7 @@ function MapCom(props) {
                     layoutCenter: ['50%', '35%'],
                     layoutSize: "70%",
                     zoom:1.2,
-                aspectScale: 0.75,
-
+                    aspectScale: 0.75,
                     roam: true,
                     label: {
                         normal: {
@@ -139,7 +138,7 @@ function MapCom(props) {
                     //涟漪效应
                     rippleEffect: {
                         brushType: "stroke",
-                        color: "#f13434",
+                        color: "#00CD97",
                         period: 10,//周期
                         scale: 10//规模
                     },
@@ -153,7 +152,7 @@ function MapCom(props) {
                     //     fontSize: "15",
                     // },
                     itemStyle: {
-                        color: "#f13434",
+                        color: "#00CD97",
                         shadowBlur: 4,
                         shadowColor: "#333"
                     },
