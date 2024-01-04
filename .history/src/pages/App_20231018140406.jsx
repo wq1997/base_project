@@ -1,4 +1,4 @@
-import { ConfigProvider, theme as antdTheme } from "antd";
+import { ConfigProvider,theme as antdTheme } from "antd";
 import { Outlet, useSelector } from "umi";
 import { ThemeEnum } from "@/components";
 import en_US from 'antd/locale/en_US';
@@ -20,14 +20,14 @@ const App = () => {
     const { theme, locale } = useSelector(state => state.global);
 
     return (
-        <ConfigProvider
+        <ConfigProvider 
             locale={localeEnum[locale]}
             theme={{
-                algorithm: theme === 'dark' ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
+                algorithm: theme === 'dark'? antdTheme.darkAlgorithm:antdTheme.defaultAlgorithm,
                 token: ThemeEnum[theme]
             }}
         >
-            <Outlet />
+            <Outlet/>
         </ConfigProvider>
     )
 }
