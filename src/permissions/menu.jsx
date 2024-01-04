@@ -7,15 +7,9 @@ const { SubMenu } = Menu;
 
 const MenuList = [
     {
-        key: "/vpp/resourceManage",
-        label: "资源管理",
+        key: "/vpp/homepage",
+        label: "首页",
         icon: "icon-shujuhoutaixitong",
-        children: [
-            {
-                key: "/vpp/resourceManage/polymerization",
-                label: "资源聚合管理",
-            },
-        ],
     },
     {
         key: "/vpp/demandResponse",
@@ -23,38 +17,54 @@ const MenuList = [
         icon: "icon-wuliaoxuqiu",
         children: [
             {
-                key: "/vpp/demandResponse/create",
-                label: "申报信息",
+                key: "/vpp/demandResponse/invitation",
+                label: "邀约管理",
             },
             {
-                key: "/vpp/demandResponse/toExamine",
-                label: "中标下发",
+                key: "/vpp/demandResponse/task",
+                label: "任务管理",
             },
             {
-                key: "/vpp/demandResponse/result",
-                label: "响应评价",
+                key: "/vpp/demandResponse/income",
+                label: "收益管理",
             },
         ],
     },
     {
-        key: "/vpp/spotTrading",
-        label: "现货交易",
-        icon: "icon-jiaoyiguanli",
+        key: "/vpp/baseinfo",
+        label: "基础资料",
+        icon: "icon-icon_shezhi",
         children: [
             {
-                key: "",
-                label: "现货交易市场",
+                key: "/vpp/baseinfo/company",
+                label: "公司配置",
+            },
+            {
+                key: "/vpp/baseinfo/role",
+                label: "角色管理",
+            },
+            {
+                key: "/vpp/baseinfo/account",
+                label: "账号管理",
+            },
+            {
+                key: "/vpp/baseinfo/level",
+                label: "用户评级管理",
             },
         ],
     },
     {
         key: "/vpp/setting",
-        label: "系统管理",
+        label: "系统设置",
         icon: "icon-icon_shezhi",
         children: [
             {
-                key: "/vpp/setting/user",
-                label: "用户管理",
+                key: "/vpp/setting/log",
+                label: "系统日志",
+            },
+            {
+                key: "/vpp/setting/notification",
+                label: "系统通知",
             },
         ],
     },
@@ -85,7 +95,17 @@ const MyMenu = () => {
                 );
             } else {
                 return (
-                    <Menu.Item key={menu.key}>
+                    <Menu.Item 
+                        key={menu.key}
+                        icon={
+                            <Icon
+                                type={menu.icon}
+                                style={{
+                                    fontSize: 20,
+                                }}
+                            />
+                        }
+                    >
                         <Link to={menu.key}>{menu.label}</Link>
                     </Menu.Item>
                 );
