@@ -3,7 +3,7 @@ import { alarmTableColums } from '@/utils/constants'
 import { useEffect, useState } from 'react'
 import { useSelector, } from "umi";
 import styles from "./index.less";
-import { Pagination, DatePicker, Input } from "antd"
+import { Pagination, DatePicker, Input,theme } from "antd"
 import { apiListLogWithPage } from "@/services/total"
 const RealtimeAlarm = () => {
   const { Search } = Input;
@@ -12,6 +12,7 @@ const RealtimeAlarm = () => {
   const [startTime, setStartTime] = useState();
   const [endTime, setEndTime] = useState();
   const [username, setUserName] = useState();
+  const { token } = theme.useToken();
   const { RangePicker } = DatePicker;
   const clums = [
     {
@@ -66,8 +67,7 @@ const RealtimeAlarm = () => {
   }
   return (
     <div className={styles.content}>
-      <div className={styles.title}>
-
+      <div className={styles.title} style={{backgroundColor:token.cardBgc}}>
         <div className={styles.level}>
           <RangePicker
             style={{ width: 400 }}
@@ -81,12 +81,15 @@ const RealtimeAlarm = () => {
           <Search placeholder="input search text" onSearch={onSearch} enterButton />
         </div>
       </div>
-      <Table
+        <div className={styles.tablePart} style={{backgroundColor:token.cardBgc}}>
+        <Table
         columns={clums}
         data={data.records}
       />
       <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} total={data.total} onChange={changPage} />
 
+        </div>
+     
     </div>
   )
 }

@@ -18,6 +18,9 @@ const theme = {
         cardShadow:'0px 2px 4px 0px rgba(6,7,16,0.5)',
         titleCardBgc:'#111838',//CardModle的背景色
         tableHead:'#20284D',//滚动表头颜色
+        barColor:['#03B4B4','#A3BCE7','#FCF1AF','#77E2AA','#FFCE8F','#59C0E9'],
+        treeBgb:'#E9EBF3',
+
     },
     default: {
         colorPrimary:'#03B4B4',
@@ -36,6 +39,8 @@ const theme = {
         cardShadow:'0px 2px 4px 0px rgba(224, 224, 224, 0.5)',
         titleCardBgc:'#fff',
         tableHead:'#E4E7F1',
+        barColor:['#03B4B4','#A3BCE7','#FCF1AF','#77E2AA','#FFCE8F','#59C0E9'],
+        treeBgb:'#E9EBF3',
     }
 }
 export default theme;

@@ -11,6 +11,7 @@ import {
 } from '@ant-design/icons';
 import { Tabs } from "antd"
 import Overview from './components/overview'
+import PartOfProceeds from './components/partOfTheProceeds/index'
 import styles from './index.less'
 
 const PageTypeList = [
@@ -43,7 +44,10 @@ const Login = () => {
         })}
         onChange={onChangeTab}
       />
-      {activeKey === "Overview" && <Overview />}
+      {activeKey === "Overview" && <Overview type={activeKey}/>}
+      {activeKey === "photovoltaic" && <PartOfProceeds type={activeKey}/>}
+      {activeKey === "energyStorage" && <PartOfProceeds type={activeKey}/>}
+      {activeKey === "chargingStation" && <PartOfProceeds type={activeKey}/>}
     </div>
   )
 }

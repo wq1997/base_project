@@ -1,5 +1,5 @@
 import { Menu, theme } from 'antd';
-import { Link, useLocation, useSelector } from 'umi';
+import { Link, useLocation, useSelector, FormattedMessage } from 'umi';
 // import menu from '../router/menuRoute'
 import { AppstoreOutlined, ToolOutlined, AlertOutlined, LineChartOutlined, ControlOutlined, SettingOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
@@ -10,32 +10,32 @@ const { SubMenu } = Menu;
 
 const MenuList = [
     {
-        label: '总览',
+        label: <FormattedMessage id='app.Overview' />,
         key: '/index/home',
         icon: <AppstoreOutlined />
     },
     {
-        label: '设备',
+        label: <FormattedMessage id='app.Device' />,
         key: '/index/device',
         icon: <ToolOutlined />,
         children: [
             // { label: 'PCS', key: '/index/device/energyPcs', type: "PCS" },
             // { label: 'BMS', key: '/index/device/energyBms', type: "BMS" },
             // { label: '户外柜', key: '/index/device/energyOut', type: "OC" },
-            { label: '储能', key: '/index/device/energyStorage', type: "PV" },
-            { label: '光伏', key: '/index/device/photovoltaic', type: "PV" },
-            { label: '充电桩', key: '/index/device/chargingStation', type: "C" },
+            { label: <FormattedMessage id='device.EnergyStorage' />, key: '/index/device/energyStorage', type: "PV" },
+            { label: <FormattedMessage id='device.Photovoltaic' />, key: '/index/device/photovoltaic', type: "PV" },
+            { label: <FormattedMessage id='device.ChargingPiles' />, key: '/index/device/chargingStation', type: "C" },
         ]
     },
     {
-        label: '统计',
+        label: <FormattedMessage id='app.Statistics' />,
         key: '/index/statistics',
         icon: <LineChartOutlined />,
         children: [
-            { label: '电量统计', key: '/index/statistics/electricityStatistics', component: "@/pages/statistics/electricityStatistics" },
-            { label: '收益统计', key: '/index/statistics/revenueStatistics', component: "@/pages/statistics/revenueStatistics" },
-            { label: '数据对比', key: '/index/statistics/dataComparison', component: "@/pages/statistics/dataComparison" },
-            { label: '报表导出', key: '/index/statistics/reportExport', component: "@/pages/statistics/reportExport" },
+            { label: <FormattedMessage id='app.ElectricityStatistics' />, key: '/index/statistics/electricityStatistics', component: "@/pages/statistics/electricityStatistics" },
+            { label: <FormattedMessage id='app.EarningsStatistics' />, key: '/index/statistics/revenueStatistics', component: "@/pages/statistics/revenueStatistics" },
+            { label: <FormattedMessage id='app.DataComparison' />, key: '/index/statistics/dataComparison', component: "@/pages/statistics/dataComparison" },
+            { label: <FormattedMessage id='app.ReportExport' />, key: '/index/statistics/reportExport', component: "@/pages/statistics/reportExport" },
         ]
     },
     // {
@@ -48,32 +48,32 @@ const MenuList = [
     //     ]
     // },
     {
-        label: '告警',
+        label: <FormattedMessage id='app.Alarm' />,
         key: '/index/alarm',
         icon: <AlertOutlined />,
         children: [
-            { label: '实时告警', key: '/index/alarm/realtimeAlarm', },
-            { label: '历史告警', key: '/index/alarm/historyAlarm', },
-            { label: '告警规则', key: '/index/alarm/alarmRules', },
+            { label: <FormattedMessage id='app.RealTimeAlerts' />, key: '/index/alarm/realtimeAlarm', },
+            { label: <FormattedMessage id='app.HistoricalAlerts' />, key: '/index/alarm/historyAlarm', },
+            { label: <FormattedMessage id='app.AlarmRules' />, key: '/index/alarm/alarmRules', },
         ]
     },
     {
-        label: '场站设置',
+        label: <FormattedMessage id='app.DepotSettings' />,
         key: '/index/depotSettings',
         icon: <ControlOutlined />,
         children: [
-            { label: '策略配置', key: '/index/depotSettings/policyConfiguration', component: "@/pages/depotSettings/policyConfiguration" },
-            { label: '电站配置', key: '/index/depotSettings/powerStationConfig', component: "@/pages/depotSettings/powerStationConfig" },
+            { label: <FormattedMessage id='app.PolicyConfiguration' />, key: '/index/depotSettings/policyConfiguration', component: "@/pages/depotSettings/policyConfiguration" },
+            { label: <FormattedMessage id='app.PowerStationConfiguration' />, key: '/index/depotSettings/powerStationConfig', component: "@/pages/depotSettings/powerStationConfig" },
         ]
     },
     {
-        label: '系统管理',
+        label: <FormattedMessage id='app.SystemAdministration' />,
         key: '/index/systemManagement',
         icon: <SettingOutlined />,
         children: [
             // { label: '策略配置', key: '/index/systemManagement/policyConfiguration', },
-            { label: '用户管理', key: '/index/systemManagement/user', },
-            { label: '操作记录', key: '/index/systemManagement/operationRecords', },
+            { label: <FormattedMessage id='app.UserManagement' />, key: '/index/systemManagement/user', },
+            { label: <FormattedMessage id='app.RecordsOfOperations' />, key: '/index/systemManagement/operationRecords', },
         ]
     },
 ]
@@ -115,7 +115,7 @@ const getMenu = menuList => {
             }
             return (
                 <Menu.Item key={menu.key} icon={menu.icon}
-                style={{ fontSize:menu.icon?'18px': '16px' }}
+                    style={{ fontSize: menu.icon ? '18px' : '16px' }}
 
                 >
                     <Link to={menu.key}>{menu.label}</Link>

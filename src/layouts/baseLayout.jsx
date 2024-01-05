@@ -1,4 +1,4 @@
-import { Outlet, useDispatch, useSelector, } from 'umi'
+import { Outlet, useDispatch, useSelector,FormattedMessage } from 'umi'
 import React from 'react';
 import { theme, Layout, Row, Avatar, Typography, Dropdown, Space } from 'antd';
 import MyMenu from "@/permissions/menu";
@@ -65,7 +65,7 @@ const BaseLayout = () => {
                         style={{
                             color: token.titleColor
                         }}
-                        level={3} className={styles.title}>{`${SYSTEM_NAME}`}</div>
+                        level={3} className={styles.title}><FormattedMessage id="app.title" /></div>
                     <Dropdown
                         menu={{
                             items: [
@@ -77,7 +77,7 @@ const BaseLayout = () => {
                                             size={10}
                                             align="baseline"
                                         >
-                                            <span>主题色</span>
+                                            <span><FormattedMessage id="app.Theme" /></span>
                                         </Space>
                                     ),
                                     children: [
@@ -90,7 +90,7 @@ const BaseLayout = () => {
                                                     onClick={()=>changeTheme("default")}
                                                 >
                                                     <div style={{ width: '10px', height: '10px', backgroundColor: '#fff' }}></div>
-                                                    <span>浅色</span>
+                                                    <span><FormattedMessage id="app.Light" /></span>
                                                 </Space>
                                             ),
                                         },
@@ -103,7 +103,7 @@ const BaseLayout = () => {
                                                     onClick={()=>changeTheme("dark")}
                                                 >
                                                     <div style={{ width: '10px', height: '10px', backgroundColor: '#212849' }}></div>
-                                                    <span>深色</span>
+                                                    <span><FormattedMessage id="app.Dark" /></span>
                                                 </Space>
                                             ),
                                         },
@@ -117,7 +117,7 @@ const BaseLayout = () => {
                                             size={10}
                                             align="baseline"
                                         >
-                                            <span>语言选择</span>
+                                            <span><FormattedMessage id="app.Language" /></span>
                                         </Space>
                                     ),
                                     children: [
@@ -127,9 +127,9 @@ const BaseLayout = () => {
                                                 <Space
                                                     size={10}
                                                     align="baseline"
-                                                    // onClick={changeLanguage("zh-CN")}
+                                                    onClick={()=>changeLanguage("zh-CN")}
                                                 >
-                                                    <span>中文</span>
+                                                    <span><FormattedMessage id="app.Chinese" /></span>
                                                 </Space>
                                             ),
                                         },
@@ -139,9 +139,9 @@ const BaseLayout = () => {
                                                 <Space
                                                     size={10}
                                                     align="baseline"
-                                                    // onClick={changeLanguage("en-US")}
+                                                    onClick={()=>changeLanguage("en-US")}
                                                 >
-                                                    <span>English</span>
+                                                    <span><FormattedMessage id="app.English" /></span>
                                                 </Space>
                                             ),
                                         },
@@ -161,7 +161,7 @@ const BaseLayout = () => {
                                                     fontSize: 20
                                                 }}
                                             />
-                                            <span>登出</span>
+                                            <span><FormattedMessage id="app.SignoOut" /></span>
                                         </Space>
                                     )
                                 }

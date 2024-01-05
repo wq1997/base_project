@@ -1,3 +1,45 @@
 export default {
-    handsome: 'wangqing is a handsome man'
+    app:{
+        title: 'Sermatec industrial and commercial microgrid twin platform',
+        Query:"Query",
+        Export:'Export',
+        Language:'Language',
+        Chinese:'Chinese',
+        English:'English',
+        Theme:'Theme',
+        Light:'Light',
+        Dark:'Dark',
+        SignoOut:'Sign out',
+        Overview:'Overview',
+        Device:'Device',
+        Statistics:'Statistics',
+        Alarm:'Alarm',
+        DepotSettings:'Depot settings',
+        SystemAdministration:'System administration',
+        RealTimeAlerts:'Real time alerts',
+        HistoricalAlerts:'Historical alerts',
+        AlarmRules:'Alarm rules',
+        PolicyConfiguration:'Policy configuration',
+        PowerStationConfiguration:'Power station configuration',
+        UserManagement:"User management",
+        RecordsOfOperations:'Records of operations',
+        ElectricityStatistics:'Electricity statistics',
+        EarningsStatistics:'Earnings statistics',
+        DataComparison:'Data comparison',
+        ReportExport:'Report export',
+    },
+    device:{
+        EnergyStorage:'Energy storage',
+        Photovoltaic:'Photovoltaic',
+        ChargingPiles:'Charging piles',
+ 
+    },
+    statistics:{
+        InternetPower:'Internet power',
+        TheGridBuysElectricity:'The grid buys electricity',
+        EnergyStorageCharge:'Energy storage charge',
+        EnergyStorageDischarge:'Energy storage discharge',
+        PhotovoltaicPowerGeneration:'Photovoltaic power generation',
+        TheAmountOfCharging:'The amount of charging at the charging station',
+    }
 }

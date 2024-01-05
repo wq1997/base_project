@@ -3,7 +3,6 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { CardModel } from "@/components";
 import styles from './index.less'
 import ReactECharts from "echarts-for-react";
-import * as echarts from "echarts";
 import { theme } from "antd";
 import {
     ToolOutlined,

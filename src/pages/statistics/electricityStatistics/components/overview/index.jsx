@@ -8,19 +8,15 @@ import {
 } from '@ant-design/icons';
 import { CardModel } from "@/components";
 import ReactECharts from "echarts-for-react";
-// import { profitTable } from '@/utils/constants'
-import Table from '@/components/Table.jsx'
-import { useSelector,useIntl } from "umi";
+import { useSelector,FormattedMessage,useIntl  } from "umi";
 
 function Com(props) {
-    const [optionsPie, setOptionsPie] = useState({})
     const { RangePicker } = DatePicker;
     const { token } = theme.useToken();
     const [options, setOptions] = useState({});
     const { theme: currentTheme } = useSelector(function (state) {
         return state.global
     });
-    var  colorList=['#528AEB', '#F3CE55', '#03B4B4',];
     const intl = useIntl();
     const getTranslation=(id)=>{
         const msg = intl.formatMessage(
@@ -30,6 +26,7 @@ function Com(props) {
           );
           return msg
     }
+
     const getOptions = () => {
         setOptions({
             tooltip: {
@@ -44,6 +41,16 @@ function Com(props) {
                 bottom: '3%',
                 containLabel: true
             },
+            legend: {
+                data: [getTranslation('statistics.InternetPower'), 
+                getTranslation('statistics.TheGridBuysElectricity'),
+                getTranslation('statistics.EnergyStorageCharge'), 
+                getTranslation('statistics.EnergyStorageDischarge'), 
+                getTranslation('statistics.PhotovoltaicPowerGeneration'),
+                getTranslation('statistics.TheAmountOfCharging'),
+            ]
+
+              },
             xAxis: [
                 {
                     type: 'category',
@@ -64,120 +71,85 @@ function Com(props) {
             ],
             series: [
                 {
-                    name: '发电量',
+                    name:getTranslation('statistics.InternetPower'),
+                    // label: <FormattedMessage id='statistics.InternetPower' />,
                     type: 'bar',
                     itemStyle: {
                         normal: {
-                            color: token.colorPrimary
+                            color: token.barColor[0]
+
                         }
                     },
-                    barWidth: '60%',
+                    barWidth: '8%',
+                    data: [0.8, 1.1, 0.4, 2.2, 0.8, 1.2, 1.5, 1.7, 1.6]
+                },
+                {
+                    name:getTranslation('statistics.TheGridBuysElectricity'),
+                    // label:<FormattedMessage id='statistics.TheGridBuysElectricity' />,
+                    type: 'bar',
+                    itemStyle: {
+                        normal: {
+                            color: token.barColor[1]
+
+                        }
+                    },
+                    barWidth: '8%',
+                    data: [0.8, 1.6, 0.4, 2.2, 0.8, 1.2, 1.5, 1.7, 1.6]
+                },
+                {
+                    name:getTranslation('statistics.EnergyStorageCharge'),
+                    // label: <FormattedMessage id='statistics.EnergyStorageCharge' />,
+                    type: 'bar',
+                    itemStyle: {
+                        normal: {
+                            color: token.barColor[2]
+
+                        }
+                    },
+                    barWidth: '8%',
+                    data: [0.8, 1.6, 0.4, 2.2, 0.8, 1.2, 1.5, 1.7, 1.6]
+                },
+                {
+                    name:getTranslation('statistics.EnergyStorageDischarge'),
+                    // label: <FormattedMessage id='statistics.EnergyStorageDischarge' />,
+                    type: 'bar',
+                    itemStyle: {
+                        normal: {
+                            color: token.barColor[3]
+
+                        }
+                    },
+                    barWidth: '8%',
+                    data: [0.8, 1.6, 0.4, 2.2, 0.8, 1.2, 1.5, 1.7, 1.6]
+                },
+                {
+                    name:getTranslation('statistics.PhotovoltaicPowerGeneration'),
+                    // label: <FormattedMessage id='statistics.PhotovoltaicPowerGeneration' />,
+                    type: 'bar',
+                    itemStyle: {
+                        normal: {
+                            color: token.barColor[4]
+
+                        }
+                    },
+                    barWidth: '8%',
+                    data: [0.8, 1.6, 0.4, 2.2, 0.8, 1.2, 1.5, 1.7, 1.6]
+                },
+                {
+                    name:getTranslation('statistics.TheAmountOfCharging'),
+                    // label:<FormattedMessage id='statistics.TheAmountOfCharging' />,
+                    type: 'bar',
+                    itemStyle: {
+                        normal: {
+                            color: token.barColor[5]
+                        }
+                    },
+                    barWidth: '8%',
                     data: [0.8, 1.6, 0.4, 2.2, 0.8, 1.2, 1.5, 1.7, 1.6]
                 }
             ]
         });
-        setOptionsPie({
-            title: {
-                text: '80',
-                subtext: '总收益',
-                x: 'center',
-                y: 'center',
-                textStyle: {
-                    fontSize: '30px',
-                    fontWeight: 500,
-                    color: token.titleColor
-                },
-                subtextStyle: {
-                    color: token.titleColor,
-                    fontSize: '12px',
-                },
-            },
-            legend: {
-                show: true,
-                icon: "circle",
-                top: "70%",
-                left: '75%',
-                width: 50,
-                padding: [0, 5],
-                itemGap: 25,
-                textStyle: {
-                    color: token.smallTitleColor,
-                    rich: {
-                        title: {
-                            fontSize: 16,
-                            lineHeight: 15,
-                            color: token.smallTitleColor
-                        },
-                        value: {
-                            fontSize: 18,
-                            lineHeight: 20,
-                            color: token.smallTitleColor
-                        }
-                    }
-                },
-            },
-            series: [
-                {
-
-                    radius: ['40%', '70%'],
-                    center: ['50%', '50%'],
-                    type: 'pie',
-                    itemStyle: {
-                        normal: {
-                            color: function (params) {
-                                return colorList[params.dataIndex]
-                            }
-                        }
-                    },
-                    labelLine: {
-                        normal: {
-                            show: true,
-                            length: 5,
-                            length2: 12,
-                            lineStyle: {
-                                color: token.smallTitleColor
-                            },
-                            align: 'right'
-                        },
-                        color: token.smallTitleColor,
-                        emphasis: {
-                            show: true
-                        }
-                    },
-                    label: {
-                        normal: {
-                            formatter: function (params) {
-                                var str = '';
-                                switch (params.name) {
-                                    case '光伏收益': str = '{a|}\n{nameStyle|光伏 }' + '{rate|' + params.value + '%}'; break;
-                                    case '储能收益': str = '{b|}\n{nameStyle|储能 }' + '{rate|' + params.value + '%}'; break;
-                                    case '充电桩收益': str = '{c|}\n{nameStyle|充电桩 }' + '{rate|' + params.value + '%}'; break;
-                                }
-                                return str
-                            },
-                            padding: [0, -10],
-                            rich: {
-                                nameStyle: {
-                                    fontSize: 12,
-                                    color: token.smallTitleColor,
-                                    align: 'left'
-                                },
-                                rate: {
-                                    fontSize: 12,
-                                    color: token.smallTitleColor,
-                                    align: 'left'
-                                }
-                            }
-                        }
-                    },
-                    data: [
-                        { value: 50, name: '光伏收益' },
-                        { value: 25, name: '储能收益' },
-                        { value: 25, name: '充电桩收益' },
-                    ]
-                }
-            ]
-        })
+      
     };
     const profitTable = [
         {
@@ -289,6 +261,7 @@ function Com(props) {
             value: '9999',
             unit: 'kWh'
         },
+
     ]
     useEffect(() => {
         getOptions();
@@ -304,10 +277,10 @@ function Com(props) {
                 </div>
                 <div className={styles.buttons}>
                     <Button type="primary" className={styles.firstButton}>
-                   { getTranslation('app.Query')}
+                    <FormattedMessage id='app.Query' />
                     </Button>
                     <Button type="primary" style={{ backgroundColor: token.defaultBg }} >
-                        导出excel
+                    <FormattedMessage id='app.Export' />excel
                     </Button>
                 </div>
 
@@ -316,53 +289,17 @@ function Com(props) {
                 <div className={styles.profitStaus}>
                     <CardModel
                         title={
-                            "收益统计"
+                            <FormattedMessage id='app.ElectricityStatistics' />
                         }
                         content={
-                            <div className={styles.contentsWrap}>
-                                <div className={styles.leftEchart}>
                                     <ReactECharts option={options} style={{ height: '100%' }} />
-                                </div>
-                                <div className={styles.rightCardData} style={{ backgroundColor: token.titleCardBgc }}>
-                                    {cardData.map((it) => {
-                                        return <div className={styles.profitCard} style={{ color: it.color, backgroundColor: token.cardBgc, boxShadow: token.cardShadow }}>
-                                            <div className={styles.cardItemTitle}>
-                                                {it.icon}
-                                                <span style={{ color: token.smallTitleColor, fontWeight: 500, fontSize: '16px', marginLeft: '3px' }}>{it.name}</span>
-                                            </div>
-                                            <div className={styles.cardItemVaue} style={{ color: token.titleColor }}>
-                                                {it.value}
-                                                <span style={{ color: token.smallTitleColor, fontSize: '16px', fontWeight: 400, marginLeft: '10px' }}>{it.unit}</span>
-                                            </div>
-                                        </div>
-                                    })}
-
-                                </div>
-                                <div className={styles.profitPie} style={{ backgroundColor: token.titleCardBgc }}>
-                                    <ReactECharts option={optionsPie} style={{ height: '100%' }} />
-                                </div>
-
-                            </div>
                         }
                     />
 
                 </div>
 
             </div>
-
-            <div className={styles.profitList}>
-                <CardModel
-                    title={
-                        "收益明细"
-                    }
-                    content={
-                        <Table
-                            columns={profitTable}
-                        // data={data.records}
-                        />
-                    }
-                />
-            </div>
+            
         </div>
     )
 }

@@ -7,9 +7,10 @@ import {
 } from "@/services/user";
 import { getEncrypt, setLocalStorage } from "@/utils/utils";
 import styles from "./index.less";
-import { history, useDispatch,FormattedMessage } from "umi";
+import { history, useDispatch, FormattedMessage } from "umi";
 import { useEffect, useState } from "react";
 import { getBaseUrl } from '@/services/request'
+import img from '../../../src/assets/imges/bgimg.png'
 const { Title } = Typography;
 
 const Login = () => {
@@ -74,7 +75,7 @@ const Login = () => {
       }}
       className={styles.login}
     >
-      <img src={`${PUBLIC_FILE_PATH}background.jpg`} style={{ width: '100%', height: '100%', objectFit: 'cover', verticalAlign: 'middle' }} />
+      <img src={img} style={{ width: '100%', height: '100%', objectFit: 'cover', verticalAlign: 'middle' }} />
       <div
         style={{
           width: 600,
@@ -90,12 +91,12 @@ const Login = () => {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%,-50%)',
-            background: '#ffffff40',
+            background:token.cardBgc,
             padding: '70px 30px',
-            borderRadius: 8,
+            borderRadius: '24px',
           }}
         >
-          <Title level={2} style={{ marginBottom: 50, color: token.colorPrimary }}><FormattedMessage id="handsome" />{`${SYSTEM_NAME}`}</Title>
+          <Title level={2} style={{ marginBottom: 50, color: token.colorPrimary }}><FormattedMessage id="app.title" /></Title>
           <Form
             onFinish={onFinish}
             autoComplete="off"

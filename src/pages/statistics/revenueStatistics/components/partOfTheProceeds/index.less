@@ -1,0 +1,66 @@
+.content{
+    width: 100%;
+    height: calc(100% - 40px);
+    .heard{
+        width: 100%;
+        height: 68px;
+        padding: 15px 20px;
+        display: flex;
+        .buttons{
+            margin-left: 30px;
+            .firstButton{
+                margin: 0 32px;
+            }
+        }
+    }
+    .profitStaus{
+        width: 100%;
+        height: calc(50% - 45px);
+        display: flex;
+        margin-bottom: 10px;
+        .leftEchart{
+            width: 80%;
+            height: 100%;
+        }
+        .rightCardData{
+            width: 20%;
+            height: 100%;
+            padding-top: 60px;
+            padding-bottom: 15px;
+            padding-left: 20px;
+            padding-right: 20px;
+            display: grid; 
+            grid-template-columns: 1fr; 
+            grid-template-rows: 1fr 1fr; 
+            gap: 10px 10px; 
+  
+            .profitCard{
+                width: 80%;
+                height: 80%;
+                padding: 16px;
+                .cardItemTitle{
+                    height: 24px;
+                    line-height: 24px;
+                }
+                .cardItemVaue{
+                    height:calc(100% - 24px);
+                    font-size: 36px;
+                    font-weight: 500;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+            .bottomCard{
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+    .profitList{
+        width: 100%;
+        height: calc(50% - 45px);
+     
+    }
+}
+

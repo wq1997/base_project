@@ -44,4 +44,4 @@ export const apiGetAllPlants = ()=>{
     // 户外柜 历史数据 SOC统计(旧 起始日期为同一天)
     export const apiFetchBatterySocByTime = (payload)=>{
       return axiosInstance.get("/minsys/fetchBatterySocByTime",{ params: payload });
-    }
+    }    
