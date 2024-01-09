@@ -8,7 +8,7 @@ const SearchInput = ({
     onChange = () => { },
 }) => {
     return (
-        <div style={{ margin: 8, 'white-space': 'nowrap' }}>
+        <div style={{ margin: 8, whiteSpace: 'nowrap' }}>
             {label && <span>{label}：</span>}
             <Input
                 value={value}

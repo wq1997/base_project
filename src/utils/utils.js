@@ -30,3 +30,18 @@ export const getEncrypt = (key, str) => {
     jsencrypt.setPublicKey(key);
     return jsencrypt.encrypt(str);
 };
+
+export const jsonToUrlParams = json => {
+    if (toType(json) !== "object") return "";
+    const paramsArr = Object.entries(json).filter(
+        ([key, value]) => value !== undefined && value !== ""
+    );
+    if (!paramsArr.length) return "";
+    let paramsUrl = paramsArr
+        .map(([key, value]) => {
+            if (typeof value == "string") value = value.trim();
+            return `${key}=${encodeURIComponent(value)}`;
+        })
+        .join("&");
+    return "?" + paramsUrl;
+};

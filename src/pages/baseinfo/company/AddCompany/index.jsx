@@ -1,12 +1,47 @@
 import React, { useState, useEffect } from "react";
 import { message, Button, Select, Form, Input, Modal, Row, Col, Radio, Upload, Space } from "antd";
+import {
+    getUpdateInitData as getUpdateInitDataServer,
+    getCityByProvince as getCityByProvinceServer,
+    updateCompany as updateCompanyServer,
+} from "@/services/company";
 import ResCapTable from "./ResCapTable";
+import { MyUpload } from "@/components";
 
 const Company = ({ open, onClose }) => {
+    const uploadUrl = process.env.API_URL + "/attachment/upload2";
 
-    const onFinish = values => {
-        console.log("Success:", values);
+    const onFinish = async values => {
+        const res = await updateCompanyServer(values);
+        if (res?.data?.status == "SUCCESS") {
+            message.success("添加成功");
+            onClose(true);
+        }
     };
+
+    const [provinces, setProvinces] = useState([]);
+    const [cities, setCities] = useState([]);
+    const [stationTypes, setStationTypes] = useState([]);
+
+    const getUpdateInitData = async () => {
+        const res = await getUpdateInitDataServer();
+        if (res?.data?.status == "SUCCESS") {
+            const { provinces, stationTypes } = res?.data?.data;
+            setProvinces(provinces);
+            setStationTypes(stationTypes);
+        }
+    };
+
+    const getCityByProvince = async province => {
+        const res = await getCityByProvinceServer(province);
+        if (res?.data?.status == "SUCCESS") {
+            setCities(res?.data?.data || []);
+        }
+    };
+
+    useEffect(() => {
+        open && getUpdateInitData();
+    }, [open]);
 
     return (
         <Modal
@@ -74,10 +109,8 @@ const Company = ({ open, onClose }) => {
                         >
                             <Select
                                 placeholder="请选择所在省份"
-                                options={[
-                                    { value: "jack", label: "Jack" },
-                                    { value: "lucy", label: "Lucy" },
-                                ]}
+                                options={provinces?.map(item => ({ label: item, value: item }))}
+                                onSelect={value => getCityByProvince(value)}
                             />
                         </Form.Item>
                     </Col>
@@ -94,10 +127,7 @@ const Company = ({ open, onClose }) => {
                         >
                             <Select
                                 placeholder="请选择所在市"
-                                options={[
-                                    { value: "jack", label: "Jack" },
-                                    { value: "lucy", label: "Lucy" },
-                                ]}
+                                options={cities?.map(item => ({ label: item, value: item }))}
                             />
                         </Form.Item>
                     </Col>
@@ -117,10 +147,11 @@ const Company = ({ open, onClose }) => {
                         >
                             <Select
                                 placeholder="请选择场站类型"
-                                options={[
-                                    { value: "jack", label: "Jack" },
-                                    { value: "lucy", label: "Lucy" },
-                                ]}
+                                fieldNames={{
+                                    label: "name",
+                                    value: "code",
+                                }}
+                                options={stationTypes}
                             />
                         </Form.Item>
                     </Col>
@@ -129,50 +160,12 @@ const Company = ({ open, onClose }) => {
                 <Row span={24}>
                     <Col span={12}>
                         <Form.Item label="合同文件" name="contractAtt">
-                            <Upload
-                                action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-                                headers={{
-                                    authorization: "authorization-text",
-                                }}
-                                onChange={info => {
-                                    if (info.file.status !== "uploading") {
-                                        console.log(info.file, info.fileList);
-                                    }
-                                    if (info.file.status === "done") {
-                                        message.success(
-                                            `${info.file.name} file uploaded successfully`
-                                        );
-                                    } else if (info.file.status === "error") {
-                                        message.error(`${info.file.name} file upload failed.`);
-                                    }
-                                }}
-                            >
-                                <Button>点击上传</Button>
-                            </Upload>
+                            <MyUpload url={uploadUrl} />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
                         <Form.Item label="其他附件" name="otherAtt">
-                            <Upload
-                                action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-                                headers={{
-                                    authorization: "authorization-text",
-                                }}
-                                onChange={info => {
-                                    if (info.file.status !== "uploading") {
-                                        console.log(info.file, info.fileList);
-                                    }
-                                    if (info.file.status === "done") {
-                                        message.success(
-                                            `${info.file.name} file uploaded successfully`
-                                        );
-                                    } else if (info.file.status === "error") {
-                                        message.error(`${info.file.name} file upload failed.`);
-                                    }
-                                }}
-                            >
-                                <Button>点击上传</Button>
-                            </Upload>
+                            <MyUpload url={uploadUrl} />
                         </Form.Item>
                     </Col>
                 </Row>
