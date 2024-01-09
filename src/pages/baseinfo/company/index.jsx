@@ -35,7 +35,6 @@ const columns = [
     {
         title: "操作",
         dataIndex: "operate",
-        render: () => <a>编辑</a>,
     },
 ];
 
@@ -134,7 +133,18 @@ const Company = () => {
                         <Button type="primary">删除公司</Button>
                     </Space>
                 )}
-            ></Table>
+            >
+                <Table.Column
+                    title="操作"
+                    key="action"
+                    render={(_, record) => (
+                        <Space size="middle">
+                            <a>Invite {record.lastName}</a>
+                            <a>Delete</a>
+                        </Space>
+                    )}
+                />
+            </Table>
         </div>
     );
 };

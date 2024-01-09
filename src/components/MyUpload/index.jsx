@@ -1,7 +1,6 @@
 import { Upload, Button, message, Tooltip } from "antd";
 
 const MyUpload = ({ url, onChange, maxCount = 3, maxSizeMB = 10 }) => {
-
     return (
         <Upload
             action={url}
@@ -24,7 +23,6 @@ const MyUpload = ({ url, onChange, maxCount = 3, maxSizeMB = 10 }) => {
                 }
             }}
         >
-
             <Tooltip title={`最大上传数量为${maxCount}，单个文件大小不超过${maxSizeMB}MB`}>
                 <Button>点击上传</Button>
             </Tooltip>
