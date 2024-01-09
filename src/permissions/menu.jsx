@@ -33,7 +33,7 @@ const MenuList = [
     {
         key: "/vpp/baseinfo",
         label: "基础资料",
-        icon: "icon-icon_shezhi",
+        icon: "icon-jibenziliao",
         children: [
             {
                 key: "/vpp/baseinfo/company",

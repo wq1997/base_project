@@ -1,13 +1,10 @@
 import axiosInstance from "./request";
 
 export const login = payload => {
-    return new Promise(resolve => {
-        setTimeout(() => {
-            resolve({
-                userName: "wangqing",
-                age: 20,
-            });
-        }, 2000);
-    });
-    //  axiosInstance.post('/login', payload)
+    const url = `/open/login?username=${payload?.username}&password=${payload?.password}`
+    return axiosInstance.post(url);
 };
+
+export const getPublicKey = ()=>{
+    return axiosInstance.get("/open/get-pub-key");
+  }
