@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button, Space, Table } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { SearchInput } from "@/components";
 import AddCompany from "./AddCompany";
 import { getCompanyList as getCompanyListServer } from "@/services/company";
+import { DEFAULT_PAGINATION } from "@/utils/constants";
 import "./index.less";
 
 const columns = [
@@ -39,13 +40,10 @@ const columns = [
 ];
 
 const Company = () => {
+    const nameRef = useRef();
     const [name, setName] = useState();
-    const [pagination, setPagination] = useState({
-        total: 0,
-        current: 1,
-        pageSize: 8,
-        showSizeChanger: false,
-    });
+    const paginationRef = useRef(DEFAULT_PAGINATION);
+    const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [companyList, setCompanyList] = useState([]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [addCompanyOpen, setAddCompanyOpen] = useState(false);
@@ -61,7 +59,8 @@ const Company = () => {
     };
 
     const getCompanyList = async () => {
-        const { current, pageSize } = pagination;
+        const { current, pageSize } = paginationRef.current;
+        const name = nameRef.current;
         const res = await getCompanyListServer({
             pageNum: current,
             pageSize,
@@ -69,34 +68,20 @@ const Company = () => {
         });
         if (res?.data?.status == "SUCCESS") {
             const { totalRecord, recordList } = res?.data?.data;
+            console.log("totalRecord", totalRecord)
             setPagination({
-                ...pagination,
-                total: totalRecord,
+                ...paginationRef.current,
+                total: parseInt(totalRecord),
             });
             setCompanyList(recordList);
         }
     };
 
-    const handleSearch = () => {
-        setPagination({
-            ...pagination,
-            current: 1,
-        });
-        getCompanyList();
-    };
-
     const handleReset = () => {
-        return new Promise((reslove) => {
-            setPagination({
-                ...pagination,
-                current: 1,
-            });
-            setName();
-        }).then(res => {
-            getCompanyList()
-        })
-
-
+        paginationRef.current = DEFAULT_PAGINATION;
+        nameRef.current="";
+        setName("");
+        getCompanyList();
     };
 
     useEffect(() => {
@@ -107,8 +92,16 @@ const Company = () => {
         <div>
             <AddCompany open={addCompanyOpen} onClose={resFlag => onAddCompanyClose(resFlag)} />
             <Space className="search">
-                <SearchInput label="公司名称" value={name} onChange={value => setName(value)} />
-                <Button type="primary" onClick={handleSearch}>
+                <SearchInput 
+                    label="公司名称" 
+                    value={name} 
+                    onChange={value => {
+                        paginationRef.current=DEFAULT_PAGINATION;
+                        nameRef.current = value;
+                        setName(value);
+                    }} 
+                />
+                <Button type="primary" onClick={getCompanyList}>
                     搜索
                 </Button>
                 <Button onClick={handleReset}>重置</Button>
@@ -120,6 +113,10 @@ const Company = () => {
                 rowSelection={{
                     selectedRowKeys,
                     onChange: onSelectChange,
+                }}
+                onChange={(pagination)=>{
+                    paginationRef.current = pagination;
+                    getCompanyList();
                 }}
                 title={() => (
                     <Space className="table-title">
