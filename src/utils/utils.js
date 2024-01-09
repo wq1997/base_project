@@ -1,3 +1,4 @@
+import { JSEncrypt } from "jsencrypt";
 export const setLocalStorage = (key, value) => localStorage.setItem(key, value);
 export const getLocalStorage = key => localStorage.getItem(key);
 
@@ -23,3 +24,9 @@ export function addColorAlpha(colorCode, alpha) {
         return `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${alpha})`;
     }
 }
+
+export const getEncrypt = (key, str) => {
+    const jsencrypt = new JSEncrypt();
+    jsencrypt.setPublicKey(key);
+    return jsencrypt.encrypt(str);
+};
