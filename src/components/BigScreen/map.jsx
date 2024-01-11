@@ -78,65 +78,63 @@ function MapCom(props) {
                 itemStyle: {
                     normal: {
                         areaColor:'rgba(0,17,41,1)',
-                        borderColor: '#3294B0',
-                        borderWidth: 1.5,
-                        shadowColor: '#2DCFDA',
+                        borderColor: '#00ffff',
+                        borderWidth: 1.8,
+                        shadowColor: '#00ffff',
                         // shadowOffsetX: 0,
                         // shadowOffsetY: 0,
                         // shadowBlur: 20
                     },
-                  
                 },
                 top: 5,
                 aspectScale: 0.75,
                 zoom: 1.2
             },
             series: [
-                {
-                    map: 'map',
-                    silent: false,
-                    type: 'map',
-                    showLegendSymbol: true, // 存在legend时显示
-                    center: [103, 39.4],
-                    layoutCenter: ['50%', '35%'],
-                    layoutSize: "70%",
-                    zoom:1.2,
-                    aspectScale: 0.75,
-                    roam: true,
-                    label: {
-                        normal: {
-                            show: false,
-                            textStyle: {
-                                color: '#fff'
-                            }
-                        },
-                        emphasis: {
-                            textStyle: {
-                                color: '#fff'
-                            }
-                        }
-                    },
-                    top: 5,
-                    itemStyle: {
-                        normal: {
-                            areaColor: 'rgba(0,255,255,.02)',
-                            borderColor: '#00ffff',
-                            borderWidth: 5,
-                            shadowColor: '#00ffff',
-                            shadowOffsetX: 0,
-                            shadowOffsetY: 0,
-                            shadowBlur: 20,
-                        },
-                        emphasis: {
-                            areaColor: 'transparent', //悬浮背景
-                            textStyle: {
-                                color: '#fff'
-                            }
-                        }
-                    },
-                    zlevel: -1
-
-                },
+                // {
+                //     map: 'map',
+                //     silent: false,
+                //     type: 'map',
+                //     showLegendSymbol: true, // 存在legend时显示
+                //     center: [103, 39.4],
+                //     layoutCenter: ['50%', '35%'],
+                //     layoutSize: "70%",
+                //     zoom:1.2,
+                //     aspectScale: 0.75,
+                //     roam: true,
+                //     label: {
+                //         normal: {
+                //             show: false,
+                //             textStyle: {
+                //                 color: '#fff'
+                //             }
+                //         },
+                //         emphasis: {
+                //             textStyle: {
+                //                 color: '#fff'
+                //             }
+                //         }
+                //     },
+                //     top: 5,
+                //     itemStyle: {
+                //         normal: {
+                //             areaColor: 'rgba(0,255,255,.02)',
+                //             borderColor: '#00ffff',
+                //             borderWidth: 5,
+                //             shadowColor: '#00ffff',
+                //             shadowOffsetX: 0,
+                //             shadowOffsetY: 0,
+                //             shadowBlur: 20,
+                //         },
+                //         emphasis: {
+                //             areaColor: 'transparent', //悬浮背景
+                //             textStyle: {
+                //                 color: '#fff'
+                //             }
+                //         }
+                //     },
+                //     zlevel: -1
+                // },
                 {
                     type: "effectScatter",
                     coordinateSystem: "geo",
