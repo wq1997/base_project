@@ -4,9 +4,9 @@ import { useDispatch, useSelector,history } from "umi";
 import ReactECharts from "echarts-for-react";
 import china from '../../../public/mapJson/chinaB'
 import * as echarts from "echarts";
-import { getLocalStorage } from "@/utils/utils";
-
-
+import axiosInstance from "@/services/request";
+import { getPlantSysDb } from "@/services/bigScreen";
+import { message } from 'antd';
 
 function MapCom(props) {
     const chartInstance= React.createRef();
@@ -18,7 +18,8 @@ function MapCom(props) {
             return {
                 name: it.name,
                 value: [it.longitude, it.latitude, 100],
-                id:it.plantId
+                id:it.plantId,
+                deviceTypeId: it.deviceTypeId
             }
         });
         return markerList;
@@ -29,13 +30,38 @@ function MapCom(props) {
     },[props.deviceType])
     const bind = useCallback((ref) => {
         if (!ref) return;
-        ref.on('click', params => {
+        ref.on('click', async params => {
+            const deviceTypeId = params?.data?.deviceTypeId;
             if (params.componentType === "series" && params.componentSubType === "effectScatter") {
-              if (props.deviceType==='LargeEnergy') {
-                window.open(`https://www.sermatec-cloud.com/authorization?token=${getLocalStorage("Token")}`, "_blank");
-              }else{
-                window.open(`https://ess.sermatec-cloud.com/authorization?token=${getLocalStorage("Token")}`, "_blank");
-              }
+                const res = await getPlantSysDb({
+                    db: props?.areaType==="domestic",
+                    isMin: props?.deviceType==="IntegratedMachine",
+                    plantId: params?.data?.id
+                })
+                let url="";
+                if(res?.data?.data?.url){
+                    const result = res?.data?.data;
+                    const tokenResult = await axiosInstance.post(result?.url, result);
+                    if (props.deviceType==='LargeEnergy') {
+                        if(deviceTypeId===2){
+                            url=`https://ess.sermatec-cloud.com/system/status`
+                        }else if(deviceTypeId===6){
+                            url=`https://www.sermatec-cloud.com/containerIndex/equipment/overview`
+                        }else{
+                            url=`https://www.sermatec-cloud.com/system/overview`;
+                        }
+                    }else{
+                        url=`https://ess.sermatec-cloud.com/authorization`;
+                    }
+
+                    if(url){
+                        window.open(`${url}?token=${tokenResult?.data?.data?.token}`, "_blank");
+                    }else{
+                        message.error("跳转失败！");
+                    }
+                }else{
+                    message.error("跳转失败！");
+                }
             }
         });
       }, [props]);

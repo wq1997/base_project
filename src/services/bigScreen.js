@@ -69,3 +69,9 @@ export const getAllDtuIdsServe = (params) => {
         params
     });
 }
+
+export const getPlantSysDb = (params) => {
+    return axiosInstance.get('/plant/sysDb', {
+        params
+    })
+}

@@ -65,10 +65,6 @@ function BigScreen() {
     });
 
     const getPlantPosition = async () => {
-        const sys=await sysDb({
-            db: areaType === 'domestic' ? true : false,
-            isMin: deviceType === 'IntegratedMachine' ? true : false
-        })
         const { data } = await getAllPlantList({
             db: areaType === 'domestic' ? true : false,
             isMin: deviceType === 'IntegratedMachine' ? true : false
@@ -243,8 +239,8 @@ function BigScreen() {
                     </AreaTemplate>
                 </div>
                 <div className={styles.contentBottomMap}>
-                    {areaType == 'domestic' && <MapChina key={deviceType} allPlant={plantsPosition} deviceType={deviceType}/>}
-                    {areaType == 'overseas' && <MapWorld key={areaType} allPlant={plantsPosition} />}
+                    {areaType == 'domestic' && <MapChina key={deviceType} allPlant={plantsPosition} areaType={areaType} deviceType={deviceType}/>}
+                    {areaType == 'overseas' && <MapWorld key={areaType} allPlant={plantsPosition} areaType={areaType} deviceType={deviceType}/>}
                 </div>
             </div>
         </div>

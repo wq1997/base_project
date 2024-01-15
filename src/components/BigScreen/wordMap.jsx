@@ -4,21 +4,21 @@ import { useDispatch, useSelector,history } from "umi";
 import ReactECharts from "echarts-for-react";
 import world from '../../../public/mapJson/maoJson'
 import * as echarts from "echarts";
-import { getLocalStorage } from "@/utils/utils";
+import axiosInstance from "@/services/request";
+import { getPlantSysDb } from "@/services/bigScreen";
+import { message } from 'antd';
 
 function MapCom(props) {
     const chartInstance= React.createRef();
     const [options, setOptions] = useState({});
     const dispatch = useDispatch();
-    // const { allPlant } = useSelector(function (state) {
-    //     return state.device
-    // });
     const convertData = function () {
         const markerList = props.allPlant?.map(it => {
             return {
                 name: it.name,
                 value: [it.longitude, it.latitude, 100],
-                id:it.plantId
+                id:it.plantId,
+                deviceTypeId: it.deviceTypeId
             }
         });
         return markerList;
@@ -26,9 +26,21 @@ function MapCom(props) {
     
     const bind = useCallback((ref) => {
         if (!ref) return;
-        ref.on('click', params => {
+        ref.on('click', async params => {
             if (params.componentType === "series" && params.componentSubType === "effectScatter") {
-                window.open(`https://eur.sermatec-cloud.com/authorization?token=${getLocalStorage("Token")}`, "_blank");
+                const res = await getPlantSysDb({
+                    db: props?.areaType==="domestic",
+                    isMin: props?.deviceType==="IntegratedMachine",
+                    plantId: params?.data?.id
+                })
+                let url="https://eur.sermatec-cloud.com/authorization";
+                if(res?.data?.data?.url){
+                    const result = res?.data?.data;
+                    const tokenResult = await axiosInstance.post(result?.url, result);
+                    window.open(`${url}?token=${tokenResult?.data?.data?.token}`, "_blank");
+                }else{
+                    message.error("跳转失败！");
+                }
             }
         });
       }, []);
