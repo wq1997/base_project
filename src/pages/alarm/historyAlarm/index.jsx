@@ -5,20 +5,22 @@ import { useSelector, } from "umi";
 import styles from "./index.less";
 import { Pagination, Select, Input, theme, Button, DatePicker } from "antd"
 import { CardModel } from "@/components";
-import { getHistoryAlarmsByPlantIdWithPage } from "@/services/alarm"
+import { getHistoryAlarmsByOptionsWithPage, getHistoryAlarmsStatistics } from "@/services/alarm"
 import {
   HistoryOutlined,
   ReconciliationOutlined,
   ScheduleOutlined,
 } from '@ant-design/icons';
+import dayjs from 'dayjs';
 import PieEcharts from '@/components/PieEcharts'
 const RealtimeAlarm = () => {
-  const { Search } = Input;
+  const { RangePicker } = DatePicker;
   const [data, setData] = useState([]);
+  const [dataTotal, setDatadataTotal] = useState([]);
   const [current, setCurrent] = useState(1);
   const [level, setLevel] = useState();
-  const [field, setField] = useState("sn");
-  const [textLike, setTextLike] = useState();
+  const [type, setType] = useState();
+  const [time,setTime]=useState([null,null]);
   const { token } = theme.useToken();
 
   const dataItems = [
@@ -35,52 +37,76 @@ const RealtimeAlarm = () => {
       value: 'desc'
     },
   ];
-  const alarmLevel = [{
-    label: '一级',
+  const alarmLevel = [
+    {
+    label: '低级',
     value: '1',
-    key: '一级',
-
+    key: '低级',
   },
   {
-    label: '二级',
+    label: '普通',
     value: '2',
-    key: '二级',
+    key: '普通',
   },
   {
-    label: '三级',
+    label: '严重',
     value: '3',
-    key: '三级',
+    key: '严重',
   },
   {
-    label: '四级',
+    label: '高级',
     value: '4',
-    key: '四级',
+    key: '高级',
   },
+  ];
+  const typeOfstation=[
+    {
+      label: '储能',
+      value: '1',
+      key: '储能',
+    },
+    {
+      label: '光伏',
+      value: '2',
+      key: '光伏',
+    },
+    {
+      label: '充电桩',
+      value: '3',
+      key: '充电桩',
+    },
+  ];
 
-  ]
-  const selectBefore = (
-    <Select defaultValue={dataItems[0].value} onChange={(e) => { setField(e) }}>
-      {dataItems.map((item) => {
-        return (<Option value={item.value} key={item.value}>{item.label}</Option>)
-      })}
-    </Select>
-  );
+
 
   useEffect(() => {
-    getData(current);
-  }, [current, level, field, textLike]);
+    getTableListData(current);
+  }, [current, level, type,time]);
 
+  useEffect(() => {
+    getTotalData();
+  }, [])
+  const sum = (arr) => {
+    return arr?.reduce((prev, cur) => {
+      return prev + cur.value
+    }, 0)
+  }
   const { currentPlantId } = useSelector(function (state) {
     return state.device
   });
-  const getData = async (page) => {
-    const { data } = await getHistoryAlarmsByPlantIdWithPage({
-      plantId: currentPlantId,
+  const getTotalData = async () => {
+    const { data } = await getHistoryAlarmsStatistics({plantId:currentPlantId});
+    setDatadataTotal(data.data)
+  };
+  const getTableListData = async (page) => {
+    const { data } = await getHistoryAlarmsByOptionsWithPage({
+      plantId:currentPlantId,
       currentPage: page || 1,
       pageSize: 10,
-      level,
-      field,
-      textLike,
+      prior:level,
+      type,
+      begin:time?.length ? time[0]?.format('YYYY-MM-DD HH:mm:ss'):null,
+      end:time?.length ? time[1]?.format('YYYY-MM-DD HH:mm:ss'):null
     });
     setData(data.data);
   }
@@ -90,31 +116,37 @@ const RealtimeAlarm = () => {
   const changeLevel = (value) => {
     setLevel(value);
   }
-  const onSearch = async (value, _e, info) => {
-    setTextLike(value);
-    console.log(info, value)
-  };
+  const changeType = (value) => {
+    setType(value);
+    }
+    const changeTime=(value)=>{
+      setTime(value);
+      console.log(value);
+    } 
   const topData = [
     {
       icon: <HistoryOutlined />,
       name: "历史告警总数",
       color: '#03B4B4',
-      value: '1000',
-      unit: ''
+      key: 'historyCount',
+      value: '',
+      unit: '个'
     },
     {
       icon: <ReconciliationOutlined />,
       name: "今日处理告警",
       color: '#ED750E',
-      value: '999',
-      unit: ''
+      key: 'currentCount',
+      value: '',
+      unit: '个'
     },
     {
       icon: <ScheduleOutlined />,
       name: "平均处理时长",
       color: '#5B8FF9',
-      value: '6',
-      unit: 'h'
+      key: 'avgCost',
+      value: '',
+      unit: ''
     },
   ];
   return (
@@ -132,29 +164,23 @@ const RealtimeAlarm = () => {
                       <span style={{ color: token.smallTitleColor, fontWeight: 500, fontSize: '16px', marginLeft: '3px' }}>{it.name}</span>
                     </div>
                     <div className={styles.topVaue} >
-                      {it.value}
-                      <span style={{ fontSize: '16px', fontWeight: 400, marginLeft: '10px', }}>{it.unit}</span>
+                      {dataTotal||null}
+                      <span style={{ fontSize: '16px', fontWeight: 400, marginLeft: '10px', height: '10%', lineHeight: '150%' }}>{it.unit}</span>
                     </div>
                   </div>
                 )
               })}
               <div className={styles.pieItem}>
                 <PieEcharts allData={{
-                  total: 100, subtext: '总数', data: [
-                    { value: 50, name: '三级' },
-                    { value: 25, name: '高级' },
-                    { value: 25, name: '严重' },]
+                  total: sum(dataTotal.priorStatistics), subtext: '总数', data: dataTotal.priorStatistics
                 }}></PieEcharts>
-                <div className={styles.pieItem_bottom} style={{color:token.smallTitleColor}}>告警等级分布</div>
+                <div className={styles.pieItem_bottom} style={{ color: token.smallTitleColor }}>告警等级分布</div>
               </div>
               <div className={styles.pieItem}>
                 <PieEcharts allData={{
-                  total: 100, subtext: '总数', data: [
-                    { value: 50, name: '三级' },
-                    { value: 25, name: '高级' },
-                    { value: 25, name: '严重' },]
+                  total: sum(dataTotal.typeStatistics), subtext: '总数', data: dataTotal.typeStatistics
                 }}></PieEcharts>
-                <div className={styles.pieItem_bottom} style={{color:token.smallTitleColor}}>告警类别分布</div>
+                <div className={styles.pieItem_bottom} style={{ color: token.smallTitleColor }}>告警类别分布</div>
 
               </div>
             </div>
@@ -174,12 +200,26 @@ const RealtimeAlarm = () => {
               placeholder='告警等级'
             />
           </div>
-          <div className={styles.date}>
-            <DatePicker />
-          </div>
           <div className={styles.dataItem}>
-            <Search addonBefore={selectBefore} placeholder="input search text" onSearch={onSearch} enterButton />
+          <Select
+              style={{ width: 150 }}
+              onChange={changeType}
+              options={typeOfstation}
+              allowClear
+              placeholder='设备类型'
+            />
           </div>
+          <div className={styles.date}>
+          <RangePicker
+              showTime={{
+                hideDisabledOptions: true,
+                defaultValue: [dayjs('00:00:00', 'HH:mm:ss'), dayjs('11:59:59', 'HH:mm:ss')],
+              }}
+              format="YYYY-MM-DD HH:mm:ss"
+              onChange={changeTime}
+            />
+          </div>
+       
           <div className={styles.buttons}>
             <Button type="primary" style={{ backgroundColor: token.defaultBg }} >
               导出excel

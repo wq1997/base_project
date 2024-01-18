@@ -1770,6 +1770,13 @@
   dependencies:
     "@fullcalendar/daygrid" "~6.1.9"
 
+"@iconify/react@^4.1.1":
+  "integrity" "sha512-jed14EjvKjee8mc0eoscGxlg7mSQRkwQG3iX3cPBCO7UlOjz0DtlvTqxqEcHUJGh+z1VJ31Yhu5B9PxfO0zbdg=="
+  "resolved" "https://registry.npmjs.org/@iconify/react/-/react-4.1.1.tgz"
+  "version" "4.1.1"
+  dependencies:
+    "@iconify/types" "^2.0.0"
+
 "@iconify/types@^2.0.0":
   "integrity" "sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg=="
   "resolved" "https://registry.npmjs.org/@iconify/types/-/types-2.0.0.tgz"
@@ -7229,7 +7236,7 @@
   dependencies:
     "history" "^5.2.0"
 
-"react@*", "react@^15.0.0 || >=16.0.0", "react@^16.11.0 || ^17.0.0 || ^18.0.0", "react@^16.3.0", "react@^16.6.0 || ^17.0.0 || ^18.0.0", "react@^16.7.0 || ^17 || ^18", "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0 || ^17.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^18.1.0", "react@>= 16.8.0", "react@>=16.0.0", "react@>=16.11.0", "react@>=16.12.0", "react@>=16.3.0", "react@>=16.8", "react@>=16.8.0", "react@>=16.9.0", "react@>=17.0.0", "react@18.1.0":
+"react@*", "react@^15.0.0 || >=16.0.0", "react@^16.11.0 || ^17.0.0 || ^18.0.0", "react@^16.3.0", "react@^16.6.0 || ^17.0.0 || ^18.0.0", "react@^16.7.0 || ^17 || ^18", "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0 || ^17.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^18.1.0", "react@>= 16.8.0", "react@>=16", "react@>=16.0.0", "react@>=16.11.0", "react@>=16.12.0", "react@>=16.3.0", "react@>=16.8", "react@>=16.8.0", "react@>=16.9.0", "react@>=17.0.0", "react@18.1.0":
   "integrity" "sha512-4oL8ivCz5ZEPyclFQXaNksK3adutVS8l2xzZU0cqEFrE9Sb7fC0EFK5uEk74wIreL1DERyjvsU915j1pcT2uEQ=="
   "resolved" "https://registry.npmjs.org/react/-/react-18.1.0.tgz"
   "version" "18.1.0"

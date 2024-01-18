@@ -17,3 +17,4 @@ export const logout = ()=>{
 export const apiGetAllUserAndInfos = ()=>{
   return axiosInstance.get(`/user/getAllUserAndInfos` );
 }
+

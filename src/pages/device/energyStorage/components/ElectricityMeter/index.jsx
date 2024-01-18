@@ -7,8 +7,8 @@ import RealtimeData from './RealtimeData';
 import HistoryData from "./HistoryData";
 
 const PageTypeList = [
-    {label:'实时数据',key:'RealtimeData'},
-    {label:'历史数据',key:'HistoryData'},
+    {label:'电表详情',key:'RealtimeData'},
+    {label:'监测曲线',key:'HistoryData'},
 ];
 const defaultActiveKey = "RealtimeData";
 

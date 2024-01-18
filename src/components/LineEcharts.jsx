@@ -84,7 +84,7 @@ function Com(props) {
 
     useEffect(() => {
         getOptions();
-    }, []);
+    }, [token]);
     return (
  
         <ReactECharts option={options} style={{height: '100%'}} />

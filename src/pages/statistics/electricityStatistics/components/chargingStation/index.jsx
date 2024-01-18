@@ -4,7 +4,6 @@ import dayjs from 'dayjs';
 import styles from './index.less'
 import { CardModel } from "@/components";
 import ReactECharts from "echarts-for-react";
-import LineEcharts from '@/components/LineEcharts'
 import Table from '@/components/Table.jsx'
 import { useSelector, FormattedMessage, useIntl } from "umi";
 

@@ -41,15 +41,22 @@ const BaseLayout = () => {
             '&::-webkit-scrollbar': {
                 display: 'none'
             },
+            '.ant-menu-item':{
+                fontFamily:'PingFangRegular !important',
+            },
+            '.ant-menu-submenu-title':{
+                fontFamily:'PingFangRegular !important',
+            },
             '.ant-menu-sub': {
                 backgroundColor: `${token.sub_innerBgc} !important`,
                 margin: '0 20px',
                 borderRadius: '4px !important',
-                fontSize: '16px !important'
+                fontSize: '16px !important',
+                fontFamily:'PingFangRegular !important',
             },
             '.ant-menu-item-icon': {
-                fontSize: '18px !important'
-
+                fontSize: '18px !important',
+                fontFamily:'PingFangRegular !important',
             }
 
         }

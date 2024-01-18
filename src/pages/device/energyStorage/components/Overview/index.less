@@ -1,0 +1,212 @@
+.overview {
+    height: 100%;
+
+    .heard {
+        height: 60px;
+        width: 100%;
+        margin-bottom: 8px;
+        font-family: PingFangSemiblod;
+        font-size: 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .overContent {
+        width: 100%;
+        height: calc(100% - 76px);
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1.375fr 1.375fr;
+        gap: 8px 8px;
+        grid-template-areas:
+            "electric running profit"
+            "charge chargebit profitAll"
+            "chargAndDischarg chargAndDischarg alarm";
+
+        .electric {
+            grid-area: electric;
+
+            .elewrap {
+                width: 100%;
+                height: 100%;
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                grid-template-rows: 1fr 1fr;
+                gap: 1px 1px;
+
+                .item {
+                    padding: 20px 20px;
+                    width: 100%;
+                    overflow: hidden;
+                    text-overflow: ellipsis !important;
+                    white-space: nowrap;
+
+                    .itemTitle {
+                        width: 100%;
+                        //  height: 22px;
+                        font-size: 16px;
+                        color: #666666;
+                        font-family: PingFangSemiblod;
+                        overflow: hidden;
+                        text-overflow: ellipsis !important;
+                        white-space: nowrap;
+                    }
+
+                    .itemValue {
+                        font-size: 24px;
+                        height: calc(100% - 22px);
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        .itemUnit {
+                            font-size: 14px;
+                            height: 10%;
+                            line-height: 100%;
+
+                        }
+                    }
+                }
+
+            }
+        }
+
+        .running {
+            grid-area: running;
+
+            .runningWrap {
+                width: 100%;
+                height: 100%;
+                display: grid;
+                grid-template-rows: 1fr 1fr;
+                gap: 8px 8px;
+
+                .realPower {
+
+                    font-size: 16px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    color: #666666;
+
+                    .label {
+                        font-family: PingFangSemiblod;
+                    }
+
+                    .value {
+                        font-size: 24px;
+                        color: #03B4B4;
+                        // line-height: 120%;
+                    }
+
+                    .unit {
+                        font-size: 14px;
+                        height: 10%;
+                        line-height: 100%;
+                    }
+                }
+
+                .realStaus {
+                    padding: 20px 20px;
+                    display: flex;
+
+                    div {
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        .value {
+                            font-size: 24px;
+                            margin-left: 15px;
+                        }
+                    }
+
+                    div:nth-child(2) {
+                        border-left: 1px solid #E6E9F2;
+                        border-right: 1px solid #E6E9F2;
+                    }
+                }
+            }
+        }
+        .profit {
+            grid-area: profit;
+
+            .profitWrap {
+                width: 100%;
+                height: 100%;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: 1fr 1fr;
+                gap: 8px 8px;
+
+                .itemProfit {
+                    padding: 15px 15px;
+                    font-size: 16px;
+
+                    .valueProfit {
+                        font-size: 24px;
+                        margin-top: 10px;
+                        span {
+                            font-size: 16px;
+
+                        }
+                    }
+                }
+            }
+        }
+
+        .charge {
+            grid-area: charge;
+            min-height: 28vh;
+            .chargeWrap{
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        .chargebit {
+            grid-area: chargebit;
+            .chargebitWrap{
+                width: 100%;
+                height: 100%;
+            }
+        }
+        .profitAll {
+            grid-area: profitAll;
+            .profitAllWrap{
+                width: 100%;
+                height: 100%;
+            }
+        }
+        .chargAndDischarg {
+            grid-area: chargAndDischarg;
+            .chargAndDischargWrap{
+                width: 100%;
+                height: 100%;
+            }
+        }
+        .alarm {
+            grid-area: alarm;
+            .alarmWrap{
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                .itemAlarm{
+                    border-bottom:  1px solid #EEEEEE;
+                    padding: 15px 15px;
+                    font-size: 16px;
+                    span:nth-child(2){
+                        margin: 0 15px 0 5px;
+                        font-size: 16px;
+                        font-family: PingFangSemiblod;
+                    }
+                }
+            }
+        }
+    }
+}

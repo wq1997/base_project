@@ -9,10 +9,10 @@ import TemperaturePressure from "./TemperaturePressure";
 import CellDetails from "./CellDetails";
 
 const PageTypeList = [
-    {label:'实时数据',key:'RealtimeData'},
-    {label:'历史数据',key:'HistoryData'},
-    {label:'温差/压差',key:'TemperaturePressure'},
+    {label:'BMS数据',key:'RealtimeData'},
+    {label:'监测曲线',key:'HistoryData'},
     {label:'电芯详情',key:'CellDetails'},
+    {label:'高级分析',key:'TemperaturePressure'},
 ];
 const defaultActiveKey = "RealtimeData";
 const Cabinet = () => {

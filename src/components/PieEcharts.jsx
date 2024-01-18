@@ -8,7 +8,6 @@ function Com(props) {
     const [xxx, setXxx] = useState('')
     var  colorList=['#528AEB', '#F3CE55', '#03B4B4',];
     useEffect(() => {
-        console.log('函数组件来咯')
     }, [])
     const { token } = theme.useToken();
     const [options, setOptions] = useState({});
@@ -106,7 +105,7 @@ function Com(props) {
 
     useEffect(() => {
         getOptions();
-    }, [token]);
+    }, [token,props]);
     return (
         <ReactECharts   option={options} style={{height: '100%',}} />
     )

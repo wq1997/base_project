@@ -13,19 +13,9 @@ export const WETHER_API = 'https://devapi.qweather.com/v7/weather/3d?';
 export const WETHER_KEY = '4e50b674eed8402c8a70c8155690a0e1';
 export const alarmTableColums = [
     {
-        title: '设备编码',
-        dataIndex: 'sn',
-        key: 'sn',
-    },
-    {
-        title: '设备名称',
-        dataIndex: 'name',
-        key: 'name',
-    },
-    {
-        title: '告警描述',
-        dataIndex: 'desc',
-        key: 'desc',
+        title: '设备类型',
+        dataIndex: 'type',
+        key: 'type',
     },
     {
         title: '告警等级',
@@ -33,62 +23,39 @@ export const alarmTableColums = [
         key: 'prior',
     },
     {
+        title: '告警描述',
+        dataIndex: 'desc',
+        key: 'desc',
+    },
+    {
+        title: '设备名称',
+        dataIndex: 'deviceName',
+        key: 'deviceName',
+    },
+    {
+        title: '并网点',
+        dataIndex: 'sn',
+        key: 'sn',
+    },
+    {
+        title: '电站名称',
+        dataIndex: 'plantName',
+        key: 'plantName',
+    },
+   
+    {
         title: '开始时间',
-        dataIndex: 'startTime',
-        key: 'startTime',
+        dataIndex: 'begin',
+        key: 'begin',
+    },
+    {
+        title: '结束时间',
+        dataIndex: 'end',
+        key: 'end',
     },
 ];
 export const RealtimeData = [];
 
-export const userTable = [
-    {
-        title: '用户名',
-        dataIndex: 'name',
-        key: 'name',
-    },
-    {
-        title: '角色',
-        dataIndex: 'roleName',
-        key: 'roleName',
-    },
-    {
-        title: '手机号',
-        dataIndex: 'phone',
-        key: 'phone',
-    },
-    {
-        title: '邮箱',
-        dataIndex: 'mail',
-        key: 'mail',
-    },
-    {
-        title: '公司',
-        dataIndex: 'company',
-        key: 'company',
-        width: 200
-
-    },
-    {
-        title: '备注',
-        dataIndex: 'desc',
-        key: 'desc',
-        width: 200
-    },
-    {
-        title: '操作',
-        dataIndex: 'operation',
-        key: 'operation',
-        render: (text, record) => {
-            return (
-                <Space>
-                    <a type="text">编辑</a>
-                    <a type="text">删除</a>
-                    <a type="text">重置密码</a>
-                </Space>
-            )
-        }
-    }
-];
 
 export const profitTable = [
     {

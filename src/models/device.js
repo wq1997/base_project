@@ -36,7 +36,7 @@ export default {
           plantDetails: {
             ...(data.data.data)
           },
-          currentPlantId:id,
+          // currentPlantId:id,
         },
       });
     },

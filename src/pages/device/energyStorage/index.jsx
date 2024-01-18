@@ -110,7 +110,7 @@ function Com(props) {
     const location = useLocation();
     const { pathname } = location;
     const { token } = theme.useToken();
-    const [pageType, setPageType] = useState(getQueryString("pageType") || defaultPageType)
+    const [pageType, setPageType] = useState(getQueryString("PageType") || defaultPageType)
     const [pageKey, setPageKey] = useState(getQueryString("PageKey") || defaultPageType)
 
     // const [treeData, setTreeData] = useState([...TreeData])
@@ -120,14 +120,14 @@ function Com(props) {
     const onSelect = (selectedKeys, e) => {
         setPageType(e.node.type);
         setPageKey(e.node.key);
-        history.push(`${pathname}?PageKey=${e.node.key}&id=${e.node.id}`);
+        history.push(`${pathname}?PageKey=${e.node.key}&id=${e.node.id}&PageType=${e.node.type}`);
     }
     const onExpand = (newExpandedKeys) => {
         setExpandedKeys(newExpandedKeys);
         setAutoExpandParent(false);
     };
     useEffect(()=>{
-        const newExpandedKeys =   dataList
+        const newExpandedKeys = dataList
         .map((item) => {
             if (item.key.indexOf(getQueryString("PageKey")) > -1) {
                 return getParentKey(item.key, defaultData);
@@ -192,7 +192,7 @@ function Com(props) {
         switch (pageType) {
             case "ALL"://总览
                 return <Overview />;
-            case "BMS"://并网点
+            case "BMS":
                 return <EnergyBMS />;
             case "PCS"://
                 return <EnergyPCS />;
@@ -201,7 +201,7 @@ function Com(props) {
             case "Meter":
                 return <ElectricityMeter />;
             case 6:
-                return <ViewEngrgy />;
+                return <Overview title={'并网点'}/>;
             case 9:
                 return <ViewOutdoor />
 
@@ -233,7 +233,7 @@ function Com(props) {
                         style={{ backgroundColor: token.treeBgb }} />
                 </div>
             </div>
-            <div className={styles.contentRight} style={{ backgroundColor: token.titleCardBgc }}>
+            <div className={styles.contentRight} >
                 {getPage()}
             </div>
         </div>

@@ -246,23 +246,7 @@ function Com(props) {
 
     ];
 
-    const cardData = [
-        {
-            icon: <CalendarOutlined />,
-            name: "平均收益",
-            color: '#03B4B4',
-            value: '10',
-            unit: 'kWh'
-        },
-        {
-            icon: <DatabaseOutlined />,
-            name: "累计收益",
-            color: '#FF9239',
-            value: '9999',
-            unit: 'kWh'
-        },
 
-    ]
     useEffect(() => {
         getOptions();
     }, []);

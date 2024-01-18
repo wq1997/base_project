@@ -18,7 +18,7 @@ function MapCom(props) {
             return {
                 name: it.name,
                 value: [it.longitude, it.latitude, 100],
-                id:it.id
+                id:it.plantId
             }
         });
         return markerList;
@@ -29,10 +29,19 @@ function MapCom(props) {
         ref.on('click', params => {
             if (params.componentType === "series" && params.componentSubType === "effectScatter") {
                 const index = params.dataIndex;
-                dispatch({ type: 'device/getAllPlantDetails',payload:{
-                    plantId:params.data.id
-                } });
-                history.push('/index/home')
+                dispatch({ 
+                    type: 'device/updateState',
+                    payload:{
+                        currentPlantId:params.data.id
+                    } })
+                localStorage.setItem('plantId',params.data.id)
+                // dispatch({ 
+                // type: 'device/getAllPlantDetails',
+                // payload:{
+                //     plantId:params.data.id
+                // } }).then(()=>{
+                    history.push('/index/home')
+                // });
             }
         });
       }, []);

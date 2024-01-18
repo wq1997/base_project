@@ -1,10 +1,14 @@
 import ThemeBtn from "./ThemeBtn";
 import ThemeEnum from "./ThemeBtn/theme";
 import LocaleBtn from "./LocaleBtn";
-import BigScreen  from "./BigScreen";
-import Strategy  from "./FullCalendar";
-import CardModel  from "./CardModel";
+import BigScreen from "./BigScreen";
+import Strategy from "./FullCalendar";
+import CardModel from "./CardModel";
 import Title from "./Title";
+import Iconify from './icon/iconify-icon'
+import SvgIcon from './icon/svg-icon'
+import IconButton from './icon/icon-button'
+
 
 export {
     BigScreen,
@@ -13,5 +17,8 @@ export {
     LocaleBtn,
     Strategy,
     CardModel,
-    Title
+    Title,
+    Iconify,
+    SvgIcon,
+    IconButton
 }
