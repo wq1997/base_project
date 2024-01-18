@@ -172,13 +172,13 @@ const RealtimeAlarm = () => {
               })}
               <div className={styles.pieItem}>
                 <PieEcharts allData={{
-                  total: sum(dataTotal.priorStatistics), subtext: '总数', data: dataTotal.priorStatistics
+                  total: sum(dataTotal?.priorStatistics), subtext: '总数', data: dataTotal?.priorStatistics
                 }}></PieEcharts>
                 <div className={styles.pieItem_bottom} style={{ color: token.smallTitleColor }}>告警等级分布</div>
               </div>
               <div className={styles.pieItem}>
                 <PieEcharts allData={{
-                  total: sum(dataTotal.typeStatistics), subtext: '总数', data: dataTotal.typeStatistics
+                  total: sum(dataTotal?.typeStatistics), subtext: '总数', data: dataTotal?.typeStatistics
                 }}></PieEcharts>
                 <div className={styles.pieItem_bottom} style={{ color: token.smallTitleColor }}>告警类别分布</div>
 
