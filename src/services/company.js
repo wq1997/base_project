@@ -9,9 +9,7 @@ export const getCompanyList = payload => {
 export const getUpdateInitData = id => {
     let url = "/company/get-edit-page-init-data";
     if (id) {
-        url = jsonToUrlParams({
-            id,
-        });
+        url = `${url}?id=${id}`;
     }
     return axiosInstance.get(url);
 };
@@ -23,5 +21,10 @@ export const getCityByProvince = province => {
 
 export const updateCompany = payload => {
     const url = `/company/save-or-update`;
+    return axiosInstance.post(url, payload);
+};
+
+export const deleteCompany = payload => {
+    const url = `/company/delete`;
     return axiosInstance.post(url, payload);
 };

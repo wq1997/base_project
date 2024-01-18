@@ -1,17 +1,47 @@
 import React, { useState, useEffect } from "react";
-import { message, Button, Select, Form, Input, Modal, Row, Col, Radio, Upload, Space } from "antd";
-import ResCapTable from "./ResCapTable";
+import { message, Button, Select, Form, Input, Modal, Row, Col, Radio, Space } from "antd";
+import {
+    getUpdateInitData as getUpdateInitDataServer,
+    updateUser as updateUserServer,
+} from "@/services/account";
 
-const Company = ({ open, onClose }) => {
+const Company = ({ open, editId, onClose }) => {
+    const [form] = Form.useForm();
+    const [companyList, setCompanyList] = useState();
+    const [roleList, setRoleList] = useState();
 
-    const onFinish = values => {
-        console.log("Success:", values);
+    const getUpdateInitData = async () => {
+        const res = await getUpdateInitDataServer(editId);
+        if (res?.data?.status == "SUCCESS") {
+            const { editUser, companies, roles } = res?.data?.data;
+            editUser ? form.setFieldsValue(editUser) : form.resetFields();
+            setCompanyList(companies);
+            setRoleList(roles);
+        }
     };
+
+    const onFinish = async values => {
+        const res = await updateUserServer({
+            id: editId,
+            ...values,
+        });
+
+        if (res?.data?.status == "SUCCESS") {
+            message.success(`${editId ? "编辑" : "添加"}成功`);
+            onClose(true);
+        } else {
+            message.info(res?.data?.msg);
+        }
+    };
+
+    useEffect(() => {
+        open && getUpdateInitData();
+    }, [open]);
 
     return (
         <Modal
-            title="新增公司"
-            width={900}
+            title={`${editId ? "编辑" : "新增"}账号`}
+            width={700}
             confirmLoading={true}
             open={open}
             footer={null}
@@ -20,315 +50,130 @@ const Company = ({ open, onClose }) => {
             <Form
                 name="basic"
                 labelCol={{
-                    span: 8,
+                    span: 7,
                 }}
                 wrapperCol={{
                     span: 14,
                 }}
+                form={form}
                 onFinish={onFinish}
                 autoComplete="off"
             >
-                <strong className="category-title">公司基础信息</strong>
-                <Row span={24}>
-                    <Col span={12}>
-                        <Form.Item
-                            label="公司名称"
-                            name="name"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "请输入公司名称",
-                                },
-                            ]}
-                        >
-                            <Input placeholder="请输入公司名称" />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item
-                            label="公司税号"
-                            name="taxCode"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "请输入公司税号",
-                                },
-                            ]}
-                        >
-                            <Input placeholder="请输入公司税号" />
-                        </Form.Item>
-                    </Col>
-                </Row>
+                <Form.Item
+                    label="用户名"
+                    name="account"
+                    rules={[
+                        {
+                            required: true,
+                            message: "请输入用户名",
+                        },
+                    ]}
+                >
+                    <Input placeholder="请输入用户名" />
+                </Form.Item>
 
-                <Row>
-                    <Col span={12}>
-                        <Form.Item
-                            label="所在省份"
-                            name="province"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "请选择所在省份",
-                                },
-                            ]}
-                        >
-                            <Select
-                                placeholder="请选择所在省份"
-                                options={[
-                                    { value: "jack", label: "Jack" },
-                                    { value: "lucy", label: "Lucy" },
-                                ]}
-                            />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item
-                            label="所在市"
-                            name="city"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "请选择所在市",
-                                },
-                            ]}
-                        >
-                            <Select
-                                placeholder="请选择所在市"
-                                options={[
-                                    { value: "jack", label: "Jack" },
-                                    { value: "lucy", label: "Lucy" },
-                                ]}
-                            />
-                        </Form.Item>
-                    </Col>
-                </Row>
+                <Form.Item
+                    label="姓名"
+                    name="name"
+                    rules={[
+                        {
+                            required: true,
+                            message: "请输入姓名",
+                        },
+                    ]}
+                >
+                    <Input placeholder="请输入姓名" />
+                </Form.Item>
 
-                <Row>
-                    <Col span={12}>
-                        <Form.Item
-                            label="场站类型"
-                            name="stationType"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "请选择场站类型",
-                                },
-                            ]}
-                        >
-                            <Select
-                                placeholder="请选择场站类型"
-                                options={[
-                                    { value: "jack", label: "Jack" },
-                                    { value: "lucy", label: "Lucy" },
-                                ]}
-                            />
-                        </Form.Item>
-                    </Col>
-                </Row>
+                {
+                    !editId && <Form.Item
+                        label="账号密码"
+                        name="password"
+                        rules={[
+                            {
+                                required: true,
+                                message: "请输入账号密码",
+                            },
+                        ]}
+                    >
+                        <Input placeholder="请输入账号密码" />
+                    </Form.Item>
+                }
 
-                <Row span={24}>
-                    <Col span={12}>
-                        <Form.Item label="合同文件" name="contractAtt">
-                            <Upload
-                                action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-                                headers={{
-                                    authorization: "authorization-text",
-                                }}
-                                onChange={info => {
-                                    if (info.file.status !== "uploading") {
-                                        console.log(info.file, info.fileList);
-                                    }
-                                    if (info.file.status === "done") {
-                                        message.success(
-                                            `${info.file.name} file uploaded successfully`
-                                        );
-                                    } else if (info.file.status === "error") {
-                                        message.error(`${info.file.name} file upload failed.`);
-                                    }
-                                }}
-                            >
-                                <Button>点击上传</Button>
-                            </Upload>
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item label="其他附件" name="otherAtt">
-                            <Upload
-                                action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-                                headers={{
-                                    authorization: "authorization-text",
-                                }}
-                                onChange={info => {
-                                    if (info.file.status !== "uploading") {
-                                        console.log(info.file, info.fileList);
-                                    }
-                                    if (info.file.status === "done") {
-                                        message.success(
-                                            `${info.file.name} file uploaded successfully`
-                                        );
-                                    } else if (info.file.status === "error") {
-                                        message.error(`${info.file.name} file upload failed.`);
-                                    }
-                                }}
-                            >
-                                <Button>点击上传</Button>
-                            </Upload>
-                        </Form.Item>
-                    </Col>
-                </Row>
+                <Form.Item
+                    label="用户手机号"
+                    name="phoneNo"
+                    rules={[
+                        {
+                            required: true,
+                            message: "请输入用户手机号",
+                        },
+                    ]}
+                >
+                    <Input placeholder="请输入用户手机号" />
+                </Form.Item>
 
-                <strong className="category-title">响应能力</strong>
+                <Form.Item
+                    label="所属公司"
+                    name="companyCode"
+                    rules={[
+                        {
+                            required: true,
+                            message: "请选择所属公司",
+                        },
+                    ]}
+                >
+                    <Select
+                        placeholder="请选择所属公司"
+                        fieldNames={{
+                            label: "name",
+                            value: "code",
+                        }}
+                        options={companyList}
+                    />
+                </Form.Item>
 
-                <Row span={24}>
-                    <Col span={12}>
-                        <Form.Item
-                            label="是否支持自动执行"
-                            name="supportAutoExecute"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "请选择是否支持自动执行",
-                                },
-                            ]}
-                        >
-                            <Radio.Group>
-                                <Radio value={true}>是</Radio>
-                                <Radio value={false}>否</Radio>
-                            </Radio.Group>
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item label="场站编号" name="stationCode">
-                            <Input placeholder="请输入采日云平台登记场站号" />
-                        </Form.Item>
-                    </Col>
-                </Row>
+                <Form.Item
+                    label="关联角色"
+                    name="roleCodes"
+                    rules={[
+                        {
+                            required: true,
+                            message: "请选择关联角色",
+                        },
+                    ]}
+                >
+                    <Select
+                        placeholder="请选择关联角色"
+                        mode="multiple"
+                        fieldNames={{
+                            label: "name",
+                            value: "code",
+                        }}
+                        options={roleList}
+                    />
+                </Form.Item>
 
-                <Row span={24}>
-                    <Col span={12}>
-                        <Form.Item
-                            label="是否默认确认任务"
-                            name="autoConfirmTask"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "请选择是否默认确认任务",
-                                },
-                            ]}
-                        >
-                            <Radio.Group>
-                                <Radio value={true}>是</Radio>
-                                <Radio value={false}>否</Radio>
-                            </Radio.Group>
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item
-                            label="最大负载量(KW)"
-                            name="maxLoad"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "请输入最大负载量",
-                                },
-                            ]}
-                        >
-                            <Input placeholder="请输入签约响应功率，要求整数" />
-                        </Form.Item>
-                    </Col>
-                </Row>
-
-                <Row span={24}>
-                    <Col span={12}>
-                        <Form.Item
-                            label="紧急联系人"
-                            name="contactPerson"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "请输入紧急联系人",
-                                },
-                            ]}
-                        >
-                            <Input placeholder="请输入紧急联系人名称" />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item
-                            label="紧急联系人电话"
-                            name="contractPhone"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "请输入紧急联系人电话",
-                                },
-                            ]}
-                        >
-                            <Input placeholder="请输入紧急联系人电话" />
-                        </Form.Item>
-                    </Col>
-                </Row>
-
-                <Row span={24}>
-                    <Col span={12}>
-                        <Form.Item
-                            label="邀约分润比列"
-                            name="profitSharingRatio"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "请输入邀约分润比列",
-                                },
-                            ]}
-                        >
-                            <Input placeholder="请输入0-100以内数字" />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item
-                            label="响应设备数"
-                            name="deviceCount"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "请输入响应设备数",
-                                },
-                            ]}
-                        >
-                            <Input placeholder="请输入0-1000以内数字" />
-                        </Form.Item>
-                    </Col>
-                </Row>
-
-                <Row span={24}>
-                    <Col span={24}>
-                        <Form.Item
-                            label="响应能力统计"
-                            name="responsivenessDetail"
-                            labelCol={{
-                                span: 4,
-                            }}
-                            wrapperCol={{
-                                span: 19,
-                            }}
-                            rules={[
-                                {
-                                    required: true,
-                                },
-                            ]}
-                        >
-                            <ResCapTable />
-                        </Form.Item>
-                    </Col>
-                </Row>
+                <Form.Item
+                    label="备注"
+                    name="remark"
+                    rules={[
+                        {
+                            required: true,
+                            message: "请输入备注",
+                        },
+                    ]}
+                >
+                    <Input.TextArea placeholder="请输入备注" />
+                </Form.Item>
 
                 <Form.Item
                     wrapperCol={{
-                        offset: 19,
+                        offset: 16,
                         span: 5,
                     }}
                 >
-                    <Space style={{ position: "relative", left: 8 }}>
+                    <Space>
                         <Button onClick={() => onClose(false)}>取消</Button>
                         <Button type="primary" htmlType="submit">
                             确定

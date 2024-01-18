@@ -1,9 +1,8 @@
-import { Input } from "antd";
+import { Input, message } from "antd";
 import "./index.less";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const ResCapTable = ({ onChange }) => {
-
+const ResCapTable = ({ data, onChange }) => {
     const [responsivenessDetail, setResponsivenessDetail] = useState({
         heightPeakCut: { dayBefore: undefined, dayIn: undefined, realTime: undefined },
         lowPeakCut: { dayBefore: undefined, dayIn: undefined, realTime: undefined },
@@ -16,6 +15,10 @@ const ResCapTable = ({ onChange }) => {
         onChange(_responsivenessDetail);
     };
 
+    useEffect(() => {
+        if (data) setResponsivenessDetail(data);
+    }, [data]);
+
     return (
         <div className="resCapTable">
             <div className="item">
@@ -27,25 +30,43 @@ const ResCapTable = ({ onChange }) => {
             <div className="item">
                 <div>削峰</div>
                 <div>
-                    <Input onChange={e => change(e.target.value, "heightPeakCut", "dayBefore")} />
+                    <Input
+                        value={responsivenessDetail?.heightPeakCut?.dayBefore}
+                        onChange={e => change(e.target.value, "heightPeakCut", "dayBefore")}
+                    />
                 </div>
                 <div>
-                    <Input onChange={e => change(e.target.value, "heightPeakCut", "dayIn")} />
+                    <Input
+                        value={responsivenessDetail?.heightPeakCut?.dayIn}
+                        onChange={e => change(e.target.value, "heightPeakCut", "dayIn")}
+                    />
                 </div>
                 <div>
-                    <Input onChange={e => change(e.target.value, "heightPeakCut", "realTime")} />
+                    <Input
+                        value={responsivenessDetail?.heightPeakCut?.realTime}
+                        onChange={e => change(e.target.value, "heightPeakCut", "realTime")}
+                    />
                 </div>
             </div>
             <div className="item">
                 <div>填谷</div>
                 <div>
-                    <Input onChange={e => change(e.target.value, "lowPeakCut", "dayBefore")} />
+                    <Input
+                        value={responsivenessDetail?.lowPeakCut?.dayBefore}
+                        onChange={e => change(e.target.value, "lowPeakCut", "dayBefore")}
+                    />
                 </div>
                 <div>
-                    <Input onChange={e => change(e.target.value, "lowPeakCut", "dayIn")} />
+                    <Input
+                        value={responsivenessDetail?.lowPeakCut?.dayIn}
+                        onChange={e => change(e.target.value, "lowPeakCut", "dayIn")}
+                    />
                 </div>
                 <div>
-                    <Input onChange={e => change(e.target.value, "lowPeakCut", "realTime")} />
+                    <Input
+                        value={responsivenessDetail?.lowPeakCut?.realTime}
+                        onChange={e => change(e.target.value, "lowPeakCut", "realTime")}
+                    />
                 </div>
             </div>
         </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { message, Button, Select, Form, Input, Modal, Row, Col, Radio, Upload, Space } from "antd";
+import { message, Button, Select, Form, Input, Modal, Row, Col, Radio, Space } from "antd";
 import {
     getUpdateInitData as getUpdateInitDataServer,
     getCityByProvince as getCityByProvinceServer,
@@ -8,25 +8,21 @@ import {
 import ResCapTable from "./ResCapTable";
 import { MyUpload } from "@/components";
 
-const Company = ({ open, onClose }) => {
-    const uploadUrl = process.env.API_URL + "/attachment/upload2";
+const uploadUrl = process.env.API_URL + "/attachment/upload2";
 
-    const onFinish = async values => {
-        const res = await updateCompanyServer(values);
-        if (res?.data?.status == "SUCCESS") {
-            message.success("添加成功");
-            onClose(true);
-        }
-    };
-
+const Company = ({ open, editId, onClose }) => {
+    const [form] = Form.useForm();
+    const [editData, setEditData] = useState();
     const [provinces, setProvinces] = useState([]);
     const [cities, setCities] = useState([]);
     const [stationTypes, setStationTypes] = useState([]);
 
     const getUpdateInitData = async () => {
-        const res = await getUpdateInitDataServer();
+        const res = await getUpdateInitDataServer(editId);
         if (res?.data?.status == "SUCCESS") {
-            const { provinces, stationTypes } = res?.data?.data;
+            const { editCompany, provinces, stationTypes } = res?.data?.data;
+            editCompany ? form.setFieldsValue(editCompany) : form.resetFields();
+            setEditData(editCompany);
             setProvinces(provinces);
             setStationTypes(stationTypes);
         }
@@ -39,13 +35,38 @@ const Company = ({ open, onClose }) => {
         }
     };
 
+    const onFinish = async values => {
+        const { heightPeakCut, lowPeakCut } = values?.responsivenessDetail;
+        const hValues = Object.values(heightPeakCut);
+        const lValues = Object.values(lowPeakCut);
+        if (
+            hValues.includes("") ||
+            hValues.includes(undefined) ||
+            lValues.includes("") ||
+            lValues.includes(undefined)
+        ) {
+            return message.info("请完整填写响应能力表格");
+        }
+        const res = await updateCompanyServer({
+            id: editId,
+            ...values,
+        });
+
+        if (res?.data?.status == "SUCCESS") {
+            message.success(`${editId ? "编辑" : "添加"}成功`);
+            onClose(true);
+        } else {
+            message.info(res?.data?.msg);
+        }
+    };
+
     useEffect(() => {
         open && getUpdateInitData();
     }, [open]);
 
     return (
         <Modal
-            title="新增公司"
+            title={`${editId ? "编辑" : "新增"}公司`}
             width={900}
             confirmLoading={true}
             open={open}
@@ -60,6 +81,7 @@ const Company = ({ open, onClose }) => {
                 wrapperCol={{
                     span: 14,
                 }}
+                form={form}
                 onFinish={onFinish}
                 autoComplete="off"
             >
@@ -160,12 +182,24 @@ const Company = ({ open, onClose }) => {
                 <Row span={24}>
                     <Col span={12}>
                         <Form.Item label="合同文件" name="contractAtt">
-                            <MyUpload url={uploadUrl} />
+                            <MyUpload
+                                url={uploadUrl}
+                                files={editData?.contractAtt?.map(item => ({
+                                    ...item,
+                                    name: item.fileName,
+                                }))}
+                            />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
                         <Form.Item label="其他附件" name="otherAtt">
-                            <MyUpload url={uploadUrl} />
+                            <MyUpload
+                                url={uploadUrl}
+                                files={editData?.otherAtt?.map(item => ({
+                                    ...item,
+                                    name: item.fileName,
+                                }))}
+                            />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -235,7 +269,7 @@ const Company = ({ open, onClose }) => {
                     <Col span={12}>
                         <Form.Item
                             label="紧急联系人"
-                            name="contactPerson"
+                            name="contactPerson" 
                             rules={[
                                 {
                                     required: true,
@@ -310,7 +344,7 @@ const Company = ({ open, onClose }) => {
                                 },
                             ]}
                         >
-                            <ResCapTable />
+                            <ResCapTable data={editData?.responsivenessDetail} />
                         </Form.Item>
                     </Col>
                 </Row>

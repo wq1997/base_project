@@ -2,6 +2,17 @@ import { JSEncrypt } from "jsencrypt";
 export const setLocalStorage = (key, value) => localStorage.setItem(key, value);
 export const getLocalStorage = key => localStorage.getItem(key);
 
+const toType = obj => {
+    if (obj == null) return obj + "";
+    let type = typeof obj;
+    if (/(object|function)/i.test(type)) {
+        type = toString.call(obj);
+        const [, res = "object"] = type.match(/^\[object (\w+)\]$/) || [];
+        return res.toLowerCase();
+    }
+    return type;
+};
+
 export function getQueryString(name) {
     let reg = new RegExp(`(^|&)${name}=([^&]*)(&|$)`, "i");
     let r = window.location.search.substr(1).match(reg);
