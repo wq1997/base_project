@@ -5,9 +5,9 @@ export const getMetersNowData = (payload) => {
     return axiosInstance.post(`${path}/getMetersNowData`, payload);
 }
 
-// 获取当前用户所有历史告警统计信息
+// 获取pcs或bms实时数据信息
 export const getBmsOrPcsNowDataById = (payload) => {
-    return axiosInstance.get(`${path}/getBmsOrPcsNowDataById?id=${payload.id}cluster=${payload.cluster}`);
+    return axiosInstance.get(`${path}/getBmsOrPcsNowDataById?id=${payload.id}&cluster=${payload.cluster||0}`);
 }
 
 // 获取pcs实时功率曲线

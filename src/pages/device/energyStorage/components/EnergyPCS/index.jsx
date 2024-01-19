@@ -8,7 +8,7 @@ import PcsDetails from "./PcsDetails";
 
 
 const PageTypeList = [
-    {label:'Pcs详情',key:'PcsDetails'},
+    {label:'PCS详情',key:'PcsDetails'},
     {label:'监测曲线',key:'MonitoringCurves'},
 ];
 const defaultActiveKey = "PcsDetails";
@@ -28,7 +28,7 @@ const Cabinet = () => {
             <Tab activeKey={activeKey} TabItem={PageTypeList} onChange={onChangeTab}/>
             <div className={styles.content}>
                 {activeKey==="MonitoringCurves"&&<MonitoringCurves/>}
-                {activeKey==="PcsDetails"&&<PcsDetails />}
+                {activeKey==="PcsDetails"&&<PcsDetails id={id}/>}
             </div>
         </div>
     )
