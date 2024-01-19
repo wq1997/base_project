@@ -42,6 +42,12 @@ function Com(props) {
                 bottom: '3%',
                 containLabel: true
             },
+            legend: {
+                
+            textStyle:{//图例文字的样式
+                color:token.titleColor,
+            }
+              },
             xAxis: [
                 {
                     type: 'category',
@@ -181,7 +187,7 @@ function Com(props) {
 
     useEffect(() => {
         getOptions();
-    }, []);
+    }, [currentTheme]);
     const disabledDate = (current) => {
         // Can not select days before today and today
         return current && current < dayjs().endOf('day');

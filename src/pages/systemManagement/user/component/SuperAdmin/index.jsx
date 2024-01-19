@@ -4,7 +4,7 @@ import styles from "./index.less";
 import { Table, Select, Input, Button, theme, Space, message,Modal } from "antd"
 import { apiGetAllUserAndInfos } from "@/services/user"
 import AddUser from '../AddUserModal'
-import { apiSaveOrUpdateUser, apiDeleteUserById, apiUpdatePassword, apiListUserWithOptions } from '@/services/total'
+import { apiSaveOrUpdateUser, apiDeleteUserById,apiResetPassword, apiUpdatePassword, apiListUserWithOptions } from '@/services/total'
 import  { ExclamationCircleFilled } from '@ant-design/icons';
 const RealtimeAlarm = () => {
   const { Search } = Input;
@@ -140,8 +140,8 @@ const RealtimeAlarm = () => {
     setIsOpenDel(!isOpenDel)
 
   }
-  const resetPwd = (record) => {
-
+  const resetPwd = async(record) => {
+    let {data}=await apiResetPassword({userId:record.f0102_Id})
   }
   const changeData = async (value) => {
     const { data } = await apiSaveOrUpdateUser(value)

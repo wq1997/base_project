@@ -26,7 +26,10 @@ export const apigetPlantById = (payload) => {
 export const apideletePlantById = (payload) => {
     return axiosInstance.get(`${path}/deletePlantById?plantId=${payload.plantId}`);
   }
-
+// 获取选项初始值
+export const getInsertPlantInitData = () => {
+  return axiosInstance.get(`${path}/getInsertPlantInitData`);
+}
 
 
 

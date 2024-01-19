@@ -95,12 +95,12 @@ const RealtimeAlarm = () => {
     return state.device
   });
   const getTotalData = async () => {
-    const { data } = await getHistoryAlarmsStatistics({plantId:currentPlantId});
+    const { data } = await getHistoryAlarmsStatistics({plantId:currentPlantId||localStorage.getItem('plantId')});
     setDatadataTotal(data.data)
   };
   const getTableListData = async (page) => {
     const { data } = await getHistoryAlarmsByOptionsWithPage({
-      plantId:currentPlantId,
+      plantId:currentPlantId||localStorage.getItem('plantId'),
       currentPage: page || 1,
       pageSize: 10,
       prior:level,
@@ -164,7 +164,7 @@ const RealtimeAlarm = () => {
                       <span style={{ color: token.smallTitleColor, fontWeight: 500, fontSize: '16px', marginLeft: '3px' }}>{it.name}</span>
                     </div>
                     <div className={styles.topVaue} >
-                      {dataTotal||null}
+                      {dataTotal[it.key]||null}
                       <span style={{ fontSize: '16px', fontWeight: 400, marginLeft: '10px', height: '10%', lineHeight: '150%' }}>{it.unit}</span>
                     </div>
                   </div>
@@ -177,10 +177,10 @@ const RealtimeAlarm = () => {
                 <div className={styles.pieItem_bottom} style={{ color: token.smallTitleColor }}>告警等级分布</div>
               </div>
               <div className={styles.pieItem}>
-                <PieEcharts allData={{
-                  total: sum(dataTotal?.typeStatistics), subtext: '总数', data: dataTotal?.typeStatistics
-                }}></PieEcharts>
-                <div className={styles.pieItem_bottom} style={{ color: token.smallTitleColor }}>告警类别分布</div>
+                  <PieEcharts allData={{
+                    total: sum(dataTotal?.typeStatistics), subtext: '总数', data: dataTotal?.typeStatistics
+                  }}></PieEcharts>
+                  <div className={styles.pieItem_bottom} style={{ color: token.smallTitleColor }}>告警类别分布</div>
 
               </div>
             </div>

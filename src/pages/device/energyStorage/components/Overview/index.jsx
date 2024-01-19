@@ -165,7 +165,7 @@ function Overview(props) {
                                             color: '#03B4B4'
                                         }}
                                     />
-                                    <span className={styles.label}>{t('当前总功率')}</span>:<span className={styles.value}>9999</span><span className={styles.unit}>kWh</span>
+                                    <span className={styles.label} style={{ color: token.titleColor }}>{t('当前总功率')}</span>:<span className={styles.value}>9999</span><span className={styles.unit} style={{ color: token.titleColor }}>kWh</span>
                                 </div>
                                 <div className={styles.realStaus} style={{ backgroundColor: token.lightTreeBgc }}>
                                     <div>{t('设备状态')}</div>

@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useEffect,  useMemo, useRef } from 'react';
 import { CardModel } from "@/components";
 import { Button, theme, Space, message, Modal, Table } from "antd";
 import styles from './index.less'
-import { apigetPlantList, apiInsertPlant, apiUpdatePlant, apideletePlantById } from '@/services/plant'
+import { apigetPlantList, apiInsertPlant, apiUpdatePlant, apideletePlantById,getInsertPlantInitData } from '@/services/plant'
 import { useSelector, useIntl } from "umi";
 import AddPlantModal,{ formList } from './component/AddPlantModal'
 import  { ExclamationCircleFilled } from '@ant-design/icons';
-
+import dayjs from 'dayjs';
+import {timeZoneList} from '@/utils/constants'
 
 function Com(props) {
     const [xxx, setXxx] = useState('')
@@ -16,12 +17,28 @@ function Com(props) {
     const [formData, setFormData] = useState();
     const [isOpen, setIsOpen] = useState(false);
     const [isOpenDel, setIsOpenDel] = useState(false);
-    const [delId, setDelId] = useState();
+    const [selectId, setSelectId] = useState();
+    const [initSelectData, setInitSelectData] = useState();
+    const dateFormat = 'YYYY/MM/DD HH/hh/ss';
 
     useEffect(() => {
         getData();
-    }, [formData])
+    }, [formData,])
+    useEffect(() => {
+        getInitData();
+    }, [locale])
+
+    const {locale} = useSelector(state => state.global);
     const intl = useIntl();
+
+    const getInitData=async()=>{
+        let {data}= await getInsertPlantInitData();
+        let str =locale==='zh-CN'? 'desc':'enDesc'
+        data.data.languageList.map(it=>{
+            it.label=`${it[str]}--${it.value}`
+        });
+        setInitSelectData({...data.data,timeZone:timeZoneList});
+    }
     const t = (id) => {
         const msg = intl.formatMessage(
             {
@@ -135,11 +152,21 @@ function Com(props) {
     }
     const changIsOpen = () => {
         setFormData({
-            prior: 1,
-            pushType: 1,
-            initNum: 0,
-            status: false,
+            name: '',
             userName: '',
+            position: '',
+            typeName: '',
+            longitude: '',
+            latitude: '',
+            // installDate:  dayjs(new Date()).format(dateFormat),
+            capacity: 0,
+            pvCapacity: 0,
+            chargePileTotal: 0,
+            cellTempMax:0,
+            cellTempMin: 0,
+            // networkDate: dayjs(new Date()).format(dateFormat),
+            timeZone:'',
+            priceUnit:''
         });
         setTitle('新增电站');
         setIsOpen(!isOpen);
@@ -147,29 +174,36 @@ function Com(props) {
     const edit = (record) => {
         setFormData({
             ...record,
-            prior: formList[0].data.find(it => it.label === record.prior)?.value,
-            pushType: formList[1].data.find(it => it.label === record.pushType)?.value,
-            status: '启用' ? true : false,
+            userName:initSelectData?.userList.find(it => it.label === record.userName)?.value,
+            typeName:initSelectData?.plantType.find(it => it.label === record.typeName)?.value,
+            priceUnit:initSelectData?.languageList.find(it => it.label === record.priceUnit)?.value||initSelectData.languageList[0].value,
+            timeZone:initSelectData?.timeZone.find(it => it.label === record.timeZone)?.value||initSelectData.timeZone[0].value,
+            // timeZone:1,
+            // priceUnit:1,
+            networkDate:dayjs(record.networkDate,dateFormat),
+            installDate:dayjs(record.installDate,dateFormat),
         });
         setTitle('编辑电站');
+        setSelectId(record.plantId)
         setIsOpen(!isOpen);
     }
     const changeIsOpenDel=(record)=>{
-        setDelId(record.id);
+        setSelectId(record.plantId);
         setIsOpenDel(!isOpenDel)
       }
     const changeData = async (value) => {
         const { data } = await (title === '编辑电站' ?
-            apiUpdatePlant({ ...value, plantId: currentPlantId || localStorage.getItem('plantId') }) :
-            apiInsertPlant({ ...value, plantId: currentPlantId || localStorage.getItem('plantId') }))
+            apiUpdatePlant({ ...value, plantId:selectId }) :
+            apiInsertPlant({ ...value, }))
         if (data.data) {
-            setFormData(value);
+            getData();
+            console.log(value,1111111);
         } else {
             message.error(data.msg)
         }
     }
     const del = async (record) => {
-        let data = await apideletePlantById({ id: delId });
+        let data = await apideletePlantById({ plantId: selectId });
         if (data.data) {
             getData();
             //   message.success(data.msg)
@@ -198,6 +232,7 @@ function Com(props) {
             />
             <AddPlantModal isOpen={isOpen} title={title} formData={formData} onRef={cancle}
                 changeData={(value) => changeData(value)}
+                initSelectData={initSelectData}
             />
             <Modal
                 title={[<><ExclamationCircleFilled style={{color:'#FAAD14',marginRight:'10px'}}/>系统提示</>]}

@@ -31,7 +31,7 @@ export const apiSaveOrUpdateUser = (payload) => {
 export const apiDeleteUserById = (payload) => {
   return axiosInstance.get(`${path}/deleteUserById?userId=${payload.userId}`,);
 }
-// 重置密码
+// 修改密码
 export const apiUpdatePassword = (payload) => {
   return axiosInstance.post(`${path}/updatePassword`, payload);
 }
@@ -40,3 +40,7 @@ export const apiListUserWithOptions = (payload) => {
   return axiosInstance.post(`${path}/listUserWithOptions`, payload);
 }
 
+// 重置密码
+export const apiResetPassword = (payload) => {
+  return axiosInstance.get(`${path}/resetPassword?userId=${payload.userId}`);
+}

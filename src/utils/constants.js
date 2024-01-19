@@ -151,3 +151,19 @@ export const profitTable = [
     },
 
 ];
+
+export const timeZoneList = (function () {
+    let list = [];
+    Array.from({ length: 12 }).forEach((_, i) => {
+        if (i !== 0) {
+            list = [
+                ...list,
+                { label: `UTC+${i}`, value: `UTC+${i}` },
+                { label: `UTC-${i}`, value: `UTC-${i}` },
+            ];
+        } else {
+            list.push({ label: "UTC+0", value: "UTC+0" });
+        }
+    });
+    return list;
+})();

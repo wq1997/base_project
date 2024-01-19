@@ -124,7 +124,7 @@ function Com(props) {
     ];
     useEffect(() => {
         getOptions();
-    }, []);
+    }, [currentTheme]);
     const disabledDate = (current) => {
         // Can not select days before today and today
         return current && current < dayjs().endOf('day');

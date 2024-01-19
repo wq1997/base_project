@@ -48,8 +48,10 @@ function Com(props) {
                 getTranslation('statistics.EnergyStorageDischarge'), 
                 getTranslation('statistics.PhotovoltaicPowerGeneration'),
                 getTranslation('statistics.TheAmountOfCharging'),
-            ]
-
+            ],
+            textStyle:{//图例文字的样式
+                color:token.titleColor,
+            }
               },
             xAxis: [
                 {
@@ -151,105 +153,11 @@ function Com(props) {
         });
       
     };
-    const profitTable = [
-        {
-            title: 'id',
-            dataIndex: 'id',
-            key: 'id',
-            width: 100,
-        },
-        {
-            title: '日期',
-            dataIndex: 'date',
-            key: 'date',
-            width: 100,
-        },
-        {
-            title: '充电成本（元）',
-            className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
-            children: [
-                {
-                    title: '尖电',
-                    dataIndex: 'street',
-                    key: 'street',
-                    width: 150,
-                },
-                {
-                    title: '峰电',
-                    dataIndex: 'street',
-                    key: 'street',
-                    width: 150,
-                },
-                {
-                    title: '平电',
-                    dataIndex: 'street',
-                    key: 'street',
-                    width: 150,
-                },
-                {
-                    title: '谷电',
-                    dataIndex: 'street',
-                    key: 'street',
-                    width: 150,
-                },
-                {
-                    title: '总计',
-                    dataIndex: 'street',
-                    key: 'street',
-                    width: 150,
-                },
-            ],
-        },
-        {
-            title: '放电收益（元）',
-            className: currentTheme === 'default' ? 'lightTitleColorLeft' : 'darkTitleColorLeft',
-            children: [
-                {
-                    title: '尖电',
-                    dataIndex: 'street',
-                    key: 'street',
-                    width: 150,
-                },
-                {
-                    title: '峰电',
-                    dataIndex: 'street',
-                    key: 'street',
-                    width: 150,
-                },
-                {
-                    title: '平电',
-                    dataIndex: 'street',
-                    key: 'street',
-                    width: 150,
-                },
-                {
-                    title: '谷电',
-                    dataIndex: 'street',
-                    key: 'street',
-                    width: 150,
-                },
-                {
-                    title: '总计',
-                    dataIndex: 'street',
-                    key: 'street',
-                    width: 150,
-                },
-
-            ],
-        },
-        {
-            title: '实际收益',
-            dataIndex: 'date',
-            key: 'date',
-            width: 100,
-        },
-
-    ];
-
+ 
 
     useEffect(() => {
         getOptions();
-    }, []);
+    }, [currentTheme]);
     const disabledDate = (current) => {
         return current && current < dayjs().endOf('day');
     };
