@@ -48,7 +48,6 @@ const Log = () => {
             title: '下发指令',
             dataIndex: 'operationCmd',
             key: 'operationCmd',
-            ellipsis: true,
             width: 400,
             render(value){
                 return (

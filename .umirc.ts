@@ -26,7 +26,12 @@ export default defineConfig({
   },
   outputPath: OutputPathName(UMI_ENV),
   define: {
-    "process.env.API_URL": apiUrl[UMI_ENV||'test'],
+    'process.env': {
+      ...process.env,
+      API_URL_1: apiUrl[`${UMI_ENV}1`] || apiUrl[`test1`], 
+      API_URL_2: apiUrl[`${UMI_ENV}2`] || apiUrl[`test2`],
+      API_URL_3: apiUrl[`${UMI_ENV}3`] || apiUrl[`test3`]
+    }
   },
   alias: {
     '@/permissions': path.resolve(__dirname,'src/permissions'),

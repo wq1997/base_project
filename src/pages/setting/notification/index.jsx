@@ -3,7 +3,7 @@ import { SearchInput } from "@/components";
 import { Button, Space, Table, Tooltip} from "antd";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import { 
-    getRoleList as getRoleListServe,
+    getNotificationList as getNotificationListServe,
 } from "@/services"
 
 const Notification = () => {
@@ -17,20 +17,22 @@ const Notification = () => {
         {
             title: "序号",
             dataIndex: "name",
+            render(text, record, index){
+                return (pagination.current - 1) * pagination.pageSize + index + 1;
+            }
         },
         {
             title: "处理状态",
-            dataIndex: "code",
+            dataIndex: "statusZh",
         },
         {
             title: "发布时间",
-            dataIndex: "1",
+            dataIndex: "createdTime",
         },
         {
             title: '通知详情',
-            dataIndex: 'remark',
-            key: 'remark',
-            ellipsis: true,
+            dataIndex: 'detail',
+            key: 'detail',
             width: 400,
             render(value){
                 return (
@@ -53,15 +55,19 @@ const Notification = () => {
             title: "操作",
             dataIndex: "operate",
             render: (text,record) => {
-                return (
-                    <Button 
-                        type="link"
-                        onClick={()=>{
-                        }}
-                    >
-                        去处理
-                    </Button>
-                )
+                const { status } = record;
+                if(status === "WAIT_PROCESSING"){
+                    return (
+                        <Button 
+                            type="link"
+                            onClick={()=>{
+                            }}
+                        >
+                            去处理
+                        </Button>
+                    )
+                }
+                return null;
             },
         },
     ];
@@ -70,7 +76,7 @@ const Notification = () => {
         const { current, pageSize } = paginationRef.current;
         setLoading(true);
         try{
-            const res = await getRoleListServe({
+            const res = await getNotificationListServe({
                 pageNum: current,
                 pageSize,
             });
