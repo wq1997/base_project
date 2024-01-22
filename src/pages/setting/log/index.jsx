@@ -3,7 +3,7 @@ import { SearchInput } from "@/components";
 import { Button, Space, Table, Tooltip} from "antd";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import { 
-    getRoleList as getRoleListServe,
+    getOperationLog as getOperationLogServe
 } from "@/services"
 import styles from "./index.less";
 
@@ -26,28 +26,28 @@ const Log = () => {
     const columns = [
         {
             title: "操作账号",
-            dataIndex: "name",
+            dataIndex: "operatorAccount",
         },
         {
             title: "操作页面",
-            dataIndex: "code",
+            dataIndex: "operationPage",
         },
         {
             title: "操作等级",
-            dataIndex: "1",
+            dataIndex: "level",
         },
         {
             title: "操作名称",
-            dataIndex: "2",
+            dataIndex: "operatorName",
         },
         {
             title: "操作KEY",
-            dataIndex: "3",
+            dataIndex: "operationKey",
         },
         {
             title: '下发指令',
-            dataIndex: 'remark',
-            key: 'remark',
+            dataIndex: 'operationCmd',
+            key: 'operationCmd',
             ellipsis: true,
             width: 400,
             render(value){
@@ -69,7 +69,7 @@ const Log = () => {
         },
         {
             title: "操作时间",
-            dataIndex: "3",
+            dataIndex: "operationTime",
         },
     ];
 
@@ -80,10 +80,14 @@ const Log = () => {
         const operationName = operationRef.current;
         setLoading(true);
         try{
-            const res = await getRoleListServe({
+            const res = await getOperationLogServe({
                 pageNum: current,
                 pageSize,
-                queryCmd: { name },
+                queryCmd: { 
+                    operatorAccount: account,
+                    operationPage: pageName,
+                    operatorName: operationName
+                },
             });
             if (res?.data?.status == "SUCCESS") {
                 const { totalRecord, recordList } = res?.data?.data;

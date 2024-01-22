@@ -15,3 +15,7 @@ export const getRoleList = (payload) => {
 export const deleteRole = (payload) => {
     return axiosInstance.post('/role/delete', payload)
 }
+
+export const getOperationLog = (payload) => {
+    return axiosInstance.post('/operation-log/find-page', payload)
+}
