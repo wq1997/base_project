@@ -49,7 +49,7 @@ const MenuList = [
             },
             {
                 key: "/vpp/baseinfo/level",
-                label: "用户评级管理",
+                label: "公司评级管理",
             },
         ],
     },

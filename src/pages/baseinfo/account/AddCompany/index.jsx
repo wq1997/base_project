@@ -59,18 +59,21 @@ const Company = ({ open, editId, onClose }) => {
                 onFinish={onFinish}
                 autoComplete="off"
             >
-                <Form.Item
-                    label="用户名"
-                    name="account"
-                    rules={[
-                        {
-                            required: true,
-                            message: "请输入用户名",
-                        },
-                    ]}
-                >
-                    <Input placeholder="请输入用户名" />
-                </Form.Item>
+                {
+                    !editId && <Form.Item
+                        label="用户名"
+                        name="account"
+                        rules={[
+                            {
+                                required: true,
+                                message: "请输入账号",
+                            },
+                        ]}
+                    >
+                        <Input placeholder="请输入账号" />
+                    </Form.Item>
+
+                }
 
                 <Form.Item
                     label="姓名"

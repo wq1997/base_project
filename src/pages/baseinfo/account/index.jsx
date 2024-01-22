@@ -31,7 +31,7 @@ const Account = () => {
 
     const columns = [
         {
-            title: "用户名",
+            title: "账号",
             dataIndex: "account",
         },
         {
