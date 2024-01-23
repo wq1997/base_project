@@ -1,17 +1,19 @@
 import axiosInstance from "./request";
 
+const { API_URL_1, API_URL_2 } = process.env;
+
 export const getUserList = payload => {
-    const url = `/user/find-page`;
+    const url = `${API_URL_1}/user/find-page`;
     return axiosInstance.post(url, payload);
 };
 
 export const getSearchInitData = () => {
-    const url = "/user/get-search-page-init-data";
+    const url = `${API_URL_1}/user/get-search-page-init-data`;
     return axiosInstance.get(url);
 };
 
 export const getUpdateInitData = id => {
-    let url = "/user/get-edit-page-init-data";
+    let url = `${API_URL_1}/user/get-edit-page-init-data`;
     if (id) {
         url = `${url}?id=${id}`;
     }
@@ -19,11 +21,11 @@ export const getUpdateInitData = id => {
 };
 
 export const updateUser = payload => {
-    const url = `/user/save-or-update`;
+    const url = `${API_URL_1}/user/save-or-update`;
     return axiosInstance.post(url, payload);
 };
 
 export const deleteUser = payload => {
-    const url = `/user/delete`;
+    const url = `${API_URL_1}/user/delete`;
     return axiosInstance.post(url, payload);
 };

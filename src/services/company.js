@@ -25,21 +25,21 @@ export const updateCompany = payload => {
 };
 
 export const deleteCompany = payload => {
-    const url = `/company/delete`;
+    const url = `${API_URL_1}/company/delete`;
     return axiosInstance.post(url, payload);
 };
 
 export const updateCompanyLevel = payload => {
-    const url = `/company/update-level`;
+    const url = `${API_URL_1}/company/update-level`;
     return axiosInstance.post(url, payload);
 };
 
 export const getAutoLevelInitData = () => {
-    const url = "/company/get-level-auto-update-config-page-init-data";
+    const url = `${API_URL_1}/company/get-level-auto-update-config-page-init-data`;
     return axiosInstance.post(url);
 };
 
 export const updateAutoLevel = data => {
-    const url = "/company/update-level-auto-update-config";
+    const url = `${API_URL_1}/company/update-level-auto-update-config`;
     return axiosInstance.post(url, data);
 };
