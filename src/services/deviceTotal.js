@@ -12,5 +12,5 @@ export const getBmsOrPcsNowDataById = (payload) => {
 
 // 获取pcs实时功率曲线
 export const getPcsNowPowerById = (payload) => {
-    return axiosInstance.post(`${path}/getPcsNowPowerById`, payload);
+    return axiosInstance.get(`${path}/getPcsNowPowerById?id=${payload.id}`);
 }

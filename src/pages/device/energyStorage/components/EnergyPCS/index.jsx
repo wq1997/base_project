@@ -5,6 +5,7 @@ import styles from "./index.less";
 import Tab from '../../../components/Tab';
 import MonitoringCurves from './MonitoringCurves';
 import PcsDetails from "./PcsDetails";
+import { theme, } from "antd";
 
 
 const PageTypeList = [
@@ -14,6 +15,7 @@ const PageTypeList = [
 const defaultActiveKey = "PcsDetails";
 const Cabinet = () => {
     const location = useLocation();
+    const { token } = theme.useToken();
     const { pathname } = location;
     const [activeKey, setActiveKey] = useState(getQueryString("activeKey") || defaultActiveKey);
     const pageType = getQueryString("pageType")||"ALL";
@@ -26,7 +28,7 @@ const Cabinet = () => {
     return (
         <div style={{height: '100%'}}>
             <Tab activeKey={activeKey} TabItem={PageTypeList} onChange={onChangeTab}/>
-            <div className={styles.content}>
+            <div className={styles.content} style={{backgroundColor: token.cardBgc,padding:'40px 30px',borderRadius: '0px 16px 0px 0px'}}>
                 {activeKey==="MonitoringCurves"&&<MonitoringCurves/>}
                 {activeKey==="PcsDetails"&&<PcsDetails id={id}/>}
             </div>

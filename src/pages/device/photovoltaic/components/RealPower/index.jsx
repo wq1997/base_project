@@ -88,7 +88,7 @@ function Com(props) {
 
     useEffect(() => {
         getOptions();
-    }, []);
+    }, [token]);
     return (
         <div className={styles.content}>
             <CardModel
