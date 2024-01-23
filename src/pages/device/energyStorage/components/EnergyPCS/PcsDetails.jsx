@@ -92,7 +92,7 @@ function Com({ id }) {
             {
                 id,
             },
-        );
+        ); 
         return msg
     }
     useEffect(() => {
