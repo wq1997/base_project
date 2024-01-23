@@ -1,13 +1,13 @@
 import axiosInstance from "./request";
 import { jsonToUrlParams } from "@/utils/utils";
-
+const { API_URL_1, API_URL_2 } = process.env;
 export const getCompanyList = payload => {
-    const url = `/company/find-page`;
+    const url = `${API_URL_1}/company/find-page`;
     return axiosInstance.post(url, payload);
 };
 
 export const getUpdateInitData = id => {
-    let url = "/company/get-edit-page-init-data";
+    let url = `${API_URL_1}/company/get-edit-page-init-data`;
     if (id) {
         url = `${url}?id=${id}`;
     }
@@ -15,12 +15,12 @@ export const getUpdateInitData = id => {
 };
 
 export const getCityByProvince = province => {
-    const url = `/other/list-cities-by-province?province=${province}`;
+    const url = `${API_URL_1}/other/list-cities-by-province?province=${province}`;
     return axiosInstance.get(url);
 };
 
 export const updateCompany = payload => {
-    const url = `/company/save-or-update`;
+    const url = `${API_URL_1}/company/save-or-update`;
     return axiosInstance.post(url, payload);
 };
 
