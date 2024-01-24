@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { CardModel } from "@/components";
 import { theme, } from "antd";
+import dayjs from 'dayjs';
 import styles from './index.less'
 import { getBmsOrPcsNowDataById, getPcsNowPowerById} from '@/services/deviceTotal'
 import { useSelector, useIntl } from "umi";
@@ -10,7 +11,10 @@ import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts";
 function Com({ id }) {
     const [data, setData] = useState('');
-    const [dataArr, setDataArr] = useState([])
+    const [dataArr, setDataArr] = useState({})
+    // const [dataX, setDataX] = useState([])
+    // const [dataY, setDataY] = useState([])
+
     const { token } = theme.useToken();
     const [options, setOptions] = useState({});
     const getOptions = () => {
@@ -30,7 +34,7 @@ function Com({ id }) {
             xAxis: [
                 {
                     type: 'category',
-                    data: ['28日', '29日', '30日', '1日', '2日', '3日', '4日', '5日', '6日'],
+                    data:dataArr?.dataX,
                     axisTick: {
                         alignWithLabel: true
                     }
@@ -45,7 +49,7 @@ function Com({ id }) {
 
                 }
             ],
-            series: [
+            series: 
                 {
                     name: '实时功率',
                     type: 'line',
@@ -77,9 +81,9 @@ function Com({ id }) {
                             }
                         }
                     },
-                    data: [12, 32, 11, 14, 90, 30, 10, 82, 91, 34, 90, 33]
+                    data: dataArr?.dataY
                 },
-            ]
+            
         });
     };
 
@@ -105,8 +109,17 @@ function Com({ id }) {
     }
 
     const getPowerData = async () => {
-        let { data } = await getPcsNowPowerById({ id })
-        setDataArr(data?.data);
+        
+        let { data } = await getPcsNowPowerById({ id });
+        let dataX=[];
+        let dataY=[];
+            console.log( data?.data,11111);
+
+        data?.data.map((it,index)=>{
+            dataX.push(dayjs(it.time).format('YYYY-MM-DD HH:mm:ss'));
+            dataY.push(it.value);
+        })
+        setDataArr({dataY:[...dataY],dataX:[...dataX]});
     }
     return (
         <div className={styles.detailsWrap}>
@@ -130,4 +143,4 @@ function Com({ id }) {
     )
 }
 
-export default Com
+    export default Com
