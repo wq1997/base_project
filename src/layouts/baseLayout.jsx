@@ -1,11 +1,21 @@
 import { Outlet, useDispatch, useSelector,FormattedMessage } from 'umi'
 import React from 'react';
-import { theme, Layout, Row, Avatar, Typography, Dropdown, Space } from 'antd';
+import { theme, Layout, Dropdown } from 'antd';
 import MyMenu from "@/permissions/menu";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import styles from "./baseLayout.less";
 import useIcon from "@/hooks/useIcon";
-import { SYSTEM_NAME } from "@/utils/constants";
+import { setLocalStorage, removeLocalStorage } from "@/utils/utils";
+import themeDefaultSvg from "../assets/svg/theme-default.svg";
+import themeDarkSvg from "../assets/svg/theme-dark.svg";
+import languageChineseSvg from "../assets/svg/language-chinese.svg";
+import languageEnglishSvg from "../assets/svg/language-english.svg";
+import mySvg from "../assets/svg/my.svg";
+import {
+    UserSwitchOutlined,
+    LogoutOutlined
+  } from '@ant-design/icons';
+  import { history } from "umi";
 
 const { Header, Sider, Content } = Layout;
 
@@ -18,6 +28,7 @@ const BaseLayout = () => {
     })
     const global = useSelector(state => state.global);
     const changeLanguage = (locale) => {
+        setLocalStorage('locale', locale)
         dispatch({
             type: 'global/changeLanguage',
             payload: {
@@ -26,6 +37,7 @@ const BaseLayout = () => {
         })
     }
     const changeTheme = (theme) => {
+        setLocalStorage("theme", theme);
         dispatch({
             type: 'global/changeTheme',
             payload: {
@@ -72,119 +84,72 @@ const BaseLayout = () => {
                         style={{
                             color: token.titleColor
                         }}
-                        level={3} className={styles.title}><FormattedMessage id="app.title" /></div>
-                    <Dropdown
-                        menu={{
-                            items: [
-                                {
-                                    key: 'color',
-                                    type: 'group',
-                                    label: (
-                                        <Space
-                                            size={10}
-                                            align="baseline"
-                                        >
-                                            <span><FormattedMessage id="app.Theme" /></span>
-                                        </Space>
-                                    ),
-                                    children: [
-                                        {
-                                            key: 'light',
-                                            label: (
-                                                <Space
-                                                    size={10}
-                                                    align="baseline"
-                                                    onClick={()=>changeTheme("default")}
-                                                >
-                                                    <div style={{ width: '10px', height: '10px', backgroundColor: '#fff' }}></div>
-                                                    <span><FormattedMessage id="app.Light" /></span>
-                                                </Space>
-                                            ),
-                                        },
-                                        {
-                                            key: 'dark',
-                                            label: (
-                                                <Space
-                                                    size={10}
-                                                    align="baseline"
-                                                    onClick={()=>changeTheme("dark")}
-                                                >
-                                                    <div style={{ width: '10px', height: '10px', backgroundColor: '#212849' }}></div>
-                                                    <span><FormattedMessage id="app.Dark" /></span>
-                                                </Space>
-                                            ),
-                                        },
-                                    ],
-                                },
-                                {
-                                    key: 'laug',
-                                    type: 'group',
-                                    label: (
-                                        <Space
-                                            size={10}
-                                            align="baseline"
-                                        >
-                                            <span><FormattedMessage id="app.Language" /></span>
-                                        </Space>
-                                    ),
-                                    children: [
-                                        {
-                                            key: 'chinese',
-                                            label: (
-                                                <Space
-                                                    size={10}
-                                                    align="baseline"
-                                                    onClick={()=>changeLanguage("zh-CN")}
-                                                >
-                                                    <span><FormattedMessage id="app.Chinese" /></span>
-                                                </Space>
-                                            ),
-                                        },
-                                        {
-                                            key: 'english',
-                                            label: (
-                                                <Space
-                                                    size={10}
-                                                    align="baseline"
-                                                    onClick={()=>changeLanguage("en-US")}
-                                                >
-                                                    <span><FormattedMessage id="app.English" /></span>
-                                                </Space>
-                                            ),
-                                        },
-                                    ],
-                                },
-                                {
-                                    key: 'logout',
-                                    label: (
-                                        <Space
-                                            size={10}
-                                            align="baseline"
-                                            onClick={() => dispatch({ type: 'user/logout' })}
-                                        >
-                                            <Icon
-                                                type="icon-dengchu"
-                                                style={{
-                                                    fontSize: 20
-                                                }}
-                                            />
-                                            <span><FormattedMessage id="app.SignoOut" /></span>
-                                        </Space>
-                                    )
-                                }
-                            ]
-                        }}
-                        placement="bottom"
+                        level={3} 
+                        className={styles.title}
                     >
-                        <Row align="middle">
-                            <Avatar
-                                style={{ background: "url(https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/36ff3767198541a288770220fe886819_mergeImage.png)", verticalAlign: 'middle', width: '64px', height: '64px' }}
-                                size="large"
-                            >
-                            </Avatar>
-                            {/* <span style={{ fontSize: 20, color: 'white', marginLeft: 10 }}>aaa</span> */}
-                        </Row>
-                    </Dropdown>
+                        <FormattedMessage id="app.title" />
+                    </div>
+                    <div style={{display:'flex',alignItems: 'center'}}>
+                        {
+                            global.theme==="default"?
+                            <img 
+                                src={themeDefaultSvg} 
+                                style={{cursor: 'pointer'}} 
+                                onClick={()=>changeTheme('dark')}
+                            />
+                            :
+                            <img 
+                                src={themeDarkSvg} 
+                                style={{cursor: 'pointer'}} 
+                                onClick={()=>changeTheme('default')}
+                            />
+                        }
+                        {
+                            global.locale==="zh-CN"?
+                            <img 
+                                src={languageEnglishSvg}
+                                style={{cursor: 'pointer', margin: '0px 40px'}} 
+                                onClick={()=>changeLanguage('en-US')}
+                            />
+                            :
+                            <img 
+                                src={languageChineseSvg}
+                                style={{cursor: 'pointer', margin: '0px 40px'}} 
+                                onClick={()=>changeLanguage('zh-CN')}
+                            />
+                        }
+                        <Dropdown
+                            placement="bottom"
+                            menu={{
+                                items: [
+                                    {
+                                        label: '退出登录',
+                                        key: 'logout',
+                                        icon: <LogoutOutlined />,
+                                    },
+                                    {
+                                        label: '切换账号',
+                                        key: 'changeAccount',
+                                        icon: <UserSwitchOutlined />,
+                                    },
+                                ],
+                                onClick({key}){
+                                    if(key==="logout"){
+                                        removeLocalStorage("Token");
+                                        history.push('/login');
+                                    }
+                                    if(key==="changeAccount"){
+                                        
+                                    }
+                                }
+                            }}
+                        >
+                            <img 
+                                src={mySvg} 
+                                style={{cursor: 'pointer'}} 
+                            />
+                        </Dropdown>
+                    </div>
                 </Header>
                 <Layout hasSider>
                     <Sider className={siderContentStyle}

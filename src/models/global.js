@@ -4,7 +4,7 @@ export default {
     namespace: 'global',
 
     state: {
-      theme: "default",
+      theme: getLocalStorage('theme') || "default",
       locale: getLocalStorage('locale')||"zh-CN"
     },
    
