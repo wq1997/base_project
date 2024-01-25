@@ -4,8 +4,8 @@ import { theme, Layout, Dropdown } from 'antd';
 import MyMenu from "@/permissions/menu";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import styles from "./baseLayout.less";
-import useIcon from "@/hooks/useIcon";
 import { setLocalStorage, removeLocalStorage } from "@/utils/utils";
+import useLocale from "@/hooks/useLocale"
 import themeDefaultSvg from "../assets/svg/theme-default.svg";
 import themeDarkSvg from "../assets/svg/theme-dark.svg";
 import languageChineseSvg from "../assets/svg/language-chinese.svg";
@@ -15,18 +15,15 @@ import {
     UserSwitchOutlined,
     LogoutOutlined
   } from '@ant-design/icons';
-  import { history } from "umi";
+  import { history, useIntl } from "umi";
 
 const { Header, Sider, Content } = Layout;
 
 const BaseLayout = () => {
-    const Icon = useIcon();
     const dispatch = useDispatch();
     const { token } = theme.useToken();
-    const { user } = useSelector(function (state) {
-        return state.user
-    })
     const global = useSelector(state => state.global);
+    
     const changeLanguage = (locale) => {
         setLocalStorage('locale', locale)
         dispatch({
@@ -123,12 +120,12 @@ const BaseLayout = () => {
                             menu={{
                                 items: [
                                     {
-                                        label: '退出登录',
+                                        label: useLocale('退出登录'),
                                         key: 'logout',
                                         icon: <LogoutOutlined />,
                                     },
                                     {
-                                        label: '切换账号',
+                                        label: useLocale('切换账号'),
                                         key: 'changeAccount',
                                         icon: <UserSwitchOutlined />,
                                     },

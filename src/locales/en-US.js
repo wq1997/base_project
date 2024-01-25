@@ -65,7 +65,7 @@ export default {
     '开始':'Beginning',
     '时间':'Time',
     '结束':'end',
-    '':'',
-    '':'',
+    '切换账号':'Switch accounts',
+    '退出登录':'Log out',
     '':'',
 }
