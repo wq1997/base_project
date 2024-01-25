@@ -1,16 +1,44 @@
 import axiosInstance from "./request";
 const path = '/total'
+// 获取电站下所有设备充放电量、效率、收益图
+export const getChargeDischargeEnergySevenDaysByPlantId = (payload) => {
+    return axiosInstance.get(`${path}/getChargeDischargeEnergySevenDaysByPlantId?plantId=${payload.plantId}`);
+}
+// 获取并网点汇充放电量、效率、收益图
+export const getChargeDischargeEnergySevenDaysDtuId = (payload) => {
+    return axiosInstance.get(`${path}/getChargeDischargeEnergySevenDaysDtuId?dtuId=${payload.dtuId}`);
+}
+// 获取运行指标
+export const getRunMetrics = (payload) => {
+    return axiosInstance.get(`${path}/getRunMetrics?plantId=${payload.plantId}`);
+}
+// 获取所有设备充放电量
+export const getEnergySummary = (payload) => {
+    return axiosInstance.get(`${path}/getEnergySummary?plantId=${payload.plantId}`);
+}
+// 获取设备树
+export const getDeviceTree = (payload) => {
+    return axiosInstance.get(`${path}/getDeviceTree?plantId=${payload.plantId}`);
+}
 // 获取电表实时数据
 export const getMetersNowData = (payload) => {
     return axiosInstance.post(`${path}/getMetersNowData`, payload);
 }
 
-// 获取pcs或bms实时数据信息
-export const getBmsOrPcsNowDataById = (payload) => {
-    return axiosInstance.get(`${path}/getBmsOrPcsNowDataById?id=${payload.id}&cluster=${payload.cluster||0}`);
+// 获取bms实时数据信息
+export const getBmsNowData = (payload) => {
+    return axiosInstance.get(`${path}/getBmsNowData?id=${payload.id}`);
 }
-
+// 获取bmC实时数据信息
+export const getBmcNowData = (payload) => {
+    return axiosInstance.get(`${path}/getBmcNowData?id=${payload.id}&cluster=${payload.cluster}`);
+}
+// 获取bmC实时数据信息
+export const getPcsNowDataById = (payload) => {
+    return axiosInstance.get(`${path}/getPcsNowDataById?id=${payload.id}`);
+}
 // 获取pcs实时功率曲线
 export const getPcsNowPowerById = (payload) => {
     return axiosInstance.get(`${path}/getPcsNowPowerById?id=${payload.id}`);
 }
+

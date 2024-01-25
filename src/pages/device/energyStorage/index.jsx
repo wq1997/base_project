@@ -10,23 +10,24 @@ import EnergyPCS from './components/EnergyPCS/index.jsx';
 import OutdoorCabinet from './components/OutdoorCabinet/index.jsx';
 import ViewEngrgy from './components/ViewEngrgy/index.jsx';
 import ViewOutdoor from './components/ViewOutdoor/index.jsx';
-import { TreeData, data } from "./mock.js";
+import { root} from "./mock.js";
+import { getDeviceTree } from '@/services/deviceTotal'
 import { history, useLocation } from "umi";
 import styles from "./index.less";
 
 const defaultPageType = "ALL";
 let defaultData = [];
 const getType = (father, child) => {
-    if (father.devicetypeId == 6) {
+    if (father.deviceTypeId == 6) {
         switch (child?.type) {
-            case 101:
-                return 'BMS';
             case 100:
                 return 'PCS';
+            case 101:
+                return 'BMS';
             case 104:
                 return 'Meter';
             default:
-                return 'PCS'
+                return 'PCS';
         }
     } else {
         return child?.parentId ? 'OutPart' : 'Meter'
@@ -34,11 +35,11 @@ const getType = (father, child) => {
 }
 const getTreeData = (data, treeData) => {
     let oringal = structuredClone(treeData);
-    data.map((it, index) => {
+    data?.map((it, index) => {
         if (it.devList) {
             let arr = [];
-            it.devList.map((item, i) => {
-                arr.push({
+            it.devList?.map((item, i) => {
+                arr?.push({
                     title: item.name,
                     id: item.id || it.dtuId || '',
                     key: `0-${index}-${i}`,
@@ -47,9 +48,9 @@ const getTreeData = (data, treeData) => {
             })
             oringal[0]?.children.push({
                 title: it.name,
-                id: it.dtuId,
+                id: it.id,
                 key: `0-${index}`,
-                type: it.devicetypeId,
+                type: it.type,
                 children: [
                     ...arr
                 ]
@@ -57,9 +58,9 @@ const getTreeData = (data, treeData) => {
         } else {
             oringal[0]?.children.push({
                 title: it.name,
-                id: it.dtuId,
+                id: it.id,
                 key: `0-${index}`,
-                type: it.devicetypeId,
+                type: it.type,
                 children: [
                     ...arr
                 ]
@@ -69,16 +70,12 @@ const getTreeData = (data, treeData) => {
     })
     defaultData = [...oringal];
 }
-getTreeData(data, TreeData)
-
-
 const dataList = [];
 const generateList = (data) => {
-    console.log(data);
     for (let i = 0; i < data.length; i++) {
         const node = data[i];
         const { key, title, id, type } = node;
-        dataList.push({
+        dataList?.push({
             key,
             title,
             id,
@@ -89,7 +86,7 @@ const generateList = (data) => {
         }
     }
 };
-generateList(defaultData);
+
 const getParentKey = (key, tree) => {
     let parentKey;
     for (let i = 0; i < tree.length; i++) {
@@ -112,48 +109,62 @@ function Com(props) {
     const { token } = theme.useToken();
     const [pageType, setPageType] = useState(getQueryString("PageType") || defaultPageType)
     const [pageKey, setPageKey] = useState(getQueryString("PageKey") || defaultPageType)
-
-    // const [treeData, setTreeData] = useState([...TreeData])
+    const [tree, setTree] = useState([]);
+    const [defaultDataFlag, setdefaultDataFlag] = useState(false);
     const [expandedKeys, setExpandedKeys] = useState([]);
     const [searchValue, setSearchValue] = useState('');
     const [autoExpandParent, setAutoExpandParent] = useState(true);
+
     const onSelect = (selectedKeys, e) => {
         setPageType(e.node.type);
         setPageKey(e.node.key);
-        history.push(`${pathname}?PageKey=${e.node.key}&id=${e.node.id}&PageType=${e.node.type}`);
+        console.log(e.node.title.props.children[2]);
+        // setTitle(e.node.title.props.children[2]);
+        history.push(`${pathname}?PageKey=${e.node.key}&id=${e.node.id}&PageType=${e.node.type}&title=${e.node.title.props.children[2]}`);
     }
     const onExpand = (newExpandedKeys) => {
         setExpandedKeys(newExpandedKeys);
         setAutoExpandParent(false);
     };
+   
     useEffect(()=>{
-        const newExpandedKeys = dataList
-        .map((item) => {
+        getData();
+    },[])
+    useEffect(()=>{
+        getTreeData(tree, root);
+        generateList(defaultData);
+        setdefaultDataFlag(!defaultDataFlag);
+    },[tree])
+    useEffect(() => {
+        const newExpandedKeys = dataList?.map((item) => {
             if (item.key.indexOf(getQueryString("PageKey")) > -1) {
                 return getParentKey(item.key, defaultData);
             }
             return null;
         })
-        .filter((item, i, self) => !!(item && self.indexOf(item) === i));
-    setExpandedKeys(newExpandedKeys);
-    },[])
+            .filter((item, i, self) => !!(item && self.indexOf(item) === i));
+        setExpandedKeys(newExpandedKeys);
+    }, [defaultDataFlag])
     const onChange = (e) => {
         const { value } = e.target;
-        const newExpandedKeys = dataList
-            .map((item) => {
-                if (item.title.indexOf(value) > -1) {
-                    return getParentKey(item.key, defaultData);
-                }
-                return null;
-            })
+        const newExpandedKeys = dataList?.map((item) => {
+            if (item.title.indexOf(value) > -1) {
+                return getParentKey(item.key, defaultData);
+            }
+            return null;
+        })
             .filter((item, i, self) => !!(item && self.indexOf(item) === i));
         setExpandedKeys(newExpandedKeys);
         setSearchValue(value);
         setAutoExpandParent(true);
     };
+    const getData= async()=>{
+        let {data} =await getDeviceTree({plantId:localStorage.getItem('plantId')});
+        setTree(data.data);
+      }
     const treeData = useMemo(() => {
         const loop = (data) =>
-            data.map((item) => {
+            data?.map((item) => {
                 const strTitle = item?.title;
                 const index = strTitle.indexOf(searchValue);
                 const beforeStr = strTitle.substring(0, index);
@@ -185,23 +196,22 @@ function Com(props) {
                 };
             });
         return loop(defaultData);
-    }, [searchValue]);
-
-
+    }, [searchValue,defaultDataFlag]);
     const getPage = () => {
+        console.log(pageType);
         switch (pageType) {
             case "ALL"://总览
                 return <Overview />;
             case "BMS":
-                return <EnergyBMS />;
+                return <EnergyBMS />;   
             case "PCS"://
                 return <EnergyPCS />;
             case "OutPart":
                 return <OutdoorCabinet />
             case "Meter":
                 return <ElectricityMeter />;
-            case 6:
-                return <Overview title={'并网点'}/>;
+            case 3:
+                return <Overview  />;
             case 9:
                 return <ViewOutdoor />
 

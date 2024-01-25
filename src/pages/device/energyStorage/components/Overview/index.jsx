@@ -12,13 +12,27 @@ import LineEcharts from '@/components/LineEcharts'
 import Charge from './components/Charge';
 import ProfitAll from './components/ProfitAll'
 import ChargAndDischarg from './components/ChargAndDischarg'
+import {
+    getEnergySummary,
+    getRunMetrics,
+    getChargeDischargeEnergySevenDaysByPlantId,
+    getChargeDischargeEnergySevenDaysDtuId
+} from '@/services/deviceTotal'
+import dayjs from 'dayjs';
+import { getQueryString } from "@/utils/utils";
 
 
 function Overview(props) {
-    const [xxx, setXxx] = useState('')
+    const [dataX, setDataX] = useState([]);
+    const [dataCharge, setDataCharge] = useState({ dayChargeEnergy: [], dayDischargeEnergy: [] });
+    const [dataEfficiency, setDataEfficiency] = useState([]);
+    const [dayEarning, setDayEarning] = useState([]);
     const { token } = theme.useToken();
     const Icon = useIcon();
     const intl = useIntl();
+    const pageType = getQueryString('pageType')||'ALL';
+    const id = getQueryString('id')||0;
+    const title = decodeURI(getQueryString('title'))||'储能总览';
     const t = (id) => {
         const msg = intl.formatMessage(
             {
@@ -26,7 +40,9 @@ function Overview(props) {
             },
         );
         return msg
-    }
+    };
+
+
     const eleData = [
         {
             label: '今日充电量',
@@ -126,11 +142,46 @@ function Overview(props) {
         },
     ]
     useEffect(() => {
-        console.log('函数组件来咯')
-    }, [])
+        getEnergy();
+        // getRun();
+        getAllElecty();
+    }, [pageType, id]);
+    const getEnergy = async () => {
+        let { data } = await getEnergySummary({ plantId: localStorage.getItem('plantId') });
+        // console.log(data.data,111111111);
+    }
+    const getRun = async () => {
+        let { data } = await getRunMetrics({ plantId: localStorage.getItem('plantId') });
+        // console.log(data.data,111111111);
+    }
+    const getAllElecty = async () => {
+        let { data } =  pageType === 'ALL' ? await getChargeDischargeEnergySevenDaysByPlantId({ plantId: localStorage.getItem('plantId') }) :
+        await getChargeDischargeEnergySevenDaysDtuId({ dtuId: id });
+        let arrA = [];
+        let arrB = [];
+        let arrC = [];
+        let arrD = [];
+        let arrE = [];
+        data?.data?.map(it => {
+            arrA.push(dayjs(it.date).format('MM-DD'));
+            arrB.push(it.dayChargeEnergy);
+            arrC.push(it.dayDischargeEnergy);
+            arrD.push(it.dayEarning);
+            arrE.push(it.efficiency)
+        })
+        setDataX([...arrA]);
+        setDataCharge(
+            {
+                dayChargeEnergy: [...arrB],
+                dayDischargeEnergy: [...arrC]
+            }
+        );
+        setDayEarning([...arrD]);
+        setDataEfficiency([...arrE]);
+    }
     return (
         <div className={styles.overview}>
-            <div className={styles.heard} style={{ backgroundColor: token.titleCardBgc }}>XX场站储能总览</div>
+            <div className={styles.heard} style={{ backgroundColor: token.titleCardBgc }}>{title}储能总览</div>
             <div className={styles.overContent} >
                 <div className={styles.electric}>
                     <CardModel
@@ -141,7 +192,7 @@ function Overview(props) {
                             <div className={styles.elewrap} style={{ backgroundColor: token.lightTreeLineBgc }}>
                                 {eleData.map(it => {
                                     return (<div className={styles.item} style={{ backgroundColor: token.lightTreeBgc }}>
-                                        <Tooltip title={t(it.label) } >
+                                        <Tooltip title={t(it.label)} >
                                             <div className={styles.itemTitle} style={{ color: token.titleColor }}>{t(it.label)}</div>
                                         </Tooltip>
                                         <div className={styles.itemValue} style={{ color: it.color }}>{it.value} <span className={styles.itemUnit} style={{ color: token.titleColor }}>{it.unit}</span></div>
@@ -209,7 +260,7 @@ function Overview(props) {
                         }
                         content={
                             <div className={styles.chargeWrap}>
-                                <Charge />
+                                <Charge dataX={dataX} dataY={dataCharge} />
                             </div>
                         } />
                 </div>
@@ -220,7 +271,9 @@ function Overview(props) {
                         }
                         content={
                             <div className={styles.chargebitWrap}>
-                                <LineEcharts name={t('充放电效率')} style={{ height: '100%' }} yData={[12, 32, 11, 14, 90, 30, 10, 82, 91, 34, 90, 33]} />
+                                <LineEcharts name={t('充放电效率')} style={{ height: '100%' }}
+                                    xData={dataX}
+                                    yData={dataEfficiency} />
                             </div>
                         } />
                 </div>
@@ -231,7 +284,7 @@ function Overview(props) {
                         }
                         content={
                             <div className={styles.profitAllWrap}>
-                                <ProfitAll />
+                                <ProfitAll dataX={dataX} dataY={dayEarning} />
                             </div>
                         } />
                 </div>
@@ -253,10 +306,10 @@ function Overview(props) {
                         }
                         content={
                             <div className={styles.alarmWrap}>
-                                {alarmData.map(it=>{
-                                    return(
+                                {alarmData.map(it => {
+                                    return (
                                         <div className={styles.itemAlarm}>
-                                            <Icon type={it.icon} style={{color:it.color}}/>
+                                            <Icon type={it.icon} style={{ color: it.color }} />
                                             <span>{t(it.label)}:</span>
                                             {it.value}
                                         </div>

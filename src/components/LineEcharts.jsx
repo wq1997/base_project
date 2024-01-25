@@ -32,14 +32,18 @@ function Com(props) {
                 data: props.xData,
                 axisTick: {
                   alignWithLabel: true
-                }
+                },
+                axisLabel: {
+                  interval: 0,
+                  rotate:0
+              }
               }
             ],
             yAxis: [
               {
                 type: 'value',
                 axisLabel: {
-                    formatter: '{value} %'
+                    formatter: '{value}'
                   },
                   
               }
@@ -84,7 +88,7 @@ function Com(props) {
 
     useEffect(() => {
         getOptions();
-    }, [token]);
+    }, [token,props]);
     return (
  
         <ReactECharts option={options} style={{height: '100%'}} />

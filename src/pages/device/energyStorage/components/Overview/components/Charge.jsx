@@ -3,7 +3,7 @@ import { DatePicker, Button, theme } from 'antd';
 import ReactECharts from "echarts-for-react";
 import { useSelector, FormattedMessage, useIntl } from "umi";
 
-function Com(props) {
+function Com({ dataX, dataY }) {
     const { token } = theme.useToken();
     const [options, setOptions] = useState({});
     const intl = useIntl();
@@ -36,17 +36,22 @@ function Com(props) {
                 t('充电量'),
                 ],
                 // top:'-5%',
-                right:'1%',
-                textStyle:{
+                right: '1%',
+                textStyle: {
                     color: token.titleColor//字体颜色
-                    },
+                },
             },
             xAxis: [
                 {
                     type: 'category',
-                    data: ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'],
+                    data: dataX,
                     axisTick: {
                         alignWithLabel: true
+                    },
+
+                    axisLabel: {
+                        interval: 0,
+                        rotate:0
                     }
                 }
             ],
@@ -61,7 +66,7 @@ function Com(props) {
             ],
             series: [
                 {
-                    name:t('放电量'),
+                    name: t('放电量'),
                     // label: <FormattedMessage id='statistics.InternetPower' />,
                     type: 'bar',
                     itemStyle: {
@@ -70,7 +75,7 @@ function Com(props) {
 
                         }
                     },
-                    data: [0.8, 1.1, 0.4, 2.2, 0.8, 1.2, 1.5, 1.7, 1.6]
+                    data: dataY.dayChargeEnergy
                 },
                 {
                     name: t('充电量'),
@@ -81,7 +86,7 @@ function Com(props) {
                             color: token.barColor[1]
                         }
                     },
-                    data: [0.8, 1.6, 0.4, 2.2, 0.8, 1.2, 1.5, 1.7, 1.6]
+                    data: dataY?.dayDischargeEnergy
                 },
 
 
@@ -95,7 +100,8 @@ function Com(props) {
 
     useEffect(() => {
         getOptions();
-    }, [token]);
+        console.log(dataX, dataY, 'cahrge12233333333333');
+    }, [token, dataX, dataY]);
 
     return (
         <ReactECharts option={options} style={{ height: '100%' }} />

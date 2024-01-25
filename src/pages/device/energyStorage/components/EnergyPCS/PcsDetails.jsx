@@ -5,18 +5,24 @@ import { CardModel } from "@/components";
 import { theme, } from "antd";
 import dayjs from 'dayjs';
 import styles from './index.less'
-import { getBmsOrPcsNowDataById, getPcsNowPowerById} from '@/services/deviceTotal'
+import { getPcsNowDataById, getPcsNowPowerById} from '@/services/deviceTotal'
 import { useSelector, useIntl } from "umi";
 import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts";
 function Com({ id }) {
     const [data, setData] = useState('');
     const [dataArr, setDataArr] = useState({})
-    // const [dataX, setDataX] = useState([])
-    // const [dataY, setDataY] = useState([])
-
     const { token } = theme.useToken();
     const [options, setOptions] = useState({});
+    const intl = useIntl();
+    const t = (id) => {
+        const msg = intl.formatMessage(
+            {
+                id,
+            },
+        ); 
+        return msg
+    }
     const getOptions = () => {
         setOptions({
             tooltip: {
@@ -89,32 +95,21 @@ function Com({ id }) {
 
     useEffect(() => {
         getOptions();
-    }, [token]);
-    const intl = useIntl();
-    const t = (id) => {
-        const msg = intl.formatMessage(
-            {
-                id,
-            },
-        ); 
-        return msg
-    }
+    }, [token,dataArr]);
+
     useEffect(() => {
         getData();
         getPowerData();
     }, [id])
     const getData = async () => {
-        let { data } = await getBmsOrPcsNowDataById({ id })
+        let { data } = await getPcsNowDataById({ id })
         setData(data?.data);
     }
 
     const getPowerData = async () => {
-        
         let { data } = await getPcsNowPowerById({ id });
         let dataX=[];
         let dataY=[];
-            console.log( data?.data,11111);
-
         data?.data.map((it,index)=>{
             dataX.push(dayjs(it.time).format('YYYY-MM-DD HH:mm:ss'));
             dataY.push(it.value);

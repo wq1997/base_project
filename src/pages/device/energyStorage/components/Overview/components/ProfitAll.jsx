@@ -3,7 +3,7 @@ import { theme } from 'antd';
 import ReactECharts from "echarts-for-react";
 import {  useIntl } from "umi";
 
-function Com(props) {
+function Com({dataX,dataY}) {
     const { token } = theme.useToken();
     const [options, setOptions] = useState({});
     const intl = useIntl();
@@ -40,9 +40,13 @@ function Com(props) {
             xAxis: [
                 {
                     type: 'category',
-                    data: ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'],
+                    data: dataX,
                     axisTick: {
                         alignWithLabel: true,
+                    },
+                    axisLabel: {
+                        interval: 0,
+                        rotate:0
                     }
                 }
             ],
@@ -50,7 +54,7 @@ function Com(props) {
                 {
                     type: 'value',
                     axisLabel: {
-                        // formatter: '{value} kWh'
+                        formatter: '{value} 元'
                     },
 
                 }
@@ -65,7 +69,7 @@ function Com(props) {
 
                         }
                     },
-                    data: [0.8, 1.1, 0.4, 2.2, 0.8, 1.2, 1.5, 1.7, 1.6]
+                    data: dataY
                 },
 
             ]
@@ -77,7 +81,7 @@ function Com(props) {
 
     useEffect(() => {
         getOptions();
-    }, [token]);
+    }, [token,dataX,dataY]);
 
     return (
         <ReactECharts option={options} style={{ height: '100%' }} />

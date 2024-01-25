@@ -7,6 +7,8 @@ import RealtimeData from './RealtimeData';
 import HistoryData from "./HistoryData";
 import TemperaturePressure from "./TemperaturePressure";
 import CellDetails from "./CellDetails";
+import { theme, } from "antd";
+
 
 const PageTypeList = [
     {label:'BMS数据',key:'RealtimeData'},
@@ -18,6 +20,7 @@ const defaultActiveKey = "RealtimeData";
 const Cabinet = () => {
     const location = useLocation();
     const { pathname } = location;
+    const { token } = theme.useToken();
     const [activeKey, setActiveKey] = useState(getQueryString("activeKey") || defaultActiveKey);
     const pageType = getQueryString("pageType")||"ALL";
     const id = getQueryString("id");
@@ -29,8 +32,8 @@ const Cabinet = () => {
     return (
         <div style={{height: '100%'}}>
             <Tab activeKey={activeKey} TabItem={PageTypeList} onChange={onChangeTab}/>
-            <div className={styles.content}>
-                {activeKey==="RealtimeData"&&<RealtimeData/>}
+            <div className={styles.content} style={{backgroundColor: token.cardBgc,padding:'40px 30px',borderRadius: '0px 16px 0px 0px'}}>
+                {activeKey==="RealtimeData"&&<RealtimeData id={id}/>}
                 {activeKey==="HistoryData"&&<HistoryData />}
                 {activeKey==="TemperaturePressure"&&<TemperaturePressure />}
                 {activeKey==="CellDetails"&&<CellDetails />}
