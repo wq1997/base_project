@@ -1,56 +1,96 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Space, Table, message, Modal } from "antd";
+import { Button, Space, Table, message, Modal, DatePicker, Tooltip } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { SearchInput } from "@/components";
-import AddCompany from "./AddCompany";
+import EnterRecord from "./EnterRecord";
+import InvitationSplit from './InvitationSplit'
 import {
-    deleteUser as deleteUserServer,
+    getInviteList as getInviteListServer,
     getSearchInitData as getSearchInitDataServer,
-} from "@/services/account";
-import { getInviteList as getInviteListServer } from "@/services/invitation";
+    deleteInvite as deleteInviteServer,
+    invalidInvite as invalidInviteServer,
+} from "@/services/invitation";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import "./index.less";
 
 const Account = () => {
-    const accountRef = useRef();
-    const nameRef = useRef();
-    const companyCodeRef = useRef();
-    const roleCodeRef = useRef();
+    const [canDelete, setCanDelete] = useState(true);
+    const [canInvalid, setCanInvalid] = useState(true);
+    const releaseTimeRef = useRef();
+    const executeTimeRef = useRef();
+    const codeRef = useRef();
+    const confirmStatusRef = useRef();
+    const splitStatusRef = useRef();
+    const responsePowerRef = useRef();
+    const responseTypeRef = useRef();
+    const responseTimeTypeRef = useRef();
     const [editId, setEditId] = useState();
-    const [account, setAccount] = useState();
-    const [name, setName] = useState();
-    const [companyCode, setCompanyCode] = useState();
-    const [roleCode, setRoleCode] = useState();
-    const [companyList, setCompanyList] = useState();
-    const [roleList, setRoleList] = useState();
+    const [code, setCode] = useState();
+    const [releaseTime, setReleaseTime] = useState();
+    const [executeTime, setExecuteTime] = useState();
+    const [confirmStatus, setConfirmStatus] = useState();
+    const [confirmStatusList, setConfirmStatusList] = useState();
+    const [splitStatus, setSplitStatus] = useState();
+    const [splitStatusList, setSplitStatusList] = useState();
+    const [responsePower, setResponsePower] = useState();
+    const [responseType, setResponseType] = useState();
+    const [responseTypeList, setResponseTypeList] = useState();
+    const [responseTimeType, setResponseTimeType] = useState();
+    const [responseTimeTypeList, setResponseTimeTypeList] = useState();
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [userList, setUserList] = useState([]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-    const [addCompanyOpen, setAddCompanyOpen] = useState(false);
+    const [enterRecordOpen, setEnterRecordOpen] = useState(false);
+    const [invitationSplitOpen, setInvitationSplitOpen] = useState(false);
 
     const columns = [
         {
-            title: "账号",
-            dataIndex: "account",
+            title: "邀约编号",
+            dataIndex: "code",
+            render: (_, record) => {
+                return record?.splitStatus == "INVALID" ? (
+                    <a>{record?.code}</a>
+                ) : (
+                    <span>{record?.code}</span>
+                );
+            },
         },
         {
-            title: "姓名",
-            dataIndex: "name",
+            title: "邀约确认状态",
+            dataIndex: "confirmStatusZh",
         },
         {
-            title: "关联手机号",
-            dataIndex: "phoneNo",
+            title: "邀约拆分状态",
+            dataIndex: "splitStatusZh",
         },
         {
-            title: "所属公司",
-            dataIndex: "company",
-            render: value => value?.name,
+            title: "邀约发布时间",
+            dataIndex: "createdTime",
         },
         {
-            title: "绑定角色",
-            dataIndex: "roles",
-            render: value => value?.map(item => item?.name)?.join("，"),
+            title: "响应类型",
+            dataIndex: "responseTypeZh",
+        },
+        {
+            title: "响应要求",
+            dataIndex: "responseTimeTypeZh",
+        },
+        {
+            title: "度电报价(元)",
+            dataIndex: "whPrice",
+        },
+        {
+            title: "响应功率(kW)",
+            dataIndex: "responsePower",
+        },
+        {
+            title: "约定开始时间",
+            dataIndex: "appointedTimeFrom",
+        },
+        {
+            title: "约定结束时间",
+            dataIndex: "appointedTimeTo",
         },
         {
             title: "备注",
@@ -59,49 +99,60 @@ const Account = () => {
         {
             title: "操作",
             dataIndex: "operate",
-            render: (_, record) =>
-                record.account != "admin" && (
-                    <a
-                        onClick={() => {
-                            setAddCompanyOpen(true);
-                            setEditId(record.id);
-                        }}
-                    >
-                        编辑
-                    </a>
-                ),
+            render: (_, { supportSplit, supportReSplit }) => {
+                if (supportSplit) {
+                    return <a>邀约拆分</a>;
+                } else if (supportReSplit) {
+                    return <a>重新拆分</a>;
+                }
+            },
         },
     ];
 
-    const onSelectChange = newSelectedRowKeys => {
+    const onSelectChange = (newSelectedRowKeys, newSelectedRows) => {
+        console.log(newSelectedRows);
+        const hasNoDelete = Boolean(newSelectedRows?.some(item => item.supportDelete == false));
+        setCanDelete(!hasNoDelete);
+        const hasNoInvalid = Boolean(newSelectedRows?.some(item => item.supportInvalid == false));
+        setCanInvalid(!hasNoInvalid);
         setSelectedRowKeys(newSelectedRowKeys);
-    };
-
-    const onAddCompanyClose = resFlag => {
-        setEditId();
-        resFlag && getInviteList();
-        setAddCompanyOpen(false);
     };
 
     const getSearchInitData = async () => {
         const res = await getSearchInitDataServer();
         if (res?.data?.status == "SUCCESS") {
-            const { companies, roles } = res?.data?.data;
-            setCompanyList(companies);
-            setRoleList(roles);
+            const { confirmStatuses, splitStatuses, responseTypes, responseTimeTypes } =
+                res?.data?.data;
+            setConfirmStatusList(confirmStatuses);
+            setSplitStatusList(splitStatuses);
+            setResponseTypeList(responseTypes);
+            setResponseTimeTypeList(responseTimeTypes);
         }
     };
 
     const getInviteList = async () => {
         const { current, pageSize } = paginationRef.current;
-        const account = accountRef.current;
-        const name = nameRef.current;
-        const companyCode = companyCodeRef.current;
-        const roleCode = roleCodeRef.current;
+        const [createdTimeFrom, createdTimeTo] = releaseTimeRef.current || [];
+        const [appointedTimeRangeStart, appointedTimeRangeEnd] = executeTimeRef.current || [];
+        const code = codeRef.current;
+        const confirmStatus = confirmStatusRef.current;
+        const splitStatus = splitStatusRef.current;
+        const responsePower = +responsePowerRef.current;
+        const responseType = responseTypeRef.current;
         const res = await getInviteListServer({
             pageNum: current,
             pageSize,
-            queryCmd: { account, name, companyCode, roleCode },
+            queryCmd: {
+                createdTimeFrom,
+                createdTimeTo,
+                appointedTimeRangeStart,
+                appointedTimeRangeEnd,
+                code,
+                confirmStatus,
+                splitStatus,
+                responsePower,
+                responseType,
+            },
         });
         if (res?.data?.status == "SUCCESS") {
             const { totalRecord, recordList } = res?.data?.data;
@@ -115,28 +166,38 @@ const Account = () => {
 
     const handleReset = () => {
         paginationRef.current = DEFAULT_PAGINATION;
-        accountRef.current = "";
-        setAccount("");
-        nameRef.current = "";
-        setName("");
-        companyCodeRef.current = "";
-        setCompanyCode("");
-        roleCodeRef.current = "";
-        setRoleCode("");
+        releaseTimeRef.current = undefined;
+        setReleaseTime([]);
+        executeTimeRef.current = undefined;
+        setExecuteTime([]);
+        codeRef.current = undefined;
+        setCode();
+        confirmStatusRef.current = undefined;
+        setConfirmStatus();
+        splitStatusRef.current = undefined;
+        setSplitStatus();
+        responsePowerRef.current = undefined;
+        setResponsePower();
+        responseTypeRef.current = undefined;
+        setResponseType();
+        responseTimeTypeRef.current = undefined;
+        setResponseTimeType();
         getInviteList();
     };
 
-    const handleDelete = () => {
+    const handleOperate = type => {
+        const typeZh = type ? "作废" : "删除";
         if (selectedRowKeys?.length == 0) {
-            return message.info("请先勾选需要删除的数据");
+            return message.info(`请先勾选需要${typeZh}的数据`);
         }
         Modal.confirm({
-            title: "确定删除?",
-            content: "删除后不可恢复",
+            title: `确定${typeZh}?`,
+            content: `${typeZh}后不可恢复`,
             onOk: async () => {
-                const res = await deleteUserServer(selectedRowKeys);
+                const fn = type ? invalidInviteServer : deleteInviteServer;
+                const res = await fn(selectedRowKeys);
                 if (res?.data?.status == "SUCCESS") {
-                    message.success("删除成功");
+                    message.success(`${typeZh}成功`);
                     setPagination({
                         current: 1,
                     });
@@ -154,50 +215,95 @@ const Account = () => {
 
     return (
         <div>
-            <AddCompany
-                open={addCompanyOpen}
-                editId={editId}
-                onClose={resFlag => onAddCompanyClose(resFlag)}
+            <EnterRecord
+                open={enterRecordOpen}
+                onClose={resFlag => {
+                    setEnterRecordOpen(false);
+                    resFlag && getInviteList();
+                }}
             />
+            <InvitationSplit open={invitationSplitOpen} />
             <Space className="search">
+                <div>
+                    <span>邀约发布时间：</span>
+                    <DatePicker.RangePicker
+                        onChange={(date, dateStr) => {
+                            paginationRef.current = DEFAULT_PAGINATION;
+                            releaseTimeRef.current = dateStr;
+                            setReleaseTime(dateStr);
+                        }}
+                    />
+                </div>
                 <SearchInput
-                    label="用户名"
-                    value={account}
+                    label="邀约编号"
+                    value={code}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
-                        accountRef.current = value;
-                        setAccount(value);
+                        codeRef.current = value;
+                        setCode(value);
                     }}
                 />
                 <SearchInput
-                    label="姓名"
-                    value={name}
-                    onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
-                        nameRef.current = value;
-                        setName(value);
-                    }}
-                />
-                <SearchInput
-                    label="所属公司"
+                    label="邀约确认状态"
+                    value={confirmStatus}
                     type="select"
-                    value={companyCode}
-                    options={companyList}
+                    options={confirmStatusList}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
-                        companyCodeRef.current = value;
-                        setCompanyCode(value);
+                        confirmStatusRef.current = value;
+                        setConfirmStatus(value);
                     }}
                 />
                 <SearchInput
-                    label="绑定角色"
+                    label="邀约拆分状态"
                     type="select"
-                    options={roleList}
-                    value={roleCode}
+                    value={splitStatus}
+                    options={splitStatusList}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
-                        roleCodeRef.current = value;
-                        setRoleCode(value);
+                        splitStatusRef.current = value;
+                        setSplitStatus(value);
+                    }}
+                />
+                <div>
+                    <span>约定执行时间：</span>
+                    <DatePicker.RangePicker
+                        onChange={(date, dateStr) => {
+                            paginationRef.current = DEFAULT_PAGINATION;
+                            executeTimeRef.current = dateStr;
+                            setExecuteTime(dateStr);
+                        }}
+                    />
+                </div>
+                <SearchInput
+                    label="响应功率(kW)"
+                    value={responsePower}
+                    onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        responsePowerRef.current = value;
+                        setResponsePower(value);
+                    }}
+                />
+                <SearchInput
+                    label="响应类型"
+                    type="select"
+                    options={responseTypeList}
+                    value={responseType}
+                    onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        responseTypeRef.current = value;
+                        setResponseType(value);
+                    }}
+                />{" "}
+                <SearchInput
+                    label="响应要求"
+                    type="select"
+                    options={responseTimeTypeList}
+                    value={responseTimeType}
+                    onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        responseTimeTypeRef.current = value;
+                        setResponseTimeType(value);
                     }}
                 />
                 <Button type="primary" onClick={getInviteList}>
@@ -226,18 +332,49 @@ const Account = () => {
                         <Button
                             type="primary"
                             icon={<PlusOutlined />}
-                            onClick={() => setAddCompanyOpen(true)}
+                            onClick={() => setEnterRecordOpen(true)}
                         >
-                            新增账号
+                            手工录入
                         </Button>
-                        <Button type="primary" danger onClick={handleDelete}>
-                            删除账号
-                            {selectedRowKeys?.length ? (
-                                <span>（{selectedRowKeys?.length}）</span>
-                            ) : (
-                                ""
-                            )}
+                        <Button type="primary" onClick={() => setEnterRecordOpen(true)}>
+                            邀约确认
                         </Button>
+                        <Tooltip
+                            placement="bottom"
+                            title="只有邀约确认状态为【未确认】【已过期】的数据可以删除"
+                        >
+                            <Button
+                                type="primary"
+                                danger
+                                disabled={!canDelete}
+                                onClick={() => handleOperate(0)}
+                            >
+                                批量删除
+                                {selectedRowKeys?.length ? (
+                                    <span>（{selectedRowKeys?.length}）</span>
+                                ) : (
+                                    ""
+                                )}
+                            </Button>
+                        </Tooltip>
+                        <Tooltip
+                            placement="bottom"
+                            title="只有邀约确认状态为【已确认】的数据可以作废"
+                        >
+                            <Button
+                                type="primary"
+                                danger
+                                disabled={!canInvalid}
+                                onClick={() => handleOperate(1)}
+                            >
+                                批量作废
+                                {selectedRowKeys?.length ? (
+                                    <span>（{selectedRowKeys?.length}）</span>
+                                ) : (
+                                    ""
+                                )}
+                            </Button>
+                        </Tooltip>
                     </Space>
                 )}
             ></Table>

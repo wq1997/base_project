@@ -29,6 +29,16 @@ export const deleteCompany = payload => {
     return axiosInstance.post(url, payload);
 };
 
+export const getLevelList = data => {
+    const url = `${API_URL_1}/company/find-level-detail-page`;
+    return axiosInstance.post(url, data);
+};
+
+export const getLevelSearchInitData = data => {
+    const url = `${API_URL_1}/company/get-level-detail-search-page-init-data`;
+    return axiosInstance.get(url, data);
+};
+
 export const updateCompanyLevel = payload => {
     const url = `${API_URL_1}/company/update-level`;
     return axiosInstance.post(url, payload);

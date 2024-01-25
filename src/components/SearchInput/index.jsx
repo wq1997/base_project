@@ -21,6 +21,7 @@ const SearchInput = ({
                 />
             ) : (
                 <Select
+                    value={value}
                     placeholder={placeholder}
                     allowClear={true}
                     style={{ width: inputWidth }}

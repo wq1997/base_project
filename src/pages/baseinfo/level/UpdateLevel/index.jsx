@@ -1,28 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { message, Button, Select, Form, Input, Modal, Space } from "antd";
 import {
-    getUpdateInitData as getUpdateInitDataServer,
     updateCompanyLevel as updateCompanyLevelServer,
+    getLevelSearchInitData as getLevelSearchInitDataServer,
 } from "@/services/company";
 
-const Company = ({ open, editId, onClose }) => {
+const Company = ({ open, editData, onClose }) => {
     const [form] = Form.useForm();
-    const [editData, setEditData] = useState();
     const [levels, setLevels] = useState([]);
 
-    const getUpdateInitData = async () => {
-        const res = await getUpdateInitDataServer(editId);
+    const getLevelSearchInitData = async () => {
+        const res = await getLevelSearchInitDataServer();
         if (res?.data?.status == "SUCCESS") {
-            const { editCompany, levels } = res?.data?.data;
-            editCompany ? form.setFieldsValue(editCompany) : form.resetFields();
-            setEditData(editCompany);
+            const { levels } = res?.data?.data;
             setLevels(levels);
         }
     };
 
     const onFinish = async values => {
         const res = await updateCompanyLevelServer({
-            id: editId,
+            id: editData?.companyId,
             level: values?.levelText,
         });
         if (res?.data?.status == "SUCCESS") {
@@ -34,7 +31,10 @@ const Company = ({ open, editId, onClose }) => {
     };
 
     useEffect(() => {
-        open && getUpdateInitData();
+        if (open) {
+            form.setFieldsValue(editData);
+            getLevelSearchInitData();
+        }
     }, [open]);
 
     return (
@@ -58,7 +58,7 @@ const Company = ({ open, editId, onClose }) => {
                 onFinish={onFinish}
                 autoComplete="off"
             >
-                <Form.Item label="公司名称" name="name">
+                <Form.Item label="公司名称" name="companyName">
                     <Input disabled={true} />
                 </Form.Item>
 

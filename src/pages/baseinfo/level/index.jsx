@@ -3,14 +3,20 @@ import { Button, Space, Table, message, Modal } from "antd";
 import { SearchInput } from "@/components";
 import AutoUpdate from "./AutoUpdate";
 import UpdateLevel from "./UpdateLevel";
-import { getCompanyList as getCompanyListServer } from "@/services/company";
+import {
+    getLevelList as getLevelListServer,
+    getLevelSearchInitData as getLevelSearchInitDataServer,
+} from "@/services/company";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import "./index.less";
 
 const Company = () => {
-    const nameRef = useRef();
-    const [editId, setEditId] = useState();
-    const [name, setName] = useState();
+    const companyNameRef = useRef();
+    const statusRef = useRef();
+    const [editData, setEditData] = useState();
+    const [companyName, setCompanyName] = useState();
+    const [status, setStatus] = useState([]);
+    const [statusList, setStatusList] = useState([]);
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [companyList, setCompanyList] = useState([]);
@@ -20,15 +26,15 @@ const Company = () => {
     const columns = [
         {
             title: "生效状态",
-            dataIndex: "name",
+            dataIndex: "statusZh",
         },
         {
             title: "公司名称",
-            dataIndex: "name",
+            dataIndex: "companyName",
         },
         {
             title: "公司编号",
-            dataIndex: "code",
+            dataIndex: "companyCode",
         },
         {
             title: "公司等级",
@@ -36,19 +42,17 @@ const Company = () => {
         },
         {
             title: "生效时间",
-            dataIndex: "levelDetail",
-            render: (_, record) =>
-                record?.levelDetail?.[record?.levelDetail?.length - 1]?.createdTime,
+            dataIndex: "createdTime",
         },
         {
             title: "操作",
             dataIndex: "operate",
             render: (_, record) =>
-                record?.code != "SERMATEC" && (
+                record?.status == "IN_EFFECT" && (
                     <a
                         onClick={() => {
                             setAddCompanyOpen(true);
-                            setEditId(record.id);
+                            setEditData(record);
                         }}
                     >
                         编辑
@@ -58,18 +62,27 @@ const Company = () => {
     ];
 
     const onAddCompanyClose = resFlag => {
-        setEditId();
-        resFlag && getCompanyList();
+        setEditData();
+        resFlag && getLevelList();
         setAddCompanyOpen(false);
     };
 
-    const getCompanyList = async () => {
+    const getLevelSearchInitData = async () => {
+        const res = await getLevelSearchInitDataServer();
+        if (res?.data?.status == "SUCCESS") {
+            const { levelStatus } = res?.data?.data;
+            setStatusList(levelStatus);
+        }
+    };
+
+    const getLevelList = async () => {
         const { current, pageSize } = paginationRef.current;
-        const name = nameRef.current;
-        const res = await getCompanyListServer({
+        const companyName = companyNameRef.current;
+        const status = statusRef.current;
+        const res = await getLevelListServer({
             pageNum: current,
             pageSize,
-            queryCmd: { name },
+            queryCmd: { companyName, status },
         });
         if (res?.data?.status == "SUCCESS") {
             const { totalRecord, recordList } = res?.data?.data;
@@ -83,13 +96,16 @@ const Company = () => {
 
     const handleReset = () => {
         paginationRef.current = DEFAULT_PAGINATION;
-        nameRef.current = "";
-        setName("");
-        getCompanyList();
+        companyNameRef.current = undefined;
+        setCompanyName();
+        statusRef.current = undefined;
+        setStatus();
+        getLevelList();
     };
 
     useEffect(() => {
-        getCompanyList();
+        getLevelSearchInitData();
+        getLevelList();
     }, []);
 
     return (
@@ -97,20 +113,31 @@ const Company = () => {
             <AutoUpdate open={autoUpdateOpen} onClose={() => setAutoUpdateOpen(false)} />
             <UpdateLevel
                 open={addCompanyOpen}
-                editId={editId}
+                editData={editData}
                 onClose={resFlag => onAddCompanyClose(resFlag)}
             />
             <Space className="search">
                 <SearchInput
                     label="公司名称"
-                    value={name}
+                    value={companyName}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
-                        nameRef.current = value;
-                        setName(value);
+                        companyNameRef.current = value;
+                        setCompanyName(value);
                     }}
                 />
-                <Button type="primary" onClick={getCompanyList}>
+                <SearchInput
+                    label="邀约确认状态"
+                    value={status}
+                    type="select"
+                    options={statusList}
+                    onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        statusRef.current = value;
+                        setStatus(value);
+                    }}
+                />
+                <Button type="primary" onClick={getLevelList}>
                     搜索
                 </Button>
                 <Button onClick={handleReset}>重置</Button>
@@ -122,7 +149,7 @@ const Company = () => {
                 pagination={pagination}
                 onChange={pagination => {
                     paginationRef.current = pagination;
-                    getCompanyList();
+                    getLevelList();
                 }}
                 title={() => (
                     <Button type="primary" onClick={() => setAutoUpdateOpen(true)}>
