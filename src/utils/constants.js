@@ -10,6 +10,7 @@ export const PUBLIC_FILE_PATH = 'https://energy.sermatec-cloud.com/static/';
 export const SYSTEM_NAME = '采日工商业微网孪生平台'
 export const MAP_KEY = '2dca0cb2ced6ced6030c26376186faee';
 export const WETHER_API = 'https://devapi.qweather.com/v7/weather/3d?';
+export const AIR_API = 'https://devapi.qweather.com/v7/air/now?';
 export const WETHER_KEY = '4e50b674eed8402c8a70c8155690a0e1';
 export const alarmTableColums = [
     {

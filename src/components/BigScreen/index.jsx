@@ -7,7 +7,7 @@ import Efficiency from './component/efficiency';
 import Prediction from './component/prediction';
 import Load from './component/load';
 import SOH from './component/soh';
-import ScrollTable from "./component/ScorllTable";
+import ScrollTable from "../ScorllTable";
 import AMapLoader from '@amap/amap-jsapi-loader'
 import { MAP_KEY } from '@/utils/utils';
 import { WETHER_API, WETHER_KEY } from "@/utils/constants";
