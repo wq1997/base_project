@@ -77,7 +77,7 @@ function MapCom(props) {
                 roam: true,
                 center: [103, 39.4],
                 selectedMode: 'single',
-                layoutCenter: ['48%', '33%'],
+                layoutCenter: ['48%', '34%'],
                 layoutSize: "70%",
                 itemStyle: {
                     normal: {
@@ -92,7 +92,7 @@ function MapCom(props) {
                 },
                 top: 5,
                 aspectScale: 0.75,
-                zoom: 1.5
+                zoom: 1.7
             },
             series: [
                 {
