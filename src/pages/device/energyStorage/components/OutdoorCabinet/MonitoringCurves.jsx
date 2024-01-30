@@ -30,50 +30,50 @@ function Com(props) {
     const getOptions = () => {
         setOptionEchart({
             tooltip: {
-              trigger: 'axis',
-              axisPointer: {
-                type: 'shadow'
-              }
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
             },
             grid: {
-              left: '3%',
-              right: '4%',
-              bottom: '3%',
-              containLabel: true
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
             },
             xAxis: [
-              {
-                type: 'category',
-                data: ['28日', '29日', '30日', '1日', '2日', '3日', '4日','5日','6日'],
-                axisTick: {
-                  alignWithLabel: true
+                {
+                    type: 'category',
+                    data: ['28日', '29日', '30日', '1日', '2日', '3日', '4日', '5日', '6日'],
+                    axisTick: {
+                        alignWithLabel: true
+                    }
                 }
-              }
             ],
             yAxis: [
-              {
-                type: 'value',
-                axisLabel: {
-                    formatter: '{value} %'
-                  },
-                  
-              }
+                {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: '{value} %'
+                    },
+
+                }
             ],
             series: [
                 {
-                    name:'实时功率',
-                    type:'line',
+                    name: '实时功率',
+                    type: 'line',
                     stack: '总量',
-                    symbol:'circle',
+                    symbol: 'circle',
                     symbolSize: 8,
                     itemStyle: {
                         normal: {
-                            color:token.colorPrimary,
+                            color: token.colorPrimary,
                             lineStyle: {
                                 color: token.colorPrimary,
-                                width:1
+                                width: 1
                             },
-                            areaStyle: { 
+                            areaStyle: {
                                 color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
                                     offset: 0,
                                     color: token.sub_innerBgc
@@ -84,17 +84,17 @@ function Com(props) {
                             }
                         }
                     },
-                    markPoint:{
-                        itemStyle:{
-                            normal:{
-                                color:'red'
+                    markPoint: {
+                        itemStyle: {
+                            normal: {
+                                color: 'red'
                             }
                         }
                     },
-                    data:[12, 32, 11, 14, 90, 30, 10, 82, 91, 34, 90, 33]
+                    data: [12, 32, 11, 14, 90, 30, 10, 82, 91, 34, 90, 33]
                 },
             ]
-          });
+        });
     };
     useEffect(() => {
         getOptions();
@@ -102,7 +102,7 @@ function Com(props) {
     return (
         <div className={styles.monitoringCurves}>
             <div className={styles.searchHead}>
-                <DatePicker onChange={onChange} />
+                <span >数据类型:</span>
                 <Select
                     className={styles.margRL}
                     style={{ width: 240 }}
@@ -115,6 +115,20 @@ function Com(props) {
                     })
                     }
                 </Select>
+                数据项:
+                <Select
+                    className={styles.margRL}
+                    style={{ width: 240 }}
+                    // onChange={changeCluster}
+                    key={activitesRef.current[0]?.value}
+                    defaultValue={activitesRef.current[0]?.value}
+                >
+                    {activitesRef.current && activitesRef.current.map(item => {
+                        return (<Option key={item.value} value={item.value}>{item.label}</Option>);
+                    })
+                    }
+                </Select>
+                <DatePicker onChange={onChange} />
                 <Button type="primary" className={styles.firstButton}>
                     {t('查询')}
                 </Button>
@@ -126,9 +140,9 @@ function Com(props) {
                 <CardModel
                     title={t('监测曲线')}
                     content={
-                            <div className={styles.echartPartCardwrap}>
+                        <div className={styles.echartPartCardwrap}>
                             <ReactECharts option={optionEchart} style={{ height: '100%' }} />
-                            </div>
+                        </div>
                     }
                 />
             </div>

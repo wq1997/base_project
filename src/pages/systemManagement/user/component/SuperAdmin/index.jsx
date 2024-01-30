@@ -89,7 +89,7 @@ const RealtimeAlarm = () => {
   ];
   useEffect(() => {
     searchData();
-  }, [level, textLike,formData]);
+  }, [level, textLike,formData,delId]);
   
 
   const searchData = async () => {
@@ -138,10 +138,15 @@ const RealtimeAlarm = () => {
       // message.success(data.msg)
     };
     setIsOpenDel(!isOpenDel)
+    searchData();
 
   }
   const resetPwd = async(record) => {
-    let {data}=await apiResetPassword({userId:record.f0102_Id})
+    let {data}=await apiResetPassword({userId:record.f0102_Id});
+    if (data.data) {
+      message.success(t('密码重置成功'))
+
+    }
   }
   const changeData = async (value) => {
     const { data } = await apiSaveOrUpdateUser(value)

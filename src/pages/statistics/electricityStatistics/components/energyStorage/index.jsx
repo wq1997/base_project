@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { DatePicker, Button, theme } from 'antd';
+import { DatePicker, Button, theme,Radio} from 'antd';
 import dayjs from 'dayjs';
 import styles from './index.less'
 import { CardModel } from "@/components";
@@ -9,8 +9,8 @@ import Table from '@/components/Table.jsx'
 import { useSelector, FormattedMessage, useIntl } from "umi";
 
 function Com(props) {
-    const { RangePicker } = DatePicker;
     const { token } = theme.useToken();
+    const [mode, setMode] = useState('date');
     const [options, setOptions] = useState({});
     const { theme: currentTheme } = useSelector(function (state) {
         return state.global
@@ -169,15 +169,19 @@ function Com(props) {
     useEffect(() => {
         getOptions();
     }, [currentTheme]);
-    const disabledDate = (current) => {
-        // Can not select days before today and today
-        return current && current < dayjs().endOf('day');
+    const handleModelChange = e => {
+        setMode(e.target.value);
     };
     return (
         <div className={styles.content}>
             <div className={styles.heard} style={{ backgroundColor: token.titleCardBgc }}>
-                <div>
-                    <RangePicker disabledDate={disabledDate} />
+            <div className={styles.date}>
+                    <DatePicker mode={mode} style={{marginRight:"20px"}}/>
+                    <Radio.Group value={mode} onChange={handleModelChange}>
+                    <Radio.Button value="date">日</Radio.Button>
+                    <Radio.Button value="month">月</Radio.Button>
+                    <Radio.Button value="year">年</Radio.Button>
+                </Radio.Group>
                 </div>
                 <div className={styles.buttons}>
                     <Button type="primary" className={styles.firstButton}>
@@ -212,7 +216,6 @@ function Com(props) {
                     />
 
                 </div>
-
             </div>
             <div className={styles.profitList} style={{ backgroundColor: token.titleCardBgc }}>
                 <Table

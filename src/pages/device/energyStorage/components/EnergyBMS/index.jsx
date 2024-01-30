@@ -4,17 +4,17 @@ import { history, useLocation } from "umi";
 import styles from "./index.less";
 import Tab from '../../../components/Tab';
 import RealtimeData from './RealtimeData';
-import HistoryData from "./HistoryData";
-import TemperaturePressure from "./TemperaturePressure";
+import MonitoringCurves from "./MonitoringCurves";
+import AdvancedAnalytics from "./AdvancedAnalytics";
 import CellDetails from "./CellDetails";
 import { theme, } from "antd";
 
 
 const PageTypeList = [
     {label:'BMS数据',key:'RealtimeData'},
-    {label:'监测曲线',key:'HistoryData'},
+    {label:'监测曲线',key:'MonitoringCurves'},
     {label:'电芯详情',key:'CellDetails'},
-    {label:'高级分析',key:'TemperaturePressure'},
+    {label:'高级分析',key:'AdvancedAnalytics'},
 ];
 const defaultActiveKey = "RealtimeData";
 const Cabinet = () => {
@@ -26,7 +26,8 @@ const Cabinet = () => {
     const id = getQueryString("id");
     const onChangeTab = key => {
         setActiveKey(key);
-        history.push(`${pathname}?pageType=${pageType}&activeKey=${key}&id=${id}`);
+        history.push(`${pathname}?PageKey=${getQueryString("PageKey")}&pageType=${pageType}&activeKey=${key}&id=${id}`);
+
     };
 
     return (
@@ -34,8 +35,8 @@ const Cabinet = () => {
             <Tab activeKey={activeKey} TabItem={PageTypeList} onChange={onChangeTab}/>
             <div className={styles.content} style={{backgroundColor: token.cardBgc,padding:'40px 30px',borderRadius: '0px 16px 0px 0px'}}>
                 {activeKey==="RealtimeData"&&<RealtimeData id={id}/>}
-                {activeKey==="HistoryData"&&<HistoryData />}
-                {activeKey==="TemperaturePressure"&&<TemperaturePressure />}
+                {activeKey==="MonitoringCurves"&&<MonitoringCurves />}
+                {activeKey==="AdvancedAnalytics"&&<AdvancedAnalytics />}
                 {activeKey==="CellDetails"&&<CellDetails />}
             </div>
         </div>

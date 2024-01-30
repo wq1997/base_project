@@ -22,7 +22,8 @@ const Cabinet = () => {
     const id = getQueryString("id");
     const onChangeTab = key => {
         setActiveKey(key);
-        history.push(`${pathname}?pageType=${pageType}&activeKey=${key}&id=${id}`);
+        history.push(`${pathname}?PageKey=${getQueryString("PageKey")}&pageType=${pageType}&activeKey=${key}&id=${id}`);
+
     };
 
     return (

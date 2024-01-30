@@ -20,7 +20,8 @@ const ElectricityMeter = () => {
     const id = getQueryString("id");
     const onChangeTab = key => {
         setActiveKey(key);
-        history.push(`${pathname}?pageType=${pageType}&activeKey=${key}&id=${id}`);
+        history.push(`${pathname}?PageKey=${getQueryString("PageKey")}&pageType=${pageType}&activeKey=${key}&id=${id}`);
+
     };
     return (
         <div style={{height: '100%'}}>
