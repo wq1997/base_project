@@ -1,0 +1,36 @@
+.energy{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .top{
+        display: flex;
+        justify-content: space-between;
+        height: calc(80% - 5px);
+        position: relative;
+        .topLeft{
+            width: 25%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            display: grid;
+            grid-template-rows: calc(50% - 5px) calc(50% - 5px);
+            grid-gap: 10px;
+        }
+        .topRight{
+            width: 25%;
+            height: 100%;
+            position: absolute;
+            right: 0;
+            display: grid;
+            grid-template-rows: calc(30% - 6.67px) calc(30% - 6.67px) calc(40% - 6.67px);
+            grid-gap: 10px;
+        }
+    }
+    
+    .bottom{
+        height: calc(20% - 5px);
+    }
+}

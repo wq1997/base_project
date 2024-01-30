@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import ScrollTable from "../../../components/ScorllTable/index";
+import ScrollTable from "@/components/ScorllTable/index";
 import { CardModel } from "@/components";
 import styles from './index.less'
 import { theme } from "antd";

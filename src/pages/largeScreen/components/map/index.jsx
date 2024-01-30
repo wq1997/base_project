@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useDispatch, useSelector,history } from "umi";
 import ReactECharts from "echarts-for-react";
-import china from '../../../public/mapJson/chinaB'
+import china from '../../../../../public/mapJson/chinaB'
 import * as echarts from "echarts";
 
 function MapCom(props) {
@@ -51,7 +51,7 @@ function MapCom(props) {
       }, [bind]);
 
     const getOptions = () => {
-       echarts.registerMap('world', china);
+       echarts.registerMap('map', china);
         setOptions({
             grid: {
               top: 0,
@@ -73,36 +73,25 @@ function MapCom(props) {
             geo: {
                 id: "bb",
                 show: true,
-                map: "world",
+                map: "map",
                 roam: true,
                 center: [103, 39.4],
                 selectedMode: 'single',
-                layoutCenter: ['50%', '25%'],
+                layoutCenter: ['48%', '34%'],
                 layoutSize: "70%",
                 itemStyle: {
                     normal: {
-                        areaColor: '#00177B',
-                        borderColor: '#0073DA',
-                        borderWidth: 1,
-                        shadowColor: 'rgba(3,221,255,0.5)',
-                        // shadowBlur: 30
+                        areaColor:'none',
+                        borderColor: '#00ffff',
+                        borderWidth: 1.8,
+                        shadowColor: '#00ffff',
                     },
-                    emphasis: {
-                        areaColor: '#4499d0',
-                    }
                 },
                 top: 5,
                 aspectScale: 0.75,
-                zoom: 1.2
+                zoom: 1.7
             },
             series: [
-                {
-                    type: 'map',
-                    map: 'world',
-                    geoIndex: 0,
-                    roam: true,
-                    top: 5
-                },
                 {
                     type: "effectScatter",
                     coordinateSystem: "geo",
@@ -112,50 +101,37 @@ function MapCom(props) {
                     //涟漪效应
                     rippleEffect: {
                         brushType: "stroke",
-                        color: "#f13434",
+                        color: "#00CD97",
                         period: 10,//周期
                         scale: 10//规模
                     },
                     hoverAnimation: true,//悬停动画
                     legendHoverLink: true,
-                    //地图点样式
-                    label: {
-                        formatter: "{b}",
-                        position: "top",
-                        show: true,
-                        fontSize: "15",
-                    },
+                    // //地图点样式
+                    // label: {
+                    //     formatter: "{b}",
+                    //     position: "top",
+                    //     show: true,
+                    //     fontSize: "15",
+                    // },
                     itemStyle: {
-                        color: "#f13434",
+                        color: "#00CD97",
                         shadowBlur: 4,
                         shadowColor: "#333"
                     },
-                    zlevel: 1
+                    zlevel: 2
                 },
                 {
                     name: '电站',
                     type: 'scatter',
                     coordinateSystem: 'geo',
                     data: convertData(),
-                    // symbol: 'pin', //气泡
-                    // symbolSize: function (val) {
-                    //     return val[2] / 5;
-                    // },
-                    // label: {
-                    //     normal: {
-                    //         formatter: '{b}',
-                    //         position: 'right',
-                    //         show: true
-                    //     },
-                    //     emphasis: {
-                    //         show: true
-                    //     }
-                    // },
                     itemStyle: {
                         normal: {
-                            areaColor: '#00177B',
+                            areaColor: 'rgba(0,255,255,.02)',
                             borderColor: '#0073DA',
-                            borderWidth: 1
+                            borderWidth: 1.5,
+                      
                         },
                         emphasis: {
                             label: {
@@ -189,4 +165,4 @@ function MapCom(props) {
     )
 }
 
-export default MapCom 
+export default MapCom;

@@ -8,7 +8,7 @@ import Title from "./Title";
 import Iconify from './icon/iconify-icon'
 import SvgIcon from './icon/svg-icon'
 import IconButton from './icon/icon-button'
-
+import ScorllTable from './ScorllTable'
 
 export {
     BigScreen,
@@ -20,5 +20,6 @@ export {
     Title,
     Iconify,
     SvgIcon,
-    IconButton
+    IconButton,
+    ScorllTable
 }
