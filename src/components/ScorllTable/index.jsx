@@ -3,10 +3,13 @@ import styles from "./index.less";
 import { useEffect, useState } from "react";
 let timer = null;
 const Table = ({
+    showHeadLine=true,
     headerLineColor='white',
+    headBackground,
     color="white",
     columns,
-    dataSource
+    dataSource,
+    tableContentRowStyle
 }) => {
     const tableRef = useRef(null);
     const tableHeaderRef = useRef(null);
@@ -45,7 +48,14 @@ const Table = ({
 
     return (
         <div className={styles.table} ref={tableRef}>
-            <div className={styles.tableHeader} style={{borderBottom: `3px solid ${headerLineColor}`}} ref={tableHeaderRef}>
+            <div 
+                className={styles.tableHeader} 
+                style={{
+                    borderBottom: showHeadLine && `3px solid ${headerLineColor}`,
+                    backgroundColor: headBackground
+                }} 
+                ref={tableHeaderRef}
+            >
                 {
                     columns?.map(column => {
                         return (
@@ -54,12 +64,18 @@ const Table = ({
                     })
                 }
             </div>
-            <div className={styles.tableOuterContent} style={{height: tableContentHeight}}>
+            <div 
+                className={styles.tableOuterContent} 
+                style={{height: tableContentHeight}}
+            >
                 <div className={styles.tableContent} ref={tableContentRef}> 
                     {
                         dataSource?.map(data => {
                             return (
-                                <div className={styles.tableContentRow}>
+                                <div 
+                                    className={styles.tableContentRow}
+                                    style={tableContentRowStyle}
+                                >
                                     {
                                         columns?.map(item => item.key)?.map(columnKey => {
                                             return (

@@ -81,13 +81,10 @@ function MapCom(props) {
                 layoutSize: "70%",
                 itemStyle: {
                     normal: {
-                        areaColor:'rgba(0,17,41,1)',
+                        areaColor:'none',
                         borderColor: '#00ffff',
                         borderWidth: 1.8,
                         shadowColor: '#00ffff',
-                        // shadowOffsetX: 0,
-                        // shadowOffsetY: 0,
-                        // shadowBlur: 20
                     },
                 },
                 top: 5,
