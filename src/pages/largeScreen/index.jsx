@@ -1,9 +1,17 @@
+import { useState } from "react";
 import Energy from "./energy";
+import Microgrids from "./microgrids";
 
 const LargeScreen = () => {
+    const [isEnergy, setIsEnergy] = useState(false);
     return (
         <div>
-            <Energy />
+            {
+                isEnergy?
+                <Energy />
+                :
+                <Microgrids />
+            }
         </div>
     )
 }
