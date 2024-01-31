@@ -55,6 +55,7 @@ const BaseLayout = () => {
             },
             '.ant-menu-submenu-title':{
                 fontFamily:'PingFangRegular !important',
+                
             },
             '.ant-menu-sub': {
                 backgroundColor: `${token.sub_innerBgc} !important`,

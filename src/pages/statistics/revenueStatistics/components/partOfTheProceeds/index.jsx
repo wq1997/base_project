@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { DatePicker, Button, theme } from 'antd';
+import { DatePicker, Button, theme,Radio } from 'antd';
 import dayjs from 'dayjs';
 import styles from './index.less'
 import {
@@ -14,7 +14,7 @@ import { useSelector} from "umi";
 
 function Com(props) {
     const [xxx, setXxx] = useState('')
-    const { RangePicker } = DatePicker;
+    const [mode, setMode] = useState('date');
     const { token } = theme.useToken();
     const [options, setOptions] = useState({});
     const { theme:currentTheme } = useSelector(function (state) {
@@ -182,16 +182,21 @@ function Com(props) {
     useEffect(() => {
         getOptions();
     }, []);
-    const disabledDate = (current) => {
-        // Can not select days before today and today
-        return current && current < dayjs().endOf('day');
+    const handleModelChange = e => {
+        setMode(e.target.value);
     };
     return (
         <div className={styles.content}>
             <div className={styles.heard} style={{ backgroundColor: token.titleCardBgc }}>
-                <div>
-                    <RangePicker disabledDate={disabledDate} />
+            <div className={styles.date}>
+                    <DatePicker mode={mode} style={{marginRight:"20px"}}/>
+                    <Radio.Group value={mode} onChange={handleModelChange}>
+                    <Radio.Button value="date">日</Radio.Button>
+                    <Radio.Button value="month">月</Radio.Button>
+                    <Radio.Button value="year">年</Radio.Button>
+                </Radio.Group>
                 </div>
+
                 <div className={styles.buttons}>
                     <Button type="primary" className={styles.firstButton}>
                         查询
@@ -213,7 +218,7 @@ function Com(props) {
                         }
                     />
                 </div>
-                <div className={styles.rightCardData} style={{ backgroundColor: token.titleCardBgc }}>
+                {/* <div className={styles.rightCardData} style={{ backgroundColor: token.titleCardBgc }}>
                     {cardData.map((it) => {
                         return <div className={styles.profitCard} style={{ color: it.color, backgroundColor: token.cardBgc, boxShadow: token.cardShadow }}>
                             <div className={styles.cardItemTitle}>
@@ -227,7 +232,7 @@ function Com(props) {
                         </div>
                     })}
 
-                </div>
+                </div> */}
 
             </div>
             <div className={styles.profitList}>

@@ -1,21 +1,16 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { DatePicker, Button, theme } from 'antd';
+import { DatePicker, Button, theme, Radio } from 'antd';
 import dayjs from 'dayjs';
 import styles from './index.less'
-import {
-    CalendarOutlined,
-    DatabaseOutlined,
-} from '@ant-design/icons';
 import { CardModel } from "@/components";
 import ReactECharts from "echarts-for-react";
 import Table from '@/components/Table.jsx'
 import { useSelector, FormattedMessage, useIntl } from "umi";
 
 function Com(props) {
-    const [xxx, setXxx] = useState('')
-    const { RangePicker } = DatePicker;
     const { token } = theme.useToken();
     const [options, setOptions] = useState({});
+    const [mode, setMode] = useState('date');
     const { theme: currentTheme } = useSelector(function (state) {
         return state.global
     });
@@ -43,11 +38,11 @@ function Com(props) {
                 containLabel: true
             },
             legend: {
-                
-            textStyle:{//图例文字的样式
-                color:token.titleColor,
-            }
-              },
+
+                textStyle: {//图例文字的样式
+                    color: token.titleColor,
+                }
+            },
             xAxis: [
                 {
                     type: 'category',
@@ -188,15 +183,19 @@ function Com(props) {
     useEffect(() => {
         getOptions();
     }, [currentTheme]);
-    const disabledDate = (current) => {
-        // Can not select days before today and today
-        return current && current < dayjs().endOf('day');
+    const handleModelChange = e => {
+        setMode(e.target.value);
     };
     return (
         <div className={styles.content}>
             <div className={styles.heard} style={{ backgroundColor: token.titleCardBgc }}>
-                <div>
-                    <RangePicker disabledDate={disabledDate} />
+                <div className={styles.date}>
+                    <DatePicker mode={mode} style={{ marginRight: "20px" }} />
+                    <Radio.Group value={mode} onChange={handleModelChange}>
+                        <Radio.Button value="date">日</Radio.Button>
+                        <Radio.Button value="month">月</Radio.Button>
+                        <Radio.Button value="year">年</Radio.Button>
+                    </Radio.Group>
                 </div>
                 <div className={styles.buttons}>
                     <Button type="primary" className={styles.firstButton}>
@@ -214,19 +213,20 @@ function Com(props) {
                         getTranslation('app.ElectricityStatistics')
                     }
                     content={
-                        <div className={styles.eletric}>
-                            <ReactECharts option={options} style={{ height: '40%',marginBottom:'10%' }} />
-                            <Table
-                                columns={profitTable}
-                                style={{ height: '50%' }}
-                            // data={data.records}
-                            />
-                        </div>
+                        // <div className={styles.eletric}>
+                            <ReactECharts option={options} style={{ height: '100%', marginBottom: '5vh' }} />
+
+                        // </div>
                     }
                 />
 
             </div>
-
+            <div className={styles.profitList} style={{ backgroundColor: token.titleCardBgc }}>
+                <Table
+                    columns={profitTable}
+                // data={data.records}
+                />
+            </div>
         </div>
     )
 }

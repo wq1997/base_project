@@ -30,7 +30,15 @@ const getType = (father, child) => {
                 return 'PCS';
         }
     } else {
-        return child?.parentId ? 'OutPart' : 'Meter'
+        switch (child?.type) {
+            case 3:
+                return 'OutPart';
+            case 105:
+                return 'Meter';
+            default:
+                return 'OutPart';
+        }
+        // return child?.parentId ? 'OutPart' : 'Meter'
     }
 }
 const getTreeData = (data, treeData) => {
@@ -118,8 +126,6 @@ function Com(props) {
     const onSelect = (selectedKeys, e) => {
         setPageType(e.node.type);
         setPageKey(e.node.key);
-        console.log(e.node.title.props.children[2]);
-        // setTitle(e.node.title.props.children[2]);
         history.push(`${pathname}?PageKey=${e.node.key}&id=${e.node.id}&PageType=${e.node.type}&title=${e.node.title.props.children[2]}`);
     }
     const onExpand = (newExpandedKeys) => {
@@ -198,7 +204,6 @@ function Com(props) {
         return loop(defaultData);
     }, [searchValue,defaultDataFlag]);
     const getPage = () => {
-        console.log(pageType);
         switch (pageType) {
             case "ALL"://总览
                 return <Overview />;

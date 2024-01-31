@@ -170,7 +170,7 @@ const Strategy = ({date,setDate}) => {
             description: '',
             start: dayjs(selectInfo.startStr),
             end: dayjs(selectInfo.endStr),
-            allDay: selectInfo.allDay,
+            allDay: selectInfo.allDay,        
         });
     }
     const handleEventClick = (clickInfo) => {
