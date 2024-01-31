@@ -3,6 +3,8 @@ import Box from "../components/box";
 import Electricity from "./Electricity";
 import ElectricityStatistics from "./ElectricityStatistics";
 import IncomeStatistics from "./IncomeStatistics";
+import RealtimeIncome from "./RealtimeIncome";
+import Efficiency from "./Efficiency";
 import styles from "./index.less";
 
 const Microgrids = () => {
@@ -20,10 +22,10 @@ const Microgrids = () => {
                     </div>
                     <div className={styles.topRight}>
                         <Box title="效率" icon="icon-biaotitishi">
-                            
+                            <Efficiency />
                         </Box>
                         <Box title="实时收益" icon="icon-biaotitishi">
-                            
+                            <RealtimeIncome />
                         </Box>
                         <Box title="收益统计(近7日)" icon="icon-biaotitishi">
                             <IncomeStatistics />
