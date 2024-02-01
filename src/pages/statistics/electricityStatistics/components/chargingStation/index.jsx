@@ -1,16 +1,21 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { DatePicker, Button, theme,Radio} from 'antd';
+import { DatePicker, Button, theme, Radio } from 'antd';
 import dayjs from 'dayjs';
 import styles from './index.less'
 import { CardModel } from "@/components";
 import ReactECharts from "echarts-for-react";
 import Table from '@/components/Table.jsx'
 import { useSelector, FormattedMessage, useIntl } from "umi";
+import { getEnergyFeeByTime } from '@/services/report'
+import moment from 'moment';
 
 function Com(props) {
     const { token } = theme.useToken();
     const [options, setOptions] = useState({});
     const [mode, setMode] = useState('date');
+    const [time, setTime] = useState(dayjs(new Date()));
+    const [format, setFormat] = useState('YYYY-MM-DD');
+    const [data, setData] = useState([]);
     const { theme: currentTheme } = useSelector(function (state) {
         return state.global
     });
@@ -74,8 +79,8 @@ function Com(props) {
     const profitTable = [
         {
             title: 'id',
-            dataIndex: 'id',
-            key: 'id',
+            dataIndex: 'idx',
+            key: 'idx',
             width: 100,
         },
         {
@@ -90,57 +95,114 @@ function Com(props) {
             children: [
                 {
                     title: '尖电',
-                    dataIndex: 'street',
-                    key: 'street',
+                    dataIndex: 'tipInEnergy',
+                    key: 'tipInEnergy',
                     width: 150,
                 },
                 {
                     title: '峰电',
-                    dataIndex: 'street',
-                    key: 'street',
+                    dataIndex: 'peakInEnergy',
+                    key: 'peakInEnergy',
                     width: 150,
                 },
                 {
                     title: '平电',
-                    dataIndex: 'street',
-                    key: 'street',
+                    dataIndex: 'flatInEnergy',
+                    key: 'flatInEnergy',
                     width: 150,
                 },
                 {
                     title: '谷电',
-                    dataIndex: 'street',
-                    key: 'street',
+                    dataIndex: 'valleyInEnergy',
+                    key: 'valleyInEnergy',
                     width: 150,
                 },
                 {
                     title: '总计',
-                    dataIndex: 'street',
-                    key: 'street',
+                    dataIndex: 'dayInEnergy',
+                    key: 'dayInEnergy',
                     width: 150,
                 },
             ],
         },
-        
+        {
+            title: '放电量（kWh）',
+            className: currentTheme === 'default' ? 'lightTitleColorLeft' : 'darkTitleColorLeft',
+            children: [
+                {
+                    title: '尖电',
+                    dataIndex: 'tipOutEnergy',
+                    key: 'tipOutEnergy',
+                    width: 150,
+                },
+                {
+                    title: '峰电',
+                    dataIndex: 'peakOutEnergy',
+                    key: 'peakOutEnergy',
+                    width: 150,
+                },
+                {
+                    title: '平电',
+                    dataIndex: 'flatOutEnergy',
+                    key: 'flatOutEnergy',
+                    width: 150,
+                },
+                {
+                    title: '谷电',
+                    dataIndex: 'valleyOutEnergy',
+                    key: 'valleyOutEnergy',
+                    width: 150,
+                },
+                {
+                    title: '总计',
+                    dataIndex: 'dayOutEnergy',
+                    key: 'dayOutEnergy',
+                    width: 150,
+                },
+
+            ],
+        },
     ];
+    const getData = async () => {
+        let httpData = {
+            time:  time.format(format),
+            type: mode === 'date' ? 0 : mode === 'month' ? 2 : 3,
+            plantId: localStorage.getItem('plantId'),
+            valueType: 1
+        }
+        let { data } = await getEnergyFeeByTime(httpData);
+        setData(data.data);
+    }
     useEffect(() => {
         getOptions();
     }, [currentTheme]);
+    useEffect(() => {
+        getData();
+    }, []);
     const handleModelChange = e => {
         setMode(e.target.value);
+        if (e.target.value == 'date') {
+            setFormat('YYYY-MM-DD');
+        }
+        else if (e.target.value === 'month') {
+            setFormat('YYYY-MM');
+        } else {
+            setFormat('YYYY');
+        }
     };
     return (
         <div className={styles.content}>
             <div className={styles.heard} style={{ backgroundColor: token.titleCardBgc }}>
-            <div className={styles.date}>
-                    <DatePicker mode={mode}  defaultValue={dayjs(`${new Date()}`,'YYYY-MM-DD' )} style={{marginRight:"20px"}}/>
+                <div className={styles.date}>
+                    <DatePicker picker={mode} defaultValue={time} format={format} style={{ marginRight: "20px" }} />
                     <Radio.Group value={mode} onChange={handleModelChange}>
-                    <Radio.Button value="date">日</Radio.Button>
-                    <Radio.Button value="month">月</Radio.Button>
-                    <Radio.Button value="year">年</Radio.Button>
-                </Radio.Group>
+                        <Radio.Button value="date">日</Radio.Button>
+                        <Radio.Button value="month">月</Radio.Button>
+                        <Radio.Button value="year">年</Radio.Button>
+                    </Radio.Group>
                 </div>
                 <div className={styles.buttons}>
-                    <Button type="primary" className={styles.firstButton}>
+                    <Button type="primary" className={styles.firstButton} onClick={getData}>
                         <FormattedMessage id='app.Query' />
                     </Button>
                     <Button type="primary" style={{ backgroundColor: token.defaultBg }} >
@@ -160,13 +222,13 @@ function Com(props) {
                         }
                     />
                 </div>
-           
+
 
             </div>
             <div className={styles.profitList} style={{ backgroundColor: token.titleCardBgc }}>
                 <Table
                     columns={profitTable}
-                // data={data.records}
+                    data={data}
                 />
             </div>
         </div>

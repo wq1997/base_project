@@ -6,11 +6,17 @@ import { CardModel } from "@/components";
 import ReactECharts from "echarts-for-react";
 import Table from '@/components/Table.jsx'
 import { useSelector, FormattedMessage, useIntl } from "umi";
+import { getEnergyFeeByTime } from '@/services/report'
 
 function Com(props) {
     const { token } = theme.useToken();
     const [options, setOptions] = useState({});
     const [mode, setMode] = useState('date');
+    const [time, setTime] = useState(dayjs(new Date()));
+    const [format, setFormat] = useState('YYYY-MM-DD');
+    const [data, setData] = useState([]);
+    const [dayIn,setDayIn]=useState([]);
+    const [dayOut,setDayOut]=useState([]);
     const { theme: currentTheme } = useSelector(function (state) {
         return state.global
     });
@@ -70,7 +76,7 @@ function Com(props) {
                             color: token.barColor[0]
                         }
                     },
-                    data: [0.8, 1.6, 0.4, 2.2, 0.8, 1.2, 1.5, 1.7, 1.6]
+                    data: dayIn
                 },
                 {
                     name: '上网量',
@@ -80,7 +86,7 @@ function Com(props) {
                             color: token.barColor[4]
                         }
                     },
-                    data: [0.8, 1.6, 0.4, 2.2, 0.8, 1.2, 1.5, 1.7, 1.6]
+                    data: dayOut
                 }
             ]
         });
@@ -88,8 +94,8 @@ function Com(props) {
     const profitTable = [
         {
             title: 'id',
-            dataIndex: 'id',
-            key: 'id',
+            dataIndex: 'idx',
+            key: 'idx',
             width: 100,
         },
         {
@@ -99,98 +105,120 @@ function Com(props) {
             width: 100,
         },
         {
-            title: '发电量（kWh）',
+            title: '充电量（kWh）',
             className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
             children: [
                 {
                     title: '尖电',
-                    dataIndex: 'street',
-                    key: 'street',
+                    dataIndex: 'tipInEnergy',
+                    key: 'tipInEnergy',
                     width: 150,
                 },
                 {
                     title: '峰电',
-                    dataIndex: 'street',
-                    key: 'street',
+                    dataIndex: 'peakInEnergy',
+                    key: 'peakInEnergy',
                     width: 150,
                 },
                 {
                     title: '平电',
-                    dataIndex: 'street',
-                    key: 'street',
+                    dataIndex: 'flatInEnergy',
+                    key: 'flatInEnergy',
                     width: 150,
                 },
                 {
                     title: '谷电',
-                    dataIndex: 'street',
-                    key: 'street',
+                    dataIndex: 'valleyInEnergy',
+                    key: 'valleyInEnergy',
                     width: 150,
                 },
                 {
                     title: '总计',
-                    dataIndex: 'street',
-                    key: 'street',
+                    dataIndex: 'dayInEnergy',
+                    key: 'dayInEnergy',
                     width: 150,
                 },
             ],
         },
         {
-            title: '发电量（kWh）',
+            title: '放电量（kWh）',
             className: currentTheme === 'default' ? 'lightTitleColorLeft' : 'darkTitleColorLeft',
             children: [
                 {
                     title: '尖电',
-                    dataIndex: 'street',
-                    key: 'street',
+                    dataIndex: 'tipOutEnergy',
+                    key: 'tipOutEnergy',
                     width: 150,
                 },
                 {
                     title: '峰电',
-                    dataIndex: 'street',
-                    key: 'street',
+                    dataIndex: 'peakOutEnergy',
+                    key: 'peakOutEnergy',
                     width: 150,
                 },
                 {
                     title: '平电',
-                    dataIndex: 'street',
-                    key: 'street',
+                    dataIndex: 'flatOutEnergy',
+                    key: 'flatOutEnergy',
                     width: 150,
                 },
                 {
                     title: '谷电',
-                    dataIndex: 'street',
-                    key: 'street',
+                    dataIndex: 'valleyOutEnergy',
+                    key: 'valleyOutEnergy',
                     width: 150,
                 },
                 {
                     title: '总计',
-                    dataIndex: 'street',
-                    key: 'street',
+                    dataIndex: 'dayOutEnergy',
+                    key: 'dayOutEnergy',
                     width: 150,
                 },
 
             ],
         },
-        {
-            title: '实际收益',
-            dataIndex: 'date',
-            key: 'date',
-            width: 100,
-        },
-
     ];
-
+    const getData = async () => {
+        let httpData = {
+            time:  time.format(format),
+            type: mode === 'date' ? 0 : mode === 'month' ? 2 : 3,
+            plantId: localStorage.getItem('plantId'),
+            valueType: 2
+        };
+        let arrIn=[];
+        let arrOut=[];
+        let { data } = await getEnergyFeeByTime(httpData);
+        data?.data.map((it)=>{
+            arrIn.push(it.dayInEnergy);
+            arrOut.push(it.dayOutEnergy)
+        })
+        setDayIn(arrIn);
+        setDayOut(arrOut);
+        setData(data.data);
+    }
     useEffect(() => {
         getOptions();
     }, [currentTheme]);
+    useEffect(() => {
+        getData();
+    }, []);
     const handleModelChange = e => {
         setMode(e.target.value);
+        if (e.target.value == 'date') {
+            setFormat('YYYY-MM-DD');
+        }
+        else if (e.target.value === 'month') {
+            setFormat('YYYY-MM');
+        } else {
+            setFormat('YYYY');
+        }
     };
+
     return (
         <div className={styles.content}>
             <div className={styles.heard} style={{ backgroundColor: token.titleCardBgc }}>
                 <div className={styles.date}>
-                    <DatePicker mode={mode} style={{ marginRight: "20px" }} />
+                    <DatePicker picker={mode} defaultValue={time} format={format} style={{ marginRight: "20px" }} />
                     <Radio.Group value={mode} onChange={handleModelChange}>
                         <Radio.Button value="date">日</Radio.Button>
                         <Radio.Button value="month">月</Radio.Button>
@@ -198,7 +226,7 @@ function Com(props) {
                     </Radio.Group>
                 </div>
                 <div className={styles.buttons}>
-                    <Button type="primary" className={styles.firstButton}>
+                    <Button type="primary" className={styles.firstButton} onClick={getData}>
                         <FormattedMessage id='app.Query' />
                     </Button>
                     <Button type="primary" style={{ backgroundColor: token.defaultBg }} >
@@ -214,7 +242,7 @@ function Com(props) {
                     }
                     content={
                         // <div className={styles.eletric}>
-                            <ReactECharts option={options} style={{ height: '100%', marginBottom: '5vh' }} />
+                        <ReactECharts option={options} style={{ height: '100%', marginBottom: '5vh' }} />
 
                         // </div>
                     }
@@ -224,7 +252,7 @@ function Com(props) {
             <div className={styles.profitList} style={{ backgroundColor: token.titleCardBgc }}>
                 <Table
                     columns={profitTable}
-                // data={data.records}
+                    data={data}
                 />
             </div>
         </div>

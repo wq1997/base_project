@@ -177,11 +177,40 @@ function Com(props) {
             setFormat('YYYY');
         }
     };
+    const profitTable = [
+        {
+            title: 'id',
+            dataIndex: 'id',
+            key: 'id',
+            width: 100,
+        },
+        {
+            title: '日期',
+            dataIndex: 'date',
+            key: 'date',
+            width: 100,
+        },
+        {
+            title: '上网电量',
+            dataIndex: 'date',
+            key: 'date',
+            width: 100,
+        },
+        {
+            title: '日期',
+            dataIndex: 'date',
+            key: 'date',
+            width: 100,
+        },
+      
+      
+
+    ];
     return (
         <div className={styles.content}>
             <div className={styles.heard} style={{ backgroundColor: token.titleCardBgc }}>
                 <div className={styles.date}>
-                    <DatePicker mode={mode}  defaultValue={time} style={{ marginRight: "20px" }} format={format} />
+                    <DatePicker picker={mode}  defaultValue={time} format={format} style={{ marginRight: "20px" }}  />
                     <Radio.Group value={mode} onChange={handleModelChange}>
                         <Radio.Button value="date">日</Radio.Button>
                         <Radio.Button value="month">月</Radio.Button>

@@ -189,7 +189,7 @@ function Com(props) {
         <div className={styles.content}>
             <div className={styles.heard} style={{ backgroundColor: token.titleCardBgc }}>
             <div className={styles.date}>
-                    <DatePicker mode={mode} style={{marginRight:"20px"}}/>
+                    <DatePicker picker={mode} style={{marginRight:"20px"}}/>
                     <Radio.Group value={mode} onChange={handleModelChange}>
                     <Radio.Button value="date">日</Radio.Button>
                     <Radio.Button value="month">月</Radio.Button>
@@ -198,7 +198,7 @@ function Com(props) {
                 </div>
 
                 <div className={styles.buttons}>
-                    <Button type="primary" className={styles.firstButton}>
+                      <Button type="primary" className={styles.firstButton}>
                         查询
                     </Button>
                     <Button type="primary" style={{ backgroundColor: token.defaultBg }} >
