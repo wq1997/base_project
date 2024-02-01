@@ -1,0 +1,112 @@
+.content{
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-auto-columns: 1fr;
+    gap: 10px 10px;
+    grid-auto-flow: row;
+    grid-template-areas:
+        "a a b b c c"
+        "d d e e f f"
+        "g g g h h h";
+
+    .flex-common {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #212849;
+        .label{
+            color: white;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        @media screen and (min-width: 2000px){
+            .label{
+                font-size: 20px;
+            }
+        }
+        @media screen and (min-width: 1000px) and (max-width: 2000px){
+            .label{
+                font-size: 16px;
+            }
+        }
+        @media screen and (max-width: 1000px){
+            .label{
+                font-size: 12px;
+            }
+        }
+        .bottom{
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            .bottomData{
+                margin-right: 5px;
+                font-family: DingTalkJinBuTi;
+            }
+            .bottomUnit{
+                color: white;
+            }
+            @media screen and (min-width: 2000px){
+                .bottomData{
+                    font-size: 20px;
+                }
+                .bottomUnit{
+                    font-size: 17px;
+                }
+            }
+            @media screen and (min-width: 1000px) and (max-width: 2000px){
+                .bottomData{
+                    font-size: 16px;
+                }
+                .bottomUnit{
+                    font-size: 13px;
+                }
+            }
+            @media screen and (max-width: 1000px){
+                .bottomData{
+                    font-size: 12px;
+                }
+                .bottomUnit{
+                    font-size: 9px;
+                }
+            }
+        }
+    }
+
+    .a { 
+        grid-area: a; 
+        .flex-common;
+    }
+    .b { 
+        grid-area: b; 
+        .flex-common;
+    }
+    .c { 
+        grid-area: c; 
+        .flex-common;
+    }
+    .d { 
+        grid-area: d; 
+        .flex-common;
+    }
+    .e { 
+        grid-area: e; 
+        .flex-common;
+    }
+    .f { 
+        grid-area: f; 
+        .flex-common;
+    }
+    .g { 
+        grid-area: g; 
+        .flex-common;
+    }
+    .h { 
+        grid-area: h; 
+        .flex-common;
+    }
+}

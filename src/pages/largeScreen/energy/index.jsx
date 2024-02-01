@@ -5,7 +5,7 @@ import ChargeDischarge from "./ChargeDischarge";
 import RealtimeAlarm from "./RealtimeAlarm";
 import PowerCurve from "./PowerCurve";
 import RealtimeIncome from "./RealtimeIncome";
-import Efficiency from "./Efficiency";
+import Device from "./Device";
 import styles from "./index.less";
 
 const Energy = () => {
@@ -22,8 +22,8 @@ const Energy = () => {
                         </Box>
                     </div>
                     <div className={styles.topRight}>
-                        <Box title="效率" icon="icon-biaotitishi">
-                            <Efficiency/>
+                        <Box title="电站设备统计" icon="icon-biaotitishi">
+                            <Device />
                         </Box>
                         <Box title="实时收益" icon="icon-biaotitishi">
                             <RealtimeIncome />

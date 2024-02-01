@@ -1,7 +1,6 @@
 const App = "@/pages/App";
 const Layout = "@/layouts/baseLayout";
 const Login = "@/pages/account/login";
-const deviceMap = "@/pages/deviceMap";
 const LargeScreen = "@/pages/largeScreen";
 import menuRoutes from '../router/menuRoute'
 export default Routes = [
@@ -17,10 +16,6 @@ export default Routes = [
           ...menuRoutes 
         ]
       },
-      {
-        path: '/deviceMap',
-        component: deviceMap
-       },
        {
         path: '/largeScreen',
         component: LargeScreen

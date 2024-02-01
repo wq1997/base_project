@@ -30,14 +30,20 @@ const PowerCurve = () => {
             xAxis: {
               type: 'category',
               boundaryGap: false,
-              data: xAxisData
+              data: xAxisData,
+              axisLine: {
+                lineStyle: {
+                    color: 'rgba(150, 164, 244, 0.3)'
+                },
+                width: 5
+              },
             },
             yAxis: {
               type: 'value',
               splitLine: {
                 show: true,
                 lineStyle: {
-                    color: '#979797'
+                   color: 'rgba(150, 164, 244, 0.3)'
                 }
               }
             },

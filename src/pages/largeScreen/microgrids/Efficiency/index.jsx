@@ -4,29 +4,17 @@ import styles from "./index.less";
 const Efficiency = () => {
     const [data, setData] = useState([
         {
-            data: 10,
-            unit: '台',
-            label: '设备告警',
-            color: '#FF6A0B'
+            data: 99,
+            unit: '%',
+            label: '储能日充放电效率',
+            color: '#03B4B4'
         },
         {
-            data: 980,
-            unit: '台',
-            label: '设备在线',
-            color: '#83FF73'
+            data: 98,
+            unit: '%',
+            label: '储能累计充放电效率',
+            color: '#FF9100'
         },
-        {
-            data: 1000,
-            unit: '台',
-            label: '总设备',
-            color: 'white'
-        },
-        {
-            data: 980,
-            unit: '台',
-            label: '设备离线',
-            color: 'white'
-        }
     ])
 
     return (
