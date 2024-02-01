@@ -5,6 +5,7 @@ import ElectricityStatistics from "./ElectricityStatistics";
 import IncomeStatistics from "./IncomeStatistics";
 import RealtimeIncome from "./RealtimeIncome";
 import Efficiency from "./Efficiency";
+import PowerCurve from "./PowerCurve";
 import styles from "./index.less";
 
 const Microgrids = () => {
@@ -34,7 +35,7 @@ const Microgrids = () => {
                 </div>
                 <div className={styles.bottom}>
                     <Box title="功率曲线" icon="icon-biaotitishi">
-                        
+                        <PowerCurve />
                     </Box>
                 </div>
             </div>
