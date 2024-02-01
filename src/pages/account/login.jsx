@@ -38,7 +38,7 @@ const Login = () => {
       setLocalStorage("Token", data?.token);
       setLocalStorage("userName", data?.userName);
       message.success('登录成功');
-      history.push("/deviceMap");
+      history.push("/largeScreen");
       dispatch({
         type: 'user/updateState',
         payload: {

@@ -113,7 +113,18 @@ const PowerCurve = () => {
         getOptions();
     }, []);
     
-    return <ReactECharts option={options} style={{height: '100%'}} />;
+    return (
+        <div
+            style={{
+                width: '100%',
+                height: '100%',
+                padding: '0 60px',
+                boxSizing: 'border-box'
+            }}
+        >
+            <ReactECharts option={options} style={{height: '100%'}} />
+        </div>
+    )
 }
 
 export default PowerCurve;
