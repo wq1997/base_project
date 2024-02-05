@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { message, Button, Form, Input, Modal, Radio, DatePicker, Space } from "antd";
+import { message, Button, Form, Input, Modal, Radio, DatePicker, Space, InputNumber } from "antd";
 import {
     getSearchInitData as getSearchInitDataServer,
     saveEnterRecord as saveEnterRecordServer,
 } from "@/services/invitation";
 import dayjs from "dayjs";
+import "./index.less";
 
 const Company = ({ open, onClose }) => {
     const [form] = Form.useForm();
@@ -36,7 +37,11 @@ const Company = ({ open, onClose }) => {
     };
 
     useEffect(() => {
-        open && getSearchInitData();
+        if (open) {
+            getSearchInitData();
+        } else {
+            form.resetFields();
+        }
     }, [open]);
 
     return (
@@ -108,7 +113,12 @@ const Company = ({ open, onClose }) => {
                         },
                     ]}
                 >
-                    <Input placeholder="请输入度电报价" />
+                    <InputNumber
+                        style={{ width: "100%" }}
+                        placeholder="请输入度电报价"
+                        min={0.01}
+                        step="0.01"
+                    />
                 </Form.Item>
 
                 <Form.Item
@@ -121,7 +131,12 @@ const Company = ({ open, onClose }) => {
                         },
                     ]}
                 >
-                    <Input placeholder="请输入响应功率" />
+                    <InputNumber
+                        style={{ width: "100%" }}
+                        placeholder="请输入响应功率"
+                        min={0.01}
+                        step="0.01"
+                    />
                 </Form.Item>
 
                 <Form.Item

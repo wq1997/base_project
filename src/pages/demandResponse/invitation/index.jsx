@@ -3,10 +3,12 @@ import { Button, Space, Table, message, Modal, DatePicker, Tooltip } from "antd"
 import { PlusOutlined } from "@ant-design/icons";
 import { SearchInput } from "@/components";
 import EnterRecord from "./EnterRecord";
-import InvitationSplit from './InvitationSplit'
+import InvitationSplit from "./InvitationSplit";
+import Detail from "./Detail";
 import {
     getInviteList as getInviteListServer,
     getSearchInitData as getSearchInitDataServer,
+    sureInvite as sureInviteServer,
     deleteInvite as deleteInviteServer,
     invalidInvite as invalidInviteServer,
 } from "@/services/invitation";
@@ -14,6 +16,7 @@ import { DEFAULT_PAGINATION } from "@/utils/constants";
 import "./index.less";
 
 const Account = () => {
+    const [canSure, setCanSure] = useState(true);
     const [canDelete, setCanDelete] = useState(true);
     const [canInvalid, setCanInvalid] = useState(true);
     const releaseTimeRef = useRef();
@@ -42,7 +45,8 @@ const Account = () => {
     const [userList, setUserList] = useState([]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [enterRecordOpen, setEnterRecordOpen] = useState(false);
-    const [invitationSplitOpen, setInvitationSplitOpen] = useState(false);
+    const [invitationSplitId, setInvitationSplitId] = useState();
+    const [detailId, setDetailId] = useState(false);
 
     const columns = [
         {
@@ -99,18 +103,22 @@ const Account = () => {
         {
             title: "操作",
             dataIndex: "operate",
-            render: (_, { supportSplit, supportReSplit }) => {
-                if (supportSplit) {
-                    return <a>邀约拆分</a>;
-                } else if (supportReSplit) {
-                    return <a>重新拆分</a>;
-                }
+            render: (_, { id, supportSplit, supportReSplit }) => {
+                return (
+                    <Space>
+                        <a onClick={() => setInvitationSplitId(id)}>
+                            {supportSplit ? "邀约拆分" : supportReSplit ? "重新拆分" : ""}
+                        </a>
+                        <a onClick={() => setDetailId(id)}>详情</a>
+                    </Space>
+                );
             },
         },
     ];
 
     const onSelectChange = (newSelectedRowKeys, newSelectedRows) => {
-        console.log(newSelectedRows);
+        const hasNoSure = Boolean(newSelectedRows?.some(item => item.supportConfirm == false));
+        setCanSure(!hasNoSure);
         const hasNoDelete = Boolean(newSelectedRows?.some(item => item.supportDelete == false));
         setCanDelete(!hasNoDelete);
         const hasNoInvalid = Boolean(newSelectedRows?.some(item => item.supportInvalid == false));
@@ -185,25 +193,42 @@ const Account = () => {
         getInviteList();
     };
 
-    const handleOperate = type => {
-        const typeZh = type ? "作废" : "删除";
+    const handleOperate = typeId => {
+        const operates = {
+            0: {
+                type: "确认",
+                tip: "邀约确认后不可取消",
+                fn: sureInviteServer,
+            },
+            1: {
+                type: "删除",
+                tip: "删除后不可恢复",
+                fn: deleteInviteServer,
+            },
+            2: {
+                type: "作废",
+                tip: "作废后不可取消",
+                fn: invalidInviteServer,
+            },
+        };
+        const { type, tip, fn } = operates[typeId];
         if (selectedRowKeys?.length == 0) {
-            return message.info(`请先勾选需要${typeZh}的数据`);
+            return message.info(`请先勾选需要${type}的数据`);
         }
         Modal.confirm({
-            title: `确定${typeZh}?`,
-            content: `${typeZh}后不可恢复`,
+            title: `确定${type}？`,
+            content: tip,
             onOk: async () => {
-                const fn = type ? invalidInviteServer : deleteInviteServer;
                 const res = await fn(selectedRowKeys);
                 if (res?.data?.status == "SUCCESS") {
-                    message.success(`${typeZh}成功`);
+                    message.success(`${type}成功`);
                     setPagination({
                         current: 1,
                     });
                     setSelectedRowKeys([]);
                     getInviteList();
                 }
+                setSelectedRowKeys([]);
             },
         });
     };
@@ -222,7 +247,19 @@ const Account = () => {
                     resFlag && getInviteList();
                 }}
             />
-            <InvitationSplit open={invitationSplitOpen} />
+            <Detail
+                detailId={detailId}
+                onClose={() => {
+                    setDetailId();
+                }}
+            />
+            <InvitationSplit
+                invitationSplitId={invitationSplitId}
+                onClose={resFlag => {
+                    setInvitationSplitId();
+                    resFlag && getInviteList();
+                }}
+            />
             <Space className="search">
                 <div>
                     <span>邀约发布时间：</span>
@@ -294,7 +331,7 @@ const Account = () => {
                         responseTypeRef.current = value;
                         setResponseType(value);
                     }}
-                />{" "}
+                />
                 <SearchInput
                     label="响应要求"
                     type="select"
@@ -336,9 +373,15 @@ const Account = () => {
                         >
                             手工录入
                         </Button>
-                        <Button type="primary" onClick={() => setEnterRecordOpen(true)}>
-                            邀约确认
-                        </Button>
+                        <Tooltip placement="bottom" title="只有邀约状态为【未确认】的数据可以确认">
+                            <Button
+                                type="primary"
+                                disabled={!canSure}
+                                onClick={() => handleOperate(0)}
+                            >
+                                邀约确认
+                            </Button>
+                        </Tooltip>
                         <Tooltip
                             placement="bottom"
                             title="只有邀约确认状态为【未确认】【已过期】的数据可以删除"
@@ -347,7 +390,7 @@ const Account = () => {
                                 type="primary"
                                 danger
                                 disabled={!canDelete}
-                                onClick={() => handleOperate(0)}
+                                onClick={() => handleOperate(1)}
                             >
                                 批量删除
                                 {selectedRowKeys?.length ? (
@@ -365,7 +408,7 @@ const Account = () => {
                                 type="primary"
                                 danger
                                 disabled={!canInvalid}
-                                onClick={() => handleOperate(1)}
+                                onClick={() => handleOperate(2)}
                             >
                                 批量作废
                                 {selectedRowKeys?.length ? (
