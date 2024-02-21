@@ -3,8 +3,22 @@ import ElectricTopLeftImg from "../../../../../public/images/electric_top_left.p
 import ElectricTopRightImg from "../../../../../public/images/electric_top_right.png";
 import ElectricBottomLeftImg from "../../../../../public/images/electric_bottom_left.png";
 import ElectricBottomRightImg from "../../../../../public/images/electric_bottom_right.png";
+import { getEnergyPowerStatisticsServe } from "@/services/bigScreen";
+import { useEffect, useState } from "react";
 
 const ElectricityStatistics = () => {
+    const [ data, setData ] = useState();
+    const getEnergyPowerStatistics = async () => {
+        const res = await getEnergyPowerStatisticsServe();
+        if(res?.data?.data){
+            setData(res?.data?.data);
+        }
+    }
+
+    useEffect(() => {
+        getEnergyPowerStatistics();
+    }, []);
+
     return (
         <div className={styles.content}>
             <div className={styles.contentBottomLeftTopContentLeftTop}>
@@ -13,7 +27,7 @@ const ElectricityStatistics = () => {
                     <div className={styles.contentBottomLeftTopContentLeftTopLeftContent}>
                         <div className={styles.contentBottomLeftTopContentLeftTopLeftContentTop}>
                             <div className={styles.contentBottomLeftTopContentLeftTopLeftContentTopData}>
-                                750000
+                                {data?.todayCharge}
                             </div>
                             <div className={styles.contentBottomLeftTopContentLeftTopLeftContentTopUnit}>
                                 kwh
@@ -29,14 +43,14 @@ const ElectricityStatistics = () => {
                     <div className={styles.contentBottomLeftTopContentLeftTopRightContent}>
                         <div className={styles.contentBottomLeftTopContentLeftTopRightContentTop}>
                             <div className={styles.contentBottomLeftTopContentLeftTopRightContentTopData}>
-                                750000
+                                {data?.todayDisCharge}
                             </div>
                             <div className={styles.contentBottomLeftTopContentLeftTopRightContentTopUnit}>
                                 kwh
                             </div>
                         </div>
                         <div className={styles.contentBottomLeftTopContentLeftTopRightContentBottom}>
-                            今日充电量
+                            今日放电量
                         </div>
                     </div>
                 </div>
@@ -47,7 +61,7 @@ const ElectricityStatistics = () => {
                     <div className={styles.contentBottomLeftTopContentLeftBottomLeftContent}>
                         <div className={styles.contentBottomLeftTopContentLeftBottomLeftContentTop}>
                             <div className={styles.contentBottomLeftTopContentLeftBottomLeftContentTopData}>
-                                75000
+                                {data?.totalCharge}
                             </div>
                             <div className={styles.contentBottomLeftTopContentLeftBottomLeftContentTopUnit}>
                                 kwh
@@ -63,14 +77,14 @@ const ElectricityStatistics = () => {
                     <div className={styles.contentBottomLeftBottomContentLeftTopRightContent}>
                         <div className={styles.contentBottomLeftBottomContentLeftTopRightContentTop}>
                             <div className={styles.contentBottomLeftBottomContentLeftTopRightContentTopData}>
-                                75000
+                                {data?.totalDisCharge}
                             </div>
                             <div className={styles.contentBottomLeftBottomContentLeftTopRightContentTopUnit}>
                                 kwh
                             </div>
                         </div>
                         <div className={styles.contentBottomLeftBottomContentLeftTopRightContentBottom}>
-                            总充电量
+                            总放电量
                         </div>
                     </div>
                 </div>

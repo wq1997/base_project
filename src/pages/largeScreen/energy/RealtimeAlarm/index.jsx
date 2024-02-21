@@ -1,51 +1,41 @@
 import { ScorllTable } from "@/components";
 import { useState, useEffect } from "react";
+import { getLatestAlarmsServe } from "@/services/bigScreen";
 
 const RealtimeAlarm = () => {
     const [dataSource, setDataSource] = useState([]);
     const columns = [
         {
             title: '告警类别',
-            key: '7'
+            key: 'type'
         },
         {
             title: '告警等级',
-            key: '6'
+            key: 'prior'
         },
         {
             title: '告警描述',
-            key: '5'
+            key: 'desc'
         },
         {
             title: '设备名称',
-            key: '4'
+            key: 'deviceName'
         },
         {
             title: '电站名称',
-            key: '3'
-        },
-        {
-            title: '告警状态',
-            key: '2'
+            key: 'plantName'
         },
         {
             title: '开始时间',
-            key: '1'
+            key: 'begin'
         },
     ]
 
-    const getList = () => {
-        setDataSource([
-            {
-                7: '储能',
-                6: '高级',
-                5: 'PCS通讯故障',
-                4: 'PCS',
-                3: 'AAA',
-                2: '告警中',
-                1: '2023.08.15 16:00'
-            }
-        ]);
+    const getList = async () => {
+        const res = await getLatestAlarmsServe();
+        if(res?.data?.data){
+            setDataSource(res?.data?.data);
+        }
     }
 
     useEffect(()=>{

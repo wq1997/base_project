@@ -1,14 +1,23 @@
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect } from "react";
+import { getEnergyWeeklyChargeDisChargeServe } from "@/services/bigScreen";
 import * as echarts from "echarts";
 
 const ChargeDischarge = () => {
     const [options, setOptions] = useState({});
-    const getOptions = () => {
-        const xAxisData = ['11/11','11/12','11/13','11/14','11/15','11/16','11/17'];
-        const data1 = [200,300,500,300,200,400,300];
-        const data2 = [400,300,400,300,100,500,400];
-        const data3 = [80,90,70,80,90,70,90];
+    const getOptions = async () => {
+        const res = await getEnergyWeeklyChargeDisChargeServe();
+        let xAxisData = [];
+        let data1 = [];
+        let data2 = [];
+        let data3 = [];
+        if(res?.data?.data){
+            const data = res?.data?.data;
+            xAxisData = data.map(item => item.date);
+            data1 = data.map(item => item.dayChargeEnergy);
+            data2 = data.map(item => item.dayDischargeEnergy);
+            data3 = data.map(item => item.efficiency);
+        }
         setOptions({
             color: ['#03B4B4'],
             tooltip: {
