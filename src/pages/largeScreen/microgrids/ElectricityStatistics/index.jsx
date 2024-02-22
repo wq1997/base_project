@@ -1,20 +1,33 @@
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect } from "react";
+import { getGccWeeklyPowerStatisticsServe } from "@/services/bigScreen"
 
 const ElectricityStatistics = () => {
     const [options, setOptions] = useState({});
-    const getOptions = () => {
+    const getOptions = async () => {
+        const res = await getGccWeeklyPowerStatisticsServe();
+        let area = [];
+        let data1 = [];
+        let data2 = [];
+        let data3 = [];
+        let data4 = [];
+
+        if(res?.data?.data){
+            const data = res?.data?.data;
+            area = data?.map(item => item?.date);
+            data1 = data?.map(item => item?.energyCharge);
+            data2 = data?.map(item => item?.energyDisCharge);
+            data3 = data?.map(item => item?.pvGenerate);
+            data4 = data?.map(item => item?.pileCharge);
+        }
         const data = {
-                area: ['1/3', '1/4', '1/5', '1/6', '1/7', '1/8', '1/9'],
+                area,
                 legend: ['储能充电量', '储能放电量', '光伏发电量', '充电桩充电量'],
                 data: [
-                    [1320, 1302, 901, 634, 1390, 1330, 1320, 1000, 500],
-                    [320, 302, 301, 334, 390, 330, 320, 100, 50],
-                    [320, 302, 301, 334, 390, 330, 320, 100, 50],
-                    [320, 302, 301, 334, 390, 330, 320, 100, 50],
-                    [320, 302, 301, 334, 390, 330, 320, 100, 50],
-                    [320, 302, 301, 334, 390, 330, 320, 100, 50],
-                    [320, 302, 301, 334, 390, 330, 320, 100, 50]
+                    data1,
+                    data2,
+                    data3,
+                    data4
                 ]
         }
         const colors = ['#03B4B4', '#7F87FF', '#F09B14', '#1DA3FF']

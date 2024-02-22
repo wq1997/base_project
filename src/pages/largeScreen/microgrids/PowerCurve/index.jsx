@@ -62,7 +62,7 @@ const PowerCurve = () => {
                     show: false,
                 },
                 data: data.area,
-                // boundaryGap: false,
+                boundaryGap: false,
             },
             yAxis: {
                 type: 'value',
@@ -98,10 +98,10 @@ const PowerCurve = () => {
                 areaStyle: {
                     normal: {
                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                           { offset: 0,  color: colors[i]}, 
-                           { offset: 0.7,  color: addColorAlpha(colors[i], 0.3)}
+                           { offset: 0,  color: addColorAlpha(colors[i], 0.5)}, 
+                           { offset: 0.7,  color: addColorAlpha(colors[i], 0.1)},
+                           { offset: 1,  color: addColorAlpha(colors[i], 0)}
                        ], false),
-    
                  }
              },
             data: data.data[i]}

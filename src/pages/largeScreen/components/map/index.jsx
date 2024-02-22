@@ -84,7 +84,7 @@ function MapCom(props) {
                         areaColor:'none',
                         borderColor: '#00ffff',
                         borderWidth: 1.8,
-                        shadowColor: '#00ffff',
+                        // shadowColor: '#00ffff',
                     },
                 },
                 top: 5,
@@ -101,7 +101,7 @@ function MapCom(props) {
                     //涟漪效应
                     rippleEffect: {
                         brushType: "stroke",
-                        color: "#00CD97",
+                        color: "#FFF01F",
                         period: 10,//周期
                         scale: 10//规模
                     },
@@ -115,7 +115,7 @@ function MapCom(props) {
                     //     fontSize: "15",
                     // },
                     itemStyle: {
-                        color: "#00CD97",
+                        color: "#FFF01F",
                         shadowBlur: 4,
                         shadowColor: "#333"
                     },

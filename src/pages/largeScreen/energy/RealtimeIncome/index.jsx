@@ -1,25 +1,54 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useIcon from "@/hooks/useIcon";
 import styles from "./index.less";
+import { getDtuStatisticsServe } from "@/services/bigScreen";
 
 const RealtimeIncome = () => {
     const Icon = useIcon();
     const [data, setData] = useState([
         {
-            data: 10000,
+            data: 0,
             unit: '万',
             label: '总收益',
             icon: 'icon-zongshouyi',
             color: '#F99C1A'
         },
         {
-            data: 100,
+            data: 0,
             unit: '万',
             label: '日收益',
             icon: 'icon-rishouyi1',
             color: '#16D0FE'
         }
     ])
+
+    const getDtuStatistics = async () => {
+        const res = await getDtuStatisticsServe();
+        if(res?.data?.data){
+            const data = res?.data?.data;
+            setData([
+                {
+                    data: data?.totalProfit,
+                    unit: '万',
+                    label: '总收益',
+                    icon: 'icon-zongshouyi',
+                    color: '#F99C1A'
+                },
+                {
+                    data: data?.dailyProfit,
+                    unit: '万',
+                    label: '日收益',
+                    icon: 'icon-rishouyi1',
+                    color: '#16D0FE'
+                }
+            ])
+        }
+    }
+
+    useEffect(() => {
+        getDtuStatistics();
+    }, [])
+
     return (
         <div className={styles.content}>
             {

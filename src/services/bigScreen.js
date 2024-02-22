@@ -1,71 +1,31 @@
-import axiosInstance from "./request";
+import axiosInstance from "./request";         
 
-export const getAllDtuRunStatusServe = (params) => {
-    return axiosInstance.get(`/dtu/getAllDtuRunStatus`, {
-        params
-    });
+const path = '/total'
+
+export const getEnergyPowerStatisticsServe = () => {
+    return axiosInstance.get(`${path}/getEnergyPowerStatistics`);
 }
 
-export const getAllDtuEfficiencyServe = (params) => {
-    return axiosInstance.get(`/dtu/getAllDtuEfficiency`, {
-        params
-    });
+export const getEnergyWeeklyChargeDisChargeServe = () => {
+    return axiosInstance.get(`${path}/getEnergyWeeklyChargeDisCharge`);
 }
 
-export const getDayCarbonServe = (params) => {
-    return axiosInstance.get(`/getDayCarbon`, {
-        params
-    });
+export const getLatestAlarmsServe = () => {
+    return axiosInstance.get(`${path}/getLatestAlarms`);
 }
 
-export const getAllPlantFeeListServe = (params) => {
-    return axiosInstance.get(`/getAllPlantFeeList`, {
-        params
-    });
+export const getDtuStatisticsServe = () => {
+    return axiosInstance.get(`${path}/getDtuStatistics`);
 }
 
-export const getOMInfoServe = (params) => {
-    return axiosInstance.get(`/getOMInfo`, {
-        params
-    });
+export const getGccPowerStatisticsServe = () => {
+    return axiosInstance.get(`${path}/getGccPowerStatistics`);
 }
 
-export const getAlmCountServe = (params) => {
-    return axiosInstance.get(`/getAlmCount`, {
-        params
-    });
+export const getGccWeeklyPowerStatisticsServe = () => {
+    return axiosInstance.get(`${path}/getGccWeeklyPowerStatistics`);
 }
 
-export const getOMOverviewServe = (params) => {
-    return axiosInstance.get(`/getOMOverview`, {
-        params
-    });
+export const getGccWeeklyProfitServe = () => {
+    return axiosInstance.get(`${path}/getGccWeeklyProfit`);
 }
-
-export const getAllPlantList = (params) => {
-    return axiosInstance.get(`/plant/getAllPlantList`, {
-        params
-    })
-
-}
-export const getAlmListServe = (params) => {
-    return axiosInstance.get(`/getAlmList`, {
-        params
-    });
-}
-
-export const sysDb = (params) => {
-    return axiosInstance.get(`/plant/sysDb`, { params })
-}
-
-export const getTotalDayFeeServe = (params) => {
-    return axiosInstance.get(`/getTotalDayFee`, {
-        params
-    });
-}
-
-export const getAllDtuIdsServe = (params) => {
-    return axiosInstance.get(`/dtu/getAllDtuIds`, {
-        params
-    });
-}             
