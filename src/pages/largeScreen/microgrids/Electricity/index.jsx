@@ -56,7 +56,59 @@ const Electricity = () => {
 
     const getGccPowerStatistics = async () => {
         const res = await getGccPowerStatisticsServe();
-        console.log(res);
+        if(res?.data?.data){
+            const data = res?.data?.data;
+            setData([
+                {
+                    label: '储能日充',
+                    data: data?.energyDailyCharge,
+                    unit: 'kWh',
+                    color: '#03B4B4'
+                },
+                {
+                    label: '储能日放',
+                    data: data?.energyDailyDisCharge,
+                    unit: 'kWh',
+                    color: '#FE8F22'
+                },
+                {
+                    label: '储能总充',
+                    data: data?.energyTotalCharge,
+                    unit: 'kWh',
+                    color: '#21D563'
+                },
+                {
+                    label: '储能总放',
+                    data: data?.energyTotalDisCharge,
+                    unit: 'kWh',
+                    color: '#F88181'
+                },
+                {
+                    label: '光伏日发',
+                    data: data?.pvDailyGenerate,
+                    unit: 'kWh',
+                    color: '#398EF8'
+                },
+                {
+                    label: '光伏累计发电',
+                    data: data?.pvTotalGenerate,
+                    unit: 'GWh',
+                    color: '#A143FA'
+                },
+                {
+                    label: '今日并网量',
+                    data: data?.dailyGridOn,
+                    unit: 'kWh',
+                    color: '#F6DE20'
+                },
+                {
+                    label: '累计并电量',
+                    data: data?.totalGridOn,
+                    unit: 'GWh',
+                    color: '#03B4B4'
+                },
+            ])
+        }
     }
 
     useEffect(()=>{

@@ -37,8 +37,8 @@ const Login = () => {
       const data = res?.data.data;
       setLocalStorage("Token", data?.token);
       setLocalStorage("userName", data?.userName);
+      setLocalStorage("sceneType", data?.sceneType);
       message.success('登录成功');
-      history.push("/largeScreen");
       dispatch({
         type: 'user/updateState',
         payload: {
@@ -47,6 +47,7 @@ const Login = () => {
           }
         }
       })
+      history.push("/largeScreen");
     } else {
       message.error(res.data.msg);
       if (res?.data.code === '407') {

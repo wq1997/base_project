@@ -1,13 +1,16 @@
 import { useState } from "react";
 import Energy from "./energy";
 import Microgrids from "./microgrids";
+import { useSelector } from "umi";
+import { getLocalStorage } from "@/utils/utils";
 
 const LargeScreen = () => {
-    const [isEnergy, setIsEnergy] = useState(true);
+    const user = useSelector(state => state.user);
+    const sceneType = user?.user?.sceneType || getLocalStorage("sceneType");
     return (
         <div>
             {
-                isEnergy?
+                sceneType === 1?
                 <Energy />
                 :
                 <Microgrids />
