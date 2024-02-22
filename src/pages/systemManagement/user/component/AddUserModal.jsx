@@ -13,9 +13,7 @@ const App = (props) => {
     return msg
   }
   useEffect(() => {
-      form.setFieldsValue(props.formData)
-      // form.setFieldsValue({})
-      console.log(props.formData,12222222222);
+    form.setFieldsValue(props.formData)
   }, [props.formData])
   const formRef = useRef();
   const [form] = Form.useForm();
@@ -47,7 +45,23 @@ const App = (props) => {
         value: '4',
         key: 'Admin',
       },
-
+      ]
+    },
+    {
+      label: '场站类型',
+      key: 'sceneType',
+      type: props.title === '新增用户' ? 2 : null,
+      required: true,
+      data: [{
+        label: '储能电站',
+        value: '1',
+        key: '储能电站',
+      },
+      {
+        label: '光储充电站',
+        value: '2',
+        key: '光储充电站',
+      },
       ]
     },
     {
@@ -81,9 +95,8 @@ const App = (props) => {
       const values = await form.validateFields();
       console.log('Success:', values);
       if (props.formData.f0102_Id) {
-        props.changeData({f0102_Id:props.formData.f0102_Id,...values})
-        
-      }else{
+        props.changeData({ f0102_Id: props.formData.f0102_Id, ...values })
+      } else {
         props.changeData(values)
       }
       props.onRef();
@@ -124,7 +137,7 @@ const App = (props) => {
                   </Form.Item>
                 </>
               )
-            } else {
+            } else if (it.type === 2) {
               return (
                 <>
                   <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.required }]}>

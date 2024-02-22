@@ -5,3 +5,7 @@ const path = '/total'
 export const getEnergyFeeByTime = (payload) => {
     return axiosInstance.post(`${path}/getEnergyFeeByTime`, payload);
 }
+// 获取收益比列图
+export const getEarningsDistribution = (payload) => {
+    return axiosInstance.post(`${path}/getEarningsDistribution`, payload);
+}

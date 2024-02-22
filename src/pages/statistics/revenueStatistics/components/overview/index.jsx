@@ -1,33 +1,42 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { DatePicker, Button, theme,Radio } from 'antd';
+import { DatePicker, Button, theme, Radio, Table } from 'antd';
 import dayjs from 'dayjs';
 import styles from './index.less'
-import {
-    CalendarOutlined,
-    DatabaseOutlined,
-} from '@ant-design/icons';
 import { CardModel } from "@/components";
 import ReactECharts from "echarts-for-react";
-import Table from '@/components/Table.jsx'
-import { useSelector,useIntl } from "umi";
+import { downloadFile } from '@/utils/utils'
+import { useSelector, useIntl } from "umi";
+import { getEnergyFeeByTime, getEarningsDistribution } from '@/services/report'
 
 function Com(props) {
     const [optionsPie, setOptionsPie] = useState({})
     const { token } = theme.useToken();
     const [mode, setMode] = useState('date');
     const [options, setOptions] = useState({});
+    const [format, setFormat] = useState('YYYY-MM-DD');
+    const [data, setData] = useState([]);
+    const [dateX, setDateX] = useState([]);
+    const [time, setTime] = useState(dayjs(new Date()));
+    const [dataY, setDataY] = useState({
+        totalEarning: [],
+        pvEarning: [],
+        energyEarning: [],
+        chargeEarning: []
+    });
+    const [pieData, setPieData] = useState();
+
     const { theme: currentTheme } = useSelector(function (state) {
         return state.global
     });
-    var  colorList=['#528AEB', '#F3CE55', '#03B4B4',];
+    var colorList = ['#528AEB', '#F3CE55', '#03B4B4',];
     const intl = useIntl();
-    const getTranslation=(id)=>{
+    const getTranslation = (id) => {
         const msg = intl.formatMessage(
             {
-              id,
+                id,
             },
-          );
-          return msg
+        );
+        return msg
     }
     const getOptions = () => {
         setOptions({
@@ -43,10 +52,20 @@ function Com(props) {
                 bottom: '3%',
                 containLabel: true
             },
+            legend: {
+                data: [getTranslation('总收益'),
+                getTranslation('光伏收益'),
+                getTranslation('储能收益'),
+                getTranslation('充电桩收益'),
+                ],
+                textStyle: {//图例文字的样式
+                    color: token.titleColor,
+                }
+            },
             xAxis: [
                 {
                     type: 'category',
-                    data: ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'],
+                    data: dateX,
                     axisTick: {
                         alignWithLabel: true
                     }
@@ -63,22 +82,60 @@ function Com(props) {
             ],
             series: [
                 {
-                    name: '发电量',
+                    name: getTranslation('总收益'),
                     type: 'bar',
                     itemStyle: {
                         normal: {
-                            color: token.colorPrimary
+                            color: token.barColor[0]
+
                         }
                     },
-                    barWidth: '60%',
-                    data: [0.8, 1.6, 0.4, 2.2, 0.8, 1.2, 1.5, 1.7, 1.6]
-                }
+                    barWidth: '8%',
+                    data: dataY.totalEarning
+                },
+                {
+                    name: getTranslation('光伏收益'),
+                    type: 'bar',
+                    itemStyle: {
+                        normal: {
+                            color: token.barColor[2]
+
+                        }
+                    },
+                    barWidth: '8%',
+                    data: dataY.pvEarning
+                },
+                {
+                    name: getTranslation('储能收益'),
+                    type: 'bar',
+                    itemStyle: {
+                        normal: {
+                            color: token.barColor[3]
+
+                        }
+                    },
+                    barWidth: '8%',
+                    data: dataY.energyEarning
+                },
+                {
+                    name: getTranslation('充电桩收益'),
+                    type: 'bar',
+                    itemStyle: {
+                        normal: {
+                            color: token.barColor[4]
+
+                        }
+                    },
+                    barWidth: '8%',
+                    data: dataY.chargeEarning
+                },
+
             ]
         });
         setOptionsPie({
             title: {
-                text: '80',
-                subtext: '总收益',
+                text: pieData?.totalEarning,
+                subtext: getTranslation('总收益'),
                 x: 'center',
                 y: 'center',
                 textStyle: {
@@ -148,9 +205,9 @@ function Com(props) {
                             formatter: function (params) {
                                 var str = '';
                                 switch (params.name) {
-                                    case '光伏收益': str = '{a|}\n{nameStyle|光伏 }' + '{rate|' + params.value + '%}'; break;
-                                    case '储能收益': str = '{b|}\n{nameStyle|储能 }' + '{rate|' + params.value + '%}'; break;
-                                    case '充电桩收益': str = '{c|}\n{nameStyle|充电桩 }' + '{rate|' + params.value + '%}'; break;
+                                    case '光伏收益': str = '{a|}\n{nameStyle|' + getTranslation('光伏') + '}' + '{rate|' + params.value + '%}'; break;
+                                    case '储能收益': str = '{b|}\n{nameStyle|' + getTranslation('储能') + '}' + '{rate|' + params.value + '%}'; break;
+                                    case '充电桩收益': str = '{c|}\n{nameStyle|' + getTranslation('充电桩') + '}' + '{rate|' + params.value + '%}'; break;
                                 }
                                 return str
                             },
@@ -170,9 +227,9 @@ function Com(props) {
                         }
                     },
                     data: [
-                        { value: 50, name: '光伏收益' },
-                        { value: 25, name: '储能收益' },
-                        { value: 25, name: '充电桩收益' },
+                        { value: (pieData?.pvProportion * 100).toFixed(2), name: '光伏收益' },
+                        { value: (pieData?.energyProportion * 100).toFixed(2), name: '储能收益' },
+                        { value: (pieData?.chargeProportion * 100).toFixed(2), name: '充电桩收益' },
                     ]
                 }
             ]
@@ -185,6 +242,7 @@ function Com(props) {
             key: 'id',
             width: 100,
         },
+
         {
             title: '日期',
             dataIndex: 'date',
@@ -192,125 +250,104 @@ function Com(props) {
             width: 100,
         },
         {
-            title: '充电成本（元）',
-            className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
-            children: [
-                {
-                    title: '尖电',
-                    dataIndex: 'street',
-                    key: 'street',
-                    width: 150,
-                },
-                {
-                    title: '峰电',
-                    dataIndex: 'street',
-                    key: 'street',
-                    width: 150,
-                },
-                {
-                    title: '平电',
-                    dataIndex: 'street',
-                    key: 'street',
-                    width: 150,
-                },
-                {
-                    title: '谷电',
-                    dataIndex: 'street',
-                    key: 'street',
-                    width: 150,
-                },
-                {
-                    title: '总计',
-                    dataIndex: 'street',
-                    key: 'street',
-                    width: 150,
-                },
-            ],
+            title: '储能收益',
+            dataIndex: 'energyEarning',
+            key: 'energyEarning',
+            width: 100,
         },
         {
-            title: '放电收益（元）',
-            className: currentTheme === 'default' ? 'lightTitleColorLeft' : 'darkTitleColorLeft',
-            children: [
-                {
-                    title: '尖电',
-                    dataIndex: 'street',
-                    key: 'street',
-                    width: 150,
-                },
-                {
-                    title: '峰电',
-                    dataIndex: 'street',
-                    key: 'street',
-                    width: 150,
-                },
-                {
-                    title: '平电',
-                    dataIndex: 'street',
-                    key: 'street',
-                    width: 150,
-                },
-                {
-                    title: '谷电',
-                    dataIndex: 'street',
-                    key: 'street',
-                    width: 150,
-                },
-                {
-                    title: '总计',
-                    dataIndex: 'street',
-                    key: 'street',
-                    width: 150,
-                },
-
-            ],
+            title: '光伏收益',
+            dataIndex: 'pvEarning',
+            key: 'pvEarning',
+            width: 100,
         },
         {
-            title: '实际收益',
-            dataIndex: 'date',
-            key: 'date',
+            title: '充电桩收益',
+            dataIndex: 'chargeEarning',
+            key: 'chargeEarning',
+            width: 100,
+        },
+        {
+            title: '总收益',
+            dataIndex: 'totalEarning',
+            key: 'totalEarning',
             width: 100,
         },
 
-    ];
 
-    const cardData = [
-        {
-            icon: <CalendarOutlined />,
-            name: "平均收益",
-            color: '#03B4B4',
-            value: '10',
-            unit: 'kWh'
-        },
-        {
-            icon: <DatabaseOutlined />,
-            name: "累计收益",
-            color: '#FF9239',
-            value: '9999',
-            unit: 'kWh'
-        },
-    ]
+    ];
+    const [scrollY, setScrollY] = useState('');
+    useEffect(() => {
+        const Y = document.getElementById('table')?.clientHeight;
+        if (Y) setScrollY(Y - 180); // 32为表头的高，应用时减去自己表格的表头高
+    }, []);
     useEffect(() => {
         getOptions();
-    }, []);
+    }, [dateX, dataY, currentTheme, pieData]);
+    useEffect(() => {
+        getData();
+    }, [])
+    const getData = async () => {
+        let httpData = {
+            time: time.format(format),
+            type: mode === 'date' ? 0 : mode === 'month' ? 2 : 3,
+            plantId: localStorage.getItem('plantId'),
+        }
+        let arrX = [];
+        let chargeEarning = [];
+        let energyEarning = [];
+        let pvEarning = [];
+        let totalEarning = [];
+        let { data } = await getEnergyFeeByTime(httpData);
+        data?.data.map((it) => {
+            totalEarning.push(it.totalEarning);
+            pvEarning.push(it.pvEarning);
+            energyEarning.push(it.energyEarning);
+            chargeEarning.push(it.chargeEarning);
+            arrX.push(it.date)
+        })
+        setData(data.data);
+        setDateX(arrX);
+        setDataY({ chargeEarning, energyEarning, pvEarning, totalEarning })
+        let { data: pieData } = await getEarningsDistribution(httpData);
+        setPieData(pieData.data)
+
+    }
+    const queryData = () => {
+        getData();
+        getOptions();
+    }
     const handleModelChange = e => {
         setMode(e.target.value);
+        if (e.target.value == 'date') {
+            setFormat('YYYY-MM-DD');
+        }
+        else if (e.target.value === 'month') {
+            setFormat('YYYY-MM');
+        } else {
+            setFormat('YYYY');
+        }
     };
     return (
         <div className={styles.content}>
             <div className={styles.heard} style={{ backgroundColor: token.titleCardBgc }}>
-            <div className={styles.date}>
-                    <DatePicker picker={mode} style={{marginRight:"20px"}}/>
+                <div className={styles.date}>
+                    <DatePicker picker={mode} defaultValue={time} style={{ marginRight: "20px" }} />
                     <Radio.Group value={mode} onChange={handleModelChange}>
-                    <Radio.Button value="date">日</Radio.Button>
-                    <Radio.Button value="month">月</Radio.Button>
-                    <Radio.Button value="year">年</Radio.Button>
-                </Radio.Group>
+                        <Radio.Button value="date">日</Radio.Button>
+                        <Radio.Button value="month">月</Radio.Button>
+                        <Radio.Button value="year">年</Radio.Button>
+                    </Radio.Group>
                 </div>
                 <div className={styles.buttons}>
-                    <Button type="primary" className={styles.firstButton}>
-                   { getTranslation('app.Query')}
+                    <Button type="primary" className={styles.firstButton} onClick={queryData}>
+                        {getTranslation('app.Query')}
                     </Button>
-                    <Button type="primary" style={{ backgroundColor: token.defaultBg }} >
+                    <Button type="primary" style={{ backgroundColor: token.defaultBg }}
+                        onClick={() => {
+
+                        }}
+                    >
                         导出excel
                     </Button>
                 </div>
@@ -354,7 +391,7 @@ function Com(props) {
 
             </div>
 
-            <div className={styles.profitList}>
+            <div className={styles.profitList} id="table">
                 <CardModel
                     title={
                         "收益明细"
@@ -362,7 +399,10 @@ function Com(props) {
                     content={
                         <Table
                             columns={profitTable}
-                        // data={data.records}
+                            dataSource={data}
+                            scroll={{
+                                y: scrollY,
+                            }}
                         />
                     }
                 />

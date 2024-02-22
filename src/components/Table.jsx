@@ -5,7 +5,6 @@ const Tables = (props) => {
         <Table
             columns={columns}
             dataSource={data}
-            pagination={false}
         />
     )
 }

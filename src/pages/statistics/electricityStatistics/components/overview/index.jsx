@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { DatePicker, Button, theme, Radio } from 'antd';
+import { DatePicker, Button, theme, Radio, Table} from 'antd';
+// import Table from '@/components/Table.jsx'
 import dayjs from 'dayjs';
 import styles from './index.less'
 import { CardModel } from "@/components";
@@ -12,6 +13,17 @@ function Com(props) {
     const [mode, setMode] = useState('date');
     const [time, setTime] = useState(dayjs(new Date()));
     const [format, setFormat] = useState('YYYY-MM-DD');
+    const [data, setData] = useState([]);
+    const [dateX,setDateX]=useState([]);
+    const [dataY,setDataY]=useState({
+        pvOutEnergy:[],
+        energyInEnergy:[],
+        energyOutEnergy:[],
+        pvInEnergy:[],
+        chargeInEnergy:[]
+    });
+    const [scrollY, setScrollY] = useState('');
+
     const { theme: currentTheme } = useSelector(function (state) {
         return state.global
     });
@@ -25,6 +37,10 @@ function Com(props) {
         return msg
     }
 
+    useEffect(() => {
+     const Y = document.getElementById('table')?.clientHeight;
+     if (Y) setScrollY(Y-180); // 32为表头的高，应用时减去自己表格的表头高
+   }, []);
     const getOptions = () => {
         setOptions({
             tooltip: {
@@ -54,7 +70,7 @@ function Com(props) {
             xAxis: [
                 {
                     type: 'category',
-                    data: ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'],
+                    data: dateX,
                     axisTick: {
                         alignWithLabel: true
                     }
@@ -72,7 +88,6 @@ function Com(props) {
             series: [
                 {
                     name: getTranslation('statistics.InternetPower'),
-                    // label: <FormattedMessage id='statistics.InternetPower' />,
                     type: 'bar',
                     itemStyle: {
                         normal: {
@@ -81,24 +96,10 @@ function Com(props) {
                         }
                     },
                     barWidth: '8%',
-                    data: [0.8, 1.1, 0.4, 2.2, 0.8, 1.2, 1.5, 1.7, 1.6]
-                },
-                {
-                    name: getTranslation('statistics.TheGridBuysElectricity'),
-                    // label:<FormattedMessage id='statistics.TheGridBuysElectricity' />,
-                    type: 'bar',
-                    itemStyle: {
-                        normal: {
-                            color: token.barColor[1]
-
-                        }
-                    },
-                    barWidth: '8%',
-                    data: [0.8, 1.6, 0.4, 2.2, 0.8, 1.2, 1.5, 1.7, 1.6]
+                    data: dataY.pvOutEnergy
                 },
                 {
                     name: getTranslation('statistics.EnergyStorageCharge'),
-                    // label: <FormattedMessage id='statistics.EnergyStorageCharge' />,
                     type: 'bar',
                     itemStyle: {
                         normal: {
@@ -107,11 +108,10 @@ function Com(props) {
                         }
                     },
                     barWidth: '8%',
-                    data: [0.8, 1.6, 0.4, 2.2, 0.8, 1.2, 1.5, 1.7, 1.6]
+                    data:dataY.energyInEnergy
                 },
                 {
                     name: getTranslation('statistics.EnergyStorageDischarge'),
-                    // label: <FormattedMessage id='statistics.EnergyStorageDischarge' />,
                     type: 'bar',
                     itemStyle: {
                         normal: {
@@ -120,11 +120,10 @@ function Com(props) {
                         }
                     },
                     barWidth: '8%',
-                    data: [0.8, 1.6, 0.4, 2.2, 0.8, 1.2, 1.5, 1.7, 1.6]
+                    data:dataY.energyOutEnergy
                 },
                 {
                     name: getTranslation('statistics.PhotovoltaicPowerGeneration'),
-                    // label: <FormattedMessage id='statistics.PhotovoltaicPowerGeneration' />,
                     type: 'bar',
                     itemStyle: {
                         normal: {
@@ -133,11 +132,10 @@ function Com(props) {
                         }
                     },
                     barWidth: '8%',
-                    data: [0.8, 1.6, 0.4, 2.2, 0.8, 1.2, 1.5, 1.7, 1.6]
+                    data: dataY.pvInEnergy
                 },
                 {
                     name: getTranslation('statistics.TheAmountOfCharging'),
-                    // label:<FormattedMessage id='statistics.TheAmountOfCharging' />,
                     type: 'bar',
                     itemStyle: {
                         normal: {
@@ -145,7 +143,7 @@ function Com(props) {
                         }
                     },
                     barWidth: '8%',
-                    data: [0.8, 1.6, 0.4, 2.2, 0.8, 1.2, 1.5, 1.7, 1.6]
+                    data: dataY.chargeInEnergy
                 }
             ]
         });
@@ -153,19 +151,36 @@ function Com(props) {
     };
     const getData=async()=>{
         let httpData={
-            startTime: mode==='date'?time:null,
-            endTime: mode==='date'?time:null,
-            time:mode==='date'?null:time.format(format),
+            time:time.format(format),
             type:mode==='date'?0:mode==='month'?2:3,
             plantId:localStorage.getItem('plantId'),
-            // valueType:
         }
+        let pvOutEnergy=[];
+        let energyInEnergy=[];
+        let energyOutEnergy=[];
+        let pvInEnergy=[];
+        let chargeInEnergy=[];
+        let arrX=[];
         let {data}=await getEnergyFeeByTime(httpData);
+        data?.data.map((it)=>{
+            pvOutEnergy.push(it.pvOutEnergy);
+            energyInEnergy.push(it.energyInEnergy);
+            energyOutEnergy.push(it.energyOutEnergy);
+            pvInEnergy.push(it.pvInEnergy);
+            chargeInEnergy.push(it.chargeInEnergy);
+            arrX.push(it.date)
+        })
+        setData(data.data);
+        setDateX(arrX);
+        setDataY({pvOutEnergy,energyInEnergy,energyOutEnergy,pvInEnergy,chargeInEnergy})
     }
 
     useEffect(() => {
         getOptions();
-    }, [currentTheme]);
+    }, [currentTheme,dataY,dateX]);
+    useEffect(()=>{
+        getData();
+    },[])
     const handleModelChange = e => {
         setMode(e.target.value);
         if (e.target.value == 'date') {
@@ -178,12 +193,12 @@ function Com(props) {
         }
     };
     const profitTable = [
-        {
-            title: 'id',
-            dataIndex: 'id',
-            key: 'id',
-            width: 100,
-        },
+        // {
+        //     title: 'id',
+        //     dataIndex: 'id',
+        //     key: 'id',
+        //     width: 100,
+        // },
         {
             title: '日期',
             dataIndex: 'date',
@@ -192,19 +207,34 @@ function Com(props) {
         },
         {
             title: '上网电量',
-            dataIndex: 'date',
-            key: 'date',
+            dataIndex: 'pvOutEnergy',
+            key: 'pvOutEnergy',
             width: 100,
         },
         {
-            title: '日期',
-            dataIndex: 'date',
-            key: 'date',
+            title: '储能充电量',
+            dataIndex: 'energyInEnergy',
+            key: 'energyInEnergy',
             width: 100,
         },
-      
-      
-
+        {
+            title: '储能放电量',
+            dataIndex: 'energyOutEnergy',
+            key: 'energyOutEnergy',
+            width: 100,
+        },
+        {
+            title: '光伏发电量',
+            dataIndex: 'pvInEnergy',
+            key: 'pvOutEnergy',
+            width: 100,
+        },
+        {
+            title: '充电桩充电量',
+            dataIndex: 'chargeInEnergy',
+            key: 'chargeInEnergy',
+            width: 100,
+        },
     ];
     return (
         <div className={styles.content}>
@@ -240,7 +270,15 @@ function Com(props) {
                     />
 
                 </div>
-
+                <div className={styles.profitList} id="table" style={{ backgroundColor: token.titleCardBgc, }}>
+                <Table
+                    columns={profitTable}
+                    dataSource={data}
+                    scroll={{
+                       y: scrollY,
+                      }}
+                />
+            </div>
             </div>
 
         </div>

@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { DatePicker, Button, theme, Radio } from 'antd';
+import { DatePicker, Button, theme, Radio,Table } from 'antd';
 import dayjs from 'dayjs';
 import styles from './index.less'
 import { CardModel } from "@/components";
 import ReactECharts from "echarts-for-react";
 import LineEcharts from '@/components/LineEcharts'
-import Table from '@/components/Table.jsx'
 import { useSelector, FormattedMessage, useIntl } from "umi";
 import { getEnergyFeeByTime } from '@/services/report'
 
@@ -15,10 +14,19 @@ function Com(props) {
     const [time, setTime] = useState(dayjs(new Date()));
     const [format, setFormat] = useState('YYYY-MM-DD');
     const [data, setData] = useState([]);
+    const [dayIn, setDayIn] = useState([]);
+    const [dayOut, setDayOut] = useState([]);
+    const [dateX, setDateX] = useState([]);
+    const [efficiency, setEfficiency] = useState([]);
     const [options, setOptions] = useState({});
     const { theme: currentTheme } = useSelector(function (state) {
         return state.global
     });
+    const [scrollY, setScrollY] = useState('');
+    useEffect(() => {
+        const Y = document.getElementById('table')?.clientHeight;
+        if (Y) setScrollY(Y-180); // 32为表头的高，应用时减去自己表格的表头高
+      }, []);
     const getOptions = () => {
         setOptions({
             tooltip: {
@@ -36,7 +44,7 @@ function Com(props) {
             xAxis: [
                 {
                     type: 'category',
-                    data: ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'],
+                    data: dateX,
                     axisTick: {
                         alignWithLabel: true
                     }
@@ -61,7 +69,7 @@ function Com(props) {
 
                         }
                     },
-                    data: [0.8, 1.6, 0.4, 2.2, 0.8, 1.2, 1.5, 1.7, 1.6]
+                    data: dayIn
                 },
                 {
                     name: '上网量',
@@ -71,19 +79,37 @@ function Com(props) {
                             color: token.barColor[5]
                         }
                     },
-                    data: [0.8, 1.6, 0.4, 2.2, 0.8, 1.2, 1.5, 1.7, 1.6]
+                    data: dayOut
                 }
             ]
         });
     };
     const getData = async () => {
         let httpData = {
-            time:  time.format(format),
+            time: time.format(format),
             type: mode === 'date' ? 0 : mode === 'month' ? 2 : 3,
             plantId: localStorage.getItem('plantId'),
             valueType: 0
         }
+        let arrIn = [];
+        let arrOut = [];
+        let arrX = [];
+        let arrEfit=[];
         let { data } = await getEnergyFeeByTime(httpData);
+        data?.data.map((it) => {
+            arrIn.push(it.dayInEnergy);
+            arrOut.push(it.dayOutEnergy);
+            arrX.push(it.date);
+            if (it.dayInEnergy===0) {
+                arrEfit.push(0);
+            }else{
+                arrEfit.push(+it.dayOutEnergy/+it.dayInEnergy)
+            }
+        })
+        setDayIn(arrIn);
+        setDayOut(arrOut);
+        setDateX(arrX);
+        setEfficiency(arrEfit);
         setData(data.data);
     }
     const profitTable = [
@@ -175,7 +201,7 @@ function Com(props) {
     ];
     useEffect(() => {
         getOptions();
-    }, [currentTheme]);
+    }, [currentTheme, dayIn, dayOut, dateX]);
     useEffect(() => {
         getData();
     }, []);
@@ -228,17 +254,22 @@ function Com(props) {
                             "充放电效率"
                         }
                         content={
-                            <LineEcharts name='充放电效率' style={{ height: '100%' }} yData={[12, 32, 11, 14, 90, 30, 10, 82, 91, 34, 90, 33]} />
+                            <LineEcharts name='充放电效率' style={{ height: '100%' }} 
+                            xData={dateX}
+                            yData={efficiency} />
 
                         }
                     />
 
                 </div>
             </div>
-            <div className={styles.profitList} style={{ backgroundColor: token.titleCardBgc }}>
+            <div className={styles.profitList} id="table" style={{ backgroundColor: token.titleCardBgc, }}>
                 <Table
                     columns={profitTable}
-                    data={data}
+                    dataSource={data}
+                    scroll={{
+                       y: scrollY,
+                      }}
                 />
             </div>
         </div>

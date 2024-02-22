@@ -64,7 +64,6 @@ const RealtimeAlarm = () => {
       dataIndex: 'company',
       key: 'company',
       width: 200
-
     },
     {
       title: t('备注'),

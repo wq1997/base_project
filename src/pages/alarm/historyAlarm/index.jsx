@@ -121,7 +121,6 @@ const RealtimeAlarm = () => {
     }
     const changeTime=(value)=>{
       setTime(value);
-      console.log(value);
     } 
   const topData = [
     {

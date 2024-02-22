@@ -168,3 +168,18 @@ export const timeZoneList = (function () {
     });
     return list;
 })();
+
+export const pcsDataType= [
+    {
+        value:169,
+        label:'实时功率',
+    },
+    {
+        value:305,
+        label:'日充电量',
+    },
+    {
+        value:306 ,
+        label:'日放电量',
+    },
+]

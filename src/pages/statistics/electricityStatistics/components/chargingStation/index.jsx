@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { DatePicker, Button, theme, Radio } from 'antd';
+import { DatePicker, Button, theme, Radio,Table } from 'antd';
 import dayjs from 'dayjs';
 import styles from './index.less'
 import { CardModel } from "@/components";
 import ReactECharts from "echarts-for-react";
-import Table from '@/components/Table.jsx'
 import { useSelector, FormattedMessage, useIntl } from "umi";
 import { getEnergyFeeByTime } from '@/services/report'
-import moment from 'moment';
 
 function Com(props) {
     const { token } = theme.useToken();
@@ -16,9 +14,17 @@ function Com(props) {
     const [time, setTime] = useState(dayjs(new Date()));
     const [format, setFormat] = useState('YYYY-MM-DD');
     const [data, setData] = useState([]);
+    const [dayIn, setDayIn] = useState([]);
+    const [dayOut, setDayOut] = useState([]);
+    const [dateX, setDateX] = useState([]);
     const { theme: currentTheme } = useSelector(function (state) {
         return state.global
     });
+    const [scrollY, setScrollY] = useState('');
+    useEffect(() => {
+        const Y = document.getElementById('table')?.clientHeight;
+        if (Y) setScrollY(Y-180); // 32为表头的高，应用时减去自己表格的表头高
+      }, []);
     const getOptions = () => {
         setOptions({
             tooltip: {
@@ -36,7 +42,7 @@ function Com(props) {
             xAxis: [
                 {
                     type: 'category',
-                    data: ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'],
+                    data: dateX,
                     axisTick: {
                         alignWithLabel: true
                     }
@@ -61,7 +67,7 @@ function Com(props) {
 
                         }
                     },
-                    data: [0.8, 1.6, 0.4, 2.2, 0.8, 1.2, 1.5, 1.7, 1.6]
+                    data:dayIn
                 },
                 {
                     name: '上网量',
@@ -71,7 +77,7 @@ function Com(props) {
                             color: token.barColor[5]
                         }
                     },
-                    data: [0.8, 1.6, 0.4, 2.2, 0.8, 1.2, 1.5, 1.7, 1.6]
+                    data: dayOut
                 }
             ]
         });
@@ -170,12 +176,24 @@ function Com(props) {
             plantId: localStorage.getItem('plantId'),
             valueType: 1
         }
+        let arrIn = [];
+        let arrOut = [];
+        let arrX = [];
         let { data } = await getEnergyFeeByTime(httpData);
+        data?.data.map((it) => {
+            arrIn.push(it.dayInEnergy);
+            arrOut.push(it.dayOutEnergy);
+            arrX.push(it.date);
+         
+        })
+        setDayIn(arrIn);
+        setDayOut(arrOut);
+        setDateX(arrX);
         setData(data.data);
     }
     useEffect(() => {
         getOptions();
-    }, [currentTheme]);
+    }, [currentTheme, dayIn, dayOut, dateX]);
     useEffect(() => {
         getData();
     }, []);
@@ -225,10 +243,13 @@ function Com(props) {
 
 
             </div>
-            <div className={styles.profitList} style={{ backgroundColor: token.titleCardBgc }}>
+            <div className={styles.profitList} id="table" style={{ backgroundColor: token.titleCardBgc, }}>
                 <Table
                     columns={profitTable}
-                    data={data}
+                    dataSource={data}
+                    scroll={{
+                       y: scrollY,
+                      }}
                 />
             </div>
         </div>
