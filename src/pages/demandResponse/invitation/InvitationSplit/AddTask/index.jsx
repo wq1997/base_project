@@ -121,7 +121,7 @@ const Company = ({ open, inviteId, editTask, remainCount, disabledCompanyCodes, 
                 >
                     <InputNumber
                         style={{ width: "100%" }}
-                        placeholder={`请输入分配任务功率，最多还可分配${remainCount}`}
+                        placeholder="请输入分配任务功率"
                         step="0.01"
                     />
                 </Form.Item>

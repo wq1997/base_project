@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Space, Table, message, Modal, DatePicker, Tooltip } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { Button, Space, Table, message, Modal, DatePicker, Tooltip, Input } from "antd";
+import { PlusOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { SearchInput } from "@/components";
 import EnterRecord from "./EnterRecord";
 import InvitationSplit from "./InvitationSplit";
@@ -14,6 +14,8 @@ import {
 } from "@/services/invitation";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import "./index.less";
+
+let invalidReason = undefined;
 
 const Account = () => {
     const [canSure, setCanSure] = useState(true);
@@ -193,6 +195,54 @@ const Account = () => {
         getInviteList();
     };
 
+    const handleInvalid = () => {
+        if (selectedRowKeys?.length == 0) {
+            return message.info("请先勾选需要作废的数据");
+        }
+        Modal.confirm({
+            title: "批量作废",
+            icon: <ExclamationCircleOutlined />,
+            width: 500,
+            content: (
+                <div>
+                    <div style={{ marginBottom: "10px" }}>
+                        作废邀约，关联任务将被同步作废，不再统计进入流水，请输入作废原因
+                    </div>
+                    <Input.TextArea
+                        rows={4}
+                        placeholder="请输入作废原因，最多50字"
+                        maxLength={50}
+                        onChange={e => (invalidReason = e.target.value)}
+                    />
+                </div>
+            ),
+            okText: "确认",
+            cancelText: "取消",
+            onOk: async () => {
+                if (!invalidReason) {
+                    message.info("请输入作废原因");
+                    return Promise.reject();
+                }
+                const res = await invalidInviteServer({
+                    ids: selectedRowKeys,
+                    reason: invalidReason,
+                });
+                if (res?.data?.status == "SUCCESS") {
+                    message.success("作废成功");
+                    setPagination({
+                        current: 1,
+                    });
+                    setSelectedRowKeys([]);
+                    getInviteList();
+                    invalidReason = undefined;
+                }
+            },
+            onCancel: () => {
+                invalidReason = undefined;
+            },
+        });
+    };
+
     const handleOperate = typeId => {
         const operates = {
             0: {
@@ -204,11 +254,6 @@ const Account = () => {
                 type: "删除",
                 tip: "删除后不可恢复",
                 fn: deleteInviteServer,
-            },
-            2: {
-                type: "作废",
-                tip: "作废后不可取消",
-                fn: invalidInviteServer,
             },
         };
         const { type, tip, fn } = operates[typeId];
@@ -228,7 +273,6 @@ const Account = () => {
                     setSelectedRowKeys([]);
                     getInviteList();
                 }
-                setSelectedRowKeys([]);
             },
         });
     };
@@ -408,7 +452,7 @@ const Account = () => {
                                 type="primary"
                                 danger
                                 disabled={!canInvalid}
-                                onClick={() => handleOperate(2)}
+                                onClick={handleInvalid}
                             >
                                 批量作废
                                 {selectedRowKeys?.length ? (
