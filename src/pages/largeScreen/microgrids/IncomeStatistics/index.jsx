@@ -1,13 +1,21 @@
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect } from "react";
+import { getGccWeeklyProfitServe } from "@/services/bigScreen"
 import * as echarts from "echarts";
 
 const IncomeStatistics = () => {
     const [options, setOptions] = useState({});
-    const getOptions = () => {
-        const xAxisData = ['11/11','11/12','11/13','11/14','11/15','11/16','11/17'];
-        const data1 = [200,300,500,300,200,400,300];
-        const data2 = [400,300,400,300,100,500,400];
+    const getOptions = async () => {
+        const res = await getGccWeeklyProfitServe();
+        let xAxisData = [];
+        let data1 = [];
+        let data2 = [];
+        if(res?.data?.data){
+            const data = res?.data?.data;
+            xAxisData = data?.map(item => item?.date);
+            data1 = data?.map(item => item?.energyProfit);
+            data2 = data?.map(item => item?.pvProfit);
+        }
         setOptions({
             color: ['#03B4B4'],
             tooltip: {

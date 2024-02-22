@@ -3,7 +3,7 @@ import Energy from "./energy";
 import Microgrids from "./microgrids";
 
 const LargeScreen = () => {
-    const [isEnergy, setIsEnergy] = useState(true);
+    const [isEnergy, setIsEnergy] = useState(false);
     return (
         <div>
             {

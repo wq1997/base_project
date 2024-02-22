@@ -17,3 +17,15 @@ export const getLatestAlarmsServe = () => {
 export const getDtuStatisticsServe = () => {
     return axiosInstance.get(`${path}/getDtuStatistics`);
 }
+
+export const getGccPowerStatisticsServe = () => {
+    return axiosInstance.get(`${path}/getGccPowerStatistics`);
+}
+
+export const getGccWeeklyPowerStatisticsServe = () => {
+    return axiosInstance.get(`${path}/getGccWeeklyPowerStatistics`);
+}
+
+export const getGccWeeklyProfitServe = () => {
+    return axiosInstance.get(`${path}/getGccWeeklyProfit`);
+}
