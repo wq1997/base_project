@@ -45,9 +45,9 @@ const Login = () => {
         onChange={onChangeTab}
       />
       {activeKey === "Overview" && <Overview type={activeKey}/>}
-      {activeKey === "photovoltaic" && <PartOfProceeds type={activeKey}/>}
-      {activeKey === "energyStorage" && <PartOfProceeds type={activeKey}/>}
-      {activeKey === "chargingStation" && <PartOfProceeds type={activeKey}/>}
+      {activeKey === "photovoltaic" && <PartOfProceeds type={activeKey} typeNum={2}/>}
+      {activeKey === "energyStorage" && <PartOfProceeds type={activeKey} typeNum={0}/>}
+      {activeKey === "chargingStation" && <PartOfProceeds type={activeKey} typeNum={1}/>}
     </div>
   )
 }

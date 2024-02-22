@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { DatePicker, Button, theme, Radio } from 'antd';
+import { DatePicker, Button, theme, Radio,Table } from 'antd';
 import dayjs from 'dayjs';
 import styles from './index.less'
 import { CardModel } from "@/components";
 import ReactECharts from "echarts-for-react";
-import Table from '@/components/Table.jsx'
+// import Table from '@/components/Table.jsx'
 import { useSelector, FormattedMessage, useIntl } from "umi";
 import { getEnergyFeeByTime } from '@/services/report'
-
 function Com(props) {
     const { token } = theme.useToken();
     const [options, setOptions] = useState({});
@@ -15,8 +14,9 @@ function Com(props) {
     const [time, setTime] = useState(dayjs(new Date()));
     const [format, setFormat] = useState('YYYY-MM-DD');
     const [data, setData] = useState([]);
-    const [dayIn,setDayIn]=useState([]);
-    const [dayOut,setDayOut]=useState([]);
+    const [dayIn, setDayIn] = useState([]);
+    const [dayOut, setDayOut] = useState([]);
+    const [dateX, setDateX] = useState([]);
     const { theme: currentTheme } = useSelector(function (state) {
         return state.global
     });
@@ -29,6 +29,11 @@ function Com(props) {
         );
         return msg
     }
+    const [scrollY, setScrollY] = useState('');
+    useEffect(() => {
+        const Y = document.getElementById('table')?.clientHeight;
+        if (Y) setScrollY(Y-180); // 32为表头的高，应用时减去自己表格的表头高
+      }, []);
     const getOptions = () => {
         setOptions({
             tooltip: {
@@ -52,7 +57,7 @@ function Com(props) {
             xAxis: [
                 {
                     type: 'category',
-                    data: ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'],
+                    data: dateX,
                     axisTick: {
                         alignWithLabel: true
                     }
@@ -180,25 +185,28 @@ function Com(props) {
     ];
     const getData = async () => {
         let httpData = {
-            time:  time.format(format),
+            time: time.format(format),
             type: mode === 'date' ? 0 : mode === 'month' ? 2 : 3,
             plantId: localStorage.getItem('plantId'),
             valueType: 2
         };
-        let arrIn=[];
-        let arrOut=[];
+        let arrIn = [];
+        let arrOut = [];
+        let arrX = [];
         let { data } = await getEnergyFeeByTime(httpData);
-        data?.data.map((it)=>{
+        data?.data.map((it) => {
             arrIn.push(it.dayInEnergy);
-            arrOut.push(it.dayOutEnergy)
+            arrOut.push(it.dayOutEnergy);
+            arrX.push(it.date)
         })
         setDayIn(arrIn);
         setDayOut(arrOut);
+        setDateX(arrX);
         setData(data.data);
     }
     useEffect(() => {
         getOptions();
-    }, [currentTheme]);
+    }, [currentTheme, dayIn, dayOut, dateX]);
     useEffect(() => {
         getData();
     }, []);
@@ -229,8 +237,12 @@ function Com(props) {
                     <Button type="primary" className={styles.firstButton} onClick={getData}>
                         <FormattedMessage id='app.Query' />
                     </Button>
-                    <Button type="primary" style={{ backgroundColor: token.defaultBg }} >
-                        <FormattedMessage id='app.Export' />excel
+                    <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={
+                        () => {
+                            // exportExcel([profitTable[0],profitTable[1],...profitTable[2].children,...profitTable[3].children], data, `${getTranslation('光伏')+getTranslation('电量统计')}.xlsx`)
+                        }
+                    }>
+                        <FormattedMessage id='app.Export' /> excel
                     </Button>
                 </div>
 
@@ -249,10 +261,13 @@ function Com(props) {
                 />
 
             </div>
-            <div className={styles.profitList} style={{ backgroundColor: token.titleCardBgc }}>
+            <div className={styles.profitList} id="table" style={{ backgroundColor: token.titleCardBgc, }}>
                 <Table
                     columns={profitTable}
-                    data={data}
+                    dataSource={data}
+                    scroll={{
+                       y: scrollY,
+                      }}
                 />
             </div>
         </div>

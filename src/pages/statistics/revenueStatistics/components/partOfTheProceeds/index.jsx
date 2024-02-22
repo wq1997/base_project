@@ -1,25 +1,30 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { DatePicker, Button, theme,Radio } from 'antd';
+import { DatePicker, Button, theme, Radio, Table } from 'antd';
 import dayjs from 'dayjs';
 import styles from './index.less'
-import {
-    CalendarOutlined,
-    DatabaseOutlined,
-} from '@ant-design/icons';
 import { CardModel } from "@/components";
 import ReactECharts from "echarts-for-react";
-// import { profitTable } from '@/utils/constants'
-import Table from '@/components/Table.jsx'
-import { useSelector} from "umi";
+// import Table from '@/components/Table.jsx'
+import { useSelector } from "umi";
+import { getEnergyFeeByTime } from '@/services/report'
 
-function Com(props) {
-    const [xxx, setXxx] = useState('')
+function Com({ typeNum }) {
     const [mode, setMode] = useState('date');
     const { token } = theme.useToken();
     const [options, setOptions] = useState({});
-    const { theme:currentTheme } = useSelector(function (state) {
+    const [format, setFormat] = useState('YYYY-MM-DD');
+    const [data, setData] = useState([]);
+    const [dateX, setDateX] = useState([]);
+    const [time, setTime] = useState(dayjs(new Date()));
+    const [dataY, setDataY] = useState();
+    const { theme: currentTheme } = useSelector(function (state) {
         return state.global
     });
+    const [scrollY, setScrollY] = useState('');
+    useEffect(() => {
+        const Y = document.getElementById('table')?.clientHeight;
+        if (Y) setScrollY(Y - 180); // 32为表头的高，应用时减去自己表格的表头高
+    }, []);
     const getOptions = () => {
         setOptions({
             tooltip: {
@@ -82,7 +87,7 @@ function Com(props) {
         },
         {
             title: '充电成本（元）',
-            className:currentTheme==='default'?'lightTitleColorRight':'darkTitleColorRight',
+            className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
             children: [
                 {
                     title: '尖电',
@@ -118,7 +123,7 @@ function Com(props) {
         },
         {
             title: '放电收益（元）',
-            className:currentTheme==='default'?'lightTitleColorLeft':'darkTitleColorLeft',
+            className: currentTheme === 'default' ? 'lightTitleColorLeft' : 'darkTitleColorLeft',
             children: [
                 {
                     title: '尖电',
@@ -150,7 +155,7 @@ function Com(props) {
                     key: 'street',
                     width: 150,
                 },
-    
+
             ],
         },
         {
@@ -159,46 +164,64 @@ function Com(props) {
             key: 'date',
             width: 100,
         },
-    
-    ];
-    
-    const cardData = [
-        {
-            icon: <CalendarOutlined />,
-            name: "平均收益",
-            color: '#03B4B4',
-            value: '10',
-            unit: 'kWh'
-        },
-        {
-            icon: <DatabaseOutlined />,
-            name: "累计收益",
-            color: '#FF9239',
-            value: '9999',
-            unit: 'kWh'
-        },
 
-    ]
+    ];
     useEffect(() => {
         getOptions();
-    }, []);
+    }, [dateX, dataY, currentTheme,]);
     const handleModelChange = e => {
         setMode(e.target.value);
+        if (e.target.value == 'date') {
+            setFormat('YYYY-MM-DD');
+        }
+        else if (e.target.value === 'month') {
+            setFormat('YYYY-MM');
+        } else {
+            setFormat('YYYY');
+        }
     };
+    useEffect(() => {
+        getData();
+    }, [])
+    const getData = async () => {
+        let httpData = {
+            time: time.format(format),
+            type: mode === 'date' ? 0 : mode === 'month' ? 2 : 3,
+            plantId: localStorage.getItem('plantId'),
+            valueType: typeNum
+        }
+        let arrX = [];
+        let chargeEarning = [];
+        let energyEarning = [];
+        let pvEarning = [];
+        let totalEarning = [];
+        let { data } = await getEnergyFeeByTime(httpData);
+        data?.data.map((it) => {
+            totalEarning.push(it.totalEarning);
+            pvEarning.push(it.pvEarning);
+            energyEarning.push(it.energyEarning);
+            chargeEarning.push(it.chargeEarning);
+            arrX.push(it.date)
+        })
+        setData(data.data);
+        setDateX(arrX);
+
+
+    }
     return (
         <div className={styles.content}>
             <div className={styles.heard} style={{ backgroundColor: token.titleCardBgc }}>
-            <div className={styles.date}>
-                    <DatePicker picker={mode} style={{marginRight:"20px"}}/>
+                <div className={styles.date}>
+                    <DatePicker picker={mode} defaultValue={time} style={{ marginRight: "20px" }} />
                     <Radio.Group value={mode} onChange={handleModelChange}>
-                    <Radio.Button value="date">日</Radio.Button>
-                    <Radio.Button value="month">月</Radio.Button>
-                    <Radio.Button value="year">年</Radio.Button>
-                </Radio.Group>
+                        <Radio.Button value="date">日</Radio.Button>
+                        <Radio.Button value="month">月</Radio.Button>
+                        <Radio.Button value="year">年</Radio.Button>
+                    </Radio.Group>
                 </div>
 
                 <div className={styles.buttons}>
-                      <Button type="primary" className={styles.firstButton}>
+                    <Button type="primary" className={styles.firstButton}>
                         查询
                     </Button>
                     <Button type="primary" style={{ backgroundColor: token.defaultBg }} >
@@ -235,16 +258,19 @@ function Com(props) {
                 </div> */}
 
             </div>
-            <div className={styles.profitList}>
+            <div className={styles.profitList} id="table">
                 <CardModel
                     title={
                         "收益明细"
                     }
                     content={
                         <Table
-                        columns={profitTable}
-                        // data={data.records}
-                      />
+                            columns={profitTable}
+                            dataSource={data}
+                            scroll={{
+                                y: scrollY,
+                            }}
+                        />
                     }
                 />
             </div>

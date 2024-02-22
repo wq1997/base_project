@@ -102,7 +102,7 @@ function Com(props) {
     return (
         <div className={styles.monitoringCurves}>
             <div className={styles.searchHead}>
-                <span >数据类型:</span>
+                <span >{t('数据类型')}:</span>
                 <Select
                     className={styles.margRL}
                     style={{ width: 240 }}
@@ -115,7 +115,7 @@ function Com(props) {
                     })
                     }
                 </Select>
-                数据项:
+                {t('数据项')}:
                 <Select
                     className={styles.margRL}
                     style={{ width: 240 }}

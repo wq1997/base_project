@@ -73,3 +73,7 @@ export const getPcsNowPowerById = (payload) => {
     return axiosInstance.get(`${path}/getPcsNowPowerById?id=${payload.id}`);
 }
 
+// 获取pcs检测曲线
+export const obtainPCSParameterData = (payload) => {
+    return axiosInstance.post(`/pcs/mg/obtainPCSParameterData`, payload);
+}

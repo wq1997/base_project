@@ -62,7 +62,7 @@ const RealtimeAlarm = () => {
       endTime: endTime ? endTime : null,
       username,
     });
-    setData(data.data);
+    setData(data?.data);
   }
   const changPage = (page) => {
     setCurrent(page);
@@ -93,9 +93,9 @@ const RealtimeAlarm = () => {
       <div className={styles.tablePart} style={{ backgroundColor: token.cardBgc }}>
         <Table
           columns={clums}
-          data={data.records}
+          data={data?.records}
         />
-        <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} total={data.total} onChange={changPage} />
+        <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} total={data?.total} onChange={changPage} />
       </div>
 
     </div>
