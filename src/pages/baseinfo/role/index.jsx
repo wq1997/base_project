@@ -216,7 +216,7 @@ const Role = () => {
                         >
                             新增角色
                         </Button>
-                        <Button type="primary" onClick={onDelete}>删除角色</Button>
+                        <Button type="primary" danger onClick={onDelete}>删除角色</Button>
                     </Space>
                 )}
             />
