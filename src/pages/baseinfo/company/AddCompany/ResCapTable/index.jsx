@@ -1,4 +1,4 @@
-import { Input, message } from "antd";
+import { Input, InputNumber } from "antd";
 import "./index.less";
 import { useEffect, useState } from "react";
 
@@ -30,42 +30,54 @@ const ResCapTable = ({ data, onChange }) => {
             <div className="item">
                 <div>削峰</div>
                 <div>
-                    <Input
+                    <InputNumber
+                        min={0}
                         value={responsivenessDetail?.heightPeakCut?.dayBefore}
-                        onChange={e => change(e.target.value, "heightPeakCut", "dayBefore")}
+                        onChange={value => change(value, "heightPeakCut", "dayBefore")}
+                        style={{width: '100%'}}
                     />
                 </div>
                 <div>
-                    <Input
+                    <InputNumber
+                        min={0}
                         value={responsivenessDetail?.heightPeakCut?.dayIn}
-                        onChange={e => change(e.target.value, "heightPeakCut", "dayIn")}
+                        onChange={value => change(value, "heightPeakCut", "dayIn")}
+                        style={{width: '100%'}}
                     />
                 </div>
                 <div>
-                    <Input
+                    <InputNumber
+                        min={0}
                         value={responsivenessDetail?.heightPeakCut?.realTime}
-                        onChange={e => change(e.target.value, "heightPeakCut", "realTime")}
+                        onChange={value => change(value, "heightPeakCut", "realTime")}
+                        style={{width: '100%'}}
                     />
                 </div>
             </div>
             <div className="item">
                 <div>填谷</div>
                 <div>
-                    <Input
+                    <InputNumber
+                        min={0}
                         value={responsivenessDetail?.lowPeakCut?.dayBefore}
-                        onChange={e => change(e.target.value, "lowPeakCut", "dayBefore")}
+                        onChange={value => change(value, "lowPeakCut", "dayBefore")}
+                        style={{width: '100%'}}
                     />
                 </div>
                 <div>
-                    <Input
+                    <InputNumber
+                        min={0}
                         value={responsivenessDetail?.lowPeakCut?.dayIn}
-                        onChange={e => change(e.target.value, "lowPeakCut", "dayIn")}
+                        onChange={value => change(value, "lowPeakCut", "dayIn")}
+                        style={{width: '100%'}}
                     />
                 </div>
                 <div>
-                    <Input
+                    <InputNumber
+                        min={0}
                         value={responsivenessDetail?.lowPeakCut?.realTime}
-                        onChange={e => change(e.target.value, "lowPeakCut", "realTime")}
+                        onChange={value => change(value, "lowPeakCut", "realTime")}
+                        style={{width: '100%'}}
                     />
                 </div>
             </div>

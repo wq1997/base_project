@@ -11,6 +11,10 @@ const HomePage = "@/pages/homepage";
 const DemandResponseInvitation = "@/pages/demandResponse/invitation";
 // 任务管理
 const DemandResponseTask = "@/pages/demandResponse/task";
+// 任务确认
+const TaskConfirm = "@/pages/demandResponse/task/confirm";
+// 任务列表
+const TaskList = "@/pages/demandResponse/task/list";
 // 收益管理
 const DemandResponseIncome = "@/pages/demandResponse/income";
 
@@ -39,7 +43,20 @@ export default Routes = [
                 routes: [
                     { path: "/vpp/homepage", component: HomePage },
                     { path: "/vpp/demandResponse/invitation", component: DemandResponseInvitation },
-                    { path: "/vpp/demandResponse/task", component: DemandResponseTask },
+                    { 
+                        path: "/vpp/demandResponse/task", 
+                        component: DemandResponseTask,
+                        routes: [
+                            {
+                                path: "/vpp/demandResponse/task/confirm", 
+                                component: TaskConfirm,
+                            },
+                            {
+                                path: "/vpp/demandResponse/task/list", 
+                                component: TaskList,
+                            }
+                        ]
+                    },
                     { path: "/vpp/demandResponse/income", component: DemandResponseIncome },
                     { path: "/vpp/baseinfo/company", component: BaseinfoCompany },
                     { path: "/vpp/baseinfo/role", component: BaseinfoRole },

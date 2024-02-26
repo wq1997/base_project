@@ -21,7 +21,7 @@ const MenuList = [
                 label: "邀约管理",
             },
             {
-                key: "/vpp/demandResponse/task",
+                key: "/vpp/demandResponse/task/confirm",
                 label: "任务管理",
             },
             {
@@ -72,6 +72,7 @@ const MenuList = [
 
 const MyMenu = () => {
     const Icon = useIcon();
+    const [selectedKeys, setSelectedKeys] = useState('');
 
     const getMenu = menuList => {
         return menuList.map(menu => {
@@ -130,7 +131,16 @@ const MyMenu = () => {
         setOpenKeys(openKeys);
     };
 
+    const getSelectKeys = () => {
+        if(pathname.startsWith('/vpp/demandResponse/task')){
+            setSelectedKeys('/vpp/demandResponse/task/confirm');
+        }else{
+            setSelectedKeys(pathname);
+        }
+    }
+
     useEffect(() => {
+        getSelectKeys();
         getOpenKeys();
     }, [pathname]);
     return (
@@ -138,7 +148,7 @@ const MyMenu = () => {
             mode="inline"
             openKeys={openKeys}
             onOpenChange={onOpenChange}
-            selectedKeys={[pathname]}
+            selectedKeys={[selectedKeys]}
         >
             {getMenu(MenuList)}
         </Menu>

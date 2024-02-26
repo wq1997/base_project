@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { message, Button, Select, Form, Input, Modal, Row, Col, Radio, Space } from "antd";
+import { message, Button, Select, Form, Input, Modal, Row, Col, Radio, Space, InputNumber } from "antd";
 import {
     getUpdateInitData as getUpdateInitDataServer,
     getCityByProvince as getCityByProvinceServer,
@@ -7,6 +7,7 @@ import {
 } from "@/services/company";
 import ResCapTable from "./ResCapTable";
 import { MyUpload } from "@/components";
+import { TELPHONE_NUMBER_REG } from "@/utils/constants";
 
 const uploadUrl = process.env.API_URL + "/attachment/upload2";
 
@@ -260,7 +261,7 @@ const Company = ({ open, editId, onClose }) => {
                                 },
                             ]}
                         >
-                            <Input placeholder="请输入签约响应功率，要求整数" />
+                            <InputNumber placeholder="请输入签约响应功率，要求整数" style={{width: '100%'}} min={0} precision={0} />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -289,6 +290,7 @@ const Company = ({ open, editId, onClose }) => {
                                     required: true,
                                     message: "请输入紧急联系人电话",
                                 },
+                                { pattern: TELPHONE_NUMBER_REG, message:'请输入正确的号码'}
                             ]}
                         >
                             <Input placeholder="请输入紧急联系人电话" />
@@ -308,7 +310,7 @@ const Company = ({ open, editId, onClose }) => {
                                 },
                             ]}
                         >
-                            <Input placeholder="请输入0-100以内数字" />
+                            <InputNumber placeholder="请输入0-100以内数字" style={{width: '100%'}} min={0} max={100} />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
@@ -322,7 +324,7 @@ const Company = ({ open, editId, onClose }) => {
                                 },
                             ]}
                         >
-                            <Input placeholder="请输入0-1000以内数字" />
+                            <InputNumber placeholder="请输入0-1000以内数字"  style={{width: '100%'}} min={0} max={1000} precision={0} />
                         </Form.Item>
                     </Col>
                 </Row>
