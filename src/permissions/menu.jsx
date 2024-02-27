@@ -25,7 +25,7 @@ const MenuList = [
                 label: "任务管理",
             },
             {
-                key: "/vpp/demandResponse/income",
+                key: "/vpp/demandResponse/income/overview",
                 label: "收益管理",
             },
         ],
@@ -134,6 +134,8 @@ const MyMenu = () => {
     const getSelectKeys = () => {
         if(pathname.startsWith('/vpp/demandResponse/task')){
             setSelectedKeys('/vpp/demandResponse/task/confirm');
+        } else if(pathname.startsWith('/vpp/demandResponse/income')){
+            setSelectedKeys('/vpp/demandResponse/income/overview');
         }else{
             setSelectedKeys(pathname);
         }
