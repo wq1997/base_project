@@ -1,12 +1,11 @@
 
-import { Flex, DatePicker, Button, Divider, Space, Typography, Table, Modal, Form, Radio, Input } from 'antd';
+import { Flex, DatePicker, Button, Divider, Space, Typography, Table } from 'antd';
 import { useRef, useState } from "react";
-import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE } from "@/utils/constants";
+import { DEFAULT_PAGINATION } from "@/utils/constants";
 import { SearchInput } from "@/components";
 import { dataSource2 } from '../invitationIncome/mock';
 
 const TaskIncome = () => {
-    const [form] = Form.useForm();
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [dataSource, setDataSource] = useState(dataSource2);
