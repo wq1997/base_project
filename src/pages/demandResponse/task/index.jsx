@@ -3,12 +3,12 @@ import { Tabs } from 'antd';
 
 const items = [
     {
-      key: '/vpp/demandResponse/task/confirm',
-      label: '任务确认',
+        key: '/vpp/demandResponse/task/confirm',
+        label: '任务确认',
     },
     {
-      key: '/vpp/demandResponse/task/list',
-      label: '任务列表',
+        key: '/vpp/demandResponse/task/list',
+        label: '任务列表',
     },
 ];
 
@@ -21,7 +21,7 @@ const Task = () => {
     }
 
     return (
-        <div>
+        <div style={{ height: '100%' }}>
             <Tabs defaultActiveKey={pathname} items={items} onChange={onChange} />
             <Outlet />
         </div>
