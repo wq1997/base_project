@@ -9,7 +9,7 @@ import ResCapTable from "./ResCapTable";
 import { MyUpload } from "@/components";
 import { TELPHONE_NUMBER_REG } from "@/utils/constants";
 
-const uploadUrl = process.env.API_URL + "/attachment/upload2";
+const uploadUrl = process.env.API_URL_1 + "/attachment/upload2";
 
 const Company = ({ open, editId, onClose }) => {
     const [form] = Form.useForm();
@@ -261,7 +261,7 @@ const Company = ({ open, editId, onClose }) => {
                                 },
                             ]}
                         >
-                            <InputNumber placeholder="请输入签约响应功率，要求整数" style={{width: '100%'}} min={0} precision={0} />
+                            <InputNumber placeholder="请输入签约响应功率，要求整数" style={{ width: '100%' }} min={0} precision={0} />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -270,7 +270,7 @@ const Company = ({ open, editId, onClose }) => {
                     <Col span={12}>
                         <Form.Item
                             label="紧急联系人"
-                            name="contactPerson" 
+                            name="contactPerson"
                             rules={[
                                 {
                                     required: true,
@@ -290,7 +290,7 @@ const Company = ({ open, editId, onClose }) => {
                                     required: true,
                                     message: "请输入紧急联系人电话",
                                 },
-                                { pattern: TELPHONE_NUMBER_REG, message:'请输入正确的号码'}
+                                { pattern: TELPHONE_NUMBER_REG, message: '请输入正确的号码' }
                             ]}
                         >
                             <Input placeholder="请输入紧急联系人电话" />
@@ -310,7 +310,7 @@ const Company = ({ open, editId, onClose }) => {
                                 },
                             ]}
                         >
-                            <InputNumber placeholder="请输入0-100以内数字" style={{width: '100%'}} min={0} max={100} />
+                            <InputNumber placeholder="请输入0-100以内数字" style={{ width: '100%' }} min={0} max={100} />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
@@ -324,7 +324,7 @@ const Company = ({ open, editId, onClose }) => {
                                 },
                             ]}
                         >
-                            <InputNumber placeholder="请输入0-1000以内数字"  style={{width: '100%'}} min={0} max={1000} precision={0} />
+                            <InputNumber placeholder="请输入0-1000以内数字" style={{ width: '100%' }} min={0} max={1000} precision={0} />
                         </Form.Item>
                     </Col>
                 </Row>
