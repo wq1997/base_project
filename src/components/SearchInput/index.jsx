@@ -16,13 +16,13 @@ const SearchInput = ({
                 <Input
                     value={value}
                     style={{ width: inputWidth }}
-                    placeholder={placeholder}
+                    placeholder={placeholder||`请输入${label}`}
                     onChange={e => onChange(e.target.value)}
                 />
             ) : (
                 <Select
                     value={value}
-                    placeholder={placeholder}
+                    placeholder={placeholder||`请选择${label}`}
                     allowClear={true}
                     style={{ width: inputWidth }}
                     fieldNames={{
