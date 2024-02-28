@@ -49,105 +49,105 @@ const Account = () => {
                     <span>{record?.code}</span>
                 );
             },
-            width: 150
+            width: 150,
         },
         {
             title: "状态",
             dataIndex: "statusZh",
-            key: 'statusZh',
-            width: 150
+            key: "statusZh",
+            width: 150,
         },
         {
             title: "确认截止时间",
             dataIndex: "confirmationDeadline",
-            width: 200
+            width: 200,
         },
         {
             title: "响应类型",
             dataIndex: "responseTypeZh",
-            width: 150
+            width: 150,
         },
         {
             title: "响应要求",
             dataIndex: "responseTimeTypeZh",
-            width: 150
+            width: 150,
         },
         {
             title: "度电报价(元)",
             dataIndex: "whPrice",
-            width: 150
+            width: 150,
         },
         {
             title: "约定响应功率(kW)",
             dataIndex: "responsePower",
-            width: 150
+            width: 150,
         },
         {
             title: "实际执行功率(kW)",
             dataIndex: "actualAveragePower",
-            width: 150
+            width: 150,
         },
         {
             title: "实际完成比例",
             dataIndex: "actualCompletionRatio",
             render: (_, { actualCompletionRatio }) => actualCompletionRatio + "%",
-            width: 150
+            width: 150,
         },
         {
             title: "约定开始时间",
             dataIndex: "appointedTimeFrom",
-            width: 150
+            width: 150,
         },
         {
             title: "约定结束时间",
             dataIndex: "appointedTimeTo",
-            width: 150
+            width: 150,
         },
         {
-            title: '任务响应公司',
-            dataIndex: 'companyName',
-            key: 'companyName',
+            title: "任务响应公司",
+            dataIndex: "companyName",
+            key: "companyName",
             ellipsis: true,
             width: 400,
-            render(value){
+            render(value) {
                 return (
                     <Tooltip title={value}>
-                        <div 
+                        <div
                             style={{
-                                overflow: 'hidden',
-                                whiteSpace: 'nowrap',
-                                textOverflow: 'ellipsis',
+                                overflow: "hidden",
+                                whiteSpace: "nowrap",
+                                textOverflow: "ellipsis",
                                 width: 400,
                             }}
                         >
                             {value}
                         </div>
                     </Tooltip>
-                )
-            }
+                );
+            },
         },
         {
-            title: '任务备注',
-            dataIndex: 'remark',
-            key: 'remark',
+            title: "任务备注",
+            dataIndex: "remark",
+            key: "remark",
             ellipsis: true,
             width: 400,
-            render(value){
+            render(value) {
                 return (
                     <Tooltip title={value}>
-                        <div 
+                        <div
                             style={{
-                                overflow: 'hidden',
-                                whiteSpace: 'nowrap',
-                                textOverflow: 'ellipsis',
+                                overflow: "hidden",
+                                whiteSpace: "nowrap",
+                                textOverflow: "ellipsis",
                                 width: 400,
                             }}
                         >
                             {value}
                         </div>
                     </Tooltip>
-                )
-            }
+                );
+            },
         },
         {
             title: "失败原因",
@@ -157,7 +157,7 @@ const Account = () => {
         {
             title: "操作",
             dataIndex: "operate",
-            fixed: 'right',
+            fixed: "right",
             width: 200,
             render: (_, { id, supportSplit, supportReSplit }) => {
                 return (
@@ -246,7 +246,6 @@ const Account = () => {
                     setPagination({
                         current: 1,
                     });
-
                     getInviteList();
                 }
             },
@@ -369,7 +368,7 @@ const Account = () => {
                     getInviteList();
                 }}
                 scroll={{
-                    x: '100%'
+                    x: "100%",
                 }}
             ></Table>
         </div>
