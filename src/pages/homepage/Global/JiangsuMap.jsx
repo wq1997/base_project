@@ -1,10 +1,12 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import ReactECharts from "echarts-for-react";
+import { theme } from "antd";
 import china from '../../../../public/mapJson/jiangsuJson'
 import * as echarts from "echarts";
 
 function MapCom(props) {
+    const { token } = theme.useToken();
     const chartInstance= React.createRef();
     const [options, setOptions] = useState({});
    
@@ -60,67 +62,24 @@ function MapCom(props) {
                 show: true,
                 map: "map",
                 roam: true,
-                center: [103, 39.4],
                 selectedMode: 'single',
-                layoutCenter: ['50%', '35%'],
-                layoutSize: "70%",
+                layoutCenter: ['45%', '50%'],
+                layoutSize: "60%",
                 itemStyle: {
                     normal: {
-                        areaColor:'rgba(0,17,41,1)',
-                        borderColor: '#00ffff',
-                        borderWidth: 1.8,
-                        shadowColor: '#00ffff'
+                        areaColor:'transparent',
+                        borderColor: token.colorPrimary,
+                        borderWidth: 1.8
                     },
                 },
                 top: 5,
-                aspectScale: 0.75,
-                zoom: 1.2
+                aspectScale: 0.9,
+                zoom: 1.5,
+                label: {
+                    show: true
+                }
             },
             series: [
-                // {
-                //     map: 'map',
-                //     silent: false,
-                //     type: 'map',
-                //     showLegendSymbol: true, // 存在legend时显示
-                //     center: [103, 39.4],
-                //     layoutCenter: ['50%', '35%'],
-                //     layoutSize: "70%",
-                //     zoom:1.2,
-                //     aspectScale: 0.75,
-                //     roam: true,
-                //     label: {
-                //         normal: {
-                //             show: false,
-                //             textStyle: {
-                //                 color: '#fff'
-                //             }
-                //         },
-                //         emphasis: {
-                //             textStyle: {
-                //                 color: '#fff'
-                //             }
-                //         }
-                //     },
-                //     top: 5,
-                //     itemStyle: {
-                //         normal: {
-                //             areaColor: 'rgba(0,255,255,.02)',
-                //             borderColor: '#00ffff',
-                //             borderWidth: 5,
-                //             shadowColor: '#00ffff',
-                //             shadowOffsetX: 0,
-                //             shadowOffsetY: 0,
-                //             shadowBlur: 20,
-                //         },
-                //         emphasis: {
-                //             areaColor: 'transparent', //悬浮背景
-                //             textStyle: {
-                //                 color: '#fff'
-                //             }
-                //         }
-                //     },
-                //     zlevel: -1
-                // },
                 {
                     type: "effectScatter",
                     coordinateSystem: "geo",
@@ -155,26 +114,11 @@ function MapCom(props) {
                     type: 'scatter',
                     coordinateSystem: 'geo',
                     data: convertData(),
-                    // symbol: 'pin', //气泡
-                    // symbolSize: function (val) {
-                    //     return val[2] / 5;
-                    // },
-                    // label: {
-                    //     normal: {
-                    //         formatter: '{b}',
-                    //         position: 'right',
-                    //         show: true
-                    //     },
-                    //     emphasis: {
-                    //         show: true
-                    //     }
-                    // },
                     itemStyle: {
                         normal: {
                             areaColor: 'rgba(0,255,255,.02)',
                             borderColor: '#0073DA',
                             borderWidth: 1.5,
-                      
                         },
                         emphasis: {
                             label: {
