@@ -1,0 +1,37 @@
+.top{
+    height: 600px;
+    display: flex;
+    justify-content: space-between;
+    .topLeft{
+        width: calc(45% - 10px);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 10px;
+        .cardData{
+            width: 100%;
+            height: calc(100% - 35px);
+            display: flex;
+            .cardDataItem{
+                flex: 1;
+            }
+        }
+        :global{
+            .ant-card-body{
+                height: 100%;
+            }
+        }
+    }
+    .topRight{
+        width: calc(55% - 10px);
+        display: flex;
+        .topRightItem{
+            width: 50%;
+        }
+        :global{
+            .ant-card-body{
+                height: 100%;
+            }
+        }
+    }
+}
