@@ -1,6 +1,7 @@
 import { Card, Typography, theme } from 'antd';
 import { useState } from "react";
 import styles from "./index.less";
+import JiangsuMap from './JiangsuMap';
 
 const Global = () => {
     const { token } = theme.useToken();
@@ -92,9 +93,9 @@ const Global = () => {
                     }
                 </div>
                 <div className={styles.topRight}>
-                    <Card style={{height: '100%'}}>
+                    <Card style={{height: '100%', width: '100%'}}>
                         <div className={styles.topRightItem}>
-                            
+                            <JiangsuMap />
                         </div>
                         <div className={styles.topRightItem}></div>
                     </Card>
