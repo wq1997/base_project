@@ -1,7 +1,14 @@
+import { useState } from "react";
+import Global from "./Global";
+import User from "./User";
 
 const HomePage = () => {
+    const [mode, setMode] = useState("Global");
+
     return (
-        <div>首页</div>
+        <div>
+            {mode==="Global"? <Global />: <User />}
+        </div>
     )
 }
 

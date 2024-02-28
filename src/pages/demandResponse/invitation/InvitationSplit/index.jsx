@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { message, Button, Form, Input, Modal, Select, Table, Space, DatePicker } from "antd";
+import { message, Button, Tooltip, Input, Modal, Select, Table, Space, DatePicker } from "antd";
 import { PlusOutlined, ExclamationCircleOutlined, AndroidOutlined } from "@ant-design/icons";
 import {
     intellectSplitInvite as intellectSplitInviteServer,
@@ -47,29 +47,75 @@ const Company = ({ invitationSplitId, onClose }) => {
 
     const columns = [
         {
-            title: "公司名称",
-            dataIndex: "companyName",
+            title: '公司名称',
+            dataIndex: 'companyName',
+            key: 'companyName',
+            width: 200,
+            render(value){
+                return (
+                    <Tooltip title={value}>
+                        <div 
+                            style={{
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                                width: 200,
+                            }}
+                        >
+                            {value}
+                        </div>
+                    </Tooltip>
+                )
+            }
+        },
+        {
+            title: "任务确认状态",
+            dataIndex: "statusZh",
+            isReSplit: true,
+            width: 200,
         },
         {
             title: "签约响应功率(kW)",
             dataIndex: "contractedResponsePower",
+            width: 200,
         },
         {
             title: "分配任务功率(kW)",
             dataIndex: "responsePower",
+            width: 200,
         },
         {
             title: "确认截止时间",
             dataIndex: "confirmationDeadline",
             render: () => <span>{deadline}</span>,
+            width: 200,
         },
         {
             title: "任务备注",
             dataIndex: "remark",
+            width: 200,
+            render(value){
+                return (
+                    <Tooltip title={value}>
+                        <div 
+                            style={{
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                                width: 200,
+                            }}
+                        >
+                            {value}
+                        </div>
+                    </Tooltip>
+                )
+            }
         },
         {
             title: "操作",
             dataIndex: "operate",
+            fixed: 'right',
+            width: 200,
             render: (_, record, index) => {
                 return (
                     <Space>
@@ -302,18 +348,13 @@ const Company = ({ invitationSplitId, onClose }) => {
                     rowKey="id"
                     dataSource={taskList}
                     columns={
-                        isReSplit
-                            ? (() => {
-                                columns.splice(1, 0, {
-                                    title: "任务确认状态",
-                                    dataIndex: "statusZh",
-                                });
-                                return columns;
-                            })()
-                            : columns
+                        isReSplit? columns: columns?.filter(column=>!column.isReSplit)
                     }
                     title={() => <Space className="table-title"></Space>}
                     pagination={false}
+                    scroll={{
+                        x: 800
+                    }}
                 ></Table>
                 {contextHolder}
             </Modal>
