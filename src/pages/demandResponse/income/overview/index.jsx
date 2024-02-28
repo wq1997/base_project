@@ -1,4 +1,4 @@
-import { Card, Space, Typography, Tooltip, Divider, Row, Select, DatePicker } from "antd";
+import { Card, Space, Typography, Tooltip, Divider, Row, Select, DatePicker, theme } from "antd";
 import useIcon from "@/hooks/useIcon";
 import { useState } from "react";
 import dayjs from "dayjs";
@@ -10,6 +10,7 @@ import styles from "./index.less";
 const { Title } = Typography;
 
 const Overview = () => {
+    const { token } = theme.useToken();
     const [dateType, setDateType] = useState('Year');
     const [date, setDate] = useState(dayjs(moment().format("YYYY")));
     const Icon = useIcon();
@@ -39,17 +40,17 @@ const Overview = () => {
                     <Space>
                         <div>
                             <Title level={5} style={{marginTop:0, marginBottom: 5}}>账户余额（元）</Title>
-                            <Title level={6} style={{margin: 0}}>28530</Title>
+                            <Title level={6} style={{margin: 0, color: token.colorPrimary}}>28530</Title>
                         </div>
                         <Divider type="vertical" style={{height: 80, margin: '0 50px'}} />
                         <div>
                             <Title level={5} style={{marginTop:0, marginBottom: 5}}>总收入金额（元）</Title>
-                            <Title level={6} style={{margin: 0}}>35825</Title>
+                            <Title level={6} style={{margin: 0, color: token.colorPrimary}}>35825</Title>
                         </div>
                         <Divider type="vertical" style={{height: 80, margin: '0 50px'}} />
                         <div>
                             <Title level={5} style={{marginTop:0, marginBottom: 5}}>已到账总额（元）</Title>
-                            <Title level={6} style={{margin: 0}}>12515</Title>
+                            <Title level={6} style={{margin: 0, color: token.colorPrimary}}>12515</Title>
                         </div>
                     </Space>
                 </div>
@@ -81,22 +82,22 @@ const Overview = () => {
                     <Space>
                         <div>
                             <Title level={5} style={{marginTop:0, marginBottom: 5}}>总收益（元）</Title>
-                            <Title level={6} style={{margin: 0}}>1250</Title>
+                            <Title level={6} style={{margin: 0, color: token.colorPrimary}}>1250</Title>
                         </div>
                         <Divider type="vertical" style={{height: 80, margin: '0 50px'}} />
                         <div>
                             <Title level={5} style={{marginTop:0, marginBottom: 5}}>响应容量（KW）</Title>
-                            <Title level={6} style={{margin: 0}}>580</Title>
+                            <Title level={6} style={{margin: 0, color: token.colorPrimary}}>580</Title>
                         </div>
                         <Divider type="vertical" style={{height: 80, margin: '0 50px'}} />
                         <div>
                             <Title level={5} style={{marginTop:0, marginBottom: 5}}>响应次数</Title>
-                            <Title level={6} style={{margin: 0}}>12</Title>
+                            <Title level={6} style={{margin: 0, color: token.colorPrimary}}>12</Title>
                         </div>
                         <Divider type="vertical" style={{height: 80, margin: '0 50px'}} />
                         <div>
                             <Title level={5} style={{marginTop:0, marginBottom: 5}}>响应成功率</Title>
-                            <Title level={6} style={{margin: 0}}>100%</Title>
+                            <Title level={6} style={{margin: 0, color: token.colorPrimary}}>100%</Title>
                         </div>
                     </Space>
                 </div>
