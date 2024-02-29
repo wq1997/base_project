@@ -4,6 +4,7 @@ import "./index.less";
 import { useEffect } from "react";
 import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts";
+const colorList = ["#9E87FF", "#73DDFF", "#fe9a8b", "#F56948", "#9E87FF"];
 
 const Confirm = () => {
     const getTasks = async () => {
@@ -75,6 +76,19 @@ const Confirm = () => {
                     100, 120, 150, 90, 90, 80, 110, 105, 130, 200, 160, 150, 130, 135, 100, 100,
                     120, 150, 133, 122,
                 ],
+                symbol: "none",
+                lineStyle: {
+                    width: 5,
+                    shadowColor: "rgba(158,135,255, 0.3)",
+                    shadowBlur: 10,
+                    shadowOffsetY: 20,
+                },
+                itemStyle: {
+                    normal: {
+                        color: colorList[0],
+                        borderColor: colorList[0],
+                    },
+                },
                 markArea: {
                     itemStyle: {
                         color: "rgba(255, 173, 177, 0.4)",
@@ -105,17 +119,43 @@ const Confirm = () => {
                 name: "签约响应量（kW）",
                 type: "line",
                 smooth: true,
+                symbol: "none",
                 data: [
                     80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,
                 ],
+                lineStyle: {
+                    width: 5,
+                    shadowColor: "rgba(115,221,255, 0.3)",
+                    shadowBlur: 10,
+                    shadowOffsetY: 20,
+                },
+                itemStyle: {
+                    normal: {
+                        color: colorList[1],
+                        borderColor: colorList[1],
+                    },
+                },
             },
             {
                 name: "任务量（kW）",
                 type: "line",
                 smooth: true,
+                symbol: "none",
                 data: [
                     120, 110, 0, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60,
                 ],
+                lineStyle: {
+                    width: 5,
+                    shadowColor: "rgba(254,154,139, 0.3)",
+                    shadowBlur: 10,
+                    shadowOffsetY: 20,
+                },
+                itemStyle: {
+                    normal: {
+                        color: colorList[2],
+                        borderColor: colorList[2],
+                    },
+                },
             },
         ],
     };
