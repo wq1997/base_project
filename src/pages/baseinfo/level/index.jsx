@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Space, Table, message, Modal } from "antd";
+import { Button, Space, Table, Tooltip, Modal } from "antd";
 import { SearchInput } from "@/components";
 import AutoUpdate from "./AutoUpdate";
 import UpdateLevel from "./UpdateLevel";
@@ -31,6 +31,23 @@ const Company = () => {
         {
             title: "公司名称",
             dataIndex: "companyName",
+            width: 200,
+            render(value){
+                return (
+                    <Tooltip title={value}>
+                        <div 
+                            style={{
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                                width: 200,
+                            }}
+                        >
+                            {value}
+                        </div>
+                    </Tooltip>
+                )
+            }
         },
         {
             title: "公司编号",

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Table, Space } from "antd";
+import { Modal, Table, Space, Tooltip } from "antd";
 import { getInviteDetail as getInviteDetailServer } from "@/services/invitation";
 import "./index.less";
 
@@ -22,6 +22,23 @@ const Company = ({ detailId, onClose }) => {
         {
             title: "公司名称",
             dataIndex: "companyName",
+            width: 200,
+            render(value){
+                return (
+                    <Tooltip title={value}>
+                        <div 
+                            style={{
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                                width: 200,
+                            }}
+                        >
+                            {value}
+                        </div>
+                    </Tooltip>
+                )
+            }
         },
         {
             title: "任务确认状态",
@@ -43,6 +60,23 @@ const Company = ({ detailId, onClose }) => {
         {
             title: "任务备注",
             dataIndex: "remark",
+            width: 150,
+            render(value){
+                return (
+                    <Tooltip title={value}>
+                        <div 
+                            style={{
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                                width: 150,
+                            }}
+                        >
+                            {value}
+                        </div>
+                    </Tooltip>
+                )
+            }
         },
     ];
 
