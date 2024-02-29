@@ -12,7 +12,7 @@ const AreaStatisc = () => {
                 axisPointer: {
                     type: null 
                 },
-                formatter: '<div style="text-align: center;">当天流量情况top7</div>{b} : {c}'
+                formatter: '{b} : {c}'
             },
             grid: {
                 left: '3%',
