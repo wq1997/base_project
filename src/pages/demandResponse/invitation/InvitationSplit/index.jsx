@@ -134,7 +134,7 @@ const Company = ({ invitationSplitId, onClose }) => {
                         <a type="primary" onClick={() => handleDelete(index)}>
                             删除
                         </a>
-                        <a type="primary">基线</a>
+                        {/* <a type="primary">基线</a> */}
                     </Space>
                 );
             },
