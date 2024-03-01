@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts";
 const colorList = ["#9E87FF", "#73DDFF", "#fe9a8b", "#F56948", "#9E87FF"];
+import { CheckCircleOutlined } from "@ant-design/icons";
 
 const Confirm = () => {
     const getTasks = async () => {
@@ -168,7 +169,9 @@ const Confirm = () => {
         <div className="confirm-task">
             <div className="wait-confirm">
                 <div className="title">
-                    <Badge count={5}>待处理任务</Badge>
+                    {/* <Badge count={5}>待处理任务</Badge> */}
+                    <div>任务要求</div>
+                    <div className="company">江苏海四达动力科技有限公司 </div>
                 </div>
                 <div className="content">
                     <div className="desc">
@@ -189,7 +192,7 @@ const Confirm = () => {
                         <div>响应时间：2023/12/31 15:00 - 2023/12/31 15:30</div>
                         <div>确认截止时间：2023/12/30 15:00</div>
                     </div>
-                    <div className="btns">
+                    {/* <div className="btns">
                         <Button>查看详情</Button>
                         <Space>
                             <Button type="primary" danger>
@@ -197,21 +200,28 @@ const Confirm = () => {
                             </Button>
                             <Button type="primary">确认响应</Button>
                         </Space>
-                    </div>
+                    </div> */}
                 </div>
             </div>
             <div className="response-suggest">
-                <div className="title">响应建议</div>
+                <div className="title">执行结果</div>
                 <div className="content">
                     <div className="expected">
-                        <div className="name">预计执行成功率</div>
-                        <div className="percent">95%</div>
-                        <div className="suggest">建议参与响应</div>
+                        <div className="name">执行情况</div>
+                        <div className="percent">成功</div>
+                        {/* <div className="suggest">建议参与响应</div> */}
                     </div>
                     <div className="illustrate">
-                        <div className="name">响应说明</div>
+                        <div className="name">执行说明</div>
                         <div className="value">
-                            响应成功率为根据响应能力及响应历史行为得出，高于60%建议确认响应
+                            <div>
+                                <CheckCircleOutlined className="check-icon" />
+                                响应时段最大负荷不高于基线最大负荷
+                            </div>
+                            <div>
+                                <CheckCircleOutlined className="check-icon" />
+                                响应差值大于等于响应能力确认值的 60%
+                            </div>
                         </div>
                     </div>
                 </div>

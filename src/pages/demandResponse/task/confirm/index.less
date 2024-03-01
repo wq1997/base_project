@@ -21,6 +21,11 @@
         .title {
             height: 30px;
             line-height: 30px;
+            display: flex;
+            justify-content: space-between;
+            .company{
+                font-weight: bold;
+            }
         }
         .content {
             height: calc(100% - 40px);
@@ -36,6 +41,9 @@
         grid-area: g1;
         .content {
             flex-direction: column;
+            .company{
+                font-weight: bold;
+            }
             .desc {
                 flex: 1;
                 padding-top: 10px;
@@ -91,6 +99,11 @@
                 .value {
                     font-size: 20px;
                     margin-top: 10px;
+                    .check-icon{
+                        margin-right: 8px;
+                        font-size: 16px;
+                        color: #52c41a;
+                    }
                 }
             }
         }

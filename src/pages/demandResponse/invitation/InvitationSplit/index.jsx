@@ -51,10 +51,10 @@ const Company = ({ invitationSplitId, onClose }) => {
             dataIndex: 'companyName',
             key: 'companyName',
             width: 200,
-            render(value){
+            render(value) {
                 return (
                     <Tooltip title={value}>
-                        <div 
+                        <div
                             style={{
                                 overflow: 'hidden',
                                 whiteSpace: 'nowrap',
@@ -94,10 +94,10 @@ const Company = ({ invitationSplitId, onClose }) => {
             title: "任务备注",
             dataIndex: "remark",
             width: 200,
-            render(value){
+            render(value) {
                 return (
                     <Tooltip title={value}>
-                        <div 
+                        <div
                             style={{
                                 overflow: 'hidden',
                                 whiteSpace: 'nowrap',
@@ -348,7 +348,7 @@ const Company = ({ invitationSplitId, onClose }) => {
                     rowKey="id"
                     dataSource={taskList}
                     columns={
-                        isReSplit? columns: columns?.filter(column=>!column.isReSplit)
+                        isReSplit ? columns : columns?.filter(column => !column.isReSplit)
                     }
                     title={() => <Space className="table-title"></Space>}
                     pagination={false}
