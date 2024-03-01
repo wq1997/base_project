@@ -89,31 +89,31 @@ const Confirm = () => {
                         borderColor: colorList[0],
                     },
                 },
-                markArea: {
-                    itemStyle: {
-                        color: "rgba(255, 173, 177, 0.4)",
-                    },
-                    data: [
-                        [
-                            {
-                                name: "Morning Peak",
-                                xAxis: "07:30",
-                            },
-                            {
-                                xAxis: "10:00",
-                            },
-                        ],
-                        [
-                            {
-                                name: "Evening Peak",
-                                xAxis: "17:30",
-                            },
-                            {
-                                xAxis: "21:15",
-                            },
-                        ],
-                    ],
-                },
+                // markArea: {
+                //     itemStyle: {
+                //         color: "rgba(255, 173, 177, 0.4)",
+                //     },
+                //     data: [
+                //         [
+                //             {
+                //                 name: "Morning Peak",
+                //                 xAxis: "07:30",
+                //             },
+                //             {
+                //                 xAxis: "10:00",
+                //             },
+                //         ],
+                //         [
+                //             {
+                //                 name: "Evening Peak",
+                //                 xAxis: "17:30",
+                //             },
+                //             {
+                //                 xAxis: "21:15",
+                //             },
+                //         ],
+                //     ],
+                // },
             },
             {
                 name: "签约响应量（kW）",
