@@ -1,0 +1,64 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\yarn\bin\yarn.js install
+
+PATH: 
+  C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Users\SER111\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Users\SER111\AppData\Roaming\nvm\v16.10.0;D:\;C:\Program Files\Git\cmd;D:\微信web开发者工具\dll;C:\Users\SER111\AppData\Local\Microsoft\WindowsApps;C:\Users\SER111\AppData\Roaming\nvm;C:\Program Files\nodejs;D:\Microsoft VS Code\bin
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  16.20.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: connect ETIMEDOUT 104.16.27.34:443
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1278:16)
+
+npm manifest: 
+  {
+    "private": true,
+    "author": "wangqing <2957009914@qq.com>",
+    "scripts": {
+      "dev": "umi dev",
+      "build": "umi build",
+      "build:test": "cross-env UMI_ENV=test umi build",
+      "build:prod": "cross-env UMI_ENV=prod umi build",
+      "postinstall": "umi setup",
+      "setup": "umi setup",
+      "start": "npm run dev"
+    },
+    "dependencies": {
+      "@ant-design/icons": "^5.1.4",
+      "@ant-design/use-emotion-css": "^1.0.4",
+      "@antv/g6": "^4.8.22",
+      "ahooks": "^3.7.8",
+      "antd": "5.8.4",
+      "antd-mobile": "^5.32.0",
+      "axios": "^1.4.0",
+      "classnames": "^2.3.2",
+      "cross-env": "^7.0.3",
+      "dayjs": "^1.11.9",
+      "echarts": "^5.4.3",
+      "echarts-for-react": "^3.0.2",
+      "jsencrypt": "^3.3.2",
+      "moment": "^2.29.4",
+      "react-helmet": "^6.1.0",
+      "umi": "^4.0.72"
+    },
+    "devDependencies": {
+      "@types/react": "^18.2.14",
+      "@types/react-dom": "^18.2.6",
+      "@umijs/plugins": "^4.0.72",
+      "compression-webpack-plugin": "^10.0.0",
+      "typescript": "^5.1.6"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
