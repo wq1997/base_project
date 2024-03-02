@@ -6,7 +6,7 @@ const AreaStatisc = () => {
 
     const getOptions = () => {
         setOptions({
-            color: ["#2478F2"],
+            color: ["#9E87FF", "#73DDFF", "#fe9a8b"],
             tooltip: {
                 trigger: "axis",
                 axisPointer: {
@@ -66,7 +66,22 @@ const AreaStatisc = () => {
                             position: "right",
                         },
                     },
-                    data: [1, 1, 2],
+                    data: [{
+                        value: 2,
+                        itemStyle: {
+                            normal: { color: "#9E87FF" }
+                        }
+                    }, {
+                        value: 1,
+                        itemStyle: {
+                            normal: { color: '#73DDFF' }
+                        }
+                    }, {
+                        value: 1,
+                        itemStyle: {
+                            normal: { color: '#fe9a8b' }
+                        }
+                    }],
                 },
             ],
         });
