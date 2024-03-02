@@ -154,22 +154,22 @@ const Account = () => {
             dataIndex: "executeResult",
             width: 200,
         },
-        {
-            title: "操作",
-            dataIndex: "operate",
-            fixed: "right",
-            width: 200,
-            render: (_, { id, supportSplit, supportReSplit }) => {
-                return (
-                    <Space>
-                        <a onClick={() => setInvitationSplitId(id)}>
-                            {supportSplit ? "邀约拆分" : supportReSplit ? "重新拆分" : ""}
-                        </a>
-                        <a onClick={() => setDetailId(id)}>详情</a>
-                    </Space>
-                );
-            },
-        },
+        // {
+        //     title: "操作",
+        //     dataIndex: "operate",
+        //     fixed: "right",
+        //     width: 200,
+        //     render: (_, { id, supportSplit, supportReSplit }) => {
+        //         return (
+        //             <Space>
+        //                 <a onClick={() => setInvitationSplitId(id)}>
+        //                     {supportSplit ? "邀约拆分" : supportReSplit ? "重新拆分" : ""}
+        //                 </a>
+        //                 <a onClick={() => setDetailId(id)}>详情</a>
+        //             </Space>
+        //         );
+        //     },
+        // },
     ];
 
     const getSearchInitData = async () => {

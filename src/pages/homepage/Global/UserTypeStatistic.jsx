@@ -41,9 +41,9 @@ const UserTypeStatistic = () => {
                   show: false
                 },
                 data: [
-                  { value: 5, name: '复合型工业园' },
-                  { value: 10, name: '源荷储一体工业园' },
-                  { value: 3, name: '配储型工业园' },
+                  { value: 0, name: '复合型工业园' },
+                  { value: 0, name: '源荷储一体工业园' },
+                  { value: 4, name: '配储型工业园' },
                 ]
               }
             ]

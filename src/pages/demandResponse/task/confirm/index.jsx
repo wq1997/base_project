@@ -16,7 +16,7 @@ const Confirm = () => {
 
     const options = {
         legend: {
-            data: ["预计基线负荷（kW）", "签约响应量（kW）", "任务量（kW）"],
+            data: ["预计基线负荷（kW）", "签约响应量（kW）", "任务量（kW）", "实际响应（kW）"],
         },
         grid: {
             top: "10%",
@@ -37,26 +37,19 @@ const Confirm = () => {
             type: "category",
             boundaryGap: false,
             data: [
-                "00:00",
-                "01:15",
-                "02:30",
-                "03:45",
-                "05:00",
-                "06:15",
-                "07:30",
-                "08:45",
-                "10:00",
-                "11:15",
-                "12:30",
+                "13:00",
+                "13:15",
+                "13:30",
                 "13:45",
+                "14:00",
+                "14:15",
+                "14:30",
+                "14:45",
                 "15:00",
-                "16:15",
-                "17:30",
-                "18:45",
-                "20:00",
-                "21:15",
-                "22:30",
-                "23:45",
+                "15:15",
+                "15:30",
+                "15:45",
+                "16:00",
             ],
         },
         yAxis: {
@@ -67,6 +60,7 @@ const Confirm = () => {
             axisPointer: {
                 snap: true,
             },
+            max: 45000,
         },
         series: [
             {
@@ -74,12 +68,12 @@ const Confirm = () => {
                 type: "line",
                 smooth: true,
                 data: [
-                    100, 120, 150, 90, 90, 80, 110, 105, 130, 200, 160, 150, 130, 135, 100, 100,
-                    120, 150, 133, 122,
+                    8532, 19231, 32643, 32763, 39232, 41204, 40401.6, 38804, 35804, 32811, 35892,
+                    37281, 23172,
                 ],
                 symbol: "none",
                 lineStyle: {
-                    width: 5,
+                    width: 3,
                     shadowColor: "rgba(158,135,255, 0.3)",
                     shadowBlur: 10,
                     shadowOffsetY: 20,
@@ -122,10 +116,11 @@ const Confirm = () => {
                 smooth: true,
                 symbol: "none",
                 data: [
-                    80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,
+                    30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000,
+                    30000, 30000,
                 ],
                 lineStyle: {
-                    width: 5,
+                    width: 3,
                     shadowColor: "rgba(115,221,255, 0.3)",
                     shadowBlur: 10,
                     shadowOffsetY: 20,
@@ -142,11 +137,9 @@ const Confirm = () => {
                 type: "line",
                 smooth: true,
                 symbol: "none",
-                data: [
-                    120, 110, 0, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60,
-                ],
+                data: [0, 0, 0, 0, 3375, 3375, 3375, 3375, 3375, 0, 0, 0, 0],
                 lineStyle: {
-                    width: 5,
+                    width: 3,
                     shadowColor: "rgba(254,154,139, 0.3)",
                     shadowBlur: 10,
                     shadowOffsetY: 20,
@@ -155,6 +148,25 @@ const Confirm = () => {
                     normal: {
                         color: colorList[2],
                         borderColor: colorList[2],
+                    },
+                },
+            },
+            {
+                name: "实际响应（kW）",
+                type: "line",
+                smooth: true,
+                symbol: "none",
+                data: [0, 0, 0, 0, 3450, 3400, 3485, 3602, 3334, 0, 0, 0, 0],
+                lineStyle: {
+                    width: 3,
+                    shadowColor: "rgba(254,154,139, 0.3)",
+                    shadowBlur: 10,
+                    shadowOffsetY: 20,
+                },
+                itemStyle: {
+                    normal: {
+                        color: colorList[3],
+                        borderColor: colorList[3],
                     },
                 },
             },
@@ -171,7 +183,7 @@ const Confirm = () => {
                 <div className="title">
                     {/* <Badge count={5}>待处理任务</Badge> */}
                     <div>任务要求</div>
-                    <div className="company">江苏海四达动力科技有限公司 </div>
+                    <div className="company">连云港华乐不锈钢制品有限公司</div>
                 </div>
                 <div className="content">
                     <div className="desc">
@@ -181,16 +193,16 @@ const Confirm = () => {
                         </div>
                         <div>
                             <div className="name">任务功率（kW）</div>
-                            <div className="value">35</div>
+                            <div className="value">3375</div>
                         </div>
                         <div>
                             <div className="name">预计收益（元）</div>
-                            <div className="value">2385</div>
+                            <div className="value">23625</div>
                         </div>
                     </div>
                     <div className="time">
-                        <div>响应时间：2023/12/31 15:00 - 2023/12/31 15:30</div>
-                        <div>确认截止时间：2023/12/30 15:00</div>
+                        <div>响应时间：2024-01-06 14:00:00 - 2024-01-06 15:00:00</div>
+                        <div>确认截止时间：2024-01-05 00:00:00</div>
                     </div>
                     {/* <div className="btns">
                         <Button>查看详情</Button>
