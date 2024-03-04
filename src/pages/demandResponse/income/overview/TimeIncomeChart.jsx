@@ -27,6 +27,9 @@ const TimeIncomeChart = () => {
                 axisPointer: {
                     type: "cross",
                 },
+                formatter: function(params) {
+                    return params[0].name + '<br>' + params[0].value + ' 元';
+                }
             },
             xAxis: {
                 type: "category",
@@ -34,6 +37,7 @@ const TimeIncomeChart = () => {
             },
             yAxis: {
                 type: "value",
+                name: '元'
             },
             grid: {
                 bottom: 20,
