@@ -37,6 +37,12 @@ const SettingLog = "@/pages/setting/log";
 // 系统通知
 const SettingNotification = "@/pages/setting/notification";
 
+// 现货交易
+const TransactionLayout = "@/layouts/transactionLayout";
+
+// 首页
+const TransactionHomepage = "@/pages/transaction/homepage";
+
 export default Routes = [
     {
         path: "/",
@@ -88,6 +94,14 @@ export default Routes = [
                     { path: "/vpp/setting/notification", component: SettingNotification },
                 ],
             },
+            {
+                path: '/transaction',
+                component: TransactionLayout,
+                routes: [
+                    { path: '/transaction/homepage', component: TransactionHomepage },
+
+                ]
+            }
         ],
     },
     { path: "/login", component: Login },
