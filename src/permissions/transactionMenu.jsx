@@ -11,6 +11,26 @@ const MenuList = [
         label: "首页",
         icon: "icon-shujuhoutaixitong",
     },
+    {
+        key: "/transaction/manage/history",
+        label: "电价预测管理",
+        icon: "icon-diannengzhiliangjiance",
+    },
+    {
+        key: "/transaction/report",
+        label: "交易申报",
+        icon: "icon-xiangmushenbaoguanli",
+    },
+    {
+        key: "/transaction/execute",
+        label: "交易执行",
+        icon: "icon-zhihangrizhi",
+    },
+    {
+        key: "/transaction/board",
+        label: "经营看板",
+        icon: "icon-shujukanban",
+    },
 ];
 
 const TransactionMenu = () => {
@@ -75,11 +95,9 @@ const TransactionMenu = () => {
     };
 
     const getSelectKeys = () => {
-        if(pathname.startsWith('/vpp/demandResponse/task')){
-            setSelectedKeys('/vpp/demandResponse/task/confirm');
-        } else if(pathname.startsWith('/vpp/demandResponse/income')){
-            setSelectedKeys('/vpp/demandResponse/income/overview');
-        }else{
+        if(pathname.startsWith('/transaction/manage')){
+            setSelectedKeys('/transaction/manage/history');
+        } else{
             setSelectedKeys(pathname);
         }
     }

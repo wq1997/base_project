@@ -42,6 +42,16 @@ const TransactionLayout = "@/layouts/transactionLayout";
 
 // 首页
 const TransactionHomepage = "@/pages/transaction/homepage";
+// 电价预测管理
+const TransactionManage = "@/pages/transaction/manage";
+const TransactionManageHistory = "@/pages/transaction/manage/history";
+const TransactionManagePrediction = "@/pages/transaction/manage/prediction";
+// 交易申报
+const TransactionReport = "@/pages/transaction/report";
+// 交易执行
+const TransactionExecute = "@/pages/transaction/execute";
+// 经营看板
+const TransactionBoard = "@/pages/transaction/board";
 
 export default Routes = [
     {
@@ -99,7 +109,17 @@ export default Routes = [
                 component: TransactionLayout,
                 routes: [
                     { path: '/transaction/homepage', component: TransactionHomepage },
-
+                    { 
+                        path: '/transaction/manage', 
+                        component: TransactionManage,
+                        routes: [
+                            { path: '/transaction/manage/history', component: TransactionManageHistory },
+                            { path: '/transaction/manage/prediction', component: TransactionManagePrediction }
+                        ]
+                    },
+                    { path: '/transaction/report', component: TransactionReport },
+                    { path: '/transaction/execute', component: TransactionExecute },
+                    { path: '/transaction/board', component: TransactionBoard }
                 ]
             }
         ],
