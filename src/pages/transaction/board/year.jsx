@@ -7,6 +7,7 @@ import * as echarts from "echarts";
 const colorList = ["#9E87FF", "#73DDFF", "#fe9a8b", "#F56948", "#9E87FF"];
 
 const Year = () => {
+    const [loading, setLoading] = useState(true);
     const totalIncom = [
         { label: "当年累计收益(万元)", value: "920.11" },
         { label: "当年最高月收益(万元)", value: "95.12" },
@@ -18,6 +19,10 @@ const Year = () => {
         { label: "当年充电电量(MWH)", value: "105087" },
         { label: "当年放电电量(MWH)", value: "105087" },
     ];
+
+    setTimeout(() => {
+        setLoading(false);
+    }, 500);
 
     const options1 = {
         title: {
@@ -75,7 +80,6 @@ const Year = () => {
             {
                 name: "月收入",
                 type: "line",
-                smooth: true,
                 data: [
                     95.12, 90.31, 86.78, 81.11, 75.31, 72.25, 73.12, 69.92, 72.28, 77.39, 61.01,
                     65.51,
@@ -186,7 +190,7 @@ const Year = () => {
                 className="charts"
                 style={{ paddingTop: "30px", minHeight: "300px", height: "calc(100% - 500px)" }}
             >
-                <ReactECharts option={options1} style={{ width: "100%", height: "100%" }} />
+                <ReactECharts showLoading={loading} option={options1} style={{ width: "100%", height: "100%" }} />
             </div>
             <div className="total">
                 {totalElectricity?.map(item => (
@@ -200,7 +204,7 @@ const Year = () => {
                 className="charts"
                 style={{ paddingTop: "30px", minHeight: "300px", height: "calc(100% - 500px)" }}
             >
-                <ReactECharts option={options2} style={{ width: "100%", height: "100%" }} />
+                <ReactECharts showLoading={loading} option={options2} style={{ width: "100%", height: "100%" }} />
             </div>
         </div>
     );

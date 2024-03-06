@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Space, Table, message, Modal, DatePicker, Tooltip, Input } from "antd";
+import { Button, Space, Table, message, Modal, DatePicker, Tooltip, Drawer } from "antd";
 import { PlusOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { SearchInput } from "@/components";
 import {
@@ -14,7 +14,7 @@ import "./index.less";
 
 let invalidReason = undefined;
 
-const Account = () => {
+const Account = ({ open, setOpen }) => {
     const [loading, setLoading] = useState(false);
     const [canSure, setCanSure] = useState(true);
     const [canDelete, setCanDelete] = useState(true);
@@ -177,13 +177,13 @@ const Account = () => {
     }, []);
 
     return (
-        <div>
+        <Drawer title="交易申报" width={'88%'} onClose={() => setOpen(false)} open={open}>
             <Space className="search">
                 <SearchInput
                     label="选择交易角色"
                     value={1}
                     type="select"
-                    options={[{ name: "够方", code: 1 }]}
+                    options={[{ name: "购方", code: 1 }]}
                 />
 
                 <SearchInput label="交易名称" value={code} />
@@ -216,7 +216,7 @@ const Account = () => {
             <div style={{ marginTop: "30px", textAlign: "center" }}>
                 <Button type="primary">确认申报</Button>
             </div>
-        </div>
+        </Drawer>
     );
 };
 

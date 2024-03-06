@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { DatePicker, Space } from "antd";
+import { DatePicker, Spin } from "antd";
 import "./index.less";
 import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts";
@@ -7,6 +7,7 @@ import { date, data } from "./data";
 const colorList = ["#9E87FF", "#73DDFF", "#fe9a8b", "#F56948", "#9E87FF"];
 
 const Year = () => {
+    const [loading, setLoading] = useState(true);
     const totalIncom = [
         { label: "当月累计收益(万元)", value: "920.11" },
         { label: "单月最高日收益(万元)", value: "95.12" },
@@ -18,6 +19,10 @@ const Year = () => {
         { label: "当月充电电量(MWH)", value: "8553" },
         { label: "当月放电电量(MWH)", value: "8553" },
     ];
+
+    setTimeout(() => {
+        setLoading(false);
+    }, 500);
 
     const options1 = {
         title: {
@@ -65,7 +70,6 @@ const Year = () => {
             {
                 name: "日收入",
                 type: "line",
-                smooth: true,
                 data: [
                     7.51, 7.71, 7.03, 6.65, 6.51, 6.3, 6.81, 6.65, 5.52, 6.92, 5.65, 5.58, 6.69,
                     6.41, 5.99, 5.81, 6.6, 6.31, 6.34, 6.86, 6.82, 5.71, 5.6, 6.01, 6.51, 5.62,
@@ -74,18 +78,19 @@ const Year = () => {
                 symbol: "none",
                 lineStyle: {
                     width: 5,
-                    color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
-                        offset: 0,
-                        color: '#9effff'
-                    },
-                    {
-                        offset: 1,
-                        color: '#9E87FF'
-                    }
+                    color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [
+                        {
+                            offset: 0,
+                            color: "#9effff",
+                        },
+                        {
+                            offset: 1,
+                            color: "#9E87FF",
+                        },
                     ]),
-                    shadowColor: 'rgba(158,135,255, 0.3)',
+                    shadowColor: "rgba(158,135,255, 0.3)",
                     shadowBlur: 10,
-                    shadowOffsetY: 20
+                    shadowOffsetY: 20,
                 },
                 itemStyle: {
                     normal: {
@@ -186,14 +191,14 @@ const Year = () => {
         },
         dataZoom: [
             {
-                type: 'inside',
+                type: "inside",
                 start: 0,
-                end: 10
+                end: 10,
             },
             {
                 start: 0,
-                end: 20
-            }
+                end: 20,
+            },
         ],
         toolbox: {
             show: true,
@@ -222,20 +227,21 @@ const Year = () => {
                 type: "line",
                 symbol: "none",
                 smooth: true,
-                 lineStyle: {
+                lineStyle: {
                     width: 3,
-                    color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
-                        offset: 0,
-                        color: '#9effff'
-                    },
-                    {
-                        offset: 1,
-                        color: '#9E87FF'
-                    }
+                    color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [
+                        {
+                            offset: 0,
+                            color: "#9effff",
+                        },
+                        {
+                            offset: 1,
+                            color: "#9E87FF",
+                        },
                     ]),
-                    shadowColor: 'rgba(158,135,255, 0.3)',
+                    shadowColor: "rgba(158,135,255, 0.3)",
                     shadowBlur: 10,
-                    shadowOffsetY: 20
+                    shadowOffsetY: 20,
                 },
                 itemStyle: {
                     normal: {
@@ -258,12 +264,18 @@ const Year = () => {
                     </div>
                 ))}
             </div>
+
             <div
                 className="charts"
                 style={{ paddingTop: "30px", minHeight: "300px", height: "calc(100% - 500px)" }}
             >
-                <ReactECharts option={options1} style={{ width: "100%", height: "100%" }} />
+                <ReactECharts
+                    showLoading={loading}
+                    option={options1}
+                    style={{ width: "100%", height: "100%" }}
+                />
             </div>
+
             <div className="total">
                 {totalElectricity?.map(item => (
                     <div>
@@ -276,13 +288,21 @@ const Year = () => {
                 className="charts"
                 style={{ paddingTop: "30px", minHeight: "300px", height: "calc(100% - 500px)" }}
             >
-                <ReactECharts option={options2} style={{ width: "100%", height: "100%" }} />
+                <ReactECharts
+                    showLoading={loading}
+                    option={options2}
+                    style={{ width: "100%", height: "100%" }}
+                />
             </div>
             <div
                 className="charts"
                 style={{ paddingTop: "30px", minHeight: "300px", height: "calc(100% - 500px)" }}
             >
-                <ReactECharts option={options3} style={{ width: "100%", height: "100%" }} />
+                <ReactECharts
+                    showLoading={loading}
+                    option={options3}
+                    style={{ width: "100%", height: "100%" }}
+                />
             </div>
         </div>
     );

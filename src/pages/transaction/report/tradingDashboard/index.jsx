@@ -11,10 +11,12 @@ import {
 } from "@/services/invitation";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import "./index.less";
+import DoDeclaration from "../doDeclaration";
 
 let invalidReason = undefined;
 
 const Account = ({ setKey }) => {
+    const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [canSure, setCanSure] = useState(true);
     const [canDelete, setCanDelete] = useState(true);
@@ -88,7 +90,7 @@ const Account = ({ setKey }) => {
             title: "操作",
             dataIndex: "operate",
             render: _ => {
-                return <a onClick={() => setKey(2)}>去申报</a>;
+                return <a onClick={() => setOpen(true)}>去申报</a>;
             },
         },
     ];
@@ -274,6 +276,7 @@ const Account = ({ setKey }) => {
 
     return (
         <div>
+            <DoDeclaration open={open} setOpen={setOpen}/>
             <Space className="search">
                 <SearchInput
                     label="市场名称"
