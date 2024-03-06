@@ -4,6 +4,7 @@ import MyMenu from "@/permissions/menu";
 import styles from "./baseLayout.less";
 import useIcon from "@/hooks/useIcon";
 import logo from "../logo.png";
+import { useEffect } from "react";
 
 const { Header, Sider, Content } = Layout;
 
@@ -12,12 +13,16 @@ const BaseLayout = () => {
     const Icon = useIcon();
     const dispatch = useDispatch();
 
+    useEffect(()=>{
+        document.title="采日VPP聚合平台";
+    }, [])
+
     return (
         <div className={styles.baseLayout}>
             <Layout className={styles.layout}>
                 <Header className={styles.header}>
                     <div style={{ display: "flex", alignItems: "center" }}>
-                        <img src={logo} className={styles.logo} />
+                        {/* <img src={logo} className={styles.logo} /> */}
                         <Typography.Title
                             level={3}
                             className={styles.title}

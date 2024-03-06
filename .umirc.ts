@@ -18,7 +18,6 @@ function OutputPathName(env: string) {
 export default defineConfig({
   routes,
   npmClient: 'pnpm',
-  title: '采日VPP聚合平台',
   plugins: ['@umijs/plugins/dist/dva', '@umijs/plugins/dist/locale'],
   dva:{},
   locale: {
