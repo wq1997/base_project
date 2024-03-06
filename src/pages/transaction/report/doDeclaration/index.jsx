@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Space, Table, message, Modal, DatePicker, Tooltip, Drawer } from "antd";
+import { Button, Space, Table, InputNumber, Modal, DatePicker, Drawer } from "antd";
 import { PlusOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { SearchInput } from "@/components";
 import {
@@ -11,11 +11,13 @@ import {
 } from "@/services/invitation";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import "./index.less";
+import dayjs from "dayjs";
 
 let invalidReason = undefined;
 
 const Account = ({ open, setOpen }) => {
     const [loading, setLoading] = useState(false);
+    const [start, setStart] = useState();
     const [canSure, setCanSure] = useState(true);
     const [canDelete, setCanDelete] = useState(true);
     const [canInvalid, setCanInvalid] = useState(true);
@@ -52,14 +54,32 @@ const Account = ({ open, setOpen }) => {
         {
             title: "交易开始时间",
             dataIndex: "name",
+            render: () => {
+                return (
+                    <DatePicker
+                        showTime={{
+                            format: "HH:mm",
+                        }}
+                        format="YYYY-MM-DD HH:mm"
+                        minuteStep={15}
+                        onChange={(_, dateStr) => setStart(dateStr)}
+                    />
+                );
+            },
         },
         {
             title: "交易结束时间",
             dataIndex: "code",
+            render: () => {
+                return start ? dayjs(start).add(15, "minute").format("YYYY-MM-DD HH:mm:ss") : "";
+            },
         },
         {
             title: "申报电量(MWH)",
             dataIndex: "type",
+            render: () => {
+                return <InputNumber style={{ width: 200 }} placeholder="请输入申报电量" />;
+            },
         },
         {
             title: "参考电价（元）",
@@ -68,6 +88,9 @@ const Account = ({ open, setOpen }) => {
         {
             title: "申报电价（元）",
             dataIndex: "limit",
+            render: () => {
+                return <InputNumber style={{ width: 200 }} placeholder="请输入申报电价" />;
+            },
         },
         {
             title: "操作",
@@ -124,7 +147,6 @@ const Account = ({ open, setOpen }) => {
                 ...paginationRef.current,
                 total: parseInt(totalRecord),
             });
-
         }
     };
 
@@ -148,27 +170,17 @@ const Account = ({ open, setOpen }) => {
 
     useEffect(() => {
         getSearchInitData();
-        setLoading(true)
+        setLoading(true);
         setTimeout(() => {
             setUserList([
                 {
                     name: "模拟交易-20240304-1",
                     code: "ZXSR19872",
                     type: "日前市场",
-                    method: "不限",
+                    method: "231.5",
                     limit: "查看交易单元限额",
                     start: "2024-03-04 00：00:00",
                     end: "2024-03-04 20：00:00",
-                    email: "查看附件",
-                },
-                {
-                    name: "模拟交易-20240304-2",
-                    code: "ZXSR19632",
-                    type: "日间市场 ",
-                    method: "不限",
-                    limit: "查看交易单元限额",
-                    start: "2024-03-04 00：00:00",
-                    end: "2024-03-04 23：59:59",
                     email: "查看附件",
                 },
             ]);
@@ -177,7 +189,7 @@ const Account = ({ open, setOpen }) => {
     }, []);
 
     return (
-        <Drawer title="交易申报" width={'88%'} onClose={() => setOpen(false)} open={open}>
+        <Drawer title="交易申报" width={"88%"} onClose={() => setOpen(false)} open={open}>
             <Space className="search">
                 <SearchInput
                     label="选择交易角色"
