@@ -54,7 +54,8 @@ const HomePage = () => {
                                     border: `1px solid ${token.colorPrimary}`,
                                     overflow: 'hidden',
                                     lineHeight: '30px',
-                                    display: 'flex'
+                                    display: 'flex',
+                                    marginTop: 40
                                 }}
                             >
                                 <div
@@ -69,7 +70,6 @@ const HomePage = () => {
                                 </div>
                                 <div
                                     style={{
-                                        marginTop: 40,
                                         width: '50%',
                                         height: 30,
                                         color: token.colorPrimary,
