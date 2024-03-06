@@ -14,7 +14,7 @@ import "./index.less";
 
 let invalidReason = undefined;
 
-const Account = () => {
+const Account = ({ setKey }) => {
     const [loading, setLoading] = useState(false);
     const [canSure, setCanSure] = useState(true);
     const [canDelete, setCanDelete] = useState(true);
@@ -50,11 +50,11 @@ const Account = () => {
 
     const columns = [
         {
-            title: "执行状态",
-            dataIndex: "status",
+            title: "交易名称",
+            dataIndex: "name",
         },
         {
-            title: "申请编号",
+            title: "交易编号",
             dataIndex: "code",
         },
         {
@@ -62,32 +62,34 @@ const Account = () => {
             dataIndex: "type",
         },
         {
-            title: "交易角色",
-            dataIndex: "role",
+            title: "交易方式",
+            dataIndex: "method",
         },
         {
-            title: "申报电量(MWH)",
-            dataIndex: "count",
+            title: "交易单元限额",
+            dataIndex: "limit",
+            render: (_, { limit }) => <a onClick={() => setDetailId(id)}>{limit}</a>,
         },
         {
-            title: "执行电量(MWH)",
-            dataIndex: "useCount",
-        },
-        {
-            title: "完成百分比",
-            dataIndex: "percent",
-        },
-        {
-            title: "执行开始时间",
+            title: "申报开始时间",
             dataIndex: "start",
         },
         {
-            title: "执行结束时间",
+            title: "申报结束时间",
             dataIndex: "end",
         },
         {
-            title: "系统备注",
-            dataIndex: "remark",
+            title: "通知附件",
+            dataIndex: "email",
+            render: (_, { email }) => <a onClick={() => setDetailId(id)}>{email}</a>,
+        },
+
+        {
+            title: "操作",
+            dataIndex: "operate",
+            render: _ => {
+                return <a onClick={() => setKey(2)}>去申报</a>;
+            },
         },
     ];
 
@@ -137,7 +139,6 @@ const Account = () => {
                 ...paginationRef.current,
                 total: parseInt(totalRecord),
             });
-           
         }
     };
 
@@ -242,34 +243,29 @@ const Account = () => {
     };
 
     useEffect(() => {
-        
         getSearchInitData();
         setLoading(true);
         setTimeout(() => {
             setUserList([
                 {
-                    status: "操作成功",
-                    code: "ZXSR19872-01",
+                    name: "模拟交易-20240304-1",
+                    code: "ZXSR19872",
                     type: "日前市场",
-                    role: "买方",
-                    count: "550",
-                    useCount: "550",
-                    percent: "100%",
-                    remark: "",
-                    start: "2024-03-04 12:15",
-                    end: "2024-03-04 12:30",
+                    method: "不限",
+                    limit: "查看交易单元限额",
+                    start: "2024-03-04 00：00:00",
+                    end: "2024-03-04 20：00:00",
+                    email: "查看附件",
                 },
                 {
-                    status: "操作成功",
-                    code: "ZXSR19632-02",
-                    type: "日间市场",
-                    role: "卖方",
-                    count: "520",
-                    useCount: "520",
-                    percent: "100%",
-                    remark: "",
-                    start: "2024-03-04 12:45",
-                    end: "2024-03-04 13:00",
+                    name: "模拟交易-20240304-2",
+                    code: "ZXSR19632",
+                    type: "日间市场 ",
+                    method: "不限",
+                    limit: "查看交易单元限额",
+                    start: "2024-03-04 00：00:00",
+                    end: "2024-03-04 23：59:59",
+                    email: "查看附件",
                 },
             ]);
             setLoading(false);
@@ -298,25 +294,13 @@ const Account = () => {
                     options={[{ name: "全部", code: 1 }]}
                 />
                 <SearchInput label="交易名称" value={code} />
-                <SearchInput
-                    label="执行状态"
-                    value={1}
-                    type="select"
-                    options={[{ name: "全部", code: 1 }]}
-                />
-                <SearchInput
-                    label="交易角色"
-                    value={1}
-                    type="select"
-                    options={[{ name: "全部", code: 1 }]}
-                />
                 <Button type="primary" onClick={getInviteList}>
                     搜索
                 </Button>
                 <Button onClick={handleReset}>重置</Button>
             </Space>
             <Table
-            loading={loading}
+                loading={loading}
                 rowKey="id"
                 dataSource={userList}
                 columns={columns}

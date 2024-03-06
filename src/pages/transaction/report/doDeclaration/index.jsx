@@ -50,44 +50,31 @@ const Account = () => {
 
     const columns = [
         {
-            title: "执行状态",
-            dataIndex: "status",
+            title: "交易开始时间",
+            dataIndex: "name",
         },
         {
-            title: "申请编号",
+            title: "交易结束时间",
             dataIndex: "code",
         },
         {
-            title: "交易类型",
+            title: "申报电量(MWH)",
             dataIndex: "type",
         },
         {
-            title: "交易角色",
-            dataIndex: "role",
+            title: "参考电价（元）",
+            dataIndex: "method",
         },
         {
-            title: "申报电量(MWH)",
-            dataIndex: "count",
+            title: "申报电价（元）",
+            dataIndex: "limit",
         },
         {
-            title: "执行电量(MWH)",
-            dataIndex: "useCount",
-        },
-        {
-            title: "完成百分比",
-            dataIndex: "percent",
-        },
-        {
-            title: "执行开始时间",
-            dataIndex: "start",
-        },
-        {
-            title: "执行结束时间",
-            dataIndex: "end",
-        },
-        {
-            title: "系统备注",
-            dataIndex: "remark",
+            title: "操作",
+            dataIndex: "operate",
+            render: _ => {
+                return <a onClick={() => setDetailId(id)}>删除</a>;
+            },
         },
     ];
 
@@ -137,7 +124,7 @@ const Account = () => {
                 ...paginationRef.current,
                 total: parseInt(totalRecord),
             });
-           
+
         }
     };
 
@@ -159,117 +146,30 @@ const Account = () => {
         getInviteList();
     };
 
-    const handleInvalid = () => {
-        if (selectedRowKeys?.length == 0) {
-            return message.info("请先勾选需要作废的数据");
-        }
-        Modal.confirm({
-            title: "批量作废",
-            icon: <ExclamationCircleOutlined />,
-            width: 500,
-            content: (
-                <div>
-                    <div style={{ marginBottom: "10px" }}>
-                        作废邀约，关联任务将被同步作废，不再统计进入流水，请输入作废原因
-                    </div>
-                    <Input.TextArea
-                        rows={4}
-                        placeholder="请输入作废原因，最多50字"
-                        maxLength={50}
-                        onChange={e => (invalidReason = e.target.value)}
-                    />
-                </div>
-            ),
-            okText: "确认",
-            cancelText: "取消",
-            onOk: async () => {
-                if (!invalidReason) {
-                    message.info("请输入作废原因");
-                    return Promise.reject();
-                }
-                const res = await invalidInviteServer({
-                    ids: selectedRowKeys,
-                    reason: invalidReason,
-                });
-                if (res?.data?.status == "SUCCESS") {
-                    message.success("作废成功");
-                    setPagination({
-                        current: 1,
-                    });
-                    setSelectedRowKeys([]);
-                    getInviteList();
-                    invalidReason = undefined;
-                }
-            },
-            onCancel: () => {
-                invalidReason = undefined;
-            },
-        });
-    };
-
-    const handleOperate = typeId => {
-        const operates = {
-            0: {
-                type: "确认",
-                tip: "邀约确认后不可取消",
-                fn: sureInviteServer,
-            },
-            1: {
-                type: "删除",
-                tip: "删除后不可恢复",
-                fn: deleteInviteServer,
-            },
-        };
-        const { type, tip, fn } = operates[typeId];
-        if (selectedRowKeys?.length == 0) {
-            return message.info(`请先勾选需要${type}的数据`);
-        }
-        Modal.confirm({
-            title: `确定${type}？`,
-            content: tip,
-            onOk: async () => {
-                const res = await fn(selectedRowKeys);
-                if (res?.data?.status == "SUCCESS") {
-                    message.success(`${type}成功`);
-                    setPagination({
-                        current: 1,
-                    });
-                    setSelectedRowKeys([]);
-                    getInviteList();
-                }
-            },
-        });
-    };
-
     useEffect(() => {
-        
         getSearchInitData();
-        setLoading(true);
+        setLoading(true)
         setTimeout(() => {
             setUserList([
                 {
-                    status: "操作成功",
-                    code: "ZXSR19872-01",
+                    name: "模拟交易-20240304-1",
+                    code: "ZXSR19872",
                     type: "日前市场",
-                    role: "买方",
-                    count: "550",
-                    useCount: "550",
-                    percent: "100%",
-                    remark: "",
-                    start: "2024-03-04 12:15",
-                    end: "2024-03-04 12:30",
+                    method: "不限",
+                    limit: "查看交易单元限额",
+                    start: "2024-03-04 00：00:00",
+                    end: "2024-03-04 20：00:00",
+                    email: "查看附件",
                 },
                 {
-                    status: "操作成功",
-                    code: "ZXSR19632-02",
-                    type: "日间市场",
-                    role: "卖方",
-                    count: "520",
-                    useCount: "520",
-                    percent: "100%",
-                    remark: "",
-                    start: "2024-03-04 12:45",
-                    end: "2024-03-04 13:00",
+                    name: "模拟交易-20240304-2",
+                    code: "ZXSR19632",
+                    type: "日间市场 ",
+                    method: "不限",
+                    limit: "查看交易单元限额",
+                    start: "2024-03-04 00：00:00",
+                    end: "2024-03-04 23：59:59",
+                    email: "查看附件",
                 },
             ]);
             setLoading(false);
@@ -280,43 +180,20 @@ const Account = () => {
         <div>
             <Space className="search">
                 <SearchInput
-                    label="市场名称"
+                    label="选择交易角色"
                     value={1}
                     type="select"
-                    options={[{ name: "xx现货交易市场", code: 1 }]}
+                    options={[{ name: "够方", code: 1 }]}
                 />
-                <SearchInput
-                    label="节点类型"
-                    value={1}
-                    type="select"
-                    options={[{ name: "模拟市场通用节点", code: 1 }]}
-                />
-                <SearchInput
-                    label="交易类型"
-                    value={1}
-                    type="select"
-                    options={[{ name: "全部", code: 1 }]}
-                />
+
                 <SearchInput label="交易名称" value={code} />
-                <SearchInput
-                    label="执行状态"
-                    value={1}
-                    type="select"
-                    options={[{ name: "全部", code: 1 }]}
-                />
-                <SearchInput
-                    label="交易角色"
-                    value={1}
-                    type="select"
-                    options={[{ name: "全部", code: 1 }]}
-                />
                 <Button type="primary" onClick={getInviteList}>
                     搜索
                 </Button>
                 <Button onClick={handleReset}>重置</Button>
             </Space>
             <Table
-            loading={loading}
+                loading={loading}
                 rowKey="id"
                 dataSource={userList}
                 columns={columns}
@@ -325,7 +202,20 @@ const Account = () => {
                     paginationRef.current = pagination;
                     getInviteList();
                 }}
+                title={() => (
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                        <Space className="table-title">
+                            <span>维护价量信息</span>
+                            <Button type="primary">批量导入报价表</Button>
+                        </Space>
+                        <Button type="primary">新增价量信息</Button>
+                    </div>
+                )}
             ></Table>
+
+            <div style={{ marginTop: "30px", textAlign: "center" }}>
+                <Button type="primary">确认申报</Button>
+            </div>
         </div>
     );
 };

@@ -73,10 +73,19 @@ const Year = () => {
                 ],
                 symbol: "none",
                 lineStyle: {
-                    width: 3,
-                    shadowColor: "rgba(158,135,255, 0.3)",
+                    width: 5,
+                    color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+                        offset: 0,
+                        color: '#9effff'
+                    },
+                    {
+                        offset: 1,
+                        color: '#9E87FF'
+                    }
+                    ]),
+                    shadowColor: 'rgba(158,135,255, 0.3)',
                     shadowBlur: 10,
-                    shadowOffsetY: 20,
+                    shadowOffsetY: 20
                 },
                 itemStyle: {
                     normal: {
@@ -179,7 +188,7 @@ const Year = () => {
             {
                 type: 'inside',
                 start: 0,
-                end: 20
+                end: 10
             },
             {
                 start: 0,
@@ -213,11 +222,20 @@ const Year = () => {
                 type: "line",
                 symbol: "none",
                 smooth: true,
-                lineStyle: {
+                 lineStyle: {
                     width: 3,
-                    shadowColor: "rgba(158,135,255, 0.3)",
+                    color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+                        offset: 0,
+                        color: '#9effff'
+                    },
+                    {
+                        offset: 1,
+                        color: '#9E87FF'
+                    }
+                    ]),
+                    shadowColor: 'rgba(158,135,255, 0.3)',
                     shadowBlur: 10,
-                    shadowOffsetY: 20,
+                    shadowOffsetY: 20
                 },
                 itemStyle: {
                     normal: {

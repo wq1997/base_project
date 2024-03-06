@@ -15,6 +15,7 @@ import "./index.less";
 let invalidReason = undefined;
 
 const Account = () => {
+    const [loading, setLoading] = useState(false);
     const [canSure, setCanSure] = useState(true);
     const [canDelete, setCanDelete] = useState(true);
     const [canInvalid, setCanInvalid] = useState(true);
@@ -49,7 +50,7 @@ const Account = () => {
 
     const columns = [
         {
-            title: "执行状态",
+            title: "申请状态",
             dataIndex: "status",
         },
         {
@@ -57,8 +58,16 @@ const Account = () => {
             dataIndex: "code",
         },
         {
+            title: "关联交易名称",
+            dataIndex: "name",
+        },
+        {
             title: "交易类型",
             dataIndex: "type",
+        },
+        {
+            title: "交易方式",
+            dataIndex: "method",
         },
         {
             title: "交易角色",
@@ -69,19 +78,15 @@ const Account = () => {
             dataIndex: "count",
         },
         {
-            title: "执行电量(MWH)",
-            dataIndex: "useCount",
+            title: "申报电价（元）",
+            dataIndex: "yuan",
         },
         {
-            title: "完成百分比",
-            dataIndex: "percent",
-        },
-        {
-            title: "执行开始时间",
+            title: "申报开始时间",
             dataIndex: "start",
         },
         {
-            title: "执行结束时间",
+            title: "申报结束时间",
             dataIndex: "end",
         },
         {
@@ -136,32 +141,6 @@ const Account = () => {
                 ...paginationRef.current,
                 total: parseInt(totalRecord),
             });
-            setUserList([
-                {
-                    status: "操作成功",
-                    code: "ZXSR19872-01",
-                    type: "日前市场",
-                    role: "买方",
-                    count: "550",
-                    useCount: "550",
-                    percent: "100%",
-                    remark: "",
-                    start: "2024-03-04 12:15",
-                    end: "2024-03-04 12:30",
-                },
-                {
-                    status: "操作成功",
-                    code: "ZXSR19632-02",
-                    type: "日间市场",
-                    role: "卖方",
-                    count: "520",
-                    useCount: "520",
-                    percent: "100%",
-                    remark: "",
-                    start: "2024-03-04 12:45",
-                    end: "2024-03-04 13:00",
-                },
-            ]);
         }
     };
 
@@ -266,8 +245,39 @@ const Account = () => {
     };
 
     useEffect(() => {
-        getInviteList();
         getSearchInitData();
+        setLoading(true);
+        setTimeout(() => {
+            setUserList([
+                {
+                    status: "处理中",
+                    code: "ZXSR19872-01",
+                    name: "模拟交易-20240304-1",
+                    type: "日前市场",
+                    method: "不限",
+                    role: "买方",
+                    count: "550",
+                    yuan: "385",
+                    remark: "",
+                    start: "2024-03-04 12:15",
+                    end: "2024-03-04 20：00:00",
+                },
+                {
+                    status: "申请成功",
+                    code: "ZXSR19632-02",
+                    name: "模拟交易-20240304-1",
+                    type: "日间市场",
+                    method: "报量报价",
+                    role: "买方",
+                    count: "550",
+                    yuan: "385        ",
+                    remark: "",
+                    start: "2024-03-04 12:45",
+                    end: "2024-03-04 23：59:59",
+                },
+            ]);
+            setLoading(false);
+        }, 1000);
     }, []);
 
     return (
@@ -275,32 +285,32 @@ const Account = () => {
             <Space className="search">
                 <SearchInput
                     label="市场名称"
-                    value={confirmStatus}
+                    value={1}
                     type="select"
                     options={[{ name: "xx现货交易市场", code: 1 }]}
                 />
                 <SearchInput
                     label="节点类型"
-                    value={confirmStatus}
+                    value={1}
                     type="select"
                     options={[{ name: "模拟市场通用节点", code: 1 }]}
                 />
                 <SearchInput
                     label="交易类型"
-                    value={confirmStatus}
+                    value={1}
                     type="select"
                     options={[{ name: "全部", code: 1 }]}
                 />
                 <SearchInput label="交易名称" value={code} />
                 <SearchInput
-                    label="执行状态"
-                    value={confirmStatus}
+                    label="申请状态"
+                    value={1}
                     type="select"
                     options={[{ name: "全部", code: 1 }]}
                 />
                 <SearchInput
                     label="交易角色"
-                    value={confirmStatus}
+                    value={1}
                     type="select"
                     options={[{ name: "全部", code: 1 }]}
                 />
@@ -310,6 +320,7 @@ const Account = () => {
                 <Button onClick={handleReset}>重置</Button>
             </Space>
             <Table
+                loading={loading}
                 rowKey="id"
                 dataSource={userList}
                 columns={columns}
