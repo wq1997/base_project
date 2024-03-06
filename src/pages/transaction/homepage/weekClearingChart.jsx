@@ -47,13 +47,6 @@ const WeekClearingChart = () => {
                 min: 0,
                 max: 25000,
                 interval: 5000,
-              },
-              {
-                type: 'value',
-                name: '%',
-                min: 0,
-                max: 100,
-                interval: 20
               }
             ],
              dataZoom: [

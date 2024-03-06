@@ -2,6 +2,7 @@ import { Card, Typography, theme, Col, Row, Statistic, Divider } from "antd";
 import styles from "./index.less";
 import WeekReportChart from "./weekReportChart";
 import WeekClearingChart from "./weekClearingChart";
+import LiuchenSvg from "./liuchen.svg";
 
 const HomePage = () => {
     const { token } = theme.useToken();
@@ -24,7 +25,14 @@ const HomePage = () => {
                                 height: 'calc(100% - 40px)'
                             }}
                         >
-
+                            <img
+                                style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    objectFit: 'contain'
+                                }} 
+                                src={LiuchenSvg} 
+                            />
                         </div>
                     </Card>
                 </div>
