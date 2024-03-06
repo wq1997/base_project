@@ -58,7 +58,6 @@ const Prediction = () => {
                             value={"A"}
                         />
                         <SearchInput
-                            label="交易类型"
                             type="select"
                             options={[
                                 {name: '统一纵轴', code: 'A'}
