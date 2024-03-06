@@ -72,7 +72,7 @@ const MenuList = [
 
 const MyMenu = () => {
     const Icon = useIcon();
-    const [selectedKeys, setSelectedKeys] = useState('');
+    const [selectedKeys, setSelectedKeys] = useState("");
 
     const getMenu = menuList => {
         return menuList.map(menu => {
@@ -96,7 +96,7 @@ const MyMenu = () => {
                 );
             } else {
                 return (
-                    <Menu.Item 
+                    <Menu.Item
                         key={menu.key}
                         icon={
                             <Icon
@@ -132,14 +132,14 @@ const MyMenu = () => {
     };
 
     const getSelectKeys = () => {
-        if(pathname.startsWith('/vpp/demandResponse/task')){
-            setSelectedKeys('/vpp/demandResponse/task/confirm');
-        } else if(pathname.startsWith('/vpp/demandResponse/income')){
-            setSelectedKeys('/vpp/demandResponse/income/overview');
-        }else{
+        if (pathname.startsWith("/vpp/demandResponse/task")) {
+            setSelectedKeys("/vpp/demandResponse/task/confirm");
+        } else if (pathname.startsWith("/vpp/demandResponse/income")) {
+            setSelectedKeys("/vpp/demandResponse/income/overview");
+        } else {
             setSelectedKeys(pathname);
         }
-    }
+    };
 
     useEffect(() => {
         getSelectKeys();

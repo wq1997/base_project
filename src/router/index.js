@@ -37,6 +37,16 @@ const SettingLog = "@/pages/setting/log";
 // 系统通知
 const SettingNotification = "@/pages/setting/notification";
 
+const transactionDeclaration = "@/pages/transactionDeclaration/tradingDashboard";
+
+const doDeclaration = "@/pages/transactionDeclaration/doDeclaration";
+
+const applicationList = "@/pages/transactionDeclaration/applicationList";
+
+const transactionExecution = "@/pages/transactionDeclaration/transactionExecution";
+
+const businessKanban = "@/pages/transactionDeclaration/businessKanban";
+
 export default Routes = [
     {
         path: "/",
@@ -48,37 +58,37 @@ export default Routes = [
                 routes: [
                     { path: "/vpp/homepage", component: HomePage },
                     { path: "/vpp/demandResponse/invitation", component: DemandResponseInvitation },
-                    { 
-                        path: "/vpp/demandResponse/task", 
+                    {
+                        path: "/vpp/demandResponse/task",
                         component: DemandResponseTask,
                         routes: [
                             {
-                                path: "/vpp/demandResponse/task/confirm", 
+                                path: "/vpp/demandResponse/task/confirm",
                                 component: TaskConfirm,
                             },
                             {
-                                path: "/vpp/demandResponse/task/list", 
+                                path: "/vpp/demandResponse/task/list",
                                 component: TaskList,
-                            }
-                        ]
+                            },
+                        ],
                     },
-                    { 
-                        path: "/vpp/demandResponse/income", 
+                    {
+                        path: "/vpp/demandResponse/income",
                         component: DemandResponseIncome,
                         routes: [
                             {
-                                path: "/vpp/demandResponse/income/overview", 
+                                path: "/vpp/demandResponse/income/overview",
                                 component: DemandResponseIncomeOverview,
                             },
                             {
-                                path: "/vpp/demandResponse/income/invitation", 
+                                path: "/vpp/demandResponse/income/invitation",
                                 component: DemandResponseIncomeInvitation,
                             },
                             {
-                                path: "/vpp/demandResponse/income/task", 
+                                path: "/vpp/demandResponse/income/task",
                                 component: DemandResponseIncomeTask,
-                            }
-                        ]
+                            },
+                        ],
                     },
                     { path: "/vpp/baseinfo/company", component: BaseinfoCompany },
                     { path: "/vpp/baseinfo/role", component: BaseinfoRole },
