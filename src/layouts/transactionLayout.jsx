@@ -1,5 +1,6 @@
 import { Outlet, useDispatch } from "umi";
 import { Layout, Row, Avatar, Typography, Dropdown, Space, theme } from "antd";
+import { useEffect } from "react";
 import MyMenu from "@/permissions/transactionMenu";
 import styles from "./baseLayout.less";
 import useIcon from "@/hooks/useIcon";
@@ -12,12 +13,16 @@ const TransactionLayout = () => {
     const Icon = useIcon();
     const dispatch = useDispatch();
 
+    useEffect(()=>{
+        document.title="现货交易平台";
+    }, [])
+
     return (
         <div className={styles.baseLayout}>
             <Layout className={styles.layout}>
                 <Header className={styles.header}>
                     <div style={{ display: "flex", alignItems: "center" }}>
-                        <img src={logo} className={styles.logo} />
+                        {/* <img src={logo} className={styles.logo} /> */}
                         <Typography.Title
                             level={3}
                             className={styles.title}
@@ -26,7 +31,7 @@ const TransactionLayout = () => {
                                 fontSize: "20px",
                             }}
                         >
-                            采日VPP聚合平台
+                            现货交易平台
                         </Typography.Title>
                     </div>
                     <Dropdown

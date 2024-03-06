@@ -103,6 +103,7 @@ const PriceChart = () => {
                 boundaryGap: false
             }],
             yAxis: [{
+                min: 250,
                 type: 'value',
                 name: '价格(元/MWh)',
                 axisTick: {
@@ -126,10 +127,10 @@ const PriceChart = () => {
             series: [{
                     name: '日前预测电价',
                     type: 'line',
-                    data: [500,400,400,500,600,700,750,850,900,800,700,500,400,600,620,800,1000,1050,800,600,500,300, 300],
+                    data: [300,400,400,500,500,600,650,850,954,950,900,800,700,680,670,600,500,1123,987,650,500,500,300],
                     symbolSize: 1,
                     symbol: 'circle',
-                    smooth: true,
+                    smooth: false,
                     yAxisIndex: 0,
                     showSymbol: false,
                     lineStyle: {
@@ -156,10 +157,10 @@ const PriceChart = () => {
                 }, {
                     name: '日前出清电价',
                     type: 'line',
-                    data: [600,500,450,550,700,660,850,900,950,700,600,500,450,660,700,900,1300,1250,900,600,550,300,250],
+                    data: [400,500,500,500,470,580,600,800,950,950,950,900,800,700,650,700,650,1023,950,957,600,400,350],
                     symbolSize: 1,
                     symbol: 'circle',
-                    smooth: true,
+                    smooth: false,
                     yAxisIndex: 0,
                     showSymbol: false,
                     lineStyle: {
@@ -204,10 +205,10 @@ const PriceChart = () => {
                 {
                     name: '日内预测电价',
                     type: 'line',
-                    data: [700,600,600,700,800,900,750,950,1100,900,900,700,600,800,820,700,1200,1250,900,800,600,400, 350],
+                    data: [250,300,300,400,500,660,670,750,844,900,920,800,600,630,670,650,600,1043,999,987,500,400,258],
                     symbolSize: 1,
                     symbol: 'circle',
-                    smooth: true,
+                    smooth: false,
                     showSymbol: false,
                     lineStyle: {
                         width: 5,
@@ -233,10 +234,10 @@ const PriceChart = () => {
                 },{
                     name: '日内出清电价',
                     type: 'line',
-                    data: [800,700,700,800,900,1100,950,950,1200,900,800,800,700,800,890,700,1500,1250,1100,1000,600,300, 300],
+                    data: [322,350,400,450,500,550,650,700,900,800,800,700,800,700,700,800,850,1156,900,900,600,300,321],
                     symbolSize: 1,
                     symbol: 'circle',
-                    smooth: true,
+                    smooth: false,
                     showSymbol: false,
                     markPoint: {
                         label: {
@@ -304,7 +305,7 @@ const PriceChart = () => {
                         justifyContent: 'space-between',
                     }}
                 >
-                    日前出清电价差：<span style={{color: token.colorPrimary, fontWeight: 600, fontSize: 18}}>1150 元/Mwh</span>
+                    日前出清电价差：<span style={{color: token.colorPrimary, fontWeight: 600, fontSize: 18}}>673 元/Mwh</span>
                 </div>
                 <div 
                     style={{
@@ -316,7 +317,7 @@ const PriceChart = () => {
                         justifyContent: 'space-between',
                     }}
                 >
-                    日内出清电价差：<span style={{color: token.colorPrimary, fontWeight: 600, fontSize: 18}}>1200 元/Mwh</span>
+                    日内出清电价差：<span style={{color: token.colorPrimary, fontWeight: 600, fontSize: 18}}>856 元/Mwh</span>
                 </div>
             </div>
             <ReactECharts  
