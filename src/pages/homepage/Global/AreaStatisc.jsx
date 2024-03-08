@@ -67,7 +67,7 @@ const AreaStatisc = () => {
                         },
                     },
                     data: [{
-                        value: 2,
+                        value: 1,
                         itemStyle: {
                             normal: { color: "#9E87FF" }
                         }
@@ -77,7 +77,7 @@ const AreaStatisc = () => {
                             normal: { color: '#73DDFF' }
                         }
                     }, {
-                        value: 1,
+                        value: 2,
                         itemStyle: {
                             normal: { color: '#fe9a8b' }
                         }
