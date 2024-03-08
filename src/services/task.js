@@ -16,3 +16,13 @@ export const getWaitConfirmTasks = () => {
     const url = `${API_URL_2}/invite-task/get-wait-confirm-invite-task-dashboard-vo`;
     return axiosInstance.get(url);
 };
+
+export const confirmTask = payload => {
+    const url = `${API_URL_2}/invite-task/confirm`;
+    return axiosInstance.post(url, payload);
+};
+
+export const refuseTask = payload => {
+    const url = `${API_URL_2}/invite-task/refuse`;
+    return axiosInstance.post(url, payload);
+};
