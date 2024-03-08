@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { theme } from 'antd';
 import * as echarts from "echarts";
 
-const colorList = ["#9E87FF", '#73DDFF', '#fe9a8b', '#F56948', '#9E87FF'];
+const colorList = ["#9E87FF", '#73DDFF', '#fe9a8b', '#F56948'];
 
 const PriceChart = () => {
     const { token } = theme.useToken();
@@ -260,11 +260,11 @@ const PriceChart = () => {
                         width: 5,
                         color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
                                 offset: 0,
-                                color: '#fe9a'
+                                color: '#F56948'
                             },
                             {
                                 offset: 1,
-                                color: '#fe9a8b'
+                                color: '#F56948'
                             }
                         ]),
                         shadowColor: 'rgba(254,154,139, 0.3)',

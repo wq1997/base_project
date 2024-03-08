@@ -42,7 +42,7 @@ const WeekPriceChart = () => {
                 extraCssText: 'box-shadow: 1px 0 2px 0 rgba(163,163,163,0.5)'
             },
             grid: {
-                top: 25,
+                top: 30,
                 bottom: 75,
                 left: 50,
                 right: 50
