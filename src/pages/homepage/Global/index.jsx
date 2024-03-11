@@ -1,6 +1,6 @@
-import { Card, Typography, theme, Table } from "antd";
+import { Card, Typography, theme } from "antd";
 import { useState } from "react";
-import { ScrollTable } from "@/components";
+import { ScrollTable, Title } from "@/components";
 import styles from "./index.less";
 import JiangsuMap from "./JiangsuMap";
 import AreaStatisc from "./AreaStatisc";
@@ -77,28 +77,34 @@ const Global = () => {
                     {Object.keys(data)?.map(item => {
                         return (
                             <Card style={{ flex: 1, height: "100%" }}>
-                                <Typography.Title
-                                    level={3}
+                                <Title
                                     style={{ marginTop: 0, marginBottom: 20 }}
                                 >
                                     {data[item].title}
-                                </Typography.Title>
+                                </Title>
                                 <div className={styles.cardData}>
                                     {data[item].dataSource?.map(dataSource => {
                                         return (
-                                            <div className={styles.cardDataItem}>
-                                                <Typography.Title
-                                                    level={5}
-                                                    style={{ marginTop: 0, marginBottom: 10 }}
-                                                >
-                                                    {dataSource.label}
-                                                </Typography.Title>
-                                                <Typography.Title
-                                                    level={2}
-                                                    style={{ margin: 0, color: token.colorPrimary }}
-                                                >
-                                                    {dataSource.value}
-                                                </Typography.Title>
+                                            <div 
+                                                className={styles.cardDataItem}
+                                                style={{
+                                                    backgroundColor: token.color1,
+                                                }}
+                                            >
+                                                <div>
+                                                    <Typography.Title
+                                                        level={5}
+                                                        style={{ marginTop: 0, marginBottom: 10, textAlign: 'center' }}
+                                                    >
+                                                        {dataSource.label}
+                                                    </Typography.Title>
+                                                    <Typography.Title
+                                                        level={2}
+                                                        style={{ margin: 0, color: token.colorPrimary, textAlign: 'center' }}
+                                                    >
+                                                        {dataSource.value}
+                                                    </Typography.Title>
+                                                </div>
                                             </div>
                                         );
                                     })}
