@@ -29,6 +29,7 @@ const Title = (props) => {
 const Description = (props) => {
     const Icon = useIcon();
     const { icon, iconColor, style } = props;
+    const { token } = theme.useToken();
     return (
         <div
             style={{display: 'flex', ...style}}
@@ -43,7 +44,7 @@ const Description = (props) => {
                     }}
                 />
             }
-            <div style={{marginLeft: 4}}>{props.children}</div>
+            <div style={{marginLeft: 4, color: token.color11, fontSize: 16, fontFamily: 'PingFangSemiblod'}}>{props.children}</div>
         </div>
     )
 }

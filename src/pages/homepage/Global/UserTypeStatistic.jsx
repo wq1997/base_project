@@ -7,6 +7,7 @@ const UserTypeStatistic = () => {
 
     const getOptions = () => {
         setOptions({
+            color: ['#384FE8', '#03B4B4', '#F3CE55'],
             tooltip: {
               trigger: 'item'
             },

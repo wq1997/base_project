@@ -21,7 +21,7 @@ const TimeIncomeChart = () => {
         ];
         const data = [46250, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         setOptions({
-            color: ["#D97559"],
+            color: ["#6BA8F0"],
             tooltip: {
                 trigger: "axis",
                 axisPointer: {

@@ -121,11 +121,12 @@ const Global = () => {
                                                         {dataSource.label}
                                                     </Title.Description>
                                                     <Typography.Title
-                                                        level={2}
+                                                        level={3}
                                                         style={{ 
                                                             margin: 0, 
                                                             color: dataSource.color, 
-                                                            textAlign: 'center' 
+                                                            textAlign: 'center',
+                                                            fontFamily: 'DingTalkJinBuTi'
                                                         }}
                                                     >
                                                         {dataSource.value}

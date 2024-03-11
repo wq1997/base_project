@@ -1,7 +1,9 @@
 import ReactECharts from "echarts-for-react";
 import { useEffect, useState } from "react";
+import { theme } from "antd";
 
 const AreaStatisc = () => {
+    const { token } = theme.useToken();
     const [options, setOptions] = useState({});
 
     const getOptions = () => {
@@ -45,15 +47,18 @@ const AreaStatisc = () => {
                     axisTick: {
                         show: false,
                     },
-                    axisTick: {
-                        show: false,
-                    },
                     axisLine: {
-                        show: false,
+                        show: true,
+                        lineStyle: {
+                            color: token.colorPrimary
+                        }
                     },
                     splitLine: {
                         show: false,
                     },
+                    axisLabel: {
+                        color: '#333'
+                    }
                 },
             ],
             series: [

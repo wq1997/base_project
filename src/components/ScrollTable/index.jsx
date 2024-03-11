@@ -1,13 +1,14 @@
-import { useRef } from "react";
 import styles from "./index.less";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { theme } from "antd";
+
 let timer = null;
 const Table = ({
-    headerLineColor='rgba(0,0,0,0.8)',
-    color="black",
+    color="#666666",
     columns,
     dataSource
 }) => {
+    const { token } = theme.useToken();
     const tableRef = useRef(null);
     const tableHeaderRef = useRef(null);
     const tableContentRef = useRef(null);
@@ -42,12 +43,21 @@ const Table = ({
     }, []);
 
     return (
-        <div className={styles.table} ref={tableRef}>
-            <div className={styles.tableHeader} style={{borderBottom: `3px solid ${headerLineColor}`}} ref={tableHeaderRef}>
+        <div 
+            className={styles.table} 
+            ref={tableRef}
+        >
+            <div 
+                className={styles.tableHeader} 
+                style={{
+                    background: token.color10
+                }} 
+                ref={tableHeaderRef}
+            >
                 {
                     columns?.map(column => {
                         return (
-                            <div className={styles.tableHeaderTitle} style={{color}}>{column?.title}</div>
+                            <div className={styles.tableHeaderTitle} style={{color: token.colorPrimary}}>{column?.title}</div>
                         )
                     })
                 }
