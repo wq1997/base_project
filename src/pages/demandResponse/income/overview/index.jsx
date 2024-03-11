@@ -1,11 +1,13 @@
 import { Card, Space, Typography, Tooltip, Divider, Row, Select, DatePicker, theme } from "antd";
 import useIcon from "@/hooks/useIcon";
 import { useState } from "react";
+import { Title as MyTitle } from "@/components"
 import dayjs from "dayjs";
 import moment from "moment";
 import TaskStaticsChart from "./TaskStaticsChart";
 import TimeIncomeChart from "./TimeIncomeChart";
 import styles from "./index.less";
+import { useEmotionCss } from "@ant-design/use-emotion-css";
 
 const { Title } = Typography;
 
@@ -13,18 +15,66 @@ const Overview = () => {
     const { token } = theme.useToken();
     const [dateType, setDateType] = useState('Year');
     const [date, setDate] = useState(dayjs(moment().format("YYYY")));
+    const [companyAccountData, setCompanyAccountData] = useState([
+        {
+            label: '账户余额',
+            data: 29661.58,
+            color: token.color12
+        },
+        {
+            label: '总收入金额(元)',
+            data: 29661.58,
+            color: token.color13
+        },
+        {
+            label: '已到账总额(元)',
+            data: 29661.58,
+            color: token.color14
+        }
+    ])
+
+    const [incomeStaticsData, setIncomeStaticsData] = useState([
+        {
+            label: '总收益(元)',
+            data: 29661.58,
+            color: token.color14
+        },
+        {
+            label: '响应容量(KW)',
+            data: 11921,
+            color: token.color15
+        },
+        {
+            label: '响应次数',
+            data: 2,
+            color: token.color16
+        },
+        {
+            label: '响应成功率',
+            data: '100%',
+            color: token.color17
+        }
+    ])
     const Icon = useIcon();
 
     const onChangeDate = (_, dateStr) => {
         setDate(dayjs(dateStr));
     }
 
+    const incomeCardStyle = useEmotionCss(()=>{
+        return {
+            padding: 16,
+            marginBottom: 20,
+            background: token.incomeOverviewCardColor
+        }
+    })
+
     return (
         <div>
-            <Card style={{ height: 170, marginBottom: 20 }}>
+            <div className={incomeCardStyle}>
                 <div style={{ marginBottom: 15 }}>
                     <Space>
-                        <Title level={3} style={{ margin: 0, display: 'inline-block' }}>公司账户</Title>
+                        <MyTitle>公司账户</MyTitle>
                         <Tooltip title="本页面中展示收益均为采日平台根据公司记录所计算的预期收益，仅做参考使用">
                             <Icon
                                 type="icon-bangzhu"
@@ -36,27 +86,37 @@ const Overview = () => {
                         </Tooltip>
                     </Space>
                 </div>
-                <div style={{ marginLeft: 40 }}>
-                    <Space>
-                        <div>
-                            <Title level={5} style={{ marginTop: 0, marginBottom: 5 }}>账户余额（元）</Title>
-                            <Title level={6} style={{ margin: 0, color: token.colorPrimary }}>29661.58</Title>
-                        </div>
-                        <Divider type="vertical" style={{ height: 80, margin: '0 50px' }} />
-                        <div>
-                            <Title level={5} style={{ marginTop: 0, marginBottom: 5 }}>总收入金额（元）</Title>
-                            <Title level={6} style={{ margin: 0, color: token.colorPrimary }}>29661.58</Title>
-                        </div>
-                        <Divider type="vertical" style={{ height: 80, margin: '0 50px' }} />
-                        <div>
-                            <Title level={5} style={{ marginTop: 0, marginBottom: 5 }}>已到账总额（元）</Title>
-                            <Title level={6} style={{ margin: 0, color: token.colorPrimary }}>0</Title>
-                        </div>
-                    </Space>
+                <div
+                    style={{
+                        display: 'flex',
+                        gap: '8px'
+                    }}
+                >
+                    {
+                        companyAccountData?.map(item => {
+                            return (
+                                <div 
+                                    style={{
+                                        flex: 1,
+                                        display: 'flex', 
+                                        alignItems: 'center', 
+                                        justifyContent: 'center',
+                                        boxShadow: '0px 2px 6px 0px rgba(176,185,210,0.4)',
+                                        padding: '25px 24px'
+                                    }}
+                                >
+                                    <div>
+                                        <MyTitle.Description style={{ marginTop: 0, marginBottom: 5 }}>{item?.label}</MyTitle.Description>
+                                        <Title level={6} style={{ margin: 0, color: item.color, fontFamily: 'DingTalkJinBuTi' }}>{item?.data}</Title>
+                                    </div>
+                                </div>
+                            )
+                        })
+                    }
                 </div>
-            </Card>
+            </div>
             <div style={{ marginBottom: 20 }}>
-                <Row align="middle">
+                <Row align="middle" style={{marginLeft: 20}}>
                     <div>筛选条件：</div>
                     <Select
                         options={[
@@ -74,39 +134,41 @@ const Overview = () => {
                     />
                 </Row>
             </div>
-            <Card style={{ height: 170, marginBottom: 20 }}>
-                <div style={{ marginBottom: 15 }}>
-                    <Title level={3} style={{ margin: 0, display: 'inline-block' }}>收益统计</Title>
+            <div className={incomeCardStyle}>
+                <MyTitle style={{ marginBottom: 15 }}>收益统计</MyTitle>
+                <div
+                    style={{
+                        display: 'flex',
+                        gap: '8px'
+                    }}
+                >
+                    {
+                        incomeStaticsData?.map(item => {
+                            return (
+                                <div 
+                                    style={{
+                                        flex: 1,
+                                        display: 'flex', 
+                                        alignItems: 'center', 
+                                        justifyContent: 'center',
+                                        boxShadow: '0px 2px 6px 0px rgba(176,185,210,0.4)',
+                                        padding: '25px 24px'
+                                    }}
+                                >
+                                    <div>
+                                        <MyTitle.Description style={{ marginTop: 0, marginBottom: 5 }}>{item?.label}</MyTitle.Description>
+                                        <Title level={6} style={{ margin: 0, color: item.color, fontFamily: 'DingTalkJinBuTi' }}>{item?.data}</Title>
+                                    </div>
+                                </div>
+                            )
+                        })
+                    }
                 </div>
-                <div style={{ marginLeft: 40 }}>
-                    <Space>
-                        <div>
-                            <Title level={5} style={{ marginTop: 0, marginBottom: 5 }}>总收益（元）</Title>
-                            <Title level={6} style={{ margin: 0, color: token.colorPrimary }}>29661.58</Title>
-                        </div>
-                        <Divider type="vertical" style={{ height: 80, margin: '0 50px' }} />
-                        <div>
-                            <Title level={5} style={{ marginTop: 0, marginBottom: 5 }}>响应容量（KW）</Title>
-                            <Title level={6} style={{ margin: 0, color: token.colorPrimary }}> 11921
-                            </Title>
-                        </div>
-                        <Divider type="vertical" style={{ height: 80, margin: '0 50px' }} />
-                        <div>
-                            <Title level={5} style={{ marginTop: 0, marginBottom: 5 }}>响应次数</Title>
-                            <Title level={6} style={{ margin: 0, color: token.colorPrimary }}>2</Title>
-                        </div>
-                        <Divider type="vertical" style={{ height: 80, margin: '0 50px' }} />
-                        <div>
-                            <Title level={5} style={{ marginTop: 0, marginBottom: 5 }}>响应成功率</Title>
-                            <Title level={6} style={{ margin: 0, color: token.colorPrimary }}>100%</Title>
-                        </div>
-                    </Space>
-                </div>
-            </Card>
+            </div>
             <div className={styles.content}>
                 <div className={styles.contentLeft}>
-                    <Card style={{ height: '100%' }}>
-                        <Title level={3} style={{ marginTop: 0, marginBottom: 35, display: 'inline-block' }}>充放量价统计</Title>
+                    <div className={incomeCardStyle}>
+                        <MyTitle style={{ marginTop: 0, marginBottom: 35}}>充放量价统计</MyTitle>
                         <div className={styles.contentLeftItem}>
                             <div>
                                 <Icon
@@ -141,23 +203,23 @@ const Overview = () => {
                                 </div>
                             </div>
                         </div>
-                    </Card>
+                    </div>
                 </div>
                 <div className={styles.contentRight}>
-                    <Card style={{ height: '100%' }}>
-                        <Title level={3} style={{ marginTop: 0, marginBottom: 15, display: 'inline-block' }}>任务执行统计</Title>
+                    <div className={incomeCardStyle}>
+                        <MyTitle style={{ marginTop: 0, marginBottom: 15}}>任务执行统计</MyTitle>
                         <div className={styles.contentRightChart}>
                             <TaskStaticsChart />
                         </div>
-                    </Card>
+                    </div>
                 </div>
             </div>
-            <Card style={{ height: 370 }}>
-                <Title level={3} style={{ marginTop: 0, marginBottom: 15, display: 'inline-block' }}>分时收益统计</Title>
+            <div style={{ height: 370 }}>
+                <MyTitle style={{ marginTop: 0, marginBottom: 15 }}>分时收益统计</MyTitle>
                 <div style={{ height: 280 }}>
                     <TimeIncomeChart />
                 </div>
-            </Card>
+            </div>
         </div>
     )
 }
