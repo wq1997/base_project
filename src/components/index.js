@@ -5,5 +5,6 @@ import SearchInput from "./SearchInput";
 import MyUpload from "./MyUpload";
 import ScrollTable from "./ScrollTable";
 import Title from "./Title";
+import GlobalWrapperCss from "./GlobalWrapperCss";
 
-export { ThemeBtn, ThemeEnum, LocaleBtn, SearchInput, MyUpload, ScrollTable, Title };
+export { ThemeBtn, ThemeEnum, LocaleBtn, SearchInput, MyUpload, ScrollTable, Title, GlobalWrapperCss };

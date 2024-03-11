@@ -16,18 +16,25 @@ const Global = () => {
                 {
                     label: "用户数量",
                     value: 4,
+                    color: token.color2
                 },
                 {
                     label: "设备资源",
                     value: 16,
+                    color: token.color3,
+                    icon: 'icon-shebeiziyuan'
                 },
                 {
                     label: "签约容量(KW)",
                     value: 40000,
+                    color: token.color4,
+                    icon: 'icon-qianyuerongliang'
                 },
                 {
                     label: "最大可调负荷(KW)",
                     value: 40000,
+                    color: token.color5,
+                    icon: 'icon-zuidaketiaofuhe'
                 },
             ],
         },
@@ -37,14 +44,20 @@ const Global = () => {
                 {
                     label: "累计收益(元)",
                     value: 90171.92,
+                    color: token.color6,
+                    icon: 'icon-leijishouyi1'
                 },
                 {
                     label: "本年收益(元)",
                     value: 46250,
+                    color: token.color5,
+                    icon: 'icon-bennianshouyi'
                 },
                 {
                     label: "次年预计收益(元)",
                     value: 128509,
+                    color: token.color7,
+                    icon: 'icon-cinianyujishouyi'
                 },
             ],
         },
@@ -54,18 +67,26 @@ const Global = () => {
                 {
                     label: "邀约总数",
                     value: 2,
+                    color: token.color8,
+                    icon: 'icon-yaoyuezongshu'
                 },
                 {
                     label: "响应成功数",
                     value: 2,
+                    color: token.color7,
+                    icon: 'icon-xiangyingchenggongshu'
                 },
                 {
                     label: "响应成功率",
                     value: "100%",
+                    color: token.color9,
+                    icon: 'icon-xiangyingchenggongshuai'
                 },
                 {
                     label: "有效响应功率(KW)",
                     value: 11921,
+                    color: token.color3,
+                    icon: 'icon-youxiaoxiangyinggongshuai'
                 },
             ],
         },
@@ -92,15 +113,20 @@ const Global = () => {
                                                 }}
                                             >
                                                 <div>
-                                                    <Typography.Title
-                                                        level={5}
+                                                    <Title.Description
+                                                        icon={dataSource.icon}
+                                                        iconColor={dataSource.color}
                                                         style={{ marginTop: 0, marginBottom: 10, textAlign: 'center' }}
                                                     >
                                                         {dataSource.label}
-                                                    </Typography.Title>
+                                                    </Title.Description>
                                                     <Typography.Title
                                                         level={2}
-                                                        style={{ margin: 0, color: token.colorPrimary, textAlign: 'center' }}
+                                                        style={{ 
+                                                            margin: 0, 
+                                                            color: dataSource.color, 
+                                                            textAlign: 'center' 
+                                                        }}
                                                     >
                                                         {dataSource.value}
                                                     </Typography.Title>
@@ -116,9 +142,9 @@ const Global = () => {
                 <div className={styles.topRight}>
                     <Card style={{ height: "100%", width: "100%" }}>
                         <div className={styles.topRightItem}>
-                            <Typography.Title level={3} style={{ margin: 0 }}>
+                            <Title>
                                 用户分布统计(江苏省)
-                            </Typography.Title>
+                            </Title>
                             <JiangsuMap
                                 allPlant={[
                                     {
@@ -153,9 +179,9 @@ const Global = () => {
 
             <div className={styles.center}>
                 <Card style={{ height: "100%", width: "100%" }}>
-                    <Typography.Title level={3} style={{ marginTop: 0, marginBottom: 20 }}>
+                    <Title style={{ marginTop: 0, marginBottom: 20 }}>
                         分时负荷统计
-                    </Typography.Title>
+                    </Title>
                     <div className={styles.centerLoadStatisc}>
                         <LoadStatisc />
                     </div>
@@ -165,9 +191,9 @@ const Global = () => {
             <div className={styles.bottom}>
                 <div className={styles.bottomLeft}>
                     <Card style={{ height: "100%", width: "100%" }}>
-                        <Typography.Title level={3} style={{ marginTop: 0, marginBottom: 20 }}>
+                        <Title style={{ marginTop: 0, marginBottom: 20 }}>
                             用户响应汇总
-                        </Typography.Title>
+                        </Title>
                         <div className={styles.bottomLeftContent}>
                             <ScrollTable
                                 columns={[
@@ -228,9 +254,9 @@ const Global = () => {
                 </div>
                 <div className={styles.bottomRight}>
                     <Card style={{ height: "100%", width: "100%" }}>
-                        <Typography.Title level={3} style={{ marginTop: 0, marginBottom: 20 }}>
+                        <Title style={{ marginTop: 0, marginBottom: 20 }}>
                             接入用户类型
-                        </Typography.Title>
+                        </Title>
                         <div className={styles.bottomRightContent}>
                             <UserTypeStatistic />
                         </div>

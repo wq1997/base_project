@@ -1,4 +1,5 @@
 import { theme } from "antd";
+import useIcon from "@/hooks/useIcon";
 
 const Title = (props) => {
     const { token } = theme.useToken();
@@ -20,9 +21,32 @@ const Title = (props) => {
                     marginRight: '4px'
                 }}
             />
-            <div style={{fontSize: 20}}>{props.children}</div>
+            <div style={{fontSize: 20, fontFamily: 'PingFangSemiblod'}}>{props.children}</div>
         </div>
     )
 }
 
+const Description = (props) => {
+    const Icon = useIcon();
+    const { icon, iconColor, style } = props;
+    return (
+        <div
+            style={{display: 'flex', ...style}}
+        >       
+            {
+                icon&&
+                <Icon
+                    type={icon}
+                    style={{
+                        fontSize: 15,
+                        color: iconColor
+                    }}
+                />
+            }
+            <div style={{marginLeft: 4}}>{props.children}</div>
+        </div>
+    )
+}
+
+Title.Description = Description;
 export default Title;
