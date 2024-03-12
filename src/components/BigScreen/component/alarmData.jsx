@@ -50,7 +50,7 @@ const AlarmData = ({
             const result = data?.data?.data;
             const cloneData = JSON.parse(JSON.stringify(myData));
             cloneData[0].data = parseInt(result?.NowCount);
-            cloneData[1].data = parseInt(result?.count);
+            cloneData[1].data = 2012 || parseInt(result?.count);
             cloneData[2].data = parseInt(result?.riskCount);
             setMyData(cloneData);
         }
