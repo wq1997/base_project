@@ -1,6 +1,6 @@
 import { Card, Typography, theme } from "antd";
 import { useState } from "react";
-import { ScrollTable, Title } from "@/components";
+import { ScrollTable, Title, StaticsCard } from "@/components";
 import styles from "./index.less";
 import JiangsuMap from "./JiangsuMap";
 import AreaStatisc from "./AreaStatisc";
@@ -16,7 +16,8 @@ const Global = () => {
                 {
                     label: "用户数量",
                     value: 4,
-                    color: token.color2
+                    color: token.color2,
+                    icon: 'icon-yonghushuliang',
                 },
                 {
                     label: "设备资源",
@@ -106,33 +107,12 @@ const Global = () => {
                                 <div className={styles.cardData}>
                                     {data[item].dataSource?.map(dataSource => {
                                         return (
-                                            <div 
-                                                className={styles.cardDataItem}
-                                                style={{
-                                                    backgroundColor: token.color1,
-                                                }}
-                                            >
-                                                <div>
-                                                    <Title.Description
-                                                        icon={dataSource.icon}
-                                                        iconColor={dataSource.color}
-                                                        style={{ marginTop: 0, marginBottom: 10, textAlign: 'center' }}
-                                                    >
-                                                        {dataSource.label}
-                                                    </Title.Description>
-                                                    <Typography.Title
-                                                        level={3}
-                                                        style={{ 
-                                                            margin: 0, 
-                                                            color: dataSource.color, 
-                                                            textAlign: 'center',
-                                                            fontFamily: 'DingTalkJinBuTi'
-                                                        }}
-                                                    >
-                                                        {dataSource.value}
-                                                    </Typography.Title>
-                                                </div>
-                                            </div>
+                                            <StaticsCard 
+                                                icon={dataSource.icon}
+                                                color={dataSource.color}
+                                                label={dataSource.label}
+                                                value={dataSource.value}
+                                            />
                                         );
                                     })}
                                 </div>

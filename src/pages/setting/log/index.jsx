@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { SearchInput } from "@/components";
-import { Button, Space, Table, Tooltip} from "antd";
+import { SearchInput, CardPage } from "@/components";
+import { Button, Space, Table, Tooltip } from "antd";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import { 
     getOperationLog as getOperationLogServe
@@ -117,7 +117,7 @@ const Log = () => {
     }, [])
 
     return (
-        <div>
+        <CardPage>
             <Space className={styles.search}>
                 <SearchInput 
                     label="操作账号" 
@@ -163,7 +163,7 @@ const Log = () => {
                 columns={columns}
                 pagination={pagination}
             />
-        </div>
+        </CardPage>
     )
 }
 

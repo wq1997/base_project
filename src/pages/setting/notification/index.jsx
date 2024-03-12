@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { SearchInput } from "@/components";
-import { Button, Space, Table, Tooltip} from "antd";
+import { CardPage } from "@/components";
+import { Button, Space, Table, Tooltip, Card} from "antd";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import { 
     getNotificationList as getNotificationListServe,
@@ -98,7 +98,7 @@ const Notification = () => {
     }, [])
 
     return (
-        <div>
+        <CardPage>
             <Table
                 loading={loading}
                 dataSource={dataSource?.map(data=> {
@@ -110,7 +110,7 @@ const Notification = () => {
                 columns={columns}
                 pagination={pagination}
             />
-        </div>
+        </CardPage>
     )
 }
 

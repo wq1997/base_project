@@ -4,7 +4,7 @@ import {
     Button,
     Divider,
     Space,
-    Typography,
+    theme,
     Table,
     Modal,
     Form,
@@ -13,11 +13,12 @@ import {
 } from "antd";
 import { useRef, useState, useEffect } from "react";
 import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE } from "@/utils/constants";
-import { SearchInput } from "@/components";
+import { SearchInput, StaticsCard } from "@/components";
 import { dataSource1 } from "./mock";
 import { getInvitationIncomeList as getInvitationIncomeListServer } from "@/services/income";
 
 const InvitationIncome = () => {
+    const { token } = theme.useToken();
     const [form] = Form.useForm();
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
@@ -25,6 +26,38 @@ const InvitationIncome = () => {
     const [dataSource, setDataSource] = useState([]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [open, setOpen] = useState(false);
+    const [staticsData, setStaticsData] = useState([
+        {
+            icon: 'icon-yuedingxiangyinggongshuaihuizong',
+            label: '约定响应功率汇总(kW)',
+            data: 12000,
+            color: token.color12
+        },
+        {
+            icon: 'icon-shijizhihanggongshuaihuizong1',
+            label: '实际执行功率汇总(kW)',
+            data: 11921,
+            color: token.color7
+        },
+        {
+            icon: 'icon-yaoyuezongshouyi',
+            label: '邀约总收益(元)',
+            data: 90171.92,
+            color: token.color18
+        },
+        {
+            icon: 'icon-pingtaizongshouyi',
+            label: '平台总收益(元)',
+            data: 29661.58,
+            color: token.color19
+        },
+        {
+            icon: 'icon-renwuzongshouyi',
+            label: '任务总收益(元)',
+            data: 62630.17,
+            color: token.color13
+        },
+    ])
 
     const columns = [
         {
@@ -176,28 +209,7 @@ const InvitationIncome = () => {
                 <Button>重置</Button>
             </Flex>
             <Divider />
-            <Flex justify="space-between">
-                <Space direction="vertical">
-                    <Space size={30}>
-                        <Typography.Title level={5} style={{ margin: 0 }}>
-                            约定响应功率汇总（KW）：12000
-                        </Typography.Title>
-                        <Typography.Title level={5} style={{ margin: 0 }}>
-                            实际执行功率汇总（KW）： 11921
-                        </Typography.Title>
-                    </Space>
-                    <Space size={30}>
-                        <Typography.Title level={5} style={{ margin: 0 }}>
-                            邀约总收益（元）： 90171.92
-                        </Typography.Title>
-                        <Typography.Title level={5} style={{ margin: 0 }}>
-                            平台总收益（元）：29661.58
-                        </Typography.Title>
-                        <Typography.Title level={5} style={{ margin: 0 }}>
-                            任务总收益（元）：62630.17
-                        </Typography.Title>
-                    </Space>
-                </Space>
+            <Flex justify="flex-end">
                 <Space>
                     <Button type="primary" onClick={() => setOpen(true)}>
                         手工确认打款
@@ -207,6 +219,27 @@ const InvitationIncome = () => {
                     </Button>
                 </Space>
             </Flex>
+            <div
+                style={{
+                    display: 'flex',
+                    gap: 8,
+                    height: 140,
+                    marginTop: 20
+                }}
+            >
+                {
+                    staticsData?.map(item => {
+                        return (
+                            <StaticsCard 
+                                icon={item.icon}
+                                color={item.color}
+                                label={item.label}
+                                value={item.data}
+                            />
+                        )
+                    })
+                }
+            </div>
             <Table
                 rowKey="id"
                 loading={loading}

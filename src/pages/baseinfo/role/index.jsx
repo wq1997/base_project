@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { SearchInput } from "@/components";
-import { Button, Space, Table, Form, Modal, Input, Tree, Tooltip, message} from "antd";
+import { SearchInput, CardPage } from "@/components";
+import { Button, Space, Table, Form, Modal, Input, Tree, Tooltip, message, Card} from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE, FORM_FORBIDDEN_SPACE } from "@/utils/constants";
 import { 
@@ -175,7 +175,7 @@ const Role = () => {
     }, [])
 
     return (
-        <div>
+        <CardPage>
             <Space className={styles.search}>
                 <SearchInput 
                     label="角色名称" 
@@ -254,7 +254,7 @@ const Role = () => {
                     </Form.Item>
                 </Form>
             </Modal>
-        </div>
+        </CardPage>
     )
 }
 
