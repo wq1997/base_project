@@ -248,9 +248,9 @@ const Confirm = () => {
                 </div>
             </div>
             <div className={classNames('response-suggest', cardStyle)}>
-                <Title>执行结果</Title>
+                <div className="title"><Title>执行结果</Title></div>
                 <div className="content">
-                    <div className="expected contentItem">
+                    <div className="expected contentItem" style={{background: 'white'}}>
                         <Title.Description icon={"icon-zhihangqingkuang"}>执行说明</Title.Description>
                         <div 
                             className="percent value"
@@ -263,7 +263,7 @@ const Confirm = () => {
                         </div>
                         {/* <div className="suggest">建议参与响应</div> */}
                     </div>
-                    <div className="illustrate contentItem">
+                    <div className="illustrate contentItem" style={{background: 'white'}}>
                         <Title.Description icon={"icon-zhihangshuoming"}>执行说明</Title.Description>
                         <div className="value">
                             <div>
