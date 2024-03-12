@@ -10,6 +10,7 @@ import {
     invalidInvite as invalidInviteServer,
 } from "@/services/invitation";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
+import { CardPage } from "@/components";
 import "./index.less";
 
 let invalidReason = undefined;
@@ -277,7 +278,7 @@ const Account = () => {
     }, []);
 
     return (
-        <div>
+        <CardPage>
             <Space className="search">
                 <SearchInput
                     label="市场名称"
@@ -326,7 +327,7 @@ const Account = () => {
                     getInviteList();
                 }}
             ></Table>
-        </div>
+        </CardPage>
     );
 };
 

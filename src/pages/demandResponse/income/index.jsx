@@ -1,5 +1,6 @@
 import { Outlet, history, useLocation } from "umi";
 import { Tabs } from 'antd';
+import { CardPage } from "@/components";
 import styles from "./index.less";
 
 const items = [
@@ -27,12 +28,12 @@ const Income = () => {
     }
 
     return (
-        <div>
+        <CardPage>
             <Tabs defaultActiveKey={pathname} items={items} onChange={onChange} />
             <div className={styles.content}>
               <Outlet />
             </div>
-        </div>
+        </CardPage>
     )
 }
 

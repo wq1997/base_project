@@ -188,7 +188,7 @@ const Year = () => {
             </div>
             <div
                 className="charts"
-                style={{ paddingTop: "30px", minHeight: "300px", height: "calc(100% - 500px)" }}
+                style={{ paddingTop: "30px", height: "400px" }}
             >
                 <ReactECharts showLoading={loading} option={options1} style={{ width: "100%", height: "100%" }} />
             </div>
@@ -202,7 +202,7 @@ const Year = () => {
             </div>
             <div
                 className="charts"
-                style={{ paddingTop: "30px", minHeight: "300px", height: "calc(100% - 500px)" }}
+                style={{ paddingTop: "30px", height: "400px" }}
             >
                 <ReactECharts showLoading={loading} option={options2} style={{ width: "100%", height: "100%" }} />
             </div>

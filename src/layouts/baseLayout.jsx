@@ -3,8 +3,8 @@ import { Layout, Row, Avatar, Typography, Dropdown, Space, theme } from "antd";
 import MyMenu from "@/permissions/menu";
 import styles from "./baseLayout.less";
 import useIcon from "@/hooks/useIcon";
-import logo from "../logo.png";
 import { useEffect } from "react";
+import { useEmotionCss } from '@ant-design/use-emotion-css';
 
 const { Header, Sider, Content } = Layout;
 
@@ -17,15 +17,51 @@ const BaseLayout = () => {
         document.title="采日VPP聚合平台";
     }, [])
 
+    const headerStyle = useEmotionCss(()=>{
+        return {
+            padding: '24px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            zIndex: 1,
+            background: token.layoutTopBackColor,
+            '.logo': {
+                width: '143px',
+                height: '15px',
+                marginRight: '20px'
+            },
+            '.title': {
+                margin: 0
+            }
+        }
+    })
+
+    const siderStyle = useEmotionCss(() => {
+        return {
+            padding: '24px 0',
+            background: token.layoutLeftBackColor,
+            '.siderContent': {
+                height: '100%', 
+                width: '100%' ,
+                overflowY: 'scroll', 
+                '&::-webkit-scrollbar':{
+                    display: 'none'
+                }
+            }
+        }
+    });
+
     return (
         <div className={styles.baseLayout}>
             <Layout className={styles.layout}>
-                <Header className={styles.header}>
+                <Header 
+                    className={headerStyle}
+                >
                     <div style={{ display: "flex", alignItems: "center" }}>
-                        {/* <img src={logo} className={styles.logo} /> */}
+                        {/* <img src={logo} className={"logo"} /> */}
                         <Typography.Title
                             level={3}
-                            className={styles.title}
+                            className={"title"}
                             style={{
                                 color: token.colorPrimary,
                                 fontSize: "20px",
@@ -79,8 +115,11 @@ const BaseLayout = () => {
                     </Dropdown>
                 </Header>
                 <Layout hasSider>
-                    <Sider className={styles.sider} width={240}>
-                        <div className={styles.siderContent}>
+                    <Sider 
+                        className={siderStyle}
+                        width={240}
+                    >
+                        <div className={'siderContent'}>
                             <MyMenu />
                         </div>
                     </Sider>

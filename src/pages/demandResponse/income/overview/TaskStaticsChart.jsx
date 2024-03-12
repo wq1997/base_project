@@ -3,9 +3,9 @@ import { useState, useEffect } from "react";
 import { Row, Divider, Space } from "antd";
 
 const project = ["削峰", "填谷"];
-const projectColor = ["#D97559", "#E4C477"];
+const projectColor = ["#4AB9F3", "#7D7CF9"];
 const equipment = ["削峰-日前", "削峰-日中", "削峰-实时", "填谷-日前", "填谷-日中", "填谷-实时"];
-const equipmentColor = ["#F39423", "#F9C78B", "#F5A544", "#FDECD8", "#F7B463", "#D5F2FF"];
+const equipmentColor = ["#7D7CF9", "#F9C78B", "#F5A544", "#4AB9F3", "#F7B463", "#D5F2FF"];
 
 const Lengend = props => {
     const { name, data, color } = props;
@@ -77,7 +77,7 @@ const TaskStaticsChart = () => {
                             value: 1,
                             type: "填谷-日前",
                             name: "填谷-日前",
-                            itemStyle: { color: equipmentColor[1] },
+                            itemStyle: { color: equipmentColor[3] },
                         },
                         {
                             value: 1,

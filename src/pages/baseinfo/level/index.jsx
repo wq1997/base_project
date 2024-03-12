@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Space, Table, Tooltip, Modal } from "antd";
-import { SearchInput } from "@/components";
+import { Button, Space, Table, Tooltip, Card } from "antd";
+import { SearchInput, CardPage } from "@/components";
 import AutoUpdate from "./AutoUpdate";
 import UpdateLevel from "./UpdateLevel";
 import {
@@ -126,7 +126,7 @@ const Company = () => {
     }, []);
 
     return (
-        <div>
+        <CardPage>
             <AutoUpdate open={autoUpdateOpen} onClose={() => setAutoUpdateOpen(false)} />
             <UpdateLevel
                 open={addCompanyOpen}
@@ -174,7 +174,7 @@ const Company = () => {
                     </Button>
                 )}
             ></Table>
-        </div>
+        </CardPage>
     );
 };
 

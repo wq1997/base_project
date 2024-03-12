@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import MyMenu from "@/permissions/transactionMenu";
 import styles from "./baseLayout.less";
 import useIcon from "@/hooks/useIcon";
-import logo from "../logo.png";
+import { useEmotionCss } from '@ant-design/use-emotion-css';
 
 const { Header, Sider, Content } = Layout;
 
@@ -17,10 +17,46 @@ const TransactionLayout = () => {
         document.title="现货交易平台";
     }, [])
 
+    const headerStyle = useEmotionCss(()=>{
+        return {
+            padding: '24px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            zIndex: 1,
+            background: token.layoutTopBackColor,
+            '.logo': {
+                width: '143px',
+                height: '15px',
+                marginRight: '20px'
+            },
+            '.title': {
+                margin: 0
+            }
+        }
+    })
+
+    const siderStyle = useEmotionCss(() => {
+        return {
+            padding: '24px 0',
+            background: token.layoutLeftBackColor,
+            '.siderContent': {
+                height: '100%', 
+                width: '100%' ,
+                overflowY: 'scroll', 
+                '&::-webkit-scrollbar':{
+                    display: 'none'
+                }
+            }
+        }
+    });
+
     return (
         <div className={styles.baseLayout}>
             <Layout className={styles.layout}>
-                <Header className={styles.header}>
+                <Header 
+                    className={headerStyle}
+                >
                     <div style={{ display: "flex", alignItems: "center" }}>
                         {/* <img src={logo} className={styles.logo} /> */}
                         <Typography.Title
@@ -79,7 +115,10 @@ const TransactionLayout = () => {
                     </Dropdown>
                 </Header>
                 <Layout hasSider>
-                    <Sider className={styles.sider} width={240}>
+                    <Sider 
+                        className={siderStyle}
+                        width={240}
+                    >
                         <div className={styles.siderContent}>
                             <MyMenu />
                         </div>

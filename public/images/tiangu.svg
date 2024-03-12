@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="140px" height="143px" viewBox="0 0 140 143" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>填谷</title>
+    <defs>
+        <linearGradient x1="68.5234188%" y1="-7.57552225%" x2="68.5234188%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#F9FBFF" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#384FE8" stop-opacity="0.0759670017" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="浅色版" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="收益管理" transform="translate(-689.000000, -833.000000)" fill="url(#linearGradient-1)">
+            <polygon id="填谷" points="689 833.666667 711.146382 932.654219 732.699625 932.654219 755.849375 975.666667 795.095056 975.666667 808.834228 932.654219 818.708911 928.235131 829 833.666667"></polygon>
+        </g>
+    </g>
+</svg>

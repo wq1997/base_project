@@ -3,14 +3,14 @@ import { Space, Radio, DatePicker } from "antd";
 import Year from "./year";
 import Month from "./month";
 import dayjs from "dayjs";
-import { SearchInput } from "@/components";
+import { SearchInput, CardPage } from "@/components";
 import "./index.less";
 
 const Account = () => {
     const [type, setType] = useState("month");
 
     return (
-        <div style={{ height: "100%" }}>
+        <CardPage>
             <div>
                 <Space>
                     <Radio.Group value={type} onChange={e => setType(e.target.value)}>
@@ -31,7 +31,7 @@ const Account = () => {
                 </Space>
             </div>
             {type == "month" ? <Month /> : <Year />}
-        </div>
+        </CardPage>
     );
 };
 
