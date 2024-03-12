@@ -5,7 +5,7 @@
 .confirm-task {
     height: calc(100% - 62px);
     display: grid;
-    grid-template-rows: 250px 1fr;
+    grid-template-rows: 350px 1fr;
     grid-template-columns: 1fr 1fr;
     grid-gap: 10px;
     grid-template-areas:
@@ -14,9 +14,8 @@
     .wait-confirm,
     .response-suggest,
     .curve {
-        border: 1px solid @border-color;
         border-radius: 10px;
-        padding: 10px;
+        padding: 16px;
         box-sizing: border-box;
         .title {
             height: 30px;
@@ -24,12 +23,11 @@
             display: flex;
             justify-content: space-between;
             .company{
-                font-weight: bold;
+                color: #666666;
             }
         }
         .content {
             height: calc(100% - 40px);
-            border-top: 1px solid @border-color;
             display: flex;
             padding-top: 10px;
             .name {
@@ -45,24 +43,14 @@
                 font-weight: bold;
             }
             .desc {
-                flex: 1;
-                padding-top: 10px;
                 width: 100%;
                 display: flex;
-                > div {
-                    flex: 1;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                    &:nth-child(2) {
-                        border-left: 1px solid @border-color;
-                        border-right: 1px solid @border-color;
-                    }
-                }
+                gap:4px;
+                height: 100%;
             }
             .time {
                 padding: 10px 0;
+                color: #999;
             }
             .btns {
                 display: flex;
@@ -83,7 +71,6 @@
             display: flex;
             .expected {
                 flex: 2;
-                border-right: 1px solid @border-color;
                 .suggest {
                     font-size: 20px;
                 }
@@ -99,11 +86,26 @@
                 .value {
                     font-size: 20px;
                     margin-top: 10px;
+                    color: #666666;
                     .check-icon{
                         margin-right: 8px;
                         font-size: 16px;
-                        color: #52c41a;
+                        color: #03B4B4;
                     }
+                }
+            }
+
+            .contentItem{
+                box-shadow: 0px 2px 6px 0px rgba(176,185,210,0.4);
+                border-radius: 8px;
+                height: calc(100% - 70px);
+                padding: 18px 16px;
+
+                .value {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
                 }
             }
         }

@@ -1,13 +1,37 @@
-import { Button, Space, Badge } from "antd";
+import { Button, Space, Badge, theme } from "antd";
 import { getWaitConfirmTasks as getWaitConfirmTasksServer } from "@/services/task";
 import "./index.less";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts";
 const colorList = ["#9E87FF", "#73DDFF", "#fe9a8b", "#F56948", "#9E87FF"];
 import { CheckCircleOutlined } from "@ant-design/icons";
+import { Title, StaticsCard } from "@/components";
+import classNames from "classnames";
+import { useEmotionCss } from "@ant-design/use-emotion-css";
 
 const Confirm = () => {
+    const { token } = theme.useToken();
+    const [taskAskData, setTaskAskData] = useState([
+        {
+            label: "响应类型",
+            value: '削峰',
+            color: token.color15,
+            icon: 'icon-xiangyingleixing'
+        },
+        {
+            label: "任务功率(KW)",
+            value: '3375',
+            color: token.color4,
+            icon: 'icon-renwugongshuai'
+        },
+        {
+            label: "预计收益(元)",
+            value: '23625',
+            color: token.color7,
+            icon: 'icon-yujishouyi'
+        },
+    ])
     const getTasks = async () => {
         const res = await getWaitConfirmTasksServer();
         if (res?.data?.status == "SUCCESS") {
@@ -60,7 +84,6 @@ const Confirm = () => {
             axisPointer: {
                 snap: true,
             },
-            max: 45000,
         },
         series: [
             {
@@ -177,28 +200,37 @@ const Confirm = () => {
         getTasks();
     }, []);
 
+    const cardStyle = useEmotionCss(()=>{
+        return {
+            background: token.incomeOverviewCardColor
+        }
+    })
+
     return (
         <div className="confirm-task">
-            <div className="wait-confirm">
+            <div className={classNames("wait-confirm", cardStyle)}>
                 <div className="title">
                     {/* <Badge count={5}>待处理任务</Badge> */}
-                    <div>任务要求</div>
+                    <Title>任务要求</Title>
                     <div className="company">连云港华乐不锈钢制品有限公司</div>
                 </div>
                 <div className="content">
                     <div className="desc">
-                        <div>
-                            <div className="name">响应类型</div>
-                            <div className="value">削峰</div>
-                        </div>
-                        <div>
-                            <div className="name">任务功率（kW）</div>
-                            <div className="value">3375</div>
-                        </div>
-                        <div>
-                            <div className="name">预计收益（元）</div>
-                            <div className="value">23625</div>
-                        </div>
+                        {
+                            taskAskData?.map(item => {
+                                return (
+                                    <div style={{boxShadow: '0px 2px 6px 0px rgba(176,185,210,0.4)', flex: 1}}>
+                                        <StaticsCard 
+                                            icon={item.icon}
+                                            color={item.color}
+                                            label={item.label}
+                                            value={item.value}
+                                            backgroundColor="white"
+                                        />
+                                    </div>
+                                )
+                            })
+                        }
                     </div>
                     <div className="time">
                         <div>响应时间：2024-01-06 14:00:00 - 2024-01-06 15:00:00</div>
@@ -215,33 +247,43 @@ const Confirm = () => {
                     </div> */}
                 </div>
             </div>
-            <div className="response-suggest">
-                <div className="title">执行结果</div>
+            <div className={classNames('response-suggest', cardStyle)}>
+                <Title>执行结果</Title>
                 <div className="content">
-                    <div className="expected">
-                        <div className="name">执行情况</div>
-                        <div className="percent">成功</div>
+                    <div className="expected contentItem">
+                        <Title.Description icon={"icon-zhihangqingkuang"}>执行说明</Title.Description>
+                        <div 
+                            className="percent value"
+                            style={{
+                                color: token.color12,
+                                fontFamily: 'DingTalkJinBuTi'
+                            }}
+                        >
+                            成功
+                        </div>
                         {/* <div className="suggest">建议参与响应</div> */}
                     </div>
-                    <div className="illustrate">
-                        <div className="name">执行说明</div>
+                    <div className="illustrate contentItem">
+                        <Title.Description icon={"icon-zhihangshuoming"}>执行说明</Title.Description>
                         <div className="value">
                             <div>
-                                <CheckCircleOutlined className="check-icon" />
-                                响应时段最大负荷不高于基线最大负荷
-                            </div>
-                            <div>
-                                <CheckCircleOutlined className="check-icon" />
-                                响应差值大于等于响应能力确认值的 60%
+                                <div>
+                                    <CheckCircleOutlined className="check-icon" />
+                                    响应时段最大负荷不高于基线最大负荷
+                                </div>
+                                <div>
+                                    <CheckCircleOutlined className="check-icon" />
+                                    响应差值大于等于响应能力确认值的 60%
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div className="curve">
-                <div className="title">用电曲线</div>
+                <Title>用电曲线</Title>
                 <div className="content" style={{ paddingTop: "30px" }}>
-                    <ReactECharts option={options} style={{ width: "100%", height: "100%" }} />
+                    <ReactECharts option={options} style={{ width: "100%", height: "500px" }} />
                 </div>
             </div>
         </div>

@@ -1,5 +1,6 @@
 import React from "react";
 import { Tabs } from "antd";
+import { CardPage } from "@/components";
 import InvitationList from "./invitationList";
 import TaskList from './taskList'
 
@@ -17,7 +18,11 @@ const Invitation = () => {
         },
     ];
 
-    return <Tabs defaultActiveKey="1" items={items} />;
+    return (
+        <CardPage>
+            <Tabs defaultActiveKey="1" items={items} />
+        </CardPage>
+    );
 };
 
 export default Invitation;

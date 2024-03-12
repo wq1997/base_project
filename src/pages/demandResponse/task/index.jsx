@@ -1,5 +1,6 @@
 import { Outlet, history, useLocation } from "umi";
 import { Tabs } from 'antd';
+import { CardPage } from "@/components";
 
 const items = [
     {
@@ -21,10 +22,10 @@ const Task = () => {
     }
 
     return (
-        <div style={{ height: '100%' }}>
+        <CardPage>
             <Tabs defaultActiveKey={pathname} items={items} onChange={onChange} />
             <Outlet />
-        </div>
+        </CardPage>
     )
 }
 
