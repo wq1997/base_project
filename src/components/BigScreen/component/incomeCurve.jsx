@@ -30,7 +30,7 @@ const IncomeCurve = ({
 
     const [myData, setMyData] = useState([]);
     const { data, run } = useRequest(getTotalDayFeeServe, {
-        pollingInterval: 1000*60*60*12, //12小时轮询一次
+        pollingInterval: 1000*60*60*2, //2小时轮询一次
         manual: true,
     });
 

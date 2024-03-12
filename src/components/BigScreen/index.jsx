@@ -54,13 +54,13 @@ function BigScreen() {
 
     const [myMaintenanceListData, setMyMaintenanceListData] = useState([]);
     const { data: maintenanceListData, run } = useRequest(getOMOverviewServe, {
-        pollingInterval: 1000*60*60*12, //12小时轮询一次
+        pollingInterval: 1000*60*60*2, //2小时轮询一次
         manual: true,
     });
 
     const [myAlmListData, setMyAlmListData] = useState([]);
     const { data: almListData, run: runAlm } = useRequest(getAlmListServe, {
-        pollingInterval: 1000*60*60*12, //12小时轮询一次
+        pollingInterval: 1000*60*60*2, //2小时轮询一次
         manual: true,
     });
 

@@ -14,7 +14,7 @@ const Efficiency = ({
 
     const [myData, setMyData] = useState();
     const { data, run } = useRequest(getAllDtuEfficiencyServe, {
-        pollingInterval: 1000*60*60*12, //12小时轮询一次
+        pollingInterval: 1000*60*60*2, //12小时轮询一次
         manual: true,
     });
     

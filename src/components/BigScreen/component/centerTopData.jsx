@@ -17,16 +17,16 @@ const dataSource = [
     },
     {
         imgUrl: centerTop2Img,
-        description: '总装机容量',
+        description: '总装机容量(MW)',
         data: 0,
         color: '#3AAFFF'
     },
-    {
-        imgUrl: centerTop3Img,
-        description: '设备落地总数',
-        data: 0,
-        color: '#C08BF1'
-    },
+    // {
+    //     imgUrl: centerTop3Img,
+    //     description: '设备落地总数',
+    //     data: 0,
+    //     color: '#C08BF1'
+    // },
     {
         imgUrl: centerTop4Img,
         description: '运维员工数量',
@@ -58,8 +58,8 @@ const CenterTopData = ({
             const cloneData = JSON.parse(JSON.stringify(myData));
             cloneData[0].data = parseInt(result?.province);
             cloneData[1].data = parseInt(result?.Installed);
-            cloneData[2].data = parseInt(result?.dtuCount);
-            cloneData[3].data = parseInt(result?.employee);
+            // cloneData[2].data = parseInt(result?.dtuCount);
+            cloneData[2].data = parseInt(result?.employee);
             setMyData(cloneData);
         }
     }, [data])
@@ -70,7 +70,7 @@ const CenterTopData = ({
                 width: '100%',
                 height: '100%',
                 display: 'grid',
-                gridTemplateColumns: 'repeat(4, 1fr)',
+                gridTemplateColumns: 'repeat(3, 1fr)',
                 gap: '5px'
             }}
         >

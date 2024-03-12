@@ -13,7 +13,7 @@ const Income = ({
     const [options, setOptions] = useState({});
     const [myData, setMyData] = useState();
     const { data, run } = useRequest(getAllPlantFeeListServe, {
-        pollingInterval: 1000*60*60*12, //12小时轮询一次
+        pollingInterval: 1000*60*60*2, //12小时轮询一次
         manual: true,
     });
 
