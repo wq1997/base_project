@@ -47,6 +47,9 @@ const TimeIncomeChart = () => {
                     data,
                     type: "bar",
                     barWidth: 40,
+                    itemStyle: {
+                        barBorderRadius: [8, 8, 0, 0], // 圆角（左上、右上、右下、左下）
+                    },
                 },
             ],
         });

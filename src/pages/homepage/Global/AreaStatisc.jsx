@@ -71,6 +71,9 @@ const AreaStatisc = () => {
                             position: "right",
                         },
                     },
+                    itemStyle: {
+                        barBorderRadius: [0, 20, 20, 0], // 圆角（左上、右上、右下、左下）
+                    },
                     data: [{
                         value: 1,
                         itemStyle: {
