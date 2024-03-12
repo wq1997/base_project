@@ -4,8 +4,8 @@ const theme = {
     },
     default: {
         colorPrimary: '#384EE8',
-        layoutTopBackColor: 'linear-gradient(90deg, #E9EFFB 0%, #FFFFFF 100%) !important',
-        layoutLeftBackColor: 'linear-gradient(180deg, #ebeff8 0%, #FFFFFF 100%) !important',
+        layoutTopBackColor: 'linear-gradient( 90deg, #E9EFFB 0%, #FFFFFF 100%) !important',
+        layoutLeftBackColor: 'linear-gradient( 180deg, #E9EFFB 0%, #FFFFFF 100%) !important',
         incomeOverviewCardColor: 'linear-gradient(360deg, rgba(248,251,255,0.5) 0%, #F8FBFF 100%, #F8FBFF 100%) !important',
         tableHeaderColor: '#F6F8FD',
         color1: '#F8FBFF',
