@@ -3,6 +3,7 @@ import ApplicationList from "./applicationList";
 import DoDeclaration from "./doDeclaration";
 import TradingDashboard from "./tradingDashboard";
 import { useState } from "react";
+import { CardPage } from "@/components";
 
 const Report = () => {
     const [key, setKey] = useState(1);
@@ -24,7 +25,11 @@ const Report = () => {
         },
     ];
 
-    return <Tabs defaultActiveKey={key} key={key} items={items} onChange={key => setKey(key)} />;
+    return (
+        <CardPage>
+            <Tabs defaultActiveKey={key} key={key} items={items} onChange={key => setKey(key)} />
+        </CardPage>
+    );
 };
 
 export default Report;

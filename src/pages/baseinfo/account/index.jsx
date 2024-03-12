@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Space, Table, message, Modal } from "antd";
+import { Button, Space, Table, message, Modal, Card } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { SearchInput } from "@/components";
+import { SearchInput, CardPage } from "@/components";
 import AddCompany from "./AddCompany";
 import {
     getUserList as getUserListServer,
@@ -153,7 +153,7 @@ const Account = () => {
     }, []);
 
     return (
-        <div>
+        <CardPage>
             <AddCompany
                 open={addCompanyOpen}
                 editId={editId}
@@ -241,7 +241,7 @@ const Account = () => {
                     </Space>
                 )}
             ></Table>
-        </div>
+        </CardPage>
     );
 };
 

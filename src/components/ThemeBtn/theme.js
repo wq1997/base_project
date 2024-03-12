@@ -24,6 +24,8 @@ const theme = {
         color15: '#3268FC',
         color16: '#00C6FC',
         color17: '#FF8700',
+        color18: '#FF8600',
+        color19: '#0972E7',
     }
 }
 export default theme;

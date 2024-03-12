@@ -1,14 +1,35 @@
-import { Flex, DatePicker, Button, Divider, Space, Typography, Table } from "antd";
+import { Flex, DatePicker, Button, Divider, theme, Typography, Table } from "antd";
 import { useRef, useState, useEffect } from "react";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
-import { SearchInput } from "@/components";
+import { SearchInput, StaticsCard } from "@/components";
 import { getTaskIncomeList as getTaskIncomeListServer } from "@/services/income";
 
 const TaskIncome = () => {
+    const { token } = theme.useToken();
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [loading, setLoading] = useState(false);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [dataSource, setDataSource] = useState([]);
+    const [staticsData, setStaticsData] = useState([
+        {
+            icon: 'icon-yuedingxiangyinggongshuaihuizong',
+            label: '约定响应功率汇总(kW)',
+            data: 12000,
+            color: token.color12
+        },
+        {
+            icon: 'icon-shijizhihanggongshuaihuizong1',
+            label: '实际执行功率汇总(kW)',
+            data: 11921,
+            color: token.color7
+        },
+        {
+            icon: 'icon-yaoyuezongshouyi',
+            label: '预计收益(元)',
+            data: 90171.92,
+            color: token.color18
+        },
+    ])
 
     const columns = [
         {
@@ -171,26 +192,32 @@ const TaskIncome = () => {
                 <Button>重置</Button>
             </Flex>
             <Divider />
-            <Flex justify="space-between">
-                <Space direction="vertical">
-                    <Space size={30}>
-                        <Typography.Title level={5} style={{ margin: 0 }}>
-                            约定响应功率汇总（KW）：12000
-                        </Typography.Title>
-                        <Typography.Title level={5} style={{ margin: 0 }}>
-                            实际执行功率汇总（KW）：11921
-                        </Typography.Title>
-                    </Space>
-                    <Typography.Title level={5} style={{ margin: 0 }}>
-                        预计收益（元）： 62630.17
-                    </Typography.Title>
-                </Space>
-                <Space>
-                    <Button type="primary" onClick={getTaskIncomeList}>
-                        刷新
-                    </Button>
-                </Space>
+            <Flex justify="end">
+                <Button type="primary" onClick={getTaskIncomeList}>
+                    刷新
+                </Button>
             </Flex>
+            <div
+                style={{
+                    display: 'flex',
+                    gap: 8,
+                    height: 140,
+                    marginTop: 20
+                }}
+            >
+                {
+                    staticsData?.map(item => {
+                        return (
+                            <StaticsCard 
+                                icon={item.icon}
+                                color={item.color}
+                                label={item.label}
+                                value={item.data}
+                            />
+                        )
+                    })
+                }
+            </div>
             <Table
                 rowKey="id"
                 loading={loading}

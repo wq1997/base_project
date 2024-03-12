@@ -15,7 +15,7 @@ const HomePage = () => {
                 }}
                 className={styles.top}
             >
-                <div style={{width: 'calc(60% - 5px)', height: 500}}>
+                <div style={{width: 'calc(60% - 2px)', height: 500}}>
                     <Card style={{width: 'calc(100%)', height: '100%'}}>
                         <Typography.Title level={3} style={{ margin: 0, marginBottom: 20 }}>
                             业务流程导航
@@ -36,7 +36,7 @@ const HomePage = () => {
                         </div>
                     </Card>
                 </div>
-                <div style={{width: 'calc(40% - 5px)', height: 500}}>
+                <div style={{width: 'calc(40% - 2px)', height: 500}}>
                     <Card style={{width: 'calc(100%)', height: '100%'}}>
                         <Typography.Title level={3} style={{ margin: 0, marginBottom: 20 }}>
                             运营统计
@@ -128,11 +128,11 @@ const HomePage = () => {
                 style={{
                     display: 'flex',
                     justifyContent: 'space-between',
-                    marginTop: 20
+                    marginTop: 4
                 }}
                 className={styles.bottom}
             >
-                <div style={{width: 'calc(50% - 5px)', height: 500}}>
+                <div style={{width: 'calc(50% - 2px)', height: 500}}>
                     <Card style={{width: 'calc(100%)', height: '100%'}}>
                         <Typography.Title level={3} style={{ margin: 0, marginBottom: 20 }}>
                             七日申报容量
@@ -146,7 +146,7 @@ const HomePage = () => {
                         </div>
                     </Card>
                 </div>
-                <div style={{width: 'calc(50% - 5px)', height: 500}}>
+                <div style={{width: 'calc(50% - 2px)', height: 500}}>
                     <Card style={{width: 'calc(100%)', height: '100%'}}>
                         <Typography.Title level={3} style={{ margin: 0, marginBottom: 20 }}>
                             七日出清电量
