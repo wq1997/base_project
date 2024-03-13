@@ -51,6 +51,9 @@ const Confirm = () => {
             },
             grid: {
                 top: "10%",
+                left: 50,
+                right: 50,
+                bottom: 20
             },
             tooltip: {
                 trigger: "axis",
