@@ -256,7 +256,7 @@ const Confirm = () => {
                             })
                         }
                     </div>
-                    <div className="time">
+                    <div className="time" style={{color: token.color27}}>
                         <div>响应时间：2024-01-06 14:00:00 - 2024-01-06 15:00:00</div>
                         <div>确认截止时间：2024-01-05 00:00:00</div>
                     </div>

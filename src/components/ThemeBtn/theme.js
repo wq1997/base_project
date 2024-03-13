@@ -31,6 +31,7 @@ const theme = {
         color24: '#00D1FF',
         color25: 'rgba(255, 255, 255, 0.15)',
         color26: 'white',
+        color27: '#DDDDDD',
     },
     default: {
         colorPrimary: '#384EE8',
@@ -64,6 +65,7 @@ const theme = {
         color24: "#6BA8F0",
         color25: 'rgba(0, 0, 0, 0.15)',
         color26: 'black',
+        color27: '#999999',
     }
 }
 export default theme;
