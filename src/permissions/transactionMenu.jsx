@@ -1,6 +1,6 @@
 import { Menu } from "antd";
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "umi";
+import { Link, useLocation, useSelector } from "umi";
 import useIcon from "@/hooks/useIcon";
 
 const { SubMenu } = Menu;
@@ -10,32 +10,38 @@ const MenuList = [
         key: "/transaction/homepage",
         label: "首页",
         icon: "icon-shujuhoutaixitong",
+        darkIcon: 'icon-shujuhoutaixitong-copy',
     },
     {
         key: "/transaction/manage/history",
         label: "电价预测管理",
         icon: "icon-diannengzhiliangjiance",
+        darkIcon: "icon-diannengzhiliangjiance-copy"
     },
     {
         key: "/transaction/report",
         label: "交易申报",
         icon: "icon-xiangmushenbaoguanli",
+        darkIcon: "icon-xiangmushenbaoguanli-copy-copy"
     },
     {
         key: "/transaction/execute",
         label: "交易执行",
         icon: "icon-zhihangrizhi",
+        darkIcon: "icon-zhihangrizhi-copy"
     },
     {
         key: "/transaction/board",
         label: "经营看板",
         icon: "icon-shujukanban",
+        darkIcon: "icon-shujukanban-copy"
     },
 ];
 
 const TransactionMenu = () => {
     const Icon = useIcon();
     const [selectedKeys, setSelectedKeys] = useState('');
+    const { theme } = useSelector(state => state.global);
 
     const getMenu = menuList => {
         return menuList.map(menu => {
@@ -46,7 +52,7 @@ const TransactionMenu = () => {
                         title={menu.label}
                         icon={
                             <Icon
-                                type={menu.icon}
+                                type={theme === 'dark'?menu.darkIcon: menu.icon}
                                 style={{
                                     color: "black",
                                     fontSize: 20,
@@ -63,7 +69,7 @@ const TransactionMenu = () => {
                         key={menu.key}
                         icon={
                             <Icon
-                                type={menu.icon}
+                                type={theme === 'dark'?menu.darkIcon: menu.icon}
                                 style={{
                                     fontSize: 20,
                                 }}

@@ -4,7 +4,7 @@ import { theme } from "antd";
 
 let timer = null;
 const Table = ({
-    color="#666666",
+    color,
     columns,
     dataSource
 }) => {
@@ -13,7 +13,7 @@ const Table = ({
     const tableHeaderRef = useRef(null);
     const tableContentRef = useRef(null);
     const [tableContentHeight, setTableContentHeight] = useState(0);
-
+    color = token.color11;
     const startScroll = () => {
         const tableContentScrollHeight = tableContentRef?.current?.scrollHeight;
         let scrollTop = 0;
@@ -57,7 +57,7 @@ const Table = ({
                 {
                     columns?.map(column => {
                         return (
-                            <div className={styles.tableHeaderTitle} style={{color: token.colorPrimary}}>{column?.title}</div>
+                            <div className={styles.tableHeaderTitle} style={{color: token.color21}}>{column?.title}</div>
                         )
                     })
                 }

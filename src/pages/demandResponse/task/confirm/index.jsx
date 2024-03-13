@@ -1,17 +1,20 @@
-import { Button, Space, Badge, theme } from "antd";
+import { Button, Space, Badge, theme as antdTheme } from "antd";
 import { getWaitConfirmTasks as getWaitConfirmTasksServer } from "@/services/task";
 import "./index.less";
 import { useEffect, useState } from "react";
 import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts";
-const colorList = ["#9E87FF", "#73DDFF", "#fe9a8b", "#F56948", "#9E87FF"];
 import { CheckCircleOutlined } from "@ant-design/icons";
 import { Title, StaticsCard } from "@/components";
 import classNames from "classnames";
 import { useEmotionCss } from "@ant-design/use-emotion-css";
+import { useSelector } from "umi";
 
+const colorList = ["#9E87FF", "#73DDFF", "#fe9a8b", "#F56948", "#9E87FF"];
 const Confirm = () => {
-    const { token } = theme.useToken();
+    const { token } = antdTheme.useToken();
+    const { theme } = useSelector(state => state.global);
+    const [options, setOptions] = useState({});
     const [taskAskData, setTaskAskData] = useState([
         {
             label: "响应类型",
@@ -38,167 +41,188 @@ const Confirm = () => {
         }
     };
 
-    const options = {
-        legend: {
-            data: ["预计基线负荷（kW）", "签约响应量（kW）", "任务量（kW）", "实际响应（kW）"],
-        },
-        grid: {
-            top: "10%",
-        },
-        tooltip: {
-            trigger: "axis",
-            axisPointer: {
-                type: "cross",
+    const getOptions = () => {
+        setOptions({
+            legend: {
+                data: ["预计基线负荷（kW）", "签约响应量（kW）", "任务量（kW）", "实际响应（kW）"],
+                textStyle: {
+                    color: token.color11
+                }
             },
-        },
-        toolbox: {
-            show: true,
-            feature: {
-                saveAsImage: {},
+            grid: {
+                top: "10%",
             },
-        },
-        xAxis: {
-            type: "category",
-            boundaryGap: false,
-            data: [
-                "13:00",
-                "13:15",
-                "13:30",
-                "13:45",
-                "14:00",
-                "14:15",
-                "14:30",
-                "14:45",
-                "15:00",
-                "15:15",
-                "15:30",
-                "15:45",
-                "16:00",
+            tooltip: {
+                trigger: "axis",
+                axisPointer: {
+                    type: "cross",
+                },
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    saveAsImage: {},
+                },
+            },
+            xAxis: {
+                type: "category",
+                boundaryGap: false,
+                data: [
+                    "13:00",
+                    "13:15",
+                    "13:30",
+                    "13:45",
+                    "14:00",
+                    "14:15",
+                    "14:30",
+                    "14:45",
+                    "15:00",
+                    "15:15",
+                    "15:30",
+                    "15:45",
+                    "16:00",
+                ],
+                axisLabel: {
+                    color: token.color11
+                }
+            },
+            yAxis: {
+                type: "value",
+                axisLabel: {
+                    formatter: "{value} kW",
+                },
+                axisPointer: {
+                    snap: true,
+                },
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        color: [token.color25]
+                    }
+                },
+                axisLabel: {
+                    color: token.color11
+                }
+            },
+            series: [
+                {
+                    name: "预计基线负荷（kW）",
+                    type: "line",
+                    smooth: true,
+                    data: [
+                        8532, 19231, 32643, 32763, 39232, 41204, 40401.6, 38804, 35804, 32811, 35892,
+                        37281, 23172,
+                    ],
+                    symbol: "none",
+                    lineStyle: {
+                        width: 3,
+                        shadowColor: "rgba(158,135,255, 0.3)",
+                        shadowBlur: 10,
+                        shadowOffsetY: 20,
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: colorList[0],
+                            borderColor: colorList[0],
+                        },
+                    },
+                    // markArea: {
+                    //     itemStyle: {
+                    //         color: "rgba(255, 173, 177, 0.4)",
+                    //     },
+                    //     data: [
+                    //         [
+                    //             {
+                    //                 name: "Morning Peak",
+                    //                 xAxis: "07:30",
+                    //             },
+                    //             {
+                    //                 xAxis: "10:00",
+                    //             },
+                    //         ],
+                    //         [
+                    //             {
+                    //                 name: "Evening Peak",
+                    //                 xAxis: "17:30",
+                    //             },
+                    //             {
+                    //                 xAxis: "21:15",
+                    //             },
+                    //         ],
+                    //     ],
+                    // },
+                },
+                {
+                    name: "签约响应量（kW）",
+                    type: "line",
+                    smooth: true,
+                    symbol: "none",
+                    data: [
+                        30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000,
+                        30000, 30000,
+                    ],
+                    lineStyle: {
+                        width: 3,
+                        shadowColor: "rgba(115,221,255, 0.3)",
+                        shadowBlur: 10,
+                        shadowOffsetY: 20,
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: colorList[1],
+                            borderColor: colorList[1],
+                        },
+                    },
+                },
+                {
+                    name: "任务量（kW）",
+                    type: "line",
+                    smooth: true,
+                    symbol: "none",
+                    data: [0, 0, 0, 0, 3375, 3375, 3375, 3375, 3375, 0, 0, 0, 0],
+                    lineStyle: {
+                        width: 3,
+                        shadowColor: "rgba(254,154,139, 0.3)",
+                        shadowBlur: 10,
+                        shadowOffsetY: 20,
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: colorList[2],
+                            borderColor: colorList[2],
+                        },
+                    },
+                },
+                {
+                    name: "实际响应（kW）",
+                    type: "line",
+                    smooth: true,
+                    symbol: "none",
+                    data: [0, 0, 0, 0, 3450, 3400, 3485, 3602, 3334, 0, 0, 0, 0],
+                    lineStyle: {
+                        width: 3,
+                        shadowColor: "rgba(254,154,139, 0.3)",
+                        shadowBlur: 10,
+                        shadowOffsetY: 20,
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: colorList[3],
+                            borderColor: colorList[3],
+                        },
+                    },
+                },
             ],
-        },
-        yAxis: {
-            type: "value",
-            axisLabel: {
-                formatter: "{value} kW",
-            },
-            axisPointer: {
-                snap: true,
-            },
-        },
-        series: [
-            {
-                name: "预计基线负荷（kW）",
-                type: "line",
-                smooth: true,
-                data: [
-                    8532, 19231, 32643, 32763, 39232, 41204, 40401.6, 38804, 35804, 32811, 35892,
-                    37281, 23172,
-                ],
-                symbol: "none",
-                lineStyle: {
-                    width: 3,
-                    shadowColor: "rgba(158,135,255, 0.3)",
-                    shadowBlur: 10,
-                    shadowOffsetY: 20,
-                },
-                itemStyle: {
-                    normal: {
-                        color: colorList[0],
-                        borderColor: colorList[0],
-                    },
-                },
-                // markArea: {
-                //     itemStyle: {
-                //         color: "rgba(255, 173, 177, 0.4)",
-                //     },
-                //     data: [
-                //         [
-                //             {
-                //                 name: "Morning Peak",
-                //                 xAxis: "07:30",
-                //             },
-                //             {
-                //                 xAxis: "10:00",
-                //             },
-                //         ],
-                //         [
-                //             {
-                //                 name: "Evening Peak",
-                //                 xAxis: "17:30",
-                //             },
-                //             {
-                //                 xAxis: "21:15",
-                //             },
-                //         ],
-                //     ],
-                // },
-            },
-            {
-                name: "签约响应量（kW）",
-                type: "line",
-                smooth: true,
-                symbol: "none",
-                data: [
-                    30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000,
-                    30000, 30000,
-                ],
-                lineStyle: {
-                    width: 3,
-                    shadowColor: "rgba(115,221,255, 0.3)",
-                    shadowBlur: 10,
-                    shadowOffsetY: 20,
-                },
-                itemStyle: {
-                    normal: {
-                        color: colorList[1],
-                        borderColor: colorList[1],
-                    },
-                },
-            },
-            {
-                name: "任务量（kW）",
-                type: "line",
-                smooth: true,
-                symbol: "none",
-                data: [0, 0, 0, 0, 3375, 3375, 3375, 3375, 3375, 0, 0, 0, 0],
-                lineStyle: {
-                    width: 3,
-                    shadowColor: "rgba(254,154,139, 0.3)",
-                    shadowBlur: 10,
-                    shadowOffsetY: 20,
-                },
-                itemStyle: {
-                    normal: {
-                        color: colorList[2],
-                        borderColor: colorList[2],
-                    },
-                },
-            },
-            {
-                name: "实际响应（kW）",
-                type: "line",
-                smooth: true,
-                symbol: "none",
-                data: [0, 0, 0, 0, 3450, 3400, 3485, 3602, 3334, 0, 0, 0, 0],
-                lineStyle: {
-                    width: 3,
-                    shadowColor: "rgba(254,154,139, 0.3)",
-                    shadowBlur: 10,
-                    shadowOffsetY: 20,
-                },
-                itemStyle: {
-                    normal: {
-                        color: colorList[3],
-                        borderColor: colorList[3],
-                    },
-                },
-            },
-        ],
-    };
+        });
+    }
 
     useEffect(() => {
         getTasks();
     }, []);
+
+    useEffect(() => {
+        getOptions();
+    }, [theme])
 
     const cardStyle = useEmotionCss(()=>{
         return {
@@ -212,20 +236,20 @@ const Confirm = () => {
                 <div className="title">
                     {/* <Badge count={5}>待处理任务</Badge> */}
                     <Title>任务要求</Title>
-                    <div className="company">连云港华乐不锈钢制品有限公司</div>
+                    <div className="company" style={{color: token.color11}}>连云港华乐不锈钢制品有限公司</div>
                 </div>
                 <div className="content">
                     <div className="desc">
                         {
                             taskAskData?.map(item => {
                                 return (
-                                    <div style={{boxShadow: '0px 2px 6px 0px rgba(176,185,210,0.4)', flex: 1}}>
+                                    <div style={{boxShadow: theme==="default" && '0px 2px 6px 0px rgba(176,185,210,0.4)', flex: 1}}>
                                         <StaticsCard 
                                             icon={item.icon}
                                             color={item.color}
                                             label={item.label}
                                             value={item.value}
-                                            backgroundColor="white"
+                                            backgroundColor={token.color22}
                                         />
                                     </div>
                                 )
@@ -250,7 +274,7 @@ const Confirm = () => {
             <div className={classNames('response-suggest', cardStyle)}>
                 <div className="title"><Title>执行结果</Title></div>
                 <div className="content">
-                    <div className="expected contentItem" style={{background: 'white'}}>
+                    <div className="expected contentItem" style={{background: token.color22, boxShadow: theme==="default" &&'0px 2px 6px 0px rgba(176,185,210,0.4)'}}>
                         <Title.Description icon={"icon-zhihangqingkuang"}>执行说明</Title.Description>
                         <div 
                             className="percent value"
@@ -263,9 +287,12 @@ const Confirm = () => {
                         </div>
                         {/* <div className="suggest">建议参与响应</div> */}
                     </div>
-                    <div className="illustrate contentItem" style={{background: 'white'}}>
+                    <div 
+                        className="illustrate contentItem" 
+                        style={{background: token.color22, boxShadow: theme==="default" &&'0px 2px 6px 0px rgba(176,185,210,0.4)'}}
+                    >
                         <Title.Description icon={"icon-zhihangshuoming"}>执行说明</Title.Description>
-                        <div className="value">
+                        <div className="value" style={{color: token.color11}}>
                             <div>
                                 <div>
                                     <CheckCircleOutlined className="check-icon" />

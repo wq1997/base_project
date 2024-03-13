@@ -1,7 +1,12 @@
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect } from "react";
+import * as echarts from "echarts";
+import { theme as antdTheme } from "antd";
+import { useSelector } from "umi";
 
 const TimeIncomeChart = () => {
+    const { token } = antdTheme.useToken();
+    const { theme } = useSelector(state => state.global);
     const [options, setOptions] = useState({});
 
     const getOptions = () => {
@@ -21,7 +26,6 @@ const TimeIncomeChart = () => {
         ];
         const data = [46250, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         setOptions({
-            color: ["#6BA8F0"],
             tooltip: {
                 trigger: "axis",
                 axisPointer: {
@@ -34,10 +38,22 @@ const TimeIncomeChart = () => {
             xAxis: {
                 type: "category",
                 data: xAxisData,
+                axisLabel: {
+                    color: token.color11
+                }
             },
             yAxis: {
                 type: "value",
-                name: '元'
+                name: '元',
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        color: [token.color25]
+                    }
+                },
+                axisLabel: {
+                    color: token.color11
+                }
             },
             grid: {
                 bottom: 20,
@@ -49,6 +65,13 @@ const TimeIncomeChart = () => {
                     barWidth: 40,
                     itemStyle: {
                         barBorderRadius: [8, 8, 0, 0], // 圆角（左上、右上、右下、左下）
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: token.color23
+                        }, {
+                            offset: 1,
+                            color: token.color24
+                        }], false),
                     },
                 },
             ],
@@ -57,7 +80,7 @@ const TimeIncomeChart = () => {
 
     useEffect(() => {
         getOptions();
-    }, []);
+    }, [theme]);
 
     return <ReactECharts option={options} style={{ height: "100%" }} />;
 };

@@ -1,11 +1,15 @@
-import { Card, Typography, theme, Col, Row, Statistic, Divider } from "antd";
+import { Card, Typography, theme as antdTheme, Col, Row, Statistic, Divider } from "antd";
 import styles from "./index.less";
 import WeekReportChart from "./weekReportChart";
 import WeekClearingChart from "./weekClearingChart";
 import LiuchenSvg from "./liuchen.svg";
+import darkLiuchenSvg from "./darkLiuchen.svg";
+import { useSelector } from "umi";
 
 const HomePage = () => {
-    const { token } = theme.useToken();
+    const { token } = antdTheme.useToken();
+    const { theme } = useSelector(state => state.global);
+
     return (
         <div>
             <div
@@ -31,7 +35,7 @@ const HomePage = () => {
                                     height: '100%',
                                     objectFit: 'contain'
                                 }} 
-                                src={LiuchenSvg} 
+                                src={theme==="default"?LiuchenSvg:darkLiuchenSvg} 
                             />
                         </div>
                     </Card>

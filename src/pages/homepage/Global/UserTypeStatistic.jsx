@@ -1,9 +1,12 @@
 import ReactECharts from "echarts-for-react";
 import { useEffect, useState } from "react";
+import { theme as antdTheme } from "antd";
+import { useSelector } from "umi";
 
 const UserTypeStatistic = () => {
-
+    const { token } = antdTheme.useToken();
     const [options, setOptions] = useState({});
+    const { theme } = useSelector(state => state.global);
 
     const getOptions = () => {
         setOptions({
@@ -14,7 +17,10 @@ const UserTypeStatistic = () => {
             legend: {
               top: '5%',
               left: 'right',
-              orient: 'vertical'
+              orient: 'vertical',
+              textStyle: {
+                color: token.color11
+             }
             },
             series: [
               {
@@ -53,7 +59,7 @@ const UserTypeStatistic = () => {
 
     useEffect(() => {
         getOptions();
-    }, [])
+    }, [theme])
 
     return (
         <ReactECharts  

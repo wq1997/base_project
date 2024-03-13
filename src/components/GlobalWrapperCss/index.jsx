@@ -9,7 +9,10 @@ const GlobalWrapperCss = (props) => {
                  backgroundColor: token.tableHeaderColor
             },
             '.ant-menu-light .ant-menu-submenu-selected >.ant-menu-submenu-title': {
-                color: 'black'
+                color: token.colorPrimary
+            },
+            '.ant-card': {
+                background: token.color20,
             }
         }
     })

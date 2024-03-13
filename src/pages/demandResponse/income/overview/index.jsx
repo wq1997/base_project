@@ -1,4 +1,4 @@
-import { Card, Space, Typography, Tooltip, Divider, Row, Select, DatePicker, theme, Badge } from "antd";
+import { Card, Space, Typography, Tooltip, Row, Select, DatePicker, theme as antdTheme, Badge } from "antd";
 import useIcon from "@/hooks/useIcon";
 import { useState } from "react";
 import { Title as MyTitle, StaticsCard } from "@/components"
@@ -8,15 +8,15 @@ import TaskStaticsChart from "./TaskStaticsChart";
 import TimeIncomeChart from "./TimeIncomeChart";
 import styles from "./index.less";
 import { useEmotionCss } from "@ant-design/use-emotion-css";
+import { useSelector } from "umi";
 import xuefengImg from "../../../../../public/images/xuefeng.svg";
 import tianguImg from "../../../../../public/images/tiangu.svg";
 
-const { Title } = Typography;
-
 const Overview = () => {
-    const { token } = theme.useToken();
+    const { token } = antdTheme.useToken();
     const [dateType, setDateType] = useState('Year');
     const [date, setDate] = useState(dayjs(moment().format("YYYY")));
+    const { theme } = useSelector(state => state.global);
     const [companyAccountData, setCompanyAccountData] = useState([
         {
             label: '账户余额',
@@ -108,7 +108,7 @@ const Overview = () => {
                                 <div 
                                     style={{
                                         flex: 1,
-                                        boxShadow: '0px 2px 6px 0px rgba(176,185,210,0.4)',
+                                        boxShadow: theme==="default" && '0px 2px 6px 0px rgba(176,185,210,0.4)',
                                     }}
                                 >
                                     <StaticsCard 
@@ -116,7 +116,7 @@ const Overview = () => {
                                         color={item.color}
                                         label={item.label}
                                         value={item.data}
-                                        backgroundColor="white"
+                                        backgroundColor={token.color22}
                                     />
                                 </div>
                             )
@@ -158,7 +158,7 @@ const Overview = () => {
                                 <div 
                                     style={{
                                         flex: 1,
-                                        boxShadow: '0px 2px 6px 0px rgba(176,185,210,0.4)',
+                                        boxShadow: theme==="default" &&'0px 2px 6px 0px rgba(176,185,210,0.4)',
                                     }}
                                 >
                                     <StaticsCard 
@@ -166,7 +166,7 @@ const Overview = () => {
                                         color={item.color}
                                         label={item.label}
                                         value={item.data}
-                                        backgroundColor="white"
+                                        backgroundColor={token.color22}
                                     />
                                 </div>
                             )
@@ -192,7 +192,7 @@ const Overview = () => {
                                         <div style={{marginBottom: 36}}>
                                             <Badge 
                                                 color={token.colorPrimary} 
-                                                text={<span style={{color: '#333', fontSize: 18, fontFamily: 'PingFangSemiblod'}}>削峰响应功率：</span>} 
+                                                text={<span style={{color: '#333', fontSize: 18, fontFamily: 'PingFangSemiblod', color: token.color11}}>削峰响应功率：</span>} 
                                             />
                                             
                                             <div style={{marginLeft: 15, marginTop: 8}}>
@@ -203,7 +203,7 @@ const Overview = () => {
                                         <div style={{marginBottom: 36}}>
                                             <Badge 
                                                 color={token.colorPrimary} 
-                                                text={<span style={{color: '#333', fontSize: 18, fontFamily: 'PingFangSemiblod'}}>平均电价：</span>} 
+                                                text={<span style={{color: '#333', fontSize: 18, fontFamily: 'PingFangSemiblod', color: token.color11}}>平均电价：</span>} 
                                             />
                                             
                                             <div style={{marginLeft: 15, marginTop: 8}}>
@@ -223,7 +223,7 @@ const Overview = () => {
                                         <div style={{marginBottom: 36}}>
                                             <Badge 
                                                 color={token.colorPrimary} 
-                                                text={<span style={{color: '#333', fontSize: 18, fontFamily: 'PingFangSemiblod'}}>填谷响应功率：</span>} 
+                                                text={<span style={{color: '#333', fontSize: 18, fontFamily: 'PingFangSemiblod', color: token.color11}}>填谷响应功率：</span>} 
                                             />
                                             
                                             <div style={{marginLeft: 15, marginTop: 8}}>
@@ -234,7 +234,7 @@ const Overview = () => {
                                         <div style={{marginBottom: 36}}>
                                             <Badge 
                                                 color={token.colorPrimary} 
-                                                text={<span style={{color: '#333', fontSize: 18, fontFamily: 'PingFangSemiblod'}}>平均电价：</span>} 
+                                                text={<span style={{color: '#333', fontSize: 18, fontFamily: 'PingFangSemiblod', color: token.color11}}>平均电价：</span>} 
                                             />
                                             
                                             <div style={{marginLeft: 15, marginTop: 8}}>
