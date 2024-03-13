@@ -4,6 +4,7 @@ import styles from "./commonLayout.less";
 import useIcon from "@/hooks/useIcon";
 import { useEffect } from "react";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
+import { setLocalStorage } from "@/utils/utils";
 
 const { Header, Sider, Content } = Layout;
 
@@ -19,6 +20,7 @@ const CommonLayout = (props) => {
     }, [])
 
     const changeTheme=(theme)=>{
+        setLocalStorage("theme", theme);
         dispatch({
             type: 'global/changeTheme',
             payload:{
