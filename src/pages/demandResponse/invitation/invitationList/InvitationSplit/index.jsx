@@ -7,6 +7,8 @@ import {
     saveSplitInvite as saveSplitInviteServer,
 } from "@/services/invitation";
 import AddTask from "./AddTask";
+import BaseLine from "./BaseLine";
+import dayjs from "dayjs";
 import "./index.less";
 
 let dateValue = undefined;
@@ -23,6 +25,7 @@ const Company = ({ invitationSplitId, onClose }) => {
     const [deadline, setDeadline] = useState();
     const [hasSplitCount, setHasSplitCount] = useState(0);
     const [remainCount, setRemainCount] = useState(0);
+    const [baseLineArgs, setBaseLineArgs] = useState(0);
 
     const getSplitInviteInitData = async () => {
         const res = await getSplitInviteInitDataServer(invitationSplitId);
@@ -47,26 +50,26 @@ const Company = ({ invitationSplitId, onClose }) => {
 
     const columns = [
         {
-            title: '公司名称',
-            dataIndex: 'companyName',
-            key: 'companyName',
+            title: "公司名称",
+            dataIndex: "companyName",
+            key: "companyName",
             width: 200,
             render(value) {
                 return (
                     <Tooltip title={value}>
                         <div
                             style={{
-                                overflow: 'hidden',
-                                whiteSpace: 'nowrap',
-                                textOverflow: 'ellipsis',
+                                overflow: "hidden",
+                                whiteSpace: "nowrap",
+                                textOverflow: "ellipsis",
                                 width: 200,
                             }}
                         >
                             {value}
                         </div>
                     </Tooltip>
-                )
-            }
+                );
+            },
         },
         {
             title: "任务确认状态",
@@ -99,23 +102,23 @@ const Company = ({ invitationSplitId, onClose }) => {
                     <Tooltip title={value}>
                         <div
                             style={{
-                                overflow: 'hidden',
-                                whiteSpace: 'nowrap',
-                                textOverflow: 'ellipsis',
+                                overflow: "hidden",
+                                whiteSpace: "nowrap",
+                                textOverflow: "ellipsis",
                                 width: 200,
                             }}
                         >
                             {value}
                         </div>
                     </Tooltip>
-                )
-            }
+                );
+            },
         },
         {
             title: "操作",
             dataIndex: "operate",
-            fixed: 'right',
-            width: 200,
+            fixed: "right",
+            width: 150,
             render: (_, record, index) => {
                 return (
                     <Space>
@@ -134,7 +137,20 @@ const Company = ({ invitationSplitId, onClose }) => {
                         <a type="primary" onClick={() => handleDelete(index)}>
                             删除
                         </a>
-                        {/* <a type="primary">基线</a> */}
+                        <a
+                            type="primary"
+                            onClick={() =>
+                                setBaseLineArgs({
+                                    companyCode: taskList[index]?.companyCode,
+                                    date: dayjs().format("YYYY-MM-DD"),
+                                    responseType: inviteInfo?.responseType,
+                                    responseTypeZh: inviteInfo?.responseTypeZh,
+                                    responseTimeType: inviteInfo?.responseTimeType,
+                                })
+                            }
+                        >
+                            基线
+                        </a>
                     </Space>
                 );
             },
@@ -289,6 +305,7 @@ const Company = ({ invitationSplitId, onClose }) => {
                 disabledCompanyCodes={getDisabledCompanyCodes()}
                 onClose={AddTaskColse}
             />
+            <BaseLine baseLineArgs={baseLineArgs} onClose={() => setBaseLineArgs(null)} />
             <Modal
                 title={isReSplit ? "重新拆分" : "邀约拆分"}
                 width={1000}
@@ -347,13 +364,11 @@ const Company = ({ invitationSplitId, onClose }) => {
                 <Table
                     rowKey="id"
                     dataSource={taskList}
-                    columns={
-                        isReSplit ? columns : columns?.filter(column => !column.isReSplit)
-                    }
+                    columns={isReSplit ? columns : columns?.filter(column => !column.isReSplit)}
                     title={() => <Space className="table-title"></Space>}
                     pagination={false}
                     scroll={{
-                        x: 800
+                        x: 800,
                     }}
                 ></Table>
                 {contextHolder}

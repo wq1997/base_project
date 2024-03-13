@@ -34,8 +34,6 @@ const Account = () => {
     const [createTime, setCreateTime] = useState();
     const [confirmStatus, setConfirmStatus] = useState();
     const [confirmStatusList, setConfirmStatusList] = useState();
-    const [splitStatus, setSplitStatus] = useState();
-    const [splitStatusList, setSplitStatusList] = useState();
     const [responseType, setResponseType] = useState();
     const [responseTypeList, setResponseTypeList] = useState();
     const [responseTimeType, setResponseTimeType] = useState();
@@ -134,7 +132,7 @@ const Account = () => {
             dataIndex: "remark",
             key: "remark",
             ellipsis: true,
-            width: 400,
+            width: 200,
             render(value) {
                 return (
                     <Tooltip title={value}>
@@ -143,7 +141,7 @@ const Account = () => {
                                 overflow: "hidden",
                                 whiteSpace: "nowrap",
                                 textOverflow: "ellipsis",
-                                width: 400,
+                                width: 200,
                             }}
                         >
                             {value}
@@ -152,22 +150,19 @@ const Account = () => {
                 );
             },
         },
-        // {
-        //     title: "操作",
-        //     dataIndex: "operate",
-        //     fixed: "right",
-        //     width: 200,
-        //     render: (_, { id, supportSplit, supportReSplit }) => {
-        //         return (
-        //             <Space>
-        //                 <a onClick={() => setInvitationSplitId(id)}>
-        //                     {supportSplit ? "邀约拆分" : supportReSplit ? "重新拆分" : ""}
-        //                 </a>
-        //                 <a onClick={() => setDetailId(id)}>详情</a>
-        //             </Space>
-        //         );
-        //     },
-        // },
+        {
+            title: "操作",
+            dataIndex: "operate",
+            fixed: "right",
+            width: 100,
+            render: (_, { id }) => {
+                return (
+                    <Space>
+                        <a onClick={() => setDetailId(id)}>查看关联邀约</a>
+                    </Space>
+                );
+            },
+        },
     ];
 
     const onSelectChange = (newSelectedRowKeys, newSelectedRows) => {
@@ -181,10 +176,8 @@ const Account = () => {
     const getSearchInitData = async () => {
         const res = await getSearchInitDataServer();
         if (res?.data?.status == "SUCCESS") {
-            const { confirmStatuses, splitStatuses, responseTypes, responseTimeTypes } =
-                res?.data?.data;
-            setConfirmStatusList(confirmStatuses);
-            setSplitStatusList(splitStatuses);
+            const { statuses, responseTypes, responseTimeTypes } = res?.data?.data;
+            setConfirmStatusList(statuses);
             setResponseTypeList(responseTypes);
             setResponseTimeTypeList(responseTimeTypes);
         }
@@ -200,6 +193,7 @@ const Account = () => {
         const confirmStatus = confirmStatusRef.current;
         const splitStatus = splitStatusRef.current;
         const responseType = responseTypeRef.current;
+        const responseTimeType = responseTimeTypeRef.current;
         const res = await getTaskistServer({
             pageNum: current,
             pageSize,
@@ -215,6 +209,7 @@ const Account = () => {
                 confirmStatus,
                 splitStatus,
                 responseType,
+                responseTimeType,
             },
         });
         if (res?.data?.status == "SUCCESS") {
@@ -241,8 +236,6 @@ const Account = () => {
         setCode();
         confirmStatusRef.current = undefined;
         setConfirmStatus();
-        splitStatusRef.current = undefined;
-        setSplitStatus();
         responseTypeRef.current = undefined;
         setResponseType();
         responseTimeTypeRef.current = undefined;
