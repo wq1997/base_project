@@ -4,6 +4,7 @@ import "./index.less";
 import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts";
 import { date, data } from "./data";
+import { Title } from "@/components";
 const colorList = ["#9E87FF", "#73DDFF", "#fe9a8b", "#F56948", "#9E87FF"];
 
 const Year = () => {
@@ -25,12 +26,6 @@ const Year = () => {
     }, 500);
 
     const options1 = {
-        title: {
-            text: "分日收入曲线",
-            textStyle: {
-                fontSize: 15,
-            },
-        },
         legend: {
             data: ["日收入"],
         },
@@ -103,12 +98,6 @@ const Year = () => {
     };
 
     const options2 = {
-        title: {
-            text: "分日充放电量报表",
-            textStyle: {
-                fontSize: 15,
-            },
-        },
         legend: {
             data: ["日充电", "日放电"],
         },
@@ -171,12 +160,6 @@ const Year = () => {
     };
 
     const options3 = {
-        title: {
-            text: "场站负载功率曲线",
-            textStyle: {
-                fontSize: 15,
-            },
-        },
         legend: {
             data: ["负载功率"],
         },
@@ -269,6 +252,7 @@ const Year = () => {
                 className="charts"
                 style={{ paddingTop: "30px", height: "400px" }}
             >
+                <Title>分日收益曲线</Title>
                 <ReactECharts
                     showLoading={loading}
                     option={options1}
@@ -288,6 +272,7 @@ const Year = () => {
                 className="charts"
                 style={{ paddingTop: "30px", height: "400px" }}
             >
+                <Title>分日充放电量报表</Title>
                 <ReactECharts
                     showLoading={loading}
                     option={options2}
@@ -298,6 +283,7 @@ const Year = () => {
                 className="charts"
                 style={{ paddingTop: "30px", height: "400px" }}
             >
+                <Title>场站负载功率曲线</Title>
                 <ReactECharts
                     showLoading={loading}
                     option={options3}

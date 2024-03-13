@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { SearchInput } from "@/components";
-import { Card, Space, Button, Typography } from "antd";
+import { SearchInput, Title } from "@/components";
+import { Card, Space, Button } from "antd";
 import PriceChart from "./dayPriceChart";
 
-const { Title } = Typography;
 const Prediction = () => {
     const [marketNameList, setMarketNameList] = useState([
         {name: '华东现货交易市场', code: 'A'},
@@ -19,7 +18,7 @@ const Prediction = () => {
     return (
         <div>
             <Card style={{ marginTop: 20}}>
-                <Title level={3} style={{ marginTop: 0, display: 'block' }}>交易日电价预测</Title>
+                <Title style={{ marginTop: 0, marginBottom: 15 }}>交易日电价预测</Title>
                 <Space direction="vertical">
                     <Space>
                         <SearchInput
