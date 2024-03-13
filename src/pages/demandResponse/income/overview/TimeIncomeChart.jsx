@@ -56,6 +56,8 @@ const TimeIncomeChart = () => {
                 }
             },
             grid: {
+                left: 50,
+                right: 50,
                 bottom: 20,
             },
             series: [

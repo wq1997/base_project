@@ -259,7 +259,7 @@ const Overview = () => {
             </div>
             <div style={{ height: 370 }}>
                 <MyTitle style={{ marginTop: 0, marginBottom: 15 }}>分时收益统计</MyTitle>
-                <div style={{ height: 280 }}>
+                <div style={{ height: 400 }}>
                     <TimeIncomeChart />
                 </div>
             </div>
