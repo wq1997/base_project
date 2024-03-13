@@ -7,7 +7,13 @@ const GlobalWrapperCss = (props) => {
         return {
             '.ant-table-wrapper .ant-table-thead >tr>th':{
                  backgroundColor: token.tableHeaderColor
-            }   
+            },
+            '.ant-menu-light .ant-menu-submenu-selected >.ant-menu-submenu-title': {
+                color: token.colorPrimary
+            },
+            '.ant-card': {
+                background: token.color20,
+            }
         }
     })
     return (

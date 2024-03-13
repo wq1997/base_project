@@ -1,10 +1,12 @@
 import ReactECharts from "echarts-for-react";
 import { useEffect, useState } from "react";
-import { theme } from "antd";
+import { theme as antdTheme } from "antd";
+import { useSelector } from "umi";
 
 const AreaStatisc = () => {
-    const { token } = theme.useToken();
+    const { token } = antdTheme.useToken();
     const [options, setOptions] = useState({});
+    const { theme } = useSelector(state => state.global);
 
     const getOptions = () => {
         setOptions({
@@ -57,7 +59,7 @@ const AreaStatisc = () => {
                         show: false,
                     },
                     axisLabel: {
-                        color: '#333'
+                        color: token.color11
                     }
                 },
             ],
@@ -70,6 +72,9 @@ const AreaStatisc = () => {
                             show: true,
                             position: "right",
                         },
+                    },
+                    itemStyle: {
+                        barBorderRadius: [0, 20, 20, 0], // 圆角（左上、右上、右下、左下）
                     },
                     data: [{
                         value: 1,
@@ -94,7 +99,7 @@ const AreaStatisc = () => {
 
     useEffect(() => {
         getOptions();
-    }, []);
+    }, [theme]);
 
     return <ReactECharts option={options} style={{ width: "100%", height: "100%" }} />;
 };

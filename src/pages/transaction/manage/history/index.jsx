@@ -1,13 +1,11 @@
-import { Button, Row, Card, Typography, Space, DatePicker, Modal, Upload } from "antd";
+import { Button, Row, Card, Space, DatePicker, Modal, Upload } from "antd";
 import { useState } from "react";
-import { SearchInput } from "@/components";
+import { SearchInput, Title } from "@/components";
 import dayjs from "dayjs";
 import moment from "moment";
 import DayPriceChart from "./dayPriceChart";
 import WeekPriceChart from "./weekPriceChart";
 import { InboxOutlined } from '@ant-design/icons';
-
-const { Title } = Typography;
 
 const History = () => {
     const [marketNameList, setMarketNameList] = useState([
@@ -33,7 +31,7 @@ const History = () => {
                 <Button type="primary" onClick={()=>setOpen(true)}>上传电价数据</Button>
             </Row>
             <Card style={{ marginTop: 20}}>
-                <Title level={3} style={{ marginTop: 0, marginBottom: 15, display: 'block' }}>单日交易数据</Title>
+                <Title style={{ marginTop: 0, marginBottom: 15 }}>单日交易数据</Title>
                 <Space>
                     <SearchInput
                         label="市场名称"
@@ -59,7 +57,7 @@ const History = () => {
                 </div>
             </Card>
             <Card style={{ marginTop: 20}}>
-                <Title level={3} style={{ marginTop: 0, marginBottom: 15, display: 'block' }}>近一周价格走势</Title>
+                <Title style={{ marginTop: 0, marginBottom: 15 }}>近一周价格走势</Title>
                 <Space>
                     <SearchInput
                         label="市场名称"

@@ -1,11 +1,16 @@
-import { Card, Typography, theme, Col, Row, Statistic, Divider } from "antd";
+import { Card, Typography, theme as antdTheme, Col, Row, Statistic, Divider } from "antd";
 import styles from "./index.less";
 import WeekReportChart from "./weekReportChart";
 import WeekClearingChart from "./weekClearingChart";
 import LiuchenSvg from "./liuchen.svg";
+import darkLiuchenSvg from "./darkLiuchen.svg";
+import { useSelector } from "umi";
+import { Title } from "@/components";
 
 const HomePage = () => {
-    const { token } = theme.useToken();
+    const { token } = antdTheme.useToken();
+    const { theme } = useSelector(state => state.global);
+
     return (
         <div>
             <div
@@ -17,9 +22,9 @@ const HomePage = () => {
             >
                 <div style={{width: 'calc(60% - 2px)', height: 500}}>
                     <Card style={{width: 'calc(100%)', height: '100%'}}>
-                        <Typography.Title level={3} style={{ margin: 0, marginBottom: 20 }}>
+                        <Title style={{ margin: 0, marginBottom: 20 }}>
                             业务流程导航
-                        </Typography.Title>
+                        </Title>
                         <div 
                             style={{
                                 height: 'calc(100% - 40px)'
@@ -31,16 +36,16 @@ const HomePage = () => {
                                     height: '100%',
                                     objectFit: 'contain'
                                 }} 
-                                src={LiuchenSvg} 
+                                src={theme==="default"?LiuchenSvg:darkLiuchenSvg} 
                             />
                         </div>
                     </Card>
                 </div>
                 <div style={{width: 'calc(40% - 2px)', height: 500}}>
                     <Card style={{width: 'calc(100%)', height: '100%'}}>
-                        <Typography.Title level={3} style={{ margin: 0, marginBottom: 20 }}>
+                        <Title style={{ margin: 0, marginBottom: 20 }}>
                             运营统计
-                        </Typography.Title>
+                        </Title>
                         <div 
                             style={{
                                 height: 'calc(100% - 40px)'
@@ -134,9 +139,9 @@ const HomePage = () => {
             >
                 <div style={{width: 'calc(50% - 2px)', height: 500}}>
                     <Card style={{width: 'calc(100%)', height: '100%'}}>
-                        <Typography.Title level={3} style={{ margin: 0, marginBottom: 20 }}>
+                        <Title style={{ margin: 0, marginBottom: 20 }}>
                             七日申报容量
-                        </Typography.Title>
+                        </Title>
                         <div 
                             style={{
                                 height: 'calc(100% - 40px)'
@@ -148,9 +153,9 @@ const HomePage = () => {
                 </div>
                 <div style={{width: 'calc(50% - 2px)', height: 500}}>
                     <Card style={{width: 'calc(100%)', height: '100%'}}>
-                        <Typography.Title level={3} style={{ margin: 0, marginBottom: 20 }}>
+                        <Title style={{ margin: 0, marginBottom: 20 }}>
                             七日出清电量
-                        </Typography.Title>
+                        </Title>
                         <div 
                             style={{
                                 height: 'calc(100% - 40px)'

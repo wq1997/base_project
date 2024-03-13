@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { message, Button, Form, Input, Modal, Select, Space, InputNumber } from "antd";
 import { getSplitInviteInitData as getSplitInviteInitDataServer } from "@/services/invitation";
+import { Title } from "@/components";
 import "./index.less";
 
 const Company = ({ open, inviteId, editTask, remainCount, disabledCompanyCodes, onClose }) => {
@@ -45,7 +46,7 @@ const Company = ({ open, inviteId, editTask, remainCount, disabledCompanyCodes, 
 
     return (
         <Modal
-            title="手工录入"
+            title={<Title>手工录入</Title>}
             width={700}
             confirmLoading={true}
             open={open}

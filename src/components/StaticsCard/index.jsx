@@ -20,17 +20,17 @@ const StaticsCard = (props) => {
                 >
                     {label}
                 </Title.Description>
-                <Typography.Title
-                    level={3}
+                <div
                     style={{ 
                         margin: 0, 
                         color, 
                         textAlign: 'center',
-                        fontFamily: 'DingTalkJinBuTi'
+                        fontFamily: 'DingTalkJinBuTi',
+                        fontSize: 30
                     }}
                 >
                     {value}
-                </Typography.Title>
+                </div>
             </div>
         </div>
     )

@@ -1,6 +1,6 @@
 import { Menu } from "antd";
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "umi";
+import { Link, useLocation, useSelector } from "umi";
 import useIcon from "@/hooks/useIcon";
 
 const { SubMenu } = Menu;
@@ -10,11 +10,13 @@ const MenuList = [
         key: "/vpp/homepage",
         label: "首页",
         icon: "icon-shujuhoutaixitong",
+        darkIcon: 'icon-shujuhoutaixitong-copy',
     },
     {
         key: "/vpp/demandResponse",
         label: "需求侧响应",
         icon: "icon-wuliaoxuqiu",
+        darkIcon: "icon-wuliaoxuqiu-copy",
         children: [
             {
                 key: "/vpp/demandResponse/invitation",
@@ -34,12 +36,14 @@ const MenuList = [
         key: '/transaction/homepage',
         label: '现货交易',
         icon: 'icon-jiaoyi',
+        darkIcon: 'icon-jiaoyi-copy',
         target: '_blank'
     },
     {
         key: "/vpp/baseinfo",
         label: "基础资料",
-        icon: "icon-jibenziliao",
+        icon: "icon-xiangmushenbaoguanli",
+        darkIcon: "icon-xiangmushenbaoguanli-copy-copy",
         children: [
             {
                 key: "/vpp/baseinfo/company",
@@ -63,6 +67,7 @@ const MenuList = [
         key: "/vpp/setting",
         label: "系统设置",
         icon: "icon-icon_shezhi",
+        darkIcon: "icon-icon_shezhi-copy",
         children: [
             {
                 key: "/vpp/setting/log",
@@ -79,6 +84,7 @@ const MenuList = [
 const MyMenu = () => {
     const Icon = useIcon();
     const [selectedKeys, setSelectedKeys] = useState("");
+    const { theme } = useSelector(state => state.global);
 
     const getMenu = menuList => {
         return menuList.map(menu => {
@@ -89,7 +95,7 @@ const MyMenu = () => {
                         title={menu.label}
                         icon={
                             <Icon
-                                type={menu.icon}
+                                type={theme === 'dark'?menu.darkIcon: menu.icon}
                                 style={{
                                     color: "black",
                                     fontSize: 20,
@@ -106,7 +112,7 @@ const MyMenu = () => {
                         key={menu.key}
                         icon={
                             <Icon
-                                type={menu.icon}
+                                type={theme === 'dark'?menu.darkIcon: menu.icon}
                                 style={{
                                     fontSize: 20,
                                 }}

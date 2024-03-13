@@ -1,15 +1,17 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import ReactECharts from "echarts-for-react";
-import { theme } from "antd";
+import { theme as antdTheme } from "antd";
 import china from '../../../../public/mapJson/jiangsuJson'
 import * as echarts from "echarts";
+import { useSelector } from "umi";
 
 function MapCom(props) {
-    const { token } = theme.useToken();
+    const { token } = antdTheme.useToken();
     const chartInstance= React.createRef();
     const [options, setOptions] = useState({});
-   
+    const { theme } = useSelector(state => state.global);
+
     const convertData = function () {
         const markerList = props.allPlant?.map(it => {
             return {
@@ -76,7 +78,8 @@ function MapCom(props) {
                 aspectScale: 0.9,
                 zoom: 1.5,
                 label: {
-                    show: true
+                    show: true,
+                    color: token.color26
                 }
             },
             series: [
@@ -135,7 +138,7 @@ function MapCom(props) {
 
     useEffect(() => {
         getOptions();
-    }, [])
+    }, [theme])
 
     return (
         <ReactECharts  

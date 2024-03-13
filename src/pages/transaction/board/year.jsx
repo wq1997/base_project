@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { DatePicker, Space } from "antd";
+import { Title } from "@/components";
 import "./index.less";
 import dayjs from "dayjs";
 import ReactECharts from "echarts-for-react";
@@ -25,12 +25,6 @@ const Year = () => {
     }, 500);
 
     const options1 = {
-        title: {
-            text: "分月收入曲线",
-            textStyle: {
-                fontSize: 15,
-            },
-        },
         legend: {
             data: ["月收入"],
         },
@@ -102,12 +96,6 @@ const Year = () => {
     };
 
     const options2 = {
-        title: {
-            text: "分月充放电量报表",
-            textStyle: {
-                fontSize: 15,
-            },
-        },
         legend: {
             data: ["充电量", "放电量"],
         },
@@ -190,6 +178,7 @@ const Year = () => {
                 className="charts"
                 style={{ paddingTop: "30px", height: "400px" }}
             >
+                <Title>分月充放电量报表</Title>
                 <ReactECharts showLoading={loading} option={options1} style={{ width: "100%", height: "100%" }} />
             </div>
             <div className="total">
@@ -204,6 +193,7 @@ const Year = () => {
                 className="charts"
                 style={{ paddingTop: "30px", height: "400px" }}
             >
+                <Title>分月收入曲线</Title>
                 <ReactECharts showLoading={loading} option={options2} style={{ width: "100%", height: "100%" }} />
             </div>
         </div>

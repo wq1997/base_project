@@ -1,10 +1,14 @@
 import ReactECharts from "echarts-for-react";
 import { useEffect, useState } from "react";
 import * as echarts from "echarts";
+import { theme as antdTheme } from "antd";
+import { useSelector } from "umi";
 
 const colorList = ["#9E87FF", '#73DDFF', '#fe9a8b', '#F56948', '#9E87FF'];
 const LoadStatisc = () => {
+    const { token } = antdTheme.useToken();
     const [options, setOptions] = useState({});
+    const { theme } = useSelector(state => state.global);
 
     const getOptions = () => {
         setOptions({
@@ -15,7 +19,7 @@ const LoadStatisc = () => {
                 itemWidth: 6,
                 itemGap: 20,
                 textStyle: {
-                    color: '#556677'
+                    color: token.color11
                 }
             },
             tooltip: {
@@ -57,13 +61,11 @@ const LoadStatisc = () => {
                 },
                 axisLabel: {
                     interval: 0,
-                    textStyle: {
-                        color: '#556677'
-                    },
                     // 默认x轴字体大小
                     fontSize: 12,
                     // margin:文字到x轴的距离
-                    margin: 15
+                    margin: 15,
+                    color: token.color11
                 },
                 axisPointer: {
                     label: {
@@ -108,13 +110,11 @@ const LoadStatisc = () => {
                         color: '#DCE2E8'
                     }
                 },
-                axisLabel: {
-                    textStyle: {
-                        color: '#556677'
-                    }
-                },
                 splitLine: {
                     show: false
+                },
+                axisLabel: {
+                    color: token.color11
                 }
             }],
             series: [{
@@ -214,7 +214,7 @@ const LoadStatisc = () => {
     
     useEffect(() => {
         getOptions();
-    }, [])
+    }, [theme])
 
     return (
         <ReactECharts  

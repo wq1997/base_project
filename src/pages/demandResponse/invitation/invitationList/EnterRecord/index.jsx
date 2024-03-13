@@ -5,6 +5,7 @@ import {
     saveEnterRecord as saveEnterRecordServer,
 } from "@/services/invitation";
 import dayjs from "dayjs";
+import { Title } from "@/components";
 import "./index.less";
 
 const Company = ({ open, onClose }) => {
@@ -46,7 +47,7 @@ const Company = ({ open, onClose }) => {
 
     return (
         <Modal
-            title="手工录入"
+            title={<Title>手工录入</Title>}
             width={700}
             confirmLoading={true}
             open={open}
