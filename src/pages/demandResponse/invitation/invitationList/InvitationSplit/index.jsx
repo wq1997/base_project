@@ -6,6 +6,7 @@ import {
     getSplitInviteInitData as getSplitInviteInitDataServer,
     saveSplitInvite as saveSplitInviteServer,
 } from "@/services/invitation";
+import { Title } from "@/components";
 import AddTask from "./AddTask";
 import "./index.less";
 
@@ -290,73 +291,75 @@ const Company = ({ invitationSplitId, onClose }) => {
                 onClose={AddTaskColse}
             />
             <Modal
-                title={isReSplit ? "重新拆分" : "邀约拆分"}
+                title={<Title>{isReSplit ? "重新拆分" : "邀约拆分"}</Title>}
                 width={1000}
                 open={Boolean(invitationSplitId)}
                 onOk={handleOk}
                 onCancel={() => onClose(false)}
             >
-                <div className="title">邀约信息</div>
-                <div className="info">
-                    <div className="item">
-                        <span>响应类型：</span>
-                        <span>{inviteInfo?.responseTypeZh}</span>
+                <div style={{padding: '20px'}}>
+                    <div className="title">邀约信息</div>
+                    <div className="info">
+                        <div className="item">
+                            <span>响应类型：</span>
+                            <span>{inviteInfo?.responseTypeZh}</span>
+                        </div>
+                        <div className="item">
+                            <span>响应要求：</span>
+                            <span>{inviteInfo?.responseTimeTypeZh}</span>
+                        </div>
+                        <div className="item">
+                            <span>度电报价(元)：</span>
+                            <span>{inviteInfo?.whPrice}</span>
+                        </div>
+                        <div className="item">
+                            <span>响应功率(kW)：</span>
+                            <span>{inviteInfo?.responsePower}</span>
+                        </div>
+                        <div className="item">
+                            <span>约定开始时间：</span>
+                            <span>{inviteInfo?.appointedTimeFrom}</span>
+                        </div>
+                        <div className="item">
+                            <span>约定结束时间：</span>
+                            <span>{inviteInfo?.appointedTimeTo}</span>
+                        </div>
                     </div>
-                    <div className="item">
-                        <span>响应要求：</span>
-                        <span>{inviteInfo?.responseTimeTypeZh}</span>
-                    </div>
-                    <div className="item">
-                        <span>度电报价(元)：</span>
-                        <span>{inviteInfo?.whPrice}</span>
-                    </div>
-                    <div className="item">
-                        <span>响应功率(kW)：</span>
-                        <span>{inviteInfo?.responsePower}</span>
-                    </div>
-                    <div className="item">
-                        <span>约定开始时间：</span>
-                        <span>{inviteInfo?.appointedTimeFrom}</span>
-                    </div>
-                    <div className="item">
-                        <span>约定结束时间：</span>
-                        <span>{inviteInfo?.appointedTimeTo}</span>
-                    </div>
+                    <div className="title">任务拆解</div>
+                    <Space>
+                        <Button
+                            type="primary"
+                            icon={<PlusOutlined />}
+                            onClick={() => setAddTaskOpen(true)}
+                        >
+                            手工添加
+                        </Button>
+                        <Button type="primary" icon={<AndroidOutlined />} onClick={() => handleUseAI()}>
+                            AI智能拆解
+                        </Button>
+                        <Button type="primary" onClick={() => sureDeadline()}>
+                            确认截止时间
+                        </Button>
+                        <div>
+                            已拆分任务：{hasSplitCount}KW 剩余任务：
+                            {remainCount}KW 任务派发比例：
+                            {((hasSplitCount / +inviteInfo?.responsePower) * 100)?.toFixed(2)}%
+                        </div>
+                    </Space>
+                    <Table
+                        rowKey="id"
+                        dataSource={taskList}
+                        columns={
+                            isReSplit ? columns : columns?.filter(column => !column.isReSplit)
+                        }
+                        title={() => <Space className="table-title"></Space>}
+                        pagination={false}
+                        scroll={{
+                            x: 800
+                        }}
+                    ></Table>
+                    {contextHolder}
                 </div>
-                <div className="title">任务拆解</div>
-                <Space>
-                    <Button
-                        type="primary"
-                        icon={<PlusOutlined />}
-                        onClick={() => setAddTaskOpen(true)}
-                    >
-                        手工添加
-                    </Button>
-                    <Button type="primary" icon={<AndroidOutlined />} onClick={() => handleUseAI()}>
-                        AI智能拆解
-                    </Button>
-                    <Button type="primary" onClick={() => sureDeadline()}>
-                        确认截止时间
-                    </Button>
-                    <div>
-                        已拆分任务：{hasSplitCount}KW 剩余任务：
-                        {remainCount}KW 任务派发比例：
-                        {((hasSplitCount / +inviteInfo?.responsePower) * 100)?.toFixed(2)}%
-                    </div>
-                </Space>
-                <Table
-                    rowKey="id"
-                    dataSource={taskList}
-                    columns={
-                        isReSplit ? columns : columns?.filter(column => !column.isReSplit)
-                    }
-                    title={() => <Space className="table-title"></Space>}
-                    pagination={false}
-                    scroll={{
-                        x: 800
-                    }}
-                ></Table>
-                {contextHolder}
             </Modal>
         </>
     );
