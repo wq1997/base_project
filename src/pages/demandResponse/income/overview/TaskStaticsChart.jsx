@@ -54,11 +54,11 @@ const TaskStaticsChart = () => {
                     },
                     selectedMode: "single",
                     data: [
-                        {
-                            value: projectData[1],
-                            name: project[1],
-                            itemStyle: { color: projectColor[1] },
-                        },
+                        // {
+                        //     value: projectData[1],
+                        //     name: project[1],
+                        //     itemStyle: { color: projectColor[1] },
+                        // },
                         {
                             value: projectData[0],
                             name: project[0],
@@ -73,12 +73,12 @@ const TaskStaticsChart = () => {
                         show: false,
                     },
                     data: [
-                        {
-                            value: 1,
-                            type: "填谷-日前",
-                            name: "填谷-日前",
-                            itemStyle: { color: equipmentColor[3] },
-                        },
+                        // {
+                        //     value: 1,
+                        //     type: "填谷-日前",
+                        //     name: "填谷-日前",
+                        //     itemStyle: { color: equipmentColor[3] },
+                        // },
                         {
                             value: 1,
                             type: "削峰-日前",
@@ -110,7 +110,7 @@ const TaskStaticsChart = () => {
                         {/* <Lengend name={equipment[1]} data={equipmentData[1]} color={equipmentColor[1]} />
                         <Lengend name={equipment[2]} data={equipmentData[2]} color={equipmentColor[2]} /> */}
                     </Space>
-                    <Divider style={{ height: 150, margin: "0 30px" }} type="vertical" />
+                    {/* <Divider style={{ height: 150, margin: "0 30px" }} type="vertical" />
                     <Space direction="vertical" size={20}>
                         <Lengend name={project[1]} data={projectData[1]} color={projectColor[1]} />
                         <Lengend
@@ -118,9 +118,9 @@ const TaskStaticsChart = () => {
                             data={equipmentData[3]}
                             color={equipmentColor[3]}
                         />
-                        {/* <Lengend name={equipment[4]} data={equipmentData[4]} color={equipmentColor[4]} />
-                        <Lengend name={equipment[5]} data={equipmentData[5]} color={equipmentColor[5]} />   */}
-                    </Space>
+                        <Lengend name={equipment[4]} data={equipmentData[4]} color={equipmentColor[4]} />
+                        <Lengend name={equipment[5]} data={equipmentData[5]} color={equipmentColor[5]} />  
+                    </Space> */}
                 </Row>
             </div>
         </div>
