@@ -19,7 +19,7 @@ const MenuList = [
         darkIcon: "icon-wuliaoxuqiu-copy",
         children: [
             {
-                key: "/vpp/demandResponse/invitation",
+                key: "/vpp/demandResponse/invitation/invitationList",
                 label: "邀约管理",
             },
             {
@@ -95,7 +95,7 @@ const MyMenu = () => {
                         title={menu.label}
                         icon={
                             <Icon
-                                type={theme === 'dark'?menu.darkIcon: menu.icon}
+                                type={theme === 'dark' ? menu.darkIcon : menu.icon}
                                 style={{
                                     color: "black",
                                     fontSize: 20,
@@ -112,7 +112,7 @@ const MyMenu = () => {
                         key={menu.key}
                         icon={
                             <Icon
-                                type={theme === 'dark'?menu.darkIcon: menu.icon}
+                                type={theme === 'dark' ? menu.darkIcon : menu.icon}
                                 style={{
                                     fontSize: 20,
                                 }}

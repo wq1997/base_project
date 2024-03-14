@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Button, Space, Table, message, Modal, DatePicker, Tooltip, Input } from "antd";
 import { PlusOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
+import { history, useLocation } from "umi";
 import { SearchInput } from "@/components";
 import EnterRecord from "./EnterRecord";
 import InvitationSplit from "./InvitationSplit";
@@ -19,6 +20,7 @@ import dayjs from "dayjs";
 let invalidReason = undefined;
 
 const Account = () => {
+    const location = useLocation();
     const [canSure, setCanSure] = useState(true);
     const [canDelete, setCanDelete] = useState(true);
     const [canInvalid, setCanInvalid] = useState(true);
@@ -142,10 +144,12 @@ const Account = () => {
     };
 
     const getInviteList = async () => {
+        const searchInviteCode = location?.search.split("=")[1];
+        setCode(searchInviteCode);
         const { current, pageSize } = paginationRef.current;
         const [createdTimeFrom, createdTimeTo] = releaseTimeRef.current || [];
         const [appointedTimeRangeStart, appointedTimeRangeEnd] = executeTimeRef.current || [];
-        const code = codeRef.current;
+        const code = searchInviteCode || codeRef.current;
         const confirmStatus = confirmStatusRef.current;
         const splitStatus = splitStatusRef.current;
         const responsePower = +responsePowerRef.current;
@@ -433,7 +437,7 @@ const Account = () => {
                                 type="primary"
                                 disabled={!canSure}
                                 onClick={() => handleOperate(0)}
-                            >
+                            >33333
                                 邀约确认
                                 {selectedRowKeys?.length ? (
                                     <span>({selectedRowKeys?.length})</span>
