@@ -32,7 +32,7 @@ const Overview = () => {
         },
         {
             label: '已到账总额(元)',
-            data: 29661.58,
+            data: 0,
             color: token.color14,
             icon: 'icon-yidaozhangzonge'
         }
@@ -47,7 +47,7 @@ const Overview = () => {
         },
         {
             icon: 'icon-xiangyingrongliang',
-            label: '响应容量(KW)',
+            label: '响应功率(KW)',
             data: 11921,
             color: token.color15
         },
