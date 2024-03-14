@@ -14,6 +14,9 @@ const GlobalWrapperCss = (props) => {
             '.ant-card': {
                 background: token.color20,
             },
+            '.ant-checkbox-checked': {
+                background: token.colorPrimary
+            }
         }
     })
     return (

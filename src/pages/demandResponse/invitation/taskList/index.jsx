@@ -154,7 +154,7 @@ const Account = () => {
             title: "操作",
             dataIndex: "operate",
             fixed: "right",
-            width: 100,
+            width: 200,
             render: (_, { id }) => {
                 return (
                     <Space>
