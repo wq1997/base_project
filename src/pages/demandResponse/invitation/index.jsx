@@ -1,26 +1,31 @@
 import React from "react";
 import { Tabs } from "antd";
+import { Outlet, history, useLocation } from "umi";
 import { CardPage } from "@/components";
-import InvitationList from "./invitationList";
-import TaskList from './taskList'
 
 const Invitation = () => {
+    const location = useLocation();
+    const { pathname } = location;
+
     const items = [
         {
-            key: "1",
+            key: "/vpp/demandResponse/invitation/invitationList",
             label: "邀约列表",
-            children: <InvitationList />,
         },
         {
-            key: "2",
+            key: "/vpp/demandResponse/invitation/allTaskList",
             label: "任务清单",
-            children: <TaskList />
         },
     ];
 
+    const onChange = value => {
+        history.push(value);
+    };
+
     return (
         <CardPage>
-            <Tabs defaultActiveKey="1" items={items} />
+            <Tabs defaultActiveKey={pathname} key={pathname} items={items} onChange={onChange} />
+            <Outlet />
         </CardPage>
     );
 };

@@ -1,10 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Button, Space, Table, message, Modal, DatePicker, Tooltip, Input } from "antd";
-import { PlusOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
+import { history, useLocation } from "umi";
 import { SearchInput } from "@/components";
-import EnterRecord from "./EnterRecord";
-import InvitationSplit from "./InvitationSplit";
-import Detail from "./Detail";
 import {
     getTaskist as getTaskistServer,
     getSearchInitData as getSearchInitDataServer,
@@ -16,6 +13,7 @@ import "./index.less";
 import dayjs from "dayjs";
 
 const Account = () => {
+    const location = useLocation();
     const [canSure, setCanSure] = useState(true);
     const [canRefuse, setCanRefuse] = useState(true);
     const endTimeRef = useRef();
@@ -42,9 +40,6 @@ const Account = () => {
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [userList, setUserList] = useState([]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-    const [enterRecordOpen, setEnterRecordOpen] = useState(false);
-    const [invitationSplitId, setInvitationSplitId] = useState();
-    const [detailId, setDetailId] = useState(false);
 
     const columns = [
         {
@@ -158,7 +153,15 @@ const Account = () => {
             render: (_, { id }) => {
                 return (
                     <Space>
-                        <a onClick={() => setDetailId(id)}>查看关联邀约</a>
+                        <a
+                            onClick={() =>
+                                history.push(
+                                    `/vpp/demandResponse/invitation/invitationList?inviteCode=${inviteCode}`
+                                )
+                            }
+                        >
+                            查看关联邀约
+                        </a>
                     </Space>
                 );
             },
@@ -284,26 +287,6 @@ const Account = () => {
 
     return (
         <div>
-            <EnterRecord
-                open={enterRecordOpen}
-                onClose={resFlag => {
-                    setEnterRecordOpen(false);
-                    resFlag && getInviteList();
-                }}
-            />
-            <Detail
-                detailId={detailId}
-                onClose={() => {
-                    setDetailId();
-                }}
-            />
-            <InvitationSplit
-                invitationSplitId={invitationSplitId}
-                onClose={resFlag => {
-                    setInvitationSplitId();
-                    resFlag && getInviteList();
-                }}
-            />
             <Space className="search">
                 <div>
                     <span>确认截止时间：</span>

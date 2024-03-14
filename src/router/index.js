@@ -9,6 +9,10 @@ const HomePage = "@/pages/homepage";
 
 // 邀约管理
 const DemandResponseInvitation = "@/pages/demandResponse/invitation";
+// 邀约列表
+const InvitationList = "@/pages/demandResponse/invitation/invitationList";
+// 任务清单
+const AllTaskList = "@/pages/demandResponse/invitation/allTaskList";
 // 任务管理
 const DemandResponseTask = "@/pages/demandResponse/task";
 // 任务确认
@@ -63,38 +67,51 @@ export default Routes = [
                 component: Layout,
                 routes: [
                     { path: "/vpp/homepage", component: HomePage },
-                    { path: "/vpp/demandResponse/invitation", component: DemandResponseInvitation },
-                    { 
-                        path: "/vpp/demandResponse/task", 
+                    {
+                        path: "/vpp/demandResponse/invitation",
+                        component: DemandResponseInvitation,
+                        routes: [
+                            {
+                                path: "/vpp/demandResponse/invitation/invitationList",
+                                component: InvitationList,
+                            },
+                            {
+                                path: "/vpp/demandResponse/invitation/allTaskList",
+                                component: AllTaskList,
+                            },
+                        ],
+                    },
+                    {
+                        path: "/vpp/demandResponse/task",
                         component: DemandResponseTask,
                         routes: [
                             {
-                                path: "/vpp/demandResponse/task/confirm", 
+                                path: "/vpp/demandResponse/task/confirm",
                                 component: TaskConfirm,
                             },
                             {
-                                path: "/vpp/demandResponse/task/list", 
+                                path: "/vpp/demandResponse/task/list",
                                 component: TaskList,
-                            }
-                        ]
+                            },
+                        ],
                     },
-                    { 
-                        path: "/vpp/demandResponse/income", 
+                    {
+                        path: "/vpp/demandResponse/income",
                         component: DemandResponseIncome,
                         routes: [
                             {
-                                path: "/vpp/demandResponse/income/overview", 
+                                path: "/vpp/demandResponse/income/overview",
                                 component: DemandResponseIncomeOverview,
                             },
                             {
-                                path: "/vpp/demandResponse/income/invitation", 
+                                path: "/vpp/demandResponse/income/invitation",
                                 component: DemandResponseIncomeInvitation,
                             },
                             {
-                                path: "/vpp/demandResponse/income/task", 
+                                path: "/vpp/demandResponse/income/task",
                                 component: DemandResponseIncomeTask,
-                            }
-                        ]
+                            },
+                        ],
                     },
                     { path: "/vpp/baseinfo/company", component: BaseinfoCompany },
                     { path: "/vpp/baseinfo/role", component: BaseinfoRole },
@@ -105,23 +122,29 @@ export default Routes = [
                 ],
             },
             {
-                path: '/transaction',
+                path: "/transaction",
                 component: TransactionLayout,
                 routes: [
-                    { path: '/transaction/homepage', component: TransactionHomepage },
-                    { 
-                        path: '/transaction/manage', 
+                    { path: "/transaction/homepage", component: TransactionHomepage },
+                    {
+                        path: "/transaction/manage",
                         component: TransactionManage,
                         routes: [
-                            { path: '/transaction/manage/history', component: TransactionManageHistory },
-                            { path: '/transaction/manage/prediction', component: TransactionManagePrediction }
-                        ]
+                            {
+                                path: "/transaction/manage/history",
+                                component: TransactionManageHistory,
+                            },
+                            {
+                                path: "/transaction/manage/prediction",
+                                component: TransactionManagePrediction,
+                            },
+                        ],
                     },
-                    { path: '/transaction/report', component: TransactionReport },
-                    { path: '/transaction/execute', component: TransactionExecute },
-                    { path: '/transaction/board', component: TransactionBoard }
-                ]
-            }
+                    { path: "/transaction/report", component: TransactionReport },
+                    { path: "/transaction/execute", component: TransactionExecute },
+                    { path: "/transaction/board", component: TransactionBoard },
+                ],
+            },
         ],
     },
     { path: "/login", component: Login },
