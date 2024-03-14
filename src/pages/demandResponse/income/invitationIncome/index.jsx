@@ -48,7 +48,7 @@ const InvitationIncome = () => {
         {
             icon: 'icon-pingtaizongshouyi',
             label: '平台总收益(元)',
-            data: 29661.58,
+            data: 27541.75,
             color: token.color19
         },
         {
