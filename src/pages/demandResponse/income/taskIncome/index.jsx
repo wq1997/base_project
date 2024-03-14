@@ -20,13 +20,13 @@ const TaskIncome = () => {
         {
             icon: 'icon-shijizhihanggongshuaihuizong1',
             label: '实际执行功率汇总(kW)',
-            data: 11921,
+            data: 7296,
             color: token.color7
         },
         {
             icon: 'icon-yaoyuezongshouyi',
             label: '预计收益(元)',
-            data: 90171.92,
+            data: 29171.92,
             color: token.color18
         },
     ])
