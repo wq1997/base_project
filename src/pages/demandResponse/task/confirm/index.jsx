@@ -118,10 +118,7 @@ const Confirm = () => {
                     ],
                     symbol: "none",
                     lineStyle: {
-                        width: 3,
-                        shadowColor: "rgba(158,135,255, 0.3)",
-                        shadowBlur: 10,
-                        shadowOffsetY: 20,
+                        width: 2
                     },
                     itemStyle: {
                         normal: {
@@ -165,10 +162,7 @@ const Confirm = () => {
                         30000, 30000,
                     ],
                     lineStyle: {
-                        width: 3,
-                        shadowColor: "rgba(115,221,255, 0.3)",
-                        shadowBlur: 10,
-                        shadowOffsetY: 20,
+                        width: 2
                     },
                     itemStyle: {
                         normal: {
@@ -203,10 +197,7 @@ const Confirm = () => {
                     symbol: "none",
                     data: [0, 0, 0, 0, 3450, 3400, 3485, 3602, 3334, 0, 0, 0, 0],
                     lineStyle: {
-                        width: 3,
-                        shadowColor: "rgba(254,154,139, 0.3)",
-                        shadowBlur: 10,
-                        shadowOffsetY: 20,
+                        width: 2
                     },
                     itemStyle: {
                         normal: {
@@ -283,7 +274,8 @@ const Confirm = () => {
                             className="percent value"
                             style={{
                                 color: token.color12,
-                                fontFamily: 'DingTalkJinBuTi'
+                                fontFamily: 'DingTalkJinBuTi',
+                                fontSize: 44
                             }}
                         >
                             成功
@@ -295,7 +287,7 @@ const Confirm = () => {
                         style={{background: token.color22, boxShadow: theme==="default" &&'0px 2px 6px 0px rgba(176,185,210,0.4)'}}
                     >
                         <Title.Description icon={"icon-zhihangshuoming"}>执行说明</Title.Description>
-                        <div className="value" style={{color: token.color11}}>
+                        <div className="value" style={{color: token.color11, fontSize: 16}}>
                             <div>
                                 <div>
                                     <CheckCircleOutlined className="check-icon" />

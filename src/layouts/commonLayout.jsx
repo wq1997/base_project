@@ -86,9 +86,9 @@ const CommonLayout = (props) => {
                         <Icon
                             type={theme==="default"?"icon-qiansezhuti":"icon-shensezhuti"}
                             style={{
-                                fontSize: 35,
+                                fontSize: 23,
                                 cursor: "pointer",
-                                marginTop: 25
+                                marginTop: 30
                             }}
                             onClick={()=>changeTheme(theme==="default"?"dark": "default")}
                         />

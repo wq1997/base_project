@@ -19,11 +19,13 @@ const Table = ({
         let scrollTop = 0;
         clearInterval(timer);
         timer = setInterval(()=>{
-            tableContentRef.current.style.top = `-${scrollTop}px`;
-            if(scrollTop>=tableContentScrollHeight-5){
-                scrollTop=0;
+            if(tableContentRef?.current?.style){
+                tableContentRef.current.style.top = `-${scrollTop}px`;
+                if(scrollTop>=tableContentScrollHeight-5){
+                    scrollTop=0;
+                }
+                scrollTop++;
             }
-            scrollTop++;
         }, 100)
     }
 

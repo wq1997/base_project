@@ -13,7 +13,7 @@ const GlobalWrapperCss = (props) => {
             },
             '.ant-card': {
                 background: token.color20,
-            }
+            },
         }
     })
     return (

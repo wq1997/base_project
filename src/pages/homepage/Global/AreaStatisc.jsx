@@ -68,10 +68,9 @@ const AreaStatisc = () => {
                     type: "bar",
                     barWidth: 25,
                     label: {
-                        normal: {
-                            show: true,
-                            position: "right",
-                        },
+                        show: true,
+                        position: "right",
+                        color: token.color11
                     },
                     itemStyle: {
                         barBorderRadius: [0, 20, 20, 0], // 圆角（左上、右上、右下、左下）

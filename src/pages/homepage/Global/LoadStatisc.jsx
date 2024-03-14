@@ -46,7 +46,9 @@ const LoadStatisc = () => {
             },
             grid: {
                 top: 10,
-                bottom: 40
+                bottom: 40,
+                left: 60,
+                right: 50
             },
             xAxis: [{
                 type: 'category',
@@ -127,7 +129,7 @@ const LoadStatisc = () => {
                     yAxisIndex: 0,
                     showSymbol: false,
                     lineStyle: {
-                        width: 5,
+                        width: 2,
                         color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
                                 offset: 0,
                                 color: '#9effff'
@@ -136,10 +138,7 @@ const LoadStatisc = () => {
                                 offset: 1,
                                 color: '#9E87FF'
                             }
-                        ]),
-                        shadowColor: 'rgba(158,135,255, 0.3)',
-                        shadowBlur: 10,
-                        shadowOffsetY: 20
+                        ])
                     },
                     itemStyle: {
                         normal: {
@@ -157,7 +156,7 @@ const LoadStatisc = () => {
                     yAxisIndex: 0,
                     showSymbol: false,
                     lineStyle: {
-                        width: 5,
+                        width: 2,
                         color: new echarts.graphic.LinearGradient(1, 1, 0, 0, [{
                                 offset: 0,
                                 color: '#73DD39'
@@ -166,10 +165,7 @@ const LoadStatisc = () => {
                                 offset: 1,
                                 color: '#73DDFF'
                             }
-                        ]),
-                        shadowColor: 'rgba(115,221,255, 0.3)',
-                        shadowBlur: 10,
-                        shadowOffsetY: 20
+                        ])
                     },
                     itemStyle: {
                         normal: {
@@ -187,7 +183,7 @@ const LoadStatisc = () => {
                     smooth: true,
                     showSymbol: false,
                     lineStyle: {
-                        width: 5,
+                        width: 2,
                         color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
                                 offset: 0,
                                 color: '#fe9a'
@@ -196,10 +192,7 @@ const LoadStatisc = () => {
                                 offset: 1,
                                 color: '#fe9a8b'
                             }
-                        ]),
-                        shadowColor: 'rgba(254,154,139, 0.3)',
-                        shadowBlur: 10,
-                        shadowOffsetY: 20
+                        ])
                     },
                     itemStyle: {
                         normal: {

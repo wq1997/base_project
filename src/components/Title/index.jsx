@@ -44,7 +44,7 @@ const Description = (props) => {
                     }}
                 />
             }
-            <div style={{marginLeft: 4, color: token.color11, fontSize: 16, fontFamily: 'PingFangSemiblod'}}>{props.children}</div>
+            <div style={{marginLeft: 4, color: token.color11, fontSize: 16}}>{props.children}</div>
         </div>
     )
 }
