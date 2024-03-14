@@ -150,7 +150,7 @@ const Account = () => {
             dataIndex: "operate",
             fixed: "right",
             width: 200,
-            render: (_, { id }) => {
+            render: (_, { inviteCode }) => {
                 return (
                     <Space>
                         <a
