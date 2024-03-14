@@ -125,7 +125,7 @@ const LoadStatisc = () => {
                     data: [3200,2300,80,1360,3500,4500,5678,12999,23456,24567,33467,12789,42345,56721,72351,65432,37821,55121,68723,62436,36722,13218,13223,8762,50,10,40,50,100,80,90,90,80,110,80,50],
                     symbolSize: 1,
                     symbol: 'circle',
-                    smooth: true,
+                    smooth: false,
                     yAxisIndex: 0,
                     showSymbol: false,
                     lineStyle: {
@@ -152,7 +152,7 @@ const LoadStatisc = () => {
                     data: [40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000],
                     symbolSize: 1,
                     symbol: 'circle',
-                    smooth: true,
+                    smooth: false,
                     yAxisIndex: 0,
                     showSymbol: false,
                     lineStyle: {
@@ -180,7 +180,7 @@ const LoadStatisc = () => {
                     data: [25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,],
                     symbolSize: 1,
                     symbol: 'circle',
-                    smooth: true,
+                    smooth: false,
                     showSymbol: false,
                     lineStyle: {
                         width: 2,

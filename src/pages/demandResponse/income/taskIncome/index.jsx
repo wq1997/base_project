@@ -14,19 +14,19 @@ const TaskIncome = () => {
         {
             icon: 'icon-yuedingxiangyinggongshuaihuizong',
             label: '约定响应功率汇总(kW)',
-            data: 12000,
+            data: 0,
             color: token.color12
         },
         {
             icon: 'icon-shijizhihanggongshuaihuizong1',
             label: '实际执行功率汇总(kW)',
-            data: 7296,
+            data: 0,
             color: token.color7
         },
         {
             icon: 'icon-yaoyuezongshouyi',
             label: '预计收益(元)',
-            data: 29171.92,
+            data: 0,
             color: token.color18
         },
     ])
@@ -124,6 +124,26 @@ const TaskIncome = () => {
                     total: parseInt(totalRecord),
                 });
                 setDataSource(recordList);
+                setStaticsData([
+                    {
+                        icon: 'icon-yuedingxiangyinggongshuaihuizong',
+                        label: '约定响应功率汇总(kW)',
+                        data: recordList?.length> 0 ? recordList.map(item=>item.responsePower).reduce((total, value) => total + value) : 0,
+                        color: token.color12
+                    },
+                    {
+                        icon: 'icon-shijizhihanggongshuaihuizong1',
+                        label: '实际执行功率汇总(kW)',
+                        data: recordList?.length> 0 ? recordList.map(item=>item.actualAveragePower).reduce((total, value) => total + value) : 0,
+                        color: token.color7
+                    },
+                    {
+                        icon: 'icon-yaoyuezongshouyi',
+                        label: '预计收益(元)',
+                        data: recordList?.length> 0 ? recordList.map(item=>item.projectedProfit).reduce((total, value) => total + value) : 0,
+                        color: token.color18
+                    },
+                ])
             }
             setLoading(false);
         }, 1000);

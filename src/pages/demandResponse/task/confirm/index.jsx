@@ -111,7 +111,6 @@ const Confirm = () => {
                 {
                     name: "预计基线负荷（kW）",
                     type: "line",
-                    smooth: true,
                     data: [
                         8532, 19231, 32643, 32763, 39232, 41204, 40401.6, 38804, 35804, 32811, 35892,
                         37281, 23172,
@@ -155,7 +154,7 @@ const Confirm = () => {
                 {
                     name: "签约响应量（kW）",
                     type: "line",
-                    smooth: true,
+                    smooth: false,
                     symbol: "none",
                     data: [
                         30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000,
@@ -174,7 +173,7 @@ const Confirm = () => {
                 {
                     name: "任务量（kW）",
                     type: "line",
-                    smooth: true,
+                    smooth: false,
                     symbol: "none",
                     data: [0, 0, 0, 0, 3375, 3375, 3375, 3375, 3375, 0, 0, 0, 0],
                     lineStyle: {
@@ -193,7 +192,7 @@ const Confirm = () => {
                 {
                     name: "实际响应（kW）",
                     type: "line",
-                    smooth: true,
+                    smooth: false,
                     symbol: "none",
                     data: [0, 0, 0, 0, 3450, 3400, 3485, 3602, 3334, 0, 0, 0, 0],
                     lineStyle: {

@@ -150,7 +150,7 @@ const BaseLine = ({ baseLineArgs, onClose }) => {
             series: summaryData?.map((item, index) => ({
                 name: item?.name,
                 type: "line",
-                smooth: true,
+                smooth: false,
                 data: item?.data,
                 symbol: "none",
                 lineStyle: {
@@ -214,7 +214,7 @@ const BaseLine = ({ baseLineArgs, onClose }) => {
             series: historyData?.map((item, index) => ({
                 name: item?.name,
                 type: "line",
-                smooth: true,
+                smooth: false,
                 data: item?.data,
                 symbol: "none",
                 lineStyle: {

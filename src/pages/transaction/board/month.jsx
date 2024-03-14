@@ -218,7 +218,7 @@ const Year = () => {
                     name: "负载功率",
                     type: "line",
                     symbol: "none",
-                    smooth: true,
+                    smooth: false,
                     lineStyle: {
                         width: 3,
                         color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [

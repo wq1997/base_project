@@ -134,19 +134,7 @@ const PriceChart = () => {
                     yAxisIndex: 0,
                     showSymbol: false,
                     lineStyle: {
-                        width: 5,
-                        color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
-                                offset: 0,
-                                color: '#9effff'
-                            },
-                            {
-                                offset: 1,
-                                color: '#9E87FF'
-                            }
-                        ]),
-                        shadowColor: 'rgba(158,135,255, 0.3)',
-                        shadowBlur: 10,
-                        shadowOffsetY: 20
+                        width: 2
                     },
                     itemStyle: {
                         normal: {
@@ -163,19 +151,7 @@ const PriceChart = () => {
                     symbol: 'circle',
                     showSymbol: false,
                     lineStyle: {
-                        width: 5,
-                        color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
-                                offset: 0,
-                                color: '#fe9a'
-                            },
-                            {
-                                offset: 1,
-                                color: '#fe9a8b'
-                            }
-                        ]),
-                        shadowColor: 'rgba(254,154,139, 0.3)',
-                        shadowBlur: 10,
-                        shadowOffsetY: 20
+                        width: 2
                     },
                     itemStyle: {
                         normal: {

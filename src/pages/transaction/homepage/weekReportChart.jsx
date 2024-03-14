@@ -147,7 +147,7 @@ const WeekReportChart = () => {
                 name: '市场参与率',
                 type: 'line',
                 yAxisIndex: 1,
-                smooth: true,
+                smooth: false,
                 tooltip: {
                   valueFormatter: function (value) {
                     return value + ' %';

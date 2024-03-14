@@ -136,19 +136,7 @@ const PriceChart = () => {
                     yAxisIndex: 0,
                     showSymbol: false,
                     lineStyle: {
-                        width: 5,
-                        color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
-                                offset: 0,
-                                color: '#9effff'
-                            },
-                            {
-                                offset: 1,
-                                color: '#9E87FF'
-                            }
-                        ]),
-                        shadowColor: 'rgba(158,135,255, 0.3)',
-                        shadowBlur: 10,
-                        shadowOffsetY: 20
+                        width: 2
                     },
                     itemStyle: {
                         normal: {
@@ -166,19 +154,7 @@ const PriceChart = () => {
                     yAxisIndex: 0,
                     showSymbol: false,
                     lineStyle: {
-                        width: 5,
-                        color: new echarts.graphic.LinearGradient(1, 1, 0, 0, [{
-                                offset: 0,
-                                color: '#73DD39'
-                            },
-                            {
-                                offset: 1,
-                                color: '#73DDFF'
-                            }
-                        ]),
-                        shadowColor: 'rgba(115,221,255, 0.3)',
-                        shadowBlur: 10,
-                        shadowOffsetY: 20
+                        width: 2
                     },
                     markPoint: {
                         label: {
@@ -213,19 +189,7 @@ const PriceChart = () => {
                     smooth: false,
                     showSymbol: false,
                     lineStyle: {
-                        width: 5,
-                        color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
-                                offset: 0,
-                                color: '#fe9a'
-                            },
-                            {
-                                offset: 1,
-                                color: '#fe9a8b'
-                            }
-                        ]),
-                        shadowColor: 'rgba(254,154,139, 0.3)',
-                        shadowBlur: 10,
-                        shadowOffsetY: 20
+                        width: 2
                     },
                     itemStyle: {
                         normal: {
@@ -259,19 +223,7 @@ const PriceChart = () => {
                         }]
                     },
                     lineStyle: {
-                        width: 5,
-                        color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
-                                offset: 0,
-                                color: '#F56948'
-                            },
-                            {
-                                offset: 1,
-                                color: '#F56948'
-                            }
-                        ]),
-                        shadowColor: 'rgba(254,154,139, 0.3)',
-                        shadowBlur: 10,
-                        shadowOffsetY: 20
+                        width: 2
                     },
                     itemStyle: {
                         normal: {
