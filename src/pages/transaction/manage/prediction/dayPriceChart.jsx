@@ -131,7 +131,6 @@ const PriceChart = () => {
                     data: [500,400,400,500,600,700,750,850,900,800,700,500,400,600,620,800,1000,1050,800,600,500,300, 300],
                     symbolSize: 1,
                     symbol: 'circle',
-                    smooth: true,
                     yAxisIndex: 0,
                     showSymbol: false,
                     lineStyle: {
@@ -162,7 +161,6 @@ const PriceChart = () => {
                     data: [700,600,600,700,800,900,750,950,1100,900,900,700,600,800,820,700,1200,1250,900,800,600,400, 350],
                     symbolSize: 1,
                     symbol: 'circle',
-                    smooth: true,
                     showSymbol: false,
                     lineStyle: {
                         width: 5,

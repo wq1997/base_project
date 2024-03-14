@@ -153,7 +153,6 @@ const WeekPriceChart = () => {
                     ],
                     symbolSize: 1,
                     symbol: 'circle',
-                    smooth: true,
                     yAxisIndex: 0,
                     showSymbol: false,
                     lineStyle: {
@@ -191,7 +190,6 @@ const WeekPriceChart = () => {
                     ],
                     symbolSize: 1,
                     symbol: 'circle',
-                    smooth: true,
                     yAxisIndex: 0,
                     showSymbol: false,
                     lineStyle: {
