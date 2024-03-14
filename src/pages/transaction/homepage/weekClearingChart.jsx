@@ -1,7 +1,11 @@
 import ReactECharts from "echarts-for-react";
 import { useEffect, useState } from "react";
+import { theme as antdTheme } from "antd";
+import { useSelector } from "umi";
 
 const WeekClearingChart = () => {
+    const { token } = antdTheme.useToken();
+    const { theme } = useSelector(state => state.global);
     const [options, setOptions] = useState({});
 
     const getOptions = () => {
@@ -21,7 +25,10 @@ const WeekClearingChart = () => {
                 right: 50
             },
             legend: {
-              data: ['日前历史出清电量', '日间历史出清电量']
+              data: ['日前历史出清电量', '日间历史出清电量'],
+              textStyle: {
+                color: token.color11
+              }
             },
             xAxis: [
               {
@@ -99,7 +106,7 @@ const WeekClearingChart = () => {
 
     useEffect(() => {
         getOptions();
-    }, [])
+    }, [theme])
 
     return (
         <ReactECharts  

@@ -1,10 +1,14 @@
 import ReactECharts from "echarts-for-react";
 import { useEffect, useState } from "react";
 import * as echarts from "echarts";
+import { theme as antdTheme } from "antd";
+import { useSelector } from "umi";
 
 const colorList = ["#9E87FF", '#73DDFF', '#fe9a8b', '#F56948', '#9E87FF'];
 
 const WeekPriceChart = () => {
+    const { token } = antdTheme.useToken();
+    const { theme } = useSelector(state => state.global);
     const [options, setOptions] = useState({});
 
     const getOptions = () => {
@@ -16,7 +20,7 @@ const WeekPriceChart = () => {
                 itemWidth: 6,
                 itemGap: 20,
                 textStyle: {
-                    color: '#556677'
+                    color: token.color11
                 }
             },
             tooltip: {
@@ -218,7 +222,7 @@ const WeekPriceChart = () => {
     
     useEffect(() => {
         getOptions();
-    }, [])
+    }, [theme])
 
     return (
         <ReactECharts  

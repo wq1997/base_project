@@ -9,6 +9,7 @@ import {
     getRoleList as getRoleListServe,
     deleteRole as deleteRoleServe,
 } from "@/services"
+import { Title } from "@/components";
 import styles from "./index.less";
 
 const Role = () => {
@@ -223,7 +224,7 @@ const Role = () => {
 
             <Modal
                 open={addRoleOpen}
-                title={operationType==="Add"?'新增角色':'编辑角色'}
+                title={<Title>{operationType==="Add"?'新增角色':'编辑角色'}</Title>}
                 onOk={onSubmit} 
                 onCancel={onCancel}
                 okText="确定"
@@ -237,10 +238,10 @@ const Role = () => {
                     labelCol={{span: 4}}
                 >
                     <Form.Item label="角色名称" name="name" rules={[{...FORM_FORBIDDEN_SPACE}, {...FORM_REQUIRED_RULE}]}> 
-                        <Input placeholder="请输入计费制度名称" />
+                        <Input placeholder="请输入角色名称" />
                     </Form.Item>
                     <Form.Item label="角色说明" name="remark">
-                        <Input.TextArea placeholder="请输入备注" />
+                        <Input.TextArea placeholder="请输入角色说明" />
                     </Form.Item>
                     <Form.Item label="权限配置" name="permCodes">
                             <Tree 

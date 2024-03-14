@@ -1,9 +1,13 @@
 import ReactECharts from "echarts-for-react";
 import { useEffect, useState } from "react";
+import { theme as antdTheme } from "antd";
+import { useSelector } from "umi";
 
 const WeekReportChart = () => {
+    const { token } = antdTheme.useToken();
+    const { theme } = useSelector(state => state.global);
     const [options, setOptions] = useState({});
-
+    
     const getOptions = () => {
         setOptions({
             color: ["#9E87FF", '#73DDFF', '#fe9a8b', '#F56948', '#00C297'],
@@ -21,7 +25,10 @@ const WeekReportChart = () => {
                 right: 50
             },
             legend: {
-              data: ['全网申报容量', '煤机申报容量', '气机申报容量', '新能源申报容量', '市场参与率']
+              data: ['全网申报容量', '煤机申报容量', '气机申报容量', '新能源申报容量', '市场参与率'],
+              textStyle: {
+                color: token.color11
+              }
             },
             xAxis: [
               {
@@ -162,7 +169,7 @@ const WeekReportChart = () => {
 
     useEffect(() => {
         getOptions();
-    }, [])
+    }, [theme])
 
     return (
         <ReactECharts  

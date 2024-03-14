@@ -4,6 +4,7 @@ import {
     getUpdateInitData as getUpdateInitDataServer,
     updateUser as updateUserServer,
 } from "@/services/account";
+import { Title } from "@/components";
 
 const Company = ({ open, editId, onClose }) => {
     const [form] = Form.useForm();
@@ -40,7 +41,7 @@ const Company = ({ open, editId, onClose }) => {
 
     return (
         <Modal
-            title={`${editId ? "编辑" : "新增"}账号`}
+            title={<Title>{`${editId ? "编辑" : "新增"}账号`}</Title>}
             width={700}
             confirmLoading={true}
             open={open}
@@ -66,11 +67,11 @@ const Company = ({ open, editId, onClose }) => {
                         rules={[
                             {
                                 required: true,
-                                message: "请输入账号",
+                                message: "请输入用户名",
                             },
                         ]}
                     >
-                        <Input placeholder="请输入账号" />
+                        <Input placeholder="请输入用户名" />
                     </Form.Item>
 
                 }

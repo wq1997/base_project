@@ -152,9 +152,9 @@ const TaskIncome = () => {
                         }}
                     />
                 </div>
-                <SearchInput label="邀约编号" placeholder="请输入邀约编号（数字）" />
-                <SearchInput label="任务编号" placeholder="请输入任务编号（数字）" />
-                <SearchInput label="任务响应公司" placeholder="请输入响应功率（数字）" />
+                <SearchInput label="邀约编号" placeholder="请输入邀约编号" />
+                <SearchInput label="任务编号" placeholder="请输入任务编号" />
+                <SearchInput label="任务响应公司" placeholder="请输入任务响应公司" />
                 <SearchInput
                     label="响应类型"
                     type="select"

@@ -95,7 +95,7 @@ const InvitationIncome = () => {
         {
             title: "邀约达成比例",
             dataIndex: "actualResponsePercent",
-            render: (_, { actualResponsePercent }) => actualResponsePercent + "%",
+            render: (_, { actualResponsePercent }) => actualResponsePercent? actualResponsePercent + "%" : '',
             width: 150,
         },
         {
@@ -171,7 +171,7 @@ const InvitationIncome = () => {
                         }}
                     />
                 </div>
-                <SearchInput label="邀约编号" placeholder="请输入邀约编号（数字）" />
+                <SearchInput label="邀约编号" placeholder="请输入邀约编号" />
                 <SearchInput
                     label="响应类型"
                     type="select"
