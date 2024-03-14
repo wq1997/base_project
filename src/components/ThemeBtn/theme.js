@@ -32,6 +32,16 @@ const theme = {
         color25: 'rgba(255, 255, 255, 0.15)',
         color26: 'white',
         color27: '#DDDDDD',
+        components: {
+            Modal: {
+                contentBg: '#0A182E',
+                footerBg: '#0A182E',
+                headerBg: '#0A182E'
+            },
+            Button: {
+                defaultBg: "none"
+            }
+        }
     },
     default: {
         colorPrimary: '#384EE8',
@@ -66,6 +76,16 @@ const theme = {
         color25: 'rgba(0, 0, 0, 0.15)',
         color26: 'black',
         color27: '#999999',
+        components: {
+            Modal: {
+                contentBg: 'white',
+                footerBg: 'white',
+                headerBg: 'white'
+            },
+            Button: {
+                defaultBg: "none"
+            }
+        }
     }
 }
 export default theme;
