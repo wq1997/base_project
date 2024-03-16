@@ -1,15 +1,15 @@
 import { Outlet, history, useLocation } from "umi";
-import { Tabs } from 'antd';
+import { Tabs } from "antd";
 import { CardPage } from "@/components";
 
 const items = [
     {
-        key: '/vpp/demandResponse/task/confirm',
-        label: '任务确认',
+        key: "/vpp/demandResponse/task/confirm",
+        label: "任务确认",
     },
     {
-        key: '/vpp/demandResponse/task/list',
-        label: '任务列表',
+        key: "/vpp/demandResponse/task/list",
+        label: "任务列表",
     },
 ];
 
@@ -17,16 +17,16 @@ const Task = () => {
     const location = useLocation();
     const { pathname } = location;
 
-    const onChange = (value) => {
+    const onChange = value => {
         history.push(value);
-    }
+    };
 
     return (
         <CardPage>
-            <Tabs defaultActiveKey={pathname} items={items} onChange={onChange} />
+            <Tabs key={pathname} defaultActiveKey={pathname} items={items} onChange={onChange} />
             <Outlet />
         </CardPage>
-    )
-}
+    );
+};
 
 export default Task;

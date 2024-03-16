@@ -10,6 +10,7 @@ import {
     getSearchInitData as getSearchInitDataServer,
 } from "@/services/task";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
+import { history, useLocation } from "umi";
 import "./index.less";
 
 const Account = () => {
@@ -17,7 +18,7 @@ const Account = () => {
     const executeTimeRef = useRef();
     const codeRef = useRef();
     const confirmStatusRef = useRef();
-    const splitStatusRef = useRef();
+
     const responseTypeRef = useRef();
     const responseTimeTypeRef = useRef();
     const [code, setCode] = useState();
@@ -25,8 +26,6 @@ const Account = () => {
     const [executeTime, setExecuteTime] = useState();
     const [confirmStatus, setConfirmStatus] = useState();
     const [confirmStatusList, setConfirmStatusList] = useState();
-    const [splitStatus, setSplitStatus] = useState();
-    const [splitStatusList, setSplitStatusList] = useState();
     const [responseType, setResponseType] = useState();
     const [responseTypeList, setResponseTypeList] = useState();
     const [responseTimeType, setResponseTimeType] = useState();
@@ -43,11 +42,7 @@ const Account = () => {
             title: "任务编号",
             dataIndex: "code",
             render: (_, record) => {
-                return record?.splitStatus == "INVALID" ? (
-                    <a>{record?.code}</a>
-                ) : (
-                    <span>{record?.code}</span>
-                );
+                return <a>{record?.code}</a>;
             },
             width: 150,
         },
@@ -152,33 +147,47 @@ const Account = () => {
         {
             title: "失败原因",
             dataIndex: "executeResult",
-            width: 200,
+            width: 400,
+            render(value) {
+                if (!value?.success) {
+                    return value?.resultDetail
+                        ?.filter(item => !item?._1)
+                        ?.map((item, index) => {
+                            return (
+                                <div>
+                                    {index + 1}. {item?._2}
+                                </div>
+                            );
+                        });
+                }
+            },
         },
-        // {
-        //     title: "操作",
-        //     dataIndex: "operate",
-        //     fixed: "right",
-        //     width: 200,
-        //     render: (_, { id, supportSplit, supportReSplit }) => {
-        //         return (
-        //             <Space>
-        //                 <a onClick={() => setInvitationSplitId(id)}>
-        //                     {supportSplit ? "邀约拆分" : supportReSplit ? "重新拆分" : ""}
-        //                 </a>
-        //                 <a onClick={() => setDetailId(id)}>详情</a>
-        //             </Space>
-        //         );
-        //     },
-        // },
+        {
+            title: "操作",
+            dataIndex: "operate",
+            fixed: "right",
+            width: 200,
+            render: (_, { id, supportConfirm }) => {
+                return supportConfirm ? (
+                    <a
+                        onClick={() => {
+                            history.push(`/vpp/demandResponse/task/confirm`);
+                        }}
+                    >
+                        前往确认
+                    </a>
+                ) : (
+                    <a onClick={() => setDetailId(id)}>查看关联邀约</a>
+                );
+            },
+        },
     ];
 
     const getSearchInitData = async () => {
         const res = await getSearchInitDataServer();
         if (res?.data?.status == "SUCCESS") {
-            const { confirmStatuses, splitStatuses, responseTypes, responseTimeTypes } =
-                res?.data?.data;
-            setConfirmStatusList(confirmStatuses);
-            setSplitStatusList(splitStatuses);
+            const { statuses, responseTypes, responseTimeTypes } = res?.data?.data;
+            setConfirmStatusList(statuses);
             setResponseTypeList(responseTypes);
             setResponseTimeTypeList(responseTimeTypes);
         }
@@ -190,8 +199,8 @@ const Account = () => {
         const [appointedTimeRangeStart, appointedTimeRangeEnd] = executeTimeRef.current || [];
         const code = codeRef.current;
         const confirmStatus = confirmStatusRef.current;
-        const splitStatus = splitStatusRef.current;
         const responseType = responseTypeRef.current;
+        const responseTimeType = responseTimeTypeRef?.current;
         const res = await getTaskistServer({
             pageNum: current,
             pageSize,
@@ -202,8 +211,8 @@ const Account = () => {
                 appointedTimeRangeEnd,
                 code,
                 confirmStatus,
-                splitStatus,
                 responseType,
+                responseTimeType,
             },
         });
         if (res?.data?.status == "SUCCESS") {
@@ -226,8 +235,7 @@ const Account = () => {
         setCode();
         confirmStatusRef.current = undefined;
         setConfirmStatus();
-        splitStatusRef.current = undefined;
-        setSplitStatus();
+
         responseTypeRef.current = undefined;
         setResponseType();
         responseTimeTypeRef.current = undefined;
@@ -300,7 +308,7 @@ const Account = () => {
                     }}
                 />
                 <SearchInput
-                    label="任务确认状态"
+                    label="任务状态"
                     value={confirmStatus}
                     type="select"
                     options={confirmStatusList}
@@ -310,17 +318,7 @@ const Account = () => {
                         setConfirmStatus(value);
                     }}
                 />
-                <SearchInput
-                    label="任务执行状态"
-                    type="select"
-                    value={splitStatus}
-                    options={splitStatusList}
-                    onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
-                        splitStatusRef.current = value;
-                        setSplitStatus(value);
-                    }}
-                />
+
                 <div>
                     <span>约定执行时间：</span>
                     <DatePicker.RangePicker
