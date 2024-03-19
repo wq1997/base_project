@@ -22,6 +22,7 @@ const TaskIncome = () => {
     const responseTypeRef = useRef();
     const responseTimeTypeRef = useRef();
     const paymentStatusRef = useRef();
+    const companyNameRef = useRef();
     const [appointedTime, setAppointedTime] = useState();
     const [chargingTime, setChargingTime] = useState();
     const [inviteCode, setInviteCode] = useState(initInviteCode);
@@ -29,6 +30,7 @@ const TaskIncome = () => {
     const [responseType, setResponseType] = useState();
     const [responseTimeType, setResponseTimeType] = useState();
     const [paymentStatus, setPaymentStatus] = useState();
+    const [companyName, setCompanyName] = useState();
 
     const [staticsData, setStaticsData] = useState([
         {
@@ -130,6 +132,7 @@ const TaskIncome = () => {
         const responseType = responseTypeRef.current;
         const responseTimeType = responseTimeTypeRef.current;
         const paymentStatus = paymentStatusRef.current;
+        const companyName = companyNameRef.current;
 
         const res = await getTaskIncomeListServer({
             pageNum: current,
@@ -143,7 +146,8 @@ const TaskIncome = () => {
                 code,
                 responseType,
                 responseTimeType,
-                paymentStatus
+                paymentStatus,
+                companyName
             },
         });
         if (res?.data?.status == "SUCCESS") {
@@ -180,6 +184,8 @@ const TaskIncome = () => {
         setResponseTimeType(undefined);
         paymentStatusRef.current = undefined;
         setPaymentStatus(undefined);
+        companyNameRef.current = undefined;
+        setCompanyName(undefined);
         getTaskIncomeList();
     }
 
@@ -240,7 +246,16 @@ const TaskIncome = () => {
                         setCode(value);
                     }}
                 />
-                <SearchInput label="任务响应公司" placeholder="请输入任务响应公司" />
+                <SearchInput 
+                    label="任务响应公司" 
+                    placeholder="请输入任务响应公司" 
+                    value={companyName}
+                    onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        companyNameRef.current = value;
+                        setCompanyName(value);
+                    }}
+                />
                 <SearchInput
                     label="响应类型"
                     type="select"
