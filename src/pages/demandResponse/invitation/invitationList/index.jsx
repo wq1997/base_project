@@ -21,19 +21,19 @@ let invalidReason = undefined;
 
 const Account = () => {
     const location = useLocation();
+    const initCode = location?.search.split("=")[1];
     const [canSure, setCanSure] = useState(true);
     const [canDelete, setCanDelete] = useState(true);
     const [canInvalid, setCanInvalid] = useState(true);
     const releaseTimeRef = useRef();
     const executeTimeRef = useRef();
-    const codeRef = useRef();
+    const codeRef = useRef(initCode);
     const confirmStatusRef = useRef();
     const splitStatusRef = useRef();
     const responsePowerRef = useRef();
     const responseTypeRef = useRef();
     const responseTimeTypeRef = useRef();
-    const [editId, setEditId] = useState();
-    const [code, setCode] = useState();
+    const [code, setCode] = useState(initCode);
     const [releaseTime, setReleaseTime] = useState();
     const [executeTime, setExecuteTime] = useState();
     const [confirmStatus, setConfirmStatus] = useState();
@@ -144,12 +144,10 @@ const Account = () => {
     };
 
     const getInviteList = async () => {
-        const searchInviteCode = location?.search.split("=")[1];
-        setCode(searchInviteCode);
         const { current, pageSize } = paginationRef.current;
         const [createdTimeFrom, createdTimeTo] = releaseTimeRef.current || [];
         const [appointedTimeRangeStart, appointedTimeRangeEnd] = executeTimeRef.current || [];
-        const code = searchInviteCode || codeRef.current;
+        const code = codeRef.current;
         const confirmStatus = confirmStatusRef.current;
         const splitStatus = splitStatusRef.current;
         const responsePower = +responsePowerRef.current;
@@ -180,6 +178,7 @@ const Account = () => {
     };
 
     const handleReset = () => {
+        history.push("/vpp/demandResponse/invitation/invitationList");
         paginationRef.current = DEFAULT_PAGINATION;
         releaseTimeRef.current = undefined;
         setReleaseTime([]);
