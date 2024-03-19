@@ -321,6 +321,7 @@ const Confirm = () => {
                                             <CheckCircleOutlined className="check-icon" />
                                         ) : (
                                             <CloseCircleOutlined
+                                                className="check-icon"
                                                 style={{ color: "#ff7875", marginRight: "8px" }}
                                             />
                                         )}
