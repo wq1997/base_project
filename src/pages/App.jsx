@@ -24,7 +24,10 @@ const App = () => {
             locale={localeEnum[locale]}
             theme={{
                 algorithm: theme === 'dark' ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
-                token: ThemeEnum[theme],
+                token: {
+                    ...ThemeEnum[theme],
+                    fontSize: 15
+                },
                 components: ThemeEnum[theme].components
             }}
         >
