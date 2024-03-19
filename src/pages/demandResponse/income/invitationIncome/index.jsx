@@ -345,7 +345,7 @@ const InvitationIncome = () => {
                         setSelectedRowKeys(newSelectedRowKeys);
                     },
                     getCheckboxProps: record => ({
-                        disabled: record.paymentStatus !== "WAIT_PAYMENT",
+                        disabled: !record.supportPaymentConfirm,
                     }),
                 }}
                 scroll={{
@@ -369,6 +369,7 @@ const InvitationIncome = () => {
                         if(res){
                             setOpen(false);
                             form.resetFields();
+                            getInvitationIncomeList();
                         }
                     }else{
                         message.error("请选择需要确认打款的记录！")

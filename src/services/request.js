@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getDvaApp } from "umi";
+import { message } from "antd";
 
 const getToken = () => localStorage.getItem("Token");
 
@@ -23,13 +24,17 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
     response => {
         if (response.status === 200) {
+            if(response.data.status==="FAILED"){
+                errorHandle(response.data.status, response.data.msg);
+                return Promise.reject(response)
+            }
             return Promise.resolve(response);
         } else {
             return Promise.reject(response);
         }
     },
     error => {
-        const { config, code, request, response, isAxiosError, toJSON } = error;
+        const { response } = error;
         if (response) {
             errorHandle(response.status, response.data.message);
             return Promise.reject(response);
@@ -48,7 +53,7 @@ instance.interceptors.response.use(
     }
 );
 
-const errorHandle = (status, message) => {
+const errorHandle = (status, messageText) => {
     switch (status) {
         case 400:
             console.log("请求错误");
@@ -70,7 +75,8 @@ const errorHandle = (status, message) => {
             console.log("token 异常，请联系管理员");
             break;
         default:
-            console.log(message);
+            message.error(messageText);
+            console.log(messageText);
     }
 };
 
