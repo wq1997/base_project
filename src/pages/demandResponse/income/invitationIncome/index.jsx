@@ -10,12 +10,14 @@ import {
     Form,
     Radio,
     Input,
+    message,
 } from "antd";
 import { useRef, useState, useEffect } from "react";
 import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE } from "@/utils/constants";
 import { SearchInput, StaticsCard } from "@/components";
-import { dataSource1 } from "./mock";
-import { getInvitationIncomeList as getInvitationIncomeListServer } from "@/services/income";
+import { getInvitationIncomeList as getInvitationIncomeListServer, confirmPayment as confirmPaymentServe } from "@/services/income";
+import dayjs from "dayjs";
+import { history } from "umi";
 
 const InvitationIncome = () => {
     const { token } = theme.useToken();
@@ -24,37 +26,51 @@ const InvitationIncome = () => {
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [loading, setLoading] = useState(false);
     const [dataSource, setDataSource] = useState([]);
-    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [open, setOpen] = useState(false);
+    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
+    const appointedTimeRef = useRef();
+    const chargingTimeRef = useRef();
+    const codeRef = useRef();
+    const responseTypeRef = useRef();
+    const responseTimeTypeRef = useRef();
+    const paymentStatusRef = useRef();
+    const [appointedTime, setAppointedTime] = useState();
+    const [chargingTime, setChargingTime] = useState();
+    const [code, setCode] = useState();
+    const [responseType, setResponseType] = useState();
+    const [responseTimeType, setResponseTimeType] = useState();
+    const [paymentStatus, setPaymentStatus] = useState();
+
     const [staticsData, setStaticsData] = useState([
         {
             icon: 'icon-yuedingxiangyinggongshuaihuizong',
             label: '约定响应功率汇总(kW)',
-            data: 12000,
+            data: 0,
             color: token.color12
         },
         {
             icon: 'icon-shijizhihanggongshuaihuizong1',
             label: '实际执行功率汇总(kW)',
-            data: 11921,
+            data: 0,
             color: token.color7
         },
         {
             icon: 'icon-yaoyuezongshouyi',
             label: '邀约总收益(元)',
-            data: 90171.92,
+            data: 0,
             color: token.color18
         },
         {
             icon: 'icon-pingtaizongshouyi',
             label: '平台总收益(元)',
-            data: 29661.58,
+            data: 0,
             color: token.color19
         },
         {
             icon: 'icon-renwuzongshouyi',
             label: '任务总收益(元)',
-            data: 62630.17,
+            data: 0,
             color: token.color13
         },
     ])
@@ -63,6 +79,9 @@ const InvitationIncome = () => {
         {
             title: "邀约编号",
             dataIndex: "code",
+            render(_,recode){
+                return <a onClick={_=>history.push(`/vpp/demandResponse/income/task?inviteCode=${recode.code}`)}>{recode.code}</a>
+            }
         },
         {
             title: "任务编号",
@@ -95,7 +114,7 @@ const InvitationIncome = () => {
         {
             title: "邀约达成比例",
             dataIndex: "actualResponsePercent",
-            render: (_, { actualResponsePercent }) => actualResponsePercent + "%",
+            render: (_, { actualResponsePercent }) => actualResponsePercent? actualResponsePercent + "%" : '',
             width: 150,
         },
         {
@@ -112,11 +131,11 @@ const InvitationIncome = () => {
         },
         {
             title: "收益计费时间",
-            dataIndex: "10",
+            dataIndex: "profitBillingTimeFrom",
         },
         {
             title: "打款状态",
-            dataIndex: "11",
+            dataIndex: "paymentStatusZh",
         },
         {
             title: "打款备注",
@@ -127,30 +146,66 @@ const InvitationIncome = () => {
     const getInvitationIncomeList = async () => {
         setLoading(true);
         const { current, pageSize } = paginationRef.current;
-        setTimeout(async () => {
-            const res = await getInvitationIncomeListServer({
-                pageNum: current,
-                pageSize,
-                queryCmd: {},
+        const [ appointedTimeRangeStart, appointedTimeRangeEnd ] = appointedTimeRef.current || [];
+        const [ profitBillingTimeFrom, profitBillingTimeTo ] = chargingTimeRef.current || [];
+        const code = codeRef.current;
+        const responseType = responseTypeRef.current;
+        const responseTimeType = responseTimeTypeRef.current;
+        const paymentStatus = paymentStatusRef.current;
+        const res = await getInvitationIncomeListServer({
+            pageNum: current,
+            pageSize,
+            queryCmd: {
+                appointedTimeRangeStart,
+                appointedTimeRangeEnd,
+                profitBillingTimeFrom,
+                profitBillingTimeTo,
+                code,
+                responseType,
+                responseTimeType,
+                paymentStatus
+            },
+        });
+        if (res?.data?.status == "SUCCESS") {
+            const { _1, _2 } = res?.data?.data;
+            const { totalRecord, recordList } = _2;
+            setPagination({
+                ...paginationRef.current,
+                total: parseInt(totalRecord),
             });
-            if (res?.data?.status == "SUCCESS") {
-                const { _2 } = res?.data?.data;
-                const { totalRecord, recordList } = _2;
-                setPagination({
-                    ...paginationRef.current,
-                    total: parseInt(totalRecord),
-                });
-                setDataSource(recordList);
-            }
-            setLoading(false);
-        }, 1000);
+            setDataSource(recordList);
+            setSelectedRowKeys([]);
+
+            staticsData[0].data = _1.totalResponsePower;
+            staticsData[1].data = _1.totalActualAveragePower;
+            staticsData[2].data = _1.totalInviteProfit;
+            staticsData[3].data = _1.platformProfit;
+            staticsData[4].data = _1.totalTaskProfit;
+            setStaticsData(staticsData)
+        }
+        setLoading(false);
     };
+
+    const handleReset = () => {
+        paginationRef.current = DEFAULT_PAGINATION;
+        appointedTimeRef.current = undefined;
+        setAppointedTime([]);
+        chargingTimeRef.current = undefined;
+        setChargingTime([]);
+        codeRef.current = undefined;
+        setCode(undefined);
+        responseTypeRef.current = undefined;
+        setResponseType(undefined);
+        responseTimeTypeRef.current = undefined;
+        setResponseTimeType(undefined);
+        paymentStatusRef.current = undefined;
+        setPaymentStatus(undefined);
+        getInvitationIncomeList();
+    }
 
     useEffect(() => {
         getInvitationIncomeList();
     }, []);
-
-    const onSelectChange = (newSelectedRowKeys, newSelectedRows) => {};
 
     return (
         <div>
@@ -160,7 +215,14 @@ const InvitationIncome = () => {
                     <DatePicker.RangePicker
                         onChange={(date, dateStr) => {
                             paginationRef.current = DEFAULT_PAGINATION;
+                            appointedTimeRef.current = dateStr;
+                            setAppointedTime(dateStr)
                         }}
+                        value={
+                            appointedTime && appointedTime.length > 0
+                                ? [dayjs(appointedTime[0]), dayjs(appointedTime[1])]
+                                : []
+                        }
                     />
                 </div>
                 <div>
@@ -168,45 +230,73 @@ const InvitationIncome = () => {
                     <DatePicker.RangePicker
                         onChange={(date, dateStr) => {
                             paginationRef.current = DEFAULT_PAGINATION;
+                            chargingTimeRef.current = dateStr;
+                            setChargingTime(dateStr);
                         }}
+                        value={
+                            chargingTime && chargingTime.length > 0
+                                ? [dayjs(chargingTime[0]), dayjs(chargingTime[1])]
+                                : []
+                        }
                     />
                 </div>
-                <SearchInput label="邀约编号" placeholder="请输入邀约编号（数字）" />
+                <SearchInput
+                     label="邀约编号" 
+                     placeholder="请输入邀约编号" 
+                     value={code}
+                     onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        codeRef.current = value;
+                        setCode(value);
+                    }}
+                />
                 <SearchInput
                     label="响应类型"
                     type="select"
-                    value={0}
+                    value={responseType}
                     options={[
-                        { code: 0, name: "全部" },
-                        { code: 1, name: "削峰" },
-                        { code: 2, name: "填谷" },
+                        { code: 'HEIGHT_PEAK_CUT', name: "削峰" },
+                        { code: 'LOW_PEAK_CUT', name: "填谷" },
                     ]}
+                    onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        responseTypeRef.current = value;
+                        setResponseType(value);
+                    }}
                 />
                 <SearchInput
                     label="响应要求"
                     type="select"
-                    value={0}
+                    value={responseTimeType}
                     options={[
-                        { code: 0, name: "全部" },
-                        { code: 1, name: "日前响应" },
-                        { code: 2, name: "日中响应" },
+                        { code: 'DAY_BEFORE', name: "日前响应" },
+                        { code: 'DAY_IN', name: "日中响应" },
                     ]}
+                    onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        responseTimeTypeRef.current = value;
+                        setResponseTimeType(value);
+                    }}
                 />
                 <SearchInput
                     label="打款状态"
                     type="select"
-                    value={0}
+                    value={paymentStatus}
                     options={[
-                        { code: 0, name: "全部" },
-                        { code: 1, name: "未打款" },
-                        { code: 2, name: "打款成功" },
-                        { code: 3, name: "打款失败" },
+                        { code: "WAIT_PAYMENT", name: "未打款" },
+                        { code: "PAID", name: "打款成功" },
+                        { code: "NON_PAYMENT", name: "打款失败" },
                     ]}
+                    onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        paymentStatusRef.current = value;
+                        setPaymentStatus(value);
+                    }}
                 />
                 <Button type="primary" onClick={getInvitationIncomeList}>
                     搜索
                 </Button>
-                <Button>重置</Button>
+                <Button onClick={handleReset}>重置</Button>
             </Flex>
             <Divider />
             <Flex justify="flex-end">
@@ -249,6 +339,15 @@ const InvitationIncome = () => {
                 onChange={pagination => {
                     paginationRef.current = pagination;
                 }}
+                rowSelection={{
+                    selectedRowKeys,
+                    onChange: (newSelectedRowKeys)=>{
+                        setSelectedRowKeys(newSelectedRowKeys);
+                    },
+                    getCheckboxProps: record => ({
+                        disabled: !record.supportPaymentConfirm,
+                    }),
+                }}
                 scroll={{
                     x: 2000,
                 }}
@@ -260,8 +359,21 @@ const InvitationIncome = () => {
                 title="手工确认打款"
                 open={open}
                 width={700}
-                onOk={() => {
-                    setOpen(false);
+                onOk={async () => {
+                    if(selectedRowKeys.length>0){
+                        const values = await form.validateFields();
+                        const res = await confirmPaymentServe({
+                            ...values,
+                            ids: selectedRowKeys
+                        })
+                        if(res){
+                            setOpen(false);
+                            form.resetFields();
+                            getInvitationIncomeList();
+                        }
+                    }else{
+                        message.error("请选择需要确认打款的记录！")
+                    }
                 }}
                 onCancel={() => {
                     setOpen(false);
@@ -270,11 +382,11 @@ const InvitationIncome = () => {
                 centered
             >
                 <Form form={form}>
-                    <Form.Item label="打款状态" name="status" rules={[{ ...FORM_REQUIRED_RULE }]}>
+                    <Form.Item label="打款状态" name="paymentStatus" rules={[{ ...FORM_REQUIRED_RULE }]}>
                         <Radio.Group
                             options={[
-                                { label: "打款成功", value: "1" },
-                                { label: "打款失败", value: "0" },
+                                { label: "打款成功", value: "PAID" },
+                                { label: "打款失败", value: "NON_PAYMENT" },
                             ]}
                         />
                     </Form.Item>

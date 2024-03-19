@@ -20,19 +20,19 @@ const Overview = () => {
     const [companyAccountData, setCompanyAccountData] = useState([
         {
             label: '账户余额',
-            data: 29661.58,
+            data: 27541.75,
             color: token.color12,
             icon: 'icon-zhanghuyue'
         },
         {
             label: '总收入金额(元)',
-            data: 29661.58,
+            data: 27541.75,
             color: token.color13,
             icon: 'icon-zongshourujine'
         },
         {
             label: '已到账总额(元)',
-            data: 29661.58,
+            data: 0,
             color: token.color14,
             icon: 'icon-yidaozhangzonge'
         }
@@ -42,19 +42,19 @@ const Overview = () => {
         {
             icon: 'icon-zongshouyi1',
             label: '总收益(元)',
-            data: 29661.58,
+            data: 27541.75,
             color: token.color14
         },
         {
             icon: 'icon-xiangyingrongliang',
-            label: '响应容量(KW)',
+            label: '响应功率(KW)',
             data: 11921,
             color: token.color15
         },
         {
             icon: 'icon-xiangyingcishu',
             label: '响应次数',
-            data: 2,
+            data: 1,
             color: token.color16
         },
         {
@@ -227,7 +227,7 @@ const Overview = () => {
                                             />
                                             
                                             <div style={{marginLeft: 15, marginTop: 8}}>
-                                                <span style={{fontFamily: 'DingTalkJinBuTi', color:token.colorPrimary, fontSize: 32}}>7296</span>
+                                                <span style={{fontFamily: 'DingTalkJinBuTi', color:token.colorPrimary, fontSize: 32}}>0</span>
                                                 <span>KW</span>
                                             </div>
                                         </div>
@@ -238,7 +238,7 @@ const Overview = () => {
                                             />
                                             
                                             <div style={{marginLeft: 15, marginTop: 8}}>
-                                                <span style={{fontFamily: 'DingTalkJinBuTi', color:token.colorPrimary, fontSize: 32}}>6.02</span>
+                                                <span style={{fontFamily: 'DingTalkJinBuTi', color:token.colorPrimary, fontSize: 32}}>0</span>
                                                 <span>元/KW</span>
                                             </div>
                                         </div>

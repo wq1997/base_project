@@ -4,7 +4,6 @@ const theme = {
         layoutTopBackColor: 'linear-gradient( 90deg, #05142E 0%, #000000 100%) !important',
         layoutLeftBackColor: 'linear-gradient( 180deg, #05142E 0%, #000000 100%) !important',
         incomeOverviewCardColor: 'linear-gradient( 360deg, rgba(1,12,30,0) 0%, #07162F 100%) !important',
-        tableHeaderColor: '#2D335E',
         color1: '#07162F',
         color2: '#D836FF',
         color3: '#23C5FF',
@@ -32,13 +31,25 @@ const theme = {
         color25: 'rgba(255, 255, 255, 0.15)',
         color26: 'white',
         color27: '#DDDDDD',
+        components: {
+            Modal: {
+                contentBg: '#0A182E',
+                footerBg: '#0A182E',
+                headerBg: '#0A182E'
+            },
+            Button: {
+                defaultBg: "none"
+            },
+            Table: {
+                headerBg: "#2D335E"
+            }
+        }
     },
     default: {
         colorPrimary: '#384EE8',
         layoutTopBackColor: 'linear-gradient( 90deg, #E9EFFB 0%, #FFFFFF 100%) !important',
         layoutLeftBackColor: 'linear-gradient( 180deg, #E9EFFB 0%, #FFFFFF 100%) !important',
         incomeOverviewCardColor: 'linear-gradient(360deg, rgba(248,251,255,0.5) 0%, #F8FBFF 100%, #F8FBFF 100%) !important',
-        tableHeaderColor: '#F6F8FD',
         color1: '#F8FBFF',
         color2: '#A138FF',
         color3: '#2394FF',
@@ -66,6 +77,19 @@ const theme = {
         color25: 'rgba(0, 0, 0, 0.15)',
         color26: 'black',
         color27: '#999999',
+        components: {
+            Modal: {
+                contentBg: 'white',
+                footerBg: 'white',
+                headerBg: 'white'
+            },
+            Button: {
+                defaultBg: "none"
+            },
+            Table: {
+                headerBg: "#F6F8FD"
+            }
+        }
     }
 }
 export default theme;

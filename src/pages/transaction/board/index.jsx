@@ -24,7 +24,7 @@ const Account = () => {
                         options={[{ name: "测试电站", code: 1 }]}
                     />
                     <DatePicker
-                        defaultValue={dayjs("2015/02", "YYYY/MM")}
+                        defaultValue={dayjs("2023/12", "YYYY/MM")}
                         format={"YYYY/MM"}
                         picker="month"
                     />

@@ -148,7 +148,9 @@ const MyMenu = () => {
             setSelectedKeys("/vpp/demandResponse/task/confirm");
         } else if (pathname.startsWith("/vpp/demandResponse/income")) {
             setSelectedKeys("/vpp/demandResponse/income/overview");
-        } else {
+        } else if (pathname.startsWith("/vpp/demandResponse/invitation")) {
+            setSelectedKeys("/vpp/demandResponse/invitation/invitationList");
+        }else {
             setSelectedKeys(pathname);
         }
     };

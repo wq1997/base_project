@@ -46,7 +46,9 @@ const LoadStatisc = () => {
             },
             grid: {
                 top: 10,
-                bottom: 40
+                bottom: 40,
+                left: 60,
+                right: 50
             },
             xAxis: [{
                 type: 'category',
@@ -123,11 +125,11 @@ const LoadStatisc = () => {
                     data: [3200,2300,80,1360,3500,4500,5678,12999,23456,24567,33467,12789,42345,56721,72351,65432,37821,55121,68723,62436,36722,13218,13223,8762,50,10,40,50,100,80,90,90,80,110,80,50],
                     symbolSize: 1,
                     symbol: 'circle',
-                    smooth: true,
+                    smooth: false,
                     yAxisIndex: 0,
                     showSymbol: false,
                     lineStyle: {
-                        width: 5,
+                        width: 2,
                         color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
                                 offset: 0,
                                 color: '#9effff'
@@ -136,10 +138,7 @@ const LoadStatisc = () => {
                                 offset: 1,
                                 color: '#9E87FF'
                             }
-                        ]),
-                        shadowColor: 'rgba(158,135,255, 0.3)',
-                        shadowBlur: 10,
-                        shadowOffsetY: 20
+                        ])
                     },
                     itemStyle: {
                         normal: {
@@ -153,11 +152,11 @@ const LoadStatisc = () => {
                     data: [40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000],
                     symbolSize: 1,
                     symbol: 'circle',
-                    smooth: true,
+                    smooth: false,
                     yAxisIndex: 0,
                     showSymbol: false,
                     lineStyle: {
-                        width: 5,
+                        width: 2,
                         color: new echarts.graphic.LinearGradient(1, 1, 0, 0, [{
                                 offset: 0,
                                 color: '#73DD39'
@@ -166,10 +165,7 @@ const LoadStatisc = () => {
                                 offset: 1,
                                 color: '#73DDFF'
                             }
-                        ]),
-                        shadowColor: 'rgba(115,221,255, 0.3)',
-                        shadowBlur: 10,
-                        shadowOffsetY: 20
+                        ])
                     },
                     itemStyle: {
                         normal: {
@@ -184,10 +180,10 @@ const LoadStatisc = () => {
                     data: [25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,],
                     symbolSize: 1,
                     symbol: 'circle',
-                    smooth: true,
+                    smooth: false,
                     showSymbol: false,
                     lineStyle: {
-                        width: 5,
+                        width: 2,
                         color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
                                 offset: 0,
                                 color: '#fe9a'
@@ -196,10 +192,7 @@ const LoadStatisc = () => {
                                 offset: 1,
                                 color: '#fe9a8b'
                             }
-                        ]),
-                        shadowColor: 'rgba(254,154,139, 0.3)',
-                        shadowBlur: 10,
-                        shadowOffsetY: 20
+                        ])
                     },
                     itemStyle: {
                         normal: {

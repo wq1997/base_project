@@ -119,10 +119,7 @@ const Confirm = () => {
                     data: baseLinePower,
                     symbol: "none",
                     lineStyle: {
-                        width: 3,
-                        shadowColor: "rgba(158,135,255, 0.3)",
-                        shadowBlur: 10,
-                        shadowOffsetY: 20,
+                        width: 2
                     },
                     itemStyle: {
                         normal: {
@@ -134,14 +131,11 @@ const Confirm = () => {
                 {
                     name: "签约响应量",
                     type: "line",
-                    smooth: true,
+                    smooth: false,
                     symbol: "none",
                     data: responsePower,
                     lineStyle: {
-                        width: 3,
-                        shadowColor: "rgba(115,221,255, 0.3)",
-                        shadowBlur: 10,
-                        shadowOffsetY: 20,
+                        width: 2
                     },
                     itemStyle: {
                         normal: {
@@ -153,7 +147,7 @@ const Confirm = () => {
                 {
                     name: "任务量",
                     type: "line",
-                    smooth: true,
+                    smooth: false,
                     symbol: "none",
                     data: targetPower,
                     lineStyle: {
@@ -268,10 +262,8 @@ const Confirm = () => {
                                 theme === "default" && "0px 2px 6px 0px rgba(176,185,210,0.4)",
                         }}
                     >
-                        <Title.Description icon={"icon-zhihangshuoming"}>
-                            响应说明
-                        </Title.Description>
-                        <div className="value" style={{ color: token.color11 }}>
+                        <Title.Description icon={"icon-zhihangshuoming"}>执行说明</Title.Description>
+                        <div className="value" style={{ color: token.color11, fontSize: 16 }}>
                             <div>
                                 响应成功率为根据响应能力及响应历史行为得出，高于60%建议确认响应。
                             </div>

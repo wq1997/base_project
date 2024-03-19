@@ -1,241 +1,251 @@
 import React, { useState, useEffect, useRef } from "react";
-import { DatePicker, Spin } from "antd";
 import "./index.less";
 import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts";
 import { date, data } from "./data";
 import { Title } from "@/components";
+import { theme as antdTheme } from "antd";
+import { useSelector } from "umi";
+
 const colorList = ["#9E87FF", "#73DDFF", "#fe9a8b", "#F56948", "#9E87FF"];
 
 const Year = () => {
-    const [loading, setLoading] = useState(true);
+    const { token } = antdTheme.useToken();
+    const { theme } = useSelector(state => state.global);
+
     const totalIncom = [
         { label: "当月累计收益(万元)", value: "920.11" },
-        { label: "单月最高日收益(万元)", value: "95.12" },
-        { label: "单月日均收益(万元)", value: "76.69" },
+        { label: "当月最高日收益(万元)", value: "95.12" },
+        { label: "当月日均收益(万元)", value: "76.69" },
     ];
 
     const totalElectricity = [
-        { label: "当月累计交易电量(MWH)", value: "17106" },
-        { label: "当月充电电量(MWH)", value: "8553" },
-        { label: "当月放电电量(MWH)", value: "8553" },
+        { label: "当月累计交易电量(MWh)", value: "17106" },
+        { label: "当月充电电量(MWh)", value: "8553" },
+        { label: "当月放电电量(MWh)", value: "8553" },
     ];
 
-    setTimeout(() => {
-        setLoading(false);
-    }, 500);
+    const [options1, setOptions1] = useState({})
+    const [options2, setOptions2] = useState({})
+    const [options3, setOptions3] = useState({})
 
-    const options1 = {
-        legend: {
-            data: ["日收入"],
-        },
-        grid: {
-            top: "15%",
-        },
-        tooltip: {
-            trigger: "axis",
-            axisPointer: {
-                type: "cross",
+    useEffect(()=>{
+        setOptions1({
+            legend: {
+                data: ["日收入"],
+                textStyle: {
+                    color: token.color11
+                }
             },
-        },
-        toolbox: {
-            show: true,
-            feature: {
-                saveAsImage: {},
+            grid: {
+                top: "15%",
             },
-        },
-        xAxis: {
-            type: "category",
-            boundaryGap: false,
-            data: [
-                2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 2.1, 2.11, 2.12, 2.13, 2.14, 2.15,
-                2.16, 2.17, 2.18, 2.19, 2.2, 2.21, 2.22, 2.23, 2.24, 2.25, 2.26, 2.27, 2.28, 2.29,
-            ],
-        },
-        yAxis: {
-            type: "value",
-            axisLabel: {
-                formatter: "{value} 万元",
-            },
-            axisPointer: {
-                snap: true,
-            },
-        },
-        series: [
-            {
-                name: "日收入",
-                type: "line",
-                data: [
-                    7.51, 7.71, 7.03, 6.65, 6.51, 6.3, 6.81, 6.65, 5.52, 6.92, 5.65, 5.58, 6.69,
-                    6.41, 5.99, 5.81, 6.6, 6.31, 6.34, 6.86, 6.82, 5.71, 5.6, 6.01, 6.51, 5.62,
-                    6.61, 6.82, 6.91,
-                ],
-                symbol: "none",
-                lineStyle: {
-                    width: 5,
-                    color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [
-                        {
-                            offset: 0,
-                            color: "#9effff",
-                        },
-                        {
-                            offset: 1,
-                            color: "#9E87FF",
-                        },
-                    ]),
-                    shadowColor: "rgba(158,135,255, 0.3)",
-                    shadowBlur: 10,
-                    shadowOffsetY: 20,
+            tooltip: {
+                trigger: "axis",
+                axisPointer: {
+                    type: "cross",
                 },
-                itemStyle: {
-                    normal: {
-                        color: colorList[1],
-                        borderColor: colorList[1],
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    saveAsImage: {},
+                },
+            },
+            xAxis: {
+                type: "category",
+                boundaryGap: false,
+                data: [
+                    2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 2.1, 2.11, 2.12, 2.13, 2.14, 2.15,
+                    2.16, 2.17, 2.18, 2.19, 2.2, 2.21, 2.22, 2.23, 2.24, 2.25, 2.26, 2.27, 2.28, 2.29,
+                ],
+            },
+            yAxis: {
+                type: "value",
+                axisLabel: {
+                    formatter: "{value} 万元",
+                },
+                axisPointer: {
+                    snap: true,
+                },
+            },
+            series: [
+                {
+                    name: "日收入",
+                    type: "line",
+                    data: [
+                        7.51, 7.71, 7.03, 6.65, 6.51, 6.3, 6.81, 6.65, 5.52, 6.92, 5.65, 5.58, 6.69,
+                        6.41, 5.99, 5.81, 6.6, 6.31, 6.34, 6.86, 6.82, 5.71, 5.6, 6.01, 6.51, 5.62,
+                        6.61, 6.82, 6.91,
+                    ],
+                    symbol: "none",
+                    lineStyle: {
+                        width: 5,
+                        color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [
+                            {
+                                offset: 0,
+                                color: "#9effff",
+                            },
+                            {
+                                offset: 1,
+                                color: "#9E87FF",
+                            },
+                        ])
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: colorList[1],
+                            borderColor: colorList[1],
+                        },
                     },
                 },
-            },
-        ],
-    };
-
-    const options2 = {
-        legend: {
-            data: ["日充电", "日放电"],
-        },
-        grid: {
-            top: "15%",
-        },
-        tooltip: {
-            trigger: "axis",
-            axisPointer: {
-                type: "cross",
-            },
-        },
-        toolbox: {
-            show: true,
-            feature: {
-                saveAsImage: {},
-            },
-        },
-        xAxis: {
-            type: "category",
-            boundaryGap: false,
-            data: [
-                2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 2.1, 2.11, 2.12, 2.13, 2.14, 2.15,
-                2.16, 2.17, 2.18, 2.19, 2.2, 2.21, 2.22, 2.23, 2.24, 2.25, 2.26, 2.27, 2.28, 2.29,
             ],
-        },
-        yAxis: {
-            type: "value",
-            axisLabel: {
-                formatter: "{value} MWH",
-                margin: 20,
+        })
+        setOptions2({
+            legend: {
+                data: ["日充电", "日放电"],
+                textStyle: {
+                    color: token.color11
+                }
             },
-            axisPointer: {
-                snap: true,
+            grid: {
+                top: "15%",
             },
-        },
-        series: [
-            {
-                name: "日充电",
-                type: "bar",
-                barWidth: 15,
-                stack: "one",
-                data: [
-                    300, 288, 290, 300, 287, 298, 280, 300, 289, 299, 288, 300, 295, 300, 299, 300,
-                    300, 300, 281, 300, 298, 296, 300, 300, 298, 287, 300, 290, 290,
-                ],
-            },
-            {
-                name: "日放电",
-                type: "bar",
-                barWidth: 15,
-                stack: "one",
-                data: [
-                    -300, -288, -290, -300, -287, -298, -280, -300, -289, -299, -288, -300, -295,
-                    -300, -299, -300, -300, -300, -281, -300, -298, -296, -300, -300, -298, -287,
-                    -300, -290, -290,
-                ],
-            },
-        ],
-    };
-
-    const options3 = {
-        legend: {
-            data: ["负载功率"],
-        },
-        grid: {
-            top: "15%",
-        },
-        tooltip: {
-            trigger: "axis",
-            axisPointer: {
-                type: "cross",
-            },
-        },
-        dataZoom: [
-            {
-                type: "inside",
-                start: 0,
-                end: 10,
-            },
-            {
-                start: 0,
-                end: 20,
-            },
-        ],
-        toolbox: {
-            show: true,
-            feature: {
-                saveAsImage: {},
-            },
-        },
-        xAxis: {
-            type: "category",
-            boundaryGap: false,
-            data: date,
-        },
-        yAxis: {
-            type: "value",
-            axisLabel: {
-                formatter: "{value} MW",
-                margin: 20,
-            },
-            axisPointer: {
-                snap: true,
-            },
-        },
-        series: [
-            {
-                name: "负载功率",
-                type: "line",
-                symbol: "none",
-                smooth: true,
-                lineStyle: {
-                    width: 3,
-                    color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [
-                        {
-                            offset: 0,
-                            color: "#9effff",
-                        },
-                        {
-                            offset: 1,
-                            color: "#9E87FF",
-                        },
-                    ]),
-                    shadowColor: "rgba(158,135,255, 0.3)",
-                    shadowBlur: 10,
-                    shadowOffsetY: 20,
+            tooltip: {
+                trigger: "axis",
+                axisPointer: {
+                    type: "cross",
                 },
-                itemStyle: {
-                    normal: {
-                        color: colorList[1],
-                        borderColor: colorList[1],
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    saveAsImage: {},
+                },
+            },
+            xAxis: {
+                type: "category",
+                boundaryGap: false,
+                data: [
+                    2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 2.1, 2.11, 2.12, 2.13, 2.14, 2.15,
+                    2.16, 2.17, 2.18, 2.19, 2.2, 2.21, 2.22, 2.23, 2.24, 2.25, 2.26, 2.27, 2.28, 2.29,
+                ],
+            },
+            yAxis: {
+                type: "value",
+                axisLabel: {
+                    formatter: "{value} MWH",
+                    margin: 20,
+                },
+                axisPointer: {
+                    snap: true,
+                },
+            },
+            series: [
+                {
+                    name: "日充电",
+                    type: "bar",
+                    barWidth: 15,
+                    stack: "one",
+                    data: [
+                        300, 288, 290, 300, 287, 298, 280, 300, 289, 299, 288, 300, 295, 300, 299, 300,
+                        300, 300, 281, 300, 298, 296, 300, 300, 298, 287, 300, 290, 290,
+                    ],
+                },
+                {
+                    name: "日放电",
+                    type: "bar",
+                    barWidth: 15,
+                    stack: "one",
+                    data: [
+                        -300, -288, -290, -300, -287, -298, -280, -300, -289, -299, -288, -300, -295,
+                        -300, -299, -300, -300, -300, -281, -300, -298, -296, -300, -300, -298, -287,
+                        -300, -290, -290,
+                    ],
+                },
+            ],
+        })
+        setOptions3({
+            legend: {
+                data: ["负载功率"],
+                textStyle: {
+                    color: token.color11
+                }
+            },
+            grid: {
+                top: "15%",
+            },
+            tooltip: {
+                trigger: "axis",
+                axisPointer: {
+                    type: "cross",
+                },
+            },
+            dataZoom: [
+                {
+                    type: "inside",
+                    start: 0,
+                    end: 10,
+                },
+                {
+                    start: 0,
+                    end: 20,
+                },
+            ],
+            toolbox: {
+                show: true,
+                feature: {
+                    saveAsImage: {},
+                },
+            },
+            xAxis: {
+                type: "category",
+                boundaryGap: false,
+                data: date,
+            },
+            yAxis: {
+                type: "value",
+                axisLabel: {
+                    formatter: "{value} MW",
+                    margin: 20,
+                },
+                axisPointer: {
+                    snap: true,
+                },
+            },
+            series: [
+                {
+                    name: "负载功率",
+                    type: "line",
+                    symbol: "none",
+                    smooth: false,
+                    lineStyle: {
+                        width: 3,
+                        color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [
+                            {
+                                offset: 0,
+                                color: "#9effff",
+                            },
+                            {
+                                offset: 1,
+                                color: "#9E87FF",
+                            },
+                        ]),
+                        shadowColor: "rgba(158,135,255, 0.3)",
+                        shadowBlur: 10,
+                        shadowOffsetY: 20,
                     },
+                    itemStyle: {
+                        normal: {
+                            color: colorList[1],
+                            borderColor: colorList[1],
+                        },
+                    },
+                    data: data,
                 },
-                data: data,
-            },
-        ],
-    };
+            ],
+        })
+    }, [theme]);
 
     return (
         <div style={{ marginTop: "10px", height: "100%" }}>
@@ -254,7 +264,6 @@ const Year = () => {
             >
                 <Title>分日收益曲线</Title>
                 <ReactECharts
-                    showLoading={loading}
                     option={options1}
                     style={{ width: "100%", height: "100%" }}
                 />
@@ -274,7 +283,6 @@ const Year = () => {
             >
                 <Title>分日充放电量报表</Title>
                 <ReactECharts
-                    showLoading={loading}
                     option={options2}
                     style={{ width: "100%", height: "100%" }}
                 />
@@ -285,7 +293,6 @@ const Year = () => {
             >
                 <Title>场站负载功率曲线</Title>
                 <ReactECharts
-                    showLoading={loading}
                     option={options3}
                     style={{ width: "100%", height: "100%" }}
                 />

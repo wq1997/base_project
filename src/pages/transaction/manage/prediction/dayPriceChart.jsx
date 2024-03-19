@@ -1,12 +1,14 @@
 import ReactECharts from "echarts-for-react";
 import { useEffect, useState } from "react";
-import { theme } from 'antd';
+import { theme as antdTheme } from "antd";
+import { useSelector } from "umi";
 import * as echarts from "echarts";
 
 const colorList = ["#9E87FF", '#73DDFF', '#fe9a8b', '#F56948', '#9E87FF'];
 
 const PriceChart = () => {
-    const { token } = theme.useToken();
+    const { token } = antdTheme.useToken();
+    const { theme } = useSelector(state => state.global);
     const [options, setOptions] = useState({});
 
     const getOptions = () => {
@@ -18,7 +20,7 @@ const PriceChart = () => {
                 itemWidth: 6,
                 itemGap: 20,
                 textStyle: {
-                    color: '#556677'
+                    color: token.color11
                 }
             },
             tooltip: {
@@ -129,23 +131,10 @@ const PriceChart = () => {
                     data: [500,400,400,500,600,700,750,850,900,800,700,500,400,600,620,800,1000,1050,800,600,500,300, 300],
                     symbolSize: 1,
                     symbol: 'circle',
-                    smooth: true,
                     yAxisIndex: 0,
                     showSymbol: false,
                     lineStyle: {
-                        width: 5,
-                        color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
-                                offset: 0,
-                                color: '#9effff'
-                            },
-                            {
-                                offset: 1,
-                                color: '#9E87FF'
-                            }
-                        ]),
-                        shadowColor: 'rgba(158,135,255, 0.3)',
-                        shadowBlur: 10,
-                        shadowOffsetY: 20
+                        width: 2
                     },
                     itemStyle: {
                         normal: {
@@ -160,22 +149,9 @@ const PriceChart = () => {
                     data: [700,600,600,700,800,900,750,950,1100,900,900,700,600,800,820,700,1200,1250,900,800,600,400, 350],
                     symbolSize: 1,
                     symbol: 'circle',
-                    smooth: true,
                     showSymbol: false,
                     lineStyle: {
-                        width: 5,
-                        color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
-                                offset: 0,
-                                color: '#fe9a'
-                            },
-                            {
-                                offset: 1,
-                                color: '#fe9a8b'
-                            }
-                        ]),
-                        shadowColor: 'rgba(254,154,139, 0.3)',
-                        shadowBlur: 10,
-                        shadowOffsetY: 20
+                        width: 2
                     },
                     itemStyle: {
                         normal: {
@@ -190,7 +166,7 @@ const PriceChart = () => {
     
     useEffect(() => {
         getOptions();
-    }, [])
+    }, [theme])
 
     return (
         <div>
@@ -211,7 +187,7 @@ const PriceChart = () => {
                         justifyContent: 'space-between',
                     }}
                 >
-                    日前出清电价差：<span style={{color: token.colorPrimary, fontWeight: 600, fontSize: 18}}>1150 元/Mwh</span>
+                    日前出清电价差：<span style={{color: token.colorPrimary, fontWeight: 600, fontSize: 18}}>1150 元/MWh</span>
                 </div>
                 <div 
                     style={{
@@ -223,7 +199,7 @@ const PriceChart = () => {
                         justifyContent: 'space-between',
                     }}
                 >
-                    日内出清电价差：<span style={{color: token.colorPrimary, fontWeight: 600, fontSize: 18}}>1200 元/Mwh</span>
+                    日内出清电价差：<span style={{color: token.colorPrimary, fontWeight: 600, fontSize: 18}}>1200 元/MWh</span>
                 </div>
             </div>
             <ReactECharts  
