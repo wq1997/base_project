@@ -11,21 +11,22 @@ import {
 } from "@/services/task";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import { history, useLocation } from "umi";
+import dayjs from "dayjs";
 import "./index.less";
 
 const Account = () => {
+    const location = useLocation();
     const endTimeRef = useRef();
     const executeTimeRef = useRef();
     const codeRef = useRef();
-    const confirmStatusRef = useRef();
-
+    const statusRef = useRef();
     const responseTypeRef = useRef();
     const responseTimeTypeRef = useRef();
     const [code, setCode] = useState();
-    const [releaseTime, setEndTime] = useState();
+    const [endTime, setEndTime] = useState();
     const [executeTime, setExecuteTime] = useState();
-    const [confirmStatus, setConfirmStatus] = useState();
-    const [confirmStatusList, setConfirmStatusList] = useState();
+    const [status, setStatus] = useState();
+    const [statusList, setStatusList] = useState();
     const [responseType, setResponseType] = useState();
     const [responseTypeList, setResponseTypeList] = useState();
     const [responseTimeType, setResponseTimeType] = useState();
@@ -41,9 +42,6 @@ const Account = () => {
         {
             title: "任务编号",
             dataIndex: "code",
-            render: (_, record) => {
-                return <a>{record?.code}</a>;
-            },
             width: 150,
         },
         {
@@ -167,18 +165,31 @@ const Account = () => {
             dataIndex: "operate",
             fixed: "right",
             width: 200,
-            render: (_, { id, supportConfirm }) => {
-                return supportConfirm ? (
-                    <a
-                        onClick={() => {
-                            history.push(`/vpp/demandResponse/task/confirm`);
-                        }}
-                    >
-                        前往确认
-                    </a>
-                ) : (
-                    <a onClick={() => setDetailId(id)}>查看关联邀约</a>
-                );
+            render: (_, { id, status, supportConfirm }) => {
+                if (supportConfirm) {
+                    return (
+                        <a
+                            onClick={() => {
+                                history.push(`/vpp/demandResponse/task/confirm?taskId=${id}`);
+                            }}
+                        >
+                            前往确认
+                        </a>
+                    );
+                }
+                if (status == "EXECUTED_FAIL" || status == "EXECUTED_SUCCESS") {
+                    return (
+                        <a
+                            onClick={() => {
+                                history.push(
+                                    `/vpp/demandResponse/task/search?taskId=${id}`
+                                );
+                            }}
+                        >
+                            查询执行情况
+                        </a>
+                    );
+                }
             },
         },
     ];
@@ -187,18 +198,20 @@ const Account = () => {
         const res = await getSearchInitDataServer();
         if (res?.data?.status == "SUCCESS") {
             const { statuses, responseTypes, responseTimeTypes } = res?.data?.data;
-            setConfirmStatusList(statuses);
+            setStatusList(statuses);
             setResponseTypeList(responseTypes);
             setResponseTimeTypeList(responseTimeTypes);
         }
     };
 
     const getInviteList = async () => {
+        const taskCode = location?.search.split("=")[1];
+        setCode(taskCode);
         const { current, pageSize } = paginationRef.current;
         const [confirmationDeadlineFrom, confirmationDeadlineTo] = endTimeRef.current || [];
         const [appointedTimeRangeStart, appointedTimeRangeEnd] = executeTimeRef.current || [];
-        const code = codeRef.current;
-        const confirmStatus = confirmStatusRef.current;
+        const code = taskCode || codeRef.current;
+        const status = statusRef.current;
         const responseType = responseTypeRef.current;
         const responseTimeType = responseTimeTypeRef?.current;
         const res = await getTaskistServer({
@@ -210,7 +223,7 @@ const Account = () => {
                 appointedTimeRangeStart,
                 appointedTimeRangeEnd,
                 code,
-                confirmStatus,
+                status,
                 responseType,
                 responseTimeType,
             },
@@ -233,9 +246,8 @@ const Account = () => {
         setExecuteTime([]);
         codeRef.current = undefined;
         setCode();
-        confirmStatusRef.current = undefined;
-        setConfirmStatus();
-
+        statusRef.current = undefined;
+        setStatus();
         responseTypeRef.current = undefined;
         setResponseType();
         responseTimeTypeRef.current = undefined;
@@ -296,6 +308,11 @@ const Account = () => {
                             endTimeRef.current = dateStr;
                             setEndTime(dateStr);
                         }}
+                        value={
+                            endTime && endTime.length > 0
+                                ? [dayjs(endTime[0]), dayjs(endTime[1])]
+                                : []
+                        }
                     />
                 </div>
                 <SearchInput
@@ -309,13 +326,13 @@ const Account = () => {
                 />
                 <SearchInput
                     label="任务状态"
-                    value={confirmStatus}
+                    value={status}
                     type="select"
-                    options={confirmStatusList}
+                    options={statusList}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
-                        confirmStatusRef.current = value;
-                        setConfirmStatus(value);
+                        statusRef.current = value;
+                        setStatus(value);
                     }}
                 />
 
@@ -327,6 +344,11 @@ const Account = () => {
                             executeTimeRef.current = dateStr;
                             setExecuteTime(dateStr);
                         }}
+                        value={
+                            executeTime && executeTime.length > 0
+                                ? [dayjs(executeTime[0]), dayjs(executeTime[1])]
+                                : []
+                        }
                     />
                 </div>
                 <SearchInput

@@ -4,12 +4,7 @@ import "./index.less";
 import { useEffect, useState } from "react";
 import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts";
-import {
-    CheckCircleOutlined,
-    CloseCircleOutlined,
-    CaretLeftOutlined,
-    CaretRightOutlined,
-} from "@ant-design/icons";
+import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { Title, StaticsCard } from "@/components";
 import classNames from "classnames";
 import { useEmotionCss } from "@ant-design/use-emotion-css";
@@ -21,14 +16,14 @@ import {
     getWaitTaskDashboard as getWaitTaskDashboardServer,
 } from "@/services/task";
 import { history, useLocation } from "umi";
-import { getQueryString, getUrlParams } from "@/utils/utils";
 
 const colorList = ["#9E87FF", "#73DDFF", "#fe9a8b", "#F56948", "#9E87FF"];
 const Confirm = () => {
-    const { search, pathname } = useLocation();
+    const location = useLocation();
     const { token } = antdTheme.useToken();
     const { theme } = useSelector(state => state.global);
     const [isWaitTask, setIsWaitTask] = useState();
+    const [taskInfo, setTaskInfo] = useState({});
     const [options, setOptions] = useState({});
     const [times, setTimes] = useState([]);
     const [baseLinePower, setBaseLinePower] = useState([]);
@@ -54,9 +49,6 @@ const Confirm = () => {
             icon: "icon-yujishouyi",
         },
     ]);
-    const [taskList, setTaskList] = useState();
-    const [curTask, setCurTask] = useState();
-    const [curTaskIndex, setCurTaskIndex] = useState(0);
 
     const getOptions = () => {
         setOptions({
@@ -173,47 +165,34 @@ const Confirm = () => {
         });
     };
 
-    const init = () => {
-        setIsWaitTask(!curTask?.executeResult);
-        taskAskData[0].value = curTask?.responseType;
-        taskAskData[1].value = curTask?.taskCapacity;
-        taskAskData[2].value = curTask?.projectedProfit;
-        setIsWaitTask(!curTask?.executeResult);
-        setTimes(curTask?.projectedPowerData?.map(item => item?._1));
-        setBaseLinePower(curTask?.projectedPowerData?.map(item => item?._2?.baseLinePower));
-        setResponsePower(curTask?.projectedPowerData?.map(item => item?._2?.responsePower));
-        setTargetPower(curTask?.projectedPowerData?.map(item => item?._2?.targetPower));
-    };
-
     const getTaskDashboard = async () => {
-        const params = getUrlParams(search);
-        const _isWaitTask = !pathname?.endsWith("search");
-        setIsWaitTask(_isWaitTask);
+        const taskId = location?.search.split("=")[1];
         let res;
-        if (_isWaitTask) {
-            res = await getWaitTaskDashboardServer();
+        if (taskId) {
+            res = await getTaskDashboardByIdServer(taskId);
         } else {
-            res = await getTaskDashboardByIdServer(params?.taskId);
+            res = await getWaitTaskDashboardServer();
         }
-        const list = _isWaitTask ? res?.data?.data : [res?.data?.data];
+        const data = taskId ? res?.data?.data : res?.data?.data?.[0];
         if (res?.data?.status == "SUCCESS") {
-            setTaskList(list);
-            const index = params?.taskId
-                ? list?.findIndex(item => item.taskId == params?.taskId)
-                : 0;
-            setCurTaskIndex(index);
-            setCurTask(list[index]);
+            const {
+                responseType,
+                taskCapacity,
+                projectedProfit,
+                executeResult,
+                projectedPowerData,
+            } = data;
+            setTaskInfo(data);
+            taskAskData[0].value = responseType;
+            taskAskData[1].value = taskCapacity;
+            taskAskData[2].value = projectedProfit;
+            setIsWaitTask(!executeResult);
+            setTimes(projectedPowerData?.map(item => item?._1));
+            setBaseLinePower(projectedPowerData?.map(item => item?._2?.baseLinePower));
+            setResponsePower(projectedPowerData?.map(item => item?._2?.responsePower));
+            setTargetPower(projectedPowerData?.map(item => item?._2?.targetPower));
         }
     };
-
-    const changeCurTask = num => {
-        const newIndex = curTaskIndex + num;
-        if (newIndex < 0 || newIndex == taskList?.length) return;
-        setCurTaskIndex(newIndex);
-        setCurTask(taskList[newIndex]);
-    };
-
-    useEffect(() => init(), [curTask]);
 
     useEffect(() => {
         getTaskDashboard();
@@ -254,9 +233,9 @@ const Confirm = () => {
                                 fontFamily: "DingTalkJinBuTi",
                             }}
                         >
-                            {curTask ? `${curTask?.projectedExecuteSuccessRate} %` : ""}
+                            {taskInfo?.projectedExecuteSuccessRate} %
                         </div>
-                        {curTask?.projectedExecuteSuccessRate >= 60 && (
+                        {taskInfo?.projectedExecuteSuccessRate >= 60 && (
                             <div className="suggest">建议参与响应</div>
                         )}
                     </div>
@@ -307,7 +286,7 @@ const Confirm = () => {
                                 fontFamily: "DingTalkJinBuTi",
                             }}
                         >
-                            {curTask ? (curTask?.executeResult?.success ? "成功" : "失败") : ""}
+                            {taskInfo?.executeResult?.success ? "成功" : "失败"}
                         </div>
                     </div>
                     <div
@@ -323,7 +302,7 @@ const Confirm = () => {
                         </Title.Description>
                         <div className="value" style={{ color: token.color11 }}>
                             <div>
-                                {curTask?.executeResult?.resultDetail?.map(item => (
+                                {taskInfo?.executeResult?.resultDetail?.map(item => (
                                     <div>
                                         {item?._1 ? (
                                             <CheckCircleOutlined className="check-icon" />
@@ -348,11 +327,10 @@ const Confirm = () => {
             title: "系统提示",
             content: "确定拒绝该任务？",
             onOk: async () => {
-                let res = await refuseTaskServer([curTask?.taskId]);
+                let res = await refuseTaskServer([taskInfo?.taskId]);
                 if (res?.data?.status == "SUCCESS") {
                     message.success(`拒绝成功`);
                     history.push(`/vpp/demandResponse/task/confirm`);
-                    getTaskDashboard();
                 }
             },
         });
@@ -363,11 +341,10 @@ const Confirm = () => {
             title: "系统提示",
             content: "确定接受该任务？",
             onOk: async () => {
-                let res = await confirmTaskServer([curTask?.taskId]);
+                let res = await confirmTaskServer([taskInfo?.taskId]);
                 if (res?.data?.status == "SUCCESS") {
                     message.success(`确认成功`);
                     history.push(`/vpp/demandResponse/task/confirm`);
-                    getTaskDashboard();
                 }
             },
         });
@@ -377,41 +354,9 @@ const Confirm = () => {
         <div className="confirm-task">
             <div className={classNames("wait-confirm", cardStyle)}>
                 <div className="title">
-                    <Title>
-                        {isWaitTask ? (
-                            <div>
-                                待处理任务
-                                {taskList?.length > 1 && (
-                                    <>
-                                        ({taskList?.length})
-                                        <CaretLeftOutlined
-                                            style={{
-                                                cursor:
-                                                    curTaskIndex == 0 ? "not-allowed" : "pointer",
-                                            }}
-                                            onClick={() => changeCurTask(-1)}
-                                        />
-                                        <CaretRightOutlined
-                                            style={{
-                                                cursor:
-                                                    curTaskIndex == taskList?.length - 1
-                                                        ? "not-allowed"
-                                                        : "pointer",
-                                            }}
-                                            onClick={() => changeCurTask(1)}
-                                        />
-                                    </>
-                                )}
-                            </div>
-                        ) : (
-                            "任务要求"
-                        )}
-                    </Title>
+                    <Title>{isWaitTask ? "待处理任务" : "任务要求"}</Title>
                     <div className="company" style={{ color: token.color11 }}>
-                        <span style={{ color: "gray", marginRight: "5px" }}>
-                            {curTask?.taskCode}
-                        </span>
-                        {curTask?.companyName}
+                        {taskInfo?.companyName}
                     </div>
                 </div>
                 <div className="content">
@@ -438,15 +383,15 @@ const Confirm = () => {
                         })}
                     </div>
                     <div className="time" style={{ color: token.color27 }}>
-                        <div>响应时间：{curTask?.responseTime}</div>
-                        <div>确认截止时间：{curTask?.confirmationDeadline}</div>
+                        <div>响应时间：{taskInfo?.responseTime}</div>
+                        <div>确认截止时间：{taskInfo?.confirmationDeadline}</div>
                     </div>
-                    {isWaitTask && curTask && (
+                    {isWaitTask && (
                         <div className="btns">
                             <Button
                                 onClick={() => {
                                     history.push(
-                                        `/vpp/demandResponse/task/list?taskCode=${curTask?.taskCode}`
+                                        `/vpp/demandResponse/task/list?taskCode=${taskInfo?.taskCode}`
                                     );
                                 }}
                             >

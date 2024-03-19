@@ -26,3 +26,13 @@ export const refuseTask = payload => {
     const url = `${API_URL_2}/invite-task/refuse`;
     return axiosInstance.post(url, payload);
 };
+
+export const getTaskDashboardById = id => {
+    const url = `${API_URL_2}/invite-task/get-invite-task-dashboard-vo?id=${id}`;
+    return axiosInstance.get(url);
+};
+
+export const getWaitTaskDashboard = () => {
+    const url = `${API_URL_2}/invite-task/get-wait-confirm-invite-task-dashboard-vo`;
+    return axiosInstance.get(url);
+};

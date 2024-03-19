@@ -8,6 +8,10 @@ const items = [
         label: "任务确认",
     },
     {
+        key: "/vpp/demandResponse/task/search",
+        label: "任务查询",
+    },
+    {
         key: "/vpp/demandResponse/task/list",
         label: "任务列表",
     },

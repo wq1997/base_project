@@ -90,6 +90,10 @@ export default Routes = [
                                 component: TaskConfirm,
                             },
                             {
+                                path: "/vpp/demandResponse/task/search",
+                                component: TaskConfirm,
+                            },
+                            {
                                 path: "/vpp/demandResponse/task/list",
                                 component: TaskList,
                             },
