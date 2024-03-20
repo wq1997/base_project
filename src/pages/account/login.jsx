@@ -14,7 +14,7 @@ const Login = () => {
 
   const onFinish = async (values) => {
     setLocalStorage("Token", 'token');
-    history.push("/cet/home")
+    history.push("/mbts/home")
   }
 
   const getPublicKey = async () => {

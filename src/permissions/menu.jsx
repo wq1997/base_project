@@ -6,7 +6,7 @@ const { SubMenu } = Menu;
 
 const MenuList = [
     {
-        key: '/cet/home',
+        key: '/mbts/home',
         label: '首页'
     }
 ]

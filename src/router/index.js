@@ -13,11 +13,11 @@ export default Routes = [
      component: App,
      routes: [
       {
-        path: '/cet',
+        path: '/mbts',
         component: Layout,
         routes: [
           // 首页
-          { path: '/cet/home', component: Home },
+          { path: '/mbts/home', component: Home },
         ]
       },
       { path: "/login", component: Login },
