@@ -119,7 +119,7 @@ const Confirm = () => {
                     data: baseLinePower,
                     symbol: "none",
                     lineStyle: {
-                        width: 2
+                        width: 2,
                     },
                     itemStyle: {
                         normal: {
@@ -135,7 +135,7 @@ const Confirm = () => {
                     symbol: "none",
                     data: responsePower,
                     lineStyle: {
-                        width: 2
+                        width: 2,
                     },
                     itemStyle: {
                         normal: {
@@ -262,7 +262,9 @@ const Confirm = () => {
                                 theme === "default" && "0px 2px 6px 0px rgba(176,185,210,0.4)",
                         }}
                     >
-                        <Title.Description icon={"icon-zhihangshuoming"}>执行说明</Title.Description>
+                        <Title.Description icon={"icon-zhihangshuoming"}>
+                            执行说明
+                        </Title.Description>
                         <div className="value" style={{ color: token.color11, fontSize: 16 }}>
                             <div>
                                 响应成功率为根据响应能力及响应历史行为得出，高于60%建议确认响应。

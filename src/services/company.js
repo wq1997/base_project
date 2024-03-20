@@ -53,3 +53,10 @@ export const updateAutoLevel = data => {
     const url = `${API_URL_1}/company/update-level-auto-update-config`;
     return axiosInstance.post(url, data);
 };
+
+export const getCompanyBaseLine = payload => {
+    const url = `${API_URL_2}/invite/get-company-base-line-dashboard-data${jsonToUrlParams(
+        payload
+    )}`;
+    return axiosInstance.post(url, payload);
+};
