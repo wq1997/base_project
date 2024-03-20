@@ -5,7 +5,7 @@ antd V5
 
 # 介绍
 王清在采日所有前端web项目的根项目
-目前拓展的功能有：
+目前拓展的功能有：\\n
     1. 多环境打包 npm run build:test  / npm run build:prod
     2. 主题色切换(深色、浅色)
     3. 多语言功能切换
