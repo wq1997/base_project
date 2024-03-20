@@ -14,19 +14,20 @@ import dayjs from "dayjs";
 
 const Account = () => {
     const location = useLocation();
+    const initInviteCode = location?.search.split("=")[1];
     const [canSure, setCanSure] = useState(true);
     const [canRefuse, setCanRefuse] = useState(true);
     const endTimeRef = useRef();
     const executeTimeRef = useRef();
     const createTimeRef = useRef();
     const codeRef = useRef();
-    const inviteCodeRef = useRef();
+    const inviteCodeRef = useRef(initInviteCode);
     const confirmStatusRef = useRef();
     const splitStatusRef = useRef();
     const responseTypeRef = useRef();
     const responseTimeTypeRef = useRef();
     const [code, setCode] = useState();
-    const [inviteCode, setInviteCode] = useState();
+    const [inviteCode, setInviteCode] = useState(initInviteCode);
     const [endTime, setEndTime] = useState();
     const [executeTime, setExecuteTime] = useState();
     const [createTime, setCreateTime] = useState();
@@ -224,6 +225,7 @@ const Account = () => {
     };
 
     const handleReset = () => {
+        history.push('/vpp/demandResponse/invitation/allTaskList');
         paginationRef.current = DEFAULT_PAGINATION;
         endTimeRef.current = undefined;
         setEndTime([]);

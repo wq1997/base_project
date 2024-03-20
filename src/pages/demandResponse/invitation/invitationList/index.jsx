@@ -57,13 +57,9 @@ const Account = () => {
         {
             title: "邀约编号",
             dataIndex: "code",
-            render: (_, record) => {
-                return record?.splitStatus == "INVALID" ? (
-                    <a>{record?.code}</a>
-                ) : (
-                    <span>{record?.code}</span>
-                );
-            },
+            render(_,recode){
+                return <a onClick={_=>history.push(`/vpp/demandResponse/invitation/allTaskList?inviteCode=${recode.code}`)}>{recode.code}</a>
+            }
         },
         {
             title: "邀约确认状态",
