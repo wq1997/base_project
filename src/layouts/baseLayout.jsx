@@ -1,19 +1,26 @@
 import { Outlet, useDispatch } from 'umi'
 import { Layout, Row, Avatar, Typography, Dropdown, Space } from 'antd';
+import { PROJECT_NAME } from "@/utils/constants";
 import MyMenu from "@/permissions/menu";
 import styles from "./baseLayout.less";
 import useIcon from "@/hooks/useIcon"
+import { useEffect } from 'react';
 
 const { Header, Sider, Content } = Layout;
 
 const BaseLayout = () => {
     const Icon = useIcon();
     const dispatch = useDispatch();
+
+    useEffect(()=>{
+        document.title= PROJECT_NAME;
+    }, [])
+
     return (
         <div className={styles.baseLayout}>
             <Layout className={styles.layout}>
                 <Header className={styles.header}>
-                    <Typography.Title level={3} className={styles.title}>采e通后台管理系统</Typography.Title>
+                    <Typography.Title level={3} className={styles.title}>{PROJECT_NAME}</Typography.Title>
                     <Dropdown 
                         menu={{ 
                             items: [
