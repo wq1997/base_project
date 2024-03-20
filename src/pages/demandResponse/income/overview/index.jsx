@@ -70,21 +70,19 @@ const Overview = () => {
     const Icon = useIcon();
 
     const onChangeDate = (_, dateStr) => {
-        console.log("dateStr", dateStr)
         setDate(dayjs(dateStr));
     }
 
     const getOverviewIncome = async () => {
-        console.log(dateType, moment(date).format("YYYY-MM"));
         let params = {};
         if(dateType==="Year"){
             params={
-                year: moment(date).format("YYYY")
+                year: dayjs(date).year()
             }
         }else{
             params={
-                year: moment(date).format("YYYY"),
-                month: moment(date).format("MM")
+                year: dayjs(date).year(),
+                month: dayjs(date).month() + 1
             }
         }
         const res = await getOverviewIncomeServe(params)
@@ -162,7 +160,6 @@ const Overview = () => {
                             if(value==="Year"){
                                 setDate(dayjs(moment(date).format("YYYY")));
                             }else{
-                                console.log(moment(date).format("YYYY-MM"))
                                 setDate(dayjs(moment(date).format("YYYY-MM")))
                             }
                             setDateType(value);

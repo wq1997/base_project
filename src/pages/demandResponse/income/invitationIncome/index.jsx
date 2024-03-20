@@ -35,12 +35,14 @@ const InvitationIncome = () => {
     const responseTypeRef = useRef();
     const responseTimeTypeRef = useRef();
     const paymentStatusRef = useRef();
+    const executeStatusRef = useRef();
     const [appointedTime, setAppointedTime] = useState();
     const [chargingTime, setChargingTime] = useState();
     const [code, setCode] = useState();
     const [responseType, setResponseType] = useState();
     const [responseTimeType, setResponseTimeType] = useState();
     const [paymentStatus, setPaymentStatus] = useState();
+    const [executeStatus, setExecuteStatus] = useState();
 
     const [staticsData, setStaticsData] = useState([
         {
@@ -90,16 +92,25 @@ const InvitationIncome = () => {
         {
             title: "响应类型",
             dataIndex: "responseTypeZh",
-            width: 200,
+            width: 100,
         },
         {
             title: "响应要求",
             dataIndex: "responseTimeTypeZh",
-            width: 200,
+            width: 100,
         },
         {
-            title: "度电报价（元）",
+            title: "邀约是否执行成功",
+            dataIndex: "executeResult",
+            width: 200,
+            render(_,record){
+                return record?.executeResult?.success?"是":"否"
+            }
+        },
+        {
+            title: "度电报价(元)",
             dataIndex: "whPrice",
+            width: 100,
         },
         {
             title: "约定响应功率(kW)",
@@ -118,28 +129,44 @@ const InvitationIncome = () => {
             width: 150,
         },
         {
-            title: "邀约预计总收益（元）",
+            title: "邀约预计总收益(元)",
             dataIndex: "projectedTotalProfit",
+            width: 200,
         },
         {
-            title: "平台分润（元）",
+            title: "平台分润(元)",
             dataIndex: "projectedPlatformProfit",
+            width: 200,
+        },
+        {
+            title: "任务收益(元)",
+            dataIndex: "projectedTaskProfit",
+            width: 150,
         },
         {
             title: "约定开始时间",
             dataIndex: "appointedTimeFrom",
+            width: 200,
         },
         {
             title: "收益计费时间",
             dataIndex: "profitBillingTimeFrom",
+            width: 200,
+        },
+        {
+            title: "系统备注",
+            dataIndex: "executeStatusZh",
+            width: 200,
         },
         {
             title: "打款状态",
             dataIndex: "paymentStatusZh",
+            width: 100,
         },
         {
             title: "打款备注",
             dataIndex: "remark",
+            width: 200,
         },
     ];
 
@@ -152,6 +179,7 @@ const InvitationIncome = () => {
         const responseType = responseTypeRef.current;
         const responseTimeType = responseTimeTypeRef.current;
         const paymentStatus = paymentStatusRef.current;
+        const executeStatus = executeStatusRef.current;
         const res = await getInvitationIncomeListServer({
             pageNum: current,
             pageSize,
@@ -163,7 +191,8 @@ const InvitationIncome = () => {
                 code,
                 responseType,
                 responseTimeType,
-                paymentStatus
+                paymentStatus,
+                executeStatus,
             },
         });
         if (res?.data?.status == "SUCCESS") {
@@ -200,6 +229,8 @@ const InvitationIncome = () => {
         setResponseTimeType(undefined);
         paymentStatusRef.current = undefined;
         setPaymentStatus(undefined);
+        executeStatusRef.current = undefined;
+        setExecuteStatus(undefined);
         getInvitationIncomeList();
     }
 
@@ -276,6 +307,20 @@ const InvitationIncome = () => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         responseTimeTypeRef.current = value;
                         setResponseTimeType(value);
+                    }}
+                />
+                <SearchInput
+                    label="邀约是否执行成功"
+                    type="select"
+                    value={executeStatus}
+                    options={[
+                        { code: 'EXECUTED_SUCCESS', name: "是" },
+                        { code: 'EXECUTED_FAIL', name: "否" },
+                    ]}
+                    onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        executeStatusRef.current = value;
+                        setExecuteStatus(value);
                     }}
                 />
                 <SearchInput
