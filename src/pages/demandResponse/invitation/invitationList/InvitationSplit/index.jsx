@@ -54,7 +54,7 @@ const Company = ({ invitationSplitId, onClose }) => {
             title: "公司名称",
             dataIndex: "companyName",
             key: "companyName",
-            width: 200,
+            width: 300,
             render(value) {
                 return (
                     <Tooltip title={value}>
@@ -63,7 +63,7 @@ const Company = ({ invitationSplitId, onClose }) => {
                                 overflow: "hidden",
                                 whiteSpace: "nowrap",
                                 textOverflow: "ellipsis",
-                                width: 200,
+                                width: 300,
                             }}
                         >
                             {value}
@@ -76,7 +76,7 @@ const Company = ({ invitationSplitId, onClose }) => {
             title: "任务确认状态",
             dataIndex: "statusZh",
             isReSplit: true,
-            width: 200,
+            width: 150,
         },
         {
             title: "签约响应功率(kW)",
@@ -142,11 +142,8 @@ const Company = ({ invitationSplitId, onClose }) => {
                             type="primary"
                             onClick={() =>
                                 setBaseLineArgs({
+                                    id: invitationSplitId,
                                     companyCode: taskList[index]?.companyCode,
-                                    date: dayjs().format("YYYY-MM-DD"),
-                                    responseType: inviteInfo?.responseType,
-                                    responseTypeZh: inviteInfo?.responseTypeZh,
-                                    responseTimeType: inviteInfo?.responseTimeType,
                                 })
                             }
                         >
@@ -314,7 +311,7 @@ const Company = ({ invitationSplitId, onClose }) => {
                 onOk={handleOk}
                 onCancel={() => onClose(false)}
             >
-                <div style={{padding: '20px'}}>
+                <div style={{ padding: "20px" }}>
                     <div className="title">邀约信息</div>
                     <div className="info">
                         <div className="item">
@@ -351,7 +348,11 @@ const Company = ({ invitationSplitId, onClose }) => {
                         >
                             手工添加
                         </Button>
-                        <Button type="primary" icon={<AndroidOutlined />} onClick={() => handleUseAI()}>
+                        <Button
+                            type="primary"
+                            icon={<AndroidOutlined />}
+                            onClick={() => handleUseAI()}
+                        >
                             AI智能拆解
                         </Button>
                         <Button type="primary" onClick={() => sureDeadline()}>
@@ -366,13 +367,11 @@ const Company = ({ invitationSplitId, onClose }) => {
                     <Table
                         rowKey="id"
                         dataSource={taskList}
-                        columns={
-                            isReSplit ? columns : columns?.filter(column => !column.isReSplit)
-                        }
+                        columns={isReSplit ? columns : columns?.filter(column => !column.isReSplit)}
                         title={() => <Space className="table-title"></Space>}
                         pagination={false}
                         scroll={{
-                            x: 800
+                            x: 800,
                         }}
                     ></Table>
                     {contextHolder}

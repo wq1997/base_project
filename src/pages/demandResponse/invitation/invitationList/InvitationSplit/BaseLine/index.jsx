@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Tabs, Modal, Select, Space, InputNumber } from "antd";
-import { getCompanyBaseLine as getCompanyBaseLineServer } from "@/services/electricityLoad";
+import { getCompanyBaseLine as getCompanyBaseLineServer } from "@/services/company";
 import ReactECharts from "echarts-for-react";
 import "./index.less";
 
@@ -111,7 +111,7 @@ const BaseLine = ({ baseLineArgs, onClose }) => {
     const Summary = () => {
         const summaryData = [
             { name: "关口负载功率", data: data?.gatewayBaseLinePowers },
-            { name: `${baseLineArgs?.responseTypeZh}能力`, data: data?.responsePowers },
+            { name: `${data?.responseTypeZh}能力`, data: data?.responsePowers },
             { name: "储能计划出力功率", data: data?.energyStoragePlanPower },
         ];
         const options = {

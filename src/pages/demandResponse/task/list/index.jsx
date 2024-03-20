@@ -2,9 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { Button, Space, Table, message, Modal, DatePicker, Tooltip, Input } from "antd";
 import { PlusOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { SearchInput } from "@/components";
-import EnterRecord from "./EnterRecord";
-import InvitationSplit from "./InvitationSplit";
-import Detail from "./Detail";
 import {
     getTaskist as getTaskistServer,
     getSearchInitData as getSearchInitDataServer,
@@ -34,9 +31,6 @@ const Account = () => {
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [userList, setUserList] = useState([]);
-    const [enterRecordOpen, setEnterRecordOpen] = useState(false);
-    const [invitationSplitId, setInvitationSplitId] = useState();
-    const [detailId, setDetailId] = useState(false);
 
     const columns = [
         {
@@ -181,9 +175,7 @@ const Account = () => {
                     return (
                         <a
                             onClick={() => {
-                                history.push(
-                                    `/vpp/demandResponse/task/search?taskId=${id}`
-                                );
+                                history.push(`/vpp/demandResponse/task/search?taskId=${id}`);
                             }}
                         >
                             查询执行情况
@@ -255,23 +247,6 @@ const Account = () => {
         getInviteList();
     };
 
-    const handleOperate = typeId => {
-        Modal.confirm({
-            title: `确定${type}？`,
-            content: tip,
-            onOk: async () => {
-                const res = await fn();
-                if (res?.data?.status == "SUCCESS") {
-                    message.success(`${type}成功`);
-                    setPagination({
-                        current: 1,
-                    });
-                    getInviteList();
-                }
-            },
-        });
-    };
-
     useEffect(() => {
         getInviteList();
         getSearchInitData();
@@ -279,26 +254,6 @@ const Account = () => {
 
     return (
         <div>
-            <EnterRecord
-                open={enterRecordOpen}
-                onClose={resFlag => {
-                    setEnterRecordOpen(false);
-                    resFlag && getInviteList();
-                }}
-            />
-            <Detail
-                detailId={detailId}
-                onClose={() => {
-                    setDetailId();
-                }}
-            />
-            <InvitationSplit
-                invitationSplitId={invitationSplitId}
-                onClose={resFlag => {
-                    setInvitationSplitId();
-                    resFlag && getInviteList();
-                }}
-            />
             <Space className="search">
                 <div>
                     <span>确认截止时间：</span>

@@ -51,3 +51,5 @@ export const saveSplitInvite = payload => {
     const url = `${API_URL_2}/invite/save-split-result`;
     return axiosInstance.post(url, payload);
 };
+
+ 
