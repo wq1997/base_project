@@ -16,3 +16,8 @@ export const confirmPayment = payload => {
     const url = `${API_URL_2}/invite/payment-confirm`;
     return axiosInstance.post(url, payload);
 }
+
+export const getOverviewIncome = (params) => {
+    const url = `${API_URL_2}/invite-task/get-company-profit-dashboard`;
+    return axiosInstance.get(url, { params });
+};

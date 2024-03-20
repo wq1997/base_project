@@ -1,6 +1,6 @@
 import { Card, Space, Typography, Tooltip, Row, Select, DatePicker, theme as antdTheme, Badge } from "antd";
 import useIcon from "@/hooks/useIcon";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Title as MyTitle, StaticsCard } from "@/components"
 import dayjs from "dayjs";
 import moment from "moment";
@@ -11,6 +11,9 @@ import { useEmotionCss } from "@ant-design/use-emotion-css";
 import { useSelector } from "umi";
 import xuefengImg from "../../../../../public/images/xuefeng.svg";
 import tianguImg from "../../../../../public/images/tiangu.svg";
+import { 
+    getOverviewIncome as getOverviewIncomeServe,
+} from "@/services/income";
 
 const Overview = () => {
     const { token } = antdTheme.useToken();
@@ -20,13 +23,13 @@ const Overview = () => {
     const [companyAccountData, setCompanyAccountData] = useState([
         {
             label: '账户余额',
-            data: 27541.75,
+            data: 0,
             color: token.color12,
             icon: 'icon-zhanghuyue'
         },
         {
             label: '总收入金额(元)',
-            data: 27541.75,
+            data: 0,
             color: token.color13,
             icon: 'icon-zongshourujine'
         },
@@ -42,33 +45,54 @@ const Overview = () => {
         {
             icon: 'icon-zongshouyi1',
             label: '总收益(元)',
-            data: 27541.75,
+            data: 0,
             color: token.color14
         },
         {
             icon: 'icon-xiangyingrongliang',
             label: '响应功率(KW)',
-            data: 11921,
+            data: 0,
             color: token.color15
         },
         {
             icon: 'icon-xiangyingcishu',
             label: '响应次数',
-            data: 1,
+            data: 0,
             color: token.color16
         },
         {
             icon: 'icon-xiangyingchenggongshuai1',
             label: '响应成功率',
-            data: '100%',
+            data: 0,
             color: token.color17
         }
     ])
     const Icon = useIcon();
 
     const onChangeDate = (_, dateStr) => {
+        console.log("dateStr", dateStr)
         setDate(dayjs(dateStr));
     }
+
+    const getOverviewIncome = async () => {
+        console.log(dateType, moment(date).format("YYYY-MM"));
+        let params = {};
+        if(dateType==="Year"){
+            params={
+                year: moment(date).format("YYYY")
+            }
+        }else{
+            params={
+                year: moment(date).format("YYYY"),
+                month: moment(date).format("MM")
+            }
+        }
+        const res = await getOverviewIncomeServe(params)
+    }
+
+    useEffect(()=>{
+        getOverviewIncome();
+    }, [date, dateType])
 
     const incomeCardStyle = useEmotionCss(()=>{
         return {
@@ -134,7 +158,15 @@ const Overview = () => {
                         ]}
                         style={{ width: 100, marginRight: 20 }}
                         value={dateType}
-                        onChange={value => setDateType(value)}
+                        onChange={value => {
+                            if(value==="Year"){
+                                setDate(dayjs(moment(date).format("YYYY")));
+                            }else{
+                                console.log(moment(date).format("YYYY-MM"))
+                                setDate(dayjs(moment(date).format("YYYY-MM")))
+                            }
+                            setDateType(value);
+                        }}
                     />
                     <DatePicker
                         onChange={onChangeDate}
