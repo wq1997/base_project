@@ -1,0 +1,22 @@
+.confirm-task {
+    height: calc(100% - 62px);
+    background-color: aqua;
+    display: grid;
+    grid-template-rows: 200px 1fr;
+    grid
+    grid-template-areas:
+        "g1 g2"
+        "g3 g3";
+    > div {
+        border: 1px solid;
+    }
+    .wait-confirm {
+        grid-area: "g1";
+    }
+    .response-suggest {
+        grid-area: "g2";
+    }
+    .curve {
+        grid-area: "g3";
+    }
+}

@@ -1,0 +1,18 @@
+.confirm-task {
+    display: grid;
+    grid-template-areas:
+        "g1 g2" 200px
+        "g3 g3" auto;
+        >div{
+            border: 1px solid;
+        }
+    .wait-confirm {
+        grid-area: "g1";
+    }
+    .response-suggest {
+        grid-area: "g2";
+    }
+    .curve {
+        grid-area: "g3";
+    }
+}

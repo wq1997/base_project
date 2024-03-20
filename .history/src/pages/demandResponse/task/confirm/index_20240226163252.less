@@ -1,0 +1,27 @@
+.confirm-task {
+    height: calc(100% - 62px);
+    display: grid;
+    grid-template-rows: 200px auto;
+    grid-gap: 10px;
+    grid-template-areas:
+        "g1 g2"
+        "g3 g3";
+    > div {
+        border: 1px solid;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+    .btns{
+        display: flex;
+        justify-content: space-between;
+    }
+    .wait-confirm {
+        grid-area: "g1"; 
+    }
+    .response-suggest {
+        grid-area: "g2";
+    }
+    .curve {
+        grid-area: "g3";
+    }
+}

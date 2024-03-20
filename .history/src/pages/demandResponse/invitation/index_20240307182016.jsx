@@ -1,0 +1,1 @@
+import InvitationList from './invitationList'

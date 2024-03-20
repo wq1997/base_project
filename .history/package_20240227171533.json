@@ -1,0 +1,38 @@
+{
+  "private": true,
+  "author": "wangqing <2957009914@qq.com>",
+  "scripts": {
+    "dev": "umi dev",
+    "build": "umi build",
+    "build:test": "cross-env UMI_ENV=test umi build",
+    "build:prod": "cross-env UMI_ENV=prod umi build",
+    "postinstall": "umi setup",
+    "setup": "umi setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^5.1.4",
+    "@ant-design/use-emotion-css": "^1.0.4",
+    "@antv/g6": "^4.8.22",
+    "ahooks": "^3.7.8",
+    "antd": "5.14.1",
+    "antd-mobile": "^5.32.0",
+    "axios": "^1.4.0",
+    "classnames": "^2.3.2",
+    "cross-env": "^7.0.3",
+    "dayjs": "^1.11.9",
+    "echarts": "^5.4.3",
+    "echarts-for-react": "^3.0.2",
+    "jsencrypt": "^3.3.2",
+    "moment": "^2.29.4",
+    "react-helmet": "^6.1.0",
+    "umi": "^4.0.72"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.2.6",
+    "@umijs/plugins": "^4.0.72",
+    "compression-webpack-plugin": "^10.0.0",
+    "typescript": "^5.1.6"
+  }
+}

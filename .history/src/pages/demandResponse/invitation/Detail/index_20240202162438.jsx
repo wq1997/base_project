@@ -1,0 +1,99 @@
+import React, { useState, useEffect } from "react";
+import { Modal, Table, Space } from "antd";
+import { getInviteDetail as getInviteDetailServer } from "@/services/invitation";
+import "./index.less";
+
+const Company = ({ detailId, onClose }) => {
+    const [inviteInfo, setInviteInfo] = useState();
+    const [taskList, setTaskList] = useState([]);
+    const [deadline, setDeadline] = useState();
+
+    const getDetail = async () => {
+        const res = await getInviteDetailServer(detailId);
+        if (res?.data?.status == "SUCCESS") {
+            const invite = res?.data?.data;
+            setInviteInfo(invite);
+            setDeadline(invite?.fullTasks?.[0]?.confirmationDeadline);
+            setTaskList(invite?.fullTasks);
+        }
+    };
+
+    const columns = [
+        {
+            title: "公司名称",
+            dataIndex: "companyName",
+        },
+        {
+            title: "任务确认状态",
+            dataIndex: "statusZh",
+        },
+        {
+            title: "签约响应功率(kW)",
+            dataIndex: "contractedResponsePower",
+        },
+        {
+            title: "分配任务功率(kW)",
+            dataIndex: "responsePower",
+        },
+        {
+            title: "确认截止时间",
+            dataIndex: "confirmationDeadline",
+            render: () => <span>{deadline}</span>,
+        },
+        {
+            title: "任务备注",
+            dataIndex: "remark",
+        },
+    ];
+
+    useEffect(() => {
+        detailId && getDetail();
+    }, [detailId]);
+
+    return (
+        <Modal
+            title="邀约详情"
+            width={1000}
+            open={Boolean(detailId)}
+            onOk={() => onClose()}
+            onCancel={() => onClose()}
+        >
+            <div className="title">邀约信息</div>
+            <div className="info">
+                <div className="item">
+                    <span>响应类型：</span>
+                    <span>{inviteInfo?.responseTypeZh}</span>
+                </div>
+                <div className="item">
+                    <span>响应要求：</span>
+                    <span>{inviteInfo?.responseTimeTypeZh}</span>
+                </div>
+                <div className="item">
+                    <span>度电报价(元)：</span>
+                    <span>{inviteInfo?.whPrice}</span>
+                </div>
+                <div className="item">
+                    <span>响应功率(kW)：</span>
+                    <span>{inviteInfo?.responsePower}</span>
+                </div>
+                <div className="item">
+                    <span>约定开始时间：</span>
+                    <span>{inviteInfo?.appointedTimeFrom}</span>
+                </div>
+                <div className="item">
+                    <span>约定结束时间：</span>
+                    <span>{inviteInfo?.appointedTimeTo}</span>
+                </div>
+            </div>
+            <div className="title">任务列表</div>
+            <Table
+                rowKey=""
+                dataSource={taskList}
+                columns={columns}
+                title={() => <Space className="table-title"></Space>}
+            ></Table>
+        </Modal>
+    );
+};
+
+export default Company;
