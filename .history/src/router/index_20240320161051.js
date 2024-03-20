@@ -3,7 +3,7 @@ const Layout = "@/layouts/baseLayout";
 
 const uploadFiles = "@/pages/uploadFiles";
 const analysisResults = "@/pages/analysisResults";
-const summaryRecord = "@/pages/summaryRecord";
+const summaryRecord = "@/pages/summary-record";
 
 const Login = "@/pages/account/login";
 const Test = "@/pages/test";
