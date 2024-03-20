@@ -55,25 +55,23 @@ const Account = () => {
         {
             title: "公司名称",
             dataIndex: "companyName",
-            key: "companyName",
-            ellipsis: true,
             width: 200,
-            render(value) {
+            render(value){
                 return (
                     <Tooltip title={value}>
-                        <div
+                        <div 
                             style={{
-                                overflow: "hidden",
-                                whiteSpace: "nowrap",
-                                textOverflow: "ellipsis",
-                                width: 400,
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                                width: 180,
                             }}
                         >
                             {value}
                         </div>
                     </Tooltip>
-                );
-            },
+                )
+            }
         },
         {
             title: "任务确认状态",
@@ -114,12 +112,12 @@ const Account = () => {
         {
             title: "约定开始时间",
             dataIndex: "appointedTimeFrom",
-            width: 150,
+            width: 200,
         },
         {
             title: "约定结束时间",
             dataIndex: "appointedTimeTo",
-            width: 150,
+            width: 200,
         },
 
         {

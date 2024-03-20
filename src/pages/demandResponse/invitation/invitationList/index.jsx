@@ -104,6 +104,25 @@ const Account = () => {
         {
             title: "备注",
             dataIndex: "remark",
+            key: "remark",
+            ellipsis: true,
+            width: 250,
+            render(value) {
+                return (
+                    <Tooltip title={value}>
+                        <div
+                            style={{
+                                overflow: "hidden",
+                                whiteSpace: "nowrap",
+                                textOverflow: "ellipsis",
+                                width: 200,
+                            }}
+                        >
+                            {value}
+                        </div>
+                    </Tooltip>
+                );
+            },
         },
         {
             title: "操作",
