@@ -1,4 +1,5 @@
-import { Space } from "antd"
+import { FormattedMessage  } from 'umi'
+
 
 export const DEFAULT_PAGINATION = { current: 1, pageSize: 10, total: 0, showQuickJumper: true };
 export const FORM_REQUIRED_RULE = { required: true, message: '请输入必填字段' };
@@ -14,43 +15,43 @@ export const AIR_API = 'https://devapi.qweather.com/v7/air/now?';
 export const WETHER_KEY = '4e50b674eed8402c8a70c8155690a0e1';
 export const alarmTableColums = [
     {
-        title: '设备类型',
+        title: <FormattedMessage id='设备类型'/>,
         dataIndex: 'type',
         key: 'type',
     },
     {
-        title: '告警等级',
+        title: <FormattedMessage id='告警等级'/>,
         dataIndex: 'prior',
         key: 'prior',
     },
     {
-        title: '告警描述',
+        title: <FormattedMessage id='告警描述'/>,
         dataIndex: 'desc',
         key: 'desc',
     },
     {
-        title: '设备名称',
+        title: <FormattedMessage id='设备名称'/>,
         dataIndex: 'deviceName',
         key: 'deviceName',
     },
     {
-        title: '并网点',
+        title: <FormattedMessage id='并网点'/>,
         dataIndex: 'sn',
         key: 'sn',
     },
     {
-        title: '电站名称',
+        title: <FormattedMessage id='电站名称'/>,
         dataIndex: 'plantName',
         key: 'plantName',
     },
    
     {
-        title: '开始时间',
+        title: <FormattedMessage id='开始时间'/>,
         dataIndex: 'begin',
         key: 'begin',
     },
     {
-        title: '结束时间',
+        title: <FormattedMessage id='结束时间'/>,
         dataIndex: 'end',
         key: 'end',
     },
@@ -60,47 +61,47 @@ export const RealtimeData = [];
 
 export const profitTable = [
     {
-        title: 'id',
+        title: <FormattedMessage id='id'/>,
         dataIndex: 'id',
         key: 'id',
         width: 100,
     },
     {
-        title: '日期',
+        title: <FormattedMessage id='日期'/>,
         dataIndex: 'date',
         key: 'date',
         width: 100,
     },
     {
-        title: '充电成本（元）',
+        title: <FormattedMessage id='充电成本（元）'/>,
         className:'chargeProfit',
         children: [
             {
-                title: '尖电',
+                title: <FormattedMessage id='尖电'/>,
                 dataIndex: 'street',
                 key: 'street',
                 width: 150,
             },
             {
-                title: '峰电',
+                title: <FormattedMessage id='峰电'/>,
                 dataIndex: 'street',
                 key: 'street',
                 width: 150,
             },
             {
-                title: '平电',
+                title: <FormattedMessage id='平电'/>,
                 dataIndex: 'street',
                 key: 'street',
                 width: 150,
             },
             {
-                title: '谷电',
+                title: <FormattedMessage id='谷电'/>,
                 dataIndex: 'street',
                 key: 'street',
                 width: 150,
             },
             {
-                title: '总计',
+                title: <FormattedMessage id='总计'/>,
                 dataIndex: 'street',
                 key: 'street',
                 width: 150,
@@ -108,35 +109,35 @@ export const profitTable = [
         ],
     },
     {
-        title: '放电收益（元）',
+        title: <FormattedMessage id='放电收益（元）'/>,
         className:'disChargeProfit',
         children: [
             {
-                title: '尖电',
+                title: <FormattedMessage id='尖电'/>,
                 dataIndex: 'street',
                 key: 'street',
                 width: 150,
             },
             {
-                title: '峰电',
+                title: <FormattedMessage id='峰电'/>,
                 dataIndex: 'street',
                 key: 'street',
                 width: 150,
             },
             {
-                title: '平电',
+                title: <FormattedMessage id='平电'/>,
                 dataIndex: 'street',
                 key: 'street',
                 width: 150,
             },
             {
-                title: '谷电',
+                title: <FormattedMessage id='谷电'/>,
                 dataIndex: 'street',
                 key: 'street',
                 width: 150,
             },
             {
-                title: '总计',
+                title: <FormattedMessage id='总计'/>,
                 dataIndex: 'street',
                 key: 'street',
                 width: 150,
@@ -145,7 +146,7 @@ export const profitTable = [
         ],
     },
     {
-        title: '实际收益',
+        title: <FormattedMessage id='实际收益'/>,
         dataIndex: 'date',
         key: 'date',
         width: 100,
@@ -172,14 +173,101 @@ export const timeZoneList = (function () {
 export const pcsDataType= [
     {
         value:169,
-        label:'实时功率',
+        label:<FormattedMessage id='实时功率'/>,
     },
     {
         value:305,
-        label:'日充电量',
+        label:<FormattedMessage id='日充电量'/>,
     },
     {
         value:306 ,
-        label:'日放电量',
+        label:<FormattedMessage id='日放电量'/>,
     },
-]
+];
+
+export const BmsDataType= [
+    {
+        value:181,
+        label:<FormattedMessage id='电压'/>,
+    },
+    {
+        value:182,
+        label:<FormattedMessage id='电流'/>,
+    },
+    {
+        value:183,
+        label:<FormattedMessage id='SOC'/>,
+    },
+    {
+        value:184,
+        label:<FormattedMessage id='SOH'/>,
+    },
+      {
+        value:303,
+        label:<FormattedMessage id='日充'/>,
+    },
+    {
+        value:304,
+        label:<FormattedMessage id='日放'/>,
+    },
+];
+
+export const BmcDataType= [
+    {
+        value:192 ,
+        label:<FormattedMessage id='电压'/>,
+    },
+    {
+        value:193 ,
+        label:<FormattedMessage id='电流'/>,
+    },
+    {
+        value:187 ,
+        label:<FormattedMessage id='SOC'/>,
+    },
+    {
+        value:194,
+        label:<FormattedMessage id='SOH'/>,
+    },
+      {
+        value:307 ,
+        label:<FormattedMessage id='日充'/>,
+    },
+    {
+        value:308 ,
+        label:<FormattedMessage id='日放'/>,
+    },
+];
+
+
+export const MgOcInitDataType= [
+    {
+        value:154,
+        label:<FormattedMessage id='电表总功率'/>,
+    },
+    {
+        value:175,
+        label:<FormattedMessage id='BMS功率'/>,
+    },
+    
+    {
+        value:169,
+        label:<FormattedMessage id='PCS功率'/>,
+    },
+    {
+        value:301,
+        label:<FormattedMessage id='日充电电量'/>,
+    },
+    {
+        value:302,
+        label:<FormattedMessage id='日放电电量'/>,
+    },
+    {
+        value:183 ,
+        label:<FormattedMessage id='SOC'/>,
+    },
+    {
+        value:999 ,
+        label:<FormattedMessage id='充放电效率'/>,
+    },
+];

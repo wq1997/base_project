@@ -219,7 +219,6 @@ function Com(props) {
                 return <Overview  />;
             case 9:
                 return <ViewOutdoor />
-
             default:
                 return <Overview />
         }

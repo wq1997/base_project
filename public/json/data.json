@@ -1,0 +1,98 @@
+{
+    "x": 15,
+    "y": 85,
+    "scale": 1,
+    "pens": [
+        {
+            "anchors": [
+                {
+                    "id": "0",
+                    "penId": "c3f057d",
+                    "x": 0.5,
+                    "y": 0
+                },
+                {
+                    "id": "1",
+                    "penId": "c3f057d",
+                    "x": 1,
+                    "y": 0.5000000000000004
+                },
+                {
+                    "id": "2",
+                    "penId": "c3f057d",
+                    "x": 0.5,
+                    "y": 0.9999999999999997
+                },
+                {
+                    "id": "3",
+                    "penId": "c3f057d",
+                    "x": 0,
+                    "y": 0.5000000000000004
+                }
+            ],
+            "autoPlay": false,
+            "canvasLayer": 2,
+            "center": {
+                "x": 1017.999999999999,
+                "y": 548.9999999999991
+            },
+            "children": [],
+            "ex": 1952.999999999998,
+            "ey": 1131.666666666665,
+            "fontSize": 12,
+            "height": 1165.3333333333317,
+            "id": "c3f057d",
+            "image": "/png/default/浅色工厂.svg",
+            "imageRatio": true,
+            "lineHeight": 1.5,
+            "lineWidth": 1,
+            "linear": true,
+            "name": "image",
+            "rotate": 0,
+            "text": "",
+            "width": 1869.999999999998,
+            "x": 83,
+            "y": -33.666666666666686
+        }
+    ],
+    "origin": {
+        "x": 0,
+        "y": 0
+    },
+    "center": {
+        "x": 28,
+        "y": -62
+    },
+    "paths": {},
+    "template": "841bd70",
+    "bkImage": "",
+    "id": "018e175b-2bdf-7c91-bfe9-16ee36ed0064",
+    "name": "meta2d.202437131749",
+    "shared": false,
+    "case": "智慧城市",
+    "view": 0,
+    "star": 0,
+    "favorite": 0,
+    "recommend": 0,
+    "ownerId": "0181ec23-91b8-70cd-809a-3a35b7e9b31d",
+    "ownerName": "AB",
+    "editorId": "0181ec23-91b8-70cd-809a-3a35b7e9b31d",
+    "editorName": "AB",
+    "search_vector": "'0':7 '1':11 '2':5 '202437131749':14 '3':9 '4':8 '7':10 '9':12 'a':4 'd':6 'e':2 'm':1 'meta2d':13 't':3",
+    "createdAt": "2024-03-07T13:20:34.783317+08:00",
+    "updatedAt": "2024-03-07T13:20:34.783317+08:00",
+    "activeColor": "#278df8",
+    "autoAlignGrid": false,
+    "autoSizeinPc": false,
+    "background": "rgba(255, 255, 255, 1)",
+    "color": "#222222",
+    "component": false,
+    "grid": false,
+    "gridColor": "#e2e2e2",
+    "gridSize": 20,
+    "groups": [],
+    "localSaveAt": "2024-03-07T13:15:43+08:00",
+    "rule": false,
+    "ruleColor": "#888888",
+    "version": "1.0.23"
+}

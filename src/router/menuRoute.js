@@ -1,8 +1,16 @@
 export default [
     {
         name: '总览',
-        path: '/index/home',
-        component: "@/pages/home",
+        path: '/index',
+        // component: "@/pages/home",
+        routes: [
+            {
+                name: '总览',
+                path: '/index/home',
+                component: "@/pages/home",
+            },
+            { name: '2.5D', path: '/index/home/2.5d', component: "@/pages/react/Meta2d" },
+        ]
     },
     {
         name: '设备',

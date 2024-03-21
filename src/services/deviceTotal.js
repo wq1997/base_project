@@ -77,3 +77,45 @@ export const getPcsNowPowerById = (payload) => {
 export const obtainPCSParameterData = (payload) => {
     return axiosInstance.post(`/pcs/mg/obtainPCSParameterData`, payload);
 }
+
+// 获取bms检测曲线
+export const obtainBMSParameterData = (payload) => {
+    return axiosInstance.post(`/bms/obtainBMSParameterData`, payload);
+}
+
+// 获取bms监测曲线簇列表
+export const obtainBMSClustersList = (payload) => {
+    return axiosInstance.get(`${path}/obtainBMSClustersList?id=${payload.id}`);
+}
+
+
+
+// 微网户外柜 监测曲线
+export const obtainMgOcParameterData = (payload) => {
+    return axiosInstance.post(`/minsys/obtainMgOcParameterData`, payload);
+}
+
+
+// 获取光伏的运行指标
+export const getPvRunMetrics = (payload) => {
+    return axiosInstance.get(`${path}/pv/getPvRunMetrics?plantId=${payload.plantId}`);
+}
+
+// 获取光伏发电量
+export const pvPowerGeneration = (payload) => {
+    return axiosInstance.post(`${path}/pv/pvPowerGeneration`, payload);
+}
+
+// 获取微网bms高级分析 初始化数据类型
+export const getBmsAnalyticsInitData = (payload) => {
+    return axiosInstance.get(`/battery/getBmsAnalyticsInitData?id=${payload.id}`);
+}
+// bms 高级分析 温差压差 曲线
+export const analyticsBmsDiffData = (payload) => {
+    return axiosInstance.post(`/battery/analyticsBmsDiffData`, payload);
+}
+
+//bms 高级分析 温度 电压曲线  
+export const analyticsBmsData = (payload) => {
+    return axiosInstance.post(`/battery/analyticsBmsData`, payload);
+}

@@ -27,6 +27,14 @@ export default defineConfig({
   define: {
     "process.env.API_URL": apiUrl[UMI_ENV||'test'],
   },
+  headScripts: [
+    { src: 'js/meta2d.js',  },
+    { src: 'js/lcjs.iife.js',  },
+    { src: 'js/marked.min.js',  },
+    { crossorigin: 'anonymous',integrity:'sha512-ppWbHq6q2f7HAwS481w6qikuC0XEeBnmkRg6KWnWg3zSIbJwWWBgsCDMAxzSB7SVqXzWwSYQ2s8TSJKjnaikMg==',src:'https://lib.baomitu.com/echarts/5.1.2/echarts.min.js'  },
+    { src: 'http://cdn.hcharts.cn/highcharts/highcharts.js',  },
+    { src: 'http://cdn.hcharts.cn/highcharts/highcharts-more.js',  },
+  ],
   alias: {
     '@/permissions': path.resolve(__dirname,'src/permissions'),
     '@/hooks': path.resolve(__dirname,'src/hooks'),

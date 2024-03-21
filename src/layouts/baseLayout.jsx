@@ -80,7 +80,8 @@ const BaseLayout = () => {
                 >
                     <div
                         style={{
-                            color: token.titleColor
+                            color: token.titleColor,
+                            fontFamily:'DingTalk'
                         }}
                         level={3} 
                         className={styles.title}

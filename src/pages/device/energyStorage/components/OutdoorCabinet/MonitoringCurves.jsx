@@ -6,16 +6,24 @@ import styles from './index.less'
 import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts";
 import { CardModel } from "@/components";
+import { MgOcInitDataType } from '@/utils/constants';
+import { getQueryString } from "@/utils/utils";
+import { obtainMgOcParameterData } from '@/services/deviceTotal';
 import dayjs from 'dayjs';
 import { useSelector, useIntl } from "umi";
 const { Option } = Select;
+const { RangePicker } = DatePicker;
 function Com(props) {
     const [xxx, setXxx] = useState('');
     const { token } = theme.useToken();
     const [option, setOption] = useState([]);
     const [optionEchart, setOptionEchart] = useState({})
     const activitesRef = useRef([]);
+    const [date, setDate] = useState(dayjs(new Date()));
+    const [type, setType] = useState(MgOcInitDataType[0].value);
+    const [title,setTitle]=useState('电表总功率')
     const intl = useIntl();
+    const id = getQueryString("id");
     const t = (id) => {
         const msg = intl.formatMessage(
             {
@@ -24,10 +32,32 @@ function Com(props) {
         );
         return msg
     }
-    function onChange(date, dateString) {
-        console.log(date, dateString);
+    function onChange(date) {
+        setDate(date);
+        console.log(date, dateString, dayjs(new Date()).format('YYYY-MM-DD'));
     }
-    const getOptions = () => {
+    const changeType = (value,label) => {
+        setType(value);
+        setTitle(label.children);
+    }
+    const queryData = async () => {
+        let { data } = await obtainMgOcParameterData({
+            id: id,
+            type,
+            // dateOne: dayjs(new Date()).format('YYYY-MM-DD'),
+            // dateTwo: date.format('YYYY-MM-DD'),
+            dateList:[dayjs(new Date()).format('YYYY-MM-DD'),date.format('YYYY-MM-DD'),]
+        });
+        let dataX = []
+        let nowY = [];
+        let toY = [];
+        data[0].data?.map(it => {
+            dataX.push(dayjs(it.time).format('HH:mm:ss'));
+            nowY.push(it.value);
+        })
+        data[1].data?.map(it => {
+            toY.push(it.value);
+        })
         setOptionEchart({
             tooltip: {
                 trigger: 'axis',
@@ -35,6 +65,9 @@ function Com(props) {
                     type: 'shadow'
                 }
             },
+            legend: {
+                data: [ `今日${title}`,`${date.format('YYYY-MM-DD')}${title}`]
+              },
             grid: {
                 left: '3%',
                 right: '4%',
@@ -44,7 +77,7 @@ function Com(props) {
             xAxis: [
                 {
                     type: 'category',
-                    data: ['28日', '29日', '30日', '1日', '2日', '3日', '4日', '5日', '6日'],
+                    data: dataX,
                     axisTick: {
                         alignWithLabel: true
                     }
@@ -54,16 +87,16 @@ function Com(props) {
                 {
                     type: 'value',
                     axisLabel: {
-                        formatter: '{value} %'
+                        formatter: '{value} kW'
                     },
 
                 }
             ],
             series: [
                 {
-                    name: '实时功率',
+                    name: `今日${title}`,
                     type: 'line',
-                    stack: '总量',
+                    // stack: 'total',
                     symbol: 'circle',
                     symbolSize: 8,
                     itemStyle: {
@@ -91,45 +124,58 @@ function Com(props) {
                             }
                         }
                     },
-                    data: [12, 32, 11, 14, 90, 30, 10, 82, 91, 34, 90, 33]
+                    data: nowY
+                },
+                {
+                    name: `${date.format('YYYY-MM-DD')}${title}`,
+                    type: 'line',
+                    // stack: 'total',
+                    symbol: 'circle',
+                    symbolSize: 8,
+                    itemStyle: {
+                        normal: {
+                            color: '#FF8E07',
+                            lineStyle: {
+                                color:'#FF8E07',
+                                width: 1
+                            },
+                            areaStyle: {
+                                color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+                                    offset: 0,
+                                    color: token.sub_innerBgc
+                                }, {
+                                    offset: 0.7,
+                                    color:' #FF8E07'
+                                }]),
+                            }
+                        }
+                    },
+                    data: toY
                 },
             ]
         });
-    };
+    }
     useEffect(() => {
-        getOptions();
+        queryData();
     }, [token]);
     return (
         <div className={styles.monitoringCurves}>
             <div className={styles.searchHead}>
-                <span >数据类型:</span>
+                <span className={styles.margRL}> {t('对比日期')}:</span>
+                <DatePicker onChange={onChange} defaultValue={date} />
+               <span  className={styles.margRL}>{t('数据项')}:</span> 
                 <Select
-                    className={styles.margRL}
+                className={styles.margR}
                     style={{ width: 240 }}
-                    // onChange={changeCluster}
-                    key={activitesRef.current[0]?.value}
-                    defaultValue={activitesRef.current[0]?.value}
+                    defaultValue={MgOcInitDataType[0]?.value}
+                    onChange={changeType}
                 >
-                    {activitesRef.current && activitesRef.current.map(item => {
+                    {MgOcInitDataType && MgOcInitDataType.map(item => {
                         return (<Option key={item.value} value={item.value}>{item.label}</Option>);
                     })
                     }
                 </Select>
-                数据项:
-                <Select
-                    className={styles.margRL}
-                    style={{ width: 240 }}
-                    // onChange={changeCluster}
-                    key={activitesRef.current[0]?.value}
-                    defaultValue={activitesRef.current[0]?.value}
-                >
-                    {activitesRef.current && activitesRef.current.map(item => {
-                        return (<Option key={item.value} value={item.value}>{item.label}</Option>);
-                    })
-                    }
-                </Select>
-                <DatePicker onChange={onChange} />
-                <Button type="primary" className={styles.firstButton}>
+                <Button type="primary" className={styles.firstButton} onClick={queryData}>
                     {t('查询')}
                 </Button>
                 <Button type="primary" style={{ backgroundColor: token.defaultBg }} >

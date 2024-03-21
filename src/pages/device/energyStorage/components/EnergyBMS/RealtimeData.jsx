@@ -10,7 +10,6 @@ const { Option } = Select;
 function Com({ id }) {
     const [data, setData] = useState('');
     const [dataBmc, setDataBmc] = useState([]);
-    const [option, setOption] = useState([])
     const [currentClu, setCurrentClu] = useState(0);
     const activitesRef = useRef([]);
     const { token } = theme.useToken();
@@ -29,7 +28,7 @@ function Com({ id }) {
 
     useEffect(() => {
         getBmcData();
-    }, [id,currentClu])
+    }, [id, currentClu])
     const getData = async () => {
         let { data } = await getBmsNowData({ id })
         setData(data?.data);
@@ -44,18 +43,18 @@ function Com({ id }) {
                 key: it
             })
         })
-        setOption([...arr]);
+        // setOption([...arr]);
         activitesRef.current = arr;
 
     }
     const changeCluster = (value) => {
         setCurrentClu(value)
     }
-    const getBmcData=async()=>{
-        let { data } = await getBmcNowData({ id,cluster:currentClu });
-        console.log(data);
-        setDataBmc(data.data)
+    const getBmcData = async () => {
+        let { data } = await getBmcNowData({ id, cluster: currentClu });
+        setDataBmc(data?.data)
     }
+
     return (
         <div className={styles.detailsWrap} >
             <div className={styles.heapRealTimeData}>

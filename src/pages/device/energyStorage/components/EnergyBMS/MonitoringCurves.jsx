@@ -8,13 +8,20 @@ import * as echarts from "echarts";
 import { CardModel } from "@/components";
 import dayjs from 'dayjs';
 import { useSelector, useIntl } from "umi";
+import { BmsDataType, BmcDataType } from '@/utils/constants'
+import { obtainBMSClustersList, obtainBMSParameterData } from '@/services/deviceTotal'
+import { getQueryString } from "@/utils/utils";
+
 const { Option } = Select;
-function Com(props) {
-    const [xxx, setXxx] = useState('');
+function Com({ id }) {
     const { token } = theme.useToken();
-    const [option, setOption] = useState([]);
+    const [type, setType] = useState(BmsDataType[0].value);
+    const [dataOption, setDataOption] = useState('');
     const [optionEchart, setOptionEchart] = useState({})
     const activitesRef = useRef([]);
+    const [goalId, setGoalId] = useState(id);
+    const [title, setTitle] = useState('电压')
+    const [date, setDate] = useState(dayjs(new Date()));
     const intl = useIntl();
     const t = (id) => {
         const msg = intl.formatMessage(
@@ -25,15 +32,47 @@ function Com(props) {
         return msg
     }
     function onChange(date, dateString) {
-        console.log(date, dateString);
+        setDate(date);
     }
-    const getOptions = () => {
+
+    useEffect(() => {
+        // getOptions();
+    }, [token]);
+    useEffect(() => {
+        getClustersData().then(() => {
+            getEchartsData(id);
+        });
+    }, [id])
+    const getClustersData = async () => {
+        let { data } = await obtainBMSClustersList({ id })
+        getClusters(data.data);
+    }
+    const getEchartsData = async (id) => {
+        let { data } = await obtainBMSParameterData({
+            id,
+            type,
+            dateOne: dayjs(new Date()).format('YYYY-MM-DD'),
+            dateTwo: date.format('YYYY-MM-DD'),
+        });
+        let dataX = []
+        let nowY = [];
+        let toY = [];
+        data.nowDay?.map(it => {
+            dataX.push(dayjs(it.time).format('HH:mm:ss'));
+            nowY.push(it.value);
+        })
+        data.toDay?.map(it => {
+            toY.push(it.value);
+        })
         setOptionEchart({
             tooltip: {
                 trigger: 'axis',
                 axisPointer: {
                     type: 'shadow'
                 }
+            },
+            legend: {
+                data: [`今日${title}`, `${date.format('YYYY-MM-DD')}${title}`]
             },
             grid: {
                 left: '3%',
@@ -44,7 +83,7 @@ function Com(props) {
             xAxis: [
                 {
                     type: 'category',
-                    data: ['28日', '29日', '30日', '1日', '2日', '3日', '4日', '5日', '6日'],
+                    data: dataX,
                     axisTick: {
                         alignWithLabel: true
                     }
@@ -54,16 +93,16 @@ function Com(props) {
                 {
                     type: 'value',
                     axisLabel: {
-                        formatter: '{value} %'
+                        formatter: '{value} kW'
                     },
 
                 }
             ],
             series: [
                 {
-                    name: '实时功率',
+                    name: `今日${title}`,
                     type: 'line',
-                    stack: '总量',
+                    // stack: 'total',
                     symbol: 'circle',
                     symbolSize: 8,
                     itemStyle: {
@@ -91,14 +130,63 @@ function Com(props) {
                             }
                         }
                     },
-                    data: [12, 32, 11, 14, 90, 30, 10, 82, 91, 34, 90, 33]
+                    data: nowY
+                },
+                {
+                    name: `${date.format('YYYY-MM-DD')}${title}`,
+                    type: 'line',
+                    // stack: 'total',
+                    symbol: 'circle',
+                    symbolSize: 8,
+                    itemStyle: {
+                        normal: {
+                            color: '#FF8E07',
+                            lineStyle: {
+                                color: '#FF8E07',
+                                width: 1
+                            },
+                            areaStyle: {
+                                color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+                                    offset: 0,
+                                    color: token.sub_innerBgc
+                                }, {
+                                    offset: 0.7,
+                                    color: ' #FF8E07'
+                                }]),
+                            }
+                        }
+                    },
+                    data: toY
                 },
             ]
         });
     };
-    useEffect(() => {
-        getOptions();
-    }, [token]);
+    const getClusters = (data) => {
+        data.map(it => {
+            it.value = it.id;
+            it.label = it.name;
+        })
+        activitesRef.current = data;
+        setDataOption(BmsDataType);
+        setGoalId(data[0].id);
+    }
+
+    const changeCluster = (val) => {
+        let goal = activitesRef.current.find(it => it.id == val);
+        setGoalId(goal.id);
+        if (goal.type == '101') {
+            setDataOption(BmsDataType);
+            setType(BmsDataType[0].value)
+        } else {
+            setDataOption(BmcDataType);
+            setType(BmcDataType[0].value)
+        }
+    }
+    const changeDataType = (val) => {
+        setType(val);
+        let typeName = dataOption.find(it => it.value == val);
+        setTitle(`${typeName.label}`)
+    }
     return (
         <div className={styles.monitoringCurves}>
             <div className={styles.searchHead}>
@@ -106,12 +194,12 @@ function Com(props) {
                 <Select
                     className={styles.margRL}
                     style={{ width: 240 }}
-                    // onChange={changeCluster}
+                    onChange={changeCluster}
                     key={activitesRef.current[0]?.value}
                     defaultValue={activitesRef.current[0]?.value}
                 >
                     {activitesRef.current && activitesRef.current.map(item => {
-                        return (<Option key={item.value} value={item.value}>{item.label}</Option>);
+                        return (<Option key={item.value} value={item.value}>{t(item.label)}</Option>);
                     })
                     }
                 </Select>
@@ -119,17 +207,15 @@ function Com(props) {
                 <Select
                     className={styles.margRL}
                     style={{ width: 240 }}
-                    // onChange={changeCluster}
-                    key={activitesRef.current[0]?.value}
-                    defaultValue={activitesRef.current[0]?.value}
+                    onChange={changeDataType}
+                    key={dataOption[0]?.value}
+                    options={dataOption}
+                    defaultValue={type}
                 >
-                    {activitesRef.current && activitesRef.current.map(item => {
-                        return (<Option key={item.value} value={item.value}>{item.label}</Option>);
-                    })
-                    }
+
                 </Select>
-                <DatePicker onChange={onChange} />
-                <Button type="primary" className={styles.firstButton}>
+                <DatePicker onChange={onChange} defaultValue={date} />
+                <Button type="primary" className={styles.firstButton} onClick={()=>getEchartsData(goalId)}>
                     {t('查询')}
                 </Button>
                 <Button type="primary" style={{ backgroundColor: token.defaultBg }} >

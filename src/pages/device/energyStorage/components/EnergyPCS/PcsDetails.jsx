@@ -105,7 +105,7 @@ function Com({ id }) {
         let { data } = await getPcsNowDataById({ id })
         setData(data?.data);
     }
-
+    console.log("idid", id)
     const getPowerData = async () => {
         let { data } = await getPcsNowPowerById({ id });
         let dataX=[];

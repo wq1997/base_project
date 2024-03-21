@@ -33,11 +33,11 @@ function Com({ id }) {
     const getData = async () => {
         let { data } = await getBmsNowData({ id })
         setData(data?.data);
-        getOption(data.data.clusters);
+        getOption(data.data?.clusters);
     }
     const getOption = (data) => {
         let arr = [];
-        data.map(it => {
+        data?.map(it => {
             arr.push({
                 value: it,
                 label: `${it + 1}#${t('电池簇')}`,
@@ -54,7 +54,7 @@ function Com({ id }) {
     const getBmcData=async()=>{
         let { data } = await getBmcNowData({ id,cluster:currentClu });
         console.log(data);
-        setDataBmc(data.data)
+        setDataBmc(data?.data)
     }
     return (
         <div className={styles.detailsWrap} >

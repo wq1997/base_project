@@ -27,6 +27,8 @@ export default {
         EarningsStatistics:'Earnings statistics',
         DataComparison:'Data comparison',
         ReportExport:'Report export',
+        Welcometologin:'Welcome to login!',
+
     },
     device:{
         EnergyStorage:'Energy storage',

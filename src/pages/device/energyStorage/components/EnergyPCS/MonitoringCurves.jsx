@@ -39,11 +39,10 @@ function Com(props) {
     const changeType = (value,label) => {
         setType(value);
         setTitle(label.children);
-        console.log(label,22222222222);
     }
     const queryData = async () => {
         let { data } = await obtainPCSParameterData({
-            devId: id,
+            id: id,
             type,
             dateOne: dayjs(new Date()).format('YYYY-MM-DD'),
             dateTwo: date.format('YYYY-MM-DD'),

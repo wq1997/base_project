@@ -5,16 +5,47 @@ import styles from './index.less'
 import { DatePicker } from 'antd';
 import ReactECharts from "echarts-for-react";
 import { theme } from "antd";
+import { useSelector, useIntl } from "umi";
+import { pvPowerGeneration } from "@/services/deviceTotal";
+import dayjs from 'dayjs';
 
 function Com(props) {
     const [xxx, setXxx] = useState('')
-
-    useEffect(() => {
-        console.log('函数组件来咯')
-    }, [])
+    const intl = useIntl();
+    const t = (id) => {
+        const msg = intl.formatMessage(
+            {
+                id,
+            },
+        );
+        return msg
+    }
+    const { currentPlantId } = useSelector(function (state) {
+        return state.device
+      });
+    const [date, setDate] = useState(dayjs(new Date()));
+    function onChange(date) {
+        setDate(date);
+    }
     const { token } = theme.useToken();
     const [options, setOptions] = useState({});
-    const getOptions = () => {
+    useEffect(() => {
+        getData();
+    }, [date]);
+    const getData=async()=>{
+        let {data} = await pvPowerGeneration({
+            type:0,
+            plantId:currentPlantId||localStorage.getItem('plantId'),
+            valueType:2,
+            startTime:date.format('YYYY-MM-DD'),
+            endTime:date.format('YYYY-MM-DD'),
+        });
+        let dataX=[];
+        let dataY=[];
+        data.data?.map(it=>{
+            dataX.push(dayjs(it.date).format('HH:mm'));
+            dataY.push(it.dayOutEnergy);
+        });
         setOptions({
             tooltip: {
                 trigger: 'axis',
@@ -31,7 +62,7 @@ function Com(props) {
             xAxis: [
                 {
                     type: 'category',
-                    data: ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'],
+                    data: [...dataX],
                     axisTick: {
                         alignWithLabel: true
                     }
@@ -48,7 +79,7 @@ function Com(props) {
             ],
             series: [
                 {
-                    name: '发电量',
+                    name: t('发电量'),
                     type: 'bar',
                     itemStyle: {
                         normal: {
@@ -56,23 +87,19 @@ function Com(props) {
                         }
                     },
                     // barWidth: '60%',
-                    data: [0.8, 1.6, 0.4, 2.2, 0.8, 1.2, 1.5, 1.7, 1.6]
+                    data:[...dataY]
                 }
             ]
         });
-    };
-
-    useEffect(() => {
-        getOptions();
-    }, []);
+    }
     return (
         <div className={styles.content}>
             <CardModel
                 title={
-                    "发电量统计"
+                    t("发电量统计")
                 }
                 filterPart={
-                    <DatePicker />
+                    <DatePicker onChange={onChange} defaultValue={date}/>
                 }
                 content={
                     <ReactECharts option={options} style={{height: '100%'}}  />

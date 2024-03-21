@@ -197,7 +197,6 @@ function Com(props) {
             apiInsertPlant({ ...value, }))
         if (data.data) {
             getData();
-            console.log(value,1111111);
         } else {
             message.error(data.msg)
         }
@@ -206,10 +205,8 @@ function Com(props) {
         let data = await apideletePlantById({ plantId: selectId });
         if (data.data) {
             getData();
-            //   message.success(data.msg)
         };
         setIsOpenDel(!isOpenDel)
-
     }
    
     return (

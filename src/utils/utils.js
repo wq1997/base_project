@@ -49,7 +49,7 @@ export const getLabel = (columns, value) => {
         const label = columns[0]?.find(item => item.value===value[0])?.label;
         return label;
     }
-    return "";
+    return "";   
 }
 
 export function getQueryString(name) {
@@ -75,3 +75,28 @@ export function addColorAlpha(colorCode, alpha) {
   }
 }
 
+/***  
+ *    前端生成excel 表格(基于 js-export-excel 插件的二次封装)
+ *    fileName:excel文件名
+ *    sheetData: 第一行的实例数据
+ *    sheetFilter:  和  sheetData 一一对应
+ *    sheetHeader:表头
+ *    option.datas:  一个对象表示一个表格
+ *    columnWidths: 列宽
+ *    
+ * ***/
+export const  downLoadExcelMode = (fileName,sheetData,sheetFilter,sheetHeader,sheetName="sheet") =>{
+  var option={};
+  option.fileName = fileName
+  option.datas=[{
+       sheetData:sheetData,
+       sheetName:sheetName,
+       sheetFilter:sheetFilter,
+       sheetHeader:sheetHeader,
+       columnWidths: ['8','4'],
+      },
+  ];
+  const ExportJsonExcel = require("js-export-excel");
+  var toExcel=new ExportJsonExcel(option);
+  toExcel.saveExcel();
+}

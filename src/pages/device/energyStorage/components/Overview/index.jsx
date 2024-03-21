@@ -349,7 +349,7 @@ function Overview(props) {
                                     )
                                 })} */}
 
-                                <Table columns={alarmTableColums} dataSource={alarms} size="middle" />
+                                <Table columns={alarmTableColums} dataSource={alarms} size="middle" scroll={{y:100}} />
                             </div>
                         } />
                 </div>

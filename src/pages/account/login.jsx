@@ -10,7 +10,9 @@ import styles from "./index.less";
 import { history, useDispatch, FormattedMessage } from "umi";
 import { useEffect, useState } from "react";
 import { getBaseUrl } from '@/services/request'
-import img from '../../../src/assets/imges/bgimg.png'
+import img from '../../../src/assets/imges/login.png'
+import img_title from '../../../src/assets/imges/login_title.png'
+
 const { Title } = Typography;
 
 const Login = () => {
@@ -76,6 +78,9 @@ const Login = () => {
       className={styles.login}
     >
       <img src={img} style={{ width: '100%', height: '100%', objectFit: 'cover', verticalAlign: 'middle' }} />
+      <img src={img_title} style={{  height: '30px',  position: 'absolute',top:'80px',left:'80px' }} alt="" />
+      <Title level={1} style={{ position: 'absolute',top:'80px',left:'80px',color:'#273667',fontFamily:'DingTalkJinBuTi',fontSize:'64px' }}><FormattedMessage id="app.title" /></Title>
+
       <div
         style={{
           width: 600,
@@ -92,16 +97,16 @@ const Login = () => {
             left: '50%',
             transform: 'translate(-50%,-50%)',
             background:token.cardBgc,
-            padding: '70px 30px',
+            padding: '90px 50px 40px 50px',
             borderRadius: '24px',
           }}
         >
-          <Title level={2} style={{ marginBottom: 50, color: token.colorPrimary }}><FormattedMessage id="app.title" /></Title>
+          <Title level={2} style={{ marginBottom: 50, color: token.titleColor }}><FormattedMessage id="app.Welcometologin" /></Title>
           <Form
             onFinish={onFinish}
             autoComplete="off"
             style={{
-              width: 450
+              width: 350
             }}
           >
             <Form.Item

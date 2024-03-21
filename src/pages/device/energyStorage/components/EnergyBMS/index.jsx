@@ -27,15 +27,14 @@ const Cabinet = () => {
     const onChangeTab = key => {
         setActiveKey(key);
         history.push(`${pathname}?PageKey=${getQueryString("PageKey")}&pageType=${pageType}&activeKey=${key}&id=${id}`);
-
     };
-
+    console.log('RealtimeData', activeKey)
     return (
         <div style={{height: '100%'}}>
             <Tab activeKey={activeKey} TabItem={PageTypeList} onChange={onChangeTab}/>
             <div className={styles.content} style={{backgroundColor: token.cardBgc,padding:'40px 30px',borderRadius: '0px 16px 0px 0px'}}>
                 {activeKey==="RealtimeData"&&<RealtimeData id={id}/>}
-                {activeKey==="MonitoringCurves"&&<MonitoringCurves />}
+                {activeKey==="MonitoringCurves"&&<MonitoringCurves id={id}/>}
                 {activeKey==="AdvancedAnalytics"&&<AdvancedAnalytics />}
                 {activeKey==="CellDetails"&&<CellDetails />}
             </div>

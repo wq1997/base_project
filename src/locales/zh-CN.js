@@ -36,7 +36,7 @@ export default {
         EarningsStatistics:'收益统计',
         DataComparison:'数据对比',
         ReportExport:'报表导出',
-
+        Welcometologin:'欢迎登录!',
     },
     device:{
         EnergyStorage:'储能',
