@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useIcon from "@/hooks/useIcon";
 import styles from "./index.less";
 
@@ -6,20 +6,48 @@ const RealtimeIncome = () => {
     const Icon = useIcon();
     const [data, setData] = useState([
         {
-            data: 10000,
+            data: 0,
             unit: '元',
             label: '光伏收益',
             icon: 'icon-guangfushouyi',
             color: '#45BDF9'
         },
         {
-            data: 100,
+            data: 0,
             unit: '元',
             label: '储能收益',
             icon: 'icon-chunengshouyi',
             color: '#AC2EF5'
         }
     ])
+
+    const getGccPowerStatistics = async () => {
+        const res = await getGccPowerStatisticsServe();
+        if(res?.data?.data){
+            const data = res?.data?.data;
+            setData([
+                {
+                    data: data?.pvProfit,
+                    unit: '元',
+                    label: '光伏收益',
+                    icon: 'icon-guangfushouyi',
+                    color: '#45BDF9'
+                },
+                {
+                    data: data?.energyProfit,
+                    unit: '元',
+                    label: '储能收益',
+                    icon: 'icon-chunengshouyi',
+                    color: '#AC2EF5'
+                }
+            ])
+        }
+    }
+
+    useEffect(()=>{
+        getGccPowerStatistics();
+    }, [])
+
     return (
         <div className={styles.content}>
             {
