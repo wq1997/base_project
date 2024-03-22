@@ -2,9 +2,9 @@ import { Button, Radio } from 'antd';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import styles from './index.less'
-import { IconButton, Iconify } from '@/components';
+import { Iconify } from '@/components';
 import { useResponsive } from '@/hooks/use-reponsive';
-
+import NewStrategy from './newStrategy';
 
 export default function CalendarHeader({ now, view, onMove, onCreate, onViewTypeChange }) {
   const { screenMap } = useResponsive();
@@ -54,12 +54,7 @@ export default function CalendarHeader({ now, view, onMove, onCreate, onViewType
       </div>
 
       <div className={styles.rightGroup}>
-        <Button className="ml-2" type="primary" onClick={() => onCreate()}>
-          <div className=" flex items-center justify-center">
-            <Iconify icon="material-symbols:add" size={24} />
-            新建策略
-          </div>
-        </Button>
+        <NewStrategy />
         <Button className={styles.centerButton} type="primary" onClick={() => onCreate()}>
           创建策略执行日程                
         </Button>
