@@ -135,13 +135,13 @@ const Company = ({ uploadOpen, onClose }) => {
                             label: "name",
                             value: "code",
                         }}
-                    // options={companies}
-                    // onChange={value => {
-                    //     const { contractedResponsePower } = companies?.find(
-                    //         item => item?.code == value
-                    //     );
-                    //     setContractedResponsePower(contractedResponsePower);
-                    // }}
+                        // options={companies}
+                        // onChange={value => {
+                        //     const { contractedResponsePower } = companies?.find(
+                        //         item => item?.code == value
+                        //     );
+                        //     setContractedResponsePower(contractedResponsePower);
+                        // }}
                     />
                 </Form.Item>
 
@@ -206,10 +206,10 @@ const Company = ({ uploadOpen, onClose }) => {
                             { label: "堆", value: 1 },
                             { label: "簇", value: 2 },
                         ]}
-                    // fieldNames={{
-                    //     label: "name",
-                    //     value: "code",
-                    // }}
+                        // fieldNames={{
+                        //     label: "name",
+                        //     value: "code",
+                        // }}
                     />
                 </Form.Item>
 

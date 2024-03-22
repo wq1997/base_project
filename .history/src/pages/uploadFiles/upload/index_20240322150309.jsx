@@ -1,27 +1,17 @@
 import React, { useState, useEffect } from "react";
-import {
-    message,
-    Button,
-    Form,
-    Input,
-    Modal,
-    Select,
-    DatePicker,
-    Space,
-    InputNumber,
-    Tooltip,
-} from "antd";
-import { PlusCircleOutlined, PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
+import { message, Button, Form, Input, Modal, Select, DatePicker, Space, InputNumber } from "antd";
+import { PlusCircleOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import { Title } from "@/components";
 import { MyUpload } from "@/components";
 import "./index.less";
 
 const uploadUrl = process.env.API_URL_1 + "/attachment/upload2";
+console.log(uploadUrl);
 
 const Company = ({ uploadOpen, onClose }) => {
     const [form] = Form.useForm();
-    const [testFiles, setTestFiles] = useState([]);
+    const [testFiles, setTestFiles] = useState([{ name: undefined, value: undefined }]);
     const [editData, setEditData] = useState();
 
     const addTestFiles = () => {
@@ -44,12 +34,6 @@ const Company = ({ uploadOpen, onClose }) => {
     };
 
     const onFinish = async values => {
-        return console.log(
-            values?.files?.map(item => ({
-                name: item?.name,
-                fileId: item?.value[0]?.name,
-            }))
-        );
         const { appointedTimeFrom, appointedTimeTo } = values;
         const res = await saveEnterRecordServer({
             ...values,
@@ -135,13 +119,13 @@ const Company = ({ uploadOpen, onClose }) => {
                             label: "name",
                             value: "code",
                         }}
-                    // options={companies}
-                    // onChange={value => {
-                    //     const { contractedResponsePower } = companies?.find(
-                    //         item => item?.code == value
-                    //     );
-                    //     setContractedResponsePower(contractedResponsePower);
-                    // }}
+                        // options={companies}
+                        // onChange={value => {
+                        //     const { contractedResponsePower } = companies?.find(
+                        //         item => item?.code == value
+                        //     );
+                        //     setContractedResponsePower(contractedResponsePower);
+                        // }}
                     />
                 </Form.Item>
 
@@ -206,123 +190,65 @@ const Company = ({ uploadOpen, onClose }) => {
                             { label: "堆", value: 1 },
                             { label: "簇", value: 2 },
                         ]}
-                    // fieldNames={{
-                    //     label: "name",
-                    //     value: "code",
-                    // }}
+                        // fieldNames={{
+                        //     label: "name",
+                        //     value: "code",
+                        // }}
                     />
                 </Form.Item>
 
                 <Form.Item
-                    label={"测试单元"}
-                    name="files"
+                    label="测试单元"
+                    name="testFiles"
                     rules={[
                         {
                             required: true,
                             message: "请输入测试单元",
                         },
-                        ({ getFieldValue }) => ({
-                            validator(_, value) {
-                                console.log(2222, getFieldValue("dimension"));
-                            },
-                        }),
                     ]}
-                    style={{ marginBottom: 0 }}
                 >
-                    <Form.List name="files">
-                        {(fields, { add, remove }) => (
-                            <>
-                                {fields.map(({ key, name, ...restField }, index) => (
-                                    <Space
-                                        key={key}
-                                        style={{
-                                            display: "flex",
-                                            marginBottom: 8,
+                    {testFiles?.map((item, index) => {
+                        return (
+                            <Space style={{ marginBottom: "10px", width: "100%" }} key={index}>
+                                <Input
+                                    placeholder="最多输入30个字符"
+                                    maxLength={30}
+                                    style={{ width: "260px" }}
+                                    value={item.name}
+                                    onChange={e => {
+                                        //  testFiles[index].name = e.target?.value
+                                        const enterName = e.target?.value;
+                                        const _testFiles = [...testFiles];
+                                        _testFiles[index].name = enterName;
+                                        setTestFiles(_testFiles);
+                                    }}
+                                />
+                                {/* {item?.value?.fileName ? (
+                                    item?.value?.fileName
+                                ) : (
+                                    <MyUpload
+                                        url={uploadUrl}
+                                        maxCount={1}
+                                        onChange={files => {
+                                            testFiles[index].value = files[files?.length - 1];
                                         }}
-                                        align="baseline"
-                                    >
-                                        <Form.Item
-                                            {...restField}
-                                            name={[name, "name"]}
-                                            rules={[
-                                                {
-                                                    required: true,
-                                                    message: "请输入测试单元名称",
-                                                },
-                                            ]}
-                                            style={{ marginBottom: 0 }}
-                                        >
-                                            <Input
-                                                placeholder="最多输入30个字符"
-                                                maxLength={30}
-                                                style={{ width: "200px" }}
-                                            />
-                                        </Form.Item>
-                                        <Form.Item
-                                            {...restField}
-                                            name={[name, "value"]}
-                                            rules={[
-                                                {
-                                                    required: true,
-                                                    message: "请上传文件",
-                                                },
-                                            ]}
-                                            style={{ marginBottom: 0 }}
-                                        >
-                                            {testFiles[index]?.value ? (
-                                                <Tooltip title={testFiles[index]?.value?.name}>
-                                                    <div
-                                                        style={{
-                                                            width: "144px",
-                                                            whiteSpace: "nowrap",
-                                                            overflow: "hidden",
-                                                            textOverflow: "ellipsis",
-                                                        }}
-                                                    >
-                                                        {testFiles[index]?.value?.name}
-                                                    </div>
-                                                </Tooltip>
-                                            ) : (
-                                                <MyUpload
-                                                    url={uploadUrl}
-                                                    maxCount={1}
-                                                    onChange={files => {
-                                                        const _testFiles = [...testFiles];
-                                                        _testFiles[index].value =
-                                                            files[files?.length - 1];
+                                    />
+                                )} */}
 
-                                                        setTestFiles(_testFiles);
-                                                    }}
-                                                />
-                                            )}
-                                        </Form.Item>
-                                        <MinusCircleOutlined
-                                            onClick={() => {
-                                                remove(name);
-                                                const _testFiles = [...testFiles];
-                                                _testFiles.splice(index, 1);
-                                                setTestFiles(_testFiles);
-                                            }}
-                                        />
-                                    </Space>
-                                ))}
-                                <Form.Item>
-                                    <Button
-                                        type="dashed"
-                                        onClick={() => {
-                                            const _testFiles = [...testFiles, { value: undefined }];
-                                            setTestFiles(_testFiles);
-                                            add();
-                                        }}
-                                        block
-                                        icon={<PlusOutlined />}
-                                    >
-                                        点击添加
-                                    </Button>
-                                </Form.Item>
-                            </>
-                        )}
-                    </Form.List>
+                                {index == 0 ? (
+                                    <PlusCircleOutlined
+                                        onClick={addTestFiles}
+                                        style={{ cursor: "pointer", fontSize: 17 }}
+                                    />
+                                ) : (
+                                    <MinusCircleOutlined
+                                        onClick={() => minusTestFiles(index)}
+                                        style={{ cursor: "pointer", fontSize: 17 }}
+                                    />
+                                )}
+                            </Space>
+                        );
+                    })}
                 </Form.Item>
 
                 <Form.Item label="备注" name="remark">
