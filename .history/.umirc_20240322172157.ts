@@ -31,20 +31,20 @@ export default defineConfig({
             API_URL_3: apiUrl[`${UMI_ENV}3`] || apiUrl[`test3`],
         },
     },
-    proxy: {
-        "/api": {
-            target: "http://118.89.73.210:9000",
-            changeOrigin: true,
-            pathRewrite: { "^/api": "" },
-        },
-    },
     alias: {
         "@/permissions": path.resolve(__dirname, "src/permissions"),
         "@/hooks": path.resolve(__dirname, "src/hooks"),
         "@/utils": path.resolve(__dirname, "src/utils"),
         "@/components": path.resolve(__dirname, "src/components"),
     },
-
+    
+proxy：{
+  '/api':{
+     target:'http://1.99.97.156:8088/group',  // 接口域名
+     changeOrigin:true,
+     secure:false,    // 如果是https接口，需配置这个参数
+   }
+  },
     chainWebpack: config => {
         config
             .plugin("replace")
@@ -111,8 +111,9 @@ export default defineConfig({
                     },
                 },
             },
+           
         });
-
+        
         if (process.env.NODE_ENV === "production") {
             config.plugin("compression-webpack-plugin").use(
                 new CompressionWebpackPlugin({

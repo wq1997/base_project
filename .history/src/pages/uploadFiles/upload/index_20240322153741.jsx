@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { message, Button, Form, Input, Modal, Select, DatePicker, Space, Upload } from "antd";
+import { message, Button, Form, Input, Modal, Select, DatePicker, Space, InputNumber } from "antd";
 import { PlusCircleOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import { Title } from "@/components";
 import { MyUpload } from "@/components";
 import "./index.less";
-import { save,login } from '@/services/api'
 
 const uploadUrl = process.env.API_URL_1 + "/attachment/upload2";
 console.log(uploadUrl);
@@ -35,20 +34,13 @@ const Company = ({ uploadOpen, onClose }) => {
     };
 
     const onFinish = async values => {
-        console.log(values)
-        const formData = new FormData();
-        values.files?.fileList.forEach(file => {
-            formData.append("file", file);
-        });
-        console.log(formData)
+        return console.log(values);
         const { appointedTimeFrom, appointedTimeTo } = values;
-        const res = await save({
+        const res = await saveEnterRecordServer({
             ...values,
-            files: formData,
-            // username:'zhangsan',
-            // password:1234567
+            appointedTimeFrom: dayjs(appointedTimeFrom).format("YYYY-MM-DD HH:mm"),
+            appointedTimeTo: dayjs(appointedTimeTo).format("YYYY-MM-DD HH:mm"),
         });
-        files
         if (res?.data?.status == "SUCCESS") {
             message.success("录入成功");
             onClose(true);
@@ -204,10 +196,10 @@ const Company = ({ uploadOpen, onClose }) => {
                             { label: "堆", value: "HEAP" },
                             { label: "簇", value: 2 },
                         ]}
-                    // fieldNames={{
-                    //     label: "name",
-                    //     value: "code",
-                    // }}
+                        // fieldNames={{
+                        //     label: "name",
+                        //     value: "code",
+                        // }}
                     />
                 </Form.Item>
 
@@ -233,13 +225,13 @@ const Company = ({ uploadOpen, onClose }) => {
                 </Form.Item>
 
                 <Form.Item label="文件" name="files">
-                    <Upload
-
-                         
-
-                    >
-                        <Button  >Click to Upload</Button>
-                    </Upload>
+                    <MyUpload
+                        url={uploadUrl}
+                        files={editData?.contractAtt?.map(item => ({
+                            ...item,
+                            name: item.fileName,
+                        }))}
+                    />
                 </Form.Item>
 
                 <Form.Item

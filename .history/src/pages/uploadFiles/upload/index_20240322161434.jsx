@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import { Title } from "@/components";
 import { MyUpload } from "@/components";
 import "./index.less";
-import { save,login } from '@/services/api'
+import { save } from '@/services/api'
 
 const uploadUrl = process.env.API_URL_1 + "/attachment/upload2";
 console.log(uploadUrl);
@@ -45,8 +45,6 @@ const Company = ({ uploadOpen, onClose }) => {
         const res = await save({
             ...values,
             files: formData,
-            // username:'zhangsan',
-            // password:1234567
         });
         files
         if (res?.data?.status == "SUCCESS") {
@@ -235,7 +233,7 @@ const Company = ({ uploadOpen, onClose }) => {
                 <Form.Item label="文件" name="files">
                     <Upload
 
-                         
+                        maxCount={1}
 
                     >
                         <Button  >Click to Upload</Button>

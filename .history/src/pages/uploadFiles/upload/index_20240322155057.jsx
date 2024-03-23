@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import { Title } from "@/components";
 import { MyUpload } from "@/components";
 import "./index.less";
-import { save,login } from '@/services/api'
+import { save } from '@/services/api'
 
 const uploadUrl = process.env.API_URL_1 + "/attachment/upload2";
 console.log(uploadUrl);
@@ -35,20 +35,17 @@ const Company = ({ uploadOpen, onClose }) => {
     };
 
     const onFinish = async values => {
-        console.log(values)
         const formData = new FormData();
         values.files?.fileList.forEach(file => {
             formData.append("file", file);
         });
-        console.log(formData)
+        return console.log(values);
         const { appointedTimeFrom, appointedTimeTo } = values;
         const res = await save({
             ...values,
-            files: formData,
-            // username:'zhangsan',
-            // password:1234567
+
         });
-        files
+        return
         if (res?.data?.status == "SUCCESS") {
             message.success("录入成功");
             onClose(true);
@@ -235,7 +232,7 @@ const Company = ({ uploadOpen, onClose }) => {
                 <Form.Item label="文件" name="files">
                     <Upload
 
-                         
+                        maxCount={1}
 
                     >
                         <Button  >Click to Upload</Button>

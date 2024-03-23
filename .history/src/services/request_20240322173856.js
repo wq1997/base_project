@@ -2,9 +2,9 @@ import axios from "axios";
 import { getDvaApp } from "umi";
 
 export const getBaseUrl = () => {
-    const { API_URL1= '' } = process.env;
-    console.log("API_URL", API_URL1)
-    return API_URL1;
+    const { API_URL = '' } = process.env;
+    console.log("API_URL", API_URL)
+    return API_URL;
 };
 const getToken = () => localStorage.getItem("Token");
 
@@ -17,7 +17,7 @@ const instance = axios.create({
 })
 
 instance.interceptors.request.use(config => {
-    config.headers.Authorization = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsiaWQiOjIsInVzZXJuYW1lIjoiemhhbmdzYW4ifSwiZXhwIjoxNzExMTQ1ODA5fQ.OktStkDzYPvWAVgXKAa9BAdl06r24J7BJLYyutrwQUU'
+    config.headers.Authorization = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsiaWQiOjIsInVzZXJuYW1lIjoiemhhbmdzYW4ifSwiZXhwIjoxNzExMTM1NzI0fQ.lh3UonVj6PH8HRE8LtfbbV6BkW0P5xuiZFmPk5d9e_0'
     return config;
 }, error => {
     return Promise.reject(error);

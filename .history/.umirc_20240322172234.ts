@@ -33,9 +33,10 @@ export default defineConfig({
     },
     proxy: {
         "/api": {
-            target: "http://118.89.73.210:9000",
+            target: "
+            http://118.89.73.210:9000", // 接口域名
             changeOrigin: true,
-            pathRewrite: { "^/api": "" },
+            secure: false, // 如果是https接口，需配置这个参数
         },
     },
     alias: {

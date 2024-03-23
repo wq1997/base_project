@@ -42,11 +42,9 @@ const Company = ({ uploadOpen, onClose }) => {
         });
         console.log(formData)
         const { appointedTimeFrom, appointedTimeTo } = values;
-        const res = await save({
+        const res = await login({
             ...values,
             files: formData,
-            // username:'zhangsan',
-            // password:1234567
         });
         files
         if (res?.data?.status == "SUCCESS") {

@@ -32,10 +32,9 @@ export default defineConfig({
         },
     },
     proxy: {
-        "/api": {
+        "/": {
             target: "http://118.89.73.210:9000",
             changeOrigin: true,
-            pathRewrite: { "^/api": "" },
         },
     },
     alias: {

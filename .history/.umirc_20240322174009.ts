@@ -35,7 +35,7 @@ export default defineConfig({
         "/api": {
             target: "http://118.89.73.210:9000",
             changeOrigin: true,
-            pathRewrite: { "^/api": "" },
+            rewrite: (path) => path.replace(/^\/api/, '')
         },
     },
     alias: {

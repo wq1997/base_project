@@ -17,7 +17,7 @@ const instance = axios.create({
 })
 
 instance.interceptors.request.use(config => {
-    config.headers.Authorization = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsiaWQiOjIsInVzZXJuYW1lIjoiemhhbmdzYW4ifSwiZXhwIjoxNzExMTQ1ODA5fQ.OktStkDzYPvWAVgXKAa9BAdl06r24J7BJLYyutrwQUU'
+    config.headers.Authorization = ' .eyJjbGFpbXMiOnsiaWQiOjIsInVzZXJuYW1lIjoiemhhbmdzYW4ifSwiZXhwIjoxNzExMTM1NzI0fQ.lh3UonVj6PH8HRE8LtfbbV6BkW0P5xuiZFmPk5d9e_0'
     return config;
 }, error => {
     return Promise.reject(error);

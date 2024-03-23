@@ -31,19 +31,16 @@ export default defineConfig({
             API_URL_3: apiUrl[`${UMI_ENV}3`] || apiUrl[`test3`],
         },
     },
-    proxy: {
-        "/api": {
-            target: "http://118.89.73.210:9000",
-            changeOrigin: true,
-            pathRewrite: { "^/api": "" },
-        },
-    },
+    proxy：{
+      
+      },
     alias: {
         "@/permissions": path.resolve(__dirname, "src/permissions"),
         "@/hooks": path.resolve(__dirname, "src/hooks"),
         "@/utils": path.resolve(__dirname, "src/utils"),
         "@/components": path.resolve(__dirname, "src/components"),
     },
+    
 
     chainWebpack: config => {
         config
@@ -111,8 +108,9 @@ export default defineConfig({
                     },
                 },
             },
+           
         });
-
+        
         if (process.env.NODE_ENV === "production") {
             config.plugin("compression-webpack-plugin").use(
                 new CompressionWebpackPlugin({

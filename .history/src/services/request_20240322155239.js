@@ -2,14 +2,14 @@ import axios from "axios";
 import { getDvaApp } from "umi";
 
 export const getBaseUrl = () => {
-    const { API_URL1= '' } = process.env;
-    console.log("API_URL", API_URL1)
-    return API_URL1;
+    const { API_URL = '' } = process.env;
+    console.log("API_URL", API_URL)
+    return API_URL;
 };
 const getToken = () => localStorage.getItem("Token");
 
 const instance = axios.create({
-    baseURL:'/api',
+    baseURL: getBaseUrl(),
     timeout: 10000,
     headers: {
         Authorization: getToken()
@@ -17,7 +17,7 @@ const instance = axios.create({
 })
 
 instance.interceptors.request.use(config => {
-    config.headers.Authorization = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsiaWQiOjIsInVzZXJuYW1lIjoiemhhbmdzYW4ifSwiZXhwIjoxNzExMTQ1ODA5fQ.OktStkDzYPvWAVgXKAa9BAdl06r24J7BJLYyutrwQUU'
+    config.headers.Authorization = 'Authorization'
     return config;
 }, error => {
     return Promise.reject(error);
@@ -30,7 +30,6 @@ instance.interceptors.response.use(response => {
         return Promise.reject(response);
     }
 }, error => {
-    console.dir('err',error)
     const { config, code, request, response, isAxiosError, toJSON } = error;
     if (response) {
         errorHandle(response.status, response.data.message);

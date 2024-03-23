@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { message, Button, Form, Input, Modal, Select, DatePicker, Space, Upload } from "antd";
+import { message, Button, Form, Input, Modal, Select, DatePicker, Space, InputNumber } from "antd";
 import { PlusCircleOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import { Title } from "@/components";
 import { MyUpload } from "@/components";
 import "./index.less";
-import { save,login } from '@/services/api'
 
 const uploadUrl = process.env.API_URL_1 + "/attachment/upload2";
 console.log(uploadUrl);
@@ -35,20 +34,13 @@ const Company = ({ uploadOpen, onClose }) => {
     };
 
     const onFinish = async values => {
-        console.log(values)
-        const formData = new FormData();
-        values.files?.fileList.forEach(file => {
-            formData.append("file", file);
-        });
-        console.log(formData)
+        return console.log(values)
         const { appointedTimeFrom, appointedTimeTo } = values;
-        const res = await save({
+        const res = await saveEnterRecordServer({
             ...values,
-            files: formData,
-            // username:'zhangsan',
-            // password:1234567
+            appointedTimeFrom: dayjs(appointedTimeFrom).format("YYYY-MM-DD HH:mm"),
+            appointedTimeTo: dayjs(appointedTimeTo).format("YYYY-MM-DD HH:mm"),
         });
-        files
         if (res?.data?.status == "SUCCESS") {
             message.success("录入成功");
             onClose(true);
@@ -128,12 +120,11 @@ const Company = ({ uploadOpen, onClose }) => {
                             label: "name",
                             value: "code",
                         }}
-                        options={[
-                            {
-                                name: "1",
-                                code: "BMS_SYSTEM",
-                            },
-                        ]}
+                        options={[{
+                            name: '1',
+                            value: 'BMS_SYSTEM'
+                        }]}
+
                     />
                 </Form.Item>
 
@@ -153,12 +144,10 @@ const Company = ({ uploadOpen, onClose }) => {
                             label: "name",
                             value: "code",
                         }}
-                        options={[
-                            {
-                                name: "1",
-                                code: "BMS_SYSTEM_CAI_HEAP",
-                            },
-                        ]}
+                        options={[{
+                            name: '1',
+                            value: 'BMS_SYSTEM_CAI_HEAP'
+                        }]}
                     />
                 </Form.Item>
 
@@ -201,7 +190,7 @@ const Company = ({ uploadOpen, onClose }) => {
                     <Select
                         placeholder="请选择设取值维度"
                         options={[
-                            { label: "堆", value: "HEAP" },
+                            { label: "堆", value: 'HEAP' },
                             { label: "簇", value: 2 },
                         ]}
                     // fieldNames={{
@@ -213,7 +202,7 @@ const Company = ({ uploadOpen, onClose }) => {
 
                 <Form.Item
                     label="测试单元"
-                    name="testUnit"
+                    name="testFiles"
                     rules={[
                         {
                             required: true,
@@ -221,25 +210,62 @@ const Company = ({ uploadOpen, onClose }) => {
                         },
                     ]}
                 >
-                    <Input
-                        placeholder="最多输入30个字符"
-                        maxLength={30}
-                        style={{ width: "260px" }}
-                    />
+                    {testFiles?.map((item, index) => {
+                        return (
+                            <Space style={{ marginBottom: "10px", width: "100%" }} key={index}>
+                                <Input
+                                    placeholder="最多输入30个字符"
+                                    maxLength={30}
+                                    style={{ width: "260px" }}
+                                    value={item.name}
+                                    onChange={e => {
+                                        //  testFiles[index].name = e.target?.value
+                                        const enterName = e.target?.value;
+                                        const _testFiles = [...testFiles];
+                                        _testFiles[index].name = enterName;
+                                        setTestFiles(_testFiles);
+                                    }}
+                                />
+                                {/* {item?.value?.fileName ? (
+                                    item?.value?.fileName
+                                ) : (
+                                    <MyUpload
+                                        url={uploadUrl}
+                                        maxCount={1}
+                                        onChange={files => {
+                                            testFiles[index].value = files[files?.length - 1];
+                                        }}
+                                    />
+                                )} */}
+
+                                {index == 0 ? (
+                                    <PlusCircleOutlined
+                                        onClick={addTestFiles}
+                                        style={{ cursor: "pointer", fontSize: 17 }}
+                                    />
+                                ) : (
+                                    <MinusCircleOutlined
+                                        onClick={() => minusTestFiles(index)}
+                                        style={{ cursor: "pointer", fontSize: 17 }}
+                                    />
+                                )}
+                            </Space>
+                        );
+                    })}
                 </Form.Item>
 
                 <Form.Item label="备注" name="remark">
                     <Input.TextArea placeholder="请输入备注" />
                 </Form.Item>
 
-                <Form.Item label="文件" name="files">
-                    <Upload
-
-                         
-
-                    >
-                        <Button  >Click to Upload</Button>
-                    </Upload>
+                <Form.Item label="文件" name="contractAtt">
+                    <MyUpload
+                        url={uploadUrl}
+                        files={editData?.contractAtt?.map(item => ({
+                            ...item,
+                            name: item.fileName,
+                        }))}
+                    />
                 </Form.Item>
 
                 <Form.Item
