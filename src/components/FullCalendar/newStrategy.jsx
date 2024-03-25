@@ -19,10 +19,12 @@ import {
     Modal,
     Tooltip,
     DatePicker,
+    message,
 } from "antd";
 import styles from "./newStrategy.less";
 import { useState } from 'react';
 import { FORM_REQUIRED_RULE } from "@/utils/constants";
+import { EditOutlined } from '@ant-design/icons';
 import moment from 'moment';
 
 const colon = false;
@@ -31,14 +33,29 @@ const tabsList = [
     {label: '基础配置', key: 'BaseConfig'},
     {label: '充放电配置', key: 'ElectricConfig'},
 ]
+const typeList = [
+    {label: '尖',value: 'pointed'},
+    {label: '峰',value: 'peak'},
+    {label: '平',value: 'flat'},
+    {label: '谷',value: 'valley'},
+];
 
-const fillInt = (max) => {
-    return new Array(max).fill(0).map((item, index)=>{
-        if(index<9){
-            return `0${index+1}`
-        }
-        return index+1;
-    });
+const fillInt = (max,includeZero) => {
+    if(includeZero){
+        return new Array(max+1).fill(0).map((item, index)=>{
+            if(index<=9){
+                return `0${index}`
+            }
+            return `${index}`;
+        });
+    }else {
+        return new Array(max).fill(0).map((item, index)=>{
+            if(index<9){
+                return `0${index+1}`
+            }
+            return `${index+1}`;
+        });
+    }
 }
 
 const NewStrategy = () => {
@@ -47,11 +64,16 @@ const NewStrategy = () => {
     const [form2] = Form.useForm(); // 基础配置
     const [form3] = Form.useForm(); // 创建年度执行计划
     const [form4] = Form.useForm(); // 创建策略执行日程
+    const [form5] = Form.useForm(); // 新增策略
+    const [form6] = Form.useForm(); // 策略详情
     const [data, setData] = useState({}); // 所有的data
     const [drawerOpen, setDrawerOpen] = useState(true); // 控制新建策略右边抽屉开关
     const [activeKey, setActiveKey] = useState('BaseConfig');
     const [createYearExcuteOpen, setCreateYearExcuteOpen] = useState(false);
     const [createExecutionScheduleOpen, setCreateExecutionScheduleOpen] = useState(false); // 创建策略执行日程
+    const [newPlanOpen, setNewPlanOpen] = useState(false); // 新增策略
+    const [editPlanOpen, setEditPlanOpen] = useState(false); // 策略详情
+    const [editKey, setEditKey] = useState(-1); // 新增时重新编辑策略列表key
 
     const [strategyDatasource, setStrategyDatasource] = useState([
         {
@@ -111,7 +133,18 @@ const NewStrategy = () => {
             render: (_, record, index)=>{
                 return (
                     <Space>
-                        <Typography.Link style={{color: token.colorPrimary}}>详情</Typography.Link>
+                        <Typography.Link 
+                            style={{color: token.colorPrimary}}
+                            onClick={()=>{
+                                form6.setFieldsValue({
+                                    ...record
+                                });
+                                setEditPlanOpen(true);
+                                setEditKey(index);
+                            }}
+                        >
+                            详情
+                        </Typography.Link>
                         <Typography.Link 
                             style={{color: token.deleteBtnColor}}
                             onClick={()=>{
@@ -389,7 +422,7 @@ const NewStrategy = () => {
                             </Col>
                         </Row>
                         <Form.Item
-                            name="EnergyStorageControlMode"
+                            name="energyStorageControlMode"
                             label="储能控制模式"
                             labelCol={{
                                 span: 4
@@ -463,7 +496,19 @@ const NewStrategy = () => {
                                         <Button type="primary" onClick={()=>setCreateYearExcuteOpen(true)}>创建年度执行计划</Button>
                                         <Button type="primary" onClick={()=>setCreateExecutionScheduleOpen(true)}>创建策略执行日程</Button>
                                     </Space>
-                                    <Button type="primary">新增</Button>
+                                    <Button 
+                                        type="primary"
+                                        onClick={() => {
+                                            const { form2Data } = data;
+                                            if(form2Data?.flat&&form2Data?.peak&&form2Data?.pointed&&form2Data?.valley){
+                                                setNewPlanOpen(true);
+                                            }else{
+                                                message.error('请先填写基础配置中尖峰平谷电价！')
+                                            }
+                                        }}
+                                    >
+                                        新增
+                                    </Button>
                                 </Row>
                                 <Table 
                                     columns={strategyColumns}
@@ -550,7 +595,10 @@ const NewStrategy = () => {
                             <Row gutter={5}>
                                 <Col span={5}>
                                     <Form.Item name="month1" style={{marginBottom: 0}} rules={[FORM_REQUIRED_RULE]}>
-                                        <Select 
+                                        <Select
+                                            showSearch
+                                            filterOption={(input, option) =>
+                                                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
                                             placeholder="月"
                                             options={fillInt(12).map((item => {
                                                 return {
@@ -564,6 +612,9 @@ const NewStrategy = () => {
                                 <Col span={5}>
                                     <Form.Item name="day1" style={{marginBottom: 0}} rules={[FORM_REQUIRED_RULE]}>
                                         <Select 
+                                            showSearch
+                                            filterOption={(input, option) =>
+                                                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
                                             placeholder="日"
                                             options={fillInt(31).map((item => {
                                                 return {
@@ -584,6 +635,9 @@ const NewStrategy = () => {
                                         rules={[FORM_REQUIRED_RULE]}
                                     >
                                         <Select 
+                                            showSearch
+                                            filterOption={(input, option) =>
+                                                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
                                             placeholder="月"
                                             options={fillInt(12).map((item => {
                                                 return {
@@ -597,6 +651,9 @@ const NewStrategy = () => {
                                 <Col span={5}>
                                     <Form.Item name="day2" style={{marginBottom: 0}} rules={[FORM_REQUIRED_RULE]}>
                                         <Select 
+                                            showSearch
+                                            filterOption={(input, option) =>
+                                                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
                                             placeholder="日"
                                             options={fillInt(31).map((item => {
                                                 return {
@@ -653,6 +710,357 @@ const NewStrategy = () => {
                     </Form.Item>
                     <Form.Item label="备注" name="remark">
                             <Input.TextArea placeholder='描述'/>
+                    </Form.Item>
+                </Form>
+            </Modal>
+
+            {/* 新增策略 */}
+            <Modal
+                title={<Title title="新增策略"/>}
+                open={newPlanOpen}
+                onOk={async () => {
+                    const values = await form5.validateFields(['name', 'datasource']);
+                    console.log("新增策略", values);
+                    setNewPlanOpen(false);
+                    form5.resetFields();
+                    setStrategyDatasource([
+                        ...strategyDatasource,
+                        {
+                            ...values,
+                            creator: '创建者',
+                            createTime: moment().format("YYYY/MM/DD")
+                        }
+                    ]);
+                }}
+                width={980}
+                onCancel={()=>{
+                    setNewPlanOpen(false);
+                    form5.resetFields();
+                }}
+            >
+                <Form 
+                    form={form5}
+                    colon={false}
+                >
+                    <Form.Item label="策略名称" name="name" rules={[FORM_REQUIRED_RULE]}>
+                        <Input placeholder="请输入策略名称" style={{maxWidth: 320}} />
+                    </Form.Item>
+                    <Form.Item label="电价">
+                        <Row>
+                            <Col span={4}>尖：{data.form2Data?.pointed}</Col>
+                            <Col span={4}>峰：{data.form2Data?.peak}</Col>
+                            <Col span={4}>平：{data.form2Data?.flat}</Col>
+                            <Col span={4}>谷：{data.form2Data?.valley}</Col>
+                        </Row>
+                    </Form.Item>
+                    <Form.Item 
+                        name=""
+                        label="时段" 
+                        dependencies={['hour1', 'min1', 'hour2', 'min2']}
+                        rules={[
+                            ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                    const hour1 = getFieldValue('hour1');
+                                    const min1 = getFieldValue('min1');
+                                    const hour2 = getFieldValue('hour2');
+                                    const min2 = getFieldValue('min2');
+                                    if(hour1&&min1&&hour2&&min2){
+                                        const YMD = moment().format('YYYY-MM-DD');
+                                        const flag = moment(`${YMD} ${hour1}:${min1}`).isBefore(moment(`${YMD} ${hour2}:${min2}`));
+                                        if(!flag){
+                                            return Promise.reject('起始时间应该早于结束时间');
+                                        }
+                                    }
+                                    return Promise.resolve();
+                                },
+                            }),
+                        ]}
+                    >
+                            <Row gutter={5} style={{width: '90%'}}>
+                                <Col span={5}>
+                                    <Form.Item name="hour1" style={{marginBottom: 0}} rules={[FORM_REQUIRED_RULE]}>
+                                        <Select 
+                                            showSearch
+                                            filterOption={(input, option) =>
+                                                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
+                                            placeholder="时"
+                                            options={fillInt(23, true).map((item => {
+                                                return {
+                                                    label: item,
+                                                    value: item
+                                                }
+                                            }))}
+                                        />
+                                    </Form.Item>
+                                </Col>
+                                <Col span={5}>
+                                    <Form.Item name="min1" style={{marginBottom: 0}} rules={[FORM_REQUIRED_RULE]}>
+                                        <Select 
+                                            showSearch
+                                            filterOption={(input, option) =>
+                                                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
+                                            placeholder="分"
+                                            options={fillInt(59, true).map((item => {
+                                                return {
+                                                    label: item,
+                                                    value: item
+                                                }
+                                            }))}
+                                        />
+                                    </Form.Item>
+                                </Col>
+                                <Col span={1}>
+                                    <Row justify="center" style={{marginTop: 5}}>至</Row>
+                                </Col>
+                                <Col span={5}>
+                                    <Form.Item 
+                                        name="hour2" 
+                                        style={{marginBottom: 0}} 
+                                        rules={[FORM_REQUIRED_RULE]}
+                                    >
+                                        <Select 
+                                            showSearch
+                                            filterOption={(input, option) =>
+                                                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
+                                            placeholder="时"
+                                            options={fillInt(24, true).map((item => {
+                                                return {
+                                                    label: item,
+                                                    value: item
+                                                }
+                                            }))}
+                                        />
+                                    </Form.Item>
+                                </Col>
+                                <Col span={5}>
+                                    <Form.Item name="min2" style={{marginBottom: 0}} rules={[FORM_REQUIRED_RULE]}>
+                                        <Select 
+                                            showSearch
+                                            filterOption={(input, option) =>
+                                                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
+                                            placeholder="分"
+                                            options={fillInt(59, true).map((item => {
+                                                return {
+                                                    label: item,
+                                                    value: item
+                                                }
+                                            }))}
+                                        />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                    </Form.Item>
+                    <Row gutter={16}>
+                        <Col span={5}>
+                            <Form.Item
+                                label="类型"
+                                name="type"
+                            >
+                                <Select 
+                                    options={typeList}
+                                    placeholder="请选择"
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col span={5}>
+                            <Form.Item
+                                label="状态"
+                                name="status"
+                            >
+                                <Select 
+                                    options={[
+                                        {label: '充电',value: '充电'},
+                                        {label: '放电',value: '放电'},
+                                    ]}
+                                    placeholder="请选择"
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col span={5}>
+                            <Form.Item
+                                label="功率(KW)"
+                                name="power"
+                            >
+                                <InputNumber min={0} placeholder='请输入' />
+                            </Form.Item>
+                        </Col>
+                        <Col span={5}>
+                            <Form.Item
+                                label="目标SOC(%)"
+                                name="soc"
+                            >
+                                <InputNumber  min={0} placeholder='请输入'/>
+                            </Form.Item>
+                        </Col>
+                        <Col>
+                            <Space>
+                                <Button
+                                    onClick={async () => {
+                                        await form5.validateFields(['hour1', 'min1', 'hour2', 'min2']);
+                                        const values = await form5.getFieldsValue();
+                                        console.log('新增策略数据', values)
+                                        const datasource = await form5.getFieldValue('datasource') || [];
+                                        form5.setFieldsValue({
+                                            datasource: [
+                                                ...datasource,
+                                                {
+                                                    type: typeList.find(item => item.value === values.type)?.label,
+                                                    time: `${values?.hour1}:${values?.min1} -  ${values?.hour2}:${values?.min2}`,
+                                                    price: data.form2Data[values.type],
+                                                    status: values?.status,
+                                                    power: values?.power,
+                                                    soc: values?.soc
+                                                }
+                                            ]
+                                        })
+                                    }}
+                                >
+                                    +
+                                </Button>
+                                <Button
+                                    onClick={()=>{
+                                        form5.resetFields(['hour1','hour2', 'min1', 'min2', 'type', 'status', 'power', 'soc'])
+                                    }}
+                                >
+                                    -
+                                </Button>
+                            </Space>
+                        </Col>
+                    </Row>
+                    <Form.Item name="datasource" valuePropName="dataSource">
+                        <Table 
+                            columns={[
+                                {
+                                    title: '类型',
+                                    key: 'type',
+                                    dataIndex: 'type'
+                                },
+                                {
+                                    title: '时段',
+                                    key: 'time',
+                                    dataIndex: 'time'
+                                },
+                                {
+                                    title: '电价(元)',
+                                    key: 'price',
+                                    dataIndex: 'price'
+                                },
+                                {
+                                    title: '状态',
+                                    key: 'status',
+                                    dataIndex: 'status'
+                                },
+                                {
+                                    title: 'PCS功率(KW)',
+                                    key: 'power',
+                                    dataIndex: 'power'
+                                },
+                                {
+                                    title: '目标SOC(%)',
+                                    key: 'soc',
+                                    dataIndex: 'soc'
+                                }
+                            ]}
+                            scroll={{
+                                y: 500
+                            }}
+                            pagination={false}
+                        />
+                    </Form.Item>
+                </Form>
+            </Modal>
+
+
+            {/* 策略详情 */}
+            <Modal
+                title={<Title title="新增策略"/>}
+                open={editPlanOpen}
+                onOk={async () => {
+                    const values = await form6.validateFields(['name', 'datasource']);
+                    console.log("新增策略", values);
+                    setEditPlanOpen(false);
+                    form6.resetFields();
+                }}
+                width={980}
+                onCancel={()=>{
+                    setEditPlanOpen(false);
+                    form6.resetFields();
+                }}
+            >
+                <Form 
+                    form={form6}
+                    colon={false}
+                >
+                    <Form.Item label="策略名称" name="name" rules={[FORM_REQUIRED_RULE]}>
+                        <Input placeholder="请输入策略名称" style={{maxWidth: 320}} />
+                    </Form.Item>
+                    <Form.Item label="电价">
+                        <Row>
+                            <Col span={4}>尖：{data.form2Data?.pointed}</Col>
+                            <Col span={4}>峰：{data.form2Data?.peak}</Col>
+                            <Col span={4}>平：{data.form2Data?.flat}</Col>
+                            <Col span={4}>谷：{data.form2Data?.valley}</Col>
+                        </Row>
+                    </Form.Item>
+                    <Form.Item name="datasource" valuePropName="dataSource">
+                        <Table 
+                            
+                            columns={[
+                                {
+                                    title: '类型',
+                                    key: 'type',
+                                    dataIndex: 'type',
+                                    editable: true,
+                                    onCell: (record, index) => {
+                                        return {
+                                            ...record,
+                                            editing: index === editKey
+                                        }
+                                    }
+                                },
+                                {
+                                    title: '时段',
+                                    key: 'time',
+                                    dataIndex: 'time',
+                                    editable: true,
+                                },
+                                {
+                                    title: '电价(元)',
+                                    key: 'price',
+                                    dataIndex: 'price',
+                                    editable: true,
+                                },
+                                {
+                                    title: '状态',
+                                    key: 'status',
+                                    dataIndex: 'status',
+                                    editable: true,
+                                },
+                                {
+                                    title: 'PCS功率(KW)',
+                                    key: 'power',
+                                    dataIndex: 'power',
+                                    editable: true,
+                                },
+                                {
+                                    title: '目标SOC(%)',
+                                    key: 'soc',
+                                    dataIndex: 'soc',
+                                    editable: true,
+                                },
+                                {
+                                    title: '操作',
+                                    key: 'Action',
+                                    render(){
+                                        return <EditOutlined />
+                                    }
+                                }
+                            ]}
+                            scroll={{
+                                y: 500
+                            }}
+                            pagination={false}
+                        />
                     </Form.Item>
                 </Form>
             </Modal>
