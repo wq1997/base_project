@@ -1,30 +1,48 @@
-const App = "@/pages/App";
-const Layout = "@/layouts/baseLayout";
-
-const Home = "@/pages/home";
-
-
-const Login = "@/pages/account/login";
-const Test = "@/pages/test"
-
 export default Routes = [
-   {
-     path: "/", 
-     component: App,
-     routes: [
-      {
-        path: '/cet',
-        component: Layout,
+    {
+        path: "/",
+        component: "@/pages/App",
         routes: [
-          // 首页
-          { path: '/cet/home', component: Home },
-        ]
-      },
-      { path: "/login", component: Login },
-      {
-        path: '/test',
-        component: Test
-       }
-     ]
-   }
-]
+            {
+                path: "/",
+                component: "@/layouts/baseLayout",
+                routes: [
+                    { path: "/overview-screen", component: "@/pages/overview" },
+                    {
+                        path: "/workbench/management-roles",
+                        component: "@/pages/workbench/managementRoles",
+                    },
+                    {
+                        path: "/workbench/execution-roles",
+                        component: "@/pages/workbench/executionRoles",
+                    },
+                    {
+                        path: "/project-management/electronic-archives",
+                        component: "@/pages/projectManagement/electronicArchives",
+                    },
+                    {
+                        path: "/project-management/task-list",
+                        component: "@/pages/projectManagement/taskList",
+                    },
+                    {
+                        path: "/project-management/workorder-details",
+                        component: "@/pages/projectManagement/workorderDetails",
+                    },
+                    {
+                        path: "/system-configuration/account-management",
+                        component: "@/pages/systemConfiguration/accountManagement",
+                    },
+                    {
+                        path: "/system-configuration/role-management",
+                        component: "@/pages/systemConfiguration/roleManagement",
+                    },
+                ],
+            },
+            { path: "/login", component: "@/pages/account/login" },
+            {
+                path: "/test",
+                component: "@/pages/test",
+            },
+        ],
+    },
+];
