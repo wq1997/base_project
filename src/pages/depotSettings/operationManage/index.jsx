@@ -187,7 +187,7 @@ const OperationManage = () => {
                 <Form
                     form={form3}
                     labelCol={{
-                        span: 5
+                        span: 6
                     }}
                 >
                     <Form.Item label="请输入密码" name={"password"}>
