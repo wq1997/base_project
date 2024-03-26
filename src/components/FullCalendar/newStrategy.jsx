@@ -68,7 +68,7 @@ const NewStrategy = () => {
     const [form5] = Form.useForm(); // 新增策略
     const [form6] = Form.useForm(); // 策略详情
     const [data, setData] = useState({}); // 所有的data
-    const [drawerOpen, setDrawerOpen] = useState(true); // 控制新建策略右边抽屉开关
+    const [drawerOpen, setDrawerOpen] = useState(false); // 控制新建策略右边抽屉开关
     const [activeKey, setActiveKey] = useState('BaseConfig');
     const [createYearExcuteOpen, setCreateYearExcuteOpen] = useState(false);
     const [createExecutionScheduleOpen, setCreateExecutionScheduleOpen] = useState(false); // 创建策略执行日程

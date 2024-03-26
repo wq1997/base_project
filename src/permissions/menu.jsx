@@ -64,6 +64,7 @@ const MenuList = [
         children: [
             { label: <FormattedMessage id='app.PolicyConfiguration' />, key: '/index/depotSettings/policyConfiguration', component: "@/pages/depotSettings/policyConfiguration" },
             { label: <FormattedMessage id='app.PowerStationConfiguration' />, key: '/index/depotSettings/powerStationConfig', component: "@/pages/depotSettings/powerStationConfig" },
+            { label: <FormattedMessage id='运维管理' />, key: '/index/depotSettings/operationManage', component: "@/pages/depotSettings/operationManage" },
         ]
     },
     {
