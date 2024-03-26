@@ -1213,11 +1213,12 @@ const NewStrategy = () => {
                                 name:'PCS功率',
                                 type:'line',
                                 symbol:'none',
+                                step: 'end',
                                 data:[200, 200, 150, 150, 120, 120, 130, 130, 150, 150, 120, 50, 120]
                             }
                         ]
                     }} 
-                    style={{width: '100%',height: 450}}
+                    style={{width: 1400,height: 450}}
                 />
 
                 <ReactECharts 
@@ -1292,6 +1293,7 @@ const NewStrategy = () => {
                             }
                         ]
                     }}
+                    style={{width: 1400,height: 250}}
                 />
             </Modal>
         </div>
