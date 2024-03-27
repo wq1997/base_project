@@ -1,5 +1,5 @@
 import axiosInstance from "./request";
-const path = '/total'
+const path = '/microgrid'
 
 // 获取并网点汇充放电量、效率、收益图
 export const getChargeDischargeEnergySevenDaysDtuId = (payload) => {
@@ -118,4 +118,9 @@ export const analyticsBmsDiffData = (payload) => {
 //bms 高级分析 温度 电压曲线  
 export const analyticsBmsData = (payload) => {
     return axiosInstance.post(`/battery/analyticsBmsData`, payload);
+}
+
+// 获取电芯实时数据
+export const fetchCellNowData = (payload) => {
+    return axiosInstance.get(`${path}/fetchCellNowData?id=${payload.id}`);
 }

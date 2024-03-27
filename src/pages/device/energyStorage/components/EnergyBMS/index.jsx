@@ -36,7 +36,7 @@ const Cabinet = () => {
                 {activeKey==="RealtimeData"&&<RealtimeData id={id}/>}
                 {activeKey==="MonitoringCurves"&&<MonitoringCurves id={id}/>}
                 {activeKey==="AdvancedAnalytics"&&<AdvancedAnalytics />}
-                {activeKey==="CellDetails"&&<CellDetails />}
+                {activeKey==="CellDetails"&&<CellDetails id={id}/>}
             </div>
         </div>
     )

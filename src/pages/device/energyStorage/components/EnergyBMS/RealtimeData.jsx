@@ -5,7 +5,7 @@ import { CardModel } from "@/components";
 import { theme, Select } from "antd";
 import styles from './index.less'
 import { useSelector, useIntl } from "umi";
-import { getBmsNowData, getBmcNowData } from '@/services/deviceTotal'
+import { getBmsNowData, getBmcNowData,obtainBMSClustersList } from '@/services/deviceTotal'
 const { Option } = Select;
 function Com({ id }) {
     const [data, setData] = useState('');
@@ -24,6 +24,7 @@ function Com({ id }) {
     }
     useEffect(() => {
         getData();
+        getOption();
     }, [id])
 
     useEffect(() => {
@@ -32,19 +33,19 @@ function Com({ id }) {
     const getData = async () => {
         let { data } = await getBmsNowData({ id })
         setData(data?.data);
-        getOption(data.data.clusters);
     }
-    const getOption = (data) => {
-        let arr = [];
-        data.map(it => {
-            arr.push({
-                value: it,
-                label: `${it + 1}#${t('电池簇')}`,
-                key: it
+    const getOption = async() => {
+        let { data } = await obtainBMSClustersList({ id })
+        let arr=[];
+        data?.data?.map((it,i)=>{
+            i===0?null:arr.push({
+                ...it,
+                label: it.name,
+                value:it.id
             })
         })
-        // setOption([...arr]);
         activitesRef.current = arr;
+        setCurrentClu(arr[0].value)
 
     }
     const changeCluster = (value) => {

@@ -1,5 +1,5 @@
 import axiosInstance from "./request";
-const path = '/total'
+const path = '/microgrid'
 // 获取电站列表
 export const apigetPlantList = () => {
   return axiosInstance.get(`${path}/getPlantList`);
