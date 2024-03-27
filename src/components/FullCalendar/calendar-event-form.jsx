@@ -1,13 +1,7 @@
-import { EventInput } from '@fullcalendar/core';
-import { ColorPicker, DatePicker, Form, Input, Modal, Switch } from 'antd';
-import { ModalFooterRender } from 'antd/es/modal/interface';
-import { Dayjs } from 'dayjs';
-import { useEffect } from 'react';
-
+import { Select, DatePicker, Form, Input, Modal } from 'antd';
+import { useEffect, useState } from 'react';
+import { FORM_REQUIRED_RULE } from "@/utils/constants";
 import { IconButton, Iconify } from '@/components';
-
-
-
 
 const COLORS = [
   '#00a76f',
@@ -31,6 +25,21 @@ export default function CalendarEventForm({
 }) {
   const title = type === 'add' ? 'Add Event' : 'Edit Event';
   const [form] = Form.useForm();
+
+  const [strategyDatasource, setStrategyDatasource] = useState([
+    {
+        id: 1,
+        name: '策略1',
+        creator: '创建者1',
+        createTime: '2024/03/26'
+    },
+    {
+        id: 2,
+        name: '策略2',
+        creator: '创建者2',
+        createTime: '2024/03/27'
+    }
+]);
 
   useEffect(() => {
     // 当 initValues 改变时，手动更新表单的值
@@ -70,7 +79,7 @@ export default function CalendarEventForm({
   return (
     <Modal
       open={open}
-      title={title}
+      title={'创建策略执行日程'}
       centered
       onCancel={onCancel}
       footer={ModalFooter}
@@ -91,63 +100,29 @@ export default function CalendarEventForm({
       }}
     >
       <Form
-        form={form}
-        size="small"
-        labelCol={{ span: 4 }}
-        wrapperCol={{ span: 18 }}
-        initialValues={initValues}
-      >
-        <Form.Item
-          label="Titile"
-          name="title"
-          rules={[{ required: true, message: 'Please input title!' }]}
+            form={form}
+            labelCol={{
+                span: 3
+            }}
         >
-          <Input />
-        </Form.Item>
-
-        <Form.Item label="Desc" name="description">
-          <Input.TextArea />
-        </Form.Item>
-
-        <Form.Item
-          label="All day"
-          name="allDay"
-          valuePropName="checked"
-        >
-          <Switch />
-        </Form.Item>
-
-        <Form.Item
-          label="Start date"
-          name="start"
-          rules={[{ required: true, message: 'Please input start date!' }]}
-        >
-          <DatePicker showTime className="w-full" format="YYYY-MM-DD HH:mm:ss" />
-        </Form.Item>
-
-        <Form.Item
-          label="End date"
-          name="end"
-          rules={[{ required: true, message: 'Please input end date!' }]}
-        >
-          <DatePicker showTime className="w-full" format="YYYY-MM-DD HH:mm:ss" />
-        </Form.Item>
-
-        <Form.Item
-          label="Color"
-          name="color"
-          getValueFromEvent={(e) => e.toHexString()}
-        >
-          <ColorPicker
-            presets={[
-              {
-                label: 'Recommended',
-                colors: COLORS,
-              },
-            ]}
-          />
-        </Form.Item>
-      </Form>
+            <Form.Item label="策略" name={"name"} rules={[FORM_REQUIRED_RULE]}>
+                <Select 
+                    options={strategyDatasource.map(item => {
+                        return {
+                            label: item.name,
+                            value: item.name
+                        }
+                    })}
+                    placeholder="请选择策略"
+                />
+            </Form.Item>
+            <Form.Item label="时间" name={"time"} rules={[FORM_REQUIRED_RULE]}>
+                    <DatePicker.RangePicker showTime />
+            </Form.Item>
+            <Form.Item label="备注" name="remark">
+                    <Input.TextArea placeholder='描述'/>
+            </Form.Item>
+        </Form>
     </Modal>
   );
 }

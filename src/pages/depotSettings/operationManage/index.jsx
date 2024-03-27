@@ -32,7 +32,7 @@ const OperationManage = () => {
         )
     }
     return (
-        <div>
+        <div style={{color: token.titleColor}}>
             <Space size={8} direction="vertical" style={{width: '100%'}}>
                 <div style={{ backgroundColor: token.titleCardBgc, height: 100, padding: '24px 37px', boxSizing: 'border-box' }}>
                     <Space size={44}>

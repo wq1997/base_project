@@ -263,7 +263,8 @@ const NewStrategy = () => {
     ]
 
     const onFininsh = async () => {
-
+        setDrawerOpen(false);
+        message.success("新建成功");
     }
 
 
@@ -304,6 +305,9 @@ const NewStrategy = () => {
                     onValuesChange={(_,allValues) => {
                         data.form1Data = allValues;
                         setData({...data});
+                    }}
+                    initialValues={{
+                        networkSite: '并网点1'
                     }}
                 >
                     <Row gutter={16}>
