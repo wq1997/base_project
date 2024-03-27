@@ -14,7 +14,7 @@ function User(props) {
 
     return (
         <div className='content' style={{ height: '100%' }}>
-            {user.roleId == 4 ?
+            {user.roleId == 3 ?
                 <SuperAdmin /> :
                 <NorMalUser />
             }

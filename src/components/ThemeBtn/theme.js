@@ -24,6 +24,10 @@ const theme = {
         lightTreeLineBgc:'#333F62',
         chartLineColor:['#03B4B4','#ED750E','#A97DFF','#4D4DF4','#EE3059','#2DD51E','#F4D81B','#4D4DF4'],
         deleteBtnColor: '#F03535',
+        cellBgc:'#212849',
+        colorLight:'#fff',
+        colorNormal:'#fff',
+        colorLittle:'#fff',
 
     },
     default: {
@@ -49,6 +53,11 @@ const theme = {
         lightTreeLineBgc:'#E6E9F2',
         chartLineColor:['#03B4B4','#ED750E','#A97DFF','#4D4DF4','#EE3059','#2DD51E','#F4D81B','#4D4DF4'],
         deleteBtnColor: '#F03535',
+        cellBgc:'#F5F8FE',
+        colorLight:'#999999',
+        colorNormal:'#000000',
+        colorLittle:'#333333',
+
     }
 }
 export default theme;

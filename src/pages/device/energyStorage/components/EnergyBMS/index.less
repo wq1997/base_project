@@ -111,3 +111,85 @@
 .advancedAnalytics:nth-child(1){
     margin-bottom: 20px;
 }
+
+.cellDetails{
+    width: 100%;
+    height: calc(100% - 10px) ;
+    .searchHead{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 30px;
+        padding-left: 20px;
+        .margRL{
+            margin: 0 40px 0 10px;
+        }
+    }
+    .cellContent{
+        width: 100%;
+        height: calc(100% - 100px);
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        .packSingle{
+            width: 100%;
+            .packTitle{
+                font-size: 20px;
+            }
+            .packContent{
+                width: 100%;
+                height: calc(100% - 30px) ;
+                padding-right: 10px;
+                padding-bottom: 10px;
+                .packCell{
+                    display: grid;
+                    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+                    .cellSingel{
+                        height: 80px;
+                        position: relative;
+                        img{
+                            position: absolute;
+                            bottom: 5px;
+                            left: 20px;
+                        }
+                        .cellVol{
+                            font-size: 16px;
+                            margin-top: 20px;
+                            text-align: center;
+                            padding-left: 8px;
+                        }
+                    }
+                }
+              .packFoot{
+                width: 100%;
+                padding: 16px 16px;
+                display: flex;
+                justify-content: space-between;
+                >div{
+                display: flex;
+                align-items: center;
+                }
+                .circle{
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 50% 50%;
+                    margin-right: 8px;
+                }
+                .footTitle{
+                    font-size: 16px;
+                    margin-right: 10px;
+                }
+                .singelAttribute{
+                    margin-right: 10px;
+                    font-size: 14px;
+                }
+                .single{
+                    width: 50%;
+                }
+              }
+              
+            }
+        }
+    }
+}

@@ -1,6 +1,6 @@
 import axiosInstance from "./request";         
 
-const path = '/total'
+const path = '/microgrid'
 
 export const getEnergyPowerStatisticsServe = () => {
     return axiosInstance.get(`${path}/getEnergyPowerStatistics`);
