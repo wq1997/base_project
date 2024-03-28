@@ -1103,7 +1103,7 @@ const AddProject = ({ open, onClose }) => {
                                                                     </Space>
                                                                     <div 
                                                                         style={{
-                                                                            width: '100%',
+                                                                            width: '640px',
                                                                             borderRadius: 8, 
                                                                             border: `1px solid rgba(255,255,255,0.3)`,
                                                                             padding: '28px 30px',
