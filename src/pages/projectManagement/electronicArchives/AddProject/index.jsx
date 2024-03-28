@@ -48,7 +48,7 @@ const AddProject = ({ open, onClose }) => {
         });
         if (res?.data?.status == "SUCCESS") {
             message.success("录入成功");
-            onClose(false);
+            onClose(true);
         } else {
             message.info(res?.data?.msg);
         }
@@ -60,10 +60,10 @@ const AddProject = ({ open, onClose }) => {
         <Modal
             title={<Title>新增项目</Title>}
             width={1200}
-            confirmLoading={false}
+            confirmLoading={true}
             open={open}
             footer={null}
-            onCancel={() => onClose(false)}
+            onCancel={() => onClose(true)}
         >
             <Steps
                 style={{ margin: "20px 0" }}
@@ -107,7 +107,7 @@ const AddProject = ({ open, onClose }) => {
                             name="appointedTimeTo"
                             rules={[
                                 {
-                                    required: false,
+                                    required: true,
                                     message: "请选择立项时间",
                                 },
                             ]}
@@ -125,7 +125,7 @@ const AddProject = ({ open, onClose }) => {
                             name="responsePower"
                             rules={[
                                 {
-                                    required: false,
+                                    required: true,
                                     message: "请输入项目名称",
                                 },
                             ]}
@@ -137,7 +137,7 @@ const AddProject = ({ open, onClose }) => {
                             name="companyCode"
                             rules={[
                                 {
-                                    required: false,
+                                    required: true,
                                     message: "请选择项目阶段",
                                 },
                             ]}
@@ -156,7 +156,7 @@ const AddProject = ({ open, onClose }) => {
                             name="companyCode"
                             rules={[
                                 {
-                                    required: false,
+                                    required: true,
                                     message: "请选择项目进度",
                                 },
                             ]}
@@ -175,7 +175,7 @@ const AddProject = ({ open, onClose }) => {
                             name="companyCode"
                             rules={[
                                 {
-                                    required: false,
+                                    required: true,
                                     message: "请选择是否支持标准巡检",
                                 },
                             ]}
@@ -194,7 +194,7 @@ const AddProject = ({ open, onClose }) => {
                             name="companyCode"
                             rules={[
                                 {
-                                    required: false,
+                                    required: true,
                                     message: "请选择项目类型",
                                 },
                             ]}
@@ -213,7 +213,7 @@ const AddProject = ({ open, onClose }) => {
                             name="companyCode"
                             rules={[
                                 {
-                                    required: false,
+                                    required: true,
                                     message: "请选择产品类型",
                                 },
                             ]}
@@ -232,7 +232,7 @@ const AddProject = ({ open, onClose }) => {
                             name="companyCode"
                             rules={[
                                 {
-                                    required: false,
+                                    required: true,
                                     message: "请选择所属区域",
                                 },
                             ]}
@@ -256,7 +256,7 @@ const AddProject = ({ open, onClose }) => {
                             expandIcon={({ isActive }) => (
                                 <CaretRightOutlined rotate={isActive ? 90 : 0} />
                             )}
-                            bordered={false}
+                            bordered={true}
                             style={{ background: "none" }}
                         >
                             <Panel header="电站详细信息" key="1">
@@ -268,7 +268,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入业主名称",
                                                     },
                                                 ]}
@@ -282,7 +282,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入项目地址",
                                                     },
                                                 ]}
@@ -299,7 +299,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="name"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入电站名称",
                                                     },
                                                 ]}
@@ -313,7 +313,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入电站联系人",
                                                     },
                                                 ]}
@@ -330,7 +330,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="name"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入电站联系方式",
                                                     },
                                                 ]}
@@ -344,7 +344,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入总包单位名称",
                                                     },
                                                 ]}
@@ -361,7 +361,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="name"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入我方供货范围",
                                                     },
                                                 ]}
@@ -375,7 +375,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入质保期起止时间",
                                                     },
                                                 ]}
@@ -398,7 +398,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="name"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入电站内储能单元分组情况",
                                                     },
                                                 ]}
@@ -412,7 +412,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入电站所属省市区/镇",
                                                     },
                                                 ]}
@@ -429,7 +429,7 @@ const AddProject = ({ open, onClose }) => {
                             expandIcon={({ isActive }) => (
                                 <CaretRightOutlined rotate={isActive ? 90 : 0} />
                             )}
-                            bordered={false}
+                            bordered={true}
                             style={{ background: "none" }}
                         >
                             <Panel header="设备配置信息" key="1">
@@ -441,7 +441,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入电池仓数量",
                                                     },
                                                 ]}
@@ -455,7 +455,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入单台电池仓容量(AH)",
                                                     },
                                                 ]}
@@ -472,7 +472,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入PCS一体机数量",
                                                     },
                                                 ]}
@@ -486,7 +486,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入电芯材料",
                                                     },
                                                 ]}
@@ -503,7 +503,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入电池堆成组方式",
                                                     },
                                                 ]}
@@ -517,7 +517,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入单台PCS最大功率(kW)",
                                                     },
                                                 ]}
@@ -534,7 +534,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入电池簇成组方式",
                                                     },
                                                 ]}
@@ -548,7 +548,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入单电芯额定容量(AH)",
                                                     },
                                                 ]}
@@ -565,7 +565,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入消防介质",
                                                     },
                                                 ]}
@@ -579,7 +579,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入充放电转换效率",
                                                     },
                                                 ]}
@@ -596,7 +596,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入额定充放电倍率(C)",
                                                     },
                                                 ]}
@@ -610,7 +610,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入关联场站信息",
                                                     },
                                                 ]}
@@ -627,7 +627,7 @@ const AddProject = ({ open, onClose }) => {
                             expandIcon={({ isActive }) => (
                                 <CaretRightOutlined rotate={isActive ? 90 : 0} />
                             )}
-                            bordered={false}
+                            bordered={true}
                             style={{ background: "none" }}
                         >
                             <Panel header="厂商信息" key="1">
@@ -639,7 +639,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入BMS厂商",
                                                     },
                                                 ]}
@@ -653,7 +653,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入联系方式",
                                                     },
                                                 ]}
@@ -670,7 +670,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入PCS厂商",
                                                     },
                                                 ]}
@@ -684,7 +684,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入联系方式",
                                                     },
                                                 ]}
@@ -701,7 +701,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入变压器厂商",
                                                     },
                                                 ]}
@@ -715,7 +715,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入联系方式",
                                                     },
                                                 ]}
@@ -732,7 +732,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入液冷系统厂商",
                                                     },
                                                 ]}
@@ -746,7 +746,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入联系方式",
                                                     },
                                                 ]}
@@ -763,7 +763,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入空调厂商",
                                                     },
                                                 ]}
@@ -777,7 +777,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入联系方式",
                                                     },
                                                 ]}
@@ -794,7 +794,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入PACK组装厂厂商",
                                                     },
                                                 ]}
@@ -808,7 +808,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入联系方式",
                                                     },
                                                 ]}
@@ -825,7 +825,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入电芯厂商",
                                                     },
                                                 ]}
@@ -839,7 +839,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入联系方式",
                                                     },
                                                 ]}
@@ -856,7 +856,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入电池仓箱体厂商",
                                                     },
                                                 ]}
@@ -870,7 +870,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入联系方式",
                                                     },
                                                 ]}
@@ -887,7 +887,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入消防厂商",
                                                     },
                                                 ]}
@@ -901,7 +901,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入联系方式",
                                                     },
                                                 ]}
@@ -918,7 +918,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入EMS厂商",
                                                     },
                                                 ]}
@@ -932,7 +932,7 @@ const AddProject = ({ open, onClose }) => {
                                                 name="taxCode"
                                                 rules={[
                                                     {
-                                                        required: false,
+                                                        required: true,
                                                         message: "请输入联系方式",
                                                     },
                                                 ]}
@@ -954,7 +954,7 @@ const AddProject = ({ open, onClose }) => {
                             name="taxCode"
                             rules={[
                                 {
-                                    required: false,
+                                    required: true,
                                     message: "请输入实施计划时间",
                                 },
                             ]}
@@ -972,7 +972,7 @@ const AddProject = ({ open, onClose }) => {
                             name="companyCode"
                             rules={[
                                 {
-                                    required: false,
+                                    required: true,
                                     message: "请选择实施负责人",
                                 },
                             ]}
@@ -1008,7 +1008,7 @@ const AddProject = ({ open, onClose }) => {
                                     name="operationsManager"
                                     rules={[
                                         {
-                                            required: false,
+                                            required: true,
                                             message: "请选择运维负责人",
                                         },
                                     ]}
@@ -1036,7 +1036,7 @@ const AddProject = ({ open, onClose }) => {
                                     name="firstInspectionTime"
                                     rules={[
                                         {
-                                            required: false,
+                                            required: true,
                                             message: "请选择首次巡检时间",
                                         },
                                     ]}
@@ -1056,7 +1056,7 @@ const AddProject = ({ open, onClose }) => {
                                     name="inspectionCycle"
                                     rules={[
                                         {
-                                            required: false,
+                                            required: true,
                                             message: "请选择巡检周期",
                                         },
                                     ]}
@@ -1078,7 +1078,7 @@ const AddProject = ({ open, onClose }) => {
                                     label="巡检组管理"
                                     rules={[
                                         {
-                                            required: false,
+                                            required: true,
                                             message: "请添加巡检组管理",
                                         },
                                     ]}
@@ -1168,7 +1168,7 @@ const AddProject = ({ open, onClose }) => {
                         )}
                     </Space>
                     {/* <Space>
-                        <Button onClick={() => onClose(false)}>取消</Button>
+                        <Button onClick={() => onClose(true)}>取消</Button>
                         <Button type="primary" htmlType="submit">
                             确定
                         </Button>
