@@ -1,34 +1,21 @@
 // 函数组件
 // 快捷键Ctrl+Win+i 添加注释
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { theme, Select, DatePicker, Button, Cascader, message } from "antd";
+import React, { useState, useEffect, } from 'react';
+import { theme, Select, DatePicker, Button, message, Row, Typography, Descriptions, Space, Modal, Form, Checkbox, Table, } from "antd";
 import styles from './index.less'
-import ReactECharts from "echarts-for-react";
-import { CardModel } from "@/components";
-import { getBmsAnalyticsInitData, analyticsBmsDiffData, analyticsBmsData } from '@/services/deviceTotal'
+import { CardModel, Title } from "@/components";
 import dayjs from 'dayjs';
-import { getQueryString } from "@/utils/utils";
-import { useSelector, useIntl } from "umi";
-const { SHOW_CHILD } = Cascader;
-function Com(props) {
+import { useIntl } from "umi";
+import { data } from "./data";
+ 
+function Com() {
+  const [form] = Form.useForm();
   const { token } = theme.useToken();
-  const [option, setOption] = useState([]);
   const [way, setWay] = useState(1);
   const [wayLabel, setWayLabel] = useState('日报表');
-  const id = getQueryString('id') || 0;
   const [date, setDate] = useState(dayjs(new Date()));
   const [dateStr, setDateStr] = useState(dayjs(new Date()).format('YYYY-MM-DD'));
-  const [dateBottom, setDateBottom] = useState(dayjs(new Date()));
-  const [packReq, setPackReq] = useState([['0', '0-0']]);
-  const [packList, setPackList] = useState([]);
-  const [cellList, setCellList] = useState([]);
-  const [cellReq, setCellReq] = useState(['0-0', '0-0-0']);
-  const [optionEchartTem, setOptionEchartTem] = useState({})
-  const [optionEchartVol, setOptionEchartVol] = useState({})
-  const [optionEchartVolBot, setOptionEchartVolBot] = useState({})
-  const [optionEchartTemBot, setOptionEchartTemBot] = useState({});
-  const [dataVdiff, setDataVdiff] = useState([]);
-  const [dataTdiff, setDataTdiff] = useState([]);
+  const [dataChoiceOpen, setDataChoiceOpen] = useState(false); //数据选择弹框
 
   const intl = useIntl();
   const wayOption = [{
@@ -60,104 +47,162 @@ function Com(props) {
     );
     return msg
   }
-  const initOption = () => {
-    setOptionEchartTem({});
-  };
+
   useEffect(() => {
-    initOption();
     getInitData();
-    getChartData();
-    getBottomChartData();
-  }, [token, id]);
+  }, [token]);
 
   const getInitData = async () => {
   
   }
-  const getChartData = async () => {
-    let dataTypeList = [];
-    let dateList = [];
-    if (way === 1) {
-      dataTypeList = packReq?.map(it => {
-        return it[1];
-      });
-      dateList = [dateStr];
-      if (dataTypeList.length > 3) {
-        message.warning('最多选择3个对比项');
-        return
-      }
-    } else {
-      dataTypeList = packReq[1];
-      dateList = dateStr;
-      if (dateList.length > 3) {
-        message.warning('最多选择3个对比项');
-        return
-      }
-    }
-    let { data } = await analyticsBmsDiffData({
-      id: 339,
-      dataTypeList,
-      dateList
-    });
-    let { tempInfo, volInfo } = data;
-    handelData(volInfo, setOptionEchartVol, 1);
-    handelData(tempInfo, setOptionEchartTem, 2);
-
-  }
-  const getBottomChartData = async () => {
-    let { data } = await analyticsBmsData({
-      id: 339,
-      dataType: cellReq[1],
-      date: dateBottom.format('YYYY-MM-DD')
-    });
-    dealDataBot(data.data?.tData, setOptionEchartTemBot, t("温度"));
-    dealDataBot(data.data?.vData, setOptionEchartVolBot, t("电压"));
-
-  }
-  const dealDataBot = (data, setHandel, title) => {
-    let arr = [];
-    data?.map(it => {
-      arr.push([dayjs(it.time).format('HH:mm:ss'), it.value])
-    })
-    setHandel({
-   series: [{
-        name: title,
-        type: 'line',
-        symbolSize: 8,
-        itemStyle: {
-          normal: {
-            color: token.chartLineColor[0],
-            lineStyle: {
-              color: token.chartLineColor[0],
-              width: 2
-            },
-          }
-        },
-        data: arr
-      }]
-    });
-
-  }
-  const handelData = (data, setHandel, val) => {
-    let series = []
-   
-  }
-  const changePack = (val) => {
-    setPackReq(val)
-  }
   const changeWay = (val,label) => {
     setWay(val);
     setWayLabel(label?.label);
-    console.log(label,121212);
   }
   const changeDate = (val, str) => {
     setDateStr(str);
     setDate(val);
   }
 
+  const electricReportColumns = [
+    {
+      title: '',
+      children: [
+        {
+          title: '序号',
+          dataIndex: '序号',
+          key: '序号'
+        },
+        {
+          title: '日期',
+          dataIndex: 'date',
+          key: 'date'
+        }
+      ]
+    },
+    {
+      title: '充电量（kWh）',
+      children: [
+        {
+          title: '尖电',
+          dataIndex: '尖电',
+          key: '尖电'
+        },
+        {
+          title: '峰电',
+          dataIndex: '峰电',
+          key: '峰电'
+        },
+        {
+          title: '平电',
+          dataIndex: '平电',
+          key: '平电'
+        },
+        {
+          title: '谷电',
+          dataIndex: '谷电',
+          key: '谷电'
+        },
+        {
+          title: '总计',
+          dataIndex: '总计',
+          key: '总计'
+        }
+      ]
+    },
+    {
+      title: '放电量（kWh）',
+      children: [
+        {
+          title: '尖电',
+          dataIndex: '尖电',
+          key: '尖电'
+        },
+        {
+          title: '峰电',
+          dataIndex: '峰电',
+          key: '峰电'
+        },
+        {
+          title: '平电',
+          dataIndex: '平电',
+          key: '平电'
+        },
+        {
+          title: '谷电',
+          dataIndex: '谷电',
+          key: '谷电'
+        },
+        {
+          title: '总计',
+          dataIndex: '总计',
+          key: '总计'
+        }
+      ]
+    },
+    {
+      title: '',
+      children: [
+        {
+          title: '充放电效率',
+          dataIndex: '充放电效率',
+          key: '充放电效率'
+        }
+      ]
+    },
+  ]
+
+  const incomeColumns = [
+    {
+      title: '',
+      children: [
+        {
+          title: '序号',
+          dataIndex: '序号',
+          key: '序号'
+        },
+        {
+          title: '日期',
+          dataIndex: 'date',
+          key: 'date'
+        }
+      ]
+    },
+    {
+      title: '发电收益（元）',
+      children: [
+        {
+          title: '尖电',
+          dataIndex: '尖电',
+          key: '尖电'
+        },
+        {
+          title: '峰电',
+          dataIndex: '峰电',
+          key: '峰电'
+        },
+        {
+          title: '平电',
+          dataIndex: '平电',
+          key: '平电'
+        },
+        {
+          title: '谷电',
+          dataIndex: '谷电',
+          key: '谷电'
+        },
+        {
+          title: '总计',
+          dataIndex: '总计',
+          key: '总计'
+        }
+      ]
+    },
+  ]
+
   return (
     <>
       <CardModel
-        title={t('数据对比')}
         content={
           <div className={styles.advancedAnalytics} style={{ color: token.titleColor }}>
             <div className={styles.searchHead}>
@@ -181,26 +226,109 @@ function Com(props) {
                 allowClear={false}
                 needConfirm
               />
-              <Button type="primary" className={styles.firstButton} onClick={getChartData}>
-                {t('数据选择')}
-              </Button>
-              <Button type="primary" style={{ backgroundColor: token.defaultBg }} >
-                {t('导出')}excel
-              </Button>
+              <Space>
+                <Button type="primary" className={styles.firstButton} onClick={()=>setDataChoiceOpen(true)}>
+                  {t('数据选择')}
+                </Button>
+                <Button type="primary" style={{ backgroundColor: token.defaultBg }} >
+                  {t('导出')}excel
+                </Button>
+              </Space>
             </div>
             <div className={styles.echartPart}>
-              <div className={styles.echartPartCardwrap}>
-              <div className={styles.title}>
-                {dayjs(new Date()).format('YYYY.MM.DD')}{t(wayLabel)}
-              </div>
-              <div className={styles.content}></div>
-
+                <div className={styles.echartPartCardwrap}>
+                <Row justify="center">
+                  <Typography.Title level={3} style={{marginTop:0, marginBottom: 27}}>{dayjs(new Date()).format('YYYY.MM.DD')}{t(wayLabel)}</Typography.Title>
+                </Row>
+                <div className={styles.content}>
+                    <div className={styles.contentItem}>
+                      <div style={{marginBottom: 10}}>
+                        <Title title={data.baseData.title} />
+                      </div>
+                      <Descriptions 
+                        items={data.baseData.data.map(item => {
+                          return {
+                            ...item,
+                            children: item.data
+                          }
+                        })}
+                      />
+                    </div>
+                    <div className={styles.contentItem}>
+                      <div style={{marginBottom: 10}}>
+                        <Title title={data.runData.title} />
+                      </div>
+                      <Descriptions 
+                        items={data.runData.data.map(item => {
+                          return {
+                            ...item,
+                            children: item.data
+                          }
+                        })}
+                      />
+                    </div>
+                    <div className={styles.contentItem}>
+                      <div style={{marginBottom: 10}}>
+                        <Title title={data.electricReportData.title} />
+                      </div>
+                      <Table 
+                        columns={electricReportColumns}
+                      />
+                    </div>
+                    <div className={styles.contentItem}>
+                      <div style={{marginBottom: 10}}>
+                        <Title title={data.incomeData.title} />
+                      </div>
+                      <Table 
+                        columns={incomeColumns}
+                      />
+                    </div>
+                </div>
               </div>
             </div>
           </div>
         }
-
       />
+      <Modal
+        open={dataChoiceOpen}
+        title={null}
+        onOk={async ()=>{
+          const values = await form.validateFields();
+          console.log(values)
+          setDataChoiceOpen(false);
+          message.success("提交成功");
+        }}
+        onCancel={()=>{
+          setDataChoiceOpen(false);
+        }}
+        width={1168}
+        className={styles.dataChoiceModal}
+      >
+        <Form
+          form={form}
+        >
+          {Object.keys(data).map(item => {
+            return (
+              <div style={{marginBottom: 30}}>
+                <div style={{marginBottom: 10}}><Title title={data[item].title} /></div>
+                <Descriptions 
+                  colon={false}
+                  items={data[item].data.map(item => {
+                    return {
+                      label: (
+                        <Form.Item name={item.value} valuePropName='checked' style={{margin: 0}}>
+                            <Checkbox />
+                        </Form.Item>
+                      ),
+                      children: item.label
+                    }
+                  })}
+                />
+              </div>
+            )
+          })}
+        </Form>
+      </Modal>
     </>
 
   )
