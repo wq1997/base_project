@@ -99,7 +99,7 @@ const Account = () => {
         },
     ]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-    const [addProjectOpen, setAddProjectOpen] = useState(true);
+    const [addProjectOpen, setAddProjectOpen] = useState(false);
     const [invitationSplitId, setInvitationSplitId] = useState();
     const [detailId, setDetailId] = useState(false);
 

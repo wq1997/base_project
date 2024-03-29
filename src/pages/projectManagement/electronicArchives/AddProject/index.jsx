@@ -1087,9 +1087,7 @@ const AddProject = ({ open, onClose }) => {
                                         <Button size="small">+</Button>
                                         <Button size="small">-</Button>
                                     </Space>
-                                    <div>
-                                        
-                                    </div>
+                                    <div></div>
                                 </Form.Item>
                             </Col>
                         </Row>
