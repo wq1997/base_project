@@ -1,24 +1,30 @@
-import { Select, Space } from "antd";
+import { Select, Space, theme } from "antd";
 import { SearchInput } from "@/components";
 import ReactECharts from "echarts-for-react";
 import "./index.less";
 
 const Board = () => {
+    const { token } = theme.useToken();
     const options = {
+        color: [token.color3, token.color2],
         tooltip: {
             trigger: "item",
         },
         legend: {
             orient: "vertical",
-            left: "left",
+            left: "right",
+            top: 30,
+            textStyle: {
+                color: token.color1
+            }
         },
         series: [
             {
                 type: "pie",
                 radius: "50%",
                 data: [
-                    { value: 701, name: "维保项目" },
-                    { value: 37, name: "实施项目" },
+                    { value: 37, name: "维保项目" },
+                    { value: 701, name: "实施项目" },
                 ],
                 emphasis: {
                     itemStyle: {
