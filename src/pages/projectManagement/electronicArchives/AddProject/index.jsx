@@ -1089,13 +1089,6 @@ const AddProject = ({ open, onClose }) => {
                                         offset: 1
                                     }}
                                 >
-<<<<<<< HEAD
-                                    <Space>
-                                        <Button size="small">+</Button>
-                                        <Button size="small">-</Button>
-                                    </Space>
-                                    <div></div>
-=======
                                     <div>
                                         <Form.List name="inspectionTeam">
                                             {(fields, { add, remove })=>{
@@ -1149,7 +1142,6 @@ const AddProject = ({ open, onClose }) => {
                                             }}
                                         </Form.List>
                                     </div>
->>>>>>> f69616a1c1af11d0c24964b670633729c208ed43
                                 </Form.Item>
                             </Col>
                         </Row>
