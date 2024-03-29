@@ -1,17 +1,23 @@
-import { Select, Space } from "antd";
+import { theme, Space } from "antd";
 import { SearchInput } from "@/components";
 import ReactECharts from "echarts-for-react";
 import "./index.less";
 
 const PersonnelTasks = () => {
+    const { token } = theme.useToken();
     const options = {
+        color: [token.color2, token.color8],
         tooltip: {
             trigger: "axis",
             axisPointer: {
                 type: "shadow",
             },
         },
-        legend: {},
+        legend: {
+            textStyle: {
+                color: token.color1
+            }
+        },
         grid: {
             left: "3%",
             right: "4%",
@@ -40,18 +46,25 @@ const PersonnelTasks = () => {
         yAxis: [
             {
                 type: "value",
+                splitLine: {
+                    lineStyle: {
+                        color: [token.color9]
+                    }
+                }
             },
         ],
         series: [
             {
                 name: "已下发",
                 type: "bar",
+                barWidth: 40,
                 stack: "Ad",
                 data: [32, 33, 30, 33, 39, 33, 32, 32, 33, 30, 33, 39],
             },
             {
                 name: "已完成",
                 type: "bar",
+                barWidth: 40,
                 stack: "Ad",
                 data: [12, 13, 10, 13, 30, 23, 12, 13, 10, 13, 30, 23],
             },

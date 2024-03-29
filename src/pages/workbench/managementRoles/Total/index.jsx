@@ -1,30 +1,36 @@
 import React, { useState } from 'react';
-import { Select, Radio } from "antd";
+import { Select, Radio, theme } from "antd";
 import ReactECharts from "echarts-for-react";
 import dayjs from 'dayjs';
 import "./index.less";
 
 const Total = () => {
+    const { token } = theme.useToken();
     const [type, setType] = useState("week");
 
     const allWorkorders = [
-        { name: "在途异常工单", value: "15", color: "#1098EF" },
-        { name: "在途其他工单", value: "52", color: "#ED9C0D" },
+        { name: "在途异常工单", value: "15", color: token.color4 },
+        { name: "在途其他工单", value: "52", color: token.color5 },
     ];
 
     const myWorkorders = [
-        { name: "发起工单数", value: "67", color: "#10EF12" },
-        { name: "已执行总数", value: "55", color: "#BB09FD" },
+        { name: "发起工单数", value: "67", color: token.color6 },
+        { name: "已执行总数", value: "55", color: token.color7 },
     ];
 
     const options = {
+        color: [token.color8, token.color10],
         tooltip: {
             trigger: "axis",
             axisPointer: {
                 type: "shadow",
             },
         },
-        legend: {},
+        legend: {
+            textStyle: {
+                color: token.color1
+            }
+        },
         grid: {
             left: "3%",
             right: "4%",
@@ -40,6 +46,11 @@ const Total = () => {
         yAxis: [
             {
                 type: "value",
+                splitLine: {
+                    lineStyle: {
+                        color: [token.color9]
+                    }
+                }
             },
         ],
         series: [
@@ -47,12 +58,14 @@ const Total = () => {
                 name: "进行中",
                 type: "bar",
                 stack: "Ad",
+                barWidth: 40,
                 data: [32, 33, 30, 33, 39, 33, 32],
             },
             {
                 name: "已完成",
                 type: "bar",
                 stack: "Ad",
+                barWidth: 40,
                 data: [12, 13, 10, 13, 30, 23, 21],
             },
         ],

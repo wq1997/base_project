@@ -38,6 +38,7 @@ const AddProject = ({ open, onClose }) => {
     };
 
     const onFinish = async values => {
+        console.log("onFinish", values);
         return;
         const { appointedTimeFrom, appointedTimeTo } = values;
         const res = await saveEnterRecordServer({
@@ -62,7 +63,7 @@ const AddProject = ({ open, onClose }) => {
             confirmLoading={true}
             open={open}
             footer={null}
-            onCancel={() => onClose(false)}
+            onCancel={() => onClose(true)}
         >
             <Steps
                 style={{ margin: "20px 0" }}
@@ -255,7 +256,7 @@ const AddProject = ({ open, onClose }) => {
                             expandIcon={({ isActive }) => (
                                 <CaretRightOutlined rotate={isActive ? 90 : 0} />
                             )}
-                            bordered={false}
+                            bordered={true}
                             style={{ background: "none" }}
                         >
                             <Panel header="电站详细信息" key="1">
@@ -428,7 +429,7 @@ const AddProject = ({ open, onClose }) => {
                             expandIcon={({ isActive }) => (
                                 <CaretRightOutlined rotate={isActive ? 90 : 0} />
                             )}
-                            bordered={false}
+                            bordered={true}
                             style={{ background: "none" }}
                         >
                             <Panel header="设备配置信息" key="1">
@@ -626,7 +627,7 @@ const AddProject = ({ open, onClose }) => {
                             expandIcon={({ isActive }) => (
                                 <CaretRightOutlined rotate={isActive ? 90 : 0} />
                             )}
-                            bordered={false}
+                            bordered={true}
                             style={{ background: "none" }}
                         >
                             <Panel header="厂商信息" key="1">
@@ -1004,7 +1005,7 @@ const AddProject = ({ open, onClose }) => {
                             <Col span={8}>
                                 <Form.Item
                                     label="运维负责人"
-                                    name="companyCode"
+                                    name="operationsManager"
                                     rules={[
                                         {
                                             required: true,
@@ -1032,7 +1033,7 @@ const AddProject = ({ open, onClose }) => {
                             <Col span={8}>
                                 <Form.Item
                                     label="首次巡检时间"
-                                    name="taxCode"
+                                    name="firstInspectionTime"
                                     rules={[
                                         {
                                             required: true,
@@ -1052,7 +1053,7 @@ const AddProject = ({ open, onClose }) => {
                             <Col span={8}>
                                 <Form.Item
                                     label="巡检周期"
-                                    name="taxCode"
+                                    name="inspectionCycle"
                                     rules={[
                                         {
                                             required: true,
@@ -1072,22 +1073,83 @@ const AddProject = ({ open, onClose }) => {
                             </Col>
                         </Row>
                         <Row>
-                            <Col span={8}>
+                            <Col span={20}>
                                 <Form.Item
                                     label="巡检组管理"
-                                    name="taxCode"
                                     rules={[
                                         {
                                             required: true,
                                             message: "请添加巡检组管理",
                                         },
                                     ]}
+                                    labelCol={{
+                                        span: 24
+                                    }}
+                                    wrapperCol={{
+                                        offset: 1
+                                    }}
                                 >
+<<<<<<< HEAD
                                     <Space>
                                         <Button size="small">+</Button>
                                         <Button size="small">-</Button>
                                     </Space>
                                     <div></div>
+=======
+                                    <div>
+                                        <Form.List name="inspectionTeam">
+                                            {(fields, { add, remove })=>{
+                                                return (
+                                                    <>
+                                                        {fields.map(({key, name, ...restField}) => {
+                                                            return (
+                                                                <div>
+                                                                    <Space style={{marginBottom: 10}}>
+                                                                        <span>巡检组{name+1}</span>
+                                                                        <Button onClick={()=>remove([name, 'inspectionTeamGroup'])}>-</Button>
+                                                                    </Space>
+                                                                    <div 
+                                                                        style={{
+                                                                            width: '640px',
+                                                                            borderRadius: 8, 
+                                                                            border: `1px solid rgba(255,255,255,0.3)`,
+                                                                            padding: '28px 30px',
+                                                                            marginBottom: 24
+                                                                    }}>
+                                                                       <Form.List name={[name, 'inspectionTeamGroup']}>
+                                                                            {(fields, { add, remove }) => {
+                                                                                return (
+                                                                                    <>
+                                                                                        {
+                                                                                            fields.map(({key, name, ...restField}) => {
+                                                                                                return (
+                                                                                                    <Space style={{width: '100%', marginBottom: 10}} align="center">
+                                                                                                        <Form.Item name={[name, 'inspectionTeamGroupItem']} label={`巡检事项${name+1}`} style={{marginBottom: 0}}>
+                                                                                                            <Input placeholder={`请输入巡检项${name+1}`} style={{width: 500}}/>
+                                                                                                        </Form.Item>
+                                                                                                        <Button onClick={()=>remove([name, 'inspectionTeamGroupItem'])}>-</Button>
+                                                                                                    </Space>
+                                                                                                )
+                                                                                            })
+                                                                                        }
+                                                                                        <Space>
+                                                                                            <Button onClick={add}>+ 添加巡检事项</Button>
+                                                                                        </Space>
+                                                                                    </>
+                                                                                )
+                                                                            }}
+                                                                        </Form.List>
+                                                                    </div>
+                                                                </div>
+                                                            )
+                                                        })}
+                                                        <Button onClick={add} style={{width: 200, height: 40}} type="primary">+ 添加巡视组</Button>
+                                                    </>
+                                                )
+                                            }}
+                                        </Form.List>
+                                    </div>
+>>>>>>> f69616a1c1af11d0c24964b670633729c208ed43
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -1101,7 +1163,7 @@ const AddProject = ({ open, onClose }) => {
                     }}
                 >
                     <Space>
-                        <Button>保存</Button>
+                        <Button htmlType="submit">保存</Button>
                         {currentStep != 0 && (
                             <Button type="primary" onClick={() => setCurrentStep(currentStep - 1)}>
                                 上一步
@@ -1114,7 +1176,7 @@ const AddProject = ({ open, onClose }) => {
                         )}
                     </Space>
                     {/* <Space>
-                        <Button onClick={() => onClose(false)}>取消</Button>
+                        <Button onClick={() => onClose(true)}>取消</Button>
                         <Button type="primary" htmlType="submit">
                             确定
                         </Button>
