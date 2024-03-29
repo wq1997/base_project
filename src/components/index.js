@@ -3,8 +3,8 @@ import ThemeEnum from "./ThemeBtn/theme";
 import LocaleBtn from "./LocaleBtn";
 import ScrollTable from "./ScrollTable";
 import SearchInput from './SearchInput'
-import GlobalWrapperCss from './GlobalWrapperCss'
 import Title from './Title'
+import GlobalWrapperCss from "./GlobalWrapperCss";
 
 export {
     ThemeBtn,
@@ -12,6 +12,6 @@ export {
     LocaleBtn,
     ScrollTable,
     SearchInput,
+    Title,
     GlobalWrapperCss,
-    Title
 }
