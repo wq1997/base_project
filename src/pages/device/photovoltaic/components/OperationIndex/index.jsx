@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { CardModel } from "@/components";
 import styles from './index.less'
-import { theme } from "antd";
+import { theme,Tooltip } from "antd";
 import { getPvRunMetrics } from "@/services/deviceTotal";
 import { useSelector,useIntl } from "umi";
 import dayjs from 'dayjs';
@@ -22,7 +22,6 @@ function Com(props) {
         return state.device
       });
     useEffect(() => {
-        console.log('函数组件来咯')
         getData();
     }, [])
 
@@ -135,10 +134,13 @@ function Com(props) {
                                             {it.icon}
                                             <span style={{ color: token.smallTitleColor, fontWeight: 500, fontSize: '16px', marginLeft: '3px' }}>{t(it.name)}</span>
                                         </div>
+                                        <Tooltip title={it.value} >
                                         <div className={styles.topVaue} style={{color:token.titleColor}}>
                                             {it.value}
                                             <span style={{color: token.smallTitleColor, fontSize: '16px', fontWeight: 400, marginLeft: '10px' }}>{it.unit}</span>
                                         </div>
+                                        </Tooltip>
+                                      
                                     </div>
                                 )
                             })}

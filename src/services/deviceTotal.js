@@ -53,7 +53,7 @@ export const getDeviceTree = (payload) => {
 
 // 获取电表实时数据
 export const getMetersNowData = (payload) => {
-    return axiosInstance.post(`${path}/getMetersNowData`, payload);
+    return axiosInstance.get(`${path}/getMetersNowData?dtuId=${payload.id}`);
 }
 
 // 获取bms实时数据信息
@@ -124,3 +124,14 @@ export const analyticsBmsData = (payload) => {
 export const fetchCellNowData = (payload) => {
     return axiosInstance.get(`${path}/fetchCellNowData?id=${payload.id}`);
 }
+
+// 电表检测曲线初始化列表
+export const getMeterMonitorInitData = () => {
+    return axiosInstance.get(`${path}/getMeterMonitorInitData`);
+}
+
+//电表检测曲线
+export const obtainMeterParameterData = (payload) => {
+    return axiosInstance.post(`/meter/obtainMeterParameterData`, payload);
+}
+

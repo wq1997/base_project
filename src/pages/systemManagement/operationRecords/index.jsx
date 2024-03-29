@@ -5,6 +5,7 @@ import { useSelector, useIntl } from "umi";
 import styles from "./index.less";
 import { Pagination, DatePicker, Input, theme } from "antd"
 import { apiListLogWithPage } from "@/services/total"
+import dayjs from 'dayjs';
 
 const RealtimeAlarm = () => {
   const { Search } = Input;
@@ -49,6 +50,9 @@ const RealtimeAlarm = () => {
       title: t('操作时间'),
       dataIndex: 'createTime',
       key: 'createTime',
+      render: (val) => {
+        return val ? dayjs(val).format('YYYY-MM-DD HH:mm:ss') : ''
+    }
     },
   ]
   useEffect(() => {

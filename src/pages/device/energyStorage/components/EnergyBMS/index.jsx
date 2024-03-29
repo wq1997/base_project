@@ -28,7 +28,6 @@ const Cabinet = () => {
         setActiveKey(key);
         history.push(`${pathname}?PageKey=${getQueryString("PageKey")}&pageType=${pageType}&activeKey=${key}&id=${id}`);
     };
-    console.log('RealtimeData', activeKey)
     return (
         <div style={{height: '100%'}}>
             <Tab activeKey={activeKey} TabItem={PageTypeList} onChange={onChangeTab}/>

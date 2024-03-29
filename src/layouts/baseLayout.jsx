@@ -1,6 +1,6 @@
-import { Outlet, useDispatch, useSelector,FormattedMessage } from 'umi'
-import React from 'react';
-import { theme, Layout, Dropdown } from 'antd';
+import { Outlet, useDispatch, useSelector, FormattedMessage, } from 'umi'
+import React,{ useState }from 'react';
+import { theme, Layout, Dropdown,Button} from 'antd';
 import MyMenu from "@/permissions/menu";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import styles from "./baseLayout.less";
@@ -13,9 +13,11 @@ import languageEnglishSvg from "../assets/svg/language-english.svg";
 import mySvg from "../assets/svg/my.svg";
 import {
     UserSwitchOutlined,
-    LogoutOutlined
-  } from '@ant-design/icons';
-  import { history, useIntl } from "umi";
+    LogoutOutlined,
+    MenuFoldOutlined,
+  MenuUnfoldOutlined,
+} from '@ant-design/icons';
+import { history, useIntl } from "umi";
 
 const { Header, Sider, Content } = Layout;
 
@@ -23,7 +25,7 @@ const BaseLayout = () => {
     const dispatch = useDispatch();
     const { token } = theme.useToken();
     const global = useSelector(state => state.global);
-    
+    const [collapsed, setCollapsed] = useState(false);
     const changeLanguage = (locale) => {
         setLocalStorage('locale', locale)
         dispatch({
@@ -50,23 +52,23 @@ const BaseLayout = () => {
             '&::-webkit-scrollbar': {
                 display: 'none'
             },
-            '.ant-menu-item':{
-                fontFamily:'PingFangRegular !important',
+            '.ant-menu-item': {
+                fontFamily: 'PingFangRegular !important',
             },
-            '.ant-menu-submenu-title':{
-                fontFamily:'PingFangRegular !important',
-                
+            '.ant-menu-submenu-title': {
+                fontFamily: 'PingFangRegular !important',
+
             },
             '.ant-menu-sub': {
                 backgroundColor: `${token.sub_innerBgc} !important`,
                 margin: '0 20px',
                 borderRadius: '4px !important',
                 fontSize: '16px !important',
-                fontFamily:'PingFangRegular !important',
+                fontFamily: 'PingFangRegular !important',
             },
             '.ant-menu-item-icon': {
                 fontSize: '18px !important',
-                fontFamily:'PingFangRegular !important',
+                fontFamily: 'PingFangRegular !important',
             }
 
         }
@@ -81,41 +83,41 @@ const BaseLayout = () => {
                     <div
                         style={{
                             color: token.titleColor,
-                            fontFamily:'DingTalk'
+                            fontFamily: 'DingTalk'
                         }}
-                        level={3} 
+                        level={3}
                         className={styles.title}
                     >
                         <FormattedMessage id="app.title" />
                     </div>
-                    <div style={{display:'flex',alignItems: 'center'}}>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
                         {
-                            global.theme==="default"?
-                            <img 
-                                src={themeDefaultSvg} 
-                                style={{cursor: 'pointer'}} 
-                                onClick={()=>changeTheme('dark')}
-                            />
-                            :
-                            <img 
-                                src={themeDarkSvg} 
-                                style={{cursor: 'pointer'}} 
-                                onClick={()=>changeTheme('default')}
-                            />
+                            global.theme === "default" ?
+                                <img
+                                    src={themeDefaultSvg}
+                                    style={{ cursor: 'pointer' }}
+                                    onClick={() => changeTheme('dark')}
+                                />
+                                :
+                                <img
+                                    src={themeDarkSvg}
+                                    style={{ cursor: 'pointer' }}
+                                    onClick={() => changeTheme('default')}
+                                />
                         }
                         {
-                            global.locale==="zh-CN"?
-                            <img 
-                                src={languageEnglishSvg}
-                                style={{cursor: 'pointer', margin: '0px 40px'}} 
-                                onClick={()=>changeLanguage('en-US')}
-                            />
-                            :
-                            <img 
-                                src={languageChineseSvg}
-                                style={{cursor: 'pointer', margin: '0px 40px'}} 
-                                onClick={()=>changeLanguage('zh-CN')}
-                            />
+                            global.locale === "zh-CN" ?
+                                <img
+                                    src={languageEnglishSvg}
+                                    style={{ cursor: 'pointer', margin: '0px 40px' }}
+                                    onClick={() => changeLanguage('en-US')}
+                                />
+                                :
+                                <img
+                                    src={languageChineseSvg}
+                                    style={{ cursor: 'pointer', margin: '0px 40px' }}
+                                    onClick={() => changeLanguage('zh-CN')}
+                                />
                         }
                         <Dropdown
                             placement="bottom"
@@ -127,25 +129,25 @@ const BaseLayout = () => {
                                         icon: <LogoutOutlined />,
                                     },
                                     {
-                                        label: useLocale('切换账号'),
+                                        label: useLocale('切换电站'),
                                         key: 'changeAccount',
                                         icon: <UserSwitchOutlined />,
                                     },
                                 ],
-                                onClick({key}){
-                                    if(key==="logout"){
+                                onClick({ key }) {
+                                    if (key === "logout") {
                                         removeLocalStorage("Token");
                                         history.push('/login');
                                     }
-                                    if(key==="changeAccount"){
-                                        
+                                    if (key === "changeAccount") {
+                                        history.push('/largeScreen');
                                     }
                                 }
                             }}
                         >
-                            <img 
-                                src={mySvg} 
-                                style={{cursor: 'pointer'}} 
+                            <img
+                                src={mySvg}
+                                style={{ cursor: 'pointer' }}
                             />
                         </Dropdown>
                     </div>
@@ -153,10 +155,25 @@ const BaseLayout = () => {
                 <Layout hasSider>
                     <Sider className={siderContentStyle}
                         style={{ background: token.bgcColorB_l }}
-                        width={240}>
+                        width={240}
+                        trigger={null} collapsible collapsed={collapsed}>
                         <div className={styles.siderContent}>
                             <MyMenu />
+                           
                         </div>
+                        <Button
+                                type="text"
+                                icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                                onClick={() => setCollapsed(!collapsed)}
+                                style={{
+                                    fontSize: '16px',
+                                    width: 64,
+                                    height: 64,
+                                    position:'absolute',
+                                    bottom:'20px',
+                                    right:'10px'
+                                }}
+                            />
                     </Sider>
                     <Content className={styles.content}
                         style={{ background: token.bgcColorl_B }}>

@@ -151,7 +151,7 @@ function Com(props) {
             legend: {
                 show: true,
                 icon: "circle",
-                top: "70%",
+                top: "55%",
                 left: '75%',
                 width: 50,
                 padding: [0, 5],

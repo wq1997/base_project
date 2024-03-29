@@ -182,11 +182,10 @@ function Com({ id }) {
             setType(BmcDataType[0].value)
         }
     }
-    const changeDataType = (val) => {
+    const changeDataType = (val, label) => {
         setType(val);
-        let typeName = dataOption.find(it => it.value == val);
-        setTitle(`${typeName.label}`)
-    }
+        setTitle(label?.label.props?.id);
+    } 
     return (
         <div className={styles.monitoringCurves}>
             <div className={styles.searchHead}>
@@ -208,14 +207,13 @@ function Com({ id }) {
                     className={styles.margRL}
                     style={{ width: 240 }}
                     onChange={changeDataType}
-                    key={dataOption[0]?.value}
                     options={dataOption}
                     defaultValue={type}
                 >
 
                 </Select>
                 <DatePicker onChange={onChange} defaultValue={date} />
-                <Button type="primary" className={styles.firstButton} onClick={()=>getEchartsData(goalId)}>
+                <Button type="primary" className={styles.firstButton} onClick={() => getEchartsData(goalId)}>
                     {t('查询')}
                 </Button>
                 <Button type="primary" style={{ backgroundColor: token.defaultBg }} >

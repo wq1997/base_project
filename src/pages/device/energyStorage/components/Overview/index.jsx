@@ -192,18 +192,18 @@ function Overview(props) {
         width: '100%',
         height: 'calc(100% - 76px)',
         display: 'grid',
-        gridTemplateColumns: '1fr 1fr 1fr',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr)) ',
         gridTemplateRows: '1fr 1.375fr 1.375fr',
         gap: '8px 8px',
         gridTemplateAreas:
-            ` "electric running profit"
+            `"electric running profit"
             "charge chargebit profitAll"
             "chargAndDischarg alarm alarm"`
     }
     let ContentStyle = useEmotionCss(({ token }) => {
         return {
             ...siderContentStyle,
-            gridTemplateAreas:
+            gridTemplateAreas: 
                 `'electric running profit'' charge chargebit profitAll' '${pageType === 'ALL' ? 'alarm' : 'chargAndDischarg'} alarm alarm'`,
         }
 
@@ -225,7 +225,10 @@ function Overview(props) {
                                         <Tooltip title={t(it.label)} >
                                             <div className={styles.itemTitle} style={{ color: token.titleColor }}>{t(it.label)}</div>
                                         </Tooltip>
+                                        <Tooltip title={energySummary[it.name]+it.unit} >
                                         <div className={styles.itemValue} style={{ color: it.color }}>{energySummary[it.name]} <span className={styles.itemUnit} style={{ color: token.titleColor }}>{it.unit}</span></div>
+                                        </Tooltip>
+
                                     </div>)
                                 })}
                             </div>

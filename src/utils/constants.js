@@ -1,5 +1,5 @@
 import { FormattedMessage  } from 'umi'
-
+import dayjs from 'dayjs';
 
 export const DEFAULT_PAGINATION = { current: 1, pageSize: 10, total: 0, showQuickJumper: true };
 export const FORM_REQUIRED_RULE = { required: true, message: '请输入必填字段' };
@@ -49,11 +49,17 @@ export const alarmTableColums = [
         title: <FormattedMessage id='开始时间'/>,
         dataIndex: 'begin',
         key: 'begin',
+        render:(val)=>{
+            return val ? dayjs(val).format('YYYY-MM-DD HH:mm:ss') : ''
+        }
     },
     {
         title: <FormattedMessage id='结束时间'/>,
         dataIndex: 'end',
         key: 'end',
+        render:(val)=>{
+            return val ? dayjs(val).format('YYYY-MM-DD HH:mm:ss') : ''
+        }
     },
 ];
 export const RealtimeData = [];

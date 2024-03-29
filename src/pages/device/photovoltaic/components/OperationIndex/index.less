@@ -12,17 +12,21 @@
         grid-template-columns:1fr 1fr 1fr;
         grid-gap: 10px;
         margin-bottom: 8px;
+        overflow: hidden;
+        text-overflow: ellipsis !important;
+        white-space: nowrap;
         .topItem {
             border-radius: 4px;
             background: #FFFFFF;
             padding: 16px;
+     
             .topItemTitle{
                 height: 24px;
                 line-height: 24px;
             }
+           
             .topVaue{
                 height:calc(100% - 24px);
-                font-size: 36px;
                 font-weight: 500;
                 display: flex;
                 justify-content: center;
@@ -36,6 +40,9 @@
         display: grid;
         grid-template-columns:1fr 1fr 1fr 1fr;
         grid-gap: 10px;
+        overflow: hidden;
+        text-overflow: ellipsis !important;
+        white-space: nowrap;
         .bottomItem {
             box-shadow: 0px 2px 4px 0px rgba(224,224,224,0.5);
             border-radius: 4px;
@@ -47,12 +54,38 @@
             };
             .bottomVaue{
                 height:calc(100% - 24px);
-                font-size: 36px;
                 font-weight: 500;
                 display: flex;
                 justify-content: center;
                 align-items: center;
             }
         }
+    }
+}
+@media screen and (min-width: 2000px){
+    .topVaue{
+        font-size: 36px;
+    }
+    .bottomVaue{
+        font-size: 36px;
+
+    }
+}
+@media screen and (min-width: 1000px) and (max-width: 2000px){
+    .topVaue{
+        font-size: 24px;
+    }
+    .bottomVaue{
+        font-size: 24px;
+
+    }
+}
+@media screen and (max-width: 1000px){
+    .topVaue{
+        font-size: 16px;
+    }
+    .bottomVaue{
+        font-size: 16px;
+
     }
 }

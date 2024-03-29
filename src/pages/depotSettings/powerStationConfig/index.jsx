@@ -1,13 +1,13 @@
-import React, { useState, useEffect,  useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { CardModel } from "@/components";
 import { Button, theme, Space, message, Modal, Table } from "antd";
 import styles from './index.less'
-import { apigetPlantList, apiInsertPlant, apiUpdatePlant, apideletePlantById,getInsertPlantInitData } from '@/services/plant'
+import { apigetPlantList, apiInsertPlant, apiUpdatePlant, apideletePlantById, getInsertPlantInitData } from '@/services/plant'
 import { useSelector, useIntl } from "umi";
-import AddPlantModal,{ formList } from './component/AddPlantModal'
-import  { ExclamationCircleFilled } from '@ant-design/icons';
+import AddPlantModal, { formList } from './component/AddPlantModal'
+import { ExclamationCircleFilled } from '@ant-design/icons';
 import dayjs from 'dayjs';
-import {timeZoneList} from '@/utils/constants'
+import { timeZoneList } from '@/utils/constants'
 
 function Com(props) {
     const [xxx, setXxx] = useState('')
@@ -28,16 +28,16 @@ function Com(props) {
         getInitData();
     }, [locale])
 
-    const {locale} = useSelector(state => state.global);
+    const { locale } = useSelector(state => state.global);
     const intl = useIntl();
 
-    const getInitData=async()=>{
-        let {data}= await getInsertPlantInitData();
-        let str =locale==='zh-CN'? 'desc':'enDesc'
-        data.data.languageList.map(it=>{
-            it.label=`${it[str]}--${it.value}`
+    const getInitData = async () => {
+        let { data } = await getInsertPlantInitData();
+        let str = locale === 'zh-CN' ? 'desc' : 'enDesc'
+        data.data.languageList.map(it => {
+            it.label = `${it[str]}--${it.value}`
         });
-        setInitSelectData({...data.data,timeZone:timeZoneList});
+        setInitSelectData({ ...data.data, timeZone: timeZoneList });
     }
     const t = (id) => {
         const msg = intl.formatMessage(
@@ -70,14 +70,18 @@ function Com(props) {
             title: t('建站日期'),
             dataIndex: 'installDate',
             key: 'installDate',
-            width: 200
-
+            width: 200,
+            render: (val) => {
+                return val ? dayjs(val).format('YYYY-MM-DD HH:mm:ss') : ''
+            }
         },
         {
             title: t('并网日期'),
             dataIndex: 'networkDate',
             key: 'networkDate',
-            // width: 200
+            render: (val) => {
+                return val ? dayjs(val).format('YYYY-MM-DD HH:mm:ss') : ''
+            }
         },
         {
             title: t('时区'),
@@ -114,13 +118,13 @@ function Com(props) {
             dataIndex: 'cellTempRange',
             key: 'cellTempRange',
             // width: 200
-            render:(text,record)=>{
-                    return(
-                        <>
+            render: (text, record) => {
+                return (
+                    <>
                         <span>{record.cellTempMin}℃</span>~
                         <span>{record.cellTempMax}℃</span>
-                        </>
-                    )
+                    </>
+                )
             }
         },
         {
@@ -158,15 +162,15 @@ function Com(props) {
             typeName: '',
             longitude: '',
             latitude: '',
-            // installDate:  dayjs(new Date()).format(dateFormat),
+            installDate: dayjs(new Date()),
             capacity: 0,
             pvCapacity: 0,
             chargePileTotal: 0,
-            cellTempMax:0,
+            cellTempMax: 0,
             cellTempMin: 0,
-            // networkDate: dayjs(new Date()).format(dateFormat),
-            timeZone:'',
-            priceUnit:''
+            networkDate: dayjs(new Date()),
+            timeZone: '',
+            priceUnit: ''
         });
         setTitle('新增电站');
         setIsOpen(!isOpen);
@@ -174,26 +178,26 @@ function Com(props) {
     const edit = (record) => {
         setFormData({
             ...record,
-            userName:initSelectData?.userList.find(it => it.label === record.userName)?.value,
-            typeName:initSelectData?.plantType.find(it => it.label === record.typeName)?.value,
-            priceUnit:initSelectData?.languageList.find(it => it.label === record.priceUnit)?.value||initSelectData.languageList[0].value,
-            timeZone:initSelectData?.timeZone.find(it => it.label === record.timeZone)?.value||initSelectData.timeZone[0].value,
+            userName: initSelectData?.userList.find(it => it.label === record.userName)?.value,
+            typeName: initSelectData?.plantType.find(it => it.label === record.typeName)?.value,
+            priceUnit: initSelectData?.languageList.find(it => it.label === record.priceUnit)?.value || initSelectData.languageList[0].value,
+            timeZone: initSelectData?.timeZone.find(it => it.label === record.timeZone)?.value || initSelectData.timeZone[0].value,
             // timeZone:1,
             // priceUnit:1,
-            networkDate:dayjs(record.networkDate,dateFormat),
-            installDate:dayjs(record.installDate,dateFormat),
+            networkDate: dayjs(record?.networkDate),
+            installDate: dayjs(record?.installDate),
         });
         setTitle('编辑电站');
         setSelectId(record.plantId)
         setIsOpen(!isOpen);
     }
-    const changeIsOpenDel=(record)=>{
+    const changeIsOpenDel = (record) => {
         setSelectId(record.plantId);
         setIsOpenDel(!isOpenDel)
-      }
+    }
     const changeData = async (value) => {
         const { data } = await (title === '编辑电站' ?
-            apiUpdatePlant({ ...value, plantId:selectId }) :
+            apiUpdatePlant({ ...value, plantId: selectId }) :
             apiInsertPlant({ ...value, }))
         if (data.data) {
             getData();
@@ -208,7 +212,7 @@ function Com(props) {
         };
         setIsOpenDel(!isOpenDel)
     }
-   
+
     return (
         <div className={styles.contents}>
             <CardModel
@@ -232,7 +236,7 @@ function Com(props) {
                 initSelectData={initSelectData}
             />
             <Modal
-                title={[<><ExclamationCircleFilled style={{color:'#FAAD14',marginRight:'10px'}}/>系统提示</>]}
+                title={[<><ExclamationCircleFilled style={{ color: '#FAAD14', marginRight: '10px' }} />系统提示</>]}
                 open={isOpenDel}
                 onOk={del}
                 onCancel={changeIsOpenDel}

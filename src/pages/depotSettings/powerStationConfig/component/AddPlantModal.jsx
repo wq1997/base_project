@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, } from 'react';
-import { DatePicker,Row,Col, Modal, Form, Input, Select, Switch, InputNumber } from 'antd';
+import { DatePicker, Row, Col, Modal, Form, Input, Select, Switch, InputNumber } from 'antd';
 import { useSelector, useIntl } from "umi";
 import { getAlarmRuleInsertInitData } from '@/services/alarm'
 
@@ -16,7 +16,7 @@ const App = (props) => {
       key: 'userName',
       type: 1,
       required: true,
-      data:props.initSelectData?.userList
+      data: props.initSelectData?.userList
     },
     {
       label: '电站位置',
@@ -29,7 +29,7 @@ const App = (props) => {
       key: 'typeName',
       type: 1,
       required: true,
-      data:props.initSelectData?.plantType
+      data: props.initSelectData?.plantType
 
     },
     {
@@ -44,7 +44,7 @@ const App = (props) => {
       type: 3,
       required: true,
     },
-    
+
     {
       label: '建站日期',
       key: 'installDate',
@@ -92,17 +92,18 @@ const App = (props) => {
       key: 'timeZone',
       type: 1,
       required: false,
-      data:props.initSelectData?.timeZone
+      data: props.initSelectData?.timeZone
     },
     {
       label: '所属货币',
       key: 'priceUnit',
       type: 1,
       required: false,
-      data:props.initSelectData?.languageList
+      data: props.initSelectData?.languageList
 
     },
   ]
+  console.log(props,1212122121);
   const intl = useIntl();
   const t = (id) => {
     const msg = intl.formatMessage(
@@ -113,26 +114,28 @@ const App = (props) => {
     return msg
   }
   useEffect(() => {
-    form.setFieldsValue(props.formData)
+    form.setFieldsValue(props?.formData)
   }, [props.formData]);
   useEffect(() => {
     getInitSearchData();
   }, [])
   const formRef = useRef();
   const [form] = Form.useForm();
- 
+
   const getInitSearchData = async () => {
     const { data } = await getAlarmRuleInsertInitData();
   }
   const onFinish = async () => {
     try {
       const values = await form.validateFields();
-      console.log(values,1111111);
-        props.changeData({  ...values,
-          createUserId:values.userName,
-          type:values.typeName,
-          installDate:values.installDate.format('YYYY-MM-DD HH:mm:ss'),
-          networkDate:values.networkDate.format('YYYY-MM-DD HH:mm:ss')})
+      console.log(values, 1111111);
+      props.changeData({
+        ...values,
+        createUserId: values.userName,
+        type: values.typeName,
+        installDate: values.installDate.format('YYYY-MM-DD HH:mm:ss'),
+        networkDate: values.networkDate.format('YYYY-MM-DD HH:mm:ss')
+      })
       props.onRef();
     } catch (errorInfo) {
       console.log('Failed:', errorInfo);
@@ -167,48 +170,48 @@ const App = (props) => {
           }}
         >
           <Row gutter={[20, 0]}>
-          {formList.map(it => {
-            if (it.type === 1) {
-              return (
-                <>
-                 <Col className="gutter-row" span={12}>
-                 <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.required }]} >
-                    <Select
-                      // defaultValue={it.data[0].value}
-                      options={it?.data}
-                    />
-                  </Form.Item>
-                 </Col>
-                  
-                </>
-              )
-            } else if (it.type === 2) {
-              return (
-                <Col className="gutter-row" span={12}>
-                  <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.required }]} >
-                    <InputNumber defaultValue={0} style={{ width: '100%' }}/>
-                  </Form.Item>
-                </Col>
-              )
-            } else if (it.type === 3) {
-              return (
-                <Col className="gutter-row" span={12}>
-                  <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.required }]} >
-                    <Input  />
-                  </Form.Item>
-                </Col>
-              )
-            }else if (it.type === 4) {
-              return (
-                <Col className="gutter-row" span={12}>
-                  <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.required }]} >
-                    <DatePicker showTime style={{ width: '100%' }}/>
-                  </Form.Item>
-                </Col>
-              )
+            {formList.map(it => {
+              if (it.type === 1) {
+                return (
+                  <>
+                    <Col className="gutter-row" span={12}>
+                      <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.required }]} >
+                        <Select
+                          // defaultValue={it.data[0].value}
+                          options={it?.data}
+                        />
+                      </Form.Item>
+                    </Col>
+
+                  </>
+                )
+              } else if (it.type === 2) {
+                return (
+                  <Col className="gutter-row" span={12}>
+                    <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.required }]} >
+                      <InputNumber defaultValue={0} style={{ width: '100%' }} />
+                    </Form.Item>
+                  </Col>
+                )
+              } else if (it.type === 3) {
+                return (
+                  <Col className="gutter-row" span={12}>
+                    <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.required }]} >
+                      <Input />
+                    </Form.Item>
+                  </Col>
+                )
+              } else if (it.type === 4) {
+                return (
+                  <Col className="gutter-row" span={12}>
+                    <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.required }]} >
+                      <DatePicker showTime style={{ width: '100%' }}  />
+                    </Form.Item>
+                  </Col>
+                )
+              }
+            })
             }
-          })
-          }
           </Row>
         </Form>
       </Modal>
