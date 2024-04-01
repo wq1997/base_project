@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Select, Radio, theme } from "antd";
 import ReactECharts from "echarts-for-react";
 import dayjs from 'dayjs';
-import "./index.less";
+import styles from "./index.less";
+import classNames from 'classnames';
 
 const Total = () => {
     const { token } = theme.useToken();
@@ -72,42 +73,42 @@ const Total = () => {
     };
 
     return (
-        <div className="total">
-            <div className="all workorders">
-                <div className="title">全部在途工单</div>
-                <div className="content">
+        <div className={styles.total}>
+            <div className={classNames(styles.all, styles.workorders)}>
+                <div className={"title"}>全部在途工单</div>
+                <div className={styles.content}>
                     {allWorkorders.map(item => (
-                        <div className="order">
+                        <div className={styles.order}>
                             <span>{item.name}</span>
-                            <span className="value" style={{ color: item.color }}>
+                            <span className={styles.value} style={{ color: item.color }}>
                                 {item.value}
                             </span>
                         </div>
                     ))}
                 </div>
             </div>
-            <div className="my workorders">
-                <div className="title">我发起的</div>
-                <div className="content">
+            <div className={classNames(styles.my,styles.workorders)}>
+                <div className={"title"}>我发起的</div>
+                <div className={styles.content}>
                     {myWorkorders.map(item => (
-                        <div className="order">
+                        <div className={styles.order}>
                             <span>{item.name}</span>
-                            <span className="value" style={{ color: item.color }}>
+                            <span className={styles.value} style={{ color: item.color }}>
                                 {item.value}
                             </span>
                         </div>
                     ))}
                 </div>
             </div>
-            <div className="task-board">
-                <div className="title">
+            <div className={styles.taskBoard}>
+                <div className={"title"}>
                     <span>任务过程看板</span>
                     <Radio.Group defaultValue={type} onChange={e => setType(e.target.value)}>
                         <Radio.Button value="week">周</Radio.Button>
                         <Radio.Button value="month">月</Radio.Button>
                     </Radio.Group>
                 </div>
-                <div className="content">
+                <div className={styles.content}>
                     <ReactECharts option={options} style={{ width: "100%", height: "100%" }} />
                 </div>
             </div>

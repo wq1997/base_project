@@ -15,6 +15,7 @@ const theme = {
         color8: '#00A8F6',
         color9: 'rgba(255,255,255,0.15)',
         color10: '#ED9C0D',
+        color11: '#2AC5F2',
         components: {
             Modal: {
                 contentBg: "#021A33",

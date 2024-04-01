@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Select, Radio } from "antd";
+import { Select, Radio, theme } from "antd";
 import ReactECharts from "echarts-for-react";
 import dayjs from 'dayjs';
 import "./index.less";
 
 const Total = () => {
+    const { token } = theme.useToken();
     const [type, setType] = useState("week");
 
     const myWorkorders = [
@@ -14,13 +15,18 @@ const Total = () => {
     ];
 
     const options = {
+        color: [token.color2, token.color11],
         tooltip: {
             trigger: "axis",
             axisPointer: {
                 type: "shadow",
             },
         },
-        legend: {},
+        legend: {
+            textStyle: {
+                color: token.color1
+            }
+        },
         grid: {
             left: "3%",
             right: "4%",
@@ -36,6 +42,11 @@ const Total = () => {
         yAxis: [
             {
                 type: "value",
+                splitLine: {
+                    lineStyle: {
+                        color: [token.color9]
+                    }
+                }
             },
         ],
         series: [
@@ -43,12 +54,14 @@ const Total = () => {
                 name: "实施工单",
                 type: "bar",
                 stack: "Ad",
+                barWidth: 40,
                 data: [32, 33, 30, 33, 39, 33, 32],
             },
             {
                 name: "运维工单",
                 type: "bar",
                 stack: "Ad",
+                barWidth: 40,
                 data: [12, 13, 10, 13, 30, 23, 21],
             },
         ],

@@ -121,10 +121,10 @@ const MyMenu = () => {
         const pathList = pathname.split("/");
         let newOpenKeys = [...openKeys];
         console.log('pathList', pathList)
-        if (pathList.length < 4) {
+        if (pathList.length < 3) {
             newOpenKeys = newOpenKeys.concat([pathname]);
         } else {
-            newOpenKeys = newOpenKeys.concat([pathList.splice(0, 3).join("/")]);
+            newOpenKeys = newOpenKeys.concat([pathList.splice(0, 2).join("/")]);
         }
         setOpenKeys(newOpenKeys);
     };

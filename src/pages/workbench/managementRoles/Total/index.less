@@ -3,22 +3,24 @@
     grid-template-rows: 2fr 4fr;
     grid-template-columns: 1fr 1fr;
     grid-gap: 10px;
+    box-sizing: border-box;
     grid-template-areas:
         "g1 g2"
         "g3 g3";
     .all {
         grid-area: g1;
+        background: #00254a;
     }
     .my {
         grid-area: g2;
-    }
-    .task-board {
-        grid-area: g3;
         background: #00254a;
+    }
+    .taskBoard {
+        grid-area: g3;
         border-radius: 16px;
+        background: #00254a;
     }
     .workorders {
-        background: #00254a;
         border-radius: 16px;
         .order {
             border-radius: 8px;

@@ -5,14 +5,18 @@ import "./index.less";
 
 const Board = () => {
     const { token } = antdTheme.useToken();
-    2;
     const options = {
+        color: [token.color3, token.color2],
         tooltip: {
             trigger: "item",
         },
         legend: {
             orient: "vertical",
-            left: "left",
+            left: "right",
+            top: 30,
+            textStyle: {
+                color: token.color1
+            }
         },
         series: [
             {

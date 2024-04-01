@@ -21,9 +21,9 @@ import "./index.less";
 
 const { Panel } = Collapse;
 
-const AddProject = ({ open, onClose }) => {
+const AddProject = ({ open, onClose, editCurrentStep }) => {
     const [form] = Form.useForm();
-    const [currentStep, setCurrentStep] = useState(3);
+    const [currentStep, setCurrentStep] = useState(0);
     const [checkGroup, setCheckGroup] = useState([]);
     const [responseTypeList, setResponseTypeList] = useState();
     const [responseTimeTypeList, setResponseTimeTypeList] = useState();
@@ -54,7 +54,9 @@ const AddProject = ({ open, onClose }) => {
         }
     };
 
-    useEffect(() => {}, [open]);
+    useEffect(() => {
+        setCurrentStep(editCurrentStep);
+    }, [editCurrentStep]);
 
     return (
         <Modal
