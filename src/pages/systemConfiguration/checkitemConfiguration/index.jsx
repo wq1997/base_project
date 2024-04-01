@@ -24,6 +24,7 @@ import {
 import { history, useLocation } from "umi";
 import { SearchInput } from "@/components";
 import AddProject from "./AddProject";
+import Detail from "./Detail";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import "./index.less";
 import dayjs from "dayjs";
@@ -61,11 +62,28 @@ const Account = () => {
     const [userList, setUserList] = useState([
         {
             id: 1,
-            account: "业务操作人员",
-            name: "CR001",
-            desc: "操作，确认，查询业务页面",
+            name: "xxxxxxxxxx",
+            type: "xxxxxxxxxx",
+            desc: "xxxxxxxxxx",
+            needPic: "是",
+            needDesc: "是",
         },
-        { id: 2, account: "管理员", name: "CR002", desc: "维护管理所有业务职能" },
+        {
+            id: 2,
+            name: "xxxxxxxxxx",
+            type: "xxxxxxxxxx",
+            desc: "xxxxxxxxxx",
+            needPic: "否",
+            needDesc: "否",
+        },
+        {
+            id: 3,
+            name: "xxxxxxxxxx",
+            type: "xxxxxxxxxx",
+            desc: "xxxxxxxxxx",
+            needPic: "是",
+            needDesc: "是",
+        },
     ]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [addProjectOpen, setAddProjectOpen] = useState(false);
@@ -75,16 +93,38 @@ const Account = () => {
 
     const columns = [
         {
-            title: "角色名称",
-            dataIndex: "account",
-        },
-        {
-            title: "角色编号",
+            title: "巡检项名称",
             dataIndex: "name",
         },
         {
-            title: "角色说明",
+            title: "所属类型",
+            dataIndex: "type",
+        },
+        {
+            title: "巡检项描述",
             dataIndex: "desc",
+        },
+        {
+            title: "是否需要上传拍照信息",
+            dataIndex: "needPic",
+            render: (_, { needPic }) => {
+                return (
+                    <span style={{ color: needPic == "是" ? "#1BE72B" : "#F50101" }}>
+                        {needPic}
+                    </span>
+                );
+            },
+        },
+        {
+            title: "是否需要上传备注",
+            dataIndex: "needDesc",
+            render: (_, { needDesc }) => {
+                return (
+                    <span style={{ color: needDesc == "是" ? "#1BE72B" : "#F50101" }}>
+                        {needDesc}
+                    </span>
+                );
+            },
         },
         {
             title: "操作",
@@ -95,6 +135,7 @@ const Account = () => {
                         <Button type="link" danger>
                             编辑
                         </Button>
+                        <Button type="link">删除</Button>
                     </Space>
                 );
             },
@@ -275,9 +316,15 @@ const Account = () => {
                     setAddProjectOpen(false);
                 }}
             />
+            <Detail
+                detailRow={detailRow}
+                onClose={resFlag => {
+                    setDetailRow(null);
+                }}
+            />
             <Space className="search">
                 <SearchInput
-                    label="角色名称"
+                    label="巡检项名称"
                     value={code}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
@@ -313,7 +360,7 @@ const Account = () => {
                             icon={<PlusCircleFilled style={{ fontSize: 13 }} />}
                             onClick={() => setAddProjectOpen(true)}
                         >
-                            新增角色
+                            新增
                         </Button>
                         <Button type="primary" danger>
                             批量删除
