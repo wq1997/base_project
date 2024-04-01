@@ -4,27 +4,14 @@ import * as echarts from "echarts";
 import { theme as antdTheme } from "antd";
 import { useSelector } from "umi";
 
-const TimeIncomeChart = () => {
+const TimeIncomeChart = ({dataSource}) => {
     const { token } = antdTheme.useToken();
     const { theme } = useSelector(state => state.global);
     const [options, setOptions] = useState({});
 
     const getOptions = () => {
-        const xAxisData = [
-            "1月",
-            "2月",
-            "3月",
-            "4月",
-            "5月",
-            "6月",
-            "7月",
-            "8月",
-            "9月",
-            "10月",
-            "11月",
-            "12月",
-        ];
-        const data = [46250, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        const xAxisData = dataSource?.timeSharingProfit?.map(item => item._1) || [];
+        const data = dataSource?.timeSharingProfit?.map(item => item._2) || [];
         setOptions({
             tooltip: {
                 trigger: "axis",
@@ -82,7 +69,7 @@ const TimeIncomeChart = () => {
 
     useEffect(() => {
         getOptions();
-    }, [theme]);
+    }, [theme, dataSource]);
 
     return <ReactECharts option={options} style={{ height: "100%" }} />;
 };

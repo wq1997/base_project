@@ -20,6 +20,7 @@ const Overview = () => {
     const [dateType, setDateType] = useState('Year');
     const [date, setDate] = useState(dayjs(moment().format("YYYY")));
     const { theme } = useSelector(state => state.global);
+    const [data, setData] = useState(null);
     const [companyAccountData, setCompanyAccountData] = useState([
         {
             label: '账户余额',
@@ -86,6 +87,22 @@ const Overview = () => {
             }
         }
         const res = await getOverviewIncomeServe(params)
+        if(res?.data?.data){
+            const cloneCompanyAccountData = JSON.parse(JSON.stringify(companyAccountData));
+            cloneCompanyAccountData[0].data = res?.data?.data?.fullAccountBalance;
+            cloneCompanyAccountData[1].data = res?.data?.data?.fullTotalIncomeAmount;
+            cloneCompanyAccountData[2].data = res?.data?.data?.fullTotalReceivedAmount;
+
+            const cloneIncomeStaticsData = JSON.parse(JSON.stringify(incomeStaticsData));
+            cloneIncomeStaticsData[0].data = res?.data?.data?.totalProfit;
+            cloneIncomeStaticsData[1].data = res?.data?.data?.responseCapacity;
+            cloneIncomeStaticsData[2].data = res?.data?.data?.responseCount;
+            cloneIncomeStaticsData[3].data = res?.data?.data?.successRate;
+
+            setCompanyAccountData(cloneCompanyAccountData);
+            setIncomeStaticsData(cloneIncomeStaticsData);
+            setData(res?.data?.data);
+        }
     }
 
     useEffect(()=>{
@@ -225,7 +242,7 @@ const Overview = () => {
                                             />
                                             
                                             <div style={{marginLeft: 15, marginTop: 8}}>
-                                                <span style={{fontFamily: 'DingTalkJinBuTi', color:token.colorPrimary, fontSize: 32}}>4625</span>
+                                                <span style={{fontFamily: 'DingTalkJinBuTi', color:token.colorPrimary, fontSize: 32}}>{data?.heightPeakCutPower || 0}</span>
                                                 <span>kW</span>
                                             </div>
                                         </div>
@@ -236,7 +253,7 @@ const Overview = () => {
                                             />
                                             
                                             <div style={{marginLeft: 15, marginTop: 8}}>
-                                                <span style={{fontFamily: 'DingTalkJinBuTi', color:token.colorPrimary, fontSize: 32}}>10</span>
+                                                <span style={{fontFamily: 'DingTalkJinBuTi', color:token.colorPrimary, fontSize: 32}}>{data?.heightPeakCutPrice || 0}</span>
                                                 <span>元/KW</span>
                                             </div>
                                         </div>
@@ -256,7 +273,7 @@ const Overview = () => {
                                             />
                                             
                                             <div style={{marginLeft: 15, marginTop: 8}}>
-                                                <span style={{fontFamily: 'DingTalkJinBuTi', color:token.colorPrimary, fontSize: 32}}>0</span>
+                                                <span style={{fontFamily: 'DingTalkJinBuTi', color:token.colorPrimary, fontSize: 32}}>{data?.lowPeakCutPower || 0}</span>
                                                 <span>KW</span>
                                             </div>
                                         </div>
@@ -267,7 +284,7 @@ const Overview = () => {
                                             />
                                             
                                             <div style={{marginLeft: 15, marginTop: 8}}>
-                                                <span style={{fontFamily: 'DingTalkJinBuTi', color:token.colorPrimary, fontSize: 32}}>0</span>
+                                                <span style={{fontFamily: 'DingTalkJinBuTi', color:token.colorPrimary, fontSize: 32}}>{data?.lowPeakCutPrice || 0}</span>
                                                 <span>元/KW</span>
                                             </div>
                                         </div>
@@ -281,7 +298,7 @@ const Overview = () => {
                     <div className={incomeCardStyle}>
                         <MyTitle style={{ marginTop: 0, marginBottom: 15}}>任务执行统计</MyTitle>
                         <div className={styles.contentRightChart}>
-                            <TaskStaticsChart />
+                            <TaskStaticsChart dataSource={data} />
                         </div>
                     </div>
                 </div>
@@ -289,7 +306,7 @@ const Overview = () => {
             <div style={{ height: 370 }}>
                 <MyTitle style={{ marginTop: 0, marginBottom: 15 }}>分时收益统计</MyTitle>
                 <div style={{ height: 400 }}>
-                    <TimeIncomeChart />
+                    <TimeIncomeChart dataSource={data} />
                 </div>
             </div>
         </div>
