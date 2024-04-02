@@ -27,7 +27,7 @@ instance.interceptors.request.use(config => {
 instance.interceptors.response.use(response => {
     if (response.status === 200) {
         let {data}=response;
-        if (data.code===403) {
+        if (data.code!==200) {
             message.error(data.msg);
             logout();
             // history.push('/login')
@@ -38,6 +38,7 @@ instance.interceptors.response.use(response => {
     }
 }, error => {
     const { config, code, request, response, isAxiosError, toJSON } = error;
+    logout();
     if (response) {
         errorHandle(response.status, response.data.message);
         return Promise.reject(response);
