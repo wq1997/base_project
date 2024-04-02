@@ -62,7 +62,7 @@ const Account = () => {
         {
             id: 1,
             account: "连云港乐华不锈钢制品有限公司",
-            name: "张峰",
+            name: "张**",
             phone: "176xxxx5537",
             area: "江苏",
             role: "业务操作人员",

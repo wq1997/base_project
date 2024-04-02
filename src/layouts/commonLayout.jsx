@@ -3,12 +3,12 @@ import { Layout, Row, Avatar, Typography, Dropdown, Space, theme as antdTheme } 
 import styles from "./commonLayout.less";
 import useIcon from "@/hooks/useIcon";
 import { useEffect } from "react";
-import { useEmotionCss } from '@ant-design/use-emotion-css';
+import { useEmotionCss } from "@ant-design/use-emotion-css";
 import { setLocalStorage } from "@/utils/utils";
 
 const { Header, Sider, Content } = Layout;
 
-const CommonLayout = (props) => {
+const CommonLayout = props => {
     const { token } = antdTheme.useToken();
     const { theme } = useSelector(state => state.global);
     const Icon = useIcon();
@@ -17,65 +17,79 @@ const CommonLayout = (props) => {
 
     useEffect(() => {
         document.title = title;
-    }, [])
+    }, []);
 
-    const changeTheme = (theme) => {
+    const changeTheme = theme => {
         setLocalStorage("theme", theme);
         dispatch({
-            type: 'global/changeTheme',
+            type: "global/changeTheme",
             payload: {
-                theme
-            }
-        })
-    }
+                theme,
+            },
+        });
+    };
 
     const headerStyle = useEmotionCss(() => {
         return {
-            padding: '24px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
+            padding: "24px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
             zIndex: 1,
             background: token.layoutTopBackColor,
-            '.logo': {
-                width: '143px',
-                height: '15px',
-                marginRight: '20px'
+            ".logo": {
+                width: "143px",
+                height: "15px",
+                marginRight: "20px",
             },
-            '.title': {
-                margin: 0
-            }
-        }
-    })
+            ".title": {
+                margin: 0,
+            },
+        };
+    });
 
     const siderStyle = useEmotionCss(() => {
         return {
-            padding: '24px 0',
+            padding: "24px 0",
             background: token.layoutLeftBackColor,
-            '.siderContent': {
-                height: '100%',
-                width: '100%',
-                overflowY: 'scroll',
-                '&::-webkit-scrollbar': {
-                    display: 'none'
-                }
-            }
-        }
+            ".siderContent": {
+                height: "100%",
+                width: "100%",
+                overflowY: "scroll",
+                "&::-webkit-scrollbar": {
+                    display: "none",
+                },
+            },
+            ".ant-menu-submenu-title": {
+                color: "#fff !important",
+                "&:hover": {
+                    color: "#fff",
+                },
+            },
+            ".ant-menu-item-selected": {
+                background:
+                    "linear-gradient( 270deg, rgba(18,88,175,0.25) 0%, #1676EF 100%) !important",
+                ".anticon,a": {
+                    color: "#fff",
+                },
+                "&:hover": {
+                    color: "#fff",
+                },
+            },
+        };
     });
 
     return (
         <div className={styles.baseLayout}>
             <Layout className={styles.layout}>
-                <Header
-                    className={headerStyle}
-                >
+                <Header className={headerStyle}>
                     <div style={{ display: "flex", alignItems: "center" }}>
                         {/* <img src={logo} className={"logo"} /> */}
                         <Typography.Title
                             level={3}
                             className={"title"}
                             style={{
-                                color: '#fff',
+                                color: "#fff",
                                 fontSize: "20px",
                             }}
                         >
@@ -88,7 +102,7 @@ const CommonLayout = (props) => {
                             style={{
                                 fontSize: 23,
                                 cursor: "pointer",
-                                marginTop: 30
+                                marginTop: 30,
                             }}
                             onClick={() => changeTheme(theme === "default" ? "dark" : "default")}
                         />
@@ -129,7 +143,11 @@ const CommonLayout = (props) => {
                                     A
                                 </Avatar>
                                 <span
-                                    style={{ fontSize: 20, color: token.colorPrimary, marginLeft: 10 }}
+                                    style={{
+                                        fontSize: 20,
+                                        color: token.colorPrimary,
+                                        marginLeft: 10,
+                                    }}
                                 >
                                     Admin
                                 </span>
@@ -138,11 +156,8 @@ const CommonLayout = (props) => {
                     </Space>
                 </Header>
                 <Layout hasSider>
-                    <Sider
-                        className={siderStyle}
-                        width={240}
-                    >
-                        <div className={'siderContent'}>
+                    <Sider className={siderStyle} width={240}>
+                        <div className={"siderContent"}>
                             <MyMenu />
                         </div>
                     </Sider>

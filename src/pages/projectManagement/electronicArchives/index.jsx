@@ -69,11 +69,11 @@ const Account = () => {
             standard: "是",
             projectType: "源网侧",
             productType: "集装箱",
-            implementationManager: "**",
-            operationsManager: "**",
+            implementationManager: "张**",
+            operationsManager: "李**",
         },
         {
-            id: 1,
+            id: 2,
             number: 1,
             name: "上海**有限公司7.5MW/22.5MWh用户储能项目",
             code: "CR20230223",
@@ -83,11 +83,11 @@ const Account = () => {
             standard: "是",
             projectType: "工商业",
             productType: "集装箱",
-            implementationManager: "**",
-            operationsManager: "**",
+            implementationManager: "张**",
+            operationsManager: "李**",
         },
         {
-            id: 1,
+            id: 3,
             number: 1,
             name: "浙江**能源科技有限公司100KW/215KWh储能项目",
             code: "CR20230605",
@@ -97,8 +97,8 @@ const Account = () => {
             standard: "是",
             projectType: "工商业",
             productType: "户外柜",
-            implementationManager: "**",
-            operationsManager: "**",
+            implementationManager: "张**",
+            operationsManager: "李**",
         },
     ]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -498,10 +498,8 @@ const Account = () => {
                     </Radio.Group>
                 </div>
 
-                <Button type="primary" onClick={getInviteList}>
-                    搜索
-                </Button>
-                <Button onClick={handleReset}>重置</Button>
+                <Button type="primary">搜索</Button>
+                <Button>重置</Button>
             </Space>
             <Table
                 rowKey="id"

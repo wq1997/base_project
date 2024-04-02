@@ -69,9 +69,9 @@ const Account = () => {
             start: "2024-02-05",
             end: "2024-02-08",
             projectName: "浙江**能源科技有限公司100KW/215KWh储能项目",
-            accept: "**",
-            launch: "**",
-            handle: "**",
+            accept: "张**",
+            launch: "李**",
+            handle: "王**",
         },
         {
             id: 2,
@@ -82,9 +82,9 @@ const Account = () => {
             start: "2024-02-13",
             end: "2024-02-17",
             projectName: "宁储**100MW/200MWh共享储能电站",
-            accept: "**",
-            launch: "**",
-            handle: "**",
+            accept: "张**",
+            launch: "李**",
+            handle: "王**",
         },
         {
             id: 3,
@@ -95,9 +95,9 @@ const Account = () => {
             start: "2024-03-11",
             end: "2024-03-18",
             projectName: "宁储**100MW/200MWh共享储能电站",
-            accept: "**",
-            launch: "**",
-            handle: "**",
+            accept: "张**",
+            launch: "李**",
+            handle: "王**",
         },
         {
             id: 4,
@@ -108,9 +108,9 @@ const Account = () => {
             start: "2024-03-18",
             end: "2024-03-22",
             projectName: "上海**有限公司7.5MW/22.5MWh用户储能项目",
-            accept: "**",
-            launch: "**",
-            handle: "**",
+            accept: "张**",
+            launch: "李**",
+            handle: "王**",
         },
     ]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -459,10 +459,8 @@ const Account = () => {
                         setResponseTimeType(value);
                     }}
                 />
-                <Button type="primary" onClick={getInviteList}>
-                    搜索
-                </Button>
-                <Button onClick={handleReset}>重置</Button>
+                <Button type="primary">搜索</Button>
+                <Button>重置</Button>
             </Space>
             <Table
                 rowKey="id"

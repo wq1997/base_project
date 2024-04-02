@@ -2,6 +2,7 @@ import { Menu } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useSelector } from 'umi';
 import useIcon from "@/hooks/useIcon";
+import { FundFilled, FolderOpenFilled, AppstoreFilled, SettingFilled } from '@ant-design/icons';
 
 const { SubMenu } = Menu;
 
@@ -9,11 +10,12 @@ const MenuList = [
     {
         key: "/overview-screen",
         label: "采日运维大屏",
+        icon: <FundFilled />
     },
     {
         key: "/workbench",
         label: "运维工作台",
-        icon: "icon-wuliaoxuqiu",
+        icon: <AppstoreFilled />,
         darkIcon: "icon-wuliaoxuqiu-copy",
         children: [
             {
@@ -29,7 +31,7 @@ const MenuList = [
     {
         key: "/project-management",
         label: "项目管理",
-        icon: "icon-wuliaoxuqiu",
+        icon: <FolderOpenFilled />,
         darkIcon: "icon-wuliaoxuqiu-copy",
         children: [
             {
@@ -55,7 +57,7 @@ const MenuList = [
     {
         key: "/system-configuration",
         label: "系统配置",
-        icon: "icon-wuliaoxuqiu",
+        icon: <SettingFilled />,
         darkIcon: "icon-wuliaoxuqiu-copy",
         children: [
             {
@@ -86,14 +88,14 @@ const MyMenu = () => {
                     <SubMenu
                         key={menu.key}
                         title={menu.label}
-                        icon={
-                            <Icon
-                                type={theme === 'dark' ? (menu.darkIcon||menu.icon) : menu.icon}
-                                style={{
-                                    color: "black",
-                                    fontSize: 20,
-                                }}
-                            />
+                        icon={menu.icon
+                            // <Icon
+                            //     type={theme === 'dark' ? (menu.darkIcon||menu.icon) : menu.icon}
+                            //     style={{
+                            //         color: "black",
+                            //         fontSize: 20,
+                            //     }}
+                            // />
                         }
                     >
                         {getMenu(menu.children)}
@@ -103,13 +105,13 @@ const MyMenu = () => {
                 return (
                     <Menu.Item
                         key={menu.key}
-                        icon={
-                            <Icon
-                                type={theme === 'dark' ? (menu.darkIcon||menu.icon) : menu.icon}
-                                style={{
-                                    fontSize: 20,
-                                }}
-                            />
+                        icon={menu.icon
+                            // <Icon
+                            //     type={theme === 'dark' ? (menu.darkIcon || menu.icon) : menu.icon}
+                            //     style={{
+                            //         fontSize: 20,
+                            //     }}
+                            // />
                         }
                     >
                         <Link to={menu.key} target={menu?.target}>{menu.label}</Link>
@@ -124,7 +126,6 @@ const MyMenu = () => {
     const getOpenKeys = () => {
         const pathList = pathname.split("/");
         let newOpenKeys = [...openKeys];
-        console.log('pathList', pathList)
         if (pathList.length < 3) {
             newOpenKeys = newOpenKeys.concat([pathname]);
         } else {
