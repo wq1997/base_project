@@ -94,36 +94,16 @@ const AddProject = ({ open, onClose }) => {
                 </Form.Item>
 
                 <Form.Item
-                    label="所属类型"
-                    name="companyCode"
-                    rules={[
-                        {
-                            required: true,
-                            message: "请选择所属类型",
-                        },
-                    ]}
-                >
-                    <Select
-                        placeholder="请选择所属类型"
-                        fieldNames={{
-                            label: "name",
-                            value: "code",
-                        }}
-                        options={[]}
-                    />
-                </Form.Item>
-
-                <Form.Item
-                    label="巡检项描述"
+                    label="巡检项内容"
                     name="responsePower"
                     rules={[
                         {
                             required: true,
-                            message: "请输入巡检项描述",
+                            message: "请输入巡检项内容",
                         },
                     ]}
                 >
-                    <Input style={{ width: "100%" }} placeholder="请输入巡检项描述" />
+                    <Input style={{ width: "100%" }} placeholder="请输入巡检项内容" />
                 </Form.Item>
 
                 <Form.Item

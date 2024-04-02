@@ -62,27 +62,79 @@ const Account = () => {
     const [userList, setUserList] = useState([
         {
             id: 1,
-            name: "xxxxxxxxxx",
-            type: "xxxxxxxxxx",
-            desc: "xxxxxxxxxx",
+            name: "储能电池及电池管理系统（BMS）",
+            desc: [
+                "储能电池及电池管理系统（BMS）",
+                "电池模组，电池架结构，铭牌，螺钉.连接线等；（目测）",
+                "汇流柜铭牌，内部通信供电接线，开关等（目测）",
+                "BMS高压箱外观，显控屏外观显示等（目测）",
+                "BMS历史告警数据，运行数据等（拍照）",
+                "汇流柜汇流排连接处；（拍照）",
+            ],
             needPic: "是",
-            needDesc: "是",
+            needDesc: "否",
         },
         {
             id: 2,
-            name: "xxxxxxxxxx",
-            type: "xxxxxxxxxx",
-            desc: "xxxxxxxxxx",
-            needPic: "否",
+            name: "储能变流器（PCS）",
+            desc: [
+                "直流侧电缆连接处；（拍照）",
+                "运行或热备用时状态检查；（拍照）",
+                "散热风机；（拍照）",
+                "显示屏，显示灯，历史告警数据；（拍照）",
+                "整体外观（拍照）",
+            ],
+            needPic: "是",
             needDesc: "否",
         },
         {
             id: 3,
-            name: "xxxxxxxxxx",
-            type: "xxxxxxxxxx",
-            desc: "xxxxxxxxxx",
+            name: "电池室或电池仓",
+            desc: [
+                "防爆灯（目测）",
+                "配电箱（目测）",
+                "电池仓整体外观，贴纸，标识，外罩；（拍照）",
+                "集装箱所有门；（目测）",
+            ],
+            needPic: "是",
+            needDesc: "否",
+        },
+        {
+            id: 4,
+            name: "液冷系统",
+            desc: [
+                "三级液冷管道（目测）",
+                "液冷机界面（拍照）",
+                "备液箱（拍照）",
+                "液冷机仓内外外观（目测）",
+            ],
             needPic: "是",
             needDesc: "是",
+        },
+        {
+            id: 5,
+            name: "EMS系统",
+            desc: ["通信连接（拍照）", "信息显示（拍照）", "历史告警记录（拍照）"],
+            needPic: "是",
+            needDesc: "否",
+        },
+        {
+            id: 6,
+            name: "消防系统",
+            desc: [
+                "消防罐外观，压力，备用电；（拍照）",
+                "消防主机（拍照）",
+                "集装箱外侧消防组件（目测）",
+            ],
+            needPic: "是",
+            needDesc: "是",
+        },
+        {
+            id: 7,
+            name: "空调系统",
+            desc: ["外观（目测）", "运行状态（拍照）", "历史告警信息（拍照）"],
+            needPic: "是",
+            needDesc: "否",
         },
     ]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -96,13 +148,17 @@ const Account = () => {
             title: "巡检项名称",
             dataIndex: "name",
         },
+
         {
-            title: "所属类型",
-            dataIndex: "type",
-        },
-        {
-            title: "巡检项描述",
+            title: "巡检项内容",
             dataIndex: "desc",
+            render: (_, { desc }) => {
+                return desc?.map((item, index) => (
+                    <div>
+                        {index + 1}. {item}
+                    </div>
+                ));
+            },
         },
         {
             title: "是否需要上传拍照信息",

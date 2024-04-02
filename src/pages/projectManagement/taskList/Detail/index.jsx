@@ -48,9 +48,6 @@ const Detail = ({ detailRow, onClose }) => {
     const CheckOrder = () => {
         return (
             <Descriptions title="业务信息">
-                <Descriptions.Item label="关联项目">Zhou Maomao</Descriptions.Item>
-                <Descriptions.Item label="计划开始时间">Zhou Maomao</Descriptions.Item>
-                <Descriptions.Item label="计划结束时间">Zhou Maomao</Descriptions.Item>
                 <Descriptions.Item label="巡检组管理">
                     <div>
                         <div>
@@ -138,9 +135,6 @@ const Detail = ({ detailRow, onClose }) => {
     const ImplementOrder = () => {
         return (
             <Descriptions title="业务信息">
-                <Descriptions.Item label="工单描述" span={3}>
-                    Zhou Maomao
-                </Descriptions.Item>
                 <Descriptions.Item label="巡检组管理">
                     <div>
                         <div>
@@ -237,16 +231,14 @@ const Detail = ({ detailRow, onClose }) => {
             onClose={() => onClose(false)}
         >
             <Descriptions title="基础信息">
-                <Descriptions.Item label="工单名称">Zhou Maomao</Descriptions.Item>
-                <Descriptions.Item label="工单类型">1810000000</Descriptions.Item>
-                <Descriptions.Item label="计划结束时间">Hangzhou, Zhejiang</Descriptions.Item>a
-                <Descriptions.Item label="关联项目名称">empty</Descriptions.Item>
-                <Descriptions.Item label="工单场景">
-                    No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China
-                </Descriptions.Item>
-                <Descriptions.Item label="发起人">Zhou Maomao</Descriptions.Item>
-                <Descriptions.Item label="处理人">Zhou Maomao</Descriptions.Item>
-                <Descriptions.Item label="计划开始时间">Zhou Maomao</Descriptions.Item>
+                <Descriptions.Item label="工单名称">{detailRow?.name}</Descriptions.Item>
+                <Descriptions.Item label="工单类型">{detailRow?.type}</Descriptions.Item>
+                <Descriptions.Item label="计划开始时间">{detailRow?.start}</Descriptions.Item>
+                <Descriptions.Item label="计划结束时间">{detailRow?.end}</Descriptions.Item>
+                <Descriptions.Item label="关联项目名称">{detailRow?.projectName}</Descriptions.Item>
+                <Descriptions.Item label="发起人">**</Descriptions.Item>
+                <Descriptions.Item label="处理人">**</Descriptions.Item>
+                <Descriptions.Item label="当前处理人">**</Descriptions.Item>
             </Descriptions>
 
             {detailRow?.type == "巡检工单" ? <CheckOrder /> : <ImplementOrder />}

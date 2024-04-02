@@ -62,55 +62,55 @@ const Account = () => {
     const [userList, setUserList] = useState([
         {
             id: 1,
-            time: "2014-02-05",
+            time: "2024-02-01",
             status: "已完成",
-            name: "XXXXXXX",
+            name: "基础实施工单",
             type: "实施工单",
-            start: "2014-2-16",
-            end: "2014-2-18",
-            projectName: "XXXXXX",
-            accept: "张三",
-            launch: "李四",
-            handle: "王五",
+            start: "2024-02-05",
+            end: "2024-02-08",
+            projectName: "浙江**能源科技有限公司100KW/215KWh储能项目",
+            accept: "**",
+            launch: "**",
+            handle: "**",
         },
         {
             id: 2,
             time: "2014-02-11",
             status: "已完成",
-            name: "XXXXXXX",
+            name: "基础巡检工单",
             type: "巡检工单",
-            start: "2014-2-16",
-            end: "2014-2-18",
-            projectName: "XXXXXX",
-            accept: "张三",
-            launch: "李四",
-            handle: "王五",
+            start: "2024-02-13",
+            end: "2024-02-17",
+            projectName: "宁储**100MW/200MWh共享储能电站",
+            accept: "**",
+            launch: "**",
+            handle: "**",
         },
         {
             id: 3,
             time: "2014-02-25",
             status: "已完成",
-            name: "XXXXXXX",
+            name: "日常巡检工单",
             type: "巡检工单",
-            start: "2014-2-16",
-            end: "2014-2-18",
-            projectName: "XXXXXX",
-            accept: "张三",
-            launch: "李四",
-            handle: "王五",
+            start: "2024-03-11",
+            end: "2024-03-18",
+            projectName: "宁储**100MW/200MWh共享储能电站",
+            accept: "**",
+            launch: "**",
+            handle: "**",
         },
         {
             id: 4,
-            time: "2014-03-01",
+            time: "2024-03-01",
             status: "已完成",
-            name: "XXXXXXX",
+            name: "日常巡检工单",
             type: "巡检工单",
-            start: "2014-2-16",
-            end: "2014-2-18",
-            projectName: "XXXXXX",
-            accept: "张三",
-            launch: "李四",
-            handle: "王五",
+            start: "2024-03-18",
+            end: "2024-03-22",
+            projectName: "上海**有限公司7.5MW/22.5MWh用户储能项目",
+            accept: "**",
+            launch: "**",
+            handle: "**",
         },
     ]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -127,6 +127,13 @@ const Account = () => {
         {
             title: "处理状态",
             dataIndex: "status",
+            render: (_, { status }) => {
+                return (
+                    <span style={{ color: status == "已完成" ? "#1BE72B" : "#F50101" }}>
+                        {status}
+                    </span>
+                );
+            },
         },
         {
             title: "工单名称",
@@ -402,20 +409,6 @@ const Account = () => {
                         setSplitStatus(value);
                     }}
                 />
-                <SearchInput
-                    label="工单场景"
-                    type="select"
-                    options={[
-                        { name: "巡检工单", code: 1 },
-                        { name: "维修工单", code: 1 },
-                    ]}
-                    value={responseType}
-                    onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
-                        responseTypeRef.current = value;
-                        setResponseType(value);
-                    }}
-                />
                 <div>
                     <span style={{ color: "#FFF" }}>计划开始时间：</span>
                     <DatePicker />
@@ -436,10 +429,7 @@ const Account = () => {
                 <SearchInput
                     label="任务接收人"
                     type="select"
-                    options={[
-                        { name: "张三", code: 1 },
-                        { name: "李四", code: 1 },
-                    ]}
+                    options={[{ name: "**", code: 1 }]}
                     value={responseTimeType}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
@@ -450,7 +440,7 @@ const Account = () => {
                 <SearchInput
                     label="任务发起人"
                     type="select"
-                    options={[{ name: "张三", code: 1 }]}
+                    options={[{ name: "**", code: 1 }]}
                     value={responseTimeType}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
@@ -461,7 +451,7 @@ const Account = () => {
                 <SearchInput
                     label="当前处理人"
                     type="select"
-                    options={[{ name: "张三", code: 1 }]}
+                    options={[{ name: "**", code: 1 }]}
                     value={responseTimeType}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;

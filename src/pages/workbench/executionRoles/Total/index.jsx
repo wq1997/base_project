@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { Select, Radio, theme } from "antd";
 import ReactECharts from "echarts-for-react";
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 import "./index.less";
 
 const Total = () => {
@@ -9,9 +9,9 @@ const Total = () => {
     const [type, setType] = useState("week");
 
     const myWorkorders = [
-        { name: "接受工单总数", value: "15", color: "#1098EF" },
+        { name: "接受工单总数", value: "67", color: "#1098EF" },
         { name: "执行工单总数", value: "52", color: "#ED9C0D" },
-        { name: "待执行异常工单", value: "67", color: "#10EF12" },
+        { name: "待执行异常工单", value: "15", color: "#10EF12" },
     ];
 
     const options = {
@@ -24,8 +24,8 @@ const Total = () => {
         },
         legend: {
             textStyle: {
-                color: token.color1
-            }
+                color: token.color1,
+            },
         },
         grid: {
             left: "3%",
@@ -44,9 +44,9 @@ const Total = () => {
                 type: "value",
                 splitLine: {
                     lineStyle: {
-                        color: [token.color9]
-                    }
-                }
+                        color: [token.color9],
+                    },
+                },
             },
         ],
         series: [

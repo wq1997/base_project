@@ -145,6 +145,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                 options={[
                                     { name: "待实施阶段", code: 1 },
                                     { name: "实施阶段", code: 2 },
+                                    { name: "售后阶段", code: 3 },
                                 ]}
                             />
                         </Form.Item>
@@ -165,8 +166,8 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                 }}
                                 options={[
                                     { name: "计划期", code: 1 },
-                                    { name: "进行中", code: 2 },
-                                    { name: "已结束", code: 3 },
+                                    { name: "试运行", code: 2 },
+                                    { name: "质保期", code: 3 },
                                 ]}
                             />
                         </Form.Item>
@@ -1108,19 +1109,17 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                                                                                                     name,
                                                                                                                     "inspectionTeamGroupItem",
                                                                                                                 ]}
-                                                                                                                label={`巡检事项${
-                                                                                                                    name +
+                                                                                                                label={`巡检事项${name +
                                                                                                                     1
-                                                                                                                }`}
+                                                                                                                    }`}
                                                                                                                 style={{
                                                                                                                     marginBottom: 0,
                                                                                                                 }}
                                                                                                             >
                                                                                                                 <Input
-                                                                                                                    placeholder={`请输入巡检项${
-                                                                                                                        name +
+                                                                                                                    placeholder={`请输入巡检项${name +
                                                                                                                         1
-                                                                                                                    }`}
+                                                                                                                        }`}
                                                                                                                     style={{
                                                                                                                         width: 500,
                                                                                                                     }}

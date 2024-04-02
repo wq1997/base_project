@@ -13,15 +13,30 @@ const PersonnelTasks = () => {
     const dataSource = [
         {
             key: "1",
-            name: "胡彦斌",
-            age: 32,
-            address: "西湖区湖底公园1号",
+            name: "宁储**100MW/200MWh共享储能电站",
+            age: "售后阶段",
+            address: "质保期",
+            type: "源网侧",
+            withCount: 11,
+            inCount: 5,
         },
         {
             key: "2",
-            name: "胡彦祖",
-            age: 42,
-            address: "西湖区湖底公园1号",
+            name: "上海**有限公司7.5MW/22.5MWh用户储能项目",
+            age: "售后阶段",
+            address: "质保期",
+            type: "工商业",
+            withCount: 8,
+            inCount: 3,
+        },
+        {
+            key: "3",
+            name: "浙江**能源科技有限公司100KW/215KWh储能项目",
+            age: "售后阶段",
+            address: "质保期",
+            type: "工商业",
+            withCount: 20,
+            inCount: 15,
         },
     ];
 
@@ -43,18 +58,18 @@ const PersonnelTasks = () => {
         },
         {
             title: "项目类型",
-            dataIndex: "address",
-            key: "address",
+            dataIndex: "type",
+            key: "type",
         },
         {
             title: "关联工单数",
-            dataIndex: "address",
-            key: "address",
+            dataIndex: "withCount",
+            key: "withCount",
         },
         {
             title: "在途工单数",
-            dataIndex: "address",
-            key: "address",
+            dataIndex: "inCount",
+            key: "inCount",
         },
     ];
 
