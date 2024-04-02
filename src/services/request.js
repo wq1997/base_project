@@ -27,7 +27,7 @@ instance.interceptors.request.use(config => {
 instance.interceptors.response.use(response => {
     if (response.status === 200) {
         let {data}=response;
-        if (data.msg==="Please login！") {
+        if (data.code===403) {
             message.error(data.msg);
             logout();
             // history.push('/login')
