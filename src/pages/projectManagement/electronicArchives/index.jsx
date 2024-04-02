@@ -59,6 +59,7 @@ const Account = () => {
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [userList, setUserList] = useState([
         {
+            id: 1,
             number: 1,
             name: "xxxx",
             code: "12332",
@@ -72,6 +73,7 @@ const Account = () => {
             operationsManager: "李四",
         },
         {
+            id: 2,
             number: 2,
             name: "xxxx",
             code: "3231321",
@@ -85,6 +87,7 @@ const Account = () => {
             operationsManager: "李四",
         },
         {
+            id: 3,
             number: 3,
             name: "xxxx",
             code: "123213",
@@ -160,49 +163,52 @@ const Account = () => {
             title: "操作",
             dataIndex: "operate",
             render: (_, { id, supportSplit, supportReSplit }) => {
-                const edit = (key) => {
+                const edit = key => {
                     setCurrentStep(key);
                     setAddProjectOpen(true);
-                }
+                };
                 return (
                     <Dropdown
                         menu={{
                             items: [
                                 {
                                     key: "1",
-                                    label: <div onClick={()=>edit(0)}>基础信息维护</div>,
+                                    label: <div onClick={() => edit(0)}>基础信息维护</div>,
                                     icon: <FileSearchOutlined />,
                                 },
                                 {
                                     key: "2",
-                                    label: <div onClick={()=>edit(1)}>详细信息维护</div>,
+                                    label: <div onClick={() => edit(1)}>详细信息维护</div>,
                                     icon: <FileProtectOutlined />,
                                 },
                                 {
                                     key: "3",
-                                    label: <div onClick={()=>edit(2)}>实施管理</div>,
+                                    label: <div onClick={() => edit(2)}>实施管理</div>,
                                     icon: <UnorderedListOutlined />,
                                 },
                                 {
                                     key: "4",
-                                    label: <div onClick={()=>edit(3)}>巡检管理</div>,
+                                    label: <div onClick={() => edit(3)}>巡检管理</div>,
                                     icon: <UserOutlined />,
                                 },
                                 {
                                     key: "5",
-                                    label: <div 
-                                                onClick={()=>{
-                                                    Modal.confirm({
-                                                        title: '系统提示',
-                                                        content: '删除此条记录不可恢复，请确认后再删除！',
-                                                        onOk(){
-                                                            message.success("删除成功！");
-                                                        }
-                                                    })
-                                                }}
-                                            >
-                                                删除项目
-                                            </div>,
+                                    label: (
+                                        <div
+                                            onClick={() => {
+                                                Modal.confirm({
+                                                    title: "系统提示",
+                                                    content:
+                                                        "删除此条记录不可恢复，请确认后再删除！",
+                                                    onOk() {
+                                                        message.success("删除成功！");
+                                                    },
+                                                });
+                                            }}
+                                        >
+                                            删除项目
+                                        </div>
+                                    ),
                                     icon: <DeleteOutlined />,
                                 },
                             ],
@@ -457,7 +463,6 @@ const Account = () => {
                         { name: "集装箱", code: 1 },
                         { name: "户外柜", code: 1 },
                     ]}
-                    value={responseTimeType}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         responseTimeTypeRef.current = value;
@@ -468,7 +473,6 @@ const Account = () => {
                     label="实施负责人"
                     type="select"
                     options={[{ name: "张三", code: 1 }]}
-                    value={responseTimeType}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         responseTimeTypeRef.current = value;
@@ -479,7 +483,6 @@ const Account = () => {
                     label="运维负责人"
                     type="select"
                     options={[{ name: "张三", code: 1 }]}
-                    value={responseTimeType}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         responseTimeTypeRef.current = value;
@@ -520,24 +523,14 @@ const Account = () => {
                         <Button type="primary" onClick={() => setAddProjectOpen(true)}>
                             新增项目
                         </Button>
-                        <Tooltip
-                            placement="bottom"
-                            title="只有邀约确认状态为【未确认】【已过期】的数据可以删除"
-                        >
-                            <Button
-                                type="primary"
-                                danger
-                                disabled={!canDelete}
-                                onClick={() => handleOperate(1)}
-                            >
-                                删除项目
-                                {selectedRowKeys?.length ? (
-                                    <span>({selectedRowKeys?.length})</span>
-                                ) : (
-                                    ""
-                                )}
-                            </Button>
-                        </Tooltip>
+                        <Button type="primary" danger disabled={!canDelete}>
+                            删除项目
+                            {selectedRowKeys?.length ? (
+                                <span>({selectedRowKeys?.length})</span>
+                            ) : (
+                                ""
+                            )}
+                        </Button>
                     </Space>
                 )}
             ></Table>

@@ -46,10 +46,10 @@ const MenuList = [
                 key: "/project-management/task-list",
                 label: "任务列表",
             },
-            {
-                key: "/project-management/workorder-details",
-                label: "工单详情",
-            },
+            // {
+            //     key: "/project-management/workorder-details",
+            //     label: "工单详情",
+            // },
         ],
     },
     {
@@ -58,6 +58,10 @@ const MenuList = [
         icon: "icon-wuliaoxuqiu",
         darkIcon: "icon-wuliaoxuqiu-copy",
         children: [
+            {
+                key: "/system-configuration/checkitem-configuration",
+                label: "巡检项配置",
+            },
             {
                 key: "/system-configuration/account-management",
                 label: "账号管理",

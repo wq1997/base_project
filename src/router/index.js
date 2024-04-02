@@ -36,6 +36,10 @@ export default Routes = [
                         path: "/system-configuration/role-management",
                         component: "@/pages/systemConfiguration/roleManagement",
                     },
+                    {
+                        path: "/system-configuration/checkitem-configuration",
+                        component: "@/pages/systemConfiguration/checkitemConfiguration",
+                    },
                 ],
             },
             { path: "/login", component: "@/pages/account/login" },
