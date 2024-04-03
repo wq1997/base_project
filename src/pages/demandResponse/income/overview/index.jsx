@@ -121,18 +121,21 @@ const Overview = () => {
         <div>
             <div className={incomeCardStyle}>
                 <div style={{ marginBottom: 15 }}>
-                    <Space>
-                        <MyTitle>公司账户</MyTitle>
-                        <Tooltip title="本页面中展示收益均为采日平台根据公司记录所计算的预期收益，仅做参考使用">
-                            <Icon
-                                type="icon-bangzhu"
-                                style={{
-                                    fontSize: 20,
-                                    cursor: 'pointer',
-                                }}
-                            />
-                        </Tooltip>
-                    </Space>
+                    <Row justify="space-between">
+                        <Space>
+                            <MyTitle>公司账户</MyTitle>
+                            <Tooltip title="本页面中展示收益均为采日平台根据公司记录所计算的预期收益，仅做参考使用">
+                                <Icon
+                                    type="icon-bangzhu"
+                                    style={{
+                                        fontSize: 20,
+                                        cursor: 'pointer',
+                                    }}
+                                />
+                            </Tooltip>
+                        </Space>
+                        <span style={{color: token.color11}}>{data?.companyName}</span>
+                    </Row>
                 </div>
                 <div
                     style={{
