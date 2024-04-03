@@ -61,12 +61,30 @@ const Account = () => {
     const [userList, setUserList] = useState([
         {
             id: 1,
-            account: "连云港乐华不锈钢制品有限公司",
+            account: "连云港**制品有限公司",
             name: "张**",
             phone: "176xxxx5537",
             area: "江苏",
             role: "业务操作人员",
             desc: "业务操作确认使用",
+        },
+        {
+            id: 2,
+            account: "江苏**科技有限公司",
+            name: "李**",
+            phone: "139xxxx5175",
+            area: "江苏",
+            role: "业务操作人员",
+            desc: "业务操作确认使用",
+        },
+        {
+            id: 3,
+            account: "上海采日能源科技有限公司",
+            name: "张**",
+            phone: "156xxxx7638",
+            area: "上海",
+            role: "管理员",
+            desc: "维护管理所有业务职能",
         },
     ]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);

@@ -9,9 +9,9 @@ const Total = () => {
     const [type, setType] = useState("week");
 
     const myWorkorders = [
-        { name: "接受工单总数", value: "67", color: "#1098EF" },
-        { name: "执行工单总数", value: "52", color: "#ED9C0D" },
-        { name: "待执行异常工单", value: "15", color: "#10EF12" },
+        { name: "工单总数", value: "67", color: "#1098EF" },
+        { name: "已执行工单", value: "52", color: "#ED9C0D" },
+        { name: "待执行工单", value: "15", color: "#10EF12" },
     ];
 
     const options = {
@@ -70,7 +70,7 @@ const Total = () => {
     return (
         <div className="total">
             <div className="my">
-                <div className="title">我待办的</div>
+                <div className="title">我的待办</div>
                 <div className="content">
                     {myWorkorders.map(item => (
                         <div className="order">

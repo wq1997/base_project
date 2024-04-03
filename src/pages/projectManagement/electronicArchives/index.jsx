@@ -74,7 +74,7 @@ const Account = () => {
         },
         {
             id: 2,
-            number: 1,
+            number: 2,
             name: "上海**有限公司7.5MW/22.5MWh用户储能项目",
             code: "CR20230223",
             time: "2023-02-23",
@@ -84,21 +84,35 @@ const Account = () => {
             projectType: "工商业",
             productType: "集装箱",
             implementationManager: "张**",
-            operationsManager: "李**",
+            operationsManager: "郑**",
         },
         {
             id: 3,
-            number: 1,
+            number: 3,
             name: "浙江**能源科技有限公司100KW/215KWh储能项目",
             code: "CR20230605",
             time: "2023-06-05",
             stage: "售后阶段",
             schedule: "质保期",
+            standard: "否",
+            projectType: "工商业",
+            productType: "户外柜",
+            implementationManager: "孙**",
+            operationsManager: "王**",
+        },
+        {
+            id: 4,
+            number: 4,
+            name: "江苏**能源科技有限公司100KW/215KWh储能项目",
+            code: "CR20240326",
+            time: "2024-03-26",
+            stage: "待实施阶段",
+            schedule: "计划期",
             standard: "是",
             projectType: "工商业",
             productType: "户外柜",
-            implementationManager: "张**",
-            operationsManager: "李**",
+            implementationManager: "李**",
+            operationsManager: "许**",
         },
     ]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -108,10 +122,6 @@ const Account = () => {
     const [currentStep, setCurrentStep] = useState(0);
 
     const columns = [
-        {
-            title: "序号",
-            dataIndex: "number",
-        },
         {
             title: "项目名称",
             dataIndex: "name",
