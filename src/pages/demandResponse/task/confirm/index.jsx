@@ -1,4 +1,4 @@
-import { Button, Space, message, theme as antdTheme, Modal } from "antd";
+import { Button, Space, message, theme as antdTheme, Modal, Empty } from "antd";
 import { getWaitConfirmTasks as getWaitConfirmTasksServer } from "@/services/task";
 import "./index.less";
 import { useEffect, useState } from "react";
@@ -367,105 +367,122 @@ const Confirm = () => {
             },
         });
     };
-
+    
     return (
-        <div className="confirm-task">
-            <div className={classNames("wait-confirm", cardStyle)}>
-                <div className="title">
-                    <Title>
-                        {isWaitTask ? (
-                            <div>
-                                待处理任务
-                                {taskList?.length > 1 && (
-                                    <>
-                                        ({taskList?.length})
-                                        <CaretLeftOutlined
-                                            style={{
-                                                cursor:
-                                                    curTaskIndex == 0 ? "not-allowed" : "pointer",
-                                            }}
-                                            onClick={() => changeCurTask(-1)}
-                                        />
-                                        <CaretRightOutlined
-                                            style={{
-                                                cursor:
-                                                    curTaskIndex == taskList?.length - 1
-                                                        ? "not-allowed"
-                                                        : "pointer",
-                                            }}
-                                            onClick={() => changeCurTask(1)}
-                                        />
-                                    </>
+        <div style={{width: '100%', height: '100%'}}>
+            {
+                taskList?.length>0?
+                <div className="confirm-task">
+                    <div className={classNames("wait-confirm", cardStyle)}>
+                        <div className="title">
+                            <Title>
+                                {isWaitTask ? (
+                                    <div>
+                                        待处理任务
+                                        {taskList?.length > 1 && (
+                                            <>
+                                                ({taskList?.length})
+                                                <CaretLeftOutlined
+                                                    style={{
+                                                        cursor:
+                                                            curTaskIndex == 0 ? "not-allowed" : "pointer",
+                                                    }}
+                                                    onClick={() => changeCurTask(-1)}
+                                                />
+                                                <CaretRightOutlined
+                                                    style={{
+                                                        cursor:
+                                                            curTaskIndex == taskList?.length - 1
+                                                                ? "not-allowed"
+                                                                : "pointer",
+                                                    }}
+                                                    onClick={() => changeCurTask(1)}
+                                                />
+                                            </>
+                                        )}
+                                    </div>
+                                ) : (
+                                    "任务要求"
                                 )}
+                            </Title>
+                            <div className="company" style={{ color: token.color11 }}>
+                                <span style={{ color: "gray", marginRight: "5px" }}>
+                                    {curTask?.taskCode}
+                                </span>
+                                {curTask?.companyName}
                             </div>
-                        ) : (
-                            "任务要求"
-                        )}
-                    </Title>
-                    <div className="company" style={{ color: token.color11 }}>
-                        <span style={{ color: "gray", marginRight: "5px" }}>
-                            {curTask?.taskCode}
-                        </span>
-                        {curTask?.companyName}
-                    </div>
-                </div>
-                <div className="content">
-                    <div className="desc">
-                        {taskAskData?.map(item => {
-                            return (
-                                <div
-                                    style={{
-                                        boxShadow:
-                                            theme === "default" &&
-                                            "0px 2px 6px 0px rgba(176,185,210,0.4)",
-                                        flex: 1,
-                                    }}
-                                >
-                                    <StaticsCard
-                                        icon={item.icon}
-                                        color={item.color}
-                                        label={item.label}
-                                        value={item.value}
-                                        backgroundColor={token.color22}
-                                    />
-                                </div>
-                            );
-                        })}
-                    </div>
-                    <div className="time" style={{ color: token.color27 }}>
-                        <div>响应时间：{curTask?.responseTime}</div>
-                        <div>确认截止时间：{curTask?.confirmationDeadline}</div>
-                    </div>
-                    {isWaitTask && curTask && (
-                        <div className="btns">
-                            <Button
-                                onClick={() => {
-                                    history.push(
-                                        `/vpp/demandResponse/task/list?taskCode=${curTask?.taskCode}`
-                                    );
-                                }}
-                            >
-                                查看详情
-                            </Button>
-                            <Space>
-                                <Button type="primary" danger onClick={handleRefuse}>
-                                    拒绝
-                                </Button>
-                                <Button type="primary" onClick={handleConfirm}>
-                                    确认响应
-                                </Button>
-                            </Space>
                         </div>
-                    )}
+                        <div className="content">
+                            <div className="desc">
+                                {taskAskData?.map(item => {
+                                    return (
+                                        <div
+                                            style={{
+                                                boxShadow:
+                                                    theme === "default" &&
+                                                    "0px 2px 6px 0px rgba(176,185,210,0.4)",
+                                                flex: 1,
+                                            }}
+                                        >
+                                            <StaticsCard
+                                                icon={item.icon}
+                                                color={item.color}
+                                                label={item.label}
+                                                value={item.value}
+                                                backgroundColor={token.color22}
+                                            />
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                            <div className="time" style={{ color: token.color27 }}>
+                                <div>响应时间：{curTask?.responseTime}</div>
+                                <div>确认截止时间：{curTask?.confirmationDeadline}</div>
+                            </div>
+                            {isWaitTask && curTask && (
+                                <div className="btns">
+                                    <Button
+                                        onClick={() => {
+                                            history.push(
+                                                `/vpp/demandResponse/task/list?taskCode=${curTask?.taskCode}`
+                                            );
+                                        }}
+                                    >
+                                        查看详情
+                                    </Button>
+                                    <Space>
+                                        <Button type="primary" danger onClick={handleRefuse}>
+                                            拒绝
+                                        </Button>
+                                        <Button type="primary" onClick={handleConfirm}>
+                                            确认响应
+                                        </Button>
+                                    </Space>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    {isWaitTask ? WaitSuggestCard() : resultCard()}
+                    <div className="curve">
+                        <Title>用电曲线</Title>
+                        <div className="content" style={{ paddingTop: "30px" }}>
+                            <ReactECharts option={options} style={{ width: "100%", height: "500px" }} />
+                        </div>
+                    </div>
                 </div>
-            </div>
-            {isWaitTask ? WaitSuggestCard() : resultCard()}
-            <div className="curve">
-                <Title>用电曲线</Title>
-                <div className="content" style={{ paddingTop: "30px" }}>
-                    <ReactECharts option={options} style={{ width: "100%", height: "500px" }} />
+                :
+                <div
+                    style={{
+                        width: '100%',
+                        height: "500px",
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}
+                >
+                    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={isWaitTask?'暂无待确认任务':'暂无待查询任务'} />
                 </div>
-            </div>
+            }
         </div>
     );
 };
