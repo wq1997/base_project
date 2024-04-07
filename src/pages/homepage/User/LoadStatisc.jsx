@@ -150,7 +150,7 @@ const LoadStatisc = ({ dataSource }) => {
                         }
                     }
                 }, {
-                    name: '日前响应能力(KW)',
+                    name: '削峰签约能力(kW)',
                     type: 'line',
                     data: data2,
                     symbolSize: 1,
@@ -178,7 +178,7 @@ const LoadStatisc = ({ dataSource }) => {
                     }
                 },
                 {
-                    name: '日中响应能力(KW)',
+                    name: '填谷签约能力(kW)',
                     type: 'line',
                     data: data3,
                     symbolSize: 1,
