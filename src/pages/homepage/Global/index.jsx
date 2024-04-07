@@ -162,28 +162,7 @@ const Global = () => {
                                 用户分布统计(江苏省)
                             </Title>
                             <JiangsuMap
-                                allPlant={[
-                                    {
-                                        longitude: 120.72816,
-                                        latitude: 31.69943,
-                                        name: "苏州京浜光电科技股份有限公司	",
-                                    },
-                                    {
-                                        longitude: 121.53228,
-                                        latitude: 31.844902,
-                                        name: "江苏海四达新能源有限公司",
-                                    },
-                                    {
-                                        longitude: 121.640297,
-                                        latitude: 31.80057,
-                                        name: "江苏海四达动力科技有限公司",
-                                    },
-                                    {
-                                        longitude: 119.437057,
-                                        latitude: 34.640018,
-                                        name: "连云港市连云区板桥工业园区",
-                                    },
-                                ]}
+                                allPlant={dataSource?.companies}
                             />
                         </div>
                         <div className={styles.topRightItem}>

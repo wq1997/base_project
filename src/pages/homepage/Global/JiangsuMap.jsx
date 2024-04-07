@@ -6,14 +6,14 @@ import china from '../../../../public/mapJson/jiangsuJson'
 import * as echarts from "echarts";
 import { useSelector } from "umi";
 
-function MapCom(props) {
+function MapCom({allPlant}) {
     const { token } = antdTheme.useToken();
     const chartInstance= React.createRef();
     const [options, setOptions] = useState({});
     const { theme } = useSelector(state => state.global);
 
     const convertData = function () {
-        const markerList = props.allPlant?.map(it => {
+        const markerList = allPlant?.map(it => {
             return {
                 name: it.name,
                 value: [it.longitude, it.latitude, 100],
@@ -32,7 +32,7 @@ function MapCom(props) {
 
             }
         });
-      }, [props]);
+      }, []);
       
     const onChartReady = useCallback((ref) => {
         chartInstance.current = ref;
@@ -138,7 +138,7 @@ function MapCom(props) {
 
     useEffect(() => {
         getOptions();
-    }, [theme])
+    }, [theme, allPlant])
 
     return (
         <ReactECharts  
