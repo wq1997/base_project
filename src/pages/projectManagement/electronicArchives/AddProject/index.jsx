@@ -22,7 +22,8 @@ import "./index.less";
 
 const { Panel } = Collapse;
 
-const AddProject = ({ open, onClose, editCurrentStep }) => {
+const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
+    console.log(detailRow);
     const [form] = Form.useForm();
     const [currentStep, setCurrentStep] = useState(0);
     const [checkGroup, setCheckGroup] = useState([]);
@@ -39,7 +40,6 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
     };
 
     const onFinish = async values => {
-        console.log("onFinish", values);
         return;
         const { appointedTimeFrom, appointedTimeTo } = values;
         const res = await saveEnterRecordServer({
@@ -57,7 +57,13 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
 
     useEffect(() => {
         setCurrentStep(editCurrentStep);
-    }, [editCurrentStep]);
+        if (detailRow) {
+            form.setFieldsValue({
+                ...detailRow,
+                time: dayjs(detailRow?.time),
+            });
+        }
+    }, [editCurrentStep, detailRow]);
 
     return (
         <Modal
@@ -66,7 +72,10 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
             confirmLoading={true}
             open={open}
             footer={null}
-            onCancel={() => onClose(true)}
+            onCancel={() => {
+                form.resetFields();
+                onClose(true);
+            }}
         >
             <Steps
                 style={{ margin: "20px 0" }}
@@ -107,6 +116,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                     <>
                         <Form.Item
                             label="立项时间"
+                            name="time"
                             rules={[
                                 {
                                     required: true,
@@ -118,6 +128,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                         </Form.Item>
                         <Form.Item
                             label="项目名称"
+                            name="name"
                             rules={[
                                 {
                                     required: true,
@@ -129,6 +140,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                         </Form.Item>
                         <Form.Item
                             label="项目阶段"
+                            name="stage"
                             rules={[
                                 {
                                     required: true,
@@ -143,14 +155,15 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                     value: "code",
                                 }}
                                 options={[
-                                    { name: "待实施阶段", code: 1 },
-                                    { name: "实施阶段", code: 2 },
-                                    { name: "售后阶段", code: 3 },
+                                    { name: "待实施阶段", code: "待实施阶段" },
+                                    { name: "实施阶段", code: "实施阶段" },
+                                    { name: "售后阶段", code: "售后阶段" },
                                 ]}
                             />
                         </Form.Item>
                         <Form.Item
                             label="项目进度"
+                            name="schedule"
                             rules={[
                                 {
                                     required: true,
@@ -165,14 +178,15 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                     value: "code",
                                 }}
                                 options={[
-                                    { name: "计划期", code: 1 },
-                                    { name: "试运行", code: 2 },
-                                    { name: "质保期", code: 3 },
+                                    { name: "计划期", code: "计划期" },
+                                    { name: "试运行", code: "试运行" },
+                                    { name: "质保期", code: "质保期" },
                                 ]}
                             />
                         </Form.Item>
                         <Form.Item
                             label="是否支持标准巡检"
+                            name="standard"
                             rules={[
                                 {
                                     required: true,
@@ -181,12 +195,13 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                             ]}
                         >
                             <Radio.Group>
-                                <Radio value={1}>是</Radio>
-                                <Radio value={2}>否</Radio>
+                                <Radio value={"是"}>是</Radio>
+                                <Radio value={"否"}>否</Radio>
                             </Radio.Group>
                         </Form.Item>
                         <Form.Item
                             label="项目类型"
+                            name="projectType"
                             rules={[
                                 {
                                     required: true,
@@ -201,13 +216,14 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                     value: "code",
                                 }}
                                 options={[
-                                    { name: "工商业", code: 1 },
-                                    { name: "源网侧", code: 2 },
+                                    { name: "工商业", code: "工商业" },
+                                    { name: "源网侧", code: "源网侧" },
                                 ]}
                             />
                         </Form.Item>
                         <Form.Item
                             label="产品类型"
+                            name="productType"
                             rules={[
                                 {
                                     required: true,
@@ -222,13 +238,14 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                     value: "code",
                                 }}
                                 options={[
-                                    { name: "集装箱", code: 1 },
-                                    { name: "户外柜", code: 2 },
+                                    { name: "集装箱", code: "集装箱" },
+                                    { name: "户外柜", code: "户外柜" },
                                 ]}
                             />
                         </Form.Item>
                         <Form.Item
                             label="所属区域"
+                            name="area"
                             rules={[
                                 {
                                     required: true,
@@ -242,7 +259,11 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                     label: "name",
                                     value: "code",
                                 }}
-                                options={[{ name: "上海", code: 1 }]}
+                                options={[
+                                    { name: "上海", code: "上海" },
+                                    { name: "宁夏", code: "上海" },
+                                    { name: "浙江", code: "上海" },
+                                ]}
                             />
                         </Form.Item>
                     </>
@@ -264,6 +285,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="业主名称"
+                                                name="owner"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -277,6 +299,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="项目地址"
+                                                name="adress"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -293,6 +316,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="电站名称"
+                                                name="plantName"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -306,6 +330,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="电站联系人"
+                                                name="plantUser"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -322,6 +347,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="电站联系方式"
+                                                name="plantPhone"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -335,6 +361,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="总包单位名称"
+                                                name="unit"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -351,6 +378,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="我方供货范围"
+                                                name="range"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -364,6 +392,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="质保期起止时间"
+                                                name="start"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -371,13 +400,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                                     },
                                                 ]}
                                             >
-                                                <DatePicker
-                                                    showTime={{
-                                                        format: "HH:mm",
-                                                    }}
-                                                    format="YYYY-MM-DD HH:mm"
-                                                    minuteStep={15}
-                                                />
+                                                <Input placeholder="请输入质保期起止时间" />
                                             </Form.Item>
                                         </Col>
                                     </Row>
@@ -386,6 +409,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="电站内储能单元分组情况"
+                                                name="group"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -399,6 +423,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="电站所属省市区/镇"
+                                                name="detailAdress"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -427,6 +452,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="电池仓数量"
+                                                name="batteryCount"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -440,6 +466,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="单台电池仓容量(AH)"
+                                                name="singleBattery"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -456,6 +483,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="PCS一体机数量"
+                                                name="PCSCount"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -469,6 +497,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="电芯材料"
+                                                name="cellMaterial"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -485,6 +514,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="电池堆成组方式"
+                                                name="heapMethod"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -498,6 +528,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="单台PCS最大功率(kW)"
+                                                name="singlePCS"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -514,6 +545,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="电池簇成组方式"
+                                                name="clusterMethod"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -527,6 +559,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="单电芯额定容量(AH)"
+                                                name="singleCell"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -543,6 +576,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="消防介质"
+                                                name="firefightingMedium"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -556,6 +590,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="充放电转换效率"
+                                                name="effect"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -572,6 +607,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="额定充放电倍率(C)"
+                                                name="multiplier"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -585,6 +621,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="关联场站信息"
+                                                name="plantInfo"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -613,6 +650,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="BMS厂商"
+                                                name="BMSManufacturer"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -626,6 +664,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="联系方式"
+                                                name="BMSManufacturerPhone"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -642,6 +681,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="PCS厂商"
+                                                name="PCSManufacturer"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -655,6 +695,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="联系方式"
+                                                name="PCSManufacturerPhone"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -671,6 +712,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="变压器厂商"
+                                                name="transformerManufacturer"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -684,6 +726,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="联系方式"
+                                                name="transformerManufacturerPhone"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -700,6 +743,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="液冷系统厂商"
+                                                name="liquidCoolingManufacturer"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -713,6 +757,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="联系方式"
+                                                name="liquidCoolingManufacturerPhone"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -729,6 +774,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="空调厂商"
+                                                name="airManufacturer"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -742,6 +788,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="联系方式"
+                                                name="airManufacturerPhone"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -758,6 +805,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="PACK组装厂厂商"
+                                                name="PACKManufacturer"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -771,6 +819,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="联系方式"
+                                                name="PACKManufacturerPhone"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -787,6 +836,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="电芯厂商"
+                                                name="cellManufacturer"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -800,6 +850,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="联系方式"
+                                                name="cellManufacturerPhone"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -816,6 +867,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="电池仓箱体厂商"
+                                                name="batteryManufacturer"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -829,6 +881,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="联系方式"
+                                                name="batteryManufacturerPhone"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -845,6 +898,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="消防厂商"
+                                                name="fireManufacturer"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -858,6 +912,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="联系方式"
+                                                name="fireManufacturerPhone"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -874,6 +929,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="EMS厂商"
+                                                name="emsManufacturer"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -887,6 +943,7 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="联系方式"
+                                                name="emsManufacturerPhone"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -1109,17 +1166,19 @@ const AddProject = ({ open, onClose, editCurrentStep }) => {
                                                                                                                     name,
                                                                                                                     "inspectionTeamGroupItem",
                                                                                                                 ]}
-                                                                                                                label={`巡检事项${name +
+                                                                                                                label={`巡检事项${
+                                                                                                                    name +
                                                                                                                     1
-                                                                                                                    }`}
+                                                                                                                }`}
                                                                                                                 style={{
                                                                                                                     marginBottom: 0,
                                                                                                                 }}
                                                                                                             >
                                                                                                                 <Input
-                                                                                                                    placeholder={`请输入巡检项${name +
+                                                                                                                    placeholder={`请输入巡检项${
+                                                                                                                        name +
                                                                                                                         1
-                                                                                                                        }`}
+                                                                                                                    }`}
                                                                                                                     style={{
                                                                                                                         width: 500,
                                                                                                                     }}

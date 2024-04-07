@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { Select, Radio, theme } from "antd";
 import ReactECharts from "echarts-for-react";
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 import styles from "./index.less";
-import classNames from 'classnames';
+import classNames from "classnames";
 
 const Total = () => {
     const { token } = theme.useToken();
     const [type, setType] = useState("week");
 
     const allWorkorders = [
-        { name: "在途异常工单", value: "15", color: token.color4 },
-        { name: "在途其他工单", value: "52", color: token.color5 },
+        { name: "在途异常工单", value: "1", color: token.color4 },
+        { name: "在途其他工单", value: "37", color: token.color5 },
     ];
 
     const myWorkorders = [
-        { name: "发起工单数", value: "67", color: token.color6 },
-        { name: "已执行总数", value: "55", color: token.color7 },
+        { name: "发起工单数", value: "128", color: token.color6 },
+        { name: "已执行总数", value: "128", color: token.color7 },
     ];
 
     const options = {
@@ -29,8 +29,8 @@ const Total = () => {
         },
         legend: {
             textStyle: {
-                color: token.color1
-            }
+                color: token.color1,
+            },
         },
         grid: {
             left: "3%",
@@ -41,7 +41,10 @@ const Total = () => {
         xAxis: [
             {
                 type: "category",
-                data: ["3-14", "3-15", "3-16", "3-17", "3-18", "3-19", "3-20"],
+                data:
+                    type == "week"
+                        ? ["04-02", "04-03", "04-04", "04-05", "04-06", "04-07", "04-08", "04-09"]
+                        : ["1月", "2月", "3月", "4月"],
             },
         ],
         yAxis: [
@@ -49,9 +52,9 @@ const Total = () => {
                 type: "value",
                 splitLine: {
                     lineStyle: {
-                        color: [token.color9]
-                    }
-                }
+                        color: [token.color9],
+                    },
+                },
             },
         ],
         series: [
@@ -60,14 +63,14 @@ const Total = () => {
                 type: "bar",
                 stack: "Ad",
                 barWidth: 40,
-                data: [32, 33, 30, 33, 39, 33, 32],
+                data: type == "week" ? [8, 6, 2, 10, 5, 2, 4, 3] : [5, 3, 21, 4],
             },
             {
                 name: "已完成",
                 type: "bar",
                 stack: "Ad",
                 barWidth: 40,
-                data: [12, 13, 10, 13, 30, 23, 21],
+                data: type == "week" ? [6, 5, 0, 5, 2, 5, 3, 7] : [135, 208, 155, 31],
             },
         ],
     };
@@ -87,7 +90,7 @@ const Total = () => {
                     ))}
                 </div>
             </div>
-            <div className={classNames(styles.my,styles.workorders)}>
+            <div className={classNames(styles.my, styles.workorders)}>
                 <div className={"title"}>我发起的</div>
                 <div className={styles.content}>
                     {myWorkorders.map(item => (

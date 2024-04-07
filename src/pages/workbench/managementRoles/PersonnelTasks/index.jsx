@@ -15,8 +15,8 @@ const PersonnelTasks = () => {
         },
         legend: {
             textStyle: {
-                color: token.color1
-            }
+                color: token.color1,
+            },
         },
         grid: {
             left: "3%",
@@ -28,18 +28,26 @@ const PersonnelTasks = () => {
             {
                 type: "category",
                 data: [
-                    "1月",
-                    "2月",
-                    "3月",
-                    "4月",
-                    "5月",
-                    "6月",
-                    "7月",
-                    "8月",
-                    "9月",
-                    "10月",
-                    "11月",
-                    "12月",
+                    "张**",
+                    "王**",
+                    "艾**",
+                    "李**",
+                    "林**",
+                    "麦**",
+                    "任**",
+                    "王**",
+                    "王**",
+                    "田**",
+                    "刘**",
+                    "吴**",
+                    "王**",
+                    "杨**",
+                    "刘**",
+                    "董**",
+                    "王**",
+                    "宋**",
+                    "何**",
+                    "孙**",
                 ],
             },
         ],
@@ -48,25 +56,27 @@ const PersonnelTasks = () => {
                 type: "value",
                 splitLine: {
                     lineStyle: {
-                        color: [token.color9]
-                    }
-                }
+                        color: [token.color9],
+                    },
+                },
             },
         ],
         series: [
             {
-                name: "已下发",
+                name: "实施工单",
                 type: "bar",
                 barWidth: 40,
                 stack: "Ad",
-                data: [32, 33, 30, 33, 39, 33, 32, 32, 33, 30, 33, 39],
+                data: [8, 5, 7, 5, 5, 6, 2, 6, 5, 7, 2, 6, 8, 3, 5, 5, 1, 2, 3, 2],
             },
             {
-                name: "已完成",
+                name: "运维工单",
                 type: "bar",
                 barWidth: 40,
                 stack: "Ad",
-                data: [12, 13, 10, 13, 30, 23, 12, 13, 10, 13, 30, 23],
+                data: [
+                    67, 65, 60, 60, 59, 56, 58, 54, 50, 46, 48, 43, 40, 42, 40, 40, 38, 36, 33, 32,
+                ],
             },
         ],
     };
@@ -85,10 +95,6 @@ const PersonnelTasks = () => {
                                 name: "全部",
                                 code: "1",
                             },
-                            {
-                                name: "园区项目",
-                                code: "2",
-                            },
                         ]}
                     />{" "}
                     <SearchInput
@@ -99,10 +105,6 @@ const PersonnelTasks = () => {
                             {
                                 name: "年",
                                 code: "1",
-                            },
-                            {
-                                name: "月",
-                                code: "2",
                             },
                         ]}
                     />

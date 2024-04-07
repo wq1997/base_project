@@ -18,7 +18,7 @@ const PersonnelTasks = () => {
             address: "质保期",
             type: "源网侧",
             withCount: 11,
-            inCount: 5,
+            inCount: 1,
         },
         {
             key: "2",
@@ -27,7 +27,7 @@ const PersonnelTasks = () => {
             address: "质保期",
             type: "工商业",
             withCount: 8,
-            inCount: 3,
+            inCount: 0,
         },
         {
             key: "3",
@@ -36,16 +36,7 @@ const PersonnelTasks = () => {
             address: "质保期",
             type: "工商业",
             withCount: 20,
-            inCount: 15,
-        },
-        {
-            key: "3",
-            name: "江苏**能源科技有限公司100KW/215KWh储能项目",
-            age: "待实施阶段",
-            address: "计划期",
-            type: "工商业",
-            withCount: 0,
-            inCount: 0,
+            inCount: 1,
         },
     ];
 

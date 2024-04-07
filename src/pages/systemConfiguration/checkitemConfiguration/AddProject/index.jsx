@@ -53,7 +53,7 @@ const AddProject = ({ open, onClose }) => {
         }
     };
 
-    useEffect(() => {}, [open]);
+    useEffect(() => { }, [open]);
 
     return (
         <Modal
@@ -82,7 +82,6 @@ const AddProject = ({ open, onClose }) => {
             >
                 <Form.Item
                     label="巡检项名称"
-                    name="responsePower"
                     rules={[
                         {
                             required: true,
@@ -95,7 +94,6 @@ const AddProject = ({ open, onClose }) => {
 
                 <Form.Item
                     label="巡检项内容"
-                    name="responsePower"
                     rules={[
                         {
                             required: true,

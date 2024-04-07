@@ -310,7 +310,6 @@ const Account = () => {
             <Space className="search">
                 <SearchInput
                     label="用户名"
-                    value={code}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         codeRef.current = value;
@@ -319,7 +318,6 @@ const Account = () => {
                 />
                 <SearchInput
                     label="姓名"
-                    value={code}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         codeRef.current = value;
@@ -334,7 +332,6 @@ const Account = () => {
                         { name: "浙江", code: 1 },
                         { name: "上海", code: 1 },
                     ]}
-                    value={responseTimeType}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         responseTimeTypeRef.current = value;
@@ -343,22 +340,19 @@ const Account = () => {
                 />
                 <SearchInput
                     label="绑定角色"
-                    type="select"
+                    type="role"
                     options={[
                         { name: "业务操作人员", code: 0 },
                         { name: "管理人员", code: 1 },
                     ]}
-                    value={responseTimeType}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         responseTimeTypeRef.current = value;
                         setResponseTimeType(value);
                     }}
                 />
-                <Button type="primary" onClick={getInviteList}>
-                    搜索
-                </Button>
-                <Button onClick={handleReset}>重置</Button>
+                <Button type="primary">搜索</Button>
+                <Button>重置</Button>
             </Space>
             <Table
                 rowKey="id"

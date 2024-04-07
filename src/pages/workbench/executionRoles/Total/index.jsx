@@ -9,9 +9,9 @@ const Total = () => {
     const [type, setType] = useState("week");
 
     const myWorkorders = [
-        { name: "工单总数", value: "67", color: "#1098EF" },
-        { name: "已执行工单", value: "52", color: "#ED9C0D" },
-        { name: "待执行工单", value: "15", color: "#10EF12" },
+        { name: "工单总数", value: "285", color: "#1098EF" },
+        { name: "已执行工单", value: "283", color: "#ED9C0D" },
+        { name: "待执行工单", value: "2", color: "#10EF12" },
     ];
 
     const options = {
@@ -36,7 +36,10 @@ const Total = () => {
         xAxis: [
             {
                 type: "category",
-                data: ["3-14", "3-15", "3-16", "3-17", "3-18", "3-19", "3-20"],
+                data:
+                    type == "week"
+                        ? ["04-02", "04-03", "04-04", "04-05", "04-06", "04-07", "04-08", "04-09"]
+                        : ["1月", "2月", "3月", "4月"],
             },
         ],
         yAxis: [
@@ -51,18 +54,18 @@ const Total = () => {
         ],
         series: [
             {
-                name: "实施工单",
+                name: "进行中",
                 type: "bar",
                 stack: "Ad",
                 barWidth: 40,
-                data: [32, 33, 30, 33, 39, 33, 32],
+                data: type == "week" ? [1, 1, 0, 1, 0, 0, 0, 1] : [0, 0, 2, 0],
             },
             {
-                name: "运维工单",
+                name: "已完成",
                 type: "bar",
                 stack: "Ad",
                 barWidth: 40,
-                data: [12, 13, 10, 13, 30, 23, 21],
+                data: type == "week" ? [0, 1, 0, 1, 0, 2, 2, 0] : [15, 16, 12, 21],
             },
         ],
     };

@@ -28,6 +28,19 @@ import Detail from "./Detail";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import "./index.less";
 import dayjs from "dayjs";
+import img1 from "./imgs/1.png";
+import img2 from "./imgs/2.png";
+import img3 from "./imgs/3.png";
+import img4 from "./imgs/4.png";
+import img5 from "./imgs/5.png";
+import img6 from "./imgs/6.png";
+import img7 from "./imgs/7.png";
+import img8 from "./imgs/8.png";
+import img9 from "./imgs/9.png";
+import img10 from "./imgs/10.png";
+import img11 from "./imgs/11.png";
+import img12 from "./imgs/12.png";
+import img13 from "./imgs/13.png";
 
 let invalidReason = undefined;
 
@@ -72,6 +85,14 @@ const Account = () => {
             accept: "张**",
             launch: "李**",
             handle: "王**",
+            groupName: "浙江**能源科技有限公司户外柜巡检",
+            checkInfo: [
+                { item: "户外柜巡检显示屏", img: img8 },
+                { item: "户外柜检查电池模块", img: img10 },
+                { item: "户外柜检查电池模组间动力线束", img: img11 },
+                { item: "户外柜检查电池模组间通信线束", img: img12 },
+                { item: "户外柜检查电池模组液冷管道接口", img: img13 },
+            ],
         },
         {
             id: 2,
@@ -85,6 +106,13 @@ const Account = () => {
             accept: "张**",
             launch: "许**",
             handle: "张**",
+            groupName: "宁储源网侧集装箱项目巡检",
+            checkInfo: [
+                { item: "源网侧集装箱项目检查BMS运行数据", img: img1 },
+                { item: "源网侧集装箱项目检查消防气体罐管道", img: img2 },
+                { item: "源网侧集装箱项目检查消防主机模块", img: img3 },
+                { item: "源网侧集装箱项目检查液冷机", img: img4 },
+            ],
         },
         {
             id: 3,
@@ -98,6 +126,13 @@ const Account = () => {
             accept: "刘**",
             launch: "田**",
             handle: "王**",
+            groupName: "宁储源网侧集装箱项目巡检",
+            checkInfo: [
+                { item: "源网侧集装箱项目检查BMS运行数据", img: img1 },
+                { item: "源网侧集装箱项目检查消防气体罐管道", img: img2 },
+                { item: "源网侧集装箱项目检查消防主机模块", img: img3 },
+                { item: "源网侧集装箱项目检查液冷机", img: img4 },
+            ],
         },
         {
             id: 4,
@@ -111,6 +146,12 @@ const Account = () => {
             accept: "孙**",
             launch: "李**",
             handle: "李**",
+            groupName: "上海**有限公司工商业集装箱项目巡检",
+            checkInfo: [
+                { item: "工商业集装箱项目储能电表巡检", img: img5 },
+                { item: "工商业集装箱项目消防主机模块巡检", img: img6 },
+                { item: "工商业集装箱项目液冷机巡检", img: img7 },
+            ],
         },
     ]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -372,7 +413,6 @@ const Account = () => {
                 </div>
                 <SearchInput
                     label="处理进度"
-                    value={confirmStatus}
                     type="select"
                     options={[
                         { name: "全部", code: 1 },
@@ -387,7 +427,6 @@ const Account = () => {
                 />
                 <SearchInput
                     label="工单名称"
-                    value={code}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         codeRef.current = value;
@@ -397,7 +436,6 @@ const Account = () => {
                 <SearchInput
                     label="工单类型"
                     type="select"
-                    value={splitStatus}
                     options={[
                         { name: "系统工单", code: 1 },
                         { name: "实施工单", code: 2 },
@@ -419,7 +457,6 @@ const Account = () => {
                 </div>
                 <SearchInput
                     label="关联项目名称"
-                    value={code}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         codeRef.current = value;
@@ -430,7 +467,6 @@ const Account = () => {
                     label="任务接收人"
                     type="select"
                     options={[{ name: "**", code: 1 }]}
-                    value={responseTimeType}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         responseTimeTypeRef.current = value;
@@ -441,7 +477,6 @@ const Account = () => {
                     label="任务发起人"
                     type="select"
                     options={[{ name: "**", code: 1 }]}
-                    value={responseTimeType}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         responseTimeTypeRef.current = value;
@@ -452,7 +487,6 @@ const Account = () => {
                     label="当前处理人"
                     type="select"
                     options={[{ name: "**", code: 1 }]}
-                    value={responseTimeType}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         responseTimeTypeRef.current = value;

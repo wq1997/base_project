@@ -195,13 +195,12 @@ const AddProject = ({ open, onClose }) => {
                         },
                     ]}
                 >
-                    <Select
-                        placeholder="请选择计划结束时间"
-                        fieldNames={{
-                            label: "name",
-                            value: "code",
+                    <DatePicker
+                        showTime={{
+                            format: "HH:mm",
                         }}
-                        options={[]}
+                        format="YYYY-MM-DD HH:mm"
+                        minuteStep={15}
                     />
                 </Form.Item>
 

@@ -53,77 +53,30 @@ const Detail = ({ detailRow, onClose }) => {
                         <div>
                             <div>
                                 <Badge color={"blue"} style={{ marginRight: "10px" }} />
-                                <span>巡检组1</span>
+                                <span>{detailRow?.groupName}</span>
                             </div>
                             <div style={{ position: "relative", left: "15px" }}>
-                                <div style={{ margin: "10px 0 " }}>
-                                    <Badge color={"blue"} style={{ marginRight: "10px" }} />
-                                    <span>巡检事项1：xxxxxxxx，xxxxxxxxxx</span>
-                                    <div
-                                        style={{
-                                            position: "relative",
-                                            left: "15px",
-                                            marginTop: "10px",
-                                        }}
-                                    >
-                                        <FileTextFilled className="file" />
-                                        <FileTextFilled className="file" />
-                                        <FileTextFilled className="file" />
+                                {detailRow?.checkInfo?.map((item, index) => (
+                                    <div style={{ margin: "10px 0 " }}>
+                                        <Badge color={"blue"} style={{ marginRight: "10px" }} />
+                                        <span>
+                                            巡检事项{index + 1}：{item.item}
+                                        </span>
+                                        <div
+                                            style={{
+                                                position: "relative",
+                                                left: "15px",
+                                                marginTop: "10px",
+                                            }}
+                                        >
+                                            <img
+                                                src={item.img}
+                                                alt=""
+                                                style={{ width: "100px", height: "120px" }}
+                                            />
+                                        </div>
                                     </div>
-                                </div>
-                                <div>
-                                    <Badge color={"blue"} style={{ marginRight: "10px" }} />
-                                    <span>巡检事项2：xxxxxxxx，xxxxxxxxxx</span>
-                                    <div
-                                        style={{
-                                            position: "relative",
-                                            left: "15px",
-                                            marginTop: "10px",
-                                        }}
-                                    >
-                                        <FileTextFilled className="file" />
-                                        <FileTextFilled className="file" />
-                                        <FileTextFilled className="file" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style={{ margin: "10px 0 " }}>
-                            <div>
-                                <Badge color={"blue"} style={{ marginRight: "10px" }} />
-                                <span>巡检组2</span>
-                            </div>
-                            <div style={{ position: "relative", left: "15px" }}>
-                                <div style={{ margin: "10px 0 " }}>
-                                    <Badge color={"blue"} style={{ marginRight: "10px" }} />
-                                    <span>巡检事项1：xxxxxxxx，xxxxxxxxxx</span>
-                                    <div
-                                        style={{
-                                            position: "relative",
-                                            left: "15px",
-                                            marginTop: "10px",
-                                        }}
-                                    >
-                                        <FileTextFilled className="file" />
-                                        <FileTextFilled className="file" />
-                                        <FileTextFilled className="file" />
-                                    </div>
-                                </div>
-                                <div>
-                                    <Badge color={"blue"} style={{ marginRight: "10px" }} />
-                                    <span>巡检事项2：xxxxxxxx，xxxxxxxxxx</span>
-                                    <div
-                                        style={{
-                                            position: "relative",
-                                            left: "15px",
-                                            marginTop: "10px",
-                                        }}
-                                    >
-                                        <FileTextFilled className="file" />
-                                        <FileTextFilled className="file" />
-                                        <FileTextFilled className="file" />
-                                    </div>
-                                </div>
+                                ))}
                             </div>
                         </div>
                     </div>
@@ -144,74 +97,56 @@ const Detail = ({ detailRow, onClose }) => {
                             </div>
                             <div style={{ position: "relative", left: "15px" }}>
                                 <div style={{ margin: "10px 0 " }}>
-                                    <span>
-                                        到货签收单附件：
-                                        <FileTextFilled className="file" />
-                                        <FileTextFilled className="file" />
-                                        <FileTextFilled className="file" />
-                                        <FileTextFilled className="file" />
-                                        <FileTextFilled className="file" />
-                                    </span>
+                                    <span>到货签收单附件：</span>
+                                    <a style={{ marginRight: "10px" }}>电芯附件.xlsx</a>
+                                    <a style={{ marginRight: "10px" }}>消防总成附件.xlsx</a>
+                                    <a style={{ marginRight: "10px" }}>传感器附件.xlsx</a>
+                                    <a style={{ marginRight: "10px" }}>转接线.xlsx</a>
                                 </div>
                                 <div>
-                                    <span>备注：xxxxxxxx，xxxxxxxxxx</span>
+                                    <span>备注：到货数量，批次号，生产日期等信息录入系统</span>
                                 </div>
                                 <div style={{ margin: "10px 0 " }}>
-                                    <span>实际处理人：xxxxxxxx，xxxxxxxxxx</span>
+                                    <span>实际处理人：王**</span>
                                 </div>
                             </div>
                         </div>
                         <div>
                             <div>
                                 <Badge color={"blue"} style={{ marginRight: "10px" }} />
-                                <span>发货阶段</span>
+                                <span>调试阶段</span>
                             </div>
                             <div style={{ position: "relative", left: "15px" }}>
                                 <div style={{ margin: "10px 0 " }}>
-                                    <span>
-                                        调试报告附件：
-                                        <span>
-                                            到货签收单附件：
-                                            <FileTextFilled className="file" />
-                                            <FileTextFilled className="file" />
-                                            <FileTextFilled className="file" />
-                                            <FileTextFilled className="file" />
-                                            <FileTextFilled className="file" />
-                                        </span>
-                                    </span>
+                                    <span>调试报告附件：</span>{" "}
+                                    <a style={{ marginRight: "10px" }}>温度采样分析报告.xlsx</a>
+                                    <a style={{ marginRight: "10px" }}>电芯老化测试.xlsx</a>
+                                    <a style={{ marginRight: "10px" }}>SOC差值检测.xlsx</a>
                                 </div>
                                 <div>
-                                    <span>备注：xxxxxxxx，xxxxxxxxxx</span>
+                                    <span>备注：保存调试源文件，上传至系统</span>
                                 </div>
                                 <div style={{ margin: "10px 0 " }}>
-                                    <span>实际处理人：xxxxxxxx，xxxxxxxxxx</span>
+                                    <span>实际处理人：张**</span>
                                 </div>
                             </div>
                         </div>
                         <div>
                             <div>
                                 <Badge color={"blue"} style={{ marginRight: "10px" }} />
-                                <span>发货阶段</span>
+                                <span>验收阶段</span>
                             </div>
                             <div style={{ position: "relative", left: "15px" }}>
                                 <div style={{ margin: "10px 0 " }}>
-                                    <span>
-                                        项目验收单附件：
-                                        <span>
-                                            到货签收单附件：
-                                            <FileTextFilled className="file" />
-                                            <FileTextFilled className="file" />
-                                            <FileTextFilled className="file" />
-                                            <FileTextFilled className="file" />
-                                            <FileTextFilled className="file" />
-                                        </span>
-                                    </span>
+                                    <span>项目验收单附件：</span>
+                                    <a style={{ marginRight: "10px" }}>项目总成明细表.xlsx</a>
+                                    <a style={{ marginRight: "10px" }}>验收测试项文件.xlsx</a>
                                 </div>
                                 <div>
-                                    <span>备注：xxxxxxxx，xxxxxxxxxx</span>
+                                    <span>备注：需满足验收标准，负责人签字</span>
                                 </div>
                                 <div style={{ margin: "10px 0 " }}>
-                                    <span>实际处理人：xxxxxxxx，xxxxxxxxxx</span>
+                                    <span>实际处理人：李**</span>
                                 </div>
                             </div>
                         </div>

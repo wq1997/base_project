@@ -71,6 +71,49 @@ const Account = () => {
             productType: "集装箱",
             implementationManager: "张**",
             operationsManager: "李**",
+            area: "宁夏",
+            owner: "**有限公司",
+            adress: "宁夏回族自治区吴忠市**",
+            plantName: "第一储能电站",
+            plantUser: "**",
+            plantPhone: "**",
+            unit: "中国电建集团**研究院有限公司",
+            range: "储能电池舱，PCS一体机",
+            start: "2022年**-2025年**",
+            group: "2条汇集线，每条15组储能单元",
+            detailAdress: "宁夏回族自治州吴忠市**",
+            batteryCount: "30台",
+            singleBattery: "6670KWh",
+            PCSCount: "30台",
+            cellMaterial: "磷酸铁锂",
+            heapMethod: "9簇",
+            singlePCS: "3450KW",
+            clusterMethod: "8个",
+            singleCell: "280AH",
+            firefightingMedium: "全氟己酮",
+            effect: "85%",
+            multiplier: "0.5C",
+            plantInfo: "无",
+            BMSManufacturer: "杭州**股份有限公司",
+            BMSManufacturerPhone: "**",
+            PCSManufacturer: "**电气股份有限公司",
+            PCSManufacturerPhone: "**",
+            transformerManufacturer: "广东**股份有限公司",
+            transformerManufacturerPhone: "**",
+            liquidCoolingManufacturer: "深圳市**股份有限公司",
+            liquidCoolingManufacturerPhone: "**",
+            airManufacturer: "深圳市**股份有限公司",
+            airManufacturerPhone: "**",
+            PACKManufacturer: "苏州**科技股份有限公司",
+            PACKManufacturerPhone: "**",
+            cellManufacturer: "**能源股份有限公司 ",
+            cellManufacturerPhone: "**",
+            batteryManufacturer: "上海**有限公司",
+            batteryManufacturerPhone: "**",
+            fireManufacturer: "安徽**新能源有限公司",
+            fireManufacturerPhone: "**",
+            emsManufacturer: "国电**控制系统有限公司",
+            emsManufacturerPhone: "**",
         },
         {
             id: 2,
@@ -85,6 +128,49 @@ const Account = () => {
             productType: "集装箱",
             implementationManager: "张**",
             operationsManager: "郑**",
+            area: "上海",
+            owner: "**有限公司",
+            adress: "上海市嘉定区**",
+            plantName: "**用户侧储能电站",
+            plantUser: "**",
+            plantPhone: "**",
+            unit: "中国**有限公司",
+            range: "储能电池舱，PCS一体机，EMS系统",
+            start: "2022年**-2024年**",
+            group: "2条汇集线，每条3组储能单元",
+            detailAdress: "上海市**",
+            batteryCount: "6台",
+            singleBattery: "4055KWh",
+            PCSCount: "2台",
+            cellMaterial: "磷酸铁锂",
+            heapMethod: "12簇",
+            singlePCS: "690KW",
+            clusterMethod: "15个",
+            singleCell: "220AH",
+            firefightingMedium: "全氟己酮",
+            effect: "83%",
+            multiplier: "0.5C",
+            plantInfo: "无",
+            BMSManufacturer: "杭州**股份有限公司",
+            BMSManufacturerPhone: "**",
+            PCSManufacturer: "苏州**技术有限公司",
+            PCSManufacturerPhone: "**",
+            transformerManufacturer: "**",
+            transformerManufacturerPhone: "**",
+            liquidCoolingManufacturer: "深圳市**股份有限公司",
+            liquidCoolingManufacturerPhone: "**",
+            airManufacturer: "深圳市**股份有限公司",
+            airManufacturerPhone: "**",
+            PACKManufacturer: "**科技股份有限公司",
+            PACKManufacturerPhone: "**",
+            cellManufacturer: "**能源股份有限公司 ",
+            cellManufacturerPhone: "**",
+            batteryManufacturer: "上海**有限公司",
+            batteryManufacturerPhone: "**",
+            fireManufacturer: "安徽**新能源有限公司",
+            fireManufacturerPhone: "**",
+            emsManufacturer: "上海采日能源科技有限公司",
+            emsManufacturerPhone: "**",
         },
         {
             id: 3,
@@ -99,20 +185,49 @@ const Account = () => {
             productType: "户外柜",
             implementationManager: "孙**",
             operationsManager: "王**",
-        },
-        {
-            id: 4,
-            number: 4,
-            name: "江苏**能源科技有限公司100KW/215KWh储能项目",
-            code: "CR20240326",
-            time: "2024-03-26",
-            stage: "待实施阶段",
-            schedule: "计划期",
-            standard: "是",
-            projectType: "工商业",
-            productType: "户外柜",
-            implementationManager: "李**",
-            operationsManager: "许**",
+            area: "浙江",
+            owner: "浙江**有限公司",
+            adress: "浙江省温州市永嘉县**",
+            plantName: "**",
+            plantUser: "**",
+            plantPhone: "**",
+            unit: "**",
+            range: "215KWh户外柜",
+            start: "2023年**-2024年**",
+            group: "1条汇集线，每条1组储能单元",
+            detailAdress: "上海市**",
+            batteryCount: "1台",
+            singleBattery: "215KWh",
+            PCSCount: "1台",
+            cellMaterial: "磷酸铁锂",
+            heapMethod: "1簇",
+            singlePCS: "110KW",
+            clusterMethod: "5个",
+            singleCell: "280AH",
+            firefightingMedium: "全氟己酮",
+            effect: "86%",
+            multiplier: "0.5C",
+            plantInfo: "无",
+            BMSManufacturer: "上海采日能源科技有限公司",
+            BMSManufacturerPhone: "**",
+            PCSManufacturer: "苏州**技术有限公司",
+            PCSManufacturerPhone: "**",
+            transformerManufacturer: "广东**股份有限公司",
+            transformerManufacturerPhone: "**",
+            liquidCoolingManufacturer: "深圳市**股份有限公司",
+            liquidCoolingManufacturerPhone: "**",
+            airManufacturer: "深圳市**股份有限公司",
+            airManufacturerPhone: "**",
+            PACKManufacturer: "**科技股份有限公司",
+            PACKManufacturerPhone: "**",
+            cellManufacturer: "上海**有限公司 ",
+            cellManufacturerPhone: "**",
+            batteryManufacturer: "上海**有限公司",
+            batteryManufacturerPhone: "**",
+            fireManufacturer: "**新能源科技股份有限公司",
+            fireManufacturerPhone: "**",
+            emsManufacturer: "上海采日能源科技有限公司",
+            emsManufacturerPhone: "**",
         },
     ]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -120,6 +235,7 @@ const Account = () => {
     const [invitationSplitId, setInvitationSplitId] = useState();
     const [detailId, setDetailId] = useState(false);
     const [currentStep, setCurrentStep] = useState(0);
+    const [detailRow, setDetailRow] = useState(0);
 
     const columns = [
         {
@@ -172,10 +288,11 @@ const Account = () => {
         {
             title: "操作",
             dataIndex: "operate",
-            render: (_, { id, supportSplit, supportReSplit }) => {
+            render: (_, row) => {
                 const edit = key => {
                     setCurrentStep(key);
                     setAddProjectOpen(true);
+                    setDetailRow(row);
                 };
                 return (
                     <Dropdown
@@ -403,8 +520,10 @@ const Account = () => {
         <div className="electronic-archives">
             <AddProject
                 open={addProjectOpen}
+                detailRow={detailRow}
                 onClose={resFlag => {
                     setAddProjectOpen(false);
+                    setDetailRow(null);
                 }}
                 editCurrentStep={currentStep}
             />
@@ -532,7 +651,7 @@ const Account = () => {
                         <Button type="primary" onClick={() => setAddProjectOpen(true)}>
                             新增项目
                         </Button>
-                        <Button type="primary" danger disabled={!canDelete}>
+                        <Button type="primary" danger>
                             删除项目
                             {selectedRowKeys?.length ? (
                                 <span>({selectedRowKeys?.length})</span>

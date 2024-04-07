@@ -35,8 +35,8 @@ const Board = () => {
                     radius: "50%",
                     selectedMode: "single",
                     data: [
-                        { value: 37, name: "维保项目" },
-                        { value: 701, name: "实施项目", selected: true },
+                        { value: 53, name: "维保项目" },
+                        { value: 2, name: "实施项目", selected: true },
                     ],
                     emphasis: {
                         itemStyle: {
@@ -98,10 +98,6 @@ const Board = () => {
                     type="select"
                     value={"2"}
                     options={[
-                        {
-                            name: "项目阶段图",
-                            code: "1",
-                        },
                         {
                             name: "项目类型图",
                             code: "2",
