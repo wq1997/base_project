@@ -21,7 +21,7 @@ const Title = (props) => {
                     marginRight: '4px'
                 }}
             />
-            <div style={{fontSize: 20, fontFamily: 'PingFangSemiblod'}}>{props.children}</div>
+            <div style={{fontSize: 20, fontFamily: 'PingFangSemiblod', color: token.color11}}>{props.children}</div>
         </div>
     )
 }

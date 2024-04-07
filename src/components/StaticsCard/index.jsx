@@ -36,4 +36,42 @@ const StaticsCard = (props) => {
     )
 }
 
+const SubStaticsCard = (props) => {
+    const { image, color, value, label } = props;
+    const { token } = theme.useToken();
+    return (
+        <div 
+            className={styles.card}
+        >
+            <div style={{height: '100%', width: '100%'}}>
+                <div
+                    style={{
+                        color, 
+                        textAlign: 'center',
+                        fontFamily: 'DingTalkJinBuTi',
+                        fontSize: 30,
+                        height: 'calc(100% - 10px)',
+                        backgroundImage: `url(${image})`,
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'bottom',
+                    }}
+                >
+                    {value}
+                </div>
+                <div 
+                    style={{
+                        height: '10px',
+                        color: token.color38,
+                        textAlign: 'center'
+                    }}
+                >
+                    {label}
+                </div>
+            </div>
+        </div>
+    )
+}
+
+StaticsCard.SubStaticsCard = SubStaticsCard;
+
 export default StaticsCard;
