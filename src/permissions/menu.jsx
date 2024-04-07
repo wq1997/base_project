@@ -1,4 +1,4 @@
-import { Menu } from "antd";
+import { Menu, theme as antdTheme } from "antd";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useSelector } from "umi";
 import useIcon from "@/hooks/useIcon";
@@ -97,6 +97,7 @@ const MenuList = [
 
 const MyMenu = () => {
     const Icon = useIcon();
+    const { token } = antdTheme.useToken();
     const [selectedKeys, setSelectedKeys] = useState("");
     const { theme } = useSelector(state => state.global);
     const { user } = useSelector(state => state.user);
@@ -112,7 +113,7 @@ const MyMenu = () => {
                             <Icon
                                 type={theme === 'dark' ? menu.darkIcon : menu.icon}
                                 style={{
-                                    color: "black",
+                                    color: token.color11,
                                     fontSize: 20,
                                 }}
                             />
