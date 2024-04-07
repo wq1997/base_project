@@ -27,7 +27,7 @@ const User = () => {
                 height: 550,
                 display: 'flex',
                 '.left': {
-                    width: 'calc(40% - 5px)',
+                    width: 'calc(45% - 5px)',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
@@ -40,10 +40,10 @@ const User = () => {
                     }
                 },
                 '.right': {
-                    width: 'calc(60% - 5px)',
+                    width: 'calc(55% - 5px)',
                     img: {
                         width: '100%',
-                        height: '100%',
+                        height: 'calc(100% - 60px)',
                         objectFit: 'cover'
                     }
                 },
@@ -169,6 +169,11 @@ const User = () => {
                     })}
                 </div>
                 <div className="right">
+                    <Title
+                        style={{ marginTop: 0, marginBottom: 20 }}
+                    >
+                        场站运行模拟
+                    </Title>
                     <img src={userHomepageRightImg}/>
                 </div>
             </div>
