@@ -3,12 +3,19 @@ import { useEffect, useState } from "react";
 import { theme as antdTheme } from "antd";
 import { useSelector } from "umi";
 
-const UserTypeStatistic = () => {
+const UserTypeStatistic = ({ dataSource }) => {
     const { token } = antdTheme.useToken();
     const [options, setOptions] = useState({});
     const { theme } = useSelector(state => state.global);
 
     const getOptions = () => {
+        const nameList = dataSource?Object.keys(dataSource):[];
+        const data = nameList.map(name => {
+          return {
+            value: dataSource[name],
+            name
+          }
+        })
         setOptions({
             color: ['#384FE8', '#03B4B4', '#F3CE55'],
             tooltip: {
@@ -47,11 +54,7 @@ const UserTypeStatistic = () => {
                 labelLine: {
                   show: false
                 },
-                data: [
-                  { value: 0, name: '复合型工业园' },
-                  { value: 0, name: '源荷储一体工业园' },
-                  { value: 4, name: '配储型工业园' },
-                ]
+                data
               }
             ]
           })    
@@ -59,7 +62,7 @@ const UserTypeStatistic = () => {
 
     useEffect(() => {
         getOptions();
-    }, [theme])
+    }, [theme, dataSource])
 
     return (
         <ReactECharts  

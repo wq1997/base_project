@@ -1,13 +1,15 @@
-import { useState } from "react";
 import Global from "./Global";
 import User from "./User";
+import { useSelector } from "umi";
 
 const HomePage = () => {
-    const [mode, setMode] = useState("Global");
-
+    const { user } = useSelector(state => state.user);
+    const isShowGlobal = user?.isSermatec && user?.selfPermCodes?.includes('op:global_mode');
+    const isShowUser = user?.selfPermCodes?.includes('op:user_mode');
     return (
         <div>
-            {mode==="Global"? <Global />: <User />}
+            {isShowGlobal&&<Global />}
+            {isShowUser&&<User />}
         </div>
     )
 }

@@ -5,16 +5,20 @@ import { theme as antdTheme } from "antd";
 import { useSelector } from "umi";
 
 const colorList = ["#9E87FF", '#73DDFF', '#fe9a8b', '#F56948', '#9E87FF'];
-const LoadStatisc = () => {
+const LoadStatisc = ({ dataSource }) => {
     const { token } = antdTheme.useToken();
     const [options, setOptions] = useState({});
     const { theme } = useSelector(state => state.global);
 
     const getOptions = () => {
+        const x = dataSource?.map(data => data?.time);
+        const data1 = dataSource?.map(data => data?.load);
+        const data2 = dataSource?.map(data => data?.heightPeakCutDayBefore);
+        const data3 = dataSource?.map(data => data?.heightPeakCutDayIn);
         setOptions({
             legend: {
                 icon: 'circle',
-                top: '5%',
+                top: 0,
                 right: '5%',
                 itemWidth: 6,
                 itemGap: 20,
@@ -45,14 +49,14 @@ const LoadStatisc = () => {
                 extraCssText: 'box-shadow: 1px 0 2px 0 rgba(163,163,163,0.5)'
             },
             grid: {
-                top: 10,
+                top: 35,
                 bottom: 40,
                 left: 60,
                 right: 50
             },
             xAxis: [{
                 type: 'category',
-                data: ['01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'],
+                data: x,
                 axisLine: {
                     lineStyle: {
                         color: '#DCE2E8'
@@ -62,7 +66,6 @@ const LoadStatisc = () => {
                     show: false
                 },
                 axisLabel: {
-                    interval: 0,
                     // 默认x轴字体大小
                     fontSize: 12,
                     // margin:文字到x轴的距离
@@ -122,7 +125,7 @@ const LoadStatisc = () => {
             series: [{
                     name: '实时负载(KW)',
                     type: 'line',
-                    data: [3200,2300,80,1360,3500,4500,5678,12999,23456,24567,33467,12789,42345,56721,72351,65432,37821,55121,68723,62436,36722,13218,13223,8762,50,10,40,50,100,80,90,90,80,110,80,50],
+                    data: data1,
                     symbolSize: 1,
                     symbol: 'circle',
                     smooth: false,
@@ -149,7 +152,7 @@ const LoadStatisc = () => {
                 }, {
                     name: '日前响应能力(KW)',
                     type: 'line',
-                    data: [40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000,40000],
+                    data: data2,
                     symbolSize: 1,
                     symbol: 'circle',
                     smooth: false,
@@ -177,7 +180,7 @@ const LoadStatisc = () => {
                 {
                     name: '日中响应能力(KW)',
                     type: 'line',
-                    data: [25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,25000,],
+                    data: data3,
                     symbolSize: 1,
                     symbol: 'circle',
                     smooth: false,
@@ -207,7 +210,7 @@ const LoadStatisc = () => {
     
     useEffect(() => {
         getOptions();
-    }, [theme])
+    }, [theme, dataSource])
 
     return (
         <ReactECharts  

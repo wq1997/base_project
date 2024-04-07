@@ -11,24 +11,29 @@ const MenuList = [
         label: "首页",
         icon: "icon-shujuhoutaixitong",
         darkIcon: 'icon-shujuhoutaixitong-copy',
+        permissions: 'menu:home'
     },
     {
         key: "/vpp/demandResponse",
         label: "需求侧响应",
         icon: "icon-wuliaoxuqiu",
         darkIcon: "icon-wuliaoxuqiu-copy",
+        permissions: 'menu:demand_response',
         children: [
             {
                 key: "/vpp/demandResponse/invitation/invitationList",
                 label: "邀约管理",
+                permissions: 'menu:invite',
             },
             {
                 key: "/vpp/demandResponse/task/confirm",
                 label: "任务管理",
+                permissions: 'menu:task',
             },
             {
                 key: "/vpp/demandResponse/income/overview",
                 label: "收益管理",
+                permissions: 'menu:profit',
             },
         ],
     },
@@ -37,29 +42,35 @@ const MenuList = [
         label: '现货交易',
         icon: 'icon-jiaoyi',
         darkIcon: 'icon-jiaoyi-copy',
-        target: '_blank'
+        target: '_blank',
+        permissions: '',
     },
     {
         key: "/vpp/baseinfo",
         label: "基础资料",
         icon: "icon-xiangmushenbaoguanli",
         darkIcon: "icon-xiangmushenbaoguanli-copy-copy",
+        permissions: 'menu:bas_data',
         children: [
             {
                 key: "/vpp/baseinfo/company",
                 label: "公司配置",
+                permissions: 'menu:company',
             },
             {
                 key: "/vpp/baseinfo/role",
                 label: "角色管理",
+                permissions: 'menu:role',
             },
             {
                 key: "/vpp/baseinfo/account",
                 label: "账号管理",
+                permissions: 'menu:user',
             },
             {
                 key: "/vpp/baseinfo/level",
                 label: "公司评级管理",
+                permissions: 'menu:company_ratings',
             },
         ],
     },
@@ -68,14 +79,17 @@ const MenuList = [
         label: "系统设置",
         icon: "icon-icon_shezhi",
         darkIcon: "icon-icon_shezhi-copy",
+        permissions: 'menu:sys_cfg',
         children: [
             {
                 key: "/vpp/setting/log",
                 label: "系统日志",
+                permissions: 'menu:sys_logs',
             },
             {
                 key: "/vpp/setting/notification",
                 label: "系统通知",
+                permissions: 'menu:notice',
             },
         ],
     },
@@ -85,6 +99,7 @@ const MyMenu = () => {
     const Icon = useIcon();
     const [selectedKeys, setSelectedKeys] = useState("");
     const { theme } = useSelector(state => state.global);
+    const { user } = useSelector(state => state.user);
 
     const getMenu = menuList => {
         return menuList.map(menu => {
@@ -107,21 +122,24 @@ const MyMenu = () => {
                     </SubMenu>
                 );
             } else {
-                return (
-                    <Menu.Item
-                        key={menu.key}
-                        icon={
-                            <Icon
-                                type={theme === 'dark' ? menu.darkIcon : menu.icon}
-                                style={{
-                                    fontSize: 20,
-                                }}
-                            />
-                        }
-                    >
-                        <Link to={menu.key} target={menu?.target}>{menu.label}</Link>
-                    </Menu.Item>
-                );
+                if(user?.selfPermCodes?.includes(menu.permissions) || !menu.permissions){
+                    return (
+                        <Menu.Item
+                            key={menu.key}
+                            icon={
+                                <Icon
+                                    type={theme === 'dark' ? menu.darkIcon : menu.icon}
+                                    style={{
+                                        fontSize: 20,
+                                    }}
+                                />
+                            }
+                        >
+                            <Link to={menu.key} target={menu?.target}>{menu.label}</Link>
+                        </Menu.Item>
+                    );
+                }
+                return null;
             }
         });
     };

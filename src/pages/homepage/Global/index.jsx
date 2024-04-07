@@ -6,6 +6,10 @@ import JiangsuMap from "./JiangsuMap";
 import AreaStatisc from "./AreaStatisc";
 import LoadStatisc from "./LoadStatisc";
 import UserTypeStatistic from "./UserTypeStatistic";
+import { 
+    getGlobalDashboardSummery as getGlobalDashboardSummeryServe,
+} from "@/services"
+import { useEffect } from "react";
 
 const Global = () => {
     const { token } = theme.useToken();
@@ -15,25 +19,25 @@ const Global = () => {
             dataSource: [
                 {
                     label: "用户数量",
-                    value: 4,
+                    value: 0,
                     color: token.color2,
                     icon: 'icon-yonghushuliang',
                 },
                 {
                     label: "设备资源",
-                    value: 16,
+                    value: 0,
                     color: token.color3,
                     icon: 'icon-shebeiziyuan'
                 },
                 {
                     label: "签约容量(KW)",
-                    value: 40000,
+                    value: 0,
                     color: token.color4,
                     icon: 'icon-qianyuerongliang'
                 },
                 {
                     label: "最大可调负荷(KW)",
-                    value: 40000,
+                    value: 0,
                     color: token.color5,
                     icon: 'icon-zuidaketiaofuhe'
                 },
@@ -44,19 +48,19 @@ const Global = () => {
             dataSource: [
                 {
                     label: "累计收益(元)",
-                    value: 90171.92,
+                    value: 0,
                     color: token.color6,
                     icon: 'icon-leijishouyi1'
                 },
                 {
                     label: "本年收益(元)",
-                    value: 46250,
+                    value: 0,
                     color: token.color5,
                     icon: 'icon-bennianshouyi'
                 },
                 {
                     label: "次年预计收益(元)",
-                    value: 128509,
+                    value: 0,
                     color: token.color7,
                     icon: 'icon-cinianyujishouyi'
                 },
@@ -67,31 +71,62 @@ const Global = () => {
             dataSource: [
                 {
                     label: "邀约总数",
-                    value: 2,
+                    value: 0,
                     color: token.color8,
                     icon: 'icon-yaoyuezongshu'
                 },
                 {
                     label: "响应成功数",
-                    value: 2,
+                    value: 0,
                     color: token.color7,
                     icon: 'icon-xiangyingchenggongshu'
                 },
                 {
                     label: "响应成功率",
-                    value: "100%",
+                    value: 0,
                     color: token.color9,
                     icon: 'icon-xiangyingchenggongshuai'
                 },
                 {
                     label: "有效响应功率(KW)",
-                    value: 11921,
+                    value: 0,
                     color: token.color3,
                     icon: 'icon-youxiaoxiangyinggongshuai'
                 },
             ],
         },
     });
+
+    const [dataSource, setDataSource] = useState({});
+
+    const getData = async () => {
+        const res = await getGlobalDashboardSummeryServe();
+        if(res?.data?.data){
+            const cloneData = JSON.parse(JSON.stringify(data));
+            const result = res?.data?.data;
+            console.log(result);
+            setDataSource(result);
+            cloneData.resource.dataSource[0].value = result.companySummary.companyCount;
+            cloneData.resource.dataSource[1].value = result.companySummary.deviceCount;
+            cloneData.resource.dataSource[2].value = result.companySummary.maxLoad;
+            cloneData.resource.dataSource[3].value = result.companySummary.maxAdjustableLoad;
+
+            cloneData.responseIncome.dataSource[0].value = result.inviteTaskProfitSummary.profitSummary;
+            cloneData.responseIncome.dataSource[1].value = result.inviteTaskProfitSummary.currentYearProfit;
+            cloneData.responseIncome.dataSource[2].value = result.inviteTaskProfitSummary.followingYearProjectedProfit;
+
+            cloneData.responseExecute.dataSource[0].value = result.inviteTaskSummary.inviteCount;
+            cloneData.responseExecute.dataSource[1].value = result.inviteTaskSummary.executeSuccessTaskCount;
+            cloneData.responseExecute.dataSource[2].value = result.inviteTaskSummary.responseSuccessRate;
+            cloneData.responseExecute.dataSource[3].value = result.inviteTaskSummary.effectiveResponsePower;
+
+            setData(cloneData);
+        }
+    }
+
+    useEffect(() => {
+        getData();
+    }, [])
     return (
         <div>
             <div className={styles.top}>
@@ -152,7 +187,7 @@ const Global = () => {
                             />
                         </div>
                         <div className={styles.topRightItem}>
-                            <AreaStatisc />
+                            <AreaStatisc dataSource={dataSource?.area2CompanyCount}/>
                         </div>
                     </Card>
                 </div>
@@ -164,7 +199,7 @@ const Global = () => {
                         分时负荷统计
                     </Title>
                     <div className={styles.centerLoadStatisc}>
-                        <LoadStatisc />
+                        <LoadStatisc dataSource={dataSource?.timeSharingLoad?.loads} />
                     </div>
                 </Card>
             </div>
@@ -180,55 +215,26 @@ const Global = () => {
                                 columns={[
                                     {
                                         title: "用户名",
-                                        key: 1,
+                                        key: 'companyName',
                                     },
                                     {
                                         title: "任务派发数量",
-                                        key: 2,
+                                        key: 'taskCount',
                                     },
                                     {
                                         title: "任务承接数量",
-                                        key: 3,
+                                        key: 'confirmTaskCount',
                                     },
                                     {
                                         title: "任务完成数量",
-                                        key: 4,
+                                        key: 'executeSuccessTaskCount',
                                     },
                                     {
                                         title: "有效响应容量(KW)",
-                                        key: 5,
+                                        key: 'responseCapacity',
                                     },
                                 ]}
-                                dataSource={[
-                                    {
-                                        1: "连云港XX场站",
-                                        2: 2,
-                                        3: 2,
-                                        4: 2,
-                                        5: 9000,
-                                    },
-                                    {
-                                        1: "江苏XX场站",
-                                        2: 2,
-                                        3: 2,
-                                        4: 2,
-                                        5: 1178,
-                                    },
-                                    {
-                                        1: "南通XX场站",
-                                        2: 2,
-                                        3: 2,
-                                        4: 2,
-                                        5: 799,
-                                    },
-                                    {
-                                        1: "江苏XX场站",
-                                        2: 2,
-                                        3: 2,
-                                        4: 2,
-                                        5: 779,
-                                    },
-                                ]}
+                                dataSource={dataSource?.companyTaskSummaries||[]}
                             />
                         </div>
                     </Card>
@@ -239,7 +245,7 @@ const Global = () => {
                             接入用户类型
                         </Title>
                         <div className={styles.bottomRightContent}>
-                            <UserTypeStatistic />
+                            <UserTypeStatistic dataSource={dataSource?.stationType2CompanyCount} />
                         </div>
                     </Card>
                 </div>

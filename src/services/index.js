@@ -25,3 +25,11 @@ export const getOperationLog = (payload) => {
 export const getNotificationList = (payload) => {
     return axiosInstance.post(`${API_URL_2}/notification/find-page`, payload)
 }
+
+export const getGlobalDashboardSummery = () => {
+    return axiosInstance.get(`${API_URL_2}/dashboard/get-global-dashboard-summery`)
+}
+
+export const getUserInfo = () => {
+    return axiosInstance.get(`${API_URL_1}/home/get-main-page-data`)
+}

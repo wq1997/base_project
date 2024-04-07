@@ -11,6 +11,7 @@ const { Header, Sider, Content } = Layout;
 const CommonLayout = (props) => {
     const { token } = antdTheme.useToken();
     const { theme } = useSelector(state => state.global);
+    const { user } = useSelector(state => state.user);
     const Icon = useIcon();
     const dispatch = useDispatch();
     const { title, MyMenu } = props;
@@ -101,7 +102,6 @@ const CommonLayout = (props) => {
                                             <Space
                                                 size={10}
                                                 align="center"
-                                                onClick={() => dispatch({ type: "user/logout" })}
                                             >
                                                 <Icon
                                                     type="icon-dengchu"
@@ -114,6 +114,11 @@ const CommonLayout = (props) => {
                                         ),
                                     },
                                 ],
+                                onClick:(info) => {
+                                    if(info?.key==="logout"){
+                                        dispatch({ type: "user/logout" })
+                                    }
+                                }
                             }}
                             placement="bottom"
                         >
@@ -126,12 +131,12 @@ const CommonLayout = (props) => {
                                     }}
                                     size="large"
                                 >
-                                    A
+                                    {user?.selfUser?.name?.[0]}
                                 </Avatar>
                                 <span
                                     style={{ fontSize: 20, color: token.colorPrimary, marginLeft: 10 }}
                                 >
-                                    Admin
+                                    {user?.selfUser?.name}
                                 </span>
                             </Row>
                         </Dropdown>

@@ -1,4 +1,4 @@
-import { login } from "@/services/user"
+import { getUserInfo } from "@/services"
 import { history } from "umi";
 
 export default {
@@ -10,13 +10,14 @@ export default {
    
     effects: {
       *queryUser({ payload }, { call, put }) {
-        const userInfo = yield call(login, { username: 'wangqing', password: '123456' });
-        console.log("queryUser", userInfo)
-        if(userInfo){
+        const res = yield call(getUserInfo);
+        if(res?.data?.data){
+          const result = res?.data?.data;
+          console.log(result);
           yield put({
             type: 'updateState',
             payload: {
-                user: userInfo
+                user: result
             }
           })
         }

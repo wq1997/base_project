@@ -3,12 +3,14 @@ import { useEffect, useState } from "react";
 import { theme as antdTheme } from "antd";
 import { useSelector } from "umi";
 
-const AreaStatisc = () => {
+const AreaStatisc = ({ dataSource }) => {
     const { token } = antdTheme.useToken();
     const [options, setOptions] = useState({});
     const { theme } = useSelector(state => state.global);
 
     const getOptions = () => {
+        const y = dataSource?Object.keys(dataSource):[];
+        const x = y.map(name => dataSource[name]);
         setOptions({
             color: ["#9E87FF", "#73DDFF", "#fe9a8b"],
             tooltip: {
@@ -45,7 +47,7 @@ const AreaStatisc = () => {
                 {
                     type: "category",
                     boundaryGap: true,
-                    data: ["连云港", "苏州", "南通"],
+                    data: y,
                     axisTick: {
                         show: false,
                     },
@@ -75,22 +77,7 @@ const AreaStatisc = () => {
                     itemStyle: {
                         barBorderRadius: [0, 20, 20, 0], // 圆角（左上、右上、右下、左下）
                     },
-                    data: [{
-                        value: 1,
-                        itemStyle: {
-                            normal: { color: "#9E87FF" }
-                        }
-                    }, {
-                        value: 1,
-                        itemStyle: {
-                            normal: { color: '#73DDFF' }
-                        }
-                    }, {
-                        value: 2,
-                        itemStyle: {
-                            normal: { color: '#fe9a8b' }
-                        }
-                    }],
+                    data: x,
                 },
             ],
         });
@@ -98,7 +85,7 @@ const AreaStatisc = () => {
 
     useEffect(() => {
         getOptions();
-    }, [theme]);
+    }, [theme, dataSource]);
 
     return <ReactECharts option={options} style={{ width: "100%", height: "100%" }} />;
 };
