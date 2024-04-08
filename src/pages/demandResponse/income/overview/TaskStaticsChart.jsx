@@ -38,16 +38,16 @@ const TaskStaticsChart = ({ dataSource }) => {
         let data1 = 0, data2 = 0;
         let type1 = 0, type2 = 0, type3 = 0, type4 = 0, type5 = 0, type6 = 0;
         if(newHeightPeakCutPower){
-            type1 = newHeightPeakCutPower['削峰-日前'] || 0;
-            type2 = newHeightPeakCutPower['削峰-日中'] || 0;
-            type3 = newHeightPeakCutPower['削峰-实时'] || 0;
+            type1 = newHeightPeakCutPower?.['削峰-日前'] || 0;
+            type2 = newHeightPeakCutPower?.['削峰-日中'] || 0;
+            type3 = newHeightPeakCutPower?.['削峰-实时'] || 0;
             data1 = type1 + type2 + type3;
         }
 
         if(newLowPeakCutPower){
-            type4 = newHeightPeakCutPower['填谷-日前'] || 0;
-            type5 = newHeightPeakCutPower['填谷-日中'] || 0;
-            type6 = newHeightPeakCutPower['填谷-实时'] || 0;
+            type4 = newHeightPeakCutPower?.['填谷-日前'] || 0;
+            type5 = newHeightPeakCutPower?.['填谷-日中'] || 0;
+            type6 = newHeightPeakCutPower?.['填谷-实时'] || 0;
             data2 = type4 + type5 + type6;
         }
         
