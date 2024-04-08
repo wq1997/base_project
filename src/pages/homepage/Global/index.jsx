@@ -92,7 +92,7 @@ const Global = () => {
                     value: 0,
                 },
                 {
-                    label: "响应成功率",
+                    label: "响应成功率(%)",
                     value: 0,
                 },
                 {

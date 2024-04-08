@@ -167,6 +167,7 @@ const Account = () => {
         const splitStatus = splitStatusRef.current;
         const responsePower = +responsePowerRef.current;
         const responseType = responseTypeRef.current;
+        const responseTimeType = responseTimeTypeRef.current;
         const res = await getInviteListServer({
             pageNum: current,
             pageSize,
@@ -180,6 +181,7 @@ const Account = () => {
                 splitStatus,
                 responsePower,
                 responseType,
+                responseTimeType
             },
         });
         if (res?.data?.status == "SUCCESS") {
