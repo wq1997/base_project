@@ -76,7 +76,7 @@ const Login = () => {
             borderRadius: 8
           }}
         >
-          <Title level={2} style={{marginBottom: 50, color: token.colorPrimary}}>采日VPP聚合平台</Title>
+          <Title level={2} style={{marginBottom: 50, color: token.colorPrimary}}>采日能源VPP聚合平台</Title>
           <Form
             onFinish={onFinish}
             autoComplete="off"

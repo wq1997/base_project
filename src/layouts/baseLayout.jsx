@@ -15,7 +15,7 @@ const BaseLayout = () => {
    return (
         <CommonLayout 
             MyMenu={MyMenu}
-            title="采日VPP聚合平台"
+            title="采日能源VPP聚合平台"
         />
    )
 };
