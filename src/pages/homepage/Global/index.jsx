@@ -41,7 +41,6 @@ const Global = () => {
         token.color48, 
         token.color49
     ]
-    console.log(backgroundColorList)
     const [data, setData] = useState({
         resource: {
             title: "资源分布统计",
