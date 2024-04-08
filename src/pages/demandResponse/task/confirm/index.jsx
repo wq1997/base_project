@@ -19,6 +19,7 @@ import {
     confirmTask as confirmTaskServer,
     refuseTask as refuseTaskServer,
     getWaitTaskDashboard as getWaitTaskDashboardServer,
+    getTaskist as getTaskistServer,
 } from "@/services/task";
 import { history, useLocation } from "umi";
 import { getQueryString, getUrlParams } from "@/utils/utils";
@@ -187,7 +188,18 @@ const Confirm = () => {
         if (_isWaitTask) {
             res = await getWaitTaskDashboardServer();
         } else {
-            res = await getTaskDashboardByIdServer(params?.taskId);
+            let defaultTaskId = "";
+            const searchRes = await getTaskistServer({
+                pageNum: 1,
+                pageSize: 1,
+                queryCmd: {
+                    status: 'EXECUTED_SUCCESS',
+                },
+            });
+            if(searchRes?.data?.data?.recordList?.length>0){
+                defaultTaskId = searchRes?.data?.data?.recordList?.[0]?.id;
+            }
+            res = await getTaskDashboardByIdServer(params?.taskId||defaultTaskId);
         }
         const list = _isWaitTask ? res?.data?.data : [res?.data?.data];
         if (res?.data?.status == "SUCCESS") {

@@ -73,11 +73,11 @@ const CommonLayout = (props) => {
                     <div style={{ display: "flex", alignItems: "center" }}>
                         {/* <img src={logo} className={"logo"} /> */}
                         <Typography.Title
-                            level={3}
                             className={"title"}
                             style={{
                                 color: token.colorPrimary,
-                                fontSize: "20px",
+                                fontSize: "28px",
+                                fontFamily: 'DingTalkJinBuTi',
                             }}
                         >
                             {title}

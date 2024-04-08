@@ -1,35 +1,51 @@
 import { theme, Typography } from "antd";
 import { Title } from "@/components";
+import useIcon from "@/hooks/useIcon";
 import styles from "./index.less";
 
 const StaticsCard = (props) => {
-    const { icon, color, value, label, backgroundColor } = props;
+    const { icon, color, iconColor, value, label, backgroundColor } = props;
     const { token } = theme.useToken();
+    const Icon = useIcon();
     return (
-        <div 
+        <div
             className={styles.card}
             style={{
-                backgroundColor: backgroundColor || token.color1,
+                background: backgroundColor || token.color1,
             }}
         >
             <div>
-                <Title.Description
-                    icon={icon}
-                    iconColor={color}
-                    style={{ marginTop: 0, marginBottom: 10, textAlign: 'center' }}
-                >
-                    {label}
-                </Title.Description>
                 <div
                     style={{ 
                         margin: 0, 
                         color, 
                         textAlign: 'center',
                         fontFamily: 'DingTalkJinBuTi',
-                        fontSize: 30
+                        fontSize: 30,
+                        marginBottom: 10
                     }}
                 >
                     {value}
+                </div>
+                <div
+                    style={{
+                        width: '100%',
+                        display: 'flex',
+                        justifyContent: 'center'
+                    }}
+                >
+                    <div style={{color: token.color11}}>{label}</div>
+                    {
+                        icon&&
+                        <Icon
+                            type={icon}
+                            style={{
+                                fontSize: 15,
+                                color: iconColor||color,
+                                marginLeft: 25
+                            }}
+                        />
+                    }
                 </div>
             </div>
         </div>

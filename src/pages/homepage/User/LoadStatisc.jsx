@@ -4,7 +4,7 @@ import * as echarts from "echarts";
 import { theme as antdTheme } from "antd";
 import { useSelector } from "umi";
 
-const colorList = ["#9E87FF", '#73DDFF', '#fe9a8b', '#F56948', '#9E87FF'];
+const colorList = ["#39E0F8", '#004BFF', '#FFD821', '#F56948', '#9E87FF'];
 const LoadStatisc = ({ dataSource }) => {
     const { token } = antdTheme.useToken();
     const [options, setOptions] = useState({});
@@ -14,7 +14,7 @@ const LoadStatisc = ({ dataSource }) => {
         const x = dataSource?.map(data => data?.time);
         const data1 = dataSource?.map(data => data?.load);
         const data2 = dataSource?.map(data => data?.heightPeakCutDayBefore);
-        const data3 = dataSource?.map(data => data?.heightPeakCutDayIn);
+        const data3 = dataSource?.map(data => data?.lowPeakCutDayBefore);
         setOptions({
             legend: {
                 icon: 'circle',

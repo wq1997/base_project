@@ -1,4 +1,4 @@
-import { Card, Typography, theme } from "antd";
+import { Card, theme as antdTheme } from "antd";
 import { useState } from "react";
 import { ScrollTable, Title, StaticsCard } from "@/components";
 import styles from "./index.less";
@@ -10,9 +10,38 @@ import {
     getGlobalDashboardSummery as getGlobalDashboardSummeryServe,
 } from "@/services"
 import { useEffect } from "react";
+import { useSelector } from "umi";
 
 const Global = () => {
-    const { token } = theme.useToken();
+    const { theme } = useSelector(state => state.global);
+    const { token } = antdTheme.useToken();
+    const colorList = [
+        token.color2,
+        token.color3,
+        token.color4,
+        token.color5,
+        token.color6,
+        token.color5,
+        token.color7,
+        token.color8,
+        token.color7,
+        token.color9,
+        token.color3
+    ]
+    const backgroundColorList = [
+        token.color39, 
+        token.color40, 
+        token.color41, 
+        token.color42, 
+        token.color43, 
+        token.color44, 
+        token.color45, 
+        token.color46, 
+        token.color47, 
+        token.color48, 
+        token.color49
+    ]
+    console.log(backgroundColorList)
     const [data, setData] = useState({
         resource: {
             title: "资源分布统计",
@@ -20,26 +49,18 @@ const Global = () => {
                 {
                     label: "用户数量",
                     value: 0,
-                    color: token.color2,
-                    icon: 'icon-yonghushuliang',
                 },
                 {
                     label: "设备资源",
                     value: 0,
-                    color: token.color3,
-                    icon: 'icon-shebeiziyuan'
                 },
                 {
                     label: "签约容量(KW)",
                     value: 0,
-                    color: token.color4,
-                    icon: 'icon-qianyuerongliang'
                 },
                 {
                     label: "最大可调负荷(KW)",
                     value: 0,
-                    color: token.color5,
-                    icon: 'icon-zuidaketiaofuhe'
                 },
             ],
         },
@@ -49,20 +70,14 @@ const Global = () => {
                 {
                     label: "累计收益(元)",
                     value: 0,
-                    color: token.color6,
-                    icon: 'icon-leijishouyi1'
                 },
                 {
                     label: "本年收益(元)",
                     value: 0,
-                    color: token.color5,
-                    icon: 'icon-bennianshouyi'
                 },
                 {
                     label: "次年预计收益(元)",
                     value: 0,
-                    color: token.color7,
-                    icon: 'icon-cinianyujishouyi'
                 },
             ],
         },
@@ -72,26 +87,18 @@ const Global = () => {
                 {
                     label: "邀约总数",
                     value: 0,
-                    color: token.color8,
-                    icon: 'icon-yaoyuezongshu'
                 },
                 {
                     label: "响应成功数",
                     value: 0,
-                    color: token.color7,
-                    icon: 'icon-xiangyingchenggongshu'
                 },
                 {
                     label: "响应成功率",
                     value: 0,
-                    color: token.color9,
-                    icon: 'icon-xiangyingchenggongshuai'
                 },
                 {
                     label: "有效响应功率(KW)",
                     value: 0,
-                    color: token.color3,
-                    icon: 'icon-youxiaoxiangyinggongshuai'
                 },
             ],
         },
@@ -105,7 +112,6 @@ const Global = () => {
             const cloneData = JSON.parse(JSON.stringify(data));
             const result = res?.data?.data;
             console.log(result);
-            setDataSource(result);
             cloneData.resource.dataSource[0].value = result.companySummary.companyCount;
             cloneData.resource.dataSource[1].value = result.companySummary.deviceCount;
             cloneData.resource.dataSource[2].value = result.companySummary.maxLoad;
@@ -119,14 +125,16 @@ const Global = () => {
             cloneData.responseExecute.dataSource[1].value = result.inviteTaskSummary.executeSuccessTaskCount;
             cloneData.responseExecute.dataSource[2].value = result.inviteTaskSummary.responseSuccessRate;
             cloneData.responseExecute.dataSource[3].value = result.inviteTaskSummary.effectiveResponsePower;
-
+            
+            setDataSource(result);
             setData(cloneData);
         }
     }
 
     useEffect(() => {
         getData();
-    }, [])
+    }, [theme])
+
     return (
         <div>
             <div className={styles.top}>
@@ -140,13 +148,14 @@ const Global = () => {
                                     {data[item].title}
                                 </Title>
                                 <div className={styles.cardData}>
-                                    {data[item].dataSource?.map(dataSource => {
+                                    {data[item].dataSource?.map((dataSource) => {
                                         return (
                                             <StaticsCard 
                                                 icon={dataSource.icon}
-                                                color={dataSource.color}
+                                                color={colorList.shift()}
                                                 label={dataSource.label}
                                                 value={dataSource.value}
+                                                backgroundColor={backgroundColorList.shift()}
                                             />
                                         );
                                     })}

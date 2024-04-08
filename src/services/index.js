@@ -33,3 +33,7 @@ export const getGlobalDashboardSummery = () => {
 export const getUserInfo = () => {
     return axiosInstance.get(`${API_URL_1}/home/get-main-page-data`)
 }
+
+export const getCompanyDashboardSummery = () => {
+    return axiosInstance.get(`${API_URL_2}/dashboard/get-company-dashboard-summery`)
+}
