@@ -51,7 +51,6 @@ const CommonLayout = props => {
 
     const siderStyle = useEmotionCss(() => {
         return {
-            padding: "24px 0",
             background: token.layoutLeftBackColor,
             ".siderContent": {
                 height: "100%",
@@ -92,7 +91,7 @@ const CommonLayout = props => {
                             style={{
                                 color: "#fff",
                                 fontSize: "26px",
-                                fontFamily:'DingTalk'
+                                fontFamily: 'DingTalk'
                             }}
                         >
                             {title}
