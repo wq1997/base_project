@@ -6,7 +6,7 @@ import "./index.less";
 const PersonnelTasks = () => {
     const { token } = theme.useToken();
     const options = {
-        color: [token.color2, token.color8],
+        color: ['#01B0EE', '#D79114'],
         tooltip: {
             trigger: "axis",
             axisPointer: {

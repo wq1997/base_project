@@ -17,7 +17,7 @@ const Board = () => {
     const { token } = theme.useToken();
     const getOptions = () => {
         const options = {
-            color: [token.color3, token.color2],
+            color: ['#1676EF', '#E29611'],
             tooltip: {
                 trigger: "item",
             },

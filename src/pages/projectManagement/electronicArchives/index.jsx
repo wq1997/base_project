@@ -114,6 +114,9 @@ const Account = () => {
             fireManufacturerPhone: "**",
             emsManufacturer: "国电**控制系统有限公司",
             emsManufacturerPhone: "**",
+            implementationPlanTime: "2022-05-03",
+            firstInspectionTime: "2022-05-20",
+            inspectionCycle: 2,
         },
         {
             id: 2,
@@ -171,6 +174,9 @@ const Account = () => {
             fireManufacturerPhone: "**",
             emsManufacturer: "上海采日能源科技有限公司",
             emsManufacturerPhone: "**",
+            implementationPlanTime: "2023-03-03",
+            firstInspectionTime: "2023-03-10",
+            inspectionCycle: 1,
         },
         {
             id: 3,
@@ -228,6 +234,7 @@ const Account = () => {
             fireManufacturerPhone: "**",
             emsManufacturer: "上海采日能源科技有限公司",
             emsManufacturerPhone: "**",
+            implementationPlanTime: "2022-06-10",
         },
     ]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);

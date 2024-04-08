@@ -15,12 +15,12 @@ const Total = () => {
     ];
 
     const myWorkorders = [
-        { name: "发起工单数", value: "128", color: token.color6 },
-        { name: "已执行总数", value: "128", color: token.color7 },
+        { name: "发起工单数", value: "128", color: token.color7 },
+        { name: "已执行总数", value: "128", color: token.color6 },
     ];
 
     const options = {
-        color: [token.color8, token.color10],
+        color: ['#682AE8', '#E29611'],
         tooltip: {
             trigger: "axis",
             axisPointer: {

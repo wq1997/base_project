@@ -111,6 +111,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                 form={form}
                 onFinish={onFinish}
                 autoComplete="off"
+                disabled={Boolean(detailRow)}
             >
                 {currentStep == 0 && (
                     <>
@@ -965,6 +966,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                     <>
                         <Form.Item
                             label="实施计划时间"
+                            name="implementationPlanTime"
                             rules={[
                                 {
                                     required: true,
@@ -972,28 +974,36 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                 },
                             ]}
                         >
-                            <DatePicker format="YYYY-MM-DD" />
+                            <Input placeholder="请输入实施计划时间" />
                         </Form.Item>
-                        <Form.Item
-                            label="实施负责人"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "请选择实施负责人",
-                                },
-                            ]}
-                        >
+                        <Form.Item label="实施负责人">
                             <Space>
-                                <Select
-                                    placeholder="请选择实施负责人"
-                                    fieldNames={{
-                                        label: "name",
-                                        value: "code",
-                                    }}
-                                    options={[]}
-                                    style={{ width: "100%" }}
-                                />
-
+                                <Form.Item
+                                    noStyle
+                                    name="implementationManager"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: "请选择实施负责人",
+                                        },
+                                    ]}
+                                >
+                                    <Select
+                                        placeholder="请选择实施负责人"
+                                        fieldNames={{
+                                            label: "name",
+                                            value: "code",
+                                        }}
+                                        style={{ width: "200px" }}
+                                        options={[
+                                            { name: "张**", code: "张**" },
+                                            { name: "李**", code: "李**" },
+                                            { name: "郑**", code: "郑**" },
+                                            { name: "孙**", code: "孙**" },
+                                            { name: "王**", code: "王**" },
+                                        ]}
+                                    />
+                                </Form.Item>
                                 <Tooltip
                                     title="创建项目后，会在计划开始时间时自动创建一条实施工单至实施负责人，实施阶段该项目
                             产生的所有工单会由实施负责人负责。"
@@ -1009,26 +1019,34 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                     <>
                         <Row span={24}>
                             <Col span={8}>
-                                <Form.Item
-                                    label="运维负责人"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: "请选择运维负责人",
-                                        },
-                                    ]}
-                                >
+                                <Form.Item label="运维负责人">
                                     <Space>
-                                        <Select
-                                            placeholder="请选择运维负责人"
-                                            fieldNames={{
-                                                label: "name",
-                                                value: "code",
-                                            }}
-                                            options={[{ name: "张三", code: 1 }]}
-                                            style={{ width: "100%" }}
-                                        />
-
+                                        <Form.Item
+                                            noStyle
+                                            name="operationsManager"
+                                            rules={[
+                                                {
+                                                    required: true,
+                                                    message: "请选择运维负责人",
+                                                },
+                                            ]}
+                                        >
+                                            <Select
+                                                placeholder="请选择运维负责人"
+                                                fieldNames={{
+                                                    label: "name",
+                                                    value: "code",
+                                                }}
+                                                options={[
+                                                    { name: "张**", code: "张**" },
+                                                    { name: "李**", code: "李**" },
+                                                    { name: "郑**", code: "郑**" },
+                                                    { name: "孙**", code: "孙**" },
+                                                    { name: "王**", code: "王**" },
+                                                ]}
+                                                style={{ width: "200px" }}
+                                            />
+                                        </Form.Item>
                                         <Tooltip title="创建项目后，实施阶段该项目产生的所有工单将由实施负责人处理。">
                                             <ExclamationCircleOutlined />
                                         </Tooltip>
@@ -1046,13 +1064,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                         },
                                     ]}
                                 >
-                                    <DatePicker
-                                        showTime={{
-                                            format: "HH:mm",
-                                        }}
-                                        format="YYYY-MM-DD HH:mm"
-                                        minuteStep={15}
-                                    />
+                                    <Input placeholder="请输入首次巡检时间" />
                                 </Form.Item>
                             </Col>
                             <Col span={8}>
@@ -1074,7 +1086,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                         }}
                                         options={[
                                             { name: "一天一次", code: 1 },
-                                            { name: "一周一次", code: 1 },
+                                            { name: "一周一次", code: 2 },
                                         ]}
                                     />
                                 </Form.Item>

@@ -5,6 +5,7 @@ import useIcon from "@/hooks/useIcon";
 import { useEffect } from "react";
 import { useEmotionCss } from "@ant-design/use-emotion-css";
 import { setLocalStorage } from "@/utils/utils";
+import '../locales/DingTalk JinBuTi.ttf'
 
 const { Header, Sider, Content } = Layout;
 
@@ -90,7 +91,8 @@ const CommonLayout = props => {
                             className={"title"}
                             style={{
                                 color: "#fff",
-                                fontSize: "20px",
+                                fontSize: "26px",
+                                fontFamily:'DingTalk'
                             }}
                         >
                             {title}
