@@ -133,15 +133,15 @@ const LoadStatisc = ({ dataSource }) => {
                     showSymbol: false,
                     lineStyle: {
                         width: 2,
-                        color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
-                                offset: 0,
-                                color: '#9effff'
-                            },
-                            {
-                                offset: 1,
-                                color: '#9E87FF'
-                            }
-                        ])
+                        // color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+                        //         offset: 0,
+                        //         color: '#9effff'
+                        //     },
+                        //     {
+                        //         offset: 1,
+                        //         color: '#9E87FF'
+                        //     }
+                        // ])
                     },
                     itemStyle: {
                         normal: {
@@ -160,15 +160,15 @@ const LoadStatisc = ({ dataSource }) => {
                     showSymbol: false,
                     lineStyle: {
                         width: 2,
-                        color: new echarts.graphic.LinearGradient(1, 1, 0, 0, [{
-                                offset: 0,
-                                color: '#73DD39'
-                            },
-                            {
-                                offset: 1,
-                                color: '#73DDFF'
-                            }
-                        ])
+                        // color: new echarts.graphic.LinearGradient(1, 1, 0, 0, [{
+                        //         offset: 0,
+                        //         color: '#73DD39'
+                        //     },
+                        //     {
+                        //         offset: 1,
+                        //         color: '#73DDFF'
+                        //     }
+                        // ])
                     },
                     itemStyle: {
                         normal: {
@@ -187,15 +187,15 @@ const LoadStatisc = ({ dataSource }) => {
                     showSymbol: false,
                     lineStyle: {
                         width: 2,
-                        color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
-                                offset: 0,
-                                color: '#fe9a'
-                            },
-                            {
-                                offset: 1,
-                                color: '#fe9a8b'
-                            }
-                        ])
+                        // color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+                        //         offset: 0,
+                        //         color: '#fe9a'
+                        //     },
+                        //     {
+                        //         offset: 1,
+                        //         color: '#fe9a8b'
+                        //     }
+                        // ])
                     },
                     itemStyle: {
                         normal: {

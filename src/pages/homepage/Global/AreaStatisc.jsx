@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { theme as antdTheme } from "antd";
 import { useSelector } from "umi";
 
+const colorList = ['#A893FF', '#61BEFB', '#FFAD57'];
+
 const AreaStatisc = ({ dataSource }) => {
     const { token } = antdTheme.useToken();
     const [options, setOptions] = useState({});
@@ -12,7 +14,6 @@ const AreaStatisc = ({ dataSource }) => {
         const y = dataSource?Object.keys(dataSource):[];
         const x = y.map(name => dataSource[name]);
         setOptions({
-            color: ["#9E87FF", "#73DDFF", "#fe9a8b"],
             tooltip: {
                 trigger: "axis",
                 axisPointer: {
@@ -75,9 +76,16 @@ const AreaStatisc = ({ dataSource }) => {
                         color: token.color11
                     },
                     itemStyle: {
-                        barBorderRadius: [0, 20, 20, 0], // 圆角（左上、右上、右下、左下）
+                        barBorderRadius: [0, 20, 20, 0], // 圆角（左上、右上、右下、左下)
                     },
-                    data: x,
+                    data: x.map((xItem, index) => {
+                        return {
+                            value: xItem,
+                            itemStyle: {
+                                color: colorList[index]
+                            }
+                        }
+                    }),
                 },
             ],
         });
