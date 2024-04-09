@@ -26,7 +26,7 @@ const MenuList = [
                 permissions: 'menu:invite',
             },
             {
-                key: "/vpp/demandResponse/task/confirm",
+                key: "/vpp/demandResponse/task/search",
                 label: "任务管理",
                 permissions: 'menu:task',
             },
@@ -37,14 +37,14 @@ const MenuList = [
             },
         ],
     },
-    {
-        key: '/transaction/homepage',
-        label: '现货交易',
-        icon: 'icon-jiaoyi',
-        darkIcon: 'icon-jiaoyi-copy',
-        target: '_blank',
-        permissions: '',
-    },
+    // {
+    //     key: '/transaction/homepage',
+    //     label: '现货交易',
+    //     icon: 'icon-jiaoyi',
+    //     darkIcon: 'icon-jiaoyi-copy',
+    //     target: '_blank',
+    //     permissions: '',
+    // },
     {
         key: "/vpp/baseinfo",
         label: "基础资料",
@@ -164,7 +164,7 @@ const MyMenu = () => {
 
     const getSelectKeys = () => {
         if (pathname.startsWith("/vpp/demandResponse/task")) {
-            setSelectedKeys("/vpp/demandResponse/task/confirm");
+            setSelectedKeys("/vpp/demandResponse/task/search");
         } else if (pathname.startsWith("/vpp/demandResponse/income")) {
             setSelectedKeys("/vpp/demandResponse/income/overview");
         } else if (pathname.startsWith("/vpp/demandResponse/invitation")) {
