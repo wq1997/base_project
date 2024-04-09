@@ -91,7 +91,7 @@ const CommonLayout = props => {
                             style={{
                                 color: "#fff",
                                 fontSize: "26px",
-                                fontFamily: 'DingTalk'
+                                fontFamily:'DingTalk'
                             }}
                         >
                             {title}
