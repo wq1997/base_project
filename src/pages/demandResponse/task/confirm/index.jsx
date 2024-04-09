@@ -176,8 +176,8 @@ const Confirm = () => {
         setIsWaitTask(!curTask?.executeResult);
         setTimes(curTask?.projectedPowerData?.map(item => item?._1));
         setBaseLinePower(curTask?.projectedPowerData?.map(item => item?._2?.baseLinePower));
-        setResponsePower(curTask?.projectedPowerData?.map(item => item?._2?.responsePower));
-        setTargetPower(curTask?.projectedPowerData?.map(item => item?._2?.targetPower));
+        setResponsePower(curTask?.projectedPowerData?.map(item => item?._2?.companyMaxPower));
+        setTargetPower(curTask?.projectedPowerData?.map(item => item?._2?.responsePower));
     };
 
     const getTaskDashboard = async () => {
