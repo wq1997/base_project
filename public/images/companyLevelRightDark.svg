@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="140px" height="74px" viewBox="0 0 140 74" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>矩形</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#0297FD" stop-opacity="0.0892974213" offset="0%"></stop>
+            <stop stop-color="#07142C" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0.256774476%" x2="50%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#07142C" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#0298FF" stop-opacity="0.498197115" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="深色版" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="大屏-公司模式" transform="translate(-487.000000, -1237.000000)" fill="url(#linearGradient-1)" stroke="url(#linearGradient-2)">
+            <rect id="矩形" transform="translate(557.000000, 1274.000000) scale(1, -1) translate(-557.000000, -1274.000000) " x="487.5" y="1237.5" width="139" height="73" rx="4"></rect>
+        </g>
+    </g>
+</svg>

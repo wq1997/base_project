@@ -13,6 +13,10 @@ import resourceDarkImg from "../../../../public/images/resourceDark.svg";
 import responseIncomeDarkImg from "../../../../public/images/responseIncomeDark.svg";
 import responseExecuteDarkImg from "../../../../public/images/responseExecuteDark.svg";
 import userHomepageRightImg from "../../../../public/images/user_homepage_right.jpg";
+import companyLevelImg from "../../../../public/images/companyLevel.svg";
+import companyLevelDarkImg from "../../../../public/images/companyLevelDark.svg";
+import companyLevelRightDarkImg from "../../../../public/images/companyLevelRightDark.svg";
+import companyLevelRightImg from "../../../../public/images/companyLevelRight.svg";
 import LoadStatisc from "./LoadStatisc";
 
 const User = () => {
@@ -56,6 +60,7 @@ const User = () => {
                 },
                 '.right': {
                     width: 'calc(55% - 5px)',
+                    height: '100%',
                     img: {
                         width: '100%',
                         height: 'calc(100% - 60px)',
@@ -235,6 +240,95 @@ const User = () => {
                     <Title style={{ marginTop: 0, marginBottom: 20 }}>
                         公司评级
                     </Title>
+                    <div
+                        style={{
+                            width: '100%',
+                            height: 'calc(100% - 30px)',
+                            display: 'flex',
+                            justifyContent: "center",
+                            alignItems: "center"
+                        }}
+                    >
+                        <div style={{position: 'relative'}}>
+                            <img src={theme==="dark"?companyLevelDarkImg:companyLevelImg}/>
+                            <span 
+                                style={{
+                                    fontSize: 60, 
+                                    position: "absolute",
+                                    left: '50%',
+                                    top: '45%',
+                                    transform: 'translate(-50%, -50%)',
+                                    color: token.color50,
+                                }}
+                            >
+                                {dataSource?.companyLevel}
+                            </span>
+                        </div>
+                        <div style={{position: 'relative', margin: '0 50px'}}>
+                            <img src={theme==="dark"?companyLevelRightDarkImg:companyLevelRightImg}/>
+                            <div 
+                                style={{
+                                    position: "absolute",
+                                    left: '50%',
+                                    top: '60%',
+                                    transform: 'translate(-50%, -50%)',
+                                    color: token.color50
+                                }}
+                            >
+                                <div 
+                                    style={{
+                                        fontSize:40,
+                                        fontFamily: 'DingTalkJinBuTi',
+                                        color: token.color37,
+                                        textAlign: 'center'
+                                    }}
+                                >
+                                    {dataSource?.complianceRate||0}%
+                                </div>
+                                <div
+                                    style={{
+                                        color: token.color51,
+                                        fontSize: 16,
+                                        textAlign: 'center',
+                                        whiteSpace: 'nowrap'
+                                    }}
+                                >
+                                    履约率(近半年)
+                                </div>
+                            </div>
+                        </div>
+                        <div style={{position: 'relative'}}>
+                            <img src={theme==="dark"?companyLevelRightDarkImg:companyLevelRightImg}/>
+                            <div 
+                                style={{
+                                    position: "absolute",
+                                    left: '50%',
+                                    top: '60%',
+                                    transform: 'translate(-50%, -50%)',
+                                }}
+                            >
+                                <div 
+                                    style={{
+                                        fontFamily: 'DingTalkJinBuTi',
+                                        textAlign: 'center',
+                                        color: token.color52
+                                    }}
+                                >
+                                    <span style={{fontSize: 40}}>{dataSource?.responseRanking}</span><span style={{fontSize: 20}}> / {dataSource?.totalCompanyCount}</span>
+                                </div>
+                                <div
+                                    style={{
+                                        color: token.color51,
+                                        fontSize: 16,
+                                        textAlign: 'center',
+                                        whiteSpace: 'nowrap'
+                                    }}
+                                >
+                                    响应量排名
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div className="right">
                     <Title style={{ marginTop: 0, marginBottom: 20 }}>
@@ -243,7 +337,7 @@ const User = () => {
                     <div
                         style={{
                             width: '100%',
-                            height: '100%'
+                            height: 'calc(100% - 30px)'
                         }}
                     >
                         <ScrollTable

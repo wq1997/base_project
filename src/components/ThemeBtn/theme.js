@@ -53,6 +53,9 @@ const theme = {
         color47: '#041F1F',
         color48: '#11153D',
         color49: '#0B263F',
+        color50: '#3392FF',
+        color51: '#628CD0',
+        color52: '#FF6600',
         components: {
             Modal: {
                 contentBg: '#0A182E',
@@ -121,6 +124,9 @@ const theme = {
         color47: '#F6FAFF',
         color48: '#F4F5FF',
         color49: '#EAF5FF',
+        color50: '#3392FF',
+        color51: '#628CD0',
+        color52: '#FF6600',
         components: {
             Modal: {
                 contentBg: 'white',
