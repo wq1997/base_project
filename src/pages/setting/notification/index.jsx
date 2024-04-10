@@ -4,7 +4,8 @@ import { Button, Space, Table, Tooltip, Card} from "antd";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import { 
     getNotificationList as getNotificationListServe,
-} from "@/services"
+} from "@/services";
+import { history } from "umi";
 
 const Notification = () => {
     const [dataSource, setDataSource] = useState([]);
@@ -61,6 +62,7 @@ const Notification = () => {
                         <Button 
                             type="link"
                             onClick={()=>{
+                                history.push(`/vpp/demandResponse/task/confirm`)
                             }}
                         >
                             去处理

@@ -6,6 +6,7 @@ export default {
 
     state: {
       user: null,
+      currentCompanyCode: localStorage.getItem('currentCompanyCode') || '',
     },
    
     effects: {
@@ -24,7 +25,8 @@ export default {
       },
 
       *logout({ payload }, { call, put }) {
-        history.push("/login")
+        localStorage.removeItem('currentCompanyCode');
+        history.push("/login");
       }
     },
    

@@ -1,5 +1,5 @@
 import { Outlet, useDispatch, useSelector } from "umi";
-import { Layout, Row, Avatar, Typography, Dropdown, Space, theme as antdTheme } from "antd";
+import { Layout, Row, Avatar, Typography, Dropdown, Space, theme as antdTheme, Select } from "antd";
 import styles from "./commonLayout.less";
 import useIcon from "@/hooks/useIcon";
 import { useEffect } from "react";
@@ -11,7 +11,7 @@ const { Header, Sider, Content } = Layout;
 const CommonLayout = (props) => {
     const { token } = antdTheme.useToken();
     const { theme } = useSelector(state => state.global);
-    const { user } = useSelector(state => state.user);
+    const { user, currentCompanyCode } = useSelector(state => state.user);
     const Icon = useIcon();
     const dispatch = useDispatch();
     const { title, MyMenu } = props;
@@ -84,6 +84,32 @@ const CommonLayout = (props) => {
                         </Typography.Title>
                     </div>
                     <Space size={40} align="center">
+                        {
+                            user?.isSermatec&&
+                            <Select 
+                                style={{width: 300}}
+                                options={[
+                                    {value: '', label: user?.selfUser?.name},
+                                    ...user?.companies?.map(item => {
+                                        return {
+                                            value: item?.code,
+                                            label: item?.name
+                                        }||[]
+                                    })
+                                ]}
+                                value={currentCompanyCode}
+                                onChange={value => {
+                                    localStorage.setItem('currentCompanyCode', value);
+                                    window.location.reload(); 
+                                    dispatch({
+                                        type: 'user/updateState',
+                                        payload: {
+                                            currentCompanyCode: value
+                                        }
+                                    })
+                                }}
+                            />
+                        }
                         <Icon
                             type={theme==="default"?"icon-qiansezhuti":"icon-shensezhuti"}
                             style={{

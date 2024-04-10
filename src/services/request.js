@@ -8,6 +8,7 @@ const instance = axios.create({
     timeout: 10000,
     headers: {
         Authorization: getToken(),
+        CompanyCode: localStorage.getItem('currentCompanyCode')
     },
 });
 

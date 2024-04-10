@@ -111,19 +111,19 @@ const Global = () => {
             const cloneData = JSON.parse(JSON.stringify(data));
             const result = res?.data?.data;
             console.log(result);
-            cloneData.resource.dataSource[0].value = result.companySummary.companyCount;
-            cloneData.resource.dataSource[1].value = result.companySummary.deviceCount;
-            cloneData.resource.dataSource[2].value = result.companySummary.maxLoad;
-            cloneData.resource.dataSource[3].value = result.companySummary.maxAdjustableLoad;
+            cloneData.resource.dataSource[0].value = result.companySummary?.companyCount || 0;
+            cloneData.resource.dataSource[1].value = result.companySummary?.deviceCount || 0;
+            cloneData.resource.dataSource[2].value = result.companySummary?.maxLoad || 0;
+            cloneData.resource.dataSource[3].value = result.companySummary?.maxAdjustableLoad || 0;
 
-            cloneData.responseIncome.dataSource[0].value = result.inviteTaskProfitSummary.profitSummary;
-            cloneData.responseIncome.dataSource[1].value = result.inviteTaskProfitSummary.currentYearProfit;
-            cloneData.responseIncome.dataSource[2].value = result.inviteTaskProfitSummary.followingYearProjectedProfit;
+            cloneData.responseIncome.dataSource[0].value = result.inviteTaskProfitSummary?.profitSummary || 0;
+            cloneData.responseIncome.dataSource[1].value = result.inviteTaskProfitSummary?.currentYearProfit || 0;
+            cloneData.responseIncome.dataSource[2].value = result.inviteTaskProfitSummary?.followingYearProjectedProfit || 0;
 
-            cloneData.responseExecute.dataSource[0].value = result.inviteTaskSummary.inviteCount;
-            cloneData.responseExecute.dataSource[1].value = result.inviteTaskSummary.executeSuccessTaskCount;
-            cloneData.responseExecute.dataSource[2].value = result.inviteTaskSummary.responseSuccessRate;
-            cloneData.responseExecute.dataSource[3].value = result.inviteTaskSummary.effectiveResponsePower;
+            cloneData.responseExecute.dataSource[0].value = result.inviteTaskSummary?.inviteCount || 0;
+            cloneData.responseExecute.dataSource[1].value = result.inviteTaskSummary?.executeSuccessTaskCount || 0;
+            cloneData.responseExecute.dataSource[2].value = result.inviteTaskSummary?.responseSuccessRate || 0;
+            cloneData.responseExecute.dataSource[3].value = result.inviteTaskSummary?.effectiveResponsePower || 0;
             
             setDataSource(result);
             setData(cloneData);

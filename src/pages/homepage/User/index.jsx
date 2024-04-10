@@ -168,17 +168,17 @@ const User = () => {
             const result = res?.data?.data;
             console.log(result);
             setDataSource(result);
-            cloneData.resource.dataSource[0].value = result.deviceCount;
-            cloneData.resource.dataSource[1].value = result.maxLoad;
-            cloneData.resource.dataSource[2].value = result.maxAdjustableLoad;
+            cloneData.resource.dataSource[0].value = result?.deviceCount || 0;
+            cloneData.resource.dataSource[1].value = result?.maxLoad || 0;
+            cloneData.resource.dataSource[2].value = result?.maxAdjustableLoad || 0;
 
-            cloneData.responseIncome.dataSource[0].value = result.profitSummary;
-            cloneData.responseIncome.dataSource[1].value = result.currentYearProfit;
-            cloneData.responseIncome.dataSource[2].value = result.followingYearProjectedProfit;
+            cloneData.responseIncome.dataSource[0].value = result?.profitSummary || 0;
+            cloneData.responseIncome.dataSource[1].value = result?.currentYearProfit || 0;
+            cloneData.responseIncome.dataSource[2].value = result?.followingYearProjectedProfit || 0;
 
-            cloneData.responseExecute.dataSource[0].value = result.receiveTaskCount;
-            cloneData.responseExecute.dataSource[1].value = result.executeSuccessTaskCount;
-            cloneData.responseExecute.dataSource[2].value = result.effectiveResponsePower;
+            cloneData.responseExecute.dataSource[0].value = result?.receiveTaskCount || 0;
+            cloneData.responseExecute.dataSource[1].value = result?.executeSuccessTaskCount || 0;
+            cloneData.responseExecute.dataSource[2].value = result?.effectiveResponsePower || 0;
 
             setData(cloneData);
         }
@@ -243,88 +243,97 @@ const User = () => {
                     <div
                         style={{
                             width: '100%',
-                            height: 'calc(100% - 30px)',
+                            height: '100%',
                             display: 'flex',
-                            justifyContent: "center",
-                            alignItems: "center"
+                            justifyContent: 'center'
                         }}
                     >
-                        <div style={{position: 'relative'}}>
-                            <img src={theme==="dark"?companyLevelDarkImg:companyLevelImg}/>
-                            <span 
-                                style={{
-                                    fontSize: 60, 
-                                    position: "absolute",
-                                    left: '50%',
-                                    top: '45%',
-                                    transform: 'translate(-50%, -50%)',
-                                    color: token.color50,
-                                }}
-                            >
-                                {dataSource?.companyLevel}
-                            </span>
-                        </div>
-                        <div style={{position: 'relative', margin: '0 50px'}}>
-                            <img src={theme==="dark"?companyLevelRightDarkImg:companyLevelRightImg}/>
-                            <div 
-                                style={{
-                                    position: "absolute",
-                                    left: '50%',
-                                    top: '60%',
-                                    transform: 'translate(-50%, -50%)',
-                                    color: token.color50
-                                }}
-                            >
+                        <div
+                            style={{
+                                width: '80%',
+                                height: 'calc(100% - 30px)',
+                                display: 'flex',
+                                justifyContent: "space-between",
+                                alignItems: "center"
+                            }}
+                        >
+                            <div style={{position: 'relative'}}>
+                                <img src={theme==="dark"?companyLevelDarkImg:companyLevelImg}/>
+                                <span 
+                                    style={{
+                                        fontSize: 60, 
+                                        position: "absolute",
+                                        left: '50%',
+                                        top: '45%',
+                                        transform: 'translate(-50%, -50%)',
+                                        color: token.color50,
+                                    }}
+                                >
+                                    {dataSource?.companyLevel}
+                                </span>
+                            </div>
+                            <div style={{position: 'relative'}}>
+                                <img src={theme==="dark"?companyLevelRightDarkImg:companyLevelRightImg}/>
                                 <div 
                                     style={{
-                                        fontSize:40,
-                                        fontFamily: 'DingTalkJinBuTi',
-                                        color: token.color37,
-                                        textAlign: 'center'
+                                        position: "absolute",
+                                        left: '50%',
+                                        top: '60%',
+                                        transform: 'translate(-50%, -50%)',
+                                        color: token.color50
                                     }}
                                 >
-                                    {dataSource?.complianceRate||0}%
-                                </div>
-                                <div
-                                    style={{
-                                        color: token.color51,
-                                        fontSize: 16,
-                                        textAlign: 'center',
-                                        whiteSpace: 'nowrap'
-                                    }}
-                                >
-                                    履约率(近半年)
+                                    <div 
+                                        style={{
+                                            fontSize:40,
+                                            fontFamily: 'DingTalkJinBuTi',
+                                            color: token.color37,
+                                            textAlign: 'center'
+                                        }}
+                                    >
+                                        {dataSource?.complianceRate||0}%
+                                    </div>
+                                    <div
+                                        style={{
+                                            color: token.color51,
+                                            fontSize: 16,
+                                            textAlign: 'center',
+                                            whiteSpace: 'nowrap'
+                                        }}
+                                    >
+                                        履约率(近半年)
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div style={{position: 'relative'}}>
-                            <img src={theme==="dark"?companyLevelRightDarkImg:companyLevelRightImg}/>
-                            <div 
-                                style={{
-                                    position: "absolute",
-                                    left: '50%',
-                                    top: '60%',
-                                    transform: 'translate(-50%, -50%)',
-                                }}
-                            >
+                            <div style={{position: 'relative'}}>
+                                <img src={theme==="dark"?companyLevelRightDarkImg:companyLevelRightImg}/>
                                 <div 
                                     style={{
-                                        fontFamily: 'DingTalkJinBuTi',
-                                        textAlign: 'center',
-                                        color: token.color52
+                                        position: "absolute",
+                                        left: '50%',
+                                        top: '60%',
+                                        transform: 'translate(-50%, -50%)',
                                     }}
                                 >
-                                    <span style={{fontSize: 40}}>{dataSource?.responseRanking}</span><span style={{fontSize: 20}}> / {dataSource?.totalCompanyCount}</span>
-                                </div>
-                                <div
-                                    style={{
-                                        color: token.color51,
-                                        fontSize: 16,
-                                        textAlign: 'center',
-                                        whiteSpace: 'nowrap'
-                                    }}
-                                >
-                                    响应量排名
+                                    <div 
+                                        style={{
+                                            fontFamily: 'DingTalkJinBuTi',
+                                            textAlign: 'center',
+                                            color: token.color52
+                                        }}
+                                    >
+                                        <span style={{fontSize: 40}}>{dataSource?.responseRanking}</span><span style={{fontSize: 20}}> / {dataSource?.totalCompanyCount}</span>
+                                    </div>
+                                    <div
+                                        style={{
+                                            color: token.color51,
+                                            fontSize: 16,
+                                            textAlign: 'center',
+                                            whiteSpace: 'nowrap'
+                                        }}
+                                    >
+                                        响应量排名
+                                    </div>
                                 </div>
                             </div>
                         </div>
