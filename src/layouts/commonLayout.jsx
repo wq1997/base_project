@@ -101,12 +101,14 @@ const CommonLayout = (props) => {
                                 onChange={value => {
                                     localStorage.setItem('currentCompanyCode', value);
                                     window.location.reload(); 
-                                    dispatch({
-                                        type: 'user/updateState',
-                                        payload: {
-                                            currentCompanyCode: value
-                                        }
-                                    })
+                                    setTimeout(()=>{
+                                        dispatch({
+                                            type: 'user/updateState',
+                                            payload: {
+                                                currentCompanyCode: value
+                                            }
+                                        })
+                                    }, 0.2 * 1000)
                                 }}
                             />
                         }
