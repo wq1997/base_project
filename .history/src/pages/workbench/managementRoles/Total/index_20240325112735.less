@@ -1,0 +1,23 @@
+.total {
+    display: grid;
+    grid-template-rows: 2fr 4fr;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+    grid-template-areas:
+        "g1 g2"
+        "g3 g3";
+    .all {
+        grid-area: g1;
+    }
+    .my {
+        grid-area: g2;
+    }
+    .task-board {
+        grid-area: g3;
+    }
+    .workorders{
+        .content :{
+            height: calc(100% - 10px);
+        }
+    }
+}
