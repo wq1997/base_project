@@ -17,7 +17,7 @@ const dataSource = [
     },
     {
         imgUrl: centerTop2Img,
-        description: '总装机容量(MWH)',
+        description: '总装机容量(MW)',
         data: 0,
         color: '#3AAFFF'
     },

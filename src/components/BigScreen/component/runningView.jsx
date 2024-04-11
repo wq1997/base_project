@@ -21,7 +21,7 @@ const dataSource = [
         imgUrl: RunningView2Img,
         description: '累计充电电量',
         data: 0,
-        unit: 'MW',
+        unit: 'MWh',
         bgImgUrl: '/images/leftTopOne_2.png',
         color:'#934CEA'
     },
@@ -29,7 +29,7 @@ const dataSource = [
         imgUrl: RunningView3Img,
         description: '累计放电电量',
         data: 0,
-        unit: 'MW',
+        unit: 'MWh',
         bgImgUrl: '/images/leftTopOne_3.png',
         color:'#38ACF6'
     },
