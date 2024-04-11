@@ -10,9 +10,6 @@ const BaseLayout = () => {
         dispatch({
             type: 'user/queryUser',
         })
-        return () => {
-            localStorage.removeItem("currentCompanyCode");
-        }
    }, [])
 
    return (

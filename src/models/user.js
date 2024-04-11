@@ -14,7 +14,6 @@ export default {
         const res = yield call(getUserInfo);
         if(res?.data?.data){
           const result = res?.data?.data;
-          console.log(result);
           yield put({
             type: 'updateState',
             payload: {
@@ -24,8 +23,18 @@ export default {
         }
       },
 
+      *clearCurrentCompanyCode({ payload }, { call, put }){
+        yield put({
+            type: 'updateState',
+            payload: {
+                currentCompanyCode: ""
+            }
+        })
+        localStorage.removeItem('currentCompanyCode', '');
+      },
+
       *logout({ payload }, { call, put }) {
-        localStorage.removeItem('currentCompanyCode');
+        yield put({type: 'clearCurrentCompanyCode'});
         history.push("/login");
       }
     },

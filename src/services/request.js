@@ -8,7 +8,7 @@ const instance = axios.create({
     timeout: 10000,
     headers: {
         Authorization: getToken(),
-        CompanyCode: localStorage.getItem('currentCompanyCode')
+        CompanyCode: localStorage.getItem('currentCompanyCode')||""
     },
 });
 
@@ -37,8 +37,8 @@ instance.interceptors.response.use(
     error => {
         const { response } = error;
         if (response) {
-            errorHandle(response.status, response.data.message);
-            return Promise.reject(response);
+            errorHandle(response.status, response.data.msg);
+            return Promise.resolve(null);
         } else {
             if (error.message.includes("timeout")) {
                 console.log("请求超时");
