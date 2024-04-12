@@ -45,7 +45,6 @@ function Com({ id }) {
             })
         })
         activitesRef.current = arr;
-        setCurrentClu(arr[0].value)
 
     }
     const changeCluster = (value) => {
@@ -75,7 +74,7 @@ function Com({ id }) {
                     }
                 />
             </div>
-            <div className={styles.operationalStatus}>
+            {/* <div className={styles.operationalStatus}>
 
                 <CardModel
                     title={t('运行状态')}
@@ -86,17 +85,17 @@ function Com({ id }) {
                         </>
                     }
                 />
-            </div>
+            </div> */}
 
             <div className={styles.clusterSearch}>
                 <Select
                     style={{ width: 240 }}
                     onChange={changeCluster}
                     key={activitesRef.current[0]?.value}
-                    defaultValue={activitesRef.current[0]?.value}
+                    defaultValue={0}
                 >
-                    {activitesRef.current && activitesRef.current.map(item => {
-                        return (<Option key={item.value} value={item.value}>{item.label}</Option>);
+                    {activitesRef.current && activitesRef.current.map((item,index) => {
+                        return (<Option key={item.value} value={index}>{item.label}</Option>);
                     })
                     }
                 </Select>
@@ -120,7 +119,7 @@ function Com({ id }) {
                 />
 
             </div>
-            <div className={styles.clusterOperationalStatus}>
+            {/* <div className={styles.clusterOperationalStatus}>
                 <CardModel
                     title={t('运行状态')}
                     content={
@@ -128,7 +127,7 @@ function Com({ id }) {
                     }
                 />
 
-            </div>
+            </div> */}
 
         </div>
     )

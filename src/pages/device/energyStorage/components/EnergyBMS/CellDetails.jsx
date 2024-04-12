@@ -5,7 +5,7 @@ import { useSelector, useIntl } from "umi";
 import Cell1 from '@/assets/svg/cell1.svg'
 import Cell2 from '@/assets/svg/cell2.svg'
 import cellTem from '@/assets/svg/cellTem.svg'
-import { fetchCellNowData,obtainBMSClustersList } from '@/services/deviceTotal'
+import { fetchCellNowData, obtainBMSClustersList } from '@/services/deviceTotal'
 import { getQueryString } from "@/utils/utils";
 
 const { Option } = Select;
@@ -30,28 +30,37 @@ function Com({ id }) {
     }, [token]);
     useEffect(() => {
         getClustersData();
-    }, [id,cluster])
+    }, [id, cluster])
     const getClustersData = async () => {
-        let { data } = await fetchCellNowData({ id:cluster });
+        let { data } = await fetchCellNowData({ id: cluster });
+        // let arr=[];
+        // let a=[1,2,3,4,5,6,7,8,9,7,8,9];
+        // a.map(it=>{
+        //     data.data[0].packData?.map(a=>{
+        //         arr.push(a);
+        //     })
+        // });
+        // console.log(arr,121212);
+        // data.data[0].packData=arr;
         setData(data?.data)
     }
 
-    const getOption = async() => {
+    const getOption = async () => {
         let { data } = await obtainBMSClustersList({ id })
-        let arr=[];
-        data?.data?.map((it,i)=>{
-            i===0?null:arr.push({
+        let arr = [];
+        data?.data?.map((it, i) => {
+            i === 0 ? null : arr.push({
                 ...it,
                 label: it.name,
-                value:it.id
+                value: it.id
             })
         })
         activitesRef.current = arr;
         setCluster(arr[0].value)
     }
     const changeCluster = (val) => {
-        setCluster(val)  
-      }
+        setCluster(val)
+    }
 
     return (
         <div className={styles.cellDetails}>
@@ -79,9 +88,11 @@ function Com({ id }) {
                             <div className={styles.packContent} style={{ backgroundColor: token.cellBgc }}>
                                 <div className={styles.packCell}>
                                     {one?.packData.map((it, index) => {
-                                        return <div className={styles.cellSingel} style={{ backgroundImage: `url(${(index + 1) % 2 === 0 ? Cell2 : Cell1})` }}>
+                                        return <div className={styles.cellSingel} style={{ backgroundImage: `url(${(index + 1) % 2 === 0 ? Cell2 : Cell1})`, backgroundSize: '100% 100%' }}>
                                             {Object.keys(it).length == 2 ? <img src={cellTem} alt="" /> : null}
-                                            <div className={styles.cellVol} style={{ color:"#999999"}}>{it.vol}v</div>
+                                            {it.tmp && <div className={styles.cellTmp} style={{ color: "#03B4B4" }}>{it.tmp}℃</div>}
+                                            <div className={styles.cellVol} style={{ color: "#999999" }}>{it.vol}v</div>
+
                                         </div>
                                     })}
                                 </div>

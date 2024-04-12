@@ -7,7 +7,6 @@ import ReactECharts from "echarts-for-react";
 import { downloadFile } from '@/utils/utils'
 import { useSelector, useIntl } from "umi";
 import { getEnergyFeeByTime, getEarningsDistribution } from '@/services/report'
-
 function Com(props) {
     const [optionsPie, setOptionsPie] = useState({})
     const { token } = theme.useToken();
@@ -53,7 +52,8 @@ function Com(props) {
                 containLabel: true
             },
             legend: {
-                data: [getTranslation('总收益'),
+                data: [
+                getTranslation('总收益'),
                 getTranslation('光伏收益'),
                 getTranslation('储能收益'),
                 getTranslation('充电桩收益'),
@@ -75,7 +75,7 @@ function Com(props) {
                 {
                     type: 'value',
                     axisLabel: {
-                        formatter: '{value} kWh'
+                        formatter: '{value}'
                     },
 
                 }
@@ -152,7 +152,7 @@ function Com(props) {
                 show: true,
                 icon: "circle",
                 top: "55%",
-                left: '75%',
+                left: '80%',
                 width: 50,
                 padding: [0, 5],
                 itemGap: 25,
@@ -237,10 +237,11 @@ function Com(props) {
     };
     const profitTable = [
         {
-            title: 'id',
+            title: '序号',
             dataIndex: 'id',
             key: 'id',
             width: 100,
+            render: (text, record, index) => index + 1,
         },
 
         {
@@ -248,6 +249,9 @@ function Com(props) {
             dataIndex: 'date',
             key: 'date',
             width: 100,
+            render:(val)=>{
+                return val ? dayjs(val).format('YYYY-MM-DD') : ''
+            }
         },
         {
             title: '储能收益',
@@ -304,7 +308,7 @@ function Com(props) {
             pvEarning.push(it.pvEarning);
             energyEarning.push(it.energyEarning);
             chargeEarning.push(it.chargeEarning);
-            arrX.push(it.date)
+            arrX.push(dayjs(it.date).format('YYYY-MM-DD') )
         })
         setData(data.data);
         setDateX(arrX);
@@ -357,7 +361,7 @@ function Com(props) {
                 <div className={styles.profitStaus}>
                     <CardModel
                         title={
-                            "收益统计"
+                            "收益统计(元)"
                         }
                         content={
                             <div className={styles.contentsWrap}>

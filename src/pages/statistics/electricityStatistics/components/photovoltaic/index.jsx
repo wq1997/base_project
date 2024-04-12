@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { DatePicker, Button, theme, Radio,Table } from 'antd';
+import { DatePicker, Button, theme, Radio, Table } from 'antd';
 import dayjs from 'dayjs';
 import styles from './index.less'
 import { CardModel } from "@/components";
@@ -32,8 +32,8 @@ function Com(props) {
     const [scrollY, setScrollY] = useState('');
     useEffect(() => {
         const Y = document.getElementById('table')?.clientHeight;
-        if (Y) setScrollY(Y-180); // 32为表头的高，应用时减去自己表格的表头高
-      }, []);
+        if (Y) setScrollY(Y - 180); // 32为表头的高，应用时减去自己表格的表头高
+    }, []);
     const getOptions = () => {
         setOptions({
             tooltip: {
@@ -67,7 +67,7 @@ function Com(props) {
                 {
                     type: 'value',
                     axisLabel: {
-                        formatter: '{value} kWh'
+                        formatter: '{value}'
                     },
 
                 }
@@ -76,6 +76,7 @@ function Com(props) {
                 {
                     name: '发电量',
                     type: 'bar',
+                    barMaxWidth: '10%',
                     itemStyle: {
                         normal: {
                             color: token.barColor[0]
@@ -84,8 +85,9 @@ function Com(props) {
                     data: dayIn
                 },
                 {
-                    name: '上网量',
+                    name: '上网电量',
                     type: 'bar',
+                    barMaxWidth: '10%',
                     itemStyle: {
                         normal: {
                             color: token.barColor[4]
@@ -97,87 +99,118 @@ function Com(props) {
         });
     };
     const profitTable = [
-        {
-            title: 'id',
-            dataIndex: 'idx',
-            key: 'idx',
+     {  
+        title:'',
+        children:[ {
+            title: '序号',
+            dataIndex: 'id',
+            key: 'id',
             width: 100,
+            className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+
+            render: (text, record, index) => index + 1,
         },
+
         {
             title: '日期',
             dataIndex: 'date',
             key: 'date',
             width: 100,
-        },
-        {
-            title: '充电量（kWh）',
             className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+
+            render: (val) => {
+                return val ? dayjs(val).format('YYYY-MM-DD') : ''
+            }
+        },
+    ]
+    },
+        {
+            title: '发电量（kWh）',
             children: [
                 {
                     title: '尖电',
                     dataIndex: 'tipInEnergy',
                     key: 'tipInEnergy',
                     width: 150,
+                    className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+
                 },
                 {
                     title: '峰电',
                     dataIndex: 'peakInEnergy',
                     key: 'peakInEnergy',
                     width: 150,
+                    className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+
                 },
                 {
                     title: '平电',
                     dataIndex: 'flatInEnergy',
                     key: 'flatInEnergy',
                     width: 150,
+                    className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+
                 },
                 {
                     title: '谷电',
                     dataIndex: 'valleyInEnergy',
                     key: 'valleyInEnergy',
                     width: 150,
+                    className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+
                 },
                 {
                     title: '总计',
                     dataIndex: 'dayInEnergy',
                     key: 'dayInEnergy',
                     width: 150,
+                    className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+
                 },
             ],
         },
         {
-            title: '放电量（kWh）',
-            className: currentTheme === 'default' ? 'lightTitleColorLeft' : 'darkTitleColorLeft',
+            title: '上网电量（kWh）',
             children: [
                 {
                     title: '尖电',
                     dataIndex: 'tipOutEnergy',
                     key: 'tipOutEnergy',
                     width: 150,
+                    className: currentTheme === 'default' ? 'lightTitleColorLeft' : 'darkTitleColorLeft',
+
                 },
                 {
                     title: '峰电',
                     dataIndex: 'peakOutEnergy',
                     key: 'peakOutEnergy',
                     width: 150,
+                    className: currentTheme === 'default' ? 'lightTitleColorLeft' : 'darkTitleColorLeft',
+
                 },
                 {
                     title: '平电',
                     dataIndex: 'flatOutEnergy',
                     key: 'flatOutEnergy',
                     width: 150,
+                    className: currentTheme === 'default' ? 'lightTitleColorLeft' : 'darkTitleColorLeft',
+
                 },
                 {
                     title: '谷电',
                     dataIndex: 'valleyOutEnergy',
                     key: 'valleyOutEnergy',
                     width: 150,
+                    className: currentTheme === 'default' ? 'lightTitleColorLeft' : 'darkTitleColorLeft',
+
                 },
                 {
                     title: '总计',
                     dataIndex: 'dayOutEnergy',
                     key: 'dayOutEnergy',
                     width: 150,
+                    className: currentTheme === 'default' ? 'lightTitleColorLeft' : 'darkTitleColorLeft',
+
                 },
 
             ],
@@ -197,7 +230,8 @@ function Com(props) {
         data?.data.map((it) => {
             arrIn.push(it.dayInEnergy);
             arrOut.push(it.dayOutEnergy);
-            arrX.push(it.date)
+            arrX.push(dayjs(it.date).format('YYYY-MM-DD'))
+
         })
         setDayIn(arrIn);
         setDayOut(arrOut);
@@ -250,7 +284,7 @@ function Com(props) {
             <div className={styles.profitStaus}>
                 <CardModel
                     title={
-                        getTranslation('app.ElectricityStatistics')
+                        getTranslation('光伏电量(kWh)')
                     }
                     content={
                         // <div className={styles.eletric}>
@@ -266,8 +300,8 @@ function Com(props) {
                     columns={profitTable}
                     dataSource={data}
                     scroll={{
-                       y: scrollY,
-                      }}
+                        y: scrollY,
+                    }}
                 />
             </div>
         </div>

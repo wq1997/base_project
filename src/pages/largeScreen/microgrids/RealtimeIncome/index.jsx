@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import useIcon from "@/hooks/useIcon";
 import styles from "./index.less";
+import { getGccPowerStatisticsServe } from "@/services/bigScreen"
 
 const RealtimeIncome = () => {
     const Icon = useIcon();

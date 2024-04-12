@@ -54,7 +54,7 @@ function Com({dataX,dataY}) {
                 {
                     type: 'value',
                     axisLabel: {
-                        formatter: '{value} 元'
+                        formatter: '{value}'
                     },
 
                 }
@@ -63,10 +63,10 @@ function Com({dataX,dataY}) {
                 {
                     name:t('收益'),
                     type: 'bar',
+                    barMaxWidth: '20%',
                     itemStyle: {
                         normal: {
                             color: token.barColor[0]
-
                         }
                     },
                     data: dataY

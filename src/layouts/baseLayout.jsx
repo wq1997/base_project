@@ -1,6 +1,6 @@
 import { Outlet, useDispatch, useSelector, FormattedMessage, } from 'umi'
-import React,{ useState }from 'react';
-import { theme, Layout, Dropdown,Button} from 'antd';
+import React, { useState } from 'react';
+import { theme, Layout, Dropdown, Button } from 'antd';
 import MyMenu from "@/permissions/menu";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import styles from "./baseLayout.less";
@@ -15,10 +15,10 @@ import {
     UserSwitchOutlined,
     LogoutOutlined,
     MenuFoldOutlined,
-  MenuUnfoldOutlined,
+    MenuUnfoldOutlined,
 } from '@ant-design/icons';
 import { history, useIntl } from "umi";
-
+import useIcon from '../hooks/useIcon';
 const { Header, Sider, Content } = Layout;
 
 const BaseLayout = () => {
@@ -44,6 +44,7 @@ const BaseLayout = () => {
             }
         })
     }
+    const Icon = useIcon();
     const siderContentStyle = useEmotionCss(({ token }) => {
         return {
             height: '100%',
@@ -93,15 +94,18 @@ const BaseLayout = () => {
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         {
                             global.theme === "default" ?
-                                <img
-                                    src={themeDefaultSvg}
-                                    style={{ cursor: 'pointer' }}
+                                <Icon
+
+                                    type='icon-shense'
+                                    // src={themeDefaultSvg}
+                                    style={{ cursor: 'pointer', fontSize: "30px" }}
                                     onClick={() => changeTheme('dark')}
                                 />
                                 :
-                                <img
-                                    src={themeDarkSvg}
-                                    style={{ cursor: 'pointer' }}
+                                <Icon
+                                    // src={themeDarkSvg}
+                                    type='icon-qianse'
+                                    style={{ cursor: 'pointer', fontSize: "30px", }}
                                     onClick={() => changeTheme('default')}
                                 />
                         }
@@ -110,13 +114,13 @@ const BaseLayout = () => {
                                 <img
                                     src={languageEnglishSvg}
                                     style={{ cursor: 'pointer', margin: '0px 40px' }}
-                                    onClick={() => changeLanguage('en-US')}
+                                    // onClick={() => changeLanguage('en-US')}
                                 />
                                 :
                                 <img
                                     src={languageChineseSvg}
                                     style={{ cursor: 'pointer', margin: '0px 40px' }}
-                                    onClick={() => changeLanguage('zh-CN')}
+                                    // onClick={() => changeLanguage('zh-CN')}
                                 />
                         }
                         <Dropdown
@@ -153,28 +157,30 @@ const BaseLayout = () => {
                     </div>
                 </Header>
                 <Layout hasSider>
+                    <div style={{height:'100%',position:'relative', background: token.bgcColorB_l,}}>
                     <Sider className={siderContentStyle}
-                        style={{ background: token.bgcColorB_l }}
+                        style={{ background: token.bgcColorB_l,  height: 'calc(100% - 94px)' }}
                         width={240}
                         trigger={null} collapsible collapsed={collapsed}>
                         <div className={styles.siderContent}>
                             <MyMenu />
-                           
                         </div>
-                        <Button
-                                type="text"
-                                icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                                onClick={() => setCollapsed(!collapsed)}
-                                style={{
-                                    fontSize: '16px',
-                                    width: 64,
-                                    height: 64,
-                                    position:'absolute',
-                                    bottom:'20px',
-                                    right:'10px'
-                                }}
-                            />
+                   
                     </Sider>
+                    <Button
+                        type="text"
+                        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                        onClick={() => {setCollapsed(!collapsed);localStorage.setItem('collased')}}
+                        style={{
+                            fontSize: '16px',
+                            width: 64,
+                            height: 64,
+                            position: 'absolute',
+                            bottom: '20px',
+                            right: '10px'
+                        }}
+                    />
+                    </div>
                     <Content className={styles.content}
                         style={{ background: token.bgcColorl_B }}>
                         <div className={styles.inContent}>

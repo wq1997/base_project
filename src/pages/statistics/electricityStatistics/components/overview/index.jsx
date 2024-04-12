@@ -80,7 +80,7 @@ function Com(props) {
                 {
                     type: 'value',
                     axisLabel: {
-                        formatter: '{value} kWh'
+                        formatter: '{value}'
                     },
 
                 }
@@ -168,7 +168,7 @@ function Com(props) {
             energyOutEnergy.push(it.energyOutEnergy);
             pvInEnergy.push(it.pvInEnergy);
             chargeInEnergy.push(it.chargeInEnergy);
-            arrX.push(it.date)
+            arrX.push(dayjs(it?.date).format('YYYY-MM-DD'))
         })
         setData(data.data);
         setDateX(arrX);
@@ -193,17 +193,22 @@ function Com(props) {
         }
     };
     const profitTable = [
-        // {
-        //     title: 'id',
-        //     dataIndex: 'id',
-        //     key: 'id',
-        //     width: 100,
-        // },
+        {
+            title: '序号',
+            dataIndex: 'id',
+            key: 'id',
+            width: 100,
+            render: (text, record, index) => index + 1,
+        },
+
         {
             title: '日期',
             dataIndex: 'date',
             key: 'date',
             width: 100,
+            render:(val)=>{
+                return val ? dayjs(val).format('YYYY-MM-DD') : ''
+            }
         },
         {
             title: '上网电量',
@@ -262,7 +267,8 @@ function Com(props) {
                 <div className={styles.profitStaus}>
                     <CardModel
                         title={
-                            <FormattedMessage id='app.ElectricityStatistics' />
+                            getTranslation('电量统计')+
+                            getTranslation('(kWh)')
                         }
                         content={
                             <ReactECharts option={options} style={{ height: '100%' }} />

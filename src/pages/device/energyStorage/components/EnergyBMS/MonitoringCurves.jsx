@@ -20,7 +20,8 @@ function Com({ id }) {
     const [optionEchart, setOptionEchart] = useState({})
     const activitesRef = useRef([]);
     const [goalId, setGoalId] = useState(id);
-    const [title, setTitle] = useState('电压')
+    const [title, setTitle] = useState('电压');
+    const [unit, setUnit] = useState('V')
     const [date, setDate] = useState(dayjs(new Date()));
     const intl = useIntl();
     const t = (id) => {
@@ -57,13 +58,16 @@ function Com({ id }) {
         let dataX = []
         let nowY = [];
         let toY = [];
-        data.nowDay?.map(it => {
-            dataX.push(dayjs(it.time).format('HH:mm:ss'));
+        data.data?.nowDay?.map(it => {
+            dataX.push(dayjs(it.time).format('HH:mm'));
             nowY.push(it.value);
         })
-        data.toDay?.map(it => {
+        dataX.length===0? data.data?.toDay?.map(it => {
             toY.push(it.value);
-        })
+            dataX.push(dayjs(it.time).format('HH:mm'))
+        }):data.data?.toDay?.map(it => {
+            toY.push(it.value);
+        });
         setOptionEchart({
             tooltip: {
                 trigger: 'axis',
@@ -72,7 +76,10 @@ function Com({ id }) {
                 }
             },
             legend: {
-                data: [`今日${title}`, `${date.format('YYYY-MM-DD')}${title}`]
+                data: [`今日${title}`, `${date.format('YYYY-MM-DD')}${title}`],
+                textStyle: {
+                    color:token.smallTitleColor,
+                }
             },
             grid: {
                 left: '3%',
@@ -93,7 +100,7 @@ function Com({ id }) {
                 {
                     type: 'value',
                     axisLabel: {
-                        formatter: '{value} kW'
+                        formatter: `{value}${unit}`
                     },
 
                 }
@@ -185,6 +192,7 @@ function Com({ id }) {
     const changeDataType = (val, label) => {
         setType(val);
         setTitle(label?.label.props?.id);
+        setUnit(label?.unit)
     } 
     return (
         <div className={styles.monitoringCurves}>

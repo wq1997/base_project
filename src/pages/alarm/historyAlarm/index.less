@@ -40,7 +40,7 @@
 
                 .topVaue {
                     height: calc(100% - 24px);
-                    font-size: 36px;
+                    // font-size: 36px;
                     font-weight: 500;
                     display: flex;
                     justify-content: center;
@@ -69,10 +69,11 @@
             margin-bottom: 35px;
 
             .date {
-                margin: 0 35px;
             }
             .dataItem {
                 width: calc(100%-210px);
+                margin: 0 35px;
+
             }
 
             .buttons {
@@ -82,4 +83,41 @@
 
         }
     }
+}
+
+@media screen and (min-width: 2000px) {
+    .topVaue {
+        font-size:36px;
+
+    }
+
+    .itemTitle {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+}
+
+@media screen and (min-width: 1000px) and (max-width: 2000px) {
+    .topVaue {
+        font-size: 24px;
+    }
+    .itemTitle {
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+}
+
+@media screen and (max-width: 1000px) {
+    .topVaue {
+        font-size: 18px;
+    }
+
+    .itemTitle {
+        font-size: 14px;
+        margin-bottom: 5px;
+
+    }
+
 }

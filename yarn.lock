@@ -295,6 +295,28 @@
   "resolved" "https://registry.npmjs.org/@antfu/utils/-/utils-0.7.6.tgz"
   "version" "0.7.6"
 
+"@antv/x6-common@^2.0.16":
+  "integrity" "sha512-37g7vmRkNdYzZPdwjaMSZEGv/MMH0S4r70/Jwoab1mioycmuIBN73iyziX8m56BvJSDucZ3J/6DU07otWqzS6A=="
+  "resolved" "https://registry.npmjs.org/@antv/x6-common/-/x6-common-2.0.17.tgz"
+  "version" "2.0.17"
+  dependencies:
+    "lodash-es" "^4.17.15"
+    "utility-types" "^3.10.0"
+
+"@antv/x6-geometry@^2.0.5":
+  "integrity" "sha512-MId6riEQkxphBpVeTcL4ZNXL4lScyvDEPLyIafvWMcWNTGK0jgkK7N20XSzqt8ltJb0mGUso5s56mrk8ysHu2A=="
+  "resolved" "https://registry.npmjs.org/@antv/x6-geometry/-/x6-geometry-2.0.5.tgz"
+  "version" "2.0.5"
+
+"@antv/x6@^2.18.1":
+  "integrity" "sha512-FkWdbLOpN9J7dfJ+kiBxzowSx2N6syBily13NMVdMs+wqC6Eo5sLXWCZjQHateTFWgFw7ZGi2y9o3Pmdov1sXw=="
+  "resolved" "https://registry.npmjs.org/@antv/x6/-/x6-2.18.1.tgz"
+  "version" "2.18.1"
+  dependencies:
+    "@antv/x6-common" "^2.0.16"
+    "@antv/x6-geometry" "^2.0.5"
+    "utility-types" "^3.10.0"
+
 "@babel/cli@^7.21.0":
   "integrity" "sha512-HbmrtxyFUr34LwAlV9jS+sSIjUp4FpdtIMGwgufY3AsxrIfsh/HxlMTywsONAZsU0RMYbZtbZFpUCrSGs7o0EA=="
   "resolved" "https://registry.npmjs.org/@babel/cli/-/cli-7.24.1.tgz"
@@ -6457,7 +6479,7 @@
   dependencies:
     "p-locate" "^5.0.0"
 
-"lodash-es@^4.2.1":
+"lodash-es@^4.17.15", "lodash-es@^4.2.1":
   "integrity" "sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw=="
   "resolved" "https://registry.npmjs.org/lodash-es/-/lodash-es-4.17.21.tgz"
   "version" "4.17.21"
@@ -9738,6 +9760,11 @@
   "integrity" "sha512-Z0DbgELS9/L/75wZbro8xAnT50pBVFQZ+hUEueGDU5FN51YSCYM+jdxsfCiHjwNP/4LCDD0i/graKpeBnOXKRA=="
   "resolved" "https://registry.npmjs.org/utila/-/utila-0.4.0.tgz"
   "version" "0.4.0"
+
+"utility-types@^3.10.0":
+  "integrity" "sha512-6Z7Ma2aVEWisaL6TvBCy7P8rm2LQoPv6dJ7ecIaIixHcwfbJ0x7mWdbcwlIM5IGQxPZSFYeqRCqlOOeKoJYMkw=="
+  "resolved" "https://registry.npmjs.org/utility-types/-/utility-types-3.11.0.tgz"
+  "version" "3.11.0"
 
 "v8-compile-cache@^2.3.0":
   "integrity" "sha512-ocyWc3bAHBB/guyqJQVI5o4BZkPhznPYUG2ea80Gond/BgNWpap8TOmLSeeQG7bnh2KMISxskdADG59j7zruhw=="

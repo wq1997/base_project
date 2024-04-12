@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 const PowerCurve = () => {
     const [options, setOptions] = useState({});
     const getOptions = () => {
-        const xAxisData = ['11/11','11/12','11/13','11/14','11/15','11/16','11/17'];
+        const xAxisData = ['04/04','04/05','04/06','04/08','04/09','04/10','04/11'];
         const data1 = [120, 132, 101, 134, 90, 230, 210];
         const data2 = [400,300,400,300,100,500,400];
         const data3 = [80,90,70,80,90,70,90];
@@ -25,7 +25,7 @@ const PowerCurve = () => {
             grid: {
                 top: 40,
                 bottom: 20,
-                right: 0
+                right: 20
             },
             xAxis: {
               type: 'category',

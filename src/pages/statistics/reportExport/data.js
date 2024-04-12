@@ -11,7 +11,7 @@ export const data = {
             {
                 label: '电站名称',
                 value: "电站名称",
-                data: "巴斯夫"
+                data: "xxx"
             },
             {
                 label: '电站类型',
@@ -46,17 +46,17 @@ export const data = {
             {
                 label: '储能装机容量',
                 value: '储能装机容量',
-                data: "215KW"
+                data: "215kWh"
             },
             {
                 label: '光伏装机容量',
                 value: '光伏装机容量',
-                data: "215KW"
+                data: "215kWh"
             },
             {
-                label: '充电桩数量',
-                value: '充电桩数量',
-                data: "2"
+                label: '充电桩装机容量',
+                value: '充电桩装机容量',
+                data: "215kWh"
             },
         ]
     },
@@ -66,47 +66,47 @@ export const data = {
             {
                 label: '告警数',
                 value: "告警数",
-                data: 1
+                data: 10
             },
             {
                 label: '并网量',
                 value: "并网量",
-                data: 10
+                data: '323.07kWh'
             },
-            {
-                label: '电网买电量',
-                value: "电网买电量",
-                data: 0
-            },
+            // {
+            //     label: '电网买电量',
+            //     value: "电网买电量",
+            //     data: 0
+            // },
             {
                 label: '光伏发电量',
                 value: "光伏发电量",
-                data: 0
+                data: '363kWh'
             },
             {
                 label: '充电桩充电量',
                 value: "充电桩充电量",
-                data: 0
+                data: '263kWh'
             },
             {
                 label: '储能总充电量',
                 value: "储能总充电量",
-                data: 0
+                data: '6340kWh'
             },
             {
                 label: '储能总放电量',
                 value: "储能总放电量",
-                data: 0
+                data: '5769.4kWh'
             },
             {
                 label: '储能总充电次数',
                 value: "储能总充电次数",
-                data: 0
+                data: 12
             },
             {
                 label: '储能充放电效率',
                 value: "储能充放电效率",
-                data: 0
+                data: '96.08%'
             },
         ]
     },

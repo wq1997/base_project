@@ -11,6 +11,7 @@ export default {
     effects: {
       *changeTheme({ payload }, { call, put }) {
         const { theme } = payload;
+        setLocalStorage('theme',theme);
         yield put({
             type: 'updateState',
             payload:{

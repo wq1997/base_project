@@ -4,69 +4,156 @@ import styles from './index.less'
 import StatusStatistics from "./components/statusStatistics";
 import ListofChargingStations from './components/listofChargingStations';
 import { theme } from "antd";
+import { useSelector, useIntl } from "umi";
+import DC from '../../../assets/svg/DCpiles.svg'
+import AC from '../../../assets/svg/ACpiles.svg'
+import {  getChargeStationStatus } from '@/services/deviceTotal'
 
 function Com(props) {
     const { token } = theme.useToken();
-
-    const dataOfCharges=[
+    const intl = useIntl();
+    const t = (id) => {
+        const msg = intl.formatMessage(
+            {
+                id,
+            },
+        );
+        return msg
+    }
+    const [dataOfAcCharges,setDataOfAcCharges] =useState([
         {
-        name:'充电中',
-        key:'charging',
-        value:'1/10'
-    },
-    {
-        name:'已插枪',
-        key:'inserted',
-        value:'1/10'
-    },
-    {
-        name:'空闲中',
-        key:'Idle',
-        value:'1/10'
-    },
-    {
-        name:'故障中',
-        key:'Failing',
-        value:'1/10'
-    },
-    {
-        name:'日充电量',
-        key:'dailyCharge',
-        value:'1/10'
-    },
-]
+            name: '充电中',
+            key: 'acChargeTotal',
+            value: '',
+            unit:''
+
+        },
+        {
+            name: '已插枪',
+            key: 'acPlugGunTotal',
+            value: '',
+            unit:''
+
+        },
+        {
+            name: '空闲中',
+            key: 'acFreeTotal',
+            value: '',
+            unit:''
+
+        },
+        {
+            name: '故障中',
+            key: 'acFaultTotal',
+            value: '',
+            unit:''
+
+        },
+        {
+            name: '日充电量',
+            key: 'acChargeEnergyTotal',
+            value: '',
+            unit:''
+
+        },
+    ]); 
+    const [dataOfDcCharges,setDataOfDcCharges] =useState([
+        {
+            name: '充电中',
+            key: 'dcChargeTotal',
+            value: '',
+            unit:''
+
+        },
+        {
+            name: '已插枪',
+            key: 'dcPlugGunTotal',
+            value: '',
+            unit:''
+
+        },
+        {
+            name: '空闲中',
+            key: 'dcFreeTotal',
+            value: '',
+            unit:''
+
+        },
+        {
+            name: '故障中',
+            key: 'dcFaultTotal',
+            value: '',
+            unit:''
+        },
+        {
+            name: '日充电量',
+            key: 'dcChargeEnergyTotal',
+            value: '',
+            unit:'kWh'
+        },
+    ]);
+
+    useEffect(() => {
+        getChargeStationStatusData();
+    }, [])
+    const getChargeStationStatusData = async () => {
+        let { data } = await getChargeStationStatus({
+            plantId: localStorage.getItem('plantId'),
+        });
+        dataOfAcCharges.map((it,i) => {
+            it.value = data?.data[it.key];
+            it.unit=i===4?'kWh':`/${data?.data['acTotal']}`
+        });
+        dataOfDcCharges.map((it,i) => {
+            it.value = data?.data[it.key];
+            it.unit=i===4?'kWh':`/${data?.data['dcTotal']}`
+        });
+        setDataOfAcCharges([...dataOfAcCharges]);
+        setDataOfDcCharges([...dataOfDcCharges]);
+
+    }
     return (
         <div className={styles.contents}>
-           <div className={styles.chargStaus}><StatusStatistics/></div>
-           <div className={styles.chargTypesDirect} style={{backgroundColor:token.titleCardBgc,color:token.smallTitleColor}}>
-            <div className={styles.leftImage}></div>
-            <div className={styles.rightData}>
-                {dataOfCharges.map(it=>{
-                    return(
-                        <div className={styles.chargingItems}>
-                            <span>{it.name}</span>
-                            <span>:</span>
-                            <span>{it.value}</span>
-                        </div>
-                    )
-                })}
+            <div className={styles.chargStaus}><StatusStatistics /></div>
+            <div className={styles.chargTypesDirect} style={{ backgroundColor: token.titleCardBgc, color: token.smallTitleColor }}>
+                <div className={styles.leftImage}>
+                    <img src={DC} alt="" />
+                    <div>{t('直流桩')}</div>
+                </div>
+                <div className={styles.rightData}>
+                    {dataOfDcCharges.map(it => {
+                        return (
+                            <div className={styles.chargingItems}>
+                                <span>{t(it.name)}</span>
+                                <span style={{ marginLeft:'10px',marginRight:'25px'}}>:</span>
+                                <span>{it.value}</span>
+                                <span>{it.unit}</span>
+
+                            </div>
+                        )
+                    })}
+                </div>
             </div>
-           </div>
-           <div className={styles.chargTypesAlternating } style={{backgroundColor:token.titleCardBgc,color:token.smallTitleColor}}>
-           <div className={styles.leftImage}></div>
-            <div className={styles.rightData}>
-            {dataOfCharges.map(it=>{
-                    return(
-                        <div className={styles.chargingItems}>
-                            <span>{it.name}</span>
-                            <span>:</span>
-                            <span>{it.value}</span>
-                        </div>
-                    )
-                })}
+            <div className={styles.chargTypesAlternating} style={{ backgroundColor: token.titleCardBgc, color: token.smallTitleColor }}>
+                <div className={styles.leftImage}>
+                    <img src={AC} alt="" />
+                    <div>{t('交流桩')}</div>
+                </div>
+                <div className={styles.rightData}>
+                    {dataOfAcCharges.map(it => {
+                        return (
+                            <div className={styles.chargingItems}>
+                                <span>{t(it.name)}</span>
+                                <span style={{ marginLeft:'10px',marginRight:'25px'}}>:</span>
+                                <span>{it.value}</span>
+                                <span>{it.unit}</span>
+
+                            </div>
+                        )
+                    })}
+                </div>
             </div>
-           </div>
-           <div className={styles.listOfCharg}><ListofChargingStations/></div>
+            <div className={styles.listOfCharg}><ListofChargingStations /></div>
         </div>
     )
 }

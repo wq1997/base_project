@@ -103,7 +103,7 @@ export const getPvRunMetrics = (payload) => {
 
 // 获取光伏发电量
 export const pvPowerGeneration = (payload) => {
-    return axiosInstance.post(`${path}/pv/pvPowerGeneration`, payload);
+    return axiosInstance.get(`${path}/pv/pvPowerGeneration?plantId=${payload.plantId}` );
 }
 
 // 获取微网bms高级分析 初始化数据类型
@@ -135,3 +135,24 @@ export const obtainMeterParameterData = (payload) => {
     return axiosInstance.post(`/meter/obtainMeterParameterData`, payload);
 }
 
+
+// 户外柜实时数据
+export const liveSummary = (payload) => {
+    return axiosInstance.get(`minsys/outdoorCabinet/liveSummary?dtuId=${payload.id}`);
+}
+
+
+// 获取充电桩收益、电量
+export const getChargeStationEarning = (payload) => {
+    return axiosInstance.get(`/microgrid/chargeStation/getChargeStationEarning?plantId=${payload.plantId}`);
+}
+
+// 获取充电桩统计状态
+export const getChargeStationStatus = (payload) => {
+    return axiosInstance.get(`/microgrid/chargeStation/getChargeStationStatus?plantId=${payload.plantId}`);
+}
+
+// 获取充电桩列表
+export const getChargeStationList = (payload) => {
+    return axiosInstance.get(`/microgrid/chargeStation/getChargeStationList?plantId=${payload.plantId}`);
+}

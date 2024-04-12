@@ -32,7 +32,7 @@ const Strategy = ({date,setDate}) => {
     const [eventInitValue, setEventInitValue] = useState(DefaultEventInitValue);
     useEffect(() => {
         const calendarApi = fullCalendarRef.current.getApi();
-        console.log(dayjs(date).format('YYYY-MM-DD'));
+        // console.log(dayjs(date).format('YYYY-MM-DD'));
         if (typeof date==='object') {
         calendarApi.gotoDate(dayjs(date).format('YYYY-MM-DD'))
         }
@@ -174,7 +174,7 @@ const Strategy = ({date,setDate}) => {
         });
     }
     const handleEventClick = (clickInfo) => {
-        if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+        if (confirm(`是否确定删除'${clickInfo.event.title}'`)) {
             clickInfo.event.remove()
         }
     }

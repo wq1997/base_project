@@ -13,13 +13,13 @@
     height: 100%;
     display: grid;
     grid-auto-columns: 1fr;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr ;
     grid-template-rows: 1fr 70px 1fr;
     gap: 1px 20px;
     grid-template-areas:
-        "heapRealTimeData heapRealTimeData heapRealTimeData operationalStatus operationalStatus"
-        "clusterSearch clusterSearch clusterSearch clusterSearch clusterSearch"
-        "clusterRealTimeData clusterRealTimeData clusterRealTimeData clusterOperationalStatus clusterOperationalStatus";
+        "heapRealTimeData heapRealTimeData heapRealTimeData "
+        "clusterSearch clusterSearch clusterSearch "
+        "clusterRealTimeData clusterRealTimeData clusterRealTimeData";
 
         .content{
             height: 100%;
@@ -29,6 +29,7 @@
             grid-template-columns:1fr 1fr 1fr 1fr;
             .item{
                 // margin-bottom: 18px;
+                padding: 8px 8px;
                 .itemKeys{
                     // font-family: PingFangSemiblod;
                     margin-right: 5px;
@@ -130,7 +131,7 @@
         width: 100%;
         height: calc(100% - 100px);
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns:repeat(auto-fill,100%);
         gap: 8px;
         .packSingle{
             width: 100%;
@@ -141,31 +142,43 @@
                 width: 100%;
                 height: calc(100% - 30px) ;
                 padding-right: 10px;
-                padding-bottom: 10px;
+                padding-bottom: 64px;
+                padding-top: 16px;
+                position: relative;
+                display: flex;
                 .packCell{
+                    width: 100%;
                     display: grid;
-                    grid-template-columns:repeat(auto-fill, 70px);
+                    grid-template-columns:repeat(12,  1fr);
+                    // grid-template-rows:repeat(auto-fill,  169px);
+
+                    // gap: 35px;
                     .cellSingel{
-                        height: 80px;
                         position: relative;
                         img{
                             position: absolute;
-                            bottom: 5px;
-                            left: 20px;
+                            bottom: calc(18% + 3px) ;
+                            left: 23%;
                         }
                         .cellVol{
-                            font-size: 16px;
-                            margin-top: 20px;
+                            margin-top: 12%;
                             text-align: center;
                             padding-left: 8px;
+                        }
+                        .cellTmp{
+                            position: absolute;
+                            bottom: 15% ;
+                            right: 25%;
                         }
                     }
                 }
               .packFoot{
-                width: 100%;
                 padding: 16px 16px;
+                position: absolute;
+                bottom: 10px;
                 display: flex;
-                justify-content: space-between;
+                right:0;
+
                 >div{
                 display: flex;
                 align-items: center;
@@ -178,18 +191,42 @@
                 }
                 .footTitle{
                     font-size: 16px;
-                    margin-right: 10px;
+                    margin-right: 20px;
                 }
                 .singelAttribute{
                     margin-right: 10px;
                     font-size: 14px;
                 }
-                .single{
-                    width: 50%;
+                .single:first-of-type{
+                    margin-right: 64px;
                 }
               }
               
             }
         }
+    }
+    @media screen and (min-width: 2000px) {
+        .cellSingel{
+            height: 110px;
+            font-size: 22px;
+        }
+       
+    }
+    
+    @media screen and (min-width: 1000px) and (max-width: 2000px) {
+        .cellSingel{
+            height: 69px;
+            font-size: 16px;
+
+        }
+    }
+    
+    @media screen and (max-width: 1000px) {
+        .cellSingel{
+            height:  69px;
+            font-size: 14px;
+
+        }
+    
     }
 }

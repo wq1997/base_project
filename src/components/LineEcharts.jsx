@@ -8,7 +8,7 @@ function Com(props) {
     const [xxx, setXxx] = useState('')
 
     useEffect(() => {
-        console.log('函数组件来咯')
+        // console.log('函数组件来咯')
     }, [])
     const { token } = theme.useToken();
     const [options, setOptions] = useState({});
@@ -51,7 +51,8 @@ function Com(props) {
             series: [
                 {
                     name:props.name,
-                    type:'line',
+                    type:'bar',
+                    barMaxWidth: props.barMaxWidth || '10%',
                     stack: '总量',
                     symbol:'circle',
                     symbolSize: 8,

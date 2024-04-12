@@ -5,14 +5,10 @@ import { CardModel } from "@/components";
 import { theme, Select } from "antd";
 import styles from './index.less'
 import { useSelector, useIntl } from "umi";
-import { getBmsNowData, getBmcNowData } from '@/services/deviceTotal'
-const { Option } = Select;
+import {runOutData} from '@/utils/constants'
+import { liveSummary } from '@/services/deviceTotal'
 function Com({ id }) {
     const [data, setData] = useState('');
-    const [dataBmc, setDataBmc] = useState([]);
-    const [option, setOption] = useState([])
-    const [currentClu, setCurrentClu] = useState(0);
-    const activitesRef = useRef([]);
     const { token } = theme.useToken();
     const intl = useIntl();
     const t = (id) => {
@@ -27,108 +23,53 @@ function Com({ id }) {
         getData();
     }, [id])
 
-    useEffect(() => {
-        getBmcData();
-    }, [id,currentClu])
     const getData = async () => {
-        let { data } = await getBmsNowData({ id })
-        setData(data?.data);
-        getOption(data.data?.clusters);
+        let { data } = await liveSummary({ id });
+        dealData(runOutData,data?.data)
     }
-    const getOption = (data) => {
-        let arr = [];
-        data?.map(it => {
-            arr.push({
-                value: it,
-                label: `${it + 1}#${t('电池簇')}`,
-                key: it
-            })
-        })
-        setOption([...arr]);
-        activitesRef.current = arr;
+    const dealData = (modelData, data) => {
+        let arr=[];
+        modelData.forEach(item => {
+            item.value.forEach(
+                it =>
+                (it.value = data[item.selectKey].hasOwnProperty(it.key)
+                    ? data[item.selectKey][it.key]
+                    : "")
+            );
+            // console.log(item,2112112);
+            arr?.push(item);
+        });
+      setData(arr);
+    }
 
-    }
-    const changeCluster = (value) => {
-        setCurrentClu(value)
-    }
-    const getBmcData=async()=>{
-        let { data } = await getBmcNowData({ id,cluster:currentClu });
-        console.log(data);
-        setDataBmc(data?.data)
-    }
+
+
     return (
         <div className={styles.detailsWrap} >
-            <div className={styles.heapRealTimeData}>
-                <CardModel
-                    title={t('运行数据')}
-                    content={
-                        <div className={styles.content} style={{ backgroundColor: token.lightTreeBgc }}>
-                            {data?.data && Object.keys(data?.data)?.map((it, index) => {
-                                return (
-                                    <div className={styles.item}>
-                                        <span className={styles.itemKeys}>{it}:</span>
-                                        <span className={styles.itemValues}>{data?.data[it]}</span>
-                                    </div>
-                                )
-                            })}
-                        </div>
-                    }
-                />
-            </div>
-            <div className={styles.operationalStatus}>
-
-                <CardModel
-                    title={t('运行状态')}
-                    content={
-                        <>
-
-
-                        </>
-                    }
-                />
-            </div>
-
-            <div className={styles.clusterSearch}>
-                <Select
-                    style={{ width: 240 }}
-                    onChange={changeCluster}
-                    key={activitesRef.current[0]?.value}
-                    defaultValue={activitesRef.current[0]?.value}
-                >
-                    {activitesRef.current && activitesRef.current.map(item => {
-                        return (<Option key={item.value} value={item.value}>{item.label}</Option>);
-                    })
-                    }
-                </Select>
-
-            </div>
-            <div className={styles.clusterRealTimeData}>
-                <CardModel
-                    title={t('运行数据')}
-                    content={
-                        <div className={styles.content} style={{ backgroundColor: token.lightTreeBgc }}>
-                            {dataBmc?.data && Object.keys(dataBmc?.data)?.map((it, index) => {
-                                return (
-                                    <div className={styles.item}>
-                                        <span className={styles.itemKeys}>{it}:</span>
-                                        <span className={styles.itemValues}>{dataBmc?.data[it]}</span>
-                                    </div>
-                                )
-                            })}
-                        </div>
-                    }
-                />
-
-            </div>
-            <div className={styles.clusterOperationalStatus}>
-                <CardModel
-                    title={t('运行状态')}
-                    content={
-                        <></>
-                    }
-                />
-
-            </div>
+            {
+                data&&data?.map(item=>{
+                    return(
+                        <div className={styles.heapRealTimeData}>
+                        <CardModel
+                            title={t(item.title)}
+                            content={
+                                <div className={styles.content} style={{ backgroundColor: token.lightTreeBgc }}>
+                                    {item?.value && item?.value?.map((it, index) => {
+                                        return (
+                                            <div className={styles.item}>
+                                                <span className={styles.itemKeys}>{it?.name}:</span>
+                                                <span className={styles.itemValues}>{it?.value}</span>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                            }
+                        />
+                    </div>
+                    )
+                })
+            }
+        
 
         </div>
     )

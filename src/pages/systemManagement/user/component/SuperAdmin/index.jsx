@@ -27,14 +27,14 @@ const RealtimeAlarm = () => {
     return msg
   }
   const alarmLevel = [{
-    label: 'User',
+    label: '普通用户',
     value: '1',
-    key: 'User',
+    key: '普通用户',
   },
   {
-    label: 'Admin',
-    value: '4',
-    key: 'Admin',
+    label: '管理员',
+    value: '3',
+    key: '管理员',
   },
 
   ]

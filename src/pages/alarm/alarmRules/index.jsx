@@ -39,34 +39,45 @@ function Com(props) {
             title: t('告警等级'),
             dataIndex: 'prior',
             key: 'prior',
+            align:'center',
+
+
         },
         {
             title: t('推送方式'),
             dataIndex: 'pushType',
             key: 'pushType',
+            align:'center',
+
         },
         {
             title: t('每小时推送上限'),
             dataIndex: 'initNum',
             key: 'initNum',
+            align:'center',
+
         },
         {
             title: t('状态'),
             dataIndex: 'status',
             key: 'status',
-            width: 200
+            width: 200,
+            align:'center',
 
         },
         {
             title: t('接收人'),
             dataIndex: 'userName',
             key: 'userName',
+            align:'center',
+
             // width: 200
         },
         {
             title: t('操作'),
             dataIndex: 'operation',
             key: 'operation',
+            align:'center',
             render: (text, record) => {
                 return (
                     <Space>

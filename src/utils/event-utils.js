@@ -5,8 +5,10 @@ let todayStr = new Date().toISOString().replace(/T.*$/, '') // YYYY-MM-DD of tod
 export const INITIAL_EVENTS = [
   {
     id: createEventId(),
-    title: 'All-day event',
-    start: todayStr
+    title: '默认策略1',
+    start: todayStr,
+    end:'2024-04-30',
+    color:'#03b4b4'
   },
   {
     id: createEventId(),

@@ -1,7 +1,7 @@
 import { ScorllTable } from "@/components";
 import { useState, useEffect } from "react";
 import { getLatestAlarmsServe } from "@/services/bigScreen";
-
+import dayjs from "dayjs";
 const RealtimeAlarm = () => {
     const [dataSource, setDataSource] = useState([]);
     const columns = [
@@ -27,22 +27,27 @@ const RealtimeAlarm = () => {
         },
         {
             title: '开始时间',
-            key: 'begin'
+            key: 'begin',
         },
     ]
 
     const getList = async () => {
         const res = await getLatestAlarmsServe();
-        if(res?.data?.data){
-            setDataSource(res?.data?.data);
+        if (res?.data?.data) {
+            let arr = [];
+            res?.data?.data.map(it => {
+                it.begin = dayjs(it.begin).format('YYYY-MM-DD HH:mm:ss');
+                arr.push(it);
+            })
+            setDataSource(arr);
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         getList();
     }, [])
     return (
-        <ScorllTable 
+        <ScorllTable
             showHeadLine={false}
             headBackground="#20284D"
             tableContentRowStyle={{

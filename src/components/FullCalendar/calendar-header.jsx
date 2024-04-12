@@ -5,9 +5,21 @@ import styles from './index.less'
 import { Iconify } from '@/components';
 import { useResponsive } from '@/hooks/use-reponsive';
 import NewStrategy from './newStrategy';
+import { useSelector, useIntl } from "umi";
+import { theme } from "antd";
 
 export default function CalendarHeader({ now, view, onMove, onCreate, onViewTypeChange }) {
   const { screenMap } = useResponsive();
+  const { token } = theme.useToken();
+  const intl = useIntl();
+  const t = (id) => {
+      const msg = intl.formatMessage(
+          {
+              id,
+          },
+      );
+      return msg
+  }
   const items = useMemo(
     () => [
       {
@@ -40,7 +52,7 @@ export default function CalendarHeader({ now, view, onMove, onCreate, onViewType
     <div className={styles.wrapHeard}>
       <div className={styles.leftGrop}>
         <Button type="primary" onClick={() => onMove('today')}>
-          今天
+          {t('今天')}
         </Button>
         <Radio.Group  className={styles.tabButton}>
           <Radio.Button value='prev' onClick={() => onMove('prev')}>
@@ -50,13 +62,13 @@ export default function CalendarHeader({ now, view, onMove, onCreate, onViewType
             <Iconify icon="solar:alt-arrow-right-outline" size={20} />
           </Radio.Button>
         </Radio.Group>
-        <span className={styles.timeNow}>{dayjs(now).format('YYYY MMM DD')}</span>
+        <span className={styles.timeNow} style={{color:token.titleColor}}>{dayjs(now).format('YYYY MM DD')}</span>
       </div>
 
       <div className={styles.rightGroup}>
         <NewStrategy />
         <Button className={styles.centerButton} type="primary" onClick={() => onCreate()}>
-          创建策略执行日程                
+        {t('创建策略执行日程')}               
         </Button>
         {screenMap.lg && (
           <Radio.Group value={view} onChange={handleMenuClick}>

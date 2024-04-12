@@ -34,16 +34,16 @@ function Com(props) {
     }, [date]);
     const getData=async()=>{
         let {data} = await pvPowerGeneration({
-            type:0,
+            // type:0,
             plantId:currentPlantId||localStorage.getItem('plantId'),
-            valueType:2,
-            startTime:date.format('YYYY-MM-DD'),
-            endTime:date.format('YYYY-MM-DD'),
+            // valueType:2,
+            // time:date.format('YYYY-MM-DD'),
+            // endTime:date.format('YYYY-MM-DD'),
         });
         let dataX=[];
         let dataY=[];
         data.data?.map(it=>{
-            dataX.push(dayjs(it.date).format('HH:mm'));
+            dataX.push(dayjs(it.date).format('YYYY-MM-DD'));
             dataY.push(it.dayOutEnergy);
         });
         setOptions({
@@ -72,7 +72,7 @@ function Com(props) {
                 {
                     type: 'value',
                     axisLabel: {
-                        formatter: '{value} kWh'
+                        formatter: '{value}'
                     },
 
                 }
@@ -81,6 +81,7 @@ function Com(props) {
                 {
                     name: t('发电量'),
                     type: 'bar',
+                    barMaxWidth:'20%',
                     itemStyle: {
                         normal: {
                             color: token.colorPrimary
@@ -96,11 +97,9 @@ function Com(props) {
         <div className={styles.content}>
             <CardModel
                 title={
-                    t("发电量统计")
+                    t("发电量统计")+'(kWh)'
                 }
-                filterPart={
-                    <DatePicker onChange={onChange} defaultValue={date}/>
-                }
+      
                 content={
                     <ReactECharts option={options} style={{height: '100%'}}  />
                 }

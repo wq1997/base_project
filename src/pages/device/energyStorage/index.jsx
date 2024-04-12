@@ -39,6 +39,7 @@ const getType = (father, child) => {
                 return 'OutPart';
         }
         // return child?.parentId ? 'OutPart' : 'Meter'
+
     }
 }
 const getTreeData = (data, treeData) => {
@@ -58,7 +59,7 @@ const getTreeData = (data, treeData) => {
                 title: it.name,
                 id: it.id,
                 key: `0-${index}`,
-                type: it.type,
+                type: it.type||it?.deviceTypeId,
                 children: [
                     ...arr
                 ]
@@ -68,7 +69,7 @@ const getTreeData = (data, treeData) => {
                 title: it.name,
                 id: it.id,
                 key: `0-${index}`,
-                type: it.type,
+                type: it.type||it?.deviceTypeId,
                 children: [
                     ...arr
                 ]
@@ -78,6 +79,7 @@ const getTreeData = (data, treeData) => {
     })
     defaultData = [...oringal];
 }
+
 const dataList = [];
 const generateList = (data) => {
     for (let i = 0; i < data.length; i++) {
@@ -141,6 +143,7 @@ function Com(props) {
         generateList(defaultData);
         setdefaultDataFlag(!defaultDataFlag);
     },[tree])
+
     useEffect(() => {
         const newExpandedKeys = dataList?.map((item) => {
             if (item.key.indexOf(getQueryString("PageKey")) > -1) {
@@ -218,7 +221,7 @@ function Com(props) {
             case 3:
                 return <Overview  />;
             case 9:
-                return <ViewOutdoor />
+                return <ViewOutdoor />;
             default:
                 return <Overview />
         }

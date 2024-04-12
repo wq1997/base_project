@@ -72,7 +72,7 @@ function Com(props) {
             key: 'installDate',
             width: 200,
             render: (val) => {
-                return val ? dayjs(val).format('YYYY-MM-DD HH:mm:ss') : ''
+                return val ? dayjs(val).format('YYYY-MM-DD ') : ''
             }
         },
         {
@@ -80,7 +80,7 @@ function Com(props) {
             dataIndex: 'networkDate',
             key: 'networkDate',
             render: (val) => {
-                return val ? dayjs(val).format('YYYY-MM-DD HH:mm:ss') : ''
+                return val ? dayjs(val).format('YYYY-MM-DD ') : ''
             }
         },
         {
@@ -108,7 +108,7 @@ function Com(props) {
             // width: 200
         },
         {
-            title: t('充电桩数量'),
+            title: t('充电桩装机容量'),
             dataIndex: 'chargePileTotal',
             key: 'chargePileTotal',
             // width: 200
@@ -185,7 +185,7 @@ function Com(props) {
             // timeZone:1,
             // priceUnit:1,
             networkDate: dayjs(record?.networkDate),
-            installDate: dayjs(record?.installDate),
+            installDate: dayjs(record?.installDate)
         });
         setTitle('编辑电站');
         setSelectId(record.plantId)

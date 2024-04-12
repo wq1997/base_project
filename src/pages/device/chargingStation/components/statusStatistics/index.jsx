@@ -14,19 +14,16 @@ import {
     SettingOutlined,
 
 } from '@ant-design/icons';
+import { getChargeStationEarning, } from '@/services/deviceTotal'
 
 function Com(props) {
-    const [xxx, setXxx] = useState('')
     var  colorList=['#528AEB', '#F3CE55', '#03B4B4',];
-    useEffect(() => {
-        console.log('函数组件来咯')
-    }, [])
     const { token } = theme.useToken();
     const [options, setOptions] = useState({});
     const getOptions = () => {
         setOptions({
             title: {
-                text: '80',
+                text: '8',
                 subtext: '充电桩总数',
                 x: 'center',
                 y: 'center',
@@ -119,67 +116,87 @@ function Com(props) {
                             }
                         },
                     data: [
-                      { value: 50, name: '空闲充电桩' },
-                      { value: 25, name: '占用充电桩' },
-                      { value: 25, name: '故障充电桩' },
+                      { value: 3, name: '空闲充电桩' },
+                      { value: 4, name: '占用充电桩' },
+                      { value: 1, name: '故障充电桩' },
                     ]
                   }
             ]
           });
     };
-    const cardData = [
+    const [cardData,setcardData] = useState([
         {
             icon: <MonitorOutlined />,
             name: "日充电收益",
+            key:'dayEarning',
             color: '#03B4B4',
-            value: '998',
-            unit: 'kWh'
+            value: '',
+            unit: '元'
         },
         {
             icon: <ThunderboltOutlined />,
             name: "日总充电量",
-            color: '#FF7300',
-            value: '1000',
-            unit: 'kWh'
-        },
-        {
-            icon: <DisconnectOutlined />,
-            name: "月总充电量",
-            color: '#6F2BF1',
-            value: '9999',
-            unit: 'kWh'
-        },
-        {
-            icon: <SettingOutlined />,
-            name: "月充电收益",
-            color: '#FFC600',
-            value: '99981',
+            key:'dayCharge',
+            value: '',
             unit: 'kWh'
         },
         {
             icon: <CalendarOutlined />,
             name: "日总用电量",
+            key:'dayElectricity',
             color: '#0095FF',
-            value: '10',
+            value: '',
             unit: 'kWh'
         },
         {
+            icon: <SettingOutlined />,
+            name: "月充电收益",
+            key:'monthEarning',
+
+            color: '#FFC600',
+            value: '',
+            unit: '元'
+        },
+        {
+            icon: <DisconnectOutlined />,
+            name: "月总充电量",
+            key:'monthCharge',
+
+            color: '#6F2BF1',
+            value: '',
+            unit: 'kWh'
+        },
+        
+        
+        {
             icon: <DatabaseOutlined />,
             name: "月总用电量",
+            key:'monthElectricity',
+
             color: '#03B4B4',
-            value: '9999',
+            value: '',
             unit: 'kWh'
         },
 
-    ]
+    ]);
     useEffect(() => {
         getOptions();
+        getData();
     }, [token]);
+    const getData=async()=>{
+        let {data}=await getChargeStationEarning({
+            plantId:localStorage.getItem('plantId'),
+        });
+        cardData.map(it=>{
+            it.value=data.data[it.key];
+        });
+        setcardData([...cardData])
+    }
     return (
         <div className={styles.content}>
             <CardModel
              title={
-                "实时功率"
+                "充电桩状态统计"
             }
                 content={
                     <div className={styles.wrap}>
@@ -205,7 +222,6 @@ function Com(props) {
                     </div>
                 }
             />
-
         </div>
     )
 }

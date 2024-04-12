@@ -8,14 +8,13 @@ import * as echarts from "echarts";
 import { CardModel } from "@/components";
 import dayjs from 'dayjs';
 import { useSelector, useIntl } from "umi";
-import { BmsDataType, BmcDataType } from '@/utils/constants'
 import { getMeterMonitorInitData, obtainMeterParameterData } from '@/services/deviceTotal'
 import { getQueryString } from "@/utils/utils";
 
 const { Option } = Select;
 function Com({ id }) {
     const { token } = theme.useToken();
-    const [type, setType] = useState(BmsDataType[0].value);
+    const [type, setType] = useState(310);
     const [dataOption, setDataOption] = useState([]);
     const [optionEchart, setOptionEchart] = useState({})
     const [goalId, setGoalId] = useState(id);
@@ -39,9 +38,6 @@ function Com({ id }) {
     }, [token]);
     useEffect(() => {
         getInitData()
-        // .then(() => {
-        //     getEchartsData(id);
-        // });
     }, [id])
     const getInitData = async () => {
         let { data } = await getMeterMonitorInitData();
@@ -59,14 +55,16 @@ function Com({ id }) {
         let dataX = []
         let nowY = [];
         let toY = [];
-        data.nowDay?.map(it => {
-            dataX.push(dayjs(it.time).format('HH:mm:ss'));
+        data.data?.nowDay?.map(it => {
+            dataX.push(dayjs(it.time).format('HH:mm'));
             nowY.push(it.value);
         })
-        data.today?.map(it => {
-            dataX.push(dayjs(it.time).format('HH:mm:ss'));
+        dataX.length===0? data.data?.today?.map(it => {
             toY.push(it.value);
-        })
+            dataX.push(dayjs(it.time).format('HH:mm'));
+        }):data.data?.today?.map(it => {
+            toY.push(it.value);
+        });
         setOptionEchart({
             tooltip: {
                 trigger: 'axis',
@@ -75,7 +73,10 @@ function Com({ id }) {
                 }
             },
             legend: {
-                data: [`今日${title}`, `${date.format('YYYY-MM-DD')}${title}`]
+                data: [`今日${title}`, `${date.format('YYYY-MM-DD')}${title}`],
+                textStyle: {
+                    color:token.smallTitleColor,
+                }
             },
             grid: {
                 left: '3%',
@@ -96,7 +97,7 @@ function Com({ id }) {
                 {
                     type: 'value',
                     axisLabel: {
-                        formatter: '{value} kW'
+                        formatter: '{value} kWh'
                     },
 
                 }
@@ -169,7 +170,6 @@ function Com({ id }) {
         setType(val[1])
         setTitle(selectedOptions[1]?.label);
     }
-    
     return (
         <div className={styles.monitoringCurves}>
             <div className={styles.searchHead}>

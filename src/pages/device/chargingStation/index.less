@@ -14,7 +14,15 @@
       .leftImage{
         width:  calc(50% ) ;
         height: calc(100% ) ;
+        display: flex ;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        div{
+          margin-top: 20px;
+        }
     }
+
     .rightData{
         width:  calc(50% ) ;
         height: calc(100%) ;
@@ -22,9 +30,9 @@
         flex-direction: column;
         justify-content: space-between;
         .chargingItems{
-            max-width: 110px;
+            max-width: 200px;
             display: flex;
-            justify-content: space-between;
+            align-self: start;
             span{
                 display: inline-block;
             }

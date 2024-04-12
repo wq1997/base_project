@@ -47,7 +47,7 @@ const theme = {
         cardShadow:'0px 2px 4px 0px rgba(224, 224, 224, 0.5)',
         titleCardBgc:'#fff',
         tableHead:'#E4E7F1',
-        barColor:['#03B4B4','#A3BCE7','#FCF1AF','#77E2AA','#FFCE8F','#59C0E9'],
+        barColor:['#03B4B4','#A3BCE7','#FCF1AF','#77E2AA','#FFCE8F','#59C0E9','#6A7DEE','#71B4F2'],
         treeBgb:'#E9EBF3',
         lightTreeBgc:'#F2F4F9',
         lightTreeLineBgc:'#E6E9F2',

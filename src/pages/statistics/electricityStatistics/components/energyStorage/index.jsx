@@ -54,15 +54,16 @@ function Com(props) {
                 {
                     type: 'value',
                     axisLabel: {
-                        formatter: '{value} kWh'
+                        formatter: '{value}'
                     },
 
                 }
             ],
             series: [
                 {
-                    name: '发电量',
+                    name: '充电电量',
                     type: 'bar',
+                    barMaxWidth:'20%',
                     itemStyle: {
                         normal: {
                             color: token.barColor[0]
@@ -72,8 +73,9 @@ function Com(props) {
                     data: dayIn
                 },
                 {
-                    name: '上网量',
+                    name: '放电电量',
                     type: 'bar',
+                    barMaxWidth:'20%',
                     itemStyle: {
                         normal: {
                             color: token.barColor[5]
@@ -99,7 +101,8 @@ function Com(props) {
         data?.data.map((it) => {
             arrIn.push(it.dayInEnergy);
             arrOut.push(it.dayOutEnergy);
-            arrX.push(it.date);
+            arrX.push(dayjs(it.date).format('YYYY-MM-DD'))
+
             if (it.dayInEnergy===0) {
                 arrEfit.push(0);
             }else{
@@ -113,92 +116,123 @@ function Com(props) {
         setData(data.data);
     }
     const profitTable = [
-        {
-            title: 'id',
-            dataIndex: 'idx',
-            key: 'idx',
-            width: 100,
-        },
-        {
-            title: '日期',
-            dataIndex: 'date',
-            key: 'date',
-            width: 100,
-        },
-        {
-            title: '充电量（kWh）',
-            className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
-            children: [
-                {
-                    title: '尖电',
-                    dataIndex: 'tipInEnergy',
-                    key: 'tipInEnergy',
-                    width: 150,
-                },
-                {
-                    title: '峰电',
-                    dataIndex: 'peakInEnergy',
-                    key: 'peakInEnergy',
-                    width: 150,
-                },
-                {
-                    title: '平电',
-                    dataIndex: 'flatInEnergy',
-                    key: 'flatInEnergy',
-                    width: 150,
-                },
-                {
-                    title: '谷电',
-                    dataIndex: 'valleyInEnergy',
-                    key: 'valleyInEnergy',
-                    width: 150,
-                },
-                {
-                    title: '总计',
-                    dataIndex: 'dayInEnergy',
-                    key: 'dayInEnergy',
-                    width: 150,
-                },
-            ],
-        },
-        {
-            title: '放电量（kWh）',
-            className: currentTheme === 'default' ? 'lightTitleColorLeft' : 'darkTitleColorLeft',
-            children: [
-                {
-                    title: '尖电',
-                    dataIndex: 'tipOutEnergy',
-                    key: 'tipOutEnergy',
-                    width: 150,
-                },
-                {
-                    title: '峰电',
-                    dataIndex: 'peakOutEnergy',
-                    key: 'peakOutEnergy',
-                    width: 150,
-                },
-                {
-                    title: '平电',
-                    dataIndex: 'flatOutEnergy',
-                    key: 'flatOutEnergy',
-                    width: 150,
-                },
-                {
-                    title: '谷电',
-                    dataIndex: 'valleyOutEnergy',
-                    key: 'valleyOutEnergy',
-                    width: 150,
-                },
-                {
-                    title: '总计',
-                    dataIndex: 'dayOutEnergy',
-                    key: 'dayOutEnergy',
-                    width: 150,
-                },
-
-            ],
-        },
-    ];
+        {  
+           title:'',
+           children:[ {
+               title: '序号',
+               dataIndex: 'id',
+               key: 'id',
+               width: 100,
+               className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+   
+               render: (text, record, index) => index + 1,
+           },
+   
+           {
+               title: '日期',
+               dataIndex: 'date',
+               key: 'date',
+               width: 100,
+               className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+   
+               render: (val) => {
+                   return val ? dayjs(val).format('YYYY-MM-DD') : ''
+               }
+           },
+       ]
+       },
+           {
+               title: '充电量（kWh）',
+               children: [
+                   {
+                       title: '尖电',
+                       dataIndex: 'tipInEnergy',
+                       key: 'tipInEnergy',
+                       width: 150,
+                       className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+   
+                   },
+                   {
+                       title: '峰电',
+                       dataIndex: 'peakInEnergy',
+                       key: 'peakInEnergy',
+                       width: 150,
+                       className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+   
+                   },
+                   {
+                       title: '平电',
+                       dataIndex: 'flatInEnergy',
+                       key: 'flatInEnergy',
+                       width: 150,
+                       className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+   
+                   },
+                   {
+                       title: '谷电',
+                       dataIndex: 'valleyInEnergy',
+                       key: 'valleyInEnergy',
+                       width: 150,
+                       className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+   
+                   },
+                   {
+                       title: '总计',
+                       dataIndex: 'dayInEnergy',
+                       key: 'dayInEnergy',
+                       width: 150,
+                       className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+   
+                   },
+               ],
+           },
+           {
+               title: '放电量（kWh）',
+               children: [
+                   {
+                       title: '尖电',
+                       dataIndex: 'tipOutEnergy',
+                       key: 'tipOutEnergy',
+                       width: 150,
+                       className: currentTheme === 'default' ? 'lightTitleColorLeft' : 'darkTitleColorLeft',
+   
+                   },
+                   {
+                       title: '峰电',
+                       dataIndex: 'peakOutEnergy',
+                       key: 'peakOutEnergy',
+                       width: 150,
+                       className: currentTheme === 'default' ? 'lightTitleColorLeft' : 'darkTitleColorLeft',
+   
+                   },
+                   {
+                       title: '平电',
+                       dataIndex: 'flatOutEnergy',
+                       key: 'flatOutEnergy',
+                       width: 150,
+                       className: currentTheme === 'default' ? 'lightTitleColorLeft' : 'darkTitleColorLeft',
+   
+                   },
+                   {
+                       title: '谷电',
+                       dataIndex: 'valleyOutEnergy',
+                       key: 'valleyOutEnergy',
+                       width: 150,
+                       className: currentTheme === 'default' ? 'lightTitleColorLeft' : 'darkTitleColorLeft',
+   
+                   },
+                   {
+                       title: '总计',
+                       dataIndex: 'dayOutEnergy',
+                       key: 'dayOutEnergy',
+                       width: 150,
+                       className: currentTheme === 'default' ? 'lightTitleColorLeft' : 'darkTitleColorLeft',
+   
+                   },
+   
+               ],
+           },
+       ];
     useEffect(() => {
         getOptions();
     }, [currentTheme, dayIn, dayOut, dateX]);
@@ -241,7 +275,7 @@ function Com(props) {
                 <div className={styles.leftEchart}>
                     <CardModel
                         title={
-                            "储能电量"
+                            "储能电量(kWh)"
                         }
                         content={
                             <ReactECharts option={options} style={{ height: '100%' }} />
@@ -256,7 +290,9 @@ function Com(props) {
                         content={
                             <LineEcharts name='充放电效率' style={{ height: '100%' }} 
                             xData={dateX}
-                            yData={efficiency} />
+                            yData={efficiency} 
+                            barMaxWidth={'20%'}
+                            />
 
                         }
                     />

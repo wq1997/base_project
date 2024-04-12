@@ -118,7 +118,7 @@ const OperationManage = () => {
                 title={<Title title="控制模式" />}
                 onOk={async ()=>{
                     const values = await form1.validateFields();
-                    console.log('控制模式', values);
+                    // console.log('控制模式', values);
                     setControlModeOpen(false);
                     form1.resetFields();
                 }}
@@ -149,7 +149,7 @@ const OperationManage = () => {
                 title={<Title title={powerOffOpen?'PCS总关机':"PCS总开机"} />}
                 onOk={async ()=>{
                     const values = await form2.validateFields();
-                    console.log('总关机|总开机', values);
+                    // console.log('总关机|总开机', values);
                     setPowerOffOpen(false);
                     setPowerOnOpen(false);
                     form2.resetFields();
@@ -175,7 +175,7 @@ const OperationManage = () => {
                 title={<Title title={"总功率设置"} />}
                 onOk={async ()=>{
                     const values = await form3.validateFields();
-                    console.log('总功率设置', values);
+                    // console.log('总功率设置', values);
                     setPowerSettingOpen(false);
                     form3.resetFields();
                 }}
@@ -205,7 +205,7 @@ const OperationManage = () => {
                 title={<Title title={title} />}
                 onOk={async ()=>{
                     const values = await form4.validateFields();
-                    console.log('其他', values);
+                    // console.log('其他', values);
                     setOtherOpen(false);
                     form4.resetFields();
                 }}

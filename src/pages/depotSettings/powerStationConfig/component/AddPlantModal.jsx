@@ -64,19 +64,19 @@ const App = (props) => {
       required: false
     },
     {
-      label: '充电桩数量',
+      label: '充电桩装机容量',
       key: 'chargePileTotal',
       type: 2,
       required: false
     },
     {
-      label: '电芯温度最大值',
+      label: '运行温度上限',
       key: 'cellTempMax',
       type: 2,
       required: false
     },
     {
-      label: '电芯温度最小值',
+      label: '运行温度下限',
       key: 'cellTempMin',
       type: 2,
       required: false
@@ -103,7 +103,6 @@ const App = (props) => {
 
     },
   ]
-  console.log(props,1212122121);
   const intl = useIntl();
   const t = (id) => {
     const msg = intl.formatMessage(
@@ -114,7 +113,7 @@ const App = (props) => {
     return msg
   }
   useEffect(() => {
-    form.setFieldsValue(props?.formData)
+    form.setFieldsValue(props?.formData);
   }, [props.formData]);
   useEffect(() => {
     getInitSearchData();
@@ -128,13 +127,12 @@ const App = (props) => {
   const onFinish = async () => {
     try {
       const values = await form.validateFields();
-      console.log(values, 1111111);
       props.changeData({
         ...values,
         createUserId: values.userName,
         type: values.typeName,
-        installDate: values.installDate.format('YYYY-MM-DD HH:mm:ss'),
-        networkDate: values.networkDate.format('YYYY-MM-DD HH:mm:ss')
+        installDate: values.installDate.format('YYYY-MM-DD'),
+        networkDate: values.networkDate.format('YYYY-MM-DD')
       })
       props.onRef();
     } catch (errorInfo) {
@@ -205,7 +203,7 @@ const App = (props) => {
                 return (
                   <Col className="gutter-row" span={12}>
                     <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.required }]} >
-                      <DatePicker showTime style={{ width: '100%' }}  />
+                      <DatePicker showTime style={{ width: '100%' }} format={'YYYY-MM-DD'}  />
                     </Form.Item>
                   </Col>
                 )

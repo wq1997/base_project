@@ -8,7 +8,7 @@ import ReactECharts from "echarts-for-react";
 import { useSelector } from "umi";
 import { getEnergyFeeByTime } from '@/services/report'
 
-function Com({ typeNum }) {
+function Com({ typeNum, dataTable, dataYM,clum }) {
     const [mode, setMode] = useState('date');
     const { token } = theme.useToken();
     const [options, setOptions] = useState({});
@@ -42,7 +42,7 @@ function Com({ typeNum }) {
             xAxis: [
                 {
                     type: 'category',
-                    data: ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'],
+                    data: ['2024-04-01', '2024-04-02', '2024-04-03',],
                     axisTick: {
                         alignWithLabel: true
                     }
@@ -52,7 +52,7 @@ function Com({ typeNum }) {
                 {
                     type: 'value',
                     axisLabel: {
-                        formatter: '{value} kWh'
+                        formatter: '{value}'
                     },
 
                 }
@@ -61,111 +61,19 @@ function Com({ typeNum }) {
                 {
                     name: '发电量',
                     type: 'bar',
+                    barMaxWidth: '10%',
                     itemStyle: {
                         normal: {
                             color: token.colorPrimary
                         }
                     },
-                    barWidth: '60%',
-                    data: [0.8, 1.6, 0.4, 2.2, 0.8, 1.2, 1.5, 1.7, 1.6]
+                    // barWidth: '60%',
+                    data: dataYM
                 }
             ]
         });
     };
-    const profitTable = [
-        {
-            title: 'id',
-            dataIndex: 'id',
-            key: 'id',
-            width: 100,
-        },
-        {
-            title: '日期',
-            dataIndex: 'date',
-            key: 'date',
-            width: 100,
-        },
-        {
-            title: '充电成本（元）',
-            className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
-            children: [
-                {
-                    title: '尖电',
-                    dataIndex: 'street',
-                    key: 'street',
-                    width: 150,
-                },
-                {
-                    title: '峰电',
-                    dataIndex: 'street',
-                    key: 'street',
-                    width: 150,
-                },
-                {
-                    title: '平电',
-                    dataIndex: 'street',
-                    key: 'street',
-                    width: 150,
-                },
-                {
-                    title: '谷电',
-                    dataIndex: 'street',
-                    key: 'street',
-                    width: 150,
-                },
-                {
-                    title: '总计',
-                    dataIndex: 'street',
-                    key: 'street',
-                    width: 150,
-                },
-            ],
-        },
-        {
-            title: '放电收益（元）',
-            className: currentTheme === 'default' ? 'lightTitleColorLeft' : 'darkTitleColorLeft',
-            children: [
-                {
-                    title: '尖电',
-                    dataIndex: 'street',
-                    key: 'street',
-                    width: 150,
-                },
-                {
-                    title: '峰电',
-                    dataIndex: 'street',
-                    key: 'street',
-                    width: 150,
-                },
-                {
-                    title: '平电',
-                    dataIndex: 'street',
-                    key: 'street',
-                    width: 150,
-                },
-                {
-                    title: '谷电',
-                    dataIndex: 'street',
-                    key: 'street',
-                    width: 150,
-                },
-                {
-                    title: '总计',
-                    dataIndex: 'street',
-                    key: 'street',
-                    width: 150,
-                },
 
-            ],
-        },
-        {
-            title: '实际收益',
-            dataIndex: 'date',
-            key: 'date',
-            width: 100,
-        },
-
-    ];
     useEffect(() => {
         getOptions();
     }, [dateX, dataY, currentTheme,]);
@@ -234,7 +142,7 @@ function Com({ typeNum }) {
                 <div className={styles.leftEchart}>
                     <CardModel
                         title={
-                            "收益统计"
+                            "收益统计(元)"
                         }
                         content={
                             <ReactECharts option={options} style={{ height: '100%' }} />
@@ -265,8 +173,8 @@ function Com({ typeNum }) {
                     }
                     content={
                         <Table
-                            columns={profitTable}
-                            dataSource={data}
+                            columns={clum}
+                            dataSource={dataTable}
                             scroll={{
                                 y: scrollY,
                             }}

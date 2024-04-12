@@ -26,8 +26,7 @@ function Com(props) {
     const [optionEchartVol, setOptionEchartVol] = useState({})
     const [optionEchartVolBot, setOptionEchartVolBot] = useState({})
     const [optionEchartTemBot, setOptionEchartTemBot] = useState({});
-    const [dataVdiff, setDataVdiff] = useState([]);
-    const [dataTdiff, setDataTdiff] = useState([]);
+
 
     const intl = useIntl();
     const wayOption = [{
@@ -77,7 +76,7 @@ function Com(props) {
                 return
             }
         } else {
-            dataTypeList = packReq[1];
+            dataTypeList = [packReq[1]];
             dateList = dateStr;
             if (dateList.length > 3) {
                 message.warning('最多选择3个对比项');
@@ -162,10 +161,11 @@ function Com(props) {
                     type: 'shadow'
                 },
                 formatter: (params) => getToolTip(params, data, val),
-            }, legend: { ...baseOption.legend, data: series?.map(item => item.name) }, series: [...series]
+            }, legend: { ...baseOption.legend, data: series?.map(item => item.name),
+             }, series: [...series]
         });
     }
-    const changePack = (val) => {
+    const changePack = (val,la) => {
         setPackReq(val)
     }
     const changeWay = (val) => {
@@ -248,7 +248,7 @@ function Com(props) {
             itemWidth: 6,
             itemGap: 20,
             textStyle: {
-                color: '#556677'
+                color:token.smallTitleColor,
             }
         },
         xAxis: [
@@ -301,7 +301,7 @@ function Com(props) {
                     <Cascader
                         className={styles.margRL}
                         style={{ width: 240 }}
-                        onChange={(val) => changePack(val)}
+                        onChange={ changePack}
                         options={packList}
                         multiple={way === 1 ? true : false}
                         maxTagCount={1}
@@ -380,7 +380,7 @@ function Com(props) {
                 </div>
                 <div className={styles.echartPart}>
                     <CardModel
-                        title={t('电压') + ('V')}
+                        title={t('电压') + '(V)'}
                         content={
                             <div className={styles.echartPartCardwrap}>
                                 <ReactECharts layUpdate={false} notMerge={true} option={optionEchartVolBot} style={{ height: '100%' }} />

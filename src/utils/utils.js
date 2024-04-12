@@ -38,7 +38,7 @@ export const downloadFile = (data) => {
         window.navigator.msSaveOrOpenBlob(blob, link.download)
       } else {
         document.body.appendChild(link)
-        link.click()
+        link.click();
         document.body.removeChild(link)
       }
 }

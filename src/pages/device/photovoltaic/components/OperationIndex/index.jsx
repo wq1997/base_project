@@ -129,13 +129,13 @@ function Com(props) {
                         <div className={styles.topContent}>
                             {topData.map(it => {
                                 return (
-                                    <div className={styles.topItem} style={{ color: it.color,backgroundColor:token.cardBgc, boxShadow:token.cardShadow}}>
+                                    <div className={styles.topItem} style={{ color: it.color,backgroundColor:token.cardBgc, boxShadow: token.cardShadow}}>
                                         <div className={styles.topItemTitle}>
                                             {it.icon}
                                             <span style={{ color: token.smallTitleColor, fontWeight: 500, fontSize: '16px', marginLeft: '3px' }}>{t(it.name)}</span>
                                         </div>
                                         <Tooltip title={it.value} >
-                                        <div className={styles.topVaue} style={{color:token.titleColor}}>
+                                        <div className={styles.topVaue} style={{color:it.color}}>
                                             {it.value}
                                             <span style={{color: token.smallTitleColor, fontSize: '16px', fontWeight: 400, marginLeft: '10px' }}>{it.unit}</span>
                                         </div>

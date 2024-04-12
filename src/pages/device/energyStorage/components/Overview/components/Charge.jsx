@@ -51,7 +51,7 @@ function Com({ dataX, dataY }) {
 
                     axisLabel: {
                         interval: 0,
-                        rotate:0
+                        rotate: 0
                     }
                 }
             ],
@@ -59,7 +59,7 @@ function Com({ dataX, dataY }) {
                 {
                     type: 'value',
                     axisLabel: {
-                        formatter: '{value} kWh'
+                        formatter: '{value} '
                     },
 
                 }
@@ -69,24 +69,26 @@ function Com({ dataX, dataY }) {
                     name: t('放电量'),
                     // label: <FormattedMessage id='statistics.InternetPower' />,
                     type: 'bar',
+                    barMaxWidth: '20%',
                     itemStyle: {
                         normal: {
                             color: token.barColor[0]
 
                         }
                     },
-                    data: dataY.dayChargeEnergy
+                    data: dataY.dayDischargeEnergy
                 },
                 {
                     name: t('充电量'),
                     // label:<FormattedMessage id='statistics.TheGridBuysElectricity' />,
                     type: 'bar',
+                    barMaxWidth: '20%',
                     itemStyle: {
                         normal: {
                             color: token.barColor[1]
                         }
                     },
-                    data: dataY?.dayDischargeEnergy
+                    data: dataY?.dayChargeEnergy
                 },
 
 
@@ -100,7 +102,6 @@ function Com({ dataX, dataY }) {
 
     useEffect(() => {
         getOptions();
-        console.log(dataX, dataY, 'cahrge12233333333333');
     }, [token, dataX, dataY]);
 
     return (

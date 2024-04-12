@@ -64,49 +64,90 @@ function Com() {
     setDate(val);
   }
 
+  const dataE = [{
+    id:1,
+    date: '2024-04-08',
+    a: 122,
+    b: 121,
+    c: 99,
+    d: 67,
+    e: 409,
+    f: 119,
+    g: 112,
+    h: 96,
+    i: 66,
+    A: 393,
+    RA: '96.08%',
+  },
+  {
+    id:2,
+    date: '2024-04-09',
+    a: 112,
+    b: 134,
+    c: 109,
+    d: 123,
+    e: 478,
+    f: 109,
+    g: 128,
+    h: 100,
+    i: 120,
+    A: 457,
+    RA: '95.60%',
+  },
+  {
+    id:3,
+    date: '2024-04-10',
+    a: 133,
+    b: 125,
+    c: 130,
+    d: 119,
+    e: 507,
+    f: 129,
+    g: 123,
+    h: 126,
+    i: 113,
+    A: 491,
+    RA: '96.84%',
+  },
+];
   const electricReportColumns = [
-    {
-      title: '',
-      children: [
         {
           title: '序号',
-          dataIndex: '序号',
-          key: '序号'
+          dataIndex: 'id',
+          key: 'id'
         },
         {
           title: '日期',
           dataIndex: 'date',
           key: 'date'
-        }
-      ]
-    },
+        },
     {
       title: '充电量（kWh）',
       children: [
         {
           title: '尖电',
-          dataIndex: '尖电',
-          key: '尖电'
+          dataIndex: 'a',
+          key: 'a'
         },
         {
           title: '峰电',
-          dataIndex: '峰电',
-          key: '峰电'
+          dataIndex: 'b',
+          key: 'b'
         },
         {
           title: '平电',
-          dataIndex: '平电',
-          key: '平电'
+          dataIndex: 'c',
+          key: 'c'
         },
         {
           title: '谷电',
-          dataIndex: '谷电',
-          key: '谷电'
+          dataIndex: 'd',
+          key: 'd'
         },
         {
           title: '总计',
-          dataIndex: '总计',
-          key: '总计'
+          dataIndex: 'e',
+          key: 'e'
         }
       ]
     },
@@ -115,28 +156,28 @@ function Com() {
       children: [
         {
           title: '尖电',
-          dataIndex: '尖电',
-          key: '尖电'
+          dataIndex: 'f',
+          key: 'f'
         },
         {
           title: '峰电',
-          dataIndex: '峰电',
-          key: '峰电'
+          dataIndex: 'g',
+          key: 'g'
         },
         {
           title: '平电',
-          dataIndex: '平电',
-          key: '平电'
+          dataIndex: 'h',
+          key: 'h'
         },
         {
           title: '谷电',
-          dataIndex: '谷电',
-          key: '谷电'
+          dataIndex: 'i',
+          key: 'i'
         },
         {
           title: '总计',
-          dataIndex: '总计',
-          key: '总计'
+          dataIndex: 'A',
+          key: 'A'
         }
       ]
     },
@@ -145,56 +186,99 @@ function Com() {
       children: [
         {
           title: '充放电效率',
-          dataIndex: '充放电效率',
-          key: '充放电效率'
+          dataIndex: 'RA',
+          key: 'RA'
         }
       ]
     },
   ]
-
-  const incomeColumns = [
+  const dataD = [
     {
-      title: '',
+    id:1,
+    date: '2024-04-08',
+    a: 118,
+    b: 132,
+    c: 72,
+    d: 88,
+    e: 410,
+    f: 243,
+    g: 263,
+    h: 285,
+    i: 260,
+    A: 1051,
+    RA: 641,
+  },
+  {
+    id:2,
+    date: '2024-04-09',
+    a: 108,
+    b: 132,
+    c: 129,
+    d: 150,
+    e: 519,
+    f: 243,
+    g: 263,
+    h: 285,
+    i: 260,
+    A: 1051,
+    RA: 641,
+  },
+  {
+    id:3,
+    date: '2024-04-10',
+    a: 121,
+    b: 111,
+    c: 142,
+    d: 121,
+    e: 495,
+    f: 243,
+    g: 263,
+    h: 285,
+    i: 260,
+    A: 1051,
+    RA: 641,
+  },
+];
+  const incomeColumns = [
+  
+        
+    {
+      title: '发电收益（元）',
       children: [
         {
           title: '序号',
-          dataIndex: '序号',
-          key: '序号'
+          dataIndex: 'id',
+          key: 'id'
         },
         {
           title: '日期',
           dataIndex: 'date',
           key: 'date'
-        }
-      ]
-    },
-    {
-      title: '发电收益（元）',
-      children: [
+        },
         {
           title: '尖电',
-          dataIndex: '尖电',
-          key: '尖电'
+          dataIndex: 'a',
+          key: 'a'
         },
         {
           title: '峰电',
-          dataIndex: '峰电',
-          key: '峰电'
+          dataIndex: 'b',
+          key: 'b'
         },
         {
           title: '平电',
-          dataIndex: '平电',
-          key: '平电'
+          dataIndex: 'c',
+          key: 'c'
         },
         {
           title: '谷电',
-          dataIndex: '谷电',
-          key: '谷电'
+          dataIndex: 'd',
+          key: 'd'
         },
         {
           title: '总计',
-          dataIndex: '总计',
-          key: '总计'
+          dataIndex: 'e',
+          key: 'e'
         }
       ]
     },
@@ -202,9 +286,7 @@ function Com() {
 
   return (
     <>
-      <CardModel
-        content={
-          <div className={styles.advancedAnalytics} style={{ color: token.titleColor }}>
+          <div className={styles.advancedAnalytics} style={{ color: token.titleColor,backgroundColor:token.titleCardBgc }}>
             <div className={styles.searchHead}>
               <span >{t('报表类型')}:</span>
               <Select
@@ -273,6 +355,8 @@ function Com() {
                       </div>
                       <Table 
                         columns={electricReportColumns}
+                        dataSource={dataE}
+                        pagination={false}
                       />
                     </div>
                     <div className={styles.contentItem}>
@@ -281,20 +365,21 @@ function Com() {
                       </div>
                       <Table 
                         columns={incomeColumns}
+                        dataSource={dataD}
+                        pagination={false}
+
                       />
                     </div>
                 </div>
               </div>
             </div>
           </div>
-        }
-      />
+      
       <Modal
         open={dataChoiceOpen}
         title={null}
         onOk={async ()=>{
           const values = await form.validateFields();
-          console.log(values)
           setDataChoiceOpen(false);
           message.success("提交成功");
         }}
@@ -302,6 +387,7 @@ function Com() {
           setDataChoiceOpen(false);
         }}
         width={1168}
+        style={{}}
         className={styles.dataChoiceModal}
       >
         <Form

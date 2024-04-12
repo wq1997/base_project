@@ -31,7 +31,8 @@ import { alarmTableColums } from '@/utils/constants'
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import classNames from 'classnames';
 
-
+let clum=[...alarmTableColums];
+clum[7]={};
 function Overview(props) {
     const [dataX, setDataX] = useState([]);
     const [dataCharge, setDataCharge] = useState({ dayChargeEnergy: [], dayDischargeEnergy: [] });
@@ -41,6 +42,9 @@ function Overview(props) {
     const [income, setIncome] = useState({});
     const [alarms, setAlarms] = useState([]);
     const [running, setRunning] = useState([]);
+    const[screenH,setScreenH]=useState('');
+    const[scroolY,setScroolY]=useState(200);
+
     const { token } = theme.useToken();
     const Icon = useIcon();
     const intl = useIntl();
@@ -135,6 +139,24 @@ function Overview(props) {
         },
 
     ];
+    useEffect(() => {
+        setScreenH(document.documentElement.clientHeight || document.body.clientHeight)
+        window.addEventListener("resize", handleWindowResize)
+        return () => {
+            window.removeEventListener("resize", handleWindowResize)
+        }
+    }, [])
+
+    const handleWindowResize = () => {
+        setScreenH(document.documentElement.clientHeight || document.body.clientHeight)
+    }
+    useEffect(()=>{
+        if (screenH < 1000) {
+            setScroolY(60);
+        }else if(screenH>1000&&screenH<1500){
+            setScroolY(130);
+        }
+    },[screenH])
 
     useEffect(() => {
         getEnergy();
@@ -208,10 +230,9 @@ function Overview(props) {
         }
 
     })
-
     return (
         <div className={styles.overview}>
-            <div className={styles.heard} style={{ backgroundColor: token.titleCardBgc }}>{title}储能总览</div>
+            <div className={styles.heard} style={{ backgroundColor: token.titleCardBgc }}>{title}</div>
             <div className={classNames(styles.overContent, ContentStyle)} >
                 <div className={styles.electric}>
                     <CardModel
@@ -249,12 +270,12 @@ function Overview(props) {
                                             color: '#03B4B4'
                                         }}
                                     />
-                                    <span className={styles.label} style={{ color: token.titleColor }}>{t('当前总功率')}</span>:<span className={styles.value}>{running?.totalPower}</span><span className={styles.unit} style={{ color: token.titleColor }}>kWh</span>
+                                    <span className={styles.label} style={{ color: token.titleColor }}>{t('当前总功率')}</span>:<span className={styles.value}>{running?.totalPower||0}</span><span className={styles.unit} style={{ color: token.titleColor }}>kW</span>
                                 </div>
                                 <div className={styles.realStaus} style={{ backgroundColor: token.lightTreeBgc }}>
                                     <div>{t('设备状态')}</div>
-                                    <div>{t('正常')}<span className={styles.value} style={{ color: '#2BC50E' }}>66</span>{t('个')}</div>
-                                    <div>{t('故障')}<span className={styles.value} style={{ color: '#D41818' }}>2</span>{t('个')}</div>
+                                    <div>{t('正常')}<span className={styles.value} style={{ color: '#2BC50E' }}>2</span>{t('个')}</div>
+                                    <div>{t('故障')}<span className={styles.value} style={{ color: '#D41818' }}>0</span>{t('个')}</div>
 
                                 </div>
                             </div>
@@ -289,7 +310,7 @@ function Overview(props) {
                 <div className={styles.charge}>
                     <CardModel
                         title={
-                            "充放电量"
+                            "充放电量(kWh)"
                         }
                         content={
                             <div className={styles.chargeWrap}>
@@ -309,14 +330,16 @@ function Overview(props) {
                                     :
                                     <LineEcharts name={t('充放电效率')} style={{ height: '100%' }}
                                         xData={dataX}
-                                        yData={dataEfficiency} />}
+                                        yData={dataEfficiency} 
+                                        barMaxWidth={'20%'}
+                                        />}
                             </div>
                         } />
                 </div>
                 <div className={styles.profitAll}>
                     <CardModel
                         title={
-                            "收益统计"
+                            "收益统计(元)"
                         }
                         content={
                             <div className={styles.profitAllWrap}>
@@ -327,7 +350,7 @@ function Overview(props) {
                 {pageType !== 'ALL' && <div className={styles.chargAndDischarg}>
                     <CardModel
                         title={
-                            "充放电功率"
+                            "充放电功率(kW)"
                         }
                         content={
                             <div className={styles.chargAndDischargWrap}>
@@ -352,7 +375,7 @@ function Overview(props) {
                                     )
                                 })} */}
 
-                                <Table columns={alarmTableColums} dataSource={alarms} size="middle" scroll={{y:100}} />
+                                <Table className={styles.alarmTable} columns={clum} dataSource={alarms} size="middle" scroll={{y:scroolY}} />
                             </div>
                         } />
                 </div>

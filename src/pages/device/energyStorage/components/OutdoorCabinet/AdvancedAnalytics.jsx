@@ -60,7 +60,7 @@ function Com(props) {
     }, [token, id]);
 
     const getInitData = async () => {
-        let { data } = await getBmsAnalyticsInitData({ id });
+        let { data } = await getBmsAnalyticsInitData({ id:339 });
         setPackList(data?.data.packList);
         setCellList(data?.data.cellList)
     }
@@ -85,7 +85,7 @@ function Com(props) {
             }
         }
         let { data } = await analyticsBmsDiffData({
-            id,
+            id:339,
             dataTypeList,
             dateList
         });
@@ -96,7 +96,7 @@ function Com(props) {
     }
     const getBottomChartData = async () => {
         let { data } = await analyticsBmsData({
-            id,
+            id:339,
             dataType: cellReq[1],
             date: dateBottom.format('YYYY-MM-DD')
         });
@@ -248,7 +248,7 @@ function Com(props) {
             itemWidth: 6,
             itemGap: 20,
             textStyle: {
-                color: '#556677'
+                color:token.smallTitleColor,
             }
         },
         xAxis: [
@@ -380,7 +380,7 @@ function Com(props) {
                 </div>
                 <div className={styles.echartPart}>
                     <CardModel
-                        title={t('电压') + ('V')}
+                        title={t('电压') + '(V)'}
                         content={
                             <div className={styles.echartPartCardwrap}>
                                 <ReactECharts layUpdate={false} notMerge={true} option={optionEchartVolBot} style={{ height: '100%' }} />

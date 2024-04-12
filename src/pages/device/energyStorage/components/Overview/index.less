@@ -17,7 +17,7 @@
             grid-area: electric;
             .elewrap {
                 width: 100%;
-                height: 100%;
+                height: calc(100% -60px);
                 display: grid;
                 grid-template-columns: 1fr 1fr 1fr;
                 grid-template-rows: 1fr 1fr;
@@ -190,22 +190,7 @@
 
             .alarmWrap {
                 width: 100%;
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-
-                .itemAlarm {
-                    border-bottom: 1px solid #EEEEEE;
-                    padding: 15px 15px;
-                    font-size: 16px;
-
-                    span:nth-child(2) {
-                        margin: 0 15px 0 5px;
-                        font-size: 16px;
-                        font-family: PingFangSemiblod;
-                    }
-                }
+                height: 100% ;
             }
         }
     }

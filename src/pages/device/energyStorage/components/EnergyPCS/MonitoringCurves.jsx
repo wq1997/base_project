@@ -49,13 +49,16 @@ function Com(props) {
         let dataX = []
         let nowY = [];
         let toY = [];
-        data.nowDay?.map(it => {
-            dataX.push(dayjs(it.time).format('HH:mm:ss'));
+        data.data?.nowDay?.map(it => {
+            dataX.push(dayjs(it.time).format('HH:mm'));
             nowY.push(it.value);
         })
-        data.toDay?.map(it => {
+        dataX.length===0? data.data?.toDay?.map(it => {
             toY.push(it.value);
-        })
+            dataX.push(dayjs(it.time).format('HH:mm'))
+        }):data.data?.toDay?.map(it => {
+            toY.push(it.value);
+        });
         setOptionEchart({
             tooltip: {
                 trigger: 'axis',
@@ -64,6 +67,9 @@ function Com(props) {
                 }
             },
             legend: {
+                textStyle: {
+                    color:token.smallTitleColor,
+                },
                 data: [ `今日${title}`,`${date.format('YYYY-MM-DD')}${title}`]
               },
             grid: {
@@ -155,7 +161,7 @@ function Com(props) {
     }
     const downLoadFoodModel = () => {  // 菜品模板下载
         // let fileName = options.find(it => it.value == dataType)?.label;
-        console.log(data,1212121221);
+        // console.log(data,1212121221);
         // let sheetData = [];
         // data.map(it => {
         //     console.log(it);

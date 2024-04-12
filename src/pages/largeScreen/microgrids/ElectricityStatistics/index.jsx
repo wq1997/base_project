@@ -1,6 +1,7 @@
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect } from "react";
 import { getGccWeeklyPowerStatisticsServe } from "@/services/bigScreen"
+import dayjs from "dayjs";
 
 const ElectricityStatistics = () => {
     const [options, setOptions] = useState({});
@@ -14,7 +15,7 @@ const ElectricityStatistics = () => {
 
         if(res?.data?.data){
             const data = res?.data?.data;
-            area = data?.map(item => item?.date);
+            area = data?.map(item => dayjs(item?.date).format('YYYY-MM-DD') );
             data1 = data?.map(item => item?.energyCharge);
             data2 = data?.map(item => item?.energyDisCharge);
             data3 = data?.map(item => item?.pvGenerate);

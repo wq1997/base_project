@@ -32,18 +32,18 @@ const App = (props) => {
     },
     {
       label: '角色',
-      key: 'roleId',
+      key: 'role',
       type: 2,
       required: true,
       data: [{
-        label: 'User',
+        label: '普通用户',
         value: '1',
-        key: 'User',
+        key: '普通用户',
       },
       {
-        label: 'Admin',
-        value: '4',
-        key: 'Admin',
+        label: '管理员',
+        value: '3',
+        key: '管理员',
       },
       ]
     },
@@ -142,7 +142,7 @@ const App = (props) => {
                 <>
                   <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.required }]}>
                     <Select
-                      defaultValue={it.data[0].value}
+                      // defaultValue={it.data[0]?.label}
                       options={it.data}
                     />
                   </Form.Item>

@@ -26,8 +26,7 @@ function Com(props) {
   const [optionEchartVol, setOptionEchartVol] = useState({})
   const [optionEchartVolBot, setOptionEchartVolBot] = useState({})
   const [optionEchartTemBot, setOptionEchartTemBot] = useState({});
-  const [dataVdiff, setDataVdiff] = useState([]);
-  const [dataTdiff, setDataTdiff] = useState([]);
+ 
 
   const intl = useIntl();
   const wayOption = [{
@@ -74,7 +73,7 @@ function Com(props) {
         return
       }
     } else {
-      dataTypeList = packReq[1];
+      dataTypeList = [packReq[1]];
       dateList = dateStr;
       if (dateList.length > 3) {
         message.warning('最多选择3个对比项');
@@ -231,7 +230,7 @@ function Com(props) {
     },
     legend: {
       icon: 'circle',
-      top: '5%',
+      top: '0%',
       left: '5%',
       itemWidth: 6,
       itemGap: 20,
@@ -272,7 +271,7 @@ function Com(props) {
     series: []
   }
   return (
-    <>
+    <div style={{height:'100%',width:'100%', paddingBottom:'10px'}}>
       <CardModel
         title={t('数据对比')}
         content={
@@ -328,7 +327,7 @@ function Com(props) {
         }
 
       />
-    </>
+    </div>
 
   )
 }

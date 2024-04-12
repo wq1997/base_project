@@ -2,6 +2,7 @@ import ReactECharts from "echarts-for-react";
 import { useState, useEffect } from "react";
 import { getGccWeeklyProfitServe } from "@/services/bigScreen"
 import * as echarts from "echarts";
+import dayjs from "dayjs";
 
 const IncomeStatistics = () => {
     const [options, setOptions] = useState({});
@@ -12,7 +13,7 @@ const IncomeStatistics = () => {
         let data2 = [];
         if(res?.data?.data){
             const data = res?.data?.data;
-            xAxisData = data?.map(item => item?.date);
+            xAxisData = data?.map(item =>dayjs(item?.date).format('YYYY-MM-DD') );
             data1 = data?.map(item => item?.energyProfit);
             data2 = data?.map(item => item?.pvProfit);
         }
@@ -92,7 +93,7 @@ const IncomeStatistics = () => {
                     type: 'bar',
                     tooltip: {
                         valueFormatter: function (value) {
-                            return value;
+                            return value
                         }
                     },
                     data: data2,

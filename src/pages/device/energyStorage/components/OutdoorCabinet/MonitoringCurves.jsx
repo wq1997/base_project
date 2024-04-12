@@ -12,16 +12,13 @@ import { obtainMgOcParameterData } from '@/services/deviceTotal';
 import dayjs from 'dayjs';
 import { useSelector, useIntl } from "umi";
 const { Option } = Select;
-const { RangePicker } = DatePicker;
 function Com(props) {
-    const [xxx, setXxx] = useState('');
     const { token } = theme.useToken();
-    const [option, setOption] = useState([]);
     const [optionEchart, setOptionEchart] = useState({})
-    const activitesRef = useRef([]);
     const [date, setDate] = useState(dayjs(new Date()));
     const [type, setType] = useState(MgOcInitDataType[0].value);
-    const [title,setTitle]=useState('电表总功率')
+    const [title,setTitle]=useState('电表总功率');
+    const [unit, setUnit] = useState('kW');
     const intl = useIntl();
     const id = getQueryString("id");
     const t = (id) => {
@@ -34,28 +31,30 @@ function Com(props) {
     }
     function onChange(date) {
         setDate(date);
-        console.log(date, dateString, dayjs(new Date()).format('YYYY-MM-DD'));
+        // console.log(date, dateString, dayjs(new Date()).format('YYYY-MM-DD'));
     }
     const changeType = (value,label) => {
         setType(value);
-        setTitle(label.children);
+        setTitle(label.children.props?.id);
+        let unit=MgOcInitDataType.find(it=>it.value==value).unit;
+        setUnit(unit);
     }
     const queryData = async () => {
         let { data } = await obtainMgOcParameterData({
             id: id,
             type,
-            // dateOne: dayjs(new Date()).format('YYYY-MM-DD'),
-            // dateTwo: date.format('YYYY-MM-DD'),
-            dateList:[dayjs(new Date()).format('YYYY-MM-DD'),date.format('YYYY-MM-DD'),]
+            dateOne: dayjs(new Date()).format('YYYY-MM-DD'),
+            dateTwo: date.format('YYYY-MM-DD'),
+            // dateList:[dayjs(new Date()).format('YYYY-MM-DD'),date.format('YYYY-MM-DD'),]
         });
         let dataX = []
         let nowY = [];
         let toY = [];
-        data[0].data?.map(it => {
+        data.nowDay?.map(it => {
             dataX.push(dayjs(it.time).format('HH:mm:ss'));
             nowY.push(it.value);
         })
-        data[1].data?.map(it => {
+        data.toDay?.map(it => {
             toY.push(it.value);
         })
         setOptionEchart({
@@ -66,7 +65,10 @@ function Com(props) {
                 }
             },
             legend: {
-                data: [ `今日${title}`,`${date.format('YYYY-MM-DD')}${title}`]
+                data: [ `今日${title}`,`${date.format('YYYY-MM-DD')}${title}`],
+                textStyle: {
+                    color:token.smallTitleColor,
+                }
               },
             grid: {
                 left: '3%',
@@ -87,7 +89,7 @@ function Com(props) {
                 {
                     type: 'value',
                     axisLabel: {
-                        formatter: '{value} kW'
+                        formatter: `{value}${unit}`
                     },
 
                 }

@@ -79,8 +79,8 @@ const Login = () => {
       className={styles.login}
     >
       <img src={img} style={{ width: '100%', height: '100%', objectFit: 'cover', verticalAlign: 'middle' }} />
-      <img src={img_title} style={{  height: '30px',  position: 'absolute',top:'80px',left:'80px' }} alt="" />
-      <Title level={1} style={{ position: 'absolute',top:'80px',left:'80px',color:'#273667',fontFamily:'DingTalkJinBuTi',fontSize:'64px' }}><FormattedMessage id="app.title" /></Title>
+      <img src={img_title} style={{ height: '30px', position: 'absolute', top: '80px', left: '80px' }} alt="" />
+      <Title level={1} style={{ position: 'absolute', top: '80px', left: '80px', color: '#273667', fontFamily: 'DingTalkJinBuTi', fontSize: '64px' }}><FormattedMessage id="app.title" /></Title>
 
       <div
         style={{
@@ -97,7 +97,7 @@ const Login = () => {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%,-50%)',
-            background:token.cardBgc,
+            background: token.cardBgc,
             padding: '90px 50px 40px 50px',
             borderRadius: '24px',
           }}
@@ -141,7 +141,7 @@ const Login = () => {
                 <Input
                   prefix={<ExclamationCircleOutlined style={{ fontSize: 15, color: '#73787F' }} />}
                   placeholder="请输入验证码"
-                  style={{ height: 40, width: 300 }}
+                  style={{ height: 40, width: 200 }}
                 />
               </Form.Item>
               <img
