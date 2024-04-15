@@ -335,7 +335,7 @@ const Account = () => {
                             setReleaseTime(dateStr);
                         }}
                         value={
-                            releaseTime && releaseTime.length > 0
+                            releaseTime && releaseTime.length > 0 && releaseTime[0] && releaseTime[1]
                                 ? [dayjs(releaseTime[0]), dayjs(releaseTime[1])]
                                 : []
                         }

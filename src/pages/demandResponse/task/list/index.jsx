@@ -264,7 +264,7 @@ const Account = () => {
                             setEndTime(dateStr);
                         }}
                         value={
-                            endTime && endTime.length > 0
+                            endTime && endTime.length > 0  && endTime[0] && endTime[1]
                                 ? [dayjs(endTime[0]), dayjs(endTime[1])]
                                 : []
                         }
@@ -300,7 +300,7 @@ const Account = () => {
                             setExecuteTime(dateStr);
                         }}
                         value={
-                            executeTime && executeTime.length > 0
+                            executeTime && executeTime.length > 0 && executeTime[0] && executeTime[1]
                                 ? [dayjs(executeTime[0]), dayjs(executeTime[1])]
                                 : []
                         }

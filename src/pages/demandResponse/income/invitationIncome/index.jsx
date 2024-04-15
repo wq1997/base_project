@@ -250,7 +250,7 @@ const InvitationIncome = () => {
                             setAppointedTime(dateStr)
                         }}
                         value={
-                            appointedTime && appointedTime.length > 0
+                            appointedTime && appointedTime.length > 0 && appointedTime[0] && appointedTime[1]
                                 ? [dayjs(appointedTime[0]), dayjs(appointedTime[1])]
                                 : []
                         }
@@ -265,7 +265,7 @@ const InvitationIncome = () => {
                             setChargingTime(dateStr);
                         }}
                         value={
-                            chargingTime && chargingTime.length > 0
+                            chargingTime && chargingTime.length > 0 && chargingTime[0] && chargingTime[1]
                                 ? [dayjs(chargingTime[0]), dayjs(chargingTime[1])]
                                 : []
                         }
