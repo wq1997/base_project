@@ -30,7 +30,7 @@ export default {
                 currentCompanyCode: ""
             }
         })
-        localStorage.removeItem('currentCompanyCode', '');
+        localStorage.setItem('currentCompanyCode', '');
       },
 
       *logout({ payload }, { call, put }) {
