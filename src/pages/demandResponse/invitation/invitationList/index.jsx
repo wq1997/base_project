@@ -303,6 +303,14 @@ const Account = () => {
         getSearchInitData();
     }, []);
 
+    useEffect(()=>{
+        if(selectedRowKeys?.length===0){
+            setCanSure(true);
+            setCanDelete(true);
+            setCanInvalid(true);
+        }
+    }, [selectedRowKeys])
+
     return (
         <div>
             <EnterRecord
