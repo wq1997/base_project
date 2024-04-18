@@ -155,7 +155,7 @@ function Com(props) {
     }, [])
     const getData = async () => {
         let { data } = await getBurDeviceDetailInfo2({ id });
-        data.data.pcsBranch[1].statusAll2 = data.data.pcsBranch[1].statusAll;
+        data.data.pcsBranch[1].statusAll2 = data.data.pcsBranch[1]?.statusAll;
         data.data.pcsBranch[1].power2 = data.data.pcsBranch[1].power;
         data.data.pcsBranch[1].cur2 = data.data.pcsBranch[1].cur;
         data.data.pcsBranch[1].vol2 = data.data.pcsBranch[1].vol;
@@ -165,8 +165,8 @@ function Com(props) {
         data.data.bmc[1].BMC2bmuLowestHardwareVersion = data.data.bmc[1].bmuLowestHardwareVersion;
         data.data.bmc[1].BMC2softwareVersion = data.data.bmc[1].softwareVersion;
         data.data.bmc[1].BMC2hardwareVersion = data.data.bmc[1].hardwareVersion;
-        data.data.bms[1].BMS2softwareVersion = data.data.bms[1].softwareVersion;
-        data.data.bms[1].BMS2hardwareVersion = data.data.bms[1].hardwareVersion;
+        // data.data.bms[1].BMS2softwareVersion = data.data.bms[1].softwareVersion;
+        // data.data.bms[1].BMS2hardwareVersion = data.data.bms[1].hardwareVersion;
         data.data.bmc[0].BMC1bmuHighestSoftwareVersion = data.data.bmc[0].bmuHighestSoftwareVersion;
         data.data.bmc[0].BMC1bmuLowestSoftwareVersion = data.data.bmc[0].bmuLowestSoftwareVersion;
         data.data.bmc[0].BMC1bmuHighestHardwareVersion = data.data.bmc[0].bmuHighestHardwareVersion;
@@ -177,7 +177,6 @@ function Com(props) {
         data.data.bms[0].BMS1hardwareVersion = data.data.bms[0].hardwareVersion;
         bms2Data.data=bms1Data.data
         ic2Data.data=ic1Data.data
-        console.log(data, 121321);
         setData(data?.data);
         dealData(data?.data?.pcs, pcsData, setPcsData);
         dealData(data?.data?.pcsBranch[0], pcsData, setPcsData);
@@ -186,21 +185,18 @@ function Com(props) {
         dealData(data?.data?.bmc[1], bms2Data, setBms2Data);
         dealData(data?.data?.bmc[0], bmsData, setBmsData);
         dealData(data?.data?.bms[0], bmsData, setBmsData)
-        dealData(data?.data?.bms[1], bmsData, setBmsData);
+        // dealData(data?.data?.bms[1], bmsData, setBmsData);
         dealData(data?.data?.bmc[1], bmsData, setBmsData);
         dealData(data?.data?.meter, meterData, setMeterData);
         dealData(data?.data?.energy, energyData, setEnergyData);
         dealData(data?.data?.bmc[0], ic1Data, setlc1Data);
         dealData(data?.data?.bmc[1], ic2Data, setlc2Data);
-
-
     }
     const dealData = (data, baseData, handlBase) => {
         baseData.data.map(it => {
             data[it.key] ? it.value = data[it.key] : null
         });
         handlBase({ ...baseData });
-        console.log(baseData, 12222212121);
     }
     return (
         <div className={styles.details}>

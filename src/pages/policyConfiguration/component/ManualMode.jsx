@@ -6,7 +6,7 @@ import { theme, message, Space, Flex, InputNumber , Modal } from "antd";
 import { useSelector, useIntl } from "umi";
 import { sendBurCmd2 } from '@/services/policy'
 
-function Com({ devId,dtuId }) {
+function Com({ devId,dtuId,historyAllData }) {
     const { token } = theme.useToken();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [allPolicy, setAllPolicy] = useState({
@@ -16,7 +16,7 @@ function Com({ devId,dtuId }) {
         bms: 1,
         pcsPowerOne: 0,
         pcsPowerTow: 0,
-        pcsPowerWaveRange: 0
+        pcsPowerWaveRange: historyAllData?.pcsPowerWaveRange||0
     })
     const [type, setType] = useState('allBranch');
     const [reqType, setReqType] = useState('pcsStartStop');
@@ -136,7 +136,7 @@ function Com({ devId,dtuId }) {
                                 width: '105px',
                             }}
                                 defaultValue={allPolicy.pcsPowerOne}
-                            onChange={(value)=>changeInput(value,'pcsPowerOne')}
+                                onChange={(value)=>changeInput(value,'pcsPowerOne')}
                             />
                             <div className={styles.selectionBox} style={{ backgroundColor: token.defaultBg }} onClick={() => showModal(devId.pcs1DevId, 'pcsPower','pcsPowerOne', allPolicy.pcsPowerOne)} >{t('下发')}</div>
                         </Flex>

@@ -182,7 +182,6 @@ const RealtimeAlarm = () => {
     const edit = (record) => {
         setFormData({
             ...record,
-           
         });
         setTitle('编辑设备');
         setRecord(record)
@@ -202,7 +201,12 @@ const RealtimeAlarm = () => {
  
     const delDevice = async () => {
         let { data } = await deleteDtu({ id: record.id });
-        setIsOpenDel(!isOpenDel)
+        if (data.code=='ok') {
+            changePlant(currentPlantId)
+        } else {
+            message.error(data.code)
+        }
+        setIsOpenDel(!isOpenDel);
     };
     const changeData = async (value) => {
         const { data } = await updateDtus({ ...value, id: record.id });
@@ -239,8 +243,6 @@ const RealtimeAlarm = () => {
         let { data: deviceStats } = await getDeviceStats({ plantId: val });
         setDatadataTotal(deviceStats?.data);
         setDataEle(dataEnergy?.data);
-        console.log(dataEnergy.data,12312);
-
     }
     const topData =[
         {

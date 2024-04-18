@@ -2,13 +2,13 @@
 // 快捷键Ctrl+Win+i 添加注释
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import styles from "./index.less";
-import { theme, notification , Space, Flex, Select, message } from "antd";
+import { theme, notification, Space, Flex, Select, message } from "antd";
 import { useSelector, useIntl } from "umi";
 import ManualMode from './component/ManualMode'
 import AutoMode from './component/AutoMode'
 import { getBurDtuDevInfo2, getBurCmdHistory2 } from '@/services/policy'
-import {connectSocket} from '@/utils/subscribe';
-import {ISSUE_COMMAND} from '@/utils/subscribe/types';
+import { connectSocket } from '@/utils/subscribe';
+import { ISSUE_COMMAND } from '@/utils/subscribe/types';
 import { sendBurCmd2 } from '@/services/policy'
 
 
@@ -18,9 +18,9 @@ function Com(props) {
     const [devId, setDevId] = useState({});
     const [options, setOptions] = useState([]);
     const [initAllData, setInitAllData] = useState([]);
-    const [historyAllData, setHistoryAllData] = useState([]);
+    const [historyAllData, setHistoryAllData] = useState({});
 
-    const [dtuId,setDtuId]=useState();
+    const [dtuId, setDtuId] = useState();
     const intl = useIntl();
     const t = (id) => {
         const msg = intl.formatMessage(
@@ -35,30 +35,28 @@ function Com(props) {
         let { data } = await sendBurCmd2({
             mode,
             dtuId,
-            cmdTypeId:7000
+            cmdTypeId: 7000
         })
-        if (data.code=='ok') {
+        if (data.code == 'ok') {
             message.success(t('命令下发成功'), 3);
-        }else{
+        } else {
             message.error(t('命令下发失败'), 3);
         }
     };
 
     useEffect(() => {
         getInitData();
-       
     }, []);
     useEffect(() => {
         getHistory();
-    }, [mode,dtuId])
-    useEffect(()=>{
+    }, [dtuId])
+    useEffect(() => {
         connectSocket(
             ISSUE_COMMAND,
             () => {
-             
+
             },
             res => {
-                console.log(res,1213);
                 if (res.hasOwnProperty("progress")) {
                 } else {
                     notification[res.code === "ok" ? "success" : "error"]({
@@ -68,9 +66,9 @@ function Com(props) {
                 }
             }
         );
-    },[])
+    }, [])
 
-   const changeType = (type) => {
+    const changeType = (type) => {
         setMode(type)
         // setIsModalOpen(true);
         handleOk();
@@ -97,9 +95,15 @@ function Com(props) {
         setDtuId(option[0].dtuId);
 
     }
-    const getHistory=async()=>{
-        let { data: initData } = await getBurCmdHistory2({ dtuId});
-
+    const getHistory = async () => {
+        if (dtuId) {
+            let { data } = await getBurCmdHistory2({ dtuId });
+            const result = data.data;
+            setHistoryAllData(result);
+            if(result.hasOwnProperty("mode")){
+                setMode(result?.mode)
+            }
+        }
     }
     const changeDevice = async (val) => {
         let arr = initAllData.find(it => it.sn === val);
@@ -113,10 +117,7 @@ function Com(props) {
         setDtuId(arr.dtuId);
     }
     return (
-
-
         <div className={styles.content} style={{ backgroundColor: token.contentBgc }}>
-          
             <Space style={{ width: '100%' }} size={30} direction="vertical" >
                 <div className={styles.device}>
                     <Flex gap={12}>
@@ -140,14 +141,14 @@ function Com(props) {
                     <Flex gap={18}>
                         <div className={styles.label}>{t('模式')}:</div>
                         <Flex gap={30}>
-                            <div className={styles.selectionBox} style={{ backgroundColor: mode === 0 ? token.colorPrimary : '#20284D' }} onClick={() => changeType(0)} >{t('自动')}</div>
-                            <div className={styles.selectionBox} style={{ backgroundColor: mode === 1 ? token.colorPrimary : '#20284D' }} onClick={() => changeType(1)} >{t('手动')}</div>
+                            <div className={styles.selectionBox} style={{ backgroundColor: mode == 0 ? token.colorPrimary : '#20284D' }} onClick={() => changeType(0)} >{t('自动')}</div>
+                            <div className={styles.selectionBox} style={{ backgroundColor: mode == 1 ? token.colorPrimary : '#20284D' }} onClick={() => changeType(1)} >{t('手动')}</div>
                         </Flex>
                     </Flex>
                 </div>
-                {mode === 0 ?<AutoMode devId={devId} dtuId={dtuId}/>: <ManualMode devId={devId} dtuId={dtuId}/>  }
+                { mode == 0 ? <AutoMode devId={devId} dtuId={dtuId} historyAllData={historyAllData}/> : <ManualMode devId={devId} dtuId={dtuId} historyAllData={historyAllData}/>}
             </Space>
-          
+
         </div>
     )
 }

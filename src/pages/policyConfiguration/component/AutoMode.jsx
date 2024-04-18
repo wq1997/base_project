@@ -1,9 +1,254 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Button, Form, InputNumber, Popconfirm, Table, theme,message } from 'antd';
+import { Button, Form, InputNumber, Popconfirm, Table, theme, message } from 'antd';
 import { useSelector, useIntl, history } from "umi";
 import styles from './index.less'
 import { sendBurCmd2 } from '@/services/policy'
-
+let modelData=[
+  {
+    key: '1',
+    firstLine: '00:00-01:00',
+    monPowers: 0,
+    tuePowers: 0,
+    wedPowers: 0,
+    thuPowers: 0,
+    friPowers: 0,
+    satPowers: 0,
+    sunPowers: 0,
+  },
+  {
+    key: '2',
+    firstLine: '01:00-02:00',
+    monPowers: 0,
+    tuePowers: 0,
+    wedPowers: 0,
+    thuPowers: 0,
+    friPowers: 0,
+    satPowers: 0,
+    sunPowers: 0,
+  },
+  {
+    key: '3',
+    firstLine: '02:00-03:00',
+    monPowers: 0,
+    tuePowers: 0,
+    wedPowers: 0,
+    thuPowers: 0,
+    friPowers: 0,
+    satPowers: 0,
+    sunPowers: 0,
+  }, {
+    key: '4',
+    firstLine: '03:00-04:00',
+    monPowers: 0,
+    tuePowers: 0,
+    wedPowers: 0,
+    thuPowers: 0,
+    friPowers: 0,
+    satPowers: 0,
+    sunPowers: 0,
+  }, {
+    key: '5',
+    firstLine: '04:00-05:00',
+    monPowers: 0,
+    tuePowers: 0,
+    wedPowers: 0,
+    thuPowers: 0,
+    friPowers: 0,
+    satPowers: 0,
+    sunPowers: 0,
+  }, {
+    key: '6',
+    firstLine: '05:00-06:00',
+    monPowers: 0,
+    tuePowers: 0,
+    wedPowers: 0,
+    thuPowers: 0,
+    friPowers: 0,
+    satPowers: 0,
+    sunPowers: 0,
+  }, {
+    key: '7',
+    firstLine: '06:00-07:00',
+    monPowers: 0,
+    tuePowers: 0,
+    wedPowers: 0,
+    thuPowers: 0,
+    friPowers: 0,
+    satPowers: 0,
+    sunPowers: 0,
+  }, {
+    key: '8',
+    firstLine: '07:00-08:00',
+    monPowers: 0,
+    tuePowers: 0,
+    wedPowers: 0,
+    thuPowers: 0,
+    friPowers: 0,
+    satPowers: 0,
+    sunPowers: 0,
+  }, {
+    key: '9',
+    firstLine: '08:00-09:00',
+    monPowers: 0,
+    tuePowers: 0,
+    wedPowers: 0,
+    thuPowers: 0,
+    friPowers: 0,
+    satPowers: 0,
+    sunPowers: 0,
+  }, {
+    key: '10',
+    firstLine: '09:00-10:00',
+    monPowers: 0,
+    tuePowers: 0,
+    wedPowers: 0,
+    thuPowers: 0,
+    friPowers: 0,
+    satPowers: 0,
+    sunPowers: 0,
+  }, {
+    key: '11',
+    firstLine: '10:00-11:00',
+    monPowers: 0,
+    tuePowers: 0,
+    wedPowers: 0,
+    thuPowers: 0,
+    friPowers: 0,
+    satPowers: 0,
+    sunPowers: 0,
+  }, {
+    key: '12',
+    firstLine: '11:00-12:00',
+    monPowers: 0,
+    tuePowers: 0,
+    wedPowers: 0,
+    thuPowers: 0,
+    friPowers: 0,
+    satPowers: 0,
+    sunPowers: 0,
+  }, {
+    key: '13',
+    firstLine: '12:00-13:00',
+    monPowers: 0,
+    tuePowers: 0,
+    wedPowers: 0,
+    thuPowers: 0,
+    friPowers: 0,
+    satPowers: 0,
+    sunPowers: 0,
+  }, {
+    key: '14',
+    firstLine: '13:00-14:00',
+    monPowers: 0,
+    tuePowers: 0,
+    wedPowers: 0,
+    thuPowers: 0,
+    friPowers: 0,
+    satPowers: 0,
+    sunPowers: 0,
+  }, {
+    key: '15',
+    firstLine: '14:00-15:00',
+    monPowers: 0,
+    tuePowers: 0,
+    wedPowers: 0,
+    thuPowers: 0,
+    friPowers: 0,
+    satPowers: 0,
+    sunPowers: 0,
+  }, {
+    key: '16',
+    firstLine: '15:00-16:00',
+    monPowers: 0,
+    tuePowers: 0,
+    wedPowers: 0,
+    thuPowers: 0,
+    friPowers: 0,
+    satPowers: 0,
+    sunPowers: 0,
+  }, {
+    key: '17',
+    firstLine: '16:00-17:00',
+    monPowers: 0,
+    tuePowers: 0,
+    wedPowers: 0,
+    thuPowers: 0,
+    friPowers: 0,
+    satPowers: 0,
+    sunPowers: 0,
+  }, {
+    key: '18',
+    firstLine: '17:00-18:00',
+    monPowers: 0,
+    tuePowers: 0,
+    wedPowers: 0,
+    thuPowers: 0,
+    friPowers: 0,
+    satPowers: 0,
+    sunPowers: 0,
+  }, {
+    key: '19',
+    firstLine: '18:00-19:00',
+    monPowers: 0,
+    tuePowers: 0,
+    wedPowers: 0,
+    thuPowers: 0,
+    friPowers: 0,
+    satPowers: 0,
+    sunPowers: 0,
+  }, {
+    key: '20',
+    firstLine: '19:00-20:00',
+    monPowers: 0,
+    tuePowers: 0,
+    wedPowers: 0,
+    thuPowers: 0,
+    friPowers: 0,
+    satPowers: 0,
+    sunPowers: 0,
+  }, {
+    key: '21',
+    firstLine: '20:00-21:00',
+    monPowers: 0,
+    tuePowers: 0,
+    wedPowers: 0,
+    thuPowers: 0,
+    friPowers: 0,
+    satPowers: 0,
+    sunPowers: 0,
+  }, {
+    key: '22',
+    firstLine: '21:00-22:00',
+    monPowers: 0,
+    tuePowers: 0,
+    wedPowers: 0,
+    thuPowers: 0,
+    friPowers: 0,
+    satPowers: 0,
+    sunPowers: 0,
+  }, {
+    key: '23',
+    firstLine: '22:00-23:00',
+    monPowers: 0,
+    tuePowers: 0,
+    wedPowers: 0,
+    thuPowers: 0,
+    friPowers: 0,
+    satPowers: 0,
+    sunPowers: 0,
+  },
+  {
+    key: '24',
+    firstLine: '23:00-24:00',
+    monPowers: 0,
+    tuePowers: 0,
+    wedPowers: 0,
+    thuPowers: 0,
+    friPowers: 0,
+    satPowers: 0,
+    sunPowers: 0,
+  },
+]
 const EditableContext = React.createContext(null);
 const EditableRow = ({ index, ...props }) => {
   const [form] = Form.useForm();
@@ -82,254 +327,9 @@ const EditableCell = ({
   }
   return <td {...restProps}>{childNode}</td>;
 };
-const App = ({ devId,dtuId }) => {
+const App = ({ devId, dtuId, historyAllData }) => {
   const { token } = theme.useToken();
-  const [dataSource, setDataSource] = useState([
-    {
-      key: '1',
-      firstLine: '00:00-01:00',
-      monPowers: 0,
-      tuePowers: 0,
-      wedPowers: 0,
-      thuPowers: 0,
-      friPowers: 0,
-      satPowers: 0,
-      sunPowers: 0,
-    },
-    {
-      key: '2',
-      firstLine: '01:00-02:00',
-      monPowers: 0,
-      tuePowers: 0,
-      wedPowers: 0,
-      thuPowers: 0,
-      friPowers: 0,
-      satPowers: 0,
-      sunPowers: 0,
-    },
-    {
-      key: '3',
-      firstLine: '02:00-03:00',
-      monPowers: 0,
-      tuePowers: 0,
-      wedPowers: 0,
-      thuPowers: 0,
-      friPowers: 0,
-      satPowers: 0,
-      sunPowers: 0,
-    }, {
-      key: '4',
-      firstLine: '03:00-04:00',
-      monPowers: 0,
-      tuePowers: 0,
-      wedPowers: 0,
-      thuPowers: 0,
-      friPowers: 0,
-      satPowers: 0,
-      sunPowers: 0,
-    }, {
-      key: '5',
-      firstLine: '04:00-05:00',
-      monPowers: 0,
-      tuePowers: 0,
-      wedPowers: 0,
-      thuPowers: 0,
-      friPowers: 0,
-      satPowers: 0,
-      sunPowers: 0,
-    }, {
-      key: '6',
-      firstLine: '05:00-06:00',
-      monPowers: 0,
-      tuePowers: 0,
-      wedPowers: 0,
-      thuPowers: 0,
-      friPowers: 0,
-      satPowers: 0,
-      sunPowers: 0,
-    }, {
-      key: '7',
-      firstLine: '06:00-07:00',
-      monPowers: 0,
-      tuePowers: 0,
-      wedPowers: 0,
-      thuPowers: 0,
-      friPowers: 0,
-      satPowers: 0,
-      sunPowers: 0,
-    }, {
-      key: '8',
-      firstLine: '07:00-08:00',
-      monPowers: 0,
-      tuePowers: 0,
-      wedPowers: 0,
-      thuPowers: 0,
-      friPowers: 0,
-      satPowers: 0,
-      sunPowers: 0,
-    }, {
-      key: '9',
-      firstLine: '08:00-09:00',
-      monPowers: 0,
-      tuePowers: 0,
-      wedPowers: 0,
-      thuPowers: 0,
-      friPowers: 0,
-      satPowers: 0,
-      sunPowers: 0,
-    }, {
-      key: '10',
-      firstLine: '09:00-10:00',
-      monPowers: 0,
-      tuePowers: 0,
-      wedPowers: 0,
-      thuPowers: 0,
-      friPowers: 0,
-      satPowers: 0,
-      sunPowers: 0,
-    }, {
-      key: '11',
-      firstLine: '10:00-11:00',
-      monPowers: 0,
-      tuePowers: 0,
-      wedPowers: 0,
-      thuPowers: 0,
-      friPowers: 0,
-      satPowers: 0,
-      sunPowers: 0,
-    }, {
-      key: '12',
-      firstLine: '11:00-12:00',
-      monPowers: 0,
-      tuePowers: 0,
-      wedPowers: 0,
-      thuPowers: 0,
-      friPowers: 0,
-      satPowers: 0,
-      sunPowers: 0,
-    }, {
-      key: '13',
-      firstLine: '12:00-13:00',
-      monPowers: 0,
-      tuePowers: 0,
-      wedPowers: 0,
-      thuPowers: 0,
-      friPowers: 0,
-      satPowers: 0,
-      sunPowers: 0,
-    }, {
-      key: '14',
-      firstLine: '13:00-14:00',
-      monPowers: 0,
-      tuePowers: 0,
-      wedPowers: 0,
-      thuPowers: 0,
-      friPowers: 0,
-      satPowers: 0,
-      sunPowers: 0,
-    }, {
-      key: '15',
-      firstLine: '14:00-15:00',
-      monPowers: 0,
-      tuePowers: 0,
-      wedPowers: 0,
-      thuPowers: 0,
-      friPowers: 0,
-      satPowers: 0,
-      sunPowers: 0,
-    }, {
-      key: '16',
-      firstLine: '15:00-16:00',
-      monPowers: 0,
-      tuePowers: 0,
-      wedPowers: 0,
-      thuPowers: 0,
-      friPowers: 0,
-      satPowers: 0,
-      sunPowers: 0,
-    }, {
-      key: '17',
-      firstLine: '16:00-17:00',
-      monPowers: 0,
-      tuePowers: 0,
-      wedPowers: 0,
-      thuPowers: 0,
-      friPowers: 0,
-      satPowers: 0,
-      sunPowers: 0,
-    }, {
-      key: '18',
-      firstLine: '17:00-18:00',
-      monPowers: 0,
-      tuePowers: 0,
-      wedPowers: 0,
-      thuPowers: 0,
-      friPowers: 0,
-      satPowers: 0,
-      sunPowers: 0,
-    }, {
-      key: '19',
-      firstLine: '18:00-19:00',
-      monPowers: 0,
-      tuePowers: 0,
-      wedPowers: 0,
-      thuPowers: 0,
-      friPowers: 0,
-      satPowers: 0,
-      sunPowers: 0,
-    }, {
-      key: '20',
-      firstLine: '19:00-20:00',
-      monPowers: 0,
-      tuePowers: 0,
-      wedPowers: 0,
-      thuPowers: 0,
-      friPowers: 0,
-      satPowers: 0,
-      sunPowers: 0,
-    }, {
-      key: '21',
-      firstLine: '20:00-21:00',
-      monPowers: 0,
-      tuePowers: 0,
-      wedPowers: 0,
-      thuPowers: 0,
-      friPowers: 0,
-      satPowers: 0,
-      sunPowers: 0,
-    }, {
-      key: '22',
-      firstLine: '21:00-22:00',
-      monPowers: 0,
-      tuePowers: 0,
-      wedPowers: 0,
-      thuPowers: 0,
-      friPowers: 0,
-      satPowers: 0,
-      sunPowers: 0,
-    }, {
-      key: '23',
-      firstLine: '22:00-23:00',
-      monPowers: 0,
-      tuePowers: 0,
-      wedPowers: 0,
-      thuPowers: 0,
-      friPowers: 0,
-      satPowers: 0,
-      sunPowers: 0,
-    },
-    {
-      key: '24',
-      firstLine: '23:00-24:00',
-      monPowers: 0,
-      tuePowers: 0,
-      wedPowers: 0,
-      thuPowers: 0,
-      friPowers: 0,
-      satPowers: 0,
-      sunPowers: 0,
-    },
-  ]);
+  const [dataSource, setDataSource] = useState(modelData);
   const [count, setCount] = useState(2);
   const intl = useIntl();
   const t = (id) => {
@@ -449,14 +449,15 @@ const App = ({ devId,dtuId }) => {
         ) : null,
     },
   ];
-  const [flag,setFlag]=useState(false)
+  const [flag, setFlag] = useState(false)
   useEffect(() => {
-    const timer = setInterval(() => {
-        setFlag(prev => !prev )
-    }, 1000*10)
-    // 清除定时器
-    return () => clearInterval(timer)
-}, [])
+    // const timer = setInterval(() => {
+    //   setFlag(prev => !prev)
+    // }, 1000 * 10)
+    // // 清除定时器
+    // return () => clearInterval(timer)
+    initData();
+  }, [historyAllData])
 
   const handleSave = (row) => {
     const newData = [...dataSource];
@@ -490,7 +491,7 @@ const App = ({ devId,dtuId }) => {
     };
   });
   const finish = async () => {
-    setFlag(prv=>!prv)
+    setFlag(prv => !prv)
     let monPowers = [], tuePowers = [], wedPowers = [], thuPowers = [], friPowers = [], satPowers = [], sunPowers = [];
     dataSource?.map((it, index) => {
       monPowers?.push(it?.monPowers);
@@ -505,7 +506,7 @@ const App = ({ devId,dtuId }) => {
       devId: devId.pcsDevId,
       dtuId,
       mode: 1,
-      cmdTypeId:7013,
+      cmdTypeId: 7013,
       monPowers,
       tuePowers,
       wedPowers,
@@ -514,15 +515,36 @@ const App = ({ devId,dtuId }) => {
       satPowers,
       sunPowers
     });
-    if (data.code=='ok') {
+    if (data.code == 'ok') {
       message.success(t('命令下发成功'), 3);
-  }else{
+    } else {
       message.error(t('命令下发失败'), 3);
+    }
   }
+  const initData = () => {
+    let arr = [];
+    modelData?.map((it, index) => {
+      if (index !== 23&&historyAllData.monPowers?.length) {
+        arr.push({
+          ...it,
+          monPowers: historyAllData?.monPowers[index],
+          tuePowers: historyAllData?.tuePowers[index],
+          wedPowers: historyAllData?.wedPowers[index],
+          thuPowers: historyAllData?.thuPowers[index],
+          friPowers: historyAllData?.friPowers[index],
+          satPowers: historyAllData?.satPowers[index],
+          sunPowers: historyAllData?.sunPowers[index],
+        });
+      }else{
+        arr.push(it);
+      }
+    });
+    setDataSource([...arr]);
   }
+
   return (
     <div className={styles.manual}>
-      <Button type="primary"  onClick={finish} style={{ backgroundColor: token.defaultBg, marginBottom: "30px", display: 'block', marginLeft: 'auto' }}>{t("下发")}</Button>
+      <Button type="primary" onClick={finish} style={{ backgroundColor: token.defaultBg, marginBottom: "30px", display: 'block', marginLeft: 'auto' }}>{t("下发")}</Button>
       <Table
         components={components}
         rowClassName={() => 'editable-row'}
