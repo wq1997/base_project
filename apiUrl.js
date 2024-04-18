@@ -1,8 +1,8 @@
+const domain = ".sermatec-cloud.com";
+const serve = 1; // 1 国内 0 国外
+
 export default apiUrl = {
-    test1: 'http://192.168.1.32:8080/auth',
-    test2: 'http://192.168.1.32:8080/main',
-    test3: 'http://192.168.1.32:8080/energy',
-    prod1: 'http://47.110.124.86:8080/auth',
-    prod2: 'http://47.110.124.86:8080/main',
-    prod3: 'http://47.110.124.86:8080/energy'
+    test: 'http://192.168.1.42/api',
+    prod: `https://${serve ? "api" : "api1"}${domain}`,
+    socketURL:'http://192.168.1.42:9999'
 }

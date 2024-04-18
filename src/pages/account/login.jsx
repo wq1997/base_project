@@ -1,49 +1,98 @@
-import { Form, Input, Checkbox, Button, Typography, theme, Tooltip } from "antd";
-import { FORM_REQUIRED_RULE, PUBLIC_FILE_PATH } from "@/utils/constants";
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import { 
+import { Form, Input, message, Checkbox, Radio, Button, Typography, theme, Divider } from "antd";
+import { FORM_REQUIRED_RULE, PUBLIC_FILE_PATH, SYSTEM_NAME } from "@/utils/constants";
+import { UserOutlined, LockOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import {
   getPublicKey as getPublicKeySever,
   login as loginSever,
 } from "@/services/user";
-import { getEncrypt, setLocalStorage } from "@/utils/utils";
+import { getEncrypt, setLocalStorage,getLocalStorage } from "@/utils/utils";
 import styles from "./index.less";
-import { history, useDispatch } from "umi";
+import { history, useDispatch, FormattedMessage, useIntl,useSelector} from "umi";
 import { useEffect, useState } from "react";
+import { getBaseUrl } from '@/services/request'
+import img from '../../../src/assets/imges/bgimg.png'
 const { Title } = Typography;
 
 const Login = () => {
   const { token } = theme.useToken();
   const dispatch = useDispatch();
   const [publicKey, setPublicKey] = useState('');
+  const [codeImgUrl, setCodeImgUrl] = useState(`${getBaseUrl()}/user/getKaptchaImage`);
+  const [showImg, setShowImg] = useState(false);
+  const [language, setLanguage] = useState(getLocalStorage('locale')=='zh-CN'?1:3);
 
+  const global = useSelector(state => state.global);
+
+  const intl = useIntl();
+  const t = (id) => {
+    const msg = intl.formatMessage(
+      {
+        id,
+      },
+    );
+    return msg
+  }
+  const changeCodeImgUrl = () => {
+    setCodeImgUrl('');
+    setTimeout(_ => (setCodeImgUrl(`${getBaseUrl()}/user/getKaptchaImage`)
+    ), 0);
+  }
   const onFinish = async (values) => {
     const res = await loginSever({
       ...values,
-      password: values.password || getEncrypt(publicKey, values.password)
+      password: getEncrypt(publicKey, values.password),
+      clientType: 4,
+      remember: false,
+      language,
     });
-    if(res?.data?.data){
-      const data = res?.data;
-      setLocalStorage("Token", data?.data);
+    if (res?.data?.data?.token) {
+      const data = res?.data.data;
+      setLocalStorage("Token", data?.token);
+      setLocalStorage("userName", data?.userName);
+      message.success(t('登录成功'));
+      history.push("/index/device");
       dispatch({
         type: 'user/updateState',
         payload: {
-            user: {
-              userName: data?.nickName
-            }
+          user: {
+            ...res.data.data
+          }
         }
       })
-      history.push("/vpp/homepage")
+    } else {
+      message.error(res.data.msg);
+      if (res?.data.code === '407') {
+        setShowImg(true)
+      } else {
+      }
     }
   }
 
   const getPublicKey = async () => {
     const res = await getPublicKeySever();
-    if(res?.data){
-      setPublicKey(res?.data)
+    if (res?.data) {
+      setPublicKey(res?.data);
+      dispatch({
+        type: 'user/updateState',
+        payload: {
+          publicKey: res.data
+
+        }
+      })
     }
   }
-
-  useEffect(()=>{
+  const changeLanguage = (e) => {
+    let locale=e.target.value==1?'zh-CN':'en-US';
+    setLanguage(e.target.value);
+    setLocalStorage('locale', locale)
+    dispatch({
+        type: 'global/changeLanguage',
+        payload: {
+            locale
+        }
+    })
+}
+  useEffect(() => {
     getPublicKey();
   }, [])
   return (
@@ -51,76 +100,101 @@ const Login = () => {
       style={{
         width: '100%',
         height: '100vh',
-        background: 'black'
+        background: `url(${img}) no-repeat`,
+        backgroundSize: '100% 101%',
+        backgroundAttachment: 'fixed',
       }}
       className={styles.login}
     >
-      <img src={`${PUBLIC_FILE_PATH}background.jpg`} style={{width: '100%', height: '100%', objectFit: 'cover', verticalAlign: 'middle' }} />
+      <Title className={styles.Title} level={1} ><FormattedMessage id="app.title" /></Title>
+
       <div
         style={{
-          width: 600,
+          width: 450,
           position: 'absolute',
           top: '50%',
           transform: 'translateY(-50%)',
           right: '10%'
         }}
-      > 
+      >
         <div
+          className={styles.formCard}
           style={{
             position: 'absolute',
             top: '50%',
             left: '50%',
             transform: 'translate(-50%,-50%)',
-            background: '#ffffff40',
-            padding: '70px 30px',
-            borderRadius: 8
+            padding: '40px 60px 70px 60px',
+
           }}
         >
-          <Title level={2} style={{marginBottom: 50, color: token.colorPrimary}}>采日能源VPP聚合平台</Title>
+          <Divider style={{ fontSize: '32px', marginBottom: 0 }}>欢迎登录</Divider>
+          <p style={{ fontSize: '14px', textAlign: 'center', marginTop: 0 }}>WELCOME TO LOGIN</p>
           <Form
             onFinish={onFinish}
             autoComplete="off"
             style={{
-              width: 450
+              width: 320, marginTop: 70
             }}
           >
             <Form.Item
-              name="username"
-              rules={[{...FORM_REQUIRED_RULE}]}
-              style={{marginBottom: 40}}
+              name="userName"
+              rules={[{ ...FORM_REQUIRED_RULE }]}
+              style={{ marginBottom: 40 }}
             >
-              <Input 
-                prefix={<UserOutlined style={{ fontSize: 15, color: '#73787F'}}/>} 
-                placeholder="请输入用户名"
-                style={{height: 40}} 
+              <Input
+                prefix={<UserOutlined style={{ fontSize: 15, color: '#73787F' }} />}
+                placeholder={t("请输入")+' '+t('账号')}
+                style={{ height: 40 }}
               />
             </Form.Item>
             <Form.Item
               name="password"
-              rules={[{...FORM_REQUIRED_RULE}]}
-              style={{marginBottom: 40}}
+              rules={[{ ...FORM_REQUIRED_RULE }]}
+              style={{ marginBottom: 40 }}
             >
-              <Input.Password 
-                prefix={<LockOutlined style={{fontSize: 15, color: '#73787F'}}/>} 
-                placeholder="请输入密码" 
-                style={{height: 40}} 
+              <Input.Password
+                prefix={<LockOutlined style={{ fontSize: 15, color: '#73787F' }} />}
+                placeholder={t("请输入")+' '+t('密码')}
+                style={{ height: 40 }}
               />
             </Form.Item>
-            <div style={{display: 'flex', justifyContent: 'space-between'}}>
+            {showImg && <Form.Item
+              style={{ position: 'relative' }}>
               <Form.Item
-                name="remember"
-                valuePropName="checked"
+                name="keywords"
+              // rules={[{ ...FORM_REQUIRED_RULE }]}
               >
-                <Checkbox>记住密码</Checkbox>
+                <Input
+                  prefix={<ExclamationCircleOutlined style={{ fontSize: 15, color: '#73787F' }} />}
+                  placeholder={t("请输入")+' '+t('验证码')}
+                  style={{ height: 40, width: 300 }}
+                />
               </Form.Item>
-              <Tooltip title="如果需要注册经销商账号，请联系我support@sermatec-ess.com">
-                <div style={{cursor: 'pointer'}}>注册</div>
-              </Tooltip>
-            </div>
+              <img
+                style={{ height: 38, width: 100, position: 'absolute', top: 1, right: 0 }}
+                src={codeImgUrl}
+                onClick={changeCodeImgUrl} />
+            </Form.Item>
+
+            }
+
+            <Form.Item
+              name="remember"
+              valuePropName="checked"
+            >
+              <Checkbox>{t('记住密码')}</Checkbox>
+            </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit" style={{width: '100%', height: 40}}>
-                登录
+              <Button type="primary" htmlType="submit" style={{ width: '100%', height: 40 }}>
+                {t('登录')}
               </Button>
+            </Form.Item>
+            <Form.Item label='Language' labelCol={10}>
+              <Radio.Group name="radiogroup" defaultValue={language} onChange={changeLanguage}>
+                <Radio value={3}>English</Radio>
+                <Radio value={1}>中文</Radio>
+              </Radio.Group>
             </Form.Item>
           </Form>
         </div>

@@ -4,8 +4,8 @@ export default {
     namespace: 'global',
 
     state: {
-      theme: getLocalStorage("theme") || "dark",
-      locale: getLocalStorage('locale')||"zh-CN"
+      theme: getLocalStorage('theme') || "default",
+      locale: getLocalStorage('locale')||"en-US"
     },
    
     effects: {

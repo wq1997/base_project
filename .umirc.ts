@@ -25,18 +25,12 @@ export default defineConfig({
   },
   outputPath: OutputPathName(UMI_ENV),
   define: {
-    'process.env': {
-      ...process.env,
-      API_URL_1: apiUrl[`${UMI_ENV}1`] || apiUrl[`test1`], 
-      API_URL_2: apiUrl[`${UMI_ENV}2`] || apiUrl[`test2`],
-      API_URL_3: apiUrl[`${UMI_ENV}3`] || apiUrl[`test3`]
-    }
+    "process.env.API_URL": apiUrl[UMI_ENV||'test'],
   },
   alias: {
     '@/permissions': path.resolve(__dirname,'src/permissions'),
     '@/hooks': path.resolve(__dirname,'src/hooks'),
     '@/utils': path.resolve(__dirname,'src/utils'),
-    '@/components': path.resolve(__dirname,'src/components'),
   },
   chainWebpack: (config) => {
     config

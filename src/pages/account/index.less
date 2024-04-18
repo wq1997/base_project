@@ -1,9 +1,53 @@
-.login{
-    :global{
-        .ant-input-password{
+.login {
+    position: relative;
+
+    .Title {
+        position: absolute;
+        left: 83px;
+        font-family: DingTalkJinBuTi;
+        color: #FFFFFF;
+        line-height: 72px;
+        text-shadow: 4px 8px 4px #000000;
+    }
+
+    .formCard {
+        background: rgba(0, 0, 0, 0.3);
+        box-shadow: 8px 8px 8px 0px rgba(0, 0, 0, 0.16);
+        border-radius: 16px;
+        backdrop-filter: blur(6px);
+        }
+p{
+    font-family: PingFangRegular;
+
+}
+    :global {
+        .ant-input-password {
             &::placeholder {
                 line-height: 40px;
             }
         }
+
+        .ant-tabs-nav {
+            margin-bottom: 0px;
+        }
     }
+}
+@media screen and (min-width: 2000px) {
+    .Title{
+        font-size: 60px;
+    }
+   
+}
+
+@media screen and (min-width: 1000px) and (max-width: 2000px) {
+    .Title{
+        font-size: 42px;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .Title{
+        font-size: 36px;
+    }
+
 }

@@ -1,6 +1,6 @@
 {
   "private": true,
-  "author": "wangqing <2957009914@qq.com>",
+  "author": "",
   "scripts": {
     "dev": "umi dev",
     "build": "umi build",
@@ -11,21 +11,28 @@
     "start": "npm run dev"
   },
   "dependencies": {
+    "@amap/amap-jsapi-loader": "^1.0.1",
     "@ant-design/icons": "^5.1.4",
     "@ant-design/use-emotion-css": "^1.0.4",
-    "@antv/g6": "^4.8.22",
+    "@iconify/react": "^4.1.1",
+    "@visactor/react-vtable": "^0.20.0",
+    "@visactor/vtable": "^0.20.0",
     "ahooks": "^3.7.8",
-    "antd": "^5.14.1",
-    "antd-mobile": "^5.32.0",
+    "antd": "^5.6.4",
     "axios": "^1.4.0",
-    "classnames": "^2.3.2",
+    "classnames": "^2.5.1",
     "cross-env": "^7.0.3",
-    "dayjs": "^1.11.9",
+    "dayjs": "^1.11.10",
     "echarts": "^5.4.3",
     "echarts-for-react": "^3.0.2",
+    "echarts-liquidfill": "^3.1.0",
+    "js-export-excel": "^1.1.4",
     "jsencrypt": "^3.3.2",
     "moment": "^2.29.4",
-    "react-helmet": "^6.1.0",
+    "qweather-icons": "^1.6.0",
+    "react-amap": "^1.2.8",
+    "react-stomp": "^5.1.0",
+    "styled-components": "^6.1.6",
     "umi": "^4.0.72"
   },
   "devDependencies": {

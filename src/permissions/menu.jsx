@@ -1,193 +1,146 @@
-import { Menu, theme as antdTheme } from "antd";
-import { useEffect, useState } from "react";
-import { Link, useLocation, useSelector } from "umi";
-import useIcon from "@/hooks/useIcon";
+import { Menu, theme } from 'antd';
+import { Link, useLocation, useSelector, FormattedMessage } from 'umi';
+// import menu from '../router/menuRoute'
+import { AppstoreOutlined, ToolOutlined, AlertOutlined, LineChartOutlined, ControlOutlined, SettingOutlined } from '@ant-design/icons';
+import { useEffect, useState } from 'react';
+import { useSetState } from 'ahooks';
+// const { token } = theme.useToken();
 
 const { SubMenu } = Menu;
 
 const MenuList = [
     {
-        key: "/vpp/homepage",
-        label: "首页",
-        icon: "icon-shujuhoutaixitong",
-        darkIcon: 'icon-shujuhoutaixitong-copy',
-        permissions: 'menu:home'
+        label: <FormattedMessage id='app.Plant' />,
+        key: '/index/plant',
+        icon: <LineChartOutlined />,
+        permissions:'A',
     },
     {
-        key: "/vpp/demandResponse",
-        label: "需求侧响应",
-        icon: "icon-wuliaoxuqiu",
-        darkIcon: "icon-wuliaoxuqiu-copy",
-        permissions: 'menu:demand_response',
-        children: [
-            {
-                key: "/vpp/demandResponse/invitation/invitationList",
-                label: "邀约管理",
-                permissions: 'menu:invite',
-            },
-            {
-                key: "/vpp/demandResponse/task/search",
-                label: "任务管理",
-                permissions: 'menu:task',
-            },
-            {
-                key: "/vpp/demandResponse/income/overview",
-                label: "收益管理",
-                permissions: 'menu:profit',
-            },
-        ],
-    },
-    // {
-    //     key: '/transaction/homepage',
-    //     label: '现货交易',
-    //     icon: 'icon-jiaoyi',
-    //     darkIcon: 'icon-jiaoyi-copy',
-    //     target: '_blank',
-    //     permissions: '',
-    // },
-    {
-        key: "/vpp/baseinfo",
-        label: "基础资料",
-        icon: "icon-xiangmushenbaoguanli",
-        darkIcon: "icon-xiangmushenbaoguanli-copy-copy",
-        permissions: 'menu:bas_data',
-        children: [
-            {
-                key: "/vpp/baseinfo/company",
-                label: "公司配置",
-                permissions: 'menu:company',
-            },
-            {
-                key: "/vpp/baseinfo/role",
-                label: "角色管理",
-                permissions: 'menu:role',
-            },
-            {
-                key: "/vpp/baseinfo/account",
-                label: "账号管理",
-                permissions: 'menu:user',
-            },
-            {
-                key: "/vpp/baseinfo/level",
-                label: "公司评级管理",
-                permissions: 'menu:company_ratings',
-            },
-        ],
+        label: <FormattedMessage id='app.Device' />,
+        key: '/index/device',
+        icon: <ToolOutlined />,
     },
     {
-        key: "/vpp/setting",
-        label: "系统设置",
-        icon: "icon-icon_shezhi",
-        darkIcon: "icon-icon_shezhi-copy",
-        permissions: 'menu:sys_cfg',
-        children: [
-            {
-                key: "/vpp/setting/log",
-                label: "系统日志",
-                permissions: 'menu:sys_logs',
-            },
-            {
-                key: "/vpp/setting/notification",
-                label: "系统通知",
-                permissions: 'menu:notice',
-            },
-        ],
+        label: <FormattedMessage id='app.PolicyConfiguration' />,
+        key: '/index/policyConfiguration',
+        icon: <ControlOutlined />,
+        // permissions:'A/B',
     },
-];
+    {
+        label: <FormattedMessage id='app.Alarm' />,
+        key: '/index/alarm',
+        icon: <AlertOutlined />,
+        children: [
+            { label: <FormattedMessage id='app.RealTimeAlerts' />, key: '/index/alarm/realtimeAlarm', },
+            { label: <FormattedMessage id='app.HistoricalAlerts' />, key: '/index/alarm/historyAlarm', },
+        ]
+    },
 
-const MyMenu = () => {
-    const Icon = useIcon();
-    const { token } = antdTheme.useToken();
-    const [selectedKeys, setSelectedKeys] = useState("");
-    const { theme } = useSelector(state => state.global);
-    const { user } = useSelector(state => state.user);
+    {
+        label: <FormattedMessage id='app.SystemAdministration' />,
+        key: '/index/systemManagement',
+        icon: <SettingOutlined />,
+        children: [
+            { label: <FormattedMessage id='app.UserManagement' />, key: '/index/systemManagement/user', },
+            { label: <FormattedMessage id='app.RecordsOfOperations' />, key: '/index/systemManagement/operationRecords', },
+        ]
+    },
+]
 
-    const getMenu = menuList => {
-        return menuList.map(menu => {
-            if (menu.children) {
-                return (
-                    <SubMenu
-                        key={menu.key}
-                        title={menu.label}
-                        icon={
-                            <Icon
-                                type={theme === 'dark' ? menu.darkIcon : menu.icon}
-                                style={{
-                                    color: token.color11,
-                                    fontSize: 20,
-                                }}
-                            />
-                        }
-                    >
-                        {getMenu(menu.children)}
-                    </SubMenu>
-                );
-            } else {
-                if(user?.selfPermCodes?.includes(menu.permissions) || !menu.permissions){
+const getMenu = menuList => {
+    const { plantDetails } = useSelector(function (state) {
+        return state.device
+    });
+    const { user } = useSelector(function (state) {
+        return state.user
+    });
+    const [currentDivice, setCurrentDivice] = useState(plantDetails.model);
+    useEffect(() => {
+        setCurrentDivice(plantDetails.model)
+    }, [plantDetails])
+
+    return menuList.map(menu => {
+        if (menu.children) {
+            return (
+                <SubMenu
+                    key={menu.key}
+                    title={menu.label}
+                    icon={menu.icon}
+                    style={{ fontSize: '18px' }}
+
+                >
+                    {getMenu(menu.children)}
+                </SubMenu>
+            );
+        } else {
+            if (menu.type) {
+                if (currentDivice?.find(it => it === menu.type)) {
                     return (
-                        <Menu.Item
-                            key={menu.key}
-                            icon={
-                                <Icon
-                                    type={theme === 'dark' ? menu.darkIcon : menu.icon}
-                                    style={{
-                                        fontSize: 20,
-                                    }}
-                                />
-                            }
+                        <Menu.Item key={menu.key}
+                            style={{ fontSize: '16px' }}
                         >
-                            <Link to={menu.key} target={menu?.target}>{menu.label}</Link>
+                            <Link to={menu.key}>{menu.label}</Link>
                         </Menu.Item>
                     );
                 }
-                return null;
+                return
             }
-        });
-    };
+            if (menu.permissions=='A') {
+                if (user.roleId == 3) {
+                    return (
+                        <Menu.Item key={menu.key} icon={menu.icon}
+                            style={{ fontSize: menu.icon ? '18px' : '16px' }}
+                        >
+                            <Link to={menu.key}>{menu.label}</Link>
+                        </Menu.Item>
+                    );
+                }
+                return
+            }
+            if (menu.permissions=='A/B') {
+                if (user.roleId != 1) {
+                    return (
+                        <Menu.Item key={menu.key} icon={menu.icon}
+                            style={{ fontSize: menu.icon ? '18px' : '16px' }}
+                        >
+                            <Link to={menu.key}>{menu.label}</Link>
+                        </Menu.Item>
+                    );
+                }
+                return
+            }
+            return (
+                <Menu.Item key={menu.key} icon={menu.icon}
+                    style={{ fontSize: menu.icon ? '18px' : '16px' }}
+                >
+                    <Link to={menu.key}>{menu.label}</Link>
+                </Menu.Item>
+            );
+        }
+    });
+};
+
+const MyMenu = () => {
     const location = useLocation();
     const { pathname } = location;
-    const [openKeys, setOpenKeys] = useState([]);
-    const getOpenKeys = () => {
+    const getDefaultOpenKeys = () => {
         const pathList = pathname.split("/");
-        let newOpenKeys = [...openKeys];
         if (pathList.length < 4) {
-            newOpenKeys = newOpenKeys.concat([pathname]);
+            return [pathname];
         } else {
-            newOpenKeys = newOpenKeys.concat([pathList.splice(0, 3).join("/")]);
+            return [pathList.splice(0, 3).join("/")]
         }
-        setOpenKeys(newOpenKeys);
-    };
-
-    const onOpenChange = openKeys => {
-        setOpenKeys(openKeys);
-    };
-
-    const getSelectKeys = () => {
-        if (pathname.startsWith("/vpp/demandResponse/task")) {
-            setSelectedKeys("/vpp/demandResponse/task/search");
-        } else if (pathname.startsWith("/vpp/demandResponse/income")) {
-            setSelectedKeys("/vpp/demandResponse/income/overview");
-        } else if (pathname.startsWith("/vpp/demandResponse/invitation")) {
-            setSelectedKeys("/vpp/demandResponse/invitation/invitationList");
-        }else {
-            setSelectedKeys(pathname);
-        }
-    };
-
-    useEffect(() => {
-        getSelectKeys();
-        getOpenKeys();
-    }, [pathname]);
+    }
     return (
         <Menu
             mode="inline"
-            openKeys={openKeys}
-            onOpenChange={onOpenChange}
-            selectedKeys={[selectedKeys]}
+            defaultOpenKeys={getDefaultOpenKeys()}
+            defaultSelectedKeys={[pathname]}
+            selectedKeys={[pathname]}
         >
             {getMenu(MenuList)}
         </Menu>
-    );
-};
+    )
+}
 
 export default MyMenu;
