@@ -996,11 +996,12 @@ const NewStrategy = () => {
                     setEditPlanOpen(false);
                     form6.resetFields();
                 }}
-                width={1500}
+                width={960}
                 onCancel={()=>{
                     setEditPlanOpen(false);
                     form6.resetFields();
                 }}
+                className={styles.detailsModal}
             >
                 <Form 
                     form={form6}
@@ -1008,14 +1009,6 @@ const NewStrategy = () => {
                 >
                     <Form.Item label="策略名称" name="name" rules={[FORM_REQUIRED_RULE]}>
                         <Input placeholder="请输入策略名称" style={{maxWidth: 320}} />
-                    </Form.Item>
-                    <Form.Item label="电价">
-                        <Row>
-                            <Col span={4}>尖：{data.form2Data?.pointed}</Col>
-                            <Col span={4}>峰：{data.form2Data?.peak}</Col>
-                            <Col span={4}>平：{data.form2Data?.flat}</Col>
-                            <Col span={4}>谷：{data.form2Data?.valley}</Col>
-                        </Row>
                     </Form.Item>
                     <Form.Item name="datasource" valuePropName="dataSource">
                         <Table
@@ -1038,7 +1031,7 @@ const NewStrategy = () => {
                                     title: '时段',
                                     key: 'time',
                                     dataIndex: 'time',
-                                    width: 500,
+                                    // width: 500,
                                     render(_,record,index){
                                         if(index===editKey){
                                             return (
@@ -1232,10 +1225,10 @@ const NewStrategy = () => {
                             }
                         ]
                     }} 
-                    style={{width: 1400,height: 450}}
+                    style={{width: '100%',height: 300,marginBottom:100}}
                 />
 
-                <ReactECharts 
+                {/* <ReactECharts 
                     option={{
                         color: [token.colorPrimary],
                         grid:{
@@ -1308,7 +1301,7 @@ const NewStrategy = () => {
                         ]
                     }}
                     style={{width: 1400,height: 250}}
-                />
+                /> */}
             </Modal>
         </div>
     )

@@ -52,3 +52,7 @@ export const getDefStrategyList = (payload) => {
 export const getStrategyCurve = (payload) => {
     return axiosInstance.get(`${path}/strategy/getStrategyCurve?strategyId=${payload.strategyId}`);
 }
+// 并网点列表（全部）
+export const getGridPointList = (payload) => {
+    return axiosInstance.get(`${path}/getGridPointList?plantId=${payload.plantId}`);
+}

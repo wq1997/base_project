@@ -7,12 +7,23 @@ import { theme, Calendar, Tree, Select } from "antd";
 import dayjs from 'dayjs';
 import moment from 'moment';
 import { useSelector, useIntl } from "umi";
+import { getGridPointList, getStrategyPlanList,getStrategyList } from '@/services/policy'
+const { Option } = Select;
 
 function Com(props) {
-  useEffect(() => {
-  }, []);
+  const [seletOption, setSelectOption] = useState([]);
+  const [gridId, setGridId] = useState();
   const { token } = theme.useToken();
   const [date, setDate] = useState(new Date());
+  useEffect(() => {
+    getInit();
+  }, []);
+  useEffect(() => {
+    if (seletOption?.length) {
+      getPlanList();
+      getStrategy();
+    }
+  },[gridId])
   const onSelect = (value, mode) => {
     setDate(value)
   };
@@ -25,38 +36,70 @@ function Com(props) {
     );
     return msg
   }
-  const onPanelChange = (value, mode) => {
-    setDate(value)
-  };
-
-  const treeData = [
+  const [strategyTreeData,setStrategyTreeData] = useState([
     {
       title: '我的策略',
       key: '0-0',
+      selectable:false,
       children: [
-        {
-          title: <span>默认策略1</span>,
-          key: '0-0-0'
-        },
-        {
-          title: <span>默认策略2</span>,
-          key: '0-0-1'
-        },
-        {
-          title: <span>默认策略3</span>,
-          key: '0-0-2'
-        }
+        // {
+        //   title:'默认策略1',
+        //   key: '0-0-0'
+        // },
+       
       ],
     },
-  ];
+  ]);
+  const onPanelChange = (value, mode) => {
+    setDate(value)
+  };
+  const getInit = async () => {
+    let { data } = await getGridPointList({ plantId: localStorage.getItem('plantId') });
+    let arr = [];
+    data?.data.map(it => {
+      arr.push({
+        label: it.gridPointName,
+        value: it.id,
+        ...it
+      })
+    })
+    setSelectOption([...arr]);
+    setGridId(arr[0]?.value)
+  }
+  const changeGrid = (val) => {
+    console.log(val, 1212);
+    setGridId(val);
+  }
 
+  const getPlanList = async () => {
+    let { data } = await getStrategyPlanList({ gridPointId: gridId });
+  }
+  const getStrategy = async () => {
+    let { data } = await getStrategyList({ gridPointId: gridId });
+    let arr=[];
+    data.data.map((it,i)=>{
+      arr.push({
+        ...it,title:it.strategyName,key:`0-0-${i}`
+      })
+    })
+    setStrategyTreeData([{...strategyTreeData[0],children:[...arr]}]);
+  }
+ 
   return (
     <div className={styles.contents}>
-      <div className={styles.hearder} style={{ backgroundColor: token.titleCardBgc,color:token.colorNormal}}>
-        并网点: 
+      <div className={styles.hearder} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal }}>
+        并网点:
         <Select
-          style={{ width: '200px',marginLeft:'10px' }}
-        />
+          style={{ width: '200px', marginLeft: '10px' }}
+          key={seletOption[0]?.value}
+          defaultValue={seletOption[0]?.value}
+          onChange={changeGrid}
+        >
+          {seletOption && seletOption.map(item => {
+            return (<Option key={item.value} value={item.value}>{item.label}</Option>);
+          })
+          }
+        </Select>
       </div>
       <div className={styles.leftTop_Calendar}>
         <CardModel
@@ -75,8 +118,8 @@ function Com(props) {
           }
           content={
             <Tree
-              checkable
-              treeData={treeData}
+              // checkable
+              treeData={strategyTreeData}
               defaultExpandAll
             />
           }
