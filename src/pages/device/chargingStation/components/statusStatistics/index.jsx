@@ -14,7 +14,8 @@ import {
     SettingOutlined,
 
 } from '@ant-design/icons';
-import { getChargeStationEarning, } from '@/services/deviceTotal'
+import { getChargeStationEarning, } from '@/services/deviceTotal';
+import { useIntl } from "umi";
 
 function Com(props) {
     var  colorList=['#528AEB', '#F3CE55', '#03B4B4',];
