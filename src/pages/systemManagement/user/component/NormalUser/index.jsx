@@ -106,7 +106,7 @@ function Com(props) {
             if (data) {
                 removeLocalStorage("Token");
                 history.push('/login');
-                message.success({ content: '密码修改成功', duration: 2 });
+                message.success({ content: t('密码修改成功'), duration: 2 });
             }
         } catch (errorInfo) {
             console.log('Failed:', errorInfo);

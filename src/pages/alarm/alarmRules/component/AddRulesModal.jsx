@@ -155,7 +155,7 @@ const App = (props) => {
               return (
                 <>
                   <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.required }]}>
-                    <Switch checkedChildren="启用" unCheckedChildren="禁用" />
+                    <Switch checkedChildren={t("启用")} unCheckedChildren={t("禁用")} />
                   </Form.Item>
                 </>
               )

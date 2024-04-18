@@ -6,13 +6,22 @@ import styles from './index.less'
 import { Pagination, Table} from "antd"
 import {  getChargeStationList } from '@/services/deviceTotal'
 import { theme } from "antd";
+import { useSelector, useIntl } from "umi";
 
 function Com(props) {
     const [data, setData] = useState([]);
     const [current, setCurrent] = useState(1);
     const [scroolY, setScroolY] = useState(200);
     const [screenH, setScreenH] = useState('');
-
+    const intl = useIntl();
+    const t = (id) => {
+      const msg = intl.formatMessage(
+        {
+          id,
+        },
+      );
+      return msg
+    }
     
   useEffect(() => {
     setScreenH(document.documentElement.clientHeight || document.body.clientHeight)
@@ -36,77 +45,77 @@ function Com(props) {
     const { token } = theme.useToken();
      const listOfCharges=[
         {
-            title: '设备状态',
+            title: t('设备状态'),
             dataIndex: 'workStaDesc',
             key: 'workStaDesc',
         },
         {
-            title: '设备名称',
+            title: t('设备名称'),
             dataIndex: 'name',
             key: 'name',
         },
         {
-            title: '设备类型',
+            title: t('设备类型'),
             dataIndex: 'inCabTypeDesc',
             key: 'inCabTypeDesc',
         },
         {
-            title: '充电电压',
+            title: t('充电电压'),
             dataIndex: 'chargeVol',
             key: 'chargeVol',
         },
         {
-            title: '充电功率',
+            title: t('充电功率'),
             dataIndex: 'pIn',
             key: 'pIn',
         },
         {
-            title: '充电电量',
+            title: t('充电电量'),
             dataIndex: 'inOEAcc',
             key: 'inOEAcc',
         },
         {
-            title: '车辆SOC',
+            title: t('车辆SOC'),
             dataIndex: 'soc',
             key: 'soc',
         },
         {
-            title: '累计电费',
+            title: t('累计电费'),
             dataIndex: 'inOCAcc',
             key: 'inOCAcc',
         },
         {
-            title: '累计服务费',
+            title: t('累计服务费'),
             dataIndex: 'serviceFee',
             key: 'serviceFee',
         },
         {
-            title: '累计总金额',
+            title: t('累计总金额'),
             dataIndex: 'totalMoney',
             key: 'totalMoney',
         },
         {
-            title: '开始时间',
+            title: t('开始时间'),
             dataIndex: 'startTime',
             key: 'startTime',
         },
         {
-            title: '更新时间',
+            title: t('更新时间'),
             dataIndex: 'curDT',
             key: 'curDT',
         },
         {
-            title: '运行时长',
+            title: t('运行时长'),
             dataIndex: 'inTime',
             key: 'inTime',
         },    
         {
-            title: '订单号',
+            title: t('订单号'),
             dataIndex: 'orderNo',
             key: 'orderNo',
         },
         {
-            title: '订单状态',
+            title: t('订单状态'),
             dataIndex: 'orderStatus',
             key: 'orderStatus',
         },
@@ -124,7 +133,7 @@ function Com(props) {
         <div className={styles.content} id='table'>
             <CardModel
                 title={
-                    "充电桩一览表"
+                    t("充电桩一览表")
                 }
                 content={
                     <div>

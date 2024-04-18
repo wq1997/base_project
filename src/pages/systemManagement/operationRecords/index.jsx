@@ -98,6 +98,7 @@ const RealtimeAlarm = () => {
         <Table
           columns={clums}
           data={data?.records}
+          pagination={false}
         />
         <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} total={data?.total} onChange={changPage} />
       </div>

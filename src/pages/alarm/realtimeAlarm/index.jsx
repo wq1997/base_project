@@ -1,7 +1,7 @@
 import Table from '@/components/Table.jsx'
 import { alarmTableColums } from '@/utils/constants'
 import { useEffect, useState } from 'react'
-import { useSelector, } from "umi";
+import { useSelector, useIntl} from "umi";
 import { CardModel } from "@/components";
 import styles from "./index.less";
 import { Pagination, theme } from "antd"
@@ -12,9 +12,17 @@ const RealtimeAlarm = () => {
   const [data, setData] = useState([]);
   const [current, setCurrent] = useState(1);
   const { token } = theme.useToken();
+  const intl = useIntl();
+  const t = (id) => {
+      const msg = intl.formatMessage(
+          {
+              id,
+          },
+      );
+      return msg
+  }
   useEffect(() => {
     getData();
-
   }, []);
   useEffect(() => {
     let timer = setInterval(() => {
@@ -42,7 +50,7 @@ const RealtimeAlarm = () => {
     <div style={{width:'100%',height:'100%',padding:'0 0 10px 0'}}>
       <CardModel
         title={
-          '实时告警'
+          t('实时告警')
         }
         content={
           <div className={styles.alarmWrap}>

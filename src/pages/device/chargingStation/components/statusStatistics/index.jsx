@@ -20,11 +20,21 @@ function Com(props) {
     var  colorList=['#528AEB', '#F3CE55', '#03B4B4',];
     const { token } = theme.useToken();
     const [options, setOptions] = useState({});
+    const intl = useIntl();
+    const t = (id) => {
+      const msg = intl.formatMessage(
+        {
+          id,
+        },
+      );
+      return msg
+    }
+    
     const getOptions = () => {
         setOptions({
             title: {
                 text: '8',
-                subtext: '充电桩总数',
+                subtext: t('充电桩总数'),
                 x: 'center',
                 y: 'center',
                 textStyle: {
@@ -94,9 +104,9 @@ function Com(props) {
                                 formatter: function(params){
                                     var str = '';
                                     switch(params.name){
-                                        case '空闲充电桩':str = '{a|}\n{nameStyle|空闲 }'+'{rate|'+params.value+'台}';break;
-                                        case '占用充电桩':str = '{b|}\n{nameStyle|占用 }'+'{rate|'+params.value+'台}';break;
-                                        case '故障充电桩':str = '{c|}\n{nameStyle|故障 }'+'{rate|'+params.value+'台}';break;
+                                        case t('空闲充电桩'):str = `{a|}\n{nameStyle|${t('空闲')} }`+'{rate|'+params.value+`${t('台')}}`;break;
+                                        case t('占用充电桩'):str = `{b|}\n{nameStyle|${t('占用')} }`+'{rate|'+params.value+`${t('台')}}`;break;
+                                        case t('故障充电桩'):str = `{c|}\n{nameStyle|${t('故障')} }`+'{rate|'+params.value+`${t('台')}}`;break;
                                     }
                                     return str
                                 },
@@ -116,9 +126,9 @@ function Com(props) {
                             }
                         },
                     data: [
-                      { value: 3, name: '空闲充电桩' },
-                      { value: 4, name: '占用充电桩' },
-                      { value: 1, name: '故障充电桩' },
+                      { value: 3, name: t('空闲充电桩') },
+                      { value: 4, name: t('占用充电桩') },
+                      { value: 1, name: t('故障充电桩') },
                     ]
                   }
             ]
@@ -196,7 +206,7 @@ function Com(props) {
         <div className={styles.content}>
             <CardModel
              title={
-                "充电桩状态统计"
+                t("充电桩状态统计")
             }
                 content={
                     <div className={styles.wrap}>
@@ -209,7 +219,7 @@ function Com(props) {
                                     <div className={styles.cardItem} style={{ color: it.color,backgroundColor:token.cardBgc, boxShadow:token.cardShadow }}>
                                         <div className={styles.cardItemTitle}>
                                             {it.icon}
-                                            <span style={{color: token.smallTitleColor, fontWeight: 500, fontSize: '16px', marginLeft: '3px' }}>{it.name}</span>
+                                            <span style={{color: token.smallTitleColor, fontWeight: 500, fontSize: '16px', marginLeft: '3px' }}>{t(it.name)}</span>
                                         </div>
                                         <div className={styles.cardItemVaue} style={{color:token.titleColor}}>
                                             {it.value}

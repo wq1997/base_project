@@ -327,7 +327,6 @@ function OverView(props) {
                         content={
                             <div className={styles.echartPartCardwrap}>
                             <ReactECharts option={optionsPower} style={{ height: '100%' }} />
-
                             </div>
                         }
                     />

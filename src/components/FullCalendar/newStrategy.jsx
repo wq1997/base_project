@@ -27,11 +27,13 @@ import { FORM_REQUIRED_RULE } from "@/utils/constants";
 import { EditOutlined, CheckOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import ReactECharts from 'echarts-for-react';
+import { useIntl} from "umi";
 
 const colon = false;
 const timeSplitSymbol = "-";
 const tabsList = [
     {label: '基础配置', key: 'BaseConfig'},
+    {label: '电价配置', key: 'ElectricityPrice'},
     {label: '充放电配置', key: 'ElectricConfig'},
 ]
 const typeList = [
@@ -75,7 +77,15 @@ const NewStrategy = () => {
     const [newPlanOpen, setNewPlanOpen] = useState(false); // 新增策略
     const [editPlanOpen, setEditPlanOpen] = useState(false); // 策略详情
     const [editKey, setEditKey] = useState(-1); // 新增时重新编辑策略列表key
-
+    const intl = useIntl();
+    const t = (id) => {
+        const msg = intl.formatMessage(
+            {
+                id,
+            },
+        );
+        return msg
+    }
     const [strategyDatasource, setStrategyDatasource] = useState([
         {
             id: 1,
@@ -106,7 +116,7 @@ const NewStrategy = () => {
 
     const strategyColumns = [
         {
-            title: '序号',
+            title: t('序号'),
             dataIndex: 'order',
             key: 'order',
             render(_,record,index){
@@ -114,22 +124,22 @@ const NewStrategy = () => {
             }
         },
         {
-            title: '策略名称',
+            title:t('策略名称'),
             dataIndex: 'name',
             key: 'name',
         },
         {
-            title: '创建用户',
+            title: t('创建用户'),
             dataIndex: 'creator',
             key: 'creator',
         },
         {
-            title: '创建时间',
+            title: t('创建时间'),
             dataIndex: 'createTime',
             key: 'createTime',
         },
         {
-            title: '操作',
+            title: t('操作'),
             key: "Action",
             render: (_, record, index)=>{
                 return (
@@ -144,14 +154,14 @@ const NewStrategy = () => {
                                 setEditKey(index);
                             }}
                         >
-                            详情
+                           {t('详情')} 
                         </Typography.Link>
                         <Typography.Link 
                             style={{color: token.deleteBtnColor}}
                             onClick={()=>{
                                 Modal.confirm({
-                                    title: '系统提示',
-                                    content: '策略删除后将无法恢复，是否确认删除该策略？',
+                                    title: t('系统提示'),
+                                    content:t('策略删除后将无法恢复，是否确认删除该策略？'),
                                     onOk(){
                                         const cloneStrategyDatasource = JSON.parse(JSON.stringify(strategyDatasource));
                                         const newData = cloneStrategyDatasource.splice(index,1);
@@ -160,7 +170,7 @@ const NewStrategy = () => {
                                 })
                             }}
                         >
-                            删除
+                           {t('删除')} 
                         </Typography.Link>
                     </Space>
                 )
@@ -170,7 +180,7 @@ const NewStrategy = () => {
 
     const yearExcuteColumns = [
         {
-            title: '序号',
+            title: t('序号'),
             dataIndex: 'order',
             key: 'order',
             render(_,record,index){
@@ -178,22 +188,22 @@ const NewStrategy = () => {
             }
         },
         {
-            title: '策略名称',
+            title: t('策略名称'),
             dataIndex: 'name',
             key: 'name',
         },
         {
-            title: '起始时间',
+            title: t('起始时间'),
             dataIndex: 'startTime',
             key: 'startTime',
         },
         {
-            title: '结束时间',
+            title: t('结束时间'),
             dataIndex: 'endTime',
             key: 'endTime',
         },
         {
-            title: '备注',
+            title: t('备注'),
             dataIndex: 'remark',
             key: 'remark',
             ellipsis: true,
@@ -216,7 +226,7 @@ const NewStrategy = () => {
             }
         },
         {
-            title: '操作',
+            title: t('操作'),
             key: "Action",
             render: (_, record, index)=>{
                 return (
@@ -238,14 +248,14 @@ const NewStrategy = () => {
                                 setCreateYearExcuteOpen(true);
                             }}
                         >
-                            编辑
+                         {t('编辑')}   
                         </Typography.Link>
                         <Typography.Link 
                             style={{color: token.deleteBtnColor}}
                             onClick={()=>{
                                 Modal.confirm({
-                                    title: '系统提示',
-                                    content: '年度执行计划删除后将无法恢复，是否确认删除该年度执行计划？',
+                                    title: t('系统提示'),
+                                    content: t('年度执行计划删除后将无法恢复，是否确认删除该年度执行计划？'),
                                     onOk(){
                                         const cloneYearExcuteDatasource = JSON.parse(JSON.stringify(yearExcuteDatasource));
                                         const newData = cloneYearExcuteDatasource.splice(index,1);
@@ -254,7 +264,7 @@ const NewStrategy = () => {
                                 })
                             }}
                         >
-                            删除
+                           {t('删除')} 
                         </Typography.Link>
                     </Space>
                 )
@@ -264,7 +274,7 @@ const NewStrategy = () => {
 
     const onFininsh = async () => {
         setDrawerOpen(false);
-        message.success("新建成功");
+        message.success(t("新建成功"));
     }
 
 
@@ -281,20 +291,21 @@ const NewStrategy = () => {
             <Button type="primary" onClick={()=>setDrawerOpen(true)}>
                 <div className={styles.btn}>
                     <Iconify icon="material-symbols:add" size={24} />
-                    新建策略
+                    
+                    {t('新建策略')}
                 </div>
             </Button>
 
             <Drawer 
                 width="980" 
-                title="新建策略"
+                title={t("新建策略")}
                 open={drawerOpen} 
                 onClose={onCancel}
                 footer={
                     <Row justify="end">
                         <Space>
-                            <Button type="primary" onClick={onFininsh}>确定</Button>
-                            <Button onClick={onCancel}>取消</Button>
+                            <Button type="primary" onClick={onFininsh}>{t('确定')}</Button>
+                            <Button onClick={onCancel}>{t('取消')}</Button>
                         </Space>
                     </Row>
                 }
@@ -373,7 +384,7 @@ const NewStrategy = () => {
                                     <Input placeholder='请输入变压器容量'/>
                                 </Form.Item>
                             </Col>
-                            <Col span={12}>
+                            {/* <Col span={12}>
                                 <Form.Item 
                                     name="transformerCapacityProtectionRatio" 
                                     label="变压器容量保护比例(%)"
@@ -384,10 +395,8 @@ const NewStrategy = () => {
                                 >
                                     <Input placeholder='请输入变压器容量保护比例'/>
                                 </Form.Item>
-                            </Col>
-                        </Row>
-                        <Row gutter={37}>
-                            <Col span={12}>
+                            </Col> */}
+                             <Col span={12}>
                                 <Form.Item 
                                     name="powerTriggerValue" 
                                     label="防逆流功率触发值(kW)"
@@ -399,6 +408,9 @@ const NewStrategy = () => {
                                     <Input placeholder='请输入防逆流功率触发值(kW)'/>
                                 </Form.Item>
                             </Col>
+                        </Row>
+                        <Row gutter={37}>
+                           
                             <Col span={12}>
                                 <Form.Item 
                                     name="adjustmentStepSize" 
@@ -411,8 +423,6 @@ const NewStrategy = () => {
                                     <Input placeholder='请输入功率调节步长(kW)'/>
                                 </Form.Item>
                             </Col>
-                        </Row>
-                        <Row gutter={37}>
                             <Col span={12}>
                                 <Form.Item 
                                     name="regulationFluctuationRange" 
@@ -457,7 +467,7 @@ const NewStrategy = () => {
                                 ]}
                             />
                         </Form.Item>
-                        <Form.Item
+                        {/* <Form.Item
                             label="电价(元)"
                             labelCol={{
                                 span: 4
@@ -486,7 +496,7 @@ const NewStrategy = () => {
                                     </Form.Item>
                                 </Col>
                             </Row>
-                        </Form.Item>
+                        </Form.Item> */}
                     </Form>
                 }
                 {/* 充放电配置 */}
@@ -563,15 +573,15 @@ const NewStrategy = () => {
                         span: 3
                     }}
                 >
-                    <Form.Item label="策略" name={"name"} rules={[FORM_REQUIRED_RULE]}>
+                    <Form.Item label={t("策略")} name={"name"} rules={[FORM_REQUIRED_RULE]}>
                         <Select 
                             options={strategyDatasource.map(item => {
                                 return {
-                                    label: item.name,
+                                    label: t(item.name),
                                     value: item.name
                                 }
                             })}
-                            placeholder="请选择策略"
+                            placeholder={t("请选择策略")}
                         />
                     </Form.Item>
                     <Form.Item 
@@ -588,7 +598,7 @@ const NewStrategy = () => {
                                     if(month1&&day1&&month2&&day2){
                                         const flag = moment(`${month1}-${day1}`).isBefore(moment(`${month2}-${day2}`));
                                         if(!flag){
-                                            return Promise.reject('起始时间应该早于结束时间');
+                                            return Promise.reject(t('起始时间应该早于结束时间'));
                                         }
                                     }
                                     return Promise.resolve();
@@ -604,7 +614,7 @@ const NewStrategy = () => {
                                             showSearch
                                             filterOption={(input, option) =>
                                                 (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
-                                            placeholder="月"
+                                            placeholder={t("月")}
                                             options={fillInt(12).map((item => {
                                                 return {
                                                     label: item,
@@ -620,7 +630,7 @@ const NewStrategy = () => {
                                             showSearch
                                             filterOption={(input, option) =>
                                                 (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
-                                            placeholder="日"
+                                            placeholder={t("日")}
                                             options={fillInt(31).map((item => {
                                                 return {
                                                     label: item,
@@ -631,7 +641,7 @@ const NewStrategy = () => {
                                     </Form.Item>
                                 </Col>
                                 <Col span={2}>
-                                    <Row justify="center" style={{marginTop: 5}}>至</Row>
+                                    <Row justify="center" style={{marginTop: 5}}>{t('至')}</Row>
                                 </Col>
                                 <Col span={5}>
                                     <Form.Item 
@@ -643,7 +653,7 @@ const NewStrategy = () => {
                                             showSearch
                                             filterOption={(input, option) =>
                                                 (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
-                                            placeholder="月"
+                                            placeholder={t("月")}
                                             options={fillInt(12).map((item => {
                                                 return {
                                                     label: item,
@@ -659,7 +669,7 @@ const NewStrategy = () => {
                                             showSearch
                                             filterOption={(input, option) =>
                                                 (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
-                                            placeholder="日"
+                                            placeholder={t("日")}
                                             options={fillInt(31).map((item => {
                                                 return {
                                                     label: item,

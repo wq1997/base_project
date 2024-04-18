@@ -12,7 +12,7 @@ import ViewEngrgy from './components/ViewEngrgy/index.jsx';
 import ViewOutdoor from './components/ViewOutdoor/index.jsx';
 import { root} from "./mock.js";
 import { getDeviceTree } from '@/services/deviceTotal'
-import { history, useLocation } from "umi";
+import { history, useLocation,useIntl } from "umi";
 import styles from "./index.less";
 
 const defaultPageType = "ALL";
@@ -124,7 +124,15 @@ function Com(props) {
     const [expandedKeys, setExpandedKeys] = useState([]);
     const [searchValue, setSearchValue] = useState('');
     const [autoExpandParent, setAutoExpandParent] = useState(true);
-
+    const intl = useIntl();
+    const t = (id) => {
+      const msg = intl.formatMessage(
+        {
+          id,
+        },
+      );
+      return msg
+    }
     const onSelect = (selectedKeys, e) => {
         setPageType(e.node.type);
         setPageKey(e.node.key);
@@ -231,9 +239,9 @@ function Com(props) {
     return (
         <div className={styles.content} style={{ color: token.smallTitleColor }}>
             <div className={styles.contentLeft} style={{ backgroundColor: token.titleCardBgc }}>
-                <Title title={'设备列表'} />
+                <Title title={t('设备列表')} />
                 <Input
-                    placeholder='请输入关键字进行过滤'
+                    placeholder={t('请输入关键字进行过滤')}
                     style={{ marginTop: 10 }}
                     // onSearch={onSearch}
                     onChange={onChange}

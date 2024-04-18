@@ -4,11 +4,20 @@ import ScrollTable from "@/components/ScorllTable/index";
 import { CardModel } from "@/components";
 import styles from './index.less'
 import { theme } from "antd";
+import { useIntl } from "umi";
 
 function Com(props) {
     const [xxx, setXxx] = useState('')
     const { token } = theme.useToken();
-
+    const intl = useIntl();
+    const t = (id) => {
+      const msg = intl.formatMessage(
+        {
+          id,
+        },
+      );
+      return msg
+    }
     useEffect(() => {
         console.log('函数组件来咯')
     }, [])
@@ -17,7 +26,7 @@ function Com(props) {
         <div className={styles.content}>
             <CardModel
              title={
-                "告警信息"
+                t("告警信息")
             }
                 content={
                     <ScrollTable
@@ -25,15 +34,15 @@ function Com(props) {
                         headerLineColor={token.tableHead}
                         columns={[
                             {
-                                title: '故障时间',
+                                title: t('故障时间'),
                                 key: 'time'
                             },
                             {
-                                title: '故障描述',
+                                title: t('故障描述'),
                                 key: 'description'
                             },
                             {
-                                title: '故障等级',
+                                title: t('故障等级'),
                                 key: 'level'
                             }
                         ]}

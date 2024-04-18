@@ -1346,7 +1346,7 @@ function Com(props) {
         <div className={styles.content}>
             <CardModel
              title={
-                "实时功率(kW)"
+                t("实时功率")+'(kW)'
             }
                 content={
                     <ReactECharts option={options} style={{height: '100%'}} />

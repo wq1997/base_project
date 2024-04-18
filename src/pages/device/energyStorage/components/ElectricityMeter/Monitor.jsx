@@ -188,7 +188,7 @@ function Com({ id }) {
                     {t('查询')}
                 </Button>
                 <Button type="primary" style={{ backgroundColor: token.defaultBg }} >
-                    {t('导出')}excel
+                    {t('导出')} Excel
                 </Button>
             </div>
             <div className={styles.echartPart}>

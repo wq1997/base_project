@@ -7,7 +7,7 @@ import {
 } from "@/services/user";
 import { getEncrypt, setLocalStorage } from "@/utils/utils";
 import styles from "./index.less";
-import { history, useDispatch, FormattedMessage } from "umi";
+import { history, useDispatch, FormattedMessage,useIntl} from "umi";
 import { useEffect, useState } from "react";
 import { getBaseUrl } from '@/services/request'
 import img from '../../../src/assets/imges/login.png'
@@ -21,7 +21,15 @@ const Login = () => {
   const [publicKey, setPublicKey] = useState('');
   const [codeImgUrl, setCodeImgUrl] = useState(`${getBaseUrl()}/user/getKaptchaImage`);
   const [showImg, setShowImg] = useState(false);
-
+  const intl = useIntl();
+  const t = (id) => {
+      const msg = intl.formatMessage(
+          {
+              id,
+          },
+      );
+      return msg
+  }
   const changeCodeImgUrl = () => {
     setCodeImgUrl('');
     setTimeout(_ => (setCodeImgUrl(`${getBaseUrl()}/user/getKaptchaImage`)
@@ -117,7 +125,7 @@ const Login = () => {
             >
               <Input
                 prefix={<UserOutlined style={{ fontSize: 15, color: '#73787F' }} />}
-                placeholder="请输入账号"
+                placeholder={t("请输入账号")}
                 style={{ height: 40 }}
               />
             </Form.Item>
@@ -128,7 +136,7 @@ const Login = () => {
             >
               <Input.Password
                 prefix={<LockOutlined style={{ fontSize: 15, color: '#73787F' }} />}
-                placeholder="请输入密码"
+                placeholder={t("请输入密码")}
                 style={{ height: 40 }}
               />
             </Form.Item>
@@ -140,7 +148,7 @@ const Login = () => {
               >
                 <Input
                   prefix={<ExclamationCircleOutlined style={{ fontSize: 15, color: '#73787F' }} />}
-                  placeholder="请输入验证码"
+                  placeholder={t("请输入验证码")}
                   style={{ height: 40, width: 200 }}
                 />
               </Form.Item>
@@ -156,11 +164,11 @@ const Login = () => {
               name="remember"
               valuePropName="checked"
             >
-              <Checkbox>记住密码</Checkbox>
+              <Checkbox>{t('记住密码')}</Checkbox>
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit" style={{ width: '100%', height: 40 }}>
-                登录
+                {t("登录")}
               </Button>
             </Form.Item>
           </Form>

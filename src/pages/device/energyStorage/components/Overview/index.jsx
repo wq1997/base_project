@@ -237,7 +237,7 @@ function Overview(props) {
                 <div className={styles.electric}>
                     <CardModel
                         title={
-                            "电量"
+                           t("电量") 
                         }
                         content={
                             <div className={styles.elewrap} style={{ backgroundColor: token.lightTreeLineBgc }}>
@@ -258,7 +258,7 @@ function Overview(props) {
                 <div className={styles.running}>
                     <CardModel
                         title={
-                            "运行指标"
+                            t("运行指标")
                         }
                         content={
                             <div className={styles.runningWrap}>
@@ -284,7 +284,7 @@ function Overview(props) {
                 <div className={styles.profit}>
                     <CardModel
                         title={
-                            "收益"
+                            t("收益")
                         }
                         content={
                             <div className={styles.profitWrap}>
@@ -310,7 +310,7 @@ function Overview(props) {
                 <div className={styles.charge}>
                     <CardModel
                         title={
-                            "充放电量(kWh)"
+                            t("充放电量")+"(kWh)"
                         }
                         content={
                             <div className={styles.chargeWrap}>
@@ -321,7 +321,7 @@ function Overview(props) {
                 <div className={styles.chargebit}>
                     <CardModel
                         title={
-                            "充放电效率"
+                            t("充放电效率")
                         }
                         content={
                             <div className={styles.chargebitWrap}>
@@ -339,7 +339,7 @@ function Overview(props) {
                 <div className={styles.profitAll}>
                     <CardModel
                         title={
-                            "收益统计(元)"
+                            t("收益统计")+'(元)'
                         }
                         content={
                             <div className={styles.profitAllWrap}>
@@ -350,7 +350,7 @@ function Overview(props) {
                 {pageType !== 'ALL' && <div className={styles.chargAndDischarg}>
                     <CardModel
                         title={
-                            "充放电功率(kW)"
+                            t("充放电功率")+'(kW)'
                         }
                         content={
                             <div className={styles.chargAndDischargWrap}>
@@ -361,7 +361,7 @@ function Overview(props) {
                 <div className={styles.alarm}>
                     <CardModel
                         title={
-                            "告警"
+                            t("告警")
                         }
                         content={
                             <div className={styles.alarmWrap}>

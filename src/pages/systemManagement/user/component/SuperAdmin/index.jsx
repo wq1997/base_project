@@ -188,7 +188,7 @@ const RealtimeAlarm = () => {
       onOk={del}  
       onCancel={changeIsOpenDel}
       >
-          数据删除后将无法恢复，是否确认删除该条数据？
+       {t("数据删除后将无法恢复，是否确认删除该条数据？")}
       </Modal>
     </div>
   )

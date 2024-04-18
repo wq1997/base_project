@@ -1,7 +1,7 @@
 import Table from '@/components/Table.jsx'
 import { alarmTableColums } from '@/utils/constants'
 import { useEffect, useState } from 'react'
-import { useSelector, } from "umi";
+import { useSelector,useIntl } from "umi";
 import styles from "./index.less";
 import { Pagination, Select, Input, theme, Button, DatePicker } from "antd"
 import { CardModel } from "@/components";
@@ -24,7 +24,15 @@ const RealtimeAlarm = () => {
   const { token } = theme.useToken();
   const [screenH, setScreenH] = useState('');
   const [scroolY, setScroolY] = useState(200);
-
+  const intl = useIntl();
+    const t = (id) => {
+        const msg = intl.formatMessage(
+            {
+                id,
+            },
+        );
+        return msg
+    }
   useEffect(() => {
     setScreenH(document.documentElement.clientHeight || document.body.clientHeight)
     window.addEventListener("resize", handleWindowResize)
@@ -47,39 +55,39 @@ const RealtimeAlarm = () => {
   }, [screenH])
   const alarmLevel = [
     {
-      label: '低级',
+      label: t('低级'),
       value: '1',
       key: '低级',
     },
     {
-      label: '普通',
+      label: t('普通'),
       value: '2',
       key: '普通',
     },
     {
-      label: '严重',
+      label: t('严重'),
       value: '3',
       key: '严重',
     },
     {
-      label: '高级',
+      label: t('高级'),
       value: '4',
       key: '高级',
     },
   ];
   const typeOfstation = [
     {
-      label: '储能',
+      label: t('储能'),
       value: '1',
       key: '储能',
     },
     {
-      label: '光伏',
+      label: t('光伏'),
       value: '2',
       key: '光伏',
     },
     {
-      label: '充电桩',
+      label: t('充电桩'),
       value: '3',
       key: '充电桩',
     },
@@ -168,7 +176,7 @@ const RealtimeAlarm = () => {
                   <div className={styles.topItem} style={{ color: it.color, backgroundColor: token.cardBgc, boxShadow: token.cardShadow }}>
                     <div className={styles.topItemTitle}>
                       {it.icon}
-                      <span style={{ color: token.smallTitleColor, fontWeight: 500, fontSize: '16px', marginLeft: '3px' }}>{it.name}</span>
+                      <span style={{ color: token.smallTitleColor, fontWeight: 500, fontSize: '16px', marginLeft: '3px' }}>{t(it.name)}</span>
                     </div>
                     <div className={styles.topVaue} >
                       {dataTotal[it.key] || 0}
@@ -179,17 +187,17 @@ const RealtimeAlarm = () => {
               })}
               <div className={styles.pieItem}>
                 <PieEcharts allData={{
-                  total: sum(dataTotal?.priorStatistics), subtext: '总数', data: dataTotal?.priorStatistics
+                  total: sum(dataTotal?.priorStatistics), subtext: t('总数'), data: dataTotal?.priorStatistics
                 }}></PieEcharts>
-                <div className={styles.pieItem_bottom} style={{ color: token.smallTitleColor }}>告警等级分布</div>
+                <div className={styles.pieItem_bottom} style={{ color: token.smallTitleColor }}>{t('告警等级分布')}</div>
               </div>
               <div className={styles.pieItem}>
                 <PieEcharts 
                   top={'50%'}
                 allData={{
-                  total: sum(dataTotal?.typeStatistics), subtext: '总数', data: dataTotal?.typeStatistics 
+                  total: sum(dataTotal?.typeStatistics), subtext: t('总数'), data: dataTotal?.typeStatistics 
                 }}></PieEcharts>
-                <div className={styles.pieItem_bottom} style={{ color: token.smallTitleColor }}>告警类别分布</div>
+                <div className={styles.pieItem_bottom} style={{ color: token.smallTitleColor }}>{t("告警类别分布")}</div>
 
               </div>
             </div>
@@ -206,7 +214,7 @@ const RealtimeAlarm = () => {
               onChange={changeLevel}
               options={alarmLevel}
               allowClear
-              placeholder='告警等级'
+              placeholder={t('告警等级')}
             />
           </div>
           <div className={styles.dataItem}>
@@ -215,7 +223,7 @@ const RealtimeAlarm = () => {
               onChange={changeType}
               options={typeOfstation}
               allowClear
-              placeholder='设备类型'
+              placeholder={t('设备类型')}
             />
           </div>
           <div className={styles.date}>
@@ -231,7 +239,7 @@ const RealtimeAlarm = () => {
 
           <div className={styles.buttons}>
             <Button type="primary" style={{ backgroundColor: token.defaultBg }} >
-              导出excel
+              {t('导出')} Excel
             </Button>
           </div>
         </div>

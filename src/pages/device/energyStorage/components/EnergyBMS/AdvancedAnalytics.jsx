@@ -30,11 +30,11 @@ function Com(props) {
 
     const intl = useIntl();
     const wayOption = [{
-        label: '相同时间 不同数据项',
+        label: t('相同时间 不同数据项'),
         value: 1,
     },
     {
-        label: '不同时间  相同数据项',
+        label: t('不同时间  相同数据项'),
         value: 2,
     },]
 
@@ -72,14 +72,14 @@ function Com(props) {
             });
             dateList = [dateStr];
             if (dataTypeList.length > 3) {
-                message.warning('最多选择3个对比项');
+                message.warning(t('最多选择3个对比项'));
                 return
             }
         } else {
             dataTypeList = [packReq[1]];
             dateList = dateStr;
             if (dateList.length > 3) {
-                message.warning('最多选择3个对比项');
+                message.warning(t('最多选择3个对比项'));
                 return
             }
         }

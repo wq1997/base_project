@@ -121,7 +121,7 @@ function Com(props) {
         <div className={styles.content}>
             <CardModel
                 title={
-                    "运行指标"
+                    t("运行指标")
                 }
                 opacity={0.7}
                 content={

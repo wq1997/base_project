@@ -146,7 +146,7 @@ function Com(props) {
         <div className={styles.contents}>
             <CardModel
                 title={
-                    "告警规则"
+                    t("告警规则")
                 }
                 filterPart={
                     <Button type='primary' onClick={changIsOpen}>{t('新增')}</Button>
@@ -169,7 +169,7 @@ function Com(props) {
                 onOk={del}
                 onCancel={changeIsOpenDel}
             >
-                数据删除后将无法恢复，是否确认删除该条数据？
+               {t('数据删除后将无法恢复，是否确认删除该条数据？')}
             </Modal>
         </div>
     )

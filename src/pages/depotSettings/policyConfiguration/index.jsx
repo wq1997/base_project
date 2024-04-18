@@ -3,9 +3,10 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { Strategy } from '@/components';
 import { CardModel } from "@/components";
 import styles from './index.less'
-import { theme, Calendar, Tree } from "antd";
+import { theme, Calendar, Tree, Select } from "antd";
 import dayjs from 'dayjs';
 import moment from 'moment';
+import { useSelector, useIntl } from "umi";
 
 function Com(props) {
   useEffect(() => {
@@ -15,7 +16,15 @@ function Com(props) {
   const onSelect = (value, mode) => {
     setDate(value)
   };
-
+  const intl = useIntl();
+  const t = (id) => {
+    const msg = intl.formatMessage(
+      {
+        id,
+      },
+    );
+    return msg
+  }
   const onPanelChange = (value, mode) => {
     setDate(value)
   };
@@ -43,10 +52,16 @@ function Com(props) {
 
   return (
     <div className={styles.contents}>
+      <div className={styles.hearder} style={{ backgroundColor: token.titleCardBgc,color:token.colorNormal}}>
+        并网点: 
+        <Select
+          style={{ width: '200px',marginLeft:'10px' }}
+        />
+      </div>
       <div className={styles.leftTop_Calendar}>
         <CardModel
           title={
-            "日历"
+            t("日历")
           }
           content={
             <Calendar fullscreen={false} onSelect={onSelect} onPanelChange={onPanelChange} value={dayjs(date)} />
@@ -56,7 +71,7 @@ function Com(props) {
       <div className={styles.leftBottom_List}>
         <CardModel
           title={
-            "策略列表"
+            t("策略列表")
           }
           content={
             <Tree

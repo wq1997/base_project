@@ -236,12 +236,12 @@ function Com(props) {
                 initSelectData={initSelectData}
             />
             <Modal
-                title={[<><ExclamationCircleFilled style={{ color: '#FAAD14', marginRight: '10px' }} />系统提示</>]}
+                title={[<><ExclamationCircleFilled style={{ color: '#FAAD14', marginRight: '10px' }} />{t('系统提示')}</>]}
                 open={isOpenDel}
                 onOk={del}
                 onCancel={changeIsOpenDel}
             >
-                数据删除后将无法恢复，是否确认删除该条数据？
+               {t('数据删除后将无法恢复，是否确认删除该条数据？')}
             </Modal>
         </div>
     )

@@ -57,9 +57,9 @@ function Com({ id }) {
             ],
             series: 
                 {
-                    name: '实时功率',
+                    name: t('实时功率'),
                     type: 'line',
-                    stack: '总量',
+                    stack: t('总量'),
                     symbol: 'circle',
                     symbolSize: 8,
                     itemStyle: {

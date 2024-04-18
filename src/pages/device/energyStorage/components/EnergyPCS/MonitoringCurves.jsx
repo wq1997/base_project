@@ -98,7 +98,7 @@ function Com(props) {
             ],
             series: [
                 {
-                    name: `今日${title}`,
+                    name: `${t('今日')}${t(title)}`,
                     type: 'line',
                     // stack: 'total',
                     symbol: 'circle',
