@@ -10,11 +10,11 @@ export default [
         component: "@/pages/device",
      
     },
-    {
-        name: '策略配置',
-        path: '/index/policyConfiguration',
-        component: "@/pages/policyConfiguration"
-    },
+    // {
+    //     name: '策略配置',
+    //     path: '/index/policyConfiguration',
+    //     component: "@/pages/policyConfiguration"
+    // },
     {
         name: '告警中心',
         path: '/index/alarm',

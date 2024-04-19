@@ -20,12 +20,12 @@ const MenuList = [
         key: '/index/device',
         icon: <ToolOutlined />,
     },
-    {
-        label: <FormattedMessage id='app.PolicyConfiguration' />,
-        key: '/index/policyConfiguration',
-        icon: <ControlOutlined />,
-        // permissions:'A/B',
-    },
+    // {
+    //     label: <FormattedMessage id='app.PolicyConfiguration' />,
+    //     key: '/index/policyConfiguration',
+    //     icon: <ControlOutlined />,
+    //     // permissions:'A/B',
+    // },
     {
         label: <FormattedMessage id='app.Alarm' />,
         key: '/index/alarm',

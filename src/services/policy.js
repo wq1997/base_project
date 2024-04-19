@@ -5,8 +5,8 @@ export const sendBurCmd2 = (payload) => {
     return axiosInstance.post('/minsys/sendBurCmd2', payload)
  }
 //获取命令下发初始化信息
- export const getBurDtuDevInfo2 = ()=>{
-    return axiosInstance.get("/minsys/getBurDtuDevInfo2");
+ export const getBurDtuDevInfo2 = (payload)=>{
+    return axiosInstance.get(`/minsys/getBurDtuDevInfo2?dtuId=${payload.dtuId}`);
   }
   
   //策略数据回显

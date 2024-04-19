@@ -6,6 +6,7 @@ import DeviceDetails from './deviceDetails';
 import MonitoringCurves from "./monitoringCurves";
 import PackDetails from "./packDetails";
 import OverView from "./overview";
+import Policy from "../../policyConfiguration/index";
 import { theme,Tabs  } from "antd";
 
 const Cabinet = () => {
@@ -32,6 +33,8 @@ const Cabinet = () => {
         { label: t('设备详情'), key: 'DeviceDetails' },
         { label: t('监测曲线'), key: 'MonitoringCurves' },
         { label: t('pack详情'), key: 'PackDetails' },
+        { label: t('策略配置'), key: 'Policy' },
+
     ];
     const defaultActiveKey = "OverView";
     return (
@@ -42,6 +45,7 @@ const Cabinet = () => {
                 {activeKey === "DeviceDetails" && <DeviceDetails />}
                 {activeKey === "MonitoringCurves" && <MonitoringCurves />}
                 {activeKey === "PackDetails" && <PackDetails />}
+                {activeKey === "Policy" && <Policy  id={id}/>}
             </div>
         </div>
     )

@@ -12,14 +12,13 @@ import { ISSUE_COMMAND } from '@/utils/subscribe/types';
 import { sendBurCmd2 } from '@/services/policy'
 
 
-function Com(props) {
+function Com({id}) {
     const [mode, setMode] = useState(0)
     const { token } = theme.useToken();
     const [devId, setDevId] = useState({});
     const [options, setOptions] = useState([]);
     const [initAllData, setInitAllData] = useState([]);
     const [historyAllData, setHistoryAllData] = useState({});
-
     const [dtuId, setDtuId] = useState();
     const intl = useIntl();
     const t = (id) => {
@@ -74,16 +73,7 @@ function Com(props) {
         handleOk();
     }
     const getInitData = async () => {
-        let { data } = await getBurDtuDevInfo2();
-        let option = [];
-        data.data?.map(it => {
-            option.push({
-                label: it.sn,
-                value: it.sn,
-                dtuId: it.dtuId
-            })
-        });
-        setOptions(option);
+        let { data } = await getBurDtuDevInfo2({dtuId:id});
         setInitAllData(data.data);
         setDevId({
             pcsDevId: data?.data[0].devInfo?.pcs,
@@ -92,12 +82,10 @@ function Com(props) {
             bms1DevId: data.data[0].devInfo?.bms[0],
             bms2DevId: data.data[0].devInfo?.bms[1],
         });
-        setDtuId(option[0].dtuId);
-
     }
     const getHistory = async () => {
-        if (dtuId) {
-            let { data } = await getBurCmdHistory2({ dtuId });
+        if (id) {
+            let { data } = await getBurCmdHistory2({ dtuId:id });
             const result = data.data;
             setHistoryAllData(result);
             if(result.hasOwnProperty("mode")){
@@ -119,7 +107,7 @@ function Com(props) {
     return (
         <div className={styles.content} style={{ backgroundColor: token.contentBgc }}>
             <Space style={{ width: '100%' }} size={30} direction="vertical" >
-                <div className={styles.device}>
+                {/* <div className={styles.device}>
                     <Flex gap={12}>
                         <div className={styles.label}>{t('设备')}:</div>
                         <Select
@@ -136,7 +124,7 @@ function Com(props) {
                             }
                         </Select>
                     </Flex>
-                </div>
+                </div> */}
                 <div className={styles.mode}>
                     <Flex gap={18}>
                         <div className={styles.label}>{t('模式')}:</div>
@@ -146,7 +134,7 @@ function Com(props) {
                         </Flex>
                     </Flex>
                 </div>
-                { mode == 0 ? <AutoMode devId={devId} dtuId={dtuId} historyAllData={historyAllData}/> : <ManualMode devId={devId} dtuId={dtuId} historyAllData={historyAllData}/>}
+                { mode == 0 ? <AutoMode devId={devId} dtuId={id} historyAllData={historyAllData}/> : <ManualMode devId={devId} dtuId={id} historyAllData={historyAllData}/>}
             </Space>
 
         </div>
