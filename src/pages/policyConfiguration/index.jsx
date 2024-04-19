@@ -33,7 +33,7 @@ function Com({id}) {
         // changeType();
         let { data } = await sendBurCmd2({
             mode,
-            dtuId,
+            dtuId:id,
             cmdTypeId: 7000
         })
         if (data.code == 'ok') {
@@ -48,7 +48,7 @@ function Com({id}) {
     }, []);
     useEffect(() => {
         getHistory();
-    }, [dtuId])
+    }, [id])
     useEffect(() => {
         connectSocket(
             ISSUE_COMMAND,

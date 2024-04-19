@@ -1653,7 +1653,7 @@ export default {
 '公司':'Company',
 '确认修改':'Confirm modifications',
 '编辑用户信息':'Edit User Information',
-'请输入':'Please enter',
+'请输入':'Please enter ',
 '低级':'Warning',
 '普通':'Normal',
 '高级':'Advanced',
@@ -1773,4 +1773,11 @@ export default {
 '请输入必填字段':'Please enter the required fields',
 '充电电量':'Charge power',
 '放电电量':'Discharge amount',
+'命令下发成功':'The command is successfully delivered',
+'命令下发失败':'The command failed to be delivered',
+'215户外柜':'215 Outdoor Cabinet',
+'232户外柜':'232 Outdoor Cabinet',
+'372户外柜':'372 Outdoor Cabinet',
+'登录成功':'Login Successful',
+
 } 

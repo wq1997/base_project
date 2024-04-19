@@ -7,9 +7,6 @@ import { history, useLocation, useIntl } from "umi";
 function Com({ data }) {
     const [height, setHeight] = useState('0fr')
     const Icon = useIcon();
-    useEffect(() => {
-        console.log('函数组件来咯')
-    }, [])
     const intl = useIntl();
     const t = (id) => {
         const msg = intl.formatMessage(

@@ -43,7 +43,7 @@ useEffect(()=>{
     let sheetHeader = [];
     alarmTableColums.map(it=>{
       sheetFilter.push(it.dataIndex);
-      sheetHeader.push(it.key);
+      sheetHeader.push(t(it.key));
     })
     let nowtime = new Date()
     let sheetName = `${nowtime.getFullYear()}-${nowtime.getMonth()+1}-${nowtime.getDate()}` 
@@ -84,7 +84,7 @@ useEffect(()=>{
       <div className={styles.content} style={{ backgroundColor: token.titleCardBgc }}>
         <div className={styles.title}>
         <div className={styles.sn}>
-        <Input placeholder={t('请输入') + t('设备编码')}  style={{ width: 240 }} onChange={changeSn}/>
+        <Input placeholder={t('请输入')+ t('设备编码')}  style={{ width: 240 }} onChange={changeSn}/>
           </div>
           <div className={styles.level}>
             <Select
