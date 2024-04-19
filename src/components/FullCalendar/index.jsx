@@ -79,6 +79,8 @@ const Strategy = ({date,setDate}) => {
                 a: {
                     color: token.titleColor,
                 },
+                '.fc-timegrid-slot-label-frame':{ color:token.titleColor},
+                '.fc-timegrid-axis-frame':{color:token.titleColor},
                 '.fc-col-header': {
                     boxShadow: 'rgba(145, 158, 171, 0.2) 0px -1px 0px inset',
                     th: {

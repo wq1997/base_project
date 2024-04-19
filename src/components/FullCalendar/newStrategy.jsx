@@ -1225,7 +1225,7 @@ const NewStrategy = () => {
                             }
                         ]
                     }} 
-                    style={{width: '100%',height: 300,marginBottom:100}}
+                    style={{width:800,height: 300,marginBottom:60}}
                 />
 
                 {/* <ReactECharts 
