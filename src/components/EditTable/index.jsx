@@ -84,11 +84,7 @@ const EditRowTable = ({ data, columns, showEdit, showClear, onChange, ...rest}) 
   const handleClear = (key) => {
     const index = dataSource.findIndex((item) => item.key === key);
     let newData = cloneObject(dataSource);
-    let newRowData = {};
-    Object.keys(dataSource[index])?.map(field => {
-        newRowData[field] = undefined;
-    })
-    newData[index] = newRowData;
+    newData[index] = {};
     setDataSource(newData);
     onChange(newData)
   };
@@ -176,7 +172,7 @@ const EditRowTable = ({ data, columns, showEdit, showClear, onChange, ...rest}) 
                         {
                             showClear &&
                             <Popconfirm title="确认删除?" onConfirm={() => handleClear(record.key)}>
-                                清空    
+                                <Button type="link">清空</Button>    
                             </Popconfirm>
                         }
                   </Space>
