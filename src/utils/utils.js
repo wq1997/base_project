@@ -72,3 +72,5 @@ export const getUrlParams = url => {
     }
     return obj;
 };
+
+export const cloneObject = (object) => JSON.parse(JSON.stringify(object));
