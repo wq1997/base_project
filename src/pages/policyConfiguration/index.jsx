@@ -29,10 +29,11 @@ function Com({id}) {
         );
         return msg
     }
-    const handleOk = async () => {
+    const handleOk = async (val) => {
+        console.log(val,mode,'ok');
         // changeType();
         let { data } = await sendBurCmd2({
-            mode,
+            mode:val||mode,
             dtuId:id,
             cmdTypeId: 7000
         })
@@ -62,6 +63,8 @@ function Com({id}) {
                         message: t("执行结果"),
                         description: res.msg,
                     });
+                    res.code === "ok"? getHistory():null;
+
                 }
             }
         );
@@ -70,7 +73,7 @@ function Com({id}) {
     const changeType = (type) => {
         setMode(type)
         // setIsModalOpen(true);
-        handleOk();
+        handleOk(type);
     }
     const getInitData = async () => {
         let { data } = await getBurDtuDevInfo2({dtuId:id});
@@ -129,12 +132,12 @@ function Com({id}) {
                     <Flex gap={18}>
                         <div className={styles.label}>{t('模式')}:</div>
                         <Flex gap={30}>
-                            <div className={styles.selectionBox} style={{ backgroundColor: mode == 0 ? token.colorPrimary : '#20284D' }} onClick={() => changeType(0)} >{t('自动')}</div>
-                            <div className={styles.selectionBox} style={{ backgroundColor: mode == 1 ? token.colorPrimary : '#20284D' }} onClick={() => changeType(1)} >{t('手动')}</div>
+                            <div className={styles.selectionBox} style={{ backgroundColor: mode == 1 ? token.colorPrimary : '#20284D' }} onClick={() => changeType(1)} >{t('自动')}</div>
+                            <div className={styles.selectionBox} style={{ backgroundColor: mode == 0 ? token.colorPrimary : '#20284D' }} onClick={() => changeType(0)} >{t('手动')}</div>
                         </Flex>
                     </Flex>
                 </div>
-                { mode == 0 ? <AutoMode devId={devId} dtuId={id} historyAllData={historyAllData}/> : <ManualMode devId={devId} dtuId={id} historyAllData={historyAllData}/>}
+                { mode == 1 ? <AutoMode devId={devId} dtuId={id} historyAllData={historyAllData}/> : <ManualMode devId={devId} dtuId={id} historyAllData={historyAllData}/>}
             </Space>
 
         </div>

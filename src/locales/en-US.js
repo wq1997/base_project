@@ -1779,5 +1779,6 @@ export default {
 '232户外柜':'232 Outdoor Cabinet',
 '372户外柜':'372 Outdoor Cabinet',
 '登录成功':'Login Successful',
-
+'编辑失败':'Edit failed',
+'编辑成功':'Edited successfully',
 } 

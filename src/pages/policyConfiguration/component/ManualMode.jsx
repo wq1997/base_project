@@ -6,7 +6,7 @@ import { theme, message, Space, Flex, InputNumber , Modal } from "antd";
 import { useSelector, useIntl } from "umi";
 import { sendBurCmd2 } from '@/services/policy'
 
-function Com({ devId,dtuId,historyAllData }) {
+function Com({ devId,dtuId,historyAllData,mode }) {
     const { token } = theme.useToken();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [allPolicy, setAllPolicy] = useState({
@@ -46,11 +46,17 @@ function Com({ devId,dtuId,historyAllData }) {
         setAllPolicy({ ...allPolicy, [type]: value, })
     }
     const showModal = (id, reqType,type, value) => {
-        setIsModalOpen(true);
-        setType(type);
-        setValue(value);
-        setCurrentId(id);
-        setReqType(reqType);
+        if (value===null||value===undefined) {
+            message.error(t('参数不能为空'), 3);
+            return
+        }else{
+            setIsModalOpen(true);
+            setType(type);
+            setValue(value);
+            setCurrentId(id);
+            setReqType(reqType);
+        }
+      
     };
     const handleOk = async () => {
         changeType();

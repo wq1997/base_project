@@ -330,6 +330,7 @@ const EditableCell = ({
 const App = ({ devId, dtuId, historyAllData }) => {
   const { token } = theme.useToken();
   const [dataSource, setDataSource] = useState(modelData);
+  const [issuFlag, setIssuFlag] = useState(true);
   const [count, setCount] = useState(2);
   const intl = useIntl();
   const t = (id) => {
@@ -468,6 +469,7 @@ const App = ({ devId, dtuId, historyAllData }) => {
       ...row,
     });
     setDataSource(newData);
+    console.log(newData);
   };
   const components = {
     body: {
@@ -501,7 +503,7 @@ const App = ({ devId, dtuId, historyAllData }) => {
       friPowers?.push(it?.friPowers);
       satPowers?.push(it?.satPowers);
       sunPowers?.push(it?.sunPowers);
-    })
+    });
     let { data } = await sendBurCmd2({
       devId: devId.pcsDevId,
       dtuId,

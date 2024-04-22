@@ -162,8 +162,10 @@ const RealtimeAlarm = () => {
     const { data } = await updateUserAndInfos(value)
     if (data?.data) {
       setFormData(value);
+      message.success(t('编辑成功'))
+
     } else {
-      message.error(data?.msg)
+      message.error(t('编辑失败'))
     }
   }
   return (
