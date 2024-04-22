@@ -495,3 +495,12 @@ export const runOutData=[
  ]
 },
 ]
+
+export const electricTypeList = [
+    {label: '尖',value: 'pointed'},
+    {label: '峰',value: 'peak'},
+    {label: '平',value: 'flat'},
+    {label: '谷',value: 'valley'},
+];
+
+export const timeSplitSymbol = "-";

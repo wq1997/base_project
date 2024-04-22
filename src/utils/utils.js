@@ -100,3 +100,21 @@ export const  downLoadExcelMode = (fileName,sheetData,sheetFilter,sheetHeader,sh
   var toExcel=new ExportJsonExcel(option);
   toExcel.saveExcel();
 }
+
+export const fillInt = (max,includeZero) => {
+  if(includeZero){
+      return new Array(max+1).fill(0).map((item, index)=>{
+          if(index<=9){
+              return `0${index}`
+          }
+          return `${index}`;
+      });
+  }else {
+      return new Array(max).fill(0).map((item, index)=>{
+          if(index<9){
+              return `0${index+1}`
+          }
+          return `${index+1}`;
+      });
+  }
+}
