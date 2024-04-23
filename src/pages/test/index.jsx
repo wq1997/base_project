@@ -1,6 +1,8 @@
 import { theme, Table, DatePicker, Form, Button } from "antd";
-import { ThemeBtn, LocaleBtn, EditTable, CustomDatePicker } from "@/components";
+import { ThemeBtn, LocaleBtn, EditTable, Flow, ScrollTable, ToggleButton } from "@/components";
 import { useIntl } from "umi";
+import flowImg from "./background.png";
+import styles from "./index.less";
 
 const Test = () => {
   const { token } = theme.useToken();
@@ -13,6 +15,93 @@ const Test = () => {
       //   color: token.colorText
       // }}
     >
+      <ToggleButton
+        freezeTime={5}
+        onClick={()=>{
+          alert("点击")
+        }}
+      >
+        下发
+      </ToggleButton>
+      <div style={{height: 200}}>
+        <div style={{width: '5px', height: '200px',position: "absolute", left: 200}}>
+          <div style={{width: 200, height: 5, position: 'absolute', left: 0, top: 0,transform: "rotate(90deg)", transformOrigin: '0px 0px', background: 'blue'}}>
+            <Flow img={flowImg}/>
+          </div>
+        </div>
+        <div style={{width: '5px', height: '200px',position: "absolute", left: 400}}>
+          <div style={{width: 200, height: 5,position: 'absolute', top: 200, transform: "rotate(-90deg)", transformOrigin: '0px 0px'}}>
+            <Flow img={flowImg}/>
+          </div>
+        </div>
+        <div style={{width: '1000px', height: '5px'}}>
+          <Flow img={flowImg}/>
+        </div>
+      </div>
+
+      <div style={{height: 100}}>
+        <ScrollTable 
+            columns={[
+              {title: "A", key: "A"},
+              {title: "B", key: "B"},
+              {title: "C", key: "C"},
+              {title: "D", key: "D"}
+            ]}
+            dataSource={[
+              {
+                A: "A",
+                B: "B",
+                C: "C",
+                D: "D"
+              },
+              {
+                A: "A",
+                B: "B",
+                C: "C",
+                D: "D"
+              },
+              {
+                A: "A",
+                B: "B",
+                C: "C",
+                D: "D"
+              }
+            ]}
+        />
+      </div>
+      <div style={{height: 100}}>
+        <ScrollTable 
+            columns={[
+              {title: "A", key: "A"},
+              {title: "B", key: "B"},
+              {title: "C", key: "C"},
+              {title: "D", key: "D"}
+            ]}
+            dataSource={[
+              {
+                A: "A",
+                B: "B",
+                C: "C",
+                D: "D"
+              },
+              {
+                A: "A",
+                B: "B",
+                C: "C",
+                D: "D"
+              },
+              {
+                A: "A",
+                B: "B",
+                C: "C",
+                D: "D"
+              }
+            ]}
+        />
+      </div>
+      <div 
+        className={styles.element} 
+      />
       <Button
         onClick={async ()=>{
           const values = await form.validateFields();
