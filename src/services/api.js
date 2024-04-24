@@ -25,7 +25,6 @@ export const saveUploadFiles = payload => {
     return axiosInstance.post(url, payload);
 };
 
-<<<<<<< HEAD
 export const getAnalysisResultsList = payload => {
     const url = `${API_URL_1}/scene/find-parse-result-page`;
     return axiosInstance.post(url, payload);
@@ -40,7 +39,6 @@ export const getExceptionData = id => {
     const url = `${API_URL_1}/exception-scene/get-info/${id}`;
     return axiosInstance.get(url);
 };
-=======
 // export const save = ({ brandCode, project, file }) =>
 //     axiosInstance.request({
 //         url: `/file/upload`,
@@ -55,4 +53,3 @@ export const sceneGetTotalRecord = payload => {
     const url = `${API_URL_1}/scene/get-total-record`;
     return axiosInstance.post(url, payload);
 };
->>>>>>> b7301da94b59706a4f0778f71d7d6c2313a6fa52
