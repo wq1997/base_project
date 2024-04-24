@@ -1,11 +1,29 @@
 import EChartsReact from "echarts-for-react";
 import { useEffect, useState } from "react";
-import * as echarts from "echarts";
+import { Empty } from "antd";
 
 const Chart = ({title, dataSource}) => {
     const [option, setOption] = useState({});
+    const [projectList, setProjectList] = useState([]);
 
     const getOption = () => {
+        const xAxisData = Object.keys(dataSource).sort();
+        let newProjectList = [];
+        xAxisData?.forEach(item => {
+            newProjectList = Array.from(new Set(newProjectList));
+            newProjectList.push(...Object.keys(dataSource?.[item]||{})||[])
+        })
+        setProjectList(newProjectList);
+
+        const series = newProjectList?.map(project => {
+            return {
+                name: project,
+                type: 'bar',
+                barWidth: 20,
+                data: xAxisData?.map(xAxis => dataSource?.[xAxis]?.[project]||0)
+            }
+        })
+        const showDataZoom = xAxisData?.length> 30; 
         setOption({
             tooltip: {
                 trigger: 'axis',
@@ -14,14 +32,20 @@ const Chart = ({title, dataSource}) => {
                 }
             },
             grid: {
-                left: '2%',
-                right: '4%',
-                bottom: '10',
+                left: '50',
+                right: '50',
+                bottom: '50',
                 top:'50',
                 containLabel: true
             },
+            dataZoom: showDataZoom && [{
+                "start": 0,
+                "end": 30,
+                "show": showDataZoom,
+                "height": 10
+            }],
             legend: {
-                data: ['1', '2', '3'],
+                data: series?.map(item => item?.name),
                 right: 10,
                 top:12,
                 itemWidth: 12,
@@ -29,18 +53,18 @@ const Chart = ({title, dataSource}) => {
             },
             xAxis: {
                 type: 'category',
-                data: ['2012','2013','2014','2015','2016','2017','2018','2019'],
+                data: xAxisData,
                 axisLabel: {
                   textStyle: {
                     fontFamily: 'Microsoft YaHei'
                   }
                 },
+                axisTick: {
+                    show: false,
+                },
               },
               yAxis: {
                 type: 'value',
-                axisLine: {
-                  show: false,
-                },
                 splitLine: {
                   show: true,
                   lineStyle: {
@@ -49,38 +73,30 @@ const Chart = ({title, dataSource}) => {
                 },
                 axisLabel: {}
               },
-              series: [{
-                name: '1',
-                type: 'bar',
-                barWidth: '15%',
-                data: [400, 400, 300, 300, 300, 400, 400, 400, 300]
-              },
-              {
-                name: '2',
-                type: 'bar',
-                barWidth: '15%',
-                data: [400, 500, 500, 500, 500, 400,400, 500, 500]
-              },
-              {
-                name: '3',
-                type: 'bar',
-                barWidth: '15%',
-                data: [400, 600, 700, 700, 1000, 400, 400, 600, 700]
-              }]
+              series
         })
     }
 
     useEffect(() => {
-        getOption()
-    }, [dataSource]);
+        getOption();
+    }, [JSON.stringify(dataSource)]);
 
     return (
         <div style={{width: '100%', height: '100%'}}>
             <p style={{textAlign: 'center', fontWeight: 800, fontSize: 25}}>{title}</p>
-            <EChartsReact 
-                option={option}
-                style={{width: '100%', height: '100%'}}
-            />
+            {
+                projectList?.length?
+                    <EChartsReact 
+                        option={option}
+                        style={{width: '100%', height: '100%'}}
+                        notMerge
+                    />
+                    :
+                    <div style={{position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)'}}>
+                        <Empty description="暂无符合搜索条件的数据" image={Empty.PRESENTED_IMAGE_SIMPLE}/>
+                    </div>
+            }
+            
         </div>
     )
 }

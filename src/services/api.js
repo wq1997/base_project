@@ -39,3 +39,8 @@ export const login = payload => {
 //             "Content-Type": "multipart/form-data",
 //         },
 //     });
+
+export const sceneGetTotalRecord = payload => {
+    const url = `${API_URL_1}/scene/get-total-record`;
+    return axiosInstance.post(url, payload);
+};
