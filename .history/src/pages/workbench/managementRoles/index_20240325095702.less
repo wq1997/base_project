@@ -1,0 +1,21 @@
+.management-roles {
+    background-color: red;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 350px 1fr;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+    grid-template-areas:
+        "g1 g2"
+        "g3 g3";
+    .board {
+        grid-area: g1;
+    }
+    .total {
+        grid-area: g2;
+    }
+
+    .personnel-tasks {
+        grid-area: g3;
+    }
+}
