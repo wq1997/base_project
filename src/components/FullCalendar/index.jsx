@@ -5,15 +5,14 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import { INITIAL_EVENTS, createEventId } from '../../utils/event-utils'
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
-// import Card from '@/components/card';
-// import { useSettings } from '@/store/settingStore';
-import { useResponsive } from '@/hooks/use-reponsive';
 import dayjs from 'dayjs';
+import { deleteStrategyPlan} from '@/services/policy'
 
 // import CalendarEvent from './calendar-event';
 import CalendarEventForm from './calendar-event-form';
 import CalendarHeader from './calendar-header';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
+import { message } from 'antd'
 const DefaultEventInitValue = {
     id: Math.random().toString(36).slice(2),
     title: '',
@@ -23,7 +22,7 @@ const DefaultEventInitValue = {
     end: dayjs(),
     color: '',
 };
-const Strategy = ({date,setDate}) => {
+const Strategy = ({ date, setDate, planList,strategy,newPolicy,getStrategy }) => {
     const fullCalendarRef = useRef(null);
     const [open, setOpen] = useState(false);
     const [view, setView] = useState('dayGridMonth');
@@ -33,8 +32,8 @@ const Strategy = ({date,setDate}) => {
     useEffect(() => {
         const calendarApi = fullCalendarRef.current.getApi();
         // console.log(dayjs(date).format('YYYY-MM-DD'));
-        if (typeof date==='object') {
-        calendarApi.gotoDate(dayjs(date).format('YYYY-MM-DD'))
+        if (typeof date === 'object') {
+            calendarApi.gotoDate(dayjs(date).format('YYYY-MM-DD'))
         }
     }, [date]);
     function renderEventContent(eventInfo) {
@@ -79,8 +78,8 @@ const Strategy = ({date,setDate}) => {
                 a: {
                     color: token.titleColor,
                 },
-                '.fc-timegrid-slot-label-frame':{ color:token.titleColor},
-                '.fc-timegrid-axis-frame':{color:token.titleColor},
+                '.fc-timegrid-slot-label-frame': { color: token.titleColor },
+                '.fc-timegrid-axis-frame': { color: token.titleColor },
                 '.fc-col-header': {
                     boxShadow: 'rgba(145, 158, 171, 0.2) 0px -1px 0px inset',
                     th: {
@@ -135,7 +134,7 @@ const Strategy = ({date,setDate}) => {
                                 display: 'flex',
                                 width: '100%',
                                 backgroundColor: token.titleColor,
-                                'b':{
+                                'b': {
 
                                 },
                                 '.fc-event-time': {
@@ -162,23 +161,24 @@ const Strategy = ({date,setDate}) => {
 
     })
     const handleDateSelect = (selectInfo) => {
-        const calendarApi = selectInfo.view.calendar;
-        calendarApi.unselect(); // clear date selection
+        console.log(selectInfo,121212);
         setOpen(true);
         setEventFormType('add');
         setEventInitValue({
-            id: Math.random().toString(36).slice(2),
-            title: '',
-            description: '',
+            id: selectInfo.id,
             start: dayjs(selectInfo.startStr),
-            end: dayjs(selectInfo.endStr),
-            allDay: selectInfo.allDay,        
+            end:dayjs(selectInfo.end.setDate(selectInfo.end.getDate()-1)),
+            allDay: selectInfo.allDay,
         });
     }
-    const handleEventClick = (clickInfo) => {
-        if (confirm(`是否确定删除'${clickInfo.event.title}'`)) {
-            clickInfo.event.remove()
-        }
+    const handleButtonSele = () => {
+        setOpen(true);
+        setEventFormType('add');
+        setEventInitValue({
+            start: dayjs(),
+            end:dayjs(),
+            allDay: true,
+        });
     }
     const handleEvents = (events) => {
         dispatchState({
@@ -203,53 +203,60 @@ const Strategy = ({date,setDate}) => {
         }
         setDate(calendarApi.getDate());
     };
+
+    const handleEventClick = (arg) => {
+        const { title, extendedProps, allDay, start, end, id } = arg.event;
+        setOpen(true);
+        setEventFormType('edit');
+        const newEventValue = {
+            id,
+            title,
+            allDay,
+            remarks: extendedProps.remarks,
+            strategyId:extendedProps.strategyId,
+        };
+        if (start) {
+            newEventValue.start = dayjs(start);
+        }
+
+        if (end) {
+            newEventValue.end = dayjs(end).add(-1, 'day');
+        }
+        setEventInitValue(newEventValue);
+    };
     const handleCancel = () => {
         setEventInitValue(DefaultEventInitValue);
         setOpen(false);
     };
-    const handleDelete = (id) => {
-        const calendarApi = fullCalendarRef.current.getApi();
-        const oldEvent = calendarApi.getEventById(id);
-        oldEvent?.remove();
-    };
-    const handleCreate = (values) => {
-        const calendarApi = fullCalendarRef.current.getApi();
-        const { title = '', description, start, end, allDay = false, color } = values;
-        const newEvent = {
-            id: Math.random().toString(36).slice(2),
-            title,
-            allDay,
-            color,
-            extendedProps: {
-                description,
-            },
-        };
-        if (start) newEvent.start = start.toDate();
-        if (end) newEvent.end = end.toDate();
-        // 刷新日历显示
-        calendarApi.addEvent(newEvent);
-    };
+    // edit event
     const handleEdit = (values) => {
-        const { id, title = '', description, start, end, allDay = false, color } = values;
-        const calendarApi = fullCalendarRef.current.getApi();
-        const oldEvent = calendarApi.getEventById(id);
-
-        const newEvent = {
-            id,
-            title,
-            allDay,
-            color,
-            extendedProps: {
-                description,
-            },
-        };
-        if (start) newEvent.start = start.toDate();
-        if (end) newEvent.end = end.toDate();
-
-        // 刷新日历显示
-        oldEvent?.remove();
-        calendarApi.addEvent(newEvent);
+   
     };
+    // create event
+    const handleCreate = (values) => {
+        const { strategyId, remarks, start, end,   } = values;
+        const newEvent = {
+            strategyId,
+            remarks,
+        };
+        if (start) newEvent.startDate = start.format('YYYY-MM-DD');
+        if (end) newEvent.endDate = end.format('YYYY-MM-DD');
+        newPolicy(newEvent);
+        getStrategy();
+        // 刷新日历显示
+        // calendarApi.addEvent(newEvent);
+    };
+    // delete event
+    const handleDelete = async(id) => {
+        let {data}=await deleteStrategyPlan({planId:id});
+        if (data.code=='200') {
+         getStrategy();
+        }else{      
+            message.error(data.msg,2)
+        }
+
+    };
+  
     useLayoutEffect(() => {
         const calendarApi = fullCalendarRef.current.getApi();
         setTimeout(() => {
@@ -265,7 +272,6 @@ const Strategy = ({date,setDate}) => {
         )
     }
 
-
     return (
         <div className='demo-app' style={{ width: '100%', height: '100%' }}>
             <div className={siderContentStyle} >
@@ -273,7 +279,7 @@ const Strategy = ({date,setDate}) => {
                     now={date}
                     view={view}
                     onMove={handleMove}
-                    onCreate={() => setOpen(true)}
+                    onCreate={handleButtonSele}
                     onViewTypeChange={handleViewTypeChange}
                 />
                 <FullCalendar
@@ -286,8 +292,9 @@ const Strategy = ({date,setDate}) => {
                     selectable={true}
                     selectMirror={true}
                     dayMaxEvents={true}
+                    events={planList}
                     // weekends={state.weekendsVisible}
-                    initialEvents={INITIAL_EVENTS} // alternatively, use the `events` setting to fetch from a feed
+                    initialEvents={planList} // alternatively, use the `events` setting to fetch from a feed
                     select={handleDateSelect}
                     eventContent={renderEventContent} // custom render function
                     eventClick={handleEventClick}
@@ -307,6 +314,7 @@ const Strategy = ({date,setDate}) => {
                 onDelete={handleDelete}
                 onCreate={handleCreate}
                 onEdit={handleEdit}
+                strategy={strategy}
             />
         </div>
     )

@@ -10,11 +10,11 @@ export const INITIAL_EVENTS = [
     end:'2024-04-30',
     color:'#03b4b4'
   },
-  {
-    id: createEventId(),
-    title: 'Timed event',
-    start: todayStr + 'T12:00:00'
-  }
+  // {
+  //   id: createEventId(),
+  //   title: 'Timed event',
+  //   start: todayStr + 'T12:00:00'
+  // }
 ]
 
 export function createEventId() {

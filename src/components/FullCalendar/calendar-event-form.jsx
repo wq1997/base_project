@@ -1,7 +1,9 @@
-import { Select, DatePicker, Form, Input, Modal } from 'antd';
+import { Select, DatePicker, Form, Input, Modal, Button } from 'antd';
 import { useEffect, useState } from 'react';
 import { FORM_REQUIRED_RULE } from "@/utils/constants";
-import { IconButton, Iconify } from '@/components';
+import {
+  DeleteOutlined
+} from '@ant-design/icons';
 
 const COLORS = [
   '#00a76f',
@@ -22,24 +24,11 @@ export default function CalendarEventForm({
   onEdit,
   onCreate,
   onDelete,
+  strategy
 }) {
-  const title = type === 'add' ? 'Add Event' : 'Edit Event';
+  const title = type === 'add' ? '新建策略执行日程' : '编辑策略执行日程';
   const [form] = Form.useForm();
-
-  const [strategyDatasource, setStrategyDatasource] = useState([
-    {
-        id: 1,
-        name: '策略1',
-        creator: '创建者1',
-        createTime: '2024/03/26'
-    },
-    {
-        id: 2,
-        name: '策略2',
-        creator: '创建者2',
-        createTime: '2024/03/27'
-    }
-]);
+  const [strategyDatasource, setStrategyDatasource] = useState([...strategy[0].children]);
 
   useEffect(() => {
     // 当 initValues 改变时，手动更新表单的值
@@ -47,30 +36,36 @@ export default function CalendarEventForm({
     form.setFieldsValue({ ...others, color });
   }, [initValues, form]);
 
+  useEffect(()=>{
+    setStrategyDatasource([...strategy[0].children])
+  }, [strategy])
   // eslint-disable-next-line react/function-component-definition, react/no-unstable-nested-components
   const ModalFooter = (_, { OkBtn, CancelBtn }) => {
     return (
       <div>
         {type === 'edit' ? (
-          <div className="flex justify-between">
-            <IconButton
+          <div className="flex justify-between" style={{ display: 'flex', justifyContent: 'space-between', }}>
+            <Button
+              icon={<DeleteOutlined />}
               onClick={() => {
                 onDelete(initValues.id);
                 onCancel();
               }}
             >
-              <Iconify icon="fluent:delete-16-filled" size={20} />
-            </IconButton>
-            <div>
+            </Button>
+            <div style={{ width: "130px", display: 'flex', justifyContent: 'space-between', }}>
               <CancelBtn />
               <OkBtn />
             </div>
           </div>
         ) : (
-          <>
-            <CancelBtn />
-            <OkBtn />
-          </>
+          <div style={{ display: 'flex', justifyContent: 'space-between', }}>
+            <div style={{ width: '10px' }}></div>
+            <div style={{ width: "130px", display: 'flex', justifyContent: 'space-between', }}>
+              <CancelBtn />
+              <OkBtn />
+            </div>
+          </div>
         )}
       </div>
     );
@@ -79,7 +74,7 @@ export default function CalendarEventForm({
   return (
     <Modal
       open={open}
-      title={'创建策略执行日程'}
+      title={title}
       centered
       onCancel={onCancel}
       footer={ModalFooter}
@@ -100,29 +95,32 @@ export default function CalendarEventForm({
       }}
     >
       <Form
-            form={form}
-            labelCol={{
-                span: 3
-            }}
-        >
-            <Form.Item label="策略" name={"name"} rules={[FORM_REQUIRED_RULE]}>
-                <Select 
-                    options={strategyDatasource.map(item => {
-                        return {
-                            label: item.name,
-                            value: item.name
-                        }
-                    })}
-                    placeholder="请选择策略"
-                />
-            </Form.Item>
-            <Form.Item label="时间" name={"time"} rules={[FORM_REQUIRED_RULE]}>
-                    <DatePicker.RangePicker showTime />
-            </Form.Item>
-            <Form.Item label="备注" name="remark">
-                    <Input.TextArea placeholder='描述'/>
-            </Form.Item>
-        </Form>
+        form={form}
+        labelCol={{ span: 5 }}
+        wrapperCol={{ span: 18 }}
+      >
+        <Form.Item label="策略" name={"strategyId"}  rules={[FORM_REQUIRED_RULE]}>
+          <Select
+          disabled={type === 'add'?false:true}
+            options={strategyDatasource?.map(item => {
+              return {
+                label: item.title,
+                value: item.strategyId
+              }
+            })}
+            placeholder="请选择策略"
+          />
+        </Form.Item>
+        <Form.Item label="开始时间" name={"start"} rules={[FORM_REQUIRED_RULE]}>
+          <DatePicker    disabled={type === 'add'?false:true}  format={'YYYY-MM-DD'} style={{ width: '100%' }} />
+        </Form.Item>
+        <Form.Item label="结束时间" name={"end"} rules={[FORM_REQUIRED_RULE]}>
+          <DatePicker    disabled={type === 'add'?false:true} format={'YYYY-MM-DD'}  style={{ width: '100%' }} />
+        </Form.Item>
+        <Form.Item label="备注" name="remarks">
+          <Input.TextArea    disabled={type === 'add'?false:true} placeholder='描述' />
+        </Form.Item>
+      </Form>
     </Modal>
   );
 }

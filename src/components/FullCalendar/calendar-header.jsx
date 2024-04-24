@@ -70,7 +70,7 @@ export default function CalendarHeader({ now, view, onMove, onCreate, onViewType
         <Button className={styles.centerButton} type="primary" onClick={() => onCreate()}>
         {t('创建策略执行日程')}               
         </Button>
-        {screenMap.lg && (
+        {/* {screenMap.lg && (
           <Radio.Group value={view} onChange={handleMenuClick}>
             {items.map(item => {
               return (
@@ -79,7 +79,7 @@ export default function CalendarHeader({ now, view, onMove, onCreate, onViewType
             })}
           </Radio.Group>
         )
-        }
+        } */}
       </div>
     </div>
   );
