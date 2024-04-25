@@ -11,8 +11,8 @@ const BaseLine = ({ baseLineArgs, onClose }) => {
 
     const isInTimes = (time, times) => {
         const cur = dayjs(time, "HH:mm");
-        const start = dayjs(times[0], "HH:mm");
-        const end = dayjs(times[1], "HH:mm");
+        const start = dayjs(times?.[0], "HH:mm");
+        const end = dayjs(times?.[1], "HH:mm");
         return (cur.isAfter(start) || cur.isSame(start)) && (cur.isBefore(end) || cur.isSame(end));
     };
 
@@ -178,7 +178,9 @@ const BaseLine = ({ baseLineArgs, onClose }) => {
         if (baseLineArgs) {
             setOpen(true);
             getCompanyBaseLine();
-        } else setOpen(false);
+        } else {
+            setOpen(false);
+        }
     }, [baseLineArgs]);
 
     const items = [
