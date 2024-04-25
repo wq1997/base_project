@@ -144,6 +144,10 @@ const Company = ({ invitationSplitId, onClose }) => {
                                 setBaseLineArgs({
                                     id: invitationSplitId,
                                     companyCode: taskList[index]?.companyCode,
+                                    responsePeriod: [
+                                        dayjs(inviteInfo?.appointedTimeFrom).format("HH:mm"),
+                                        dayjs(inviteInfo?.appointedTimeTo).format("HH:mm"),
+                                    ],
                                 })
                             }
                         >
@@ -154,7 +158,7 @@ const Company = ({ invitationSplitId, onClose }) => {
             },
         },
     ];
-
+ 
     useEffect(() => {
         invitationSplitId && getSplitInviteInitData();
     }, [invitationSplitId]);
