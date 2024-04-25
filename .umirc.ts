@@ -21,7 +21,7 @@ export default defineConfig({
   plugins: ['@umijs/plugins/dist/dva', '@umijs/plugins/dist/locale'],
   dva:{},
   locale: {
-    default: "zh-CN"
+    default: "en-US"
   },
   outputPath: OutputPathName(UMI_ENV),
   define: {

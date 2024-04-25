@@ -1,5 +1,5 @@
 import { ConfigProvider,theme as antdTheme } from "antd";
-import { Outlet, useSelector, useLocation, history } from "umi";
+import { Outlet, useSelector, useLocation, history, setLocale } from "umi";
 import { setLocalStorage, removeLocalStorage } from "@/utils/utils";
 import { ThemeEnum } from "@/components";
 import en_US from 'antd/locale/en_US';
@@ -18,6 +18,9 @@ const localeEnum = {
     en_US
 }
 setLocalStorage("theme", 'dark');
+setLocalStorage("locale", 'en-US');
+setLocale('en-US');
+
 
 const App = () => {
     const { theme, locale } = useSelector(state => state.global);
@@ -25,7 +28,7 @@ const App = () => {
     if(location?.pathname==="/"){
         history.push('/login');
     }
-
+    console.log("localelocale", locale)
     return (
         <ConfigProvider 
             locale={localeEnum[locale]}

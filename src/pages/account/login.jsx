@@ -9,12 +9,12 @@ import { getEncrypt, setLocalStorage,getLocalStorage } from "@/utils/utils";
 import styles from "./index.less";
 import { history, useDispatch, FormattedMessage, useIntl,useSelector} from "umi";
 import { useEffect, useState } from "react";
-import { getBaseUrl } from '@/services/request'
+import { getBaseUrl } from '@/services/request';
 import img from '../../../src/assets/imges/bgimg.png'
 const { Title } = Typography;
 
 const Login = () => {
-  const { token } = theme.useToken();
+  const { token } = theme.useToken(); 
   const dispatch = useDispatch();
   const [publicKey, setPublicKey] = useState('');
   const [codeImgUrl, setCodeImgUrl] = useState(`${getBaseUrl()}/user/getKaptchaImage`);
@@ -84,7 +84,7 @@ const Login = () => {
   const changeLanguage = (e) => {
     let locale=e.target.value==1?'zh-CN':'en-US';
     setLanguage(e.target.value);
-    setLocalStorage('locale', locale)
+    setLocalStorage('locale', locale);
     dispatch({
         type: 'global/changeLanguage',
         payload: {
@@ -95,6 +95,7 @@ const Login = () => {
   useEffect(() => {
     getPublicKey();
   }, [])
+  console.log(language,global?.locale);
   return (
     <div
       style={{
