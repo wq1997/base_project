@@ -2,6 +2,7 @@ export const setLocalStorage = (key, value) => localStorage.setItem(key, value);
 export const getLocalStorage = key => localStorage.getItem(key);
 export const MAP_KEY = 'b6b9b071ea496e3aa5c1e2e068275f42';
 export const removeLocalStorage = key => localStorage.removeItem(key);
+export const downLoadUrl='http://192.168.1.42/download/';
 import JSEncrypt from 'jsencrypt'
 
 export const getEncrypt=(key,data) =>{
@@ -99,6 +100,15 @@ export const  downLoadExcelMode = (fileName,sheetData,sheetFilter,sheetHeader,sh
   const ExportJsonExcel = require("js-export-excel");
   var toExcel=new ExportJsonExcel(option);
   toExcel.saveExcel();
+}
+
+
+export function download(url, filename) {
+  const link = document.createElement("a");
+  link.target='_blank';
+  link.href = `${url}${filename}`;
+  link.download = filename;
+  link.click();
 }
 
 

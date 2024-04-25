@@ -1,17 +1,16 @@
 import { Outlet, useDispatch, useSelector,FormattedMessage,useLocation } from 'umi'
 import React, { useEffect } from 'react';
-import { theme, Layout, Dropdown } from 'antd';
+import { theme, Layout, Dropdown,Button } from 'antd';
 import MyMenu from "@/permissions/menu";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import styles from "./baseLayout.less";
-import { setLocalStorage, removeLocalStorage } from "@/utils/utils";
+import { setLocalStorage, removeLocalStorage,download,downLoadUrl } from "@/utils/utils";
 import useLocale from "@/hooks/useLocale"
 import shouye from "../assets/svg/shouye.svg";
-import languageChineseSvg from "../assets/svg/language-chinese.svg";
-import languageEnglishSvg from "../assets/svg/language-english.svg";
-import mySvg from "../assets/svg/my.svg";
+import down from "../assets/svg/down.svg";
+import mySvg from "../assets/svg/mine.svg";
 import {
-    UserSwitchOutlined,
+    FilePdfOutlined,
     LogoutOutlined
   } from '@ant-design/icons';
   import { history, useIntl } from "umi";
@@ -92,6 +91,31 @@ const BaseLayout = () => {
                         <FormattedMessage id="app.title" />
                     </div>
                     <div style={{display:'flex',alignItems: 'center', }}>
+                    <Dropdown
+                            placement="bottom"
+                            menu={{
+                                items: [
+                                    {
+                                        label: useLocale('导出使用说明'),
+                                        key: 'ExportPdf',
+                                        icon: <FilePdfOutlined />,
+                                    },
+                                ],
+                                onClick({key}){
+                                    if(key==="ExportPdf"){
+                                     let fileName= global.locale==="zh-CN"?'储能软件系统使用说明.pdf':'Energy storage software system instruction manual.pdf'
+                                     download(downLoadUrl,fileName);
+                                    }
+                                   
+                                }
+                            }}
+                        >
+                          <img 
+                                src={down} 
+                                style={{cursor: 'pointer',}} 
+                                onClick={()=>history.push('/index/device')}
+                            />
+                        </Dropdown>
                             <img 
                                 src={shouye} 
                                 style={{cursor: 'pointer',margin: '0px 40px'}} 
@@ -120,11 +144,6 @@ const BaseLayout = () => {
                                         key: 'logout',
                                         icon: <LogoutOutlined />,
                                     },
-                                    // {
-                                    //     label: useLocale('切换账号'),
-                                    //     key: 'changeAccount',
-                                    //     icon: <UserSwitchOutlined />,
-                                    // },
                                 ],
                                 onClick({key}){
                                     if(key==="logout"){

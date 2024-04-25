@@ -1781,4 +1781,6 @@ export default {
 '登录成功':'Login Successful',
 '编辑失败':'Edit failed',
 '编辑成功':'Edited successfully',
+'导出使用说明':'Export Instructions'
+
 } 
