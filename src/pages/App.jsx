@@ -1,6 +1,7 @@
 import { ConfigProvider, theme as antdTheme } from "antd";
-import { Outlet, useSelector } from "umi";
+import { Outlet, useSelector, setLocale } from "umi";
 import { ThemeEnum, GlobalWrapperCss } from "@/components";
+import { DEFAULT_LOCALE } from "@/utils/constants";
 import en_US from 'antd/locale/en_US';
 import zh_CN from 'antd/locale/zh_CN';
 import dayjs from "dayjs";
@@ -10,6 +11,8 @@ import 'dayjs/locale/zh-cn';
 dayjs.extend(weekday);
 dayjs.extend(localeData);
 dayjs.locale('zh-cn');
+setLocale(DEFAULT_LOCALE, false);
+
 
 const localeEnum = {
     zh_CN,

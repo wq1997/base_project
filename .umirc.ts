@@ -1,6 +1,7 @@
 import { defineConfig } from "umi";
-import routes from "./src/router"
+import routes from "./src/router";
 import apiUrl from "./apiUrl";
+import { DEFAULT_LOCALE } from "./src/utils/constants";
 
 const path = require('path');
 const prodGzipList = ['js', 'css', 'jsx', 'less'];
@@ -21,7 +22,7 @@ export default defineConfig({
   plugins: ['@umijs/plugins/dist/dva', '@umijs/plugins/dist/locale'],
   dva:{},
   locale: {
-    default: "zh-CN"
+    default: DEFAULT_LOCALE
   },
   outputPath: OutputPathName(UMI_ENV),
   define: {

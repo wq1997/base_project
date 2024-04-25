@@ -1,11 +1,13 @@
 import { setLocale } from "umi";
 import { setLocalStorage, getLocalStorage } from "@/utils/utils";
+import { DEFAULT_LOCALE } from "@/utils/constants";
+
 export default {
     namespace: 'global',
 
     state: {
       theme: "default",
-      locale: getLocalStorage('locale')||"zh-CN"
+      locale: getLocalStorage('locale')||DEFAULT_LOCALE
     },
    
     effects: {
