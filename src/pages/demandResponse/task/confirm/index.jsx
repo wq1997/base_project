@@ -92,7 +92,6 @@ const Confirm = () => {
             },
             xAxis: {
                 type: "category",
-                boundaryGap: false,
                 data: times,
                 axisLabel: {
                     color: token.color11,

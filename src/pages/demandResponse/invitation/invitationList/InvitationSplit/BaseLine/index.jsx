@@ -13,7 +13,7 @@ const BaseLine = ({ baseLineArgs, onClose }) => {
         const cur = dayjs(time, "HH:mm");
         const start = dayjs(times?.[0], "HH:mm");
         const end = dayjs(times?.[1], "HH:mm");
-        return (cur.isAfter(start) || cur.isSame(start)) && (cur.isBefore(end) || cur.isSame(end));
+        return (cur.isAfter(start) || cur.isSame(start)) && cur.isBefore(end);
     };
 
     const Summary = () => {
