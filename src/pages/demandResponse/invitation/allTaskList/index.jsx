@@ -208,7 +208,7 @@ const Account = () => {
                 createdTimeTo,
                 code,
                 inviteCode,
-                confirmStatus,
+                status: confirmStatus,
                 splitStatus,
                 responseType,
                 responseTimeType,
