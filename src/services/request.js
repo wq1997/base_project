@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getDvaApp } from "umi";
+import { getLocalStorage } from "@/utils/utils";
 
 export const getBaseUrl = () => {
     const { API_URL1 = "" } = process.env;
@@ -18,8 +19,7 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
     config => {
-        config.headers.Authorization =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsiaWQiOjIsInVzZXJuYW1lIjoiemhhbmdzYW4ifSwiZXhwIjoxNzExMTQ1ODA5fQ.OktStkDzYPvWAVgXKAa9BAdl06r24J7BJLYyutrwQUU";
+        config.headers.Authorization = getLocalStorage("Token");
         return config;
     },
     error => {

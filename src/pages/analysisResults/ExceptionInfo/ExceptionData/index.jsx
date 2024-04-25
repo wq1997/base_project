@@ -87,7 +87,7 @@ const ExceptionData = ({ infoId, onClose }) => {
         return data;
     };
 
-    const getOptions = ({ unit, labels, pieces, series }) => {
+    const getOptions = ({ unit, labels, pieces, series, physicalLocation, groupLength }) => {
         setOptions({
             legend: {
                 icon: "circle",
@@ -97,11 +97,24 @@ const ExceptionData = ({ infoId, onClose }) => {
             },
             xAxis: {
                 type: "category",
-                data: labels,
                 axisLabel: {
                     showMaxLabel: true, //固定显示滚动条最后一条数据
                 },
+                data: labels?.map(label => {
+                    return {
+                        value: label,
+                        textStyle: {
+                            fontSize: 1 ? 10 : 8,
+                            color: physicalLocation?.includes(
+                                Math.ceil(label.match(/\d+/g)[0] / groupLength)
+                            )
+                                ? "red"
+                                : "black",
+                        },
+                    };
+                }),
             },
+
             yAxis: {
                 axisLabel: {
                     formatter: `{value} ${unit}`,
@@ -133,7 +146,7 @@ const ExceptionData = ({ infoId, onClose }) => {
                     {
                         show: false,
                         dimension: 0,
-                        seriesIndex: 0, //第一部分数据
+                        seriesIndex: 0,
                         pieces,
                     },
                 ],
@@ -155,6 +168,7 @@ const ExceptionData = ({ infoId, onClose }) => {
             setExceptionScene(exceptionScene);
             const sceneName = exceptionScene?.sceneName;
             const physicalLocation = exceptionScene?.physicalLocation?.split(",");
+
             let addColumns = [];
             let tempList = [];
             let isShowChart = false;
@@ -242,7 +256,7 @@ const ExceptionData = ({ infoId, onClose }) => {
                         width: 80,
                     });
                 });
-                const colorList = ["#48D8BF", "#9E87FF"];
+                const colorList = ["#48D8BF", "#5470C6"];
                 tempList?.forEach((item, index) => {
                     series.push({
                         ...itemStyle,
@@ -262,6 +276,8 @@ const ExceptionData = ({ infoId, onClose }) => {
                     "MODULE_VOLTAGE_STRATIFICATION_WITHIN_CLUSTER",
                     "MODULE_TEMPERATURE_STRATIFICATION_WITHIN_CLUSTER",
                 ].includes(sceneName);
+                const groupLength =
+                    sceneName == "MODULE_VOLTAGE_STRATIFICATION_WITHIN_CLUSTER" ? 13 : 7;
                 getOptions({
                     unit,
                     labels,
@@ -269,13 +285,12 @@ const ExceptionData = ({ infoId, onClose }) => {
                     ...(showPieces && {
                         pieces: getVisualMap({
                             groups: physicalLocation,
-                            groupLength:
-                                sceneName == "MODULE_VOLTAGE_STRATIFICATION_WITHIN_CLUSTER"
-                                    ? 13
-                                    : 7,
+                            groupLength,
                             maxNum: keys?.length,
                         }),
                     }),
+                    physicalLocation: physicalLocation?.map(item => +item),
+                    groupLength,
                 });
             }
             setShowChart(isShowChart);

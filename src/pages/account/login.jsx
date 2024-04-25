@@ -1,4 +1,4 @@
-import { Form, Input, Checkbox, Button, Typography, theme, Tooltip } from "antd";
+import { Form, Input, Checkbox, Button, Typography, theme, Tooltip, message } from "antd";
 import { FORM_REQUIRED_RULE, PUBLIC_FILE_PATH } from "@/utils/constants";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { getPublicKey as getPublicKeySever, login as loginSever } from "@/services/api";
@@ -9,40 +9,20 @@ import { useEffect, useState } from "react";
 const { Title } = Typography;
 
 const Login = () => {
+    localStorage.removeItem("Token");
+
     const { token } = theme.useToken();
-    const dispatch = useDispatch();
-    const [publicKey, setPublicKey] = useState("");
 
     const onFinish = async values => {
-        const res = await loginSever({
-            ...values,
-            password: values.password || getEncrypt(publicKey, values.password),
-        });
-        if (res?.data?.data) {
-            const data = res?.data;
-            setLocalStorage("Token", data?.data);
-            dispatch({
-                type: "user/updateState",
-                payload: {
-                    user: {
-                        userName: data?.nickName,
-                    },
-                },
-            });
+        const res = await loginSever(values);
+        if (res?.data?.code == 0) {
+            setLocalStorage("Token", res?.data?.data);
             history.push("/upload-files");
+        } else {
+            message.error(res?.data?.message);
         }
     };
 
-    const getPublicKey = async () => {
-        const res = await getPublicKeySever();
-        if (res?.data) {
-            setPublicKey(res?.data);
-        }
-    };
-
-    useEffect(() => {
-        getPublicKey();
-    }, []);
     return (
         <div
             style={{

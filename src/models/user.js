@@ -1,38 +1,37 @@
-import { login } from "@/services/api"
+import { login } from "@/services/api";
 import { history } from "umi";
 
 export default {
-    namespace: 'user',
+    namespace: "user",
 
     state: {
-      user: null,
+        user: null,
     },
-   
-    effects: {
-      *queryUser({ payload }, { call, put }) {
-        const userInfo = yield call(login, { username: 'wangqing', password: '123456' });
-        console.log("queryUser", userInfo)
-        if(userInfo){
-          yield put({
-            type: 'updateState',
-            payload: {
-                user: userInfo
-            }
-          })
-        }
-      },
 
-      *logout({ payload }, { call, put }) {
-        history.push("/login")
-      }
+    effects: {
+        *queryUser({ payload }, { call, put }) {
+            const userInfo = yield call(login, { username: "wangqing", password: "123456" });
+            if (userInfo) {
+                yield put({
+                    type: "updateState",
+                    payload: {
+                        user: userInfo,
+                    },
+                });
+            }
+        },
+
+        *logout({ payload }, { call, put }) {
+            history.push("/login");
+        },
     },
-   
+
     reducers: {
-      updateState(state, { payload }) {
-        return {
-          ...state,
-          ...payload,
-        };
-      },
-    }
-  };
+        updateState(state, { payload }) {
+            return {
+                ...state,
+                ...payload,
+            };
+        },
+    },
+};
