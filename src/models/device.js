@@ -22,7 +22,7 @@ export default {
         type: 'updateState',
         payload: {
           allPlant: [
-            ...(data.data.data)
+            ...data.data.data
           ]
         },
       })
@@ -36,7 +36,7 @@ export default {
           plantDetails: {
             ...(data.data.data)
           },
-          // currentPlantId:id,
+          currentPlantId:id,
         },
       });
     },
@@ -60,6 +60,8 @@ export default {
 
   reducers: {
     updateState(state, { payload }) {
+      console.log(state,payload,{...state,
+        ...payload},'device');
       return {
         ...state,
         ...payload,

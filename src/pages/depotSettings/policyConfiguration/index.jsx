@@ -3,17 +3,17 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { Strategy } from '@/components';
 import { CardModel } from "@/components";
 import Detail from '@/components/FullCalendar/newStrategy/detail';
-
 import styles from './index.less'
 import { theme, Calendar, Tree, Select, Form } from "antd";
 import dayjs from 'dayjs';
 import { useSelector, useIntl } from "umi";
-import { getGridPointList, getStrategyPlanList, getStrategyList, getStrategyInfo,saveStrategyPlan } from '@/services/policy'
+import { getGridPointList, getStrategyPlanList, getStrategyList, getStrategyInfo,saveStrategyPlan,getBasicParams } from '@/services/policy'
 const { Option } = Select;
 
 function Com(props) {
   const [seletOption, setSelectOption] = useState([]);
   const [gridId, setGridId] = useState();
+  const [currentGrid, setCurrentGrid] = useState();
   const { token } = theme.useToken();
   const [date, setDate] = useState(new Date());
   const [form6] = Form.useForm(); // 策略详情
@@ -69,7 +69,6 @@ function Com(props) {
   }
   const newPolicy=async(value)=>{
     let {data}=await saveStrategyPlan({...value,gridPoint:gridId});
-    console.log(data,33333333333);
   }
   const getInit = async () => {
     let { data } = await getGridPointList({ plantId: localStorage.getItem('plantId') });
@@ -82,10 +81,13 @@ function Com(props) {
       })
     })
     setSelectOption([...arr]);
-    setGridId(arr[0]?.value)
+    setGridId(arr[0]?.value);
+    setCurrentGrid(arr[0]);
   }
   const changeGrid = (val) => {
-    console.log(val, 1212);
+    setCurrentGrid(
+    seletOption.find(it=>it.value==val)
+    )
     setGridId(val);
   }
 
@@ -167,7 +169,15 @@ function Com(props) {
         </CardModel>
       </div>
       <div className={styles.right_Content} style={{ backgroundColor: token.titleCardBgc }}>
-        <Strategy date={date} setDate={onSelect} planList={planList} strategy={strategyTreeData} newPolicy={newPolicy}  getStrategy={getStrategy}/>
+        <Strategy 
+        date={date} 
+        setDate={onSelect} 
+        planList={planList} 
+        strategy={strategyTreeData} 
+        newPolicy={newPolicy}  
+        getStrategy={getStrategy}
+        currentGrid={currentGrid}
+        />
       </div>
       <Detail
         form={form6}

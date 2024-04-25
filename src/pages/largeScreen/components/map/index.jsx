@@ -15,9 +15,10 @@ function MapCom(props) {
     const convertData = function () {
         const markerList = allPlant?.map(it => {
             return {
+                ...it,
                 name: it.name,
                 value: [it.longitude, it.latitude, 100],
-                id:it.plantId
+                id:it.plantId,
             }
         });
         return markerList;
@@ -32,13 +33,16 @@ function MapCom(props) {
                     type: 'device/updateState',
                     payload:{
                         currentPlantId:params.data.id
-                    } })
-                localStorage.setItem('plantId',params.data.id)
+                    } 
+                })
+                localStorage.setItem('plantId',params.data.id);
+                localStorage.setItem('current',JSON.stringify(params.data))
                 // dispatch({ 
                 // type: 'device/getAllPlantDetails',
                 // payload:{
                 //     plantId:params.data.id
-                // } }).then(()=>{
+                // } })
+                // .then(()=>{
                     history.push('/index/home')
                 // });
             }

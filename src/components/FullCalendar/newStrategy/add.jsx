@@ -44,14 +44,14 @@ const Add = ({
                     <Form.Item label="策略名称" name="name" rules={[FORM_REQUIRED_RULE]}>
                         <Input placeholder="请输入策略名称" style={{maxWidth: 320}} />
                     </Form.Item>
-                    <Form.Item label="电价">
+                    {/* <Form.Item label="电价">
                         <Row>
                             <Col span={4}>尖：{data.form2Data?.pointed}</Col>
                             <Col span={4}>峰：{data.form2Data?.peak}</Col>
                             <Col span={4}>平：{data.form2Data?.flat}</Col>
                             <Col span={4}>谷：{data.form2Data?.valley}</Col>
                         </Row>
-                    </Form.Item>
+                    </Form.Item> */}
                     <Form.Item 
                         name=""
                         label="时段" 
@@ -109,7 +109,7 @@ const Add = ({
                                     </Form.Item>
                                 </Col>
                                 <Col span={1}>
-                                    <Row justify="center" style={{marginTop: 5}}>至</Row>
+                                    <Row justify="center" style={{marginTop: 5}}>-</Row>
                                 </Col>
                                 <Col span={5}>
                                     <Form.Item 
@@ -150,7 +150,7 @@ const Add = ({
                             </Row>
                     </Form.Item>
                     <Row gutter={16}>
-                        <Col span={5}>
+                        {/* <Col span={5}>
                             <Form.Item
                                 label="类型"
                                 name="type"
@@ -160,7 +160,7 @@ const Add = ({
                                     placeholder="请选择"
                                 />
                             </Form.Item>
-                        </Col>
+                        </Col> */}
                         <Col span={5}>
                             <Form.Item
                                 label="状态"

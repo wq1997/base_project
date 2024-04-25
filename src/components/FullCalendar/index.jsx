@@ -22,7 +22,7 @@ const DefaultEventInitValue = {
     end: dayjs(),
     color: '',
 };
-const Strategy = ({ date, setDate, planList,strategy,newPolicy,getStrategy }) => {
+const Strategy = ({ date, setDate, planList,strategy,newPolicy,getStrategy,currentGrid }) => {
     const fullCalendarRef = useRef(null);
     const [open, setOpen] = useState(false);
     const [view, setView] = useState('dayGridMonth');
@@ -281,6 +281,7 @@ const Strategy = ({ date, setDate, planList,strategy,newPolicy,getStrategy }) =>
                     onMove={handleMove}
                     onCreate={handleButtonSele}
                     onViewTypeChange={handleViewTypeChange}
+                    currentGrid={currentGrid}
                 />
                 <FullCalendar
                     ref={fullCalendarRef}

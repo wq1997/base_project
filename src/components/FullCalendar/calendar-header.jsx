@@ -8,7 +8,7 @@ import NewStrategy from './newStrategy';
 import { useSelector, useIntl } from "umi";
 import { theme } from "antd";
 
-export default function CalendarHeader({ now, view, onMove, onCreate, onViewTypeChange }) {
+export default function CalendarHeader({ now, view, onMove, onCreate, onViewTypeChange,currentGrid}) {
   const { screenMap } = useResponsive();
   const { token } = theme.useToken();
   const intl = useIntl();
@@ -66,7 +66,7 @@ export default function CalendarHeader({ now, view, onMove, onCreate, onViewType
       </div>
 
       <div className={styles.rightGroup}>
-        <NewStrategy />
+        <NewStrategy  currentGrid={currentGrid}/>
         <Button className={styles.centerButton} type="primary" onClick={() => onCreate()}>
         {t('创建策略执行日程')}               
         </Button>

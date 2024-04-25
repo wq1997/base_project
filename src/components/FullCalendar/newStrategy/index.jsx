@@ -1,15 +1,15 @@
 import { Iconify, Title } from '@/components';
-import { 
+import {
     theme,
-    Button, 
-    Drawer, 
-    Form, 
-    Row, 
-    Col, 
-    Input, 
+    Button,
+    Drawer,
+    Form,
+    Row,
+    Col,
+    Input,
     Select,
-    Tabs, 
-    Divider, 
+    Tabs,
+    Divider,
     Space,
     Switch,
     Radio,
@@ -22,20 +22,22 @@ import {
 import styles from "./index.less";
 import { useState } from 'react';
 import { timeSplitSymbol } from "@/utils/constants";
-import { useIntl} from "umi";
+import { useIntl } from "umi";
 import Add from './add';
 import NewYear from './newYear';
 import NewSchedule from './newSchedule';
 import Detail from './detail';
+import { sendBasicParams, getBasicParams } from '@/services/policy'
+import { useEffect } from 'react';
 
 const colon = false;
 const tabsList = [
-    {label: '基础配置', key: 'BaseConfig'},
-    {label: '电价配置', key: 'ElectricityPrice'},
-    {label: '充放电配置', key: 'ElectricConfig'},
+    { label: '基础配置', key: 'BaseConfig' },
+    { label: '电价配置', key: 'ElectricityPrice' },
+    { label: '充放电配置', key: 'ElectricConfig' },
 ]
 
-const NewStrategy = () => {
+const NewStrategy = ({ currentGrid }) => {
     const { token } = theme.useToken();
     const [form1] = Form.useForm(); // 电站类型和并网点
     const [form2] = Form.useForm(); // 基础配置
@@ -60,6 +62,9 @@ const NewStrategy = () => {
         );
         return msg
     }
+    useEffect(() => {
+        getBasicParamsF();
+    }, [drawerOpen])
     const [strategyDatasource, setStrategyDatasource] = useState([
         {
             id: 1,
@@ -74,7 +79,10 @@ const NewStrategy = () => {
             createTime: '2024/03/27'
         }
     ]);
-
+    const getBasicParamsF = async () => {
+        let { data } = await getBasicParams({ gridPointId: currentGrid.value });
+        form2.setFieldsValue(data.data);
+    }
     const [yearExcuteDatasource, setYearExcuteDatasource] = useState([
         {
             name: '策略1',
@@ -93,12 +101,12 @@ const NewStrategy = () => {
             title: t('序号'),
             dataIndex: 'order',
             key: 'order',
-            render(_,record,index){
-                return index+1;
+            render(_, record, index) {
+                return index + 1;
             }
         },
         {
-            title:t('策略名称'),
+            title: t('策略名称'),
             dataIndex: 'name',
             key: 'name',
         },
@@ -115,12 +123,12 @@ const NewStrategy = () => {
         {
             title: t('操作'),
             key: "Action",
-            render: (_, record, index)=>{
+            render: (_, record, index) => {
                 return (
                     <Space>
-                        <Typography.Link 
-                            style={{color: token.colorPrimary}}
-                            onClick={()=>{
+                        <Typography.Link
+                            style={{ color: token.colorPrimary }}
+                            onClick={() => {
                                 form6.setFieldsValue({
                                     ...record
                                 });
@@ -128,23 +136,23 @@ const NewStrategy = () => {
                                 setEditKey(index);
                             }}
                         >
-                           {t('详情')} 
+                            {t('详情')}
                         </Typography.Link>
-                        <Typography.Link 
-                            style={{color: token.deleteBtnColor}}
-                            onClick={()=>{
+                        <Typography.Link
+                            style={{ color: token.deleteBtnColor }}
+                            onClick={() => {
                                 Modal.confirm({
                                     title: t('系统提示'),
-                                    content:t('策略删除后将无法恢复，是否确认删除该策略？'),
-                                    onOk(){
+                                    content: t('策略删除后将无法恢复，是否确认删除该策略？'),
+                                    onOk() {
                                         const cloneStrategyDatasource = JSON.parse(JSON.stringify(strategyDatasource));
-                                        const newData = cloneStrategyDatasource.splice(index,1);
+                                        const newData = cloneStrategyDatasource.splice(index, 1);
                                         setStrategyDatasource(cloneStrategyDatasource);
                                     }
                                 })
                             }}
                         >
-                           {t('删除')} 
+                            {t('删除')}
                         </Typography.Link>
                     </Space>
                 )
@@ -157,8 +165,8 @@ const NewStrategy = () => {
             title: t('序号'),
             dataIndex: 'order',
             key: 'order',
-            render(_,record,index){
-                return index+1;
+            render(_, record, index) {
+                return index + 1;
             }
         },
         {
@@ -182,10 +190,10 @@ const NewStrategy = () => {
             key: 'remark',
             ellipsis: true,
             width: 300,
-            render(value){
+            render(value) {
                 return (
                     <Tooltip title={value}>
-                        <div 
+                        <div
                             style={{
                                 overflow: 'hidden',
                                 whiteSpace: 'nowrap',
@@ -202,12 +210,12 @@ const NewStrategy = () => {
         {
             title: t('操作'),
             key: "Action",
-            render: (_, record, index)=>{
+            render: (_, record, index) => {
                 return (
                     <Space>
-                        <Typography.Link 
-                            style={{color: token.defaultBg}}
-                            onClick={()=>{
+                        <Typography.Link
+                            style={{ color: token.defaultBg }}
+                            onClick={() => {
                                 const month1 = record.startTime.split(timeSplitSymbol)[0];
                                 const day1 = record.startTime.split(timeSplitSymbol)[1];
                                 const month2 = record.endTime.split(timeSplitSymbol)[0];
@@ -222,23 +230,23 @@ const NewStrategy = () => {
                                 setCreateYearExcuteOpen(true);
                             }}
                         >
-                         {t('编辑')}   
+                            {t('编辑')}
                         </Typography.Link>
-                        <Typography.Link 
-                            style={{color: token.deleteBtnColor}}
-                            onClick={()=>{
+                        <Typography.Link
+                            style={{ color: token.deleteBtnColor }}
+                            onClick={() => {
                                 Modal.confirm({
                                     title: t('系统提示'),
                                     content: t('年度执行计划删除后将无法恢复，是否确认删除该年度执行计划？'),
-                                    onOk(){
+                                    onOk() {
                                         const cloneYearExcuteDatasource = JSON.parse(JSON.stringify(yearExcuteDatasource));
-                                        const newData = cloneYearExcuteDatasource.splice(index,1);
-                                        setExcuteDatasource(cloneYearExcuteDatasource);
+                                        const newData = cloneYearExcuteDatasource.splice(index, 1);
+                                        // setExcuteDatasource(cloneYearExcuteDatasource);
                                     }
                                 })
                             }}
                         >
-                           {t('删除')} 
+                            {t('删除')}
                         </Typography.Link>
                     </Space>
                 )
@@ -247,8 +255,11 @@ const NewStrategy = () => {
     ]
 
     const onFininsh = async () => {
+        if (activeKey === 'BaseConfig') {
+            let { data } = await sendBasicParams({ ...form2.getFieldsValue(), gridPointId: currentGrid?.value });
+        }
         setDrawerOpen(false);
-        message.success(t("新建成功"));
+        // message.success(t("新建成功"));
     }
 
 
@@ -259,21 +270,19 @@ const NewStrategy = () => {
         form2.resetFields();
     }
 
-    console.log(data);
     return (
         <div>
-            <Button type="primary" onClick={()=>setDrawerOpen(true)}>
+            <Button type="primary" onClick={() => setDrawerOpen(true)}>
                 <div className={styles.btn}>
                     <Iconify icon="material-symbols:add" size={24} />
-                    
                     {t('新建策略')}
                 </div>
             </Button>
 
-            <Drawer 
-                width="980" 
-                title={t("新建策略")}
-                open={drawerOpen} 
+            <Drawer
+                width="980"
+                title={t("策略详情")}
+                open={drawerOpen}
                 onClose={onCancel}
                 footer={
                     <Row justify="end">
@@ -284,12 +293,12 @@ const NewStrategy = () => {
                     </Row>
                 }
             >
-                <Form 
-                    form={form1} 
-                    colon={colon} 
-                    onValuesChange={(_,allValues) => {
+                <Form
+                    form={form1}
+                    // colon={colon} 
+                    onValuesChange={(_, allValues) => {
                         data.form1Data = allValues;
-                        setData({...data});
+                        setData({ ...data });
                     }}
                     initialValues={{
                         networkSite: '并网点1'
@@ -298,64 +307,71 @@ const NewStrategy = () => {
                     <Row gutter={16}>
                         <Col span={12}>
                             <Form.Item name="deviceType" label="电站类型">
-                                <Input placeholder='请输入电站类型' style={{maxWidth: 320}} />
+                                {JSON.parse(localStorage.getItem('current')).typeName}
                             </Form.Item>
                         </Col>
                         <Col span={12}>
                             <Form.Item name="networkSite" label="并网点">
-                                <Select 
-                                    options={[
-                                        {value: '并网点1', label: '并网点1'},
-                                        {value: '并网点2', label: '并网点2'},
-                                    ]}
-                                    placeholder='请选择并网点'
-                                    style={{maxWidth: 240}}
-                                />
+                                {currentGrid?.gridPointName}
                             </Form.Item>
                         </Col>
                     </Row>
                 </Form>
-                <Tabs 
+                <Tabs
                     items={tabsList}
                     type="card"
                     activeKey={activeKey}
                     onChange={key => setActiveKey(key)}
                 />
-                <Divider style={{marginTop: 0}}/>
+                <Divider style={{ marginTop: 0 }} />
                 {/* 基础配置 */}
                 {
-                    activeKey==="BaseConfig"&&
-                    <Form 
+                    activeKey === "BaseConfig" &&
+                    <Form
                         form={form2}
                         colon={colon}
-                        onValuesChange={(_,allValues) => {
+                        onValuesChange={(_, allValues) => {
                             data.form2Data = allValues;
-                            setData({...data});
+                            setData({ ...data });
                         }}
+                    // initialValues={{
+                    //     antiRefluxEnabled: true,
+                    //     // antiRefluxTriggerPower:0,
+                    //     branchDispatchPowerMode:1,
+                    //     enabled:true,
+                    //     expansionEnabled:true,
+                    //     fullTimePeriodEnabled:true,
+                    //     powerAdjustStep:0,
+                    //     powerFluctuateRange:0,
+                    //     preventOverloadEnabled:true,
+                    //     runStrategyPeriod:0,
+                    //     storageControlMode:1,
+                    //     // transformCap:0,
+                    // }}
                     >
-                        <Form.Item name="runCycle" label="策略运行周期(ms)">
-                            <Input placeholder='请输入策略运行周期' style={{maxWidth: 218}} />
+                        <Form.Item name="runStrategyPeriod" label="策略运行周期(ms)">
+                            <Input placeholder='请输入策略运行周期' style={{ maxWidth: 218 }} />
                         </Form.Item>
-                        <Form.Item name="enable" label="是否启用">
+                        <Form.Item name="enabled" label="是否启用">
                             <Switch />
                         </Form.Item>
                         <Row gutter={16}>
-                            <Col span={6}><Form.Item name="expansion" label="是否扩容"><Switch /></Form.Item></Col>
-                            <Col span={6}><Form.Item name="overload" label="是否防过载"><Switch /></Form.Item></Col>
-                            <Col span={6}><Form.Item name="antiReflux" label="是否防逆流"><Switch /></Form.Item></Col>
-                            <Col span={6}><Form.Item name="fullTime" label="是否全时段"><Switch /></Form.Item></Col>
+                            <Col span={6}><Form.Item name="expansionEnabled" label="是否扩容" ><Switch /></Form.Item></Col>
+                            <Col span={6}><Form.Item name="preventOverloadEnabled" label="是否防过载"><Switch /></Form.Item></Col>
+                            <Col span={6}><Form.Item name="antiRefluxEnabled" label="是否防逆流"><Switch /></Form.Item></Col>
+                            <Col span={6}><Form.Item name="fullTimePeriodEnabled" label="是否全时段"><Switch /></Form.Item></Col>
                         </Row>
                         <Row gutter={37}>
                             <Col span={12}>
-                                <Form.Item 
-                                    name="transformerCapacity" 
+                                <Form.Item
+                                    name="transformCap"
                                     label="变压器容量"
                                     labelCol={{
                                         span: 8
                                     }}
                                     labelAlign="left"
                                 >
-                                    <Input placeholder='请输入变压器容量'/>
+                                    <Input disabled={true} placeholder='请输入变压器容量' />
                                 </Form.Item>
                             </Col>
                             {/* <Col span={12}>
@@ -370,48 +386,48 @@ const NewStrategy = () => {
                                     <Input placeholder='请输入变压器容量保护比例'/>
                                 </Form.Item>
                             </Col> */}
-                             <Col span={12}>
-                                <Form.Item 
-                                    name="powerTriggerValue" 
+                            <Col span={12}>
+                                <Form.Item
+                                    name="antiRefluxTriggerPower"
                                     label="防逆流功率触发值(kW)"
                                     labelCol={{
                                         span: 8
                                     }}
                                     labelAlign="left"
                                 >
-                                    <Input placeholder='请输入防逆流功率触发值(kW)'/>
+                                    <Input disabled={true} placeholder='请输入防逆流功率触发值(kW)' />
                                 </Form.Item>
                             </Col>
                         </Row>
                         <Row gutter={37}>
-                           
+
                             <Col span={12}>
-                                <Form.Item 
-                                    name="adjustmentStepSize" 
+                                <Form.Item
+                                    name="powerAdjustStep"
                                     label="功率调节步长(kW)"
                                     labelCol={{
                                         span: 8
                                     }}
                                     labelAlign="left"
                                 >
-                                    <Input placeholder='请输入功率调节步长(kW)'/>
+                                    <Input placeholder='请输入功率调节步长(kW)' />
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
-                                <Form.Item 
-                                    name="regulationFluctuationRange" 
+                                <Form.Item
+                                    name="powerFluctuateRange"
                                     label="功率调节波动范围(kW)"
                                     labelCol={{
                                         span: 8
                                     }}
                                     labelAlign="left"
                                 >
-                                    <Input placeholder='请输入功率调节波动范围(kW)'/>
+                                    <Input placeholder='请输入功率调节波动范围(kW)' />
                                 </Form.Item>
                             </Col>
                         </Row>
                         <Form.Item
-                            name="energyStorageControlMode"
+                            name="storageControlMode"
                             label="储能控制模式"
                             labelCol={{
                                 span: 4
@@ -420,14 +436,15 @@ const NewStrategy = () => {
                         >
                             <Radio.Group
                                 options={[
-                                    {label:'最大功率', value: '最大功率'},
-                                    {label:'满时段均匀', value: '满时段均匀'},
-                                    {label:'计划曲线', value: '计划曲线'},
+                                    { label: '最大功率', value: 1 },
+                                    { label: '满时段均匀', value: 2 },
+                                    { label: '计划曲线', value: 3 },
                                 ]}
+                                defaultValue={1}
                             />
                         </Form.Item>
                         <Form.Item
-                            name="energyStorageBranchPowerDistributionMode"
+                            name="branchDispatchPowerMode"
                             label="储能分支功率下发模式"
                             labelCol={{
                                 span: 4
@@ -436,42 +453,47 @@ const NewStrategy = () => {
                         >
                             <Radio.Group
                                 options={[
-                                    {label:'平均功率', value: '平均功率'},
-                                    {label:'SOC动态均衡', value: 'SOC动态均衡'},
+                                    { label: '平均功率', value: 1 },
+                                    { label: 'SOC动态均衡', value: 2 },
                                 ]}
+                                defaultValue={1}
                             />
                         </Form.Item>
                     </Form>
                 }
                 {/* 充放电配置 */}
                 {
-                    activeKey==="ElectricConfig"&&
+                    activeKey === "ElectricConfig" &&
                     <div>
-                        <Space direction="vertical" style={{width: '100%'}} size={30}>
-                            <Space direction="vertical" style={{width: '100%'}} size={20}>
+                        <Space direction="vertical" style={{ width: '100%' }} size={30}>
+                            <Space direction="vertical" style={{ width: '100%' }} size={20}>
                                 <Row justify="space-between">
                                     <Space size={30}>
                                         <Title title="策略列表" />
-                                        <Button type="primary" onClick={()=>setCreateYearExcuteOpen(true)}>创建年度执行计划</Button>
-                                        <Button type="primary" onClick={()=>setCreateExecutionScheduleOpen(true)}>创建策略执行日程</Button>
+                                        {/* <Button type="primary" onClick={()=>setCreateYearExcuteOpen(true)}>创建年度执行计划</Button> */}
                                     </Space>
-                                    <Button 
+                                    <Button
                                         type="primary"
                                         onClick={() => {
                                             setNewPlanOpen(true);
                                         }}
                                     >
-                                        新增
+                                        {t('新增')}
                                     </Button>
                                 </Row>
-                                <Table 
+                                <Table
                                     columns={strategyColumns}
                                     dataSource={strategyDatasource}
                                 />
                             </Space>
-                            <Space direction="vertical" style={{width: '100%'}} size={20}>
-                                <Title title="年度执行计划" />
-                                <Table 
+                            <Space direction="vertical" style={{ width: '100%' }} size={20}>
+                                <Row justify="space-between">
+                                    <Title title="年度执行计划" />
+                                    <Button type="primary" onClick={() => setCreateExecutionScheduleOpen(true)}>创建策略执行日程</Button>
+                                </Row>
+
+
+                                <Table
                                     columns={yearExcuteColumns}
                                     dataSource={yearExcuteDatasource}
                                 />
@@ -482,7 +504,7 @@ const NewStrategy = () => {
             </Drawer>
 
             {/* 创建年度执行计划 */}
-            <NewYear 
+            <NewYear
                 form={form3}
                 dataSource={yearExcuteDatasource}
                 onChangeDatasource={(value) => {
@@ -495,7 +517,7 @@ const NewStrategy = () => {
             />
 
             {/* 创建策略执行日程 */}
-            <NewSchedule 
+            <NewSchedule
                 form={form4}
                 dataSource={strategyDatasource}
                 open={createExecutionScheduleOpen}
@@ -505,10 +527,10 @@ const NewStrategy = () => {
             />
 
             {/* 新增策略 */}
-            <Add 
+            <Add
                 data={data}
-                form={form5} 
-                dataSource={strategyDatasource} 
+                form={form5}
+                dataSource={strategyDatasource}
                 onChangeDatasource={(value) => {
                     setStrategyDatasource(value);
                 }}
@@ -518,7 +540,7 @@ const NewStrategy = () => {
                 }}
             />
             {/* 策略详情 */}
-            <Detail 
+            <Detail
                 form={form6}
                 open={editPlanOpen}
                 onChangeOpen={(value) => {
