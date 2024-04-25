@@ -24,7 +24,7 @@ import {
 import { history, useLocation } from "umi";
 import { getQueryString, getUrlParams } from "@/utils/utils";
 
-const colorList = ["#9E87FF", "#73DDFF", "#fe9a8b", "#F56948", "#9E87FF"];
+const colorList = ["#9E87FF", "#73DDFF", "#fe9a8b", "rgb(56, 91, 243)", "#9E87FF"];
 const Confirm = () => {
     const { search, pathname } = useLocation();
     const { token } = antdTheme.useToken();
@@ -32,9 +32,12 @@ const Confirm = () => {
     const [isWaitTask, setIsWaitTask] = useState();
     const [options, setOptions] = useState({});
     const [times, setTimes] = useState([]);
+    const [actualPower, setActualPower] = useState([]);
     const [baseLinePower, setBaseLinePower] = useState([]);
+    const [companyMaxPower, setCompanyMaxPower] = useState([]);
     const [responsePower, setResponsePower] = useState([]);
-    const [targetPower, setTargetPower] = useState([]);
+    const [actualAveragePower, setActualAveragePower] = useState([]);
+    
     const [taskAskData, setTaskAskData] = useState([
         {
             label: "响应类型",
@@ -60,9 +63,11 @@ const Confirm = () => {
     const [curTaskIndex, setCurTaskIndex] = useState(0);
 
     const getOptions = () => {
+        const isSearch = pathname?.endsWith("search");
+        const legendData = isSearch? ["响应时段负荷", "负荷基线", "任务要求", "实际响应"] : ["预计基线负荷", "签约响应量", "任务量"];
         setOptions({
             legend: {
-                data: ["预计基线负荷", "签约响应量", "任务量"],
+                data: legendData,
                 textStyle: {
                     color: token.color11,
                 },
@@ -114,10 +119,10 @@ const Confirm = () => {
             },
             series: [
                 {
-                    name: "预计基线负荷",
+                    name: legendData[0],
                     type: "line",
                     smooth: true,
-                    data: baseLinePower,
+                    data: isSearch? actualPower: baseLinePower,
                     symbol: "none",
                     lineStyle: {
                         width: 2,
@@ -130,11 +135,11 @@ const Confirm = () => {
                     },
                 },
                 {
-                    name: "签约响应量",
+                    name: legendData[1],
                     type: "line",
                     smooth: false,
                     symbol: "none",
-                    data: responsePower,
+                    data: isSearch? baseLinePower: companyMaxPower,
                     lineStyle: {
                         width: 2,
                     },
@@ -146,21 +151,34 @@ const Confirm = () => {
                     },
                 },
                 {
-                    name: "任务量",
+                    name: legendData[2],
                     type: "line",
                     smooth: false,
                     symbol: "none",
-                    data: targetPower,
+                    data: responsePower,
                     lineStyle: {
                         width: 3,
-                        shadowColor: "rgba(254,154,139, 0.3)",
-                        shadowBlur: 10,
-                        shadowOffsetY: 20,
                     },
                     itemStyle: {
                         normal: {
                             color: colorList[2],
                             borderColor: colorList[2],
+                        },
+                    },
+                },
+                isSearch && {
+                    name: legendData[3],
+                    type: "line",
+                    smooth: false,
+                    symbol: "none",
+                    data: actualAveragePower,
+                    lineStyle: {
+                        width: 3
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: colorList[3],
+                            borderColor: colorList[3],
                         },
                     },
                 },
@@ -175,9 +193,11 @@ const Confirm = () => {
         taskAskData[2].value = curTask?.projectedProfit;
         setIsWaitTask(!curTask?.executeResult);
         setTimes(curTask?.projectedPowerData?.map(item => item?._1));
+        setActualPower(curTask?.projectedPowerData?.map(item => item?._2?.actualPower));
         setBaseLinePower(curTask?.projectedPowerData?.map(item => item?._2?.baseLinePower));
-        setResponsePower(curTask?.projectedPowerData?.map(item => item?._2?.companyMaxPower));
-        setTargetPower(curTask?.projectedPowerData?.map(item => item?._2?.responsePower));
+        setCompanyMaxPower(curTask?.projectedPowerData?.map(item => item?._2?.companyMaxPower));
+        setResponsePower(curTask?.projectedPowerData?.map(item => item?._2?.responsePower));
+        setActualAveragePower(curTask?.projectedPowerData?.map(item => item?._2?.actualAveragePower));
     };
 
     const getTaskDashboard = async () => {
