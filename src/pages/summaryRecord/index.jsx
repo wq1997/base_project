@@ -74,7 +74,7 @@ const Home = () => {
                     dataSource?
                     <Chart 
                         dataSource={dataSource}
-                        title={`${searchParams?.uploadDateFrom}至${searchParams?.uploadDateTo} ${searchParams?.projectName||""}项目异常数据汇总`}
+                        title={`${searchParams?.uploadDateFrom} 至 ${searchParams?.uploadDateTo} ${searchParams?.projectName||""} 项目异常数据汇总`}
                     />
                     :
                     <div style={{position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)'}}>

@@ -47,8 +47,11 @@ const ExceptionData = ({ infoId, onClose }) => {
 
     const getVisualMap = ({ groups, groupLength, maxNum }) => {
         let data = [];
-        const getRange = num => [num * groupLength, num * groupLength + groupLength];
-        groups.forEach((item, index) => {
+        const getRange = num => {
+            if (num == 1) return [0, num * groupLength - 1];
+            return [(num - 1) * groupLength - 1, num * groupLength - 1];
+        };
+        groups?.forEach((item, index) => {
             const [curL, curR] = getRange(item);
             if (index == 0 && curL != 0) {
                 data.push({
