@@ -51,9 +51,9 @@ const BaseLayout = () => {
                                 style={{ backgroundColor: "#F56A00", verticalAlign: 'middle' }} 
                                 size="large" 
                             >
-                                C
+                                CR
                             </Avatar>
-                            <span style={{fontSize: 20, color: 'white', marginLeft: 10}}>用户名</span>
+                            <span style={{fontSize: 20, color: 'white', marginLeft: 10}}>sermatec</span>
                         </Row>
                     </Dropdown>
                 </Header>

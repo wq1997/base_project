@@ -93,14 +93,6 @@ const Login = () => {
                                 style={{ height: 40 }}
                             />
                         </Form.Item>
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
-                            <Form.Item name="remember" valuePropName="checked">
-                                <Checkbox>记住密码</Checkbox>
-                            </Form.Item>
-                            <Tooltip title="如果需要注册经销商账号，请联系我support@sermatec-ess.com">
-                                <div style={{ cursor: "pointer" }}>注册</div>
-                            </Tooltip>
-                        </div>
                         <Form.Item>
                             <Button
                                 type="primary"
