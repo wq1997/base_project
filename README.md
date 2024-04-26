@@ -15,3 +15,15 @@ antd V5
 # 执行
 npm install
 npm start
+
+# 目前项目对应分支
+main_mofs_view：MOFS大屏  
+main-battery-tools：电池诊断工具  
+main-caietong：采e通web  
+main-large-screen：运维大屏  
+main-run-maintenance：运维管理系统  
+main-small-scale-energy-storage-372：保加利亚 372  
+main-twin-platform：采日工商业微网孪生平台  
+main-vpp：采日VPP  
+main-small-scale-energy-storage  
+  备注：小型储能系统(目前是从 保加利亚 372 项目分支切换过来，可以在main-small-scale-energy-storage合并main-small-scale-energy-storage-372，不要反向合并)，暂时只有国标1.0和国标2.0

@@ -1,16 +1,12 @@
 import { useRef } from "react";
 import styles from "./index.less";
 import { useEffect, useState } from "react";
-let timer = null;
 const Table = ({
-    showHeadLine=true,
-    headerLineColor='white',
-    headBackground,
-    color="white",
+    color="red",
     columns,
-    dataSource,
-    tableContentRowStyle
+    dataSource
 }) => {
+    const [timer, setTimer] = useState(null);
     const tableRef = useRef(null);
     const tableHeaderRef = useRef(null);
     const tableContentRef = useRef(null);
@@ -19,16 +15,15 @@ const Table = ({
     const startScroll = () => {
         const tableContentScrollHeight = tableContentRef?.current?.scrollHeight;
         let scrollTop = 0;
-        clearInterval(timer);
-        timer = setInterval(()=>{
-            if(tableContentRef?.current){
-                tableContentRef.current.style.top = `-${scrollTop}px`;
-                if(scrollTop>=tableContentScrollHeight-5){
-                    scrollTop=0;
-                }
-                scrollTop++;
+        let newTimer = null
+        newTimer = setInterval(()=>{
+            tableContentRef.current.style.top = `-${scrollTop}px`;
+            if(scrollTop>=tableContentScrollHeight-5){
+                scrollTop=0;
             }
+            scrollTop++;
         }, 50)
+        setTimer(newTimer);
     }
 
     const init = () => {
@@ -36,26 +31,22 @@ const Table = ({
         const tableHeaderHeight = tableHeaderRef?.current?.clientHeight;
         const tableContentScrollHeight = tableContentRef?.current?.scrollHeight;
         setTableContentHeight(parentHeight-tableHeaderHeight);
-        if(tableContentScrollHeight>tableContentHeight){
+        if(tableContentScrollHeight>parentHeight-tableHeaderHeight){
             startScroll();
         }
     }
 
     useEffect(()=>{
+        if(timer){
+            clearInterval(timer);
+            setTimer(null);
+        }
         init();
-        window.addEventListener("resize", init);
-    }, []);
+    }, [dataSource]);
 
     return (
         <div className={styles.table} ref={tableRef}>
-            <div 
-                className={styles.tableHeader} 
-                style={{
-                    borderBottom: showHeadLine && `3px solid ${headerLineColor}`,
-                    backgroundColor: headBackground
-                }} 
-                ref={tableHeaderRef}
-            >
+            <div className={styles.tableHeader} ref={tableHeaderRef}>
                 {
                     columns?.map(column => {
                         return (
@@ -64,18 +55,12 @@ const Table = ({
                     })
                 }
             </div>
-            <div 
-                className={styles.tableOuterContent} 
-                style={{height: tableContentHeight}}
-            >
+            <div className={styles.tableOuterContent} style={{height: tableContentHeight}}>
                 <div className={styles.tableContent} ref={tableContentRef}> 
                     {
                         dataSource?.map(data => {
                             return (
-                                <div 
-                                    className={styles.tableContentRow}
-                                    style={tableContentRowStyle}
-                                >
+                                <div className={styles.tableContentRow}>
                                     {
                                         columns?.map(item => item.key)?.map(columnKey => {
                                             return (

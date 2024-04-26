@@ -1,6 +1,7 @@
 import { defineConfig } from "umi";
 import routes from "./src/router";
 import apiUrl from "./apiUrl";
+import { DEFAULT_LOCALE } from "./src/utils/constants";
 
 const path = require("path");
 const prodGzipList = ["js", "css", "jsx", "less"];
