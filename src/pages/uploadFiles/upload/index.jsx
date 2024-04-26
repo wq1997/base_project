@@ -132,7 +132,7 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
                             },
                         ]}
                     >
-                        <Select
+                        <InputSelect
                             placeholder="请输入项目名称"
                             showSearch={true}
                             options={projectNameOptions}
