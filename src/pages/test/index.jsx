@@ -1,5 +1,5 @@
 import { theme, Table, DatePicker, Form, Button } from "antd";
-import { ThemeBtn, LocaleBtn, EditTable, Flow, ScrollTable, ToggleButton, InputSelect, } from "@/components";
+import { ThemeBtn, LocaleBtn, EditTable, Flow, ScrollTable, ToggleButton, } from "@/components";
 import { useIntl } from "umi";
 import flowImg from "./background.png";
 import styles from "./index.less";
@@ -15,18 +15,6 @@ const Test = () => {
       //   color: token.colorText
       // }}
     >
-      <p>
-        <InputSelect 
-          options={[
-            {label: '王清', value: '王清'},
-            {label: '张宇', value: '张宇'}
-          ]}
-          onChange={(value) => {
-            console.log(value);
-          }}
-          style={{width: 200}}
-        />
-      </p>
       <p>
         <ToggleButton
           freezeTime={5}
