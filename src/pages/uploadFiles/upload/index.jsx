@@ -19,8 +19,7 @@ import {
     DeleteOutlined,
 } from "@ant-design/icons";
 import dayjs from "dayjs";
-import { Title } from "@/components";
-import { MyUpload } from "@/components";
+import { Title, InputSelect } from "@/components";
 import {
     getUploadFilesInitData as getUploadFilesInitDataServer,
     saveUploadFiles as saveUploadFilesServer,

@@ -73,7 +73,6 @@ export const getUrlParams = url => {
     return obj;
 };
 
-<<<<<<< HEAD
 export const toFormData = data => {
     if (data === null) return null;
     return Object.keys(data).reduce((formData, item) => {
@@ -89,6 +88,3 @@ export const toFormData = data => {
         return formData;
     }, new FormData());
 };
-=======
-export const cloneObject = (object) => JSON.parse(JSON.stringify(object));
->>>>>>> main
