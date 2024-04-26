@@ -88,3 +88,4 @@ export const toFormData = data => {
         return formData;
     }, new FormData());
 };
+export const cloneObject = object => JSON.parse(JSON.stringify(object));
