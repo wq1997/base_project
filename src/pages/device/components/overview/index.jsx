@@ -317,11 +317,11 @@ function Com(props) {
                                 <div className={styles.value}>{allData?.pcs?.activePower || '-'}</div>
                                 <div className={styles.value}>{allData?.pcsCur || '-'}</div>
                             </div>
-                            <div className={styles.oneData}>
+                            {/* <div className={styles.oneData}>
                                 <div className={styles.key}>{t('光伏')}</div>
                                 <div className={styles.value}>0.0</div>
                                 <div className={styles.value}>0.0</div>
-                            </div>
+                            </div> */}
                             <div className={styles.oneData}>
                                 <div className={styles.key}>{t('BMS簇1')}</div>
                                 <div className={styles.value}>{allData?.bmc[0]?.power|| '-'}</div>
