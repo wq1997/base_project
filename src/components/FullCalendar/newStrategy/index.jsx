@@ -21,13 +21,13 @@ import {
 } from "antd";
 import styles from "./index.less";
 import { useState } from 'react';
-import { timeSplitSymbol } from "@/utils/constants";
 import { useIntl } from "umi";
 import Add from './add';
-import NewYear from './newYear';
-import NewSchedule from './newSchedule';
+import NewPrice from './newPriceRule';
+import ElectricitypricePer from './ElectricitypricePer';
+import CalendarEventForm from '../calendar-event-form';
 import Detail from './detail';
-import { sendBasicParams, getBasicParams } from '@/services/policy'
+import { sendBasicParams, getBasicParams, getStrategyInfo, saveStrategy, getPricePlan, savePricePlan } from '@/services/policy'
 import { useEffect } from 'react';
 
 const colon = false;
@@ -37,22 +37,26 @@ const tabsList = [
     { label: '充放电配置', key: 'ElectricConfig' },
 ]
 
-const NewStrategy = ({ currentGrid }) => {
+const NewStrategy = ({ currentGrid, strategy, deleteStrategy, getStrategy, handleCreate, planList, onDeletePlan }) => {
     const { token } = theme.useToken();
     const [form1] = Form.useForm(); // 电站类型和并网点
     const [form2] = Form.useForm(); // 基础配置
-    const [form3] = Form.useForm(); // 创建年度执行计划
+    const [form3] = Form.useForm(); // 电价规则
     const [form4] = Form.useForm(); // 创建策略执行日程
     const [form5] = Form.useForm(); // 新增策略
     const [form6] = Form.useForm(); // 策略详情
     const [data, setData] = useState({}); // 所有的data
     const [drawerOpen, setDrawerOpen] = useState(false); // 控制新建策略右边抽屉开关
     const [activeKey, setActiveKey] = useState('BaseConfig');
-    const [createYearExcuteOpen, setCreateYearExcuteOpen] = useState(false);
     const [createExecutionScheduleOpen, setCreateExecutionScheduleOpen] = useState(false); // 创建策略执行日程
     const [newPlanOpen, setNewPlanOpen] = useState(false); // 新增策略
     const [editPlanOpen, setEditPlanOpen] = useState(false); // 策略详情
+    const [newPriceRule, setNewPriceRule] = useState(false); // 价格规则
+    const [pricePer, setPricePer] = useState(false); // 时段电价
     const [editKey, setEditKey] = useState(-1); // 新增时重新编辑策略列表key
+    const [detailsData, setDetailsData] = useState(); // 策略详情
+    const [priceData, setPriceData] = useState(); // 电价表
+
     const intl = useIntl();
     const t = (id) => {
         const msg = intl.formatMessage(
@@ -65,37 +69,22 @@ const NewStrategy = ({ currentGrid }) => {
     useEffect(() => {
         getBasicParamsF();
     }, [drawerOpen])
-    const [strategyDatasource, setStrategyDatasource] = useState([
-        {
-            id: 1,
-            name: '策略1',
-            creator: '创建者1',
-            createTime: '2024/03/26'
-        },
-        {
-            id: 2,
-            name: '策略2',
-            creator: '创建者2',
-            createTime: '2024/03/27'
-        }
-    ]);
+    useEffect(() => {
+        getPrice();
+    }, [currentGrid?.value])
     const getBasicParamsF = async () => {
         let { data } = await getBasicParams({ gridPointId: currentGrid.value });
         form2.setFieldsValue(data.data);
     }
-    const [yearExcuteDatasource, setYearExcuteDatasource] = useState([
-        {
-            name: '策略1',
-            startTime: `03${timeSplitSymbol}12`,
-            endTime: `08${timeSplitSymbol}20`,
-        },
-        {
-            name: '策略2',
-            startTime: `05${timeSplitSymbol}01`,
-            endTime: `10${timeSplitSymbol}20`,
-        }
-    ])
 
+    const getDetails = async (val) => {
+        let { data } = await getStrategyInfo({ strategyId: val?.strategyId });
+        setDetailsData(data?.data)
+    }
+    const getPrice = async () => {
+        let { data } = await getPricePlan({ plantId: localStorage.getItem('plantId') });
+        setPriceData(data?.data)
+    }
     const strategyColumns = [
         {
             title: t('序号'),
@@ -107,18 +96,18 @@ const NewStrategy = ({ currentGrid }) => {
         },
         {
             title: t('策略名称'),
-            dataIndex: 'name',
-            key: 'name',
+            dataIndex: 'strategyName',
+            key: 'strategyName',
         },
         {
             title: t('创建用户'),
-            dataIndex: 'creator',
-            key: 'creator',
+            dataIndex: 'createUserName',
+            key: 'createUserName',
         },
         {
             title: t('创建时间'),
-            dataIndex: 'createTime',
-            key: 'createTime',
+            dataIndex: 'createTimeVo',
+            key: 'createTimeVo',
         },
         {
             title: t('操作'),
@@ -134,6 +123,8 @@ const NewStrategy = ({ currentGrid }) => {
                                 });
                                 setEditPlanOpen(true);
                                 setEditKey(index);
+                                console.log(record);
+                                getDetails(record);
                             }}
                         >
                             {t('详情')}
@@ -145,9 +136,7 @@ const NewStrategy = ({ currentGrid }) => {
                                     title: t('系统提示'),
                                     content: t('策略删除后将无法恢复，是否确认删除该策略？'),
                                     onOk() {
-                                        const cloneStrategyDatasource = JSON.parse(JSON.stringify(strategyDatasource));
-                                        const newData = cloneStrategyDatasource.splice(index, 1);
-                                        setStrategyDatasource(cloneStrategyDatasource);
+                                        deleteStrategy(record);
                                     }
                                 })
                             }}
@@ -159,8 +148,7 @@ const NewStrategy = ({ currentGrid }) => {
             }
         }
     ]
-
-    const yearExcuteColumns = [
+    const price = [
         {
             title: t('序号'),
             dataIndex: 'order',
@@ -170,26 +158,46 @@ const NewStrategy = ({ currentGrid }) => {
             }
         },
         {
-            title: t('策略名称'),
-            dataIndex: 'name',
-            key: 'name',
+            title: t('规则名称'),
+            dataIndex: 'planName',
+            key: 'planName',
         },
         {
-            title: t('起始时间'),
-            dataIndex: 'startTime',
-            key: 'startTime',
+            title: t('电价类型'),
+            dataIndex: 'planType',
+            key: 'planType',
         },
         {
-            title: t('结束时间'),
-            dataIndex: 'endTime',
-            key: 'endTime',
+            title: t('开始日期'),
+            dataIndex: 'startDate',
+            key: 'startDate',
+        },
+        {
+            title: t('结束日期'),
+            dataIndex: 'endDate',
+            key: 'endDate',
+        }, {
+            title: t('尖时电价/元'),
+            dataIndex: 'tipPrice',
+            key: 'tipPrice',
+        }, {
+            title: t('峰时电价/元'),
+            dataIndex: 'peakPrice',
+            key: 'peakPrice',
+        }, {
+            title: t('平时电价/元'),
+            dataIndex: 'flatPrice',
+            key: 'flatPrice',
+        }, {
+            title: t('谷时电价/元'),
+            dataIndex: 'valleyPrice',
+            key: 'valleyPrice',
         },
         {
             title: t('备注'),
-            dataIndex: 'remark',
-            key: 'remark',
+            dataIndex: 'desc',
+            key: 'desc',
             ellipsis: true,
-            width: 300,
             render(value) {
                 return (
                     <Tooltip title={value}>
@@ -214,23 +222,12 @@ const NewStrategy = ({ currentGrid }) => {
                 return (
                     <Space>
                         <Typography.Link
-                            style={{ color: token.defaultBg }}
+                            style={{ color: token.colorPrimary }}
                             onClick={() => {
-                                const month1 = record.startTime.split(timeSplitSymbol)[0];
-                                const day1 = record.startTime.split(timeSplitSymbol)[1];
-                                const month2 = record.endTime.split(timeSplitSymbol)[0];
-                                const day2 = record.endTime.split(timeSplitSymbol)[1];
-                                form3.setFieldsValue({
-                                    ...record,
-                                    month1,
-                                    month2,
-                                    day1,
-                                    day2
-                                })
-                                setCreateYearExcuteOpen(true);
+                                setPricePer(true)
                             }}
                         >
-                            {t('编辑')}
+                            {t('时段配置')}
                         </Typography.Link>
                         <Typography.Link
                             style={{ color: token.deleteBtnColor }}
@@ -239,9 +236,81 @@ const NewStrategy = ({ currentGrid }) => {
                                     title: t('系统提示'),
                                     content: t('年度执行计划删除后将无法恢复，是否确认删除该年度执行计划？'),
                                     onOk() {
-                                        const cloneYearExcuteDatasource = JSON.parse(JSON.stringify(yearExcuteDatasource));
-                                        const newData = cloneYearExcuteDatasource.splice(index, 1);
+                                        let arr = [...priceData];
+                                        arr.splice(index, 1);
+                                        setPriceData([...arr])
                                         // setExcuteDatasource(cloneYearExcuteDatasource);
+                                    }
+                                })
+                            }}
+                        >
+                            {t('删除')}
+                        </Typography.Link>
+                    </Space>
+                )
+            }
+        }
+    ]
+    const yearExcuteColumns = [
+        {
+            title: t('序号'),
+            dataIndex: 'order',
+            key: 'order',
+            render(_, record, index) {
+                return index + 1;
+            }
+        },
+        {
+            title: t('策略名称'),
+            dataIndex: 'title',
+            key: 'title',
+        },
+        {
+            title: t('起始时间'),
+            dataIndex: 'start',
+            key: 'start',
+        },
+        {
+            title: t('结束时间'),
+            dataIndex: 'end',
+            key: 'end',
+        },
+        {
+            title: t('备注'),
+            dataIndex: 'remarks',
+            key: 'remarks',
+            ellipsis: true,
+            render(value) {
+                return (
+                    <Tooltip title={value}>
+                        <div
+                            style={{
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                                width: 250,
+                            }}
+                        >
+                            {value}
+                        </div>
+                    </Tooltip>
+                )
+            }
+        },
+        {
+            title: t('操作'),
+            key: "Action",
+            render: (_, record, index) => {
+                return (
+                    <Space>
+                        <Typography.Link
+                            style={{ color: token.deleteBtnColor }}
+                            onClick={() => {
+                                Modal.confirm({
+                                    title: t('系统提示'),
+                                    content: t('年度执行计划删除后将无法恢复，是否确认删除该年度执行计划？'),
+                                    onOk() {
+                                        onDeletePlan(record.id);
                                     }
                                 })
                             }}
@@ -257,19 +326,29 @@ const NewStrategy = ({ currentGrid }) => {
     const onFininsh = async () => {
         if (activeKey === 'BaseConfig') {
             let { data } = await sendBasicParams({ ...form2.getFieldsValue(), gridPointId: currentGrid?.value });
+        } else if (activeKey === 'ElectricityPrice') {
+            let { data } = await savePricePlan({ pricePlan: [...priceData], plantId: localStorage.getItem('plantId') });
+
         }
         setDrawerOpen(false);
         // message.success(t("新建成功"));
     }
 
+    const newStrategy = async (val) => {
+        let { data } = await saveStrategy({ ...val, gridPoint: currentGrid?.value });
+        getStrategy();
+        console.log(getStrategy, 'getStrategy');
+        // setDrawerOpen(false);
+        // message.success(t("新建成功"));
 
+    }
     const onCancel = () => {
         setDrawerOpen(false);
         setData({});
         form1.resetFields();
         form2.resetFields();
     }
-
+    console.log(planList, 'startDate');
     return (
         <div>
             <Button type="primary" onClick={() => setDrawerOpen(true)}>
@@ -334,20 +413,6 @@ const NewStrategy = ({ currentGrid }) => {
                             data.form2Data = allValues;
                             setData({ ...data });
                         }}
-                    // initialValues={{
-                    //     antiRefluxEnabled: true,
-                    //     // antiRefluxTriggerPower:0,
-                    //     branchDispatchPowerMode:1,
-                    //     enabled:true,
-                    //     expansionEnabled:true,
-                    //     fullTimePeriodEnabled:true,
-                    //     powerAdjustStep:0,
-                    //     powerFluctuateRange:0,
-                    //     preventOverloadEnabled:true,
-                    //     runStrategyPeriod:0,
-                    //     storageControlMode:1,
-                    //     // transformCap:0,
-                    // }}
                     >
                         <Form.Item name="runStrategyPeriod" label="策略运行周期(ms)">
                             <Input placeholder='请输入策略运行周期' style={{ maxWidth: 218 }} />
@@ -374,18 +439,6 @@ const NewStrategy = ({ currentGrid }) => {
                                     <Input disabled={true} placeholder='请输入变压器容量' />
                                 </Form.Item>
                             </Col>
-                            {/* <Col span={12}>
-                                <Form.Item 
-                                    name="transformerCapacityProtectionRatio" 
-                                    label="变压器容量保护比例(%)"
-                                    labelCol={{
-                                        span: 8
-                                    }}
-                                    labelAlign="left"
-                                >
-                                    <Input placeholder='请输入变压器容量保护比例'/>
-                                </Form.Item>
-                            </Col> */}
                             <Col span={12}>
                                 <Form.Item
                                     name="antiRefluxTriggerPower"
@@ -461,6 +514,36 @@ const NewStrategy = ({ currentGrid }) => {
                         </Form.Item>
                     </Form>
                 }
+                {/* 电价 */}
+                {
+                    activeKey === "ElectricityPrice" &&
+                    <div>
+                        <Space direction="vertical" style={{ width: '100%' }} size={30}>
+                            <Space direction="vertical" style={{ width: '100%' }} size={20}>
+                                <Row justify="space-between">
+                                    <Space size={30}>
+                                        <Title title="电价规则" />
+                                        {/* <Button type="primary" onClick={()=>setCreateYearExcuteOpen(true)}>创建年度执行计划</Button> */}
+                                    </Space>
+                                    <Button
+                                        type="primary"
+                                        onClick={() => {
+                                            setNewPriceRule(true)
+                                        }}
+                                    >
+                                        {t('新增')}
+                                    </Button>
+                                </Row>
+                                <Table
+                                    columns={price}
+                                    dataSource={priceData}
+                                    scroll={{ Y: 300 }}
+                                />
+                            </Space>
+
+                        </Space>
+                    </div>
+                }
                 {/* 充放电配置 */}
                 {
                     activeKey === "ElectricConfig" &&
@@ -483,57 +566,87 @@ const NewStrategy = ({ currentGrid }) => {
                                 </Row>
                                 <Table
                                     columns={strategyColumns}
-                                    dataSource={strategyDatasource}
+                                    dataSource={strategy[0]?.children}
+                                    scroll={{ Y: 300 }}
                                 />
                             </Space>
                             <Space direction="vertical" style={{ width: '100%' }} size={20}>
                                 <Row justify="space-between">
-                                    <Title title="年度执行计划" />
+                                    <Title title="策略执行日程" />
                                     <Button type="primary" onClick={() => setCreateExecutionScheduleOpen(true)}>创建策略执行日程</Button>
                                 </Row>
 
 
                                 <Table
                                     columns={yearExcuteColumns}
-                                    dataSource={yearExcuteDatasource}
+                                    dataSource={planList}
+                                    scroll={{ Y: 300 }}
+
                                 />
                             </Space>
                         </Space>
                     </div>
                 }
             </Drawer>
-
-            {/* 创建年度执行计划 */}
-            <NewYear
+            {/* 新增价格规则 */}
+            <NewPrice
+                open={newPriceRule}
                 form={form3}
-                dataSource={yearExcuteDatasource}
-                onChangeDatasource={(value) => {
-                    setYearExcuteDatasource(value);
+                dataSource={[{
+                    name: '市电',
+                    value: 1
+                }, {
+                    name: '光伏上网',
+                    value: 2
+                }, {
+                    name: '充电桩',
+                    value: 3
+                }]}
+                onChangeOpen={(value) => {
+                    setNewPriceRule(value);
                 }}
-                open={createYearExcuteOpen}
-                onChangeOpen={value => {
-                    setCreateYearExcuteOpen(value);
+                addPriceRules={(value) => {
+                    setPriceData(prv => [...prv, value]);
+                    // console.log();
                 }}
             />
-
-            {/* 创建策略执行日程 */}
-            <NewSchedule
+            {/* 时段电价 */}
+            <ElectricitypricePer
+                open={pricePer}
                 form={form4}
-                dataSource={strategyDatasource}
-                open={createExecutionScheduleOpen}
+                dataSource={[{
+                    name: '尖',
+                    value: 0
+                }, {
+                    name: '峰',
+                    value: 1
+                }, {
+                    name: '平',
+                    value: 2
+                },
+                {
+                    name: '谷',
+                    value: 3
+                }
+            ]}
                 onChangeOpen={(value) => {
-                    setCreateExecutionScheduleOpen(value);
-                }}
+                    setPricePer(value);
+                }} />
+            {/* 创建策略执行日程 */}
+            <CalendarEventForm
+                open={createExecutionScheduleOpen}
+                type={'add'}
+                onCreate={handleCreate}
+                strategy={strategy}
+                initValues={{}}
+                onCancel={() => setCreateExecutionScheduleOpen(false)}
             />
 
             {/* 新增策略 */}
             <Add
                 data={data}
                 form={form5}
-                dataSource={strategyDatasource}
-                onChangeDatasource={(value) => {
-                    setStrategyDatasource(value);
-                }}
+                newStrategy={newStrategy}
                 open={newPlanOpen}
                 onChangeOpen={(value) => {
                     setNewPlanOpen(value);
@@ -543,6 +656,7 @@ const NewStrategy = ({ currentGrid }) => {
             <Detail
                 form={form6}
                 open={editPlanOpen}
+                detailsData={detailsData}
                 onChangeOpen={(value) => {
                     setEditPlanOpen(value);
                 }}

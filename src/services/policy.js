@@ -56,3 +56,11 @@ export const getStrategyCurve = (payload) => {
 export const getGridPointList = (payload) => {
     return axiosInstance.get(`${path}/getGridPointList?plantId=${payload.plantId}`);
 }
+// 并获取电价列表
+export const getPricePlan = (payload) => {
+    return axiosInstance.get(`${path}/price/getPricePlan?plantId=${payload.plantId}`);
+}
+// 设置电价列表
+export const savePricePlan = (payload) => {
+    return axiosInstance.post(`${path}/price/savePricePlan`, payload);
+}

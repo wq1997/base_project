@@ -7,8 +7,6 @@ import { INITIAL_EVENTS, createEventId } from '../../utils/event-utils'
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import dayjs from 'dayjs';
 import { deleteStrategyPlan} from '@/services/policy'
-
-// import CalendarEvent from './calendar-event';
 import CalendarEventForm from './calendar-event-form';
 import CalendarHeader from './calendar-header';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
@@ -22,7 +20,7 @@ const DefaultEventInitValue = {
     end: dayjs(),
     color: '',
 };
-const Strategy = ({ date, setDate, planList,strategy,newPolicy,getStrategy,currentGrid }) => {
+const Strategy = ({ date, setDate, planList,strategy,newPolicy,getStrategy,currentGrid,deleteStrategy }) => {
     const fullCalendarRef = useRef(null);
     const [open, setOpen] = useState(false);
     const [view, setView] = useState('dayGridMonth');
@@ -281,7 +279,13 @@ const Strategy = ({ date, setDate, planList,strategy,newPolicy,getStrategy,curre
                     onMove={handleMove}
                     onCreate={handleButtonSele}
                     onViewTypeChange={handleViewTypeChange}
+                    onDeletePlan={handleDelete}
+                    planList={planList}
+                    getStrategy={getStrategy}
                     currentGrid={currentGrid}
+                    strategy={strategy}
+                    deleteStrategy={deleteStrategy}
+                    handleCreate={handleCreate}
                 />
                 <FullCalendar
                     ref={fullCalendarRef}

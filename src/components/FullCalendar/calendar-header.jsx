@@ -8,17 +8,17 @@ import NewStrategy from './newStrategy';
 import { useSelector, useIntl } from "umi";
 import { theme } from "antd";
 
-export default function CalendarHeader({ now, view, onMove, onCreate, onViewTypeChange,currentGrid}) {
+export default function CalendarHeader({ now, view, onMove, onCreate, onViewTypeChange, currentGrid, strategy, deleteStrategy, getStrategy, handleCreate, onDeletePlan,planList }) {
   const { screenMap } = useResponsive();
   const { token } = theme.useToken();
   const intl = useIntl();
   const t = (id) => {
-      const msg = intl.formatMessage(
-          {
-              id,
-          },
-      );
-      return msg
+    const msg = intl.formatMessage(
+      {
+        id,
+      },
+    );
+    return msg
   }
   const items = useMemo(
     () => [
@@ -54,21 +54,29 @@ export default function CalendarHeader({ now, view, onMove, onCreate, onViewType
         <Button type="primary" onClick={() => onMove('today')}>
           {t('今天')}
         </Button>
-        <Radio.Group  className={styles.tabButton}>
+        <Radio.Group className={styles.tabButton}>
           <Radio.Button value='prev' onClick={() => onMove('prev')}>
-            <Iconify icon="solar:alt-arrow-left-outline"  size={20} />
+            <Iconify icon="solar:alt-arrow-left-outline" size={20} />
           </Radio.Button>
           <Radio.Button value='next' onClick={() => onMove('next')}>
             <Iconify icon="solar:alt-arrow-right-outline" size={20} />
           </Radio.Button>
         </Radio.Group>
-        <span className={styles.timeNow} style={{color:token.titleColor}}>{dayjs(now).format('YYYY MM DD')}</span>
+        <span className={styles.timeNow} style={{ color: token.titleColor }}>{dayjs(now).format('YYYY MM DD')}</span>
       </div>
 
       <div className={styles.rightGroup}>
-        <NewStrategy  currentGrid={currentGrid}/>
+        <NewStrategy
+          currentGrid={currentGrid}
+          strategy={strategy}
+          deleteStrategy={deleteStrategy}
+          getStrategy={getStrategy}
+          handleCreate={handleCreate}
+          planList={planList}
+          onDeletePlan={onDeletePlan}
+        />
         <Button className={styles.centerButton} type="primary" onClick={() => onCreate()}>
-        {t('创建策略执行日程')}               
+          {t('创建策略执行日程')}
         </Button>
         {/* {screenMap.lg && (
           <Radio.Group value={view} onChange={handleMenuClick}>
