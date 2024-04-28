@@ -296,8 +296,6 @@ const NewPriceRule = ({ form, dataSource, open, onChangeOpen, addPriceRules }) =
                             rules={[
                                 ({ getFieldValue }) => ({
                                     validator(_, value) {
-                                        console.log("AAAA")
-
                                         const hour1 = getFieldValue('hour1');
                                         const min1 = getFieldValue('min1');
                                         const hour2 = getFieldValue('hour2');
