@@ -6,7 +6,7 @@ import styles from './index.less'
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import ReactECharts from "echarts-for-react";
-const categories = [  '谷','平', '峰','尖',];
+const categories = [ '谷','平', '峰','尖',];
 const types = [
     { name: '谷', color: '#03B4B4' },
     { name: '平', color: '#49ADEE' },
@@ -203,43 +203,6 @@ const NewPriceRule = ({ form, dataSource, open, onChangeOpen, addPriceRules }) =
                     },
                     data: [
                         ...dataY
-                    //     {
-                    //     name: '尖',
-                    //     value: [0, '00:00', '00:50'],
-                    //     itemStyle: {
-                    //         normal: {
-                    //             color: types[0].color,
-
-                    //         }
-                    //     }
-                    // },
-                    // {
-                    //     name: '峰',
-                    //     value: [1, '00:50', '12:50', 50],
-                    //     itemStyle: {
-                    //         normal: {
-                    //             color: types[1].color
-                    //         }
-                    //     }
-                    // },
-                    // {
-                    //     name: '平',
-                    //     value: [2, '12:50', '16:50', 50],
-                    //     itemStyle: {
-                    //         normal: {
-                    //             color: types[2].color
-                    //         }
-                    //     }
-                    // },
-                    // {
-                    //     name: '谷',
-                    //     value: [3, '16:50', '23:59', 50],
-                    //     itemStyle: {
-                    //         normal: {
-                    //             color: types[3].color
-                    //         }
-                    //     }
-                    // }
                 ]
                 }
             ]
@@ -396,27 +359,31 @@ const NewPriceRule = ({ form, dataSource, open, onChangeOpen, addPriceRules }) =
                                         const hour2 =  values.hour2;
                                         const min2 =  values.min2;
                                         arr.push({
-                                            name:categories[values?.timeType],
-                                                value: [values?.timeType, `${hour1}:${min1}`, `${hour2}:${min2}`],
+                                            name:categories[Math.abs(values?.timeType-4)-1],
+                                                value: [Math.abs(values?.timeType-4)-1, `${hour1}:${min1}`, `${hour2}:${min2}`],
                                                 itemStyle: {
                                                     normal: {
-                                                        color: types[values?.timeType].color,
+                                                        color: types[Math.abs(values?.timeType-4)-1].color,
                                                     }
                                                 }
                                         });
                                         setDataY([...dataY,...arr])
-                                        console.log(form.getFieldsValue(),arr,option,1111111);
-
                                     }}>+</Button>
                                 </Col>
                                 <Col span={2}>
-                                    <Button type='primary' style={{ backgroundColor: '#7989B2' }}>-</Button>
+                                    <Button type='primary' style={{ backgroundColor: '#7989B2' }} onClick={()=>{
+                                        let arr=dataY;
+                                        arr.splice(arr.length-1,1);
+                                        setDataY([...arr])
+                                    }}>-</Button>
                                 </Col>
                             </Row>
                         </Form.Item>
                     </Col>
                     <Col span={2}>
-                        <Button type='primary'>清空时段</Button>
+                        <Button type='primary' onClick={()=>{
+                            setDataY([]);
+                        }}>清空时段</Button>
                     </Col>
                 </Row>
             </Form>
