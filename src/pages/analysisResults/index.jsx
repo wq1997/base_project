@@ -118,8 +118,7 @@ const Account = () => {
         }
     };
 
-    const getList = async () => {
-        const id = location?.search.split("=")[1];
+    const getList = async id => {
         const { current, pageSize } = paginationRef.current;
         const [uploadTimeFrom, uploadTimeTo] = uploadTimeRef.current || [];
         const projectName = projectNameRef.current;
@@ -154,6 +153,7 @@ const Account = () => {
     };
 
     const handleReset = () => {
+        history.push(`/analysis-results`);
         paginationRef.current = DEFAULT_PAGINATION;
         projectNameRef.current = undefined;
         setProjectName();
@@ -174,7 +174,7 @@ const Account = () => {
 
     useEffect(() => {
         getInitData();
-        getList();
+        getList(location?.search?.split("=")[1]);
     }, []);
 
     return (
@@ -237,7 +237,7 @@ const Account = () => {
                         }}
                         value={
                             uploadTime && uploadTime.length > 0
-                                ? [dayjs(uploadTime[0]), dayjs(uploadTime[1])]
+                                ? [dayjs(uploadTime?.[0]), dayjs(uploadTime?.[1])]
                                 : []
                         }
                     />
