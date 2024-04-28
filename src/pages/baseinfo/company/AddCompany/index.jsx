@@ -226,28 +226,52 @@ const Company = ({ open, editId, onClose }) => {
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                        <Form.Item label="场站编号" name="stationCode">
-                            <Input placeholder="请输入采日云平台登记场站号" />
+                        <Form.Item noStyle dependencies={['supportAutoExecute']}>
+                            {({getFieldsValue}) => {
+                                const supportAutoExecute = getFieldsValue(['supportAutoExecute'])?.supportAutoExecute;
+                                if(supportAutoExecute){
+                                    form.setFieldsValue({
+                                        stationCode: ""
+                                    })
+                                }
+                                return (
+                                    <Form.Item label="场站编号" name="stationCode">
+                                        <Input placeholder="请输入采日云平台登记场站号" disabled={supportAutoExecute}/>
+                                    </Form.Item>
+                                )
+                            }}
                         </Form.Item>
                     </Col>
                 </Row>
 
                 <Row span={24}>
                     <Col span={12}>
-                        <Form.Item
-                            label="是否默认确认任务"
-                            name="autoConfirmTask"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "请选择是否默认确认任务",
-                                },
-                            ]}
-                        >
-                            <Radio.Group>
-                                <Radio value={true}>是</Radio>
-                                <Radio value={false}>否</Radio>
-                            </Radio.Group>
+                        <Form.Item noStyle dependencies={['supportAutoExecute']}>
+                            {({getFieldsValue}) => {
+                                const supportAutoExecute = getFieldsValue(['supportAutoExecute'])?.supportAutoExecute;
+                                if(supportAutoExecute){
+                                    form.setFieldsValue({
+                                        autoConfirmTask: undefined
+                                    })
+                                }
+                                return (
+                                    <Form.Item
+                                        label="是否默认确认任务"
+                                        name="autoConfirmTask"
+                                        rules={[
+                                            {
+                                                required: !supportAutoExecute,
+                                                message: "请选择是否默认确认任务",
+                                            },
+                                        ]}
+                                    >
+                                        <Radio.Group disabled={supportAutoExecute}>
+                                            <Radio value={true}>是</Radio>
+                                            <Radio value={false}>否</Radio>
+                                        </Radio.Group>
+                                    </Form.Item>
+                                )
+                            }}
                         </Form.Item>
                     </Col>
                     <Col span={12}>
@@ -268,32 +292,46 @@ const Company = ({ open, editId, onClose }) => {
 
                 <Row span={24}>
                     <Col span={12}>
-                        <Form.Item
-                            label="紧急联系人"
-                            name="contactPerson"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "请输入紧急联系人",
-                                },
-                            ]}
-                        >
-                            <Input placeholder="请输入紧急联系人名称" />
+                        <Form.Item noStyle dependencies={['supportAutoExecute']}>
+                            {({getFieldsValue}) => {
+                                const supportAutoExecute = getFieldsValue(['supportAutoExecute'])?.supportAutoExecute;
+                                return (
+                                    <Form.Item
+                                        label="紧急联系人"
+                                        name="contactPerson"
+                                        rules={[
+                                            {
+                                                required: !supportAutoExecute,
+                                                message: "请输入紧急联系人",
+                                            },
+                                        ]}
+                                    >
+                                        <Input placeholder="请输入紧急联系人名称" />
+                                    </Form.Item>
+                                )
+                            }}
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                        <Form.Item
-                            label="紧急联系人电话"
-                            name="contractPhone"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "请输入紧急联系人电话",
-                                },
-                                { pattern: TELPHONE_NUMBER_REG, message: '请输入正确的号码' }
-                            ]}
-                        >
-                            <Input placeholder="请输入紧急联系人电话" />
+                        <Form.Item noStyle dependencies={['supportAutoExecute']}>
+                            {({getFieldsValue}) => {
+                                const supportAutoExecute = getFieldsValue(['supportAutoExecute'])?.supportAutoExecute;
+                                return (
+                                    <Form.Item
+                                        label="紧急联系人电话"
+                                        name="contractPhone"
+                                        rules={[
+                                            {
+                                                required: !supportAutoExecute,
+                                                message: "请输入紧急联系人电话",
+                                            },
+                                            { pattern: TELPHONE_NUMBER_REG, message: '请输入正确的号码' }
+                                        ]}
+                                    >
+                                        <Input placeholder="请输入紧急联系人电话" />
+                                    </Form.Item>
+                                )
+                            }}
                         </Form.Item>
                     </Col>
                 </Row>
@@ -331,22 +369,29 @@ const Company = ({ open, editId, onClose }) => {
 
                 <Row span={24}>
                     <Col span={24}>
-                        <Form.Item
-                            label="响应能力统计"
-                            name="responsivenessDetail"
-                            labelCol={{
-                                span: 4,
+                        <Form.Item noStyle dependencies={['supportAutoExecute']}>
+                            {({getFieldsValue}) => {
+                                const supportAutoExecute = getFieldsValue(['supportAutoExecute'])?.supportAutoExecute;
+                                return (
+                                    <Form.Item
+                                        label="响应能力统计"
+                                        name="responsivenessDetail"
+                                        labelCol={{
+                                            span: 4,
+                                        }}
+                                        wrapperCol={{
+                                            span: 19,
+                                        }}
+                                        rules={[
+                                            {
+                                                required: true,
+                                            },
+                                        ]}
+                                    >
+                                        <ResCapTable data={editData?.responsivenessDetail} supportAutoExecute={supportAutoExecute} />
+                                    </Form.Item>
+                                )
                             }}
-                            wrapperCol={{
-                                span: 19,
-                            }}
-                            rules={[
-                                {
-                                    required: true,
-                                },
-                            ]}
-                        >
-                            <ResCapTable data={editData?.responsivenessDetail} />
                         </Form.Item>
                     </Col>
                 </Row>

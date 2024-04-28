@@ -89,7 +89,7 @@ const CommonLayout = (props) => {
                             <Select 
                                 style={{width: 300}}
                                 options={[
-                                    {value: '', label: user?.selfUser?.name},
+                                    {value: '', label: "所有公司"},
                                     ...user?.companies?.map(item => {
                                         return {
                                             value: item?.code,

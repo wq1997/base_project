@@ -134,6 +134,8 @@ const Company = () => {
                 <SearchInput
                     label="公司名称"
                     value={name}
+                    inputWidth={250}
+                    placeholder="请输入公司编号或名称关键词"
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         nameRef.current = value;

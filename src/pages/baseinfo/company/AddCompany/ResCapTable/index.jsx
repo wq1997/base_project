@@ -2,7 +2,7 @@ import { Input, InputNumber } from "antd";
 import "./index.less";
 import { useEffect, useState } from "react";
 
-const ResCapTable = ({ data, onChange }) => {
+const ResCapTable = ({ supportAutoExecute, data, onChange }) => {
     const [responsivenessDetail, setResponsivenessDetail] = useState({
         heightPeakCut: { dayBefore: undefined, dayIn: undefined, realTime: undefined },
         lowPeakCut: { dayBefore: undefined, dayIn: undefined, realTime: undefined },
@@ -51,6 +51,7 @@ const ResCapTable = ({ data, onChange }) => {
                         value={responsivenessDetail?.heightPeakCut?.realTime}
                         onChange={value => change(value, "heightPeakCut", "realTime")}
                         style={{width: '100%'}}
+                        disabled={!supportAutoExecute}
                     />
                 </div>
             </div>
@@ -78,6 +79,7 @@ const ResCapTable = ({ data, onChange }) => {
                         value={responsivenessDetail?.lowPeakCut?.realTime}
                         onChange={value => change(value, "lowPeakCut", "realTime")}
                         style={{width: '100%'}}
+                        disabled={!supportAutoExecute}
                     />
                 </div>
             </div>

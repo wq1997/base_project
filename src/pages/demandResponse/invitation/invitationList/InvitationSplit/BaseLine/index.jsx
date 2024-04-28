@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Tabs, Modal, Select, Space, InputNumber } from "antd";
+import { Tabs, Modal, theme, Space, InputNumber } from "antd";
 import { getCompanyBaseLine as getCompanyBaseLineServer } from "@/services/company";
 import ReactECharts from "echarts-for-react";
 import dayjs from "dayjs";
@@ -8,6 +8,7 @@ import "./index.less";
 const BaseLine = ({ baseLineArgs, onClose }) => {
     const [open, setOpen] = useState(false);
     const [data, setData] = useState();
+    const { token } = theme.useToken();
 
     const isInTimes = (time, times) => {
         const cur = dayjs(time, "HH:mm");
@@ -25,6 +26,9 @@ const BaseLine = ({ baseLineArgs, onClose }) => {
         const options = {
             legend: {
                 data: summaryData?.map(item => item?.name),
+                textStyle: {
+                    color: token.color11
+                }
             },
             grid: {
                 top: "10%",
@@ -56,7 +60,7 @@ const BaseLine = ({ baseLineArgs, onClose }) => {
                         value: time,
                         textStyle: {
                             fontSize: isInTimes(time, baseLineArgs?.responsePeriod) ? 10 : 8,
-                            color: isInTimes(time, baseLineArgs?.responsePeriod) ? "red" : "black",
+                            color: isInTimes(time, baseLineArgs?.responsePeriod) ? "red" : token.color11,
                         },
                     };
                 }),
@@ -78,9 +82,6 @@ const BaseLine = ({ baseLineArgs, onClose }) => {
                 symbol: "none",
                 lineStyle: {
                     width: 3,
-                    shadowColor: "rgba(158,135,255, 0.3)",
-                    shadowBlur: 10,
-                    shadowOffsetY: 20,
                 },
             })),
         };
@@ -110,6 +111,9 @@ const BaseLine = ({ baseLineArgs, onClose }) => {
         const options = {
             legend: {
                 data: historyData?.map(item => item?.name),
+                textStyle: {
+                    color: token.color11
+                }
             },
             tooltip: {
                 trigger: "axis",
@@ -156,10 +160,7 @@ const BaseLine = ({ baseLineArgs, onClose }) => {
                 data: item?.data,
                 symbol: "none",
                 lineStyle: {
-                    width: 3,
-                    shadowColor: "rgba(158,135,255, 0.3)",
-                    shadowBlur: 10,
-                    shadowOffsetY: 20,
+                    width: 3
                 },
             })),
         };

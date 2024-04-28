@@ -15,7 +15,13 @@ const Company = ({ open, editId, onClose }) => {
         const res = await getUpdateInitDataServer(editId);
         if (res?.data?.status == "SUCCESS") {
             const { editUser, companies, roles } = res?.data?.data;
-            editUser ? form.setFieldsValue(editUser) : form.resetFields();
+            editUser ? 
+                form.setFieldsValue({
+                    ...editUser,
+                    roleCodes: editUser?.roleCodes?.length>0?editUser?.roleCodes?.[0]:""
+                }) 
+                : 
+                form.resetFields();
             setCompanyList(companies);
             setRoleList(roles);
         }
@@ -25,6 +31,7 @@ const Company = ({ open, editId, onClose }) => {
         const res = await updateUserServer({
             id: editId,
             ...values,
+            roleCodes: values?.roleCodes?.length>0?[values.roleCodes]:[],
         });
 
         if (res?.data?.status == "SUCCESS") {
@@ -90,15 +97,9 @@ const Company = ({ open, editId, onClose }) => {
                 </Form.Item>
 
                 {
-                    !editId && <Form.Item
+                    <Form.Item
                         label="账号密码"
                         name="password"
-                        rules={[
-                            {
-                                required: true,
-                                message: "请输入账号密码",
-                            },
-                        ]}
                     >
                         <Input placeholder="请输入账号密码" />
                     </Form.Item>
@@ -149,7 +150,7 @@ const Company = ({ open, editId, onClose }) => {
                 >
                     <Select
                         placeholder="请选择关联角色"
-                        mode="multiple"
+                        // mode="multiple"
                         fieldNames={{
                             label: "name",
                             value: "code",
