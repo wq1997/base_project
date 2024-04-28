@@ -24,12 +24,10 @@ const Strategy = ({ date, setDate, planList,strategy,newPolicy,getStrategy,curre
     const fullCalendarRef = useRef(null);
     const [open, setOpen] = useState(false);
     const [view, setView] = useState('dayGridMonth');
-    // const [date, setDate] = useState(new Date());
     const [eventFormType, setEventFormType] = useState('add');
     const [eventInitValue, setEventInitValue] = useState(DefaultEventInitValue);
     useEffect(() => {
         const calendarApi = fullCalendarRef.current.getApi();
-        // console.log(dayjs(date).format('YYYY-MM-DD'));
         if (typeof date === 'object') {
             calendarApi.gotoDate(dayjs(date).format('YYYY-MM-DD'))
         }
