@@ -276,6 +276,7 @@ function Com(props) {
                 </div>
                 <div className={styles.echartPart}>
                     <CardModel
+                        backgroundColor="unset"
                         title={t('监测曲线')}
                         content={
                             <div className={styles.echartPartCardwrap}>

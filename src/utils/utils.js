@@ -111,4 +111,4 @@ export function download(url, filename) {
   link.click();
 }
 
-
+export const cloneObject = (object) => JSON.parse(JSON.stringify(object));

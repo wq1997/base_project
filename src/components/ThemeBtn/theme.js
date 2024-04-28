@@ -2,7 +2,7 @@
 
 const theme = {
     dark: {
-        colorPrimary: '#03B4B4',
+        colorPrimary: '#197AD8',
         colorPrimaryR:'rgba(3,180,180,1)',
         colorBgContainer:'rgba(0,0,0,0)',
         colorBorder:'#FFFFFF',
@@ -11,12 +11,13 @@ const theme = {
         titleColor:'#FFFFFF',
         smallTitleColor:'#D8D8D8',
         defaultBg:'#ED750E',//默认类型按钮背景色
-        bgcColorB_l:'#090F2C',//深到浅渐变（侧导航和头部背景色）
-        bgcColorl_B:'#03081D',//浅到深渐变（内容模块背景色）
-        sub_innerBgc:'#181F41',//侧导航二级导航背景色
+        bgcColorB_l:'linear-gradient(135deg, #00395A 0%, #0F2F56 100%)',//深到浅渐变（侧导航和头部背景色）
+        bgcColorl_B:'linear-gradient(135deg, #00395A 0%, #0F2F56 100%)',//浅到深渐变（内容模块背景色）
+        sub_innerBgc:'',//侧导航二级导航背景色
         cardBgc:'#212849',
         cardShadow:'0px 2px 4px 0px rgba(6,7,16,0.5)',
-        titleCardBgc:'#111838',//CardModle的背景色
+        titleCardBgc:'#074267',//CardModle的背景色
+        areaCardBgc: '#0E4C73',
         tableHead:'#20284D',//滚动表头颜色
         barColor:['#03B4B4','#A3BCE7','#FCF1AF','#77E2AA','#FFCE8F','#59C0E9'],
         treeBgb:'#03081D',
@@ -25,7 +26,6 @@ const theme = {
         contentBgc:'#111838',
         darkbgc:'#0C122E',
         chartLineColor:['#03B4B4','#ED750E','#A97DFF','#4D4DF4','#EE3059','#2DD51E','#F4D81B','#4D4DF4']
-
     },
     default: {
         colorPrimary:'#03B4B4',

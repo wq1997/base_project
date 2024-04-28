@@ -57,7 +57,7 @@ const RealtimeAlarm = () => {
   }
   return (
     <div style={{ width: '100%', height: '100%', paddingBottom: '10px' }}>
-      <div className={styles.alarmWrap} style={{ padding: '35px 35px', backgroundColor: token.titleCardBgc }}>
+      <div className={styles.alarmWrap} style={{ padding: '35px 35px' }}>
         <div className={styles.title}>
           <div className={styles.sn}>
             <Input placeholder={t('请输入') + t('设备编码')}  style={{ width: 240 }} onChange={changeSn}/>

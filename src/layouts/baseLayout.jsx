@@ -75,6 +75,8 @@ const BaseLayout = () => {
         }
     });
 
+    const startIndex = pathname.split('/')[1]==='index';
+
     return (
         <div className={styles.baseLayout}>
             <Layout className={styles.layout}>
@@ -164,7 +166,7 @@ const BaseLayout = () => {
                     </div>
                 </Header>
                 <Layout hasSider>
-                   {pathname.split('/')[1]==='index'&& <Sider className={siderContentStyle}
+                   {startIndex&& <Sider className={siderContentStyle}
                         style={{ background: token.bgcColorB_l }}
                         width={240}>
                         <div className={styles.siderContent}>
@@ -172,7 +174,10 @@ const BaseLayout = () => {
                         </div>
                     </Sider>}
                     <Content className={styles.content}
-                        style={{ background: token.bgcColorl_B }}>
+                        style={{ 
+                            background: startIndex&&token.bgcColorl_B,
+                            margin: startIndex&&'8px'
+                        }}>
                         <div className={styles.inContent}>
                             <Outlet />
                         </div>

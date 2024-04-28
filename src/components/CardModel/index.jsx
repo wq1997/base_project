@@ -10,7 +10,7 @@ function Com(props) {
     }, [])
 
     return (
-        <div className={styles.card} style={{ backgroundColor: props.bgc?  props.bgc: token.titleCardBgc }}>
+        <div className={styles.card} style={{ backgroundColor: props?.backgroundColor || token.titleCardBgc }}>
             <div className={styles.header}>
                 <Title title={props.title} />
                 <div className={styles.filterPart}>

@@ -5,7 +5,6 @@ body{
     padding: 0;
     color: #FFFFFF;
     font-family: PingFangRegular;
-
 }
 
 .ant-menu{
@@ -20,29 +19,43 @@ body{
 .ant-btn-default:not(:disabled):not(.ant-btn-disabled):hover{
     color: unset;
 }
-.ant-table-tbody > tr > td {
-    padding-top: 5px!important;
-    padding-bottom: 5px!important;
 
-  }
+.ant-tabs-nav{
+  margin-bottom: 0px !important;
+}
 
-  .ant-tabs-nav{
-    margin-bottom: 0px !important;
-  }
-  .ant-tabs-nav::before{
-    border-bottom: 0px solid #303030 !important;
+.ant-tabs-nav::before{
+  border-bottom: 0px solid #303030 !important;
 
-  }
-  
-  .ant-tabs-tab{
-         border: 0px solid #303030  !important;
-         border-radius: 8px 8px 0px 0px !important;
-         padding: 7px 35px !important;
-  }
-  .ant-tabs-tab-active{
-    background-color: #111838 !important;
-  }
-  .ant-tabs-nav-wrap{
-    flex-direction: row-reverse !important;
-    padding-right: 30px !important;
- }
+}
+
+.ant-tabs-tab{
+      border: 0px solid #303030  !important;
+      border-radius: 8px 8px 0px 0px !important;
+      padding: 7px 35px !important;
+}
+
+.ant-tabs-tab-active{
+  background-color: #111838 !important;
+}
+
+.ant-tabs-nav-wrap{
+  flex-direction: row-reverse !important;
+  padding-right: 30px !important;
+}
+
+.ant-menu-light .ant-menu-item-selected, :where(.css-dev-only-do-not-override-1ch1jvq).ant-menu-light>.ant-menu .ant-menu-item-selected{
+  background-color: unset !important;
+}
+
+.ant-table-cell::before{
+  width: 0 !important;
+}
+
+.ant-table-header{
+  background-color: #0A4A74 !important;
+}
+
+.ant-table-wrapper .ant-table-tbody >tr >td{
+  border-bottom: 1px solid rgba(221,221,221,0.5) !important;
+}

@@ -198,8 +198,8 @@ function Com(props) {
         setSelectId(value);
     }
     return (
-        <div className={styles.contents} style={{ backgroundColor: token.cardBgc }}>
-            <div className={styles.title} style={{ backgroundColor: token.cardBgc }}>
+        <div className={styles.contents}>
+            <div className={styles.title}>
                 <div className={styles.level}>
                     <Select
                         style={{
@@ -219,7 +219,6 @@ function Com(props) {
             </div>
             <div className={styles.tablePart}>
                 <Table
-                    style={{ backgroundColor: token.cardBgc }}
                     columns={userTable}
                     dataSource={data}
                     scroll={{ x: 'max-content' }} ></Table>

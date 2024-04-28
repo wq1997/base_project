@@ -1,6 +1,5 @@
 import { ConfigProvider,theme as antdTheme } from "antd";
 import { Outlet, useSelector, useLocation, history, setLocale } from "umi";
-import { setLocalStorage, removeLocalStorage } from "@/utils/utils";
 import { ThemeEnum } from "@/components";
 import en_US from 'antd/locale/en_US';
 import zh_CN from 'antd/locale/zh_CN';
@@ -11,16 +10,11 @@ import localeData from "dayjs/plugin/localeData";
 import 'dayjs/locale/zh-cn';
 dayjs.extend(weekday);
 dayjs.extend(localeData);
-dayjs.locale('zh-cn');
 
 const localeEnum = {
     zh_CN,
     en_US
 }
-setLocalStorage("theme", 'dark');
-setLocalStorage("locale", 'en-US');
-setLocale('en-US');
-
 
 const App = () => {
     const { theme, locale } = useSelector(state => state.global);
@@ -28,7 +22,9 @@ const App = () => {
     if(location?.pathname==="/"){
         history.push('/login');
     }
-    console.log("localelocale", locale)
+    dayjs.locale(locale);
+    setLocale(locale, false);
+
     return (
         <ConfigProvider 
             locale={localeEnum[locale]}

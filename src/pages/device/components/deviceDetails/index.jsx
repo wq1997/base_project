@@ -1,12 +1,14 @@
 // 函数组件
 // 快捷键Ctrl+Win+i 添加注释
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import styles from './index.less'
+import styles from './index.less';
+import { theme } from "antd";
 import { getBurDeviceDetailInfo2 } from '@/services/deviceTotal'
 import { getQueryString } from "@/utils/utils";
 import DetalisCard from "../DetailsCard";
 function Com(props) {
     const [data, setData] = useState('');
+    const { token } = theme.useToken();
     const [pcsData, setPcsData] = useState({
         title: "PCS信息",
         data: [
@@ -199,7 +201,7 @@ function Com(props) {
         handlBase({ ...baseData });
     }
     return (
-        <div className={styles.details}>
+        <div className={styles.details} style={{backgroundColor: token.bgcColorB_l}}>
             <DetalisCard data={pcsData} />
             <DetalisCard data={bms1Data} />
             <DetalisCard data={bms2Data} />

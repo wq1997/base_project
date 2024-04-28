@@ -57,11 +57,10 @@ const Cabinet = () => {
         { label: t('策略配置'), key: 'Policy' },
     ]);
     const defaultActiveKey = "OverView";
-    console.log(PageTypeList);
     return (
-        <div style={{ height: '100%', backgroundColor: '#03081D', }}>
+        <div style={{ height: '100%', background: '#0A1328' }}>
             <Tabs className={styles.tab} activeKey={activeKey} items={PageTypeList} onChange={onChangeTab} />
-            <div className={styles.content} style={{ padding: '40px 30px', borderRadius: '0px 16px 0px 0px' }}>
+            <div className={styles.content} style={{ padding: '40px 30px', borderRadius: '16px 16px 0px 0px', background: token.bgcColorB_l }}>
                 {activeKey === "OverView" && <OverView id={id} />}
                 {activeKey === "DeviceDetails" && <DeviceDetails />}
                 {activeKey === "MonitoringCurves" && <MonitoringCurves />}

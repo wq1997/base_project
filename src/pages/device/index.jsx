@@ -283,7 +283,7 @@ const RealtimeAlarm = () => {
     }
     return (
         <>
-            <div className={styles.head} style={{ backgroundColor: token.titleCardBgc }}>
+            <div className={styles.head}>
                 <Select
                     style={{width: 240,}}
                     onChange={(val) => changePlant(val)}
@@ -296,13 +296,13 @@ const RealtimeAlarm = () => {
                     }
                 </Select>
             </div>
-            <div className={styles.wrap} style={{ backgroundColor: token.titleCardBgc }}>
+            <div className={styles.wrap}>
                 <div className={styles.first}>
                     <CardModel
                         title={t('电量统计')}
                         bgc={'#0D1430'}
                         content={
-                            <div className={styles.topContent} style={{ backgroundColor: token.titleCardBgc }}>
+                            <div className={styles.topContent} style={{ backgroundColor: token.areaCardBgc, borderRadius: 8 }}>
                                 {eleData.map(it => {
                                     return (
                                         <div className={styles.topItem} style={{ color: it.color,  }}>
@@ -329,7 +329,7 @@ const RealtimeAlarm = () => {
                             <div className={styles.secondContent}>
                                 {topData.map(it => {
                                     return (
-                                        <div className={styles.topItem} style={{ color: it.color, backgroundColor: token.titleCardBgc, }}>
+                                        <div className={styles.topItem} style={{ color: it.color, backgroundColor: token.areaCardBgc, borderRadius: 8}}>
                                             <div className={styles.leftIcon}>
                                                 {it.icon}
                                             </div>

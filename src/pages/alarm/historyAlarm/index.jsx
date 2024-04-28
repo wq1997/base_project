@@ -81,7 +81,7 @@ useEffect(()=>{
  
   return (
     <div className={styles.wrap}>
-      <div className={styles.content} style={{ backgroundColor: token.titleCardBgc }}>
+      <div className={styles.content}>
         <div className={styles.title}>
         <div className={styles.sn}>
         <Input placeholder={t('请输入')+ t('设备编码')}  style={{ width: 240 }} onChange={changeSn}/>
