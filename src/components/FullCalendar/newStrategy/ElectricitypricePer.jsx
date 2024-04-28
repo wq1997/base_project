@@ -306,6 +306,9 @@ const NewPriceRule = ({ form, dataSource, open, onChangeOpen, addPriceRules }) =
                                             if (!flag) {
                                                 return Promise.reject('起始时间应该早于结束时间');
                                             }
+                                            if(moment(`${YMD} ${hour2}:${min2}`).diff(moment(`${YMD} ${hour1}:${min1}`), 'minute')<30){
+                                                return Promise.reject('起始时间与结束时间至少相差30分钟');
+                                            }
                                         }
                                         return Promise.resolve();
                                     },
@@ -359,7 +362,7 @@ const NewPriceRule = ({ form, dataSource, open, onChangeOpen, addPriceRules }) =
                                             filterOption={(input, option) =>
                                                 (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
                                             placeholder="时"
-                                            options={fillInt(24, true).map((item => {
+                                            options={fillInt(23, true).map((item => {
                                                 return {
                                                     label: item,
                                                     value: item
