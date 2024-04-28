@@ -19,7 +19,7 @@ const Login = () => {
   const [publicKey, setPublicKey] = useState('');
   const [codeImgUrl, setCodeImgUrl] = useState(`${getBaseUrl()}/user/getKaptchaImage`);
   const [showImg, setShowImg] = useState(false);
-  const [language, setLanguage] = useState(global?.locale=='zh-CN'?1:3);
+  const [language, setLanguage] = useState(localStorage.getItem('locale')=='zh-CN'?1:3);
 
   const global = useSelector(state => state.global);
 
