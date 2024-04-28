@@ -99,7 +99,7 @@ const Company = () => {
         const res = await getLevelListServer({
             pageNum: current,
             pageSize,
-            queryCmd: { companyName, status },
+            queryCmd: { keyword: companyName, status },
         });
         if (res?.data?.status == "SUCCESS") {
             const { totalRecord, recordList } = res?.data?.data;
@@ -135,7 +135,9 @@ const Company = () => {
             />
             <Space className="search">
                 <SearchInput
-                    label="公司名称"
+                    label="公司"
+                    inputWidth={250}
+                    placeholder="请输入公司名称或公司编号"
                     value={companyName}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;

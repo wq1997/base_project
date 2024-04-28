@@ -161,7 +161,7 @@ const Account = () => {
             />
             <Space className="search">
                 <SearchInput
-                    label="用户名"
+                    label="账号"
                     value={account}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;

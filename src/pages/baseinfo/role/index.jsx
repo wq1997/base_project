@@ -105,7 +105,7 @@ const Role = () => {
             const res = await getRoleListServe({
                 pageNum: current,
                 pageSize,
-                queryCmd: { name },
+                queryCmd: { keyword: name },
             });
             if (res?.data?.status == "SUCCESS") {
                 const { totalRecord, recordList } = res?.data?.data;
@@ -179,8 +179,8 @@ const Role = () => {
         <CardPage>
             <Space className={styles.search}>
                 <SearchInput 
-                    label="角色名称" 
-                    placeholder="请输入角色名称关键词或角色编号" 
+                    label="角色" 
+                    placeholder="请输入角色名称或角色编号" 
                     inputWidth={250} 
                     value={name} 
                     onChange={value => {

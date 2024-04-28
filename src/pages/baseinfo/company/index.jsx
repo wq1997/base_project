@@ -79,7 +79,7 @@ const Company = () => {
         const res = await getCompanyListServer({
             pageNum: current,
             pageSize,
-            queryCmd: { name },
+            queryCmd: { keyword: name },
         });
         if (res?.data?.status == "SUCCESS") {
             const { totalRecord, recordList } = res?.data?.data;
@@ -132,10 +132,10 @@ const Company = () => {
             />
             <Space className="search">
                 <SearchInput
-                    label="公司名称"
+                    label="公司"
                     value={name}
                     inputWidth={250}
-                    placeholder="请输入公司编号或名称关键词"
+                    placeholder="请输入公司名称或公司编号"
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         nameRef.current = value;
