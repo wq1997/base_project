@@ -141,14 +141,14 @@ const NewPriceRule = ({ form, dataSource, open, onChangeOpen, addPriceRules }) =
             }
         ]
     });
-    const [dataY, setDataY] = useState([
-       ]);
+    const [dataY, setDataY] = useState([]);
 
     useEffect(()=>{
         setOption(
             {
             tooltip: {
                 formatter: function (params) {
+                    console.log(params,121212);
                     // return params.marker + params.name + ': ' + params.value[3] + ' ms';
                 }
             },
