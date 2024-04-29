@@ -314,8 +314,8 @@ function Com(props) {
                         <div className={styles.pcsOneBody}>
                             <div className={styles.oneData}>
                                 <div className={styles.key}>PCS</div>
-                                <div className={styles.value}>{allData?.pcs?.activePower || '-'}</div>
-                                <div className={styles.value}>{allData?.pcsCur || '-'}</div>
+                                <div className={styles.value}>{allData?.pcs?.activePower || '0'}</div>
+                                <div className={styles.value}>{allData?.pcsCur || '0'}</div>
                             </div>
                             {/* <div className={styles.oneData}>
                                 <div className={styles.key}>{t('光伏')}</div>
@@ -324,13 +324,13 @@ function Com(props) {
                             </div> */}
                             <div className={styles.oneData}>
                                 <div className={styles.key}>{t('BMS簇1')}</div>
-                                <div className={styles.value}>{allData?.bmc[0]?.power|| '-'}</div>
-                                <div className={styles.value}>{allData?.bmc[0]?.cur|| '-'}</div>
+                                <div className={styles.value}>{allData?.bmc[0]?.power|| '0'}</div>
+                                <div className={styles.value}>{allData?.bmc[0]?.cur|| '0'}</div>
                             </div>
                             <div className={styles.oneData}>
                                 <div className={styles.key}>{t('BMS簇2')}</div>
-                                <div className={styles.value}>{allData?.bmc[1]?.power|| '-'}</div>
-                                <div className={styles.value}>{allData?.bmc[1]?.cur|| '-'}</div>
+                                <div className={styles.value}>{allData?.bmc[1]?.power|| '0'}</div>
+                                <div className={styles.value}>{allData?.bmc[1]?.cur|| '0'}</div>
                             </div>
                         </div>
                     </div>
