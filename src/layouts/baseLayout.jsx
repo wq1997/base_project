@@ -115,7 +115,6 @@ const BaseLayout = () => {
                           <img 
                                 src={down} 
                                 style={{cursor: 'pointer',}} 
-                                onClick={()=>history.push('/index/device')}
                             />
                         </Dropdown>
                             <img 

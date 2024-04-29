@@ -5,21 +5,21 @@ import {
   getPublicKey as getPublicKeySever,
   login as loginSever,
 } from "@/services/user";
-import { getEncrypt, setLocalStorage,getLocalStorage } from "@/utils/utils";
+import { getEncrypt, setLocalStorage, getLocalStorage } from "@/utils/utils";
 import styles from "./index.less";
-import { history, useDispatch, FormattedMessage, useIntl,useSelector} from "umi";
+import { history, useDispatch, FormattedMessage, useIntl, useSelector } from "umi";
 import { useEffect, useState } from "react";
 import { getBaseUrl } from '@/services/request';
 import img from '../../../src/assets/imges/bgimg.png'
 const { Title } = Typography;
 
 const Login = () => {
-  const { token } = theme.useToken(); 
+  const { token } = theme.useToken();
   const dispatch = useDispatch();
   const [publicKey, setPublicKey] = useState('');
   const [codeImgUrl, setCodeImgUrl] = useState(`${getBaseUrl()}/user/getKaptchaImage`);
   const [showImg, setShowImg] = useState(false);
-  const [language, setLanguage] = useState(global?.locale=='zh-CN'?1:3);
+  const [language, setLanguage] = useState(localStorage.getItem('locale') == 'zh-CN' ? 1 : 3);
 
   const global = useSelector(state => state.global);
 
@@ -82,20 +82,19 @@ const Login = () => {
     }
   }
   const changeLanguage = (e) => {
-    let locale=e.target.value==1?'zh-CN':'en-US';
+    let locale = e.target.value == 1 ? 'zh-CN' : 'en-US';
     setLanguage(e.target.value);
     setLocalStorage('locale', locale);
     dispatch({
-        type: 'global/changeLanguage',
-        payload: {
-            locale
-        }
+      type: 'global/changeLanguage',
+      payload: {
+        locale
+      }
     })
-}
+  }
   useEffect(() => {
     getPublicKey();
   }, [])
-  console.log(language,global?.locale);
   return (
     <div
       style={{
@@ -145,7 +144,7 @@ const Login = () => {
             >
               <Input
                 prefix={<UserOutlined style={{ fontSize: 15, color: '#73787F' }} />}
-                placeholder={t("请输入")+' '+t('账号')}
+                placeholder={t("请输入") + ' ' + t('账号')}
                 style={{ height: 40 }}
               />
             </Form.Item>
@@ -156,7 +155,7 @@ const Login = () => {
             >
               <Input.Password
                 prefix={<LockOutlined style={{ fontSize: 15, color: '#73787F' }} />}
-                placeholder={t("请输入")+' '+t('密码')}
+                placeholder={t("请输入") + ' ' + t('密码')}
                 style={{ height: 40 }}
               />
             </Form.Item>
@@ -168,7 +167,7 @@ const Login = () => {
               >
                 <Input
                   prefix={<ExclamationCircleOutlined style={{ fontSize: 15, color: '#73787F' }} />}
-                  placeholder={t("请输入")+' '+t('验证码')}
+                  placeholder={t("请输入") + ' ' + t('验证码')}
                   style={{ height: 40, width: 300 }}
                 />
               </Form.Item>

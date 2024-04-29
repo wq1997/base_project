@@ -1,4 +1,4 @@
-import { ConfigProvider,theme as antdTheme } from "antd";
+import { ConfigProvider, theme as antdTheme } from "antd";
 import { Outlet, useSelector, useLocation, history, setLocale } from "umi";
 import { ThemeEnum } from "@/components";
 import en_US from 'antd/locale/en_US';
@@ -19,21 +19,21 @@ const localeEnum = {
 const App = () => {
     const { theme, locale } = useSelector(state => state.global);
     const location = useLocation();
-    if(location?.pathname==="/"){
+    if (location?.pathname === "/") {
         history.push('/login');
     }
     dayjs.locale(locale);
     setLocale(locale, false);
 
     return (
-        <ConfigProvider 
+        <ConfigProvider
             locale={localeEnum[locale]}
-            theme={{    
-                algorithm: theme === 'dark'? antdTheme.darkAlgorithm:antdTheme.defaultAlgorithm,
+            theme={{
+                algorithm: theme === 'dark' ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
                 token: ThemeEnum[theme]
             }}
         >
-            <Outlet/>
+            <Outlet />
         </ConfigProvider>
     )
 }
