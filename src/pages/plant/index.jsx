@@ -159,7 +159,6 @@ function Com(props) {
         setIsOpen(!isOpen);
     }
     const edit = (record) => {
-        console.log(initSelectData?.userList.find(it => it.label === record.userNames[0])?.value,record,1111111);
         setFormData({
             ...record,
             userName: initSelectData?.userList.find(it => it.label === record.userNames[0])?.value,

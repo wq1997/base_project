@@ -1,10 +1,6 @@
-import { Menu, theme } from 'antd';
+import { Menu } from 'antd';
 import { Link, useLocation, useSelector, FormattedMessage } from 'umi';
-// import menu from '../router/menuRoute'
-import { AppstoreOutlined, ToolOutlined, AlertOutlined, LineChartOutlined, ControlOutlined, SettingOutlined } from '@ant-design/icons';
-import { useEffect, useState } from 'react';
-import { useSetState } from 'ahooks';
-// const { token } = theme.useToken();
+import { ToolOutlined, AlertOutlined, LineChartOutlined, BarChartOutlined, SettingOutlined } from '@ant-design/icons';
 
 const { SubMenu } = Menu;
 
@@ -13,7 +9,7 @@ const MenuList = [
         label: <FormattedMessage id='app.Plant' />,
         key: '/index/plant',
         icon: <LineChartOutlined />,
-        permissions:'A',
+        permissions:'3',
     },
     {
         label: <FormattedMessage id='app.Device' />,
@@ -26,6 +22,11 @@ const MenuList = [
     //     icon: <ControlOutlined />,
     //     // permissions:'A/B',
     // },
+    {
+        label: <FormattedMessage id='收益统计' />,
+        key: '/index/revenue',
+        icon: <BarChartOutlined />,
+    },
     {
         label: <FormattedMessage id='app.Alarm' />,
         key: '/index/alarm',
@@ -48,16 +49,9 @@ const MenuList = [
 ]
 
 const getMenu = menuList => {
-    const { plantDetails } = useSelector(function (state) {
-        return state.device
-    });
     const { user } = useSelector(function (state) {
         return state.user
     });
-    const [currentDivice, setCurrentDivice] = useState(plantDetails.model);
-    useEffect(() => {
-        setCurrentDivice(plantDetails.model)
-    }, [plantDetails])
 
     return menuList.map(menu => {
         if (menu.children) {
@@ -73,49 +67,16 @@ const getMenu = menuList => {
                 </SubMenu>
             );
         } else {
-            if (menu.type) {
-                if (currentDivice?.find(it => it === menu.type)) {
-                    return (
-                        <Menu.Item key={menu.key}
-                            style={{ fontSize: '16px' }}
-                        >
-                            <Link to={menu.key}>{menu.label}</Link>
-                        </Menu.Item>
-                    );
-                }
-                return
+            if(menu.permissions&&menu.permissions==user.roleId || !menu.permissions){
+                return (
+                    <Menu.Item key={menu.key} icon={menu.icon}
+                        style={{ fontSize: menu.icon ? '18px' : '16px' }}
+                    >
+                        <Link to={menu.key}>{menu.label}</Link>
+                    </Menu.Item>
+                );
             }
-            if (menu.permissions=='A') {
-                if (user.roleId == 3) {
-                    return (
-                        <Menu.Item key={menu.key} icon={menu.icon}
-                            style={{ fontSize: menu.icon ? '18px' : '16px' }}
-                        >
-                            <Link to={menu.key}>{menu.label}</Link>
-                        </Menu.Item>
-                    );
-                }
-                return
-            }
-            if (menu.permissions=='A/B') {
-                if (user.roleId != 1) {
-                    return (
-                        <Menu.Item key={menu.key} icon={menu.icon}
-                            style={{ fontSize: menu.icon ? '18px' : '16px' }}
-                        >
-                            <Link to={menu.key}>{menu.label}</Link>
-                        </Menu.Item>
-                    );
-                }
-                return
-            }
-            return (
-                <Menu.Item key={menu.key} icon={menu.icon}
-                    style={{ fontSize: menu.icon ? '18px' : '16px' }}
-                >
-                    <Link to={menu.key}>{menu.label}</Link>
-                </Menu.Item>
-            );
+            return null;
         }
     });
 };

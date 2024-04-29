@@ -16,6 +16,11 @@ export default [
     //     component: "@/pages/policyConfiguration"
     // },
     {
+        name: '收益统计',
+        path: '/index/revenue',
+        component: '@/pages/revenue'
+    },
+    {
         name: '告警中心',
         path: '/index/alarm',
         routes: [
