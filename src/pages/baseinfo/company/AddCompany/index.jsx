@@ -236,7 +236,7 @@ const Company = ({ open, editId, onClose }) => {
                                 }
                                 return (
                                     <Form.Item label="场站编号" name="stationCode">
-                                        <Input placeholder="请输入采日云平台登记场站号" disabled={supportAutoExecute}/>
+                                        <Input placeholder="请输入采日云平台登记场站号" disabled={!supportAutoExecute}/>
                                     </Form.Item>
                                 )
                             }}
@@ -260,12 +260,12 @@ const Company = ({ open, editId, onClose }) => {
                                         name="autoConfirmTask"
                                         rules={[
                                             {
-                                                required: !supportAutoExecute,
+                                                required: supportAutoExecute,
                                                 message: "请选择是否默认确认任务",
                                             },
                                         ]}
                                     >
-                                        <Radio.Group disabled={supportAutoExecute}>
+                                        <Radio.Group disabled={!supportAutoExecute}>
                                             <Radio value={true}>是</Radio>
                                             <Radio value={false}>否</Radio>
                                         </Radio.Group>
