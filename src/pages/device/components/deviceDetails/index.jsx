@@ -62,7 +62,7 @@ function Com(props) {
     })
     const [bms2Data, setBms2Data] = useState({
         title: "BMS簇2信息",
-        data: [  ],
+        data:JSON.parse(JSON.stringify(bms1Data.data)) ,
     })
     const [bmsData, setBmsData] = useState({
         title: "BMS版本信息",
@@ -143,10 +143,7 @@ function Com(props) {
     })
     const [ic2Data, setlc2Data] = useState({
         title: "液冷机2数据",
-        data: [
-       
-           
-        ],
+        data: JSON.parse(JSON.stringify(ic1Data.data)),
     })
     const id = getQueryString("id");
 
@@ -175,8 +172,8 @@ function Com(props) {
         data.data.bmc[0].BMC1hardwareVersion = data.data.bmc[0].hardwareVersion;
         data.data.bms[0].BMS1softwareVersion = data.data.bms[0].softwareVersion;
         data.data.bms[0].BMS1hardwareVersion = data.data.bms[0].hardwareVersion;
-        bms2Data.data=bms1Data.data
-        ic2Data.data=ic1Data.data
+        // setBms2Data({...bms2Data,data:[...bms1Data.data],})
+        // ic2Data.data=[...ic1Data.data]
         setData(data?.data);
         dealData(data?.data?.pcs, pcsData, setPcsData);
         dealData(data?.data?.pcsBranch[0], pcsData, setPcsData);
