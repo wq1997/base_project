@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Button, Space, Table, message, Modal, Card } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import { useSelector } from "umi";
 import { SearchInput, CardPage } from "@/components";
 import AddCompany from "./AddCompany";
 import {
@@ -10,12 +11,14 @@ import {
 } from "@/services/account";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import "./index.less";
+import { hasPerm } from "@/utils/utils";
 
 const Account = () => {
     const accountRef = useRef();
     const nameRef = useRef();
     const companyCodeRef = useRef();
     const roleCodeRef = useRef();
+    const { user } = useSelector(state => state.user);
     const [editId, setEditId] = useState();
     const [account, setAccount] = useState();
     const [name, setName] = useState();
@@ -60,7 +63,8 @@ const Account = () => {
             title: "操作",
             dataIndex: "operate",
             render: (_, record) =>
-                record.account != "admin" && (
+                record.account != "admin" &&
+                hasPerm(user, "op:user_edit") && (
                     <a
                         onClick={() => {
                             setAddCompanyOpen(true);
@@ -223,21 +227,25 @@ const Account = () => {
                 }}
                 title={() => (
                     <Space className="table-title">
-                        <Button
-                            type="primary"
-                            icon={<PlusOutlined />}
-                            onClick={() => setAddCompanyOpen(true)}
-                        >
-                            新增账号
-                        </Button>
-                        <Button type="primary" danger onClick={handleDelete}>
-                            删除账号
-                            {selectedRowKeys?.length ? (
-                                <span>（{selectedRowKeys?.length}）</span>
-                            ) : (
-                                ""
-                            )}
-                        </Button>
+                        {hasPerm(user, "op:user_add") && (
+                            <Button
+                                type="primary"
+                                icon={<PlusOutlined />}
+                                onClick={() => setAddCompanyOpen(true)}
+                            >
+                                新增账号
+                            </Button>
+                        )}
+                        {hasPerm(user, "op:user_delete") && (
+                            <Button type="primary" danger onClick={handleDelete}>
+                                删除账号
+                                {selectedRowKeys?.length ? (
+                                    <span>（{selectedRowKeys?.length}）</span>
+                                ) : (
+                                    ""
+                                )}
+                            </Button>
+                        )}
                     </Space>
                 )}
             ></Table>

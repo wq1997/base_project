@@ -1,19 +1,22 @@
 import React, { useState, useEffect, useRef } from "react";
 import { SearchInput, CardPage } from "@/components";
-import { Button, Space, Table, Form, Modal, Input, Tree, Tooltip, message, Card} from "antd";
+import { useSelector } from "umi";
+import { Button, Space, Table, Form, Modal, Input, Tree, Tooltip, message, Card } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE, FORM_FORBIDDEN_SPACE } from "@/utils/constants";
-import { 
+import {
     getPermissionTree as getPermissionTreeServe,
     addRole as addRoleServe,
     getRoleList as getRoleListServe,
     deleteRole as deleteRoleServe,
-} from "@/services"
+} from "@/services";
+import { hasPerm } from "@/utils/utils";
 import { Title } from "@/components";
 import styles from "./index.less";
 
 const Role = () => {
     const [form] = Form.useForm();
+    const { user } = useSelector(state => state.user);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [addRoleOpen, setAddRoleOpen] = useState(false);
     const [dataSource, setDataSource] = useState([]);
@@ -39,69 +42,70 @@ const Role = () => {
             dataIndex: "code",
         },
         {
-            title: '角色说明',
-            dataIndex: 'remark',
-            key: 'remark',
+            title: "角色说明",
+            dataIndex: "remark",
+            key: "remark",
             ellipsis: true,
             width: 400,
-            render(value){
+            render(value) {
                 return (
                     <Tooltip title={value}>
-                        <div 
+                        <div
                             style={{
-                                overflow: 'hidden',
-                                whiteSpace: 'nowrap',
-                                textOverflow: 'ellipsis',
+                                overflow: "hidden",
+                                whiteSpace: "nowrap",
+                                textOverflow: "ellipsis",
                                 width: 400,
                             }}
                         >
                             {value}
                         </div>
                     </Tooltip>
-                )
-            }
+                );
+            },
         },
         {
             title: "操作",
             dataIndex: "operate",
-            render: (text,record) => {
+            render: (text, record) => {
                 return (
-                    <Button 
-                        type="link"
-                        onClick={()=>{
-                            form.setFieldsValue({
-                                ...record
-                            })
-                            setCheckedKeys(record?.permCodes)
-                            setOperationType("Edit");
-                            setAddRoleOpen(true);
-                            setCurrentRecord(record);
-                        }}
-                    >
-                        编辑
-                    </Button>
-                )
+                    hasPerm(user, "op:role_edit") && (
+                        <Button
+                            type="link"
+                            onClick={() => {
+                                form.setFieldsValue({
+                                    ...record,
+                                });
+                                setCheckedKeys(record?.permCodes);
+                                setOperationType("Edit");
+                                setAddRoleOpen(true);
+                                setCurrentRecord(record);
+                            }}
+                        >
+                            编辑
+                        </Button>
+                    )
+                );
             },
         },
     ];
 
-    
     const onSelectChange = newSelectedRowKeys => {
         setSelectedRowKeys(newSelectedRowKeys);
     };
 
-    const getPermissionTree = async() => {
+    const getPermissionTree = async () => {
         const res = await getPermissionTreeServe();
-        if(res?.data?.data){
+        if (res?.data?.data) {
             setTreeData(res?.data?.data);
         }
-    }
+    };
 
     const getList = async () => {
         const { current, pageSize } = paginationRef.current;
         const name = nameRef.current;
         setLoading(true);
-        try{
+        try {
             const res = await getRoleListServe({
                 pageNum: current,
                 pageSize,
@@ -115,89 +119,90 @@ const Role = () => {
                 });
                 setDataSource(recordList);
             }
-        }finally{
+        } finally {
             setLoading(false);
         }
-    }
+    };
 
-    const onSubmit = async() => {
+    const onSubmit = async () => {
         let res = null;
         try {
             const values = await form.validateFields();
-            if(operationType==="Edit"){
+            if (operationType === "Edit") {
                 res = await addRoleServe({
                     ...values,
                     id: currentRecord?.id,
-                    permCodes: checkedKeys
-                })
-            }else{
+                    permCodes: checkedKeys,
+                });
+            } else {
                 res = await addRoleServe({
                     ...values,
-                    permCodes: checkedKeys
+                    permCodes: checkedKeys,
                 });
             }
-            if(res?.data){
+            if (res?.data) {
                 getList();
                 onCancel();
             }
-
-          } catch (errorInfo) {
-            console.log('Failed:', errorInfo);
+        } catch (errorInfo) {
+            console.log("Failed:", errorInfo);
         }
-    }
+    };
 
     const onCancel = () => {
         setAddRoleOpen(false);
         form.resetFields();
         setCheckedKeys([]);
-    }
+    };
 
     const onDelete = async () => {
-        if(selectedRowKeys&&selectedRowKeys?.length>0){
+        if (selectedRowKeys && selectedRowKeys?.length > 0) {
             const res = await deleteRoleServe(selectedRowKeys);
             if (res?.data?.status == "SUCCESS") {
                 getList();
             }
-        }else{
-            message.error("请选择需要删除的角色")
+        } else {
+            message.error("请选择需要删除的角色");
         }
-    }
+    };
 
     const handleReset = () => {
         paginationRef.current = DEFAULT_PAGINATION;
-        nameRef.current="";
+        nameRef.current = "";
         setName("");
         getList();
     };
 
-    useEffect(()=>{
+    useEffect(() => {
         getPermissionTree();
         getList();
-    }, [])
+    }, []);
 
     return (
         <CardPage>
             <Space className={styles.search}>
-                <SearchInput 
-                    label="角色" 
-                    placeholder="请输入角色名称或角色编号" 
-                    inputWidth={250} 
-                    value={name} 
+                <SearchInput
+                    label="角色"
+                    placeholder="请输入角色名称或角色编号"
+                    inputWidth={250}
+                    value={name}
                     onChange={value => {
-                        nameRef.current=value;
-                        setName(value)
-                    }} 
+                        nameRef.current = value;
+                        setName(value);
+                    }}
                 />
-                <Button type="primary" onClick={getList}>搜索</Button>
+                <Button type="primary" onClick={getList}>
+                    搜索
+                </Button>
                 <Button onClick={handleReset}>重置</Button>
             </Space>
             <Table
                 loading={loading}
-                dataSource={dataSource?.map(data=> {
+                dataSource={dataSource?.map(data => {
                     return {
                         ...data,
-                        key: data?.id
-                    }
+                        key: data?.id,
+                    };
                 })}
                 columns={columns}
                 pagination={pagination}
@@ -207,25 +212,31 @@ const Role = () => {
                 }}
                 title={() => (
                     <Space className={styles.tableTitle}>
-                        <Button
-                            type="primary"
-                            icon={<PlusOutlined />}
-                            onClick={() => {
-                                setOperationType("Add");
-                                setAddRoleOpen(true);
-                            }}
-                        >
-                            新增角色
-                        </Button>
-                        <Button type="primary" danger onClick={onDelete}>删除角色</Button>
+                        {hasPerm(user, "op:role_add") && (
+                            <Button
+                                type="primary"
+                                icon={<PlusOutlined />}
+                                onClick={() => {
+                                    setOperationType("Add");
+                                    setAddRoleOpen(true);
+                                }}
+                            >
+                                新增角色
+                            </Button>
+                        )}
+                        {hasPerm(user, "op:role_delete") && (
+                            <Button type="primary" danger onClick={onDelete}>
+                                删除角色
+                            </Button>
+                        )}
                     </Space>
                 )}
             />
 
             <Modal
                 open={addRoleOpen}
-                title={<Title>{operationType==="Add"?'新增角色':'编辑角色'}</Title>}
-                onOk={onSubmit} 
+                title={<Title>{operationType === "Add" ? "新增角色" : "编辑角色"}</Title>}
+                onOk={onSubmit}
                 onCancel={onCancel}
                 okText="确定"
                 cancelText="取消"
@@ -233,30 +244,34 @@ const Role = () => {
             >
                 <Form
                     form={form}
-                    style={{marginTop: 24}}
+                    style={{ marginTop: 24 }}
                     autoComplete="off"
-                    labelCol={{span: 4}}
+                    labelCol={{ span: 4 }}
                 >
-                    <Form.Item label="角色名称" name="name" rules={[{...FORM_FORBIDDEN_SPACE}, {...FORM_REQUIRED_RULE}]}> 
+                    <Form.Item
+                        label="角色名称"
+                        name="name"
+                        rules={[{ ...FORM_FORBIDDEN_SPACE }, { ...FORM_REQUIRED_RULE }]}
+                    >
                         <Input placeholder="请输入角色名称" />
                     </Form.Item>
                     <Form.Item label="角色说明" name="remark">
                         <Input.TextArea placeholder="请输入角色说明" />
                     </Form.Item>
                     <Form.Item label="权限配置" name="permCodes">
-                            <Tree 
-                                treeData={treeData} 
-                                checkable 
-                                checkedKeys={checkedKeys}
-                                onCheck={(checkedKeys) => {
-                                    setCheckedKeys(checkedKeys)
-                                }}
-                            />
+                        <Tree
+                            treeData={treeData}
+                            checkable
+                            checkedKeys={checkedKeys}
+                            onCheck={checkedKeys => {
+                                setCheckedKeys(checkedKeys);
+                            }}
+                        />
                     </Form.Item>
                 </Form>
             </Modal>
         </CardPage>
-    )
-}
+    );
+};
 
 export default Role;

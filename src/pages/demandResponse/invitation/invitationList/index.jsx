@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Button, Space, Table, message, Modal, DatePicker, Tooltip, Input } from "antd";
 import { PlusOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
-import { history, useLocation } from "umi";
+import { history, useLocation, useSelector } from "umi";
 import { SearchInput } from "@/components";
 import EnterRecord from "./EnterRecord";
 import InvitationSplit from "./InvitationSplit";
@@ -14,6 +14,7 @@ import {
     invalidInvite as invalidInviteServer,
 } from "@/services/invitation";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
+import { hasPerm } from "@/utils/utils";
 import "./index.less";
 import dayjs from "dayjs";
 
@@ -22,6 +23,7 @@ let invalidReason = undefined;
 const Account = () => {
     const location = useLocation();
     const initCode = location?.search.split("=")[1];
+    const { user } = useSelector(state => state.user);
     const [canSure, setCanSure] = useState(true);
     const [canDelete, setCanDelete] = useState(true);
     const [canInvalid, setCanInvalid] = useState(true);
@@ -57,9 +59,19 @@ const Account = () => {
         {
             title: "邀约编号",
             dataIndex: "code",
-            render(_,recode){
-                return <a onClick={_=>history.push(`/vpp/demandResponse/invitation/allTaskList?inviteCode=${recode.code}`)}>{recode.code}</a>
-            }
+            render(_, recode) {
+                return (
+                    <a
+                        onClick={_ =>
+                            history.push(
+                                `/vpp/demandResponse/invitation/allTaskList?inviteCode=${recode.code}`
+                            )
+                        }
+                    >
+                        {recode.code}
+                    </a>
+                );
+            },
         },
         {
             title: "邀约确认状态",
@@ -126,9 +138,11 @@ const Account = () => {
             render: (_, { id, supportSplit, supportReSplit }) => {
                 return (
                     <Space>
-                        <a onClick={() => setInvitationSplitId(id)}>
-                            {supportSplit ? "邀约拆分" : supportReSplit ? "重新拆分" : ""}
-                        </a>
+                        {hasPerm(user, "op:invite_split") && (
+                            <a onClick={() => setInvitationSplitId(id)}>
+                                {supportSplit ? "邀约拆分" : supportReSplit ? "重新拆分" : ""}
+                            </a>
+                        )}
                         <a onClick={() => setDetailId(id)}>详情</a>
                     </Space>
                 );
@@ -181,7 +195,7 @@ const Account = () => {
                 splitStatus,
                 responsePower,
                 responseType,
-                responseTimeType
+                responseTimeType,
             },
         });
         if (res?.data?.status == "SUCCESS") {
@@ -303,13 +317,13 @@ const Account = () => {
         getSearchInitData();
     }, []);
 
-    useEffect(()=>{
-        if(selectedRowKeys?.length===0){
+    useEffect(() => {
+        if (selectedRowKeys?.length === 0) {
             setCanSure(true);
             setCanDelete(true);
             setCanInvalid(true);
         }
-    }, [selectedRowKeys])
+    }, [selectedRowKeys]);
 
     return (
         <div>
@@ -343,7 +357,10 @@ const Account = () => {
                             setReleaseTime(dateStr);
                         }}
                         value={
-                            releaseTime && releaseTime.length > 0 && releaseTime[0] && releaseTime[1]
+                            releaseTime &&
+                                releaseTime.length > 0 &&
+                                releaseTime[0] &&
+                                releaseTime[1]
                                 ? [dayjs(releaseTime[0]), dayjs(releaseTime[1])]
                                 : []
                         }
@@ -449,63 +466,74 @@ const Account = () => {
                 }}
                 title={() => (
                     <Space className="table-title">
-                        <Button
-                            type="primary"
-                            icon={<PlusOutlined />}
-                            onClick={() => setEnterRecordOpen(true)}
-                        >
-                            手工录入
-                        </Button>
-                        <Tooltip placement="bottom" title="只有邀约状态为【未确认】的数据可以确认">
+                        {hasPerm(user, "op:invite_add") && (
                             <Button
                                 type="primary"
-                                disabled={!canSure}
-                                onClick={() => handleOperate(0)}
+                                icon={<PlusOutlined />}
+                                onClick={() => setEnterRecordOpen(true)}
                             >
-                                邀约确认
-                                {selectedRowKeys?.length ? (
-                                    <span>({selectedRowKeys?.length})</span>
-                                ) : (
-                                    ""
-                                )}
+                                手工录入
                             </Button>
-                        </Tooltip>
-                        <Tooltip
-                            placement="bottom"
-                            title="只有邀约确认状态为【未确认】【已过期】的数据可以删除"
-                        >
-                            <Button
-                                type="primary"
-                                danger
-                                disabled={!canDelete}
-                                onClick={() => handleOperate(1)}
+                        )}
+                        {hasPerm(user, "op:invite_confirm") && (
+                            <Tooltip
+                                placement="bottom"
+                                title="只有邀约状态为【未确认】的数据可以确认"
                             >
-                                批量删除
-                                {selectedRowKeys?.length ? (
-                                    <span>({selectedRowKeys?.length})</span>
-                                ) : (
-                                    ""
-                                )}
-                            </Button>
-                        </Tooltip>
-                        <Tooltip
-                            placement="bottom"
-                            title="只有邀约确认状态为【已确认】的数据可以作废"
-                        >
-                            <Button
-                                type="primary"
-                                danger
-                                disabled={!canInvalid}
-                                onClick={handleInvalid}
+                                <Button
+                                    type="primary"
+                                    disabled={!canSure}
+                                    onClick={() => handleOperate(0)}
+                                >
+                                    邀约确认
+                                    {selectedRowKeys?.length ? (
+                                        <span>({selectedRowKeys?.length})</span>
+                                    ) : (
+                                        ""
+                                    )}
+                                </Button>
+                            </Tooltip>
+                        )}
+                        {hasPerm(user, "op:invite_delete") && (
+                            <Tooltip
+                                placement="bottom"
+                                title="只有邀约确认状态为【未确认】【已过期】的数据可以删除"
                             >
-                                批量作废
-                                {selectedRowKeys?.length ? (
-                                    <span>({selectedRowKeys?.length})</span>
-                                ) : (
-                                    ""
-                                )}
-                            </Button>
-                        </Tooltip>
+                                <Button
+                                    type="primary"
+                                    danger
+                                    disabled={!canDelete}
+                                    onClick={() => handleOperate(1)}
+                                >
+                                    批量删除
+                                    {selectedRowKeys?.length ? (
+                                        <span>({selectedRowKeys?.length})</span>
+                                    ) : (
+                                        ""
+                                    )}
+                                </Button>
+                            </Tooltip>
+                        )}
+                        {hasPerm(user, "op:invite_invalid") && (
+                            <Tooltip
+                                placement="bottom"
+                                title="只有邀约确认状态为【已确认】的数据可以作废"
+                            >
+                                <Button
+                                    type="primary"
+                                    danger
+                                    disabled={!canInvalid}
+                                    onClick={handleInvalid}
+                                >
+                                    批量作废
+                                    {selectedRowKeys?.length ? (
+                                        <span>({selectedRowKeys?.length})</span>
+                                    ) : (
+                                        ""
+                                    )}
+                                </Button>
+                            </Tooltip>
+                        )}
                     </Space>
                 )}
             ></Table>

@@ -1,22 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Tabs } from "antd";
-import { Outlet, history, useLocation } from "umi";
+import { Outlet, history, useLocation, useSelector } from "umi";
 import { CardPage } from "@/components";
+import { hasPerm } from "@/utils/utils";
 
 const Invitation = () => {
+    const { user } = useSelector(state => state.user);
     const location = useLocation();
     const { pathname } = location;
 
     const items = [
-        {
+        hasPerm(user, "op:invite_list") && {
             key: "/vpp/demandResponse/invitation/invitationList",
             label: "邀约列表",
         },
-        {
+        hasPerm(user, "op:invite_task") && {
             key: "/vpp/demandResponse/invitation/allTaskList",
             label: "任务清单",
         },
-    ];
+    ]?.filter(item => item != false);
 
     const onChange = value => {
         history.push(value);

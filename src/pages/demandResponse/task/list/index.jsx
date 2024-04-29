@@ -7,12 +7,14 @@ import {
     getSearchInitData as getSearchInitDataServer,
 } from "@/services/task";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
-import { history, useLocation } from "umi";
+import { history, useLocation, useSelector } from "umi";
+import { hasPerm } from "@/utils/utils";
 import dayjs from "dayjs";
 import "./index.less";
 
 const Account = () => {
     const location = useLocation();
+    const { user } = useSelector(state => state.user);
     const endTimeRef = useRef();
     const executeTimeRef = useRef();
     const codeRef = useRef();
@@ -162,13 +164,15 @@ const Account = () => {
             render: (_, { id, status, supportConfirm }) => {
                 if (supportConfirm) {
                     return (
-                        <a
-                            onClick={() => {
-                                history.push(`/vpp/demandResponse/task/confirm?taskId=${id}`);
-                            }}
-                        >
-                            前往确认
-                        </a>
+                        hasPerm(user, "op:task_confirm") && (
+                            <a
+                                onClick={() => {
+                                    history.push(`/vpp/demandResponse/task/confirm?taskId=${id}`);
+                                }}
+                            >
+                                前往确认
+                            </a>
+                        )
                     );
                 }
                 if (status == "EXECUTED_FAIL" || status == "EXECUTED_SUCCESS") {
@@ -264,7 +268,7 @@ const Account = () => {
                             setEndTime(dateStr);
                         }}
                         value={
-                            endTime && endTime.length > 0  && endTime[0] && endTime[1]
+                            endTime && endTime.length > 0 && endTime[0] && endTime[1]
                                 ? [dayjs(endTime[0]), dayjs(endTime[1])]
                                 : []
                         }
@@ -300,7 +304,10 @@ const Account = () => {
                             setExecuteTime(dateStr);
                         }}
                         value={
-                            executeTime && executeTime.length > 0 && executeTime[0] && executeTime[1]
+                            executeTime &&
+                            executeTime.length > 0 &&
+                            executeTime[0] &&
+                            executeTime[1]
                                 ? [dayjs(executeTime[0]), dayjs(executeTime[1])]
                                 : []
                         }

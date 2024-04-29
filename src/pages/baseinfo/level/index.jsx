@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Button, Space, Table, Tooltip, Card } from "antd";
+import { useSelector } from "umi";
 import { SearchInput, CardPage } from "@/components";
 import AutoUpdate from "./AutoUpdate";
 import UpdateLevel from "./UpdateLevel";
@@ -9,10 +10,12 @@ import {
 } from "@/services/company";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import "./index.less";
+import { hasPerm } from "@/utils/utils";
 
 const Company = () => {
     const companyNameRef = useRef();
     const statusRef = useRef();
+    const { user } = useSelector(state => state.user);
     const [editData, setEditData] = useState();
     const [companyName, setCompanyName] = useState();
     const [status, setStatus] = useState([]);
@@ -32,22 +35,22 @@ const Company = () => {
             title: "公司名称",
             dataIndex: "companyName",
             width: 200,
-            render(value){
+            render(value) {
                 return (
                     <Tooltip title={value}>
-                        <div 
+                        <div
                             style={{
-                                overflow: 'hidden',
-                                whiteSpace: 'nowrap',
-                                textOverflow: 'ellipsis',
+                                overflow: "hidden",
+                                whiteSpace: "nowrap",
+                                textOverflow: "ellipsis",
                                 width: 200,
                             }}
                         >
                             {value}
                         </div>
                     </Tooltip>
-                )
-            }
+                );
+            },
         },
         {
             title: "公司编号",
@@ -65,7 +68,8 @@ const Company = () => {
             title: "操作",
             dataIndex: "operate",
             render: (_, record) =>
-                record?.status == "IN_EFFECT" && (
+                record?.status == "IN_EFFECT" &&
+                hasPerm(user, "op:company_ratings_edit") && (
                     <a
                         onClick={() => {
                             setAddCompanyOpen(true);
@@ -170,11 +174,13 @@ const Company = () => {
                     paginationRef.current = pagination;
                     getLevelList();
                 }}
-                title={() => (
-                    <Button type="primary" onClick={() => setAutoUpdateOpen(true)}>
-                        自动更新逻辑
-                    </Button>
-                )}
+                title={() =>
+                    hasPerm(user, "op:company_ratings_cfg") && (
+                        <Button type="primary" onClick={() => setAutoUpdateOpen(true)}>
+                            自动更新逻辑
+                        </Button>
+                    )
+                }
             ></Table>
         </CardPage>
     );

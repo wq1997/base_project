@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Button, Space, Table, message, Modal, DatePicker, Tooltip, Input } from "antd";
-import { history, useLocation } from "umi";
+import { history, useLocation, useSelector } from "umi";
 import { SearchInput } from "@/components";
 import {
     getTaskist as getTaskistServer,
@@ -9,12 +9,14 @@ import {
     refuseTask as refuseTaskServer,
 } from "@/services/task";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
+import { hasPerm } from "@/utils/utils";
 import "./index.less";
 import dayjs from "dayjs";
 
 const Account = () => {
     const location = useLocation();
     const initInviteCode = location?.search.split("=")[1];
+    const { user } = useSelector(state => state.user);
     const [canSure, setCanSure] = useState(true);
     const [canRefuse, setCanRefuse] = useState(true);
     const endTimeRef = useRef();
@@ -57,22 +59,22 @@ const Account = () => {
             title: "公司名称",
             dataIndex: "companyName",
             width: 200,
-            render(value){
+            render(value) {
                 return (
                     <Tooltip title={value}>
-                        <div 
+                        <div
                             style={{
-                                overflow: 'hidden',
-                                whiteSpace: 'nowrap',
-                                textOverflow: 'ellipsis',
+                                overflow: "hidden",
+                                whiteSpace: "nowrap",
+                                textOverflow: "ellipsis",
                                 width: 180,
                             }}
                         >
                             {value}
                         </div>
                     </Tooltip>
-                )
-            }
+                );
+            },
         },
         {
             title: "任务确认状态",
@@ -225,7 +227,7 @@ const Account = () => {
     };
 
     const handleReset = () => {
-        history.push('/vpp/demandResponse/invitation/allTaskList');
+        history.push("/vpp/demandResponse/invitation/allTaskList");
         paginationRef.current = DEFAULT_PAGINATION;
         endTimeRef.current = undefined;
         setEndTime([]);
@@ -413,35 +415,45 @@ const Account = () => {
                 }}
                 title={() => (
                     <Space className="table-title">
-                        <Tooltip placement="bottom" title="只有任务状态为【未确认】的数据可以确认">
-                            <Button
-                                type="primary"
-                                disabled={!canSure}
-                                onClick={() => handleOperate(0)}
+                        {hasPerm(user, "op:invite_task_confirm") && (
+                            <Tooltip
+                                placement="bottom"
+                                title="只有任务状态为【未确认】的数据可以确认"
                             >
-                                批量确认
-                                {selectedRowKeys?.length ? (
-                                    <span>({selectedRowKeys?.length})</span>
-                                ) : (
-                                    ""
-                                )}
-                            </Button>
-                        </Tooltip>
-                        <Tooltip placement="bottom" title="只有任务状态为【未确认】的数据可以拒绝">
-                            <Button
-                                type="primary"
-                                danger
-                                disabled={!canRefuse}
-                                onClick={() => handleOperate(1)}
+                                <Button
+                                    type="primary"
+                                    disabled={!canSure}
+                                    onClick={() => handleOperate(0)}
+                                >
+                                    批量确认
+                                    {selectedRowKeys?.length ? (
+                                        <span>({selectedRowKeys?.length})</span>
+                                    ) : (
+                                        ""
+                                    )}
+                                </Button>
+                            </Tooltip>
+                        )}
+                        {hasPerm(user, "op:invite_task_refuse") && (
+                            <Tooltip
+                                placement="bottom"
+                                title="只有任务状态为【未确认】的数据可以拒绝"
                             >
-                                批量拒绝
-                                {selectedRowKeys?.length ? (
-                                    <span>({selectedRowKeys?.length})</span>
-                                ) : (
-                                    ""
-                                )}
-                            </Button>
-                        </Tooltip>
+                                <Button
+                                    type="primary"
+                                    danger
+                                    disabled={!canRefuse}
+                                    onClick={() => handleOperate(1)}
+                                >
+                                    批量拒绝
+                                    {selectedRowKeys?.length ? (
+                                        <span>({selectedRowKeys?.length})</span>
+                                    ) : (
+                                        ""
+                                    )}
+                                </Button>
+                            </Tooltip>
+                        )}
                     </Space>
                 )}
             ></Table>

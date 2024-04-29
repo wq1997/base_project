@@ -72,3 +72,7 @@ export const getUrlParams = url => {
     }
     return obj;
 };
+
+export const hasPerm = (user, code) => {
+    return user?.selfPermCodes?.includes(code);
+};
