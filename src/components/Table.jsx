@@ -1,11 +1,12 @@
-import { Button, Dropdown,Table  } from "antd"
+import { Table  } from "antd"
 const Tables = (props) => {
-    const {columns,data,pagination}=props;
+    const {columns,data,pagination, ...rest}=props;
     return (
         <Table
             columns={columns}
             dataSource={data}
             pagination={pagination}
+            {...rest}
         />
     )
 }

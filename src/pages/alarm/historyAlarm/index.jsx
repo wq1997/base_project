@@ -118,14 +118,11 @@ const RealtimeAlarm = () => {
           columns={alarmTableColums}
           data={data?.list}
           pagination={false}
+          scroll={{y:"calc(100vh - 350px)"}}
         />
         <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} total={data?.total} pageSizeOptions={[10, 20, 30]} onChange={changPage} />
-
       </div>
-
-
     </div>
-
   )
 }
 
