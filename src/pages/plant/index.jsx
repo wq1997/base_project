@@ -159,12 +159,11 @@ function Com(props) {
         setIsOpen(!isOpen);
     }
     const edit = (record) => {
-        console.log(initSelectData?.userList.find(it => it.label === record.userNames[0])?.value,record,1111111);
         setFormData({
             ...record,
-            userName: initSelectData?.userList.find(it => it.label === record.userNames[0])?.value,
-            priceUnit: initSelectData?.currencyList.find(it => it.label === record.priceUnit)?.value || initSelectData.currencyList[0].value,
-            timeZone: initSelectData?.timeZone.find(it => it.label === record.timeZone)?.value || initSelectData.timeZone[0].value,
+            userName: initSelectData?.userList.find(it => it.label === record.userNames?.[0])?.value,
+            priceUnit: initSelectData?.currencyList.find(it => it.label === record.priceUnit)?.value || initSelectData.currencyList?.[0]?.value,
+            timeZone: initSelectData?.timeZone.find(it => it.label === record.timeZone)?.value || initSelectData.timeZone?.[0]?.value,
             // networkDate: dayjs(record.networkDate),
             installDate: dayjs(record.installDate),
         });
