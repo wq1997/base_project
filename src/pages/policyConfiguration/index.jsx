@@ -33,7 +33,7 @@ function Com({id}) {
         console.log(val,mode,'ok');
         // changeType();
         let { data } = await sendBurCmd2({
-            mode:val||mode,
+            mode:val,
             dtuId:id,
             cmdTypeId: 7000
         })
