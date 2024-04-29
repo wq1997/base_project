@@ -1,5 +1,6 @@
 import axiosInstance from "./request";
 const { API_URL_1, API_URL_2 } = process.env;
+console.log("---------", API_URL_1);
 
 export const login = payload => {
     const url = `${API_URL_1}/user/login`;
@@ -21,7 +22,7 @@ export const getUploadFilesList = payload => {
 };
 
 export const saveUploadFiles = payload => {
-    const url = `/scene/upload`;
+    const url = `${API_URL_1}/scene/upload`;
     return axiosInstance.post(url, payload);
 };
 

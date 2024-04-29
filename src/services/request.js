@@ -10,7 +10,7 @@ export const getBaseUrl = () => {
 const getToken = () => localStorage.getItem("Token");
 
 const instance = axios.create({
-    baseURL: "/api",
+    baseURL: getBaseUrl(),
     timeout: 50000,
     headers: {
         Authorization: getToken(),

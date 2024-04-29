@@ -304,12 +304,11 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
                                                 <Upload
                                                     maxCount={1}
                                                     showUploadList={false}
-                                                    onChange={({ file }) => {
-                                                        if (file?.status == "done") {
-                                                            const _testFiles = [...testFiles];
-                                                            _testFiles[index] = file;
-                                                            setTestFiles(_testFiles);
-                                                        }
+                                                    beforeUpload={file => {
+                                                        const _testFiles = [...testFiles];
+                                                        _testFiles[index] = file;
+                                                        setTestFiles(_testFiles);
+                                                        return false;
                                                     }}
                                                     onRemove={() => {
                                                         minustestFiles(index);
@@ -337,6 +336,7 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
                                             <MinusCircleOutlined
                                                 onClick={() => {
                                                     remove(name);
+
                                                     const _testFiles = [...testFiles];
                                                     _testFiles.splice(index, 1);
                                                     setTestFiles(_testFiles);

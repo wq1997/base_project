@@ -32,13 +32,13 @@ export default defineConfig({
             API_URL_3: apiUrl[`${UMI_ENV}3`] || apiUrl[`test3`],
         },
     },
-    proxy: {
-        "/api": {
-            target: "http://192.168.1.32:9000",
-            changeOrigin: true,
-            pathRewrite: { "^/api": "" },
-        },
-    },
+    // proxy: {
+    //     "/api": {
+    //         target: "http://192.168.1.32:9000",
+    //         changeOrigin: true,
+    //         pathRewrite: { "^/api": "" },
+    //     },
+    // },
     alias: {
         "@/permissions": path.resolve(__dirname, "src/permissions"),
         "@/hooks": path.resolve(__dirname, "src/hooks"),

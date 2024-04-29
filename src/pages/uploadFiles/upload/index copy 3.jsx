@@ -40,8 +40,6 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
     const [dataTypeOptions, setDataTypeOptions] = useState([]);
     const [deviceTypeOptions, setDeviceTypeOptions] = useState([]);
     const [dimensionOptions, setDimensionOptions] = useState([]);
-    const [value, setValue] = useState();
-    const [defaultOpen, setdefaultOpen] = useState(false);
 
     const minustestFiles = index => {
         const _testFiles = [...testFiles];
@@ -102,50 +100,6 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
         onClose();
     };
 
-    // Filter `option.label` match the user type `input`
-    const filterOption = (input, option) =>
-        (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
-
-    const options = [
-        {
-            value: "jack",
-            label: "Jack",
-        },
-        {
-            value: "lucy",
-            label: "Lucy",
-        },
-        {
-            value: "tom",
-            label: "Tom",
-        },
-    ];
-
-    const onChange = value => {
-        console.log("value", value);
-        setValue(value);
-        setTimeout(() => {
-            const select = document.getElementById("select");
-            const input = document.getElementById("input");
-            console.log(
-                options?.find(item => item?.value.includes(value)),
-                select,
-                input
-            );
-            if (options?.find(item => item?.value.includes(value))) {
-                setdefaultOpen(true);
-                select && select?.focus();
-                select.selectionStart = value?.length;
-            } else {
-                setdefaultOpen(false);
-                input && input?.focus();
-                input.selectionStart = value?.length;
-            }
-
-            //form.setFieldValue("projectName", value);
-        });
-    };
-
     return (
         <Modal
             title={<Title>上传文件</Title>}
@@ -178,34 +132,11 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
                             },
                         ]}
                     >
-                        <Input placeholder="请输入项目名称" />
-                        {/* {options?.find(item => item?.value.includes(value)) || !value ? (
-                            <Select
-                                id='select'
-                                showSearch
-                                placeholder="Select a person"
-                                optionFilterProp="children"
-                               
-                                onChange={value => {
-                                    onChange(value);
-                                }}
-                                onSearch={value => {
-                                    onChange(value);
-                                }}
-                                filterOption={filterOption}
-                                options={options}
-                                 
-                            />
-                        ) : (
-                            <Input
-                                id='input'
-                                placeholder="Basic usage"
-                        
-                                onChange={e => {
-                                    onChange(e.target.value);
-                                }}
-                            />
-                        )} */}
+                        <InputSelect
+                            placeholder="请输入项目名称"
+                            showSearch={true}
+                            options={projectNameOptions}
+                        />
                     </Form.Item>
 
                     <Form.Item
@@ -371,6 +302,7 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
                                                 }}
                                             >
                                                 <Upload
+                                                    customRequest={() => { }}
                                                     maxCount={1}
                                                     showUploadList={false}
                                                     onChange={({ file }) => {
