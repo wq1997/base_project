@@ -39,10 +39,8 @@ function Com(props) {
             if (index===0) {
                 it.value= data.data?.bmsStatus[0]
             }else if(index===1){
-                it.value= data.data?.bmsStatus[1]
-            }else if(index===2){
                 it.value= data.data?.pcsStatus
-            }else if(index===3){
+            }else if(index===2){
                 it.value= data.data?.meterStatus
             }
           arr.push(it);
@@ -51,7 +49,6 @@ function Com(props) {
     }
 
     const [status,setStatus] =useState([
-  
         {
             title: t('BMS'),
             value: false,
