@@ -1,13 +1,34 @@
-import { Form, theme, Space, Row, Button, Col, Switch, Input } from "antd";
+import { Form, theme, Space, Row, Button, Col, Switch, Input, Radio,} from "antd";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { Title } from "@/components";
+import { Title, EditTable } from "@/components";
 import { useIntl } from "umi";
 import ButtonGroup from "./component/ButtonGroup";
+import Tabs from "./component/Tabs";
 
 const PolicyConfiguration = () => {
     const intl = useIntl();
     const { token } = theme.useToken();
-    const { form } = Form.useForm();
+    const [form] = Form.useForm();
+
+    const strategyList = [
+        {label: intl.formatMessage({id: '策略1'}), value: 1},
+        {label: intl.formatMessage({id: '策略2'}), value: 2}
+    ]
+
+    const monthList = [
+        {label: intl.formatMessage({id: '1月'}), value: 1},
+        {label: intl.formatMessage({id: '2月'}), value: 2},
+        {label: intl.formatMessage({id: '3月'}), value: 3},
+        {label: intl.formatMessage({id: '4月'}), value: 4},
+        {label: intl.formatMessage({id: '5月'}), value: 5},
+        {label: intl.formatMessage({id: '6月'}), value: 6},
+        {label: intl.formatMessage({id: '7月'}), value: 7},
+        {label: intl.formatMessage({id: '8月'}), value: 8},
+        {label: intl.formatMessage({id: '9月'}), value: 9},
+        {label: intl.formatMessage({id: '10月'}), value: 10},
+        {label: intl.formatMessage({id: '11月'}), value: 11},
+        {label: intl.formatMessage({id: '12月'}), value: 12}
+    ]
 
     const areaStyle = useEmotionCss(()=>{
         return {
@@ -19,8 +40,10 @@ const PolicyConfiguration = () => {
 
     const distributeStyle = useEmotionCss(()=>{
         return {
+            cursor: 'pointer',
+            padding: '5px 20px',
+            borderRadius: 5,
             backgroundColor: token.defaultBg,
-            border: 'none'
         }
     })
 
@@ -32,7 +55,7 @@ const PolicyConfiguration = () => {
                 mode: 'Custom'
             }}
         >
-            <div style={{width: '100%', height: 'auto', minHeight: '100%',  background: "#0A1328"}}>
+            <Space style={{width: '100%', height: 'auto', minHeight: '100%',  background: "#0A1328"}} direction="vertical" size={12}>
                 <div className={areaStyle}>
                     <Space style={{width: '100%'}} direction="vertical">
                         <Form.Item label={intl.formatMessage({id: '策略模式'})} name="mode">
@@ -46,11 +69,11 @@ const PolicyConfiguration = () => {
                         <Space style={{width: '100%'}} direction="vertical" size={20}>
                             <Row justify="space-between" align="middle">
                                 <Title title={intl.formatMessage({id: '设备命令'})} />
-                                <Button 
+                                <div 
                                     className={distributeStyle}
                                 >
                                     {intl.formatMessage({id: '下发'})}
-                                </Button>
+                                </div>
                             </Row>
                             <Space style={{width: '100%', padding: '0 20px'}} direction="vertical" size={30}>
                                 <Row>
@@ -142,7 +165,168 @@ const PolicyConfiguration = () => {
                         </Space>
                     </Space>
                 </div>
-            </div>
+                <div className={areaStyle}>
+                     <Space style={{width: '100%'}} direction="vertical" size={30}>
+                        <Row justify="space-between">
+                            <Title title={intl.formatMessage({id: '策略配置'})} />
+                            <div 
+                                className={distributeStyle}
+                                onClick={async ()=>{
+                                    const values = await form.validateFields();
+                                    console.log(values);
+                                }}
+                            >
+                                {intl.formatMessage({id: '下发'})}
+                            </div>
+                        </Row> 
+                        <Row justify="space-between">
+                            <Form.Item name="strategyIndex" style={{margin: 0}}>
+                                <Tabs 
+                                    items={strategyList}
+                                />
+                            </Form.Item>
+                            <Button 
+                                style={{background: 'linear-gradient(90deg, #0787DB 0%, #034FB4 100%)', border: 'none'}}
+                            >
+                                {intl.formatMessage({id: '新增'})}
+                            </Button>
+                        </Row>
+                        <Form.Item name="strategyList">
+                            <EditTable.EditRowTable
+                                showClear
+                                showEdit
+                                showDelete
+                                data={[
+                                    {type: '尖'}
+                                ]}
+                                columns={[
+                                    {
+                                        title: '类型',
+                                        dataIndex: 'type',
+                                        editable: true,
+                                        inputType: 'Select',
+                                        options: [
+                                            {value: '尖', name: intl.formatMessage({id: '尖'})},
+                                            {value: '峰', name: intl.formatMessage({id: '峰'})},
+                                            {value: '平', name: intl.formatMessage({id: '平'})},
+                                            {value: '谷', name: intl.formatMessage({id: '谷'})}
+                                        ]
+                                    },
+                                ]}
+                            />
+                        </Form.Item>
+                    </Space>                              
+                </div>
+
+                <div className={areaStyle}>
+                    <Space style={{width: '100%'}} direction="vertical" size={20}>
+                        <Row justify="space-between" align="middle">
+                            <Title title={intl.formatMessage({id: '策略选择'})} />
+                            <div 
+                                className={distributeStyle}
+                                onClick={async ()=>{
+                                    const values = await form.validateFields();
+                                    console.log("values", values)
+                                }}
+                            >
+                                {intl.formatMessage({id: '下发'})}
+                            </div>
+                        </Row>
+                        <Row>
+                            {
+                                monthList.map(month => {
+                                    return (
+                                        <Col span={24/monthList.length}>
+                                            <div style={{marginBottom: 10}}>{month.label}</div>
+                                            <Form.Item name={month.value} layout="vertical" style={{margin: 0}}>
+                                                <Radio.Group>
+                                                    <Space direction="vertical">
+                                                        {strategyList?.map(strategy=><Radio value={strategy.value}>{strategy.label}</Radio>)}
+                                                    </Space>
+                                                </Radio.Group>
+                                            </Form.Item>
+                                        </Col>
+                                    )
+                                })
+                            }
+                        </Row>
+                    </Space>
+                </div>
+                
+                <div className={areaStyle}>
+                    <Space style={{width: '100%'}} direction="vertical" size={20}>
+                        <Row justify="space-between" align="middle">
+                            <Title title={intl.formatMessage({id: '除湿机参数设置'})} />
+                            <div 
+                                className={distributeStyle}
+                                onClick={async ()=>{
+                                }}
+                            >
+                                {intl.formatMessage({id: '下发'})}
+                            </div>
+                        </Row>
+                        <Row gutter={50}>
+                            <Col span={6}>
+                                <Form.Item name="oneTemperature" label={intl.formatMessage({id: '除湿机温度启动值(℃)'})} style={{margin: 0}}>
+                                    <Input style={{width: "100%"}} placeholder={intl.formatMessage({id: '请输入除湿机温度启动值'})}/>
+                                </Form.Item>
+                            </Col>
+                            <Col span={6}>
+                                <Form.Item name="twoTemperature" label={intl.formatMessage({id: '除湿机温度停止值(℃)'})} style={{margin: 0}}>
+                                    <Input style={{width: "100%"}} placeholder={intl.formatMessage({id: '请输入除湿机温度停止值'})}/>
+                                </Form.Item>
+                            </Col>
+                            <Col span={6}>
+                                <Form.Item name="threeTemperature" label={intl.formatMessage({id: '除湿机湿度启动值(%rh)'})} style={{margin: 0}}>
+                                    <Input style={{width: "100%"}} placeholder={intl.formatMessage({id: '请输入除湿机湿度启动值'})}/>
+                                </Form.Item>
+                            </Col>
+                            <Col span={6}>
+                                <Form.Item name="fourTemperature" label={intl.formatMessage({id: '除湿机湿度停止值(%rh)'})} style={{margin: 0}}>
+                                    <Input style={{width: "100%"}} placeholder={intl.formatMessage({id: '请输入除湿机湿度停止值'})}/>
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                    </Space>
+                </div>
+
+                <div className={areaStyle}>
+                    <Space style={{width: '100%'}} direction="vertical" size={20}>
+                        <Row justify="space-between" align="middle">
+                            <Title title={intl.formatMessage({id: '液冷机参数设置'})} />
+                            <div 
+                                className={distributeStyle}
+                                onClick={async ()=>{
+                                }}
+                            >
+                                {intl.formatMessage({id: '下发'})}
+                            </div>
+                        </Row>
+                        <Row gutter={50}>
+                            <Col span={6}>
+                                <Form.Item name="fiveTemperature" label={intl.formatMessage({id: '液冷制冷点(℃)'})} style={{margin: 0}}>
+                                    <Input style={{width: "100%"}} placeholder={intl.formatMessage({id: '请输入液冷制冷点'})}/>
+                                </Form.Item>
+                            </Col>
+                            <Col span={6}>
+                                <Form.Item name="sixTemperature" label={intl.formatMessage({id: '液冷加热点(℃)'})} style={{margin: 0}}>
+                                    <Input style={{width: "100%"}} placeholder={intl.formatMessage({id: '请输入液冷加热点'})}/>
+                                </Form.Item>
+                            </Col>
+                            <Col span={6}>
+                                <Form.Item name="sevenTemperature" label={intl.formatMessage({id: '液冷制冷回差(℃)'})} style={{margin: 0}}>
+                                    <Input style={{width: "100%"}} placeholder={intl.formatMessage({id: '请输入液冷制冷回差'})}/>
+                                </Form.Item>
+                            </Col>
+                            <Col span={6}>
+                                <Form.Item name="eightTemperature" label={intl.formatMessage({id: '液冷加热回差(℃)'})} style={{margin: 0}}>
+                                    <Input style={{width: "100%"}} placeholder={intl.formatMessage({id: '请输入液冷加热回差'})}/>
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                    </Space>
+                </div>
+            </Space>
         </Form>
     )
 }
