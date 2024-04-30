@@ -70,6 +70,7 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
         setSpinning(true);
         const res = await saveUploadFilesServer(
             toFormData({
+                id: detailId,
                 ...values,
                 files: values?.testUnits?.map(item => item.file[0]),
                 testUnits: values?.testUnits?.map(item => item.name),
@@ -78,10 +79,10 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
         setSpinning(false);
         if (res?.data?.code == 0) {
             message.success("解析成功");
+            onCloseModal();
         } else {
-            message.error("解析失败");
+            message.error(res?.data?.message);
         }
-        onCloseModal();
     };
 
     useEffect(() => {
@@ -132,11 +133,7 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
                             },
                         ]}
                     >
-                        <InputSelect
-                            placeholder="请输入项目名称"
-                            showSearch={true}
-                            options={projectNameOptions}
-                        />
+                        <Input placeholder="请输入项目名称" />
                     </Form.Item>
 
                     <Form.Item

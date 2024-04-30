@@ -50,7 +50,7 @@ const InputSelect = (props) => {
                             onClick={()=>{
                                 onMyChange(item.value);
                                 onMyBlur();
-                            }}
+                            }}z
                             className={optionsItemStyle}
                             style={{
                                 background: myValue === item.value && addColorAlpha(token.colorPrimary, 0.05),
