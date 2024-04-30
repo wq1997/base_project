@@ -10,7 +10,7 @@ import { useSelector, useIntl } from "umi";
 import { getGridPointList, getStrategyPlanList, getStrategyList, getStrategyInfo, saveStrategyPlan, deleteStrategy } from '@/services/policy'
 const { Option } = Select;
 
-function Com(props) {
+function Com(props) {     
   const [seletOption, setSelectOption] = useState([]);
   const [gridId, setGridId] = useState();
   const [currentGrid, setCurrentGrid] = useState();
