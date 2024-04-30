@@ -241,7 +241,7 @@ function Com(props) {
     }
     return (
         <>
-            <div className={styles.advancedAnalytics}>
+            <div className={styles.advancedAnalytics} style={{width: '100%', height: '100%', padding: '40px 30px',  background: token.bgcColorB_l}}>
                 <div className={styles.searchHead}>
                     <span >{t('数据项')}:</span>
                     <Select

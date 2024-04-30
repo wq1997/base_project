@@ -1,7 +1,11 @@
+import { theme } from "antd";
 
 const OverView = () => {
+    const { token } = theme.useToken();
     return (
-        <div>总览</div>
+        <div style={{width: '100%', height: 'auto', minHeight: '100%', padding: '40px 30px',  background: token.bgcColorB_l}}>
+            总览
+        </div>
     )
 }
 

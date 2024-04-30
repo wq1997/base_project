@@ -198,7 +198,7 @@ function Com(props) {
         handlBase({ ...baseData });
     }
     return (
-        <div className={styles.details} style={{backgroundColor: token.bgcColorB_l}}>
+        <div className={styles.details} style={{width: '100%', height: 'auto', minHeight: '100%', padding: '40px 30px',  background: token.bgcColorB_l}}>
             <DetalisCard data={pcsData} />
             <DetalisCard data={bms1Data} />
             <DetalisCard data={bms2Data} />
@@ -207,7 +207,6 @@ function Com(props) {
             <DetalisCard data={energyData} />
             <DetalisCard data={ic1Data} />
             <DetalisCard data={ic2Data} />
-
         </div>
     )
 }

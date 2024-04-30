@@ -3,13 +3,13 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { getBurPackDetailInitData2, getBurPackDetailInfo2 } from '@/services/deviceTotal'
 import { getQueryString } from "@/utils/utils";
-import { theme, Select, message } from "antd";
+import { theme, Select } from "antd";
 import { useSelector, useIntl } from "umi";
 import styles from './index.less'
-import DetalisCard from "../DetailsCard";
 import useIcon from "@/hooks/useIcon";
 
 function Com(props) {
+    const { token } = theme.useToken();
     const [options, setOptions] = useState([])
     const [selectId, setSelectId] = useState('0,0')
     const [data, setData] = useState([])
@@ -57,7 +57,7 @@ function Com(props) {
         setSelectId(val)
     }
     return (
-        <div className={styles.pack}>
+        <div className={styles.pack} style={{width: '100%', height: 'auto', minHeight: '100%', padding: '40px 30px',  background: token.bgcColorB_l}}>
             <Select
                 className={styles.margRL}
                 style={{ width: 180 }}
