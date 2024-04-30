@@ -29,7 +29,7 @@ const Task = () => {
 
     return (
         <CardPage>
-            <Tabs key={pathname} defaultActiveKey={pathname} items={items} onChange={onChange} />
+            <Tabs activeKey={pathname} defaultActiveKey={pathname} items={items} onChange={onChange} />
             <Outlet />
         </CardPage>
     );

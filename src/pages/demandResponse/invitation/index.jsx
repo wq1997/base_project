@@ -26,7 +26,7 @@ const Invitation = () => {
 
     return (
         <CardPage>
-            <Tabs defaultActiveKey={pathname} key={pathname} items={items} onChange={onChange} />
+            <Tabs defaultActiveKey={pathname} activeKey={pathname} items={items} onChange={onChange} />
             <Outlet />
         </CardPage>
     );

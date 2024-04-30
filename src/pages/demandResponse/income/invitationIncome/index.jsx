@@ -166,7 +166,7 @@ const InvitationIncome = () => {
         },
         {
             title: "收益计费时间",
-            dataIndex: "profitBillingTimeFrom",
+            dataIndex: "profitBillingTime",
             width: 200,
         },
         {
@@ -181,8 +181,11 @@ const InvitationIncome = () => {
         },
         {
             title: "打款备注",
-            dataIndex: "remark",
+            dataIndex: "confirmOperationInfo",
             width: 200,
+            render(_, { confirmOperationInfo }){
+                return confirmOperationInfo?.reason;
+            }
         },
     ];
 

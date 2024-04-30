@@ -45,9 +45,9 @@ const TaskStaticsChart = ({ dataSource }) => {
         }
 
         if(newLowPeakCutPower){
-            type4 = newHeightPeakCutPower?.['填谷-日前'] || 0;
-            type5 = newHeightPeakCutPower?.['填谷-日中'] || 0;
-            type6 = newHeightPeakCutPower?.['填谷-实时'] || 0;
+            type4 = newLowPeakCutPower?.['填谷-日前'] || 0;
+            type5 = newLowPeakCutPower?.['填谷-日中'] || 0;
+            type6 = newLowPeakCutPower?.['填谷-实时'] || 0;
             data2 = type4 + type5 + type6;
         }
         

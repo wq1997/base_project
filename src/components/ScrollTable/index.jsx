@@ -2,31 +2,31 @@ import styles from "./index.less";
 import { useEffect, useState, useRef } from "react";
 import { theme } from "antd";
 
-let timer = null;
 const Table = ({
     color,
     columns,
     dataSource
 }) => {
     const { token } = theme.useToken();
+    color = token.color11;
+    const [timer, setTimer] = useState(null);
     const tableRef = useRef(null);
     const tableHeaderRef = useRef(null);
     const tableContentRef = useRef(null);
     const [tableContentHeight, setTableContentHeight] = useState(0);
-    color = token.color11;
+
     const startScroll = () => {
         const tableContentScrollHeight = tableContentRef?.current?.scrollHeight;
         let scrollTop = 0;
-        clearInterval(timer);
-        timer = setInterval(()=>{
-            if(tableContentRef?.current?.style){
-                tableContentRef.current.style.top = `-${scrollTop}px`;
-                if(scrollTop>=tableContentScrollHeight-5){
-                    scrollTop=0;
-                }
-                scrollTop++;
+        let newTimer = null
+        newTimer = setInterval(()=>{
+            tableContentRef.current.style.top = `-${scrollTop}px`;
+            if(scrollTop>=tableContentScrollHeight-5){
+                scrollTop=0;
             }
-        }, 100)
+            scrollTop++;
+        }, 50)
+        setTimer(newTimer);
     }
 
     const init = () => {
@@ -34,15 +34,18 @@ const Table = ({
         const tableHeaderHeight = tableHeaderRef?.current?.clientHeight;
         const tableContentScrollHeight = tableContentRef?.current?.scrollHeight;
         setTableContentHeight(parentHeight-tableHeaderHeight);
-        if(tableContentScrollHeight>tableContentHeight){
+        if(tableContentScrollHeight>parentHeight-tableHeaderHeight){
             startScroll();
         }
     }
 
     useEffect(()=>{
+        if(timer){
+            clearInterval(timer);
+            setTimer(null);
+        }
         init();
-        window.addEventListener("resize", init);
-    }, []);
+    }, [dataSource]);
 
     return (
         <div 

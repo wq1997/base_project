@@ -30,7 +30,7 @@ const Income = () => {
 
     return (
         <CardPage>
-            <Tabs defaultActiveKey={pathname} key={pathname} items={items} onChange={onChange} />
+            <Tabs defaultActiveKey={pathname} activeKey={pathname} items={items} onChange={onChange} />
             <div className={styles.content}>
                 <Outlet />
             </div>
