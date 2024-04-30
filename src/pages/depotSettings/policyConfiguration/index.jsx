@@ -4,10 +4,10 @@ import { Strategy } from '@/components';
 import { CardModel } from "@/components";
 import Detail from '@/components/FullCalendar/newStrategy/detail';
 import styles from './index.less'
-import { theme, Calendar, Tree, Select, Form,message } from "antd";
+import { theme, Calendar, Tree, Select, Form, message } from "antd";
 import dayjs from 'dayjs';
 import { useSelector, useIntl } from "umi";
-import { getGridPointList, getStrategyPlanList, getStrategyList, getStrategyInfo,saveStrategyPlan,deleteStrategy } from '@/services/policy'
+import { getGridPointList, getStrategyPlanList, getStrategyList, getStrategyInfo, saveStrategyPlan, deleteStrategy } from '@/services/policy'
 const { Option } = Select;
 
 function Com(props) {
@@ -67,13 +67,13 @@ function Com(props) {
     let { data } = await getStrategyInfo({ strategyId });
     setDetailsData(data?.data)
   }
-  const newPolicy=async(value)=>{
-    let {data}=await saveStrategyPlan({...value,gridPoint:gridId});
-    if (data.code=='200') {
-      message.success(data.msg,2)
-     }else{      
-         message.error(data.msg,2)
-     }
+  const newPolicy = async (value) => {
+    let { data } = await saveStrategyPlan({ ...value, gridPoint: gridId });
+    if (data.code == '200') {
+      message.success(data.msg, 2)
+    } else {
+      message.error(data.msg, 2)
+    }
   }
   const getInit = async () => {
     let { data } = await getGridPointList({ plantId: localStorage.getItem('plantId') });
@@ -91,7 +91,7 @@ function Com(props) {
   }
   const changeGrid = (val) => {
     setCurrentGrid(
-    seletOption.find(it=>it.value==val)
+      seletOption.find(it => it.value == val)
     )
     setGridId(val);
   }
@@ -112,9 +112,9 @@ function Com(props) {
         color: token.chartLineColor[i]
       });
       console.log(dayjs(it.endDate).add(1, 'day').format('YYYY-MM-DD'));
-    }); 
+    });
     setPlanList([...arr]);
-    
+
   }
   const getStrategy = async () => {
     let { data } = await getStrategyList({ gridPointId: gridId });
@@ -127,17 +127,17 @@ function Com(props) {
     setStrategyTreeData([{ ...strategyTreeData[0], children: [...arr] }]);
     getPlanList(arr);
   }
-  const delStrategy=async(val)=>{
-    let { data } = await deleteStrategy({ strategyId:val?.strategyId });
-    if (data.code=='200') {
-      message.success(t('删除成功'),2);
-    getStrategy();
+  const delStrategy = async (val) => {
+    let { data } = await deleteStrategy({ strategyId: val?.strategyId });
+    if (data.code == '200') {
+      message.success(t('删除成功'), 2);
+      getStrategy();
 
-    }else{
-      message.error(t(data.msg),2);
+    } else {
+      message.error(t(data.msg), 2);
 
     }
-}
+  }
   return (
     <div className={styles.contents}>
       <div className={styles.hearder} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal }}>
@@ -184,15 +184,15 @@ function Com(props) {
         </CardModel>
       </div>
       <div className={styles.right_Content} style={{ backgroundColor: token.titleCardBgc }}>
-        <Strategy 
-        date={date} 
-        setDate={onSelect} 
-        planList={planList} 
-        strategy={strategyTreeData} 
-        newPolicy={newPolicy}  
-        getStrategy={getStrategy}
-        deleteStrategy={delStrategy}
-        currentGrid={currentGrid}
+        <Strategy
+          date={date}
+          setDate={onSelect}
+          planList={planList}
+          strategy={strategyTreeData}
+          newPolicy={newPolicy}
+          getStrategy={getStrategy}
+          deleteStrategy={delStrategy}
+          currentGrid={currentGrid}
         />
       </div>
       <Detail

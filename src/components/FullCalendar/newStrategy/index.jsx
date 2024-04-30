@@ -56,6 +56,7 @@ const NewStrategy = ({ currentGrid, strategy, deleteStrategy, getStrategy, handl
     const [editKey, setEditKey] = useState(-1); // 新增时重新编辑策略列表key
     const [detailsData, setDetailsData] = useState(); // 策略详情
     const [priceData, setPriceData] = useState(); // 电价表
+    const [editIndex, setEditIndex] = useState(-1); // 当前编辑的index
 
     const intl = useIntl();
     const t = (id) => {
@@ -224,7 +225,8 @@ const NewStrategy = ({ currentGrid, strategy, deleteStrategy, getStrategy, handl
                         <Typography.Link
                             style={{ color: token.colorPrimary }}
                             onClick={() => {
-                                setPricePer(true)
+                                setPricePer(true);
+                                setEditIndex(index);
                             }}
                         >
                             {t('时段配置')}
@@ -575,13 +577,10 @@ const NewStrategy = ({ currentGrid, strategy, deleteStrategy, getStrategy, handl
                                     <Title title="策略执行日程" />
                                     <Button type="primary" onClick={() => setCreateExecutionScheduleOpen(true)}>创建策略执行日程</Button>
                                 </Row>
-
-
                                 <Table
                                     columns={yearExcuteColumns}
                                     dataSource={planList}
                                     scroll={{ Y: 300 }}
-
                                 />
                             </Space>
                         </Space>
@@ -614,6 +613,21 @@ const NewStrategy = ({ currentGrid, strategy, deleteStrategy, getStrategy, handl
             <ElectricitypricePer
                 open={pricePer}
                 form={form4}
+                currentData={editIndex>=0?priceData?.[editIndex]:null}
+                onSubmit={(values) => {
+                    console.log("values", values)
+                    let arr=[];
+                    values.map(it=>{
+                        arr.push({
+                            timeType:it.value[0],
+                            startHm:it.value[1],
+                            endHm:it.value[2]
+                        })
+                    })
+                    const newPriceData = JSON.parse(JSON.stringify(priceData));
+                    newPriceData[editIndex].timePeriodList = arr;
+                    setPriceData(newPriceData);
+                }}
                 dataSource={[{
                     name: '尖',
                     value: 0

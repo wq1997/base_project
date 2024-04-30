@@ -1,6 +1,7 @@
 import { theme, Select, Row, Space, Button, Modal, Form, Input, } from "antd";
 import { Title } from "@/components";
-import { useState } from "react";
+import { getGridPointList,  } from '@/services/policy'
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 
 const OperationManage = () => {
     const { token } = theme.useToken();
@@ -14,6 +15,9 @@ const OperationManage = () => {
     const [powerSettingOpen, setPowerSettingOpen] = useState(false) // 总功率设置
     const [otherOpen, setOtherOpen] = useState(false); // 其他弹框
     const [title, setTitle] = useState(); // 其他弹框title
+    const [seletOption, setSelectOption] = useState([]);
+    const [gridId, setGridId] = useState();
+    const [currentGrid, setCurrentGrid] = useState();
 
 
     const MyButton = ({text, id, onClick}) => {
@@ -31,6 +35,23 @@ const OperationManage = () => {
             </div>
         )
     }
+    useEffect(() => {
+        getInit();
+      }, []);
+    const getInit = async () => {
+        let { data } = await getGridPointList({ plantId: localStorage.getItem('plantId') });
+        let arr = [];
+        data?.data.map(it => {
+          arr.push({
+            label: it.gridPointName,
+            value: it.id,
+            ...it
+          })
+        })
+        setSelectOption([...arr]);
+        setGridId(arr[0]?.value);
+        setCurrentGrid(arr[0]);
+      }
     return (
         <div style={{color: token.titleColor}}>
             <Space size={8} direction="vertical" style={{width: '100%'}}>
@@ -41,10 +62,7 @@ const OperationManage = () => {
                             <Select 
                                 style={{width: 240, height: 48}}
                                 placeholder="请选择并网点" 
-                                options={[
-                                    {value: '并网点1', label: '并网点1'},
-                                    {value: '并网点2', label: '并网点2'}
-                                ]}
+                                options={seletOption}
                             />
                         </Row>
                         <Space size={33}>

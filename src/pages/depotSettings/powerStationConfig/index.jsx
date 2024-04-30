@@ -241,7 +241,7 @@ function Com(props) {
                 onOk={del}
                 onCancel={changeIsOpenDel}
             >
-               {t('数据删除后将无法恢复，是否确认删除该条数据？')}
+                {t('数据删除后将无法恢复，是否确认删除该条数据？')}
             </Modal>
         </div>
     )

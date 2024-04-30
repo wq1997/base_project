@@ -6,7 +6,8 @@ import styles from './index.less'
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import ReactECharts from "echarts-for-react";
-const categories = [ '谷','平', '峰','尖',];
+import { message } from 'antd';
+const categories = ['谷', '平', '峰', '尖',];
 const types = [
     { name: '谷', color: '#03B4B4' },
     { name: '平', color: '#49ADEE' },
@@ -58,11 +59,11 @@ const renderItem = (params, api) => {
     );
 }
 let datax = create(1);
-const NewPriceRule = ({ form, dataSource, open, onChangeOpen, addPriceRules }) => {
-    const [option, setOption] = useState(    {
+const NewPriceRule = ({ form, onSubmit, currentData, dataSource, open, onChangeOpen,  }) => {
+    const [option, setOption] = useState({
         tooltip: {
             formatter: function (params) {
-                // return params.marker + params.name + ': ' + params.value[3] + ' ms';
+                return params.marker + params.name + ': ' + params.data?.value[1] - params.data?.value[2];
             }
         },
         title: {
@@ -96,13 +97,13 @@ const NewPriceRule = ({ form, dataSource, open, onChangeOpen, addPriceRules }) =
         yAxis: {
             axisLine: {
                 show: false, // 不显示坐标轴线
-          },
-          axisTick:{
-            show:false // 不显示坐标轴刻度线
-      },
-      splitLine:{
-        show:true // 不显示网格线
-   },
+            },
+            axisTick: {
+                show: false // 不显示坐标轴刻度线
+            },
+            splitLine: {
+                show: true // 不显示网格线
+            },
             data: categories
         },
         series: [
@@ -118,7 +119,7 @@ const NewPriceRule = ({ form, dataSource, open, onChangeOpen, addPriceRules }) =
                     y: 0
                 },
                 data: [
-                         {
+                    {
                         name: '尖',
                         value: [0, '00:00', '00:50'],
                         itemStyle: {
@@ -137,93 +138,118 @@ const NewPriceRule = ({ form, dataSource, open, onChangeOpen, addPriceRules }) =
                             }
                         }
                     },
-            ]
+                ]
             }
         ]
     });
     const [dataY, setDataY] = useState([]);
 
-    useEffect(()=>{
+    useEffect(() => {
         setOption(
             {
-            tooltip: {
-                formatter: function (params) {
-                    console.log(params,121212);
-                    // return params.marker + params.name + ': ' + params.value[3] + ' ms';
-                }
-            },
-            title: {
-                //   text: 'Profile',
-                left: 'center'
-            },
-            dataZoom: [
-                {
-                    type: 'slider',
-                    filterMode: 'weakFilter',
-                    showDataShadow: false,
-                    top: 400,
-                    labelFormatter: ''
+                tooltip: {
+                    formatter: function (params) {
+                        console.log();
+                        return params.marker + params.name + ': ' + params.data?.value[1] +'-'+ params.data?.value[2];
+                    }
                 },
-                {
-                    type: 'inside',
-                    filterMode: 'weakFilter'
-                }
-            ],
-            grid: {
-                height: 300
-            },
-            xAxis: {
-                position: 'top',
-                data: datax
-    
-            },
-            yAxis: {
-                axisLine: {
-                    show: false, // 不显示坐标轴线
-              },
-              axisTick:{
-                show:false // 不显示坐标轴刻度线
-          },
-          splitLine:{
-            show:true // 不显示网格线
-       },
-                data: categories
-            },
-            series: [
-                {
-                    type: 'custom',
-                    renderItem: renderItem,
-                    itemStyle: {
-                        opacity: 0.8,
-                        borderWidth: '100%',
+                title: {
+                    //   text: 'Profile',
+                    left: 'center'
+                },
+                dataZoom: [
+                    {
+                        type: 'slider',
+                        filterMode: 'weakFilter',
+                        showDataShadow: false,
+                        top: 400,
+                        labelFormatter: ''
                     },
-                    encode: {
-                        x: [1, 2],
-                        y: 0
+                    {
+                        type: 'inside',
+                        filterMode: 'weakFilter'
+                    }
+                ],
+                grid: {
+                    height: 300
+                },
+                xAxis: {
+                    position: 'top',
+                    data: datax
+
+                },
+                yAxis: {
+                    axisLine: {
+                        show: false, // 不显示坐标轴线
                     },
-                    data: [
-                        ...dataY
+                    axisTick: {
+                        show: false // 不显示坐标轴刻度线
+                    },
+                    splitLine: {
+                        show: true // 不显示网格线
+                    },
+                    data: categories
+                },
+                series: [
+                    {
+                        type: 'custom',
+                        renderItem: renderItem,
+                        itemStyle: {
+                            opacity: 0.8,
+                            borderWidth: '100%',
+                        },
+                        encode: {
+                            x: [1, 2],
+                            y: 0
+                        },
+                        data: [
+                            ...dataY
+                        ]
+                    }
                 ]
+            }
+        )
+
+    }, [JSON.stringify(dataY)])
+
+    useEffect(()=>{
+        setDataY(currentData?.timePeriodList?.map(item => {
+            return {
+                name: categories[Math.abs(item?.timeType - 4) - 1],
+                value: [item.timeType, item.startHm, item.endHm],
+                itemStyle: {
+                    normal: {
+                        color: types[Math.abs(item?.timeType - 4) - 1]?.color,
+                    }
                 }
-            ]
-        }
-    )
+            }
+        })||[])
+    }, [JSON.stringify(currentData)])
 
-    },[JSON.stringify(dataY)])
-
-
+    console.log("222222", currentData)
     return (
         <Modal
             title={<Title title="时段电价" />}
             open={open}
             onOk={async () => {
-                const values = await form.validateFields(['timeType']);
-                values.startDate = values.startDate.format('MM-DD');
-                values.endDate = values.endDate.format('MM-DD');
-                addPriceRules(values);
-                onChangeOpen(false);
-                form.resetFields();
-                console.log("新增电价规则", values, values.startDate.format('MM-DD'));
+                const YMD = moment().format('YYYY-MM-DD');
+                let sum=0;
+                dataY?.map(it => {
+                    const flag1 = moment(`${YMD} ${it.value[2]}`).diff(moment(`${YMD} ${it.value[1]}`),'minutes',true);
+                    sum+=flag1;
+                    console.log(flag1,sum,24*60,1111);
+                })
+                if (sum==(24*60-dataY.length)) {
+                    onChangeOpen(false);
+                    form.resetFields();
+                    onSubmit(dataY);
+                    message.success('时间段添加成功');
+                    setDataY([]);
+                }else{
+                    message.warning('时段不足一天');
+                }
+            
+                console.log("新增电价规则", dataY, );
 
             }}
             width={960}
@@ -269,7 +295,7 @@ const NewPriceRule = ({ form, dataSource, open, onChangeOpen, addPriceRules }) =
                                             if (!flag) {
                                                 return Promise.reject('起始时间应该早于结束时间');
                                             }
-                                            if(moment(`${YMD} ${hour2}:${min2}`).diff(moment(`${YMD} ${hour1}:${min1}`), 'minute')<30){
+                                            if (moment(`${YMD} ${hour2}:${min2}`).diff(moment(`${YMD} ${hour1}:${min1}`), 'minute') < 30) {
                                                 return Promise.reject('起始时间与结束时间至少相差30分钟');
                                             }
                                         }
@@ -351,29 +377,69 @@ const NewPriceRule = ({ form, dataSource, open, onChangeOpen, addPriceRules }) =
                                     </Form.Item>
                                 </Col>
                                 <Col span={2}>
-                                    <Button type='primary' style={{ backgroundColor: '#7989B2' }} onClick={async()=>{
+                                    <Button type='primary' style={{ backgroundColor: '#7989B2' }} onClick={async () => {
                                         const values = await form.validateFields();
-                                        let arr=[];
                                         const hour1 = values.hour1;
-                                        const min1 =  values.min1;
-                                        const hour2 =  values.hour2;
-                                        const min2 =  values.min2;
-                                        arr.push({
-                                            name:categories[Math.abs(values?.timeType-4)-1],
-                                                value: [Math.abs(values?.timeType-4)-1, `${hour1}:${min1}`, `${hour2}:${min2}`],
-                                                itemStyle: {
-                                                    normal: {
-                                                        color: types[Math.abs(values?.timeType-4)-1].color,
+                                        const min1 = values.min1;
+                                        const hour2 = values.hour2;
+                                        const min2 = values.min2;
+                                        if (hour1 && min1 && hour2 && min2) {
+                                            if(dataY?.length>0){
+                                                const YMD = moment().format('YYYY-MM-DD');
+                                                let hasFailed = false;
+                                                let current = null;
+                                                dataY?.forEach(it => {
+                                                    let start = `${YMD} ${it?.value[1]}`;
+                                                    let end = `${YMD} ${it?.value[2]}`;
+                                                    const flag1 = moment(`${YMD} ${hour2}:${min2}`).isBefore(moment(start));
+                                                    const flag2 = moment(end).isBefore(moment(`${YMD} ${hour1}:${min1}`));
+                                                    if (flag1 || flag2) {
+                                                        current = {
+                                                            name: categories[Math.abs(values?.timeType - 4) - 1],
+                                                            value: [Math.abs(values?.timeType - 4) - 1, `${hour1}:${min1}`, `${hour2}:${min2}`],
+                                                            itemStyle: {
+                                                                normal: {
+                                                                    color: types[Math.abs(values?.timeType - 4) - 1].color,
+                                                                }
+                                                            }
+                                                        }
+                                                    } else {
+                                                        hasFailed=true;
                                                     }
+                                                })
+                                                console.log(dataY)
+                                                if(hasFailed){
+                                                    message.error('时间不可重叠')
+                                                }else{
+                                                    message.success('时间段添加成功');
+                                                    console.log("AAAA", [...dataY||[], current])
+                                                    setDataY([...dataY||[], current]);
+                                                    form.resetFields();
                                                 }
-                                        });
-                                        setDataY([...dataY,...arr])
+                                            }else{
+                                                let arr = [];
+                                                arr.push({
+                                                    name: categories[Math.abs(values?.timeType - 4) - 1],
+                                                    value: [Math.abs(values?.timeType - 4) - 1, `${hour1}:${min1}`, `${hour2}:${min2}`],
+                                                    itemStyle: {
+                                                        normal: {
+                                                            color: types[Math.abs(values?.timeType - 4) - 1].color,
+                                                        }
+                                                    }
+                                                });
+                                                setDataY([...dataY, ...arr]);
+                                                form.resetFields();
+                                                message.success('时间段添加成功');
+                                            } 
+                                        }
+                                        
                                     }}>+</Button>
                                 </Col>
                                 <Col span={2}>
-                                    <Button type='primary' style={{ backgroundColor: '#7989B2' }} onClick={()=>{
-                                        let arr=dataY;
-                                        arr.splice(arr.length-1,1);
+                                    <Button type='primary' style={{ backgroundColor: '#7989B2' }} onClick={() => {
+                                        let arr = JSON.parse(JSON.stringify(dataY));
+                                        arr.splice(arr.length - 1, 1);
+                                        console.log("-", arr)
                                         setDataY([...arr])
                                     }}>-</Button>
                                 </Col>
@@ -381,7 +447,7 @@ const NewPriceRule = ({ form, dataSource, open, onChangeOpen, addPriceRules }) =
                         </Form.Item>
                     </Col>
                     <Col span={2}>
-                        <Button type='primary' onClick={()=>{
+                        <Button type='primary' onClick={() => {
                             setDataY([]);
                         }}>清空时段</Button>
                     </Col>
