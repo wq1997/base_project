@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { 
-    Button, 
+    theme, 
     Form, 
     InputNumber, 
     Popconfirm, 
@@ -16,7 +16,8 @@ import moment from 'moment';
 import dayjs from 'dayjs';
 
 // 编辑行的表格
-const EditRowTable = ({ data, columns, showEdit, showClear, onChange, ...rest}) => {
+const EditRowTable = ({ data, columns, showEdit, showClear, showDelete, onChange, ...rest}) => {
+  const { token } = theme.useToken();
   const [form] = Form.useForm();
   const [dataSource, setDataSource] = useState(data);
   const [defaultColumns, setDefaultColumns] = useState(columns);
@@ -82,18 +83,27 @@ const EditRowTable = ({ data, columns, showEdit, showClear, onChange, ...rest}) 
     };
 
   const handleClear = (key) => {
-    const index = dataSource.findIndex((item) => item.key === key);
+    const index = dataSource.findIndex((item) => item?.key === key);
     let newData = cloneObject(dataSource);
     newData[index] = {};
     setDataSource(newData);
     onChange(newData)
   };
 
+  const handleDelete = (key) => {
+    const index = dataSource.findIndex((item) => item?.key === key);
+    let newData = cloneObject(dataSource);
+    newData[index] = null;
+    newData = newData?.filter(item => item);
+    setDataSource(newData);
+    onChange(newData);
+  }
+
   const save = async (key) => {
     try {
       const row = await form.validateFields();
       const newData = [...dataSource];
-      const index = newData.findIndex((item) => key === item.key);
+      const index = newData.findIndex((item) => item?.key === key);
       if (index > -1) {
         const columns = cloneObject(defaultColumns);
         let object = cloneObject(row);
@@ -142,7 +152,7 @@ const EditRowTable = ({ data, columns, showEdit, showClear, onChange, ...rest}) 
   }
 
   const getDefaultDataSource = () => {
-    let newDataSource = cloneObject(data);
+    let newDataSource = cloneObject(dataSource);
     newDataSource = newDataSource?.map((item, index) => {
         return {
             ...item,
@@ -154,25 +164,35 @@ const EditRowTable = ({ data, columns, showEdit, showClear, onChange, ...rest}) 
   }
 
   const getDefaultColoums = () => {
-    const newColumns = cloneObject(columns);
-    if(showEdit || showClear){
+    const newColumns = cloneObject(columns||[]);
+    if(showEdit || showClear || showDelete){
         newColumns.push({
             title: '操作',
             dataIndex: 'operation',
             align: 'center',
             render: (_, record) => {
               return (
-                  <Space>
+                  <Space size={20}>
                         {
                             showEdit &&
-                            <Button type="link" onClick={() => isEditing(record)?save(record?.key):edit(record)}>
+                            <div 
+                              type="link" 
+                              onClick={() => isEditing(record)?save(record?.key):edit(record)}
+                              style={{color: token.colorPrimary, cursor: 'pointer'}}
+                            >
                                 {isEditing(record)?"保存":"编辑"}      
-                            </Button>
+                            </div>
                         }
                         {
                             showClear &&
-                            <Popconfirm title="确认删除?" onConfirm={() => handleClear(record.key)}>
-                                <Button type="link">清空</Button>    
+                            <Popconfirm title="确认清空?" onConfirm={() => handleClear(record?.key)}>
+                                <div type="link" style={{color: '#F7A037', cursor: 'pointer'}}>清空</div>    
+                            </Popconfirm>
+                        }
+                        {
+                            showDelete &&
+                            <Popconfirm title="确认删除?" onConfirm={() => handleDelete(record?.key)}>
+                                <div type="link" style={{color: '#F03535', cursor: 'pointer'}}>删除</div>    
                             </Popconfirm>
                         }
                   </Space>
@@ -223,11 +243,11 @@ const EditRowTable = ({ data, columns, showEdit, showClear, onChange, ...rest}) 
 
   useEffect(()=>{
     getDefaultColoums();
-  }, [editingKey])
+  }, [editingKey, dataSource])
 
   useEffect(()=>{
     getDefaultDataSource();
-  }, [])
+  }, [JSON.stringify(data)])
 
   return (
     <Form form={form} component={false}>
