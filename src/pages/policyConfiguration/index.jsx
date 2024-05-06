@@ -132,19 +132,19 @@ const PolicyConfiguration = () => {
                                 </Row>
                                 <Row>
                                     <Col span={12}>
-                                        <Form.Item label={intl.formatMessage({id: 'PCS功率'})} name="pscPower"  style={{margin: 0}}>
+                                        <Form.Item label={intl.formatMessage({id: 'PCS功率(kW)'})} name="pscPower"  style={{margin: 0}}>
                                             <Input placeholder={intl.formatMessage({id: '请输入PCS功率'})} style={{width: 300}} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={12}>
-                                        <Form.Item label={intl.formatMessage({id: '功率波动范围'})} name="powerFluctuationRange"  style={{margin: 0}}>
+                                        <Form.Item label={intl.formatMessage({id: '功率波动范围(kW)'})} name="powerFluctuationRange"  style={{margin: 0}}>
                                             <Input placeholder={intl.formatMessage({id: '请输入功率波动范围'})} style={{width: 300}} />
                                         </Form.Item>
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col span={12}>
-                                        <Form.Item label={intl.formatMessage({id: '防逆流触发值'})} name="antiBackflowTriggerValue"  style={{margin: 0}}>
+                                        <Form.Item label={intl.formatMessage({id: '防逆流触发值(kW)'})} name="antiBackflowTriggerValue"  style={{margin: 0}}>
                                             <Input placeholder={intl.formatMessage({id: '请输入防逆流触发值'})} style={{width: 300}} />
                                         </Form.Item>
                                     </Col>
@@ -152,10 +152,10 @@ const PolicyConfiguration = () => {
                                         <Form.Item label={intl.formatMessage({id: '变压器容量'})} style={{margin: 0}}>
                                             <Space direction="horizontal">
                                                 <Form.Item style={{margin: 0}} name="transformerCapacity-1">
-                                                    <Input style={{width: 200}} />
+                                                    <Input style={{width: 200}} placeholder="kW" />
                                                 </Form.Item>
                                                 <Form.Item style={{margin: 0}} name="transformerCapacity-2">
-                                                    <Input style={{width: 200}} />
+                                                    <Input style={{width: 200}} placeholder="%"/>
                                                 </Form.Item>
                                             </Space>
                                         </Form.Item>

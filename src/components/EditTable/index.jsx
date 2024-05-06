@@ -165,7 +165,7 @@ const EditRowTable = ({ data, columns, showEdit, showClear, showDelete, onChange
 
   const getDefaultColoums = () => {
     const newColumns = cloneObject(columns||[]);
-    if(showEdit || showClear){
+    if(showEdit || showClear || showDelete){
         newColumns.push({
             title: '操作',
             dataIndex: 'operation',
