@@ -1,0 +1,73 @@
+.overView{
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    padding: 25px 20px 12px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    .deepColor{
+        background: #074267;
+    }
+    .top{
+        width: 100%;
+        height: 10%;
+        .deepColor;
+    }
+    .center{
+        width: 100%;
+        height: calc(70% - 16px);
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        .centerLeft{
+            width: 30%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            .centerLeftOne{
+                width: 100%;
+                height: calc(35% - 8px);
+                .deepColor;
+            }
+            .centerLeftTwo{
+                width: 100%;
+                height: 30%;
+                .deepColor;
+            }
+            .centerLeftThree{
+                width: 100%;
+                height: calc(35% - 8px);
+                .deepColor;
+            }
+        }
+        .centerRight{
+            width: calc(70% - 8px);
+            height: 100%;
+            background: linear-gradient( 180deg, #00192E 0%, #00152B 57%, #0D2C4F 100%);
+        }
+    }
+    .bottom{
+        width: 100%;
+        height: 20%;
+        display: flex;
+        gap: 8px;
+        .bottomOne{
+            width: 50%;
+            height: 100%;
+            .deepColor;
+        }
+        .bottomTwo{
+            width: calc(25% - 8px);
+            height: 100%;
+            .deepColor;
+        }
+        .bottomThree{
+            width: calc(25% - 8px);
+            height: 100%;
+            .deepColor;
+        }
+    }
+}
+
