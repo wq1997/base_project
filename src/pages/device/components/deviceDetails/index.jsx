@@ -6,9 +6,169 @@ import { theme } from "antd";
 import { getBurDeviceDetailInfo2 } from '@/services/deviceTotal'
 import { getQueryString } from "@/utils/utils";
 import DetalisCard from "../DetailsCard";
+import { Table, } from 'antd';
+import { useSelector, useIntl } from "umi";
+
 function Com(props) {
     const [data, setData] = useState('');
-    const { token } = theme.useToken();
+    const intl = useIntl();
+    const t = (id) => {
+        const msg = intl.formatMessage(
+            {
+                id,
+            },
+        );
+        return msg
+    }
+    const [dataTable1, setDataTable1] = useState([]);
+
+    const tableClum1 = [
+        {
+            title: '',
+            dataIndex: 0,
+            key: 0,
+            align:'center'
+        },
+        {
+            title: '0:00--1:00',
+            dataIndex: 1,
+            key: 1,
+            align:'center'
+
+        }, {
+            title: '1:00--2:00',
+            dataIndex: 2,
+            key: 2,
+            align:'center'
+
+        }, {
+            title: '2:00--3:00',
+            dataIndex: 3,
+            key: 3,
+            align:'center'
+
+        },
+        {
+            title: '3:00--4:00',
+            dataIndex: 4,
+            align:'center',
+            key: 4,
+        }, {
+            title: '4:00--5:00',
+            dataIndex: 5,
+            align:'center',
+            key: 5,
+        }, 
+        {
+            title: '5:00--6:00',
+            dataIndex: 6,
+            align:'center',
+            key: 6,
+        }, 
+        {
+            title: '6:00--7:00',
+            dataIndex: 7,
+            align:'center',
+            key: 7,
+        },
+        {
+            title: '7:00--8:00',
+            dataIndex: 8,
+            align:'center',
+            key: 8,
+        }, {
+            title: '8:00--9:00',
+            dataIndex: 9,
+            align:'center',
+            key: 9,
+        }, {
+            title: '9:00--10:00',
+            dataIndex: 10,
+            align:'center',
+            key: 10,
+        },
+        {
+            title: '10:00--11:00',
+            dataIndex: 11,
+            align:'center',
+            key: 11,
+        }, {
+            title: '11:00--12:00',
+            dataIndex: 12,
+            align:'center',
+            key: 12,
+        }, 
+    ]
+    const tableClum2 = [
+        {
+            title: '',
+            dataIndex: 0,
+            align:'center',
+            key: 0,
+        },
+        {
+            title: '12:00--13:00',
+            dataIndex: 13,
+            align:'center',
+            key: 13,
+        },{
+            title: '13:00--14:00',
+            dataIndex: 14,
+            align:'center',
+            key: 14,
+        }, {
+            title: '14:00--15:00',
+            dataIndex: 15,
+            align:'center',
+            key: 15,
+        }, {
+            title: '15:00--16:00',
+            dataIndex: 16,
+            align:'center',
+            key: 16,
+        }, {
+            title: '16:00--17:00',
+            dataIndex: 17,
+            align:'center',
+            key: 17,
+        }, {
+            title: '17:00--18:00',
+            dataIndex: 18,
+            align:'center',
+            key: 18,
+        }, {
+            title: '18:00--19:00',
+            dataIndex: 19,
+            align:'center',
+            key: 19,
+        }, {
+            title: '19:00--20:00',
+            dataIndex: 20,
+            align:'center',
+            key: 20
+        }, {
+            title: '20:00--21:00',
+            dataIndex: 21,
+            align:'center',
+            key: 21,
+        }, {
+            title: '21:00--22:00',
+            dataIndex: 22,
+            align:'center',
+            key: 22,
+        },
+        {
+            title: '22:00--23:00',
+            dataIndex: 23,
+            align:'center',
+            key: 23
+        }, {
+            title: '23:00--00:00',
+            dataIndex: 24,
+            align:'center',
+            key: 24
+        },
+    ]
     const [pcsData, setPcsData] = useState({
         title: "PCS信息",
         data: [
@@ -64,7 +224,7 @@ function Com(props) {
     })
     const [bms2Data, setBms2Data] = useState({
         title: "BMS簇2信息",
-        data:JSON.parse(JSON.stringify(bms1Data.data)) ,
+        data: JSON.parse(JSON.stringify(bms1Data.data)),
     })
     const [bmsData, setBmsData] = useState({
         title: "BMS版本信息",
@@ -121,7 +281,7 @@ function Com(props) {
             { name: "月放电电量", value: "-", key: "monDischargeEnergy" },
             { name: "累计充电电量", value: "-", key: "totalCEnergy" },
             { name: "累计放电电量", value: "-", key: "totalDEnergy" },
-           
+
         ],
     })
     const [ic1Data, setlc1Data] = useState({
@@ -140,7 +300,7 @@ function Com(props) {
             { name: "水泵状态", value: "-", key: "wpState" },
             { name: "压缩机状态", value: "-", key: "csState" },
             { name: "液冷机当前模式", value: "-", key: "lcMode" },
-           
+
         ],
     })
     const [ic2Data, setlc2Data] = useState({
@@ -190,13 +350,27 @@ function Com(props) {
         dealData(data?.data?.energy, energyData, setEnergyData);
         dealData(data?.data?.bmc[0], ic1Data, setlc1Data);
         dealData(data?.data?.bmc[1], ic2Data, setlc2Data);
+        let arr=[];
+        let obj1={};
+        let obj2={};
+        data.data.energy?.hoursCharge.map((it,index)=>{
+            obj1={...obj1,0:t('充电电量'),[index+1]:it}
+        });
+        data.data.energy?.hoursDischarge.map((it,index)=>{
+            obj2={...obj2,0:t('放电电量'),[index+1]:it}
+        });
+
+        arr.push(obj1);
+        arr.push(obj2);
+        setDataTable1([...arr])
     }
     const dealData = (data, baseData, handlBase) => {
         baseData.data.map(it => {
             data[it.key] ? it.value = data[it.key] : null
         });
         handlBase({ ...baseData });
-    }
+    };
+  
     return (
         <div className={styles.details} style={{width: '100%', height: 'auto', minHeight: '100%', padding: '40px 30px',  background: token.bgcColorB_l}}>
             <DetalisCard data={pcsData} />
@@ -205,6 +379,8 @@ function Com(props) {
             <DetalisCard data={bmsData} />
             <DetalisCard data={meterData} />
             <DetalisCard data={energyData} />
+            <Table pagination={false} columns={tableClum1} dataSource={dataTable1}/>
+            <Table pagination={false} columns={tableClum2} dataSource={dataTable1} style={{marginBottom:'32px'}}/>
             <DetalisCard data={ic1Data} />
             <DetalisCard data={ic2Data} />
         </div>

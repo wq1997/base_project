@@ -24,7 +24,6 @@ const App = () => {
     }
     dayjs.locale(locale);
     setLocale(locale, false);
-
     return (
         <ConfigProvider
             locale={localeEnum[locale]}
