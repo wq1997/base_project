@@ -29,6 +29,15 @@ function Com(props) {
 
 
     const intl = useIntl();
+    
+    const t = (id) => {
+        const msg = intl.formatMessage(
+            {
+                id,
+            },
+        );
+        return msg
+    }
     const wayOption = [{
         label: t('相同时间 不同数据项'),
         value: 1,
@@ -39,14 +48,6 @@ function Com(props) {
     },]
 
 
-    const t = (id) => {
-        const msg = intl.formatMessage(
-            {
-                id,
-            },
-        );
-        return msg
-    }
 
     const initOption = () => {
         setOptionEchartTem(baseOption);
