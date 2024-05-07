@@ -17,9 +17,6 @@ const localeEnum = {
     zh_CN,
     en_US
 }
-setLocalStorage("theme", 'dark');
-
-
 
 const App = () => {
     const { theme, locale } = useSelector(state => state.global);
@@ -27,7 +24,6 @@ const App = () => {
     if (location?.pathname === "/") {
         history.push('/login');
     }
-    // setLocalStorage("locale", 'en-US');
     setLocale(locale);
     return (
         <ConfigProvider
