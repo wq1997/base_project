@@ -211,7 +211,7 @@ const InvitationIncome = () => {
                 responseType,
                 responseTimeType,
                 paymentStatus,
-                executeSuccess: executeStatus==="EXECUTED_SUCCESS",
+                executeSuccess: executeStatus ? executeStatus==="EXECUTED_SUCCESS" : undefined,
             },
         });
         if (res?.data?.status == "SUCCESS") {
