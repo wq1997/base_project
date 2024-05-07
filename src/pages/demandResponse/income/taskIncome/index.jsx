@@ -56,11 +56,13 @@ const TaskIncome = () => {
     const columns = [
         {
             title: "邀约编号",
-            dataIndex: "inviteCode"
+            dataIndex: "inviteCode",
+            width: 200,
         },
         {
             title: "任务编号",
             dataIndex: "code",
+            width: 200,
         },
         {
             title: "响应类型",
@@ -75,11 +77,12 @@ const TaskIncome = () => {
         {
             title: "度电报价（元）",
             dataIndex: "whPrice",
+            width: 200,
         },
         {
             title: "约定响应功率(kW)",
             dataIndex: "responsePower",
-            width: 150,
+            width: 350,
         },
         {
             title: "实际执行功率(kW)",
@@ -95,6 +98,7 @@ const TaskIncome = () => {
         {
             title: "预计收益（元)",
             dataIndex: "projectedProfit",
+            width: 200,
         },
         {
             title: "约定开始时间",
@@ -104,11 +108,12 @@ const TaskIncome = () => {
         {
             title: "收益计费时间",
             dataIndex: "profitBillingTime",
+            width: 200,
         },
         {
             title: "任务响应公司",
             dataIndex: "companyName",
-            width: 200,
+            width: 300,
         },
         {
             title: "打款状态",
@@ -118,6 +123,7 @@ const TaskIncome = () => {
         {
             title: "打款备注",
             dataIndex: "remark",
+            width: 200,
             render(_,record){
                 return record?.confirmOperationInfo?.reason;
             }

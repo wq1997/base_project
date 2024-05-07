@@ -86,6 +86,7 @@ const InvitationIncome = () => {
         {
             title: "邀约编号",
             dataIndex: "code",
+            width: 200,
             render(_, recode) {
                 return (
                     <a
@@ -103,21 +104,22 @@ const InvitationIncome = () => {
         {
             title: "任务编号",
             dataIndex: "code",
+            width: 200,
         },
         {
             title: "响应类型",
             dataIndex: "responseTypeZh",
-            width: 100,
+            width: 200,
         },
         {
             title: "响应要求",
             dataIndex: "responseTimeTypeZh",
-            width: 100,
+            width: 200,
         },
         {
             title: "邀约是否执行成功",
             dataIndex: "executeResult",
-            width: 200,
+            width: 400,
             render(_, record) {
                 return record?.executeResult?.success ? "是" : "否";
             },
@@ -125,7 +127,7 @@ const InvitationIncome = () => {
         {
             title: "度电报价(元)",
             dataIndex: "whPrice",
-            width: 100,
+            width: 300,
         },
         {
             title: "约定响应功率(kW)",
@@ -177,14 +179,14 @@ const InvitationIncome = () => {
         {
             title: "打款状态",
             dataIndex: "paymentStatusZh",
-            width: 100,
+            width: 200,
         },
         {
             title: "打款备注",
-            dataIndex: "confirmOperationInfo",
-            width: 200,
-            render(_, { confirmOperationInfo }){
-                return confirmOperationInfo?.reason;
+            dataIndex: "remark",
+            width: 300,
+            render(_, { paymentOperationInfo }){
+                return paymentOperationInfo?.reason;
             }
         },
     ];

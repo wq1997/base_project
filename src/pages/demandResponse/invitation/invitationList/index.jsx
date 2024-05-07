@@ -59,6 +59,7 @@ const Account = () => {
         {
             title: "邀约编号",
             dataIndex: "code",
+            width: 200,
             render(_, recode) {
                 return (
                     <a
@@ -76,38 +77,47 @@ const Account = () => {
         {
             title: "邀约确认状态",
             dataIndex: "confirmStatusZh",
+            width: 200,
         },
         {
             title: "邀约拆分状态",
             dataIndex: "splitStatusZh",
+            width: 200,
         },
         {
             title: "邀约发布时间",
             dataIndex: "createdTime",
+            width: 300,
         },
         {
             title: "响应类型",
             dataIndex: "responseTypeZh",
+            width: 200,
         },
         {
             title: "响应要求",
             dataIndex: "responseTimeTypeZh",
+            width: 200,
         },
         {
             title: "度电报价(元)",
             dataIndex: "whPrice",
+            width: 200,
         },
         {
             title: "响应功率(kW)",
             dataIndex: "responsePower",
+            width: 200,
         },
         {
             title: "约定开始时间",
             dataIndex: "appointedTimeFrom",
+            width: 300,
         },
         {
             title: "约定结束时间",
             dataIndex: "appointedTimeTo",
+            width: 200,
         },
         {
             title: "备注",
@@ -135,6 +145,8 @@ const Account = () => {
         {
             title: "操作",
             dataIndex: "operate",
+            fixed: "right",
+            width: 200,
             render: (_, { id, supportSplit, supportReSplit }) => {
                 return (
                     <Space>
@@ -463,6 +475,9 @@ const Account = () => {
                 onChange={pagination => {
                     paginationRef.current = pagination;
                     getInviteList();
+                }}
+                scroll={{
+                    x: "100%",
                 }}
                 title={() => (
                     <Space className="table-title">
