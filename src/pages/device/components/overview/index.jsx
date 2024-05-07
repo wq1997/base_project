@@ -20,7 +20,7 @@ const OverView = () => {
                         <div className={styles.centerLeftThree}></div>
                     </div>
                     <div className={styles.centerRight}>
-
+                        
                     </div>
                 </div>
                 <div className={styles.bottom}>

@@ -1,6 +1,6 @@
 // 函数组件
 // 快捷键Ctrl+Win+i 添加注释
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './index.less';
 import { theme } from "antd";
 import { getBurDeviceDetailInfo2 } from '@/services/deviceTotal'
@@ -10,6 +10,7 @@ import { Table, } from 'antd';
 import { useSelector, useIntl } from "umi";
 
 function Com(props) {
+    const { token } = theme.useToken();
     const [data, setData] = useState('');
     const intl = useIntl();
     const t = (id) => {
