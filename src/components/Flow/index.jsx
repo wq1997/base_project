@@ -31,7 +31,6 @@ const Flow = ({
     }, [flowHeight])
 
     useEffect(() => {
-        const singleImgWidth = imgRef?.current?.clientWidth;
         const imgListWidth = imgListRef?.current?.clientWidth;
         let right = 0;
         if(timer){
@@ -51,10 +50,10 @@ const Flow = ({
             }
         }, 10);
         setTimer(newTimer);
-    }, [imgCount])
+    }, [imgCount, flowWidth])
 
     useEffect(()=>{
-        init();
+        setTimeout(()=>{init()}, 500)
     }, []);
 
     return (

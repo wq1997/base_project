@@ -179,8 +179,8 @@ const SchematicDiagram = () => {
                     <div
                         style={{
                             position: 'absolute', 
-                            right: - energySystemIconWidth/2 - 170, 
-                            top: Math.tan((180 - energySystemChargingAngle - 40) * Math.PI / 180) * (- energySystemIconWidth/2 - 170),
+                            right: - energySystemIconWidth/2 - 150, 
+                            top: Math.tan((180 - energySystemChargingAngle - 40) * Math.PI / 180) * (- energySystemIconWidth/2 - 150),
                             transform: `rotate(-${energySystemChargingAngle}deg)`,
                         }} 
                     >
