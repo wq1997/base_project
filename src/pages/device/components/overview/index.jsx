@@ -1,4 +1,5 @@
 import { theme, Space } from "antd";
+import SchematicDiagram from "./SchematicDiagram";
 import styles from "./index.less";
 
 const OverView = () => {
@@ -20,7 +21,7 @@ const OverView = () => {
                         <div className={styles.centerLeftThree}></div>
                     </div>
                     <div className={styles.centerRight}>
-                        
+                        <SchematicDiagram />
                     </div>
                 </div>
                 <div className={styles.bottom}>

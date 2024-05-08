@@ -23,8 +23,12 @@ const Flow = ({
 
     useEffect(() => {
         const singleImgWidth = imgRef?.current?.clientWidth;
-        setImgCount(Math.floor(flowWidth/singleImgWidth)*2);
-    }, [flowHeight])
+        if(flowWidth<singleImgWidth){
+            setImgCount(10)
+        }else{
+            setImgCount(Math.floor(flowWidth/singleImgWidth)*10);
+        }
+    }, [flowWidth, flowHeight])
 
     useEffect(() => {
         const imgListWidth = imgListRef?.current?.clientWidth;
@@ -42,9 +46,9 @@ const Flow = ({
                         right = 0;
                     }, 0)
                 }
-                right++;
+                right=right+0.3;
             }
-        }, 50);
+        }, 10);
         setTimer(newTimer);
     }, [imgCount])
 
@@ -53,7 +57,11 @@ const Flow = ({
     }, []);
 
     return (
-        <div ref={flowRef} className={styles.outer} style={{height: flowHeight, overflow: 'hidden'}}>
+        <div 
+            ref={flowRef} 
+            className={styles.outer} 
+            style={{height: flowHeight, overflow: 'hidden'}}
+        >
             <div 
                 ref={imgListRef} 
                 className={styles.imgList} 
@@ -63,7 +71,7 @@ const Flow = ({
                 {
                     imgCount>0 &&
                     new Array(imgCount).fill(0)?.map(_=> {
-                        return <img src={img} style={{height: '100%'}} />
+                        return <img src={img} style={{height: '100%', marginLeft: flowWidth*0.2}} />
                     })
                 }
             </div>
