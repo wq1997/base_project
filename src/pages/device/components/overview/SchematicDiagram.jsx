@@ -14,13 +14,18 @@ const energySystemChargingAngle = 155; // 储能系统充电的角度
 const energySystemDisChargingAngle = 25; // 储能系统放电的角度
 const energySystemIconPrecent = 0.4; 
 
+const citySystemLineWidthPercent = 0.4; // 线的百分比，自定义
+const citySystemChargingAngle = 90;
+
 const SchematicDiagram = () => {
     const schematicDiagramRef = useRef();
+    const [schematicDiagramColHardWidth, setSchematicDiagramColHardWidth] = useState(0);
     const [loadSystemLineWidth, setLoadSystemLineWidth] = useState(0);
     const [loadSystemIconWidth, setLoadSystemIconWidth] = useState(0); // 负载系统图标宽度
     const [energySystemLineWidth, setEnergySystemLineWidth] = useState(0);
     const [energySystemStatus, setEnergySystemStatus] = useState(1); // 大于0代表放电，小于0代表充电，等于0代表待机
     const [energySystemIconWidth, setEnrgySystemIconWidth] = useState(0); // 负载系统图标宽度
+    const [citySystemLineWidth, setCitySystemLineWidth] = useState(0);
 
 
     const centerStyle = useEmotionCss(()=>{
@@ -43,6 +48,7 @@ const SchematicDiagram = () => {
     const initLineWidth = () => {
         const schematicDiagramRowHarfWidth = schematicDiagramRef?.current?.clientWidth/2;
         const schematicDiagramColHardWidth = schematicDiagramRef?.current?.clientHeight/2;
+        setSchematicDiagramColHardWidth(schematicDiagramColHardWidth);
 
         const loadSystemRowWidth = schematicDiagramRowHarfWidth*loadSystemLineWidthPercent;
         const loadSystemColWidth = schematicDiagramColHardWidth*loadSystemLineWidthPercent;
@@ -57,6 +63,8 @@ const SchematicDiagram = () => {
         const energySystemLineWidth = Math.sqrt(energySystemDiagonalLength);
         setEnrgySystemIconWidth(energySystemLineWidth*energySystemIconPrecent);
         setEnergySystemLineWidth(energySystemLineWidth);
+
+        setCitySystemLineWidth(schematicDiagramColHardWidth*citySystemLineWidthPercent);
     }
 
     useEffect(()=>{
@@ -71,6 +79,42 @@ const SchematicDiagram = () => {
             ref={schematicDiagramRef}
             style={{width: '100%', height: '100%', position: 'relative'}}
         >
+
+            <div
+                style={{
+                    width: '200px',
+                    height: '64px',
+                    background: '#08213E',
+                    border: '2px solid',
+                    borderImage: 'linear-gradient(135deg, rgba(87, 223, 254, 1), rgba(40, 104, 255, 1)) 2 2',
+                    position: 'absolute',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    top: schematicDiagramColHardWidth - citySystemLineWidth - 64
+                }}
+            >
+                <div className={titleStyle} style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>市电系统</div>
+                <div style={{position: 'absolute', right: -70, top: 20}}>
+                    功率：
+                </div>
+            </div>
+            {/* 市电系统 */}
+            <div className={centerStyle}>
+                <div 
+                    style={{
+                        position: 'relative',
+                        width: citySystemLineWidth, 
+                        height: '5px',
+                        top: -citySystemLineWidth,
+                        transform: `rotate(${citySystemChargingAngle}deg)`,
+                        transformOrigin: '0px 3px',
+                        background: '#244A75'
+                    }}
+                >
+                    <Flow img={dlImg} />
+                </div>
+            </div>
+
             {/* 储能系统 */}
             <div className={centerStyle}>
                 {/* 充电状态 */}

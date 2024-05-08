@@ -42,7 +42,7 @@ const Flow = ({
         newTimer = setInterval(()=>{
             if(imgListRef.current){
                 imgListRef.current.style.right = `-${right}px`;
-                if(right - 10 > imgListWidth - flowWidth){
+                if(right + 50 > imgListWidth - flowWidth){
                     setTimeout(()=>{
                         right = 0;
                     }, 0)
