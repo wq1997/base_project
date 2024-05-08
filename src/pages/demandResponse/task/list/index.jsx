@@ -149,7 +149,7 @@ const Account = () => {
                         ?.map((item, index) => {
                             return (
                                 <div>
-                                    {index + 1}. {item?._2}
+                                    未满足“{item?._2}”
                                 </div>
                             );
                         });
