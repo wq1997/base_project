@@ -122,7 +122,7 @@ const TaskIncome = () => {
         },
         {
             title: "打款备注",
-            dataIndex: "remark",
+            dataIndex: "paymentRemark",
             width: 200,
             render(_,record){
                 return record?.confirmOperationInfo?.reason;
