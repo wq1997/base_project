@@ -23,7 +23,8 @@ main-caietong：采e通web
 main-large-screen：运维大屏  
 main-run-maintenance：运维管理系统  
 main-small-scale-energy-storage-372：372  
-main-small-scale-energy-storage-gb: 国标 215  
+main-small-scale-energy-storage-gb-1.0: 国标1.0 215  
+main-small-scale-energy-storage-gb-2.0: 国标2.0 215  
 main-twin-platform：采日工商业微网孪生平台  
 main-vpp：采日VPP  
 main-photovoltaic-system: 光伏系统  
