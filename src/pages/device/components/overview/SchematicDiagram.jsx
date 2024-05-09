@@ -1,3 +1,4 @@
+import { useIntl } from "umi";
 import { useState, useEffect, useRef } from "react";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { Flow } from "@/components";
@@ -5,19 +6,20 @@ import dlImg from "@/assets/imges/dl.svg";
 import fzxtlImg from "@/assets/imges/fzxtl.svg";
 import nyxtlImg from "@/assets/imges/nyxtl.svg"
 
-const loadSystemLineWidthPercent = 0.3; // 线的百分比，自定义
+const loadSystemLineWidthPercent = 0.35; // 线的百分比，自定义
 const schematicDiagramIconPrecent = 0.7; 
 const loadSystemAngle = 25; // 负载系统的角度
 
-const energySystemLineWidthPercent = 0.4;
+const energySystemLineWidthPercent = 0.45;
 const energySystemChargingAngle = 155; // 储能系统充电的角度
 const energySystemDisChargingAngle = 25; // 储能系统放电的角度
 const energySystemIconPrecent = 0.4; 
 
-const citySystemLineWidthPercent = 0.4; // 线的百分比，自定义
+const citySystemLineWidthPercent = 0.5; // 线的百分比，自定义
 const citySystemChargingAngle = 90;
 
 const SchematicDiagram = () => {
+    const intl = useIntl();
     const schematicDiagramRef = useRef();
     const [schematicDiagramColHardWidth, setSchematicDiagramColHardWidth] = useState(0);
     const [loadSystemLineWidth, setLoadSystemLineWidth] = useState(0);
@@ -26,7 +28,6 @@ const SchematicDiagram = () => {
     const [energySystemStatus, setEnergySystemStatus] = useState(1); // 大于0代表放电，小于0代表充电，等于0代表待机
     const [energySystemIconWidth, setEnrgySystemIconWidth] = useState(0); // 负载系统图标宽度
     const [citySystemLineWidth, setCitySystemLineWidth] = useState(0);
-
 
     const centerStyle = useEmotionCss(()=>{
         return {
@@ -95,7 +96,7 @@ const SchematicDiagram = () => {
             >
                 <div className={titleStyle} style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>市电系统</div>
                 <div style={{position: 'absolute', right: -70, top: 20}}>
-                    功率：
+                    {intl.formatMessage({id:'功率'})}：
                 </div>
             </div>
             {/* 市电系统 */}
@@ -179,16 +180,16 @@ const SchematicDiagram = () => {
                     <div
                         style={{
                             position: 'absolute', 
-                            right: - energySystemIconWidth/2 - 150, 
-                            top: Math.tan((180 - energySystemChargingAngle - 40) * Math.PI / 180) * (- energySystemIconWidth/2 - 150),
+                            right: - energySystemIconWidth/2 - 170, 
+                            top: Math.tan((180 - energySystemChargingAngle - 50) * Math.PI / 180) * (- energySystemIconWidth/2 - 170),
                             transform: `rotate(-${energySystemChargingAngle}deg)`,
                         }} 
                     >
                         <div className={titleStyle}>
-                            储能系统
+                            {intl.formatMessage({id:'储能系统'})}
                         </div>
-                        <div style={{margin: '10px 0'}}>运行状态：</div>
-                        <div>功率：</div>
+                        <div style={{margin: '10px 0'}}>{intl.formatMessage({id:'运行状态'})}：</div>
+                        <div>{intl.formatMessage({id:'功率'})}：</div>
                     </div>
                 </div>
             </div>
@@ -220,16 +221,16 @@ const SchematicDiagram = () => {
                         <div
                             style={{
                                 position: 'absolute', 
-                                right:  - loadSystemIconWidth - 40, 
-                                top: Math.tan((loadSystemAngle + 10) * Math.PI / 180) * (- loadSystemIconWidth - 40),
+                                right:  - loadSystemIconWidth - 50, 
+                                top: Math.tan((loadSystemAngle + 10) * Math.PI / 180) * (- loadSystemIconWidth - 50),
                                 transform: `rotate(-${loadSystemAngle}deg)`,
                             }} 
                         >
                             <div className={titleStyle}>
-                                负载系统
+                                {intl.formatMessage({id:'负载系统'})}
                             </div>
-                            <div style={{margin: '10px 0'}}>运行状态：</div>
-                            <div>功率：</div>
+                            <div style={{margin: '10px 0'}}>{intl.formatMessage({id:'运行状态'})}：</div>
+                            <div>{intl.formatMessage({id:'功率'})}：</div>
                         </div>
                     </div>
             </div>

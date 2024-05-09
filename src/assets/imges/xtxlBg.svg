@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="162px" height="66px" viewBox="0 0 162 66" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>矩形</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#008EE6" stop-opacity="0.6" offset="0%"></stop>
+            <stop stop-color="#074267" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="52.3418777%" y1="42%" x2="50%" y2="54.6103509%" id="linearGradient-2">
+            <stop stop-color="#00D5FF" offset="0%"></stop>
+            <stop stop-color="#064C78" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="215国标2.0" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="设备中心详情-总览" transform="translate(-86.000000, -562.000000)" fill="url(#linearGradient-1)" stroke="url(#linearGradient-2)">
+            <rect id="矩形" x="86.5" y="562.5" width="161" height="65"></rect>
+        </g>
+    </g>
+</svg>

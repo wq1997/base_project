@@ -1,9 +1,144 @@
-import { theme, Space } from "antd";
+import { useIntl } from "umi";
+import { theme, Radio } from "antd";
+import { Title } from "@/components";
 import SchematicDiagram from "./SchematicDiagram";
 import styles from "./index.less";
+import { useState } from "react";
+import leftTop1Img from "@/assets/imges/leftTop1.svg";
+import leftTop2Img from "@/assets/imges/leftTop2.svg";
+import leftTop3Img from "@/assets/imges/leftTop3.svg";
+import leftTop4Img from "@/assets/imges/leftTop4.svg";
+import leftTopBgImg from "@/assets/imges/leftTopBg.svg";
+import xtxl1Img from "@/assets/imges/xtxl1.svg";
+import xtxlBgImg from "@/assets/imges/xtxlBg.svg";
+import leftBottom1Img from "@/assets/imges/leftBottom1.svg";
+import leftBottom2Img from "@/assets/imges/leftBottom2.svg";
+import leftBottom3Img from "@/assets/imges/leftBottom3.svg";
+import leftBottom4Img from "@/assets/imges/leftBottom4.svg";
+import leftBottomBg1Img from "@/assets/imges/leftBottomBg1.svg";
+import leftBottomBg2Img from "@/assets/imges/leftBottomBg2.svg";
+import bottomLeft1Img from "@/assets/imges/bottomLeft1.svg";
+import bottomLeft2Img from "@/assets/imges/bottomLeft2.svg";
+import bottomLeftBgImg from "@/assets/imges/bottomLeftBg.svg";
 
 const OverView = () => {
+    const intl = useIntl();
     const { token } = theme.useToken();
+
+    const [electricityStatisticsDataSource, setElectricityStatisticsDataSource] = useState([
+        {
+            title: '日充电量',
+            data: '10988',
+            icon: leftTop1Img
+        },
+        {
+            title: '日放电量',
+            data: '10988',
+            icon: leftTop2Img
+        },
+        {
+            title: '累计充电量',
+            data: '10988',
+            icon: leftTop3Img
+        },
+        {
+            title: '累计放电量',
+            data: '10988',
+            icon: leftTop4Img
+        }
+    ])
+
+    const [systemEfficiencyDataSource, setSystemEfficiencyDataSource] = useState([
+        {
+            title: "PCS",
+            data: 85,
+            color: '#B95CFC'
+        },
+        {
+            title: "关口表",
+            data: 85,
+            color: '#37EEFF'
+        }
+    ]);
+
+    const [benefitStatisticsDataSource, setBenefitStatisticsDataSource] = useState([
+        {
+            title: "日收益",
+            data: 10988,
+            color: '#FFE600',
+            backgroundImg: leftBottomBg1Img,
+            img: leftBottom1Img
+        },
+        {
+            title: "周收益",
+            data: 10988,
+            color: '#72FFE3',
+            backgroundImg: leftBottomBg2Img,
+            img: leftBottom2Img
+        },
+        {
+            title: "月收益",
+            data: 10988,
+            color: '#00C3FF',
+            backgroundImg: leftBottomBg1Img,
+            img: leftBottom3Img
+        },
+        {
+            title: "累计收益",
+            data: 10988,
+            color: '#B95CFC',
+            backgroundImg: leftBottomBg2Img,
+            img: leftBottom4Img
+        }
+    ]);
+
+    const [bmsInfoDataSource, setBmsInfoDataSource] = useState([
+        {
+            title: "单体最高",
+            icon: bottomLeft1Img,
+            data: [
+                {
+                    title: "温度/℃",
+                    value: 0
+                },
+                {
+                    title: "No.",
+                    value: 0
+                },
+                {
+                    title: "电压/mV",
+                    value: 0
+                },
+                {
+                    title: "No.",
+                    value: 0
+                }
+            ]
+        },
+        {
+            title: "单体最低",
+            icon: bottomLeft2Img,
+            data: [
+                {
+                    title: "温度/℃",
+                    value: 0
+                },
+                {
+                    title: "No.",
+                    value: 0
+                },
+                {
+                    title: "电压/mV",
+                    value: 0
+                },
+                {
+                    title: "No.",
+                    value: 0
+                }
+            ]
+        }
+    ])
+
     return (
         <div 
             className={styles.overView}
@@ -12,22 +147,142 @@ const OverView = () => {
             }}
         >
                 <div className={styles.top}>
-
+                    <div className={styles.topTitle}>东方日立1号储能柜</div>
+                    <div className={styles.snTitle}>{intl.formatMessage({id:'SN号'})}：CH005000AADFH001</div>
                 </div>
                 <div className={styles.center}>
                     <div className={styles.centerLeft}>
-                        <div className={styles.centerLeftOne}></div>
-                        <div className={styles.centerLeftTwo}></div>
-                        <div className={styles.centerLeftThree}></div>
+                        <div className={styles.centerLeftOne}>
+                            <div className={styles.title}>
+                                <Title title={intl.formatMessage({id: '电量统计'})} />
+                                <div>
+                                    <Radio.Group>
+                                        <Radio value={1}>PCS</Radio>
+                                        <Radio value={2}>{intl.formatMessage({id: '关口表'})}</Radio>
+                                    </Radio.Group>
+                                </div>
+                            </div>
+                            <div className={styles.centerLeftOneArea}>
+                                {
+                                    electricityStatisticsDataSource?.map(item => {
+                                        return (
+                                            <div className={styles.item}>
+                                                <div className={styles.left}>
+                                                    <img src={item.icon} style={{width: '100%'}} />
+                                                </div>
+                                                <div className={styles.right}>
+                                                    <div className={styles.rightData}>
+                                                        <div className={styles.rightData1}>{item.data}</div>
+                                                        <div className={styles.rightData2}>{intl.formatMessage({id: item.title})}</div>
+                                                    </div>
+                                                    <img src={leftTopBgImg} />
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                        </div>
+                        <div className={styles.centerLeftTwo}>
+                            <div className={styles.title}>
+                                <Title title={intl.formatMessage({id: '系统效率(前一日)'})} />
+                            </div>
+                            <div className={styles.centerLeftTwoArea}>
+                                {
+                                    systemEfficiencyDataSource?.map(item => {
+                                        return (
+                                            <div className={styles.item}>
+                                                <img src={xtxl1Img} className={styles.img1} />
+                                                <div className={styles.label}>{item.title}</div>
+                                                <div className={styles.data}>
+                                                    <div style={{color: item.color}} className={styles.dataCount}>{item.data} %</div>
+                                                    <img src={xtxlBgImg} className={styles.img2} />
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                        </div>
+                        <div className={styles.centerLeftThree}>
+                            <div className={styles.title}>
+                                <Title title={intl.formatMessage({id: '收益统计'})} />
+                            </div>
+                            <div className={styles.centerLeftThreeArea}>
+                                {
+                                    benefitStatisticsDataSource?.map((item, index) => {
+                                        const isZero = index%2===0;
+                                        return (
+                                            <div className={styles.item}>
+                                                <img src={item.backgroundImg} className={styles.backgroundImg}/>
+                                                <img src={item.img}  className={styles.img} style={{[isZero?'bottom': 'top']: '-7px'}}/>
+                                                <div className={styles.data}>
+                                                    <div className={isZero?styles.data1: styles.data2} style={{color: isZero&&item.color}}>{isZero?item.data:intl.formatMessage({id: item.title})}</div>
+                                                    <div className={!isZero?styles.data1: styles.data2} style={{color: !isZero&&item.color}}>{!isZero?item.data:intl.formatMessage({id: item.title})}</div>
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                        </div>
                     </div>
                     <div className={styles.centerRight}>
                         <SchematicDiagram />
                     </div>
                 </div>
                 <div className={styles.bottom}>
-                    <div className={styles.bottomOne}></div>
-                    <div className={styles.bottomTwo}></div>
-                    <div className={styles.bottomThree}></div>
+                    <div className={styles.bottomOne}>
+                        <div className={styles.title}>
+                            <Title title={intl.formatMessage({id: 'BMS信息'})} />
+                        </div>
+                        <div className={styles.area}>
+                            {
+                                bmsInfoDataSource?.map(bmsItem => {
+                                    return (
+                                        <div>
+                                            <div className={styles.subTitle}>
+                                                <img src={bmsItem.icon}/>
+                                                <div style={{fontSize: 20}}>{bmsItem.title}</div>
+                                            </div>
+                                            <div className={styles.subArea}>
+                                                <div className={styles.subAreaLeft}>
+                                                    <img src={bmsItem.icon}/>
+                                                </div>
+                                                <div className={styles.subAreaRight}>
+                                                    {
+                                                        bmsItem?.data?.map(item => {
+                                                            return (
+                                                                <div className={styles.subAreaRightItem}>
+                                                                    <div className={styles.subAreaRightItemTitle}>{intl.formatMessage({id: item.title})}</div>
+                                                                    <div className={styles.subAreaRightItemValue}>{item.value}</div>
+                                                                </div>
+                                                            )
+                                                        })
+                                                    }
+                                                </div>
+                                                <img src={bottomLeftBgImg} className={styles.subAreaBg} />
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                            }
+                        </div>
+                    </div>
+                    <div className={styles.bottomTwo}>
+                        <div className={styles.title}>
+                            <Title title={intl.formatMessage({id: 'PCS信息'})} />
+                        </div>
+                        
+                    </div>
+                    <div className={styles.bottomThree}>
+                        <div className={styles.title}>
+                            <Title title={intl.formatMessage({id: '通讯状态'})} />
+                        </div>
+                        <div className={styles.area}>
+
+                        </div>
+                    </div>
                 </div>
         </div>
     )
