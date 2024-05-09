@@ -1,30 +1,23 @@
-const App = "@/pages/App";
-const Layout = "@/layouts/baseLayout";
-
-const Home = "@/pages/home";
-
-
-const Login = "@/pages/account/login";
-const Test = "@/pages/test"
-
 export default Routes = [
-   {
-     path: "/", 
-     component: App,
-     routes: [
-      {
-        path: '/cet',
-        component: Layout,
+    { path: "/login", component: "@/pages/account/login" },
+    {
+        path: "/",
+        component: "@/pages/App",
         routes: [
-          // 首页
-          { path: '/cet/home', component: Home },
-        ]
-      },
-      { path: "/login", component: Login },
-      {
-        path: '/test',
-        component: Test
-       }
-     ]
-   }
-]
+            {
+                path: "/",
+                component: "@/layouts/baseLayout",
+                routes: [
+                    { path: "/overview-screen", component: "@/pages/overview" },
+                    { path: "/plant-overview", component: "@/pages/overview" },
+                    { path: "/plant-management", component: "@/pages/overview" },
+                    { path: "/device-management", component: "@/pages/overview" },
+                    { path: "/alarm-management", component: "@/pages/overview" },
+                    { path: "/report-management", component: "@/pages/overview" },
+                    { path: "/personal-settings", component: "@/pages/settings/personalSetting" },
+                    { path: "/operation-log",component: "@/pages/settings/operationLog" },
+                ],
+            },
+        ],
+    },
+];

@@ -1,16 +1,56 @@
-import { Menu } from 'antd';
-import { useEffect, useState } from 'react';
-import { Link, useLocation, useSelector } from 'umi';
+import { Menu } from "antd";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useSelector } from "umi";
 import useIcon from "@/hooks/useIcon";
 
 const { SubMenu } = Menu;
 
 const MenuList = [
     {
-        key: '/cet/home',
-        label: '首页'
-    }
-]
+        key: "/overview-screen",
+        label: "总览大屏",
+    },
+    {
+        key: "/plant-monitoring",
+        label: "电站监控",
+        children: [
+            {
+                key: "/plant-overview",
+                label: "电站概览",
+            },
+            {
+                key: "/plant-management",
+                label: "电站管理",
+            },
+        ],
+    },
+    {
+        key: "/device-management",
+        label: "设备管理",
+    },
+    {
+        key: "/alarm-management",
+        label: "告警管理",
+    },
+    {
+        key: "/report-management",
+        label: "报表管理",
+    },
+    {
+        key: "/system-settings",
+        label: "系统设置",
+        children: [
+            {
+                key: "/personal-settings",
+                label: "个人设置",
+            },
+            {
+                key: "/operation-log",
+                label: "操作日志",
+            },
+        ],
+    },
+];
 
 const MyMenu = () => {
     const Icon = useIcon();
@@ -26,7 +66,7 @@ const MyMenu = () => {
                         title={menu.label}
                         icon={
                             <Icon
-                                type={theme === 'dark' ? (menu.darkIcon||menu.icon) : menu.icon}
+                                type={theme === "dark" ? menu.darkIcon || menu.icon : menu.icon}
                                 style={{
                                     color: "black",
                                     fontSize: 20,
@@ -43,14 +83,16 @@ const MyMenu = () => {
                         key={menu.key}
                         icon={
                             <Icon
-                                type={theme === 'dark' ? (menu.darkIcon||menu.icon) : menu.icon}
+                                type={theme === "dark" ? menu.darkIcon || menu.icon : menu.icon}
                                 style={{
                                     fontSize: 20,
                                 }}
                             />
                         }
                     >
-                        <Link to={menu.key} target={menu?.target}>{menu.label}</Link>
+                        <Link to={menu.key} target={menu?.target}>
+                            {menu.label}
+                        </Link>
                     </Menu.Item>
                 );
             }
