@@ -232,12 +232,12 @@ const Account = () => {
                     <DatePicker.RangePicker
                         onChange={(date, dateStr) => {
                             paginationRef.current = DEFAULT_PAGINATION;
-                            uploadTime.current = dateStr;
+                            uploadTimeRef.current = dateStr;
                             setUploadTime(dateStr);
                         }}
                         value={
                             uploadTime && uploadTime.length > 0
-                                ? [dayjs(uploadTime?.[0]), dayjs(uploadTime?.[1])]
+                                ? [dayjs(uploadTime[0]), dayjs(uploadTime[1])]
                                 : []
                         }
                     />
@@ -270,7 +270,7 @@ const Account = () => {
                         setDimension(value);
                     }}
                 />
-                <Button type="primary" onClick={getList}>
+                <Button type="primary" onClick={() => getList()}>
                     搜索
                 </Button>
                 <Button onClick={handleReset}>重置</Button>

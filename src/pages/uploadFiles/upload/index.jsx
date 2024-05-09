@@ -25,6 +25,7 @@ import {
     saveUploadFiles as saveUploadFilesServer,
 } from "@/services/api";
 import { toFormData } from "@/utils/utils";
+import { ALL_SPACE_REG } from "@/utils/constants";
 import "./index.less";
 
 const uploadUrl = process.env.API_URL_1 + "/attachment/upload2";
@@ -39,6 +40,7 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
     const [dimension, setDimension] = useState();
     const [dataTypeOptions, setDataTypeOptions] = useState([]);
     const [deviceTypeOptions, setDeviceTypeOptions] = useState([]);
+    const [dataTypeAndDeviceTypeMapping, setDataTypeAndDeviceTypeMapping] = useState();
     const [dimensionOptions, setDimensionOptions] = useState([]);
 
     const minustestFiles = index => {
@@ -52,13 +54,13 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
         if (res?.data?.code == 0) {
             const {
                 dataTypeEnumList,
-                deviceTypeEnumList,
+                dataTypeAndDeviceTypeMapping,
                 dimensionEnumList,
                 projectNameList,
                 scene,
             } = res?.data?.data;
             setDataTypeOptions(dataTypeEnumList);
-            setDeviceTypeOptions(deviceTypeEnumList);
+            setDataTypeAndDeviceTypeMapping(dataTypeAndDeviceTypeMapping);
             setDimensionOptions(dimensionEnumList);
             setProjectNameOptions(projectNameList?.map(item => ({ label: item, value: item })));
             form.setFieldsValue(scene);
@@ -131,6 +133,10 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
                                 required: true,
                                 message: "请输入项目名称",
                             },
+                            {
+                                pattern: ALL_SPACE_REG,
+                                message: "请输入项目名称",
+                            },
                         ]}
                     >
                         <Input placeholder="请输入项目名称" />
@@ -142,6 +148,10 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
                         rules={[
                             {
                                 required: true,
+                                message: "请输入子项目名称",
+                            },
+                            {
+                                pattern: ALL_SPACE_REG,
                                 message: "请输入子项目名称",
                             },
                         ]}
@@ -165,6 +175,10 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
                                 label: "desc",
                             }}
                             options={dataTypeOptions}
+                            onChange={value => {
+                                form.setFieldValue("deviceType", undefined);
+                                setDeviceTypeOptions(dataTypeAndDeviceTypeMapping[value]);
+                            }}
                         />
                     </Form.Item>
 
@@ -195,6 +209,10 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
                                 required: true,
                                 message: "请输入设备位置",
                             },
+                            {
+                                pattern: ALL_SPACE_REG,
+                                message: "请输入设备位置",
+                            },
                         ]}
                     >
                         <Input placeholder="最多输入30个字符" maxLength={30} />
@@ -206,6 +224,10 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
                         rules={[
                             {
                                 required: true,
+                                message: "请输入设备编号",
+                            },
+                            {
+                                pattern: ALL_SPACE_REG,
                                 message: "请输入设备编号",
                             },
                         ]}
@@ -266,6 +288,10 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
                                                 rules={[
                                                     {
                                                         required: true,
+                                                        message: "请输入测试单元名称",
+                                                    },
+                                                    {
+                                                        pattern: ALL_SPACE_REG,
                                                         message: "请输入测试单元名称",
                                                     },
                                                 ]}
