@@ -7,6 +7,7 @@ import EditTable from "./EditTable";
 import CustomDatePicker from "./CustomDatePicker";
 import Flow from "./Flow";
 import ToggleButton from "./ToggleButton";
+import ScrollTable from "./ScrollTable";
 
 export {
     ThemeBtn,
@@ -18,4 +19,5 @@ export {
     CustomDatePicker,
     Flow,
     ToggleButton,
+    ScrollTable,
 }

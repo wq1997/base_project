@@ -375,6 +375,10 @@
             .title{
                 .commonTitle; 
             }
+            .area{
+                .commonArea;
+                
+            }
         }
         .bottomThree{
             width: calc(25% - 8px);
@@ -386,6 +390,15 @@
             }
             .area{
                 .commonArea;
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(3, 1fr);
+                gap: 10%;
+                .item{
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                }
             }
         }
     }

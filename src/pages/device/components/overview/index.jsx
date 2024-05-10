@@ -1,6 +1,6 @@
 import { useIntl } from "umi";
 import { theme, Radio } from "antd";
-import { Title } from "@/components";
+import { Title, ScrollTable } from "@/components";
 import SchematicDiagram from "./SchematicDiagram";
 import styles from "./index.less";
 import { useState } from "react";
@@ -20,6 +20,7 @@ import leftBottomBg2Img from "@/assets/imges/leftBottomBg2.svg";
 import bottomLeft1Img from "@/assets/imges/bottomLeft1.svg";
 import bottomLeft2Img from "@/assets/imges/bottomLeft2.svg";
 import bottomLeftBgImg from "@/assets/imges/bottomLeftBg.svg";
+import MyRadio from "./MyRadio";
 
 const OverView = () => {
     const intl = useIntl();
@@ -137,6 +138,34 @@ const OverView = () => {
                 }
             ]
         }
+    ])
+
+    const [communicationStatusDataSource, setCommunicationStatusDataSource] = useState([
+        {
+            label: 'BMS',
+            key: "BMS",
+            checked: true
+        },
+        {
+            label: 'PCS',
+            key: "PCS",
+            checked: true
+        },
+        {
+            label: 'UPS',
+            key: "UPS",
+            checked: false
+        },
+        {
+            label: '计量代表',
+            key: "JLDB",
+            checked: true
+        },
+        {
+            label: '负荷电表',
+            key: "FHDB",
+            checked: false
+        },
     ])
 
     return (
@@ -273,14 +302,46 @@ const OverView = () => {
                         <div className={styles.title}>
                             <Title title={intl.formatMessage({id: 'PCS信息'})} />
                         </div>
-                        
+                        <div className={styles.area}>
+                            <ScrollTable 
+                                columns={[
+                                    {title: "", key: "title"},
+                                    {title: "A", key: "A"},
+                                    {title: "B", key: "B"},
+                                    {title: "C", key: "C"}
+                                ]}
+                                dataSource={[
+                                    {
+                                      A: "A",
+                                      B: "B",
+                                      C: "C",
+                                      title: intl.formatMessage({id: '电流/A'})
+                                    },
+                                    {
+                                      A: "A",
+                                      B: "B",
+                                      C: "C",
+                                      title: intl.formatMessage({id: '电压/V'})
+                                    }
+                                ]}
+                            />
+                        </div>
                     </div>
                     <div className={styles.bottomThree}>
                         <div className={styles.title}>
                             <Title title={intl.formatMessage({id: '通讯状态'})} />
                         </div>
                         <div className={styles.area}>
-
+                            {
+                                communicationStatusDataSource?.map(item => {
+                                    return (
+                                        <div className={styles.item}>
+                                            {intl.formatMessage({id: item.label})}
+                                            <MyRadio checked={item.checked} />
+                                        </div>
+                                    )
+                                })
+                            }
                         </div>
                     </div>
                 </div>
