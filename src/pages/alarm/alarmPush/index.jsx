@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { SearchInput } from "@/components";
 import { Button, Space, Table, Tag, Switch } from "antd";
-import { DEFAULT_PAGINATION } from "@/utils/constants";
-import dayjs from "dayjs";
 
 const colors = {
-    prompt: 'blue',
-    secondary: 'orange',
-    important: 'magenta',
-    urgent: 'red',
-}
+    prompt: "blue",
+    secondary: "orange",
+    important: "volcano",
+    urgent: "magenta",
+};
 
 const Log = () => {
     const [dataSource, setDataSource] = useState([
@@ -25,7 +23,7 @@ const Log = () => {
             title: "告警级别",
             dataIndex: "levelText",
             render: (_, record, index) => {
-                return <Tag color={colors[record?.level]}>{record?.levelText}</Tag>
+                return <Tag color={colors[record?.level]}>{record?.levelText}</Tag>;
             },
         },
         {
@@ -121,7 +119,7 @@ const Log = () => {
             >
                 保存配置
             </Button>
-            <Table loading={loading} dataSource={dataSource} columns={columns} />
+            <Table loading={loading} dataSource={dataSource} columns={columns} pagination={false} />
         </>
     );
 };
