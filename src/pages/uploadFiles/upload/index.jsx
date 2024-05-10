@@ -64,6 +64,7 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
             setDimensionOptions(dimensionEnumList);
             setProjectNameOptions(projectNameList?.map(item => ({ label: item, value: item })));
             form.setFieldsValue(scene);
+            setDeviceTypeOptions(dataTypeAndDeviceTypeMapping[scene?.dataType]);
             setEditData(scene);
         }
     };
