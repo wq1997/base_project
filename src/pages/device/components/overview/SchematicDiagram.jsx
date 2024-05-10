@@ -94,7 +94,7 @@ const SchematicDiagram = () => {
                     top: schematicDiagramColHardWidth - citySystemLineWidth - 64
                 }}
             >
-                <div className={titleStyle} style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>市电系统</div>
+                <div className={titleStyle} style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', whiteSpace: 'nowrap'}}>{intl.formatMessage({id: '市电系统'})}</div>
                 <div style={{position: 'absolute', right: -70, top: 20}}>
                     {intl.formatMessage({id:'功率'})}：
                 </div>

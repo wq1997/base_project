@@ -1826,4 +1826,5 @@ export default {
 '请输入PCS功率': 'Please enter the PCS power',
 '请输入防逆流触发值':'Please enter the Anti-reflux trigger value',
 '除湿机参数设置': 'Dehumidifier parameter settings',
+'市电系统': 'Power System',
 } 
