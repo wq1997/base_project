@@ -4,14 +4,13 @@ import { getLocalStorage } from "@/utils/utils";
 
 export const getBaseUrl = () => {
     const { API_URL1 = "" } = process.env;
-    console.log("API_URL", API_URL1);
     return API_URL1;
 };
 const getToken = () => localStorage.getItem("Token");
 
 const instance = axios.create({
     baseURL: getBaseUrl(),
-    timeout: 50000,
+    timeout: 180000,
     headers: {
         Authorization: getToken(),
     },
@@ -36,7 +35,6 @@ instance.interceptors.response.use(
         }
     },
     error => {
-        console.dir("err", error);
         const { config, code, request, response, isAxiosError, toJSON } = error;
         if (response) {
             errorHandle(response.status, response.data.message);
