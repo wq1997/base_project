@@ -181,11 +181,11 @@ const SchematicDiagram = () => {
                         style={{
                             position: 'absolute', 
                             right: - energySystemIconWidth/2 - 200, 
-                            top: Math.tan((180 - energySystemChargingAngle - 40) * Math.PI / 180) * (- energySystemIconWidth/2 - 200),
+                            top: Math.tan((180 - energySystemChargingAngle - 35) * Math.PI / 180) * (- energySystemIconWidth/2 - 200),
                             transform: `rotate(-${energySystemChargingAngle}deg)`,
                         }} 
                     >
-                        <div className={titleStyle}>
+                        <div className={titleStyle} style={{width: '200px', wordWrap: 'break-word'}}>
                             {intl.formatMessage({id:'储能系统'})}
                         </div>
                         <div style={{margin: '10px 0'}}>{intl.formatMessage({id:'运行状态'})}：</div>

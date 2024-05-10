@@ -10,6 +10,7 @@ import {
     Select,
     DatePicker,
 } from 'antd';
+import { useIntl } from "umi";
 import { cloneObject } from "@/utils/utils";
 import CustomDatePicker from '../CustomDatePicker';
 import moment from 'moment';
@@ -17,6 +18,7 @@ import dayjs from 'dayjs';
 
 // 编辑行的表格
 const EditRowTable = ({ data, columns, showEdit, showClear, showDelete, onChange, ...rest}) => {
+  const intl = useIntl();
   const { token } = theme.useToken();
   const [form] = Form.useForm();
   const [dataSource, setDataSource] = useState(data);
@@ -69,7 +71,7 @@ const EditRowTable = ({ data, columns, showEdit, showClear, showDelete, onChange
                     rules={[
                         {
                             required: true,
-                            message: `${title} 是必填的!`,
+                            message: `${title} ${intl.formatMessage({id: '是必填的'})}!`,
                         },
                     ]}
                 >
@@ -167,7 +169,7 @@ const EditRowTable = ({ data, columns, showEdit, showClear, showDelete, onChange
     const newColumns = cloneObject(columns||[]);
     if(showEdit || showClear || showDelete){
         newColumns.push({
-            title: '操作',
+            title: intl.formatMessage({id: '操作'}),
             dataIndex: 'operation',
             align: 'center',
             render: (_, record) => {
@@ -180,19 +182,19 @@ const EditRowTable = ({ data, columns, showEdit, showClear, showDelete, onChange
                               onClick={() => isEditing(record)?save(record?.key):edit(record)}
                               style={{color: token.colorPrimary, cursor: 'pointer'}}
                             >
-                                {isEditing(record)?"保存":"编辑"}      
+                                {isEditing(record)?intl.formatMessage({id: '保存'}):intl.formatMessage({id: '编辑'})}      
                             </div>
                         }
                         {
                             showClear &&
-                            <Popconfirm title="确认清空?" onConfirm={() => handleClear(record?.key)}>
-                                <div type="link" style={{color: '#F7A037', cursor: 'pointer'}}>清空</div>    
+                            <Popconfirm title={`${intl.formatMessage({id: '确认清空'})}?`} onConfirm={() => handleClear(record?.key)}>
+                                <div type="link" style={{color: '#F7A037', cursor: 'pointer'}}>{intl.formatMessage({id: '清空'})}</div>    
                             </Popconfirm>
                         }
                         {
                             showDelete &&
-                            <Popconfirm title="确认删除?" onConfirm={() => handleDelete(record?.key)}>
-                                <div type="link" style={{color: '#F03535', cursor: 'pointer'}}>删除</div>    
+                            <Popconfirm title={`${intl.formatMessage({id: '确认删除'})}?`} onConfirm={() => handleDelete(record?.key)}>
+                                <div type="link" style={{color: '#F03535', cursor: 'pointer'}}>{intl.formatMessage({id: '删除'})}</div>    
                             </Popconfirm>
                         }
                   </Space>

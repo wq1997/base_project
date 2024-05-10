@@ -222,7 +222,7 @@ const OverView = () => {
                                         return (
                                             <div className={styles.item}>
                                                 <img src={xtxl1Img} className={styles.img1} />
-                                                <div className={styles.label}>{item.title}</div>
+                                                <div className={styles.label}>{intl.formatMessage({id: item.title})}</div>
                                                 <div className={styles.data}>
                                                     <div style={{color: item.color}} className={styles.dataCount}>{item.data} %</div>
                                                     <img src={xtxlBgImg} className={styles.img2} />

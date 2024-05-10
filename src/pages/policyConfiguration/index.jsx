@@ -103,7 +103,7 @@ const PolicyConfiguration = () => {
                                 <Row>
                                     <Col span={12}>
                                         <Row>
-                                            <Col span={4}>
+                                            <Col span={6}>
                                                 <Form.Item label={intl.formatMessage({id: '并离网'})} name="network" style={{margin: 0}}>
                                                     <Switch checkedChildren={intl.formatMessage({id: '并网'})} unCheckedChildren={intl.formatMessage({id: '离网'})} />
                                                 </Form.Item>
@@ -117,7 +117,7 @@ const PolicyConfiguration = () => {
                                     </Col>
                                     <Col span={12}>
                                         <Row>
-                                            <Col span={4}>
+                                            <Col span={6}>
                                                 <Form.Item label={intl.formatMessage({id: '防过载'})} name="antiOverload" style={{margin: 0}}>
                                                     <Switch />
                                                 </Form.Item>
@@ -132,19 +132,19 @@ const PolicyConfiguration = () => {
                                 </Row>
                                 <Row>
                                     <Col span={12}>
-                                        <Form.Item label={intl.formatMessage({id: 'PCS功率(kW)'})} name="pscPower"  style={{margin: 0}}>
+                                        <Form.Item label={`${intl.formatMessage({id: 'PCS功率'})}(kW)`} name="pscPower"  style={{margin: 0}}>
                                             <Input placeholder={intl.formatMessage({id: '请输入PCS功率'})} style={{width: 300}} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={12}>
-                                        <Form.Item label={intl.formatMessage({id: '功率波动范围(kW)'})} name="powerFluctuationRange"  style={{margin: 0}}>
+                                        <Form.Item label={`${intl.formatMessage({id: '功率波动范围'})}(kW)`} name="powerFluctuationRange"  style={{margin: 0}}>
                                             <Input placeholder={intl.formatMessage({id: '请输入功率波动范围'})} style={{width: 300}} />
                                         </Form.Item>
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col span={12}>
-                                        <Form.Item label={intl.formatMessage({id: '防逆流触发值(kW)'})} name="antiBackflowTriggerValue"  style={{margin: 0}}>
+                                        <Form.Item label={`${intl.formatMessage({id: '防逆流触发值'})}(kW)`} name="antiBackflowTriggerValue"  style={{margin: 0}}>
                                             <Input placeholder={intl.formatMessage({id: '请输入防逆流触发值'})} style={{width: 300}} />
                                         </Form.Item>
                                     </Col>
