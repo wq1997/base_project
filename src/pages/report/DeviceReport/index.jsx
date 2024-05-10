@@ -3,13 +3,18 @@ import { SearchInput } from "@/components";
 import { Button, Space, Table, Tooltip, DatePicker } from "antd";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import dayjs from "dayjs";
-import styles from "./index.less";
 
 const Log = () => {
     const [dataSource, setDataSource] = useState([]);
     const [loading, setLoading] = useState(false);
-    const accountRef = useRef();
-    const [account, setAccount] = useState();
+    const deviceNameRef = useRef();
+    const [deviceName, setDeviceName] = useState();
+    const deviceTypeRef = useRef();
+    const [deviceType, setDeviceType] = useState();
+    const [deviceTypeOptions, setDeviceTypeOptions] = useState([]);
+    const timeDimensionRef = useRef();
+    const [timeDimension, setTimeDimension] = useState();
+    const [timeDimensionOptions, setTimeDimensionOptions] = useState([]);
     const executeTimeRef = useRef();
     const [executeTime, setExecuteTime] = useState();
     const paginationRef = useRef(DEFAULT_PAGINATION);
@@ -18,51 +23,53 @@ const Log = () => {
     const columns = [
         {
             title: "序号",
-            dataIndex: "operatorAccount",
+            dataIndex: "",
         },
         {
-            title: "用户名",
-            dataIndex: "operationPage",
+            title: "电站名称",
+            dataIndex: "",
         },
         {
-            title: "IP",
-            dataIndex: "operatorName",
+            title: "设备名称",
+            dataIndex: "",
         },
         {
-            title: "操作对象",
-            dataIndex: "operationKey",
+            title: "设备类型",
+            dataIndex: "",
         },
         {
-            title: "操作内容",
-            dataIndex: "operationCmd",
-            key: "operationCmd",
-            width: 400,
-            render(value) {
-                return (
-                    <Tooltip title={value}>
-                        <div
-                            style={{
-                                overflow: "hidden",
-                                whiteSpace: "nowrap",
-                                textOverflow: "ellipsis",
-                                width: 400,
-                            }}
-                        >
-                            {value}
-                        </div>
-                    </Tooltip>
-                );
-            },
+            title: "组串总容量(kWp)",
+            dataIndex: "",
         },
         {
-            title: "操作时间",
-            dataIndex: "operationTime",
+            title: "发电量(度)",
+            dataIndex: "",
+        },
+        {
+            title: "累计发电量(度)",
+            dataIndex: "",
+        },
+        {
+            title: "等价发电时(kWh/kWp)",
+            dataIndex: "",
+        },
+        {
+            title: "峰值交流功率(kW)",
+            dataIndex: "",
+        },
+        {
+            title: "并网时长(h)",
+            dataIndex: "",
+        },
+        {
+            title: "限电损失电量(度)",
+            dataIndex: "",
         },
     ];
 
     const getList = async () => {
         const { current, pageSize } = paginationRef.current;
-        const account = accountRef.current;
+        const deviceName = deviceNameRef.current;
         const pageName = pageRef.current;
         const operationName = operationRef.current;
         setLoading(true);
@@ -70,11 +77,7 @@ const Log = () => {
             const res = await getOperationLogServe({
                 pageNum: current,
                 pageSize,
-                queryCmd: {
-                    operatorAccount: account,
-                    operationPage: pageName,
-                    operatorName: operationName,
-                },
+                queryCmd: {},
             });
             if (res?.data?.status == "SUCCESS") {
                 const { totalRecord, recordList } = res?.data?.data;
@@ -91,8 +94,12 @@ const Log = () => {
 
     const handleReset = () => {
         paginationRef.current = DEFAULT_PAGINATION;
-        accountRef.current = undefined;
-        setAccount();
+        deviceTypeRef.current = undefined;
+        setDeviceType();
+        deviceNameRef.current = undefined;
+        setDeviceName();
+        timeDimensionRef.current = undefined;
+        setTimeDimension();
         executeTimeRef.current = undefined;
         setExecuteTime([]);
         getList();
@@ -111,17 +118,42 @@ const Log = () => {
                 }}
             >
                 <SearchInput
-                    label="操作账号"
-                    placeholder="请输入账号名称关键词或编号"
-                    inputWidth={250}
-                    value={account}
+                    label="设备类型"
+                    value={deviceType}
+                    type="select"
+                    options={deviceTypeOptions}
                     onChange={value => {
-                        accountRef.current = value;
-                        setAccount(value);
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        deviceTypeRef.current = value;
+                        setDeviceType(value);
+                    }}
+                />
+                <SearchInput
+                    label="设备名称"
+                    placeholder="请输入设备名称"
+                    inputWidth={250}
+                    value={deviceName}
+                    onChange={value => {
+                        deviceNameRef.current = value;
+                        setDeviceName(value);
+                    }}
+                />
+                <SearchInput
+                    label="时间维度"
+                    value={timeDimension}
+                    type="select"
+                    options={[
+                        { name: "按日统计", code: "day" },
+                        { name: "按月统计", code: "month" },
+                        { name: "按年统计", code: "year" },
+                    ]}
+                    onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        timeDimensionRef.current = value;
+                        setTimeDimension(value);
                     }}
                 />
                 <div>
-                    <span>开始/结束时间：</span>
                     <DatePicker.RangePicker
                         onChange={(date, dateStr) => {
                             paginationRef.current = DEFAULT_PAGINATION;
@@ -142,14 +174,12 @@ const Log = () => {
             </Space>
             <Table
                 loading={loading}
-                dataSource={dataSource?.map(data => {
-                    return {
-                        ...data,
-                        key: data?.id,
-                    };
-                })}
+                dataSource={[]}
                 columns={columns}
                 pagination={pagination}
+                scroll={{
+                    x: 2500,
+                }}
             />
         </>
     );

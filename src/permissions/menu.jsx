@@ -31,6 +31,16 @@ const MenuList = [
     {
         key: "/alarm-management",
         label: "告警管理",
+        children: [
+            {
+                key: "/active-record",
+                label: "告警记录",
+            },
+            {
+                key: "/alarm-push",
+                label: "告警推送",
+            },
+        ],
     },
     {
         key: "/report-management",
