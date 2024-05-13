@@ -5,8 +5,8 @@ import { Button, Space, Table, Tag, Switch } from "antd";
 const colors = {
     prompt: "blue",
     secondary: "orange",
-    important: "volcano",
-    urgent: "magenta",
+    important: "#EB2F96",
+    urgent: "#FA541C",
 };
 
 const Log = () => {
@@ -23,7 +23,7 @@ const Log = () => {
             title: "告警级别",
             dataIndex: "levelText",
             render: (_, record, index) => {
-                return <Tag color={colors[record?.level]}>{record?.levelText}</Tag>;
+                return <span style={{ color: colors[record?.level] }}>{record?.levelText}</span>;
             },
         },
         {

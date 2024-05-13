@@ -8,6 +8,7 @@ import CustomDatePicker from "./CustomDatePicker";
 import Flow from "./Flow";
 import ToggleButton from "./ToggleButton";
 import SearchInput from './SearchInput'
+import MyUpload from "./MyUpload";
 
 export {
     ThemeBtn,
@@ -19,5 +20,6 @@ export {
     CustomDatePicker,
     Flow,
     ToggleButton,
-    SearchInput
+    SearchInput,
+    MyUpload
 }
