@@ -12,15 +12,6 @@ const ExceptionInfo = ({ resultId, onClose }) => {
 
     const columns = [
         {
-            title: "序号",
-            dataIndex: "projectName",
-            fixed: "left",
-            width: 80,
-            render: (text, record, index) => {
-                return index + 1;
-            },
-        },
-        {
             title: "簇号",
             dataIndex: "clusterNumber",
             width: 80,
