@@ -69,100 +69,121 @@ const PolicyConfiguration = () => {
                         <Space style={{width: '100%'}} direction="vertical" size={20}>
                             <Row justify="space-between" align="middle">
                                 <Title title={intl.formatMessage({id: '设备命令'})} />
-                                <div 
-                                    className={distributeStyle}
-                                >
-                                    {intl.formatMessage({id: '下发'})}
-                                </div>
                             </Row>
                             <Space style={{width: '100%', padding: '0 20px'}} direction="vertical" size={30}>
                                 <Row>
                                     <Col span={12}>
-                                        <Form.Item label={intl.formatMessage({id: 'PCS设置'})} name="pcsSetting"  style={{margin: 0}}>
-                                            <ButtonGroup 
-                                                options={[
-                                                    {label: intl.formatMessage({id: 'PCS开机'}), value: '0'},
-                                                    {label: intl.formatMessage({id: 'PCS关机'}), value: '1'},
-                                                    {label: intl.formatMessage({id: 'PCS复位'}), value: '2'},
-                                                ]}
-                                            />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col span={12}>
-                                        <Form.Item label={intl.formatMessage({id: 'BMS设置'})} name="bmsSetting"  style={{margin: 0}}>
-                                            <ButtonGroup 
-                                                options={[
-                                                    {label: intl.formatMessage({id: 'BMS开机'}), value: '0'},
-                                                    {label: intl.formatMessage({id: 'BMS关机'}), value: '1'},
-                                                    {label: intl.formatMessage({id: 'BMS复位'}), value: '2'},
-                                                ]}
-                                            />
-                                        </Form.Item>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col span={12}>
-                                        <Row>
-                                            <Col span={6}>
-                                                <Form.Item label={intl.formatMessage({id: '并离网'})} name="network" style={{margin: 0}}>
-                                                    <Switch checkedChildren={intl.formatMessage({id: '并网'})} unCheckedChildren={intl.formatMessage({id: '离网'})} />
+                                        <Row gutter={24}>
+                                            <Col>
+                                                <Form.Item label={intl.formatMessage({id: 'PCS设置'})} name="pcsSetting"  style={{margin: 0}}>
+                                                    <ButtonGroup 
+                                                        options={[
+                                                            {label: intl.formatMessage({id: 'PCS开机'}), value: '0'},
+                                                            {label: intl.formatMessage({id: 'PCS关机'}), value: '1'},
+                                                            {label: intl.formatMessage({id: 'PCS待机'}), value: '2'},
+                                                            {label: intl.formatMessage({id: 'PCS复位'}), value: '3'},
+                                                        ]}
+                                                    />
                                                 </Form.Item>
                                             </Col>
-                                            <Col span={4}>
-                                                <Form.Item label={intl.formatMessage({id: '防逆流'})} name="antiReflux" style={{margin: 0}}>
-                                                    <Switch />
-                                                </Form.Item>
+                                            <Col>
+                                                <div
+                                                    className={distributeStyle}
+                                                    onClick={async ()=>{
+                                                        const values = await form.validateFields(['pcsSetting'])
+                                                        console.log('values', values)
+                                                    }}
+                                                >
+                                                    {intl.formatMessage({id: '下发'})}
+                                                </div>
                                             </Col>
                                         </Row>
                                     </Col>
                                     <Col span={12}>
-                                        <Row>
-                                            <Col span={6}>
-                                                <Form.Item label={intl.formatMessage({id: '防过载'})} name="antiOverload" style={{margin: 0}}>
-                                                    <Switch />
+                                        <Row gutter={12}>
+                                            <Col>
+                                                <Form.Item label={intl.formatMessage({id: 'BMS设置'})} name="bmsSetting"  style={{margin: 0}}>
+                                                    <ButtonGroup 
+                                                        options={[
+                                                            {label: intl.formatMessage({id: 'BMS开机'}), value: '0'},
+                                                            {label: intl.formatMessage({id: 'BMS关机'}), value: '1'},
+                                                        ]}
+                                                    />
                                                 </Form.Item>
                                             </Col>
-                                            <Col span={4}>
-                                                <Form.Item label={intl.formatMessage({id: '扩容'})} name="expansion" style={{margin: 0}}>
-                                                    <Switch />
-                                                </Form.Item>
+                                            <Col>
+                                                <div
+                                                    className={distributeStyle}
+                                                    onClick={async ()=>{
+                                                        const values = await form.validateFields(['bmsSetting'])
+                                                        console.log('values', values)
+                                                    }}
+                                                >
+                                                    {intl.formatMessage({id: '下发'})}
+                                                </div>
                                             </Col>
                                         </Row>
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col span={12}>
-                                        <Form.Item label={`${intl.formatMessage({id: 'PCS功率'})}(kW)`} name="pscPower"  style={{margin: 0}}>
-                                            <Input placeholder={intl.formatMessage({id: '请输入PCS功率'})} style={{width: 300}} />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col span={12}>
-                                        <Form.Item label={`${intl.formatMessage({id: '功率波动范围'})}(kW)`} name="powerFluctuationRange"  style={{margin: 0}}>
-                                            <Input placeholder={intl.formatMessage({id: '请输入功率波动范围'})} style={{width: 300}} />
-                                        </Form.Item>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col span={12}>
-                                        <Form.Item label={`${intl.formatMessage({id: '防逆流触发值'})}(kW)`} name="antiBackflowTriggerValue"  style={{margin: 0}}>
-                                            <Input placeholder={intl.formatMessage({id: '请输入防逆流触发值'})} style={{width: 300}} />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col span={12}>
-                                        <Form.Item label={intl.formatMessage({id: '变压器容量'})} style={{margin: 0}}>
-                                            <Space direction="horizontal">
-                                                <Form.Item style={{margin: 0}} name="transformerCapacity-1">
-                                                    <Input style={{width: 200}} placeholder="kW" />
+                                        <Row gutter={24}>
+                                            <Col>
+                                                <Form.Item label={`${intl.formatMessage({id: 'PCS功率'})}(kW)`} name="pscPower"  style={{margin: 0}}>
+                                                    <Input placeholder={intl.formatMessage({id: '请输入PCS功率'})} style={{width: 300}} />
                                                 </Form.Item>
-                                                <Form.Item style={{margin: 0}} name="transformerCapacity-2">
-                                                    <Input style={{width: 200}} placeholder="%"/>
-                                                </Form.Item>
-                                            </Space>
-                                        </Form.Item>
+                                            </Col>
+                                            <Col>
+                                                <div
+                                                    className={distributeStyle}
+                                                    onClick={async ()=>{
+                                                        const values = await form.validateFields(['pscPower'])
+                                                        console.log('values', values)
+                                                    }}
+                                                >
+                                                    {intl.formatMessage({id: '下发'})}
+                                                </div>
+                                            </Col>
+                                        </Row>
                                     </Col>
                                 </Row>
                             </Space>
                         </Space>
+                    </Space>
+                </div>
+                <div className={areaStyle}>
+                    <Space style={{width: '100%'}} direction="vertical" size={30}>
+                        <Row justify="space-between">
+                            <Title title={intl.formatMessage({id: '参数设置'})} />
+                            <div 
+                                className={distributeStyle}
+                                onClick={async ()=>{
+                                    const values = await form.validateFields(['expansion','transformerCapacity-1','transformerCapacity-2']);
+                                    console.log(values);
+                                }}
+                            >
+                                {intl.formatMessage({id: '下发'})}
+                            </div>
+                        </Row> 
+                        <Row>
+                            <Col span={2}>
+                                <Form.Item label={intl.formatMessage({id: '扩容'})} name="expansion" style={{margin: 0}}>
+                                    <Switch />
+                                </Form.Item>
+                            </Col>
+                            <Col span={10}>
+                                <Form.Item label={intl.formatMessage({id: '变压器容量'})} style={{margin: 0}}>
+                                    <Space direction="horizontal">
+                                        <Form.Item style={{margin: 0}} name="transformerCapacity-1">
+                                            <Input style={{width: 200}} placeholder="kW" />
+                                        </Form.Item>
+                                        <Form.Item style={{margin: 0}} name="transformerCapacity-2">
+                                            <Input style={{width: 200}} placeholder="%"/>
+                                        </Form.Item>
+                                    </Space>
+                                </Form.Item>
+                            </Col>
+                        </Row>
                     </Space>
                 </div>
                 <div className={areaStyle}>
