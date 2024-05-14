@@ -5,9 +5,10 @@ import { CardModel } from "@/components";
 import styles from './index.less'
 import { theme } from "antd";
 import { useIntl } from "umi";
+import {getNowAlarmsByPv}from '@/services/deviceTotal'
 
 function Com(props) {
-    const [xxx, setXxx] = useState('')
+    const [data, setData] = useState([])
     const { token } = theme.useToken();
     const intl = useIntl();
     const t = (id) => {
@@ -19,8 +20,12 @@ function Com(props) {
       return msg
     }
     useEffect(() => {
-        console.log('函数组件来咯')
+        getPvAlarm();
     }, [])
+    const getPvAlarm=async()=>{
+        let {data}=await getNowAlarmsByPv({plantId:localStorage.getItem('plantId')});
+        setData(data?.data);
+    }
 
     return (
         <div className={styles.content}>
@@ -34,60 +39,19 @@ function Com(props) {
                         headerLineColor={token.tableHead}
                         columns={[
                             {
-                                title: t('故障时间'),
+                                title: t('告警设备'),
+                                key: 'deviceName'
+                            },
+                            {
+                                title: t('告警时间'),
                                 key: 'time'
                             },
                             {
-                                title: t('故障描述'),
-                                key: 'description'
+                                title: t('告警描述'),
+                                key: 'desc'
                             },
-                            {
-                                title: t('故障等级'),
-                                key: 'level'
-                            }
                         ]}
-                        dataSource={[
-                            {
-                                time: '2023-11-11',
-                                description: '失败警告',
-                                level: 1
-                            },
-                            {
-                                time: '2023-11-11',
-                                description: '失败警告',
-                                level: 1
-                            },
-                            {
-                                time: '2023-11-11',
-                                description: '失败警告',
-                                level: 1
-                            },
-                            {
-                                time: '2023-11-11',
-                                description: '失败警告',
-                                level: 1
-                            },
-                            {
-                                time: '2023-11-11',
-                                description: '失败警告',
-                                level: 1
-                            },
-                            {
-                                time: '2023-11-11',
-                                description: '失败警告',
-                                level: 1
-                            },
-                            {
-                                time: '2023-11-11',
-                                description: '失败警告',
-                                level: 1
-                            },
-                            {
-                                time: '2023-11-11',
-                                description: '失败警告',
-                                level: 1
-                            }
-                        ]}
+                        dataSource={data}
                     />
                 }
             />

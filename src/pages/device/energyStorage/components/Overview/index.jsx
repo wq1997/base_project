@@ -31,8 +31,8 @@ import { alarmTableColums } from '@/utils/constants'
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import classNames from 'classnames';
 
-let clum=[...alarmTableColums];
-clum[7]={};
+let clum = [...alarmTableColums];
+clum[7] = {};
 function Overview(props) {
     const [dataX, setDataX] = useState([]);
     const [dataCharge, setDataCharge] = useState({ dayChargeEnergy: [], dayDischargeEnergy: [] });
@@ -42,8 +42,8 @@ function Overview(props) {
     const [income, setIncome] = useState({});
     const [alarms, setAlarms] = useState([]);
     const [running, setRunning] = useState([]);
-    const[screenH,setScreenH]=useState('');
-    const[scroolY,setScroolY]=useState(200);
+    const [screenH, setScreenH] = useState('');
+    const [scroolY, setScroolY] = useState(200);
 
     const { token } = theme.useToken();
     const Icon = useIcon();
@@ -150,13 +150,13 @@ function Overview(props) {
     const handleWindowResize = () => {
         setScreenH(document.documentElement.clientHeight || document.body.clientHeight)
     }
-    useEffect(()=>{
+    useEffect(() => {
         if (screenH < 1000) {
             setScroolY(60);
-        }else if(screenH>1000&&screenH<1500){
+        } else if (screenH > 1000 && screenH < 1500) {
             setScroolY(130);
         }
-    },[screenH])
+    }, [screenH])
 
     useEffect(() => {
         getEnergy();
@@ -172,7 +172,7 @@ function Overview(props) {
     }
     const getRun = async () => {
         let { data } = pageType === 'ALL' ? await getRunMetrics({ plantId: localStorage.getItem('plantId') }) :
-            await getRunMetricsj({ dtuId: id });
+            await getRunMetricsj({ gridPointId: id });
         setRunning(data.data);
     }
     const getIncome = async () => {
@@ -225,7 +225,7 @@ function Overview(props) {
     let ContentStyle = useEmotionCss(({ token }) => {
         return {
             ...siderContentStyle,
-            gridTemplateAreas: 
+            gridTemplateAreas:
                 `'electric running profit'' charge chargebit profitAll' '${pageType === 'ALL' ? 'alarm' : 'chargAndDischarg'} alarm alarm'`,
         }
 
@@ -237,7 +237,7 @@ function Overview(props) {
                 <div className={styles.electric}>
                     <CardModel
                         title={
-                           t("电量") 
+                            t("电量")
                         }
                         content={
                             <div className={styles.elewrap} style={{ backgroundColor: token.lightTreeLineBgc }}>
@@ -246,8 +246,8 @@ function Overview(props) {
                                         <Tooltip title={t(it.label)} >
                                             <div className={styles.itemTitle} style={{ color: token.titleColor }}>{t(it.label)}</div>
                                         </Tooltip>
-                                        <Tooltip title={energySummary[it.name]+it.unit} >
-                                        <div className={styles.itemValue} style={{ color: it.color }}>{energySummary[it.name]} <span className={styles.itemUnit} style={{ color: token.titleColor }}>{it.unit}</span></div>
+                                        <Tooltip title={energySummary[it.name] + it.unit} >
+                                            <div className={styles.itemValue} style={{ color: it.color }}>{energySummary[it.name]} <span className={styles.itemUnit} style={{ color: token.titleColor }}>{it.unit}</span></div>
                                         </Tooltip>
 
                                     </div>)
@@ -270,12 +270,13 @@ function Overview(props) {
                                             color: '#03B4B4'
                                         }}
                                     />
-                                    <span className={styles.label} style={{ color: token.titleColor }}>{t('当前总功率')}</span>:<span className={styles.value}>{running?.totalPower||0}</span><span className={styles.unit} style={{ color: token.titleColor }}>kW</span>
+                                    <span className={styles.label} style={{ color: token.titleColor }}>{t('当前总功率')}</span>:<span className={styles.value}>{running?.totalPower?.split(' ')[0]
+                                        || 0}</span><span className={styles.unit} style={{ color: token.titleColor }}>{running?.totalPower?.split(' ')[1] || 'kW'}</span>
                                 </div>
                                 <div className={styles.realStaus} style={{ backgroundColor: token.lightTreeBgc }}>
                                     <div>{t('设备状态')}</div>
-                                    <div>{t('正常')}<span className={styles.value} style={{ color: '#2BC50E' }}>2</span>{t('个')}</div>
-                                    <div>{t('故障')}<span className={styles.value} style={{ color: '#D41818' }}>0</span>{t('个')}</div>
+                                    <div>{t('正常')}<span className={styles.value} style={{ color: '#2BC50E' }}>{running?.onlineDevices}</span>{t('个')}</div>
+                                    <div>{t('故障')}<span className={styles.value} style={{ color: '#D41818' }}>{running?.faultDevices}</span>{t('个')}</div>
 
                                 </div>
                             </div>
@@ -310,7 +311,7 @@ function Overview(props) {
                 <div className={styles.charge}>
                     <CardModel
                         title={
-                            t("充放电量")+"(kWh)"
+                            t("充放电量") + "(kWh)"
                         }
                         content={
                             <div className={styles.chargeWrap}>
@@ -330,16 +331,16 @@ function Overview(props) {
                                     :
                                     <LineEcharts name={t('充放电效率')} style={{ height: '100%' }}
                                         xData={dataX}
-                                        yData={dataEfficiency} 
+                                        yData={dataEfficiency}
                                         barMaxWidth={'20%'}
-                                        />}
+                                    />}
                             </div>
                         } />
                 </div>
                 <div className={styles.profitAll}>
                     <CardModel
                         title={
-                            t("收益统计")+'(元)'
+                            t("收益统计") + '(元)'
                         }
                         content={
                             <div className={styles.profitAllWrap}>
@@ -350,7 +351,7 @@ function Overview(props) {
                 {pageType !== 'ALL' && <div className={styles.chargAndDischarg}>
                     <CardModel
                         title={
-                            t("充放电功率")+'(kW)'
+                            t("充放电功率") + '(kW)'
                         }
                         content={
                             <div className={styles.chargAndDischargWrap}>
@@ -375,7 +376,7 @@ function Overview(props) {
                                     )
                                 })} */}
 
-                                <Table className={styles.alarmTable} columns={clum} dataSource={alarms} size="middle" scroll={{y:scroolY}} />
+                                <Table className={styles.alarmTable} columns={clum} dataSource={alarms} size="middle" scroll={{ y: scroolY }} />
                             </div>
                         } />
                 </div>

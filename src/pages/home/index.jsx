@@ -5,16 +5,34 @@ import styles from './index.less'
 import { CardModel } from "@/components";
 import useIcon from "@/hooks/useIcon";
 import { useSelector, useIntl } from "umi";
-import { theme, } from "antd";
+import { theme, Radio,Descriptions } from "antd";
 import ReactECharts from "echarts-for-react";
-import Light from '../../assets/svg/lightHome.svg'
+import { getGridPointPower, getPlantEnergyFee } from '@/services/home'
+import { getEnergyFeeByTime } from '@/services/report'
+import { getGridPointList } from '@/services/policy'
+
+import dayjs from 'dayjs';
 import Img from '../react/Meta2d'
 function OverView(props) {
     const { token } = theme.useToken();
     const Icon = useIcon();
     const [options, setOptions] = useState({});
+    const [grids, setGrids] = useState([]);
+    const [currntGrid, setCurrntGrid] = useState();
     const [optionsPower, setOptionsPower] = useState({});
+    const [time, setTime] = useState(dayjs(new Date()));
+    const [isHovered, setIsHovered] = useState(false);
+    const [data, setData] = useState([]);
+    const [dateX, setDateX] = useState([]);
+    const [dataY, setDataY] = useState({
+        pvOutEnergy: [],
+        energyInEnergy: [],
+        energyOutEnergy: [],
+        pvInEnergy: [],
+        chargeInEnergy: []
+    });
     const intl = useIntl();
+    let currentPlant=JSON.parse(localStorage.getItem('current'))
     const t = (id) => {
         const msg = intl.formatMessage(
             {
@@ -24,36 +42,103 @@ function OverView(props) {
         return msg
     }
     useEffect(() => {
-        // console.log('函数组件来咯')
         getOptions();
-    }, [token])
-    const electricityStatistics = [
+        getPlantLabelData();
+        getGrid();
+    }, [token,])
+    useEffect(() => {
+        getPowerOption();
+    }, [token, currntGrid])
+    const [electricityStatistics, setElectricityStatistics] = useState([
         {
-            value: '30041',
+            value: '',
             label: '储能累计充电量',
-            unit: 'kWh',
+            key: 'energyInEnergy',
+            unit: '',
             color: '#F3DF2E'
         },
         {
-            value: '27053',
+            value: '',
             label: '储能累计放电量',
-            unit: 'kWh',
+            key: 'energyOutEnergy',
+            unit: '',
             color: '#D53D3D'
         },
         {
-            value: '8462',
+            value: '',
             label: '光伏累计发电量',
-            unit: 'kWh',
+            key: 'pvOutEnergy',
+            unit: '',
             color: '#3072E1'
         },
         {
-            value: '12296',
+            value: '',
             label: '充电桩累计充电量',
-            unit: 'kWh',
+            key: 'chargeInEnergy',
+            unit: '',
             color: '#03B4B4'
         },
-    ];
-    const getOptions = () => {
+    ]);
+    let detailsPartData=[
+        {
+        key: 'name',
+        label: t('电站名称'),
+        span:2
+    },
+    {
+        key: 'installDateVo',
+        label: t('建站日期'),
+    },
+    {
+        key: 'typeName',
+        label: t('电站类型'),
+        
+    },
+    {
+        key: 'designPower',
+        label: t('储能装机功率'),
+    },
+    {
+        key: 'capacity',
+        label: t('储能装机容量'),
+    },
+    {
+        key: 'pvCapacity',
+        label: t('光伏装机容量'),
+    },
+    {
+        key: 'chargePileCapacity',
+        label: t('充电桩装机容量'),
+    },
+    {
+        key: 'position',
+        label: t('电站位置'),
+        span:2
+    },
+]
+    const getOptions = async () => {
+        let { data: energyData } = await getEnergyFeeByTime({
+            plantId: localStorage.getItem('plantId'),
+            time: time.format('YYYY-MM-DD'),
+            type: 0,
+        });
+        let pvOutEnergy = [];
+        let energyInEnergy = [];
+        let energyOutEnergy = [];
+        let pvInEnergy = [];
+        let chargeInEnergy = [];
+        let arrX = [];
+        energyData?.data?.map((it) => {
+            pvOutEnergy.push(it.pvOutEnergy);
+            energyInEnergy.push(it.energyInEnergy);
+            energyOutEnergy.push(it.energyOutEnergy);
+            pvInEnergy.push(it.pvInEnergy);
+            chargeInEnergy.push(it.chargeInEnergy);
+            arrX.push(dayjs(it?.date).format('YYYY-MM-DD'))
+        })
+        setData(data.data);
+        setDateX(arrX);
+        setDataY({ pvOutEnergy, energyInEnergy, energyOutEnergy, pvInEnergy, chargeInEnergy })
         setOptions({
             tooltip: {
                 trigger: 'axis',
@@ -69,10 +154,10 @@ function OverView(props) {
             },
             legend: {
                 data: [
-                t('储能日充'),
-                t('储能日放'),
-                t('光伏日发电量'),
-                t('充电桩电量'),
+                    t('储能日充'),
+                    t('储能日放'),
+                    t('光伏日发电量'),
+                    t('充电桩电量'),
                 ],
                 textStyle: {//图例文字的样式
                     color: token.titleColor,
@@ -81,7 +166,7 @@ function OverView(props) {
             xAxis: [
                 {
                     type: 'category',
-                    data: ['2024-04-02','2024-04-03','2024-04-04','2024-04-05','2024-04-06'],
+                    data: dateX,
                     axisTick: {
                         alignWithLabel: true
                     }
@@ -107,7 +192,7 @@ function OverView(props) {
                         }
                     },
                     barWidth: '8%',
-                    data: [1321,6317,6185,6401,6804]
+                    data: dataY.energyInEnergy
                 },
                 {
                     name: t('储能日放'),
@@ -119,7 +204,7 @@ function OverView(props) {
                         }
                     },
                     barWidth: '8%',
-                    data:[1173,5766.4,5610.14,5806.82,6179.07]
+                    data: dataY.energyOutEnergy
                 },
                 {
                     name: t('光伏日发电量'),
@@ -131,7 +216,8 @@ function OverView(props) {
                         }
                     },
                     barWidth: '8%',
-                    data:[1145,1145,604.44,803.44,886.5,187.79]
+                    data: dataY.pvInEnergy
+
                 },
                 {
                     name: t('充电桩电量'),
@@ -143,11 +229,32 @@ function OverView(props) {
                         }
                     },
                     barWidth: '8%',
-                    data:[8755,4668,3622,5422,1233,4423,2236]
+                    data: dataY.chargeInEnergy
                 },
-                
+
             ]
         });
+
+    };
+
+    const getGrid = async () => {
+        let { data: grid } = await getGridPointList({
+            plantId: localStorage.getItem('plantId')
+        })
+        setGrids(grid?.data);
+        setCurrntGrid(grid?.data?.[0]?.id)
+    }
+    const getPowerOption = async () => {
+
+        let { data: powerData } = await getGridPointPower({
+            gridPointId: currntGrid
+        });
+        let { pvPower, loadPower, gridPower, energyPower } = powerData?.data;
+        let pvData = dealData(pvPower);
+        let loadData = dealData(loadPower);
+        let gridData = dealData(gridPower);
+        let energyData = dealData(energyPower);
+
         setOptionsPower({
             tooltip: {
                 trigger: 'axis',
@@ -163,10 +270,10 @@ function OverView(props) {
             },
             legend: {
                 data: [
-                t('储能'),
-                t('电网'),
-                t('光伏'),
-                t('负载'),
+                    t('储能'),
+                    t('电网'),
+                    t('光伏'),
+                    t('负载'),
                 ],
                 textStyle: {//图例文字的样式
                     color: token.titleColor,
@@ -175,7 +282,6 @@ function OverView(props) {
             xAxis: [
                 {
                     type: 'category',
-                    data: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00','24:00'],
                     axisTick: {
                         alignWithLabel: true
                     }
@@ -200,7 +306,7 @@ function OverView(props) {
 
                         }
                     },
-                    data: [120,221,152,164,232,213,234,243,235,256,222,210,232,213,234,243,235,256,222,210,234,243,235,256,222,210]
+                    data: energyData
                 },
                 {
                     name: t('电网'),
@@ -211,7 +317,7 @@ function OverView(props) {
 
                         }
                     },
-                    data: [120,221,152,164,232,213,234,243,235,256,222,210,232,213,234,243,235,256,222,210,234,243,235,256,222,210]
+                    data: gridData
 
                 },
                 {
@@ -223,7 +329,7 @@ function OverView(props) {
 
                         }
                     },
-                    data: [120,221,152,164,232,213,234,243,235,256,222,210,232,213,234,243,235,256,222,210,234,243,235,256,222,210]
+                    data: pvData
 
                 },
                 {
@@ -235,37 +341,86 @@ function OverView(props) {
 
                         }
                     },
-                    data: [120,221,152,164,232,213,234,243,235,256,222,210,232,213,234,243,235,256,222,210,234,243,235,256,222,210]
+                    data: loadData
 
                 },
-                
+
             ]
         });
+    }
+    const getPlantLabelData = async () => {
+        let { data } = await getPlantEnergyFee({
+            plantId: localStorage.getItem('plantId')
+        });
+        let arr = [];
+        let arr1=[];
+        electricityStatistics?.map(it => {
+            arr.push({
+                ...it,
+                value: data.data[it.key].split(' ')[0],
+                unit: data.data[it.key].split(' ')[1],
+            })
+        })
+        profit?.map(it => {
+            arr1.push({
+                ...it,
+                value: data.data[it.key],
+            })
+        })
+        setProfit([...arr1]);
+        setElectricityStatistics([...arr])
+    }
+    const onChange = (e) => {
+        console.log('radio checked', e.target.value);
+        setCurrntGrid(e.target.value);
     };
-    const profit = [
+    const dealData = (data) => {
+        let arr = [];
+        data?.map(it => {
+            arr.push([
+                dayjs(it.time).format('HH:mm'),
+                it.value,
+            ])
+        })
+        return arr
+    }
+    const [profit, setProfit] = useState([
         {
-            value: '5298',
+            value: '',
             label: '今日收益',
-            unit: '元',
+            key: 'dailyEarn',
+            unit: currentPlant.priceUnit,
             color: '#E9641C',
             icon: 'icon-qushi'
         },
         {
-            value: '63372',
+            value: '',
             label: '累计收益',
-            unit: '元',
+            key: 'totalEarning',
+            unit: currentPlant.priceUnit,
             color: '#03B4B4',
             icon: 'icon-qian'
         },
-    ]
-
+    ])
     return (
-        <div className={styles.container} style={{color:token.titleColor}}>
-            <div className={styles.imgPart} style={{backgroundColor:token.titleCardBgc}}>
+        <div className={styles.container} style={{ color: token.titleColor }}>
+            <div className={styles.imgPart} style={{ backgroundColor: token.titleCardBgc }}>
                 <Img />
-                {/* <img src={Light} alt="" style={{}} /> */}
-                
-                 {/* <Light/> */}
+                <div className={styles.detailsButton}
+                 onMouseEnter={() => setIsHovered(true)}
+                 onMouseLeave={() => setIsHovered(false)}
+                >{t('电站信息')}</div>
+                {isHovered&&<div className={styles.detailsPart}>
+                <Descriptions  column={2}  items={
+                    detailsPartData.map(it=>{
+                        return{
+                            ...it,
+                            children:currentPlant[it.key]
+                        }
+                    })
+                } />
+                    
+                    </div>}
             </div>
             <div className={styles.card}>
                 <div className={styles.dataLeft} style={{ backgroundColor: token.titleCardBgc }}>
@@ -299,8 +454,8 @@ function OverView(props) {
                                         {t(it.label)}
                                     </div>
                                     <div className={styles.value} >
-                                            <span style={{color:it.color}}>{it.value}</span>
-                                            <span className={styles.unit}>{it.unit}</span>
+                                        <span style={{ color: it.color }}>{it.value}</span>
+                                        <span className={styles.unit}>{it.unit}</span>
 
                                     </div>
                                 </div>
@@ -313,20 +468,33 @@ function OverView(props) {
                 </div>
                 <div className={styles.echarLeft}>
                     <CardModel
-                        title={t('电量统计')+'(kWh)'}
+                        title={t('电量统计') + '(kWh)'}
                         content={
                             <div className={styles.echartPartCardwrap}>
-                            <ReactECharts option={options} style={{ height: '100%' }} />
+                                <ReactECharts option={options} style={{ height: '100%' }} />
                             </div>
                         }
                     />
                 </div>
                 <div className={styles.echarRight}>
                     <CardModel
-                        title={t('功率')+'(kW)'}
+                        title={t('功率') + '(kW)'}
+                        filterPart={
+                            <Radio.Group onChange={onChange} value={currntGrid}>
+                                {
+                                    grids.length && grids?.map(it => {
+                                        return (
+                                            <>
+                                                <Radio value={it?.id}>{it?.gridPointName}</Radio>
+                                            </>
+                                        )
+                                    })
+                                }
+                            </Radio.Group>
+                        }
                         content={
                             <div className={styles.echartPartCardwrap}>
-                            <ReactECharts option={optionsPower} style={{ height: '100%' }} />
+                                <ReactECharts option={optionsPower} style={{ height: '100%' }} />
                             </div>
                         }
                     />

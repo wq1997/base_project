@@ -7,7 +7,7 @@ import styles from './index.less'
 import { theme, Calendar, Tree, Select, Form, message } from "antd";
 import dayjs from 'dayjs';
 import { useSelector, useIntl } from "umi";
-import { getGridPointList, getStrategyPlanList, getStrategyList, getStrategyInfo, saveStrategyPlan, deleteStrategy } from '@/services/policy'
+import { getGridPointList, getStrategyPlanList, getStrategyList, getStrategyInfo, saveStrategyPlan, deleteStrategy ,} from '@/services/policy'
 const { Option } = Select;
 
 function Com(props) {     

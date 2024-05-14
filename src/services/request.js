@@ -7,12 +7,11 @@ export const getBaseUrl = () => {
     return API_URL;
 };
 const getToken = () => localStorage.getItem("Token");
-
 const instance = axios.create({
     baseURL: getBaseUrl(),
     timeout: 10000,
     headers: {
-        Authorization: getToken()
+        Authorization: getToken(),
     }
 })
 
@@ -26,7 +25,6 @@ instance.interceptors.request.use(config => {
 
 instance.interceptors.response.use(response => {
     if (response.status === 200) {
-        // console.log(response,101010);
         let {data}=response;
         if (data.msg==="Please login！") {
             message.error(data.msg);

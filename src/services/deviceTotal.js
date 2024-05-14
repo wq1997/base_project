@@ -11,7 +11,7 @@ export const getNowAlarmsByDtu = (payload) => {
 }
 // 获取并网点运行指标
 export const getRunMetricsj = (payload) => {
-    return axiosInstance.get(`${path}/getRunMetricsj?dtuId=${payload.dtuId}`);
+    return axiosInstance.get(`${path}/getRunMetricsByGridPoint?gridPointId=${payload.gridPointId}`);
 }
 // 获取并网点获取收益
 export const getIncomeByDtuId = (payload) => {
@@ -33,6 +33,10 @@ export const getRunMetrics = (payload) => {
 export const getEnergySummary = (payload) => {
     return axiosInstance.get(`${path}/getEnergySummary?plantId=${payload.plantId}`);
 }
+// 并网点 功率曲线
+export const getGridPointPowers = (payload) => {
+    return axiosInstance.get(`${path}/getGridPointPowers?gridPointId=${payload.gridPointId}`);
+}
 // 获取电站下所有设备效率
 export const getEfficiencyByPlantId = (payload) => {
     return axiosInstance.get(`${path}/getEfficiencyByPlantId?plantId=${payload.plantId}`);
@@ -48,6 +52,10 @@ export const getIncomeByPlantId = (payload) => {
 // 获取设备树
 export const getDeviceTree = (payload) => {
     return axiosInstance.get(`${path}/getDeviceTree?plantId=${payload.plantId}`);
+}
+// 获取设备树列表 （只包含储能）
+export const getGridPointTree = (payload) => {
+    return axiosInstance.get(`${path}/getGridPointTree?plantId=${payload.plantId}`);
 }
 
 
@@ -105,7 +113,14 @@ export const getPvRunMetrics = (payload) => {
 export const pvPowerGeneration = (payload) => {
     return axiosInstance.get(`${path}/pv/pvPowerGeneration?plantId=${payload.plantId}` );
 }
-
+// 获取光伏在线告警
+export const getNowAlarmsByPv = (payload) => {
+    return axiosInstance.get(`${path}/pv/getNowAlarmsByPv?plantId=${payload.plantId}` );
+}
+// 获取光伏在线告警
+export const getPyPower = (payload) => {
+    return axiosInstance.get(`${path}/pv/getPyPower?plantId=${payload.plantId}` );
+}
 // 获取微网bms高级分析 初始化数据类型
 export const getBmsAnalyticsInitData = (payload) => {
     return axiosInstance.get(`/battery/getBmsAnalyticsInitData?id=${payload.id}`);

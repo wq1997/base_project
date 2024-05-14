@@ -2,7 +2,8 @@
  * label 显示名称
  * value 传递给后端的可以 选择的时候提交
  * data 数值
- */ 
+ */
+import dayjs from 'dayjs';
 
 export const data = {
     baseData: {
@@ -10,53 +11,63 @@ export const data = {
         data: [
             {
                 label: '电站名称',
-                value: "电站名称",
-                data: "xxx"
+                value: "name",
+                data: ""
             },
             {
                 label: '电站类型',
-                value: "电站类型",
-                data: "储能"
+                value: "type",
+                data: ""
+            },
+            {
+                label: '建站日期',
+                value: "installDate",
+                data: ''
             },
             {
                 label: '电站位置',
-                value: "电站位置",
-                data: '上海市浦东新区'
+                value: "installer",
+                data: ''
             },
             {
                 label: '时区',
-                value: '时区',
-                data: "UTF+8"
+                value: 'timeZone',
+                data: ""
             },
             {
                 label: '货币',
-                value: '货币',
-                data: "人民币"
+                value: 'priceUnit',
+                data: ""
             },
             {
                 label: '并网日期',
-                value: '并网日期',
-                data: "2023.12.27"
+                value: 'networkDate',
+                data: ""
             },
             {
                 label: '安全运行天数',
-                value: '安全运行天数',
-                data: "10"
+                value: 'safeOperatingDays',
+                data: ""
+            },
+            {
+                label: '储能额定功率',
+                value: 'designPower',
+                data: ""
             },
             {
                 label: '储能装机容量',
-                value: '储能装机容量',
-                data: "215kWh"
+                value: 'capacity',
+                data: ""
             },
             {
                 label: '光伏装机容量',
-                value: '光伏装机容量',
-                data: "215kWh"
+                value: 'pvCapacity',
+                data: ""
             },
             {
                 label: '充电桩装机容量',
-                value: '充电桩装机容量',
-                data: "215kWh"
+                value: 'chargePileCapacity',
+                data: ""
             },
         ]
     },
@@ -64,49 +75,49 @@ export const data = {
         title: '电站运行数据',
         data: [
             {
-                label: '告警数',
-                value: "告警数",
-                data: 10
+                label: '严重告警数',
+                value: "alarmNumber",
+                data: ''
             },
             {
                 label: '并网量',
-                value: "并网量",
-                data: '323.07kWh'
+                value: "gridTotal",
+                data: ''
             },
-            // {
-            //     label: '电网买电量',
-            //     value: "电网买电量",
-            //     data: 0
-            // },
             {
                 label: '光伏发电量',
-                value: "光伏发电量",
-                data: '363kWh'
+                value: "pvDischarge",
+                data: ''
             },
             {
                 label: '充电桩充电量',
-                value: "充电桩充电量",
-                data: '263kWh'
+                value: "csCharge",
+                data: ''
             },
             {
-                label: '储能总充电量',
-                value: "储能总充电量",
-                data: '6340kWh'
+                label: '储能充电电量',
+                value: "totalCharge",
+                data: ''
             },
             {
-                label: '储能总放电量',
-                value: "储能总放电量",
-                data: '5769.4kWh'
+                label: '储能放电电量',
+                value: "totalDischarge",
+                data: ''
             },
             {
-                label: '储能总充电次数',
-                value: "储能总充电次数",
-                data: 12
+                label: '储能充电成本',
+                value: "chargingCosts",
+                data: ''
+            },
+            {
+                label: '储能放电收益',
+                value: "dischargeGains",
+                data: '',
             },
             {
                 label: '储能充放电效率',
-                value: "储能充放电效率",
-                data: '96.08%'
+                value: "energyEfficiency",
+                data: '',
             },
         ]
     },
@@ -144,4 +155,510 @@ export const data = {
             },
         ]
     }
+}
+
+
+export const inCome = {
+    energyIncome: [
+        {
+            title: '',
+            children: [{
+                title: '序号',
+                dataIndex: 'id',
+                key: 'id',
+                width: 100,
+                render: (text, record, index) => index + 1,
+            },
+            {
+                title: '日期',
+                dataIndex: 'date',
+                key: 'date',
+                width: 100,
+                render: (val) => {
+                    return val ? dayjs(val).format('YYYY-MM-DD') : ''
+                }
+            },]
+        },
+        {
+            title: '充电成本（元）',
+            children: [
+                {
+                    title: '尖电',
+                    dataIndex: 'tipInFee',
+                    key: 'tipInFee',
+                    width: 150,
+                },
+                {
+                    title: '峰电',
+                    dataIndex: 'peakInFee',
+                    key: 'peakInFee',
+                    width: 150,
+                },
+                {
+                    title: '平电',
+                    dataIndex: 'flatInFee',
+                    key: 'flatInFee',
+                    width: 150,
+                },
+                {
+                    title: '谷电',
+                    dataIndex: 'valleyInFee',
+                    key: 'valleyInFee',
+                    width: 150,
+                },
+                {
+                    title: '总计',
+                    dataIndex: 'dayInFee',
+                    key: 'dayInFee',
+                    width: 150,
+
+
+                },
+            ],
+        },
+        {
+            title: '放电收益（元）',
+            children: [
+                {
+                    title: '尖电',
+                    dataIndex: 'tipOutFee',
+                    key: 'tipOutFee',
+                    width: 150,
+
+
+                },
+                {
+                    title: '峰电',
+                    dataIndex: 'peakInFee',
+                    key: 'peakInFee',
+                    width: 150,
+                },
+                {
+                    title: '平电',
+                    dataIndex: 'flatInFee',
+                    key: 'flatInFee',
+                    width: 150,
+                },
+                {
+                    title: '谷电',
+                    dataIndex: 'valleyInFee',
+                    key: 'valleyInFee',
+                    width: 150,
+                },
+                {
+                    title: '总计',
+                    dataIndex: 'dayOutFee',
+                    key: 'dayOutFee',
+                    width: 150,
+                },
+            ],
+        },
+        {
+            title: '',
+            children: [{
+                title: '实际收益',
+                dataIndex: 'dayEarning',
+                key: 'dayEarning',
+                width: 100,
+            }],
+        }
+
+    ],
+    chargePileIncome: [
+        {
+            title: '充电收益（元）',
+            children: [
+                {
+                    title: '序号',
+                    dataIndex: 'id',
+
+                    key: 'id',
+                    width: 100,
+                    render: (text, record, index) => index + 1,
+                },
+                {
+                    title: '日期',
+                    dataIndex: 'date',
+                    key: 'date',
+                    width: 100,
+                    render: (val) => {
+                        return val ? dayjs(val).format('YYYY-MM-DD') : ''
+                    }
+
+                },
+                {
+                    title: '尖电',
+                    dataIndex: 'tipOutFee',
+                    key: 'tipOutFee',
+                    width: 150,
+
+
+                },
+                {
+                    title: '峰电',
+                    dataIndex: 'peakInFee',
+                    key: 'peakInFee',
+                    width: 150,
+                },
+                {
+                    title: '平电',
+                    dataIndex: 'flatInFee',
+                    key: 'flatInFee',
+                    width: 150,
+                },
+                {
+                    title: '谷电',
+                    dataIndex: 'valleyInFee',
+                    key: 'valleyInFee',
+                    width: 150,
+                },
+                {
+                    title: '总计',
+                    dataIndex: 'dayOutFee',
+                    key: 'dayOutFee',
+                    width: 150,
+                },
+            ],
+        },
+
+    ],
+    pvIncome: [
+        {
+            title: '发电收益（元）',
+            children: [
+                {
+                    title: '序号',
+                    dataIndex: 'id',
+                    key: 'id',
+                    width: 100,
+                    render: (text, record, index) => index + 1,
+                },
+                {
+                    title: '日期',
+                    dataIndex: 'date',
+                    key: 'date',
+                    width: 100,
+                    render: (val) => {
+                        return val ? dayjs(val).format('YYYY-MM-DD') : ''
+                    }
+                },
+                {
+                    title: '尖电',
+                    dataIndex: 'tipOutFee',
+                    key: 'tipOutFee',
+                    width: 150,
+                },
+                {
+                    title: '峰电',
+                    dataIndex: 'peakInFee',
+                    key: 'peakInFee',
+                    width: 150,
+                },
+                {
+                    title: '平电',
+                    dataIndex: 'flatInFee',
+                    key: 'flatInFee',
+                    width: 150,
+                },
+                {
+                    title: '谷电',
+                    dataIndex: 'valleyInFee',
+                    key: 'valleyInFee',
+                    width: 150,
+                },
+                {
+                    title: '总计',
+                    dataIndex: 'dayOutFee',
+                    key: 'dayOutFee',
+                    width: 150,
+                },
+
+            ],
+        },
+
+    ],
+
+};
+
+export const energy = {
+    energyEnergy: [
+        {
+            title: '',
+            children: [{
+                title: '序号',
+                dataIndex: 'id',
+                key: 'id',
+                width: 100,
+                render: (text, record, index) => index + 1,
+            },
+
+            {
+                title: '日期',
+                dataIndex: 'date',
+                key: 'date',
+                width: 100,
+                render: (val) => {
+                    return val ? dayjs(val).format('YYYY-MM-DD') : ''
+                }
+            },
+            ]
+        },
+        {
+            title: '充电量（kWh）',
+            children: [
+                {
+                    title: '尖电',
+                    dataIndex: 'tipInEnergy',
+                    key: 'tipInEnergy',
+                    width: 150,
+                },
+                {
+                    title: '峰电',
+                    dataIndex: 'peakInEnergy',
+                    key: 'peakInEnergy',
+                    width: 150,
+                },
+                {
+                    title: '平电',
+                    dataIndex: 'flatInEnergy',
+                    key: 'flatInEnergy',
+                    width: 150,
+                },
+                {
+                    title: '谷电',
+                    dataIndex: 'valleyInEnergy',
+                    key: 'valleyInEnergy',
+                    width: 150,
+                },
+                {
+                    title: '总计',
+                    dataIndex: 'dayInEnergy',
+                    key: 'dayInEnergy',
+                    width: 150,
+                },
+            ],
+        },
+        {
+            title: '放电量（kWh）',
+            children: [
+                {
+                    title: '尖电',
+                    dataIndex: 'tipOutEnergy',
+                    key: 'tipOutEnergy',
+                    width: 150,
+                },
+                {
+                    title: '峰电',
+                    dataIndex: 'peakOutEnergy',
+                    key: 'peakOutEnergy',
+                    width: 150,
+                },
+                {
+                    title: '平电',
+                    dataIndex: 'flatOutEnergy',
+                    key: 'flatOutEnergy',
+                    width: 150,
+                },
+                {
+                    title: '谷电',
+                    dataIndex: 'valleyOutEnergy',
+                    key: 'valleyOutEnergy',
+                    width: 150,
+                },
+                {
+                    title: '总计',
+                    dataIndex: 'dayOutEnergy',
+                    key: 'dayOutEnergy',
+                    width: 150,
+                },
+            ],
+        },
+    ],
+
+    chargePileEnergy: [
+        {
+            title: '',
+            children: [{
+                title: '序号',
+                dataIndex: 'id',
+                key: 'id',
+                width: 100,
+                render: (text, record, index) => index + 1,
+            },
+
+            {
+                title: '日期',
+                dataIndex: 'date',
+                key: 'date',
+                width: 100,
+                render: (val) => {
+                    return val ? dayjs(val).format('YYYY-MM-DD') : ''
+                }
+            },
+            ]
+        },
+        {
+            title: '充电量（kWh）',
+            children: [
+                {
+                    title: '尖电',
+                    dataIndex: 'tipInEnergy',
+                    key: 'tipInEnergy',
+                    width: 150,
+                },
+                {
+                    title: '峰电',
+                    dataIndex: 'peakInEnergy',
+                    key: 'peakInEnergy',
+                    width: 150,
+                },
+                {
+                    title: '平电',
+                    dataIndex: 'flatInEnergy',
+                    key: 'flatInEnergy',
+                    width: 150,
+                },
+                {
+                    title: '谷电',
+                    dataIndex: 'valleyInEnergy',
+                    key: 'valleyInEnergy',
+                    width: 150,
+                },
+                {
+                    title: '总计',
+                    dataIndex: 'dayInEnergy',
+                    key: 'dayInEnergy',
+                    width: 150,
+                },
+            ],
+        },
+        {
+            title: '用电量（kWh）',
+            children: [
+                {
+                    title: '尖电',
+                    dataIndex: 'tipOutEnergy',
+                    key: 'tipOutEnergy',
+                    width: 150,
+                },
+                {
+                    title: '峰电',
+                    dataIndex: 'peakOutEnergy',
+                    key: 'peakOutEnergy',
+                    width: 150,
+                },
+                {
+                    title: '平电',
+                    dataIndex: 'flatOutEnergy',
+                    key: 'flatOutEnergy',
+                    width: 150,
+                },
+                {
+                    title: '谷电',
+                    dataIndex: 'valleyOutEnergy',
+                    key: 'valleyOutEnergy',
+                    width: 150,
+                },
+                {
+                    title: '总计',
+                    dataIndex: 'dayOutEnergy',
+                    key: 'dayOutEnergy',
+                    width: 150,
+                },
+
+            ],
+        },
+    ],
+    pvEnergy: [
+        {
+            title: '',
+            children: [{
+                title: '序号',
+                dataIndex: 'id',
+                key: 'id',
+                width: 100,
+                render: (text, record, index) => index + 1,
+            },
+            {
+                title: '日期',
+                dataIndex: 'date',
+                key: 'date',
+                width: 100,
+                render: (val) => {
+                    return val ? dayjs(val).format('YYYY-MM-DD') : ''
+                }
+            },
+            ]
+        },
+        {
+            title: '发电量（kWh）',
+            children: [
+                {
+                    title: '尖电',
+                    dataIndex: 'tipInEnergy',
+                    key: 'tipInEnergy',
+                    width: 150,
+                },
+                {
+                    title: '峰电',
+                    dataIndex: 'peakInEnergy',
+                    key: 'peakInEnergy',
+                    width: 150,
+                },
+                {
+                    title: '平电',
+                    dataIndex: 'flatInEnergy',
+                    key: 'flatInEnergy',
+                    width: 150,
+                },
+                {
+                    title: '谷电',
+                    dataIndex: 'valleyInEnergy',
+                    key: 'valleyInEnergy',
+                    width: 150,
+                },
+                {
+                    title: '总计',
+                    dataIndex: 'dayInEnergy',
+                    key: 'dayInEnergy',
+                    width: 150,
+                },
+            ],
+        },
+        {
+            title: '上网电量（kWh）',
+            children: [
+                {
+                    title: '尖电',
+                    dataIndex: 'tipOutEnergy',
+                    key: 'tipOutEnergy',
+                    width: 150,
+                },
+                {
+                    title: '峰电',
+                    dataIndex: 'peakOutEnergy',
+                    key: 'peakOutEnergy',
+                    width: 150,
+                },
+                {
+                    title: '平电',
+                    dataIndex: 'flatOutEnergy',
+                    key: 'flatOutEnergy',
+                    width: 150,
+                },
+                {
+                    title: '谷电',
+                    dataIndex: 'valleyOutEnergy',
+                    key: 'valleyOutEnergy',
+                    width: 150,
+                },
+                {
+                    title: '总计',
+                    dataIndex: 'dayOutEnergy',
+                    key: 'dayOutEnergy',
+                    width: 150,
+                },
+            ],
+        },
+    ],
 }

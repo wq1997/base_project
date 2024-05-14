@@ -11,14 +11,14 @@ import OutdoorCabinet from './components/OutdoorCabinet/index.jsx';
 import ViewEngrgy from './components/ViewEngrgy/index.jsx';
 import ViewOutdoor from './components/ViewOutdoor/index.jsx';
 import { root} from "./mock.js";
-import { getDeviceTree } from '@/services/deviceTotal'
+import { getDeviceTree,getGridPointTree } from '@/services/deviceTotal'
 import { history, useLocation,useIntl } from "umi";
 import styles from "./index.less";
 
 const defaultPageType = "ALL";
 let defaultData = [];
 const getType = (father, child) => {
-    if (father.deviceTypeId == 6) {
+    if (father.deviceType == 6) {
         switch (child?.type) {
             case 100:
                 return 'PCS';
@@ -44,32 +44,34 @@ const getType = (father, child) => {
 }
 const getTreeData = (data, treeData) => {
     let oringal = structuredClone(treeData);
+    console.log(oringal,'oringal');
     data?.map((it, index) => {
-        if (it.devList) {
+        if (it.dtuDevList) {
             let arr = [];
-            it.devList?.map((item, i) => {
+            it.dtuDevList?.map((item, i) => {
                 arr?.push({
                     title: item.name,
                     id: item.id || it.dtuId || '',
                     key: `0-${index}-${i}`,
-                    type: getType(it, item)
+                    type: getType(it, item),
+                    
                 })
             })
             oringal[0]?.children.push({
-                title: it.name,
+                title: it.gridPointName,
                 id: it.id,
                 key: `0-${index}`,
-                type: it.type||it?.deviceTypeId,
+                type: it.type||it?.deviceType,
                 children: [
                     ...arr
                 ]
             })
         } else {
             oringal[0]?.children.push({
-                title: it.name,
+                title: it.gridPointName,
                 id: it.id,
                 key: `0-${index}`,
-                type: it.type||it?.deviceTypeId,
+                type: it.type||it?.deviceType,
                 children: [
                     ...arr
                 ]
@@ -176,12 +178,14 @@ function Com(props) {
         setAutoExpandParent(true);
     };
     const getData= async()=>{
-        let {data} =await getDeviceTree({plantId:localStorage.getItem('plantId')});
+        let {data:res} =await getDeviceTree({plantId:localStorage.getItem('plantId')});
+        let {data}=await getGridPointTree({plantId:localStorage.getItem('plantId')});
         setTree(data.data);
       }
     const treeData = useMemo(() => {
         const loop = (data) =>
             data?.map((item) => {
+                console.log(item,111111);
                 const strTitle = item?.title;
                 const index = strTitle.indexOf(searchValue);
                 const beforeStr = strTitle.substring(0, index);

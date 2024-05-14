@@ -5,9 +5,9 @@ import { theme, Select, DatePicker, Button, Cascader, message } from "antd";
 import styles from './index.less'
 import ReactECharts from "echarts-for-react";
 import { CardModel } from "@/components";
-import { getBmsAnalyticsInitData, analyticsBmsDiffData, analyticsBmsData } from '@/services/deviceTotal'
+import { getDataComparisonInit, getDataParams, getCompareData } from '@/services/report'
 import dayjs from 'dayjs';
-import { getQueryString } from "@/utils/utils";
+import { getQueryString, downLoadExcelMode } from "@/utils/utils";
 import { useSelector, useIntl } from "umi";
 const { SHOW_CHILD } = Cascader;
 function Com(props) {
@@ -18,15 +18,13 @@ function Com(props) {
   const [date, setDate] = useState(dayjs(new Date()));
   const [dateStr, setDateStr] = useState(dayjs(new Date()).format('YYYY-MM-DD'));
   const [dateBottom, setDateBottom] = useState(dayjs(new Date()));
-  const [packReq, setPackReq] = useState([['0', '0-0']]);
+  const [packReq, setPackReq] = useState([]);
   const [packList, setPackList] = useState([]);
-  const [cellList, setCellList] = useState([]);
+  const [dataOfEchart, setDataOfEchart] = useState([]);
   const [cellReq, setCellReq] = useState(['0-0', '0-0-0']);
   const [optionEchartTem, setOptionEchartTem] = useState({})
-  const [optionEchartVol, setOptionEchartVol] = useState({})
-  const [optionEchartVolBot, setOptionEchartVolBot] = useState({})
-  const [optionEchartTemBot, setOptionEchartTemBot] = useState({});
- 
+  const [optionEchart, setOptionEchart] = useState({})
+  const [cascaderValue, setCascaderValue] = useState([]);
 
   const intl = useIntl();
   const wayOption = [{
@@ -51,123 +49,241 @@ function Com(props) {
   useEffect(() => {
     initOption();
     getInitData();
-    getChartData();
-    getBottomChartData();
+    // getChartData();
   }, [token, id]);
 
   const getInitData = async () => {
-    let { data } = await getBmsAnalyticsInitData({ id: 339 });
-    setPackList(data?.data.packList);
-    setCellList(data?.data.cellList)
+    let { data } = await getDataComparisonInit({ plantId: localStorage.getItem('plantId') });
+    let { BMC, BMS, PCS, others } = data?.data;
+    let arr = [];
+    arr.push(delInitData(BMC, 'BMC'));
+    arr.push(delInitData(BMS, 'BMS'));
+    arr.push(delInitData(PCS, 'PCS'));
+    arr.push(delInitData(others, 'others'));
+    console.log("AAAA", arr)
+    let devId = "";
+    let currentValue = "";
+    arr?.forEach(item => {
+      if (!devId) {
+        currentValue = item.value;
+        devId = item?.children?.[0]?.id;
+      }
+    });
+    if (devId) {
+      let { data: subData } = await getDataParams({ plantId: localStorage.getItem('plantId'), devId: 329 || devId });
+      const index = arr.findIndex(item => item.value === currentValue);
+      if (subData?.data?.length > 0) {
+        arr[index].children[0].children = subData.data?.map(item => {
+          return {
+            value: item?.dataType,
+            label: item?.dataTypeDesc
+          }
+        });
+        setCascaderValue([[currentValue, arr[index]?.children?.[0].id, subData.data?.[0]?.dataType]]);
+        let { data } = await getCompareData({
+          dataParams: [{ devId: 329 || arr[index]?.children?.[0].id, dataId: subData.data?.[0]?.dataType }],
+          dateList: ["2024-05-08" || dateStr],
+          compareType: way
+        });
+        setPackList(arr);
+        setDataOfEchart(data?.data);
+        handelData(data?.data, setOptionEchart);
+      }
+      return;
+    }
+    setPackList(arr);
+  };
+  const delInitData = (data, Name) => {
+    let arr = [];
+    data?.map(it => {
+      arr.push({
+        ...it,
+        label: it.name,
+        value: it.id,
+        isLeaf: false,
+        // disableCheckbox: true,
+      })
+    });
+    return {
+      value: Name,
+      label: Name,
+      isLeaf: false,
+      children: [...arr]
+    }
   }
+  const loadData = async (selectedOptions) => {
+    const targetOption = selectedOptions[selectedOptions.length - 1];
+    if (selectedOptions.length == 2) {
+      let { data } = await getDataParams({ plantId: localStorage.getItem('plantId'), devId: 329 || targetOption.id });
+      data.data.map(it => {
+        it.value = it.dataType;
+        it.label = it.dataTypeDesc;
+      })
+      targetOption.children = data.data;
+      console.log("XXXX", packList)
+      setPackList([...packList]);
+    };
+  };
   const getChartData = async () => {
     let dataTypeList = [];
     let dateList = [];
     if (way === 1) {
       dataTypeList = packReq?.map(it => {
-        return it[1];
+        return { devId: it[1], dataId: it[2] };
       });
       dateList = [dateStr];
+      console.log(dataTypeList, 'dataTypeList');
       if (dataTypeList.length > 3) {
         message.warning('最多选择3个对比项');
         return
       }
+      if (dataTypeList.find(it=>it.dataId==undefined)) {
+        message.warning('请准确选择数据项');
+        return
+      }
     } else {
-      dataTypeList = [packReq[1]];
+      dataTypeList = [{ devId: packReq[1], dataId: packReq[2] }];
       dateList = dateStr;
       if (dateList.length > 3) {
         message.warning('最多选择3个对比项');
         return
       }
     }
-    let { data } = await analyticsBmsDiffData({
-      id: 339,
-      dataTypeList,
-      dateList
+    let { data } = await getCompareData({
+      dataParams: dataTypeList,
+      dateList,
+      compareType: way
     });
-    let { tempInfo, volInfo } = data;
-    handelData(volInfo, setOptionEchartVol, 1);
-    handelData(tempInfo, setOptionEchartTem, 2);
-
+    setDataOfEchart(data?.data);
+    handelData(data?.data, setOptionEchart);
   }
-  const getBottomChartData = async () => {
-    let { data } = await analyticsBmsData({
-      id: 339,
-      dataType: cellReq[1],
-      date: dateBottom.format('YYYY-MM-DD')
+  const downloadExcel = () => {
+    let fileName = t('数据对比');
+    let sheetFilter = ['time'];
+    let sheetHeader = [t('时间')];
+    let sheetData = [];
+    let sheetName = '';
+    dataOfEchart.map((it, i) => {
+      if (way == 1) {
+        sheetFilter.push(it.label);
+        sheetHeader.push(`${it.label}(${it.unit})`);
+        sheetName = dayjs(it.value[0]?.time).format('YYYY-MM-DD');
+        i == 0 ?
+          it.value?.map((item, index) => {
+            sheetData.push({
+              [it.label]: item.value,
+              time: dayjs(item.time).format('HH:mm')
+            })
+          }) : it.value?.map((item, index) => {
+            sheetData[index] = {
+              ...sheetData[index],
+              [it.label]: item.value,
+            }
+          });
+      } else {
+        sheetFilter.push(dayjs(it.value[0]?.time).format('YYYY-MM-DD'));
+        sheetHeader.push(`${dayjs(it.value[0]?.time).format('YYYY-MM-DD')}(${it.unit})`);
+        sheetName = it.label.split('/');
+        i == 0 ?
+          it.value?.map((item, index) => {
+            sheetData.push({
+              [dayjs(it?.value[0]?.time).format('YYYY-MM-DD')]: item?.value,
+              time: dayjs(item?.time).format('HH:mm')
+            })
+          }) : it.value?.map((item, index) => {
+            sheetData[index] = {
+              ...sheetData[index],
+              [dayjs(it?.value[0]?.time).format('YYYY-MM-DD')]: item?.value,
+            }
+          });
+      }
+
+
     });
-    dealDataBot(data.data?.tData, setOptionEchartTemBot, t("温度"));
-    dealDataBot(data.data?.vData, setOptionEchartVolBot, t("电压"));
-
+    downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader, sheetName);
   }
-  const dealDataBot = (data, setHandel, title) => {
-    let arr = [];
-    data?.map(it => {
-      arr.push([dayjs(it.time).format('HH:mm:ss'), it.value])
-    })
-    setHandel({
-      ...baseOption, series: [{
-        name: title,
-        type: 'line',
-        symbolSize: 8,
-        itemStyle: {
-          normal: {
-            color: token.chartLineColor[0],
-            lineStyle: {
-              color: token.chartLineColor[0],
-              width: 2
-            },
-          }
-        },
-        data: arr
-      }]
-    });
-
-  }
-  const handelData = (data, setHandel, val) => {
-    let series = []
+  const handelData = (data, setHandel) => {
+    let series = [];
+    let yAxis = [];
     data?.map((one, index) => {
       let seriesData = [];
-      one.data?.map(it => {
+      one.value?.map(it => {
         seriesData.push([
-          it.time,
-          it.diff,
+          dayjs(it.time).format('HH:mm'),
+          it.value,
         ])
       })
-      series.push({
-        name: one.date,
-        type: 'line',
-        symbolSize: 8,
-        itemStyle: {
-          normal: {
-            color: token.chartLineColor[index],
-            lineStyle: {
+      if (one.value) {
+        series.push({
+          name: way == 1 ? one?.label : dayjs(one?.value[0]?.time).format('YYYY-MM-DD'),
+          type: 'line',
+          symbolSize: 8,
+          yAxisIndex: index,
+          itemStyle: {
+            normal: {
               color: token.chartLineColor[index],
-              width: 2
+              lineStyle: {
+                color: token.chartLineColor[index],
+                width: 2
+              },
+            }
+          },
+          data: seriesData
+        });
+        yAxis.push({
+          type: 'value',
+          position: index == 0 ? 'left' : 'right',
+          offset: index == 0 || index == 1 ? 0 : 100 * index,
+          alignTicks: true,
+          name: one?.unit,
+          // name: way==1? one?.label:dayjs(one.value[0]?.time).format('YYYY-MM-DD'),
+          axisLabel: {
+            show: true,
+            formatter: `{value}`
+          },
+          axisLine: {
+            show: true,
+            lineStyle: {
+              color: token.chartLineColor[index]
+            }
+          },
+
+        });
+        setHandel({
+          ...baseOption,
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'shadow'
             },
-          }
-        },
-        data: seriesData
-      })
+            // formatter: (params) => getToolTip(params, data),
+          }, yAxis: [...yAxis], legend: { ...baseOption.legend, data: series?.map(item => item.name) }, series: [...series]
+        });
+      } else {
+        yAxis.push({
+        });
+        setHandel({
+          ...baseOption,
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'shadow'
+            },
+            // formatter: (params) => getToolTip(params, data),
+          }, yAxis: [...yAxis], legend: { ...baseOption.legend, data: series?.map(item => item.name) }, series: [...series]
+        });
+      }
     })
-    setHandel({
-      ...baseOption,
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'shadow'
-        },
-        formatter: (params) => getToolTip(params, data, val),
-      }, legend: { ...baseOption.legend, data: series?.map(item => item.name) }, series: [...series]
-    });
+
   }
-  const changePack = (val) => {
-    setPackReq(val)
+  const changePack = (val, selectedOptions) => {
+    loadData(selectedOptions[selectedOptions.length - 1]);
+    setPackReq(val);
   }
   const changeWay = (val) => {
     setWay(val);
     setDate(dayjs(new Date()));
-    setOptionEchartVol(baseOption);
+    setOptionEchart(baseOption);
     val === 1 ? setPackReq([['0', '0-0']]) : setPackReq(['0', '0-0']);
     val === 1 ? setDateStr(dayjs(new Date()).format('YYYY-MM-DD')) : setDateStr([dayjs(new Date()).format('YYYY-MM-DD')]);
     getChartData();
@@ -176,20 +292,13 @@ function Com(props) {
     setDateStr(str);
     setDate(val);
   }
-  const getToolTip = (params, data, val) => {
+  const getToolTip = (params, data) => {
     let text = '';
     if (data.length == params.length) {
       params?.forEach(({ seriesName, dataIndex, seriesIndex, color }) => {
-        let {
-          diff,
-          maxPackNo,
-          maxPackValue,
-          minPackNo,
-          minPackValue,
-          time,
-        } = data[seriesIndex].data[dataIndex];
-        if (val === 1) {
-          text = text.concat(`
+        console.log(params, data[seriesIndex].data[dataIndex], 100000);
+        return
+        text = text.concat(`
                     <div>
                       <span style="background:${color};width:10px;height:10px;border-radius:50%;display:inline-block"></span>
                       ${data[seriesIndex].date}：${time} <br/>
@@ -197,17 +306,6 @@ function Com(props) {
                       ${t("最大电压")}：${maxPackValue || ""} (${t("第")}${maxPackNo || ""}${t("节")})<br/>
                       ${t("最小电压")}：${minPackValue || ""} (${t("第")}${minPackNo || ""}${t("节")})<br/>
                       </div>`);
-        } else {
-          text = text.concat(`
-                    <div>
-                      <span style="background:${color};width:10px;height:10px;border-radius:50%;display:inline-block"></span>
-                      ${data[seriesIndex].date}：${time} <br/>
-                      ${t('温差')}：${diff || ""} <br/>
-                      ${t("最高温度")}：${maxPackValue || ""} (${t("采样点")}${maxPackNo || ""})<br/>
-                      ${t("最低温度")}：${minPackValue || ""} (${t("采样点")}${minPackNo || ""})<br/>
-                      </div>
-                    `);
-        }
 
       })
 
@@ -271,7 +369,7 @@ function Com(props) {
     series: []
   }
   return (
-    <div style={{height:'100%',width:'100%', paddingBottom:'10px'}}>
+    <div style={{ height: '100%', width: '100%', paddingBottom: '10px' }}>
       <CardModel
         title={t('数据对比')}
         content={
@@ -287,19 +385,24 @@ function Com(props) {
               >
               </Select>
               <span >{t('数据项')}:</span>
-              <Cascader
-                className={styles.margRL}
-                style={{ width: 240 }}
-                onChange={(val) => changePack(val)}
-                options={packList}
-                multiple={way === 1 ? true : false}
-                maxTagCount={1}
-                showCheckedStrategy={SHOW_CHILD}
-                defaultValue={[['0', '0-0']]}
-                key={way}
-                allowClear={false}
-              >
-              </Cascader>
+              {
+                cascaderValue?.length > 0 &&
+                <Cascader
+                  className={styles.margRL}
+                  style={{ width: 240 }}
+                  onChange={changePack}
+                  options={packList}
+                  loadData={loadData}
+                  multiple={way === 1 ? true : false}
+                  maxTagCount={1}
+                  showCheckedStrategy={SHOW_CHILD}
+                  defaultValue={cascaderValue}
+                  key={way}
+                  allowClear={false}
+                >
+                </Cascader>
+              }
+
               <span >{t('对比日期')}:</span>
               <DatePicker className={styles.margRL}
                 style={{ width: 240 }}
@@ -314,13 +417,13 @@ function Com(props) {
               <Button type="primary" className={styles.firstButton} onClick={getChartData}>
                 {t('查询')}
               </Button>
-              <Button type="primary" style={{ backgroundColor: token.defaultBg }} >
+              <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downloadExcel}>
                 {t('导出')}excel
               </Button>
             </div>
             <div className={styles.echartPart}>
               <div className={styles.echartPartCardwrap}>
-                <ReactECharts layUpdate={false} notMerge={true} option={optionEchartVol} style={{ height: '100%' }} />
+                <ReactECharts layUpdate={false} notMerge={true} option={optionEchart} style={{ height: '100%' }} />
               </div>
             </div>
           </div>

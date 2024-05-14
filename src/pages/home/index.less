@@ -13,6 +13,46 @@
   grid-area: 1 / 1 / 2 / 2;
   width: 100%;
   height: 100%;
+  position: relative;
+
+  .detailsButton {
+    width: 104px;
+    height: 40px;
+    margin: 0 auto;
+    position: absolute;
+    color: #fff;
+    top: 20px;
+    left: 20px;
+    z-index: 999;
+    padding: 8px 16px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 4px;
+    line-height: 24px;
+    text-align: center;
+  }
+  .detailsPart{
+
+    background: rgba(0, 0, 0, 0.4);
+    position: absolute;
+    top: 70px;
+    left: 80px;
+    z-index: 999;
+    border-radius: 4px;
+    :global{
+      .ant-descriptions-item-container{
+        background: rgba(0, 0, 0, 0.6) !important;
+        padding: 9px 16px  !important;
+        border-radius: 4px;
+      }
+      .ant-descriptions-item-label{
+        color: #fff;
+      }
+      .ant-descriptions-item-content{
+        color: #fff;
+
+      }
+    }
+  }
   // overflow: hidden;
   // background: url(../../assets/svg/lightHome.svg) no-repeat center center;
   // background-size:cover;
@@ -71,7 +111,8 @@
 
 .echarLeft {
   grid-area: echarLeft;
-  .echartPartCardwrap{
+
+  .echartPartCardwrap {
     width: 100%;
     height: 100%;
   }
@@ -79,13 +120,19 @@
 
 .echarRight {
   grid-area: echarRight;
-  .echartPartCardwrap{
+
+  .echartPartCardwrap {
     width: 100%;
     height: 100%;
   }
 }
 
 @media screen and (min-width: 2000px) {
+  .detailsPart{
+    width: 466px;
+    height: 360px;
+    padding: 36px 25px;
+  }
   .value {
     font-size: 36px;
   }
@@ -106,6 +153,11 @@
 }
 
 @media screen and (min-width: 1000px) and (max-width: 2000px) {
+  .detailsPart{
+    width:420px;
+    height: 320px;
+    padding: 18px 12px;
+  }
   .value {
     font-size: 24px;
   }
@@ -130,14 +182,18 @@
   .value {
     font-size: 16px;
   }
+
   .unit {
     font-size: 14px;
   }
+
   .title {
     font-size: 14px;
   }
+
   .label {
     font-size: 14px;
 
   }
 }
+

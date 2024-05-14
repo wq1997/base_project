@@ -7,6 +7,7 @@ import * as echarts from "echarts";
 import { theme } from "antd";
 import dayjs from 'dayjs';
 import {  useIntl } from "umi";
+import {getPyPower}from '@/services/deviceTotal'
 
 const mock1=[
     {
@@ -1176,82 +1177,15 @@ function Com(props) {
     }, [])
     const { token } = theme.useToken();
     const [options, setOptions] = useState({});
-    const getOptions = () => {
-        setOptions({
-            tooltip: {
-              trigger: 'axis',
-              axisPointer: {
-                type: 'shadow'
-              }
-            },
-            grid: {
-              left: '3%',
-              right: '4%',
-              bottom: '3%',
-              containLabel: true
-            },
-            xAxis: [
-              {
-                type: 'category',
-                data:['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00','24:00'],
-                axisTick: {
-                  alignWithLabel: true
-                }
-              }
-            ],
-            yAxis: [
-              {
-                type: 'value',
-                axisLabel: {
-                    formatter: '{value}'
-                  },
-                  
-              }
-            ],
-            series: [
-                {
-                    name:'实时功率',
-                    type:'line',
-                    stack: '总量',
-                    symbol:'circle',
-                    symbolSize: 8,
-                    itemStyle: {
-                        normal: {
-                            color:token.colorPrimary,
-                            lineStyle: {
-                                color: token.colorPrimary,
-                                width:1
-                            },
-                            areaStyle: { 
-                                color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
-                                    offset: 0,
-                                    color: token.sub_innerBgc
-                                }, {
-                                    offset: 1,
-                                    color: token.colorPrimaryR
-                                }]),
-                            }
-                        }
-                    },
-                    markPoint:{
-                        itemStyle:{
-                            normal:{
-                                color:'red'
-                            }
-                        }
-                    },
-                    data:[12, 32, 11, 14, 90, 30, 10, 82, 91, 34, 90, 33]
-                },
-            ]
-          });
-    };
+
 
     useEffect(() => {
         // getOptions();
         getMock();
 
     }, [token]);
-    const getMock=()=>{
+    const getMock=async()=>{
+        let {data}=await getPyPower({plantId:localStorage.getItem('plantId')})
         let arrX=[];
         let arrY=[]
         mock1.map(it=>{

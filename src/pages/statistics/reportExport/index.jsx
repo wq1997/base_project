@@ -6,37 +6,42 @@ import styles from './index.less'
 import { CardModel, Title } from "@/components";
 import dayjs from 'dayjs';
 import { useIntl } from "umi";
-import { data } from "./data";
- 
+import { data, inCome, energy } from "./data";
+import { getExportReportList, getDtuReport, exportReport, updateReportTemplate } from "@/services/report";
+
 function Com() {
   const [form] = Form.useForm();
   const { token } = theme.useToken();
-  const [way, setWay] = useState(1);
+  const [way, setWay] = useState(0);
   const [wayLabel, setWayLabel] = useState('日报表');
+  const [picker, setPicker] = useState('date');
   const [date, setDate] = useState(dayjs(new Date()));
   const [dateStr, setDateStr] = useState(dayjs(new Date()).format('YYYY-MM-DD'));
   const [dataChoiceOpen, setDataChoiceOpen] = useState(false); //数据选择弹框
+  const [modelData, setModelData] = useState([]);
+  const [allData, setAllData] = useState({});
+  const [currentModel, setCurrentModel] = useState([]);
 
   const intl = useIntl();
   const wayOption = [{
     label: '日报表',
-    value: 1,
+    value: 0,
   },
   {
     label: '周报表',
-    value: 2,
+    value: 1,
   },
   {
     label: '月报表',
-    value: 3,
+    value: 2,
   },
   {
     label: '年报表',
-    value: 4,
+    value: 3,
   },
   {
     label: '总报表',
-    value: 5,
+    value: 4,
   },
   ]
   const t = (id) => {
@@ -50,340 +55,227 @@ function Com() {
 
   useEffect(() => {
     getInitData();
-  }, [token]);
+  }, [token, way, dataChoiceOpen,date]);
+  useEffect(() => {
+    if (way == 0) {
+      setPicker('date')
+    } else if (way == 1) {
+      setPicker('date')
+    } else if (way == 2) {
+      setPicker('month')
+    } else if (way == 3) {
+      setPicker('year')
+    };
+    console.log(dayjs(date).format('YYYY-MM-DD'), 111111);
+  }, [way])
 
   const getInitData = async () => {
-  
+    let { data: reqData } = await getExportReportList({
+      plantId: localStorage.getItem('plantId'),
+      type: way,
+    });
+    setModelData(reqData.data);
+    let obj = {};
+    reqData?.data.map(it => {
+      it.children?.map(item => {
+        obj[item.value] = item.state;
+      })
+    });
+
+    data.baseData.data = delBaseData(data.baseData.data, obj);
+    data.runData.data = delBaseData(data.runData.data, obj);
+    form.setFieldsValue({ ...obj });
+    setCurrentModel({ ...obj });
+    console.log(data.runData.data, obj, 111111);
+    let currentDate = '';
+    if (way == 0) {
+      currentDate = dayjs(date).format('YYYY-MM-DD')
+    } else if (way == 1) {
+      currentDate = dayjs(date).format('YYYY-MM-DD')
+
+    } else if (way == 2) {
+      currentDate = dayjs(date).format('YYYY-MM')
+
+    } else if (way == 3) {
+      currentDate = dayjs(date).format('YYYY')
+    };
+    let { data: allData } = await getDtuReport({
+      plantId: localStorage.getItem('plantId'),
+      type: way,
+      date: currentDate,
+    });
+    setAllData(allData?.data);
   }
-  const changeWay = (val,label) => {
+  const delBaseData = (base, data) => {
+    let arr = [];
+    base.map(it => {
+      if (data?.[it?.value]) {
+        arr.push(it)
+      }
+    });
+    return arr
+  }
+  const exportData = async () => {
+    let res = await exportReport({
+      plantId: localStorage.getItem('plantId'),
+      type: way,
+      date,
+    });
+    let blob = res?.data;
+    let content = [];
+    content.push(blob);
+    // new Blob 实例化文件流
+    const blobData = new Blob(content);
+    const url = window.URL.createObjectURL(blobData)
+    const link = document.createElement('a')
+    link.style.display = "none"
+    link.href = url
+    // fileName 文件名后缀记得添加
+    link.setAttribute('download', `${wayLabel}.xls`)
+    document.body.appendChild(link)
+    link.click()
+    //下载完成移除元素
+    document.body.removeChild(link)
+    //释放掉blob对象
+    window.URL.revokeObjectURL(url)
+  }
+  const changeWay = (val, label) => {
     setWay(val);
     setWayLabel(label?.label);
   }
   const changeDate = (val, str) => {
     setDateStr(str);
     setDate(val);
+    console.log(dayjs(val).format('YYYY-MM-DD'), str);
   }
-
-  const dataE = [{
-    id:1,
-    date: '2024-04-08',
-    a: 122,
-    b: 121,
-    c: 99,
-    d: 67,
-    e: 409,
-    f: 119,
-    g: 112,
-    h: 96,
-    i: 66,
-    A: 393,
-    RA: '96.08%',
-  },
-  {
-    id:2,
-    date: '2024-04-09',
-    a: 112,
-    b: 134,
-    c: 109,
-    d: 123,
-    e: 478,
-    f: 109,
-    g: 128,
-    h: 100,
-    i: 120,
-    A: 457,
-    RA: '95.60%',
-  },
-  {
-    id:3,
-    date: '2024-04-10',
-    a: 133,
-    b: 125,
-    c: 130,
-    d: 119,
-    e: 507,
-    f: 129,
-    g: 123,
-    h: 126,
-    i: 113,
-    A: 491,
-    RA: '96.84%',
-  },
-];
-  const electricReportColumns = [
-        {
-          title: '序号',
-          dataIndex: 'id',
-          key: 'id'
-        },
-        {
-          title: '日期',
-          dataIndex: 'date',
-          key: 'date'
-        },
-    {
-      title: '充电量（kWh）',
-      children: [
-        {
-          title: '尖电',
-          dataIndex: 'a',
-          key: 'a'
-        },
-        {
-          title: '峰电',
-          dataIndex: 'b',
-          key: 'b'
-        },
-        {
-          title: '平电',
-          dataIndex: 'c',
-          key: 'c'
-        },
-        {
-          title: '谷电',
-          dataIndex: 'd',
-          key: 'd'
-        },
-        {
-          title: '总计',
-          dataIndex: 'e',
-          key: 'e'
-        }
-      ]
-    },
-    {
-      title: '放电量（kWh）',
-      children: [
-        {
-          title: '尖电',
-          dataIndex: 'f',
-          key: 'f'
-        },
-        {
-          title: '峰电',
-          dataIndex: 'g',
-          key: 'g'
-        },
-        {
-          title: '平电',
-          dataIndex: 'h',
-          key: 'h'
-        },
-        {
-          title: '谷电',
-          dataIndex: 'i',
-          key: 'i'
-        },
-        {
-          title: '总计',
-          dataIndex: 'A',
-          key: 'A'
-        }
-      ]
-    },
-    {
-      title: '',
-      children: [
-        {
-          title: '充放电效率',
-          dataIndex: 'RA',
-          key: 'RA'
-        }
-      ]
-    },
-  ]
-  const dataD = [
-    {
-    id:1,
-    date: '2024-04-08',
-    a: 118,
-    b: 132,
-    c: 72,
-    d: 88,
-    e: 410,
-    f: 243,
-    g: 263,
-    h: 285,
-    i: 260,
-    A: 1051,
-    RA: 641,
-  },
-  {
-    id:2,
-    date: '2024-04-09',
-    a: 108,
-    b: 132,
-    c: 129,
-    d: 150,
-    e: 519,
-    f: 243,
-    g: 263,
-    h: 285,
-    i: 260,
-    A: 1051,
-    RA: 641,
-  },
-  {
-    id:3,
-    date: '2024-04-10',
-    a: 121,
-    b: 111,
-    c: 142,
-    d: 121,
-    e: 495,
-    f: 243,
-    g: 263,
-    h: 285,
-    i: 260,
-    A: 1051,
-    RA: 641,
-  },
-];
-  const incomeColumns = [
-  
-        
-    {
-      title: '发电收益（元）',
-      children: [
-        {
-          title: '序号',
-          dataIndex: 'id',
-          key: 'id'
-        },
-        {
-          title: '日期',
-          dataIndex: 'date',
-          key: 'date'
-        },
-        {
-          title: '尖电',
-          dataIndex: 'a',
-          key: 'a'
-        },
-        {
-          title: '峰电',
-          dataIndex: 'b',
-          key: 'b'
-        },
-        {
-          title: '平电',
-          dataIndex: 'c',
-          key: 'c'
-        },
-        {
-          title: '谷电',
-          dataIndex: 'd',
-          key: 'd'
-        },
-        {
-          title: '总计',
-          dataIndex: 'e',
-          key: 'e'
-        }
-      ]
-    },
-  ]
-
+  console.log(modelData, allData, data);
   return (
     <>
-          <div className={styles.advancedAnalytics} style={{ color: token.titleColor,backgroundColor:token.titleCardBgc }}>
-            <div className={styles.searchHead}>
-              <span >{t('报表类型')}:</span>
-              <Select
-                className={styles.margRL}
-                style={{ width: 180 }}
-                onChange={ changeWay}
-                options={wayOption}
-                defaultValue={wayOption[0].value}
-              >
-              </Select>
-              <span >{t('对比日期')}:</span>
-              <DatePicker className={styles.margRL}
-                style={{ width: 240 }}
-                multiple={way === 1 ? false : true}
-                maxTagCount={1}
-                onChange={(val, str) => changeDate(val, str)}
-                defaultValue={date}
-                key={way + 1}
-                allowClear={false}
-                needConfirm
-              />
-              <Space>
-                <Button type="primary" className={styles.firstButton} onClick={()=>setDataChoiceOpen(true)}>
-                  {t('数据选择')}
-                </Button>
-                <Button type="primary" style={{ backgroundColor: token.defaultBg }} >
-                  {t('导出')}excel
-                </Button>
-              </Space>
-            </div>
-            <div className={styles.echartPart}>
-                <div className={styles.echartPartCardwrap}>
-                <Row justify="center">
-                  <Typography.Title level={3} style={{marginTop:0, marginBottom: 27}}>{dayjs(new Date()).format('YYYY.MM.DD')}{t(wayLabel)}</Typography.Title>
-                </Row>
-                <div className={styles.content}>
-                    <div className={styles.contentItem}>
-                      <div style={{marginBottom: 10}}>
-                        <Title title={data.baseData.title} />
-                      </div>
-                      <Descriptions 
-                        items={data.baseData.data.map(item => {
-                          return {
-                            ...item,
-                            children: item.data
-                          }
-                        })}
-                      />
-                    </div>
-                    <div className={styles.contentItem}>
-                      <div style={{marginBottom: 10}}>
-                        <Title title={data.runData.title} />
-                      </div>
-                      <Descriptions 
-                        items={data.runData.data.map(item => {
-                          return {
-                            ...item,
-                            children: item.data
-                          }
-                        })}
-                      />
-                    </div>
-                    <div className={styles.contentItem}>
-                      <div style={{marginBottom: 10}}>
-                        <Title title={data.electricReportData.title} />
-                      </div>
-                      <Table 
-                        columns={electricReportColumns}
-                        dataSource={dataE}
-                        pagination={false}
-                      />
-                    </div>
-                    <div className={styles.contentItem}>
-                      <div style={{marginBottom: 10}}>
-                        <Title title={data.incomeData.title} />
-                      </div>
-                      <Table 
-                        columns={incomeColumns}
-                        dataSource={dataD}
-                        pagination={false}
-
-                      />
-                    </div>
+      <div className={styles.advancedAnalytics} style={{ color: token.titleColor, backgroundColor: token.titleCardBgc }}>
+        <div className={styles.searchHead}>
+          <span >{t('报表类型')}:</span>
+          <Select
+            className={styles.margRL}
+            style={{ width: 180 }}
+            onChange={changeWay}
+            options={wayOption}
+            defaultValue={wayOption[0].value}
+          >
+          </Select>
+          <span >{t('对比日期')}:</span>
+          <DatePicker className={styles.margRL}
+            style={{ width: 240 }}
+            // multiple={way === 1 ? false : true}
+            picker={picker}
+            maxTagCount={1}
+            onChange={(val, str) => changeDate(val, str)}
+            defaultValue={date}
+            key={way + 1}
+            allowClear={false}
+            needConfirm
+          />
+          <Space>
+            <Button type="primary" className={styles.firstButton} onClick={() => setDataChoiceOpen(true)}>
+              {t('数据选择')}
+            </Button>
+            <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={exportData}>
+              {t('导出')}excel
+            </Button>
+          </Space>
+        </div>
+        <div className={styles.echartPart}>
+          <div className={styles.echartPartCardwrap}>
+            <Row justify="center">
+              <Typography.Title level={3} style={{ marginTop: 0, marginBottom: 27 }}>{dayjs(new Date()).format('YYYY.MM.DD')}{t(wayLabel)}</Typography.Title>
+            </Row>
+            <div className={styles.content}>
+              <div className={styles.contentItem}>
+                <div style={{ marginBottom: 10 }}>
+                  <Title title={data.baseData.title} />
                 </div>
+                {Object.keys(currentModel).length && <Descriptions
+                  items={data.baseData?.data.map(item => {
+                    return {
+                      ...item,
+                      children: allData?.plant?.[item?.value]
+                    }
+                  })}
+                />}
+              </div>
+              <div className={styles.contentItem}>
+                <div style={{ marginBottom: 10 }}>
+                  <Title title={data.runData.title} />
+                </div>
+                {Object.keys(currentModel).length && <Descriptions
+                  items={data.runData.data.map(item => {
+                    return {
+                      ...item,
+                      children: allData?.run?.[item.value]
+                    }
+                  })}
+                />}
+              </div>
+              <div className={styles.contentItem}>
+                <div style={{ marginBottom: 10 }}>
+                  <Title title={data.electricReportData.title} />
+                </div>
+                {Object.keys(energy).map((it,i) => {
+                  return (
+                    <>
+                      {
+                        currentModel[it] && <Table
+                          columns={energy[it]}
+                          dataSource={allData?.reportData?.[i]}
+                          pagination={false}
+                        />
+                      }
+                    </>
+                  )
+                })}
+
+              </div>
+              <div className={styles.contentItem}>
+                <div style={{ marginBottom: 10 }}>
+                  <Title title={data.incomeData.title} />
+                </div>
+                {Object.keys(inCome).map((it,i)=> {
+                  return (
+                    <>
+                      {
+                        currentModel[it] && <Table
+                          columns={inCome[it]}
+                          dataSource={allData?.reportData?.[i]}
+                          pagination={false}
+                        />
+                      }
+                    </>
+                  )
+                })}
               </div>
             </div>
           </div>
-      
+        </div>
+      </div>
       <Modal
         open={dataChoiceOpen}
         title={null}
-        onOk={async ()=>{
+        onOk={async () => {
           const values = await form.validateFields();
+          Object.keys(values).map(it => {
+            if (!values[it]) {
+              delete values[it]
+            }
+          })
+          let { data } = await updateReportTemplate({
+            plantId: localStorage.getItem('plantId'),
+            type: way,
+            fields: Object.keys(values)
+          });
+          // setCurrentModel(Object.keys(values));
           setDataChoiceOpen(false);
           message.success("提交成功");
         }}
-        onCancel={()=>{
+        onCancel={() => {
           setDataChoiceOpen(false);
         }}
         width={1168}
@@ -393,20 +285,20 @@ function Com() {
         <Form
           form={form}
         >
-          {Object.keys(data).map(item => {
+          {modelData.map(item => {
             return (
-              <div style={{marginBottom: 30}}>
-                <div style={{marginBottom: 10}}><Title title={data[item].title} /></div>
-                <Descriptions 
+              <div style={{ marginBottom: 30 }}>
+                <div style={{ marginBottom: 10 }}><Title title={item?.label} /></div>
+                <Descriptions
                   colon={false}
-                  items={data[item].data.map(item => {
+                  items={item?.children?.map(it => {
                     return {
                       label: (
-                        <Form.Item name={item.value} valuePropName='checked' style={{margin: 0}}>
-                            <Checkbox />
+                        <Form.Item name={it.value} valuePropName='checked' style={{ margin: 0 }}>
+                          <Checkbox />
                         </Form.Item>
                       ),
-                      children: item.label
+                      children: it.label
                     }
                   })}
                 />
