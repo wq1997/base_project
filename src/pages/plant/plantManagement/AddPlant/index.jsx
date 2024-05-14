@@ -227,7 +227,7 @@ const Plant = ({ open, editId, onClose }) => {
                     <Col span={12}>
                         <Tooltip title="逆变器统计时，电站累计发电量从设备并网发电时刻开始统计">
                             <QuestionCircleOutlined
-                                style={{ position: "absolute", top: "-8px", left: "160px" }}
+                                style={{ position: "absolute", top: "-6px", left: "160px" }}
                             />
                         </Tooltip>
                         <Form.Item
