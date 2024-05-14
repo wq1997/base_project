@@ -64,13 +64,26 @@
 
 .Bms1 {
     grid-area: Bms1;
-
+    .valueOne {
+        .left {
+            min-width:180px;
+        }
+       .right{
+        min-width:100px;
+       }
+    }
 
 
 }
 
 .Bms2 {
     grid-area: Bms2;
+    .left {
+        min-width:180px;
+    }
+   .right{
+    min-width:100px;
+   }
 }
 
 .TodayEntity {
@@ -112,7 +125,7 @@
 
             }
 
-            
+
         }
     }
 }
@@ -184,7 +197,7 @@
                 width: 100px;
             }
 
-           
+
         }
     }
 }
@@ -205,6 +218,7 @@
 
         .bmsTitle {
             width: 100%;
+
             img {
                 margin-right: 5px;
             }
@@ -215,12 +229,15 @@
             justify-content: space-around;
             align-items: center;
             height: calc(100% - 30px);
-            img{
-                height:40%;
+
+            img {
+                
+                height: 40%;
                 min-height: 40px;
             }
+
             .value {
-                width: 60%;
+                width: 65%;
                 height: 100%;
                 display: flex;
                 justify-content: space-around;
@@ -254,30 +271,34 @@
         font-size: 20px;
     }
 
-    .Box{
+    .Box {
         .boxTitle {
             font-size: 18px;
         }
-        .value{
+
+        .value {
             font-size: 46px;
-    
-            .unit{
+
+            .unit {
                 font-size: 18px;
             }
         }
     }
+
     .bmsTitle {
         font-size: 20px;
     }
-    .bmsBody{
+
+    .bmsBody {
         font-size: 18px;
     }
 
-    .statusOne{
-        .title{
+    .statusOne {
+        .title {
             font-size: 20px !important;
         }
-        .value{
+
+        .value {
             font-size: 20px !important;
 
         }
@@ -297,29 +318,35 @@
     .pcsOneBody {
         font-size: 18px;
     }
-    .Box{
+
+    .Box {
         .boxTitle {
             font-size: 16px;
         }
-        .value{
+
+        .value {
             font-size: 34px;
-    
-            .unit{
+
+            .unit {
                 font-size: 16px;
             }
         }
     }
+
     .bmsTitle {
         font-size: 18px;
     }
-    .bmsBody{
+
+    .bmsBody {
         font-size: 16px;
     }
-    .statusOne{
-        .title{
+
+    .statusOne {
+        .title {
             font-size: 18px !important;
         }
-        .value{
+
+        .value {
             font-size: 18px !important;
 
         }
@@ -339,31 +366,37 @@
     .pcsOneBody {
         font-size: 16px;
     }
-.Box{
-    .boxTitle {
-        font-size: 14px;
-    }
-    .value{
-        font-size: 30px;
 
-        .unit{
+    .Box {
+        .boxTitle {
             font-size: 14px;
         }
-    }
-}
-.bmsTitle {
-    font-size: 16px;
-}
-.bmsBody{
-    font-size: 14px;
-}
-.statusOne{
-    .title{
-        font-size: 16px !important;
-    }
-    .value{
-        font-size: 16px !important;
 
+        .value {
+            font-size: 30px;
+
+            .unit {
+                font-size: 14px;
+            }
+        }
     }
-}
+
+    .bmsTitle {
+        font-size: 16px;
+    }
+
+    .bmsBody {
+        font-size: 14px;
+    }
+
+    .statusOne {
+        .title {
+            font-size: 16px !important;
+        }
+
+        .value {
+            font-size: 16px !important;
+
+        }
+    }
 }

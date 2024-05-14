@@ -79,7 +79,7 @@ function Com(props) {
                                 {one.vols?.map((it, index) => {
                                     return (
                                         <div className={styles.oneData}>
-                                            {t("电芯")}{index}:{it}
+                                            {t("电芯")}{index}:<span style={{marginLeft:'10px'}}>{it}</span>
                                         </div>
                                     )
                                 })}
