@@ -49,7 +49,6 @@ const ExceptionInfo = ({ resultId, onClose }) => {
     ];
 
     const getInitData = async () => {
-        
         const res = await getAnalysisResultsInfoServer(resultId);
         if (res?.data?.code == 0) {
             setList(res?.data?.data);

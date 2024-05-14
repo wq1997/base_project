@@ -161,6 +161,7 @@ const ExceptionData = ({ infoId, onClose }) => {
             const {
                 exceptionScene,
                 excSingleVoltages,
+                excClusterSocs,
                 excSingleTemperatures,
                 excPoleTemperatures,
                 excStackVoltageCurrents,
@@ -191,7 +192,7 @@ const ExceptionData = ({ infoId, onClose }) => {
                 // 堆内簇SOC之间差值过大
                 ["DIFFERENCE_IN_SOC_BETWEEN_CLUSTERS_TOO_LARGE"].includes(sceneName)
             ) {
-                tempList = excStackVoltageCurrents;
+                tempList = excClusterSocs;
                 addColumns = [
                     {
                         title: "簇号",
