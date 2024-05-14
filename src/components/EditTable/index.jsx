@@ -9,15 +9,18 @@ import {
     Space,
     Select,
     DatePicker,
+    Button,
+    Row
 } from 'antd';
 import { useIntl } from "umi";
 import { cloneObject } from "@/utils/utils";
 import CustomDatePicker from '../CustomDatePicker';
 import moment from 'moment';
 import dayjs from 'dayjs';
+import Tabs from "../../pages/policyConfiguration/component/Tabs";
 
 // 编辑行的表格
-const EditRowTable = ({ data, columns, showEdit, showClear, showDelete, onChange, ...rest}) => {
+const EditRowTable = ({ data, columns, showEdit, showClear, showDelete, onChange, strategyList, ...rest}) => {
   const intl = useIntl();
   const { token } = theme.useToken();
   const [form] = Form.useForm();
@@ -252,17 +255,29 @@ const EditRowTable = ({ data, columns, showEdit, showClear, showDelete, onChange
   }, [JSON.stringify(data)])
 
   return (
-    <Form form={form} component={false}>
-        <Table
-            components={components}
-            rowClassName={() => 'editable-row'}
-            bordered
-            dataSource={dataSource}
-            columns={myColumns}
-            pagination={false}
-            {...rest}
-        />
-    </Form>
+    <Space direction="vertical" size={20} style={{width: '100%'}}>
+      <Row justify="space-between">
+          <Tabs 
+              items={strategyList}
+          />
+          <Button 
+              style={{background: 'linear-gradient(90deg, #0787DB 0%, #034FB4 100%)', border: 'none'}}
+          >
+              {intl.formatMessage({id: '新增'})}
+          </Button>
+      </Row>
+      <Form form={form} component={false}>
+          <Table
+              components={components}
+              rowClassName={() => 'editable-row'}
+              bordered
+              dataSource={dataSource}
+              columns={myColumns}
+              pagination={false}
+              {...rest}
+          />
+      </Form>
+    </Space>
   );
 };
 let EditTable = {};

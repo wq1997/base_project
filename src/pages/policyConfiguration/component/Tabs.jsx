@@ -12,7 +12,7 @@ const Tabs = (props) => {
     }
 
     return (
-        <Space size={30} style={{width: '100%'}}>
+        <Space size={30}>
             {
                 items?.map(item => {
                     return (

@@ -3,7 +3,6 @@ import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { Title, EditTable } from "@/components";
 import { useIntl } from "umi";
 import ButtonGroup from "./component/ButtonGroup";
-import Tabs from "./component/Tabs";
 
 const PolicyConfiguration = () => {
     const intl = useIntl();
@@ -193,25 +192,13 @@ const PolicyConfiguration = () => {
                             <div 
                                 className={distributeStyle}
                                 onClick={async ()=>{
-                                    const values = await form.validateFields();
+                                    const values = await form.validateFields(['strategyList']);
                                     console.log(values);
                                 }}
                             >
                                 {intl.formatMessage({id: '下发'})}
                             </div>
                         </Row> 
-                        <Row justify="space-between">
-                            <Form.Item name="strategyIndex" style={{margin: 0}}>
-                                <Tabs 
-                                    items={strategyList}
-                                />
-                            </Form.Item>
-                            <Button 
-                                style={{background: 'linear-gradient(90deg, #0787DB 0%, #034FB4 100%)', border: 'none'}}
-                            >
-                                {intl.formatMessage({id: '新增'})}
-                            </Button>
-                        </Row>
                         <Form.Item name="strategyList">
                             <EditTable.EditRowTable
                                 showClear
@@ -234,6 +221,7 @@ const PolicyConfiguration = () => {
                                         ]
                                     },
                                 ]}
+                                strategyList={strategyList}
                             />
                         </Form.Item>
                     </Space>                              
