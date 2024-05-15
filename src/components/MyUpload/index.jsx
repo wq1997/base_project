@@ -28,7 +28,6 @@ const MyUpload = ({ url, files = defaultFiles, onChange, maxCount = 3, maxSizeMB
                     }
                 }}
                 onChange={info => {
-                    console.log("info", info);
                     let newFiles = info?.fileList;
                     if (info.file.status === "done") {
                         message.success("上传成功");

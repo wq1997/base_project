@@ -93,9 +93,9 @@ const Chart = ({title, dataSource, searchParams}) => {
                         notMerge
                         onEvents={{
                             click: (e)=>{
-                                let url = "/analysis-results";
+                                let url = "/analysis-results"; 
                                 if(!searchParams.projectName){
-                                    url = url+`?projectName=${e.seriesName}`
+                                    url = url+`?projectName=${encodeURIComponent(e.seriesName)}`
                                 }else{
                                     url = url+`?projectName=${searchParams.projectName}&deviceBoxNo=${e.seriesName}`
                                 }

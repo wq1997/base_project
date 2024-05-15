@@ -4,6 +4,7 @@ import { PlusOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { history, useLocation } from "umi";
 import { SearchInput } from "@/components";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
+import { getUrlParams } from "@/utils/utils";
 import "./index.less";
 import dayjs from "dayjs";
 import ExceptionInfo from "./ExceptionInfo";
@@ -14,16 +15,17 @@ import {
 
 const Account = () => {
     const location = useLocation();
-    const projectNameRef = useRef();
+    const params = getUrlParams(location?.search);
+    const projectNameRef = useRef(decodeURIComponent(params?.projectName || ""));
     const childrenProjectNameRef = useRef();
     const dataTypeRef = useRef();
     const devicePositionRef = useRef();
     const dimensionRef = useRef();
-    const deviceBoxNoRef = useRef();
+    const deviceBoxNoRef = useRef(decodeURIComponent(params?.deviceBoxNo || ""));
     const deviceTypeRef = useRef();
     const uploadTimeRef = useRef();
 
-    const [projectName, setProjectName] = useState();
+    const [projectName, setProjectName] = useState(decodeURIComponent(params?.projectName || ""));
     const [childrenProjectName, setChildrenProjectName] = useState();
     const [resultId, setResultId] = useState(undefined);
     const [dataType, setDataType] = useState();
@@ -32,7 +34,7 @@ const Account = () => {
     const [uploadTime, setUploadTime] = useState();
     const [dimension, setDimension] = useState();
     const [dimensionOptions, setDimensionOptions] = useState();
-    const [deviceBoxNo, setDeviceBoxNo] = useState();
+    const [deviceBoxNo, setDeviceBoxNo] = useState(decodeURIComponent(params?.deviceBoxNo || ""));
     const [deviceType, setDeviceType] = useState();
     const [deviceTypeOptions, setDeviceTypeOptions] = useState();
     const paginationRef = useRef(DEFAULT_PAGINATION);
@@ -126,6 +128,7 @@ const Account = () => {
         const projectName = projectNameRef.current;
         const childrenProjectName = childrenProjectNameRef.current;
         const dataType = dataTypeRef.current;
+        const deviceBoxNo = deviceBoxNoRef.current;
         const devicePosition = devicePositionRef.current;
         const deviceType = deviceTypeRef.current;
         const dimension = dimensionRef.current;
@@ -140,6 +143,7 @@ const Account = () => {
                 childrenProjectName,
                 dataType,
                 devicePosition,
+                deviceBoxNo,
                 deviceType,
                 dimension,
             },
@@ -178,7 +182,7 @@ const Account = () => {
 
     useEffect(() => {
         getInitData();
-        getList(location?.search?.split("=")[1]);
+        getList(params?.id);
     }, []);
 
     return (
@@ -224,20 +228,20 @@ const Account = () => {
                 />
                 <SearchInput
                     label="设备箱号"
-                    value={devicePosition}
-                    onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
-                        devicePositionRef.current = value;
-                        setDevicePosition(value);
-                    }}
-                />
-                <SearchInput
-                    label="设备位置"
                     value={deviceBoxNo}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         deviceBoxNoRef.current = value;
                         setDeviceBoxNo(value);
+                    }}
+                />
+                <SearchInput
+                    label="设备位置"
+                    value={devicePosition}
+                    onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        devicePositionRef.current = value;
+                        setDevicePosition(value);
                     }}
                 />
                 <div>

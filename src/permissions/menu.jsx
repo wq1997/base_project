@@ -89,7 +89,6 @@ const MyMenu = () => {
     const getSelectKeys = () => {
         setSelectedKeys(pathname);
     };
-    console.log("openkeys", openKeys);
     useEffect(() => {
         getSelectKeys();
         getOpenKeys();

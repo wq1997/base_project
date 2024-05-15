@@ -4,6 +4,7 @@ const SearchInput = ({
     showSearch = false,
     label = undefined,
     value = undefined,
+    disabled = false,
     placeholder = undefined,
     inputWidth = 200,
     type = "input",
@@ -20,6 +21,7 @@ const SearchInput = ({
             {type == "input" ? (
                 <Input
                     value={value}
+                    disabled={disabled}
                     style={{ width: inputWidth }}
                     placeholder={placeholder || `请输入${label}`}
                     onChange={e => onChange(e.target.value)}
@@ -28,6 +30,7 @@ const SearchInput = ({
                 <Select
                     showSearch={showSearch}
                     value={value}
+                    disabled={disabled}
                     placeholder={placeholder || `请选择${label}`}
                     allowClear={true}
                     style={{ width: inputWidth }}
