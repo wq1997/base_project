@@ -1,10 +1,12 @@
 import { useIntl } from "umi";
 import { Form, Select, DatePicker, Button, Flex, Radio, theme, Space } from "antd";
 import { Title } from "@/components";
+import { FORM_REQUIRED_RULE } from "@/utils/constants";
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import * as echarts from "echarts";
+import moment from "moment";
 
 const Revenue = () => {
     const intl = useIntl();
@@ -28,7 +30,7 @@ const Revenue = () => {
             },
             xAxis: [{
                 type: 'category',
-                data: ['湖北', '福建', '山东', '广西', '浙江', '河南', '河北', '安徽', '上海', '北京'],
+                data: ['湖北', '福建', '山东', '广西', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'],
                 axisLine: {
                     lineStyle: {
                         color: 'rgba(255,255,255,0.12)'
@@ -59,7 +61,7 @@ const Revenue = () => {
             }],
             series: [{
                 type: 'bar',
-                data: [300, 450, 770, 203, 255, 188, 156, 300, 400, 450],
+                data: [300, 450, 770, 203,300, 450, 770, 203,300, 450, 770, 203,300, 450, 770],
                 barWidth: 50,
                 itemStyle: {
                     normal: {
@@ -90,7 +92,8 @@ const Revenue = () => {
                     layout="inline"
                     initialValues={{
                         device: '',
-                        time: dayjs(),
+                        dayTime: [dayjs(moment().subtract(5, 'day').format("YYYY-MM-DD")), dayjs(moment().subtract(1, 'day').format("YYYY-MM-DD"))],
+                        yearTime: dayjs(),
                         timeType: 'DAY'
                     }}
                 >
@@ -106,9 +109,21 @@ const Revenue = () => {
                         <Form.Item noStyle dependencies={['timeType']}>
                                 {({getFieldsValue})=>{
                                     const { timeType } = getFieldsValue(['timeType']);
+                                    if(timeType==="DAY"){
+                                        return (
+                                            <Form.Item 
+                                                name="dayTime"
+                                            >
+                                                <DatePicker.RangePicker 
+                                                    maxDate={dayjs(moment().subtract(1, 'day').format('YYYY-MM-DD'), 'YYYY-MM-DD')} 
+                                                    style={{width: '300px', height: 40}}
+                                                />
+                                            </Form.Item>
+                                        )
+                                    }
                                     return (
-                                        <Form.Item name="time">
-                                            <DatePicker allowClear={false} picker={timeType?.toLocaleLowerCase()} style={{width: '250px', height: 40}}/>
+                                        <Form.Item name="yearTime">
+                                            <DatePicker allowClear={false} picker={"year"} style={{width: '250px', height: 40}}/>
                                         </Form.Item>
                                     )
                                 }}
@@ -116,7 +131,6 @@ const Revenue = () => {
                         <Form.Item name="timeType">
                                 <Radio.Group size="large">
                                     <Radio.Button value="DAY">日</Radio.Button>
-                                    <Radio.Button value="MONTH">月</Radio.Button>
                                     <Radio.Button value="YEAR">年</Radio.Button>
                                 </Radio.Group>
                         </Form.Item>
@@ -127,9 +141,13 @@ const Revenue = () => {
                         let format="YYYY-MM-DD";
                         const values = await form.validateFields();
                         const { timeType } = values;
-                        if(timeType==="MONTH") format="YYYY-MM";
-                        if(timeType==="YEAR") format="YYYY";
-                        values.time = dayjs(values.time).format(format);
+                        if(timeType==="YEAR"){
+                            format="YYYY";
+                            values.time = dayjs(values.yearTime).format(format);
+                        }
+                        if(timeType=="DAY"){
+                            values.time = values.dayTime&&values.dayTime?.length>0?[dayjs(values.dayTime[0]).format(format),dayjs(values.dayTime[1]).format(format)]:[];
+                        }
                         console.log(values);
                     }}
                     type="primary"
