@@ -2,7 +2,7 @@
 // 快捷键Ctrl+Win+i 添加注释
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import styles from "./index.less";
-import { theme, notification, Space, Flex, Select, message } from "antd";
+import { theme, notification, Space, Flex, Modal, message } from "antd";
 import { useSelector, useIntl } from "umi";
 import ManualMode from './component/ManualMode'
 import AutoMode from './component/AutoMode'
@@ -12,14 +12,15 @@ import { ISSUE_COMMAND } from '@/utils/subscribe/types';
 import { sendBurCmd2 } from '@/services/policy'
 
 
-function Com({id}) {
+function Com({ id }) {
     const [mode, setMode] = useState(0)
     const { token } = theme.useToken();
     const [devId, setDevId] = useState({});
     const [options, setOptions] = useState([]);
     const [initAllData, setInitAllData] = useState([]);
     const [historyAllData, setHistoryAllData] = useState({});
-    const [dtuId, setDtuId] = useState();
+    
+  const [isModalOpen, setIsModalOpen] = useState(false);
     const intl = useIntl();
     const t = (id) => {
         const msg = intl.formatMessage(
@@ -29,19 +30,21 @@ function Com({id}) {
         );
         return msg
     }
-    const handleOk = async (val) => {
-        console.log(val,mode,'ok');
+    const handleOk = async () => {
+        console.log(val, mode, 'ok');
         // changeType();
+        setMode(type)
         let { data } = await sendBurCmd2({
-            mode:val,
-            dtuId:id,
+            mode: type,
+            dtuId: id,
             cmdTypeId: 7000
         })
         if (data.code == 'ok') {
             message.success(t('命令下发成功'), 3);
         } else {
             message.error(t('命令下发失败'), 3);
-        }
+        };
+        setIsModalOpen(false);
     };
 
     useEffect(() => {
@@ -63,7 +66,7 @@ function Com({id}) {
                         message: t("执行结果"),
                         description: res.msg,
                     });
-                    res.code === "ok"? getHistory():null;
+                    res.code === "ok" ? getHistory() : null;
 
                 }
             }
@@ -71,12 +74,10 @@ function Com({id}) {
     }, [])
 
     const changeType = (type) => {
-        setMode(type)
-        // setIsModalOpen(true);
-        handleOk(type);
+        setIsModalOpen(true);
     }
     const getInitData = async () => {
-        let { data } = await getBurDtuDevInfo2({dtuId:id});
+        let { data } = await getBurDtuDevInfo2({ dtuId: id });
         setInitAllData(data.data);
         setDevId({
             pcsDevId: data?.data[0].devInfo?.pcs,
@@ -88,25 +89,15 @@ function Com({id}) {
     }
     const getHistory = async () => {
         if (id) {
-            let { data } = await getBurCmdHistory2({ dtuId:id });
+            let { data } = await getBurCmdHistory2({ dtuId: id });
             const result = data.data;
             setHistoryAllData(result);
-            if(result.hasOwnProperty("mode")){
+            if (result.hasOwnProperty("mode")) {
                 setMode(result?.mode)
             }
         }
     }
-    const changeDevice = async (val) => {
-        let arr = initAllData.find(it => it.sn === val);
-        setDevId({
-            pcsDevId: arr.devInfo?.pcs,
-            pcs1DevId: arr.devInfo?.pcsBranch[0],
-            pcs2DevId: arr.devInfo?.pcsBranch[1],
-            bms1DevId: arr.devInfo?.bms[0],
-            bms2DevId: arr.devInfo?.bms[1],
-        });
-        setDtuId(arr.dtuId);
-    }
+
     return (
         <div className={styles.content} style={{ backgroundColor: token.contentBgc }}>
             <Space style={{ width: '100%' }} size={30} direction="vertical" >
@@ -137,9 +128,11 @@ function Com({id}) {
                         </Flex>
                     </Flex>
                 </div>
-                { mode == 1 ? <AutoMode devId={devId} dtuId={id} historyAllData={historyAllData}/> : <ManualMode devId={devId} dtuId={id} historyAllData={historyAllData}/>}
+                {mode == 1 ? <AutoMode devId={devId} dtuId={id} historyAllData={historyAllData} /> : <ManualMode devId={devId} dtuId={id} historyAllData={historyAllData} />}
             </Space>
-
+            <Modal  open={isModalOpen} onOk={handleOk} onCancel={()=>setIsModalOpen(false)}>
+               
+            </Modal>
         </div>
     )
 }
