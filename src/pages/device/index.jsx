@@ -112,6 +112,24 @@ const RealtimeAlarm = () => {
 
     ];
 
+    const [incomeData, setIncomeData] = useState([
+        {
+            label: t('日收益'),
+            value: 180,
+            color: '#0082FF'
+        },
+        {
+            label: t('月收益'),
+            value: 180,
+            color: '#EEC830'
+        },
+        {
+            label: t('累计收益'),
+            value: 180,
+            color: '#DE83C4'
+        }
+    ])
+
     useEffect(() => {
         getAllPlant();
     }, [])
@@ -278,6 +296,7 @@ const RealtimeAlarm = () => {
             unit: t('个')
         },
     ];
+
     if (tableColum.length===7&&user?.roleId == 1) {
         tableColum[5]={};
     }
@@ -347,6 +366,27 @@ const RealtimeAlarm = () => {
                                     )
                                 })}
 
+                            </div>
+                        }
+                    />
+                </div>
+
+                <div className={styles.third}>
+                    <CardModel
+                        title={t('收益统计')}
+                        bgc={'#0D1430'}
+                        content={
+                            <div className={styles.content}>
+                                <div className={styles.contentLeft}>
+                                    {incomeData?.map(item => {
+                                        return <div>{item.label}</div>
+                                    })}
+                                </div>
+                                <div className={styles.contentRight}>
+                                    {incomeData?.map(item => {
+                                        return <div><span style={{color:item.color, fontSize: 20}}>{item.value}</span> {t('元')}</div>
+                                    })}
+                                </div>
                             </div>
                         }
                     />

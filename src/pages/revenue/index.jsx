@@ -1,7 +1,6 @@
 import { useIntl } from "umi";
 import { Form, Select, DatePicker, Button, Flex, Radio, theme, Space } from "antd";
 import { Title } from "@/components";
-import { FORM_REQUIRED_RULE } from "@/utils/constants";
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
@@ -86,7 +85,7 @@ const Revenue = () => {
     return (
         <Space size={30} direction="vertical" style={{width: '100%', height:'100%', padding: 30}}>
             <Flex justify="center" align="center" gap={10}>
-                <span>数据项：</span>
+                <span>{intl.formatMessage({id: '数据项'})}：</span>
                 <Form 
                     form={form} 
                     layout="inline"
@@ -101,7 +100,7 @@ const Revenue = () => {
                         <Form.Item name="device">
                             <Select 
                                 options={[
-                                    {label: '总收益', value: ''}
+                                    {label: intl.formatMessage({id: '总收益'}), value: ''}
                                 ]}
                                 style={{width: '250px', height: 40}}
                             />
@@ -130,8 +129,8 @@ const Revenue = () => {
                         </Form.Item>
                         <Form.Item name="timeType">
                                 <Radio.Group size="large">
-                                    <Radio.Button value="DAY">日</Radio.Button>
-                                    <Radio.Button value="YEAR">年</Radio.Button>
+                                    <Radio.Button value="DAY">{intl.formatMessage({id: '日'})}</Radio.Button>
+                                    <Radio.Button value="YEAR">{intl.formatMessage({id: '年'})}</Radio.Button>
                                 </Radio.Group>
                         </Form.Item>
                     </Flex>
@@ -153,7 +152,7 @@ const Revenue = () => {
                     type="primary"
                     style={{padding: '0 20px', height: 40}}
                 >
-                    查询
+                    {intl.formatMessage({id: '查询'})}
                 </Button>
                 <Button 
                     type="primary"
@@ -166,7 +165,7 @@ const Revenue = () => {
                 </Button>
             </Flex>
             <Space direction="vertical" style={{width: '100%'}}>
-                <Title title={"收益统计(元)"}/>
+                <Title title={`${intl.formatMessage({id: '收益统计'})}(${intl.formatMessage({id: '元'})})`}/>
                 <ReactECharts option={option} style={{width: '100%', height: 'calc(100vh - 250px)'}}/>
             </Space>
         </Space>

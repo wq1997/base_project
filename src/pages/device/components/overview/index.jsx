@@ -272,7 +272,7 @@ const OverView = () => {
                                         <div>
                                             <div className={styles.subTitle}>
                                                 <img src={bmsItem.icon}/>
-                                                <div style={{fontSize: 20}}>{bmsItem.title}</div>
+                                                <div style={{fontSize: 18}}>{intl.formatMessage({id: bmsItem.title})}</div>
                                             </div>
                                             <div className={styles.subArea}>
                                                 <div className={styles.subAreaLeft}>

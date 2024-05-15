@@ -1827,4 +1827,8 @@ export default {
 '请输入防逆流触发值':'Please enter the Anti-reflux trigger value',
 '除湿机参数设置': 'Dehumidifier parameter settings',
 '市电系统': 'Power System',
+'元': 'CNY',
+'日': 'day',
+'年': 'year',
+'总收益': 'Total revenue',
 } 
