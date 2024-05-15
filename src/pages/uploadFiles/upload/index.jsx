@@ -71,14 +71,19 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
 
     const onFinish = async values => {
         setSpinning(true);
-        const res = await saveUploadFilesServer(
-            toFormData({
-                id: detailId,
-                ...values,
-                files: values?.testUnits?.map(item => item.file[0]),
-                testUnits: values?.testUnits?.map(item => item.name),
-            })
-        );
+        let res;
+        try {
+            res = await saveUploadFilesServer(
+                toFormData({
+                    id: detailId,
+                    ...values,
+                    files: values?.testUnits?.map(item => item.file[0]),
+                    testUnits: values?.testUnits?.map(item => item.name),
+                })
+            );
+        } catch (e) {
+            setSpinning(false);
+        }
         setSpinning(false);
         if (res?.data?.code == 0) {
             message.success("解析成功");
@@ -360,7 +365,6 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
                                             <MinusCircleOutlined
                                                 onClick={() => {
                                                     remove(name);
-
                                                     const _testFiles = [...testFiles];
                                                     _testFiles.splice(index, 1);
                                                     setTestFiles(_testFiles);
