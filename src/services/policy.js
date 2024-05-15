@@ -64,3 +64,11 @@ export const getPricePlan = (payload) => {
 export const savePricePlan = (payload) => {
     return axiosInstance.post(`${path}/price/savePricePlan`, payload);
 }
+// 获取运维命令
+export const getOMCommands = (payload) => {
+    return axiosInstance.get(`${path}/strategy/getOMCommands?gridPointId=${payload.gridPointId}`);
+}
+// 下发运维命令
+export const sendOMCommands = (payload) => {
+    return axiosInstance.post(`${path}/strategy/sendOMCommands`, payload);
+}

@@ -60,7 +60,6 @@ function Com(props) {
     arr.push(delInitData(BMS, 'BMS'));
     arr.push(delInitData(PCS, 'PCS'));
     arr.push(delInitData(others, 'others'));
-    console.log("AAAA", arr)
     let devId = "";
     let currentValue = "";
     arr?.forEach(item => {
@@ -120,7 +119,6 @@ function Com(props) {
         it.label = it.dataTypeDesc;
       })
       targetOption.children = data.data;
-      console.log("XXXX", packList)
       setPackList([...packList]);
     };
   };
@@ -132,7 +130,6 @@ function Com(props) {
         return { devId: it[1], dataId: it[2] };
       });
       dateList = [dateStr];
-      console.log(dataTypeList, 'dataTypeList');
       if (dataTypeList.length > 3) {
         message.warning('最多选择3个对比项');
         return

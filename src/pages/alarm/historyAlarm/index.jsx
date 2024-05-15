@@ -1,7 +1,8 @@
 import Table from '@/components/Table.jsx'
 import { alarmTableColums } from '@/utils/constants'
+import { getQueryString, downLoadExcelMode } from "@/utils/utils";
 import { useEffect, useState } from 'react'
-import { useSelector,useIntl } from "umi";
+import { useSelector, useIntl } from "umi";
 import styles from "./index.less";
 import { Pagination, Select, Input, theme, Button, DatePicker } from "antd"
 import { CardModel } from "@/components";
@@ -25,14 +26,14 @@ const RealtimeAlarm = () => {
   const [screenH, setScreenH] = useState('');
   const [scroolY, setScroolY] = useState(200);
   const intl = useIntl();
-    const t = (id) => {
-        const msg = intl.formatMessage(
-            {
-                id,
-            },
-        );
-        return msg
-    }
+  const t = (id) => {
+    const msg = intl.formatMessage(
+      {
+        id,
+      },
+    );
+    return msg
+  }
   useEffect(() => {
     setScreenH(document.documentElement.clientHeight || document.body.clientHeight)
     window.addEventListener("resize", handleWindowResize)
@@ -138,6 +139,14 @@ const RealtimeAlarm = () => {
   const changeTime = (value) => {
     setTime(value);
   }
+  const downloadExcel = () => {
+    let fileName = t('历史告警');
+    let sheetFilter = ['type','priorName','desc','deviceName','name','plantName','begin','end'];
+    let sheetHeader = [t('设备类型'),t('告警等级'),t('告警描述'),t('设备名称'),t('并网点'),t('电站名称'),t('开始时间'),t('结束时间'),];
+    let sheetData = [...data.records];
+    let sheetName = '';
+    downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader, sheetName);
+  }
   const topData = [
     {
       icon: <HistoryOutlined />,
@@ -192,11 +201,11 @@ const RealtimeAlarm = () => {
                 <div className={styles.pieItem_bottom} style={{ color: token.smallTitleColor }}>{t('告警等级分布')}</div>
               </div>
               <div className={styles.pieItem}>
-                <PieEcharts 
+                <PieEcharts
                   top={'50%'}
-                allData={{
-                  total: sum(dataTotal?.typeStatistics), subtext: t('总数'), data: dataTotal?.typeStatistics 
-                }}></PieEcharts>
+                  allData={{
+                    total: sum(dataTotal?.typeStatistics), subtext: t('总数'), data: dataTotal?.typeStatistics
+                  }}></PieEcharts>
                 <div className={styles.pieItem_bottom} style={{ color: token.smallTitleColor }}>{t("告警类别分布")}</div>
 
               </div>
@@ -238,7 +247,7 @@ const RealtimeAlarm = () => {
           </div>
 
           <div className={styles.buttons}>
-            <Button type="primary" style={{ backgroundColor: token.defaultBg }} >
+            <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downloadExcel}>
               {t('导出')} Excel
             </Button>
           </div>

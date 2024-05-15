@@ -7,21 +7,19 @@ import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts";
 import { CardModel } from "@/components";
 import { pcsDataType } from '@/utils/constants';
-import { getQueryString,downLoadExcelMode} from "@/utils/utils";
+import { getQueryString, downLoadExcelMode } from "@/utils/utils";
 import { obtainPCSParameterData } from '@/services/deviceTotal';
 import dayjs from 'dayjs';
 import { useSelector, useIntl } from "umi";
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 function Com(props) {
-    const [xxx, setXxx] = useState('');
     const { token } = theme.useToken();
-    const [option, setOption] = useState([]);
     const [optionEchart, setOptionEchart] = useState({})
-    const activitesRef = useRef([]);
     const [date, setDate] = useState(dayjs(new Date()));
     const [type, setType] = useState(pcsDataType[0].value);
-    const [title,setTitle]=useState('实时功率')
+    const [title, setTitle] = useState('实时功率');
+    const [excelData, setExcelData] = useState([]);
     const intl = useIntl();
     const id = getQueryString("id");
     const t = (id) => {
@@ -35,7 +33,7 @@ function Com(props) {
     function onChange(date) {
         setDate(date);
     }
-    const changeType = (value,label) => {
+    const changeType = (value, label) => {
         setType(value);
         setTitle(label?.children.props?.id);
     }
@@ -46,19 +44,27 @@ function Com(props) {
             dateOne: dayjs(new Date()).format('YYYY-MM-DD'),
             dateTwo: date.format('YYYY-MM-DD'),
         });
+        let excelData = [];
         let dataX = []
         let nowY = [];
         let toY = [];
-        data.data?.nowDay?.map(it => {
+        data.data?.nowDay?.map((it, index) => {
             dataX.push(dayjs(it.time).format('HH:mm'));
             nowY.push(it.value);
+            excelData.push({
+                time: dayjs(it.time).format('HH:mm'),
+                nowDay: it.value,
+                toDay: data.data?.toDay[index].value
+            })
         })
-        dataX.length===0? data.data?.toDay?.map(it => {
+        dataX.length === 0 ? data.data?.toDay?.map((it, index) => {
             toY.push(it.value);
-            dataX.push(dayjs(it.time).format('HH:mm'))
-        }):data.data?.toDay?.map(it => {
+            dataX.push(dayjs(it.time).format('HH:mm'));
+
+        }) : data.data?.toDay?.map((it, index) => {
             toY.push(it.value);
         });
+        setExcelData([...excelData]);
         setOptionEchart({
             tooltip: {
                 trigger: 'axis',
@@ -68,10 +74,10 @@ function Com(props) {
             },
             legend: {
                 textStyle: {
-                    color:token.smallTitleColor,
+                    color: token.smallTitleColor,
                 },
-                data: [ `今日${title}`,`${date.format('YYYY-MM-DD')}${title}`]
-              },
+                data: [`今日${title}`, `${date.format('YYYY-MM-DD')}${title}`]
+            },
             grid: {
                 left: '3%',
                 right: '4%',
@@ -140,7 +146,7 @@ function Com(props) {
                         normal: {
                             color: '#FF8E07',
                             lineStyle: {
-                                color:'#FF8E07',
+                                color: '#FF8E07',
                                 width: 1
                             },
                             areaStyle: {
@@ -149,7 +155,7 @@ function Com(props) {
                                     color: token.sub_innerBgc
                                 }, {
                                     offset: 0.7,
-                                    color:' #FF8E07'
+                                    color: ' #FF8E07'
                                 }]),
                             }
                         }
@@ -159,20 +165,12 @@ function Com(props) {
             ]
         });
     }
-    const downLoadFoodModel = () => {  // 菜品模板下载
-        // let fileName = options.find(it => it.value == dataType)?.label;
-        // console.log(data,1212121221);
-        // let sheetData = [];
-        // data.map(it => {
-        //     console.log(it);
-        // })
-        // let sheetFilter = ['time', 'value'];
-        // let sheetHeader = ["时刻", fileName];
-        // sheetHeader.push(it.title);
-        // let nowtime = new Date()
-        // let sheetName = `${nowtime.getFullYear()}-${nowtime.getMonth() + 1}-${nowtime.getDate()}`
-        // console.log(sheetName)
-        // downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader, sheetName)
+    const downLoadFoodModel = () => {
+        let fileName = title;
+        let sheetData = excelData;
+        let sheetFilter = ['time', 'nowDay', 'toDay'];
+        let sheetHeader = ["时刻", dayjs(new Date()).format('YYYY-MM-DD'), dayjs(date)?.format('YYYY-MM-DD')];
+        downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader,)
     };
 
     useEffect(() => {
@@ -183,9 +181,9 @@ function Com(props) {
             <div className={styles.searchHead}>
                 <span className={styles.margRL}> {t('对比日期')}:</span>
                 <DatePicker onChange={onChange} defaultValue={date} />
-               <span  className={styles.margRL}>{t('数据项')}:</span> 
+                <span className={styles.margRL}>{t('数据项')}:</span>
                 <Select
-                className={styles.margR}
+                    className={styles.margR}
                     style={{ width: 240 }}
                     defaultValue={pcsDataType[0]?.value}
                     onChange={changeType}
@@ -198,7 +196,7 @@ function Com(props) {
                 <Button type="primary" className={styles.firstButton} onClick={queryData}>
                     {t('查询')}
                 </Button>
-                <Button type="primary" style={{ backgroundColor: token.defaultBg }}  onClick={downLoadFoodModel}>
+                <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downLoadFoodModel}>
                     {t('导出')}excel
                 </Button>
             </div>

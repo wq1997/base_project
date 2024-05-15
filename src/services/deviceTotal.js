@@ -119,7 +119,7 @@ export const getNowAlarmsByPv = (payload) => {
 }
 // 获取光伏在线告警
 export const getPyPower = (payload) => {
-    return axiosInstance.get(`${path}/pv/getPyPower?plantId=${payload.plantId}` );
+    return axiosInstance.get(`${path}/pv/getPvPower?plantId=${payload.plantId}` );
 }
 // 获取微网bms高级分析 初始化数据类型
 export const getBmsAnalyticsInitData = (payload) => {

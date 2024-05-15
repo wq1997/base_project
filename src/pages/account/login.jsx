@@ -70,7 +70,8 @@ const Login = () => {
   const getPublicKey = async () => {
     const res = await getPublicKeySever();
     if (res?.data) {
-      setPublicKey(res?.data)
+      setPublicKey(res?.data);
+      localStorage.setItem('publicKey',res?.data)
     }
   }
 

@@ -10,7 +10,7 @@ import dayjs from 'dayjs';
 import { useSelector, useIntl } from "umi";
 import { BmsDataType, BmcDataType } from '@/utils/constants'
 import { obtainBMSClustersList, obtainBMSParameterData } from '@/services/deviceTotal'
-import { getQueryString } from "@/utils/utils";
+import { getQueryString,downLoadExcelMode } from "@/utils/utils";
 
 const { Option } = Select;
 function Com({ id }) {
@@ -23,6 +23,8 @@ function Com({ id }) {
     const [title, setTitle] = useState('电压');
     const [unit, setUnit] = useState('V')
     const [date, setDate] = useState(dayjs(new Date()));
+    const [excelData,setExcelData]=useState([]);
+
     const intl = useIntl();
     const t = (id) => {
         const msg = intl.formatMessage(
@@ -55,12 +57,18 @@ function Com({ id }) {
             dateOne: dayjs(new Date()).format('YYYY-MM-DD'),
             dateTwo: date.format('YYYY-MM-DD'),
         });
+        let excelData=[];
         let dataX = []
         let nowY = [];
         let toY = [];
-        data.data?.nowDay?.map(it => {
+        data.data?.nowDay?.map((it,index) => {
             dataX.push(dayjs(it.time).format('HH:mm'));
             nowY.push(it.value);
+            excelData.push({
+                time:dayjs(it.time).format('HH:mm'),
+                nowDay:it.value,
+                toDay:data.data?.toDay[index].value
+            })
         })
         dataX.length===0? data.data?.toDay?.map(it => {
             toY.push(it.value);
@@ -68,6 +76,8 @@ function Com({ id }) {
         }):data.data?.toDay?.map(it => {
             toY.push(it.value);
         });
+        setExcelData([...excelData]);
+
         setOptionEchart({
             tooltip: {
                 trigger: 'axis',
@@ -168,6 +178,13 @@ function Com({ id }) {
             ]
         });
     };
+    const downLoadFoodModel = () => {  
+        let fileName =title;
+        let sheetData = excelData;
+        let sheetFilter = ['time', 'nowDay','toDay'];
+        let sheetHeader = ["时刻", dayjs(new Date()).format('YYYY-MM-DD'),dayjs(date)?.format('YYYY-MM-DD')];
+        downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader,)
+    };
     const getClusters = (data) => {
         data.map(it => {
             it.value = it.id;
@@ -224,7 +241,7 @@ function Com({ id }) {
                 <Button type="primary" className={styles.firstButton} onClick={() => getEchartsData(goalId)}>
                     {t('查询')}
                 </Button>
-                <Button type="primary" style={{ backgroundColor: token.defaultBg }} >
+                <Button type="primary" style={{ backgroundColor: token.defaultBg }}  onClick={downLoadFoodModel} >
                     {t('导出')}excel
                 </Button>
             </div>

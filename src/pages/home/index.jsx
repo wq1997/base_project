@@ -245,7 +245,6 @@ function OverView(props) {
         setCurrntGrid(grid?.data?.[0]?.id)
     }
     const getPowerOption = async () => {
-
         let { data: powerData } = await getGridPointPower({
             gridPointId: currntGrid
         });

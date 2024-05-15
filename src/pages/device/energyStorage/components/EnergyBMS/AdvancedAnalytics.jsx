@@ -7,7 +7,7 @@ import ReactECharts from "echarts-for-react";
 import { CardModel } from "@/components";
 import { getBmsAnalyticsInitData, analyticsBmsDiffData, analyticsBmsData } from '@/services/deviceTotal'
 import dayjs from 'dayjs';
-import { getQueryString } from "@/utils/utils";
+import { getQueryString, downLoadExcelMode } from "@/utils/utils";
 import { useSelector, useIntl } from "umi";
 const { SHOW_CHILD } = Cascader;
 function Com(props) {
@@ -26,10 +26,13 @@ function Com(props) {
     const [optionEchartVol, setOptionEchartVol] = useState({})
     const [optionEchartVolBot, setOptionEchartVolBot] = useState({})
     const [optionEchartTemBot, setOptionEchartTemBot] = useState({});
+    const [vAndTExcelTitle, setVAndTExcelTitle] = useState('');
+    const [vAndTExcelData, setVAndTExcelData] = useState([]);
+    const [diffData, setDiffData] = useState({});
 
 
     const intl = useIntl();
-    
+
     const t = (id) => {
         const msg = intl.formatMessage(
             {
@@ -62,7 +65,8 @@ function Com(props) {
     const getInitData = async () => {
         let { data } = await getBmsAnalyticsInitData({ id });
         setPackList(data?.data.packList);
-        setCellList(data?.data.cellList)
+        setCellList(data?.data.cellList);
+        setVAndTExcelTitle(`${data?.data?.cellList[0]?.label}/${data?.data?.cellList[0]?.children[0]?.label}`)
     }
     const getChartData = async () => {
         let dataTypeList = [];
@@ -92,7 +96,7 @@ function Com(props) {
         let { tempInfo, volInfo } = data;
         handelData(volInfo, setOptionEchartVol, 1);
         handelData(tempInfo, setOptionEchartTem, 2);
-
+        setDiffData(data);
     }
     const getBottomChartData = async () => {
         let { data } = await analyticsBmsData({
@@ -100,15 +104,24 @@ function Com(props) {
             dataType: cellReq[1],
             date: dateBottom.format('YYYY-MM-DD')
         });
+        let excelArr = [];
+        data.data?.tData?.map((it, index) => {
+            excelArr.push({
+                time: dayjs(it.time).format('HH:mm:ss'),
+                tempInfo: it.value,
+                volInfo: data.data?.vData[index]?.value
+            })
+        });
+        setVAndTExcelData([...excelArr]);
         dealDataBot(data.data?.tData, setOptionEchartTemBot, t("温度"));
         dealDataBot(data.data?.vData, setOptionEchartVolBot, t("电压"));
 
     }
     const dealDataBot = (data, setHandel, title) => {
         let arr = [];
-        data?.map(it => {
-            arr.push([dayjs(it.time).format('HH:mm:ss'), it.value])
-        })
+        data?.map((it, index) => {
+            arr.push([dayjs(it.time).format('HH:mm:ss'), it.value]);
+        });
         setHandel({
             ...baseOption, series: [{
                 name: title,
@@ -127,6 +140,41 @@ function Com(props) {
             }]
         });
 
+    }
+    const downLoadVAndT = () => {
+        let fileName = vAndTExcelTitle;
+        let sheetData = vAndTExcelData;
+        let sheetName = dateBottom.format('YYYY-MM-DD');
+        let sheetFilter = ['time', 'volInfo', 'tempInfo'];
+        let sheetHeader = [t("时刻"), `${t('电压')}V`, `${t('温度')}℃`];
+        console.log(fileName, sheetData, sheetName);
+        downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader, sheetName)
+    };
+    const downLoadVAndTDiff = () => {
+        var option = {
+            datas:[]
+        };
+        option.fileName = t('温差压差');
+        diffData?.tempInfo?.map((item,index) => {
+            let data = [];
+            item?.data?.map((it, i) => {
+                data.push({
+                    time: dayjs(it.time).format('HH:mm:ss'),
+                    tempInfo: it?.diff,
+                    volInfo: diffData?.volInfo[index]?.data[i]?.diff,
+                })
+            })
+            option.datas.push({
+                sheetData: data,
+                sheetName: item?.date,
+                sheetFilter : ['time', 'volInfo', 'tempInfo'],
+                sheetHeader : [t("时刻"), `${t('压差')}V`, `${t('温差')}℃`],
+                columnWidths: ['8', '4'],
+            })
+        })
+        const ExportJsonExcel = require("js-export-excel");
+        var toExcel = new ExportJsonExcel(option);
+        toExcel.saveExcel();
     }
     const handelData = (data, setHandel, val) => {
         let series = []
@@ -162,11 +210,12 @@ function Com(props) {
                     type: 'shadow'
                 },
                 formatter: (params) => getToolTip(params, data, val),
-            }, legend: { ...baseOption.legend, data: series?.map(item => item.name),
-             }, series: [...series]
+            }, legend: {
+                ...baseOption.legend, data: series?.map(item => item.name),
+            }, series: [...series]
         });
     }
-    const changePack = (val,la) => {
+    const changePack = (val, la) => {
         setPackReq(val)
     }
     const changeWay = (val) => {
@@ -198,13 +247,13 @@ function Com(props) {
                     <div>
                       <span style="background:${color};width:10px;height:10px;border-radius:50%;display:inline-block"></span>
                       ${data[seriesIndex].date}：${time} <br/>
-                      ${t('电压差')}：${diff||""} <br/>
-                      ${t("最大电压")}：${maxPackValue||""} (${t(
+                      ${t('电压差')}：${diff || ""} <br/>
+                      ${t("最大电压")}：${maxPackValue || ""} (${t(
                         "第"
-                    )}${maxPackNo||""}${t("节")})<br/>
-                      ${t("最小电压")}：${minPackValue||""} (${t(
+                    )}${maxPackNo || ""}${t("节")})<br/>
+                      ${t("最小电压")}：${minPackValue || ""} (${t(
                         "第"
-                    )}${minPackNo||""}${t("节")})<br/>
+                    )}${minPackNo || ""}${t("节")})<br/>
                       </div>
                     `);
                 } else {
@@ -212,13 +261,13 @@ function Com(props) {
                     <div>
                       <span style="background:${color};width:10px;height:10px;border-radius:50%;display:inline-block"></span>
                       ${data[seriesIndex].date}：${time} <br/>
-                      ${t('温差')}：${diff||""} <br/>
-                      ${t("最高温度")}：${maxPackValue||""} (${t(
+                      ${t('温差')}：${diff || ""} <br/>
+                      ${t("最高温度")}：${maxPackValue || ""} (${t(
                         "采样点"
-                    )}${maxPackNo||""})<br/>
-                      ${t("最低温度")}：${minPackValue||""} (${t(
+                    )}${maxPackNo || ""})<br/>
+                      ${t("最低温度")}：${minPackValue || ""} (${t(
                         "采样点"
-                    )}${minPackNo||""})<br/>
+                    )}${minPackNo || ""})<br/>
                       </div>
                     `);
                 }
@@ -249,7 +298,7 @@ function Com(props) {
             itemWidth: 6,
             itemGap: 20,
             textStyle: {
-                color:token.smallTitleColor,
+                color: token.smallTitleColor,
             }
         },
         xAxis: [
@@ -267,15 +316,15 @@ function Com(props) {
         ],
         dataZoom: [{ type: "inside" }],
         toolbox: {
-          show: true,
-          right: 25,
-          feature: {
-            magicType: { type: ["line", "bar"], title: "", default: "line" },
-            dataZoom: {
-              yAxisIndex: "none",
+            show: true,
+            right: 25,
+            feature: {
+                magicType: { type: ["line", "bar"], title: "", default: "line" },
+                dataZoom: {
+                    yAxisIndex: "none",
+                },
+                saveAsImage: {},
             },
-            saveAsImage: {},
-          },
         },
         yAxis: [
             {
@@ -302,7 +351,7 @@ function Com(props) {
                     <Cascader
                         className={styles.margRL}
                         style={{ width: 240 }}
-                        onChange={ changePack}
+                        onChange={changePack}
                         options={packList}
                         multiple={way === 1 ? true : false}
                         maxTagCount={1}
@@ -327,7 +376,7 @@ function Com(props) {
                     <Button type="primary" className={styles.firstButton} onClick={getChartData}>
                         {t('查询')}
                     </Button>
-                    <Button type="primary" style={{ backgroundColor: token.defaultBg }} >
+                    <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downLoadVAndTDiff}>
                         {t('导出')}excel
                     </Button>
                 </div>
@@ -357,7 +406,7 @@ function Com(props) {
                     <Cascader
                         className={styles.margRL}
                         style={{ width: 240 }}
-                        onChange={(val) => { setCellReq(val) }}
+                        onChange={(val, arr) => { setCellReq(val); setVAndTExcelTitle(`${arr[0].label}/${arr[1].label}`); console.log(val, a); }}
                         options={cellList}
                         showCheckedStrategy={SHOW_CHILD}
                         defaultValue={
@@ -375,7 +424,7 @@ function Com(props) {
                     <Button type="primary" className={styles.firstButton} onClick={getBottomChartData}>
                         {t('查询')}
                     </Button>
-                    <Button type="primary" style={{ backgroundColor: token.defaultBg }} >
+                    <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downLoadVAndT}>
                         {t('导出')}excel
                     </Button>
                 </div>

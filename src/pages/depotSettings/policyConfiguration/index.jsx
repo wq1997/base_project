@@ -141,7 +141,7 @@ function Com(props) {
   return (
     <div className={styles.contents}>
       <div className={styles.hearder} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal }}>
-        并网点:
+       {t('并网点')}:
         <Select
           style={{ width: '200px', marginLeft: '10px' }}
           key={seletOption[0]?.value}

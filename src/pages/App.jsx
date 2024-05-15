@@ -29,7 +29,12 @@ const App = () => {
             locale={localeEnum[locale]}
             theme={{
                 algorithm: theme === 'dark'? antdTheme.darkAlgorithm:antdTheme.defaultAlgorithm,
-                token: ThemeEnum[theme]
+                token: ThemeEnum[theme],
+                components: {
+                    Input: {
+                        autoComplete: 'off'
+                    }
+                }
             }}
         >
             <Outlet/>

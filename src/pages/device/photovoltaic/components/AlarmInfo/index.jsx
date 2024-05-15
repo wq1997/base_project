@@ -6,6 +6,7 @@ import styles from './index.less'
 import { theme } from "antd";
 import { useIntl } from "umi";
 import {getNowAlarmsByPv}from '@/services/deviceTotal'
+import dayjs from 'dayjs';
 
 function Com(props) {
     const [data, setData] = useState([])
@@ -24,6 +25,9 @@ function Com(props) {
     }, [])
     const getPvAlarm=async()=>{
         let {data}=await getNowAlarmsByPv({plantId:localStorage.getItem('plantId')});
+        data?.data?.map(it=>{
+            it.begin=dayjs(it.begin).format('YYYY-MM-DD')
+        })
         setData(data?.data);
     }
 
@@ -44,7 +48,7 @@ function Com(props) {
                             },
                             {
                                 title: t('告警时间'),
-                                key: 'time'
+                                key: 'begin'
                             },
                             {
                                 title: t('告警描述'),
