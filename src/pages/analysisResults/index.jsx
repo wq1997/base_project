@@ -191,7 +191,7 @@ const Account = () => {
                     value={projectName}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
-                        codeRef.current = value;
+                        projectNameRef.current = value;
                         setProjectName(value);
                     }}
                 />
