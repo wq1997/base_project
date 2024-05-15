@@ -82,6 +82,7 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
                 })
             );
         } catch (e) {
+            message.error('出错了，请重试');
             setSpinning(false);
         }
         setSpinning(false);
