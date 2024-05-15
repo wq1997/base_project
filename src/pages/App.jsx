@@ -18,7 +18,7 @@ const localeEnum = {
 
 const App = () => {
     const { theme, locale } = useSelector(state => state.global);
- 
+
     return (
         <ConfigProvider
             locale={localeEnum[locale]}

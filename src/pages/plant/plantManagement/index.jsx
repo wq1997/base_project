@@ -9,7 +9,7 @@ import styles from "./index.less";
 const Log = () => {
     const [dataSource, setDataSource] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [addPlantOpen, setAddPlantOpen] = useState(true);
+    const [addPlantOpen, setAddPlantOpen] = useState(false);
     const [editId, setEditId] = useState();
     const companyRef = useRef();
     const [company, setCompany] = useState();
