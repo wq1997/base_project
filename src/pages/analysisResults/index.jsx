@@ -19,6 +19,7 @@ const Account = () => {
     const dataTypeRef = useRef();
     const devicePositionRef = useRef();
     const dimensionRef = useRef();
+    const deviceBoxNoRef = useRef();
     const deviceTypeRef = useRef();
     const uploadTimeRef = useRef();
 
@@ -31,6 +32,7 @@ const Account = () => {
     const [uploadTime, setUploadTime] = useState();
     const [dimension, setDimension] = useState();
     const [dimensionOptions, setDimensionOptions] = useState();
+    const [deviceBoxNo, setDeviceBoxNo] = useState();
     const [deviceType, setDeviceType] = useState();
     const [deviceTypeOptions, setDeviceTypeOptions] = useState();
     const paginationRef = useRef(DEFAULT_PAGINATION);
@@ -59,7 +61,7 @@ const Account = () => {
             dataIndex: "devicePosition",
         },
         {
-            title: "设备编号",
+            title: "设备箱号",
             dataIndex: "deviceBoxNo",
         },
         {
@@ -163,6 +165,8 @@ const Account = () => {
         setDataType();
         devicePositionRef.current = undefined;
         setDevicePosition();
+        deviceBoxNoRef.current = undefined;
+        setDeviceBoxNo();
         uploadTimeRef.current = undefined;
         setUploadTime();
         dimensionRef.current = undefined;
@@ -219,12 +223,21 @@ const Account = () => {
                     }}
                 />
                 <SearchInput
-                    label="设备位置"
+                    label="设备箱号"
                     value={devicePosition}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         devicePositionRef.current = value;
                         setDevicePosition(value);
+                    }}
+                />
+                <SearchInput
+                    label="设备位置"
+                    value={deviceBoxNo}
+                    onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        deviceBoxNoRef.current = value;
+                        setDeviceBoxNo(value);
                     }}
                 />
                 <div>
