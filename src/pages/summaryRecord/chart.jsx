@@ -1,8 +1,9 @@
 import EChartsReact from "echarts-for-react";
 import { useEffect, useState } from "react";
 import { Empty } from "antd";
+import { history } from "umi";
 
-const Chart = ({title, dataSource}) => {
+const Chart = ({title, dataSource, searchParams}) => {
     const [option, setOption] = useState({});
     const [projectList, setProjectList] = useState([]);
 
@@ -23,7 +24,7 @@ const Chart = ({title, dataSource}) => {
                 data: xAxisData?.map(xAxis => dataSource?.[xAxis]?.[project]||0)
             }
         })
-        const showDataZoom = xAxisData?.length> 30; 
+        const showDataZoom = true; 
         setOption({
             tooltip: {
                 trigger: 'axis',
@@ -40,7 +41,7 @@ const Chart = ({title, dataSource}) => {
             },
             dataZoom: showDataZoom && [{
                 "start": 0,
-                "end": 30,
+                "end": 20,
                 "show": showDataZoom,
                 "height": 10
             }],
@@ -90,6 +91,17 @@ const Chart = ({title, dataSource}) => {
                         option={option}
                         style={{width: '100%', height: '100%'}}
                         notMerge
+                        onEvents={{
+                            click: (e)=>{
+                                let url = "/analysis-results";
+                                if(!searchParams.projectName){
+                                    url = url+`?projectName=${e.seriesName}`
+                                }else{
+                                    url = url+`?projectName=${searchParams.projectName}&deviceBoxNo=${e.seriesName}`
+                                }
+                                history.push(url);
+                            }
+                        }}
                     />
                     :
                     <div style={{position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)'}}>

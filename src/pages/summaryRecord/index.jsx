@@ -74,6 +74,7 @@ const Home = () => {
                     dataSource?
                     <Chart 
                         dataSource={dataSource}
+                        searchParams={searchParams}
                         title={`${searchParams?.uploadDateFrom} 至 ${searchParams?.uploadDateTo} ${searchParams?.projectName||""} 项目异常数据汇总`}
                     />
                     :
