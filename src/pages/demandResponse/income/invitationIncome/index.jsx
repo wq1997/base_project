@@ -21,9 +21,10 @@ import {
 } from "@/services/income";
 import dayjs from "dayjs";
 import { history, useSelector } from "umi";
-import { hasPerm } from "@/utils/utils";
+import { hasPerm, recordPage } from "@/utils/utils";
 
 const InvitationIncome = () => {
+    recordPage('op:profit_invite');
     const { token } = theme.useToken();
     const [form] = Form.useForm();
     const { user } = useSelector(state => state.user);

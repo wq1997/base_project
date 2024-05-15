@@ -11,9 +11,10 @@ import {
 } from "@/services/account";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import "./index.less";
-import { hasPerm } from "@/utils/utils";
+import { hasPerm, recordPage } from "@/utils/utils";
 
 const Account = () => {
+    recordPage('menu:user');
     const accountRef = useRef();
     const nameRef = useRef();
     const companyCodeRef = useRef();

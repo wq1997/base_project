@@ -3,7 +3,8 @@ import { getDvaApp } from "umi";
 import { message } from "antd";
 
 const getToken = () => localStorage.getItem("Token");
-const getCompanyCode = () =>localStorage.getItem('currentCompanyCode')||""
+const getCompanyCode = () => localStorage.getItem('currentCompanyCode')||"";
+const getPageKey =  () => localStorage.getItem('page')||"";
 
 const instance = axios.create({
     timeout: 10000,
@@ -17,6 +18,7 @@ instance.interceptors.request.use(
     config => {
         config.headers.Authorization = getToken();
         config.headers.CompanyCode = getCompanyCode();
+        config.headers.OperationKey = getPageKey();
         return config;
     },
     error => {

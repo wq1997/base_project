@@ -18,8 +18,10 @@ import companyLevelDarkImg from "../../../../public/images/companyLevelDark.svg"
 import companyLevelRightDarkImg from "../../../../public/images/companyLevelRightDark.svg";
 import companyLevelRightImg from "../../../../public/images/companyLevelRight.svg";
 import LoadStatisc from "./LoadStatisc";
+import { recordPage } from "@/utils/utils";
 
 const User = () => {
+    recordPage('op:user_mode');
     const { token } = antdTheme.useToken();
     const { theme } = useSelector(state => state.global);
     const [dataSource, setDataSource] = useState({});

@@ -14,8 +14,10 @@ import tianguImg from "../../../../../public/images/tiangu.svg";
 import { 
     getOverviewIncome as getOverviewIncomeServe,
 } from "@/services/income";
+import { recordPage } from "@/utils/utils";
 
 const Overview = () => {
+    recordPage('op:profit_dashboard');
     const { token } = antdTheme.useToken();
     const [dateType, setDateType] = useState('Year');
     const [date, setDate] = useState(dayjs(moment().format("YYYY")));

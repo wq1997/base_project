@@ -9,10 +9,11 @@ import {
     deleteCompany as deleteCompanyServer,
 } from "@/services/company";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
-import { hasPerm } from "@/utils/utils";
+import { hasPerm, recordPage } from "@/utils/utils";
 import "./index.less";
 
 const Company = () => {
+    recordPage('menu:company');
     const nameRef = useRef();
     const [editId, setEditId] = useState();
     const { user } = useSelector(state => state.user);

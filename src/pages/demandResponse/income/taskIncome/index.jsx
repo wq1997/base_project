@@ -5,8 +5,10 @@ import { SearchInput, StaticsCard } from "@/components";
 import { getTaskIncomeList as getTaskIncomeListServer } from "@/services/income";
 import dayjs from "dayjs";
 import { useLocation, history } from "umi";
+import { recordPage } from "@/utils/utils";
 
 const TaskIncome = () => {
+    recordPage('op:profit_task');
     const location = useLocation();
     const initInviteCode = location?.search.split("=")[1];
     const { token } = theme.useToken();

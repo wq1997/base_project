@@ -76,3 +76,7 @@ export const getUrlParams = url => {
 export const hasPerm = (user, code) => {
     return user?.selfPermCodes?.includes(code);
 };
+
+export const recordPage = (key) => {
+    setLocalStorage('page', key)
+}

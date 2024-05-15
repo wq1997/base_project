@@ -10,9 +10,10 @@ import {
 } from "@/services/company";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import "./index.less";
-import { hasPerm } from "@/utils/utils";
+import { hasPerm, recordPage } from "@/utils/utils";
 
 const Company = () => {
+    recordPage('menu:company_ratings');
     const companyNameRef = useRef();
     const statusRef = useRef();
     const { user } = useSelector(state => state.user);

@@ -9,11 +9,12 @@ import {
     refuseTask as refuseTaskServer,
 } from "@/services/task";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
-import { hasPerm } from "@/utils/utils";
+import { hasPerm, recordPage } from "@/utils/utils";
 import "./index.less";
 import dayjs from "dayjs";
 
 const Account = () => {
+    recordPage('op:invite_task');
     const location = useLocation();
     const initInviteCode = location?.search.split("=")[1];
     const { user } = useSelector(state => state.user);

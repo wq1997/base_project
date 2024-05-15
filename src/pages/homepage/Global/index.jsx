@@ -11,8 +11,10 @@ import {
 } from "@/services"
 import { useEffect } from "react";
 import { useSelector } from "umi";
+import { recordPage } from "@/utils/utils";
 
 const Global = () => {
+    recordPage('op:global_mode');
     const { theme } = useSelector(state => state.global);
     const { token } = antdTheme.useToken();
     const colorList = [

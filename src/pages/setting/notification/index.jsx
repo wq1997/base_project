@@ -2,12 +2,14 @@ import React, { useState, useEffect, useRef } from "react";
 import { CardPage } from "@/components";
 import { Button, Space, Table, Tooltip, Card} from "antd";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
+import { recordPage } from "@/utils/utils";
 import { 
     getNotificationList as getNotificationListServe,
 } from "@/services";
 import { history } from "umi";
 
 const Notification = () => {
+    recordPage('menu:notice');
     const [dataSource, setDataSource] = useState([]);
     const [loading, setLoading] = useState(false);
 

@@ -14,13 +14,14 @@ import {
     invalidInvite as invalidInviteServer,
 } from "@/services/invitation";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
-import { hasPerm } from "@/utils/utils";
+import { hasPerm, recordPage } from "@/utils/utils";
 import "./index.less";
 import dayjs from "dayjs";
 
 let invalidReason = undefined;
 
 const Account = () => {
+    recordPage('op:invite_list');
     const location = useLocation();
     const initCode = location?.search.split("=")[1];
     const { user } = useSelector(state => state.user);

@@ -2,12 +2,14 @@ import React, { useState, useEffect, useRef } from "react";
 import { SearchInput, CardPage } from "@/components";
 import { Button, Space, Table, Tooltip } from "antd";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
+import { recordPage } from "@/utils/utils";
 import { 
     getOperationLog as getOperationLogServe
 } from "@/services"
 import styles from "./index.less";
 
 const Log = () => {
+    recordPage('menu:sys_logs');
     const [dataSource, setDataSource] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -38,7 +40,7 @@ const Log = () => {
         },
         {
             title: "操作名称",
-            dataIndex: "operatorName",
+            dataIndex: "operationName",
         },
         {
             title: "操作KEY",
@@ -162,6 +164,10 @@ const Log = () => {
                 })}
                 columns={columns}
                 pagination={pagination}
+                onChange={pagination => {
+                    paginationRef.current = pagination;
+                    getList();
+                }}
             />
         </CardPage>
     )

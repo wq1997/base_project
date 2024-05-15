@@ -10,11 +10,12 @@ import {
     getRoleList as getRoleListServe,
     deleteRole as deleteRoleServe,
 } from "@/services";
-import { hasPerm } from "@/utils/utils";
+import { hasPerm, recordPage } from "@/utils/utils";
 import { Title } from "@/components";
 import styles from "./index.less";
 
 const Role = () => {
+    recordPage('menu:role');
     const [form] = Form.useForm();
     const { user } = useSelector(state => state.user);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
