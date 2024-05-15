@@ -22,9 +22,9 @@ main-battery-tools：电池诊断工具
 main-caietong：采e通web  
 main-large-screen：运维大屏  
 main-run-maintenance：运维管理系统  
-main-small-scale-energy-storage-372：372  
-main-small-scale-energy-storage-gb-1.0: 国标1.0 215  
-main-small-scale-energy-storage-gb-2.0: 国标2.0 215  
+main-small-scale-energy-storage-372：保加利亚372  
+main-small-scale-energy-storage-gb-215：国标 215 (包括国标1.0和国标2.0), 从(保加利亚372)分支切换过来的。  
 main-twin-platform：采日工商业微网孪生平台  
+main-twin-platform-home-372: 国内372,从(采日工商业微网孪生平台)切换过来的。  
 main-vpp：采日VPP  
 main-photovoltaic-system: 光伏系统  
