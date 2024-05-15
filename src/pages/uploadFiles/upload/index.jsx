@@ -220,16 +220,16 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
                     </Form.Item>
 
                     <Form.Item
-                        label="设备编号"
+                        label="设备箱号"
                         name="deviceBoxNo"
                         rules={[
                             {
                                 required: true,
-                                message: "请输入设备编号",
+                                message: "请输入设备箱号",
                             },
                             {
                                 pattern: ALL_SPACE_REG,
-                                message: "请输入设备编号",
+                                message: "请输入设备箱号",
                             },
                         ]}
                     >

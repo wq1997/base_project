@@ -23,6 +23,7 @@ const Account = () => {
     const childrenProjectNameRef = useRef();
     const dataTypeRef = useRef();
     const devicePositionRef = useRef();
+    const deviceBoxNoRef = useRef();
     const dimensionRef = useRef();
     const deviceTypeRef = useRef();
     const uploadTimeRef = useRef();
@@ -33,6 +34,7 @@ const Account = () => {
     const [dataType, setDataType] = useState();
     const [dataTypeOptions, setDataTypeOptions] = useState();
     const [devicePosition, setDevicePosition] = useState();
+    const [deviceBoxNo, setDeviceBoxNo] = useState();
     const [uploadTime, setUploadTime] = useState();
     const [dimension, setDimension] = useState();
     const [dimensionOptions, setDimensionOptions] = useState();
@@ -65,7 +67,7 @@ const Account = () => {
             dataIndex: "devicePosition",
         },
         {
-            title: "设备编号",
+            title: "设备箱号",
             dataIndex: "deviceBoxNo",
         },
         {
@@ -138,6 +140,7 @@ const Account = () => {
         const childrenProjectName = childrenProjectNameRef.current;
         const dataType = dataTypeRef.current;
         const devicePosition = devicePositionRef.current;
+        const deviceBoxNo = deviceBoxNoRef.current;
         const deviceType = deviceTypeRef.current;
         const dimension = dimensionRef.current;
         const res = await getUploadFilesListServer({
@@ -150,6 +153,7 @@ const Account = () => {
                 childrenProjectName,
                 dataType,
                 devicePosition,
+                deviceBoxNo,
                 deviceType,
                 dimension,
             },
@@ -174,6 +178,8 @@ const Account = () => {
         setDataType();
         devicePositionRef.current = undefined;
         setDevicePosition();
+        deviceBoxNoRef.current = undefined;
+        setDeviceBoxNo();
         uploadTimeRef.current = undefined;
         setUploadTime();
         dimensionRef.current = undefined;
@@ -235,6 +241,15 @@ const Account = () => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         dataTypeRef.current = value;
                         setDataType(value);
+                    }}
+                />
+                <SearchInput
+                    label="设备箱号"
+                    value={deviceBoxNo}
+                    onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        deviceBoxNoRef.current = value;
+                        setDeviceBoxNo(value);
                     }}
                 />
                 <SearchInput
