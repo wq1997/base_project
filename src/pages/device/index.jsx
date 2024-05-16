@@ -261,7 +261,7 @@ const Log = () => {
                     <Button
                         type="primary"
                         onClick={() => setAddDeviceOpen(true)}
-                        style={{ float: "right", marginBottom: '8px' }}
+                        style={{ float: "right", marginBottom: "8px" }}
                     >
                         新增设备
                     </Button>
