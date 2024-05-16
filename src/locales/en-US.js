@@ -1831,4 +1831,7 @@ export default {
 '日': 'day',
 '年': 'year',
 '总收益': 'Total revenue',
+'前一日效率': "Previous day's efficiency",
+'累计效率': 'Accumulated efficiency',
+'PCS电量统计': 'PCS power statistics',
 } 

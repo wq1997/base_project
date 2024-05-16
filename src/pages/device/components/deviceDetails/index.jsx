@@ -371,7 +371,7 @@ function Com(props) {
         });
         handlBase({ ...baseData });
     };
-  
+    console.log(pcsData)
     return (
         <div className={styles.details} style={{width: '100%', height: 'auto', minHeight: '100%', padding: '40px 30px',  background: token.bgcColorB_l}}>
             <DetalisCard data={pcsData} />
