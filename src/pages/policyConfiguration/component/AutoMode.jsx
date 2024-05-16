@@ -1,9 +1,12 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Button, Form, InputNumber, Popconfirm, Table, theme, message } from 'antd';
+import { Button, Form, InputNumber, Popconfirm, Modal, Table, theme, message, Input } from 'antd';
 import { useSelector, useIntl, history } from "umi";
 import styles from './index.less'
 import { sendBurCmd2 } from '@/services/policy'
-let modelData=[
+import { Title } from "@/components";
+import { getEncrypt, } from "@/utils/utils";
+import { FORM_REQUIRED_RULE, } from "@/utils/constants";
+let modelData = [
   {
     key: '1',
     firstLine: '00:00-01:00',
@@ -330,9 +333,9 @@ const EditableCell = ({
 const App = ({ devId, dtuId, historyAllData }) => {
   const { token } = theme.useToken();
   const [dataSource, setDataSource] = useState(modelData);
-  const [issuFlag, setIssuFlag] = useState(true);
-  const [count, setCount] = useState(2);
   const intl = useIntl();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [form1] = Form.useForm();
   const t = (id) => {
     const msg = intl.formatMessage(
       {
@@ -376,7 +379,6 @@ const App = ({ devId, dtuId, historyAllData }) => {
       const dataIndex = defaultColumns.find((item) => item.key === key).dataIndex;
       newData?.map(it => {
         it[dataIndex] = 0;
-        console.log(it[dataIndex], 1212121);
       })
     }
     setDataSource(newData);
@@ -452,11 +454,6 @@ const App = ({ devId, dtuId, historyAllData }) => {
   ];
   const [flag, setFlag] = useState(false)
   useEffect(() => {
-    // const timer = setInterval(() => {
-    //   setFlag(prev => !prev)
-    // }, 1000 * 10)
-    // // 清除定时器
-    // return () => clearInterval(timer)
     initData();
   }, [historyAllData])
 
@@ -526,7 +523,7 @@ const App = ({ devId, dtuId, historyAllData }) => {
   const initData = () => {
     let arr = [];
     modelData?.map((it, index) => {
-      if (index !== 23&&historyAllData.monPowers?.length) {
+      if (index !== 23 && historyAllData.monPowers?.length) {
         arr.push({
           ...it,
           monPowers: historyAllData?.monPowers[index],
@@ -537,7 +534,7 @@ const App = ({ devId, dtuId, historyAllData }) => {
           satPowers: historyAllData?.satPowers[index],
           sunPowers: historyAllData?.sunPowers[index],
         });
-      }else{
+      } else {
         arr.push(it);
       }
     });
@@ -546,7 +543,7 @@ const App = ({ devId, dtuId, historyAllData }) => {
 
   return (
     <div className={styles.manual}>
-      <Button type="primary" onClick={finish} style={{ backgroundColor: token.defaultBg, marginBottom: "30px", display: 'block', marginLeft: 'auto' }}>{t("下发")}</Button>
+      <Button type="primary" onClick={() => setIsModalOpen(true)} style={{ backgroundColor: token.defaultBg, marginBottom: "30px", display: 'block', marginLeft: 'auto' }}>{t("下发")}</Button>
       <Table
         components={components}
         rowClassName={() => 'editable-row'}
@@ -573,6 +570,58 @@ const App = ({ devId, dtuId, historyAllData }) => {
         )}
 
       />
+      <Modal
+        open={isModalOpen}
+        title={<Title title={t("自动模式下发")} />}
+        onOk={async () => {
+          let monPowers = [], tuePowers = [], wedPowers = [], thuPowers = [], friPowers = [], satPowers = [], sunPowers = [];
+          dataSource?.map((it, index) => {
+            monPowers?.push(it?.monPowers);
+            tuePowers?.push(it?.tuePowers);
+            wedPowers?.push(it?.wedPowers);
+            thuPowers?.push(it?.thuPowers);
+            friPowers?.push(it?.friPowers);
+            satPowers?.push(it?.satPowers);
+            sunPowers?.push(it?.sunPowers);
+          });
+          const values = await form1.validateFields();
+          let { data } = await sendBurCmd2({
+            mode: 1,
+            dtuId,
+            cmdTypeId: 7013,
+            devId: devId.pcsDevId,
+            monPowers,
+            tuePowers,
+            wedPowers,
+            thuPowers,
+            friPowers,
+            satPowers,
+            sunPowers,
+            password: getEncrypt(localStorage.getItem('publicKey'), values.password),
+          });
+          if (data.code == 'ok') {
+            message.success(t('命令下发成功'));
+          } else {
+            message.warning(data?.msg);
+          }
+          setIsModalOpen(false);
+          form1.resetFields();
+        }}
+        onCancel={() => {
+          setIsModalOpen(false);
+          form1.resetFields();
+        }}
+      >
+        <Form
+          form={form1}
+        >
+          <Form.Item name={"password"} label={t("请输入密码")} rules={[FORM_REQUIRED_RULE]}>
+            <Input className="pwd" placeholder={t("请输入密码")} />
+          </Form.Item>
+          <span>{t('确定下发自动模式指令吗？')}</span>
+        </Form>
+      </Modal>
+
     </div>
   );
 };

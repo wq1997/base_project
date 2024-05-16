@@ -2,24 +2,26 @@
 // 快捷键Ctrl+Win+i 添加注释
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import styles from "./index.less";
-import { theme, notification, Space, Flex, Modal, message } from "antd";
+import { theme, notification, Space, Flex, Modal, message,Form,Input,} from "antd";
 import { useSelector, useIntl } from "umi";
+import { Title } from "@/components";
 import ManualMode from './component/ManualMode'
 import AutoMode from './component/AutoMode'
 import { getBurDtuDevInfo2, getBurCmdHistory2 } from '@/services/policy'
 import { connectSocket } from '@/utils/subscribe';
 import { ISSUE_COMMAND } from '@/utils/subscribe/types';
 import { sendBurCmd2 } from '@/services/policy'
-
+import { getEncrypt, } from "@/utils/utils";
+import { FORM_REQUIRED_RULE, } from "@/utils/constants";
 
 function Com({ id }) {
     const [mode, setMode] = useState(0)
     const { token } = theme.useToken();
     const [devId, setDevId] = useState({});
-    const [options, setOptions] = useState([]);
     const [initAllData, setInitAllData] = useState([]);
     const [historyAllData, setHistoryAllData] = useState({});
-    
+    const [form1] = Form.useForm(); // 控制模式
+    const [type, setType] = useState(0)
   const [isModalOpen, setIsModalOpen] = useState(false);
     const intl = useIntl();
     const t = (id) => {
@@ -74,6 +76,7 @@ function Com({ id }) {
     }, [])
 
     const changeType = (type) => {
+        setType(type);
         setIsModalOpen(true);
     }
     const getInitData = async () => {
@@ -101,24 +104,6 @@ function Com({ id }) {
     return (
         <div className={styles.content} style={{ backgroundColor: token.contentBgc }}>
             <Space style={{ width: '100%' }} size={30} direction="vertical" >
-                {/* <div className={styles.device}>
-                    <Flex gap={12}>
-                        <div className={styles.label}>{t('设备')}:</div>
-                        <Select
-                            style={{
-                                width: 240,
-                            }}
-                            onChange={(val) => changeDevice(val)}
-                            key={options[0]?.value}
-                            defaultValue={options[0]?.value}
-                        >
-                            {options && options?.map(item => {
-                                return (<Option key={item.value} value={item.value}>{item.label}</Option>);
-                            })
-                            }
-                        </Select>
-                    </Flex>
-                </div> */}
                 <div className={styles.mode}>
                     <Flex gap={18}>
                         <div className={styles.label}>{t('模式')}:</div>
@@ -130,8 +115,39 @@ function Com({ id }) {
                 </div>
                 {mode == 1 ? <AutoMode devId={devId} dtuId={id} historyAllData={historyAllData} /> : <ManualMode devId={devId} dtuId={id} historyAllData={historyAllData} />}
             </Space>
-            <Modal  open={isModalOpen} onOk={handleOk} onCancel={()=>setIsModalOpen(false)}>
-               
+            <Modal
+                open={isModalOpen}
+                title={<Title title={t("模式切换")} />}
+                onOk={async () => {
+                    const values = await form1.validateFields();
+                    let { data } = await sendBurCmd2({
+                        mode: type,
+                        dtuId: id,
+                        cmdTypeId: 7000,
+                        password: getEncrypt(localStorage.getItem('publicKey'), values.password),
+                    });
+                    if (data.code == 'ok') {
+                        message.success(t('命令下发成功'));
+                        setMode(type);
+                    } else {
+                        message.warning(data?.msg);
+                    }
+                    setIsModalOpen(false);
+                    form1.resetFields();
+                }}
+                onCancel={() => {
+                    setIsModalOpen(false);
+                    form1.resetFields();
+                }}
+            >
+                <Form
+                    form={form1}
+                >
+                    <Form.Item name={"password"} label={t("请输入密码")} rules={[FORM_REQUIRED_RULE]}>
+                        <Input  className="pwd"  placeholder={t("请输入密码")} />
+                    </Form.Item>
+                    <span>{t(`确定切换为${mode==1?'手动':'自动'}模式吗?`)}</span>
+                </Form>
             </Modal>
         </div>
     )

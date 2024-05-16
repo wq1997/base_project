@@ -1783,6 +1783,18 @@ export default {
 '编辑成功':'Edited successfully',
 '导出使用说明':'Export Instructions',
 '密码修改成功':'Password Changed Successfully',
-'执行结果':'Execution Result'
-
+'执行结果':'Execution Result',
+'请输入密码':'Please enter password',
+'确定切换为手动模式吗?':'Are you sure to switch to Manual mode?',
+'确定切换为自动模式吗?':'Are you sure to switch to Automate mode?',
+'确定执行该操作吗?':'Are you sure to execute  this operation?',
+'命令下发成功！':'Command executed successfully!',
+'确定将':'Are you sure to set the',
+'设置为':' to ',
+'确定下发':'Are you sure to execute the',
+'命令吗':' command?',
+'模式切换':'Mode switching',
+'命令下发':'Command',
+'确定下发自动模式指令吗？':'Are you sure you want to send an auto mode command?',
+'自动模式下发':'Issued in automatic mode'
 } 
