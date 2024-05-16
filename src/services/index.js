@@ -26,6 +26,10 @@ export const getNotificationList = (payload) => {
     return axiosInstance.post(`${API_URL_2}/notification/find-page`, payload)
 }
 
+export const changeNotificationStatus = (id) => {
+    return axiosInstance.post(`${API_URL_2}/notification/processed?id=${id}`)
+}
+
 export const getGlobalDashboardSummery = () => {
     return axiosInstance.get(`${API_URL_2}/dashboard/get-global-dashboard-summery`)
 }

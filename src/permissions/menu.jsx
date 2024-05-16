@@ -111,6 +111,7 @@ const MyMenu = () => {
 
     const getMenu = menuList => {
         return menuList.map(menu => {
+            if(!(user?.selfPermCodes?.includes(menu.permissions) || !menu.permissions)) return null;
             if (menu.children) {
                 return (
                     <SubMenu
@@ -130,26 +131,23 @@ const MyMenu = () => {
                     </SubMenu>
                 );
             } else {
-                if (user?.selfPermCodes?.includes(menu.permissions) || !menu.permissions) {
-                    return (
-                        <Menu.Item
-                            key={menu.key}
-                            icon={
-                                <Icon
-                                    type={theme === "dark" ? menu.darkIcon : menu.icon}
-                                    style={{
-                                        fontSize: 20,
-                                    }}
-                                />
-                            }
-                        >
-                            <Link to={menu.key} target={menu?.target}>
-                                {menu.label}
-                            </Link>
-                        </Menu.Item>
-                    );
-                }
-                return null;
+                return (
+                    <Menu.Item
+                        key={menu.key}
+                        icon={
+                            <Icon
+                                type={theme === "dark" ? menu.darkIcon : menu.icon}
+                                style={{
+                                    fontSize: 20,
+                                }}
+                            />
+                        }
+                    >
+                        <Link to={menu.key} target={menu?.target}>
+                            {menu.label}
+                        </Link>
+                    </Menu.Item>
+                );
             }
         });
     };

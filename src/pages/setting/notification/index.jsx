@@ -5,6 +5,7 @@ import { DEFAULT_PAGINATION } from "@/utils/constants";
 import { recordPage } from "@/utils/utils";
 import { 
     getNotificationList as getNotificationListServe,
+    changeNotificationStatus as changeNotificationStatusServe
 } from "@/services";
 import { history } from "umi";
 
@@ -58,13 +59,16 @@ const Notification = () => {
             title: "操作",
             dataIndex: "operate",
             render: (text,record) => {
-                const { status } = record;
+                const { status, id } = record;
                 if(status === "WAIT_PROCESSING"){
                     return (
                         <Button 
                             type="link"
-                            onClick={()=>{
-                                history.push(`/vpp/demandResponse/task/confirm`)
+                            onClick={async ()=>{
+                                const res = await changeNotificationStatusServe(id);
+                                if(res?.data){
+                                    history.push(`/vpp/demandResponse/task/confirm`);
+                                }
                             }}
                         >
                             去处理
