@@ -597,7 +597,7 @@ const App = ({ devId, dtuId, historyAllData }) => {
             friPowers,
             satPowers,
             sunPowers,
-            password: getEncrypt(localStorage.getItem('publicKey'), values.password),
+            password: getEncrypt(JSON.parse(sessionStorage.getItem('counterData')).publicKey, values.password),
           });
           if (data.code == 'ok') {
             message.success(t('命令下发成功'));

@@ -164,7 +164,7 @@ function Com({ devId, dtuId, historyAllData, mode }) {
                         [reqType]: value,
                         dtuId,
                         cmdTypeId: cmdTypeId[type],
-                        password: getEncrypt(localStorage.getItem('publicKey'), values.password),
+                        password: getEncrypt(JSON.parse(sessionStorage.getItem('counterData')).publicKey , values.password),
                     });
                     if (data.code == 'ok') {
                          changeType();

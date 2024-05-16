@@ -32,25 +32,10 @@ function Com({ id }) {
         );
         return msg
     }
-    const handleOk = async () => {
-        console.log(val, mode, 'ok');
-        // changeType();
-        setMode(type)
-        let { data } = await sendBurCmd2({
-            mode: type,
-            dtuId: id,
-            cmdTypeId: 7000
-        })
-        if (data.code == 'ok') {
-            message.success(t('命令下发成功'), 3);
-        } else {
-            message.error(t('命令下发失败'), 3);
-        };
-        setIsModalOpen(false);
-    };
 
     useEffect(() => {
         getInitData();
+        
     }, []);
     useEffect(() => {
         getHistory();
@@ -124,7 +109,7 @@ function Com({ id }) {
                         mode: type,
                         dtuId: id,
                         cmdTypeId: 7000,
-                        password: getEncrypt(localStorage.getItem('publicKey'), values.password),
+                        password: getEncrypt(JSON.parse(sessionStorage.getItem('counterData')).publicKey , values.password),
                     });
                     if (data.code == 'ok') {
                         message.success(t('命令下发成功'));

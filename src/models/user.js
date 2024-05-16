@@ -19,7 +19,7 @@ export default {
       yield put({ type: "updateState", payload });
       const data = yield select((state) => state.user);
       // const publicKey = yield select((state) => state.publicKey);
-      // sessionStorage.setItem("counterData", JSON.stringify(publicKey));
+      // localStorage.setItem("publicKey", publicKey);
       sessionStorage.setItem("counterData", JSON.stringify(data));
     },
 
