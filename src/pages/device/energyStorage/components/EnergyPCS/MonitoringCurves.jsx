@@ -12,7 +12,6 @@ import { obtainPCSParameterData } from '@/services/deviceTotal';
 import dayjs from 'dayjs';
 import { useSelector, useIntl } from "umi";
 const { Option } = Select;
-const { RangePicker } = DatePicker;
 function Com(props) {
     const { token } = theme.useToken();
     const [optionEchart, setOptionEchart] = useState({})

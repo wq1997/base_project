@@ -7,6 +7,8 @@ import { CardModel } from "@/components";
 import ReactECharts from "echarts-for-react";
 import { useSelector, FormattedMessage, useIntl } from "umi";
 import {getEnergyFeeByTime} from '@/services/report'
+import {  downLoadExcelMode } from "@/utils/utils";
+
 function Com(props) {
     const { token } = theme.useToken();
     const [options, setOptions] = useState({});
@@ -22,6 +24,7 @@ function Com(props) {
         pvInEnergy:[],
         chargeInEnergy:[]
     });
+    const [excelData,setExcelData]=useState([]);
     const [scrollY, setScrollY] = useState('');
 
     const { theme: currentTheme } = useSelector(function (state) {
@@ -172,7 +175,7 @@ function Com(props) {
         })
         setData(data.data);
         setDateX(arrX);
-        setDataY({pvOutEnergy,energyInEnergy,energyOutEnergy,pvInEnergy,chargeInEnergy})
+        setDataY({pvOutEnergy,energyInEnergy,energyOutEnergy,pvInEnergy,chargeInEnergy});
     }
 
     useEffect(() => {
@@ -191,6 +194,13 @@ function Com(props) {
         } else {
             setFormat('YYYY');
         }
+    };
+    const downLoadExcelModel = () => {
+        let fileName = getTranslation('电量统计');
+        let sheetData = excelData;
+        let sheetFilter = ['time', 'nowDay', 'toDay'];
+        let sheetHeader = [getTranslation("日期"),getTranslation("上网电量"),getTranslation("储能充电量"),getTranslation("光伏发电量"), getTranslation("充电桩充电量"),];
+        downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader,getTranslation('总览'))
     };
     const profitTable = [
         {
@@ -245,7 +255,7 @@ function Com(props) {
         <div className={styles.content}>
             <div className={styles.heard} style={{ backgroundColor: token.titleCardBgc }}>
                 <div className={styles.date}>
-                    <DatePicker picker={mode}  defaultValue={time} format={format} style={{ marginRight: "20px" }}  />
+                    <DatePicker picker={mode} onChange={(val)=>setTime(val)}  defaultValue={time} format={format} style={{ marginRight: "20px" }}  />
                     <Radio.Group value={mode} onChange={handleModelChange}>
                         <Radio.Button value="date">日</Radio.Button>
                         <Radio.Button value="month">月</Radio.Button>
