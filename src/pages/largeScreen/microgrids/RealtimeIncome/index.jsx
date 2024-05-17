@@ -3,7 +3,7 @@ import useIcon from "@/hooks/useIcon";
 import styles from "./index.less";
 import { getGccPowerStatisticsServe } from "@/services/bigScreen"
 
-const RealtimeIncome = () => {
+const RealtimeIncome = ({plantId}) => {
     const Icon = useIcon();
     const [data, setData] = useState([
         {
@@ -23,7 +23,7 @@ const RealtimeIncome = () => {
     ])
 
     const getGccPowerStatistics = async () => {
-        const res = await getGccPowerStatisticsServe();
+        const res = await getGccPowerStatisticsServe({plantId});
         if(res?.data?.data){
             const data = res?.data?.data;
             setData([

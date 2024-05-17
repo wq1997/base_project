@@ -3,17 +3,17 @@ import { useState, useEffect } from "react";
 import { getEnergyWeeklyChargeDisChargeServe } from "@/services/bigScreen";
 import * as echarts from "echarts";
 
-const ChargeDischarge = () => {
+const ChargeDischarge = ({plantId}) => {
     const [options, setOptions] = useState({});
     const getOptions = async () => {
-        const res = await getEnergyWeeklyChargeDisChargeServe();
+        const res = await getEnergyWeeklyChargeDisChargeServe({plantId});
         let xAxisData = [];
         let data1 = [];
         let data2 = [];
         let data3 = [];
         if(res?.data?.data){
             const data = res?.data?.data;
-            xAxisData = data.map(item => item.date);
+            xAxisData = data.map(item => `${item?.date?.year}/${item?.date?.monthValue}/${item?.date?.dayOfMonth}`);
             data1 = data.map(item => item.dayChargeEnergy);
             data2 = data.map(item => item.dayDischargeEnergy);
             data3 = data.map(item => item.efficiency);

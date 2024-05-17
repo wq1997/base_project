@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { getGccPowerStatisticsServe } from "@/services/bigScreen";
 import styles from "./index.less";
 
-const Efficiency = () => {
+const Efficiency = ({plantId}) => {
     const [data, setData] = useState([
         {
             data: 0,
@@ -19,7 +19,7 @@ const Efficiency = () => {
     ])
 
     const getGccPowerStatistics = async () => {
-        const res = await getGccPowerStatisticsServe();
+        const res = await getGccPowerStatisticsServe({plantId});
         if(res?.data?.data){
             const data = res?.data?.data;
             setData([

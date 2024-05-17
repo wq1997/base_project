@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import styles from "./index.less";
 import { getDtuStatisticsServe } from "@/services/bigScreen";
 
-const Device = () => {
+const Device = ({plantId}) => {
     const [data, setData] = useState([
         {
             data: 0,
@@ -31,7 +31,7 @@ const Device = () => {
     ])
 
     const getDtuStatistics = async () => {
-        const res = await getDtuStatisticsServe();
+        const res = await getDtuStatisticsServe({plantId});
         if(res?.data?.data){
             const data = res?.data?.data;
             setData([

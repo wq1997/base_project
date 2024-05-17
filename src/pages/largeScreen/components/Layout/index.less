@@ -90,6 +90,22 @@
         padding: 0 10px;
         box-sizing: border-box;
         position: relative;
+        .plant{
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            :global{
+                .ant-select-selector{
+                    background: transparent !important;
+                    color: white !important;
+                }
+                .ant-select-selection-item{
+                    color: white !important;
+                }
+            }
+        }
         .children{
             width: 100%;
             height: 100%;

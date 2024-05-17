@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { getGccPowerStatisticsServe } from "@/services/bigScreen"
 import styles from "./index.less";
 
-const Electricity = () => {
+const Electricity = ({plantId}) => {
     const [data, setData] = useState([
         {
             label: '储能日充',
@@ -55,7 +55,7 @@ const Electricity = () => {
     ])
 
     const getGccPowerStatistics = async () => {
-        const res = await getGccPowerStatisticsServe();
+        const res = await getGccPowerStatisticsServe({plantId});
         if(res?.data?.data){
             const data = res?.data?.data;
             setData([
@@ -127,7 +127,7 @@ const Electricity = () => {
                                 </div>
                                 <div className={styles.bottom}>
                                     <div className={styles.bottomData} style={{color: item.color}}>{item.data}</div>
-                                    <div className={styles.bottomUnit}>{item.unit}</div>
+                                    {/* <div className={styles.bottomUnit}>{item.unit}</div> */}
                                 </div>
                             </div>
                         </div>

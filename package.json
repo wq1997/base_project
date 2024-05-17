@@ -14,7 +14,7 @@
     "@amap/amap-jsapi-loader": "^1.0.1",
     "@ant-design/icons": "^5.1.4",
     "@ant-design/use-emotion-css": "^1.0.4",
-    "@fullcalendar/core": "^6.1.9",
+    "@fullcalendar/core": "^6.1.11",
     "@fullcalendar/daygrid": "^6.1.9",
     "@fullcalendar/interaction": "^6.1.9",
     "@fullcalendar/list": "^6.1.9",

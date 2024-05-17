@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import * as echarts from "echarts";
 import { addColorAlpha } from "@/utils/utils";
 
-const PowerCurve = () => {
+const PowerCurve = ({plantId}) => {
     const [options, setOptions] = useState({});
     const getOptions = () => {
         const data = {

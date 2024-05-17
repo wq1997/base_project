@@ -3,10 +3,10 @@ import { useState, useEffect } from "react";
 import { getGccWeeklyPowerStatisticsServe } from "@/services/bigScreen"
 import dayjs from "dayjs";
 
-const ElectricityStatistics = () => {
+const ElectricityStatistics = ({plantId}) => {
     const [options, setOptions] = useState({});
     const getOptions = async () => {
-        const res = await getGccWeeklyPowerStatisticsServe();
+        const res = await getGccWeeklyPowerStatisticsServe({plantId});
         let area = [];
         let data1 = [];
         let data2 = [];
@@ -15,7 +15,7 @@ const ElectricityStatistics = () => {
 
         if(res?.data?.data){
             const data = res?.data?.data;
-            area = data?.map(item => dayjs(item?.date).format('YYYY-MM-DD') );
+            area = data?.map(item => `${item?.date?.year}/${item?.date?.monthValue}/${item?.date?.dayOfMonth}`);
             data1 = data?.map(item => item?.energyCharge);
             data2 = data?.map(item => item?.energyDisCharge);
             data3 = data?.map(item => item?.pvGenerate);
