@@ -95,7 +95,11 @@ const Account = () => {
         },
         {
             title: "备注",
-            dataIndex: "remark",
+            dataIndex: "remark", 
+        },
+        {
+            title: "失败原因",
+            dataIndex: "parseFailReason",
         },
         {
             title: "操作",
