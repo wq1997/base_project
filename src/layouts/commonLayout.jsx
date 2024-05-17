@@ -1,22 +1,41 @@
-import { Outlet, useDispatch, useSelector } from "umi";
-import { Layout, Row, Avatar, Typography, Dropdown, Space, theme as antdTheme, Select } from "antd";
+import { Outlet, useDispatch, useSelector, history } from "umi";
+import { Layout, Row, Avatar, Typography, Dropdown, Space, theme as antdTheme, Select, Badge } from "antd";
 import styles from "./commonLayout.less";
 import useIcon from "@/hooks/useIcon";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { setLocalStorage } from "@/utils/utils";
+import {
+    getNotificationCount as getNotificationCountServe
+} from "@/services";
+import { useRequest } from "ahooks";
+import notificationImg from "../../public/images/notification.svg"
 
 const { Header, Sider, Content } = Layout;
 
 const CommonLayout = (props) => {
     const { token } = antdTheme.useToken();
     const { theme } = useSelector(state => state.global);
+    const [ count, setCount ] = useState(0);
     const { user, currentCompanyCode } = useSelector(state => state.user);
     const Icon = useIcon();
     const dispatch = useDispatch();
     const { title, MyMenu } = props;
 
+    const { data: result, run, cancel } = useRequest(getNotificationCountServe, {
+        manual: true,
+        pollingInterval: 1000 * 10,
+        refreshDeps: [theme]
+    });
+
     useEffect(()=>{
+        if(result?.data?.status==="SUCCESS"){
+            setCount(result?.data?.data);
+        }
+    }, [result])
+
+    useEffect(()=>{
+        run();
         document.title= title;
     }, [])
 
@@ -121,6 +140,15 @@ const CommonLayout = (props) => {
                             }}
                             onClick={()=>changeTheme(theme==="default"?"dark": "default")}
                         />
+                        <Badge dot={count>0}>
+                            <Avatar 
+                                src={notificationImg} 
+                                style={{cursor: 'pointer'}}
+                                onClick={()=>{
+                                    history.push("/vpp/setting/notification");
+                                }}
+                            />
+                        </Badge>
                         <Dropdown
                             menu={{
                                 items: [

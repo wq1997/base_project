@@ -41,3 +41,7 @@ export const getUserInfo = () => {
 export const getCompanyDashboardSummery = () => {
     return axiosInstance.get(`${API_URL_2}/dashboard/get-company-dashboard-summery`)
 }
+
+export const getNotificationCount = () => {
+    return axiosInstance.get(`${API_URL_2}/notification/count`)
+}

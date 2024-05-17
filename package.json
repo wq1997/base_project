@@ -14,7 +14,6 @@
     "@ant-design/icons": "^5.1.4",
     "@ant-design/use-emotion-css": "^1.0.4",
     "@antv/g6": "^4.8.22",
-    "ahooks": "^3.7.8",
     "antd": "^5.14.1",
     "antd-mobile": "^5.32.0",
     "axios": "^1.4.0",
@@ -32,6 +31,7 @@
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "@umijs/plugins": "^4.0.72",
+    "ahooks": "^3.7.8",
     "compression-webpack-plugin": "^10.0.0",
     "typescript": "^5.1.6"
   }

@@ -19,6 +19,7 @@ import companyLevelRightDarkImg from "../../../../public/images/companyLevelRigh
 import companyLevelRightImg from "../../../../public/images/companyLevelRight.svg";
 import LoadStatisc from "./LoadStatisc";
 import { recordPage } from "@/utils/utils";
+import { useRequest } from "ahooks";
 
 const User = () => {
     recordPage('op:user_mode');
@@ -163,31 +164,35 @@ const User = () => {
         },
     });
 
-    const getData = async () => {
-        const res = await getCompanyDashboardSummeryServe();
-        if(res?.data?.data){
-            const cloneData = JSON.parse(JSON.stringify(data));
-            const result = res?.data?.data;
-            console.log(result);
-            setDataSource(result);
-            cloneData.resource.dataSource[0].value = result?.deviceCount || 0;
-            cloneData.resource.dataSource[1].value = result?.maxLoad || 0;
-            cloneData.resource.dataSource[2].value = result?.maxAdjustableLoad || 0;
-
-            cloneData.responseIncome.dataSource[0].value = result?.profitSummary || 0;
-            cloneData.responseIncome.dataSource[1].value = result?.currentYearProfit || 0;
-            cloneData.responseIncome.dataSource[2].value = result?.followingYearProjectedProfit || 0;
-
-            cloneData.responseExecute.dataSource[0].value = result?.receiveTaskCount || 0;
-            cloneData.responseExecute.dataSource[1].value = result?.executeSuccessTaskCount || 0;
-            cloneData.responseExecute.dataSource[2].value = result?.effectiveResponsePower || 0;
-
-            setData(cloneData);
-        }
-    }
+    const { data: result, run } = useRequest(getCompanyDashboardSummeryServe, {
+        manual: true,
+        pollingInterval: 1000 * 60 * 5,
+        refreshDeps: [theme]
+    });
 
     useEffect(()=>{
-        getData();
+        if(result?.data?.data){
+            const cloneData = JSON.parse(JSON.stringify(data));
+            const resultData = result?.data?.data;
+            cloneData.resource.dataSource[0].value = resultData?.deviceCount || 0;
+            cloneData.resource.dataSource[1].value = resultData?.maxLoad || 0;
+            cloneData.resource.dataSource[2].value = resultData?.maxAdjustableLoad || 0;
+
+            cloneData.responseIncome.dataSource[0].value = resultData?.profitSummary || 0;
+            cloneData.responseIncome.dataSource[1].value = resultData?.currentYearProfit || 0;
+            cloneData.responseIncome.dataSource[2].value = resultData?.followingYearProjectedProfit || 0;
+
+            cloneData.responseExecute.dataSource[0].value = resultData?.receiveTaskCount || 0;
+            cloneData.responseExecute.dataSource[1].value = resultData?.executeSuccessTaskCount || 0;
+            cloneData.responseExecute.dataSource[2].value = resultData?.effectiveResponsePower || 0;
+
+            setDataSource(resultData);
+            setData(cloneData);
+        }
+    }, [result])
+
+    useEffect(()=>{
+        run();
     }, [])
 
     return (

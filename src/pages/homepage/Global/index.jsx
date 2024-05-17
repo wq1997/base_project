@@ -12,6 +12,7 @@ import {
 import { useEffect } from "react";
 import { useSelector } from "umi";
 import { recordPage } from "@/utils/utils";
+import { useRequest } from "ahooks";
 
 const Global = () => {
     recordPage('op:global_mode');
@@ -106,34 +107,39 @@ const Global = () => {
     });
 
     const [dataSource, setDataSource] = useState({});
+    
+    const { data: result, run, cancel } = useRequest(getGlobalDashboardSummeryServe, {
+        manual: true,
+        pollingInterval: 1000 * 60 * 5,
+        refreshDeps: [theme]
+    });
 
-    const getData = async () => {
-        const res = await getGlobalDashboardSummeryServe();
-        if(res?.data?.data){
+
+    useEffect(()=>{
+        if(result) {
             const cloneData = JSON.parse(JSON.stringify(data));
-            const result = res?.data?.data;
-            console.log(result);
-            cloneData.resource.dataSource[0].value = result.companySummary?.companyCount || 0;
-            cloneData.resource.dataSource[1].value = result.companySummary?.deviceCount || 0;
-            cloneData.resource.dataSource[2].value = result.companySummary?.maxLoad || 0;
-            cloneData.resource.dataSource[3].value = result.companySummary?.maxAdjustableLoad || 0;
+            const resultData = result?.data?.data;
+            cloneData.resource.dataSource[0].value = resultData?.companySummary?.companyCount || 0;
+            cloneData.resource.dataSource[1].value = resultData?.companySummary?.deviceCount || 0;
+            cloneData.resource.dataSource[2].value = resultData?.companySummary?.maxLoad || 0;
+            cloneData.resource.dataSource[3].value = resultData?.companySummary?.maxAdjustableLoad || 0;
 
-            cloneData.responseIncome.dataSource[0].value = result.inviteTaskProfitSummary?.profitSummary || 0;
-            cloneData.responseIncome.dataSource[1].value = result.inviteTaskProfitSummary?.currentYearProfit || 0;
-            cloneData.responseIncome.dataSource[2].value = result.inviteTaskProfitSummary?.followingYearProjectedProfit || 0;
+            cloneData.responseIncome.dataSource[0].value = resultData?.inviteTaskProfitSummary?.profitSummary || 0;
+            cloneData.responseIncome.dataSource[1].value = resultData?.inviteTaskProfitSummary?.currentYearProfit || 0;
+            cloneData.responseIncome.dataSource[2].value = resultData?.inviteTaskProfitSummary?.followingYearProjectedProfit || 0;
 
-            cloneData.responseExecute.dataSource[0].value = result.inviteTaskSummary?.inviteCount || 0;
-            cloneData.responseExecute.dataSource[1].value = result.inviteTaskSummary?.executeSuccessTaskCount || 0;
-            cloneData.responseExecute.dataSource[2].value = result.inviteTaskSummary?.responseSuccessRate || 0;
-            cloneData.responseExecute.dataSource[3].value = result.inviteTaskSummary?.effectiveResponsePower || 0;
+            cloneData.responseExecute.dataSource[0].value = resultData?.inviteTaskSummary?.inviteCount || 0;
+            cloneData.responseExecute.dataSource[1].value = resultData?.inviteTaskSummary?.executeSuccessTaskCount || 0;
+            cloneData.responseExecute.dataSource[2].value = resultData?.inviteTaskSummary?.responseSuccessRate || 0;
+            cloneData.responseExecute.dataSource[3].value = resultData?.inviteTaskSummary?.effectiveResponsePower || 0;
             
-            setDataSource(result);
+            setDataSource(resultData);
             setData(cloneData);
         }
-    }
+    }, [result])
 
     useEffect(() => {
-        getData();
+        run();
     }, [theme])
 
     return (
