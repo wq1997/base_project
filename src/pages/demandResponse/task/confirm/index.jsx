@@ -219,7 +219,14 @@ const Confirm = () => {
             if(searchRes?.data?.data?.recordList?.length>0){
                 defaultTaskId = searchRes?.data?.data?.recordList?.[0]?.id;
             }
-            res = await getTaskDashboardByIdServer(params?.taskId||defaultTaskId);
+            let url = "";
+            if(params?.taskId||defaultTaskId){
+                url= `id=${params?.taskId||defaultTaskId}`
+            }
+            if(params?.code){
+                url = `code=${params?.code}`
+            }
+            res = await getTaskDashboardByIdServer(url);
         }
         const list = _isWaitTask ? res?.data?.data : [res?.data?.data];
         if (res?.data?.status == "SUCCESS") {

@@ -59,7 +59,7 @@ const Notification = () => {
             title: "操作",
             dataIndex: "operate",
             render: (text,record) => {
-                const { status, id } = record;
+                const { status, id, businessKey, businessType } = record;
                 if(status === "WAIT_PROCESSING"){
                     return (
                         <Button 
@@ -67,7 +67,12 @@ const Notification = () => {
                             onClick={async ()=>{
                                 const res = await changeNotificationStatusServe(id);
                                 if(res?.data){
-                                    history.push(`/vpp/demandResponse/task/confirm`);
+                                    if(businessType==="TASK_CONFIRM"){
+                                        history.push(`/vpp/demandResponse/task/confirm`);
+                                    }
+                                    if(businessType==="TASK_EXECUTED"){
+                                        history.push(`/vpp/demandResponse/task/search?code=${businessKey}`);
+                                    }
                                 }
                             }}
                         >

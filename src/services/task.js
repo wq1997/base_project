@@ -27,8 +27,8 @@ export const refuseTask = payload => {
     return axiosInstance.post(url, payload);
 };
 
-export const getTaskDashboardById = id => {
-    const url = `${API_URL_2}/invite-task/get-invite-task-dashboard-vo?id=${id}`;
+export const getTaskDashboardById = parmasUrl => {
+    const url = `${API_URL_2}/invite-task/get-invite-task-dashboard-vo?${parmasUrl}`;
     return axiosInstance.get(url);
 };
 

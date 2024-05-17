@@ -375,7 +375,16 @@ const InvitationIncome = () => {
             <Flex justify="flex-end">
                 <Space>
                     {hasPerm(user, "op:payment_confirm_invite") && (
-                        <Button type="primary" onClick={() => setOpen(true)}>
+                        <Button 
+                            type="primary" 
+                            onClick={() => {
+                                if(selectedRowKeys?.length>0){
+                                    setOpen(true);
+                                }else{
+                                    message.error('请先勾选需要确认的数据')
+                                }
+                            }}
+                        >
                             手工确认打款
                         </Button>
                     )}
