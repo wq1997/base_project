@@ -5,7 +5,7 @@ const domain = ".sermatec-cloud.com";
  * in/out : 代表的是国内还是国外
  */
 export default apiUrl = {
-    "test": 'https://abroad-power.sermatec-cloud.com/api',
+    "test": 'http://192.168.1.42/api',
     "test-in": 'http://192.168.1.42/api',
     "test-out": 'http://192.168.1.42/api',
     "prod-in": `https://api${domain}`,

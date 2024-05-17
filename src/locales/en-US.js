@@ -1834,4 +1834,5 @@ export default {
 '前一日效率': "Previous day's efficiency",
 '累计效率': 'Accumulated efficiency',
 'PCS电量统计': 'PCS power statistics',
+'日期范围最少选择五天最多选择12天！': 'Select a date range of at least five days and a maximum of 12 days!',
 } 

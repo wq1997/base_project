@@ -1,16 +1,24 @@
 import { useIntl } from "umi";
-import { Form, Select, DatePicker, Button, Flex, Radio, theme, Space } from "antd";
+import { Form, Select, DatePicker, Button, Flex, Radio, theme, Space, message } from "antd";
 import { Title } from "@/components";
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import * as echarts from "echarts";
 import moment from "moment";
+import {
+    getAllDevices as getAllDevicesServe,
+    getRevenue as getRevenueServe,
+} from "@/services";
+
+const defaultStartDate = dayjs(moment().subtract(5, 'day').format("YYYY-MM-DD"));
+const defaultEndDate = dayjs(moment().subtract(1, 'day').format("YYYY-MM-DD"));
 
 const Revenue = () => {
     const intl = useIntl();
     const { token } = theme.useToken();
     const [ form ] = Form.useForm();
+    const [ dataSource, setDataSource ] = useState([]);
     const [option, setOption] = useState({});
 
     const initOption = () => {
@@ -78,9 +86,28 @@ const Revenue = () => {
         setOption(option);
     }
 
+    const getAllDevices = async () => {
+        const res = await getAllDevicesServe();
+        console.log("AAA", res);
+    }
+
+    const getDataSource = async (params) => {
+        const res = await getRevenueServe(params);
+        console.log(res);
+    }
+
     useEffect(()=>{
         initOption();
-    }, []);
+    }, [dataSource]);
+
+    useEffect(()=>{
+        getAllDevices();
+        getDataSource({
+            startDate: defaultStartDate.format("YYYY-MM-DD"),
+            endDate: defaultEndDate.format("YYYY-MM-DD"),
+            dateType: 'day'
+        });
+    }, [])
 
     return (
         <Space size={30} direction="vertical" style={{width: '100%', height:'100%', padding: 30}}>
@@ -91,9 +118,9 @@ const Revenue = () => {
                     layout="inline"
                     initialValues={{
                         device: '',
-                        dayTime: [dayjs(moment().subtract(5, 'day').format("YYYY-MM-DD")), dayjs(moment().subtract(1, 'day').format("YYYY-MM-DD"))],
+                        dayTime: [defaultStartDate, defaultEndDate],
                         yearTime: dayjs(),
-                        timeType: 'DAY'
+                        timeType: 'day'
                     }}
                 >
                     <Flex align="center">
@@ -108,7 +135,7 @@ const Revenue = () => {
                         <Form.Item noStyle dependencies={['timeType']}>
                                 {({getFieldsValue})=>{
                                     const { timeType } = getFieldsValue(['timeType']);
-                                    if(timeType==="DAY"){
+                                    if(timeType==="day"){
                                         return (
                                             <Form.Item 
                                                 name="dayTime"
@@ -116,21 +143,27 @@ const Revenue = () => {
                                                 <DatePicker.RangePicker 
                                                     maxDate={dayjs(moment().subtract(1, 'day').format('YYYY-MM-DD'), 'YYYY-MM-DD')} 
                                                     style={{width: '300px', height: 40}}
+                                                    allowClear={false}
                                                 />
                                             </Form.Item>
                                         )
                                     }
                                     return (
                                         <Form.Item name="yearTime">
-                                            <DatePicker allowClear={false} picker={"year"} style={{width: '250px', height: 40}}/>
+                                            <DatePicker 
+                                                allowClear={false} 
+                                                maxDate={dayjs(moment().format('YYYY'))}
+                                                picker={"year"} 
+                                                style={{width: '250px', height: 40}}
+                                            />
                                         </Form.Item>
                                     )
                                 }}
                         </Form.Item>
                         <Form.Item name="timeType">
                                 <Radio.Group size="large">
-                                    <Radio.Button value="DAY">{intl.formatMessage({id: '日'})}</Radio.Button>
-                                    <Radio.Button value="YEAR">{intl.formatMessage({id: '年'})}</Radio.Button>
+                                    <Radio.Button value="day">{intl.formatMessage({id: '日'})}</Radio.Button>
+                                    <Radio.Button value="year">{intl.formatMessage({id: '年'})}</Radio.Button>
                                 </Radio.Group>
                         </Form.Item>
                     </Flex>
@@ -139,15 +172,30 @@ const Revenue = () => {
                     onClick={async ()=>{
                         let format="YYYY-MM-DD";
                         const values = await form.validateFields();
-                        const { timeType } = values;
-                        if(timeType==="YEAR"){
+                        const { timeType, device } = values;
+                        let params = {};
+                        if(timeType==="year"){
                             format="YYYY";
-                            values.time = dayjs(values.yearTime).format(format);
+                            params = {
+                                dtuId: device,
+                                date: dayjs(values.yearTime).format(format),
+                                dateType: timeType
+                            }
                         }
-                        if(timeType=="DAY"){
-                            values.time = values.dayTime&&values.dayTime?.length>0?[dayjs(values.dayTime[0]).format(format),dayjs(values.dayTime[1]).format(format)]:[];
+                        if(timeType=="day"){
+                            const dayLength = dayjs(dayjs(values.dayTime[1]).format(format)).diff(dayjs(values.dayTime[0]).format(format), 'days')+1;
+                            if(dayLength<5||dayLength>12){
+                                message.error(intl.formatMessage({id: '日期范围最少选择五天最多选择12天！'}));
+                                return;
+                            }
+                            params = {
+                                dtuId: device,
+                                startDate: dayjs(values.dayTime[0]).format(format),
+                                endDate: dayjs(values.dayTime[1]).format(format),
+                                dateType: timeType
+                            }
                         }
-                        console.log(values);
+                        console.log(params);
                     }}
                     type="primary"
                     style={{padding: '0 20px', height: 40}}
