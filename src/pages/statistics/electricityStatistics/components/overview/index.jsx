@@ -24,7 +24,6 @@ function Com(props) {
         pvInEnergy:[],
         chargeInEnergy:[]
     });
-    const [excelData,setExcelData]=useState([]);
     const [scrollY, setScrollY] = useState('');
 
     const { theme: currentTheme } = useSelector(function (state) {
@@ -171,7 +170,9 @@ function Com(props) {
             energyOutEnergy.push(it.energyOutEnergy);
             pvInEnergy.push(it.pvInEnergy);
             chargeInEnergy.push(it.chargeInEnergy);
-            arrX.push(dayjs(it?.date).format('YYYY-MM-DD'))
+            it.date=dayjs(it?.date).format('YYYY-MM-DD')
+            arrX.push(it?.date);
+            
         })
         setData(data.data);
         setDateX(arrX);
@@ -197,8 +198,8 @@ function Com(props) {
     };
     const downLoadExcelModel = () => {
         let fileName = getTranslation('电量统计');
-        let sheetData = excelData;
-        let sheetFilter = ['time', 'nowDay', 'toDay'];
+        let sheetData = data;
+        let sheetFilter = ['date', 'pvOutEnergy', 'energyInEnergy','energyOutEnergy','pvInEnergy','chargeInEnergy'];
         let sheetHeader = [getTranslation("日期"),getTranslation("上网电量"),getTranslation("储能充电量"),getTranslation("光伏发电量"), getTranslation("充电桩充电量"),];
         downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader,getTranslation('总览'))
     };
@@ -212,40 +213,40 @@ function Com(props) {
         },
 
         {
-            title: '日期',
+            title:getTranslation('日期'),
             dataIndex: 'date',
             key: 'date',
             width: 100,
-            render:(val)=>{
-                return val ? dayjs(val).format('YYYY-MM-DD') : ''
-            }
+            // render:(val)=>{
+            //     return val ? dayjs(val).format('YYYY-MM-DD') : ''
+            // }
         },
         {
-            title: '上网电量',
+            title: getTranslation('上网电量'),
             dataIndex: 'pvOutEnergy',
             key: 'pvOutEnergy',
             width: 100,
         },
         {
-            title: '储能充电量',
+            title: getTranslation('储能充电量'),
             dataIndex: 'energyInEnergy',
             key: 'energyInEnergy',
             width: 100,
         },
         {
-            title: '储能放电量',
+            title: getTranslation('储能放电量'),
             dataIndex: 'energyOutEnergy',
             key: 'energyOutEnergy',
             width: 100,
         },
         {
-            title: '光伏发电量',
+            title: getTranslation('光伏发电量'),
             dataIndex: 'pvInEnergy',
             key: 'pvOutEnergy',
             width: 100,
         },
         {
-            title: '充电桩充电量',
+            title:getTranslation('充电桩充电量'),
             dataIndex: 'chargeInEnergy',
             key: 'chargeInEnergy',
             width: 100,
@@ -267,7 +268,7 @@ function Com(props) {
                     <Button type="primary" className={styles.firstButton} onClick={getData}>
                         <FormattedMessage id='app.Query' />
                     </Button>
-                    <Button type="primary" style={{ backgroundColor: token.defaultBg }} >
+                    <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downLoadExcelModel} >
                         <FormattedMessage id='app.Export' />excel
                     </Button>
                 </div>

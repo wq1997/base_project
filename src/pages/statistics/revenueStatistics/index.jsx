@@ -21,48 +21,7 @@ const PageTypeList = [
   { label: '充电桩', key: 'chargingStation', icon: WalletOutlined },
 ];
 const defaultPageType = "Overview";
-const dataP = [{
-  date: '2024-04-01',
-  a: 130,
-  b: 110,
-  c: 90,
-  d: 50,
-  e: 380,
-  f: 262,
-  g: 239,
-  h: 230,
-  i: 221.5,
-  A: 951.5,
-  RA: 571.5,
-}];
-const dataE = [{
-  date: '2024-04-01',
-  a: 122,
-  b: 121,
-  c: 99,
-  d: 67,
-  e: 409,
-  f: 210,
-  g: 204,
-  h: 245,
-  i: 260,
-  A: 919,
-  RA: 510,
-}];
-const dataD = [{
-  date: '2024-04-01',
-  a: 118,
-  b: 132,
-  c: 72,
-  d: 88,
-  e: 410,
-  f: 243,
-  g: 263,
-  h: 285,
-  i: 260,
-  A: 1051,
-  RA: 641,
-}];
+
 
 const Login = () => {
   const location = useLocation();
@@ -92,10 +51,6 @@ const profitTableE = [
           key: 'date',
           width: 100,
           className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
-
-          // render:(val)=>{
-          //     return val ? dayjs(val).format('YYYY-MM-DD') : ''
-          // }
       },]
   },
   {
@@ -103,40 +58,40 @@ const profitTableE = [
       children: [
           {
               title: '尖电',
-              dataIndex: 'a',
-              key: 'a',
+              dataIndex: 'tipInFee',
+              key: 'tipInFee',
               width: 150,
               className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
 
           },
           {
               title: '峰电',
-              dataIndex: 'b',
-              key: 'b',
+              dataIndex: 'peakInFee',
+              key: 'peakInFee',
               width: 150,
               className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
 
           },
           {
               title: '平电',
-              dataIndex: 'c',
-              key: 'c',
+              dataIndex: 'flatInFee',
+              key: 'flatInFee',
               width: 150,
               className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
 
           },
           {
               title: '谷电',
-              dataIndex: 'd',
-              key: 'd',
+              dataIndex: 'valleyInFee',
+              key: 'valleyInFee',
               width: 150,
               className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
 
           },
           {
               title: '总计',
-              dataIndex: 'e',
-              key: 'e',
+              dataIndex: 'dayInFee',
+              key: 'dayInFee',
               width: 150,
               className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
 
@@ -148,40 +103,40 @@ const profitTableE = [
       children: [
           {
               title: '尖电',
-              dataIndex: 'f',
-              key: 'f',
+              dataIndex: 'tipOutFee',
+              key: 'tipOutFee',
               width: 150,
               className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
 
           },
           {
               title: '峰电',
-              dataIndex: 'g',
-              key: 'g',
+              dataIndex: 'peakOutFee',
+              key: 'peakOutFee',
               width: 150,
               className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
 
           },
           {
               title: '平电',
-              dataIndex: 'h',
-              key: 'h',
+              dataIndex: 'flatOutFee',
+              key: 'flatOutFee',
               width: 150,
               className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
 
           },
           {
               title: '谷电',
-              dataIndex: 'i',
-              key: 'i',
+              dataIndex: 'valleyOutFee',
+              key: 'valleyOutFee',
               width: 150,
               className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
 
           },
           {
               title: '总计',
-              dataIndex: 'A',
-              key: 'A',
+              dataIndex: 'dayOutFee',
+              key: 'dayOutFee',
               width: 150,
               className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
 
@@ -191,86 +146,89 @@ const profitTableE = [
   },
   {
       title: '',
-      children: [{
+      children: [
+        {
           title: '实际收益',
-          dataIndex: 'RA',
-          key: 'RA',
+          dataIndex: 'dayEarning',
+          key: 'dayEarning',
           width: 100,
           className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
 
-      }],
+      }
+    ],
   }
 
 ];
 const profitTableP = [
+    {
+        title: '',
+        children: [{
+            title: '序号',
+            dataIndex: 'id',
+            className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+            key: 'id',
+            width: 100,
+            render: (text, record, index) => index + 1,
+        },
+        {
+            title: '日期',
+            dataIndex: 'date',
+            key: 'date',
+            width: 100,
+            className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+        },]
+    },
 
   {
       title: '发电收益（元）',
       children: [
         {
-          title: '序号',
-          dataIndex: 'id',
-          className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
-          key: 'id',
-          width: 100,
-          render: (text, record, index) => index + 1,
-      },
-      {
-          title: '日期',
-          dataIndex: 'date',
-          key: 'date',
-          width: 100,
-          className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+            title: '尖电',
+            dataIndex: 'tipOutFee',
+            key: 'tipOutFee',
+            width: 150,
+            className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
 
-          // render:(val)=>{
-          //     return val ? dayjs(val).format('YYYY-MM-DD') : ''
-          // }
-      },
-          {
-              title: '尖电',
-              dataIndex: 'a',
-              key: 'a',
-              width: 150,
-              className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+        },
+        {
+            title: '峰电',
+            dataIndex: 'peakOutFee',
+            key: 'peakOutFee',
+            width: 150,
+            className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
 
-          },
-          {
-              title: '峰电',
-              dataIndex: 'b',
-              key: 'b',
-              width: 150,
-              className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+        },
+        {
+            title: '平电',
+            dataIndex: 'flatOutFee',
+            key: 'flatOutFee',
+            width: 150,
+            className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
 
-          },
-          {
-              title: '平电',
-              dataIndex: 'c',
-              key: 'c',
-              width: 150,
-              className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+        },
+        {
+            title: '谷电',
+            dataIndex: 'valleyOutFee',
+            key: 'valleyOutFee',
+            width: 150,
+            className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
 
-          },
-          {
-              title: '谷电',
-              dataIndex: 'd',
-              key: 'd',
-              width: 150,
-              className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+        },
+        {
+            title: '总计',
+            dataIndex: 'dayOutFee',
+            key: 'dayOutFee',
+            width: 150,
+            className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
 
-          },
-          {
-              title: '总计',
-              dataIndex: 'e',
-              key: 'e',
-              width: 150,
-              className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+        },
 
-          },
-      ],
+    ],
   },
 
 ];
 const profitTableD = [
+  
   {
       title: '充电收益（元）',
       children: [
@@ -288,51 +246,54 @@ const profitTableD = [
           key: 'date',
           width: 100,
           className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
-
-          // render:(val)=>{
-          //     return val ? dayjs(val).format('YYYY-MM-DD') : ''
-          // }
       },
-          {
-              title: '尖电',
-              dataIndex: 'a',
-              key: 'a',
-              width: 150,
-              className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+      {
+        title: '尖电',
+        dataIndex: 'tipOutFee',
+        key: 'tipOutFee',
+        width: 150,
+        className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
 
-          },
-          {
-              title: '峰电',
-              dataIndex: 'b',
-              key: 'b',
-              width: 150,
-              className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+    },
+    {
+        title: '峰电',
+        dataIndex: 'peakOutFee',
+        key: 'peakOutFee',
+        width: 150,
+        className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
 
-          },
-          {
-              title: '平电',
-              dataIndex: 'c',
-              key: 'c',
-              width: 150,
-              className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+    },
+    {
+        title: '平电',
+        dataIndex: 'flatOutFee',
+        key: 'flatOutFee',
+        width: 150,
+        className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
 
-          },
-          {
-              title: '谷电',
-              dataIndex: 'd',
-              key: 'd',
-              width: 150,
-              className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+    },
+    {
+        title: '谷电',
+        dataIndex: 'valleyOutFee',
+        key: 'valleyOutFee',
+        width: 150,
+        className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
 
-          },
-          {
-              title: '总计',
-              dataIndex: 'e',
-              key: 'e',
-              width: 150,
-              className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+    },
+    {
+        title: '总计',
+        dataIndex: 'dayOutFee',
+        key: 'dayOutFee',
+        width: 150,
+        className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
 
-          },
+    }, {
+        title: '实际收益',
+        dataIndex: 'dayEarning',
+        key: 'dayEarning',
+        width: 100,
+        className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+
+    }
       ],
   },
 
@@ -352,9 +313,9 @@ const profitTableD = [
         onChange={onChangeTab}
       />
       {activeKey === "Overview" && <Overview type={activeKey} />}
-      {activeKey === "photovoltaic" && <PartOfProceeds type={activeKey} typeNum={2} dataTable={dataP} dataYM={[572.5,572.5,572.5]} clum={profitTableP} />}
-      {activeKey === "energyStorage" && <PartOfProceeds type={activeKey} typeNum={0} dataTable={dataE} dataYM={[510,572.5,510]} clum={profitTableE}/>}
-      {activeKey === "chargingStation" && <PartOfProceeds type={activeKey} typeNum={1} dataTable={dataD} dataYM={[641,641,641]}  clum={profitTableD}/>}
+      {activeKey === "photovoltaic" && <PartOfProceeds type={activeKey} typeNum={2}   clum={profitTableP} />}
+      {activeKey === "energyStorage" && <PartOfProceeds type={activeKey} typeNum={0}  clum={profitTableE}/>}
+      {activeKey === "chargingStation" && <PartOfProceeds type={activeKey} typeNum={1}   clum={profitTableD}/>}
     </div>
   )
 }

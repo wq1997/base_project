@@ -16,6 +16,9 @@ const RealtimeAlarm = () => {
   const [username, setUserName] = useState();
   const { token } = theme.useToken();
   const { RangePicker } = DatePicker;
+  const { user } = useSelector(function (state) {
+    return state.user
+});
   const intl = useIntl();
   const t = (id) => {
     const msg = intl.formatMessage(
@@ -90,9 +93,9 @@ const RealtimeAlarm = () => {
             showTime
           />
         </div>
-        <div className={styles.dataItem}>
+        {user.roleId == 3 &&<div className={styles.dataItem}>
           <Search placeholder={t('用户名')} onSearch={onSearch} enterButton />
-        </div>
+        </div>}
       </div>
       <div className={styles.tablePart} style={{ backgroundColor: token.cardBgc }}>
         <Table

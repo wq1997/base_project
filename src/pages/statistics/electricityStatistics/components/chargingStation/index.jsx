@@ -6,6 +6,7 @@ import { CardModel } from "@/components";
 import ReactECharts from "echarts-for-react";
 import { useSelector, FormattedMessage, useIntl } from "umi";
 import { getEnergyFeeByTime } from '@/services/report'
+import {  downLoadExcelMode } from "@/utils/utils";
 
 function Com(props) {
     const { token } = theme.useToken();
@@ -16,6 +17,7 @@ function Com(props) {
     const [data, setData] = useState([]);
     const [dayIn, setDayIn] = useState([]);
     const [dayOut, setDayOut] = useState([]);
+    const [excelData, setExcelData] = useState([]);
     const [dateX, setDateX] = useState([]);
     const { theme: currentTheme } = useSelector(function (state) {
         return state.global
@@ -86,6 +88,15 @@ function Com(props) {
             ]
         });
     };
+    const intl = useIntl();
+    const t = (id) => {
+        const msg = intl.formatMessage(
+            {
+                id,
+            },
+        );
+        return msg
+    }
     const profitTable = [
         {  
            title:'',
@@ -214,19 +225,34 @@ function Com(props) {
         let arrIn = [];
         let arrOut = [];
         let arrX = [];
+        let excel=[];
+
         let { data } = await getEnergyFeeByTime(httpData);
         data?.data.map((it) => {
             arrIn.push(it.dayInEnergy);
             arrOut.push(it.dayOutEnergy);
-            arrX.push(dayjs(it.date).format('YYYY-MM-DD'))
-
+            it.date=dayjs(it?.date).format('YYYY-MM-DD')
+            arrX.push(it?.date);
+            excel.push({
+                dayInEnergy:it.dayInEnergy,
+                dayOutEnergy:it.dayOutEnergy,
+                date:it.date,
+            })
          
         })
+        setExcelData(excel);
         setDayIn(arrIn);
         setDayOut(arrOut);
         setDateX(arrX);
         setData(data.data);
     }
+    const downLoadExcelModel = () => {
+        let fileName = t('电量统计');
+        let sheetData = excelData;
+        let sheetFilter = ['date', 'dayInEnergy', 'dayOutEnergy',];
+        let sheetHeader = [t("日期"),t("充电量")+'(kWh)',t("用电量")+'(kWh)',];
+        downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader,t('充电桩电量'))
+    };
     useEffect(() => {
         getOptions();
     }, [currentTheme, dayIn, dayOut, dateX]);
@@ -259,7 +285,7 @@ function Com(props) {
                     <Button type="primary" className={styles.firstButton} onClick={getData}>
                         <FormattedMessage id='app.Query' />
                     </Button>
-                    <Button type="primary" style={{ backgroundColor: token.defaultBg }} >
+                    <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downLoadExcelModel} >
                         <FormattedMessage id='app.Export' />excel
                     </Button>
                 </div>

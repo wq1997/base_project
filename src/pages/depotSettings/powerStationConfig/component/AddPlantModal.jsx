@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, } from 'react';
 import { DatePicker, Row, Col, Modal, Form, Input, Select, Switch, InputNumber } from 'antd';
 import { useSelector, useIntl } from "umi";
 import { getAlarmRuleInsertInitData } from '@/services/alarm'
+const { Option } = Select;
 
 const App = (props) => {
   const formList = [
@@ -10,6 +11,7 @@ const App = (props) => {
       key: 'name',
       type: 3,
       required: true,
+      disabled: props.title=='编辑电站'?true:false
     },
     {
       label: '所属用户',
@@ -100,7 +102,6 @@ const App = (props) => {
       type: 1,
       required: false,
       data: props.initSelectData?.languageList
-
     },
   ]
   const intl = useIntl();
@@ -139,6 +140,8 @@ const App = (props) => {
       console.log('Failed:', errorInfo);
     }
   };
+  console.log( props.initSelectData?.languageList,form.getFieldsValue()
+    ,11111111);
   return (
     <>
       <Modal
@@ -175,9 +178,15 @@ const App = (props) => {
                     <Col className="gutter-row" span={12}>
                       <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.required }]} >
                         <Select
-                          // defaultValue={it.data[0].value}
-                          options={it?.data}
-                        />
+                          defaultValue={it?.data?.[0]?.value}
+                          key={it?.data?.[0]?.value}
+                        >
+                          {it?.data && it?.data.map(item => {
+                            return (<Option key={item.value} value={item.value}>{item.label}</Option>);
+                          })
+                          }
+
+                        </Select>
                       </Form.Item>
                     </Col>
 
@@ -195,7 +204,7 @@ const App = (props) => {
                 return (
                   <Col className="gutter-row" span={12}>
                     <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.required }]} >
-                      <Input />
+                      <Input  disabled={it.disabled}/>
                     </Form.Item>
                   </Col>
                 )
@@ -203,7 +212,7 @@ const App = (props) => {
                 return (
                   <Col className="gutter-row" span={12}>
                     <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.required }]} >
-                      <DatePicker showTime style={{ width: '100%' }} format={'YYYY-MM-DD'}  />
+                      <DatePicker showTime style={{ width: '100%' }} format={'YYYY-MM-DD'} />
                     </Form.Item>
                   </Col>
                 )

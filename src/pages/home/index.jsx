@@ -5,7 +5,7 @@ import styles from './index.less'
 import { CardModel } from "@/components";
 import useIcon from "@/hooks/useIcon";
 import { useSelector, useIntl } from "umi";
-import { theme, Radio,Descriptions } from "antd";
+import { theme, Radio, Descriptions, Tooltip } from "antd";
 import ReactECharts from "echarts-for-react";
 import { getGridPointPower, getPlantEnergyFee } from '@/services/home'
 import { getEnergyFeeByTime } from '@/services/report'
@@ -32,7 +32,7 @@ function OverView(props) {
         chargeInEnergy: []
     });
     const intl = useIntl();
-    let currentPlant=JSON.parse(localStorage.getItem('current'))
+    let currentPlant = JSON.parse(localStorage.getItem('current'))
     const t = (id) => {
         const msg = intl.formatMessage(
             {
@@ -79,43 +79,43 @@ function OverView(props) {
             color: '#03B4B4'
         },
     ]);
-    let detailsPartData=[
+    let detailsPartData = [
         {
-        key: 'name',
-        label: t('电站名称'),
-        span:2
-    },
-    {
-        key: 'installDateVo',
-        label: t('建站日期'),
-    },
-    {
-        key: 'typeName',
-        label: t('电站类型'),
-        
-    },
-    {
-        key: 'designPower',
-        label: t('储能装机功率'),
-    },
-    {
-        key: 'capacity',
-        label: t('储能装机容量'),
-    },
-    {
-        key: 'pvCapacity',
-        label: t('光伏装机容量'),
-    },
-    {
-        key: 'chargePileCapacity',
-        label: t('充电桩装机容量'),
-    },
-    {
-        key: 'position',
-        label: t('电站位置'),
-        span:2
-    },
-]
+            key: 'name',
+            label: t('电站名称'),
+            span: 2
+        },
+        {
+            key: 'installDateVo',
+            label: t('建站日期'),
+        },
+        {
+            key: 'typeName',
+            label: t('电站类型'),
+
+        },
+        {
+            key: 'designPower',
+            label: t('储能装机功率'),
+        },
+        {
+            key: 'capacity',
+            label: t('储能装机容量'),
+        },
+        {
+            key: 'pvCapacity',
+            label: t('光伏装机容量'),
+        },
+        {
+            key: 'chargePileCapacity',
+            label: t('充电桩装机容量'),
+        },
+        {
+            key: 'position',
+            label: t('电站位置'),
+            span: 2
+        },
+    ]
     const getOptions = async () => {
         let { data: energyData } = await getEnergyFeeByTime({
             plantId: localStorage.getItem('plantId'),
@@ -352,7 +352,7 @@ function OverView(props) {
             plantId: localStorage.getItem('plantId')
         });
         let arr = [];
-        let arr1=[];
+        let arr1 = [];
         electricityStatistics?.map(it => {
             arr.push({
                 ...it,
@@ -406,20 +406,20 @@ function OverView(props) {
             <div className={styles.imgPart} style={{ backgroundColor: token.titleCardBgc }}>
                 <Img />
                 <div className={styles.detailsButton}
-                 onMouseEnter={() => setIsHovered(true)}
-                 onMouseLeave={() => setIsHovered(false)}
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
                 >{t('电站信息')}</div>
-                {isHovered&&<div className={styles.detailsPart}>
-                <Descriptions  column={2}  items={
-                    detailsPartData.map(it=>{
-                        return{
-                            ...it,
-                            children:currentPlant[it.key]
-                        }
-                    })
-                } />
-                    
-                    </div>}
+                {isHovered && <div className={styles.detailsPart}>
+                    <Descriptions column={2} items={
+                        detailsPartData.map(it => {
+                            return {
+                                ...it,
+                                children: currentPlant[it.key]
+                            }
+                        })
+                    } />
+
+                </div>}
             </div>
             <div className={styles.card}>
                 <div className={styles.dataLeft} style={{ backgroundColor: token.titleCardBgc }}>
@@ -430,9 +430,12 @@ function OverView(props) {
                                     <span style={{ color: it.color }}>{it.value}</span>
                                     <span className={styles.unit}>{it.unit}</span>
                                 </div>
-                                <div className={styles.label}>
-                                    {t(it.label)}
-                                </div>
+                                <Tooltip title={t(it.label)} >
+                                    <div className={styles.label}>
+                                        {t(it.label)}
+                                    </div>
+                                </Tooltip>
+
                             </div>
                         </>
                     })}

@@ -4,6 +4,7 @@ import { FORM_REQUIRED_RULE } from "@/utils/constants";
 import {
   DeleteOutlined
 } from '@ant-design/icons';
+import { useIntl } from "umi";
 
 const COLORS = [
   '#00a76f',
@@ -29,6 +30,16 @@ export default function CalendarEventForm({
   const title = type === 'add' ? '新建策略执行日程' : '编辑策略执行日程';
   const [form] = Form.useForm();
   const [strategyDatasource, setStrategyDatasource] = useState([...strategy[0].children]);
+  const intl = useIntl();
+  const t = (id) => {
+    const msg = intl.formatMessage(
+      {
+        id,
+      },
+    );
+    return msg
+  }
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     // 当 initValues 改变时，手动更新表单的值
@@ -36,7 +47,7 @@ export default function CalendarEventForm({
     form.setFieldsValue({ ...others, color });
   }, [initValues, form]);
 
-  useEffect(()=>{
+  useEffect(() => {
     setStrategyDatasource([...strategy[0].children])
   }, [strategy])
   // eslint-disable-next-line react/function-component-definition, react/no-unstable-nested-components
@@ -48,8 +59,8 @@ export default function CalendarEventForm({
             <Button
               icon={<DeleteOutlined />}
               onClick={() => {
-                onDelete(initValues.id);
-                onCancel();
+                // onCancel();
+                setIsOpen(true)
               }}
             >
             </Button>
@@ -71,56 +82,76 @@ export default function CalendarEventForm({
     );
   };
 
+
   return (
-    <Modal
-      open={open}
-      title={title}
-      centered
-      onCancel={onCancel}
-      footer={ModalFooter}
-      onOk={() => {
-        form
-          .validateFields()
-          .then((values) => {
-            form.resetFields();
-            const { id } = initValues;
-            const event = { ...values, id };
-            if (type === 'add') onCreate(event);
-            if (type === 'edit') onEdit(event);
-            onCancel();
-          })
-          .catch((info) => {
-            console.log('Validate Failed:', info);
-          });
-      }}
-    >
-      <Form
-        form={form}
-        labelCol={{ span: 5 }}
-        wrapperCol={{ span: 18 }}
+    <>
+      <Modal
+        open={open}
+        title={t(title)}
+        centered
+        onCancel={onCancel}
+        footer={ModalFooter}
+        onOk={() => {
+          form
+            .validateFields()
+            .then((values) => {
+              form.resetFields();
+              const { id } = initValues;
+              const event = { ...values, id };
+              if (type === 'add') onCreate(event);
+              if (type === 'edit') onEdit(event);
+              onCancel();
+            })
+            .catch((info) => {
+              console.log('Validate Failed:', info);
+            });
+        }}
       >
-        <Form.Item label="策略" name={"strategyId"}  rules={[FORM_REQUIRED_RULE]}>
-          <Select
-          disabled={type === 'add'?false:true}
-            options={strategyDatasource?.map(item => {
-              return {
-                label: item.title,
-                value: item.strategyId
-              }
-            })}
-            placeholder="请选择策略"
-          />
-        </Form.Item>
-        <Form.Item label="开始时间" name={"start"} rules={[FORM_REQUIRED_RULE]}>
-          <DatePicker    disabled={type === 'add'?false:true}  format={'YYYY-MM-DD'} style={{ width: '100%' }} />
-        </Form.Item>
-        <Form.Item label="结束时间" name={"end"} rules={[FORM_REQUIRED_RULE]}>
-          <DatePicker    disabled={type === 'add'?false:true} format={'YYYY-MM-DD'}  style={{ width: '100%' }} />
-        </Form.Item>
-        <Form.Item label="备注" name="remarks">
-          <Input.TextArea    disabled={type === 'add'?false:true} placeholder='描述' />
-        </Form.Item>
-      </Form>
-    </Modal>
+        <Form
+          form={form}
+          labelCol={{ span: 5 }}
+          wrapperCol={{ span: 18 }}
+        >
+          <Form.Item label={t("策略")} name={"strategyId"} rules={[FORM_REQUIRED_RULE]}>
+            <Select
+              disabled={type === 'add' ? false : true}
+              options={strategyDatasource?.map(item => {
+                return {
+                  label: item.title,
+                  value: item.strategyId
+                }
+              })}
+              placeholder={t("请选择策略")}
+            />
+          </Form.Item>
+          <Form.Item label={t("开始时间")} name={"start"} rules={[FORM_REQUIRED_RULE]}>
+            <DatePicker disabled={type === 'add' ? false : true} format={'YYYY-MM-DD'} style={{ width: '100%' }} />
+          </Form.Item>
+          <Form.Item label={t("结束时间")}  name={"end"} rules={[FORM_REQUIRED_RULE]}>
+            <DatePicker disabled={type === 'add' ? false : true} format={'YYYY-MM-DD'} style={{ width: '100%' }} />
+          </Form.Item>
+          <Form.Item label={t("备注")} name="remarks">
+            <Input.TextArea disabled={type === 'add' ? false : true} placeholder={t('描述')} />
+          </Form.Item>
+        </Form>
+      </Modal>
+      <Modal
+        title={t('系统提示')}
+        open={isOpen}
+        onCancel={()=>setIsOpen(false)}
+        onOk={
+          () => {
+            onDelete(initValues?.id)
+            onCancel();
+            setIsOpen(false)
+          }
+        }
+      >
+        <span>
+          {t('策略执行日程删除后将无法恢复，是否确认删除该日程？')}
+        </span>
+      </Modal>
+    </>
+
   );
 }

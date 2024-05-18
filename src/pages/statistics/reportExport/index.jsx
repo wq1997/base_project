@@ -104,6 +104,7 @@ function Com() {
       type: way,
       date: currentDate,
     });
+
     setAllData(allData?.data);
   }
   const delBaseData = (base, data) => {
@@ -146,9 +147,7 @@ function Com() {
   const changeDate = (val, str) => {
     setDateStr(str);
     setDate(val);
-    console.log(dayjs(val).format('YYYY-MM-DD'), str);
   }
-  console.log(modelData, allData, data);
   return (
     <>
       <div className={styles.advancedAnalytics} style={{ color: token.titleColor, backgroundColor: token.titleCardBgc }}>
@@ -165,7 +164,6 @@ function Com() {
           <span >{t('对比日期')}:</span>
           <DatePicker className={styles.margRL}
             style={{ width: 240 }}
-            // multiple={way === 1 ? false : true}
             picker={picker}
             maxTagCount={1}
             onChange={(val, str) => changeDate(val, str)}

@@ -7,6 +7,7 @@ import ReactECharts from "echarts-for-react";
 import LineEcharts from '@/components/LineEcharts'
 import { useSelector, FormattedMessage, useIntl } from "umi";
 import { getEnergyFeeByTime } from '@/services/report'
+import {  downLoadExcelMode } from "@/utils/utils";
 
 function Com(props) {
     const { token } = theme.useToken();
@@ -18,6 +19,7 @@ function Com(props) {
     const [dayOut, setDayOut] = useState([]);
     const [dateX, setDateX] = useState([]);
     const [efficiency, setEfficiency] = useState([]);
+    const [excelData, setExcelData] = useState([]);
     const [options, setOptions] = useState({});
     const { theme: currentTheme } = useSelector(function (state) {
         return state.global
@@ -86,6 +88,15 @@ function Com(props) {
             ]
         });
     };
+    const intl = useIntl();
+    const t = (id) => {
+        const msg = intl.formatMessage(
+            {
+                id,
+            },
+        );
+        return msg
+    }
     const getData = async () => {
         let httpData = {
             time: time.format(format),
@@ -97,24 +108,46 @@ function Com(props) {
         let arrOut = [];
         let arrX = [];
         let arrEfit=[];
+        let excel=[];
         let { data } = await getEnergyFeeByTime(httpData);
         data?.data.map((it) => {
             arrIn.push(it.dayInEnergy);
             arrOut.push(it.dayOutEnergy);
-            arrX.push(dayjs(it.date).format('YYYY-MM-DD'))
-
+            it.date=dayjs(it?.date).format('YYYY-MM-DD')
+            arrX.push(it?.date);
             if (it.dayInEnergy===0) {
                 arrEfit.push(0);
+                excel.push({
+                    dayInEnergy:it.dayInEnergy,
+                    dayOutEnergy:it.dayOutEnergy,
+                    date:it.date,
+                    efit:0
+                })
             }else{
-                arrEfit.push(+it.dayOutEnergy/+it.dayInEnergy)
+                arrEfit.push((+it.dayOutEnergy/+it.dayInEnergy).toFixed(2));
+                excel.push({
+                    dayInEnergy:it.dayInEnergy,
+                    dayOutEnergy:it.dayOutEnergy,
+                    date:it.date,
+                    efit:(+it.dayOutEnergy/+it.dayInEnergy).toFixed(2)
+                });
+                it.efficiency=(+it.dayOutEnergy/+it.dayInEnergy).toFixed(2)
             }
         })
+        setExcelData(excel);
         setDayIn(arrIn);
         setDayOut(arrOut);
         setDateX(arrX);
         setEfficiency(arrEfit);
         setData(data.data);
     }
+    const downLoadExcelModel = () => {
+        let fileName = t('电量统计');
+        let sheetData = excelData;
+        let sheetFilter = ['date', 'dayInEnergy', 'dayOutEnergy','efit',];
+        let sheetHeader = [t("日期"),t("充电电量")+'(kWh)',t("放电电量")+'(kWh)',t("充放电效率"), ];
+        downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader,t('储能'))
+    };
     const profitTable = [
         {  
            title:'',
@@ -124,7 +157,6 @@ function Com(props) {
                key: 'id',
                width: 100,
                className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
-   
                render: (text, record, index) => index + 1,
            },
    
@@ -135,9 +167,6 @@ function Com(props) {
                width: 100,
                className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
    
-               render: (val) => {
-                   return val ? dayjs(val).format('YYYY-MM-DD') : ''
-               }
            },
        ]
        },
@@ -229,9 +258,16 @@ function Com(props) {
                        className: currentTheme === 'default' ? 'lightTitleColorLeft' : 'darkTitleColorLeft',
    
                    },
-   
+                   {
+                    title: '充放电效率',
+                    dataIndex: 'efficiency',
+                    key: 'efficiency',
+                    width: 150,
+                    className: currentTheme === 'default' ? 'lightTitleColorLeft' : 'darkTitleColorLeft',
+                   }
                ],
            },
+          
        ];
     useEffect(() => {
         getOptions();
@@ -265,8 +301,8 @@ function Com(props) {
                     <Button type="primary" className={styles.firstButton} onClick={getData}>
                         <FormattedMessage id='app.Query' />
                     </Button>
-                    <Button type="primary" style={{ backgroundColor: token.defaultBg }} >
-                        <FormattedMessage id='app.Export' />excel
+                    <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downLoadExcelModel} >
+                        <FormattedMessage id='app.Export'  />excel
                     </Button>
                 </div>
 

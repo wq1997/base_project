@@ -31,7 +31,6 @@
     text-align: center;
   }
   .detailsPart{
-
     background: rgba(0, 0, 0, 0.4);
     position: absolute;
     top: 70px;
@@ -72,11 +71,14 @@
 
 .dataLeft {
   grid-area: dataLeft;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr  1fr;
 
   .wrap {
+    padding: 20px 40px;
+    overflow: hidden;
+    text-overflow: ellipsis !important;
+    white-space: nowrap;
     .value {
       font-family: DingTalk;
       margin-bottom: 10px;
@@ -86,7 +88,10 @@
 
     .label {
       font-size: 18px;
-
+      height: calc(100% - 22px);
+      overflow: hidden;
+      text-overflow: ellipsis !important;
+      white-space: nowrap;
     }
   }
 }
@@ -129,7 +134,8 @@
 
 @media screen and (min-width: 2000px) {
   .detailsPart{
-    width: 466px;
+    min-width: 466px;
+    max-width: 1000px;
     height: 360px;
     padding: 36px 25px;
   }
@@ -154,7 +160,8 @@
 
 @media screen and (min-width: 1000px) and (max-width: 2000px) {
   .detailsPart{
-    width:420px;
+    min-width:420px;
+    max-width: 1000px;
     height: 320px;
     padding: 18px 12px;
   }
@@ -179,6 +186,12 @@
 }
 
 @media screen and (max-width: 1000px) {
+  .detailsPart{
+    min-width:420px;
+    max-width: 1000px;
+    height: 320px;
+    padding: 18px 12px;
+  }
   .value {
     font-size: 16px;
   }

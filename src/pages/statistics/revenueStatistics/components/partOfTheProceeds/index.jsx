@@ -4,11 +4,11 @@ import dayjs from 'dayjs';
 import styles from './index.less'
 import { CardModel } from "@/components";
 import ReactECharts from "echarts-for-react";
-// import Table from '@/components/Table.jsx'
-import { useSelector } from "umi";
+import {  downLoadExcelMode } from "@/utils/utils";
+import { useSelector,useIntl} from "umi";
 import { getEnergyFeeByTime } from '@/services/report'
 
-function Com({ typeNum, dataTable, dataYM,clum }) {
+function Com({ typeNum, clum }) {
     const [mode, setMode] = useState('date');
     const { token } = theme.useToken();
     const [options, setOptions] = useState({});
@@ -42,7 +42,7 @@ function Com({ typeNum, dataTable, dataYM,clum }) {
             xAxis: [
                 {
                     type: 'category',
-                    data: ['2024-04-01', '2024-04-02', '2024-04-03',],
+                    data: [...dateX],
                     axisTick: {
                         alignWithLabel: true
                     }
@@ -67,13 +67,20 @@ function Com({ typeNum, dataTable, dataYM,clum }) {
                             color: token.colorPrimary
                         }
                     },
-                    // barWidth: '60%',
-                    data: dataYM
+                    data: dataY
                 }
             ]
         });
     };
-
+    const intl = useIntl();
+    const t = (id) => {
+        const msg = intl.formatMessage(
+            {
+                id,
+            },
+        );
+        return msg
+    }
     useEffect(() => {
         getOptions();
     }, [dateX, dataY, currentTheme,]);
@@ -99,28 +106,33 @@ function Com({ typeNum, dataTable, dataYM,clum }) {
             valueType: typeNum
         }
         let arrX = [];
-        let chargeEarning = [];
-        let energyEarning = [];
-        let pvEarning = [];
-        let totalEarning = [];
+        let dayEarning = [];
         let { data } = await getEnergyFeeByTime(httpData);
         data?.data.map((it) => {
-            totalEarning.push(it.totalEarning);
-            pvEarning.push(it.pvEarning);
-            energyEarning.push(it.energyEarning);
-            chargeEarning.push(it.chargeEarning);
-            arrX.push(it.date)
+            dayEarning.push(it.dayEarning)
+            it.date=dayjs(it?.date).format('YYYY-MM-DD')
+            arrX.push(it?.date);
         })
         setData(data.data);
         setDateX(arrX);
-
-
+        setDataY([...dayEarning]);
+    }
+    const downLoadExcelModel = () => {
+        let fileName = t('收益统计');
+        let sheetData = data;
+        let sheetFilter = ['date', 'dayEarning', ];
+        let sheetHeader = [t("日期"),t("日收益"),];
+        downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader,t('总览'))
+    };
+    const queryData = () => {
+        getData();
+        getOptions();
     }
     return (
         <div className={styles.content}>
             <div className={styles.heard} style={{ backgroundColor: token.titleCardBgc }}>
                 <div className={styles.date}>
-                    <DatePicker picker={mode} defaultValue={time} style={{ marginRight: "20px" }} />
+                    <DatePicker picker={mode} defaultValue={time} onChange={val=>setTime(val)} style={{ marginRight: "20px" }} />
                     <Radio.Group value={mode} onChange={handleModelChange}>
                         <Radio.Button value="date">日</Radio.Button>
                         <Radio.Button value="month">月</Radio.Button>
@@ -129,10 +141,10 @@ function Com({ typeNum, dataTable, dataYM,clum }) {
                 </div>
 
                 <div className={styles.buttons}>
-                    <Button type="primary" className={styles.firstButton}>
+                    <Button type="primary" className={styles.firstButton} onClick={queryData}>
                         查询
                     </Button>
-                    <Button type="primary" style={{ backgroundColor: token.defaultBg }} >
+                    <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downLoadExcelModel}>
                         导出excel
                     </Button>
                 </div>
@@ -149,22 +161,6 @@ function Com({ typeNum, dataTable, dataYM,clum }) {
                         }
                     />
                 </div>
-                {/* <div className={styles.rightCardData} style={{ backgroundColor: token.titleCardBgc }}>
-                    {cardData.map((it) => {
-                        return <div className={styles.profitCard} style={{ color: it.color, backgroundColor: token.cardBgc, boxShadow: token.cardShadow }}>
-                            <div className={styles.cardItemTitle}>
-                                {it.icon}
-                                <span style={{ color: token.smallTitleColor, fontWeight: 500, fontSize: '16px', marginLeft: '3px' }}>{it.name}</span>
-                            </div>
-                            <div className={styles.cardItemVaue} style={{ color: token.titleColor }}>
-                                {it.value}
-                                <span style={{ color: token.smallTitleColor, fontSize: '16px', fontWeight: 400, marginLeft: '10px' }}>{it.unit}</span>
-                            </div>
-                        </div>
-                    })}
-
-                </div> */}
-
             </div>
             <div className={styles.profitList} id="table">
                 <CardModel
@@ -174,7 +170,7 @@ function Com({ typeNum, dataTable, dataYM,clum }) {
                     content={
                         <Table
                             columns={clum}
-                            dataSource={dataTable}
+                            dataSource={data}
                             scroll={{
                                 y: scrollY,
                             }}

@@ -471,6 +471,12 @@ export const energy = {
                     key: 'dayOutEnergy',
                     width: 150,
                 },
+                {
+                    title: '充放电效率',
+                    dataIndex: 'efficiency',
+                    key: 'efficiency',
+                    width: 150,
+                   }
             ],
         },
     ],

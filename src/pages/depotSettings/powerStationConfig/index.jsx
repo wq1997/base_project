@@ -10,7 +10,6 @@ import dayjs from 'dayjs';
 import { timeZoneList } from '@/utils/constants'
 
 function Com(props) {
-    const [xxx, setXxx] = useState('')
     const [data, setData] = useState([]);
     const { token } = theme.useToken();
     const [title, setTitle] = useState('新增电站');
@@ -180,7 +179,7 @@ function Com(props) {
             ...record,
             userName: initSelectData?.userList.find(it => it.label === record.userName)?.value,
             typeName: initSelectData?.plantType.find(it => it.label === record.typeName)?.value,
-            priceUnit: initSelectData?.languageList.find(it => it.label === record.priceUnit)?.value || initSelectData.languageList[0].value,
+            priceUnit: initSelectData?.languageList.find(it => it.value == record.priceUnit)?.value || initSelectData.languageList[0].value,
             timeZone: initSelectData?.timeZone.find(it => it.label === record.timeZone)?.value || initSelectData.timeZone[0].value,
             // timeZone:1,
             // priceUnit:1,
@@ -200,7 +199,7 @@ function Com(props) {
             apiUpdatePlant({ ...value, plantId: selectId }) :
             apiInsertPlant({ ...value, }))
         if (data.data) {
-            getData();
+             getData();
         } else {
             message.error(data.msg)
         }

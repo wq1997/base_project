@@ -7,6 +7,8 @@ import ReactECharts from "echarts-for-react";
 // import Table from '@/components/Table.jsx'
 import { useSelector, FormattedMessage, useIntl } from "umi";
 import { getEnergyFeeByTime } from '@/services/report'
+import {  downLoadExcelMode } from "@/utils/utils";
+
 function Com(props) {
     const { token } = theme.useToken();
     const [options, setOptions] = useState({});
@@ -17,11 +19,13 @@ function Com(props) {
     const [dayIn, setDayIn] = useState([]);
     const [dayOut, setDayOut] = useState([]);
     const [dateX, setDateX] = useState([]);
+    const [excelData, setExcelData] = useState([]);
+
     const { theme: currentTheme } = useSelector(function (state) {
         return state.global
     });
     const intl = useIntl();
-    const getTranslation = (id) => {
+    const t = (id) => {
         const msg = intl.formatMessage(
             {
                 id,
@@ -117,10 +121,6 @@ function Com(props) {
             key: 'date',
             width: 100,
             className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
-
-            render: (val) => {
-                return val ? dayjs(val).format('YYYY-MM-DD') : ''
-            }
         },
     ]
     },
@@ -216,6 +216,13 @@ function Com(props) {
             ],
         },
     ];
+    const downLoadExcelModel = () => {
+        let fileName = t('电量统计');
+        let sheetData = excelData;
+        let sheetFilter = ['date', 'dayInEnergy', 'dayOutEnergy','efit',];
+        let sheetHeader = [t("日期"),t("发电量")+'(kWh)',t("上网电量")+'(kWh)', ];
+        downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader,t('光伏'))
+    };
     const getData = async () => {
         let httpData = {
             time: time.format(format),
@@ -223,16 +230,24 @@ function Com(props) {
             plantId: localStorage.getItem('plantId'),
             valueType: 2
         };
+        
         let arrIn = [];
         let arrOut = [];
         let arrX = [];
+        let excel=[];
         let { data } = await getEnergyFeeByTime(httpData);
         data?.data.map((it) => {
             arrIn.push(it.dayInEnergy);
             arrOut.push(it.dayOutEnergy);
-            arrX.push(dayjs(it.date).format('YYYY-MM-DD'))
-
+            it.date=dayjs(it?.date).format('YYYY-MM-DD')
+            arrX.push(it?.date);
+            excel.push({
+                dayInEnergy:it.dayInEnergy,
+                dayOutEnergy:it.dayOutEnergy,
+                date:it.date
+            })
         })
+        setExcelData(excel);
         setDayIn(arrIn);
         setDayOut(arrOut);
         setDateX(arrX);
@@ -272,9 +287,7 @@ function Com(props) {
                         <FormattedMessage id='app.Query' />
                     </Button>
                     <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={
-                        () => {
-                            // exportExcel([profitTable[0],profitTable[1],...profitTable[2].children,...profitTable[3].children], data, `${getTranslation('光伏')+getTranslation('电量统计')}.xlsx`)
-                        }
+                        downLoadExcelModel
                     }>
                         <FormattedMessage id='app.Export' /> excel
                     </Button>
@@ -284,7 +297,7 @@ function Com(props) {
             <div className={styles.profitStaus}>
                 <CardModel
                     title={
-                        getTranslation('光伏电量(kWh)')
+                        t('光伏电量(kWh)')
                     }
                     content={
                         // <div className={styles.eletric}>

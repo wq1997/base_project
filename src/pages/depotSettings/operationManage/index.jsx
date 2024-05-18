@@ -1,4 +1,4 @@
-import { theme, Select, Row, Space, Button, Modal, Form, Input, message } from "antd";
+import { theme, Select, Row, Space, Button, Modal, Form, Input, message, InputNumber } from "antd";
 import { Title } from "@/components";
 import { getGridPointList, getOMCommands, sendOMCommands } from '@/services/policy'
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
@@ -146,10 +146,10 @@ const OperationManage = () => {
                                                     <span>{t('有功功率')}：{it?.pcsPower}kW</span>
                                                 </Space>
                                                 <Space>
-                                                    <MyButton text="功率设置" />
-                                                    <MyButton text="开机" />
-                                                    <MyButton text="关机" />
-                                                    <MyButton text="复位" />
+                                                    <MyButton text="功率设置" cmdKey='4' devId={item.devId} />
+                                                    <MyButton text="开机" cmdKey='1' devId={item.devId} />
+                                                    <MyButton text="关机" cmdKey='2' devId={item.devId} />
+                                                    <MyButton text="复位" cmdKey='3' devId={item.devId} />
                                                 </Space>
                                             </Row>
                                             <Row justify="space-between">
@@ -160,9 +160,9 @@ const OperationManage = () => {
                                                     <span>SOC: {it?.bmsSoc}%</span>
                                                 </Space>
                                                 <Space>
-                                                    <MyButton text="开机" />
-                                                    <MyButton text="关机" />
-                                                    <MyButton text="复位" />
+                                                    <MyButton text="开机" cmdKey='12' devId={item.devId} />
+                                                    <MyButton text="关机" cmdKey='13' devId={item.devId} />
+                                                    <MyButton text="复位" cmdKey='14' devId={item.devId} />
                                                 </Space>
                                             </Row>
                                         </Space>
@@ -205,7 +205,7 @@ const OperationManage = () => {
                     form={form1}
                 >
                     <Form.Item name={"password"} label="请输入密码" rules={[FORM_REQUIRED_RULE]}>
-                        <Input  className="pwd"  placeholder="请输入密码" />
+                        <Input className="pwd" placeholder="请输入密码" />
                     </Form.Item>
                     <Form.Item name={"mode"} label="请选择模式" rules={[FORM_REQUIRED_RULE]}>
                         <Select
@@ -250,7 +250,7 @@ const OperationManage = () => {
                     form={form2}
                 >
                     <Form.Item label="请输入密码" name={"password"} rules={[FORM_REQUIRED_RULE]}>
-                        <Input   className="pwd"  placeholder="请输入密码" />
+                        <Input className="pwd" placeholder="请输入密码" />
                     </Form.Item>
                     <span>确定下发PCS总{powerOffOpen ? '关机' : '开机'}指令吗？</span>
                 </Form>
@@ -289,7 +289,7 @@ const OperationManage = () => {
                     }}
                 >
                     <Form.Item label="请输入密码" name={"password"} rules={[FORM_REQUIRED_RULE]}>
-                        <Input className="pwd" type="text"  placeholder="请输入密码" />
+                        <Input className="pwd" type="text" placeholder="请输入密码" />
                     </Form.Item>
                     <Form.Item label="请输入功率(KW)" name={"power"} rules={[FORM_REQUIRED_RULE]}>
                         <Input placeholder="请输入功率" />
@@ -326,9 +326,14 @@ const OperationManage = () => {
                 <Form
                     form={form4}
                 >
-                    <Form.Item label="请输入密码"  name={"password"} rules={[FORM_REQUIRED_RULE]}>
-                        <Input className="pwd"   placeholder="请输入密码"  />
+                    <Form.Item label="请输入密码" name={"password"} rules={[FORM_REQUIRED_RULE]}>
+                        <Input className="pwd" placeholder="请输入密码" />
                     </Form.Item>
+                    {cmdKey == 4 && <Form.Item label="请输入功率" name={"power"} rules={[FORM_REQUIRED_RULE]}>
+                        <InputNumber style={{
+                            width: '100%',
+                        }} placeholder="请输入功率" />
+                    </Form.Item>}
                     <span>确定下发指令吗？</span>
                 </Form>
             </Modal>

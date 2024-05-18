@@ -6,8 +6,6 @@ import { useEmotionCss } from '@ant-design/use-emotion-css';
 import styles from "./baseLayout.less";
 import { setLocalStorage, removeLocalStorage } from "@/utils/utils";
 import useLocale from "@/hooks/useLocale"
-import themeDefaultSvg from "../assets/svg/theme-default.svg";
-import themeDarkSvg from "../assets/svg/theme-dark.svg";
 import languageChineseSvg from "../assets/svg/language-chinese.svg";
 import languageEnglishSvg from "../assets/svg/language-english.svg";
 import mySvg from "../assets/svg/my.svg";
@@ -114,13 +112,13 @@ const BaseLayout = () => {
                                 <img
                                     src={languageEnglishSvg}
                                     style={{ cursor: 'pointer', margin: '0px 40px' }}
-                                    // onClick={() => changeLanguage('en-US')}
+                                    onClick={() => changeLanguage('en-US')}
                                 />
                                 :
                                 <img
                                     src={languageChineseSvg}
                                     style={{ cursor: 'pointer', margin: '0px 40px' }}
-                                    // onClick={() => changeLanguage('zh-CN')}
+                                    onClick={() => changeLanguage('zh-CN')}
                                 />
                         }
                         <Dropdown

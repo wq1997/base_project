@@ -64,7 +64,7 @@ export const formList = [
     label: '是否启用',
     key: 'status',
     type: 3,
-    required: true
+    required: true,
   },
 ]
 const App = (props) => {

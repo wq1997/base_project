@@ -7,6 +7,8 @@ import ReactECharts from "echarts-for-react";
 import { downloadFile } from '@/utils/utils'
 import { useSelector, useIntl } from "umi";
 import { getEnergyFeeByTime, getEarningsDistribution } from '@/services/report'
+import {  downLoadExcelMode } from "@/utils/utils";
+
 function Com(props) {
     const [optionsPie, setOptionsPie] = useState({})
     const { token } = theme.useToken();
@@ -249,9 +251,9 @@ function Com(props) {
             dataIndex: 'date',
             key: 'date',
             width: 100,
-            render:(val)=>{
-                return val ? dayjs(val).format('YYYY-MM-DD') : ''
-            }
+            // render:(val)=>{
+            //     return val ? dayjs(val).format('YYYY-MM-DD') : ''
+            // }
         },
         {
             title: '储能收益',
@@ -308,7 +310,8 @@ function Com(props) {
             pvEarning.push(it.pvEarning);
             energyEarning.push(it.energyEarning);
             chargeEarning.push(it.chargeEarning);
-            arrX.push(dayjs(it.date).format('YYYY-MM-DD') )
+            it.date=dayjs(it?.date).format('YYYY-MM-DD')
+            arrX.push(it?.date);
         })
         setData(data.data);
         setDateX(arrX);
@@ -317,6 +320,13 @@ function Com(props) {
         setPieData(pieData.data)
 
     }
+    const downLoadExcelModel = () => {
+        let fileName = getTranslation('收益统计');
+        let sheetData = data;
+        let sheetFilter = ['date', 'totalEarning', 'energyEarning','pvEarning','chargeEarning',];
+        let sheetHeader = [getTranslation("日期"),getTranslation("总收益"),getTranslation("储能收益"),getTranslation("光伏收益"), getTranslation("充电桩收益"),];
+        downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader,getTranslation('总览'))
+    };
     const queryData = () => {
         getData();
         getOptions();
@@ -336,7 +346,7 @@ function Com(props) {
         <div className={styles.content}>
             <div className={styles.heard} style={{ backgroundColor: token.titleCardBgc }}>
                 <div className={styles.date}>
-                    <DatePicker picker={mode} defaultValue={time} style={{ marginRight: "20px" }} />
+                    <DatePicker onChange={(val)=>setTime(val)} picker={mode} defaultValue={time} style={{ marginRight: "20px" }} />
                     <Radio.Group value={mode} onChange={handleModelChange}>
                         <Radio.Button value="date">日</Radio.Button>
                         <Radio.Button value="month">月</Radio.Button>
@@ -348,9 +358,9 @@ function Com(props) {
                         {getTranslation('app.Query')}
                     </Button>
                     <Button type="primary" style={{ backgroundColor: token.defaultBg }}
-                        onClick={() => {
-
-                        }}
+                        onClick={
+                            downLoadExcelModel
+                       }
                     >
                         导出excel
                     </Button>
@@ -368,21 +378,6 @@ function Com(props) {
                                 <div className={styles.leftEchart}>
                                     <ReactECharts option={options} style={{ height: '100%' }} />
                                 </div>
-                                {/* <div className={styles.rightCardData} style={{ backgroundColor: token.titleCardBgc }}>
-                                    {cardData.map((it) => {
-                                        return <div className={styles.profitCard} style={{ color: it.color, backgroundColor: token.cardBgc, boxShadow: token.cardShadow }}>
-                                            <div className={styles.cardItemTitle}>
-                                                {it.icon}
-                                                <span style={{ color: token.smallTitleColor, fontWeight: 500, fontSize: '16px', marginLeft: '3px' }}>{it.name}</span>
-                                            </div>
-                                            <div className={styles.cardItemVaue} style={{ color: token.titleColor }}>
-                                                {it.value}
-                                                <span style={{ color: token.smallTitleColor, fontSize: '16px', fontWeight: 400, marginLeft: '10px' }}>{it.unit}</span>
-                                            </div>
-                                        </div>
-                                    })}
-
-                                </div> */}
                                 <div className={styles.profitPie} style={{ backgroundColor: token.titleCardBgc }}>
                                     <ReactECharts option={optionsPie} style={{ height: '100%' }} />
                                 </div>

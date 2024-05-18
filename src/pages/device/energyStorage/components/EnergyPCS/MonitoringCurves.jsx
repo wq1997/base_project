@@ -201,7 +201,7 @@ function Com(props) {
             </div>
             <div className={styles.echartPart}>
                 <CardModel
-                    title={t('监测曲线')}
+                    title={t(title)}
                     content={
                         <div className={styles.echartPartCardwrap}>
                             <ReactECharts option={optionEchart} style={{ height: '100%' }} />
