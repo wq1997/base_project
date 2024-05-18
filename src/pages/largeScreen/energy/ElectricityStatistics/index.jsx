@@ -6,10 +6,10 @@ import ElectricBottomRightImg from "../../../../../public/images/electric_bottom
 import { getEnergyPowerStatisticsServe } from "@/services/bigScreen";
 import { useEffect, useState } from "react";
 
-const ElectricityStatistics = () => {
+const ElectricityStatistics = ({plantId}) => {
     const [ data, setData ] = useState();
     const getEnergyPowerStatistics = async () => {
-        const res = await getEnergyPowerStatisticsServe();
+        const res = await getEnergyPowerStatisticsServe({plantId});
         if(res?.data?.data){
             setData(res?.data?.data);
         }
@@ -29,9 +29,6 @@ const ElectricityStatistics = () => {
                             <div className={styles.contentBottomLeftTopContentLeftTopLeftContentTopData}>
                                 {data?.todayCharge}
                             </div>
-                            <div className={styles.contentBottomLeftTopContentLeftTopLeftContentTopUnit}>
-                                kwh
-                            </div>
                         </div>
                         <div className={styles.contentBottomLeftTopContentLeftTopLeftContentBottom}>
                             今日充电量
@@ -44,9 +41,6 @@ const ElectricityStatistics = () => {
                         <div className={styles.contentBottomLeftTopContentLeftTopRightContentTop}>
                             <div className={styles.contentBottomLeftTopContentLeftTopRightContentTopData}>
                                 {data?.todayDisCharge}
-                            </div>
-                            <div className={styles.contentBottomLeftTopContentLeftTopRightContentTopUnit}>
-                                kwh
                             </div>
                         </div>
                         <div className={styles.contentBottomLeftTopContentLeftTopRightContentBottom}>
@@ -63,9 +57,6 @@ const ElectricityStatistics = () => {
                             <div className={styles.contentBottomLeftTopContentLeftBottomLeftContentTopData}>
                                 {data?.totalCharge}
                             </div>
-                            <div className={styles.contentBottomLeftTopContentLeftBottomLeftContentTopUnit}>
-                                kwh
-                            </div>
                         </div>
                         <div className={styles.contentBottomLeftTopContentLeftTopLeftContentBottom}>
                             总充电量
@@ -78,9 +69,6 @@ const ElectricityStatistics = () => {
                         <div className={styles.contentBottomLeftBottomContentLeftTopRightContentTop}>
                             <div className={styles.contentBottomLeftBottomContentLeftTopRightContentTopData}>
                                 {data?.totalDisCharge}
-                            </div>
-                            <div className={styles.contentBottomLeftBottomContentLeftTopRightContentTopUnit}>
-                                kwh
                             </div>
                         </div>
                         <div className={styles.contentBottomLeftBottomContentLeftTopRightContentBottom}>

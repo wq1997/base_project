@@ -2,7 +2,7 @@ import { ScorllTable } from "@/components";
 import { useState, useEffect } from "react";
 import { getLatestAlarmsServe } from "@/services/bigScreen";
 import dayjs from "dayjs";
-const RealtimeAlarm = () => {
+const RealtimeAlarm = ({plantId}) => {
     const [dataSource, setDataSource] = useState([]);
     const columns = [
         {
@@ -32,7 +32,7 @@ const RealtimeAlarm = () => {
     ]
 
     const getList = async () => {
-        const res = await getLatestAlarmsServe();
+        const res = await getLatestAlarmsServe({plantId});
         if (res?.data?.data) {
             let arr = [];
             res?.data?.data.map(it => {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import useIcon from "@/hooks/useIcon";
 import moment from "moment";
 import { MAP_KEY } from '@/utils/utils';
@@ -6,6 +6,8 @@ import { WETHER_API, WETHER_KEY, AIR_API } from "@/utils/constants";
 import AMapLoader from '@amap/amap-jsapi-loader'
 import styles from "./index.less";
 import Map from "../map";
+import { Select } from "antd";
+import { useSelector } from "umi";
 
 const dayEnum = {
     0: '日',
@@ -18,12 +20,16 @@ const dayEnum = {
 }
 
 const Layout = (props) => {
-    const Icon = useIcon();
+    const { allPlant } = useSelector(function (state) {
+        return state.device
+    });
+    const Icon = useIcon(); 
     const [currentTime, setCurrentTime] = useState(moment().format("YYYY/MM/DD HH:mm:ss"));
     const [wether, setWether] = useState(null);
     const [air, setAir] = useState(null);
     const [position,setPosition]=useState([]);
-
+    const [plantId, setPlantId] = useState();
+    const currentPlantId = plantId||allPlant?.[0]?.plantId;
     const refreshCurrentTime = () => {
         setInterval(()=>{
             setCurrentTime(moment().format("YYYY/MM/DD HH:mm:ss"));
@@ -152,8 +158,25 @@ const Layout = (props) => {
                 </div>
             </div>
             <div className={styles.screenBottom}>
+                <div className={styles.plant}>
+                    <Select 
+                        style={{width: 250}}
+                        options={allPlant?.map(item => {
+                            return {
+                                label: item?.name,
+                                value: item?.plantId
+                            }
+                        })}
+                        onChange={value=>setPlantId(value)}
+                        value={currentPlantId}
+                    />
+                </div>
                 <div className={styles.children}>
-                    {props.children}
+                   {currentPlantId && React.Children.map(props.children, child=>{
+                        return React.cloneElement(child, {
+                            plantId: currentPlantId
+                        });
+                   })}
                 </div>
                 <div className={styles.map}>
                     <Map />

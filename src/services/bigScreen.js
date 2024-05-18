@@ -2,30 +2,30 @@ import axiosInstance from "./request";
 
 const path = '/microgrid'
 
-export const getEnergyPowerStatisticsServe = () => {
-    return axiosInstance.get(`${path}/getEnergyPowerStatistics`);
+export const getEnergyPowerStatisticsServe = (payload) => {
+    return axiosInstance.get(`${path}/getEnergyPowerStatistics`, {params: payload});
 }
 
-export const getEnergyWeeklyChargeDisChargeServe = () => {
-    return axiosInstance.get(`${path}/getEnergyWeeklyChargeDisCharge`);
+export const getEnergyWeeklyChargeDisChargeServe = (payload) => {
+    return axiosInstance.get(`${path}/getEnergyWeeklyChargeDisCharge`, {params: payload});
 }
 
-export const getLatestAlarmsServe = () => {
-    return axiosInstance.get(`${path}/getLatestAlarms`);
+export const getLatestAlarmsServe = (payload) => {
+    return axiosInstance.get(`${path}/getLatestAlarms`, {params: payload});
 }
 
-export const getDtuStatisticsServe = () => {
-    return axiosInstance.get(`${path}/getDtuStatistics`);
+export const getDtuStatisticsServe = (payload) => {
+    return axiosInstance.get(`${path}/getDtuStatistics`, {params: payload});
 }
 
-export const getGccPowerStatisticsServe = () => {
-    return axiosInstance.get(`${path}/getGccPowerStatistics`);
+export const getGccPowerStatisticsServe = (payload) => {
+    return axiosInstance.get(`${path}/getGccPowerStatistics`, {params: payload});
 }
 
-export const getGccWeeklyPowerStatisticsServe = () => {
-    return axiosInstance.get(`${path}/getGccWeeklyPowerStatistics`);
+export const getGccWeeklyPowerStatisticsServe = (payload) => {
+    return axiosInstance.get(`${path}/getGccWeeklyPowerStatistics`, {params: payload});
 }
 
-export const getGccWeeklyProfitServe = () => {
-    return axiosInstance.get(`${path}/getGccWeeklyProfit`);
+export const getGccWeeklyProfitServe = (payload) => {
+    return axiosInstance.get(`${path}/getGccWeeklyProfit`, {params: payload});
 }

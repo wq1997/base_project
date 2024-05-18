@@ -4,16 +4,16 @@ import { getGccWeeklyProfitServe } from "@/services/bigScreen"
 import * as echarts from "echarts";
 import dayjs from "dayjs";
 
-const IncomeStatistics = () => {
+const IncomeStatistics = ({plantId}) => {
     const [options, setOptions] = useState({});
     const getOptions = async () => {
-        const res = await getGccWeeklyProfitServe();
+        const res = await getGccWeeklyProfitServe({plantId});
         let xAxisData = [];
         let data1 = [];
         let data2 = [];
         if(res?.data?.data){
             const data = res?.data?.data;
-            xAxisData = data?.map(item =>dayjs(item?.date).format('YYYY-MM-DD') );
+            xAxisData = data?.map(item => `${item?.date?.year}/${item?.date?.monthValue}/${item?.date?.dayOfMonth}`);
             data1 = data?.map(item => item?.energyProfit);
             data2 = data?.map(item => item?.pvProfit);
         }

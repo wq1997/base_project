@@ -1,7 +1,7 @@
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect } from "react";
 
-const PowerCurve = () => {
+const PowerCurve = ({plantId}) => {
     const [options, setOptions] = useState({});
     const getOptions = () => {
         const xAxisData = ['04/04','04/05','04/06','04/08','04/09','04/10','04/11'];
