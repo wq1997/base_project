@@ -19,6 +19,7 @@ function Com(props) {
     const [date, setDate] = useState(dayjs(new Date()));
     const [dateStr, setDateStr] = useState([dayjs(new Date()).format('YYYY-MM-DD')]);
     const [dataType, setDataType] = useState(-1);
+    const [title, setTitle] = useState('');
     const [optionEchart, setOptionEchart] = useState({});
     const [data, setData] = useState();
     const intl = useIntl();
@@ -40,11 +41,12 @@ function Com(props) {
         getChartData();
     }, [token, id]);
     useEffect(() => {
-        setDataType(options[0]?.value)
+        setDataType(options[0]?.value);
     }, [options])
     const getInitData = async () => {
         let { data } = await getMonitorTypeInitData2();
         setOptions(data?.data);
+        setTitle(data?.data?.[0]?.label)
     }
     const getChartData = async () => {
         let dateList = dateStr;
@@ -144,6 +146,8 @@ function Com(props) {
         let unit = options.find(it => it.value == val).unit
         setDataType(val);
         setUnit(unit);
+        setTitle(a.children);
+        console.log(a,val);
     }
     const changeDate = (val, str) => {
         setDateStr(str);
@@ -276,7 +280,7 @@ function Com(props) {
                 </div>
                 <div className={styles.echartPart}>
                     <CardModel
-                        title={t('监测曲线')}
+                        title={title}
                         content={
                             <div className={styles.echartPartCardwrap}>
                                 <ReactECharts layUpdate={false} notMerge={true} option={optionEchart} style={{ height: '100%' }} />
