@@ -116,17 +116,17 @@ const RealtimeAlarm = () => {
     const [incomeData, setIncomeData] = useState([
         {
             label: t('日收益'),
-            value: 180,
+            value: 0,
             color: '#0082FF'
         },
         {
             label: t('月收益'),
-            value: 180,
+            value: 0,
             color: '#EEC830'
         },
         {
             label: t('累计收益'),
-            value: 180,
+            value: 0,
             color: '#DE83C4'
         }
     ])
