@@ -5,6 +5,7 @@ import { Button, Modal, Form, Input, Select, theme, message } from 'antd';
 import { CardModel } from "@/components";
 import { apiSaveOrUpdateUser, } from '@/services/total'
 import { removeLocalStorage } from "@/utils/utils";
+import { getEncrypt,  } from "@/utils/utils";
 
 function Com(props) {
     const { user } = useSelector(function (state) {
@@ -102,7 +103,10 @@ function Com(props) {
     const delUserData = async () => {
         try {
             const values = await form.validateFields();
-            const { data } = await apiSaveOrUpdateUser({ ...form.getFieldsValue(), f0102_Id: user.f0102_Id });
+            const { data } = await apiSaveOrUpdateUser({ ...form.getFieldsValue(), 
+                password:getEncrypt(localStorage.getItem('publicKey'),values.password),
+                passwordRe:getEncrypt(localStorage.getItem('publicKey'), values.passwordRe),
+                f0102_Id: user.f0102_Id });
             if (data) {
                 removeLocalStorage("Token");
                 history.push('/login');

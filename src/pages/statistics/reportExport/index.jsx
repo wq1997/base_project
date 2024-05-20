@@ -21,6 +21,7 @@ function Com() {
   const [modelData, setModelData] = useState([]);
   const [allData, setAllData] = useState({});
   const [currentModel, setCurrentModel] = useState([]);
+  const [currentFormat, setCurrentFormat] = useState('YYYY-MM-DD');
 
   const intl = useIntl();
   const wayOption = [{
@@ -58,12 +59,16 @@ function Com() {
   }, [token, way, dataChoiceOpen,date]);
   useEffect(() => {
     if (way == 0) {
-      setPicker('date')
+      setPicker('date');
+      setCurrentFormat('YYYY-MM-DD')
     } else if (way == 1) {
-      setPicker('date')
+      setPicker('date');
+      setCurrentFormat('YYYY-MM-DD')
     } else if (way == 2) {
+      setCurrentFormat('YYYY-MM')
       setPicker('month')
     } else if (way == 3) {
+      setCurrentFormat('YYYY')
       setPicker('year')
     };
     console.log(dayjs(date).format('YYYY-MM-DD'), 111111);
@@ -87,18 +92,7 @@ function Com() {
     form.setFieldsValue({ ...obj });
     setCurrentModel({ ...obj });
     console.log(data.runData.data, obj, 111111);
-    let currentDate = '';
-    if (way == 0) {
-      currentDate = dayjs(date).format('YYYY-MM-DD')
-    } else if (way == 1) {
-      currentDate = dayjs(date).format('YYYY-MM-DD')
-
-    } else if (way == 2) {
-      currentDate = dayjs(date).format('YYYY-MM')
-
-    } else if (way == 3) {
-      currentDate = dayjs(date).format('YYYY')
-    };
+    let currentDate = dayjs(date).format(currentFormat);
     let { data: allData } = await getDtuReport({
       plantId: localStorage.getItem('plantId'),
       type: way,
@@ -120,7 +114,7 @@ function Com() {
     let res = await exportReport({
       plantId: localStorage.getItem('plantId'),
       type: way,
-      date,
+      date: dayjs(date).format(currentFormat),
     });
     let blob = res?.data;
     let content = [];
@@ -146,7 +140,7 @@ function Com() {
   }
   const changeDate = (val, str) => {
     setDateStr(str);
-    setDate(val);
+    setDate(dayjs(val).format());
   }
   return (
     <>

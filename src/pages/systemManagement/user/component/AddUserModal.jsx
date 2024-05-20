@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, } from 'react';
 import { Button, Modal, Form, Input, Select } from 'antd';
 import { useSelector, useIntl } from "umi";
+import { getEncrypt,  } from "@/utils/utils";
 
 const App = (props) => {
   const intl = useIntl();
@@ -32,7 +33,7 @@ const App = (props) => {
     },
     {
       label: '角色',
-      key: 'role',
+      key: 'roleId',
       type: 2,
       required: true,
       data: [{
@@ -93,11 +94,12 @@ const App = (props) => {
     // const values = formRef.current?.getFieldsValue();
     try {
       const values = await form.validateFields();
-      console.log('Success:', values);
+
+      console.log('Success:', values.password);
       if (props.formData.f0102_Id) {
-        props.changeData({ f0102_Id: props.formData.f0102_Id, ...values })
+        props.changeData({ f0102_Id: props.formData.f0102_Id, ...values,password:getEncrypt(localStorage.getItem('publicKey'), values.password), })
       } else {
-        props.changeData(values)
+        props.changeData({...values,password:getEncrypt(localStorage.getItem('publicKey'), values.password),})
       }
       props.onRef();
     } catch (errorInfo) {
@@ -142,7 +144,6 @@ const App = (props) => {
                 <>
                   <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.required }]}>
                     <Select
-                      // defaultValue={it.data[0]?.label}
                       options={it.data}
                     />
                   </Form.Item>
