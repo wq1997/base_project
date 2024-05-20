@@ -63,6 +63,9 @@ function Com(props) {
             key: 'status',
             width: 200,
             align:'center',
+            render:(text, record) => {
+               return text?t('启用'):t('禁用')
+            }
 
         },
         {
@@ -113,7 +116,7 @@ function Com(props) {
             ...record,
             prior: formList[0].data.find(it => it.label === record.prior)?.value,
             pushType: formList[1].data.find(it => it.label === record.pushType)?.value,
-            status: '启用' ? true : false,
+            // status: '启用' ? true : false,
         });
         setTitle('编辑告警规则');
         setIsOpen(!isOpen);

@@ -79,6 +79,8 @@ const App = (props) => {
   }
   useEffect(() => {
     form.setFieldsValue(props.formData)
+    console.log(props.formData,1111111111);
+
   }, [props.formData]);
   useEffect(() => {
     getInitSearchData();
