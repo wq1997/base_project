@@ -1,13 +1,44 @@
 import Table from '@/components/Table.jsx'
-import { alarmTableColums } from '@/utils/constants'
 import { useEffect, useState } from 'react'
-import { useSelector, useIntl } from "umi";
-import { CardModel } from "@/components";
+import { FormattedMessage, useIntl } from "umi";
 import styles from "./index.less";
 import { Pagination, theme, Select, Input, Button, DatePicker } from "antd"
 import { getNowAlarmsWithPage } from "@/services/alarm"
 import { alarmLevel } from "@/utils/constants"
-import dayjs from 'dayjs';
+const alarmTableColums = [
+  {
+      title: <FormattedMessage id='Sn' />,
+      dataIndex: 'sn',
+      key: 'Sn',
+  },
+  {
+      title: <FormattedMessage id='告警等级' />,
+      dataIndex: 'priorDesc',
+      key: '告警等级',
+  },
+  {
+      title: <FormattedMessage id='告警描述' />,
+      dataIndex: 'desc',
+      key: '告警描述',
+  },
+  {
+      title: <FormattedMessage id='设备名称' />,
+      dataIndex: 'deviceName',
+      key: '设备名称',
+  },
+
+  {
+      title: <FormattedMessage id='电站名称' />,
+      dataIndex: 'plantName',
+      key: '电站名称',
+  },
+
+  {
+      title: <FormattedMessage id='开始时间' />,
+      dataIndex: 'beginS',
+      key: '开始时间',
+  },
+];
 const RealtimeAlarm = () => {
   const [data, setData] = useState([]);
   const [current, setCurrent] = useState(1);

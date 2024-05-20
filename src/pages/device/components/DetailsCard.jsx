@@ -3,8 +3,9 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import useIcon from "@/hooks/useIcon";
 import { history, useLocation, useIntl } from "umi";
+import { Table, } from 'antd';
 
-function Com({ data }) {
+function Com({ data,table }) {
     const [height, setHeight] = useState('0fr')
     const Icon = useIcon();
     const intl = useIntl();
@@ -17,9 +18,9 @@ function Com({ data }) {
         return msg
     }
     return (
-        <div className='card_main' >
+        <div className='card_main' style={{padding:'16px 20px',marginBottom:'8px',borderRadius:'8px'}}>
             <div className='card_title' style={{ fontSize: '20px', marginBottom: '20px' }}>
-                <Icon type='icon-shixinjiantou-xiangshang-copy' style={{ cursor: 'pointer' }}></Icon>
+                <Icon type='icon-xiangyou' style={{ cursor: 'pointer',marginRight:'6px' }}></Icon>
                 {t(data.title)}
             </div>
             <div className='card_contain' style={{
@@ -41,7 +42,12 @@ function Com({ data }) {
                     )
                 })}
             </div>
+            {table&&<div style={{
+                padding: '0 20px',
 
+            }}>
+                <Table pagination={false} columns={table.tableClum1} dataSource={table.dataTable1}/>
+            <Table pagination={false} columns={table.tableClum2} dataSource={table.dataTable1} style={{marginBottom:'32px'}}/> </div>  }
         </div>
     )
 }

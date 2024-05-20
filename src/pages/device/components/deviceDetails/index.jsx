@@ -379,9 +379,7 @@ function Com(props) {
             <DetalisCard data={bms2Data} />
             <DetalisCard data={bmsData} />
             <DetalisCard data={meterData} />
-            <DetalisCard data={energyData} />
-            <Table pagination={false} columns={tableClum1} dataSource={dataTable1}/>
-            <Table pagination={false} columns={tableClum2} dataSource={dataTable1} style={{marginBottom:'32px'}}/>
+            <DetalisCard data={energyData} table={{tableClum1,tableClum2,dataTable1}}/>
             <DetalisCard data={ic1Data} />
             <DetalisCard data={ic2Data} />
         </div>

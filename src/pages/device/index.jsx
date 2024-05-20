@@ -73,7 +73,21 @@ const RealtimeAlarm = () => {
             name: 'dailyCharge',
             value: '',
             unit: 'kWh',
+            color: '#FF9D4F'
+        },
+        {
+            label: t('月充电量'),
+            name: 'monthCharge',
+            value: '',
+            unit: 'kWh',
             color: '#03B4B4'
+        },
+        {
+            label: t('累计充电量'),
+            name: 'totalCharge',
+            value: '',
+            unit: 'kWh',
+            color: '#DE83C4'
         },
         {
             label: t('日放电量'),
@@ -90,25 +104,11 @@ const RealtimeAlarm = () => {
             color: '#03B4B4'
         },
         {
-            label: t('月充电量'),
-            name: 'monthCharge',
-            value: '',
-            unit: 'kWh',
-            color: '#DE83C4'
-        },
-        {
-            label: t('累计充电量'),
-            name: 'totalCharge',
-            value: '',
-            unit: 'kWh',
-            color: '#71B4F2'
-        },
-        {
             label: t('累计放电量'),
             name: 'totalDisCharge',
             value: '',
             unit: 'kWh',
-            color: '#EEC830'
+            color: '#DE83C4'
         },
 
     ];
@@ -191,7 +191,7 @@ const RealtimeAlarm = () => {
             render: (text, record) => {
                 return (
                     <Space>
-                        <Button type="link" style={{ color: token.colorPrimary }} onClick={() => { history.push(`/device?activeKey=OverView&id=${record.id}`) }}>{t('详情')}</Button>
+                        <Button type="link" style={{ color: token.colorPrimary }} onClick={() => { history.push(`/device?activeKey=OverView&id=${record.id}&title=${record.name}`) }}>{t('详情')}</Button>
                     </Space>
                 )
             }

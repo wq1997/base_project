@@ -4,7 +4,7 @@ import styles from "./index.less";
 import { Table, Select, Input, Button, theme, Space, message, Modal } from "antd"
 import { getBurUserWithRole2, getAllUserRoot, updateUserAndInfos } from "@/services/user"
 import AddUser from '../AddUserModal'
-import { apiSaveOrUpdateUser, apiDeleteUserById, apiResetPassword, apiListUserWithOptions } from '@/services/total'
+import { apiDeleteUserById, } from '@/services/user'
 import { ExclamationCircleFilled } from '@ant-design/icons';
 const RealtimeAlarm = () => {
   const { Search } = Input;
@@ -129,9 +129,7 @@ const RealtimeAlarm = () => {
   const cancle = () => {
     setIsOpen(!isOpen);
   }
-  const onSearch = (value, _e, info) => {
-    setTextLike(value);
-  };
+
   const roleIdSearch = (value) => {
     setLevel(value);
 
@@ -151,21 +149,13 @@ const RealtimeAlarm = () => {
     searchData();
 
   }
-  const resetPwd = async (record) => {
-    let { data } = await apiResetPassword({ userId: record.f0102_Id });
-    if (data?.data) {
-      message.success(t('密码重置成功'))
-
-    }
-  }
   const changeData = async (value) => {
     const { data } = await updateUserAndInfos(value)
     if (data?.data) {
       setFormData(value);
-      message.success(t('编辑成功'))
-
+      message.success(title=='编辑用户'?t('编辑成功'):t('新增成功'))
     } else {
-      message.error(t('编辑失败'))
+      message.error(title=='编辑用户'?t('编辑失败'):t('新增失败'))
     }
   }
   return (
@@ -189,9 +179,7 @@ const RealtimeAlarm = () => {
           onChange={roleIdSearch}
           allowClear
         />
-        {/* <div className={styles.level}>
-          <Search style={{ width: 280 }} placeholder={t("用户名")} onSearch={onSearch} enterButton allowClear />
-        </div> */}
+      
         <div className={styles.dataItem}>
           <Button type='primary' onClick={changIsOpen} >{t('新增')}</Button>
         </div>
