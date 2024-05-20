@@ -1,5 +1,5 @@
 import { useIntl } from "umi";
-import { Form, Select, DatePicker, Button, Flex, Radio, theme, Space, message } from "antd";
+import { Form, Select, DatePicker, Button, Flex, Radio, theme, Space, message, Empty } from "antd";
 import { Title } from "@/components";
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect } from "react";
@@ -7,19 +7,56 @@ import dayjs from "dayjs";
 import * as echarts from "echarts";
 import moment from "moment";
 import {
-    getAllDevices as getAllDevicesServe,
     getRevenue as getRevenueServe,
 } from "@/services";
+import {
+    getDtusOfPlant as getDtusOfPlantServe
+} from "@/services/plant";
+import {
+    getFetchPlantList as getFetchPlantListServe,
+} from "@/services/deviceTotal";
 
 const defaultStartDate = dayjs(moment().subtract(5, 'day').format("YYYY-MM-DD"));
 const defaultEndDate = dayjs(moment().subtract(1, 'day').format("YYYY-MM-DD"));
 
 const Revenue = () => {
     const intl = useIntl();
-    const { token } = theme.useToken();
-    const [ form ] = Form.useForm();
-    const [ dataSource, setDataSource ] = useState([]);
+    const {token} = theme.useToken();
+    const [form] = Form.useForm();
+    const [dataSource, setDataSource] = useState([]);
     const [option, setOption] = useState({});
+    const [plantList, setPlantList] = useState([]);
+    const [devicesList, setDevicesList] = useState([]);
+
+    const getParams = async() => {
+        let format="YYYY-MM-DD";
+        const values = await form.validateFields();
+        const { timeType, plantId, device } = values;
+        let params = {};
+        if(timeType==="year"){
+            format="YYYY";
+            params = {
+                dtuId: device,
+                date: dayjs(values.yearTime).format(format),
+                dateType: timeType
+            }
+        }
+        if(timeType=="day"){
+            const dayLength = dayjs(dayjs(values.dayTime[1]).format(format)).diff(dayjs(values.dayTime[0]).format(format), 'days')+1;
+            if(dayLength<5||dayLength>12){
+                message.error(intl.formatMessage({id: '日期范围最少选择5天最多选择12天！'}));
+                return;
+            }
+            params = {
+                plantId,
+                dtuId: device,
+                startDate: dayjs(values.dayTime[0]).format(format),
+                endDate: dayjs(values.dayTime[1]).format(format),
+                dateType: timeType
+            }
+        }
+        return params;
+    }
 
     const initOption = () => {
         const option = {
@@ -37,7 +74,7 @@ const Revenue = () => {
             },
             xAxis: [{
                 type: 'category',
-                data: ['湖北', '福建', '山东', '广西', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'],
+                data: dataSource?.map(item => moment(item.time).format("YYYY/MM/DD")),
                 axisLine: {
                     lineStyle: {
                         color: 'rgba(255,255,255,0.12)'
@@ -68,7 +105,7 @@ const Revenue = () => {
             }],
             series: [{
                 type: 'bar',
-                data: [300, 450, 770, 203,300, 450, 770, 203,300, 450, 770, 203,300, 450, 770],
+                data: dataSource?.map(item => item.number),
                 barWidth: 50,
                 itemStyle: {
                     normal: {
@@ -86,14 +123,27 @@ const Revenue = () => {
         setOption(option);
     }
 
-    const getAllDevices = async () => {
-        const res = await getAllDevicesServe();
-        console.log("AAA", res);
+    const getAllPlantList = async () => {
+        const res = await getFetchPlantListServe();
+        if(res?.data?.data){
+            const data = res?.data?.data;
+            const plantList = data?.map(item => {
+                return {
+                    value: item.plantId,
+                    label: item.name
+                }
+            })
+            setPlantList(plantList?.length>0?plantList:[]);
+        }
     }
 
     const getDataSource = async (params) => {
         const res = await getRevenueServe(params);
-        console.log(res);
+        if(res?.data?.data?.data){
+            setDataSource(res?.data?.data?.data)
+        }else{
+            setDataSource([]);
+        }
     }
 
     useEffect(()=>{
@@ -101,7 +151,7 @@ const Revenue = () => {
     }, [dataSource]);
 
     useEffect(()=>{
-        getAllDevices();
+        getAllPlantList();
         getDataSource({
             startDate: defaultStartDate.format("YYYY-MM-DD"),
             endDate: defaultEndDate.format("YYYY-MM-DD"),
@@ -117,6 +167,7 @@ const Revenue = () => {
                     form={form} 
                     layout="inline"
                     initialValues={{
+                        plantId: '',
                         device: '',
                         dayTime: [defaultStartDate, defaultEndDate],
                         yearTime: dayjs(),
@@ -124,10 +175,45 @@ const Revenue = () => {
                     }}
                 >
                     <Flex align="center">
+                        <Form.Item name="plantId">
+                            <Select 
+                                options={[
+                                    {label: intl.formatMessage({id: '总收益'}), value: ''},
+                                    ...plantList
+                                ]}
+                                onChange={async plantId => {
+                                    if(plantId){
+                                        const res = await getDtusOfPlantServe({plantId});
+                                        if(res?.data?.data){
+                                            let data = res?.data?.data;
+                                            if(data){
+                                                try{
+                                                    data = JSON.parse(data);
+                                                }catch{
+                                                    data = [];
+                                                }
+                                                data = data?.length>0?data?.map(item => {
+                                                    return {
+                                                        value: item.id,
+                                                        label: item.name
+                                                    }
+                                                }): [];
+                                                setDevicesList(data);
+                                            }
+                                        }
+                                    }else{
+                                        setDevicesList([]);
+                                    }
+                                    form.setFieldsValue({device: ''});
+                                }}
+                                style={{width: '250px', height: 40}}
+                            />
+                        </Form.Item>
                         <Form.Item name="device">
                             <Select 
                                 options={[
-                                    {label: intl.formatMessage({id: '总收益'}), value: ''}
+                                    {label: intl.formatMessage({id: '总收益'}), value: ''},
+                                    ...devicesList
                                 ]}
                                 style={{width: '250px', height: 40}}
                             />
@@ -170,32 +256,8 @@ const Revenue = () => {
                 </Form>
                 <Button 
                     onClick={async ()=>{
-                        let format="YYYY-MM-DD";
-                        const values = await form.validateFields();
-                        const { timeType, device } = values;
-                        let params = {};
-                        if(timeType==="year"){
-                            format="YYYY";
-                            params = {
-                                dtuId: device,
-                                date: dayjs(values.yearTime).format(format),
-                                dateType: timeType
-                            }
-                        }
-                        if(timeType=="day"){
-                            const dayLength = dayjs(dayjs(values.dayTime[1]).format(format)).diff(dayjs(values.dayTime[0]).format(format), 'days')+1;
-                            if(dayLength<5||dayLength>12){
-                                message.error(intl.formatMessage({id: '日期范围最少选择五天最多选择12天！'}));
-                                return;
-                            }
-                            params = {
-                                dtuId: device,
-                                startDate: dayjs(values.dayTime[0]).format(format),
-                                endDate: dayjs(values.dayTime[1]).format(format),
-                                dateType: timeType
-                            }
-                        }
-                        console.log(params);
+                        const params = await getParams();
+                        getDataSource(params);
                     }}
                     type="primary"
                     style={{padding: '0 20px', height: 40}}
@@ -214,7 +276,16 @@ const Revenue = () => {
             </Flex>
             <Space direction="vertical" style={{width: '100%'}}>
                 <Title title={`${intl.formatMessage({id: '收益统计'})}(${intl.formatMessage({id: '元'})})`}/>
-                <ReactECharts option={option} style={{width: '100%', height: 'calc(100vh - 250px)'}}/>
+                <div style={{width: '100%', height: 'calc(100vh - 250px)'}}>
+                    {
+                        dataSource?.length>0?
+                        <ReactECharts option={option} style={{width: '100%', height: '100%'}}/>
+                        :
+                        <div style={{position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)'}}>
+                            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={intl.formatMessage({id: '暂无收益'})} />
+                        </div>
+                    }
+                </div>
             </Space>
         </Space>
     )

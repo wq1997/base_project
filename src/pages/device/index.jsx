@@ -5,6 +5,7 @@ import styles from "./index.less";
 import { Table, Select, Space, theme, Button, Modal } from "antd"
 import { CardModel } from "@/components";
 import { getFetchPlantList, deleteDtu, updateDtus } from "@/services/deviceTotal"
+import { getAllRevenue as getAllRevenueServe } from "@/services";
 import { getBurEnergyStats2, getDeviceStats,getDtusOfPlant } from "@/services/plant"
 import { optionType } from '@/utils/constants'
 import {
@@ -300,6 +301,23 @@ const RealtimeAlarm = () => {
     if (tableColum.length===7&&user?.roleId == 1) {
         tableColum[5]={};
     }
+
+    const getAllRevenue = async () => {
+        const res = await getAllRevenueServe({plantId: currentPlantId});
+        if(res?.data?.data){
+            const data = res?.data?.data;
+            const newIncomeData = JSON.parse(JSON.stringify(incomeData));
+            newIncomeData[0].value = data?.dayEarning;
+            newIncomeData[1].value = data?.monthEarning;
+            newIncomeData[2].value = data?.allEarning;
+            setIncomeData(newIncomeData);
+        }
+    }
+
+    useEffect(()=>{
+        if(currentPlantId) getAllRevenue();
+    }, [currentPlantId])
+
     return (
         <>
             <div className={styles.head}>

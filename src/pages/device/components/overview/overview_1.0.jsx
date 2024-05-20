@@ -157,7 +157,7 @@ const OverView = () => {
             checked: false
         },
         {
-            label: '计量代表',
+            label: '计量电表',
             key: "JLDB",
             checked: true
         },
