@@ -116,7 +116,7 @@ const IncomeStatistics = ({plantId}) => {
 
     useEffect(() => {
         getOptions();
-    }, []);
+    }, [plantId]);
 
     return <ReactECharts option={options} style={{height: '100%'}} />;
 }

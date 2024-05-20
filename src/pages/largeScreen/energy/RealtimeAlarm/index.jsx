@@ -45,7 +45,7 @@ const RealtimeAlarm = ({plantId}) => {
 
     useEffect(() => {
         getList();
-    }, [])
+    }, [plantId])
     return (
         <ScorllTable
             showHeadLine={false}

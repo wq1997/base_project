@@ -113,7 +113,7 @@ const Electricity = ({plantId}) => {
 
     useEffect(()=>{
         getGccPowerStatistics();
-    }, [])
+    }, [plantId])
 
     return (
         <div className={styles.content}>

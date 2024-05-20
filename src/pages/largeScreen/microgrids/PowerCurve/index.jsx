@@ -111,7 +111,7 @@ const PowerCurve = ({plantId}) => {
 
     useEffect(() => {
         getOptions();
-    }, []);
+    }, [plantId]);
     
     return (
         <div

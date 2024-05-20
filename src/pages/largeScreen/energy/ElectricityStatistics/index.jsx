@@ -17,7 +17,7 @@ const ElectricityStatistics = ({plantId}) => {
 
     useEffect(() => {
         getEnergyPowerStatistics();
-    }, []);
+    }, [plantId]);
 
     return (
         <div className={styles.content}>

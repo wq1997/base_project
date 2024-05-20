@@ -47,7 +47,7 @@ const RealtimeIncome = ({plantId}) => {
 
     useEffect(()=>{
         getGccPowerStatistics();
-    }, [])
+    }, [plantId])
 
     return (
         <div className={styles.content}>

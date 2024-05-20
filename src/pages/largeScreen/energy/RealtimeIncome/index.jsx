@@ -47,7 +47,7 @@ const RealtimeIncome = ({plantId}) => {
 
     useEffect(() => {
         getDtuStatistics();
-    }, [])
+    }, [plantId])
 
     return (
         <div className={styles.content}>
