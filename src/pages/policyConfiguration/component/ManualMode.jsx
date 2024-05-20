@@ -181,11 +181,12 @@ function Com({ devId, dtuId, historyAllData, mode }) {
                 }}>
                 <Form
                     form={form1}
+                    style={{marginTop:'32px'}}
                 >
                     <Form.Item name={"password"} label={t("请输入密码")} rules={[FORM_REQUIRED_RULE]}>
                         <Input className="pwd" placeholder={t("请输入密码")} />
                     </Form.Item>
-                   { cmdTypeId[type]==7001||cmdTypeId[type]==7011?<span>{t(`确定将`)+t(title)+t('设置为')+value+'?'}</span>:<span>{t(`确定下发`)+title+t('命令吗')}</span>}
+                   { cmdTypeId[type]==7001||cmdTypeId[type]==7011?<span style={{marginLeft:'10px'}}>{t(`确定将`)+t(title)+t('设置为')+value+'?'}</span>:<span style={{marginLeft:'10px'}}>{t(`确定下发`)+title+t('命令吗')}</span>}
                 </Form>
             </Modal>
 

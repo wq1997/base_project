@@ -71,7 +71,7 @@ function Com(props) {
                 {data.map((one, index) => {
                     return (<div className={styles.onePack}>
                         <div className={styles.title1}>
-                            <Icon type='icon-shixinjiantou-xiangshang-copy' style={{ cursor: 'pointer' }}></Icon>
+                            <Icon type='icon-xiangyou' style={{ cursor: 'pointer',marginRight:'6px' }}></Icon>
                             PACK{one.packNo + 1}</div>
                         <div className={styles.vol}>
                             <div className={styles.title2}>{t("单体电压/mV")}</div>
@@ -95,6 +95,8 @@ function Com(props) {
                                         </div>
                                     )
                                 })}
+                            </div>
+                            <div className={styles.tempContent}>
                                 {Object.keys(one?.extraPackData).map((it, index) => {
                                     return (
                                         <div className={styles.oneData}>

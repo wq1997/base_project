@@ -127,11 +127,12 @@ function Com({ id }) {
             >
                 <Form
                     form={form1}
+                    style={{marginTop:'32px'}}
                 >
                     <Form.Item name={"password"} label={t("请输入密码")} rules={[FORM_REQUIRED_RULE]}>
                         <Input  className="pwd"  placeholder={t("请输入密码")} />
                     </Form.Item>
-                    <span>{t(`确定切换为${mode==1?'手动':'自动'}模式吗?`)}</span>
+                    <span style={{marginLeft:'10px'}}>{t(`确定切换为${mode==1?'手动':'自动'}模式吗?`)}</span>
                 </Form>
             </Modal>
         </div>

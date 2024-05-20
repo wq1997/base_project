@@ -614,11 +614,12 @@ const App = ({ devId, dtuId, historyAllData }) => {
       >
         <Form
           form={form1}
+          style={{marginTop:'32px'}}
         >
           <Form.Item name={"password"} label={t("请输入密码")} rules={[FORM_REQUIRED_RULE]}>
             <Input className="pwd" placeholder={t("请输入密码")} />
           </Form.Item>
-          <span>{t('确定下发自动模式指令吗？')}</span>
+          <span   style={{marginLeft:'10px'}}>{t('确定下发自动模式指令吗？')}</span>
         </Form>
       </Modal>
 

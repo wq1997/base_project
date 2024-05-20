@@ -72,42 +72,42 @@ const RealtimeAlarm = () => {
             name: 'dailyCharge',
             value: '',
             unit: 'kWh',
-            color: '#03B4B4'
+            color: '#FF9D4F'
         },
         {
             label: t('月充电量'),
             name: 'monthCharge',
             value: '',
             unit: 'kWh',
-            color: '#DE83C4'
+            color: '#03B4B4'
         },
         {
             label: t('累计充电量'),
             name: 'totalCharge',
             value: '',
             unit: 'kWh',
-            color: '#71B4F2'
+            color: '#DE83C4'
         },
         {
             label: t('日放电量'),
             name: 'dailyDisCharge',
             value: '',
             unit: 'kWh',
-            color: '#03B4B4'
+            color: '#FF9D4F'
         },
         {
             label: t('月放电量'),
             name: 'monthDisCharge',
             value: '',
             unit: 'kWh',
-            color: '#DE83C4'
+            color: '#03B4B4'
         },
         {
             label: t('累计放电量'),
             name: 'totalDisCharge',
             value: '',
             unit: 'kWh',
-            color: '#71B4F2'
+            color: '#DE83C4'
         },
 
     ];
