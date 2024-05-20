@@ -1796,5 +1796,7 @@ export default {
 '模式切换':'Mode switching',
 '命令下发':'Command',
 '确定下发自动模式指令吗？':'Are you sure you want to send an auto mode command?',
-'自动模式下发':'Issued in automatic mode'
+'自动模式下发':'Issued in automatic mode',
+'新增成功':'New Success',
+'新增失败':'New Failure',
 } 

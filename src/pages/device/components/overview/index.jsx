@@ -68,7 +68,7 @@ function Com(props) {
 
     return (
         <div className={styles.content}>
-            <div className={styles.title} style={{ backgroundColor: token.darkbgc }}>{t('储能管理系统')}</div>
+            <div className={styles.title} style={{ backgroundColor: token.darkbgc }}>{decodeURI(getQueryString("title"))}</div>
             <div className={styles.PcsData} style={{ backgroundColor: token.darkbgc }}>
                 <CardModel
                     title={t('PCS信息')}

@@ -45,3 +45,7 @@ export const updateUserAndInfos = (payload) => {
   return axiosInstance.post('/user/updateUserAndInfos', payload)
 }
 
+// 根据id删除
+export const apiDeleteUserById = (payload) => {
+  return axiosInstance.get(`/user/deleteUser?userId=${payload.userId}`,);
+}
