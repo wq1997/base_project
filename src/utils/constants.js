@@ -112,16 +112,22 @@ export const alarmLevel = [
 ];
 export const optionType = [
     {
-        label: <FormattedMessage id='215户外柜' />,
+        label: <FormattedMessage id='215户外柜国标1.0' />,
         value: 7,
     },
     {
-        label: <FormattedMessage id='232户外柜' />,
-        value: 13,
-    }, {
+        label: <FormattedMessage id='215户外柜国标2.0' />,
+        value: 15,
+    },
+    // {
+    //     label: <FormattedMessage id='232户外柜' />,
+    //     value: 13,
+    // }, 
+    {
         label: <FormattedMessage id='372户外柜' />,
         value: 14,
-    }]
+    }
+]
 
     export const userTable = [
         {

@@ -9,19 +9,14 @@ import OverView from "./overview";
 import Policy from "../../policyConfiguration/index";
 import { theme, Tabs } from "antd";
 import { useEffect } from 'react';
-import { getBurDtuDevInfo2,  } from '@/services/policy'
+import { getBurDtuDevInfo2,  } from '@/services/policy';
+import { 
+    getDeviceTypeByDtuId as getDeviceTypeByDtuIdServe
+} from "@/services";
+
+const defaultActiveKey = "OverView";
 
 const Cabinet = () => {
-    const location = useLocation();
-    const { pathname } = location;
-    const { token } = theme.useToken();
-    const [activeKey, setActiveKey] = useState(getQueryString("activeKey") || defaultActiveKey);
-    const id = getQueryString("id");
-    const onChangeTab = key => {
-        setActiveKey(key);
-        history.push(`${pathname}?activeKey=${key}&id=${id}&title=${getQueryString("title")}`);
-    };
-    const intl = useIntl();
     const t = (id) => {
         const msg = intl.formatMessage(
             {
@@ -30,9 +25,21 @@ const Cabinet = () => {
         );
         return msg
     }
-    useEffect(() => {
-        getInitData();
-    }, [])
+
+    const id = getQueryString("id");
+    const intl = useIntl();
+    const location = useLocation();
+    const { pathname } = location;
+    const [activeKey, setActiveKey] = useState(getQueryString("activeKey") || defaultActiveKey);
+    const [deviceVersion, setDeviceVersion] = useState();
+    const [PageTypeList, setPageTypeList] = useState([
+        { label: t('总览'), key: 'OverView' },
+        { label: t('设备详情'), key: 'DeviceDetails' },
+        { label: t('监测曲线'), key: 'MonitoringCurves' },
+        { label: t('pack详情'), key: 'PackDetails' },
+        { label: t('策略配置'), key: 'Policy' },
+    ]);
+
     const getInitData = async () => {
         let { data } = await getBurDtuDevInfo2({ dtuId: id });
         Object.keys(data.data[0]?.devInfo).length !==0 ? setPageTypeList([
@@ -47,22 +54,33 @@ const Cabinet = () => {
             { label: t('设备详情'), key: 'DeviceDetails' },
             { label: t('监测曲线'), key: 'MonitoringCurves' },
             { label: t('pack详情'), key: 'PackDetails' },
+            { label: t('策略配置'), key: 'Policy' },
         ]);
     }
-    const [PageTypeList, setPageTypeList] = useState([
-        { label: t('总览'), key: 'OverView' },
-        { label: t('设备详情'), key: 'DeviceDetails' },
-        { label: t('监测曲线'), key: 'MonitoringCurves' },
-        { label: t('pack详情'), key: 'PackDetails' },
-        { label: t('策略配置'), key: 'Policy' },
-    ]);
-    const defaultActiveKey = "OverView";
+
+    const getDeviceType = async () => {
+        const res = await getDeviceTypeByDtuIdServe({ dtuId: id });
+        if(res?.data?.data){
+            setDeviceVersion(res?.data?.data);
+        }
+    }
+
+    const onChangeTab = key => {
+        setActiveKey(key);
+        history.push(`${pathname}?activeKey=${key}&id=${id}&title=${getQueryString("title")}`);
+    };
+
+    useEffect(() => {
+        getInitData();
+        getDeviceType();
+    }, [])
+
     return (
         <div style={{ height: '100%', background: '#0A1328' }}>
             <Tabs className={styles.tab} activeKey={activeKey} items={PageTypeList} onChange={onChangeTab} />
             <div className={styles.content} style={{ borderRadius: '16px 16px 0px 0px' }}>
-                {activeKey === "OverView" && <OverView id={id} />}
-                {activeKey === "DeviceDetails" && <DeviceDetails />}
+                {activeKey === "OverView" && <OverView deviceVersion={deviceVersion} />}
+                {activeKey === "DeviceDetails" && <DeviceDetails deviceVersion={deviceVersion} />}
                 {activeKey === "MonitoringCurves" && <MonitoringCurves />}
                 {activeKey === "PackDetails" && <PackDetails />}
                 {activeKey === "Policy" && <Policy id={id} />}

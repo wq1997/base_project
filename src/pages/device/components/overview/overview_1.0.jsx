@@ -21,8 +21,14 @@ import bottomLeft1Img from "@/assets/imges/bottomLeft1.svg";
 import bottomLeft2Img from "@/assets/imges/bottomLeft2.svg";
 import bottomLeftBgImg from "@/assets/imges/bottomLeftBg.svg";
 import MyRadio from "./MyRadio";
+import { useEffect } from "react";
+import { getQueryString } from "@/utils/utils";
+import {
+    getDtuOverViews as getDtuOverViewsServe,
+} from "@/services";
 
-const OverView = () => {
+const OverView = ({deviceVersion}) => {
+    const id = getQueryString('id')
     const intl = useIntl();
     const { token } = theme.useToken();
 
@@ -167,6 +173,15 @@ const OverView = () => {
             checked: false
         },
     ])
+
+    const getDataSource = async () => {
+        const res = await getDtuOverViewsServe({dtuId: id, type: deviceVersion});
+        console.log(res.data)
+    }
+
+    useEffect(()=>{
+        getDataSource();
+    }, [])
 
     return (
         <div 

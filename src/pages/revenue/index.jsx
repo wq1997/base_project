@@ -1,5 +1,5 @@
 import { useIntl } from "umi";
-import { Form, Select, DatePicker, Button, Flex, Radio, theme, Space, message, Empty } from "antd";
+import { Form, Select, DatePicker, Button, Flex, Radio, theme, Space, message, Empty, Spin } from "antd";
 import { Title } from "@/components";
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect } from "react";
@@ -8,6 +8,7 @@ import * as echarts from "echarts";
 import moment from "moment";
 import {
     getRevenue as getRevenueServe,
+    getAllRevenueExcel as getAllRevenueExcelServe,
 } from "@/services";
 import {
     getDtusOfPlant as getDtusOfPlantServe
@@ -15,6 +16,7 @@ import {
 import {
     getFetchPlantList as getFetchPlantListServe,
 } from "@/services/deviceTotal";
+import { downloadFile } from "@/utils/utils";
 
 const defaultStartDate = dayjs(moment().subtract(5, 'day').format("YYYY-MM-DD"));
 const defaultEndDate = dayjs(moment().subtract(1, 'day').format("YYYY-MM-DD"));
@@ -27,6 +29,7 @@ const Revenue = () => {
     const [option, setOption] = useState({});
     const [plantList, setPlantList] = useState([]);
     const [devicesList, setDevicesList] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const getParams = async() => {
         let format="YYYY-MM-DD";
@@ -138,12 +141,14 @@ const Revenue = () => {
     }
 
     const getDataSource = async (params) => {
+        setLoading(true);
         const res = await getRevenueServe(params);
         if(res?.data?.data?.data){
             setDataSource(res?.data?.data?.data)
         }else{
             setDataSource([]);
         }
+        setLoading(false);
     }
 
     useEffect(()=>{
@@ -266,27 +271,36 @@ const Revenue = () => {
                 </Button>
                 <Button 
                     type="primary"
-                    onClick={()=>{
-
+                    onClick={async ()=>{
+                        const params = await getParams();
+                        const res = await getAllRevenueExcelServe(params);
+                        if(res?.data){
+                            downloadFile({
+                                fileName: `${intl.formatMessage({id: '收益统计'})}.xlsx`,
+                                content: res?.data
+                            })
+                        }
                     }} 
                     style={{ backgroundColor: token.defaultBg, padding: '0 20px', height: 40 }} 
                 >
                     {intl.formatMessage({id:'导出'})} Excel
                 </Button>
             </Flex>
-            <Space direction="vertical" style={{width: '100%'}}>
-                <Title title={`${intl.formatMessage({id: '收益统计'})}(${intl.formatMessage({id: '元'})})`}/>
-                <div style={{width: '100%', height: 'calc(100vh - 250px)'}}>
-                    {
-                        dataSource?.length>0?
-                        <ReactECharts option={option} style={{width: '100%', height: '100%'}}/>
-                        :
-                        <div style={{position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)'}}>
-                            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={intl.formatMessage({id: '暂无收益'})} />
-                        </div>
-                    }
-                </div>
-            </Space>
+            <Spin spinning={loading}>
+                <Space direction="vertical" style={{width: '100%'}}>
+                    <Title title={`${intl.formatMessage({id: '收益统计'})}(${intl.formatMessage({id: '元'})})`}/>
+                    <div style={{width: '100%', height: 'calc(100vh - 250px)'}}>
+                        {
+                            dataSource?.length>0?
+                            <ReactECharts option={option} style={{width: '100%', height: '100%'}}/>
+                            :
+                            <div style={{position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)'}}>
+                                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={intl.formatMessage({id: '暂无收益'})} />
+                            </div>
+                        }
+                    </div>
+                </Space>
+            </Spin>
         </Space>
     )
 }
