@@ -169,7 +169,7 @@ const Add = ({
                         </Col>
                         <Col span={5}>
                             <Form.Item
-                                label="功率(KW)"
+                                label="功率(kW)"
                                 name="pcsPower"
                             >
                                 <InputNumber min={0} placeholder='请输入' />
@@ -189,7 +189,6 @@ const Add = ({
                                     onClick={async () => {
                                         await form.validateFields(['hour1', 'min1', 'hour2', 'min2']);
                                         const values = await form.getFieldsValue();
-                                        console.log('新增策略数据', values)
                                         const contentList = await form.getFieldValue('contentList') || [];
                                         let flag=true;
                                         let startTime = parseInt(values?.hour1 + values?.min1);
@@ -259,7 +258,7 @@ const Add = ({
                                     dataIndex: 'action'
                                 },
                                 {
-                                    title: 'PCS功率(KW)',
+                                    title: 'PCS功率(kW)',
                                     key: 'pcsPower',
                                     dataIndex: 'pcsPower'
                                 },

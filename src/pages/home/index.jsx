@@ -47,6 +47,7 @@ function OverView(props) {
         getGrid();
     }, [token,])
     useEffect(() => {
+        getOptions();
         getPowerOption();
     }, [token, currntGrid])
     const [electricityStatistics, setElectricityStatistics] = useState([
@@ -292,7 +293,6 @@ function OverView(props) {
                     axisLabel: {
                         formatter: '{value}'
                     },
-
                 }
             ],
             series: [
@@ -302,7 +302,6 @@ function OverView(props) {
                     itemStyle: {
                         normal: {
                             color: token.barColor[0]
-
                         }
                     },
                     data: energyData
@@ -313,7 +312,6 @@ function OverView(props) {
                     itemStyle: {
                         normal: {
                             color: token.barColor[2]
-
                         }
                     },
                     data: gridData
@@ -337,13 +335,10 @@ function OverView(props) {
                     itemStyle: {
                         normal: {
                             color: token.barColor[4]
-
                         }
                     },
                     data: loadData
-
                 },
-
             ]
         });
     }
@@ -370,7 +365,6 @@ function OverView(props) {
         setElectricityStatistics([...arr])
     }
     const onChange = (e) => {
-        console.log('radio checked', e.target.value);
         setCurrntGrid(e.target.value);
     };
     const dealData = (data) => {
