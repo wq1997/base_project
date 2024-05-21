@@ -8,7 +8,7 @@ import RealtimeIncome from "./RealtimeIncome";
 import Device from "./Device";
 import styles from "./index.less";
 
-const Energy = () => {
+const Energy = ({onChange}) => {
     const Content = ({plantId}) => {
         return (
             <div className={styles.energy}>
@@ -42,7 +42,7 @@ const Energy = () => {
         )
     }
     return (
-        <Layout title="采日能源储能管理系统">
+        <Layout title="采日能源储能管理系统" onChange={onChange}>
             <Content />
         </Layout>
     )

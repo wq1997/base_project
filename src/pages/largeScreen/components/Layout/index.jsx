@@ -113,6 +113,10 @@ const Layout = (props) => {
         refreshWeather();
     }, []);
 
+    useEffect(()=>{
+        if(currentPlantId) props.onChange&&props.onChange(currentPlantId);
+    }, [currentPlantId])
+
     return (
         <div className={styles.screen}>
             <div className={styles.screenTop}>
