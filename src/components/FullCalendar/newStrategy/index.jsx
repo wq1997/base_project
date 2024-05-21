@@ -423,8 +423,8 @@ const NewStrategy = ({ currentGrid, strategy, deleteStrategy, getStrategy, handl
                             <Switch />
                         </Form.Item>
                         <Row gutter={16}>
-                            <Col span={6}><Form.Item name="expansionEnabled" label="是否扩容" ><Switch /></Form.Item></Col>
-                            <Col span={6}><Form.Item name="preventOverloadEnabled" label="是否防过载"><Switch disabled={!form2.getFieldValue('expansionEnabled')}/></Form.Item></Col>
+                            <Col span={6}><Form.Item name="preventOverloadEnabled" label="是否防过载"><Switch /></Form.Item></Col>
+                            <Col span={6}><Form.Item name="expansionEnabled" label="是否扩容" ><Switch disabled={!form2.getFieldValue('preventOverloadEnabled')}/></Form.Item></Col>
                             <Col span={6}><Form.Item name="antiRefluxEnabled" label="是否防逆流"><Switch /></Form.Item></Col>
                             <Col span={6}><Form.Item name="fullTimePeriodEnabled" label="是否全时段"><Switch  disabled={!form2.getFieldValue('antiRefluxEnabled')}/></Form.Item></Col>
                         </Row>

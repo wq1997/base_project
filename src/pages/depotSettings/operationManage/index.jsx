@@ -291,7 +291,7 @@ const OperationManage = () => {
                     <Form.Item label="请输入密码" name={"password"} rules={[FORM_REQUIRED_RULE]}>
                         <Input className="pwd" type="text" placeholder="请输入密码" />
                     </Form.Item>
-                    <Form.Item label="请输入功率(KW)" name={"power"} rules={[FORM_REQUIRED_RULE]}>
+                    <Form.Item label="请输入功率(kW)" name={"power"} rules={[FORM_REQUIRED_RULE]}>
                         <Input placeholder="请输入功率" />
                     </Form.Item>
                 </Form>
