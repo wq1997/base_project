@@ -8,9 +8,10 @@ import RealtimeIncome from "./RealtimeIncome";
 import Device from "./Device";
 import styles from "./index.less";
 
-const Energy = ({onChange}) => {
-    const Content = ({plantId}) => {
-        return (
+const Energy = ({plantId, onChange}) => {
+    
+    return (
+        <Layout title="采日能源储能管理系统" plantId={plantId} onChange={onChange}>
             <div className={styles.energy}>
                 <div className={styles.top}>
                     <div className={styles.topLeft}>
@@ -39,11 +40,6 @@ const Energy = ({onChange}) => {
                     </Box>
                 </div>
             </div>
-        )
-    }
-    return (
-        <Layout title="采日能源储能管理系统" onChange={onChange}>
-            <Content />
         </Layout>
     )
 }

@@ -8,9 +8,9 @@ import Efficiency from "./Efficiency";
 import PowerCurve from "./PowerCurve";
 import styles from "./index.less";
 
-const Microgrids = ({onChange}) => {
-    const Content = ({plantId}) => {
-        return (
+const Microgrids = ({plantId, onChange}) => {
+    return (
+        <Layout title="采日能源微网管理系统" plantId={plantId} onChange={onChange}>
             <div className={styles.microgrids}>
                 <div className={styles.top}>
                     <div className={styles.topLeft}>
@@ -39,11 +39,6 @@ const Microgrids = ({onChange}) => {
                     </Box>
                 </div>
             </div>
-        )
-    }
-    return (
-        <Layout title="采日能源微网管理系统" onChange={onChange}>
-            <Content />
         </Layout>
     )
 }

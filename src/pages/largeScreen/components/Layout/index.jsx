@@ -28,8 +28,7 @@ const Layout = (props) => {
     const [wether, setWether] = useState(null);
     const [air, setAir] = useState(null);
     const [position,setPosition]=useState([]);
-    const [plantId, setPlantId] = useState();
-    const currentPlantId = plantId||allPlant?.[0]?.plantId;
+    const currentPlantId = props.plantId;
     const refreshCurrentTime = () => {
         setInterval(()=>{
             setCurrentTime(moment().format("YYYY/MM/DD HH:mm:ss"));
@@ -113,10 +112,6 @@ const Layout = (props) => {
         refreshWeather();
     }, []);
 
-    useEffect(()=>{
-        if(currentPlantId) props.onChange&&props.onChange(currentPlantId);
-    }, [currentPlantId])
-
     return (
         <div className={styles.screen}>
             <div className={styles.screenTop}>
@@ -171,16 +166,12 @@ const Layout = (props) => {
                                 value: item?.plantId
                             }
                         })}
-                        onChange={value=>setPlantId(value)}
+                        onChange={value=>props.onChange&&props.onChange(value)}
                         value={currentPlantId}
                     />
                 </div>
                 <div className={styles.children}>
-                   {currentPlantId && React.Children.map(props.children, child=>{
-                        return React.cloneElement(child, {
-                            plantId: currentPlantId
-                        });
-                   })}
+                   {props.children}
                 </div>
                 <div className={styles.map}>
                     <Map />
