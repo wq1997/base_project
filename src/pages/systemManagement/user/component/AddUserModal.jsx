@@ -108,7 +108,7 @@ const App = (props) => {
       if (props.formData.f0102_Id) {
         props.changeData({ f0102_Id: props.formData.f0102_Id, ...values })
       } else {
-        props.changeData(values)
+        props.changeData({...values, active:true })
       }
       props.onRef();
     } catch (errorInfo) {

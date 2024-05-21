@@ -22,6 +22,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    .sn{
+        position: absolute;
+        bottom: 10px;
+        right: 3%;
+        span{
+            margin-right: 15px;
+        }
+    }
 }
 
 .PcsData {
@@ -262,6 +271,9 @@
 @media screen and (min-width: 2000px) {
     .title {
         font-size: 36px;
+        .sn{
+         font-size: 24px;
+        }
     }
 
     .pcsOneTitle {
@@ -309,6 +321,9 @@
 @media screen and (min-width: 1000px) and (max-width: 2000px) {
     .title {
         font-size: 28px;
+        .sn{
+            font-size: 18px;
+           }
 
     }
 
@@ -357,7 +372,9 @@
 @media screen and (max-width: 1000px) {
     .title {
         font-size: 24px;
-
+        .sn{
+            font-size: 16px;
+           }
     }
 
     .pcsOneTitle {

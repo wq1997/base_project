@@ -98,8 +98,8 @@ const RealtimeAlarm = () => {
 
   };
   return (
-    <div className={styles.content}>
-      <div className={styles.title} style={{ backgroundColor: token.cardBgc }}>
+    <div className={styles.content} style={{height:'100%'}}>
+      <div className={styles.title} style={{ backgroundColor: token.titleCardBgc }}>
         <div className={styles.level}>
           <RangePicker
             style={{ width: 280 }}
@@ -119,7 +119,7 @@ const RealtimeAlarm = () => {
           {t('导出')} Excel
         </Button>
       </div>
-      <div className={styles.tablePart} style={{ backgroundColor: token.cardBgc }}>
+      <div className={styles.tablePart} style={{backgroundColor: token.titleCardBgc, height: "calc(100% - 102px)" }}>
         <Table
           columns={clums}
           data={data?.list}
