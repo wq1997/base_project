@@ -161,6 +161,7 @@ export default {
 '触发时间':'Trigger time',
 '计量数据':'Measure data',
 '计量电表':'Measure meter',
+'计量电表电量': 'Measure meter electricity level',
 '讯息':'Message',
 '设备启动':'Device startup',
 '设备停机':'Equipment shutdown',

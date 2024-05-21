@@ -95,13 +95,6 @@ const OverView = () => {
             img: leftBottom1Img
         },
         {
-            title: "周收益",
-            data: 10988,
-            color: '#72FFE3',
-            backgroundImg: leftBottomBg2Img,
-            img: leftBottom2Img
-        },
-        {
             title: "月收益",
             data: 10988,
             color: '#00C3FF',
@@ -112,7 +105,7 @@ const OverView = () => {
             title: "累计收益",
             data: 10988,
             color: '#B95CFC',
-            backgroundImg: leftBottomBg2Img,
+            backgroundImg: leftBottomBg1Img,
             img: leftBottom4Img
         }
     ]);
@@ -176,11 +169,6 @@ const OverView = () => {
             checked: true
         },
         {
-            label: 'UPS',
-            key: "UPS",
-            checked: false
-        },
-        {
             label: '计量电表',
             key: "JLDB",
             checked: true
@@ -207,7 +195,7 @@ const OverView = () => {
                     <div className={styles.centerLeft}>
                         <div className={styles.centerLeftOne}>
                             <div className={styles.title}>
-                                <Title title={intl.formatMessage({id: '关口表电量统计'})} />
+                                <Title title={`${intl.formatMessage({id: '计量电表电量'})}/kWh`} />
                             </div>
                             <div className={styles.centerLeftOneArea}>
                                 <div  className={styles.centerLeftOneAreaLeft}>
@@ -287,19 +275,18 @@ const OverView = () => {
                         </div>
                         <div className={styles.centerLeftThree}>
                             <div className={styles.title}>
-                                <Title title={intl.formatMessage({id: '收益统计'})} />
+                                <Title title={`${intl.formatMessage({id: '收益统计'})}/${intl.formatMessage({id: '元'})}`} />
                             </div>
                             <div className={styles.centerLeftThreeArea}>
                                 {
                                     benefitStatisticsDataSource?.map((item, index) => {
-                                        const isZero = index%2===0;
                                         return (
                                             <div className={styles.item}>
                                                 <img src={item.backgroundImg} className={styles.backgroundImg}/>
-                                                <img src={item.img}  className={styles.img} style={{[isZero?'bottom': 'top']: '-7px'}}/>
+                                                <img src={item.img}  className={styles.img} style={{bottom: '-7px'}}/>
                                                 <div className={styles.data}>
-                                                    <div className={isZero?styles.data1: styles.data2} style={{color: isZero&&item.color}}>{isZero?item.data:intl.formatMessage({id: item.title})}</div>
-                                                    <div className={!isZero?styles.data1: styles.data2} style={{color: !isZero&&item.color}}>{!isZero?item.data:intl.formatMessage({id: item.title})}</div>
+                                                    <div className={styles.data1} style={{color: item.color}}>{item.data}</div>
+                                                    <div className={styles.data2}>{intl.formatMessage({id: item.title})}</div>
                                                 </div>
                                             </div>
                                         )

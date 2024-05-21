@@ -62,7 +62,7 @@ const OverView = ({deviceVersion}) => {
             color: '#B95CFC'
         },
         {
-            title: "关口表",
+            title: "计量电表",
             data: 85,
             color: '#37EEFF'
         }
@@ -80,21 +80,14 @@ const OverView = ({deviceVersion}) => {
             title: "周收益",
             data: 10988,
             color: '#72FFE3',
-            backgroundImg: leftBottomBg2Img,
-            img: leftBottom2Img
-        },
-        {
-            title: "月收益",
-            data: 10988,
-            color: '#00C3FF',
             backgroundImg: leftBottomBg1Img,
-            img: leftBottom3Img
+            img: leftBottom2Img
         },
         {
             title: "累计收益",
             data: 10988,
             color: '#B95CFC',
-            backgroundImg: leftBottomBg2Img,
+            backgroundImg: leftBottomBg1Img,
             img: leftBottom4Img
         }
     ]);
@@ -158,11 +151,6 @@ const OverView = ({deviceVersion}) => {
             checked: true
         },
         {
-            label: 'UPS',
-            key: "UPS",
-            checked: false
-        },
-        {
             label: '计量电表',
             key: "JLDB",
             checked: true
@@ -198,11 +186,11 @@ const OverView = ({deviceVersion}) => {
                     <div className={styles.centerLeft}>
                         <div className={styles.centerLeftOne}>
                             <div className={styles.title}>
-                                <Title title={intl.formatMessage({id: '电量统计'})} />
+                                <Title title={`${intl.formatMessage({id: '电量统计'})}/kWh`} />
                                 <div>
                                     <Radio.Group>
                                         <Radio value={1}>PCS</Radio>
-                                        <Radio value={2}>{intl.formatMessage({id: '关口表'})}</Radio>
+                                        <Radio value={2}>{intl.formatMessage({id: '计量电表'})}</Radio>
                                     </Radio.Group>
                                 </div>
                             </div>
@@ -250,19 +238,18 @@ const OverView = ({deviceVersion}) => {
                         </div>
                         <div className={styles.centerLeftThree}>
                             <div className={styles.title}>
-                                <Title title={intl.formatMessage({id: '收益统计'})} />
+                                <Title title={`${intl.formatMessage({id: '收益统计'})}/${intl.formatMessage({id: '元'})}`} />
                             </div>
                             <div className={styles.centerLeftThreeArea}>
                                 {
                                     benefitStatisticsDataSource?.map((item, index) => {
-                                        const isZero = index%2===0;
                                         return (
                                             <div className={styles.item}>
                                                 <img src={item.backgroundImg} className={styles.backgroundImg}/>
-                                                <img src={item.img}  className={styles.img} style={{[isZero?'bottom': 'top']: '-7px'}}/>
+                                                <img src={item.img}  className={styles.img} style={{bottom: '-7px'}}/>
                                                 <div className={styles.data}>
-                                                    <div className={isZero?styles.data1: styles.data2} style={{color: isZero&&item.color}}>{isZero?item.data:intl.formatMessage({id: item.title})}</div>
-                                                    <div className={!isZero?styles.data1: styles.data2} style={{color: !isZero&&item.color}}>{!isZero?item.data:intl.formatMessage({id: item.title})}</div>
+                                                    <div className={styles.data1} style={{color: item.color}}>{item.data}</div>
+                                                    <div className={styles.data2}>{intl.formatMessage({id: item.title})}</div>
                                                 </div>
                                             </div>
                                         )
