@@ -11,6 +11,9 @@ const Index = () => {
             <div className={styles.weather}>
                 <span className={styles.title}>电站概览</span>
             </div>
+            <div>
+                
+            </div>
         </div>
     );
 };
