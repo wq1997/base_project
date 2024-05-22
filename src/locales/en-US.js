@@ -1930,7 +1930,7 @@ export default {
 '液冷进水压力':'Inlet pressure of liquid cooling',
 '液冷出水压力':'Liquid cooling outlet pressure',
 '液冷环境温度':'Ambient temperature of liquid cooling',
-'': '',
+'放电': 'Discharge',
 '': '',
 '': '',
 '': '',

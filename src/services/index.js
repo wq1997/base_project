@@ -23,3 +23,7 @@ export const getDtuOverViews = (payload) => {
 export const getAllRevenueExcel = (payload) => {
     return axiosInstance.post(`/minsys/revenue/exportRevenue`, payload, {responseType: 'blob'})
 }
+
+export const getDtuDetailInfo = (payload) => {
+    return axiosInstance.get(`/minsys/dtu/dtuDetailInfo`, { params: payload })
+}

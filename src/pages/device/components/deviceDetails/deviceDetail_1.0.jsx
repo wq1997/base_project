@@ -4,6 +4,9 @@ import React, { useState, useEffect } from 'react';
 import styles from './index.less';
 import { theme } from "antd";
 import { getQueryString } from "@/utils/utils";
+import {
+    getDtuDetailInfo as getDtuDetailInfoServe,
+} from "@/services";
 import DetalisCard from "../DetailsCard";
 
 function Com(props) {
@@ -177,6 +180,14 @@ function Com(props) {
             { name: "液冷环境温度", value: "-", key: "" },
         ]
     })
+
+    const getDtuDetailInfo = async () => {
+        const res = await getDtuDetailInfoServe({dtuId: id})
+    }
+
+    useEffect(()=>{
+        getDtuDetailInfo();
+    }, [])
 
     return (
         <div className={styles.details} style={{width: '100%', height: 'auto', minHeight: '100%', padding: '40px 30px',  background: token.bgcColorB_l}}>

@@ -39,6 +39,7 @@ const Cabinet = () => {
         { label: t('pack详情'), key: 'PackDetails' },
         { label: t('策略配置'), key: 'Policy' },
     ]);
+    const [data, setData] = useState();
 
     const getInitData = async () => {
         let { data } = await getBurDtuDevInfo2({ dtuId: id });
@@ -56,6 +57,7 @@ const Cabinet = () => {
             { label: t('pack详情'), key: 'PackDetails' },
             { label: t('策略配置'), key: 'Policy' },
         ]);
+        setData(data?.data?.[0])
     }
 
     const getDeviceType = async () => {
@@ -79,7 +81,7 @@ const Cabinet = () => {
         <div style={{ height: '100%', background: '#0A1328' }}>
             <Tabs className={styles.tab} activeKey={activeKey} items={PageTypeList} onChange={onChangeTab} />
             <div className={styles.content} style={{ borderRadius: '16px 16px 0px 0px' }}>
-                {activeKey === "OverView" && <OverView deviceVersion={deviceVersion} />}
+                {activeKey === "OverView" && <OverView sn={data?.sn} deviceVersion={deviceVersion} />}
                 {activeKey === "DeviceDetails" && <DeviceDetails deviceVersion={deviceVersion} />}
                 {activeKey === "MonitoringCurves" && <MonitoringCurves />}
                 {activeKey === "PackDetails" && <PackDetails />}

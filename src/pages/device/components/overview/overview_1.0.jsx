@@ -1,5 +1,5 @@
 import { useIntl } from "umi";
-import { theme, Radio } from "antd";
+import { theme, Radio, Spin } from "antd";
 import { Title, ScrollTable } from "@/components";
 import SchematicDiagram from "./SchematicDiagram";
 import styles from "./overview_1.0.less";
@@ -22,35 +22,38 @@ import bottomLeft2Img from "@/assets/imges/bottomLeft2.svg";
 import bottomLeftBgImg from "@/assets/imges/bottomLeftBg.svg";
 import MyRadio from "./MyRadio";
 import { useEffect } from "react";
-import { getQueryString } from "@/utils/utils";
+import { getQueryString, cloneObject } from "@/utils/utils";
 import {
     getDtuOverViews as getDtuOverViewsServe,
 } from "@/services";
 
-const OverView = ({deviceVersion}) => {
-    const id = getQueryString('id')
+const OverView = ({deviceVersion, sn}) => {
+    const id = getQueryString('id');
+    const title = getQueryString('title')
     const intl = useIntl();
     const { token } = theme.useToken();
+    const [dataSource, setDataSource] = useState({});
+    const [currentElectricType, setCurrentElectricType] = useState('PCS');
 
     const [electricityStatisticsDataSource, setElectricityStatisticsDataSource] = useState([
         {
             title: '日充电量',
-            data: '10988',
+            data: 0,
             icon: leftTop1Img
         },
         {
             title: '日放电量',
-            data: '10988',
+            data: 0,
             icon: leftTop2Img
         },
         {
             title: '累计充电量',
-            data: '10988',
+            data: 0,
             icon: leftTop3Img
         },
         {
             title: '累计放电量',
-            data: '10988',
+            data: 0,
             icon: leftTop4Img
         }
     ])
@@ -58,12 +61,12 @@ const OverView = ({deviceVersion}) => {
     const [systemEfficiencyDataSource, setSystemEfficiencyDataSource] = useState([
         {
             title: "PCS",
-            data: 85,
+            data: 0,
             color: '#B95CFC'
         },
         {
             title: "计量电表",
-            data: 85,
+            data: 0,
             color: '#37EEFF'
         }
     ]);
@@ -71,21 +74,21 @@ const OverView = ({deviceVersion}) => {
     const [benefitStatisticsDataSource, setBenefitStatisticsDataSource] = useState([
         {
             title: "日收益",
-            data: 10988,
+            data: 0,
             color: '#FFE600',
             backgroundImg: leftBottomBg1Img,
             img: leftBottom1Img
         },
         {
-            title: "周收益",
-            data: 10988,
-            color: '#72FFE3',
+            title: "月收益",
+            data: 0,
+            color: '#00C3FF',
             backgroundImg: leftBottomBg1Img,
-            img: leftBottom2Img
+            img: leftBottom3Img
         },
         {
             title: "累计收益",
-            data: 10988,
+            data: 0,
             color: '#B95CFC',
             backgroundImg: leftBottomBg1Img,
             img: leftBottom4Img
@@ -98,7 +101,7 @@ const OverView = ({deviceVersion}) => {
             icon: bottomLeft1Img,
             data: [
                 {
-                    title: "温度/℃",
+                    title: "温度",
                     value: 0
                 },
                 {
@@ -106,7 +109,7 @@ const OverView = ({deviceVersion}) => {
                     value: 0
                 },
                 {
-                    title: "电压/mV",
+                    title: "电压",
                     value: 0
                 },
                 {
@@ -120,7 +123,7 @@ const OverView = ({deviceVersion}) => {
             icon: bottomLeft2Img,
             data: [
                 {
-                    title: "温度/℃",
+                    title: "温度",
                     value: 0
                 },
                 {
@@ -128,7 +131,7 @@ const OverView = ({deviceVersion}) => {
                     value: 0
                 },
                 {
-                    title: "电压/mV",
+                    title: "电压",
                     value: 0
                 },
                 {
@@ -139,21 +142,39 @@ const OverView = ({deviceVersion}) => {
         }
     ])
 
+    const [pcsInfoDataSource, setPcsInfoDataSource] = useState([
+        {
+          A: 0,
+          B: 0,
+          C: 0,
+          title: intl.formatMessage({id: '电流'})
+        }]
+    );
+
+    const [pcsInfoDataSource2, setPcsInfoDataSource2] = useState([
+        {
+            AB: 0,
+            BC: 0,
+            AC: 0,
+            title: intl.formatMessage({id: '电压'})
+        }
+    ])
+
     const [communicationStatusDataSource, setCommunicationStatusDataSource] = useState([
         {
             label: 'BMS',
             key: "BMS",
-            checked: true
+            checked: false
         },
         {
             label: 'PCS',
             key: "PCS",
-            checked: true
+            checked: false
         },
         {
             label: '计量电表',
             key: "JLDB",
-            checked: true
+            checked: false
         },
         {
             label: '负荷电表',
@@ -164,8 +185,65 @@ const OverView = ({deviceVersion}) => {
 
     const getDataSource = async () => {
         const res = await getDtuOverViewsServe({dtuId: id, type: deviceVersion});
-        console.log(res.data)
+        if(res?.data?.data){
+            setDataSource(res?.data?.data);
+        }
     }
+
+
+    useEffect(()=>{
+        const newElectricityStatisticsDataSource = cloneObject(electricityStatisticsDataSource); // 电量统计
+        const newBenefitStatisticsDataSource = cloneObject(benefitStatisticsDataSource); //收益统计
+        const newBmsInfoDataSource = cloneObject(bmsInfoDataSource); //BMS信息
+        const newPcsInfoDataSource = cloneObject(pcsInfoDataSource); //PCS信息
+        const newCommunicationStatusDataSource = cloneObject(communicationStatusDataSource); //通讯状态
+
+        // 电量统计
+        if(currentElectricType==="PCS"){
+            newElectricityStatisticsDataSource[0].data = dataSource?.pcs?.dayCEnergy||0;
+            newElectricityStatisticsDataSource[1].data = dataSource?.pcs?.dayDEnergy||0;
+            newElectricityStatisticsDataSource[2].data = dataSource?.pcs?.totalCEnergy||0;
+            newElectricityStatisticsDataSource[3].data = dataSource?.pcs?.totalDEnergy||0;
+        }else if(currentElectricType==="JLDB"){
+            newElectricityStatisticsDataSource[0].data = dataSource?.gmeter?.dayChargeEnergy||0;
+            newElectricityStatisticsDataSource[1].data = dataSource?.gmeter?.dayDischargeEnergy||0;
+            newElectricityStatisticsDataSource[2].data = dataSource?.gmeter?.totalCEnergy||0;
+            newElectricityStatisticsDataSource[3].data = dataSource?.gmeter?.totalDEnergy||0;
+        }
+
+        //收益统计
+        newBenefitStatisticsDataSource[0].data = dataSource?.revenue?.dayEarning||0;
+        newBenefitStatisticsDataSource[1].data = dataSource?.revenue?.monthEarning||0;
+        newBenefitStatisticsDataSource[2].data = dataSource?.revenue?.allEarning||0;
+
+        //BMS信息
+        newBmsInfoDataSource[0].data[0].value = dataSource?.bms?.cellTempMax||0;
+        newBmsInfoDataSource[0].data[1].value = dataSource?.bms?.cellTempMaxNo||0;
+        newBmsInfoDataSource[0].data[2].value = dataSource?.bms?.cellVolMax||0;
+        newBmsInfoDataSource[0].data[3].value = dataSource?.bms?.cellVolMaxNo||0;
+
+        newBmsInfoDataSource[1].data[0].value = dataSource?.bms?.cellTempMin||0;
+        newBmsInfoDataSource[1].data[1].value = dataSource?.bms?.cellTempMinNo||0;
+        newBmsInfoDataSource[1].data[2].value = dataSource?.bms?.cellVolMin||0;
+        newBmsInfoDataSource[1].data[3].value = dataSource?.bms?.cellVolMinNo||0;
+
+        // PCS信息
+        newPcsInfoDataSource[0].A = dataSource?.pcs?.phaseACur||0;
+        newPcsInfoDataSource[0].B = dataSource?.pcs?.phaseBCur||0;
+        newPcsInfoDataSource[0].C = dataSource?.pcs?.phaseCCur||0;
+
+        //通讯状态
+        newCommunicationStatusDataSource[0].checked = dataSource?.Status?.bms||0;
+        newCommunicationStatusDataSource[1].checked = dataSource?.Status?.pcs||0;
+        newCommunicationStatusDataSource[2].checked = dataSource?.Status?.gmeter||0;
+        newCommunicationStatusDataSource[3].checked = dataSource?.Status?.tmeter||0;
+
+        setElectricityStatisticsDataSource(newElectricityStatisticsDataSource); // 电量统计
+        setBenefitStatisticsDataSource(newBenefitStatisticsDataSource); // 收益统计
+        setBmsInfoDataSource(newBmsInfoDataSource); //BMS信息
+        setPcsInfoDataSource(newPcsInfoDataSource); //PCS信息 
+        setCommunicationStatusDataSource(newCommunicationStatusDataSource); //通讯状态
+    }, [dataSource, currentElectricType])
 
     useEffect(()=>{
         getDataSource();
@@ -179,8 +257,8 @@ const OverView = ({deviceVersion}) => {
             }}
         >
                 <div className={styles.top}>
-                    <div className={styles.topTitle}>东方日立1号储能柜</div>
-                    <div className={styles.snTitle}>{intl.formatMessage({id:'SN号'})}：CH005000AADFH001</div>
+                    <div className={styles.topTitle}>{title?decodeURI(title):''}</div>
+                    <div className={styles.snTitle}>{intl.formatMessage({id:'SN号'})}：{sn}</div>
                 </div>
                 <div className={styles.center}>
                     <div className={styles.centerLeft}>
@@ -188,9 +266,12 @@ const OverView = ({deviceVersion}) => {
                             <div className={styles.title}>
                                 <Title title={`${intl.formatMessage({id: '电量统计'})}/kWh`} />
                                 <div>
-                                    <Radio.Group>
-                                        <Radio value={1}>PCS</Radio>
-                                        <Radio value={2}>{intl.formatMessage({id: '计量电表'})}</Radio>
+                                    <Radio.Group 
+                                        value={currentElectricType}
+                                        onChange={e=>setCurrentElectricType(e.target.value)}
+                                    >
+                                        <Radio value={"PCS"}>PCS</Radio>
+                                        <Radio value={"JLDB"}>{intl.formatMessage({id: '计量电表'})}</Radio>
                                     </Radio.Group>
                                 </div>
                             </div>
@@ -259,7 +340,12 @@ const OverView = ({deviceVersion}) => {
                         </div>
                     </div>
                     <div className={styles.centerRight}>
-                        <SchematicDiagram />
+                        {
+                            dataSource?.flowDiagram?
+                            <SchematicDiagram dataSource={dataSource?.flowDiagram||{}}/>
+                            :
+                            <Spin spinning={true} />
+                        }
                     </div>
                 </div>
                 <div className={styles.bottom}>
@@ -312,20 +398,16 @@ const OverView = ({deviceVersion}) => {
                                     {title: "B", key: "B"},
                                     {title: "C", key: "C"}
                                 ]}
-                                dataSource={[
-                                    {
-                                      A: "A",
-                                      B: "B",
-                                      C: "C",
-                                      title: intl.formatMessage({id: '电流/A'})
-                                    },
-                                    {
-                                      A: "A",
-                                      B: "B",
-                                      C: "C",
-                                      title: intl.formatMessage({id: '电压/V'})
-                                    }
+                                dataSource={pcsInfoDataSource}
+                            />
+                            <ScrollTable 
+                                columns={[
+                                    {title: "", key: "title"},
+                                    {title: "AB", key: "AB"},
+                                    {title: "BC", key: "BC"},
+                                    {title: "AC", key: "AC"}
                                 ]}
+                                dataSource={pcsInfoDataSource2}
                             />
                         </div>
                     </div>

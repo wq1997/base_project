@@ -4,7 +4,8 @@ import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { Flow } from "@/components";
 import dlImg from "@/assets/imges/dl.svg";
 import fzxtlImg from "@/assets/imges/fzxtl.svg";
-import nyxtlImg from "@/assets/imges/nyxtl.svg"
+import nyxtlImg from "@/assets/imges/nyxtl.svg";
+import nyxtlZeroImg from "@/assets/imges/outdoorCabinet.svg";
 
 const loadSystemLineWidthPercent = 0.35; // 线的百分比，自定义
 const schematicDiagramIconPrecent = 0.7; 
@@ -18,17 +19,23 @@ const energySystemIconPrecent = 0.4;
 const citySystemLineWidthPercent = 0.5; // 线的百分比，自定义
 const citySystemChargingAngle = 90;
 
-const SchematicDiagram = () => {
+const SchematicDiagram = ({dataSource}) => {
     const intl = useIntl();
     const schematicDiagramRef = useRef();
+    dataSource.totalActivePower=dataSource?.totalActivePower||0;
+    dataSource.power = dataSource?.power||0;
+    dataSource.loadPower = dataSource?.loadPower||0;
+    const totalActivePowerData = parseFloat(dataSource?.totalActivePower);
+    const powerData = parseFloat(dataSource?.power);
+    const loadPowerData = parseFloat(dataSource?.loadPower);
     const [schematicDiagramColHardWidth, setSchematicDiagramColHardWidth] = useState(0);
     const [loadSystemLineWidth, setLoadSystemLineWidth] = useState(0);
     const [loadSystemIconWidth, setLoadSystemIconWidth] = useState(0); // 负载系统图标宽度
     const [energySystemLineWidth, setEnergySystemLineWidth] = useState(0);
-    const [energySystemStatus, setEnergySystemStatus] = useState(1); // 大于0代表放电，小于0代表充电，等于0代表待机
+    const [energySystemStatus, setEnergySystemStatus] = useState(powerData); // 大于0代表放电，小于0代表充电，等于0代表待机
     const [energySystemIconWidth, setEnrgySystemIconWidth] = useState(0); // 负载系统图标宽度
     const [citySystemLineWidth, setCitySystemLineWidth] = useState(0);
-
+    
     const centerStyle = useEmotionCss(()=>{
         return {
             position: 'absolute',
@@ -95,8 +102,8 @@ const SchematicDiagram = () => {
                 }}
             >
                 <div className={titleStyle} style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', whiteSpace: 'nowrap'}}>{intl.formatMessage({id: '市电系统'})}</div>
-                <div style={{position: 'absolute', right: -70, top: 20}}>
-                    {intl.formatMessage({id:'功率'})}：
+                <div style={{position: 'absolute', left: 210, top: 20, textWrap: 'nowrap'}}>
+                    {intl.formatMessage({id:'功率'})}：{dataSource?.totalActivePower}
                 </div>
             </div>
             {/* 市电系统 */}
@@ -112,7 +119,10 @@ const SchematicDiagram = () => {
                         background: '#244A75'
                     }}
                 >
-                    <Flow img={dlImg} />
+                    {
+                        totalActivePowerData>0&&
+                        <Flow img={dlImg} />
+                    }
                 </div>
             </div>
 
@@ -167,7 +177,7 @@ const SchematicDiagram = () => {
                     }}
                 >
                     <img 
-                        src={nyxtlImg} 
+                        src={powerData===0?nyxtlZeroImg:nyxtlImg} 
                         style={{
                             position: 'absolute', 
                             right:  -energySystemIconWidth/2, 
@@ -188,8 +198,13 @@ const SchematicDiagram = () => {
                         <div className={titleStyle} style={{width: '200px', wordWrap: 'break-word'}}>
                             {intl.formatMessage({id:'储能系统'})}
                         </div>
-                        <div style={{margin: '10px 0'}}>{intl.formatMessage({id:'运行状态'})}：</div>
-                        <div>{intl.formatMessage({id:'功率'})}：</div>
+                        <div style={{margin: '10px 0'}}>
+                            {intl.formatMessage({id:'运行状态'})}：
+                            {powerData>0&&intl.formatMessage({id:'放电'})}
+                            {powerData<0&&intl.formatMessage({id:'充电'})}
+                            {powerData===0&&intl.formatMessage({id:'待机'})}
+                        </div>
+                        <div>{intl.formatMessage({id:'功率'})}：{dataSource?.power}</div>
                     </div>
                 </div>
             </div>
@@ -206,7 +221,7 @@ const SchematicDiagram = () => {
                         transformOrigin: '0px 0px',
                         background: '#244A75'
                     }}>
-                        <Flow img={dlImg} />
+                        {loadPowerData>0&&<Flow img={dlImg} />}
                         <img 
                             src={fzxtlImg} 
                             style={{
@@ -229,8 +244,12 @@ const SchematicDiagram = () => {
                             <div className={titleStyle}>
                                 {intl.formatMessage({id:'负载系统'})}
                             </div>
-                            <div style={{margin: '10px 0'}}>{intl.formatMessage({id:'运行状态'})}：</div>
-                            <div>{intl.formatMessage({id:'功率'})}：</div>
+                            <div style={{margin: '10px 0'}}>
+                                {intl.formatMessage({id:'运行状态'})}：
+                                {loadPowerData>0&&intl.formatMessage({id:'用电'})}
+                                {loadPowerData===0&&intl.formatMessage({id:'待机'})}
+                            </div>
+                            <div>{intl.formatMessage({id:'功率'})}：{dataSource?.loadPower}</div>
                         </div>
                     </div>
             </div>

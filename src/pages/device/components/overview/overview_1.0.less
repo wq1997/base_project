@@ -257,7 +257,7 @@
                             }
                             @media screen and (min-width: 2000px){
                                 .data1{
-                                    font-size: 30px;
+                                    font-size: 35px;
                                 }
                                 .rightData2{
                                     font-size: 18px;
@@ -265,7 +265,7 @@
                             }
                             @media screen and (min-width: 1000px) and (max-width: 2000px){
                                 .data1{
-                                    font-size: 20px;
+                                    font-size: 25px;
                                 }
                                 .rightData2{
                                     font-size: 12px;
@@ -273,7 +273,7 @@
                             }
                             @media screen and (max-width: 1000px){
                                 .data1{
-                                    font-size: 10px;
+                                    font-size: 15px;
                                 }
                                 .rightData2{
                                     font-size: 10px;
@@ -353,7 +353,7 @@
                         .subAreaRightItem{
                             display: grid;
                             align-items: center;
-                            grid-template-columns: repeat(2, 1fr);
+                            grid-template-columns: 1fr 3fr;
                             grid-template-rows: repeat(1, 1fr);
                             gap: 8px;
                             .subAreaRightItemTitle{
@@ -394,8 +394,12 @@
                 .commonTitle; 
             }
             .area{
-                .commonArea;
-                
+                height: 110px;
+                padding: 0 10px;
+                box-sizing: border-box;
+                display: grid;
+                grid-template-columns: repeat(1, 1fr);
+                grid-template-rows: repeat(2, 1fr);
             }
         }
         .bottomThree{
