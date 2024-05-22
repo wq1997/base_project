@@ -1,5 +1,5 @@
-import { theme, Table, DatePicker, Form, Button } from "antd";
-import { ThemeBtn, LocaleBtn, EditTable, Flow, ScrollTable, ToggleButton, } from "@/components";
+import { theme, Table, DatePicker, Form, Button, Input } from "antd";
+import { ThemeBtn, LocaleBtn, EditTable, Flow, ScrollTable, ToggleButton } from "@/components";
 import { useIntl } from "umi";
 import flowImg from "./background.png";
 import styles from "./index.less";
@@ -8,13 +8,26 @@ const Test = () => {
   const { token } = theme.useToken();
   const intl = useIntl();
   const [form] = Form.useForm();
+  const [form2] = Form.useForm();
   return (
     <div 
-      // style={{
-      //   background: token.colorPrimary,
-      //   color: token.colorText
-      // }}
+      style={{
+        background: token.backgroundColor
+      }}
     >
+      <Form>
+        <Form.Item name={"test"} label="测试">
+          <Input />
+        </Form.Item>
+      </Form>
+      <Button
+        onClick={async ()=>{
+          const values = await form2.validateFields();
+          console.log("values", values);
+        }}
+      >
+          测试
+      </Button>
       <p>
         <ToggleButton
           freezeTime={5}
