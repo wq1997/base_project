@@ -57,7 +57,7 @@ const PowerCurve = ({plantId}) => {
               {
                 name: '当前执行',
                 type: 'line',
-                stack: 'Total',
+                stack: 'Total', 
                 data: data2
               },
               {
