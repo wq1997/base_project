@@ -29,7 +29,7 @@ const App = () => {
         <ConfigProvider
             locale={localeEnum[locale]}
             theme={{
-                algorithm: theme === 'dark' ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
+                algorithm: theme === 'dark' ? antdTheme.darkAlgorithm : antdTheme.darkAlgorithm,
                 token: ThemeEnum[theme]
             }}
         >

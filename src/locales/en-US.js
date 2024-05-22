@@ -1799,4 +1799,5 @@ export default {
 '自动模式下发':'Issued in automatic mode',
 '新增成功':'New Success',
 '新增失败':'New Failure',
+"上海采日能源科技有限公司 - 沪ICP备":'Shanghai Sermatec Energy Technology Co.,Ltd'
 } 
