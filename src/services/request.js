@@ -27,9 +27,11 @@ instance.interceptors.request.use(config => {
 instance.interceptors.response.use(response => {
     if (response.status === 200) {
         let {data}=response;
-        if (data.msg==="Please login！") {
+        if (data.msg) {
             message.error(data.msg);
-            logout();
+            if(data.msg==="Please login！"){
+                logout();
+            }
         }
         return Promise.resolve(response);
     } else {
