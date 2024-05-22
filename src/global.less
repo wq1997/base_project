@@ -44,6 +44,17 @@ body{
  }
  
  .pwd{
-	text-security:disc !important;
+	 text-security:disc !important;
 	 -webkit-text-security:disc !important;
+}
+
+input:-webkit-autofill {
+  -webkit-animation: autofill-fix 1s infinite!important;
+  -webkit-text-fill-color: white;
+  caret-color: white;
+  -webkit-transition: background-color 50000s ease-in-out 0s!important;
+  -webkit-box-shadow: 0 0 0 1000px transparent inset!important;
+  transition: background-color 50000s ease-in-out 0s!important;
+  background-color: transparent!important;
+  background-image: none !important;
 }

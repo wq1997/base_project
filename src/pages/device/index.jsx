@@ -2,12 +2,11 @@
 import { useEffect, useState, useRef } from 'react'
 import { useSelector, useIntl, history } from "umi";
 import styles from "./index.less";
-import { Table, Select, Space, theme, Button, Modal } from "antd"
+import { Table, Select, Space, theme, Button, Modal, message } from "antd"
 import { CardModel } from "@/components";
 import { getFetchPlantList, deleteDtu, updateDtus } from "@/services/deviceTotal"
 import { getAllRevenue as getAllRevenueServe } from "@/services";
 import { getBurEnergyStats2, getDeviceStats,getDtusOfPlant } from "@/services/plant"
-import { optionType } from '@/utils/constants'
 import {
     HistoryOutlined,
     PieChartOutlined,
