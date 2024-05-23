@@ -198,7 +198,7 @@ const Login = () => {
           </Form>
         </div>
       </div>
-      <span className={styles.bottom}>{t('上海采日能源科技有限公司 - 沪ICP备')}<a style={{textDecoration:'none',color: 'inherit'}} href="https://beian.miit.gov.cn/" target="_blank">17053140</a></span>
+      <span className={styles.bottom}>{t('上海采日能源科技有限公司 - 沪ICP备')}<a style={{textDecoration:'none',color: 'inherit'}} href="https://beian.miit.gov.cn/" target="_blank">17053140</a>{t('号')}</span>
     </div>
   )
 }
