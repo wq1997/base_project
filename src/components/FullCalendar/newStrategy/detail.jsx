@@ -242,7 +242,7 @@ const Detail = ({ form, open, onChangeOpen, detailsData }) => {
 
                     },
                     {
-                        title: 'PCS功率(KW)',
+                        title: 'PCS功率(kW)',
                         key: 'pcsPower',
                         dataIndex: 'pcsPower',
                     },
