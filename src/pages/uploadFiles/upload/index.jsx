@@ -82,7 +82,7 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
                 })
             );
         } catch (e) {
-            message.error('出错了');
+            message.error("出错了");
             setSpinning(false);
         }
         setSpinning(false);
@@ -150,20 +150,16 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
                     </Form.Item>
 
                     <Form.Item
-                        label="子项目名称"
+                        label="测试时间"
                         name="childrenProjectName"
                         rules={[
                             {
                                 required: true,
-                                message: "请输入子项目名称",
-                            },
-                            {
-                                pattern: ALL_SPACE_REG,
-                                message: "请输入子项目名称",
+                                message: "请选择测试时间",
                             },
                         ]}
                     >
-                        <Input placeholder="不可以重复，最多输入30个字符" maxLength={30} />
+                        <DatePicker format="YYYY-MM-DD" />
                     </Form.Item>
 
                     <Form.Item

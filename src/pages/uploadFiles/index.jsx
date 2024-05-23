@@ -51,7 +51,7 @@ const Account = () => {
             dataIndex: "projectName",
         },
         {
-            title: "子项目名称",
+            title: "测试时间",
             dataIndex: "childrenProjectName",
         },
         {
@@ -225,7 +225,7 @@ const Account = () => {
                     }}
                 />
                 <SearchInput
-                    label="子项目名称"
+                    label="测试时间"
                     value={childrenProjectName}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
