@@ -1931,6 +1931,7 @@ export default {
 '液冷出水压力':'Liquid cooling outlet pressure',
 '液冷环境温度':'Ambient temperature of liquid cooling',
 '放电': 'Discharge',
+"上海采日能源科技有限公司 - 沪ICP备":'Shanghai Sermatec Energy Technology Co.,Ltd',
 '': '',
 '': '',
 '': '',

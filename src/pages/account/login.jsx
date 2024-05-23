@@ -107,7 +107,6 @@ const Login = () => {
       className={styles.login}
     >
       <Title className={styles.Title} level={1} ><FormattedMessage id="app.title" /></Title>
-
       <div
         style={{
           width: 450,
@@ -128,7 +127,7 @@ const Login = () => {
 
           }}
         >
-          <Divider style={{ fontSize: '32px', marginBottom: 0 }}>欢迎登录</Divider>
+          <Divider style={{ fontSize: '32px', marginBottom: 0,color:'#fff' }}>欢迎登录</Divider>
           <p style={{ fontSize: '14px', textAlign: 'center', marginTop: 0 }}>WELCOME TO LOGIN</p>
           <Form
             onFinish={onFinish}
@@ -199,6 +198,7 @@ const Login = () => {
           </Form>
         </div>
       </div>
+      <span className={styles.bottom}>{t('上海采日能源科技有限公司 - 沪ICP备')}<a style={{textDecoration:'none',color: 'inherit'}} href="https://beian.miit.gov.cn/" target="_blank">17053140</a></span>
     </div>
   )
 }

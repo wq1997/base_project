@@ -159,11 +159,11 @@ const RealtimeAlarm = () => {
     }
   }
   return (
-    <div className={styles.content}>
-      <div className={styles.title}>
+    <div className={styles.content} style={{height:'100%'}}>
+      <div className={styles.title} style={{ backgroundColor:  token.titleCardBgc }}>
         <Select
           style={{
-            width: 120,
+            width: 240,
           }}
           placeholder={t('选择角色')}
           options={[
@@ -184,7 +184,7 @@ const RealtimeAlarm = () => {
           <Button type='primary' onClick={changIsOpen} >{t('新增')}</Button>
         </div>
       </div>
-      <div className={styles.tablePart}>
+      <div className={styles.tablePart} style={{ backgroundColor: token.titleCardBgc, height: "calc(100% - 102px)" }}>
         <Table
           columns={userTable}
           dataSource={data}
