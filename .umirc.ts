@@ -1,7 +1,6 @@
 import { defineConfig } from "umi";
 import routes from "./src/router";
 import apiUrl from "./apiUrl";
-import { DEFAULT_LOCALE } from "./src/utils/constants";
 
 const path = require("path");
 const prodGzipList = ["js", "css", "jsx", "less"];
@@ -21,11 +20,14 @@ export default defineConfig({
     plugins: ["@umijs/plugins/dist/dva", "@umijs/plugins/dist/locale"],
     dva: {},
     locale: {
-        default: DEFAULT_LOCALE,
+        default: "zh-CN",
     },
     outputPath: OutputPathName(UMI_ENV),
     define: {
-        "process.env.API_URL": apiUrl[UMI_ENV || "test"],
+        "process.env": {
+            ...process.env,
+            API_URL_1: apiUrl[`${UMI_ENV}1`] || apiUrl[`test1`],
+        },
     },
     alias: {
         "@/permissions": path.resolve(__dirname, "src/permissions"),

@@ -2,6 +2,7 @@ import { Form, Input, Checkbox, Button, Typography, theme, Tooltip } from "antd"
 import { FORM_REQUIRED_RULE, PUBLIC_FILE_PATH, PROJECT_NAME } from "@/utils/constants";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { getEncrypt, setLocalStorage } from "@/utils/utils";
+import { login as loginSever } from "@/services/user";
 import styles from "./index.less";
 import { history, useDispatch } from "umi";
 import { useEffect, useState } from "react";
@@ -13,8 +14,23 @@ const Login = () => {
     const [publicKey, setPublicKey] = useState("");
 
     const onFinish = async values => {
-        setLocalStorage("Token", "token");
-        history.push("/overview-screen");
+        const res = await loginSever({
+            ...values,
+            password: values.password,
+        });
+        if (res?.data?.data) {
+            const data = res?.data;
+            setLocalStorage("Token", data?.data);
+            dispatch({
+                type: "user/updateState",
+                payload: {
+                    user: {
+                        userName: data?.nickName,
+                    },
+                },
+            });
+            history.push("/overview-screen");
+        }
     };
 
     const getPublicKey = async () => {
@@ -73,7 +89,7 @@ const Login = () => {
                         }}
                     >
                         <Form.Item
-                            name="username"
+                            name="userName"
                             rules={[{ ...FORM_REQUIRED_RULE }]}
                             style={{ marginBottom: 40 }}
                         >
@@ -94,14 +110,6 @@ const Login = () => {
                                 style={{ height: 40 }}
                             />
                         </Form.Item>
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
-                            <Form.Item name="remember" valuePropName="checked">
-                                <Checkbox>记住密码</Checkbox>
-                            </Form.Item>
-                            <Tooltip title="如果需要注册经销商账号，请联系我support@sermatec-ess.com">
-                                <div style={{ cursor: "pointer" }}>注册</div>
-                            </Tooltip>
-                        </div>
                         <Form.Item>
                             <Button
                                 type="primary"
