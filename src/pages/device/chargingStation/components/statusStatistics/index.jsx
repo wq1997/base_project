@@ -30,7 +30,7 @@ function Com(props) {
       );
       return msg
     }
-    
+    let currentPlant = JSON.parse(localStorage.getItem('current'));
     const getOptions = () => {
         setOptions({
             title: {
@@ -142,7 +142,7 @@ function Com(props) {
             key:'dayEarning',
             color: '#03B4B4',
             value: '',
-            unit: '元'
+            unit: currentPlant.priceUnit
         },
         {
             icon: <ThunderboltOutlined />,
@@ -163,16 +163,14 @@ function Com(props) {
             icon: <SettingOutlined />,
             name: "月充电收益",
             key:'monthEarning',
-
             color: '#FFC600',
             value: '',
-            unit: '元'
+            unit: currentPlant.priceUnit
         },
         {
             icon: <DisconnectOutlined />,
             name: "月总充电量",
             key:'monthCharge',
-
             color: '#6F2BF1',
             value: '',
             unit: 'kWh'
@@ -183,7 +181,6 @@ function Com(props) {
             icon: <DatabaseOutlined />,
             name: "月总用电量",
             key:'monthElectricity',
-
             color: '#03B4B4',
             value: '',
             unit: 'kWh'

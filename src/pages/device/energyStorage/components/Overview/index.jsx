@@ -44,7 +44,7 @@ function Overview(props) {
     const [running, setRunning] = useState([]);
     const [screenH, setScreenH] = useState('');
     const [scroolY, setScroolY] = useState(200);
-
+    let currentPlant = JSON.parse(localStorage.getItem('current'));
     const { token } = theme.useToken();
     const Icon = useIcon();
     const intl = useIntl();
@@ -109,14 +109,14 @@ function Overview(props) {
         {
             label: '日收益',
             name: 'todayIncome',
-            unit: '元',
+            unit: currentPlant.priceUnit,
             color: '#03B4B4',
             icon: 'icon-qian'
         },
         {
             label: '周收益',
             name: 'weekIncome',
-            unit: '元',
+            unit: currentPlant.priceUnit,
             color: '#FF9D4F',
             icon: 'icon-qian1'
 
@@ -124,7 +124,7 @@ function Overview(props) {
         {
             label: '月收益',
             name: 'monthIncome',
-            unit: '元',
+            unit: currentPlant.priceUnit,
             color: '#EEC830',
             icon: 'icon-fenxiangzhuanshouyi'
 
@@ -132,7 +132,7 @@ function Overview(props) {
         {
             label: '累计收益',
             name: 'totalIncome',
-            unit: '元',
+            unit: currentPlant.priceUnit,
             color: '#71B4F2',
             icon: 'icon-qushi'
 
@@ -293,10 +293,14 @@ function Overview(props) {
                                     return (
                                         <>
                                             <div className={styles.itemProfit} style={{ backgroundColor: token.lightTreeBgc }}>
-                                                <div className={styles.titleProfit}>
-                                                    <Icon type={it.icon} style={{ color: it.color }}></Icon>
-                                                    {t(it.label)}
-                                                </div>
+                                                <Tooltip title={t(it.label)} >
+                                                    <div className={styles.titleProfit}>
+                                                        <Icon type={it.icon} style={{ color: it.color }}></Icon>
+                                                        {t(it.label)}
+                                                    </div>
+                                                </Tooltip>
+
+
                                                 <div className={styles.valueProfit} style={{ color: it.color }}>
                                                     {income[it.name]} <span style={{ color: token.titleColor }}>{t(it.unit)}</span>
                                                 </div>

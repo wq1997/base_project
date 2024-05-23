@@ -3,11 +3,11 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import styles from './index.less'
 import StatusStatistics from "./components/statusStatistics";
 import ListofChargingStations from './components/listofChargingStations';
-import { theme } from "antd";
+import { theme, Tooltip } from "antd";
 import { useSelector, useIntl } from "umi";
 import DC from '../../../assets/svg/DCpiles.svg'
 import AC from '../../../assets/svg/ACpiles.svg'
-import {  getChargeStationStatus } from '@/services/deviceTotal'
+import { getChargeStationStatus } from '@/services/deviceTotal'
 
 function Com(props) {
     const { token } = theme.useToken();
@@ -20,76 +20,76 @@ function Com(props) {
         );
         return msg
     }
-    const [dataOfAcCharges,setDataOfAcCharges] =useState([
+    const [dataOfAcCharges, setDataOfAcCharges] = useState([
         {
-            name: '充电中',
+            label: '充电中',
             key: 'acChargeTotal',
             value: '',
-            unit:''
+            unit: ''
 
         },
         {
-            name: '已插枪',
+            label: '已插枪',
             key: 'acPlugGunTotal',
             value: '',
-            unit:''
+            unit: ''
 
         },
         {
-            name: '空闲中',
+            label: '空闲中',
             key: 'acFreeTotal',
             value: '',
-            unit:''
+            unit: ''
 
         },
         {
-            name: '故障中',
+            label: '故障中',
             key: 'acFaultTotal',
             value: '',
-            unit:''
+            unit: ''
 
         },
         {
-            name: '日充电量',
+            label: '日充电量',
             key: 'acChargeEnergyTotal',
             value: '',
-            unit:''
+            unit: ''
 
         },
-    ]); 
-    const [dataOfDcCharges,setDataOfDcCharges] =useState([
+    ]);
+    const [dataOfDcCharges, setDataOfDcCharges] = useState([
         {
-            name: '充电中',
+            label: '充电中',
             key: 'dcChargeTotal',
             value: '',
-            unit:''
+            unit: ''
 
         },
         {
-            name: '已插枪',
+            label: '已插枪',
             key: 'dcPlugGunTotal',
             value: '',
-            unit:''
+            unit: ''
 
         },
         {
-            name: '空闲中',
+            label: '空闲中',
             key: 'dcFreeTotal',
             value: '',
-            unit:''
+            unit: ''
 
         },
         {
-            name: '故障中',
+            label: '故障中',
             key: 'dcFaultTotal',
             value: '',
-            unit:''
+            unit: ''
         },
         {
-            name: '日充电量',
+            label: '日充电量',
             key: 'dcChargeEnergyTotal',
             value: '',
-            unit:'kWh'
+            unit: 'kWh'
         },
     ]);
 
@@ -100,13 +100,13 @@ function Com(props) {
         let { data } = await getChargeStationStatus({
             plantId: localStorage.getItem('plantId'),
         });
-        dataOfAcCharges.map((it,i) => {
+        dataOfAcCharges.map((it, i) => {
             it.value = data?.data[it.key];
-            it.unit=i===4?'kWh':`/${data?.data['acTotal']}`
+            it.unit = i === 4 ? 'kWh' : `/${data?.data['acTotal']}`
         });
-        dataOfDcCharges.map((it,i) => {
+        dataOfDcCharges.map((it, i) => {
             it.value = data?.data[it.key];
-            it.unit=i===4?'kWh':`/${data?.data['dcTotal']}`
+            it.unit = i === 4 ? 'kWh' : `/${data?.data['dcTotal']}`
         });
         setDataOfAcCharges([...dataOfAcCharges]);
         setDataOfDcCharges([...dataOfDcCharges]);
@@ -124,15 +124,17 @@ function Com(props) {
                     {dataOfDcCharges.map(it => {
                         return (
                             <div className={styles.chargingItems}>
-                                <span>{t(it.name)}</span>
-                                <span style={{ marginLeft:'10px',marginRight:'25px'}}>:</span>
+                                   <Tooltip title={t(it.label)} >
+                                   <span className={styles.label} >{t(it.label)}</span>
+                                   </Tooltip>
+                                <span style={{ marginLeft: '10px', marginRight: '25px' }}>:</span>
                                 <span>{it.value}</span>
                                 <span>{it.unit}</span>
-
                             </div>
                         )
                     })}
                 </div>
+
             </div>
             <div className={styles.chargTypesAlternating} style={{ backgroundColor: token.titleCardBgc, color: token.smallTitleColor }}>
                 <div className={styles.leftImage}>
@@ -143,11 +145,12 @@ function Com(props) {
                     {dataOfAcCharges.map(it => {
                         return (
                             <div className={styles.chargingItems}>
-                                <span>{t(it.name)}</span>
-                                <span style={{ marginLeft:'10px',marginRight:'25px'}}>:</span>
+                                 <Tooltip title={t(it.label)} >
+                                   <span className={styles.label} >{t(it.label)}</span>
+                                   </Tooltip>
+                                <span style={{ marginLeft: '10px', marginRight: '25px' }}>:</span>
                                 <span>{it.value}</span>
                                 <span>{it.unit}</span>
-
                             </div>
                         )
                     })}

@@ -32,7 +32,7 @@ function OverView(props) {
         chargeInEnergy: []
     });
     const intl = useIntl();
-    let currentPlant = JSON.parse(localStorage.getItem('current'))
+    let currentPlant = JSON.parse(localStorage.getItem('current'));
     const t = (id) => {
         const msg = intl.formatMessage(
             {
@@ -97,26 +97,26 @@ function OverView(props) {
         },
         {
             key: 'designPower',
-            label: t('储能装机功率'),
+            label: `${t('储能装机功率')}(kW)`,
         },
         {
             key: 'capacity',
-            label: t('储能装机容量'),
+            label: `${t('储能装机容量')}(kWh)`,
         },
         {
             key: 'pvCapacity',
-            label: t('光伏装机容量'),
+            label: `${t('光伏装机容量')}(kWh)`,
         },
         {
             key: 'chargePileCapacity',
-            label: t('充电桩装机容量'),
+            label: `${t('充电桩装机容量')}(kWh)`,
         },
         {
             key: 'position',
             label: t('电站位置'),
             span: 2
         },
-    ]
+    ] 
     const getOptions = async () => {
         let { data: energyData } = await getEnergyFeeByTime({
             plantId: localStorage.getItem('plantId'),

@@ -57,6 +57,7 @@ const NewStrategy = ({ currentGrid, strategy, deleteStrategy, getStrategy, handl
     const [detailsData, setDetailsData] = useState(); // 策略详情
     const [priceData, setPriceData] = useState(); // 电价表
     const [editIndex, setEditIndex] = useState(-1); // 当前编辑的index
+    let currentPlant = JSON.parse(localStorage.getItem('current'));
 
     const intl = useIntl();
     const t = (id) => {
@@ -178,19 +179,19 @@ const NewStrategy = ({ currentGrid, strategy, deleteStrategy, getStrategy, handl
             dataIndex: 'endDate',
             key: 'endDate',
         }, {
-            title: t('尖时电价/元'),
+            title: `${t('尖时电价')}/${currentPlant.priceUnit}`,
             dataIndex: 'tipPrice',
             key: 'tipPrice',
         }, {
-            title: t('峰时电价/元'),
+            title: `${t('峰时电价')}/${currentPlant.priceUnit}`,
             dataIndex: 'peakPrice',
             key: 'peakPrice',
         }, {
-            title: t('平时电价/元'),
+            title: `${t('平时电价')}/${currentPlant.priceUnit}`,
             dataIndex: 'flatPrice',
             key: 'flatPrice',
         }, {
-            title: t('谷时电价/元'),
+            title: `${t('谷时电价')}/${currentPlant.priceUnit}`,
             dataIndex: 'valleyPrice',
             key: 'valleyPrice',
         },

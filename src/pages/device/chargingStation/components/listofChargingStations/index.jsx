@@ -35,7 +35,7 @@ function Com(props) {
       }
     useEffect(() => {
         if (screenH < 1000) {
-            setScroolY(200);
+            setScroolY(130);
           } else if (screenH > 1000 && screenH < 1300) {
             setScroolY(300);
           } else if (screenH > 1300) {

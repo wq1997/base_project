@@ -26,13 +26,30 @@
     .rightData{
         width:  calc(50% ) ;
         height: calc(100%) ;
+
+        // :global{
+        //   .ant-descriptions-item-label{
+        //     width: 100px;
+        //     padding-right: 10px;
+        //     overflow: hidden;
+        //     text-overflow: ellipsis !important;
+        //     white-space: nowrap;
+        //   }
+        // }
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         .chargingItems{
             max-width: 200px;
+            width: 100%;
             display: flex;
             align-self: start;
+            .label{
+              width: 50%;
+              overflow: hidden;
+              text-overflow: ellipsis !important;
+              white-space: nowrap;
+            }
             span{
                 display: inline-block;
             }

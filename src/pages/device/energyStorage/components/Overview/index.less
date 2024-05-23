@@ -129,16 +129,20 @@
 
                 .itemProfit {
                     padding: 15px 15px;
+                    width: 100%;
                     font-size: 16px;
-
+                    overflow: hidden;
+                    text-overflow: ellipsis !important;
+                    white-space: nowrap;
+                    .titleProfit{
+                        overflow: hidden;
+                        text-overflow: ellipsis !important;
+                        white-space: nowrap;
+                    }
                     .valueProfit {
                         font-size: 24px;
                         margin-top: 10px;
-
-                        span {
-                            font-size: 16px;
-
-                        }
+                        font-size: 16px;
                     }
                 }
             }
