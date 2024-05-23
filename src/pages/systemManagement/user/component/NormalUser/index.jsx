@@ -143,11 +143,12 @@ function Com(props) {
     }
   
     return (
-        <div className='content' style={{  backgroundColor: token.titleCardBgc, height: "100%" }}>
+        <div className='content' style={{height: "100%" }}>
             <CardModel
                 title={
                     t("个人信息")
                 }
+                backgroundColor={token.bgcColorl_B}
                 content={
                     <Table
                         columns={userTable}
