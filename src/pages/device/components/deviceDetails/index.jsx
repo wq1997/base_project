@@ -5,8 +5,8 @@ import DeviceDetailTwo from "./deviceDetail_2.0";
 const DeviceDetails = ({deviceVersion}) => {
     return (
         <>
-            {deviceVersion===7&&<DeviceDetailOne />}
-            {deviceVersion===15&&<DeviceDetailTwo />}
+            {deviceVersion===7&&<DeviceDetailOne deviceVersion={deviceVersion} />}
+            {deviceVersion===15&&<DeviceDetailTwo deviceVersion={deviceVersion} />}
         </>
     )
 }

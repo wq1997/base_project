@@ -26,6 +26,7 @@ import { getQueryString, cloneObject } from "@/utils/utils";
 import {
     getDtuOverViews as getDtuOverViewsServe,
 } from "@/services";
+import classNames from "classnames";
 
 const OverView = ({deviceVersion, sn}) => {
     const id = getQueryString('id');
@@ -144,19 +145,19 @@ const OverView = ({deviceVersion, sn}) => {
 
     const [pcsInfoDataSource, setPcsInfoDataSource] = useState([
         {
+          title: intl.formatMessage({id: '电流'}),
           A: 0,
           B: 0,
           C: 0,
-          title: intl.formatMessage({id: '电流'})
         }]
     );
 
     const [pcsInfoDataSource2, setPcsInfoDataSource2] = useState([
         {
+            title: intl.formatMessage({id: '电压'}),
             AB: 0,
             BC: 0,
             AC: 0,
-            title: intl.formatMessage({id: '电压'})
         }
     ])
 
@@ -391,24 +392,18 @@ const OverView = ({deviceVersion, sn}) => {
                             <Title title={intl.formatMessage({id: 'PCS信息'})} />
                         </div>
                         <div className={styles.area}>
-                            <ScrollTable 
-                                columns={[
-                                    {title: "", key: "title"},
-                                    {title: "A", key: "A"},
-                                    {title: "B", key: "B"},
-                                    {title: "C", key: "C"}
-                                ]}
-                                dataSource={pcsInfoDataSource}
-                            />
-                            <ScrollTable 
-                                columns={[
-                                    {title: "", key: "title"},
-                                    {title: "AB", key: "AB"},
-                                    {title: "BC", key: "BC"},
-                                    {title: "AC", key: "AC"}
-                                ]}
-                                dataSource={pcsInfoDataSource2}
-                            />
+                            <div className={classNames(styles.areaItem, styles.areaItemHeader)}>
+                                {['','A','B','C'].map(item=><div className={styles.areaItemContent}>{item}</div>)}
+                            </div>
+                            <div className={classNames(styles.areaItem, styles.areaItemContent)}>
+                                {Object.values(pcsInfoDataSource[0]||{}).map(item=><div className={styles.areaItemContent}>{item}</div>)}
+                            </div>
+                            <div className={classNames(styles.areaItem, styles.areaItemHeader)}>
+                                {['','AB','BC','AC'].map(item=><div className={styles.areaItemContent}>{item}</div>)}
+                            </div>
+                            <div className={classNames(styles.areaItem, styles.areaItemContent)}>
+                                {Object.values(pcsInfoDataSource2[0]||{}).map(item=><div className={styles.areaItemContent}>{item}</div>)}
+                            </div>
                         </div>
                     </div>
                     <div className={styles.bottomThree}>
