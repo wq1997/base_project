@@ -20,7 +20,7 @@ const Login = () => {
         });
         if (res?.data?.data) {
             const data = res?.data;
-            setLocalStorage("Token", data?.data);
+            setLocalStorage("Token", data?.data?.token);
             dispatch({
                 type: "user/updateState",
                 payload: {

@@ -10,14 +10,11 @@ const getToken = () => localStorage.getItem("Token");
 const instance = axios.create({
     baseURL: getBaseUrl(),
     timeout: 10000,
-    headers: {
-        Authorization: getToken(),
-    },
 });
 
 instance.interceptors.request.use(
     config => {
-        config.headers.Authorization = "Bearer " + getToken();
+        config.headers.token = getToken();
         return config;
     },
     error => {
