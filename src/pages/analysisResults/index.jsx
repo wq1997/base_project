@@ -17,7 +17,7 @@ const Account = () => {
     const location = useLocation();
     const params = getUrlParams(location?.search);
     const projectNameRef = useRef(decodeURIComponent(params?.projectName || ""));
-    const childrenProjectNameRef = useRef();
+    const testDateRef = useRef();
     const dataTypeRef = useRef();
     const devicePositionRef = useRef();
     const dimensionRef = useRef();
@@ -26,7 +26,7 @@ const Account = () => {
     const uploadTimeRef = useRef();
 
     const [projectName, setProjectName] = useState(decodeURIComponent(params?.projectName || ""));
-    const [childrenProjectName, setChildrenProjectName] = useState();
+    const [testDate, setTestDate] = useState();
     const [resultId, setResultId] = useState(undefined);
     const [dataType, setDataType] = useState();
     const [dataTypeOptions, setDataTypeOptions] = useState();
@@ -47,8 +47,8 @@ const Account = () => {
             dataIndex: "projectName",
         },
         {
-            title: "子项目名称",
-            dataIndex: "childrenProjectName",
+            title: "测试时间",
+            dataIndex: "testDate",
         },
         {
             title: "数据类型",
@@ -136,7 +136,7 @@ const Account = () => {
         const { current, pageSize } = paginationRef.current;
         const [uploadTimeFrom, uploadTimeTo] = uploadTimeRef.current || [];
         const projectName = projectNameRef.current;
-        const childrenProjectName = childrenProjectNameRef.current;
+        const testDate = testDateRef.current;
         const dataType = dataTypeRef.current;
         const deviceBoxNo = deviceBoxNoRef.current;
         const devicePosition = devicePositionRef.current;
@@ -150,7 +150,7 @@ const Account = () => {
                 uploadTimeFrom,
                 uploadTimeTo,
                 projectName,
-                childrenProjectName,
+                testDate,
                 dataType,
                 devicePosition,
                 deviceBoxNo,
@@ -173,8 +173,8 @@ const Account = () => {
         paginationRef.current = DEFAULT_PAGINATION;
         projectNameRef.current = undefined;
         setProjectName();
-        childrenProjectNameRef.current = undefined;
-        setChildrenProjectName();
+        testDateRef.current = undefined;
+        setTestDate();
         dataTypeRef.current = undefined;
         setDataType();
         devicePositionRef.current = undefined;
@@ -213,15 +213,18 @@ const Account = () => {
                         setProjectName(value);
                     }}
                 />
-                <SearchInput
-                    label="子项目名称"
-                    value={childrenProjectName}
-                    onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
-                        childrenProjectNameRef.current = value;
-                        setChildrenProjectName(value);
-                    }}
-                />
+                <div>
+                    <span>测试时间：</span>
+                    <DatePicker
+                        format="YYYY-MM-DD"
+                        value={testDate ? dayjs(testDate) : undefined}
+                        onChange={(date, dateStr) => {
+                            paginationRef.current = DEFAULT_PAGINATION;
+                            testDateRef.current = dateStr;
+                            setTestDate(dateStr);
+                        }}
+                    />
+                </div>
                 <SearchInput
                     label="数据类型"
                     value={dataType}
