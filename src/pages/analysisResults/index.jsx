@@ -75,6 +75,16 @@ const Account = () => {
             dataIndex: "uploadTime",
         },
         {
+            title: "是否异常",
+            render: (_, { exceptionCount }) => {
+                return exceptionCount > 0 ? (
+                    <span style={{ color: "rgb(255, 77, 79)" }}>是</span>
+                ) : (
+                    "否"
+                );
+            },
+        },
+        {
             title: "异常总数",
             dataIndex: "exceptionCount",
         },

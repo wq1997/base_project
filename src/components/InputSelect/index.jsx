@@ -1,78 +1,34 @@
-import { Select, theme } from "antd";
-import { useState, useRef } from "react";
-import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { addColorAlpha } from "@/utils/utils";
+import React, { useState } from "react";
+import { AutoComplete } from "antd";
 
-const InputSelect = (props) => {
-    const { token } = theme.useToken();
-    const inputRef = useRef(null);
-    const { value, options, onChange } = props;
-    const [ myValue, setMyValue ] = useState(value||[]);
-    const [ myOptions, setMyOptions] = useState(options||[]);
-    const [ inputContent, setInputContent ] = useState('');
+const InputSelect = ({ placeholder, list = [], onChange }) => {
+    list = list?.map(item => ({
+        value: item,
+    }));
 
-    const onMyChange = (value) => {
-        setMyValue(value);
-        onChange(value);
-    }
+    const [value, setValue] = useState();
+    const [options, setOptions] = useState(list);
 
-    const onMyBlur = () => {
-        if(inputRef?.current) inputRef?.current?.blur();
-    }
+    const handleSearch = text => {
+        const newList = list?.filter(item => item?.value?.includes(text));
+        setOptions(newList);
+    };
 
-    const optionsItemStyle = useEmotionCss(()=>{
-        return {
-            padding: '5px 0 5px 5px',
-            cursor: 'pointer',
-            marginBottom: '5px',
-            "&:hover": {
-                background: addColorAlpha('#000000', 0.05)
-            }
-        }
-    })
+    const handleChange = data => {
+        setValue(data);
+        onChange(data);
+    };
 
     return (
-        <Select 
-            ref={inputRef}
-            {...props} 
-            value={myValue}
-            showSearch
-            options={myOptions}
-            onChange={onMyChange} 
-            filterOption={input => {
-                setInputContent(input);
-            }}
-            dropdownRender={_=>{
-                return options.map(item => {
-                    return (
-                        <div 
-                            key={item.value} 
-                            onClick={()=>{
-                                onMyChange(item.value);
-                                onMyBlur();
-                            }}z
-                            className={optionsItemStyle}
-                            style={{
-                                background: myValue === item.value && addColorAlpha(token.colorPrimary, 0.05),
-                                height: item.visible===false?0:"auto"
-                            }}
-                        >
-                                {item.label}
-                        </div>
-                    )
-                });
-            }}
-            onBlur={()=>{
-                if(inputContent){
-                    onMyBlur();
-                    setMyOptions([...myOptions, {label: inputContent, value: inputContent, visible: false}]);
-                    setMyValue(inputContent);
-                    onChange(inputContent)
-                    setInputContent('');
-                }
-            }}
-        />
-    )
-}
-
+        <>
+            <AutoComplete
+                placeholder={placeholder}
+                value={value}
+                options={options}
+                onSearch={handleSearch}
+                onChange={handleChange}
+            />
+        </>
+    );
+};
 export default InputSelect;

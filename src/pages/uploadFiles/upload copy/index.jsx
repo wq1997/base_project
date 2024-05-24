@@ -28,13 +28,15 @@ import { toFormData } from "@/utils/utils";
 import { ALL_SPACE_REG } from "@/utils/constants";
 import "./index.less";
 
+const uploadUrl = process.env.API_URL_1 + "/attachment/upload2";
+
 const Company = ({ detailId, uploadOpen, onClose }) => {
     const [form] = Form.useForm();
     const [testFiles, setTestFiles] = useState([]);
     const [editData, setEditData] = useState();
     const [spinning, setSpinning] = useState(false);
-    const [devicePositionList, setDevicePositionList] = useState([]);
-    const [projectNameList, setProjectNameList] = useState([]);
+    const [projectName, setProjectName] = useState([]);
+    const [projectNameOptions, setProjectNameOptions] = useState([]);
     const [dimension, setDimension] = useState();
     const [dataTypeOptions, setDataTypeOptions] = useState([]);
     const [deviceTypeOptions, setDeviceTypeOptions] = useState([]);
@@ -55,14 +57,12 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
                 dataTypeAndDeviceTypeMapping,
                 dimensionEnumList,
                 projectNameList,
-                devicePositionList,
                 scene,
             } = res?.data?.data;
             setDataTypeOptions(dataTypeEnumList);
             setDataTypeAndDeviceTypeMapping(dataTypeAndDeviceTypeMapping);
             setDimensionOptions(dimensionEnumList);
-            setProjectNameList(projectNameList);
-            setDevicePositionList(devicePositionList);
+            setProjectNameOptions(projectNameList?.map(item => ({ label: item, value: item })));
             form.setFieldsValue(scene);
             setDeviceTypeOptions(dataTypeAndDeviceTypeMapping[scene?.dataType]);
             setEditData(scene);
@@ -79,7 +79,6 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
                     ...values,
                     files: values?.testUnits?.map(item => item.file[0]),
                     testUnits: values?.testUnits?.map(item => item.name),
-                    testDate: dayjs(values?.testDate).format("YYYY-MM-DD"),
                 })
             );
         } catch (e) {
@@ -147,12 +146,12 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
                             },
                         ]}
                     >
-                        <InputSelect placeholder="请输入项目名称" list={projectNameList} />
+                        <Input placeholder="请输入项目名称" />
                     </Form.Item>
 
                     <Form.Item
                         label="测试时间"
-                        name="testDate"
+                        name="childrenProjectName"
                         rules={[
                             {
                                 required: true,
@@ -219,7 +218,7 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
                             },
                         ]}
                     >
-                        <InputSelect placeholder="请输入设备位置" list={devicePositionList} />
+                        <Input placeholder="最多输入30个字符" maxLength={30} />
                     </Form.Item>
 
                     <Form.Item
