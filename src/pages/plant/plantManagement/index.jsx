@@ -5,6 +5,7 @@ import { DEFAULT_PAGINATION } from "@/utils/constants";
 import AddPlant from "./AddPlant";
 import dayjs from "dayjs";
 import styles from "./index.less";
+import { getPlantList as getPlantListServer } from "@/services/plant";
 
 const Log = () => {
     const [dataSource, setDataSource] = useState([]);
@@ -64,18 +65,18 @@ const Log = () => {
 
     const getList = async () => {
         const { current, pageSize } = paginationRef.current;
-        const account = accountRef.current;
-        const pageName = pageRef.current;
-        const operationName = operationRef.current;
+        const company = companyRef.current;
+        const plantName = plantNameRef.current;
+        const plantType = plantTypeRef.current;
         setLoading(true);
         try {
-            const res = await getOperationLogServe({
-                pageNum: current,
+            const res = await getPlantListServer({
+                pageNo: current,
                 pageSize,
                 queryCmd: {
-                    operatorAccount: account,
-                    operationPage: pageName,
-                    operatorName: operationName,
+                    company,
+                    name: plantName,
+                    plantType,
                 },
             });
             if (res?.data?.status == "SUCCESS") {
@@ -111,7 +112,7 @@ const Log = () => {
     };
 
     useEffect(() => {
-        //  getList();
+        getList();
     }, []);
 
     return (

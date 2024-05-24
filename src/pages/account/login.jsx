@@ -1,4 +1,4 @@
-import { Form, Input, Checkbox, Button, Typography, theme, Tooltip } from "antd";
+import { Form, Input, message, Button, Typography, theme, Tooltip } from "antd";
 import { FORM_REQUIRED_RULE, PUBLIC_FILE_PATH, PROJECT_NAME } from "@/utils/constants";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { getEncrypt, setLocalStorage } from "@/utils/utils";
@@ -30,6 +30,8 @@ const Login = () => {
                 },
             });
             history.push("/overview-screen");
+        } else {
+            message.error(res?.data?.message);
         }
     };
 
