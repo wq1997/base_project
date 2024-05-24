@@ -161,17 +161,17 @@ const OverView = () => {
         {
             label: 'BMS',
             key: "BMS",
-            checked: true
+            checked: false
         },
         {
             label: 'PCS',
             key: "PCS",
-            checked: true
+            checked: false
         },
         {
             label: '计量电表',
             key: "JLDB",
-            checked: true
+            checked: false
         },
         {
             label: '负荷电表',

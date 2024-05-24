@@ -85,7 +85,7 @@ const Cabinet = () => {
                 {activeKey === "DeviceDetails" && <DeviceDetails deviceVersion={deviceVersion} />}
                 {activeKey === "MonitoringCurves" && <MonitoringCurves />}
                 {activeKey === "PackDetails" && <PackDetails />}
-                {activeKey === "Policy" && <Policy id={id} />}
+                {activeKey === "Policy" && <Policy id={id} deviceVersion={deviceVersion}/>}
             </div>
         </div>
     )

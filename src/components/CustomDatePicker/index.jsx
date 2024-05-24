@@ -1,12 +1,14 @@
 import { Select, Space, Form, Button } from "antd";
 import moment from "moment";
 import { useEffect } from "react";
+import { useIntl } from "umi";
 
 const rangeTime = (length) => {
     return new Array(length).fill(0).map((_,index) => index<=9?`0${index}`:`${index}`)
 }
 
 const CustomDatePicker = (props) => {
+    const intl = useIntl();
     const [form] = Form.useForm();
     const { onChange, value } = props;
 
@@ -43,7 +45,7 @@ const CustomDatePicker = (props) => {
                                 if(startTime1&&endTime1&&startTime2&&endTime2){
                                     const flag = moment(`1997/05/05 ${startTime1}:${endTime1}:00`).isBefore(moment(`1997/05/05 ${startTime2}:${endTime2}:00`));
                                     if(!flag){
-                                        return Promise.reject("起始时间应该早于结束时间");
+                                        return Promise.reject(intl.formatMessage({id: '起始时间应该早于结束时间'}));
                                     }
                                     onChange(`${startTime1}:${endTime1}~${startTime2}:${endTime2}`)
                                 }
@@ -66,7 +68,7 @@ const CustomDatePicker = (props) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: `必填!`,
+                                        message: intl.formatMessage({id: '必填'}),
                                     },
                                 ]}
                             >
@@ -87,7 +89,7 @@ const CustomDatePicker = (props) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: `必填!`,
+                                        message: intl.formatMessage({id: '必填'}),
                                     },
                                 ]}
                             >
@@ -110,7 +112,7 @@ const CustomDatePicker = (props) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: `必填!`,
+                                        message: intl.formatMessage({id: '必填'}),
                                     },
                                 ]}
                             >
@@ -131,7 +133,7 @@ const CustomDatePicker = (props) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: `必填!`,
+                                        message: intl.formatMessage({id: '必填'}),
                                     },
                                 ]}
                             >

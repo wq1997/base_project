@@ -74,7 +74,7 @@ const EditRowTable = ({ data, columns, showEdit, showClear, showDelete, onChange
                     rules={[
                         {
                             required: true,
-                            message: `${title} ${intl.formatMessage({id: '是必填的'})}!`,
+                            message: `${title} ${intl.formatMessage({id: '是必填的!'})}!`,
                         },
                     ]}
                 >

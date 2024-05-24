@@ -209,8 +209,8 @@ const PolicyConfiguration = () => {
                                 ]}
                                 columns={[
                                     {
-                                        title: '类型',
-                                        dataIndex: 'type',
+                                        title: intl.formatMessage({id: '时段'}),
+                                        dataIndex: 'shiduan',
                                         editable: true,
                                         inputType: 'Select',
                                         options: [
@@ -220,6 +220,40 @@ const PolicyConfiguration = () => {
                                             {value: '谷', name: intl.formatMessage({id: '谷'})}
                                         ]
                                     },
+                                    {
+                                        title: intl.formatMessage({id: '类型'}),
+                                        dataIndex: 'leixing',
+                                        editable: true,
+                                        inputType: 'Select',
+                                        options: [
+                                            {value: '充电', name: intl.formatMessage({id: '充电'})},
+                                            {value: '放电', name: intl.formatMessage({id: '放电'})},
+                                        ]
+                                    },
+                                    {
+                                        title: intl.formatMessage({id: 'SOC(%)'}),
+                                        dataIndex: 'soc',
+                                        editable: true,
+                                        inputType: 'Input',
+                                    },
+                                    {
+                                        title: `${intl.formatMessage({id: '功率'})}(kW)`,
+                                        dataIndex: 'gonglve',
+                                        editable: true,
+                                        inputType: 'Input',
+                                    },
+                                    {
+                                        title: `${intl.formatMessage({id: '电价'})}(${intl.formatMessage({id: '元'})})`,
+                                        dataIndex: 'dianjia',
+                                        editable: true,
+                                        inputType: 'InputNumber',
+                                    },
+                                    {
+                                        title: `${intl.formatMessage({id: '开始时间'})}~${intl.formatMessage({id: '结束时间'})}`,
+                                        dataIndex: 'timetime',
+                                        editable: true,
+                                        inputType: 'CustomDatePicker',
+                                    }
                                 ]}
                                 strategyList={strategyList}
                             />

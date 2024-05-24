@@ -2,16 +2,11 @@ import { useState } from "react";
 import PolicyConfiguration_one from "./policy_1.0";
 import PolicyConfiguration_two from "./policy_2.0";
 
-const PolicyConfiguration = () => {
-    const [deviceVersion, setDeviceVersion] = useState(2)
+const PolicyConfiguration = ({deviceVersion}) => {
     return (
         <div>
-            {
-                deviceVersion===1?
-                <PolicyConfiguration_one />
-                :
-                <PolicyConfiguration_two />
-            }
+            {deviceVersion===7&&<PolicyConfiguration_one />}
+            {deviceVersion===15&&<PolicyConfiguration_two />}
         </div>
     )
 }
