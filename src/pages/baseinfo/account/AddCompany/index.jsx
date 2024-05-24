@@ -5,6 +5,7 @@ import {
     updateUser as updateUserServer,
 } from "@/services/account";
 import { Title } from "@/components";
+import { PASSWORD_RGE } from "@/utils/constants";
 
 const Company = ({ open, editId, onClose }) => {
     const [form] = Form.useForm();
@@ -100,6 +101,12 @@ const Company = ({ open, editId, onClose }) => {
                     <Form.Item
                         label="账号密码"
                         name="password"
+                        rules={[
+                            {
+                                pattern: PASSWORD_RGE,
+                                message: '密码长度为8-16位，数字、字母、字符至少包含两种'
+                            }
+                        ]}
                     >
                         <Input placeholder="请输入账号密码" />
                     </Form.Item>
