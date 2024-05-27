@@ -1,6 +1,6 @@
 export default apiUrl = {
-    // test1: "http://localhost:9000",
-     test1: "http://192.168.1.32:9000",
+     test1: "http://localhost:9000",
+    // test1: "http://192.168.1.32:9000",
     // test1: "http://192.168.1.32:8080/auth",
     // test2: "http://192.168.1.32:8080/main",
     // test3: "http://192.168.1.32:8080/energy",

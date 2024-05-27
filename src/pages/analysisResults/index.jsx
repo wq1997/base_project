@@ -263,7 +263,7 @@ const Account = () => {
                         onChange={(date, dateStr) => {
                             paginationRef.current = DEFAULT_PAGINATION;
                             uploadTimeRef.current = dateStr;
-                            setUploadTime(dateStr);
+                            setUploadTime(dateStr?.includes("") ? [] : dateStr);
                         }}
                         value={
                             uploadTime && uploadTime.length > 0
