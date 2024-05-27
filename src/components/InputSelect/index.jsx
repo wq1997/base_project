@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AutoComplete } from "antd";
 
-const InputSelect = ({ placeholder, list = [], onChange }) => {
+const InputSelect = ({ defaultValue, placeholder, list = [], onChange }) => {
     list = list?.map(item => ({
         value: item,
     }));
@@ -18,6 +18,10 @@ const InputSelect = ({ placeholder, list = [], onChange }) => {
         setValue(data);
         onChange(data);
     };
+
+    useEffect(() => {
+        setValue(defaultValue);
+    }, [defaultValue]);
 
     return (
         <>

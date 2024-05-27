@@ -63,11 +63,11 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
             setDimensionOptions(dimensionEnumList);
             setProjectNameList(projectNameList);
             setDevicePositionList(devicePositionList);
+            setDeviceTypeOptions(dataTypeAndDeviceTypeMapping[scene?.dataType]);
             form.setFieldsValue({
                 ...scene,
-                testDate: dayjs(scene?.testDate, "YYYY-MM-DD"),
+                testDate: scene?.testDate ? dayjs(scene?.testDate, "YYYY-MM-DD") : undefined,
             });
-            setDeviceTypeOptions(dataTypeAndDeviceTypeMapping[scene?.dataType]);
             setEditData(scene);
         }
     };
@@ -150,7 +150,11 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
                             },
                         ]}
                     >
-                        <InputSelect placeholder="请输入项目名称" list={projectNameList} />
+                        <InputSelect
+                            defaultValue={editData?.projectName}
+                            placeholder="请输入项目名称"
+                            list={projectNameList}
+                        />
                     </Form.Item>
 
                     <Form.Item
@@ -222,7 +226,11 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
                             },
                         ]}
                     >
-                        <InputSelect placeholder="请输入设备位置" list={devicePositionList} />
+                        <InputSelect
+                            defaultValue={editData?.devicePosition}
+                            placeholder="请输入设备位置"
+                            list={devicePositionList}
+                        />
                     </Form.Item>
 
                     <Form.Item
