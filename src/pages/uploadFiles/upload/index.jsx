@@ -63,7 +63,10 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
             setDimensionOptions(dimensionEnumList);
             setProjectNameList(projectNameList);
             setDevicePositionList(devicePositionList);
-            form.setFieldsValue(scene);
+            form.setFieldsValue({
+                ...scene,
+                testDate: dayjs(scene?.testDate, "YYYY-MM-DD"),
+            });
             setDeviceTypeOptions(dataTypeAndDeviceTypeMapping[scene?.dataType]);
             setEditData(scene);
         }
