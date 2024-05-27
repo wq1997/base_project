@@ -8,13 +8,14 @@ import dayjs from 'dayjs';
 import { useIntl } from "umi";
 import { data, inCome, energy } from "./data";
 import { getExportReportList, getDtuReport, exportReport, updateReportTemplate } from "@/services/report";
+let dataMidst=JSON.parse(JSON.stringify(data));
 
 function Com() {
   const [form] = Form.useForm();
   const { token } = theme.useToken();
   const [way, setWay] = useState(0);
   const [wayLabel, setWayLabel] = useState('日报表');
-  const [picker, setPicker] = useState('date');
+  const [picker, setPicker] = useState('date'); 
   const [date, setDate] = useState(dayjs(new Date()));
   const [dateStr, setDateStr] = useState(dayjs(new Date()).format('YYYY-MM-DD'));
   const [dataChoiceOpen, setDataChoiceOpen] = useState(false); //数据选择弹框
@@ -86,12 +87,12 @@ function Com() {
         obj[item.value] = item.state;
       })
     });
-
-    data.baseData.data = delBaseData(data.baseData.data, obj);
-    data.runData.data = delBaseData(data.runData.data, obj);
+    console.log(data.baseData.data, obj, 111111);
+    dataMidst.baseData.data = delBaseData(data.baseData.data, obj);
+    dataMidst.runData.data = delBaseData(data.runData.data, obj);
     form.setFieldsValue({ ...obj });
     setCurrentModel({ ...obj });
-    console.log(data.runData.data, obj, 111111);
+    console.log(data.baseData.data, obj, 22222);
     let currentDate = dayjs(date).format(currentFormat);
     let { data: allData } = await getDtuReport({
       plantId: localStorage.getItem('plantId'),
@@ -183,10 +184,10 @@ function Com() {
             <div className={styles.content}>
               <div className={styles.contentItem}>
                 <div style={{ marginBottom: 10 }}>
-                  <Title title={data.baseData.title} />
+                  <Title title={dataMidst.baseData.title} />
                 </div>
                 {Object.keys(currentModel).length && <Descriptions
-                  items={data.baseData?.data.map(item => {
+                  items={dataMidst.baseData?.data.map(item => {
                     return {
                       ...item,
                       children: allData?.plant?.[item?.value]
@@ -196,10 +197,10 @@ function Com() {
               </div>
               <div className={styles.contentItem}>
                 <div style={{ marginBottom: 10 }}>
-                  <Title title={data.runData.title} />
+                  <Title title={dataMidst.runData.title} />
                 </div>
                 {Object.keys(currentModel).length && <Descriptions
-                  items={data.runData.data.map(item => {
+                  items={dataMidst.runData.data.map(item => {
                     return {
                       ...item,
                       children: allData?.run?.[item.value]
@@ -209,7 +210,7 @@ function Com() {
               </div>
               <div className={styles.contentItem}>
                 <div style={{ marginBottom: 10 }}>
-                  <Title title={data.electricReportData.title} />
+                  <Title title={dataMidst.electricReportData.title} />
                 </div>
                 {Object.keys(energy).map((it,i) => {
                   return (

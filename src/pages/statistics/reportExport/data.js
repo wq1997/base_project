@@ -26,7 +26,7 @@ export const data = {
             },
             {
                 label: '电站位置',
-                value: "installer",
+                value: "position",
                 data: ''
             },
             {

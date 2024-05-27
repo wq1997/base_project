@@ -106,7 +106,7 @@ const RealtimeAlarm = () => {
       phone: '',
       mail: '',
       company: '',
-      roleId: '1',
+      roleId: 1,
     });
     setTitle('新增用户');
     setIsOpen(!isOpen);

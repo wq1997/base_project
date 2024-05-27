@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, } from 'react';
 import { Button, Modal, Form, Input, Select } from 'antd';
 import { useSelector, useIntl } from "umi";
-import { getEncrypt,  } from "@/utils/utils";
+import { getEncrypt, } from "@/utils/utils";
 
 const App = (props) => {
   const intl = useIntl();
@@ -38,12 +38,12 @@ const App = (props) => {
       required: true,
       data: [{
         label: '普通用户',
-        value: '1',
+        value: 1,
         key: '普通用户',
       },
       {
         label: '管理员',
-        value: '3',
+        value: 3,
         key: '管理员',
       },
       ]
@@ -97,9 +97,9 @@ const App = (props) => {
 
       console.log('Success:', values.password);
       if (props.formData.f0102_Id) {
-        props.changeData({ f0102_Id: props.formData.f0102_Id, ...values,password:getEncrypt(localStorage.getItem('publicKey'), values.password), })
+        props.changeData({ f0102_Id: props.formData.f0102_Id, ...values, password: getEncrypt(localStorage.getItem('publicKey'), values.password), })
       } else {
-        props.changeData({...values,password:getEncrypt(localStorage.getItem('publicKey'), values.password),})
+        props.changeData({ ...values, password: getEncrypt(localStorage.getItem('publicKey'), values.password), })
       }
       props.onRef();
     } catch (errorInfo) {
@@ -143,9 +143,11 @@ const App = (props) => {
               return (
                 <>
                   <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.required }]}>
-                    <Select
-                      options={it.data}
-                    />
+                    <Select>
+                      {it.data.map(item => (
+                        <Select.Option key={item.key} value={item.value}>{item.label}</Select.Option>
+                      ))}
+                    </Select>
                   </Form.Item>
                 </>
               )

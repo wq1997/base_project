@@ -363,7 +363,7 @@ const NewStrategy = ({ currentGrid, strategy, deleteStrategy, getStrategy, handl
 
             <Drawer
                 width="980"
-                title={t("策略详情")}
+                title={t("策略配置")}
                 open={drawerOpen}
                 onClose={onCancel}
                 footer={
