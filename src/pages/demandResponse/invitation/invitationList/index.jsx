@@ -419,7 +419,10 @@ const Account = () => {
                             setExecuteTime(dateStr);
                         }}
                         value={
-                            executeTime && executeTime.length > 0
+                            executeTime &&
+                                executeTime.length > 0 &&
+                                executeTime[0] &&
+                                executeTime[1]
                                 ? [dayjs(executeTime[0]), dayjs(executeTime[1])]
                                 : []
                         }
