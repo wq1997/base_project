@@ -21,7 +21,7 @@ import dayjs from 'dayjs';
 import Tabs from "../../pages/policyConfiguration/component/Tabs";
 
 // 编辑行的表格
-const EditRowTable = ({ data, columns, showEdit, showClear, showDelete, onChange, strategyList, ...rest}) => {
+const EditRowTable = ({ data, columns, showAdd, showEdit, showClear, showDelete, onChange, strategyList, correlationList, maxLength, ...rest}) => {
   const intl = useIntl();
   const { token } = theme.useToken();
   const [form] = Form.useForm();
@@ -29,7 +29,8 @@ const EditRowTable = ({ data, columns, showEdit, showClear, showDelete, onChange
   const [defaultColumns, setDefaultColumns] = useState(columns);
   const [editingKey, setEditingKey] = useState(-1);
   const isEditing = (record) => record.key === editingKey;
-  const hasEditing = editingKey||editingKey===0;
+  const hasEditing = editingKey>0;
+
   const EditableCell = (props) => {
     const {
         title,
@@ -43,7 +44,6 @@ const EditRowTable = ({ data, columns, showEdit, showClear, showDelete, onChange
         options,
         ...restProps
     } = props;
-
     const getFormByType = () =>{
         const props = {
             style: {
@@ -163,7 +163,7 @@ const EditRowTable = ({ data, columns, showEdit, showClear, showDelete, onChange
     newDataSource = newDataSource?.map((item, index) => {
         return {
             ...item,
-            key: index
+            key: index+1
         }
     })
     setDataSource(newDataSource);
@@ -210,11 +210,7 @@ const EditRowTable = ({ data, columns, showEdit, showClear, showDelete, onChange
                             <Popconfirm 
                               title={`${intl.formatMessage({id: '确认删除'})}?`} 
                               onConfirm={() => {
-                                if(hasEditing){
-                                  message.error(intl.formatMessage({id: "当前在编辑状态，不可操作"}));
-                                }else{
-                                  handleDelete(record?.key)
-                                }
+                                handleDelete(record?.key)
                               }}
                             >
                                 <div type="link" style={{color: '#F03535', cursor: 'pointer'}}>{intl.formatMessage({id: '删除'})}</div>    
@@ -229,6 +225,10 @@ const EditRowTable = ({ data, columns, showEdit, showClear, showDelete, onChange
   }
 
   const add = async () => {
+    if(dataSource?.length>=maxLength){
+      message.error(intl.formatMessage({id: "最多可配置{count}条策略！"}, { count: maxLength }));
+      return;
+    }
     if(hasEditing){
       message.error(intl.formatMessage({id: "当前在编辑状态，不可操作"}));
     }else{
@@ -284,7 +284,7 @@ const EditRowTable = ({ data, columns, showEdit, showClear, showDelete, onChange
 
   useEffect(()=>{
     getDefaultColoums();
-  }, [editingKey, dataSource])
+  }, [editingKey, dataSource, showClear, showEdit, showDelete])
 
   useEffect(()=>{
     getDefaultDataSource();
@@ -299,11 +299,31 @@ const EditRowTable = ({ data, columns, showEdit, showClear, showDelete, onChange
           <Button 
               style={{background: 'linear-gradient(90deg, #0787DB 0%, #034FB4 100%)', border: 'none'}}
               onClick={add}
+              disabled={!showAdd}
           >
               {intl.formatMessage({id: '新增'})}
           </Button>
       </Row>
-      <Form form={form} component={false}>
+      <Form 
+        form={form} 
+        component={false}
+        onValuesChange={(changedValues, allValues) => {
+          if(correlationList?.length>0){
+            if(Object.keys(changedValues)[0]===correlationList[0]&&dataSource?.length>0){
+              const currentObject = dataSource.find(item=>item[correlationList[0]]===Object.values(changedValues)[0]);
+              if(currentObject){
+                form.setFieldsValue({
+                  [correlationList[1]]: currentObject[correlationList[1]]
+                })
+              }else{
+                form.setFieldsValue({
+                  [correlationList[1]]: undefined
+                })
+              }
+            }
+          }
+        }}
+      >
           <Table
               components={components}
               rowClassName={() => 'editable-row'}

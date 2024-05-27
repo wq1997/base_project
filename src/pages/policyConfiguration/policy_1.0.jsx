@@ -3,11 +3,14 @@ import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { Title, EditTable } from "@/components";
 import { useIntl } from "umi";
 import ButtonGroup from "./component/ButtonGroup";
+import { useState } from "react";
 
 const PolicyConfiguration = () => {
     const intl = useIntl();
     const { token } = theme.useToken();
     const [form] = Form.useForm();
+    const [mode, setMode] = useState('Custom');
+    const canIssue = mode==="Custom";
 
     const strategyList = [
         {label: intl.formatMessage({id: '策略1'}), value: 1},
@@ -46,12 +49,21 @@ const PolicyConfiguration = () => {
         }
     })
 
+    const disabledDistributeStyle = useEmotionCss(()=>{
+        return {
+            cursor: 'pointer',
+            padding: '5px 20px',
+            borderRadius: 5,
+            backgroundColor: '#2C638F',
+        }
+    })
+
     return (
         <Form 
             form={form} 
             colon={false}
             initialValues={{
-                mode: 'Custom'
+                mode
             }}
         >
             <Space style={{width: '100%', height: 'auto', minHeight: '100%',  background: "#0A1328"}} direction="vertical" size={12}>
@@ -59,10 +71,14 @@ const PolicyConfiguration = () => {
                     <Space style={{width: '100%'}} direction="vertical">
                         <Form.Item label={intl.formatMessage({id: '策略模式'})} name="mode">
                             <ButtonGroup 
+                                value={mode}
                                 options={[
                                     {label: intl.formatMessage({id: '自动'}), value: 'Automatic'},
                                     {label: intl.formatMessage({id: '手动'}), value: 'Custom'},
                                 ]}
+                                onChange={value=>{
+                                    setMode(value);
+                                }}
                             />
                         </Form.Item>
                         <Space style={{width: '100%'}} direction="vertical" size={20}>
@@ -87,10 +103,11 @@ const PolicyConfiguration = () => {
                                             </Col>
                                             <Col>
                                                 <div
-                                                    className={distributeStyle}
+                                                    className={canIssue?distributeStyle:disabledDistributeStyle}
                                                     onClick={async ()=>{
-                                                        const values = await form.validateFields(['pcsSetting'])
-                                                        console.log('values', values)
+                                                        if(canIssue){
+                                                            const values = await form.validateFields(['pcsSetting'])
+                                                        }
                                                     }}
                                                 >
                                                     {intl.formatMessage({id: '下发'})}
@@ -112,10 +129,12 @@ const PolicyConfiguration = () => {
                                             </Col>
                                             <Col>
                                                 <div
-                                                    className={distributeStyle}
+                                                    className={canIssue?distributeStyle:disabledDistributeStyle}
                                                     onClick={async ()=>{
-                                                        const values = await form.validateFields(['bmsSetting'])
-                                                        console.log('values', values)
+                                                        if(canIssue){
+                                                            const values = await form.validateFields(['bmsSetting'])
+                                                            console.log('values', values)
+                                                        }
                                                     }}
                                                 >
                                                     {intl.formatMessage({id: '下发'})}
@@ -129,15 +148,17 @@ const PolicyConfiguration = () => {
                                         <Row gutter={24}>
                                             <Col>
                                                 <Form.Item label={`${intl.formatMessage({id: 'PCS功率'})}(kW)`} name="pscPower"  style={{margin: 0}}>
-                                                    <Input placeholder={intl.formatMessage({id: '请输入PCS功率'})} style={{width: 300}} />
+                                                    <Input disabled={!canIssue} placeholder={intl.formatMessage({id: '请输入PCS功率'})} style={{width: 300}} />
                                                 </Form.Item>
                                             </Col>
                                             <Col>
                                                 <div
-                                                    className={distributeStyle}
+                                                    className={canIssue?distributeStyle:disabledDistributeStyle}
                                                     onClick={async ()=>{
-                                                        const values = await form.validateFields(['pscPower'])
-                                                        console.log('values', values)
+                                                        if(canIssue){
+                                                            const values = await form.validateFields(['pscPower'])
+                                                            console.log('values', values)
+                                                        }
                                                     }}
                                                 >
                                                     {intl.formatMessage({id: '下发'})}
@@ -155,10 +176,12 @@ const PolicyConfiguration = () => {
                         <Row justify="space-between">
                             <Title title={intl.formatMessage({id: '参数设置'})} />
                             <div 
-                                className={distributeStyle}
+                                className={canIssue?distributeStyle:disabledDistributeStyle}
                                 onClick={async ()=>{
-                                    const values = await form.validateFields(['expansion','transformerCapacity-1','transformerCapacity-2']);
-                                    console.log(values);
+                                    if(canIssue){
+                                        const values = await form.validateFields(['expansion','transformerCapacity-1','transformerCapacity-2']);
+                                        console.log(values);
+                                    }
                                 }}
                             >
                                 {intl.formatMessage({id: '下发'})}
@@ -167,17 +190,17 @@ const PolicyConfiguration = () => {
                         <Row>
                             <Col span={2}>
                                 <Form.Item label={intl.formatMessage({id: '扩容'})} name="expansion" style={{margin: 0}}>
-                                    <Switch />
+                                    <Switch disabled={!canIssue} />
                                 </Form.Item>
                             </Col>
                             <Col span={10}>
                                 <Form.Item label={intl.formatMessage({id: '变压器容量'})} style={{margin: 0}}>
                                     <Space direction="horizontal">
                                         <Form.Item style={{margin: 0}} name="transformerCapacity-1">
-                                            <Input style={{width: 200}} placeholder="kW" />
+                                            <Input disabled={!canIssue} style={{width: 200}} placeholder="kW" />
                                         </Form.Item>
                                         <Form.Item style={{margin: 0}} name="transformerCapacity-2">
-                                            <Input style={{width: 200}} placeholder="%"/>
+                                            <Input disabled={!canIssue} style={{width: 200}} placeholder="%"/>
                                         </Form.Item>
                                     </Space>
                                 </Form.Item>
@@ -190,10 +213,12 @@ const PolicyConfiguration = () => {
                         <Row justify="space-between">
                             <Title title={intl.formatMessage({id: '策略配置'})} />
                             <div 
-                                className={distributeStyle}
+                                className={canIssue?distributeStyle:disabledDistributeStyle}
                                 onClick={async ()=>{
-                                    const values = await form.validateFields(['strategyList']);
-                                    console.log(values);
+                                    if(canIssue){
+                                        const values = await form.validateFields(['strategyList']);
+                                        console.log(values);
+                                    }
                                 }}
                             >
                                 {intl.formatMessage({id: '下发'})}
@@ -201,9 +226,10 @@ const PolicyConfiguration = () => {
                         </Row> 
                         <Form.Item name="strategyList">
                             <EditTable.EditRowTable
-                                showClear
-                                showEdit
-                                showDelete
+                                showAdd={canIssue}
+                                showClear={canIssue}
+                                showEdit={canIssue}
+                                showDelete={canIssue}
                                 data={[
                                     {type: '尖'}
                                 ]}
@@ -256,7 +282,8 @@ const PolicyConfiguration = () => {
                                     }
                                 ]}
                                 strategyList={strategyList}
-                                correlationList={['']}
+                                correlationList={['shiduan','dianjia']}
+                                maxLength={2}
                             />
                         </Form.Item>
                     </Space>                              
@@ -267,10 +294,12 @@ const PolicyConfiguration = () => {
                         <Row justify="space-between" align="middle">
                             <Title title={intl.formatMessage({id: '策略选择'})} />
                             <div 
-                                className={distributeStyle}
+                                className={canIssue?distributeStyle:disabledDistributeStyle}
                                 onClick={async ()=>{
-                                    const values = await form.validateFields();
-                                    console.log("values", values)
+                                    if(canIssue){
+                                        const values = await form.validateFields(monthList.map(month=>month.value));
+                                        console.log("values", values)
+                                    }
                                 }}
                             >
                                 {intl.formatMessage({id: '下发'})}
