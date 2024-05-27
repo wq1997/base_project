@@ -57,7 +57,7 @@ const Login = () => {
           }
         }
       })
-      history.push("/largeScreen");
+      history.push("/index/home");
     } else {
       message.error(res.data.msg);
       if (res?.data.code === '407') {
