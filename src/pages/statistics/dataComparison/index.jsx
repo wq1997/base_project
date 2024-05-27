@@ -69,7 +69,7 @@ function Com(props) {
       }
     });
     if (devId) {
-      let { data: subData } = await getDataParams({ plantId: localStorage.getItem('plantId'), devId: 329 || devId });
+      let { data: subData } = await getDataParams({ plantId: localStorage.getItem('plantId'), devId: devId });
       const index = arr.findIndex(item => item.value === currentValue);
       if (subData?.data?.length > 0) {
         arr[index].children[0].children = subData.data?.map(item => {
@@ -80,7 +80,7 @@ function Com(props) {
         });
         setCascaderValue([[currentValue, arr[index]?.children?.[0].id, subData.data?.[0]?.dataType]]);
         let { data } = await getCompareData({
-          dataParams: [{ devId: 329 || arr[index]?.children?.[0].id, dataId: subData.data?.[0]?.dataType }],
+          dataParams: [{ devId:  arr[index]?.children?.[0].id, dataId: subData.data?.[0]?.dataType }],
           dateList: ["2024-05-08" || dateStr],
           compareType: way
         });
@@ -113,7 +113,7 @@ function Com(props) {
   const loadData = async (selectedOptions) => {
     const targetOption = selectedOptions[selectedOptions.length - 1];
     if (selectedOptions.length == 2) {
-      let { data } = await getDataParams({ plantId: localStorage.getItem('plantId'), devId: 329 || targetOption.id });
+      let { data } = await getDataParams({ plantId: localStorage.getItem('plantId'), devId: targetOption.id });
       data.data.map(it => {
         it.value = it.dataType;
         it.label = it.dataTypeDesc;
@@ -383,7 +383,7 @@ function Com(props) {
               </Select>
               <span >{t('数据项')}:</span>
               {
-                cascaderValue?.length > 0 &&
+                // cascaderValue?.length > 0 &&
                 <Cascader
                   className={styles.margRL}
                   style={{ width: 240 }}
