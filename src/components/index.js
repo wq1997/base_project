@@ -9,6 +9,7 @@ import Flow from "./Flow";
 import ToggleButton from "./ToggleButton";
 import SearchInput from './SearchInput'
 import MyUpload from "./MyUpload";
+import AuthImg from './AuthImg'
 
 export {
     ThemeBtn,
@@ -21,5 +22,6 @@ export {
     Flow,
     ToggleButton,
     SearchInput,
-    MyUpload
+    MyUpload,
+    AuthImg
 }

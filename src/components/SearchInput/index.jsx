@@ -7,6 +7,10 @@ const SearchInput = ({
     inputWidth = 200,
     type = "input",
     options = [],
+    fieldNames = {
+        label: "displayName",
+        value: "name",
+    },
     onChange = () => {},
 }) => {
     return (
@@ -16,19 +20,16 @@ const SearchInput = ({
                 <Input
                     value={value}
                     style={{ width: inputWidth }}
-                    placeholder={placeholder||`请输入${label}`}
+                    placeholder={placeholder || `请输入${label}`}
                     onChange={e => onChange(e.target.value)}
                 />
             ) : (
                 <Select
                     value={value}
-                    placeholder={placeholder||`请选择${label}`}
+                    placeholder={placeholder || `请选择${label}`}
                     allowClear={true}
                     style={{ width: inputWidth }}
-                    fieldNames={{
-                        label: "name",
-                        value: "code",
-                    }}
+                    fieldNames={fieldNames}
                     options={options}
                     onChange={value => onChange(value)}
                 />

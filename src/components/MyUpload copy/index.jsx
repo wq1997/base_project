@@ -4,30 +4,22 @@ import { useEffect, useState } from "react";
 
 const defaultFiles = [];
 
-const MyUpload = ({
-    accept,
-    url,
-    files = defaultFiles,
-    onChange,
-    maxCount = 3,
-    maxSizeMB = 10,
-}) => {
-    const [fileList, setFileList] = useState([]);
+const MyUpload = ({ url, files = defaultFiles, onChange, maxCount = 3, maxSizeMB = 10 }) => {
+    const [newFiles, setNewFiles] = useState([]);
 
     useEffect(() => {
-        setFileList(files);
+        setNewFiles(files);
     }, [files]);
 
     return (
         <>
             <Upload
-                accept={accept}
                 action={url}
                 headers={{
                     token: localStorage.getItem("Token"),
                 }}
-                listType="picture-card"
-                fileList={fileList}
+           
+                fileList={newFiles}
                 maxCount={maxCount}
                 beforeUpload={file => {
                     if (file.size / 1024 / 1024 > maxSizeMB) {
@@ -36,32 +28,25 @@ const MyUpload = ({
                     }
                 }}
                 onChange={info => {
+                    console.log(info);
                     let newFiles = info?.fileList;
-                    const isDone = info?.file?.status == "done";
-                    const is200 = info?.file?.response?.code == 200;
-                    if (isDone && is200) {
+                    if (info.file.status === "done") {
                         message.success("上传成功");
                         newFiles = newFiles?.map(item => ({
-                            fileName: item?.response?.data,
+                            ...item?.response?.data,
+                            name: item?.response?.data?.fileName,
                             ...item,
                         }));
-                    } else if (isDone && !is200) {
+                    } else if (info.file.status === "error") {
                         message.error("上传失败");
                     }
                     onChange(newFiles);
-                    setFileList(newFiles); //这里必须要重新set一下解决onChange只执行一次问题 fileList默认值的原因
-                    if (isDone && !is200) {
-                        // 上传失败后不预览
-                        newFiles.pop();
-                        setFileList(newFiles);
-                    }
+                    setNewFiles(newFiles); //这里必须要重新set一下解决onChange只执行一次问题 fileList默认值的原因
                 }}
             >
-                {fileList.length >= maxCount ? null : (
-                    <Tooltip title={`最多上传${maxCount}个文件，单个文件大小不超过${maxSizeMB}MB`}>
-                        +
-                    </Tooltip>
-                )}
+                <Tooltip title={`最多上传${maxCount}个文件，单个文件大小不超过${maxSizeMB}MB`}>
+                    <Button>点击上传</Button>
+                </Tooltip>
             </Upload>
         </>
     );

@@ -31,7 +31,7 @@ const Login = () => {
             });
             history.push("/overview-screen");
         } else {
-            message.error(res?.data?.message);
+            message.error(res?.data?.description);
         }
     };
 

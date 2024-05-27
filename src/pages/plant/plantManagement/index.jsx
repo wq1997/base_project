@@ -5,12 +5,15 @@ import { DEFAULT_PAGINATION } from "@/utils/constants";
 import AddPlant from "./AddPlant";
 import dayjs from "dayjs";
 import styles from "./index.less";
-import { getPlantList as getPlantListServer } from "@/services/plant";
+import {
+    getPlantType as getPlantTypeServer,
+    getPlantList as getPlantListServer,
+} from "@/services/plant";
 
 const Log = () => {
     const [dataSource, setDataSource] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [addPlantOpen, setAddPlantOpen] = useState(false);
+    const [addPlantOpen, setAddPlantOpen] = useState(true);
     const [editId, setEditId] = useState();
     const companyRef = useRef();
     const [company, setCompany] = useState();
@@ -19,73 +22,97 @@ const Log = () => {
     const [plantTypeOptions, setPlantTypeOptions] = useState([]);
     const plantNameRef = useRef();
     const [plantName, setPlantName] = useState();
-    const connectGridTimeRef = useRef();
-    const [connectGridTime, setConnectGridTime] = useState();
+    const gridTimeRef = useRef();
+    const [gridTime, setGridTime] = useState([]);
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
 
     const columns = [
         {
-            title: "序号",
-            dataIndex: "operatorAccount",
-        },
-        {
-            title: "SN号",
-            dataIndex: "",
-        },
-        {
-            title: "设备名称",
-            dataIndex: "operationPage",
-        },
-        {
-            title: "设备类型",
-            dataIndex: "operatorName",
-        },
-        {
-            title: "设备状态",
-            dataIndex: "",
-        },
-        {
-            title: "设备型号",
-            dataIndex: "",
-        },
-        {
             title: "电站名称",
-            dataIndex: "",
+            dataIndex: "name",
         },
         {
-            title: "质保有效期",
-            dataIndex: "",
+            title: "所属公司",
+            dataIndex: "company",
         },
         {
-            title: "通信状态",
-            dataIndex: "",
+            title: "电站类型",
+            dataIndex: "plantTypeName",
+        },
+        {
+            title: "电站组串总容量(kWp)",
+            dataIndex: "totalCapacity",
+        },
+        {
+            title: "电站地址",
+            dataIndex: "address",
+        },
+        {
+            title: "联系人",
+            dataIndex: "contact",
+        },
+        {
+            title: "联系方式",
+            dataIndex: "contactWay",
+        },
+        {
+            title: "并网时间",
+            dataIndex: "gridTime",
+        },
+        {
+            title: "操作",
+            dataIndex: "operate",
+            width: 150,
+            render: (_, {}) => {
+                return (
+                    <Space size={10}>
+                        <a type="link" onClick={() => {}}>
+                            编辑
+                        </a>
+                        <a style={{ color: "#ff4d4f" }} onClick={() => {}}>
+                            删除
+                        </a>
+                        <a type="link" onClick={() => {}}>
+                            详情
+                        </a>
+                    </Space>
+                );
+            },
         },
     ];
+
+    const getPlantType = async () => {
+        const res = await getPlantTypeServer();
+        if (res?.data?.data) {
+            setPlantTypeOptions(res?.data?.data);
+        }
+    };
 
     const getList = async () => {
         const { current, pageSize } = paginationRef.current;
         const company = companyRef.current;
         const plantName = plantNameRef.current;
         const plantType = plantTypeRef.current;
+        const [gridStartTime, gridEndTime] = gridTimeRef.current || [];
         setLoading(true);
         try {
             const res = await getPlantListServer({
                 pageNo: current,
                 pageSize,
-                queryCmd: {
-                    company,
-                    name: plantName,
-                    plantType,
-                },
+                company,
+                name: plantName,
+                plantType,
+                gridStartTime,
+                gridEndTime,
             });
-            if (res?.data?.status == "SUCCESS") {
-                const { totalRecord, recordList } = res?.data?.data;
+            if (res?.data?.data) {
+                const { total, records } = res?.data?.data;
                 setPagination({
                     ...paginationRef.current,
-                    total: parseInt(totalRecord),
+                    total: parseInt(total),
                 });
-                setDataSource(recordList);
+                setDataSource(records);
             }
         } finally {
             setLoading(false);
@@ -100,8 +127,8 @@ const Log = () => {
         setPlantType();
         plantNameRef.current = undefined;
         setPlantName();
-        connectGridTimeRef.current = undefined;
-        setConnectGridTime();
+        gridTimeRef.current = undefined;
+        setGridTime();
         getList();
     };
 
@@ -112,6 +139,7 @@ const Log = () => {
     };
 
     useEffect(() => {
+        getPlantType();
         getList();
     }, []);
 
@@ -135,16 +163,6 @@ const Log = () => {
                     }}
                 />
                 <SearchInput
-                    label="电站类型"
-                    value={plantType}
-                    type="select"
-                    options={plantTypeOptions}
-                    onChange={value => {
-                        plantTypeRef.current = value;
-                        setPlantType(value);
-                    }}
-                />
-                <SearchInput
                     label="电站名称"
                     placeholder="请输入电站名称"
                     inputWidth={250}
@@ -154,14 +172,29 @@ const Log = () => {
                         setPlantName(value);
                     }}
                 />
+                <SearchInput
+                    label="电站类型"
+                    value={plantType}
+                    type="select"
+                    options={plantTypeOptions}
+                    onChange={value => {
+                        plantTypeRef.current = value;
+                        setPlantType(value);
+                    }}
+                />
                 <div>
                     <span>并网时间：</span>
-                    <DatePicker
+                    <DatePicker.RangePicker
                         onChange={(date, dateStr) => {
-                            connectGridTimeRef.current = dateStr;
-                            setConnectGridTime(dateStr);
+                            paginationRef.current = DEFAULT_PAGINATION;
+                            gridTimeRef.current = dateStr;
+                            setGridTime(dateStr?.includes("") ? [] : dateStr);
                         }}
-                        value={connectGridTime ? dayjs(connectGridTime) : undefined}
+                        value={
+                            gridTime && gridTime.length > 0
+                                ? [dayjs(gridTime[0]), dayjs(gridTime[1])]
+                                : []
+                        }
                     />
                 </div>
                 <Button type="primary" onClick={getList}>
@@ -171,14 +204,14 @@ const Log = () => {
             </Space>
             <Table
                 loading={loading}
-                dataSource={dataSource?.map(data => {
-                    return {
-                        ...data,
-                        key: data?.id,
-                    };
-                })}
+                rowKey="id"
+                dataSource={dataSource}
                 columns={columns}
                 pagination={pagination}
+                onChange={pagination => {
+                    paginationRef.current = pagination;
+                    getList();
+                }}
                 title={() => (
                     <Button
                         type="primary"
