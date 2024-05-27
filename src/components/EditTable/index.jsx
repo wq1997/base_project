@@ -10,7 +10,8 @@ import {
     Select,
     DatePicker,
     Button,
-    Row
+    Row,
+    message,
 } from 'antd';
 import { useIntl } from "umi";
 import { cloneObject } from "@/utils/utils";
@@ -28,6 +29,7 @@ const EditRowTable = ({ data, columns, showEdit, showClear, showDelete, onChange
   const [defaultColumns, setDefaultColumns] = useState(columns);
   const [editingKey, setEditingKey] = useState(-1);
   const isEditing = (record) => record.key === editingKey;
+  const hasEditing = editingKey||editingKey===0;
   const EditableCell = (props) => {
     const {
         title,
@@ -190,13 +192,31 @@ const EditRowTable = ({ data, columns, showEdit, showClear, showDelete, onChange
                         }
                         {
                             showClear &&
-                            <Popconfirm title={`${intl.formatMessage({id: '确认清空'})}?`} onConfirm={() => handleClear(record?.key)}>
+                            <Popconfirm 
+                              title={`${intl.formatMessage({id: '确认清空'})}?`} 
+                              onConfirm={() => {
+                                if(hasEditing){
+                                  message.error(intl.formatMessage({id: "当前在编辑状态，不可操作"}));
+                                }else{
+                                  handleClear(record?.key)
+                                }
+                              }}
+                            >
                                 <div type="link" style={{color: '#F7A037', cursor: 'pointer'}}>{intl.formatMessage({id: '清空'})}</div>    
                             </Popconfirm>
                         }
                         {
                             showDelete &&
-                            <Popconfirm title={`${intl.formatMessage({id: '确认删除'})}?`} onConfirm={() => handleDelete(record?.key)}>
+                            <Popconfirm 
+                              title={`${intl.formatMessage({id: '确认删除'})}?`} 
+                              onConfirm={() => {
+                                if(hasEditing){
+                                  message.error(intl.formatMessage({id: "当前在编辑状态，不可操作"}));
+                                }else{
+                                  handleDelete(record?.key)
+                                }
+                              }}
+                            >
                                 <div type="link" style={{color: '#F03535', cursor: 'pointer'}}>{intl.formatMessage({id: '删除'})}</div>    
                             </Popconfirm>
                         }
@@ -206,6 +226,22 @@ const EditRowTable = ({ data, columns, showEdit, showClear, showDelete, onChange
         })
     }
     setDefaultColumns(newColumns);
+  }
+
+  const add = async () => {
+    if(hasEditing){
+      message.error(intl.formatMessage({id: "当前在编辑状态，不可操作"}));
+    }else{
+      let newDataSource = cloneObject(dataSource);
+      let keyList = newDataSource.map(data => data.key);
+      let key = Math.max(...keyList)+1;
+      newDataSource.push({
+        key
+      });
+      await form.resetFields();
+      setDataSource(newDataSource);
+      setEditingKey(key);
+    }
   }
 
   const handleSave = (row) => {
@@ -262,6 +298,7 @@ const EditRowTable = ({ data, columns, showEdit, showClear, showDelete, onChange
           />
           <Button 
               style={{background: 'linear-gradient(90deg, #0787DB 0%, #034FB4 100%)', border: 'none'}}
+              onClick={add}
           >
               {intl.formatMessage({id: '新增'})}
           </Button>

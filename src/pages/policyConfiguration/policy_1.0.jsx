@@ -256,6 +256,7 @@ const PolicyConfiguration = () => {
                                     }
                                 ]}
                                 strategyList={strategyList}
+                                correlationList={['']}
                             />
                         </Form.Item>
                     </Space>                              
