@@ -18,6 +18,7 @@ import { MyUpload, AuthImg } from "@/components";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { savePlant as savePlantServer } from "@/services/plant";
 import { getPlantType as getPlantTypeServer } from "@/services/plant";
+import dayjs from "dayjs";
 
 const uploadUrl = process.env.API_URL_1 + "/api/v1/plant/upload";
 
@@ -33,16 +34,23 @@ const Plant = ({ open, editId, onClose }) => {
         }
     };
 
-    const onFinish = async values => {
-        console.log("onFinish");
-        return console.log(values);
+    const onFinish = async (values, commit) => {
+        console.log({
+            ...values,
+            gridTime: dayjs(values?.gridTime).format("YYYY-MM-DD"),
+            logo: values?.logo?.[0]?.fileName,
+            photo: values?.photo?.map(item => item?.fileName),
+        });
         const res = await savePlantServer({
             id: editId,
+            commit,
             ...values,
+            gridTime: dayjs(values?.gridTime).format("YYYY-MM-DD"),
+            logo: values?.logo?.[0]?.fileName,
+            photo: values?.photo?.map(item => item?.fileName),
         });
-
         if (res?.data?.status == "SUCCESS") {
-            message.success(`${editId ? "编辑" : "添加"}成功`);
+            message.success(`${commit ? "保存" : "添加"}成功`);
             onClose(true);
         } else {
             message.info(res?.data?.msg);
@@ -72,10 +80,10 @@ const Plant = ({ open, editId, onClose }) => {
                     span: 12,
                 }}
                 form={form}
-                onFinish={onFinish}
+                onFinish={values => onFinish(values, false)}
                 autoComplete="off"
             >
-                {/* <Row span={24}>
+                <Row span={24}>
                     <Col span={12}>
                         <Form.Item
                             label="所属公司"
@@ -222,7 +230,7 @@ const Plant = ({ open, editId, onClose }) => {
                             <InputNumber placeholder="请输入纬度" style={{ width: "100%" }} />
                         </Form.Item>
                     </Col>
-                </Row> */}
+                </Row>
 
                 <Row span={24}>
                     <Col span={12}>
@@ -302,7 +310,7 @@ const Plant = ({ open, editId, onClose }) => {
                             <MyUpload
                                 accept=".jpg,.png,.jpeg,.bmp"
                                 url={uploadUrl}
-                                maxCount={6}
+                                maxCount={1}
                                 maxSizeMB={20}
                                 files={editData?.contractAtt?.map(item => ({
                                     ...item,
@@ -315,14 +323,17 @@ const Plant = ({ open, editId, onClose }) => {
 
                 <Form.Item
                     wrapperCol={{
-                        offset: 19,
+                        offset: 17,
                         span: 5,
                     }}
                 >
                     <Space style={{ position: "relative", left: 8 }}>
                         <Button onClick={() => onClose(false)}>取消</Button>
+                        <Button type="primary" ghost onClick={() => onFinish(true)}>
+                            保存
+                        </Button>
                         <Button type="primary" htmlType="submit">
-                            确定
+                            提交
                         </Button>
                     </Space>
                 </Form.Item>
