@@ -21,7 +21,21 @@ import dayjs from 'dayjs';
 import Tabs from "../../pages/policyConfiguration/component/Tabs";
 
 // 编辑行的表格
-const EditRowTable = ({ data, columns, showAdd, showEdit, showClear, showDelete, onChange, strategyList, correlationList, maxLength, ...rest}) => {
+const EditRowTable = ({ 
+    data = [], 
+    columns, 
+    showAdd, 
+    showEdit, 
+    showClear, 
+    showDelete, 
+    onChange, 
+    tabValue,
+    onChangeTabs,
+    strategyList, 
+    correlationList, 
+    maxLength, 
+    ...rest
+}) => {
   const intl = useIntl();
   const { token } = theme.useToken();
   const [form] = Form.useForm();
@@ -294,7 +308,9 @@ const EditRowTable = ({ data, columns, showAdd, showEdit, showClear, showDelete,
     <Space direction="vertical" size={20} style={{width: '100%'}}>
       <Row justify="space-between">
           <Tabs 
+              value={tabValue}
               items={strategyList}
+              onChange={onChangeTabs}
           />
           <Button 
               style={{background: 'linear-gradient(90deg, #0787DB 0%, #034FB4 100%)', border: 'none'}}

@@ -67,3 +67,7 @@ export const sendLiquidCooler = (payload) => {
 export const switchModes = (payload) => {
     return axiosInstance.post(`/minsys/strategy/switchModes`, payload);
 }
+
+export const sendStrategySetting = (payload) => {
+    return axiosInstance.post(`/minsys/strategy/sendStrategySetting`, payload);
+}

@@ -15,6 +15,7 @@ import {
     sendDehumidifier as sendDehumidifierServe,
     sendLiquidCooler as sendLiquidCoolerServe,
     switchModes as switchModesServe,
+    sendStrategySetting as sendStrategySettingServe,
 } from "@/services";
 import { getQueryString } from "@/utils/utils";
 import { FORM_REQUIRED_RULE } from "@/utils/constants";
@@ -26,14 +27,15 @@ const PolicyConfiguration = () => {
     const [form] = Form.useForm();
     const [checkForm] = Form.useForm();
     const [mode, setMode] = useState();
+    const [tabValue, setTabValue] = useState(1);
     const [nextMode, setNextMode] = useState();
     const [checkModalOpen, setCheckModalOpen] = useState(false);
     const [checkModalType, setCheckModalType] = useState('');
     const canIssue = mode===1;
 
     const strategyList = [
-        {label: intl.formatMessage({id: '策略1'}), value: 0},
-        {label: intl.formatMessage({id: '策略2'}), value: 1}
+        {label: intl.formatMessage({id: '策略1'}), value: 1},
+        {label: intl.formatMessage({id: '策略2'}), value: 2}
     ]
 
     const monthList = [
@@ -126,7 +128,7 @@ const PolicyConfiguration = () => {
                                         <Col span={12}>
                                             <Row gutter={24}>
                                                 <Col>
-                                                    <Form.Item label={intl.formatMessage({id: 'PCS设置'})} name="pcsStartStop" rules={[{ ...FORM_REQUIRED_RULE }]}  style={{margin: 0}}>
+                                                    <Form.Item label={intl.formatMessage({id: 'PCS设置'})} name="runModePCS" rules={[{ ...FORM_REQUIRED_RULE }]}  style={{margin: 0}}>
                                                         <ButtonGroup 
                                                             options={[
                                                                 {label: intl.formatMessage({id: 'PCS开机'}), value: 1},
@@ -141,10 +143,10 @@ const PolicyConfiguration = () => {
                                                     <div
                                                         className={canIssue?distributeStyle:disabledDistributeStyle}
                                                         onClick={async ()=>{
-                                                            await form.validateFields(['pcsStartStop']);
+                                                            await form.validateFields(['runModePCS']);
                                                             if(canIssue){
                                                                 setCheckModalOpen(true);
-                                                                setCheckModalType('pcsStartStop');
+                                                                setCheckModalType('runModePCS');
                                                             }
                                                         }}
                                                     >
@@ -218,7 +220,7 @@ const PolicyConfiguration = () => {
                                 <div 
                                     className={canIssue?distributeStyle:disabledDistributeStyle}
                                     onClick={async ()=>{
-                                        await form.validateFields(['isExpand','kilowatt','percentage']);
+                                        await form.validateFields(['enable','cap']);
                                         if(canIssue){
                                             setCheckModalOpen(true);
                                             setCheckModalType('sendParamSetting');
@@ -230,18 +232,15 @@ const PolicyConfiguration = () => {
                             </Row> 
                             <Row>
                                 <Col span={2}>
-                                    <Form.Item label={intl.formatMessage({id: '扩容'})} name="isExpand" valuePropName="checked" style={{margin: 0}}>
+                                    <Form.Item label={intl.formatMessage({id: '扩容'})} name="enable" valuePropName="checked" style={{margin: 0}}>
                                         <Switch disabled={!canIssue} defaultValue={false} />
                                     </Form.Item>
                                 </Col>
                                 <Col span={10}>
                                     <Form.Item label={intl.formatMessage({id: '变压器容量'})} style={{margin: 0}}>
                                         <Space direction="horizontal">
-                                            <Form.Item style={{margin: 0}} name="kilowatt" rules={[{ ...FORM_REQUIRED_RULE }]}>
-                                                <Input disabled={!canIssue} style={{width: 200}} placeholder="kW" />
-                                            </Form.Item>
-                                            <Form.Item style={{margin: 0}} name="percentage" rules={[{ ...FORM_REQUIRED_RULE }]}>
-                                                <Input disabled={!canIssue} style={{width: 200}} placeholder="%"/>
+                                            <Form.Item style={{margin: 0}} name="cap" rules={[{ ...FORM_REQUIRED_RULE }]}>
+                                                <InputNumber disabled={!canIssue} style={{width: 200}} placeholder="%"/>
                                             </Form.Item>
                                         </Space>
                                     </Form.Item>
@@ -256,75 +255,77 @@ const PolicyConfiguration = () => {
                                 <div 
                                     className={canIssue?distributeStyle:disabledDistributeStyle}
                                     onClick={async ()=>{
+                                        await form.validateFields(['durationList']);
                                         if(canIssue){
-                                            const values = await form.validateFields(['strategyList']);
-                                            console.log(values);
+                                            setCheckModalOpen(true);
+                                            setCheckModalType('sendStrategySetting');
                                         }
                                     }}
                                 >
                                     {intl.formatMessage({id: '下发'})}
                                 </div>
                             </Row> 
-                            <Form.Item name="strategyList">
+                            <Form.Item name="durationList"  rules={[{ ...FORM_REQUIRED_RULE }]}>
                                 <EditTable.EditRowTable
                                     showAdd={canIssue}
                                     showClear={canIssue}
                                     showEdit={canIssue}
                                     showDelete={canIssue}
-                                    data={[
-                                        {type: '尖'}
-                                    ]}
                                     columns={[
                                         {
                                             title: intl.formatMessage({id: '时段'}),
-                                            dataIndex: 'shiduan',
+                                            dataIndex: 'timeType',
                                             editable: true,
                                             inputType: 'Select',
                                             options: [
-                                                {value: '尖', name: intl.formatMessage({id: '尖'})},
-                                                {value: '峰', name: intl.formatMessage({id: '峰'})},
-                                                {value: '平', name: intl.formatMessage({id: '平'})},
-                                                {value: '谷', name: intl.formatMessage({id: '谷'})}
+                                                {value: '尖', label: intl.formatMessage({id: '尖'})},
+                                                {value: '峰', label: intl.formatMessage({id: '峰'})},
+                                                {value: '平', label: intl.formatMessage({id: '平'})},
+                                                {value: '谷', label: intl.formatMessage({id: '谷'})}
                                             ]
                                         },
                                         {
                                             title: intl.formatMessage({id: '类型'}),
-                                            dataIndex: 'leixing',
+                                            dataIndex: 'action',
                                             editable: true,
                                             inputType: 'Select',
                                             options: [
-                                                {value: '充电', name: intl.formatMessage({id: '充电'})},
-                                                {value: '放电', name: intl.formatMessage({id: '放电'})},
+                                                {value: '充电', label: intl.formatMessage({id: '充电'})},
+                                                {value: '放电', label: intl.formatMessage({id: '放电'})},
                                             ]
                                         },
                                         {
                                             title: intl.formatMessage({id: 'SOC(%)'}),
-                                            dataIndex: 'soc',
+                                            dataIndex: 'targetSoc',
                                             editable: true,
-                                            inputType: 'Input',
+                                            inputType: 'InputNumber',
                                         },
                                         {
                                             title: `${intl.formatMessage({id: '功率'})}(kW)`,
-                                            dataIndex: 'gonglve',
+                                            dataIndex: 'pcsPower',
                                             editable: true,
-                                            inputType: 'Input',
+                                            inputType: 'InputNumber',
                                         },
                                         {
                                             title: `${intl.formatMessage({id: '电价'})}(${intl.formatMessage({id: '元'})})`,
-                                            dataIndex: 'dianjia',
+                                            dataIndex: 'elePrice',
                                             editable: true,
                                             inputType: 'InputNumber',
                                         },
                                         {
                                             title: `${intl.formatMessage({id: '开始时间'})}~${intl.formatMessage({id: '结束时间'})}`,
-                                            dataIndex: 'timetime',
+                                            dataIndex: 'timeStramp',
                                             editable: true,
                                             inputType: 'CustomDatePicker',
                                         }
                                     ]}
                                     strategyList={strategyList}
-                                    correlationList={['shiduan','dianjia']}
-                                    maxLength={2}
+                                    correlationList={['timeType','elePrice']}
+                                    maxLength={10}
+                                    tabValue={tabValue}
+                                    onChangeTabs={value => {
+                                        setTabValue(value);
+                                    }}
                                 />
                             </Form.Item>
                         </Space>                              
@@ -375,7 +376,7 @@ const PolicyConfiguration = () => {
                                 <div 
                                     className={distributeStyle}
                                     onClick={async ()=>{
-                                        await form.validateFields(['tempStart', 'tempStop', 'humidityStart', 'humidityStop']);
+                                        await form.validateFields(['tempStart', 'tempStop', 'humStart', 'humStop']);
                                         if(canIssue){
                                             setCheckModalOpen(true);
                                             setCheckModalType('sendDehumidifier');
@@ -397,12 +398,12 @@ const PolicyConfiguration = () => {
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item name="humidityStart" label={intl.formatMessage({id: '除湿机湿度启动值(%rh)'})} rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
+                                    <Form.Item name="humStart" label={intl.formatMessage({id: '除湿机湿度启动值(%rh)'})} rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
                                         <InputNumber style={{width: "100%"}} placeholder={intl.formatMessage({id: '请输入除湿机湿度启动值'})}/>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item name="humidityStop" label={intl.formatMessage({id: '除湿机湿度停止值(%rh)'})} rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
+                                    <Form.Item name="humStop" label={intl.formatMessage({id: '除湿机湿度停止值(%rh)'})} rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
                                         <InputNumber style={{width: "100%"}} placeholder={intl.formatMessage({id: '请输入除湿机湿度停止值'})}/>
                                     </Form.Item>
                                 </Col>
@@ -417,7 +418,7 @@ const PolicyConfiguration = () => {
                                 <div 
                                     className={distributeStyle}
                                     onClick={async ()=>{
-                                        await form.validateFields(['coldPoint', 'hotPoint', 'coolingDifference', 'heatingDifference']);
+                                        await form.validateFields(['coolingPoint', 'heatPoint', 'coolingDiffPoint', 'heatDiffPoint']);
                                         if(canIssue){
                                             setCheckModalOpen(true);
                                             setCheckModalType('sendLiquidCooler');
@@ -429,22 +430,22 @@ const PolicyConfiguration = () => {
                             </Row>
                             <Row gutter={50}>
                                 <Col span={6}>
-                                    <Form.Item name="coldPoint" label={intl.formatMessage({id: '液冷制冷点(℃)'})}  rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
+                                    <Form.Item name="coolingPoint" label={intl.formatMessage({id: '液冷制冷点(℃)'})}  rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
                                         <InputNumber style={{width: "100%"}} placeholder={intl.formatMessage({id: '请输入液冷制冷点'})}/>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item name="hotPoint" label={intl.formatMessage({id: '液冷加热点(℃)'})}  rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
+                                    <Form.Item name="heatPoint" label={intl.formatMessage({id: '液冷加热点(℃)'})}  rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
                                         <InputNumber style={{width: "100%"}} placeholder={intl.formatMessage({id: '请输入液冷加热点'})}/>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item name="coolingDifference" label={intl.formatMessage({id: '液冷制冷回差(℃)'})}  rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
+                                    <Form.Item name="coolingDiffPoint" label={intl.formatMessage({id: '液冷制冷回差(℃)'})}  rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
                                         <InputNumber style={{width: "100%"}} placeholder={intl.formatMessage({id: '请输入液冷制冷回差'})}/>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item name="heatingDifference" label={intl.formatMessage({id: '液冷加热回差(℃)'})}  rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
+                                    <Form.Item name="heatDiffPoint" label={intl.formatMessage({id: '液冷加热回差(℃)'})}  rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
                                         <InputNumber style={{width: "100%"}} placeholder={intl.formatMessage({id: '请输入液冷加热回差'})}/>
                                     </Form.Item>
                                 </Col>
@@ -472,8 +473,8 @@ const PolicyConfiguration = () => {
                             res = await switchModesServe({...values, dtuId: id, type: 7});
                         }
                         // 设备命令-PCS设置
-                        if(checkModalType==="pcsStartStop"){
-                            values = await form.validateFields(['pcsStartStop']);
+                        if(checkModalType==="runModePCS"){
+                            values = await form.validateFields(['runModePCS']);
                             res = await sendPCSSettingServe({...values, dtuId: id, type: 7});
                         }
                         // 设备命令-BMS设置
@@ -488,22 +489,52 @@ const PolicyConfiguration = () => {
                         }
                         // 参数设置
                         if(checkModalType==="sendParamSetting"){
-                            values = await form.validateFields(['isExpand', 'kilowatt', 'kilowatt']);
-                            res = await sendParamSettingServe({...values, isExpand: values?.isExpand?1:0, dtuId: id, type: 7});
+                            values = await form.validateFields(['enable', 'cap']);
+                            res = await sendParamSettingServe({...values, enable: values?.enable?1:0, dtuId: id, type: 7});
+                        }
+                        // 策略配置
+                        if(checkModalType==="sendStrategySetting"){
+                            values = await form.validateFields(['durationList']);
+                            values = values?.durationList.map(value => {
+                                const timeStramp = value.timeStramp;
+                                const timeStrampList = timeStramp.split("~");
+                                const time1 = timeStrampList[0].split(":");
+                                const time2 = timeStrampList[1].split(":");
+                                delete value.timeStramp;
+                                delete value.key;
+                                return {
+                                    ...value,
+                                    action: {
+                                        '充电': 0,
+                                        '放电': 1
+                                    }[value.action],
+                                    timeType: {
+                                        '尖': 0,
+                                        '峰': 1,
+                                        '平': 2,
+                                        '谷': 3
+                                    }[value.timeType],
+                                    startHour: time1[0],
+                                    startMin: time1[1],
+                                    endHour: time2[0],
+                                    endMin: time2[1],
+                                }
+                            })
+                            res = await sendStrategySettingServe({...values, strategyType: tabValue,dtuId: id, type: 7})
                         }
                         // 策略选择
                         if(checkModalType==="sendStrategySelect"){
                             values = await form.validateFields(monthList.map(month=>month.value));
-                            res = await sendStrategySelectServe({...values, dtuId: id, type: 7})
+                            res = await sendStrategySelectServe({policySelectList: monthList.map(month=>values[month.value]), dtuId: id, type: 7})
                         }
                         // 除湿机参数设置
                         if(checkModalType==="sendDehumidifier"){
-                            values = await form.validateFields(['tempStart', 'tempStop', 'humidityStart', 'humidityStop']);
+                            values = await form.validateFields(['tempStart', 'tempStop', 'humStart', 'humStop']);
                             res = await sendDehumidifierServe({...values, dtuId: id, type: 7})
                         }
                         // 液冷机参数设置
                         if(checkModalType==="sendLiquidCooler"){
-                            values = await form.validateFields(['coldPoint', 'hotPoint', 'coolingDifference', 'heatingDifference']);
+                            values = await form.validateFields(['coolingPoint', 'heatPoint', 'coolingDiffPoint', 'heatDiffPoint']);
                             res = await sendLiquidCoolerServe({...values, dtuId: id, type: 7})
                         }
                     }

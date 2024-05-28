@@ -1,5 +1,5 @@
 import { Space, theme, Badge } from "antd";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Tabs = (props) => {
     const { token } = theme.useToken();
@@ -10,6 +10,10 @@ const Tabs = (props) => {
         onChange&&onChange(value);
         setValue(value);
     }
+
+    useEffect(()=>{
+        setValue(props.value);
+    }, [JSON.stringify(props)])
 
     return (
         <Space size={30}>

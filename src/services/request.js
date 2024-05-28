@@ -28,8 +28,11 @@ instance.interceptors.response.use(response => {
     if (response.status === 200) {
         let {data}=response;
         if (data.msg) {
-            if(data.msg!=='ok'){
-                message.info(data.msg);
+            if(data.code&&data.code!=='ok'){
+                message.error(data.msg);
+            }
+            if((data.code==="ok"||data.msg==="ok")&&data.msg&&data.msg!=="ok"){
+                message.success(data.msg);
             }
             if(data.msg==="Please login！"){
                 logout();
