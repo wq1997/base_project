@@ -10,20 +10,12 @@ const { Title } = Typography;
 const Login = () => {
   const { token } = theme.useToken();
   const dispatch = useDispatch();
-  const [publicKey, setPublicKey] = useState('');
 
   const onFinish = async (values) => {
     setLocalStorage("Token", 'token');
     history.push("/cet/home")
   }
 
-  const getPublicKey = async () => {
-    setPublicKey()
-  }
-
-  useEffect(()=>{
-    getPublicKey();
-  }, [])
   return (
     <div
       style={{
