@@ -5,7 +5,7 @@ import styles from './index.less'
 import { CardModel } from "@/components";
 import useIcon from "@/hooks/useIcon";
 import { useSelector, useIntl } from "umi";
-import { theme, Switch, Select, Tooltip } from "antd";
+import { theme, Switch, Select, Descriptions  } from "antd";
 import { getGridPointPower, getPlantEnergyFee } from '@/services/home'
 import { getEnergyFeeByTime } from '@/services/report'
 import { getGridPointList } from '@/services/policy'
@@ -186,47 +186,64 @@ function OverView(props) {
             icon: 'icon-gongyezujian-yibiaopan'
         },
     ]);
-    const gridData=[
+    const gridData = [
         {
-        key:'lineAbVol',
-        label:'AB线电压',
-        unit:'V'
-    },
-    {
-        key:'lineBcVol',
-        label:'BC线电压',
-        unit:'V'
+            key: 'lineAbVol',
+            label: 'AB线电压',
+            unit: 'V'
+        },
+        {
+            key: 'lineBcVol',
+            label: 'BC线电压',
+            unit: 'V'
 
-    },
-    {
-        key:'lineCaVol',
-        label:'CA线电压',
-         unit:'V'
+        },
+        {
+            key: 'lineCaVol',
+            label: 'CA线电压',
+            unit: 'V'
 
-    },
-    {
-        key:'phaseACur',
-        label:'A相电流',
-        unit:'A'
+        },
+        {
+            key: 'phaseACur',
+            label: 'A相电流',
+            unit: 'A'
 
-    },
-    {
-        key:'phaseBCur',
-        label:'B相电流',
-        unit:'A'
+        },
+        {
+            key: 'phaseBCur',
+            label: 'B相电流',
+            unit: 'A'
 
-    },
-    {
-        key:'phaseCCur',
-        label:'C相电流',
-        unit:'A'
+        },
+        {
+            key: 'phaseCCur',
+            label: 'C相电流',
+            unit: 'A'
 
-    },
-    {
-        key:'phaseACur',
-        label:'A相电流'
-    },
-]
+        },
+        {
+            key: 'oilTemp',
+            label: '变压器油温',
+            unit: '℃'
+        },
+        {
+            key: 'activePower',
+            label: '有功功率',
+            unit: 'kW'
+
+        },
+        {
+            key: 'reactivePower',
+            label: '无功功率',
+            unit: 'KVar'
+        },
+        {
+            key: 'factor',
+            label: '功率因数',
+            unit: ''
+        },
+    ]
     return (
         <>
 
@@ -293,7 +310,7 @@ function OverView(props) {
                         title='1#Transformer'
                         content={
                             <>
-
+                            <Descriptions column={5}  items={gridData}/>
                             </>
                         }
                     />

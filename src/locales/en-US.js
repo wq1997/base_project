@@ -8,7 +8,7 @@ export default {
         English:'English',
         Theme:'Theme',
         Light:'Light',
-        Dark:'Dark',
+        Dark:'Dark', 
         SignoOut:'Sign out',
         Overview:'Overview',
         Device:'Device',
