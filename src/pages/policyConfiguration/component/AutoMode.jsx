@@ -6,6 +6,9 @@ import { sendBurCmd2 } from '@/services/policy'
 import { Title } from "@/components";
 import { getEncrypt, } from "@/utils/utils";
 import { FORM_REQUIRED_RULE, } from "@/utils/constants";
+import {
+  getPublicKey as getPublicKeySever,
+} from "@/services/user";
 let modelData = [
   {
     key: '1',
@@ -574,6 +577,10 @@ const App = ({ devId, dtuId, historyAllData }) => {
         open={isModalOpen}
         title={<Title title={t("自动模式下发")} />}
         onOk={async () => {
+    const publicKeyRes = await getPublicKeySever();
+    if(publicKeyRes?.data){
+      const publicKey = publicKeyRes?.data;
+
           let monPowers = [], tuePowers = [], wedPowers = [], thuPowers = [], friPowers = [], satPowers = [], sunPowers = [];
           dataSource?.map((it, index) => {
             monPowers?.push(it?.monPowers);
@@ -597,7 +604,7 @@ const App = ({ devId, dtuId, historyAllData }) => {
             friPowers,
             satPowers,
             sunPowers,
-            password: getEncrypt(JSON.parse(sessionStorage.getItem('counterData')).publicKey, values.password),
+            password: getEncrypt(publicKey, values.password),
           });
           if (data.code == 'ok') {
             message.success(t('命令下发成功'));
@@ -607,6 +614,7 @@ const App = ({ devId, dtuId, historyAllData }) => {
           setIsModalOpen(false);
           form1.resetFields();
         }}
+      }
         onCancel={() => {
           setIsModalOpen(false);
           form1.resetFields();

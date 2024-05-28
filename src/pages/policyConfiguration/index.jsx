@@ -13,7 +13,9 @@ import { ISSUE_COMMAND } from '@/utils/subscribe/types';
 import { sendBurCmd2 } from '@/services/policy'
 import { getEncrypt, } from "@/utils/utils";
 import { FORM_REQUIRED_RULE, } from "@/utils/constants";
-
+import {
+    getPublicKey as getPublicKeySever,
+  } from "@/services/user";
 function Com({ id }) {
     const [mode, setMode] = useState(0)
     const { token } = theme.useToken();
@@ -104,12 +106,15 @@ function Com({ id }) {
                 open={isModalOpen}
                 title={<Title title={t("模式切换")} />}
                 onOk={async () => {
+                    const publicKeyRes = await getPublicKeySever();
+                    if (publicKeyRes?.data) {
+                        const publicKey = publicKeyRes?.data;
                     const values = await form1.validateFields();
                     let { data } = await sendBurCmd2({
                         mode: type,
                         dtuId: id,
                         cmdTypeId: 7000,
-                        password: getEncrypt(JSON.parse(sessionStorage.getItem('counterData')).publicKey , values.password),
+                        password: getEncrypt(publicKey, values.password),
                     });
                     if (data.code == 'ok') {
                         message.success(t('命令下发成功'));
@@ -119,7 +124,7 @@ function Com({ id }) {
                     }
                     setIsModalOpen(false);
                     form1.resetFields();
-                }}
+                }}}
                 onCancel={() => {
                     setIsModalOpen(false);
                     form1.resetFields();
