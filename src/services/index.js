@@ -27,3 +27,43 @@ export const getAllRevenueExcel = (payload) => {
 export const getDtuDetailInfo = (payload) => {
     return axiosInstance.get(`/minsys/dtu/dtuDetailInfo`, { params: payload })
 }
+
+export const getBurCmdHistory2 = (payload) => {
+    return axiosInstance.get(`/minsys/getBurCmdHistory2`, { params: payload })
+}
+
+export const verifyPassword = (payload) => {
+    return axiosInstance.get(`/minsys/strategy/verifyPassword`, { params: payload });
+}
+
+export const sendPCSSetting = (payload) => {
+    return axiosInstance.post(`/minsys/strategy/sendPCSSetting`, payload);
+}
+
+export const sendBMSSetting = (payload) => {
+    return axiosInstance.post(`/minsys/strategy/sendBMSSetting`, payload);
+}
+
+export const sendPCSPower = (payload) => {
+    return axiosInstance.post(`/minsys/strategy/sendPCSPower`, payload);
+}
+
+export const sendParamSetting = (payload) => {
+    return axiosInstance.post(`/minsys/strategy/sendParamSetting`, payload);
+}
+
+export const sendStrategySelect = (payload) => {
+    return axiosInstance.post(`/minsys/strategy/sendStrategySelect`, payload);
+}
+
+export const sendDehumidifier = (payload) => {
+    return axiosInstance.post(`/minsys/strategy/sendDehumidifier`, payload);
+}
+
+export const sendLiquidCooler = (payload) => {
+    return axiosInstance.post(`/minsys/strategy/sendLiquidCooler`, payload);
+}
+
+export const switchModes = (payload) => {
+    return axiosInstance.post(`/minsys/strategy/switchModes`, payload);
+}

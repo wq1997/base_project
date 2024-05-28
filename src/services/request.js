@@ -28,7 +28,7 @@ instance.interceptors.response.use(response => {
     if (response.status === 200) {
         let {data}=response;
         if (data.msg) {
-            message.error(data.msg);
+            message.info(data.msg);
             if(data.msg==="Please login！"){
                 logout();
             }

@@ -1,15 +1,24 @@
 import { Button, Space } from "antd";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const ButtonGroup = (props) => {
-    const {options, onChange} = props;
+    const {options, onChange, onControlledChange} = props;
     const [value, setValue] = useState(props.value);
 
     const onMyClick = (value) => {
-        onChange&&onChange(value)
-        setValue(value);
+        if(props.mode==="controlled"){
+            onControlledChange&&onControlledChange(value)
+        }else{
+            onChange&&onChange(value)
+            setValue(value);
+        }
+       
     }
-    
+
+    useEffect(()=>{
+        setValue(props.value);
+    }, [JSON.stringify(props)]);
+
     return (
         <Space size={20}>
             {
