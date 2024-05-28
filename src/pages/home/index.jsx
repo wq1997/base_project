@@ -5,32 +5,19 @@ import styles from './index.less'
 import { CardModel } from "@/components";
 import useIcon from "@/hooks/useIcon";
 import { useSelector, useIntl } from "umi";
-import { theme, Radio, Descriptions, Tooltip } from "antd";
-import ReactECharts from "echarts-for-react";
+import { theme, Switch, Select, Tooltip } from "antd";
 import { getGridPointPower, getPlantEnergyFee } from '@/services/home'
 import { getEnergyFeeByTime } from '@/services/report'
 import { getGridPointList } from '@/services/policy'
-
 import dayjs from 'dayjs';
-import Img from '../react/Meta2d'
+
 function OverView(props) {
     const { token } = theme.useToken();
     const Icon = useIcon();
     const [options, setOptions] = useState({});
     const [grids, setGrids] = useState([]);
     const [currntGrid, setCurrntGrid] = useState();
-    const [optionsPower, setOptionsPower] = useState({});
-    const [time, setTime] = useState(dayjs(new Date()));
-    const [isHovered, setIsHovered] = useState(false);
-    const [data, setData] = useState([]);
-    const [dateX, setDateX] = useState([]);
-    const [dataY, setDataY] = useState({
-        pvOutEnergy: [],
-        energyInEnergy: [],
-        energyOutEnergy: [],
-        pvInEnergy: [],
-        chargeInEnergy: []
-    });
+
     const intl = useIntl();
     let currentPlant = JSON.parse(localStorage.getItem('current'));
     const t = (id) => {
@@ -42,13 +29,10 @@ function OverView(props) {
         return msg
     }
     useEffect(() => {
-        getOptions();
-        getPlantLabelData();
-        getGrid();
+
     }, [token,])
     useEffect(() => {
-        getOptions();
-        getPowerOption();
+
     }, [token, currntGrid])
     const [electricityStatistics, setElectricityStatistics] = useState([
         {
@@ -116,7 +100,7 @@ function OverView(props) {
             label: t('电站位置'),
             span: 2
         },
-    ] 
+    ]
     const getOptions = async () => {
         let { data: energyData } = await getEnergyFeeByTime({
             plantId: localStorage.getItem('plantId'),
@@ -140,102 +124,6 @@ function OverView(props) {
         setData(data.data);
         setDateX(arrX);
         setDataY({ pvOutEnergy, energyInEnergy, energyOutEnergy, pvInEnergy, chargeInEnergy })
-        setOptions({
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    type: 'shadow'
-                }
-            },
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                containLabel: true
-            },
-            legend: {
-                data: [
-                    t('储能日充'),
-                    t('储能日放'),
-                    t('光伏日发电量'),
-                    t('充电桩电量'),
-                ],
-                textStyle: {//图例文字的样式
-                    color: token.titleColor,
-                }
-            },
-            xAxis: [
-                {
-                    type: 'category',
-                    data: dateX,
-                    axisTick: {
-                        alignWithLabel: true
-                    }
-                }
-            ],
-            yAxis: [
-                {
-                    type: 'value',
-                    axisLabel: {
-                        formatter: '{value}'
-                    },
-
-                }
-            ],
-            series: [
-                {
-                    name: t('储能日充'),
-                    type: 'bar',
-                    itemStyle: {
-                        normal: {
-                            color: token.barColor[0]
-
-                        }
-                    },
-                    barWidth: '8%',
-                    data: dataY.energyInEnergy
-                },
-                {
-                    name: t('储能日放'),
-                    type: 'bar',
-                    itemStyle: {
-                        normal: {
-                            color: token.barColor[2]
-
-                        }
-                    },
-                    barWidth: '8%',
-                    data: dataY.energyOutEnergy
-                },
-                {
-                    name: t('光伏日发电量'),
-                    type: 'bar',
-                    itemStyle: {
-                        normal: {
-                            color: token.barColor[3]
-
-                        }
-                    },
-                    barWidth: '8%',
-                    data: dataY.pvInEnergy
-
-                },
-                {
-                    name: t('充电桩电量'),
-                    type: 'bar',
-                    itemStyle: {
-                        normal: {
-                            color: token.barColor[4]
-
-                        }
-                    },
-                    barWidth: '8%',
-                    data: dataY.chargeInEnergy
-                },
-
-            ]
-        });
-
     };
 
     const getGrid = async () => {
@@ -245,103 +133,7 @@ function OverView(props) {
         setGrids(grid?.data);
         setCurrntGrid(grid?.data?.[0]?.id)
     }
-    const getPowerOption = async () => {
-        let { data: powerData } = await getGridPointPower({
-            gridPointId: currntGrid
-        });
-        let { pvPower, loadPower, gridPower, energyPower } = powerData?.data;
-        let pvData = dealData(pvPower);
-        let loadData = dealData(loadPower);
-        let gridData = dealData(gridPower);
-        let energyData = dealData(energyPower);
 
-        setOptionsPower({
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    type: 'shadow'
-                }
-            },
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                containLabel: true
-            },
-            legend: {
-                data: [
-                    t('储能'),
-                    t('电网'),
-                    t('光伏'),
-                    t('负载'),
-                ],
-                textStyle: {//图例文字的样式
-                    color: token.titleColor,
-                }
-            },
-            xAxis: [
-                {
-                    type: 'category',
-                    axisTick: {
-                        alignWithLabel: true
-                    }
-                }
-            ],
-            yAxis: [
-                {
-                    type: 'value',
-                    axisLabel: {
-                        formatter: '{value}'
-                    },
-                }
-            ],
-            series: [
-                {
-                    name: t('储能'),
-                    type: 'line',
-                    itemStyle: {
-                        normal: {
-                            color: token.barColor[0]
-                        }
-                    },
-                    data: energyData
-                },
-                {
-                    name: t('电网'),
-                    type: 'line',
-                    itemStyle: {
-                        normal: {
-                            color: token.barColor[2]
-                        }
-                    },
-                    data: gridData
-
-                },
-                {
-                    name: t('光伏'),
-                    type: 'line',
-                    itemStyle: {
-                        normal: {
-                            color: token.barColor[3]
-
-                        }
-                    },
-                    data: pvData
-
-                },
-                {
-                    name: t('负载'),
-                    type: 'line',
-                    itemStyle: {
-                        normal: {
-                            color: token.barColor[4]
-                        }
-                    },
-                    data: loadData
-                },
-            ]
-        });
-    }
     const getPlantLabelData = async () => {
         let { data } = await getPlantEnergyFee({
             plantId: localStorage.getItem('plantId')
@@ -367,20 +159,11 @@ function OverView(props) {
     const onChange = (e) => {
         setCurrntGrid(e.target.value);
     };
-    const dealData = (data) => {
-        let arr = [];
-        data?.map(it => {
-            arr.push([
-                dayjs(it.time).format('HH:mm'),
-                it.value,
-            ])
-        })
-        return arr
-    }
+
     const [profit, setProfit] = useState([
         {
             value: '',
-            label: '今日收益',
+            label: '总充电',
             key: 'dailyEarn',
             unit: currentPlant.priceUnit,
             color: '#E9641C',
@@ -396,107 +179,50 @@ function OverView(props) {
         },
     ])
     return (
-        <div className={styles.container} style={{ color: token.titleColor }}>
-            <div className={styles.imgPart} style={{ backgroundColor: token.titleCardBgc }}>
-                <Img />
-                <div className={styles.detailsButton}
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
-                >{t('电站信息')}</div>
-                {isHovered && <div className={styles.detailsPart}>
-                    <Descriptions column={2} items={
-                        detailsPartData.map(it => {
-                            return {
-                                ...it,
-                                children: currentPlant[it.key]
-                            }
-                        })
-                    } />
+        <>
 
-                </div>}
-            </div>
-            <div className={styles.card}>
-                <div className={styles.dataLeft} style={{ backgroundColor: token.titleCardBgc }}>
-                    {electricityStatistics.map(it => {
-                        return <>
-                            <div className={styles.wrap} >
-                                <div className={styles.value} >
-                                    <span style={{ color: it.color }}>{it.value}</span>
-                                    <span className={styles.unit}>{it.unit}</span>
-                                </div>
-                                <Tooltip title={t(it.label)} >
-                                    <div className={styles.label}>
-                                        {t(it.label)}
-                                    </div>
-                                </Tooltip>
-
-                            </div>
-                        </>
-                    })}
-                </div>
-                <div className={styles.dataRight} style={{ backgroundColor: token.titleCardBgc }}>
-                    {
-                        profit.map(it => {
-                            return <>
-                                <div className={styles.wrap} >
-                                    <div className={styles.title}>
-                                        <Icon
-                                            type={it.icon}
-                                            style={{
-                                                fontSize: 20,
-                                                color: it.color
-                                            }}
-                                        />
-                                        {t(it.label)}
-                                    </div>
-                                    <div className={styles.value} >
-                                        <span style={{ color: it.color }}>{it.value}</span>
-                                        <span className={styles.unit}>{it.unit}</span>
-
-                                    </div>
-                                </div>
-
-                            </>
-                        })
-
-                    }
-
-                </div>
-                <div className={styles.echarLeft}>
-                    <CardModel
-                        title={t('电量统计') + '(kWh)'}
-                        content={
-                            <div className={styles.echartPartCardwrap}>
-                                <ReactECharts option={options} style={{ height: '100%' }} />
-                            </div>
-                        }
-                    />
-                </div>
-                <div className={styles.echarRight}>
-                    <CardModel
-                        title={t('功率') + '(kW)'}
-                        filterPart={
-                            <Radio.Group onChange={onChange} value={currntGrid}>
+            <div className={styles.container} style={{ color: token.titleColor }}>
+                <div className={styles.title} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal }}>
+                    <div>
+                        {t('并网点')}:
+                        <Select
+                            style={{
+                                width: 200,
+                                marginLeft: '10px'
+                            }}
+                            allowClear
+                            options={[
                                 {
-                                    grids.length && grids?.map(it => {
-                                        return (
-                                            <>
-                                                <Radio value={it?.id}>{it?.gridPointName}</Radio>
-                                            </>
-                                        )
-                                    })
-                                }
-                            </Radio.Group>
-                        }
-                        content={
-                            <div className={styles.echartPartCardwrap}>
-                                <ReactECharts option={optionsPower} style={{ height: '100%' }} />
-                            </div>
-                        }
-                    />
+                                    value: 'lucy',
+                                    label: 'Lucy',
+                                },
+                            ]}
+                        />
+                    </div>
+                    <Switch className={styles.right} checkedChildren="总览列表" unCheckedChildren="接线图" defaultChecked />
                 </div>
+                <div className={styles.heard} style={{color: token.colorNormal }}>
+                    <div className={styles.headLeftPart} style={{ backgroundColor: token.titleCardBgc, }}>
+                        <div>
+                            <span></span>
+                            <span></span>
+                            <Icon type='icon-zongchongdian'/>
+                        </div>
+                        <div></div>
+                    </div>
+                    <div className={styles.headLeftPart} style={{ backgroundColor: token.titleCardBgc,   }}></div>
+                    <div className={styles.headLeftPart} style={{ backgroundColor: token.titleCardBgc,   }}></div>
+                    <div className={styles.headLeftPart} style={{ backgroundColor: token.titleCardBgc,   }}></div>
+                    <div className={styles.headLeftPart} style={{ backgroundColor: token.titleCardBgc,   }}></div>
+
+
+                </div>
+                <div className={styles.cneterPart} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal }}></div>
+                <div className={styles.bottomPart} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal }}></div>
+
             </div>
-        </div>
+        </>
+
     )
 }
 

@@ -56,7 +56,9 @@ const Login = () => {
             ...res.data.data
           }
         }
-      })
+      });
+      localStorage.setItem('plantId','123');
+      
       history.push("/index/home");
     } else {
       message.error(res.data.msg);

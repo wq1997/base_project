@@ -2,211 +2,48 @@
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-rows: 1fr 1fr;
   grid-auto-columns: 1fr;
+  grid-auto-rows: 1fr 1fr;
+  grid-template-rows: 60px 1fr 1fr 1fr 1fr 1fr;
   gap: 8px 8px;
-  grid-auto-flow: row;
   padding-bottom: 10px;
 }
 
-.imgPart {
+.title {
   grid-area: 1 / 1 / 2 / 2;
-  width: 100%;
-  height: 100%;
-  position: relative;
-
-  .detailsButton {
-    width: 104px;
-    height: 40px;
-    margin: 0 auto;
-    position: absolute;
-    color: #fff;
-    top: 20px;
-    left: 20px;
-    z-index: 999;
-    padding: 8px 16px;
-    background: rgba(0, 0, 0, 0.4);
-    border-radius: 4px;
-    line-height: 24px;
-    text-align: center;
-  }
-  .detailsPart{
-    background: rgba(0, 0, 0, 0.4);
-    position: absolute;
-    top: 70px;
-    left: 80px;
-    z-index: 999;
-    border-radius: 4px;
-    :global{
-      .ant-descriptions-item-container{
-        background: rgba(0, 0, 0, 0.6) !important;
-        padding: 9px 16px  !important;
-        border-radius: 4px;
-      }
-      .ant-descriptions-item-label{
-        color: #fff;
-      }
-      .ant-descriptions-item-content{
-        color: #fff;
-
-      }
-    }
-  }
-  // overflow: hidden;
-  // background: url(../../assets/svg/lightHome.svg) no-repeat center center;
-  // background-size:cover;
-}
-
-.card {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 130px 1fr;
-  gap: 8px 8px;
-  grid-auto-flow: row;
-  grid-template-areas:
-    "dataLeft dataRight"
-    "echarLeft echarRight";
-  grid-area: 2 / 1 / 3 / 2;
-}
-
-.dataLeft {
-  grid-area: dataLeft;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr  1fr;
-
-  .wrap {
-    padding: 20px 40px;
-    overflow: hidden;
-    text-overflow: ellipsis !important;
-    white-space: nowrap;
-    .value {
-      font-family: DingTalk;
-      margin-bottom: 10px;
-
-      .unit {}
-    }
-
-    .label {
-      font-size: 18px;
-      height: calc(100% - 22px);
-      overflow: hidden;
-      text-overflow: ellipsis !important;
-      white-space: nowrap;
-    }
-  }
-}
-
-.dataRight {
-  grid-area: dataRight;
+  padding: 0 20px;
   display: flex;
-  justify-content: space-around;
   align-items: center;
-
-  .wrap {
-    .value {
-      // font-size: 36px;
-      font-family: DingTalk;
-      margin-bottom: 10px;
-
-    }
-
-
+  font-size: 14px;
+  position: relative;
+  border-radius: 8px;
+  .right {
+    position: absolute;
+    right: 20px;
   }
 }
 
-.echarLeft {
-  grid-area: echarLeft;
+.heard {
+  grid-area: 2 / 1 / 3 / 2;
+  border-radius: 8px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 8px 8px;
 
-  .echartPartCardwrap {
-    width: 100%;
-    height: 100%;
-  }
 }
 
-.echarRight {
-  grid-area: echarRight;
-
-  .echartPartCardwrap {
-    width: 100%;
-    height: 100%;
-  }
+.cneterPart {
+  grid-area: 3 / 1 / 4 / 2;
+  border-radius: 8px;
 }
 
-@media screen and (min-width: 2000px) {
-  .detailsPart{
-    min-width: 466px;
-    max-width: 1000px;
-    height: 360px;
-    padding: 36px 25px;
-  }
-  .value {
-    font-size: 36px;
-  }
-
-  .unit {
-    font-size: 18px;
-
-  }
-
-  .title {
-    font-size: 18px;
-
-  }
-
-  .label {
-    font-size: 18px;
-  }
+.bottomPart {
+  grid-area: 4 / 1 / 7 / 2;
+  border-radius: 8px;
 }
 
-@media screen and (min-width: 1000px) and (max-width: 2000px) {
-  .detailsPart{
-    min-width:420px;
-    max-width: 1000px;
-    height: 320px;
-    padding: 18px 12px;
-  }
-  .value {
-    font-size: 24px;
-  }
+@media screen and (min-width: 2000px) {}
 
-  .unit {
-    font-size: 16px;
+@media screen and (min-width: 1000px) and (max-width: 2000px) {}
 
-  }
-
-  .title {
-    font-size: 16px;
-
-  }
-
-  .label {
-    font-size: 16px;
-
-  }
-}
-
-@media screen and (max-width: 1000px) {
-  .detailsPart{
-    min-width:420px;
-    max-width: 1000px;
-    height: 320px;
-    padding: 18px 12px;
-  }
-  .value {
-    font-size: 16px;
-  }
-
-  .unit {
-    font-size: 14px;
-  }
-
-  .title {
-    font-size: 14px;
-  }
-
-  .label {
-    font-size: 14px;
-
-  }
-}
-
+@media screen and (max-width: 1000px) {}
