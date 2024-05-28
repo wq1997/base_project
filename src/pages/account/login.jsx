@@ -18,7 +18,7 @@ const Login = () => {
             ...values,
             password: values.password,
         });
-        if (res?.data?.data) {
+        if (res?.data?.code == 200) {
             const data = res?.data;
             setLocalStorage("Token", data?.data?.token);
             dispatch({

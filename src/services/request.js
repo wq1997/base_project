@@ -60,6 +60,7 @@ const errorHandle = (status, message) => {
             break;
         case 403:
             console.log("权限不足，拒绝访问");
+            logout();
             break;
         case 404:
             console.log("请求的资源不存在或请求地址出错");

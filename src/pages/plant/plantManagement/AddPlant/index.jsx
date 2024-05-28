@@ -35,22 +35,20 @@ const Plant = ({ open, editId, onClose }) => {
     };
 
     const onFinish = async (values, commit) => {
-        console.log({
-            ...values,
-            gridTime: dayjs(values?.gridTime).format("YYYY-MM-DD"),
-            logo: values?.logo?.[0]?.fileName,
-            photo: values?.photo?.map(item => item?.fileName),
-        });
+        if (!commit) {
+            console.log(form.getFieldsValue());
+        }
+        return;
         const res = await savePlantServer({
             id: editId,
             commit,
             ...values,
             gridTime: dayjs(values?.gridTime).format("YYYY-MM-DD"),
             logo: values?.logo?.[0]?.fileName,
-            photo: values?.photo?.map(item => item?.fileName),
+            photo: values?.photo?.[0]?.fileName,
         });
-        if (res?.data?.status == "SUCCESS") {
-            message.success(`${commit ? "保存" : "添加"}成功`);
+        if (res?.data?.code == 200) {
+            message.success(`${commit ? "添加" : "保存"}成功`);
             onClose(true);
         } else {
             message.info(res?.data?.msg);
@@ -72,6 +70,7 @@ const Plant = ({ open, editId, onClose }) => {
             onCancel={() => onClose(false)}
         >
             <Form
+                id="form"
                 name="basic"
                 labelCol={{
                     span: 10,
@@ -80,7 +79,7 @@ const Plant = ({ open, editId, onClose }) => {
                     span: 12,
                 }}
                 form={form}
-                onFinish={values => onFinish(values, false)}
+                onFinish={values => onFinish(values, true)}
                 autoComplete="off"
             >
                 <Row span={24}>
@@ -329,7 +328,12 @@ const Plant = ({ open, editId, onClose }) => {
                 >
                     <Space style={{ position: "relative", left: 8 }}>
                         <Button onClick={() => onClose(false)}>取消</Button>
-                        <Button type="primary" ghost onClick={() => onFinish(true)}>
+                        <Button
+                            type="primary"
+                            ghost
+                            form="form"
+                            onClick={values => onFinish(values, false)}
+                        >
                             保存
                         </Button>
                         <Button type="primary" htmlType="submit">

@@ -13,7 +13,7 @@ import {
 const Log = () => {
     const [dataSource, setDataSource] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [addPlantOpen, setAddPlantOpen] = useState(true);
+    const [addPlantOpen, setAddPlantOpen] = useState(false);
     const [editId, setEditId] = useState();
     const companyRef = useRef();
     const [company, setCompany] = useState();
@@ -106,7 +106,7 @@ const Log = () => {
                 gridStartTime,
                 gridEndTime,
             });
-            if (res?.data?.data) {
+            if (res?.data?.code == 200) {
                 const { total, records } = res?.data?.data;
                 setPagination({
                     ...paginationRef.current,
@@ -134,7 +134,7 @@ const Log = () => {
 
     const onAddPlantClose = resFlag => {
         setEditId();
-        resFlag && getCompanyList();
+        resFlag && getList();
         setAddPlantOpen(false);
     };
 
