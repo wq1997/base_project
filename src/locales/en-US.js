@@ -1939,6 +1939,7 @@ export default {
 '起始时间应该早于结束时间': 'The start time should be earlier than the end time',
 '用电': 'Consume power',
 '最多可配置{count}条策略！': 'Up to {count} policies can be configured!',
+'号':'Number',
 '': '',
 '': '',
 } 
