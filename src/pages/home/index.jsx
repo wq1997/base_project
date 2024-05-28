@@ -185,7 +185,48 @@ function OverView(props) {
             color: 'rgb(11, 194, 213)',
             icon: 'icon-gongyezujian-yibiaopan'
         },
-    ])
+    ]);
+    const gridData=[
+        {
+        key:'lineAbVol',
+        label:'AB线电压',
+        unit:'V'
+    },
+    {
+        key:'lineBcVol',
+        label:'BC线电压',
+        unit:'V'
+
+    },
+    {
+        key:'lineCaVol',
+        label:'CA线电压',
+         unit:'V'
+
+    },
+    {
+        key:'phaseACur',
+        label:'A相电流',
+        unit:'A'
+
+    },
+    {
+        key:'phaseBCur',
+        label:'B相电流',
+        unit:'A'
+
+    },
+    {
+        key:'phaseCCur',
+        label:'C相电流',
+        unit:'A'
+
+    },
+    {
+        key:'phaseACur',
+        label:'A相电流'
+    },
+]
     return (
         <>
 
@@ -237,21 +278,27 @@ function OverView(props) {
                     {power.map(it => {
                         return (
                             <div className={styles.headrightPart} style={{ backgroundColor: token.titleCardBgc, }}>
-                                <div className={styles.value} style={{color:it.color}}>
+                                <div className={styles.value} style={{ color: it.color }}>
                                     {it.value}
-                                    <span className={styles.unit} style={{color:token.colorNormal}}>({it.unit})</span>
-                                    <div className={styles.label} style={{color:token.colorNormal}}>{it.label}</div>
+                                    <span className={styles.unit} style={{ color: token.colorNormal }}>({it.unit})</span>
+                                    <div className={styles.label} style={{ color: token.colorNormal }}>{t(it.label)}</div>
                                 </div>
                                 <Icon className={styles.icon} style={{ color: it.color }} type={it.icon} />
                             </div>
                         )
                     })}
+                </div>
+                <div className={styles.cneterPart} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal }}>
+                    <CardModel
+                        title='1#Transformer'
+                        content={
+                            <>
 
-
-
+                            </>
+                        }
+                    />
 
                 </div>
-                <div className={styles.cneterPart} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal }}></div>
                 <div className={styles.bottomPart} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal }}></div>
 
             </div>
