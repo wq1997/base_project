@@ -29,6 +29,8 @@ const PolicyConfiguration = () => {
     const [mode, setMode] = useState();
     const [tabValue, setTabValue] = useState(1);
     const [nextMode, setNextMode] = useState();
+    const [runModePCSBMS, setRunModePCSBMS] = useState();
+    const [nextRunModePCSBMS, setNextRunModePCSBMS] = useState();
     const [checkModalOpen, setCheckModalOpen] = useState(false);
     const [checkModalType, setCheckModalType] = useState('');
     const canIssue = mode===1;
@@ -93,7 +95,7 @@ const PolicyConfiguration = () => {
     useEffect(()=>{
         getInitData();
     }, [])
-
+    
     return (
         <>
             <Form 
@@ -115,7 +117,6 @@ const PolicyConfiguration = () => {
                                         setNextMode(value);
                                         setCheckModalOpen(true);
                                         setCheckModalType('switchModes');
-
                                     }}
                                 />
                             </Form.Item>
@@ -125,64 +126,25 @@ const PolicyConfiguration = () => {
                                 </Row>
                                 <Space style={{width: '100%', padding: '0 20px'}} direction="vertical" size={30}>
                                     <Row>
-                                        <Col span={12}>
-                                            <Row gutter={24}>
-                                                <Col>
-                                                    <Form.Item label={intl.formatMessage({id: 'PCS设置'})} name="runModePCS" rules={[{ ...FORM_REQUIRED_RULE }]}  style={{margin: 0}}>
-                                                        <ButtonGroup 
-                                                            options={[
-                                                                {label: intl.formatMessage({id: 'PCS开机'}), value: 1},
-                                                                {label: intl.formatMessage({id: 'PCS关机'}), value: 2},
-                                                                {label: intl.formatMessage({id: 'PCS待机'}), value: 3},
-                                                                {label: intl.formatMessage({id: 'PCS复位'}), value: 4},
-                                                            ]}
-                                                        />
-                                                    </Form.Item>
-                                                </Col>
-                                                <Col>
-                                                    <div
-                                                        className={canIssue?distributeStyle:disabledDistributeStyle}
-                                                        onClick={async ()=>{
-                                                            await form.validateFields(['runModePCS']);
-                                                            if(canIssue){
-                                                                setCheckModalOpen(true);
-                                                                setCheckModalType('runModePCS');
-                                                            }
-                                                        }}
-                                                    >
-                                                        {intl.formatMessage({id: '下发'})}
-                                                    </div>
-                                                </Col>
-                                            </Row>
-                                        </Col>
-                                        <Col span={12}>
-                                            <Row gutter={12}>
-                                                <Col>
-                                                    <Form.Item label={intl.formatMessage({id: 'BMS设置'})} name="bmsStartStop" rules={[{ ...FORM_REQUIRED_RULE }]}  style={{margin: 0}}>
-                                                        <ButtonGroup 
-                                                            options={[
-                                                                {label: intl.formatMessage({id: 'BMS开机'}), value: 1},
-                                                                {label: intl.formatMessage({id: 'BMS关机'}), value: 2},
-                                                            ]}
-                                                        />
-                                                    </Form.Item>
-                                                </Col>
-                                                <Col>
-                                                    <div
-                                                        className={canIssue?distributeStyle:disabledDistributeStyle}
-                                                        onClick={async ()=>{
-                                                            await form.validateFields(['bmsStartStop']);
-                                                            if(canIssue){
-                                                                setCheckModalOpen(true);
-                                                                setCheckModalType('bmsStartStop');
-                                                            }
-                                                        }}
-                                                    >
-                                                        {intl.formatMessage({id: '下发'})}
-                                                    </div>
-                                                </Col>
-                                            </Row>
-                                        </Col>
+                                        <Form.Item label={intl.formatMessage({id: 'PCS/BMS设置'})} name="runModePCSBMS" style={{margin: 0}}>
+                                            <ButtonGroup 
+                                                value={runModePCSBMS}
+                                                mode={'controlled'}
+                                                options={[
+                                                    {label: intl.formatMessage({id: 'PCS开机'}), value: 1},
+                                                    {label: intl.formatMessage({id: 'PCS关机'}), value: 2},
+                                                    {label: intl.formatMessage({id: 'PCS待机'}), value: 3},
+                                                    {label: intl.formatMessage({id: 'PCS复位'}), value: 4},
+                                                    {label: intl.formatMessage({id: 'BMS开机'}), value: 5},
+                                                    {label: intl.formatMessage({id: 'BMS关机'}), value: 6},
+                                                ]}
+                                                onControlledChange={async value=>{
+                                                    setNextRunModePCSBMS(value);
+                                                    setCheckModalOpen(true);
+                                                    setCheckModalType('runModePCSBMS');
+                                                }}
+                                            />
+                                        </Form.Item>
                                     </Row>
                                     <Row>
                                         <Col span={12}>
@@ -455,7 +417,7 @@ const PolicyConfiguration = () => {
                 </Space>
             </Form>
             <Modal
-                title={intl.formatMessage({id: '密码校验'})}
+                title={<Title title={intl.formatMessage({id: '命令下发'})} />}
                 open={checkModalOpen}
                 onCancel={()=>{
                     setCheckModalOpen(false);
@@ -469,17 +431,12 @@ const PolicyConfiguration = () => {
                     if(verifyPasswordRes?.data?.code==="ok"){
                         // 策略模式
                         if(checkModalType==="switchModes"){
-                            values = await form.validateFields(['mode']);
+                            values = { mode: nextMode }
                             res = await switchModesServe({...values, dtuId: id, type: 7});
                         }
-                        // 设备命令-PCS设置
-                        if(checkModalType==="runModePCS"){
-                            values = await form.validateFields(['runModePCS']);
-                            res = await sendPCSSettingServe({...values, dtuId: id, type: 7});
-                        }
-                        // 设备命令-BMS设置
-                        if(checkModalType==="bmsStartStop"){
-                            values = await form.validateFields(['bmsStartStop']);
+                        // 设备命令-PCS/BMS设置
+                        if(checkModalType==="runModePCSBMS"){
+                            values = { PCSBMS: nextRunModePCSBMS }
                             res = await sendBMSSettingServe({...values, dtuId: id, type: 7});
                         }
                         // 设备命令-PCS功率
@@ -538,22 +495,29 @@ const PolicyConfiguration = () => {
                             res = await sendLiquidCoolerServe({...values, dtuId: id, type: 7})
                         }
                     }
+
                     if(res?.data?.code==="ok"){
                         setCheckModalOpen(false);
                         checkForm.resetFields();
                         if(checkModalType==="switchModes"){
                             setMode(nextMode);
                         }
+                        if(checkModalType==="runModePCSBMS"){
+                            setRunModePCSBMS(nextRunModePCSBMS);
+                            form.setFieldsValue({runModePCSBMS: nextRunModePCSBMS})
+                        }
                     }
                 }}
                 centered
             >
-                <Form form={checkForm} >
-                    <Form.Item name={"password"} rules={[{ ...FORM_REQUIRED_RULE }]}>
-                        <Input className="pwd" />
-                    </Form.Item>
-                </Form>
-                <div>{intl.formatMessage({id: '确定执行该操作吗?'})}</div>
+                <div style={{padding: 20}}>
+                    <Form form={checkForm} >
+                        <Form.Item name={"password"} label={intl.formatMessage({id: '请输入密码'})} rules={[{ ...FORM_REQUIRED_RULE }]}>
+                            <Input placeholder={intl.formatMessage({id: '请输入密码'})} className="pwd" />
+                        </Form.Item>
+                    </Form>
+                    <div style={{marginLeft: 10}}>{intl.formatMessage({id: '确定执行该操作吗?'})}</div>
+                </div>
             </Modal>
         </>
     )
