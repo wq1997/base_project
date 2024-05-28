@@ -17,7 +17,10 @@ import {
 import { MyUpload, AuthImg } from "@/components";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { savePlant as savePlantServer } from "@/services/plant";
-import { getPlantType as getPlantTypeServer } from "@/services/plant";
+import {
+    getPlantType as getPlantTypeServer,
+    getDraftPlant as getDraftPlantServer,
+} from "@/services/plant";
 import dayjs from "dayjs";
 
 const uploadUrl = process.env.API_URL_1 + "/api/v1/plant/upload";
@@ -29,21 +32,34 @@ const Plant = ({ open, editId, onClose }) => {
 
     const getPlantType = async () => {
         const res = await getPlantTypeServer();
-        if (res?.data?.data) {
+        if (res?.data?.code == 200) {
             setPlantTypeOptions(res?.data?.data);
         }
     };
 
-    const onFinish = async (values, commit) => {
-        if (!commit) {
-            console.log(form.getFieldsValue());
+    const getDraftPlant = async () => {
+        const res = await getDraftPlantServer();
+        if (res?.data?.code == 200) {
+            const values = res?.data?.data;
+            values
+                ? form.setFieldsValue({
+                      ...values,
+                      startDate: dayjs(values?.gridTime, "YYYY-MM-DD"),
+                  })
+                : form.resetFields();
+            setEditData(values);
+        } else {
+            setEditData();
         }
-        return;
+    };
+
+    const onFinish = async (commit, values) => {
+        if (!commit) values = form.getFieldsValue();
         const res = await savePlantServer({
-            id: editId,
+            id: editData?.id,
             commit,
             ...values,
-            gridTime: dayjs(values?.gridTime).format("YYYY-MM-DD"),
+            gridTime: values?.gridTime ? dayjs(values?.gridTime).format("YYYY-MM-DD") : undefined,
             logo: values?.logo?.[0]?.fileName,
             photo: values?.photo?.[0]?.fileName,
         });
@@ -56,8 +72,10 @@ const Plant = ({ open, editId, onClose }) => {
     };
 
     useEffect(() => {
-        getPlantType();
-        // open && getPlantType();
+        if (open) {
+            getPlantType();
+            //getDraftPlant();
+        }
     }, [open]);
 
     return (
@@ -79,7 +97,7 @@ const Plant = ({ open, editId, onClose }) => {
                     span: 12,
                 }}
                 form={form}
-                onFinish={values => onFinish(values, true)}
+                onFinish={values => onFinish(true, values)}
                 autoComplete="off"
             >
                 <Row span={24}>
@@ -328,12 +346,7 @@ const Plant = ({ open, editId, onClose }) => {
                 >
                     <Space style={{ position: "relative", left: 8 }}>
                         <Button onClick={() => onClose(false)}>取消</Button>
-                        <Button
-                            type="primary"
-                            ghost
-                            form="form"
-                            onClick={values => onFinish(values, false)}
-                        >
+                        <Button type="primary" ghost form="form" onClick={() => onFinish(false)}>
                             保存
                         </Button>
                         <Button type="primary" htmlType="submit">
