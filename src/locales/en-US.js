@@ -1,6 +1,6 @@
 export default {
     app:{
-        title: 'Sermatec industrial and commercial microgrid twin platform',
+        title: 'Sermatec Energy Storage Management System',
         Query:"Query",
         Export:'Export',
         Language:'Language',
