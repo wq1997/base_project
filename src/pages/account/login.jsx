@@ -16,7 +16,6 @@ const { Title } = Typography;
 const Login = () => {
   const { token } = theme.useToken();
   const dispatch = useDispatch();
-  const [publicKey, setPublicKey] = useState('');
   const [codeImgUrl, setCodeImgUrl] = useState(`${getBaseUrl()}/user/getKaptchaImage`);
   const [showImg, setShowImg] = useState(false);
   const [language, setLanguage] = useState(localStorage.getItem('locale') == 'zh-CN' ? 1 : 3);
@@ -38,49 +37,39 @@ const Login = () => {
     ), 0);
   }
   const onFinish = async (values) => {
-    const res = await loginSever({
-      ...values,
-      password: getEncrypt(publicKey, values.password),
-      clientType: 4,
-      remember: false,
-      language,
-    });
-    if (res?.data?.data?.token) {
-      const data = res?.data.data;
-      setLocalStorage("Token", data?.token);
-      setLocalStorage("userName", data?.userName);
-      message.success(t('登录成功'));
-      history.push("/index/device");
-      dispatch({
-        type: 'user/updateState',
-        payload: {
-          user: {
-            ...res.data.data
+    const publicKeyRes = await getPublicKeySever();
+    if(publicKeyRes?.data){
+      const publicKey = publicKeyRes?.data;
+      const res = await loginSever({
+        ...values,
+        password: getEncrypt(publicKey, values.password),
+        clientType: 4,
+        remember: false,
+        language,
+      });
+      if (res?.data?.data?.token) {
+        const data = res?.data.data;
+        setLocalStorage("Token", data?.token);
+        setLocalStorage("userName", data?.userName);
+        message.success(t('登录成功'));
+        history.push("/index/device");
+        dispatch({
+          type: 'user/updateState',
+          payload: {
+            user: {
+              ...res.data.data
+            }
           }
-        }
-      })
-    } else {
-      message.error(res.data.msg);
-      if (res?.data.code === '407') {
-        setShowImg(true)
+        })
       } else {
+        message.error(res.data.msg);
+        if (res?.data.code === '407') {
+          setShowImg(true)
+        }
       }
     }
   }
 
-  const getPublicKey = async () => {
-    const res = await getPublicKeySever();
-    if (res?.data) {
-      setPublicKey(res?.data);
-      dispatch({
-        type: 'user/updateState',
-        payload: {
-          publicKey: res.data
-
-        }
-      })
-    }
-  }
   const changeLanguage = (e) => {
     let locale = e.target.value == 1 ? 'zh-CN' : 'en-US';
     setLanguage(e.target.value);
@@ -92,9 +81,7 @@ const Login = () => {
       }
     })
   }
-  useEffect(() => {
-    getPublicKey();
-  }, [])
+
   return (
     <div
       style={{
