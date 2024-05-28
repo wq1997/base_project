@@ -86,16 +86,15 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
                 })
             );
         } catch (e) {
-            message.error("出错了");
             setSpinning(false);
         }
         setSpinning(false);
         if (res?.data?.code == 0) {
             message.success("解析成功");
-            onCloseModal();
         } else {
             message.error(res?.data?.message);
         }
+        onCloseModal();
     };
 
     useEffect(() => {

@@ -10,7 +10,6 @@ const getToken = () => localStorage.getItem("Token");
 
 const instance = axios.create({
     baseURL: getBaseUrl(),
-    timeout: 180000,
     headers: {
         Authorization: getToken(),
     },
