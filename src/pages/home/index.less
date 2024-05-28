@@ -17,6 +17,7 @@
   font-size: 14px;
   position: relative;
   border-radius: 8px;
+
   .right {
     position: absolute;
     right: 20px;
@@ -29,6 +30,56 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   gap: 8px 8px;
+
+  .headLeftPart {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    padding: 10px 25px;
+
+    .line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .label {
+        font-size: 18px;
+      }
+
+      .value {
+        font-size: 2vh;
+
+        .unit {
+          font-size: 1vh;
+        }
+      }
+
+      .icon {
+        font-size: 4vh;
+      }
+    }
+  }
+
+  .headrightPart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .value {
+      font-size: 3vh;
+      margin-right: 7%;
+      .unit {
+        font-size: 12px;
+      }
+      .label{
+        font-size: 16px;
+
+      }
+    }
+
+    .icon {
+      font-size: 4vh;
+    }
+  }
 
 }
 

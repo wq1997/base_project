@@ -160,22 +160,30 @@ function OverView(props) {
         setCurrntGrid(e.target.value);
     };
 
-    const [profit, setProfit] = useState([
+    const [power, setPower] = useState([
         {
-            value: '',
-            label: '总充电',
-            key: 'dailyEarn',
-            unit: currentPlant.priceUnit,
-            color: '#E9641C',
-            icon: 'icon-qushi'
+            value: '0.000',
+            label: '光伏',
+            key: 'pvPower',
+            unit: 'kW',
+            color: 'rgb(14, 116, 225)',
+            icon: 'icon-guangfu1'
         },
         {
-            value: '',
-            label: '累计收益',
-            key: 'totalEarning',
-            unit: currentPlant.priceUnit,
-            color: '#03B4B4',
-            icon: 'icon-qian'
+            value: '0.000',
+            label: '负载',
+            key: 'loadPower',
+            unit: 'kW',
+            color: 'rgb(254, 135, 51)',
+            icon: 'icon-sifufuzai'
+        },
+        {
+            value: '0.000',
+            label: '当前总功率',
+            key: 'totalPower',
+            unit: 'kW',
+            color: 'rgb(11, 194, 213)',
+            icon: 'icon-gongyezujian-yibiaopan'
         },
     ])
     return (
@@ -201,19 +209,45 @@ function OverView(props) {
                     </div>
                     <Switch className={styles.right} checkedChildren="总览列表" unCheckedChildren="接线图" defaultChecked />
                 </div>
-                <div className={styles.heard} style={{color: token.colorNormal }}>
+                <div className={styles.heard} style={{ color: token.colorNormal }}>
                     <div className={styles.headLeftPart} style={{ backgroundColor: token.titleCardBgc, }}>
-                        <div>
-                            <span></span>
-                            <span></span>
-                            <Icon type='icon-zongchongdian'/>
+                        <div className={styles.line}>
+                            <span className={styles.label}>{t('总充电')}</span>
+                            <span className={styles.value} style={{ color: 'rgb(14, 116, 225)' }}>{'0.00'}<span className={styles.unit} style={{ color: token.colorNormal }}>(MWh)</span></span>
+                            <Icon className={styles.icon} type='icon-zongchongdian' />
                         </div>
-                        <div></div>
+                        <div className={styles.line}>
+                            <span className={styles.label}>{t('总放电')}</span>
+                            <span className={styles.value} style={{ color: 'rgb(245, 221, 59)' }}>{'0.00'}<span className={styles.unit} style={{ color: token.colorNormal }}>(MWh)</span></span>
+                            <Icon className={styles.icon} type='icon-zongfangdian' />
+                        </div>
                     </div>
-                    <div className={styles.headLeftPart} style={{ backgroundColor: token.titleCardBgc,   }}></div>
-                    <div className={styles.headLeftPart} style={{ backgroundColor: token.titleCardBgc,   }}></div>
-                    <div className={styles.headLeftPart} style={{ backgroundColor: token.titleCardBgc,   }}></div>
-                    <div className={styles.headLeftPart} style={{ backgroundColor: token.titleCardBgc,   }}></div>
+                    <div className={styles.headLeftPart} style={{ backgroundColor: token.titleCardBgc, }}>
+                        <div className={styles.line}>
+                            <span className={styles.label}>{t('日充电')}</span>
+                            <span className={styles.value} style={{ color: 'rgb(11, 194, 213)' }}>{'0.00'}<span className={styles.unit} style={{ color: token.colorNormal }}>(MWh)</span></span>
+                            <Icon className={styles.icon} type='icon-richongdian' />
+                        </div>
+                        <div className={styles.line}>
+                            <span className={styles.label}>{t('日放电')}</span>
+                            <span className={styles.value} style={{ color: 'rgb(254, 135, 51)' }}>{'0.00'}<span className={styles.unit} style={{ color: token.colorNormal }}>(MWh)</span></span>
+                            <Icon className={styles.icon} type='icon-rifangdian' />
+                        </div>
+                    </div>
+                    {power.map(it => {
+                        return (
+                            <div className={styles.headrightPart} style={{ backgroundColor: token.titleCardBgc, }}>
+                                <div className={styles.value} style={{color:it.color}}>
+                                    {it.value}
+                                    <span className={styles.unit} style={{color:token.colorNormal}}>({it.unit})</span>
+                                    <div className={styles.label} style={{color:token.colorNormal}}>{it.label}</div>
+                                </div>
+                                <Icon className={styles.icon} style={{ color: it.color }} type={it.icon} />
+                            </div>
+                        )
+                    })}
+
+
 
 
                 </div>
