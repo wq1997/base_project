@@ -7,6 +7,8 @@ import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 import localeData from "dayjs/plugin/localeData";
 import 'dayjs/locale/zh-cn';
+import { useEffect } from "react";
+import OvertimeLogin from "../utils/overtime";
 dayjs.extend(weekday);
 dayjs.extend(localeData);
 dayjs.locale('zh-cn');
@@ -18,6 +20,10 @@ const localeEnum = {
 
 const App = () => {
     const { theme, locale } = useSelector(state => state.global);
+
+    useEffect(() => {
+        global.overtime = window.setInterval(OvertimeLogin(), 1000);
+    });
 
     return (
         <ConfigProvider
