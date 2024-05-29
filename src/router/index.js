@@ -7,7 +7,7 @@ export default Routes = [
                 path: "/",
                 component: "@/layouts/baseLayout",
                 routes: [
-                    { path: "/overview-screen", component: "@/pages/overview" },
+                    // { path: "/overview-screen", component: "@/pages/overview" },
                     {
                         path: "/workbench/management-roles",
                         component: "@/pages/workbench/managementRoles",

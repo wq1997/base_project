@@ -7,11 +7,11 @@ import { FundFilled, FolderOpenFilled, AppstoreFilled, SettingFilled } from '@an
 const { SubMenu } = Menu;
 
 const MenuList = [
-    {
-        key: "/overview-screen",
-        label: "采日运维大屏",
-        icon: <FundFilled />
-    },
+    // {
+    //     key: "/overview-screen",
+    //     label: "采日运维大屏",
+    //     icon: <FundFilled />
+    // },
     {
         key: "/workbench",
         label: "运维工作台",

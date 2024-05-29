@@ -14,7 +14,7 @@ const Login = () => {
 
   const onFinish = async (values) => {
     setLocalStorage("Token", 'token');
-    history.push("/overview-screen")
+    history.push("/workbench/management-roles")
   }
 
   const getPublicKey = async () => {
