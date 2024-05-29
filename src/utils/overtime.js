@@ -15,7 +15,7 @@ const OvertimeLogin=()=> {
         timeType = window.location.href.indexOf('login') < 0;
         currentTime = new Date().getTime();
         console.log("currentTime", (currentTime - lastTime)/1000);
-        if (currentTime - lastTime > timeOut) {
+        if ((currentTime - lastTime)/1000 > timeOut) {
             if (timeType) {
 				window.clearInterval(global.overtime)
 				getDvaApp()._store.dispatch({
