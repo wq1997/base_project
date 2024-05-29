@@ -3,6 +3,7 @@ import { SearchInput } from "@/components";
 import { Button, Space, Table, Tooltip, DatePicker } from "antd";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import AddPlant from "./AddPlant";
+import Detail from "./Detail";
 import dayjs from "dayjs";
 import styles from "./index.less";
 import {
@@ -25,6 +26,7 @@ const Log = () => {
     const gridTimeRef = useRef();
     const [gridTime, setGridTime] = useState([]);
     const paginationRef = useRef(DEFAULT_PAGINATION);
+    const [detailId, setDetailId] = useState();
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
 
     const columns = [
@@ -68,7 +70,6 @@ const Log = () => {
                 return (
                     <Space size={10}>
                         <a
-                            type="link"
                             onClick={() => {
                                 setEditId(id);
                                 setAddPlantOpen(true);
@@ -79,9 +80,7 @@ const Log = () => {
                         <a style={{ color: "#ff4d4f" }} onClick={() => {}}>
                             删除
                         </a>
-                        <a type="link" onClick={() => {}}>
-                            详情
-                        </a>
+                        <a onClick={() => setDetailId(id)}>详情</a>
                     </Space>
                 );
             },
@@ -90,7 +89,7 @@ const Log = () => {
 
     const getPlantType = async () => {
         const res = await getPlantTypeServer();
-        if (res?.data?.data) {
+        if (res?.data?.code == 200) {
             setPlantTypeOptions(res?.data?.data);
         }
     };
@@ -152,6 +151,12 @@ const Log = () => {
     return (
         <>
             <AddPlant open={addPlantOpen} editId={editId} onClose={onAddPlantClose} />
+            <Detail
+                detailId={detailId}
+                onClose={() => {
+                    setDetailId();
+                }}
+            />
             <Space
                 style={{
                     flexWrap: "wrap",

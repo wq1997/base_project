@@ -17,6 +17,11 @@ export const savePlant = payload => {
     return axiosInstance.post(url, payload);
 };
 
+export const updatePlant = payload => {
+    const url = `${API_URL_1}/api/v1/plant/${payload?.id}`;
+    return axiosInstance.put(url, payload);
+};
+
 export const getDraftPlant = () => {
     const url = `${API_URL_1}/api/v1/plant/draft`;
     return axiosInstance.get(url);

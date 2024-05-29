@@ -4,18 +4,20 @@ import { Button, Space, Table, Tooltip, DatePicker } from "antd";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import AddDevice from "./AddDevice";
 import dayjs from "dayjs";
-import styles from "./index.less";
+import { QuestionCircleOutlined } from "@ant-design/icons";
+import {
+    getDeviceList as getDeviceListServer,
+    getCommunicationStatus as getCommunicationStatusServer,
+    getDeviceType as getDeviceTypeServer,
+} from "@/services/device";
+import { color } from "echarts";
 
 const Log = () => {
     const [dataSource, setDataSource] = useState([]);
     const [loading, setLoading] = useState(false);
     const [addDeviceOpen, setAddDeviceOpen] = useState(false);
     const [editId, setEditId] = useState();
-    const companyRef = useRef();
-    const [company, setCompany] = useState();
-    const plantTypeRef = useRef();
-    const [plantType, setPlantType] = useState();
-    const [plantTypeOptions, setPlantTypeOptions] = useState([]);
+
     const plantNameRef = useRef();
     const [plantName, setPlantName] = useState();
     const communicationStatusRef = useRef();
@@ -26,36 +28,30 @@ const Log = () => {
     const [deviceTypeOptions, setDeviceTypeOptions] = useState([]);
     const deviceNameRef = useRef();
     const [deviceName, setDeviceName] = useState();
-    const [deviceNameOptions, setDeviceNameOptions] = useState([]);
     const snRef = useRef();
     const [sn, setSn] = useState();
     const deviceModelRef = useRef();
     const [deviceModel, setDeviceModel] = useState();
-    const executeTimeRef = useRef();
-    const [executeTime, setExecuteTime] = useState();
+
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
 
     const columns = [
         {
-            title: "序号",
-            dataIndex: "operatorAccount",
-        },
-        {
             title: "SN号",
-            dataIndex: "",
+            dataIndex: "snNumber",
         },
         {
             title: "设备名称",
-            dataIndex: "operationPage",
+            dataIndex: "name",
         },
         {
             title: "设备类型",
-            dataIndex: "operatorName",
+            dataIndex: "typeZh",
         },
         {
             title: "设备状态",
-            dataIndex: "",
+            dataIndex: "deviceStatusZh",
         },
         {
             title: "设备型号",
@@ -63,41 +59,59 @@ const Log = () => {
         },
         {
             title: "电站名称",
-            dataIndex: "",
+            dataIndex: "plantName",
         },
         {
             title: "质保有效期",
-            dataIndex: "",
+            dataIndex: "warrantyPeriod",
         },
         {
             title: "通信状态",
-            dataIndex: "",
+            dataIndex: "communicationStatusZh",
         },
     ];
 
+    const getCommunicationStatus = async () => {
+        const res = await getCommunicationStatusServer();
+        if (res?.data?.code == 200) {
+            setCommunicationStatusOptions(res?.data?.data);
+        }
+    };
+
+    const getDeviceType = async () => {
+        const res = await getDeviceTypeServer();
+        if (res?.data?.code == 200) {
+            setDeviceTypeOptions(res?.data?.data);
+        }
+    };
+
     const getList = async () => {
         const { current, pageSize } = paginationRef.current;
-        const account = accountRef.current;
-        const pageName = pageRef.current;
-        const operationName = operationRef.current;
+
+        const plantName = plantNameRef.current;
+        const communicationStatus = communicationStatusRef?.current;
+        const name = deviceNameRef?.current;
+        const type = deviceTypeRef?.current;
+        const sn = snRef?.current;
+
         setLoading(true);
         try {
-            const res = await getOperationLogServe({
-                pageNum: current,
+            const res = await getDeviceListServer({
+                pageNo: current,
                 pageSize,
-                queryCmd: {
-                    operatorAccount: account,
-                    operationPage: pageName,
-                    operatorName: operationName,
-                },
+                plantName,
+                communicationStatus,
+                name,
+                type,
+                sn,
             });
-            if (res?.data?.status == "SUCCESS") {
-                const { totalRecord, recordList } = res?.data?.data;
+            if (res?.data?.code == 200) {
+                const { total, records } = res?.data?.data;
                 setPagination({
                     ...paginationRef.current,
-                    total: parseInt(totalRecord),
+                    total: parseInt(total),
                 });
-                setDataSource(recordList);
+                setDataSource(records);
             }
         } finally {
             setLoading(false);
@@ -106,12 +120,8 @@ const Log = () => {
 
     const handleReset = () => {
         paginationRef.current = DEFAULT_PAGINATION;
-        companyRef.current = undefined;
-        setCompany();
         deviceTypeRef.current = undefined;
         setDeviceType();
-        plantTypeRef.current = undefined;
-        setPlantType();
         plantNameRef.current = undefined;
         setPlantName();
         communicationStatusRef.current = undefined;
@@ -122,19 +132,19 @@ const Log = () => {
         setSn();
         deviceModelRef.current = undefined;
         setDeviceModel();
-        executeTimeRef.current = undefined;
-        setExecuteTime([]);
         getList();
     };
 
-    const onAddDeviceClose = resFlag => {
+    const onAddDeviceClose = () => {
         setEditId();
-        resFlag && getCompanyList();
+        getList();
         setAddDeviceOpen(false);
     };
 
     useEffect(() => {
-        //  getList();
+        getCommunicationStatus();
+        getDeviceType();
+        getList();
     }, []);
 
     return (
@@ -146,26 +156,6 @@ const Log = () => {
                     marginBottom: "8px",
                 }}
             >
-                <SearchInput
-                    label="所属公司"
-                    placeholder="请输入所属公司"
-                    inputWidth={250}
-                    value={company}
-                    onChange={value => {
-                        companyRef.current = value;
-                        setCompany(value);
-                    }}
-                />
-                <SearchInput
-                    label="电站类型"
-                    value={plantType}
-                    type="select"
-                    options={plantTypeOptions}
-                    onChange={value => {
-                        plantTypeRef.current = value;
-                        setPlantType(value);
-                    }}
-                />
                 <SearchInput
                     label="电站名称"
                     placeholder="请输入电站名称"
@@ -187,6 +177,16 @@ const Log = () => {
                     }}
                 />
                 <SearchInput
+                    label="设备名称"
+                    placeholder="请输入设备名称"
+                    inputWidth={250}
+                    value={deviceName}
+                    onChange={value => {
+                        deviceNameRef.current = value;
+                        setDeviceName(value);
+                    }}
+                />
+                <SearchInput
                     label="设备类型"
                     value={deviceType}
                     type="select"
@@ -195,16 +195,6 @@ const Log = () => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         deviceTypeRef.current = value;
                         setDeviceType(value);
-                    }}
-                />
-                <SearchInput
-                    label="设备名称"
-                    placeholder="请输入设备名称"
-                    inputWidth={250}
-                    value={deviceName}
-                    onChange={value => {
-                        deviceNameRef.current = value;
-                        setDeviceName(value);
                     }}
                 />
                 <SearchInput
@@ -227,21 +217,7 @@ const Log = () => {
                         setDeviceModel(value);
                     }}
                 />
-                <div>
-                    <span>开始/结束时间：</span>
-                    <DatePicker.RangePicker
-                        onChange={(date, dateStr) => {
-                            paginationRef.current = DEFAULT_PAGINATION;
-                            executeTimeRef.current = dateStr;
-                            setExecuteTime(dateStr);
-                        }}
-                        value={
-                            executeTime && executeTime.length > 0
-                                ? [dayjs(executeTime[0]), dayjs(executeTime[1])]
-                                : []
-                        }
-                    />
-                </div>
+
                 <Button type="primary" onClick={getList}>
                     搜索
                 </Button>
@@ -258,13 +234,87 @@ const Log = () => {
                 columns={columns}
                 pagination={pagination}
                 title={() => (
-                    <Button
-                        type="primary"
-                        onClick={() => setAddDeviceOpen(true)}
-                        style={{ float: "right", marginBottom: "8px" }}
+                    <Space
+                        style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                        }}
                     >
-                        新增设备
-                    </Button>
+                        <div style={{ position: "relative" }}>
+                            <QuestionCircleOutlined style={{ marginRight: "5px" }} />
+                            状态说明
+                            <div
+                                style={{
+                                    position: "absolute",
+                                    zIndex: 99,
+                                    background: "#fff",
+                                    width: "400px",
+                                    boxShadow: "0 2px 0 rgba(5, 145, 255, 0.1)",
+                                }}
+                            >
+                                <Table
+                                    bordered
+                                    size="small"
+                                    dataSource={[
+                                        {
+                                            status: "运行",
+                                            explain: "设备正常运行 (含并网、离网、点检)",
+                                            color: "#67c23a",
+                                        },
+                                        {
+                                            status: "待机",
+                                            explain: "待机 (含指令关机)或非异常关机",
+                                            color: "#e6a23c",
+                                        },
+                                        {
+                                            status: "故障",
+                                            explain: "设备存在故障或异常关机",
+                                            color: "#f56c6c",
+                                        },
+                                        {
+                                            status: "断连",
+                                            explain: "通信断连",
+                                            color: "#909399",
+                                        },
+                                        {
+                                            status: "载入中",
+                                            explain: "设备完成识别，特征信息采集过程中",
+                                            color: "#409eff",
+                                        },
+                                    ]}
+                                    columns={[
+                                        { title: "状态", dataIndex: "status" },
+                                        {
+                                            title: "颜色",
+                                            dataIndex: "color",
+                                            render(_, { color }) {
+                                                return (
+                                                    <div
+                                                        style={{
+                                                            width: "20px",
+                                                            height: "20px",
+                                                            background: color,
+                                                            borderRadius: "50%",
+                                                        }}
+                                                    ></div>
+                                                );
+                                            },
+                                        },
+                                        { title: "说明", dataIndex: "explain" },
+                                    ]}
+                                    pagination={false}
+                                />
+                            </div>
+                        </div>
+                        <Button
+                            type="primary"
+                            onClick={() => setAddDeviceOpen(true)}
+                            style={{ float: "right", marginBottom: "8px" }}
+                        >
+                            新增设备
+                        </Button>
+                    </Space>
                 )}
             />
         </>

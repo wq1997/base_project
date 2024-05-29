@@ -15,7 +15,6 @@ const MyUpload = ({
     const [fileList, setFileList] = useState([]);
 
     useEffect(() => {
-        console.log('files',files)
         setFileList(files);
     }, [files]);
 

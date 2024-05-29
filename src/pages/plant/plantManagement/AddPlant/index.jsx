@@ -16,10 +16,11 @@ import {
 } from "antd";
 import { MyUpload, AuthImg } from "@/components";
 import { QuestionCircleOutlined } from "@ant-design/icons";
-import { savePlant as savePlantServer } from "@/services/plant";
 import {
     getPlantType as getPlantTypeServer,
     getPlantInfoById as getPlantInfoByIdServer,
+    savePlant as savePlantServer,
+    updatePlant as updatePlantServer,
 } from "@/services/plant";
 import dayjs from "dayjs";
 
@@ -57,19 +58,21 @@ const Plant = ({ open, editId, onClose }) => {
 
     const onFinish = async (commit, values) => {
         if (!commit) values = form.getFieldsValue();
-        const res = await savePlantServer({
+        const fn = editId ? updatePlantServer : savePlantServer;
+        const res = await fn({
             id: editData?.id,
             commit,
             ...values,
             gridTime: formatTime(values?.gridTime),
-            logo: values?.logo?.[0]?.fileName,
-            photo: values?.photo?.[0]?.fileName,
+            logo: values?.logo?.[0]?.fileName || null,
+            photo: values?.photo?.[0]?.fileName || null,
         });
         if (res?.data?.code == 200) {
-            message.success(`${commit ? "添加" : "保存"}成功`);
-            onClose();
+            message.success(`${editData?.id ? "保存" : "添加"}成功`);
+            localStorage.removeItem("plantDraft");
+            onCancel(true);
         } else {
-            message.info(res?.data?.msg);
+            message.info(res?.data?.description);
         }
     };
 
@@ -79,18 +82,22 @@ const Plant = ({ open, editId, onClose }) => {
             if (editId) {
                 getPlantInfo();
             } else {
-                const plantDraft = JSON.parse(localStorage.getItem("plantDraft")) || {};
-                setEditData(plantDraft);
-                form.setFieldsValue({
-                    ...plantDraft,
-                    gridTime: dayjs(plantDraft?.gridTime, "YYYY-MM-DD"),
-                });
+                const plantDraft = JSON.parse(localStorage.getItem("plantDraft"));
+                if (plantDraft) {
+                    setEditData(plantDraft);
+                    form.setFieldsValue({
+                        ...plantDraft,
+                        gridTime: plantDraft?.gridTime
+                            ? dayjs(plantDraft?.gridTime, "YYYY-MM-DD")
+                            : undefined,
+                    });
+                }
             }
         }
     }, [open]);
 
-    const onCancel = () => {
-        if (!editId) {
+    const onCancel = isSaveOK => {
+        if (!editId && !isSaveOK) {
             localStorage.setItem("plantDraft", JSON.stringify(form.getFieldsValue()));
         }
         form.resetFields();
@@ -104,7 +111,7 @@ const Plant = ({ open, editId, onClose }) => {
             confirmLoading={true}
             open={open}
             footer={null}
-            onCancel={onCancel}
+            onCancel={() => onCancel(false)}
         >
             <Form
                 id="form"
@@ -168,6 +175,7 @@ const Plant = ({ open, editId, onClose }) => {
                             ]}
                         >
                             <Select
+                                allowClear={true}
                                 placeholder="请选择电站类型"
                                 fieldNames={{ label: "displayName", value: "name" }}
                                 options={plantTypeOptions}
@@ -372,7 +380,7 @@ const Plant = ({ open, editId, onClose }) => {
                     }}
                 >
                     <Space style={{ position: "relative", left: 8 }}>
-                        <Button onClick={() => onClose(false)}>取消</Button>
+                        <Button onClick={() => onCancel(false)}>取消</Button>
                         {/* <Button type="primary" ghost form="form" onClick={() => onFinish(false)}>
                             保存
                         </Button> */}

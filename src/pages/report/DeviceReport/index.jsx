@@ -138,6 +138,7 @@ const Log = () => {
                         setDeviceName(value);
                     }}
                 />
+                加个设备型号选择
                 <SearchInput
                     label="时间维度"
                     value={timeDimension}
