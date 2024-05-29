@@ -1,4 +1,4 @@
-import { Form, theme, Space, Row, Modal, Col, Switch, Input, Radio, InputNumber } from "antd";
+import { Form, theme, Space, Row, Modal, Col, Switch, Input, Radio, InputNumber, Button } from "antd";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { Title, EditTable } from "@/components";
 import { useIntl } from "umi";
@@ -104,6 +104,21 @@ const PolicyConfiguration = () => {
             >
                 <Space style={{width: '100%', height: 'auto', minHeight: '100%',  background: "#0A1328"}} direction="vertical" size={12}>
                     <div className={areaStyle}>
+                        <div
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'end'
+                            }}
+                        >
+                            <Button
+                                style={{
+                                    background: '#03B417',
+                                    border: 'none'
+                                }}
+                            >
+                                刷新
+                            </Button>
+                        </div>
                         <Space style={{width: '100%'}} direction="vertical">
                             <Form.Item label={intl.formatMessage({id: '策略模式'})} name="mode"  rules={[{ ...FORM_REQUIRED_RULE }]}>
                                 <ButtonGroup 
