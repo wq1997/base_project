@@ -16,12 +16,10 @@ export default [
         name: '设备',
         path: '/index/device',
         routes: [
-            // { name: 'PCS', path: '/index/device/energyPcs', component: "@/pages/device/energyPcs" },
-            // { name: 'BMS', path: '/index/device/energyBms', component: "@/pages/device/energyBms" },
-            // { name: '户外柜', path: '/index/device/energyOut', component: "@/pages/device/energyOut" },
+           
             { name: '储能', path: '/index/device/energyStorage', component: "@/pages/device/energyStorage" },
-            { name: '光伏', path: '/index/device/photovoltaic', component: "@/pages/device/photovoltaic" },
-            { name: '充电桩', path: '/index/device/chargingStation', component: "@/pages/device/chargingStation" },
+            // { name: '光伏', path: '/index/device/photovoltaic', component: "@/pages/device/photovoltaic" },
+            // { name: '充电桩', path: '/index/device/chargingStation', component: "@/pages/device/chargingStation" },
         ]
     },
     {
@@ -29,7 +27,7 @@ export default [
         path: '/index/statistics',
         routes: [
             { name: '电量统计', path: '/index/statistics/electricityStatistics', component: "@/pages/statistics/electricityStatistics" },
-            { name: '收益统计', path: '/index/statistics/revenueStatistics', component: "@/pages/statistics/revenueStatistics" },
+            // { name: '收益统计', path: '/index/statistics/revenueStatistics', component: "@/pages/statistics/revenueStatistics" },
             { name: '数据对比', path: '/index/statistics/dataComparison', component: "@/pages/statistics/dataComparison" },
             { name: '报表导出', path: '/index/statistics/reportExport', component: "@/pages/statistics/reportExport" },
         ]

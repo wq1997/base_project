@@ -19,12 +19,9 @@ const MenuList = [
         key: '/index/device',
         icon: <ToolOutlined />,
         children: [
-            // { label: 'PCS', key: '/index/device/energyPcs', type: "PCS" },
-            // { label: 'BMS', key: '/index/device/energyBms', type: "BMS" },
-            // { label: '户外柜', key: '/index/device/energyOut', type: "OC" },
             { label: <FormattedMessage id='device.EnergyStorage' />, key: '/index/device/energyStorage', type: "PV" },
-            { label: <FormattedMessage id='device.Photovoltaic' />, key: '/index/device/photovoltaic', type: "PV" },
-            { label: <FormattedMessage id='device.ChargingPiles' />, key: '/index/device/chargingStation', type: "C" },
+            // { label: <FormattedMessage id='device.Photovoltaic' />, key: '/index/device/photovoltaic', type: "PV" },
+            // { label: <FormattedMessage id='device.ChargingPiles' />, key: '/index/device/chargingStation', type: "C" },
         ]
     },
     {
@@ -33,20 +30,11 @@ const MenuList = [
         icon: <LineChartOutlined />,
         children: [
             { label: <FormattedMessage id='app.ElectricityStatistics' />, key: '/index/statistics/electricityStatistics', component: "@/pages/statistics/electricityStatistics" },
-            { label: <FormattedMessage id='app.EarningsStatistics' />, key: '/index/statistics/revenueStatistics', component: "@/pages/statistics/revenueStatistics" },
+            // { label: <FormattedMessage id='app.EarningsStatistics' />, key: '/index/statistics/revenueStatistics', component: "@/pages/statistics/revenueStatistics" },
             { label: <FormattedMessage id='app.DataComparison' />, key: '/index/statistics/dataComparison', component: "@/pages/statistics/dataComparison" },
             { label: <FormattedMessage id='app.ReportExport' />, key: '/index/statistics/reportExport', component: "@/pages/statistics/reportExport" },
         ]
     },
-    // {
-    //     label: '收益',
-    //     key: '/index/profit',
-    //     icon: <AccountBookOutlined />,
-    //     children: [
-    //         { label: '收益明细', key: '/index/profit/revenueDetails', },
-    //         { label: '收益统计', key: '/index/profit/revenueStatistics', },
-    //     ]
-    // },
     {
         label: <FormattedMessage id='app.Alarm' />,
         key: '/index/alarm',

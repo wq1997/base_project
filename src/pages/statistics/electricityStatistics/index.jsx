@@ -44,7 +44,8 @@ const PageTypeList = [
 ];
   return (
     <div className={styles.content}>
-      <Tabs 
+      <Overview />
+      {/* <Tabs 
         activeKey={activeKey}
         type="card"
         items={[AppstoreOutlined, DesktopOutlined, DatabaseOutlined, WalletOutlined].map((Icon, index) => {
@@ -59,7 +60,7 @@ const PageTypeList = [
       {activeKey === "Overview" && <Overview type={activeKey}/>}
       {activeKey === "photovoltaic" && <Photovoltaic type={activeKey}/>}
       {activeKey === "energyStorage" && <EnergyStorage type={activeKey}/>}
-      {activeKey === "chargingStation" && <ChargingStation type={activeKey}/>}
+      {activeKey === "chargingStation" && <ChargingStation type={activeKey}/>} */}
     </div>
   )
 }

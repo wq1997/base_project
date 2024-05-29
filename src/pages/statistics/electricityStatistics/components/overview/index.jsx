@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { DatePicker, Button, theme, Radio, Table} from 'antd';
+import { DatePicker, Button, theme, Radio, Table,} from 'antd';
 // import Table from '@/components/Table.jsx'
 import dayjs from 'dayjs';
 import styles from './index.less'
@@ -8,7 +8,7 @@ import ReactECharts from "echarts-for-react";
 import { useSelector, FormattedMessage, useIntl } from "umi";
 import {getEnergyFeeByTime} from '@/services/report'
 import {  downLoadExcelMode } from "@/utils/utils";
-
+const { RangePicker } = DatePicker;
 function Com(props) {
     const { token } = theme.useToken();
     const [options, setOptions] = useState({});
@@ -222,33 +222,21 @@ function Com(props) {
             // }
         },
         {
-            title: getTranslation('上网电量'),
+            title: `${getTranslation('充电电量')}(kWh)`,
             dataIndex: 'pvOutEnergy',
             key: 'pvOutEnergy',
             width: 100,
         },
         {
-            title: getTranslation('储能充电量'),
+            title: `${getTranslation('放电电量')}(kWh)`,
             dataIndex: 'energyInEnergy',
             key: 'energyInEnergy',
             width: 100,
         },
         {
-            title: getTranslation('储能放电量'),
+            title: getTranslation('充放电效率'),
             dataIndex: 'energyOutEnergy',
             key: 'energyOutEnergy',
-            width: 100,
-        },
-        {
-            title: getTranslation('光伏发电量'),
-            dataIndex: 'pvInEnergy',
-            key: 'pvOutEnergy',
-            width: 100,
-        },
-        {
-            title:getTranslation('充电桩充电量'),
-            dataIndex: 'chargeInEnergy',
-            key: 'chargeInEnergy',
             width: 100,
         },
     ];
@@ -256,10 +244,10 @@ function Com(props) {
         <div className={styles.content}>
             <div className={styles.heard} style={{ backgroundColor: token.titleCardBgc }}>
                 <div className={styles.date}>
-                    <DatePicker picker={mode} onChange={(val)=>setTime(val)}  defaultValue={time} format={format} style={{ marginRight: "20px" }}  />
+                    {mode=='date'?<RangePicker format={format} style={{ marginRight: "20px" }} />:<DatePicker picker={mode} onChange={(val)=>setTime(val)}  defaultValue={time} format={format} style={{ marginRight: "20px" }}  />}
                     <Radio.Group value={mode} onChange={handleModelChange}>
                         <Radio.Button value="date">日</Radio.Button>
-                        <Radio.Button value="month">月</Radio.Button>
+                        {/* <Radio.Button value="month">月</Radio.Button> */}
                         <Radio.Button value="year">年</Radio.Button>
                     </Radio.Group>
                 </div>

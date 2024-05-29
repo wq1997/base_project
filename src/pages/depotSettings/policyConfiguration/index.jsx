@@ -7,10 +7,10 @@ import styles from './index.less'
 import { theme, Calendar, Tree, Select, Form, message } from "antd";
 import dayjs from 'dayjs';
 import { useSelector, useIntl } from "umi";
-import { getGridPointList, getStrategyPlanList, getStrategyList, getStrategyInfo, saveStrategyPlan, deleteStrategy ,} from '@/services/policy'
+import { getGridPointList, getStrategyPlanList, getStrategyList, getStrategyInfo, saveStrategyPlan, deleteStrategy, } from '@/services/policy'
 const { Option } = Select;
 
-function Com(props) {     
+function Com(props) {
   const [seletOption, setSelectOption] = useState([]);
   const [gridId, setGridId] = useState();
   const [currentGrid, setCurrentGrid] = useState();
@@ -141,7 +141,7 @@ function Com(props) {
   return (
     <div className={styles.contents}>
       <div className={styles.hearder} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal }}>
-       {t('并网点')}:
+        {t('并网点')}:
         <Select
           style={{ width: '200px', marginLeft: '10px' }}
           key={seletOption[0]?.value}
@@ -153,48 +153,11 @@ function Com(props) {
           })
           }
         </Select>
+
+        
       </div>
-      <div className={styles.leftTop_Calendar}>
-        <CardModel
-          title={
-            t("日历")
-          }
-          content={
-            <Calendar fullscreen={false} onSelect={onSelect} onPanelChange={onPanelChange} value={dayjs(date)} />
-          }
-        ></CardModel>
-      </div>
-      <div className={styles.leftBottom_List}>
-        <CardModel
-          title={
-            t("策略列表")
-          }
-          content={
-            <Tree
-              // checkable
-              treeData={strategyTreeData}
-              defaultExpandAll
-              onSelect={(_, { node }) => {
-                setEditPlanOpen(prv => !prv);
-                setStrategyId(node?.strategyId);
-              }}
-            />
-          }
-        >
-        </CardModel>
-      </div>
-      <div className={styles.right_Content} style={{ backgroundColor: token.titleCardBgc }}>
-        <Strategy
-          date={date}
-          setDate={onSelect}
-          planList={planList}
-          strategy={strategyTreeData}
-          newPolicy={newPolicy}
-          getStrategy={getStrategy}
-          deleteStrategy={delStrategy}
-          currentGrid={currentGrid}
-        />
-      </div>
+        <div class="content"></div>
+        <div class="bottom"></div>
       <Detail
         form={form6}
         open={editPlanOpen}

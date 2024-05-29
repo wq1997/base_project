@@ -5,7 +5,7 @@ import styles from './index.less'
 import { CardModel } from "@/components";
 import useIcon from "@/hooks/useIcon";
 import { useSelector, useIntl } from "umi";
-import { theme, Switch, Select, Descriptions  } from "antd";
+import { theme, Switch, Select, Descriptions } from "antd";
 import { getGridPointPower, getPlantEnergyFee } from '@/services/home'
 import { getEnergyFeeByTime } from '@/services/report'
 import { getGridPointList } from '@/services/policy'
@@ -190,58 +190,83 @@ function OverView(props) {
         {
             key: 'lineAbVol',
             label: 'AB线电压',
-            unit: 'V'
+            unit: '(V)'
         },
         {
             key: 'lineBcVol',
             label: 'BC线电压',
-            unit: 'V'
+            unit: '(V)'
 
         },
         {
             key: 'lineCaVol',
             label: 'CA线电压',
-            unit: 'V'
+            unit: '(V)'
 
         },
         {
             key: 'phaseACur',
             label: 'A相电流',
-            unit: 'A'
+            unit: '(A)'
 
         },
         {
             key: 'phaseBCur',
             label: 'B相电流',
-            unit: 'A'
+            unit: '(A)'
 
         },
         {
             key: 'phaseCCur',
             label: 'C相电流',
-            unit: 'A'
+            unit: '(A)'
 
         },
         {
             key: 'oilTemp',
             label: '变压器油温',
-            unit: '℃'
+            unit: '(℃)'
         },
         {
             key: 'activePower',
             label: '有功功率',
-            unit: 'kW'
+            unit: '(kW)'
 
         },
         {
             key: 'reactivePower',
             label: '无功功率',
-            unit: 'KVar'
+            unit: '(KVar)'
         },
         {
             key: 'factor',
             label: '功率因数',
             unit: ''
+        },
+    ];
+    const pcsModel = [
+        {
+            key: 'startState',
+            label: '状态',
+            unit: ''
+        },
+        {
+            key: 'startState',
+            label: '直流功率',
+            unit: '(kW)'
+
+        },
+        {
+            key: 'startState',
+            label: 'SOC',
+            unit: '(%)'
+
+        },
+        {
+            key: 'startState',
+            label: 'SOH',
+            unit: '(%)'
+
         },
     ]
     return (
@@ -310,13 +335,75 @@ function OverView(props) {
                         title='1#Transformer'
                         content={
                             <>
-                            <Descriptions column={5}  items={gridData}/>
+                                <Descriptions
+                                    column={{
+                                        xs: 1,
+                                        sm: 2,
+                                        md: 3,
+                                        lg: 4,
+                                        xl: 5,
+                                        xxl: 5,
+                                    }}
+                                    items={gridData.map(it => {
+                                        return {
+                                            label: t(it.label) + `${it.unit}`,
+                                            key: it.key,
+                                            children: it.label
+                                        }
+                                    })
+
+
+                                    } />
                             </>
                         }
                     />
 
                 </div>
-                <div className={styles.bottomPart} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal }}></div>
+                <div className={styles.bottomPart} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal }}>
+                    <CardModel
+                        title='PCS1'
+                        content={
+                            <>
+                                <div className={styles.totalPcs} style={{ backgroundColor: token.cardBgc }}>
+                                    <Descriptions
+                                        column={{
+                                            xs: 1,
+                                            sm: 2,
+                                            md: 3,
+                                            lg: 4,
+                                            xl: 5,
+                                            xxl: 5,
+                                        }}
+                                        items={gridData.map(it => {
+                                            return {
+                                                label: t(it.label) + `${it.unit} `,
+                                                key: it.key,
+                                                children: it.label
+                                            }
+                                        })
+                                        } />
+                                </div>
+                                <div className={styles.pcsModule}>
+                                    {[...Array(8)].map((item, i) => {
+                                        return <Descriptions
+                                            style={{ backgroundColor: token.cardBgc,padding:'16px 12px 8px 12px',borderRadius:'8px' }}
+                                            column={1}
+                                            title={"Module1#" + (i + 1)}
+                                            items={pcsModel.map(it => {
+                                                return {
+                                                    label: t(it.label) + `${it.unit}`,
+                                                    key: it.key,
+                                                    children: '--' || it.label
+                                                }
+                                            })
+                                            } />
+                                    })}
+                                </div>
+
+                            </>
+                        }
+                    />
+                </div>
 
             </div>
         </>
