@@ -3,17 +3,28 @@
     height: 100%;
     padding-bottom: 10px;
     display: grid;
-    grid-auto-columns: 1fr; 
-    grid-auto-rows: 1fr 1fr; 
-    grid-template-rows: auto 1fr 60px; 
-    gap: 8px 8px; 
+    grid-auto-columns: 1fr;
+    grid-auto-rows: 1fr 1fr;
+    grid-template-rows: auto 1fr 60px;
+    gap: 8px 8px;
 
-    .hearder{
+    .hearder {
         grid-area: 1 / 1 / 2 / 2;
-        padding: 20px 20px;
-        display: flex;
-        align-items: center;
     }
-    .content { grid-area: 2 / 1 / 3 / 2; }
-    .bottom { grid-area: 3 / 1 / 4 / 2; }
+
+    .headBottom {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-rows: 1fr;
+    }
+
+    .content {
+        grid-area: 2 / 1 / 3 / 2;
+        border-radius: 8px;
+    }
+
+    .bottom {
+        grid-area: 3 / 1 / 4 / 2;
+    }
 }
