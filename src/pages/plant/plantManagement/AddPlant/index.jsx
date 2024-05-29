@@ -19,11 +19,13 @@ import { QuestionCircleOutlined } from "@ant-design/icons";
 import { savePlant as savePlantServer } from "@/services/plant";
 import {
     getPlantType as getPlantTypeServer,
-    getDraftPlant as getDraftPlantServer,
+    getPlantInfoById as getPlantInfoByIdServer,
 } from "@/services/plant";
 import dayjs from "dayjs";
 
 const uploadUrl = process.env.API_URL_1 + "/api/v1/plant/upload";
+
+const formatTime = time => (time ? dayjs(time).format("YYYY-MM-DD") : undefined);
 
 const Plant = ({ open, editId, onClose }) => {
     const [form] = Form.useForm();
@@ -37,19 +39,19 @@ const Plant = ({ open, editId, onClose }) => {
         }
     };
 
-    const getDraftPlant = async () => {
-        const res = await getDraftPlantServer();
+    const getPlantInfo = async () => {
+        const res = await getPlantInfoByIdServer(editId);
         if (res?.data?.code == 200) {
-            const values = res?.data?.data;
-            values
-                ? form.setFieldsValue({
-                      ...values,
-                      startDate: dayjs(values?.gridTime, "YYYY-MM-DD"),
-                  })
-                : form.resetFields();
-            setEditData(values);
-        } else {
-            setEditData();
+            const values = res?.data?.data || {};
+            form.setFieldsValue({
+                ...values,
+                gridTime: dayjs(values?.gridTime, "YYYY-MM-DD"),
+            });
+            setEditData({
+                ...values,
+                logo: values?.logo ? [{ fileName: values?.logo }] : undefined,
+                photo: values?.photo ? [{ fileName: values?.photo }] : undefined,
+            });
         }
     };
 
@@ -59,24 +61,41 @@ const Plant = ({ open, editId, onClose }) => {
             id: editData?.id,
             commit,
             ...values,
-            gridTime: values?.gridTime ? dayjs(values?.gridTime).format("YYYY-MM-DD") : undefined,
+            gridTime: formatTime(values?.gridTime),
             logo: values?.logo?.[0]?.fileName,
             photo: values?.photo?.[0]?.fileName,
         });
         if (res?.data?.code == 200) {
             message.success(`${commit ? "添加" : "保存"}成功`);
-            onClose(true);
+            onClose();
         } else {
             message.info(res?.data?.msg);
         }
     };
 
     useEffect(() => {
+        getPlantType();
         if (open) {
-            getPlantType();
-            //getDraftPlant();
+            if (editId) {
+                getPlantInfo();
+            } else {
+                const plantDraft = JSON.parse(localStorage.getItem("plantDraft")) || {};
+                setEditData(plantDraft);
+                form.setFieldsValue({
+                    ...plantDraft,
+                    gridTime: dayjs(plantDraft?.gridTime, "YYYY-MM-DD"),
+                });
+            }
         }
     }, [open]);
+
+    const onCancel = () => {
+        if (!editId) {
+            localStorage.setItem("plantDraft", JSON.stringify(form.getFieldsValue()));
+        }
+        form.resetFields();
+        onClose();
+    };
 
     return (
         <Modal
@@ -85,7 +104,7 @@ const Plant = ({ open, editId, onClose }) => {
             confirmLoading={true}
             open={open}
             footer={null}
-            onCancel={() => onClose(false)}
+            onCancel={onCancel}
         >
             <Form
                 id="form"
@@ -303,10 +322,14 @@ const Plant = ({ open, editId, onClose }) => {
                                 url={uploadUrl}
                                 maxCount={1}
                                 maxSizeMB={5}
-                                files={editData?.contractAtt?.map(item => ({
-                                    ...item,
-                                    name: item.fileName,
-                                }))}
+                                files={
+                                    editData?.logo?.length
+                                        ? editData?.logo?.map(item => ({
+                                              url: `http://192.168.1.32:8088${item?.fileName}`,
+                                              status: "done",
+                                          }))
+                                        : undefined
+                                }
                             />
                         </Form.Item>
                     </Col>
@@ -329,10 +352,14 @@ const Plant = ({ open, editId, onClose }) => {
                                 url={uploadUrl}
                                 maxCount={1}
                                 maxSizeMB={20}
-                                files={editData?.contractAtt?.map(item => ({
-                                    ...item,
-                                    name: item.fileName,
-                                }))}
+                                files={
+                                    editData?.photo?.length
+                                        ? editData?.photo?.map(item => ({
+                                              url: `http://192.168.1.32:8088${item?.fileName}`,
+                                              status: "done",
+                                          }))
+                                        : undefined
+                                }
                             />
                         </Form.Item>
                     </Col>
@@ -340,15 +367,15 @@ const Plant = ({ open, editId, onClose }) => {
 
                 <Form.Item
                     wrapperCol={{
-                        offset: 17,
-                        span: 5,
+                        offset: 19,
+                        span: 4,
                     }}
                 >
                     <Space style={{ position: "relative", left: 8 }}>
                         <Button onClick={() => onClose(false)}>取消</Button>
-                        <Button type="primary" ghost form="form" onClick={() => onFinish(false)}>
+                        {/* <Button type="primary" ghost form="form" onClick={() => onFinish(false)}>
                             保存
-                        </Button>
+                        </Button> */}
                         <Button type="primary" htmlType="submit">
                             提交
                         </Button>

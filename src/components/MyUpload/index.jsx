@@ -15,6 +15,7 @@ const MyUpload = ({
     const [fileList, setFileList] = useState([]);
 
     useEffect(() => {
+        console.log('files',files)
         setFileList(files);
     }, [files]);
 
@@ -57,7 +58,7 @@ const MyUpload = ({
                     }
                 }}
             >
-                {fileList.length >= maxCount ? null : (
+                {fileList?.length >= maxCount ? null : (
                     <Tooltip title={`最多上传${maxCount}个文件，单个文件大小不超过${maxSizeMB}MB`}>
                         +
                     </Tooltip>

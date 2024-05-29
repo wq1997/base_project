@@ -21,3 +21,8 @@ export const getDraftPlant = () => {
     const url = `${API_URL_1}/api/v1/plant/draft`;
     return axiosInstance.get(url);
 };
+
+export const getPlantInfoById = id => {
+    const url = `${API_URL_1}/api/v1/plant/${id}`;
+    return axiosInstance.get(url);
+};

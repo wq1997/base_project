@@ -64,10 +64,16 @@ const Log = () => {
             title: "操作",
             dataIndex: "operate",
             width: 150,
-            render: (_, {}) => {
+            render: (_, { id }) => {
                 return (
                     <Space size={10}>
-                        <a type="link" onClick={() => {}}>
+                        <a
+                            type="link"
+                            onClick={() => {
+                                setEditId(id);
+                                setAddPlantOpen(true);
+                            }}
+                        >
                             编辑
                         </a>
                         <a style={{ color: "#ff4d4f" }} onClick={() => {}}>
@@ -132,9 +138,9 @@ const Log = () => {
         getList();
     };
 
-    const onAddPlantClose = resFlag => {
+    const onAddPlantClose = () => {
         setEditId();
-        resFlag && getList();
+        getList();
         setAddPlantOpen(false);
     };
 
@@ -145,7 +151,7 @@ const Log = () => {
 
     return (
         <>
-            <AddPlant open={addPlantOpen} onClose={resFlag => onAddPlantClose(resFlag)} />
+            <AddPlant open={addPlantOpen} editId={editId} onClose={onAddPlantClose} />
             <Space
                 style={{
                     flexWrap: "wrap",
