@@ -123,7 +123,7 @@ const LoadStatisc = ({ dataSource }) => {
                 }
             }],
             series: [{
-                    name: '实时负载(KW)',
+                    name: '前一日负载(KW)',
                     type: 'line',
                     data: data1,
                     symbolSize: 1,
