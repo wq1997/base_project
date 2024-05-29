@@ -556,8 +556,43 @@
                 .commonTitle; 
             }
             .area{
-                .commonArea;
-                
+                height: calc(100% - 30px);
+                display: grid;
+                align-items: center;
+                grid-template-columns: repeat(1, 1fr);
+                grid-template-rows: repeat(4, 1fr);
+                .areaItem{
+                    display: grid;
+                    align-items: center;
+                    grid-template-columns: repeat(4, 1fr);
+                    grid-template-rows: repeat(1, 1fr);
+                    height: 100%;
+                }
+                .areaItemHeader{
+                    background: linear-gradient(rgba(21, 171, 219, 0.4) 0%, rgba(9, 114, 180, 0) 100%);
+                    border: 1px solid #00C3FF;
+                    .areaItemContent{
+                        color: #2193C3;
+                        height: 100%;
+                        width: 100%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
+                }
+                .areaItemContent{
+                    text-align: center;
+                    height: 100%;
+                    .areaItemContent{
+                        color: white;
+                        background: #053451;
+                        height: 100%;
+                        width: 100%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
+                }
             }
         }
         .bottomThree{

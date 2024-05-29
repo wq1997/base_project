@@ -1,5 +1,5 @@
 import { useIntl } from "umi";
-import { theme, Radio } from "antd";
+import { theme, Spin } from "antd";
 import { Title, ScrollTable } from "@/components";
 import SchematicDiagram from "./SchematicDiagram";
 import styles from "./overview_2.0.less";
@@ -22,11 +22,14 @@ import bottomLeft1Img from "@/assets/imges/bottomLeft1.svg";
 import bottomLeft2Img from "@/assets/imges/bottomLeft2.svg";
 import bottomLeftBgImg from "@/assets/imges/bottomLeftBg.svg";
 import MyRadio from "./MyRadio";
+import { getQueryString, cloneObject } from "@/utils/utils";
+import classNames from "classnames";
 
-const OverView = () => {
+const OverView = ({deviceVersion, sn}) => {
     const intl = useIntl();
+    const title = getQueryString('title')
     const { token } = theme.useToken();
-
+    const [dataSource, setDataSource] = useState({});
     const [electricityStatisticsDataSourceLeft, setElectricityStatisticsDataSourceLeft] = useState([
         {
             title: '日充电量',
@@ -116,7 +119,7 @@ const OverView = () => {
             icon: bottomLeft1Img,
             data: [
                 {
-                    title: "温度/℃",
+                    title: "温度",
                     value: 0
                 },
                 {
@@ -124,7 +127,7 @@ const OverView = () => {
                     value: 0
                 },
                 {
-                    title: "电压/mV",
+                    title: "电压",
                     value: 0
                 },
                 {
@@ -138,7 +141,7 @@ const OverView = () => {
             icon: bottomLeft2Img,
             data: [
                 {
-                    title: "温度/℃",
+                    title: "温度",
                     value: 0
                 },
                 {
@@ -146,7 +149,7 @@ const OverView = () => {
                     value: 0
                 },
                 {
-                    title: "电压/mV",
+                    title: "电压",
                     value: 0
                 },
                 {
@@ -154,6 +157,24 @@ const OverView = () => {
                     value: 0
                 }
             ]
+        }
+    ])
+
+    const [pcsInfoDataSource, setPcsInfoDataSource] = useState([
+        {
+          title: intl.formatMessage({id: '电流'}),
+          A: 0,
+          B: 0,
+          C: 0,
+        }]
+    );
+
+    const [pcsInfoDataSource2, setPcsInfoDataSource2] = useState([
+        {
+            title: intl.formatMessage({id: '电压'}),
+            AB: 0,
+            BC: 0,
+            AC: 0,
         }
     ])
 
@@ -188,8 +209,8 @@ const OverView = () => {
             }}
         >
                 <div className={styles.top}>
-                    <div className={styles.topTitle}>东方日立1号储能柜</div>
-                    <div className={styles.snTitle}>{intl.formatMessage({id:'SN号'})}：CH005000AADFH001</div>
+                    <div className={styles.topTitle}>{title?decodeURI(title):''}</div>
+                    <div className={styles.snTitle}>{intl.formatMessage({id:'SN号'})}：{sn}</div>
                 </div>
                 <div className={styles.center}>
                     <div className={styles.centerLeft}>
@@ -296,7 +317,12 @@ const OverView = () => {
                         </div>
                     </div>
                     <div className={styles.centerRight}>
-                        <SchematicDiagram />
+                        {
+                            dataSource?.flowDiagram?
+                            <SchematicDiagram dataSource={dataSource?.flowDiagram||{}}/>
+                            :
+                            <Spin spinning={true} />
+                        }
                     </div>
                 </div>
                 <div className={styles.bottom}>
@@ -342,28 +368,18 @@ const OverView = () => {
                             <Title title={intl.formatMessage({id: 'PCS信息'})} />
                         </div>
                         <div className={styles.area}>
-                            <ScrollTable 
-                                columns={[
-                                    {title: "", key: "title"},
-                                    {title: "A", key: "A"},
-                                    {title: "B", key: "B"},
-                                    {title: "C", key: "C"}
-                                ]}
-                                dataSource={[
-                                    {
-                                      A: "A",
-                                      B: "B",
-                                      C: "C",
-                                      title: intl.formatMessage({id: '电流/A'})
-                                    },
-                                    {
-                                      A: "A",
-                                      B: "B",
-                                      C: "C",
-                                      title: intl.formatMessage({id: '电压/V'})
-                                    }
-                                ]}
-                            />
+                            <div className={classNames(styles.areaItem, styles.areaItemHeader)}>
+                                {['','A','B','C'].map(item=><div className={styles.areaItemContent}>{item}</div>)}
+                            </div>
+                            <div className={classNames(styles.areaItem, styles.areaItemContent)}>
+                                {Object.values(pcsInfoDataSource[0]||{}).map(item=><div className={styles.areaItemContent}>{item}</div>)}
+                            </div>
+                            <div className={classNames(styles.areaItem, styles.areaItemHeader)}>
+                                {['','AB','BC','AC'].map(item=><div className={styles.areaItemContent}>{item}</div>)}
+                            </div>
+                            <div className={classNames(styles.areaItem, styles.areaItemContent)}>
+                                {Object.values(pcsInfoDataSource2[0]||{}).map(item=><div className={styles.areaItemContent}>{item}</div>)}
+                            </div>
                         </div>
                     </div>
                     <div className={styles.bottomThree}>
