@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 const defaultFiles = [];
 
-const MyUpload = ({ url, files = defaultFiles, onChange, maxCount = 3, maxSizeMB = 10 }) => {
+const MyUpload = ({ url, files = defaultFiles, onChange, maxCount = 3, maxSizeMB = 10, accept=".pdf" }) => {
     const [newFiles, setNewFiles] = useState([]);
 
     useEffect(() => {
@@ -14,6 +14,7 @@ const MyUpload = ({ url, files = defaultFiles, onChange, maxCount = 3, maxSizeMB
     return (
         <>
             <Upload
+                accept={accept}
                 action={url}
                 headers={{
                     Authorization: localStorage.getItem("Token"),
@@ -42,7 +43,7 @@ const MyUpload = ({ url, files = defaultFiles, onChange, maxCount = 3, maxSizeMB
                     setNewFiles(newFiles); //这里必须要重新set一下解决onChange只执行一次问题 fileList默认值的原因
                 }}
             >
-                <Tooltip title={`最多上传${maxCount}个文件，单个文件大小不超过${maxSizeMB}MB`}>
+                <Tooltip title={`最多上传${maxCount}个文件，单个文件大小不超过${maxSizeMB}MB，支持${accept}文件上传`}>
                     <Button>点击上传</Button>
                 </Tooltip>
             </Upload>
