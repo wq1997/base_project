@@ -8,7 +8,7 @@ import {
     getBurCmdHistory2 as getBurCmdHistory2Serve,
     verifyPassword as verifyPasswordServe,
     sendPCSSetting as sendPCSSettingServe,
-    sendBMSSetting as sendBMSSettingServe,
+    updateData as updateDataServe,
     sendPCSPower as sendPCSPowerServe,
     sendParamSetting as sendParamSettingServe,
     sendStrategySelect as sendStrategySelectServe,
@@ -17,7 +17,7 @@ import {
     switchModes as switchModesServe,
     sendStrategySetting as sendStrategySettingServe,
 } from "@/services";
-import { getQueryString } from "@/utils/utils";
+import { getQueryString, translateNmberToTime } from "@/utils/utils";
 import { FORM_REQUIRED_RULE } from "@/utils/constants";
 
 const PolicyConfiguration = () => {
@@ -27,17 +27,18 @@ const PolicyConfiguration = () => {
     const [form] = Form.useForm();
     const [checkForm] = Form.useForm();
     const [mode, setMode] = useState();
-    const [tabValue, setTabValue] = useState(1);
+    const [tabValue, setTabValue] = useState(0);
     const [nextMode, setNextMode] = useState();
     const [runModePCSBMS, setRunModePCSBMS] = useState();
     const [nextRunModePCSBMS, setNextRunModePCSBMS] = useState();
     const [checkModalOpen, setCheckModalOpen] = useState(false);
     const [checkModalType, setCheckModalType] = useState('');
+    const [durationList, setDurationList] = useState([]);
     const canIssue = mode===1;
 
     const strategyList = [
-        {label: intl.formatMessage({id: '策略1'}), value: 1},
-        {label: intl.formatMessage({id: '策略2'}), value: 2}
+        {label: intl.formatMessage({id: '策略1'}), value: 0},
+        {label: intl.formatMessage({id: '策略2'}), value: 1}
     ]
 
     const monthList = [
@@ -82,20 +83,70 @@ const PolicyConfiguration = () => {
     })
 
     const getInitData = async () => {
-        const res = await getBurCmdHistory2Serve({dtuId:id});
+        const res = await getBurCmdHistory2Serve({dtuId:id,type:7});
         if(res?.data?.data){
             const data = res?.data?.data;
-            form.setFieldsValue({
-                ...data
+            const durationList1 = data?.durationList1?.map(item => {
+                return {
+                    ...item,
+                    action: {
+                        0: '充电',
+                        1: '放电'
+                    }[item.action],
+                    timeType: {
+                        0: '尖',
+                        1: '峰',
+                        2: '平',
+                        3: '谷'
+                    }[item.timeType],
+                    timeStramp: `${translateNmberToTime(item.startMin)}:${translateNmberToTime(item.startHour)}~${translateNmberToTime(item.endMin)}:${translateNmberToTime(item.endHour)}`
+                }
+            })
+            const durationList2 = data?.durationList2?.map(item => {
+                return {
+                    ...item,
+                    action: {
+                        0: '充电',
+                        1: '放电'
+                    }[item.action],
+                    timeType: {
+                        0: '尖',
+                        1: '峰',
+                        2: '平',
+                        3: '谷'
+                    }[item.timeType],
+                    timeStramp: `${translateNmberToTime(item.startMin)}:${translateNmberToTime(item.startHour)}~${translateNmberToTime(item.endMin)}:${translateNmberToTime(item.endHour)}`
+                }
+            })
+            const durationList = tabValue===0?durationList1:durationList2;
+            const params = {
+                mode: data?.mode,
+                enable: data?.enable,
+                cap: data?.cap,
+                durationList,
+                pcsPower: data?.power,
+                tempStart: data?.tempStart,
+                tempStop: data?.tempStop,
+                humStart: data?.humStart,
+                humStop: data?.humStop,
+                coolingPoint: data?.coolingPoint,
+                heatPoint: data?.heatPoint,
+                coolingDiffPoint: data?.coolingDiffPoint,
+                heatDiffPoint: data?.heatDiffPoint
+            }
+            monthList?.forEach((item, index) => {
+                params[item.value] = data?.policySelectList?.[index]
             });
-            setMode(res?.data?.data?.mode);
+            form.setFieldsValue(params);
+            setDurationList(durationList)
+            setMode(data?.mode);
         }
     }
 
     useEffect(()=>{
         getInitData();
-    }, [])
-    
+    }, [tabValue])
+
     return (
         <>
             <Form 
@@ -114,6 +165,10 @@ const PolicyConfiguration = () => {
                                 style={{
                                     background: '#03B417',
                                     border: 'none'
+                                }}
+                                onClick={async () => {
+                                    await updateDataServe({dtuId: id, type: 7});
+                                    await getInitData();
                                 }}
                             >
                                 刷新
@@ -147,11 +202,11 @@ const PolicyConfiguration = () => {
                                                 mode={'controlled'}
                                                 options={[
                                                     {label: intl.formatMessage({id: 'PCS开机'}), value: 1},
-                                                    {label: intl.formatMessage({id: 'PCS关机'}), value: 2},
-                                                    {label: intl.formatMessage({id: 'PCS待机'}), value: 3},
-                                                    {label: intl.formatMessage({id: 'PCS复位'}), value: 4},
-                                                    {label: intl.formatMessage({id: 'BMS开机'}), value: 5},
-                                                    {label: intl.formatMessage({id: 'BMS关机'}), value: 6},
+                                                    {label: intl.formatMessage({id: 'PCS关机'}), value: 0},
+                                                    {label: intl.formatMessage({id: 'PCS待机'}), value: 2},
+                                                    {label: intl.formatMessage({id: 'PCS复位'}), value: 3},
+                                                    {label: intl.formatMessage({id: 'BMS开机'}), value: 4},
+                                                    {label: intl.formatMessage({id: 'BMS关机'}), value: 5},
                                                 ]}
                                                 onControlledChange={async value=>{
                                                     setNextRunModePCSBMS(value);
@@ -242,12 +297,13 @@ const PolicyConfiguration = () => {
                                     {intl.formatMessage({id: '下发'})}
                                 </div>
                             </Row> 
-                            <Form.Item name="durationList"  rules={[{ ...FORM_REQUIRED_RULE }]}>
+                            <Form.Item name="durationList" rules={[{ ...FORM_REQUIRED_RULE }]}>
                                 <EditTable.EditRowTable
                                     showAdd={canIssue}
                                     showClear={canIssue}
                                     showEdit={canIssue}
                                     showDelete={canIssue}
+                                    data={durationList}
                                     columns={[
                                         {
                                             title: intl.formatMessage({id: '时段'}),
@@ -451,13 +507,13 @@ const PolicyConfiguration = () => {
                         }
                         // 设备命令-PCS/BMS设置
                         if(checkModalType==="runModePCSBMS"){
-                            values = { PCSBMS: nextRunModePCSBMS }
-                            res = await sendBMSSettingServe({...values, dtuId: id, type: 7});
+                            values = { pcsAndBmsMode: nextRunModePCSBMS }
+                            res = await sendPCSSettingServe({...values, dtuId: id, type: 7});
                         }
                         // 设备命令-PCS功率
                         if(checkModalType==="pcsPower"){
                             values = await form.validateFields(['pcsPower']);
-                            res = await sendPCSPowerServe({...values, dtuId: id, type: 7});
+                            res = await sendPCSPowerServe({power: values?.pcsPower, dtuId: id, type: 7});
                         }
                         // 参数设置
                         if(checkModalType==="sendParamSetting"){
@@ -472,8 +528,6 @@ const PolicyConfiguration = () => {
                                 const timeStrampList = timeStramp.split("~");
                                 const time1 = timeStrampList[0].split(":");
                                 const time2 = timeStrampList[1].split(":");
-                                delete value.timeStramp;
-                                delete value.key;
                                 return {
                                     ...value,
                                     action: {
@@ -516,6 +570,7 @@ const PolicyConfiguration = () => {
                         checkForm.resetFields();
                         if(checkModalType==="switchModes"){
                             setMode(nextMode);
+                            form.setFieldsValue({mode: nextMode})
                         }
                         if(checkModalType==="runModePCSBMS"){
                             setRunModePCSBMS(nextRunModePCSBMS);
@@ -531,7 +586,44 @@ const PolicyConfiguration = () => {
                             <Input placeholder={intl.formatMessage({id: '请输入密码'})} className="pwd" />
                         </Form.Item>
                     </Form>
-                    <div style={{marginLeft: 10}}>{intl.formatMessage({id: '确定执行该操作吗?'})}</div>
+                    <div style={{marginLeft: 10}}>
+                        {
+                            checkModalType==="switchModes"&&nextMode===0&&
+                            intl.formatMessage({id: '确定切换为自动模式吗?'})
+                        }
+                        {
+                            checkModalType==="switchModes"&&nextMode===1&&
+                            intl.formatMessage({id: '确定切换为手动模式吗?'})
+                        }
+                        {
+                            checkModalType==="runModePCSBMS"&&nextRunModePCSBMS===1&&
+                            intl.formatMessage({id: '确定下发PCS开机命令吗?'})
+                        }
+                        {
+                            checkModalType==="runModePCSBMS"&&nextRunModePCSBMS===0&&
+                            intl.formatMessage({id: '确定下发PCS关机命令吗?'})
+                        }
+                        {
+                            checkModalType==="runModePCSBMS"&&nextRunModePCSBMS===2&&
+                            intl.formatMessage({id: '确定下发PCS待机命令吗?'})
+                        }
+                        {
+                            checkModalType==="runModePCSBMS"&&nextRunModePCSBMS===3&&
+                            intl.formatMessage({id: '确定下发PCS复位命令吗?'})
+                        }
+                        {
+                            checkModalType==="runModePCSBMS"&&nextRunModePCSBMS===4&&
+                            intl.formatMessage({id: '确定下发BMS开机命令吗?'})
+                        }
+                        {
+                            checkModalType==="runModePCSBMS"&&nextRunModePCSBMS===5&&
+                            intl.formatMessage({id: '确定下发BMS关机命令吗?'})
+                        }
+                        {
+                            checkModalType&&checkModalType!=="switchModes"&&checkModalType!=="runModePCSBMS"&&
+                            intl.formatMessage({id: '确定执行该操作吗?'})
+                        }
+                    </div>
                 </div>
             </Modal>
         </>

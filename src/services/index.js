@@ -29,7 +29,7 @@ export const getDtuDetailInfo = (payload) => {
 }
 
 export const getBurCmdHistory2 = (payload) => {
-    return axiosInstance.get(`/minsys/getBurCmdHistory2`, { params: payload })
+    return axiosInstance.get(`/minsys/strategy/getStrategyData`, { params: payload })
 }
 
 export const verifyPassword = (payload) => {
@@ -70,4 +70,8 @@ export const switchModes = (payload) => {
 
 export const sendStrategySetting = (payload) => {
     return axiosInstance.post(`/minsys/strategy/sendStrategySetting`, payload);
+}
+
+export const updateData = (payload) => {
+    return axiosInstance.get(`/minsys/strategy/updateData`, { params: payload })
 }

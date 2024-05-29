@@ -173,7 +173,7 @@ const EditRowTable = ({
   }
 
   const getDefaultDataSource = () => {
-    let newDataSource = cloneObject(dataSource);
+    let newDataSource = cloneObject(data);
     newDataSource = newDataSource?.map((item, index) => {
         return {
             ...item,
