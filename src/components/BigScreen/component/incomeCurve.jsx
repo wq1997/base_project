@@ -41,7 +41,7 @@ const IncomeCurve = ({
             grid: {
                 top: '10',
                 left: '20',
-                right: '25',
+                right: '35',
                 bottom: '0',
                 containLabel: true,
             },
