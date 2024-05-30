@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import RunningView1Img from "../../../../public/images/RunningView1.svg";
-import RunningView2Img from "../../../../public/images/RunningView2.svg";
-import RunningView3Img from "../../../../public/images/RunningView3.svg";
-import RunningView4Img from "../../../../public/images/RunningView4.svg";
+import RunningView1Img from "../../../assets/images/RunningView1.svg";
+import RunningView2Img from "../../../assets/images/RunningView2.svg";
+import RunningView3Img from "../../../assets/images/RunningView3.svg";
+import RunningView4Img from "../../../assets/images/RunningView4.svg";
 import { useRequest } from "ahooks";
 import {
     getAllDtuRunStatusServe
@@ -88,7 +88,7 @@ const RunningView = ({
                             style={{
                                 background: `#00102B url(${item?.bgImgUrl}) center center`,
                                 backgroundSize: '100% 100%',
-                                padding: '10px 20px',
+                                padding: '10px 10px',
                                 boxSizing: 'border-box',
                                 textAlign: 'center',
                                 display: 'flex',
@@ -101,7 +101,7 @@ const RunningView = ({
                                     <div style={{color: item?.color, fontSize: 20}}>{item?.data}</div>
                                     <div style={{fontSize: 10, color: 'white'}}>{item?.unit}</div>
                                 </div>
-                                <div style={{color: 'white', margin: '5px 0', fontSize: 12}}>{item?.description}</div>
+                                <div style={{color: 'white', margin: '5px 0', fontSize: 12, whiteSpace: 'nowrap'}}>{item?.description}</div>
                                 <img src={item?.imgUrl} style={{width: 45}} />
                             </div>
                         </div>
