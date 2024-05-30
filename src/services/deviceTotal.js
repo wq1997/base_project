@@ -21,8 +21,8 @@ export const getBurDeviceDetailInfo2 = (payload) => {
 }
 
 // 监测曲线初始化信息
-export const getMonitorTypeInitData2 = () => {
-    return axiosInstance.get(`/minsys/getMonitorTypeInitData2`);
+export const getMonitorTypeInitData2 = (payload) => {
+    return axiosInstance.get(`/minsys/getMonitorTypeInitData2?deviceType=${payload.deviceType}`);
 }
 
 // 监测曲线

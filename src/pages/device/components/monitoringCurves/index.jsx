@@ -44,7 +44,7 @@ function Com(props) {
         setDataType(options[0]?.value);
     }, [options])
     const getInitData = async () => {
-        let { data } = await getMonitorTypeInitData2();
+        let { data } = await getMonitorTypeInitData2({deviceType:getQueryString('type')});
         setOptions(data?.data);
         setTitle(data?.data?.[0]?.label)
     }

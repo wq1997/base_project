@@ -27,7 +27,7 @@ function Com(props) {
     }
 
     useEffect(() => {
-        initData();
+        getQueryString('type')=="14"? initData():null;
     }, [])
 
     useEffect(() => {
@@ -42,7 +42,7 @@ function Com(props) {
     const getPackData = async () => {
         let { data } = await getBurPackDetailInfo2({
             dtuId: id,
-            idxItem: selectId
+            idxItem: getQueryString('type')=="14"?undefined:selectId
         });
         setData(data.data)
     }
@@ -58,7 +58,7 @@ function Com(props) {
     }
     return (
         <div className={styles.pack}>
-            <Select
+          { getQueryString('type')=="14"&&<Select
                 className={styles.margRL}
                 style={{ width: 180 }}
                 options={options}
@@ -66,7 +66,7 @@ function Com(props) {
                 onChange={(val) => changePack(val)
                 }
             >
-            </Select>
+            </Select>}
             <div className={styles.packContent}>
                 {data.map((one, index) => {
                     return (<div className={styles.onePack}>
