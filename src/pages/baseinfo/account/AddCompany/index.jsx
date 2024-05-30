@@ -104,7 +104,7 @@ const Company = ({ open, editId, onClose }) => {
                         rules={[
                             {
                                 pattern: PASSWORD_RGE,
-                                message: '密码长度为8-16位，数字、字母、字符至少包含两种'
+                                message: '要求8-16个字符、由数字、字母、特殊字符三种中的两种组成'
                             }
                         ]}
                     >
