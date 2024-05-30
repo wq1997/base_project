@@ -3,7 +3,7 @@ import { theme, Spin } from "antd";
 import { Title, ScrollTable } from "@/components";
 import SchematicDiagram from "./SchematicDiagram";
 import styles from "./overview_2.0.less";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import leftTop1Img from "@/assets/imges/leftTop1.svg";
 import leftTop2Img from "@/assets/imges/leftTop2.svg";
 import leftTop3Img from "@/assets/imges/leftTop3.svg";
@@ -23,32 +23,36 @@ import bottomLeft2Img from "@/assets/imges/bottomLeft2.svg";
 import bottomLeftBgImg from "@/assets/imges/bottomLeftBg.svg";
 import MyRadio from "./MyRadio";
 import { getQueryString, cloneObject } from "@/utils/utils";
+import {
+    getDtuOverViews as getDtuOverViewsServe,
+} from "@/services";
 import classNames from "classnames";
 
 const OverView = ({deviceVersion, sn}) => {
-    const intl = useIntl();
+    const id = getQueryString('id');
     const title = getQueryString('title')
+    const intl = useIntl();
     const { token } = theme.useToken();
     const [dataSource, setDataSource] = useState({});
     const [electricityStatisticsDataSourceLeft, setElectricityStatisticsDataSourceLeft] = useState([
         {
             title: '日充电量',
-            data: '10988',
+            data: 0,
             icon: leftTop1Img
         },
         {
             title: '日放电量',
-            data: '10988',
+            data: 0,
             icon: leftTop2Img
         },
         {
             title: '累计充电量',
-            data: '10988',
+            data: 0,
             icon: leftTop3Img
         },
         {
             title: '累计放电量',
-            data: '10988',
+            data: 0,
             icon: leftTop4Img
         }
     ])
@@ -56,12 +60,12 @@ const OverView = ({deviceVersion, sn}) => {
     const [electricityStatisticsDataSourceRight, setElectricityStatisticsDataSourceRight] = useState([
         {
             title: '前一日效率',
-            data: '85',
+            data: 0,
             color: '#B95CFC'
         },
         {
             title: '累计效率',
-            data: '85',
+            data: 0,
             color: '#FFE600'
         },
     ])
@@ -69,20 +73,20 @@ const OverView = ({deviceVersion, sn}) => {
     const [systemEfficiencyDataSource, setSystemEfficiencyDataSource] = useState([
         {
             title: "累计效率",
-            data: 85,
+            data: 0,
             color: '#72FFE3',
             type: 'left'
         },
         {
             title: "累计充电量",
-            data: 10889,
+            data: 0,
             color: '#00CCFF',
             icon: leftTop3Img,
             type: 'right'
         },
         {
             title: "累计放电量",
-            data: 10889,
+            data: 0,
             color: '#00CCFF',
             icon: leftTop4Img,
             type: 'right'
@@ -92,21 +96,21 @@ const OverView = ({deviceVersion, sn}) => {
     const [benefitStatisticsDataSource, setBenefitStatisticsDataSource] = useState([
         {
             title: "日收益",
-            data: 10988,
+            data: 0,
             color: '#FFE600',
             backgroundImg: leftBottomBg1Img,
             img: leftBottom1Img
         },
         {
             title: "月收益",
-            data: 10988,
+            data: 0,
             color: '#00C3FF',
             backgroundImg: leftBottomBg1Img,
             img: leftBottom3Img
         },
         {
             title: "累计收益",
-            data: 10988,
+            data: 0,
             color: '#B95CFC',
             backgroundImg: leftBottomBg1Img,
             img: leftBottom4Img
@@ -200,6 +204,82 @@ const OverView = ({deviceVersion, sn}) => {
             checked: false
         },
     ])
+
+    const getDataSource = async () => {
+        const res = await getDtuOverViewsServe({dtuId: id, type: deviceVersion});
+        if(res?.data?.data){
+            setDataSource(res?.data?.data);
+        }
+    }
+
+    useEffect(()=>{
+        const newElectricityStatisticsDataSourceLeft = cloneObject(electricityStatisticsDataSourceLeft); // 计量电表电量
+        const newElectricityStatisticsDataSourceRight = cloneObject(electricityStatisticsDataSourceRight);
+        const newSystemEfficiencyDataSource = cloneObject(systemEfficiencyDataSource); // PCS电量统计
+        const newBenefitStatisticsDataSource = cloneObject(benefitStatisticsDataSource); //收益统计
+        const newBmsInfoDataSource = cloneObject(bmsInfoDataSource); //BMS信息
+        const newPcsInfoDataSource = cloneObject(pcsInfoDataSource); //PCS信息
+        const newPcsInfoDataSource2 = cloneObject(pcsInfoDataSource2);
+        const newCommunicationStatusDataSource = cloneObject(communicationStatusDataSource); //通讯状态
+
+        // 计量电表电量
+        newElectricityStatisticsDataSourceLeft[0].data = dataSource?.gmeter?.dayChargeEnergy||0;
+        newElectricityStatisticsDataSourceLeft[1].data = dataSource?.gmeter?.dayDischargeEnergy||0;
+        newElectricityStatisticsDataSourceLeft[2].data = dataSource?.gmeter?.totalCEnergy||0;
+        newElectricityStatisticsDataSourceLeft[3].data = dataSource?.gmeter?.totalDEnergy||0;
+
+        newElectricityStatisticsDataSourceRight[0].data = dataSource?.meterEfficiency||0;
+        newElectricityStatisticsDataSourceRight[1].data = dataSource?.meterAllEfficiency||0;
+
+        // PCS电量统计
+        newSystemEfficiencyDataSource[0].data = dataSource?.pcsEfficiency||0;
+        newSystemEfficiencyDataSource[1].data = dataSource?.pcs?.totalCEnergy||0;
+        newSystemEfficiencyDataSource[2].data = dataSource?.pcs?.totalDEnergy||0;
+
+        //收益统计
+        newBenefitStatisticsDataSource[0].data = dataSource?.revenue?.dayEarning||0;
+        newBenefitStatisticsDataSource[1].data = dataSource?.revenue?.monthEarning||0;
+        newBenefitStatisticsDataSource[2].data = dataSource?.revenue?.allEarning||0;
+
+        //BMS信息
+        newBmsInfoDataSource[0].data[0].value = dataSource?.bms?.cellTempMax||0;
+        newBmsInfoDataSource[0].data[1].value = dataSource?.bms?.cellTempMaxNo||0;
+        newBmsInfoDataSource[0].data[2].value = dataSource?.bms?.cellVolMax||0;
+        newBmsInfoDataSource[0].data[3].value = dataSource?.bms?.cellVolMaxNo||0;
+
+        newBmsInfoDataSource[1].data[0].value = dataSource?.bms?.cellTempMin||0;
+        newBmsInfoDataSource[1].data[1].value = dataSource?.bms?.cellTempMinNo||0;
+        newBmsInfoDataSource[1].data[2].value = dataSource?.bms?.cellVolMin||0;
+        newBmsInfoDataSource[1].data[3].value = dataSource?.bms?.cellVolMinNo||0;
+
+        // PCS信息
+        newPcsInfoDataSource[0].A = dataSource?.pcs?.phaseACur||0;
+        newPcsInfoDataSource[0].B = dataSource?.pcs?.phaseBCur||0;
+        newPcsInfoDataSource[0].C = dataSource?.pcs?.phaseCCur||0;
+
+        newPcsInfoDataSource2[0].AB = dataSource?.pcs?.lineAbVol||0;
+        newPcsInfoDataSource2[0].BC = dataSource?.pcs?.lineBcVol||0;
+        newPcsInfoDataSource2[0].AC = dataSource?.pcs?.lineAcVol||0;
+
+        //通讯状态
+        newCommunicationStatusDataSource[0].checked = dataSource?.Status?.bms||0;
+        newCommunicationStatusDataSource[1].checked = dataSource?.Status?.pcs||0;
+        newCommunicationStatusDataSource[2].checked = dataSource?.Status?.gmeter||0;
+        newCommunicationStatusDataSource[3].checked = dataSource?.Status?.tmeter||0;
+
+        setElectricityStatisticsDataSourceLeft(newElectricityStatisticsDataSourceLeft); // 计量电表电量
+        setElectricityStatisticsDataSourceRight(newElectricityStatisticsDataSourceRight);
+        setSystemEfficiencyDataSource(newSystemEfficiencyDataSource); // 系统效率(前一日)
+        setBenefitStatisticsDataSource(newBenefitStatisticsDataSource); // 收益统计
+        setBmsInfoDataSource(newBmsInfoDataSource); //BMS信息
+        setPcsInfoDataSource(newPcsInfoDataSource); //PCS信息 
+        setPcsInfoDataSource2(newPcsInfoDataSource2);
+        setCommunicationStatusDataSource(newCommunicationStatusDataSource); //通讯状态
+    }, [dataSource])
+
+    useEffect(()=>{
+        getDataSource();
+    }, [])
 
     return (
         <div 

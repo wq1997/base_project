@@ -194,9 +194,11 @@ const OverView = ({deviceVersion, sn}) => {
 
     useEffect(()=>{
         const newElectricityStatisticsDataSource = cloneObject(electricityStatisticsDataSource); // 电量统计
+        const newSystemEfficiencyDataSource = cloneObject(systemEfficiencyDataSource); // 系统效率(前一日)
         const newBenefitStatisticsDataSource = cloneObject(benefitStatisticsDataSource); //收益统计
         const newBmsInfoDataSource = cloneObject(bmsInfoDataSource); //BMS信息
         const newPcsInfoDataSource = cloneObject(pcsInfoDataSource); //PCS信息
+        const newPcsInfoDataSource2 = cloneObject(pcsInfoDataSource2);
         const newCommunicationStatusDataSource = cloneObject(communicationStatusDataSource); //通讯状态
 
         // 电量统计
@@ -211,6 +213,10 @@ const OverView = ({deviceVersion, sn}) => {
             newElectricityStatisticsDataSource[2].data = dataSource?.gmeter?.totalCEnergy||0;
             newElectricityStatisticsDataSource[3].data = dataSource?.gmeter?.totalDEnergy||0;
         }
+
+        // 系统效率(前一日)
+        newSystemEfficiencyDataSource[0].data = dataSource?.pcsEfficiency||0;
+        newSystemEfficiencyDataSource[1].data = dataSource?.meterEfficiency||0;
 
         //收益统计
         newBenefitStatisticsDataSource[0].data = dataSource?.revenue?.dayEarning||0;
@@ -233,6 +239,10 @@ const OverView = ({deviceVersion, sn}) => {
         newPcsInfoDataSource[0].B = dataSource?.pcs?.phaseBCur||0;
         newPcsInfoDataSource[0].C = dataSource?.pcs?.phaseCCur||0;
 
+        newPcsInfoDataSource2[0].AB = dataSource?.pcs?.lineAbVol||0;
+        newPcsInfoDataSource2[0].BC = dataSource?.pcs?.lineBcVol||0;
+        newPcsInfoDataSource2[0].AC = dataSource?.pcs?.lineAcVol||0;
+
         //通讯状态
         newCommunicationStatusDataSource[0].checked = dataSource?.Status?.bms||0;
         newCommunicationStatusDataSource[1].checked = dataSource?.Status?.pcs||0;
@@ -240,9 +250,11 @@ const OverView = ({deviceVersion, sn}) => {
         newCommunicationStatusDataSource[3].checked = dataSource?.Status?.tmeter||0;
 
         setElectricityStatisticsDataSource(newElectricityStatisticsDataSource); // 电量统计
+        setSystemEfficiencyDataSource(newSystemEfficiencyDataSource); // 系统效率(前一日)
         setBenefitStatisticsDataSource(newBenefitStatisticsDataSource); // 收益统计
         setBmsInfoDataSource(newBmsInfoDataSource); //BMS信息
         setPcsInfoDataSource(newPcsInfoDataSource); //PCS信息 
+        setPcsInfoDataSource2(newPcsInfoDataSource2);
         setCommunicationStatusDataSource(newCommunicationStatusDataSource); //通讯状态
     }, [dataSource, currentElectricType])
 
