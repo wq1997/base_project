@@ -2,9 +2,9 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { Strategy } from '@/components';
 import { CardModel } from "@/components";
-import Detail from '@/components/FullCalendar/newStrategy/detail';
+import Add from './components/addPolicy';
 import styles from './index.less'
-import { theme, Input, Space, Select, Form, message,Button, Table } from "antd";
+import { theme, Input, Space, Select, Form, message, Button, Table } from "antd";
 import dayjs from 'dayjs';
 import { useSelector, useIntl } from "umi";
 import { getGridPointList, getStrategyPlanList, getStrategyList, getStrategyInfo, saveStrategyPlan, deleteStrategy, } from '@/services/policy'
@@ -54,13 +54,13 @@ function Com(props) {
       ],
     },
   ]);
-  
+
 
   const getDetails = async () => {
     let { data } = await getStrategyInfo({ strategyId });
     setDetailsData(data?.data)
   }
- 
+
   const getInit = async () => {
     let { data } = await getGridPointList({ plantId: localStorage.getItem('plantId') });
     let arr = [];
@@ -160,7 +160,6 @@ function Com(props) {
               labelCol={{ span: 6 }}
               wrapperCol={{ span: 18 }}
               rules={[
-
               ]}
             >
               <Input />
@@ -198,57 +197,60 @@ function Com(props) {
         </Space>
 
         <div className={styles.content} style={{ backgroundColor: token.titleCardBgc, borderRadius: '8px' }}>
-                <Button>{t('新增策略')}</Button>
-                <Form.Item
-                  name="tb"
-                 >
-                  <Table
-                  columns={[
-                    {
-                      title: t('编号'),
-                      dataIndex: 'num',
-                      key: 'num',
-                      render: (text, record, index) => index + 1,
-                    },
-                    {
-                      title: t('策略名称'),
-                      dataIndex: 'name',
-                      key: 'name',
-                    },
-                    {
-                      title: t('开始时间'),
-                      dataIndex: 'start',
-                      key: 'start',
-                    },
-                    {
-                      title: t('结束时间'),
-                      dataIndex: 'end',
-                      key: 'end',
-                    },
-                    {
-                      title: t('模式'),
-                      dataIndex: 'action',
-                      key: 'action',
-                    },
-                    {
-                      title: t('操作'),
-                      dataIndex: 'option',
-                      key: 'option',
-                      render: (text, record) => {
-                        return (
-                            <Space>
-                                <Button type="link" onClick={() => edit(record)}>{t('编辑')}</Button>
-                                <Button type="link" onClick={() => edit(record)}>{t('详情')}</Button>
-                                <Popconfirm title="Are you sure delete this task?" okText="Yes" cancelText="No">
-                                <Button type="link" danger onClick={() => changeIsOpenDel(record)}>{t('删除')}</Button>
-                                </Popconfirm>
-                            </Space>
-                        )
-                    }
-                    },
-                  ]}
-                  />
-                </Form.Item>
+          <div style={{ width: '100%', display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+            <Button type="primary" style={{ marginBottom: '10px' }} onClick={() => setEditPlanOpen(true)}>{t('新增策略')}</Button>
+
+          </div>
+          <Form.Item
+            name="tb"
+          >
+            <Table
+              columns={[
+                {
+                  title: t('编号'),
+                  dataIndex: 'num',
+                  key: 'num',
+                  render: (text, record, index) => index + 1,
+                },
+                {
+                  title: t('策略名称'),
+                  dataIndex: 'name',
+                  key: 'name',
+                },
+                {
+                  title: t('开始时间'),
+                  dataIndex: 'start',
+                  key: 'start',
+                },
+                {
+                  title: t('结束时间'),
+                  dataIndex: 'end',
+                  key: 'end',
+                },
+                {
+                  title: t('模式'),
+                  dataIndex: 'action',
+                  key: 'action',
+                },
+                {
+                  title: t('操作'),
+                  dataIndex: 'option',
+                  key: 'option',
+                  render: (text, record) => {
+                    return (
+                      <Space>
+                        <Button type="link" onClick={() => edit(record)}>{t('编辑')}</Button>
+                        <Button type="link" onClick={() => edit(record)}>{t('详情')}</Button>
+                        <Popconfirm title="Are you sure delete this task?" okText="Yes" cancelText="No">
+                          <Button type="link" danger onClick={() => changeIsOpenDel(record)}>{t('删除')}</Button>
+                        </Popconfirm>
+                      </Space>
+                    )
+                  }
+                },
+              ]}
+            />
+          </Form.Item>
         </div>
         <div className={styles.bottom}>
           <Form.Item
@@ -265,7 +267,7 @@ function Com(props) {
         </div>
 
       </Form>
-      <Detail
+      <Add
         form={form6}
         open={editPlanOpen}
         detailsData={detailsData}

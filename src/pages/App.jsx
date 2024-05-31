@@ -33,7 +33,11 @@ const App = () => {
                 components: {
                     Input: {
                         autoComplete: 'off'
-                    }
+                    },
+                    Modal: {
+                        contentBg: '#1C244C',
+                        headerBg: '#1C244C'
+                    },
                 }
             }}
         >

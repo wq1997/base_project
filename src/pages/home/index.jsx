@@ -7,6 +7,7 @@ import useIcon from "@/hooks/useIcon";
 import { useSelector, useIntl } from "umi";
 import { theme, Switch, Select, Descriptions } from "antd";
 import { getGridPointPower, getPlantEnergyFee } from '@/services/home'
+import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { getEnergyFeeByTime } from '@/services/report'
 import { getGridPointList } from '@/services/policy'
 import dayjs from 'dayjs';
@@ -64,43 +65,13 @@ function OverView(props) {
             color: '#03B4B4'
         },
     ]);
-    let detailsPartData = [
-        {
-            key: 'name',
-            label: t('电站名称'),
-            span: 2
-        },
-        {
-            key: 'installDateVo',
-            label: t('建站日期'),
-        },
-        {
-            key: 'typeName',
-            label: t('电站类型'),
-
-        },
-        {
-            key: 'designPower',
-            label: `${t('储能装机功率')}(kW)`,
-        },
-        {
-            key: 'capacity',
-            label: `${t('储能装机容量')}(kWh)`,
-        },
-        {
-            key: 'pvCapacity',
-            label: `${t('光伏装机容量')}(kWh)`,
-        },
-        {
-            key: 'chargePileCapacity',
-            label: `${t('充电桩装机容量')}(kWh)`,
-        },
-        {
-            key: 'position',
-            label: t('电站位置'),
-            span: 2
-        },
-    ]
+    const contentStyle = useEmotionCss(({ token }) => {
+        return {
+            '.ant-descriptions-item-label': {
+                color: `${token.colorNormal} !important`,
+            }
+        }
+    });
     const getOptions = async () => {
         let { data: energyData } = await getEnergyFeeByTime({
             plantId: localStorage.getItem('plantId'),
@@ -159,6 +130,9 @@ function OverView(props) {
     const onChange = (e) => {
         setCurrntGrid(e.target.value);
     };
+
+
+
 
     const [power, setPower] = useState([
         {
@@ -351,9 +325,9 @@ function OverView(props) {
                                             children: it.label
                                         }
                                     })
-
-
-                                    } />
+                                    }
+                                    className={contentStyle}
+                                />
                             </>
                         }
                     />
@@ -364,7 +338,7 @@ function OverView(props) {
                         title='PCS1'
                         content={
                             <>
-                                <div className={styles.totalPcs} style={{ backgroundColor: token.cardBgc }}>
+                                <div className={styles.totalPcs} style={{ backgroundColor: token.lightTreeBgc }}>
                                     <Descriptions
                                         column={{
                                             xs: 1,
@@ -381,12 +355,15 @@ function OverView(props) {
                                                 children: it.label
                                             }
                                         })
-                                        } />
+                                        }
+                                        className={contentStyle}
+                                    />
                                 </div>
                                 <div className={styles.pcsModule}>
                                     {[...Array(8)].map((item, i) => {
                                         return <Descriptions
-                                            style={{ backgroundColor: token.cardBgc,padding:'16px 12px 8px 12px',borderRadius:'8px' }}
+                                            className={contentStyle}
+                                            style={{ backgroundColor: token.lightTreeBgc, padding: '16px 12px 8px 12px', borderRadius: '8px' }}
                                             column={1}
                                             title={"Module1#" + (i + 1)}
                                             items={pcsModel.map(it => {
