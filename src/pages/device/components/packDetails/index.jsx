@@ -68,7 +68,7 @@ function Com(props) {
             >
             </Select>
             <div className={styles.packContent}>
-                {data.map((one, index) => {
+                {data?.map((one, index) => {
                     return (<div className={styles.onePack}>
                         <div className={styles.title1}>
                             <Icon type='icon-xiangyou' style={{ cursor: 'pointer',marginRight:'6px' }}></Icon>
@@ -108,9 +108,6 @@ function Com(props) {
                         </div>
                     </div>)
                 })}
-
-
-
             </div>
 
         </div>

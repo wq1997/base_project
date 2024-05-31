@@ -20,7 +20,7 @@ import {
 import { getQueryString, translateNmberToTime } from "@/utils/utils";
 import { FORM_REQUIRED_RULE } from "@/utils/constants";
 
-const PolicyConfiguration = () => {
+const PolicyConfiguration = ({deviceVersion}) => {
     const id = getQueryString("id");
     const intl = useIntl();
     const { token } = theme.useToken();
@@ -83,7 +83,7 @@ const PolicyConfiguration = () => {
     })
 
     const getInitData = async () => {
-        const res = await getBurCmdHistory2Serve({dtuId:id,type:7});
+        const res = await getBurCmdHistory2Serve({dtuId:id,type:deviceVersion});
         if(res?.data?.data){
             const data = res?.data?.data;
             const durationList1 = data?.durationList1?.map(item => {
@@ -164,14 +164,15 @@ const PolicyConfiguration = () => {
                             <Button
                                 style={{
                                     background: '#03B417',
-                                    border: 'none'
+                                    border: 'none',
+                                    marginBottom: 20
                                 }}
                                 onClick={async () => {
-                                    await updateDataServe({dtuId: id, type: 7});
+                                    await updateDataServe({dtuId: id, type: deviceVersion});
                                     await getInitData();
                                 }}
                             >
-                                刷新
+                                {intl.formatMessage({id: '刷新'})}
                             </Button>
                         </div>
                         <Space style={{width: '100%'}} direction="vertical">
@@ -503,22 +504,22 @@ const PolicyConfiguration = () => {
                         // 策略模式
                         if(checkModalType==="switchModes"){
                             values = { mode: nextMode }
-                            res = await switchModesServe({...values, dtuId: id, type: 7});
+                            res = await switchModesServe({...values, dtuId: id, type: deviceVersion});
                         }
                         // 设备命令-PCS/BMS设置
                         if(checkModalType==="runModePCSBMS"){
                             values = { pcsAndBmsMode: nextRunModePCSBMS }
-                            res = await sendPCSSettingServe({...values, dtuId: id, type: 7});
+                            res = await sendPCSSettingServe({...values, dtuId: id, type: deviceVersion});
                         }
                         // 设备命令-PCS功率
                         if(checkModalType==="pcsPower"){
                             values = await form.validateFields(['pcsPower']);
-                            res = await sendPCSPowerServe({power: values?.pcsPower, dtuId: id, type: 7});
+                            res = await sendPCSPowerServe({power: values?.pcsPower, dtuId: id, type: deviceVersion});
                         }
                         // 参数设置
                         if(checkModalType==="sendParamSetting"){
                             values = await form.validateFields(['enable', 'cap']);
-                            res = await sendParamSettingServe({...values, enable: values?.enable?1:0, dtuId: id, type: 7});
+                            res = await sendParamSettingServe({...values, enable: values?.enable?1:0, dtuId: id, type: deviceVersion});
                         }
                         // 策略配置
                         if(checkModalType==="sendStrategySetting"){
@@ -546,22 +547,22 @@ const PolicyConfiguration = () => {
                                     endMin: time2[1],
                                 }
                             })
-                            res = await sendStrategySettingServe({...values, strategyType: tabValue,dtuId: id, type: 7})
+                            res = await sendStrategySettingServe({...values, strategyType: tabValue,dtuId: id, type: deviceVersion})
                         }
                         // 策略选择
                         if(checkModalType==="sendStrategySelect"){
                             values = await form.validateFields(monthList.map(month=>month.value));
-                            res = await sendStrategySelectServe({policySelectList: monthList.map(month=>values[month.value]), dtuId: id, type: 7})
+                            res = await sendStrategySelectServe({policySelectList: monthList.map(month=>values[month.value]), dtuId: id, type: deviceVersion})
                         }
                         // 除湿机参数设置
                         if(checkModalType==="sendDehumidifier"){
                             values = await form.validateFields(['tempStart', 'tempStop', 'humStart', 'humStop']);
-                            res = await sendDehumidifierServe({...values, dtuId: id, type: 7})
+                            res = await sendDehumidifierServe({...values, dtuId: id, type: deviceVersion})
                         }
                         // 液冷机参数设置
                         if(checkModalType==="sendLiquidCooler"){
                             values = await form.validateFields(['coolingPoint', 'heatPoint', 'coolingDiffPoint', 'heatDiffPoint']);
-                            res = await sendLiquidCoolerServe({...values, dtuId: id, type: 7})
+                            res = await sendLiquidCoolerServe({...values, dtuId: id, type: deviceVersion})
                         }
                     }
 

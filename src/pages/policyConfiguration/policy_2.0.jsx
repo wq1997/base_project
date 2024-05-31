@@ -20,8 +20,9 @@ import {
     sendStrategySetting as sendStrategySettingServe,
 } from "@/services";
 
-const PolicyConfiguration = () => {
+const PolicyConfiguration = ({deviceVersion}) => {
     const intl = useIntl();
+    const id = getQueryString("id");
     const { token } = theme.useToken();
     const [form] = Form.useForm();
     const [checkForm] = Form.useForm();
@@ -81,6 +82,71 @@ const PolicyConfiguration = () => {
         }
     })
 
+    const getInitData = async () => {
+        const res = await getBurCmdHistory2Serve({dtuId:id,type:deviceVersion});
+        if(res?.data?.data){
+            const data = res?.data?.data;
+            const durationList1 = data?.durationList1?.map(item => {
+                return {
+                    ...item,
+                    action: {
+                        0: '充电',
+                        1: '放电'
+                    }[item.action],
+                    timeType: {
+                        0: '尖',
+                        1: '峰',
+                        2: '平',
+                        3: '谷'
+                    }[item.timeType],
+                    timeStramp: `${translateNmberToTime(item.startMin)}:${translateNmberToTime(item.startHour)}~${translateNmberToTime(item.endMin)}:${translateNmberToTime(item.endHour)}`
+                }
+            })
+            const durationList2 = data?.durationList2?.map(item => {
+                return {
+                    ...item,
+                    action: {
+                        0: '充电',
+                        1: '放电'
+                    }[item.action],
+                    timeType: {
+                        0: '尖',
+                        1: '峰',
+                        2: '平',
+                        3: '谷'
+                    }[item.timeType],
+                    timeStramp: `${translateNmberToTime(item.startMin)}:${translateNmberToTime(item.startHour)}~${translateNmberToTime(item.endMin)}:${translateNmberToTime(item.endHour)}`
+                }
+            })
+            const durationList = tabValue===0?durationList1:durationList2;
+            const params = {
+                mode: data?.mode,
+                enable: data?.enable,
+                cap: data?.cap,
+                durationList,
+                pcsPower: data?.power,
+                tempStart: data?.tempStart,
+                tempStop: data?.tempStop,
+                humStart: data?.humStart,
+                humStop: data?.humStop,
+                coolingPoint: data?.coolingPoint,
+                heatPoint: data?.heatPoint,
+                coolingDiffPoint: data?.coolingDiffPoint,
+                heatDiffPoint: data?.heatDiffPoint
+            }
+            monthList?.forEach((item, index) => {
+                params[item.value] = data?.policySelectList?.[index]
+            });
+            form.setFieldsValue(params);
+            setDurationList(durationList)
+            setMode(data?.mode);
+        }
+    }
+
+    useEffect(()=>{
+        getInitData();
+    }, [tabValue])
+
     return (
         <>
             <Form 
@@ -101,14 +167,15 @@ const PolicyConfiguration = () => {
                             <Button
                                 style={{
                                     background: '#03B417',
-                                    border: 'none'
+                                    border: 'none',
+                                    marginBottom: 20
                                 }}
                                 onClick={async () => {
-                                    await updateDataServe({dtuId: id, type: 7});
+                                    await updateDataServe({dtuId: id, type: deviceVersion});
                                     await getInitData();
                                 }}
                             >
-                                刷新
+                                {intl.formatMessage({id: '刷新'})}
                             </Button>
                         </div>
                         <Space style={{width: '100%'}} direction="vertical">
@@ -140,10 +207,10 @@ const PolicyConfiguration = () => {
                                                 options={[
                                                     {label: intl.formatMessage({id: 'PCS开机'}), value: 1},
                                                     {label: intl.formatMessage({id: 'PCS关机'}), value: 0},
-                                                    {label: intl.formatMessage({id: 'PCS复位'}), value: 3},
+                                                    {label: intl.formatMessage({id: 'PCS复位'}), value: 2},
                                                     {label: intl.formatMessage({id: 'BMS开机'}), value: 4},
-                                                    {label: intl.formatMessage({id: 'BMS关机'}), value: 5},
-                                                    {label: intl.formatMessage({id: 'BMS复位'}), value: 6},
+                                                    {label: intl.formatMessage({id: 'BMS关机'}), value: 3},
+                                                    {label: intl.formatMessage({id: 'BMS复位'}), value: 5},
                                                 ]}
                                                 onControlledChange={async value=>{
                                                     setNextRunModePCSBMS(value);
@@ -186,8 +253,11 @@ const PolicyConfiguration = () => {
                                 <div 
                                     className={canIssue?distributeStyle:disabledDistributeStyle}
                                     onClick={async ()=>{
-                                        const values = await form.validateFields(['expansion','transformerCapacity-1','transformerCapacity-2']);
-                                        console.log(values);
+                                        await form.validateFields(['switchOnOffGrid','antiReflux','overload', 'expansion', 'antiRefluxTriggerValue', 'tranCap', 'tranCapPercent', 'pcsPowerWaveRange']);
+                                        if(canIssue){
+                                            setCheckModalOpen(true);
+                                            setCheckModalType('sendParamSetting');
+                                        }
                                     }}
                                 >
                                     {intl.formatMessage({id: '下发'})}
@@ -196,47 +266,47 @@ const PolicyConfiguration = () => {
                             <Space style={{width: '100%'}} direction="vertical" size={30}>
                                 <Row>
                                     <Col span={2}>
-                                        <Form.Item label={intl.formatMessage({id: '并离网'})} name="network" style={{margin: 0}}>
+                                        <Form.Item label={intl.formatMessage({id: '并离网'})} name="switchOnOffGrid" rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
                                             <Switch checkedChildren={intl.formatMessage({id: '并网'})} unCheckedChildren={intl.formatMessage({id: '离网'})} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={2}>
-                                        <Form.Item label={intl.formatMessage({id: '防逆流'})} name="antiReflux" style={{margin: 0}}>
+                                        <Form.Item label={intl.formatMessage({id: '防逆流'})} name="antiReflux" rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
                                             <Switch />
                                         </Form.Item>
                                     </Col>
                                     <Col span={2}>
-                                        <Form.Item label={intl.formatMessage({id: '防过载'})} name="antiOverload" style={{margin: 0}}>
+                                        <Form.Item label={intl.formatMessage({id: '防过载'})} name="overload" rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
                                             <Switch />
                                         </Form.Item>
                                     </Col>
                                     <Col span={2}>
-                                        <Form.Item label={intl.formatMessage({id: '扩容'})} name="expansion" style={{margin: 0}}>
+                                        <Form.Item label={intl.formatMessage({id: '扩容'})} name="expansion" rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
                                             <Switch />
                                         </Form.Item>
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col span={7}>
-                                        <Form.Item label={`${intl.formatMessage({id: '防逆流触发值'})}(kW)`} name="antiBackflowTriggerValue"  style={{margin: 0}}>
-                                            <Input placeholder={intl.formatMessage({id: '请输入防逆流触发值'})} style={{width: 300}} />
+                                        <Form.Item label={`${intl.formatMessage({id: '防逆流触发值'})}(kW)`} name="antiRefluxTriggerValue" rules={[{ ...FORM_REQUIRED_RULE }]}  style={{margin: 0}}>
+                                            <InputNumber placeholder={intl.formatMessage({id: '请输入防逆流触发值'})} style={{width: 300}} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={7}>
                                         <Form.Item label={intl.formatMessage({id: '变压器容量'})} style={{margin: 0}}>
                                             <Space direction="horizontal">
-                                                <Form.Item style={{margin: 0}} name="transformerCapacity-1">
-                                                    <Input style={{width: 200}} placeholder="kW" />
+                                                <Form.Item style={{margin: 0}} name="tranCap" rules={[{ ...FORM_REQUIRED_RULE }]}>
+                                                    <InputNumber style={{width: 200}} placeholder="kW" />
                                                 </Form.Item>
-                                                <Form.Item style={{margin: 0}} name="transformerCapacity-2">
-                                                    <Input style={{width: 200}} placeholder="%"/>
+                                                <Form.Item style={{margin: 0}} name="tranCapPercent" rules={[{ ...FORM_REQUIRED_RULE }]}>
+                                                    <InputNumber style={{width: 200}} placeholder="%" min={0} max={100}/>
                                                 </Form.Item>
                                             </Space>
                                         </Form.Item>
                                     </Col>
                                     <Col span={7}>
-                                        <Form.Item label={`${intl.formatMessage({id: '功率波动范围'})}(kW)`} name="powerFluctuationRange"  style={{margin: 0}}>
-                                            <Input placeholder={intl.formatMessage({id: '请输入功率波动范围'})} style={{width: 300}} />
+                                        <Form.Item label={`${intl.formatMessage({id: '功率波动范围'})}(kW)`} name="pcsPowerWaveRange" rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
+                                            <InputNumber placeholder={intl.formatMessage({id: '请输入功率波动范围'})} style={{width: 300}} />
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -250,8 +320,11 @@ const PolicyConfiguration = () => {
                                 <div 
                                     className={canIssue?distributeStyle:disabledDistributeStyle}
                                     onClick={async ()=>{
-                                        const values = await form.validateFields(['strategyList']);
-                                        console.log(values);
+                                        await form.validateFields(['durationList']);
+                                        if(canIssue){
+                                            setCheckModalOpen(true);
+                                            setCheckModalType('sendStrategySetting');
+                                        }
                                     }}
                                 >
                                     {intl.formatMessage({id: '下发'})}
@@ -450,22 +523,30 @@ const PolicyConfiguration = () => {
                         // 策略模式
                         if(checkModalType==="switchModes"){
                             values = { mode: nextMode }
-                            res = await switchModesServe({...values, dtuId: id, type: 7});
+                            res = await switchModesServe({...values, dtuId: id, type: deviceVersion});
                         }
                         // 设备命令-PCS/BMS设置
                         if(checkModalType==="runModePCSBMS"){
                             values = { pcsAndBmsMode: nextRunModePCSBMS }
-                            res = await sendPCSSettingServe({...values, dtuId: id, type: 7});
+                            res = await sendPCSSettingServe({...values, dtuId: id, type: deviceVersion});
                         }
                         // 设备命令-PCS功率
                         if(checkModalType==="pcsPower"){
                             values = await form.validateFields(['pcsPower']);
-                            res = await sendPCSPowerServe({power: values?.pcsPower, dtuId: id, type: 7});
+                            res = await sendPCSPowerServe({power: values?.pcsPower, dtuId: id, type: deviceVersion});
                         }
                         // 参数设置
                         if(checkModalType==="sendParamSetting"){
-                            values = await form.validateFields(['enable', 'cap']);
-                            res = await sendParamSettingServe({...values, enable: values?.enable?1:0, dtuId: id, type: 7});
+                            values = await form.validateFields(['switchOnOffGrid','antiReflux','overload', 'expansion', 'antiRefluxTriggerValue', 'tranCap', 'tranCapPercent', 'pcsPowerWaveRange']);
+                            res = await sendParamSettingServe({
+                                ...values, 
+                                expansion: values?.expansion?1:0, 
+                                overload: values?.overload?1:0, 
+                                antiReflux: values?.antiReflux?1:0, 
+                                switchOnOffGrid: values?.switchOnOffGrid?1:0, 
+                                dtuId: id, 
+                                type: deviceVersion
+                            });
                         }
                         // 策略配置
                         if(checkModalType==="sendStrategySetting"){
@@ -493,22 +574,22 @@ const PolicyConfiguration = () => {
                                     endMin: time2[1],
                                 }
                             })
-                            res = await sendStrategySettingServe({...values, strategyType: tabValue,dtuId: id, type: 7})
+                            res = await sendStrategySettingServe({...values, strategyType: tabValue,dtuId: id, type: deviceVersion})
                         }
                         // 策略选择
                         if(checkModalType==="sendStrategySelect"){
                             values = await form.validateFields(monthList.map(month=>month.value));
-                            res = await sendStrategySelectServe({policySelectList: monthList.map(month=>values[month.value]), dtuId: id, type: 7})
+                            res = await sendStrategySelectServe({policySelectList: monthList.map(month=>values[month.value]), dtuId: id, type: deviceVersion})
                         }
                         // 除湿机参数设置
                         if(checkModalType==="sendDehumidifier"){
                             values = await form.validateFields(['tempStart', 'tempStop', 'humStart', 'humStop']);
-                            res = await sendDehumidifierServe({...values, dtuId: id, type: 7})
+                            res = await sendDehumidifierServe({...values, dtuId: id, type: deviceVersion})
                         }
                         // 液冷机参数设置
                         if(checkModalType==="sendLiquidCooler"){
                             values = await form.validateFields(['coolingPoint', 'heatPoint', 'coolingDiffPoint', 'heatDiffPoint']);
-                            res = await sendLiquidCoolerServe({...values, dtuId: id, type: 7})
+                            res = await sendLiquidCoolerServe({...values, dtuId: id, type: deviceVersion})
                         }
                     }
 
