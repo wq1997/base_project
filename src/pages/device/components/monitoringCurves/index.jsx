@@ -61,7 +61,9 @@ function Com(props) {
             dateList: dateStr
         });
         dealDataBot(data?.data, setOptionEchart)
-        setData(data?.data)
+        setData(data?.data);
+        let title = options.find(it => it.value == dataType).label
+        setTitle(title);
 
     }
 
@@ -147,7 +149,7 @@ function Com(props) {
         let unit = options.find(it => it.value == val).unit
         setDataType(val);
         setUnit(unit);
-        setTitle(a.children);
+        // setTitle(a.children);
         console.log(a,val);
     }
     const changeDate = (val, str) => {
