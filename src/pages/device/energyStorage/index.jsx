@@ -263,7 +263,7 @@ function Com(props) {
                 </div>
             </div>
             <div className={styles.contentRight} >
-                {getPage()}
+                {/* {getPage()} */}
             </div>
         </div>
     )

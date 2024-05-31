@@ -109,14 +109,14 @@ function Overview(props) {
         {
             label: '日收益',
             name: 'todayIncome',
-            unit: currentPlant.priceUnit,
+            unit: currentPlant?.priceUnit,
             color: '#03B4B4',
             icon: 'icon-qian'
         },
         {
             label: '周收益',
             name: 'weekIncome',
-            unit: currentPlant.priceUnit,
+            unit: currentPlant?.priceUnit,
             color: '#FF9D4F',
             icon: 'icon-qian1'
 
@@ -124,7 +124,7 @@ function Overview(props) {
         {
             label: '月收益',
             name: 'monthIncome',
-            unit: currentPlant.priceUnit,
+            unit: currentPlant?.priceUnit,
             color: '#EEC830',
             icon: 'icon-fenxiangzhuanshouyi'
 
@@ -132,7 +132,7 @@ function Overview(props) {
         {
             label: '累计收益',
             name: 'totalIncome',
-            unit: currentPlant.priceUnit,
+            unit: currentPlant?.priceUnit,
             color: '#71B4F2',
             icon: 'icon-qushi'
 

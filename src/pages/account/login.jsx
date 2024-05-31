@@ -36,9 +36,10 @@ const Login = () => {
     ), 0);
   }
   const onFinish = async (values) => {
-    localStorage.setItem('plantId','123');
-    history.push("/index/home");
-    return
+    // setLocalStorage("Token", 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiaWQiOjEwNjQwLCJuYW1lIjoibWc0OHJvdCIsInJvbGVJZCI6MywiYXV0aElkcyI6WzEsMiwzLDQsNSw2LDcsOCw5LDEwLDExLDEyLDEzLDE0LDE1LDE2LDE3LDE4LDE5LDIwLDIxLDIyLDIzLDI0LDI1LDI2LDI3LDI4LDI5XSwiY2xpZW50VHlwZSI6MywiVVVJRCI6ImNiNGE0MTRjLTZhODAtNDE3YS05MGRjLTNlZmM2MWIxNGZhMyIsImlhdCI6MTcxNzEyMzYyMCwiZXhwIjoxNzE3MTQ1MjIwfQ.fmxsnuWpe_WlVZs5lx3Q6GlA7j6N0lb5OY5HgEdP-7w');
+    // localStorage.setItem('plantId','123');
+    // history.push("/index/home");
+    // return
     const res = await loginSever({
       ...values,
       password: getEncrypt(publicKey, values.password),

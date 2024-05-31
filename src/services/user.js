@@ -1,4 +1,4 @@
-import axiosInstance from "./request";
+import axiosInstance from "./req";
 
 export const login = (payload) => {
    return axiosInstance.post('/user/loginWithCode', payload)
