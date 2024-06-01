@@ -353,12 +353,7 @@ const OverView = ({deviceVersion, sn}) => {
                         </div>
                     </div>
                     <div className={styles.centerRight}>
-                        {
-                            dataSource?.flowDiagram?
-                            <SchematicDiagram dataSource={dataSource?.flowDiagram||{}}/>
-                            :
-                            <Spin spinning={true} />
-                        }
+                        <SchematicDiagram dataSource={dataSource?.flowDiagram||{totalActivePower:0, power:0, loadPower: 0}}/>
                     </div>
                 </div>
                 <div className={styles.bottom}>

@@ -32,6 +32,7 @@ const Cabinet = () => {
     const { pathname } = location;
     const [activeKey, setActiveKey] = useState(getQueryString("activeKey") || defaultActiveKey);
     const [deviceVersion, setDeviceVersion] = useState();
+    const [sn, setSn] = useState();
     const [PageTypeList, setPageTypeList] = useState([
         { label: t('总览'), key: 'OverView' },
         { label: t('设备详情'), key: 'DeviceDetails' },
@@ -43,26 +44,14 @@ const Cabinet = () => {
 
     const getInitData = async () => {
         let { data } = await getBurDtuDevInfo2({ dtuId: id });
-        Object.keys(data.data[0]?.devInfo).length !==0 ? setPageTypeList([
-            { label: t('总览'), key: 'OverView' },
-            { label: t('设备详情'), key: 'DeviceDetails' },
-            { label: t('监测曲线'), key: 'MonitoringCurves' },
-            { label: t('pack详情'), key: 'PackDetails' },
-            { label: t('策略配置'), key: 'Policy' },
-
-        ]) : setPageTypeList([
-            { label: t('总览'), key: 'OverView' },
-            { label: t('设备详情'), key: 'DeviceDetails' },
-            { label: t('监测曲线'), key: 'MonitoringCurves' },
-            { label: t('pack详情'), key: 'PackDetails' },
-        ]);
         setData(data?.data?.[0])
     }
 
     const getDeviceType = async () => {
         const res = await getDeviceTypeByDtuIdServe({ dtuId: id });
         if(res?.data?.data){
-            setDeviceVersion(res?.data?.data);
+            setDeviceVersion(res?.data?.data?.deviceTypeId);
+            setSn(res?.data?.data?.sn);
         }
     }
 
@@ -80,7 +69,7 @@ const Cabinet = () => {
         <div style={{ height: '100%', background: '#0A1328' }}>
             <Tabs className={styles.tab} activeKey={activeKey} items={PageTypeList} onChange={onChangeTab} />
             <div className={styles.content} style={{ borderRadius: '16px 16px 0px 0px' }}>
-                {activeKey === "OverView" && <OverView sn={data?.sn} deviceVersion={deviceVersion} />}
+                {activeKey === "OverView" && <OverView sn={sn} deviceVersion={deviceVersion} />}
                 {activeKey === "DeviceDetails" && <DeviceDetails deviceVersion={deviceVersion} />}
                 {activeKey === "MonitoringCurves" && <MonitoringCurves />}
                 {activeKey === "PackDetails" && <PackDetails />}
