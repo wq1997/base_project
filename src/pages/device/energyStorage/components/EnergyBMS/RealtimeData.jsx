@@ -38,7 +38,7 @@ function Com({ id }) {
         let { data } = await obtainBMSClustersList({ id })
         let arr=[];
         data?.data?.map((it,i)=>{
-            i===0?null:arr.push({
+           arr.push({
                 ...it,
                 label: it.name,
                 value:it.id
@@ -74,19 +74,6 @@ function Com({ id }) {
                     }
                 />
             </div>
-            {/* <div className={styles.operationalStatus}>
-
-                <CardModel
-                    title={t('运行状态')}
-                    content={
-                        <>
-
-
-                        </>
-                    }
-                />
-            </div> */}
-
             <div className={styles.clusterSearch}>
                 <Select
                     style={{ width: 240 }}
@@ -95,7 +82,7 @@ function Com({ id }) {
                     defaultValue={0}
                 >
                     {activitesRef.current && activitesRef.current.map((item,index) => {
-                        return (<Option key={item.value} value={index}>{item.label}</Option>);
+                        return (<Option key={item.value} value={index}>{item.name}</Option>);
                     })
                     }
                 </Select>
@@ -119,15 +106,6 @@ function Com({ id }) {
                 />
 
             </div>
-            {/* <div className={styles.clusterOperationalStatus}>
-                <CardModel
-                    title={t('运行状态')}
-                    content={
-                        <></>
-                    }
-                />
-
-            </div> */}
 
         </div>
     )

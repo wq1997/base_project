@@ -4,6 +4,10 @@ const path = ''
 export const apigetPlantList = () => {
   return axiosInstance.get(`${path}/getPlantList`);
 }
+// 获取并网点列表
+export const getGridPointList = (payload) => {
+  return axiosInstance.get(`${path}/getGridPointList?plantId=${payload.plantId}`);
+}
 
 // 新增电站
 export const apiInsertPlant = (payload) => {
@@ -29,6 +33,11 @@ export const apideletePlantById = (payload) => {
 // 获取选项初始值
 export const getInsertPlantInitData = () => {
   return axiosInstance.get(`${path}/getInsertPlantInitData`);
+}
+
+// 根据并网点获取首页实时数据
+export const getOverviewLiveData = (payload) => {
+  return axiosInstance.get(`${path}/getOverviewLiveData?gridPointId=${payload.gridPointId}`);
 }
 
 

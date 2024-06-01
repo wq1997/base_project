@@ -10,12 +10,12 @@ import EnergyPCS from './components/EnergyPCS/index.jsx';
 import OutdoorCabinet from './components/OutdoorCabinet/index.jsx';
 import ViewEngrgy from './components/ViewEngrgy/index.jsx';
 import ViewOutdoor from './components/ViewOutdoor/index.jsx';
-import { root} from "./mock.js";
-import { getDeviceTree,getGridPointTree } from '@/services/deviceTotal'
-import { history, useLocation,useIntl } from "umi";
+import { root } from "./mock.js";
+import { getDeviceTree, getGridPointTree } from '@/services/deviceTotal'
+import { history, useLocation, useIntl } from "umi";
 import styles from "./index.less";
 
-const defaultPageType = "ALL";
+const defaultPageType = "PCS";
 let defaultData = [];
 const getType = (father, child) => {
     if (father.deviceType == 6) {
@@ -25,6 +25,17 @@ const getType = (father, child) => {
             case 101:
                 return 'BMS';
             case 104:
+                return 'Meter';
+            default:
+                return 'PCS';
+        }
+    } else if (father.deviceType == 14) {
+        switch (child?.type) {
+            case 1:
+                return 'PCS';
+            case 3:
+                return 'BMS';
+            case 0:
                 return 'Meter';
             default:
                 return 'PCS';
@@ -44,7 +55,7 @@ const getType = (father, child) => {
 }
 const getTreeData = (data, treeData) => {
     let oringal = structuredClone(treeData);
-    console.log(oringal,'oringal');
+    console.log(oringal, 'oringal');
     data?.map((it, index) => {
         if (it.dtuDevList) {
             let arr = [];
@@ -54,14 +65,14 @@ const getTreeData = (data, treeData) => {
                     id: item.id || it.dtuId || '',
                     key: `0-${index}-${i}`,
                     type: getType(it, item),
-                    
+
                 })
             })
             oringal[0]?.children.push({
                 title: it.gridPointName,
                 id: it.id,
                 key: `0-${index}`,
-                type: it.type||it?.deviceType,
+                type: it.type || it?.deviceType,
                 children: [
                     ...arr
                 ]
@@ -71,7 +82,7 @@ const getTreeData = (data, treeData) => {
                 title: it.gridPointName,
                 id: it.id,
                 key: `0-${index}`,
-                type: it.type||it?.deviceType,
+                type: it.type || it?.deviceType,
                 children: [
                     ...arr
                 ]
@@ -120,7 +131,7 @@ function Com(props) {
     const { pathname } = location;
     const { token } = theme.useToken();
     const [pageType, setPageType] = useState(getQueryString("PageType") || defaultPageType)
-    const [pageKey, setPageKey] = useState(getQueryString("PageKey") || defaultPageType)
+    const [pageKey, setPageKey] = useState(getQueryString("PageKey") || '0-0-0')
     const [tree, setTree] = useState([]);
     const [defaultDataFlag, setdefaultDataFlag] = useState(false);
     const [expandedKeys, setExpandedKeys] = useState([]);
@@ -128,12 +139,12 @@ function Com(props) {
     const [autoExpandParent, setAutoExpandParent] = useState(true);
     const intl = useIntl();
     const t = (id) => {
-      const msg = intl.formatMessage(
-        {
-          id,
-        },
-      );
-      return msg
+        const msg = intl.formatMessage(
+            {
+                id,
+            },
+        );
+        return msg
     }
     const onSelect = (selectedKeys, e) => {
         setPageType(e.node.type);
@@ -144,15 +155,15 @@ function Com(props) {
         setExpandedKeys(newExpandedKeys);
         setAutoExpandParent(false);
     };
-   
-    useEffect(()=>{
+
+    useEffect(() => {
         getData();
-    },[])
-    useEffect(()=>{
+    }, [])
+    useEffect(() => {
         getTreeData(tree, root);
         generateList(defaultData);
         setdefaultDataFlag(!defaultDataFlag);
-    },[tree])
+    }, [tree])
 
     useEffect(() => {
         const newExpandedKeys = dataList?.map((item) => {
@@ -162,8 +173,11 @@ function Com(props) {
             return null;
         })
             .filter((item, i, self) => !!(item && self.indexOf(item) === i));
+        console.log(newExpandedKeys, 1111111121212);
         setExpandedKeys(newExpandedKeys);
     }, [defaultDataFlag])
+    useEffect(() => {
+    }, [])
     const onChange = (e) => {
         const { value } = e.target;
         const newExpandedKeys = dataList?.map((item) => {
@@ -177,15 +191,13 @@ function Com(props) {
         setSearchValue(value);
         setAutoExpandParent(true);
     };
-    const getData= async()=>{
-        let {data:res} =await getDeviceTree({plantId:localStorage.getItem('plantId')});
-        let {data}=await getGridPointTree({plantId:localStorage.getItem('plantId')});
+    const getData = async () => {
+        let { data } = await getGridPointTree({ plantId: localStorage.getItem('plantId') });
         setTree(data.data);
-      }
+    }
     const treeData = useMemo(() => {
         const loop = (data) =>
             data?.map((item) => {
-                console.log(item,111111);
                 const strTitle = item?.title;
                 const index = strTitle.indexOf(searchValue);
                 const beforeStr = strTitle.substring(0, index);
@@ -206,6 +218,7 @@ function Com(props) {
                         key: item.key,
                         id: item.id,
                         type: item.type,
+                        selectable: false,
                         children: loop(item.children),
                     };
                 }
@@ -217,21 +230,23 @@ function Com(props) {
                 };
             });
         return loop(defaultData);
-    }, [searchValue,defaultDataFlag]);
+    }, [searchValue, defaultDataFlag]);
     const getPage = () => {
         switch (pageType) {
             case "ALL"://总览
                 return <Overview />;
             case "BMS":
-                return <EnergyBMS />;   
+                return <EnergyBMS />;
             case "PCS"://
-                return <EnergyPCS />;
+                return <EnergyPCS id={
+                    dataList.find(it => it.key == pageKey)?.id
+                } />;
             case "OutPart":
                 return <OutdoorCabinet />
             case "Meter":
                 return <ElectricityMeter />;
             case 3:
-                return <Overview  />;
+                return <Overview />;
             case 9:
                 return <ViewOutdoor />;
             default:
@@ -263,7 +278,7 @@ function Com(props) {
                 </div>
             </div>
             <div className={styles.contentRight} >
-                {/* {getPage()} */}
+                {getPage()}
             </div>
         </div>
     )

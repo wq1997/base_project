@@ -1,5 +1,7 @@
 import axiosInstance from "./request";
-const path = '/microgrid'
+// const path = '/microgrid'
+const path = ''
+
 export const apiGetAllPlants = () => {
   return axiosInstance.get(`${path}/getPlantList`);
 }

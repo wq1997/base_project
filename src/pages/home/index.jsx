@@ -9,131 +9,15 @@ import { theme, Switch, Select, Descriptions } from "antd";
 import { getGridPointPower, getPlantEnergyFee } from '@/services/home'
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { getEnergyFeeByTime } from '@/services/report'
-import { getGridPointList } from '@/services/policy'
+import { getGridPointList,getOverviewLiveData } from '@/services/plant'
 import dayjs from 'dayjs';
 
 function OverView(props) {
     const { token } = theme.useToken();
     const Icon = useIcon();
-    const [options, setOptions] = useState({});
     const [grids, setGrids] = useState([]);
     const [currntGrid, setCurrntGrid] = useState();
-
-    const intl = useIntl();
-    let currentPlant = JSON.parse(localStorage.getItem('current'));
-    const t = (id) => {
-        const msg = intl.formatMessage(
-            {
-                id,
-            },
-        );
-        return msg
-    }
-    useEffect(() => {
-
-    }, [token,])
-    useEffect(() => {
-
-    }, [token, currntGrid])
-    const [electricityStatistics, setElectricityStatistics] = useState([
-        {
-            value: '',
-            label: '储能累计充电量',
-            key: 'energyInEnergy',
-            unit: '',
-            color: '#F3DF2E'
-        },
-        {
-            value: '',
-            label: '储能累计放电量',
-            key: 'energyOutEnergy',
-            unit: '',
-            color: '#D53D3D'
-        },
-        {
-            value: '',
-            label: '光伏累计发电量',
-            key: 'pvOutEnergy',
-            unit: '',
-            color: '#3072E1'
-        },
-        {
-            value: '',
-            label: '充电桩累计充电量',
-            key: 'chargeInEnergy',
-            unit: '',
-            color: '#03B4B4'
-        },
-    ]);
-    const contentStyle = useEmotionCss(({ token }) => {
-        return {
-            '.ant-descriptions-item-label': {
-                color: `${token.colorNormal} !important`,
-            }
-        }
-    });
-    const getOptions = async () => {
-        let { data: energyData } = await getEnergyFeeByTime({
-            plantId: localStorage.getItem('plantId'),
-            time: time.format('YYYY-MM-DD'),
-            type: 0,
-        });
-        let pvOutEnergy = [];
-        let energyInEnergy = [];
-        let energyOutEnergy = [];
-        let pvInEnergy = [];
-        let chargeInEnergy = [];
-        let arrX = [];
-        energyData?.data?.map((it) => {
-            pvOutEnergy.push(it.pvOutEnergy);
-            energyInEnergy.push(it.energyInEnergy);
-            energyOutEnergy.push(it.energyOutEnergy);
-            pvInEnergy.push(it.pvInEnergy);
-            chargeInEnergy.push(it.chargeInEnergy);
-            arrX.push(dayjs(it?.date).format('YYYY-MM-DD'))
-        })
-        setData(data.data);
-        setDateX(arrX);
-        setDataY({ pvOutEnergy, energyInEnergy, energyOutEnergy, pvInEnergy, chargeInEnergy })
-    };
-
-    const getGrid = async () => {
-        let { data: grid } = await getGridPointList({
-            plantId: localStorage.getItem('plantId')
-        })
-        setGrids(grid?.data);
-        setCurrntGrid(grid?.data?.[0]?.id)
-    }
-
-    const getPlantLabelData = async () => {
-        let { data } = await getPlantEnergyFee({
-            plantId: localStorage.getItem('plantId')
-        });
-        let arr = [];
-        let arr1 = [];
-        electricityStatistics?.map(it => {
-            arr.push({
-                ...it,
-                value: data.data[it.key].split(' ')[0],
-                unit: data.data[it.key].split(' ')[1],
-            })
-        })
-        profit?.map(it => {
-            arr1.push({
-                ...it,
-                value: data.data[it.key],
-            })
-        })
-        setProfit([...arr1]);
-        setElectricityStatistics([...arr])
-    }
-    const onChange = (e) => {
-        setCurrntGrid(e.target.value);
-    };
-
-
-
-
+    const [allData, setAllData] = useState({});
     const [power, setPower] = useState([
         {
             value: '0.000',
@@ -160,6 +44,52 @@ function OverView(props) {
             icon: 'icon-gongyezujian-yibiaopan'
         },
     ]);
+    const intl = useIntl();
+    const t = (id) => {
+        const msg = intl.formatMessage(
+            {
+                id,
+            },
+        );
+        return msg
+    }
+    useEffect(() => {
+        getGrid();
+    }, [token,])
+    useEffect(() => {
+        getOverviewData();
+    }, [token, currntGrid])
+   
+    const contentStyle = useEmotionCss(({ token }) => {
+        return {
+            '.ant-descriptions-item-label': {
+                color: `${token.colorNormal} !important`,
+            }
+        }
+    });
+  
+    const getGrid = async () => {
+        let { data: grid } = await getGridPointList({
+            plantId: localStorage.getItem('plantId')
+        })
+        setGrids(grid?.data);
+        setCurrntGrid(grid?.data?.[0]?.id);
+    }
+
+    const getOverviewData = async () => {
+        let { data } = await getOverviewLiveData({
+            gridPointId: currntGrid
+        });
+        setAllData(data?.data);
+        power.map((it)=>{
+            it.value=data?.data?.[it.key];
+        });
+
+    }
+    const changeGrid = (e) => {
+        setCurrntGrid(e.target.value);
+    };
+    
     const gridData = [
         {
             key: 'lineAbVol',
@@ -218,6 +148,79 @@ function OverView(props) {
             unit: ''
         },
     ];
+    const pcsData = [
+        {
+            key: 'faultState',
+            label: '故障状态',
+            unit: ''
+        },
+        {
+            key: 'warnState',
+            label: '告警状态',
+            unit: ''
+        },
+        {
+            key: 'activePower',
+            label: '有功功率',
+            unit: ''
+        },
+        {
+            key: 'totalDischargeEnergy',
+            label: '总放电电量',
+            unit: ''
+        },
+        {
+            key: 'totalChargeEnergy',
+            label: '总充电电量',
+            unit: ''
+        },
+        {
+            key: 'todayDischargeEnergy',
+            label: '日放电电量',
+            unit: ''
+        },
+        {
+            key: 'todayChargeEnergy',
+            label: '日充电电量',
+            unit: ''
+        },
+        {
+            key: 'lineAbVol',
+            label: 'AB线电压',
+            unit: '(V)'
+        },
+        {
+            key: 'lineBcVol',
+            label: 'BC线电压',
+            unit: '(V)'
+
+        },
+        {
+            key: 'lineCaVol',
+            label: 'CA线电压',
+            unit: '(V)'
+
+        },
+        {
+            key: 'phaseACur',
+            label: 'A相电流',
+            unit: '(A)'
+
+        },
+        {
+            key: 'phaseBCur',
+            label: 'B相电流',
+            unit: '(A)'
+
+        },
+        {
+            key: 'phaseCCur',
+            label: 'C相电流',
+            unit: '(A)'
+
+        },
+      
+    ];
     const pcsModel = [
         {
             key: 'startState',
@@ -255,14 +258,15 @@ function OverView(props) {
                                 width: 200,
                                 marginLeft: '10px'
                             }}
-                            allowClear
-                            options={[
-                                {
-                                    value: 'lucy',
-                                    label: 'Lucy',
-                                },
-                            ]}
-                        />
+                            key={grids[0]?.id}
+                            defaultValue={grids[0]?.id}
+                        onChange={changeGrid}
+                        >
+                            {grids && grids.map(item => {
+                                return (<Option key={item.id} value={item.id}>{item.gridPointName}</Option>);
+                            })
+                            }
+                        </Select>
                     </div>
                     <Switch className={styles.right} checkedChildren="总览列表" unCheckedChildren="接线图" defaultChecked />
                 </div>
@@ -270,24 +274,24 @@ function OverView(props) {
                     <div className={styles.headLeftPart} style={{ backgroundColor: token.titleCardBgc, }}>
                         <div className={styles.line}>
                             <span className={styles.label}>{t('总充电')}</span>
-                            <span className={styles.value} style={{ color: 'rgb(14, 116, 225)' }}>{'0.00'}<span className={styles.unit} style={{ color: token.colorNormal }}>(MWh)</span></span>
+                            <span className={styles.value} style={{ color: 'rgb(14, 116, 225)' }}>{allData?.totalCEnergy?.split(' ')?.[0]}<span className={styles.unit} style={{ color: token.colorNormal }}>{`(${allData?.totalCEnergy?.split(' ')?.[1]})`}</span></span>
                             <Icon className={styles.icon} type='icon-zongchongdian' />
                         </div>
                         <div className={styles.line}>
                             <span className={styles.label}>{t('总放电')}</span>
-                            <span className={styles.value} style={{ color: 'rgb(245, 221, 59)' }}>{'0.00'}<span className={styles.unit} style={{ color: token.colorNormal }}>(MWh)</span></span>
+                            <span className={styles.value} style={{ color: 'rgb(245, 221, 59)' }}>{allData?.totalDEnergy?.split(' ')?.[0]}<span className={styles.unit} style={{ color: token.colorNormal }}>{`(${allData?.totalDEnergy?.split(' ')?.[1]})`}</span></span>
                             <Icon className={styles.icon} type='icon-zongfangdian' />
                         </div>
                     </div>
                     <div className={styles.headLeftPart} style={{ backgroundColor: token.titleCardBgc, }}>
                         <div className={styles.line}>
                             <span className={styles.label}>{t('日充电')}</span>
-                            <span className={styles.value} style={{ color: 'rgb(11, 194, 213)' }}>{'0.00'}<span className={styles.unit} style={{ color: token.colorNormal }}>(MWh)</span></span>
+                            <span className={styles.value} style={{ color: 'rgb(11, 194, 213)' }}>{allData?.dayChargeEnergy?.split(' ')?.[0]}<span className={styles.unit} style={{ color: token.colorNormal }}>{`(${allData?.dayChargeEnergy?.split(' ')?.[1]})`}</span></span>
                             <Icon className={styles.icon} type='icon-richongdian' />
                         </div>
                         <div className={styles.line}>
                             <span className={styles.label}>{t('日放电')}</span>
-                            <span className={styles.value} style={{ color: 'rgb(254, 135, 51)' }}>{'0.00'}<span className={styles.unit} style={{ color: token.colorNormal }}>(MWh)</span></span>
+                            <span className={styles.value} style={{ color: 'rgb(254, 135, 51)' }}>{allData?.dayDischargeEnergy?.split(' ')?.[0]}<span className={styles.unit} style={{ color: token.colorNormal }}>{`(${allData?.dayDischargeEnergy?.split(' ')?.[1]})`}</span></span>
                             <Icon className={styles.icon} type='icon-rifangdian' />
                         </div>
                     </div>
@@ -320,9 +324,10 @@ function OverView(props) {
                                     }}
                                     items={gridData.map(it => {
                                         return {
-                                            label: t(it.label) + `${it.unit}`,
+                                            // label: t(it.label) + `${it.unit}`,
+                                            label: t(it.label) ,
                                             key: it.key,
-                                            children: it.label
+                                            children: allData?.msc?.[0]?.[it.key]
                                         }
                                     })
                                     }
@@ -348,11 +353,11 @@ function OverView(props) {
                                             xl: 5,
                                             xxl: 5,
                                         }}
-                                        items={gridData.map(it => {
+                                        items={pcsData.map(it => {
                                             return {
                                                 label: t(it.label) + `${it.unit} `,
                                                 key: it.key,
-                                                children: it.label
+                                                children: allData?.msc?.[0]?.pcs?.[it.key]||'--'
                                             }
                                         })
                                         }
@@ -360,7 +365,7 @@ function OverView(props) {
                                     />
                                 </div>
                                 <div className={styles.pcsModule}>
-                                    {[...Array(8)].map((item, i) => {
+                                    {allData?.msc?.[0]?.pcs?.branch?.map((item, i) => {
                                         return <Descriptions
                                             className={contentStyle}
                                             style={{ backgroundColor: token.lightTreeBgc, padding: '16px 12px 8px 12px', borderRadius: '8px' }}
@@ -370,7 +375,7 @@ function OverView(props) {
                                                 return {
                                                     label: t(it.label) + `${it.unit}`,
                                                     key: it.key,
-                                                    children: '--' || it.label
+                                                    children: item[it.key] ||'--' 
                                                 }
                                             })
                                             } />

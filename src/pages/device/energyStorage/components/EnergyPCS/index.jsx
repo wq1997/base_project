@@ -13,7 +13,7 @@ const PageTypeList = [
     {label:'监测曲线',key:'MonitoringCurvesPcs'},
 ];
 const defaultActiveKey = "PcsDetails";
-const Cabinet = () => {
+const Cabinet = (props) => {
     const location = useLocation();
     const { token } = theme.useToken();
     const { pathname } = location;
@@ -28,9 +28,9 @@ const Cabinet = () => {
     return (
         <div style={{height: 'calc(100% - 56px)'}}>
             <Tab activeKey={activeKey} TabItem={PageTypeList} onChange={onChangeTab}/>
-            <div className={styles.content} style={{backgroundColor: token.cardBgc,padding:'40px 30px',borderRadius: '0px 16px 0px 0px'}}>
+            <div className={styles.contents} style={{backgroundColor: token.cardBgc,padding:'40px 30px',borderRadius: '0px 16px 0px 0px'}}>
                 {activeKey==="MonitoringCurvesPcs"&&<MonitoringCurves/>}
-                {activeKey==="PcsDetails"&&<PcsDetails id={id}/>}
+                {activeKey==="PcsDetails"&&<PcsDetails id={id||props.id}/>}
             </div>
         </div>
     )

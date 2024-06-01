@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { getBaseUrl } from '@/services/request'
 import img from '../../../src/assets/imges/login.png'
 import img_title from '../../../src/assets/imges/login_title.png'
+import { apigetPlantList,  } from '@/services/plant'
 
 const { Title } = Typography;
 
@@ -36,10 +37,6 @@ const Login = () => {
     ), 0);
   }
   const onFinish = async (values) => {
-    // setLocalStorage("Token", 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiaWQiOjEwNjQwLCJuYW1lIjoibWc0OHJvdCIsInJvbGVJZCI6MywiYXV0aElkcyI6WzEsMiwzLDQsNSw2LDcsOCw5LDEwLDExLDEyLDEzLDE0LDE1LDE2LDE3LDE4LDE5LDIwLDIxLDIyLDIzLDI0LDI1LDI2LDI3LDI4LDI5XSwiY2xpZW50VHlwZSI6MywiVVVJRCI6ImNiNGE0MTRjLTZhODAtNDE3YS05MGRjLTNlZmM2MWIxNGZhMyIsImlhdCI6MTcxNzEyMzYyMCwiZXhwIjoxNzE3MTQ1MjIwfQ.fmxsnuWpe_WlVZs5lx3Q6GlA7j6N0lb5OY5HgEdP-7w');
-    // localStorage.setItem('plantId','123');
-    // history.push("/index/home");
-    // return
     const res = await loginSever({
       ...values,
       password: getEncrypt(publicKey, values.password),
@@ -61,8 +58,9 @@ const Login = () => {
           }
         }
       });
-      localStorage.setItem('plantId','123');
+      getData();
       history.push("/index/home");
+
     } else {
       message.error(res.data.msg);
       if (res?.data.code === '407') {
@@ -71,7 +69,10 @@ const Login = () => {
       }
     }
   }
-
+  const getData = async () => {
+    const { data } = await apigetPlantList();
+    localStorage.setItem('plantId',data.data?.[0].plantId);
+}
   const getPublicKey = async () => {
     const res = await getPublicKeySever();
     if (res?.data) {
@@ -83,6 +84,8 @@ const Login = () => {
   useEffect(() => {
     getPublicKey();
   }, [])
+
+  // const 
   return (
     <div
       style={{

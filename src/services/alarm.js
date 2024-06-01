@@ -1,8 +1,10 @@
 import axiosInstance from "./request";
-const path = '/microgrid'
+// const path = '/microgrid'
+const path = ''
+
 // 根据电站id分页查询实时告警
 export const getNowAlarmsWithPage = (payload) => {
-    return axiosInstance.post(`${path}/alarm/getNowAlarmsWithPage`, payload);
+    return axiosInstance.post(`${path}/alarm/getNowAlarmsOptionsWithPage`, payload);
 }
 // 获取当前用户所有设备的历史告警(条件搜索)
 export const getHistoryAlarmsByOptionsWithPage = (payload) => {

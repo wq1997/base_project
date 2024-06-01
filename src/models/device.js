@@ -1,5 +1,5 @@
 import { apiGetAllPlants, apiGetDtuList } from "@/services/total"
-import { apiGetALLContainer } from "@/services/device"
+// import { apiGetALLContainer } from "@/services/device"
 import { setLocalStorage, getLocalStorage } from "@/utils/utils";
 
 export default {

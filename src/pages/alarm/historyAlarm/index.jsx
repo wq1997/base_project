@@ -17,7 +17,6 @@ import PieEcharts from '@/components/PieEcharts'
 const RealtimeAlarm = () => {
   const { RangePicker } = DatePicker;
   const [data, setData] = useState([]);
-  const [dataTotal, setDatadataTotal] = useState([]);
   const [current, setCurrent] = useState(1);
   const [level, setLevel] = useState();
   const [type, setType] = useState();
@@ -100,21 +99,10 @@ const RealtimeAlarm = () => {
     getTableListData(current);
   }, [current, level, type, time]);
 
-  useEffect(() => {
-    getTotalData();
-  }, [])
-  const sum = (arr) => {
-    return arr?.reduce((prev, cur) => {
-      return prev + cur.value
-    }, 0)
-  }
   const { currentPlantId } = useSelector(function (state) {
     return state.device
   });
-  const getTotalData = async () => {
-    const { data } = await getHistoryAlarmsStatistics({ plantId: currentPlantId || localStorage.getItem('plantId') });
-    setDatadataTotal(data.data)
-  };
+
   const getTableListData = async (page) => {
     const { data } = await getHistoryAlarmsByOptionsWithPage({
       plantId: currentPlantId || localStorage.getItem('plantId'),
@@ -147,74 +135,9 @@ const RealtimeAlarm = () => {
     let sheetName = '';
     downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader, sheetName);
   }
-  const topData = [
-    {
-      icon: <HistoryOutlined />,
-      name: "严重告警历史总数",
-      color: '#03B4B4',
-      key: 'historyCount',
-      value: '',
-      unit: '个'
-    },
-    {
-      icon: <ReconciliationOutlined />,
-      name: "今日处理严重告警数",
-      color: '#ED750E',
-      key: 'currentCount',
-      value: '',
-      unit: '个'
-    },
-    {
-      icon: <ScheduleOutlined />,
-      name: "近半年严重告警平均处理时长",
-      color: '#5B8FF9',
-      key: 'avgCost',
-      value: '',
-      unit: ''
-    },
-  ];
+
   return (
     <div className={styles.wrap}>
-      <div className={styles.heard}>
-        <CardModel
-          title='历史告警'
-          content={
-            <div className={styles.topContent}>
-              {topData.map(it => {
-                return (
-                  <div className={styles.topItem} style={{ color: it.color, backgroundColor: token.cardBgc, boxShadow: token.cardShadow }}>
-                    <div className={styles.topItemTitle}>
-                      {it.icon}
-                      <span style={{ color: token.smallTitleColor, fontWeight: 500, fontSize: '16px', marginLeft: '3px' }}>{t(it.name)}</span>
-                    </div>
-                    <div className={styles.topVaue} >
-                      {dataTotal[it.key] || 0}
-                      <span style={{ fontSize: '16px', fontWeight: 400, marginLeft: '10px', height: '10%', lineHeight: '150%' }}>{it.unit}</span>
-                    </div>
-                  </div>
-                )
-              })}
-              <div className={styles.pieItem}>
-                <PieEcharts allData={{
-                  total: sum(dataTotal?.priorStatistics), subtext: t('总数'), data: dataTotal?.priorStatistics
-                }}></PieEcharts>
-                <div className={styles.pieItem_bottom} style={{ color: token.smallTitleColor }}>{t('告警等级分布')}</div>
-              </div>
-              <div className={styles.pieItem}>
-                <PieEcharts
-                  top={'50%'}
-                  allData={{
-                    total: sum(dataTotal?.typeStatistics), subtext: t('总数'), data: dataTotal?.typeStatistics
-                  }}></PieEcharts>
-                <div className={styles.pieItem_bottom} style={{ color: token.smallTitleColor }}>{t("告警类别分布")}</div>
-
-              </div>
-            </div>
-          }
-        />
-      </div>
-
-
       <div className={styles.content} style={{ backgroundColor: token.titleCardBgc }}>
         <div className={styles.title}>
           <div className={styles.level}>

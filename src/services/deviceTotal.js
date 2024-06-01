@@ -1,5 +1,6 @@
 import axiosInstance from "./request";
-const path = '/microgrid'
+// const path = '/microgrid'
+const path = ''
 
 // 获取并网点汇充放电量、效率、收益图
 export const getChargeDischargeEnergySevenDaysDtuId = (payload) => {
@@ -27,7 +28,7 @@ export const getChargeDischargeEnergySevenDaysByPlantId = (payload) => {
 }
 // 获取运行指标
 export const getRunMetrics = (payload) => {
-    return axiosInstance.get(`${path}/getRunMetrics?plantId=${payload.plantId}`);
+    return axiosInstance.get(`${path}/getRunMetrics    ?plantId=${payload.plantId}`);
 }
 // 获取所有设备充放电量
 export const getEnergySummary = (payload) => {
@@ -66,15 +67,15 @@ export const getMetersNowData = (payload) => {
 
 // 获取bms实时数据信息
 export const getBmsNowData = (payload) => {
-    return axiosInstance.get(`${path}/getBmsNowData?id=${payload.id}`);
+    return axiosInstance.get(`${path}/getBMSLiveData?devId=${payload.id}`);
 }
 // 获取bmC实时数据信息
 export const getBmcNowData = (payload) => {
-    return axiosInstance.get(`${path}/getBmcNowData?id=${payload.id}&cluster=${payload.cluster}`);
+    return axiosInstance.get(`${path}/getBMCLiveData?devId=${payload.id}&cluster=${payload.cluster}`);
 }
-// 获取bmC实时数据信息
+// 获取PCS实时数据
 export const getPcsNowDataById = (payload) => {
-    return axiosInstance.get(`${path}/getPcsNowDataById?id=${payload.id}`);
+    return axiosInstance.get(`${path}/getPCSLiveData?devId=${payload.id}`);
 }
 // 获取pcs实时功率曲线
 export const getPcsNowPowerById = (payload) => {
