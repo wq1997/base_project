@@ -114,7 +114,7 @@ export const alarmLevel = [
 export const optionType = [
     {
         label: <FormattedMessage id='215户外柜' />,
-        value: 7,
+        value: 16,
     },
     {
         label: <FormattedMessage id='232户外柜' />,
