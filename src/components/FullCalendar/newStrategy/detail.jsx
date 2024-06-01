@@ -260,7 +260,7 @@ const Detail = ({ form, open, onChangeOpen, detailsData }) => {
                 dataSource={detailsData?.contentList}
             />
 
-            <Typography.Title level={5}>PCS功率（KW）</Typography.Title>
+            <Typography.Title level={5}>PCS功率（kW）</Typography.Title>
             <ReactECharts
                 option={option}
                 style={{ width: 900, height: 300, marginBottom: 60 }}

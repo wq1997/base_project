@@ -28,7 +28,8 @@ const theme = {
         colorLight:'#fff',
         colorNormal:'#fff',
         colorLittle:'#fff',
-
+        mybuttonBgc:'#212849',
+        mybuttonColor:'#6978A1'
     },
     default: {
         colorPrimary:'#03B4B4',
@@ -57,6 +58,8 @@ const theme = {
         colorLight:'#999999',
         colorNormal:'#000000',
         colorLittle:'#333333',
+        mybuttonBgc:'#D1D9EF',
+        mybuttonColor:'#6978A1'
 
     }
 }

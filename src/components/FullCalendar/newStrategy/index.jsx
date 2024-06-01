@@ -237,7 +237,7 @@ const NewStrategy = ({ currentGrid, strategy, deleteStrategy, getStrategy, handl
                             onClick={() => {
                                 Modal.confirm({
                                     title: t('系统提示'),
-                                    content: t('年度执行计划删除后将无法恢复，是否确认删除该年度执行计划？'),
+                                    content: t('电价规则删除后将无法恢复，是否确认删除该年度执行计划？'),
                                     onOk() {
                                         let arr = [...priceData];
                                         arr.splice(index, 1);
@@ -311,7 +311,7 @@ const NewStrategy = ({ currentGrid, strategy, deleteStrategy, getStrategy, handl
                             onClick={() => {
                                 Modal.confirm({
                                     title: t('系统提示'),
-                                    content: t('年度执行计划删除后将无法恢复，是否确认删除该年度执行计划？'),
+                                    content: t('策略执行日程删除后将无法恢复，是否确认删除该年度执行计划？'),
                                     onOk() {
                                         onDeletePlan(record.id);
                                     }

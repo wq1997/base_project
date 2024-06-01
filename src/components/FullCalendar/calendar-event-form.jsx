@@ -27,7 +27,7 @@ export default function CalendarEventForm({
   onDelete,
   strategy
 }) {
-  const title = type === 'add' ? '新建策略执行日程' : '编辑策略执行日程';
+  const title = type === 'add' ? '创建策略执行日程' : '编辑策略执行日程';
   const [form] = Form.useForm();
   const [strategyDatasource, setStrategyDatasource] = useState([...strategy[0].children]);
   const intl = useIntl();
