@@ -404,8 +404,11 @@ const PolicyConfiguration = ({deviceVersion}) => {
                                 <div 
                                     className={canIssue?distributeStyle:disabledDistributeStyle}
                                     onClick={async ()=>{
-                                        const values = await form.validateFields();
-                                        console.log("values", values)
+                                        await form.validateFields(monthList.map(month=>month.value));
+                                        if(canIssue){
+                                            setCheckModalOpen(true);
+                                            setCheckModalType('sendStrategySelect');
+                                        }
                                     }}
                                 >
                                     {intl.formatMessage({id: '下发'})}
@@ -437,8 +440,13 @@ const PolicyConfiguration = ({deviceVersion}) => {
                             <Row justify="space-between" align="middle">
                                 <Title title={intl.formatMessage({id: '除湿机参数设置'})} />
                                 <div 
-                                    className={canIssue?distributeStyle:disabledDistributeStyle}
+                                    className={distributeStyle}
                                     onClick={async ()=>{
+                                        await form.validateFields(['tempStart', 'tempStop', 'humStart', 'humStop']);
+                                        if(canIssue){
+                                            setCheckModalOpen(true);
+                                            setCheckModalType('sendDehumidifier');
+                                        }
                                     }}
                                 >
                                     {intl.formatMessage({id: '下发'})}
@@ -446,22 +454,22 @@ const PolicyConfiguration = ({deviceVersion}) => {
                             </Row>
                             <Row gutter={50}>
                                 <Col span={6}>
-                                    <Form.Item name="oneTemperature" label={intl.formatMessage({id: '除湿机温度启动值(℃)'})} style={{margin: 0}}>
+                                    <Form.Item name="tempStart" label={intl.formatMessage({id: '除湿机温度启动值(℃)'})} style={{margin: 0}}>
                                         <Input style={{width: "100%"}} placeholder={intl.formatMessage({id: '请输入除湿机温度启动值'})}/>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item name="twoTemperature" label={intl.formatMessage({id: '除湿机温度停止值(℃)'})} style={{margin: 0}}>
+                                    <Form.Item name="tempStop" label={intl.formatMessage({id: '除湿机温度停止值(℃)'})} style={{margin: 0}}>
                                         <Input style={{width: "100%"}} placeholder={intl.formatMessage({id: '请输入除湿机温度停止值'})}/>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item name="threeTemperature" label={intl.formatMessage({id: '除湿机湿度启动值(%rh)'})} style={{margin: 0}}>
+                                    <Form.Item name="humStart" label={intl.formatMessage({id: '除湿机湿度启动值(%rh)'})} style={{margin: 0}}>
                                         <Input style={{width: "100%"}} placeholder={intl.formatMessage({id: '请输入除湿机湿度启动值'})}/>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item name="fourTemperature" label={intl.formatMessage({id: '除湿机湿度停止值(%rh)'})} style={{margin: 0}}>
+                                    <Form.Item name="humStop" label={intl.formatMessage({id: '除湿机湿度停止值(%rh)'})} style={{margin: 0}}>
                                         <Input style={{width: "100%"}} placeholder={intl.formatMessage({id: '请输入除湿机湿度停止值'})}/>
                                     </Form.Item>
                                 </Col>
@@ -474,8 +482,13 @@ const PolicyConfiguration = ({deviceVersion}) => {
                             <Row justify="space-between" align="middle">
                                 <Title title={intl.formatMessage({id: '液冷机参数设置'})} />
                                 <div 
-                                    className={canIssue?distributeStyle:disabledDistributeStyle}
+                                    className={distributeStyle}
                                     onClick={async ()=>{
+                                        await form.validateFields(['coolingPoint', 'heatPoint', 'coolingDiffPoint', 'heatDiffPoint']);
+                                        if(canIssue){
+                                            setCheckModalOpen(true);
+                                            setCheckModalType('sendLiquidCooler');
+                                        }
                                     }}
                                 >
                                     {intl.formatMessage({id: '下发'})}
@@ -483,22 +496,22 @@ const PolicyConfiguration = ({deviceVersion}) => {
                             </Row>
                             <Row gutter={50}>
                                 <Col span={6}>
-                                    <Form.Item name="fiveTemperature" label={intl.formatMessage({id: '液冷制冷点(℃)'})} style={{margin: 0}}>
+                                    <Form.Item name="coolingPoint" label={intl.formatMessage({id: '液冷制冷点(℃)'})} style={{margin: 0}}>
                                         <Input style={{width: "100%"}} placeholder={intl.formatMessage({id: '请输入液冷制冷点'})}/>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item name="sixTemperature" label={intl.formatMessage({id: '液冷加热点(℃)'})} style={{margin: 0}}>
+                                    <Form.Item name="heatPoint" label={intl.formatMessage({id: '液冷加热点(℃)'})} style={{margin: 0}}>
                                         <Input style={{width: "100%"}} placeholder={intl.formatMessage({id: '请输入液冷加热点'})}/>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item name="sevenTemperature" label={intl.formatMessage({id: '液冷制冷回差(℃)'})} style={{margin: 0}}>
+                                    <Form.Item name="coolingDiffPoint" label={intl.formatMessage({id: '液冷制冷回差(℃)'})} style={{margin: 0}}>
                                         <Input style={{width: "100%"}} placeholder={intl.formatMessage({id: '请输入液冷制冷回差'})}/>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item name="eightTemperature" label={intl.formatMessage({id: '液冷加热回差(℃)'})} style={{margin: 0}}>
+                                    <Form.Item name="heatDiffPoint" label={intl.formatMessage({id: '液冷加热回差(℃)'})} style={{margin: 0}}>
                                         <Input style={{width: "100%"}} placeholder={intl.formatMessage({id: '请输入液冷加热回差'})}/>
                                     </Form.Item>
                                 </Col>
