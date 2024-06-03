@@ -224,7 +224,7 @@ const PolicyConfiguration = ({deviceVersion}) => {
                                         <Col span={12}>
                                             <Row gutter={24}>
                                                 <Col>
-                                                    <Form.Item label={`${intl.formatMessage({id: 'PCS功率'})}(kW)`} name="pscPower"  style={{margin: 0}}>
+                                                    <Form.Item label={`${intl.formatMessage({id: 'PCS功率'})}(kW)`} name="pcsPower" rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
                                                         <Input placeholder={intl.formatMessage({id: '请输入PCS功率'})} style={{width: 300}} />
                                                     </Form.Item>
                                                 </Col>
@@ -232,8 +232,11 @@ const PolicyConfiguration = ({deviceVersion}) => {
                                                     <div
                                                         className={canIssue?distributeStyle:disabledDistributeStyle}
                                                         onClick={async ()=>{
-                                                            const values = await form.validateFields(['pscPower'])
-                                                            console.log('values', values)
+                                                            await form.validateFields(['pcsPower']);
+                                                            if(canIssue){
+                                                                setCheckModalOpen(true);
+                                                                setCheckModalType('pcsPower');
+                                                            }
                                                         }}
                                                     >
                                                         {intl.formatMessage({id: '下发'})}
@@ -454,22 +457,22 @@ const PolicyConfiguration = ({deviceVersion}) => {
                             </Row>
                             <Row gutter={50}>
                                 <Col span={6}>
-                                    <Form.Item name="tempStart" label={intl.formatMessage({id: '除湿机温度启动值(℃)'})} style={{margin: 0}}>
+                                    <Form.Item name="tempStart" label={intl.formatMessage({id: '除湿机温度启动值(℃)'})}  rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
                                         <Input style={{width: "100%"}} placeholder={intl.formatMessage({id: '请输入除湿机温度启动值'})}/>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item name="tempStop" label={intl.formatMessage({id: '除湿机温度停止值(℃)'})} style={{margin: 0}}>
+                                    <Form.Item name="tempStop" label={intl.formatMessage({id: '除湿机温度停止值(℃)'})}  rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
                                         <Input style={{width: "100%"}} placeholder={intl.formatMessage({id: '请输入除湿机温度停止值'})}/>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item name="humStart" label={intl.formatMessage({id: '除湿机湿度启动值(%rh)'})} style={{margin: 0}}>
+                                    <Form.Item name="humStart" label={intl.formatMessage({id: '除湿机湿度启动值(%rh)'})}  rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
                                         <Input style={{width: "100%"}} placeholder={intl.formatMessage({id: '请输入除湿机湿度启动值'})}/>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item name="humStop" label={intl.formatMessage({id: '除湿机湿度停止值(%rh)'})} style={{margin: 0}}>
+                                    <Form.Item name="humStop" label={intl.formatMessage({id: '除湿机湿度停止值(%rh)'})}  rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
                                         <Input style={{width: "100%"}} placeholder={intl.formatMessage({id: '请输入除湿机湿度停止值'})}/>
                                     </Form.Item>
                                 </Col>
@@ -496,22 +499,22 @@ const PolicyConfiguration = ({deviceVersion}) => {
                             </Row>
                             <Row gutter={50}>
                                 <Col span={6}>
-                                    <Form.Item name="coolingPoint" label={intl.formatMessage({id: '液冷制冷点(℃)'})} style={{margin: 0}}>
+                                    <Form.Item name="coolingPoint" label={intl.formatMessage({id: '液冷制冷点(℃)'})}  rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
                                         <Input style={{width: "100%"}} placeholder={intl.formatMessage({id: '请输入液冷制冷点'})}/>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item name="heatPoint" label={intl.formatMessage({id: '液冷加热点(℃)'})} style={{margin: 0}}>
+                                    <Form.Item name="heatPoint" label={intl.formatMessage({id: '液冷加热点(℃)'})}  rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
                                         <Input style={{width: "100%"}} placeholder={intl.formatMessage({id: '请输入液冷加热点'})}/>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item name="coolingDiffPoint" label={intl.formatMessage({id: '液冷制冷回差(℃)'})} style={{margin: 0}}>
+                                    <Form.Item name="coolingDiffPoint" label={intl.formatMessage({id: '液冷制冷回差(℃)'})}  rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
                                         <Input style={{width: "100%"}} placeholder={intl.formatMessage({id: '请输入液冷制冷回差'})}/>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item name="heatDiffPoint" label={intl.formatMessage({id: '液冷加热回差(℃)'})} style={{margin: 0}}>
+                                    <Form.Item name="heatDiffPoint" label={intl.formatMessage({id: '液冷加热回差(℃)'})}  rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
                                         <Input style={{width: "100%"}} placeholder={intl.formatMessage({id: '请输入液冷加热回差'})}/>
                                     </Form.Item>
                                 </Col>
