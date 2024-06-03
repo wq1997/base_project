@@ -32,10 +32,9 @@ const SchematicDiagram = ({dataSource}) => {
     const [loadSystemLineWidth, setLoadSystemLineWidth] = useState(0);
     const [loadSystemIconWidth, setLoadSystemIconWidth] = useState(0); // 负载系统图标宽度
     const [energySystemLineWidth, setEnergySystemLineWidth] = useState(0);
-    const [energySystemStatus, setEnergySystemStatus] = useState(powerData); // 大于0代表放电，小于0代表充电，等于0代表待机
     const [energySystemIconWidth, setEnrgySystemIconWidth] = useState(0); // 负载系统图标宽度
     const [citySystemLineWidth, setCitySystemLineWidth] = useState(0);
-    
+
     const centerStyle = useEmotionCss(()=>{
         return {
             position: 'absolute',
@@ -130,7 +129,7 @@ const SchematicDiagram = ({dataSource}) => {
             <div className={centerStyle}>
                 {/* 充电状态 */}
                 {
-                    energySystemStatus<0&&
+                    powerData<0&&
                     <div 
                         style={{
                             position: 'absolute',
@@ -148,7 +147,7 @@ const SchematicDiagram = ({dataSource}) => {
 
                 {/* 放电状态 */}
                 {
-                    energySystemStatus>0&&
+                    powerData>0&&
                     <div 
                         style={{
                             position: 'absolute',
@@ -172,7 +171,7 @@ const SchematicDiagram = ({dataSource}) => {
                         height: '5px',
                         transform: `rotate(${energySystemChargingAngle}deg)`,
                         transformOrigin: '0px 0px',
-                        background: energySystemStatus===0?'#244A75': 'transparent',
+                        background: powerData===0?'#244A75': 'transparent',
                         zIndex: 200
                     }}
                 >
