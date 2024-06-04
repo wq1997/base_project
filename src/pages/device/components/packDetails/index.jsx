@@ -27,7 +27,7 @@ function Com(props) {
     }
 
     useEffect(() => {
-        getQueryString('type')=="14"? initData():null;
+        initData();
     }, [])
 
     useEffect(() => {
