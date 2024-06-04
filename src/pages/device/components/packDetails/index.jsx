@@ -42,7 +42,7 @@ function Com(props) {
     const getPackData = async () => {
         let { data } = await getBurPackDetailInfo2({
             dtuId: id,
-            idxItem: getQueryString('type')=="14"?undefined:selectId
+            idxItem: getQueryString('type')=="14"?selectId:undefined,
         });
         setData(data.data)
     }
