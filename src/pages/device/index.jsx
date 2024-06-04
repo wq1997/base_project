@@ -190,7 +190,15 @@ const RealtimeAlarm = () => {
             render: (text, record) => {
                 return (
                     <Space>
-                        <Button type="link" style={{ color: token.colorPrimary }} onClick={() => { history.push(`/device?activeKey=OverView&id=${record.id}&title=${record.name||""}`) }}>{t('详情')}</Button>
+                        <Button 
+                            type="link" 
+                            style={{ color: token.colorPrimary }} 
+                            onClick={() => { 
+                                history.push(`/device?activeKey=OverView&id=${record.id}&title=${record.name||""}&type=${record.deviceTypeId||""}`)
+                            }}
+                        >
+                            {t('详情')}
+                        </Button>
                     </Space>
                 )
             }

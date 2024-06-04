@@ -11,14 +11,14 @@ import { getQueryString, downLoadExcelMode } from "@/utils/utils";
 import { useSelector, useIntl } from "umi";
 const { Option } = Select;
 
-function Com(props) {
+function Com({deviceVersion}) {
     const { token } = theme.useToken();
     const [options, setOptions] = useState([]);
     const [unit, setUnit] = useState('%');
     const id = getQueryString('id') || 0;
     const [date, setDate] = useState(dayjs(new Date()));
     const [dateStr, setDateStr] = useState([dayjs(new Date()).format('YYYY-MM-DD')]);
-    const [dataType, setDataType] = useState(-1);
+    const [dataType, setDataType] = useState();
     const [title, setTitle] = useState('');
     const [optionEchart, setOptionEchart] = useState({});
     const [data, setData] = useState();
@@ -44,12 +44,14 @@ function Com(props) {
     }, [options])
     const getInitData = async () => {
         let { data } = await getMonitorTypeInitData2({deviceType:getQueryString('type')});
-        setOptions(data?.data);
-        setTitle(data?.data?.[0]?.label);
-        setDataType(data?.data?.[0]?.value);
-        getChartData();
+        if(data?.data){
+            setOptions(data?.data);
+            setTitle(data?.data?.[0]?.label);
+            setDataType(data?.data?.[0]?.value);
+            getChartData(data?.data?.[0]?.value);
+        }
     }
-    const getChartData = async () => {
+    const getChartData = async (initDataType) => {
         let dateList = dateStr;
         if (dateList.length > 7) {
             message.warning(t('最多选择7个对比项'));
@@ -57,14 +59,15 @@ function Com(props) {
         }
         let { data } = await monitorDataWithTime2({
             dtuId: id,
-            dataType,
+            dataType: dataType||initDataType,
             dateList: dateStr
         });
-        dealDataBot(data?.data, setOptionEchart)
-        setData(data?.data);
-        let title = options.find(it => it.value == dataType).label
-        setTitle(title);
-
+        if(data?.data){
+            dealDataBot(data?.data, setOptionEchart)
+            setData(data?.data);
+            let title = options.find(it => it.value == dataType).label
+            setTitle(title);
+        }
     }
 
     const dealDataBot = (data, setHandel) => {

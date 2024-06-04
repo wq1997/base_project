@@ -57,7 +57,7 @@ const Cabinet = () => {
 
     const onChangeTab = key => {
         setActiveKey(key);
-        history.push(`${pathname}?activeKey=${key}&id=${id}&title=${getQueryString("title")}`);
+        history.push(`${pathname}?activeKey=${key}&id=${id}&title=${getQueryString("title")}&type=${getQueryString("type")}`);
     };
 
     useEffect(() => {
@@ -71,8 +71,8 @@ const Cabinet = () => {
             <div className={styles.content} style={{ borderRadius: '16px 16px 0px 0px' }}>
                 {activeKey === "OverView" && <OverView sn={sn} deviceVersion={deviceVersion} />}
                 {activeKey === "DeviceDetails" && <DeviceDetails deviceVersion={deviceVersion} />}
-                {activeKey === "MonitoringCurves" && <MonitoringCurves />}
-                {activeKey === "PackDetails" && <PackDetails />}
+                {activeKey === "MonitoringCurves" && <MonitoringCurves deviceVersion={deviceVersion} />}
+                {activeKey === "PackDetails" && <PackDetails deviceVersion={deviceVersion} />}
                 {activeKey === "Policy" && <Policy id={id} deviceVersion={deviceVersion}/>}
             </div>
         </div>
