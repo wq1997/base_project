@@ -34,7 +34,11 @@ const Cabinet = () => {
     const [deviceVersion, setDeviceVersion] = useState();
     const [sn, setSn] = useState();
     const [PageTypeList, setPageTypeList] = useState([
-   
+        { label: t('总览'), key: 'OverView' },
+        { label: t('设备详情'), key: 'DeviceDetails' },
+        { label: t('监测曲线'), key: 'MonitoringCurves' },
+        { label: t('pack详情'), key: 'PackDetails' },
+        { label: t('策略配置'), key: 'Policy' },
     ]);
     const [data, setData] = useState();
 
