@@ -125,12 +125,11 @@ const App = (props) => {
                                         <Col className="gutter-row" span={24}>
                                             <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.required }]} >
                                                 <Select
-                                                    options={it?.option}
+                                                    // options={it?.option}
                                                     disabled={it.disabled}
                                                 >
                                                     {it.option.map(item=>{
                                                     return<Option key={item.valaue} value={item.value}>{item.label}</Option>
-                                                         
                                                     })}
 
                                                 </Select>

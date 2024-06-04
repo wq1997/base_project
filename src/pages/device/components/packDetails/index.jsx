@@ -27,7 +27,7 @@ function Com(props) {
     }
 
     useEffect(() => {
-        initData();
+        getQueryString('type')=="14"? initData():null;
     }, [])
 
     useEffect(() => {
@@ -42,7 +42,7 @@ function Com(props) {
     const getPackData = async () => {
         let { data } = await getBurPackDetailInfo2({
             dtuId: id,
-            idxItem: selectId
+            idxItem: getQueryString('type')=="14"?selectId:undefined,
         });
         setData(data.data)
     }

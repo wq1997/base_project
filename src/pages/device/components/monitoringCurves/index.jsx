@@ -38,15 +38,16 @@ function Com(props) {
     useEffect(() => {
         initOption();
         getInitData();
-        getChartData();
     }, [token, id]);
     useEffect(() => {
         setDataType(options[0]?.value);
     }, [options])
     const getInitData = async () => {
-        let { data } = await getMonitorTypeInitData2();
+        let { data } = await getMonitorTypeInitData2({deviceType:getQueryString('type')});
         setOptions(data?.data);
-        setTitle(data?.data?.[0]?.label)
+        setTitle(data?.data?.[0]?.label);
+        setDataType(data?.data?.[0]?.value);
+        getChartData();
     }
     const getChartData = async () => {
         let dateList = dateStr;
@@ -60,7 +61,9 @@ function Com(props) {
             dateList: dateStr
         });
         dealDataBot(data?.data, setOptionEchart)
-        setData(data?.data)
+        setData(data?.data);
+        let title = options.find(it => it.value == dataType).label
+        setTitle(title);
 
     }
 
@@ -146,7 +149,7 @@ function Com(props) {
         let unit = options.find(it => it.value == val).unit
         setDataType(val);
         setUnit(unit);
-        setTitle(a.children);
+        // setTitle(a.children);
         console.log(a,val);
     }
     const changeDate = (val, str) => {
