@@ -1,5 +1,5 @@
 import { useIntl } from "umi";
-import { Form, Select, DatePicker, Button, Flex, Radio, theme, Space, message, Empty, Spin } from "antd";
+import { Form, Cascader, DatePicker, Button, Flex, Radio, theme, Space, message, Empty, Spin } from "antd";
 import { Title } from "@/components";
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect } from "react";
@@ -21,20 +21,19 @@ import { downloadFile } from "@/utils/utils";
 const defaultStartDate = dayjs(moment().subtract(5, 'day').format("YYYY-MM-DD"));
 const defaultEndDate = dayjs(moment().subtract(1, 'day').format("YYYY-MM-DD"));
 
-const Electricity = () => {
+const Revenue = () => {
     const intl = useIntl();
     const {token} = theme.useToken();
     const [form] = Form.useForm();
     const [dataSource, setDataSource] = useState([]);
     const [option, setOption] = useState({});
-    const [plantList, setPlantList] = useState([]);
-    const [devicesList, setDevicesList] = useState([]);
+    const [plantDeviceList, setPlantDeviceList] = useState([]);
     const [loading, setLoading] = useState(false);
 
     const getParams = async() => {
         let format="YYYY-MM-DD";
         const values = await form.validateFields();
-        const { timeType, plantId, device } = values;
+        const { timeType, currentPlantDevice } = values;
         let params = {};
         if(timeType==="year"){
             format="YYYY";
@@ -51,8 +50,8 @@ const Electricity = () => {
                 return;
             }
             params = {
-                plantId,
-                dtuId: device,
+                plantId: currentPlantDevice?.[0],
+                dtuId: currentPlantDevice?.[1],
                 startDate: dayjs(values.dayTime[0]).format(format),
                 endDate: dayjs(values.dayTime[1]).format(format),
                 dateType: timeType
@@ -126,17 +125,55 @@ const Electricity = () => {
         setOption(option);
     }
 
-    const getAllPlantList = async () => {
+    const getDtusOfPlant = async (plantList, plantId) => {
+        const res = await getDtusOfPlantServe({plantId});
+        if(res?.data?.data){
+            let data = res?.data?.data;
+            if(data){
+                try{
+                    data = JSON.parse(data);
+                }catch{
+                    data = [];
+                }
+                data = data?.length>0?data?.map(item => {
+                    return {
+                        value: item.id,
+                        label: item.name||intl.formatMessage({id: '设备无名称'})
+                    }
+                }): [];
+                const currentIndex = plantList?.findIndex(item => item.value===plantId);
+                plantList[currentIndex].children=data;
+                setPlantDeviceList([...plantList]);
+
+                const currentPlantDevice = await form.getFieldValue("currentPlantDevice")
+                if(currentPlantDevice?.length===0){
+                    form.setFieldsValue({currentPlantDevice:[plantId, data[0].value]})
+                    const params = await getParams();
+                    getDataSource(params);
+                }
+            }
+        }
+    }
+
+    const initPlantDevice = async () => {
         const res = await getFetchPlantListServe();
         if(res?.data?.data){
             const data = res?.data?.data;
             const plantList = data?.map(item => {
                 return {
                     value: item.plantId,
-                    label: item.name
+                    label: item.name,
+                    children: [
+                        {
+                            value: '',
+                            label: ''
+                        }
+                    ]
                 }
             })
-            setPlantList(plantList?.length>0?plantList:[]);
+            if(plantList?.length>0){
+                getDtusOfPlant(plantList, plantList?.[0]?.value)
+            }
         }
     }
 
@@ -156,12 +193,7 @@ const Electricity = () => {
     }, [dataSource]);
 
     useEffect(()=>{
-        getAllPlantList();
-        getDataSource({
-            startDate: defaultStartDate.format("YYYY-MM-DD"),
-            endDate: defaultEndDate.format("YYYY-MM-DD"),
-            dateType: 'day'
-        });
+        initPlantDevice();
     }, [])
 
     return (
@@ -172,54 +204,22 @@ const Electricity = () => {
                     form={form} 
                     layout="inline"
                     initialValues={{
-                        plantId: '',
-                        device: '',
+                        currentPlantDevice: [],
                         dayTime: [defaultStartDate, defaultEndDate],
                         yearTime: dayjs(),
                         timeType: 'day'
                     }}
                 >
                     <Flex align="center">
-                        <Form.Item name="plantId">
-                            <Select 
-                                options={[
-                                    {label: intl.formatMessage({id: '电站总收益'}), value: ''},
-                                    ...plantList
-                                ]}
-                                onChange={async plantId => {
-                                    if(plantId){
-                                        const res = await getDtusOfPlantServe({plantId});
-                                        if(res?.data?.data){
-                                            let data = res?.data?.data;
-                                            if(data){
-                                                try{
-                                                    data = JSON.parse(data);
-                                                }catch{
-                                                    data = [];
-                                                }
-                                                data = data?.length>0?data?.map(item => {
-                                                    return {
-                                                        value: item.id,
-                                                        label: item.name
-                                                    }
-                                                }): [];
-                                                setDevicesList(data);
-                                            }
-                                        }
-                                    }else{
-                                        setDevicesList([]);
+                        <Form.Item name={"currentPlantDevice"}>
+                            <Cascader 
+                                changeOnSelect
+                                options={plantDeviceList}
+                                onChange={async value => {
+                                    if(value?.length===1){
+                                        getDtusOfPlant(plantDeviceList,value[0])
                                     }
-                                    form.setFieldsValue({device: ''});
                                 }}
-                                style={{width: '250px', height: 40}}
-                            />
-                        </Form.Item>
-                        <Form.Item name="device">
-                            <Select 
-                                options={[
-                                    {label: intl.formatMessage({id: '设备总收益'}), value: ''},
-                                    ...devicesList
-                                ]}
                                 style={{width: '250px', height: 40}}
                             />
                         </Form.Item>
@@ -295,7 +295,7 @@ const Electricity = () => {
                             <ReactECharts option={option} style={{width: '100%', height: '100%'}}/>
                             :
                             <div style={{position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)'}}>
-                                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={intl.formatMessage({id: '暂无收益'})} />
+                                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={intl.formatMessage({id: '暂无数据'})} />
                             </div>
                         }
                     </div>
@@ -305,4 +305,4 @@ const Electricity = () => {
     )
 }
 
-export default Electricity;
+export default Revenue;

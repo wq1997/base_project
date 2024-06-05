@@ -34,6 +34,9 @@ const App = () => {
                     Modal: {
                         contentBg: '#0D4D77',
                         headerBg: '#0D4D77'
+                    },
+                    Cascader: {
+                        optionSelectedBg: '#0D4D77',
                     }
                 }
             }}
