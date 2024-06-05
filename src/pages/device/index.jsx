@@ -1,16 +1,26 @@
 import React, { useState, useEffect, useRef } from "react";
 import { SearchInput } from "@/components";
-import { Button, Space, Table, Tooltip, DatePicker } from "antd";
+import { Button, Space, Table, Popconfirm, DatePicker } from "antd";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import AddDevice from "./AddDevice";
-import dayjs from "dayjs";
+import Detail from "./Detail";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import {
     getDeviceList as getDeviceListServer,
     getCommunicationStatus as getCommunicationStatusServer,
     getDeviceType as getDeviceTypeServer,
+    getDeviceModel as getDeviceModelServer,
+    deleteDevice as deleteDeviceServer,
 } from "@/services/device";
-import { color } from "echarts";
+import "./index.less";
+
+const deviceStatusColor = {
+    RUNNING: "#67c23a",
+    STANDBY: "#e6a23c",
+    MALFUNCTION: "#f56c6c",
+    DISCONNECTED: "#909399",
+    LOADING: "#409eff",
+};
 
 const Log = () => {
     const [dataSource, setDataSource] = useState([]);
@@ -32,8 +42,9 @@ const Log = () => {
     const [sn, setSn] = useState();
     const deviceModelRef = useRef();
     const [deviceModel, setDeviceModel] = useState();
-
+    const [deviceModelOptions, setDeviceModelOptions] = useState([]);
     const paginationRef = useRef(DEFAULT_PAGINATION);
+    const [detailId, setDetailId] = useState();
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
 
     const columns = [
@@ -51,11 +62,21 @@ const Log = () => {
         },
         {
             title: "设备状态",
-            dataIndex: "deviceStatusZh",
+            dataIndex: "deviceStatus",
+            render: (_, { deviceStatus }) => (
+                <div
+                    style={{
+                        width: "15px",
+                        height: "15px",
+                        background: deviceStatusColor[deviceStatus],
+                        borderRadius: "50%",
+                    }}
+                ></div>
+            ),
         },
         {
             title: "设备型号",
-            dataIndex: "",
+            dataIndex: "model",
         },
         {
             title: "电站名称",
@@ -69,7 +90,38 @@ const Log = () => {
             title: "通信状态",
             dataIndex: "communicationStatusZh",
         },
+        {
+            title: "操作",
+            dataIndex: "operate",
+            width: 150,
+            render: (_, { id }) => {
+                return (
+                    <Space size={10}>
+                        <Popconfirm
+                            title="操作确认"
+                            description="确定删除此设备？"
+                            onConfirm={() => deleteDevice(id)}
+                            okText="确定"
+                            cancelText="取消"
+                        >
+                            <a style={{ color: "#ff4d4f" }}>删除</a>
+                        </Popconfirm>
+                        <a onClick={() => setDetailId(id)}>详情</a>
+                    </Space>
+                );
+            },
+        },
     ];
+
+    const deleteDevice = async id => {
+        const res = await deleteDeviceServer(id);
+        if (res?.data?.code == 200) {
+            getList();
+            message.info("删除成功");
+        } else {
+            message.info(res?.data?.description);
+        }
+    };
 
     const getCommunicationStatus = async () => {
         const res = await getCommunicationStatusServer();
@@ -85,15 +137,26 @@ const Log = () => {
         }
     };
 
+    const getDeviceModel = async () => {
+        const res = await getDeviceModelServer();
+        if (res?.data?.code == 200) {
+            setDeviceModelOptions(
+                res?.data?.data?.map(item => ({
+                    displayName: item,
+                    name: item,
+                }))
+            );
+        }
+    };
+
     const getList = async () => {
         const { current, pageSize } = paginationRef.current;
-
         const plantName = plantNameRef.current;
         const communicationStatus = communicationStatusRef?.current;
         const name = deviceNameRef?.current;
         const type = deviceTypeRef?.current;
         const sn = snRef?.current;
-
+        const model = deviceModelRef?.current;
         setLoading(true);
         try {
             const res = await getDeviceListServer({
@@ -104,6 +167,7 @@ const Log = () => {
                 name,
                 type,
                 sn,
+                model,
             });
             if (res?.data?.code == 200) {
                 const { total, records } = res?.data?.data;
@@ -144,12 +208,20 @@ const Log = () => {
     useEffect(() => {
         getCommunicationStatus();
         getDeviceType();
+        getDeviceModel();
         getList();
     }, []);
 
     return (
         <>
             <AddDevice open={addDeviceOpen} onClose={resFlag => onAddDeviceClose(resFlag)} />
+            <Detail
+                detailId={detailId}
+                onClose={() => {
+                    setDetailId();
+                    getList();
+                }}
+            />
             <Space
                 style={{
                     flexWrap: "wrap",
@@ -210,8 +282,10 @@ const Log = () => {
                 <SearchInput
                     label="设备型号"
                     placeholder="请选择设备型号"
+                    type="select"
                     inputWidth={250}
                     value={deviceModel}
+                    options={deviceModelOptions}
                     onChange={value => {
                         deviceModelRef.current = value;
                         setDeviceModel(value);
@@ -241,18 +315,12 @@ const Log = () => {
                             alignItems: "center",
                         }}
                     >
-                        <div style={{ position: "relative" }}>
-                            <QuestionCircleOutlined style={{ marginRight: "5px" }} />
-                            状态说明
-                            <div
-                                style={{
-                                    position: "absolute",
-                                    zIndex: 99,
-                                    background: "#fff",
-                                    width: "400px",
-                                    boxShadow: "0 2px 0 rgba(5, 145, 255, 0.1)",
-                                }}
-                            >
+                        <div className="statusExplain">
+                            <div>
+                                <QuestionCircleOutlined style={{ marginRight: "5px" }} />
+                                设备状态说明
+                            </div>
+                            <div className="explainTable">
                                 <Table
                                     bordered
                                     size="small"
@@ -260,31 +328,30 @@ const Log = () => {
                                         {
                                             status: "运行",
                                             explain: "设备正常运行 (含并网、离网、点检)",
-                                            color: "#67c23a",
+                                            color: deviceStatusColor.RUNNING,
                                         },
                                         {
                                             status: "待机",
                                             explain: "待机 (含指令关机)或非异常关机",
-                                            color: "#e6a23c",
+                                            color: deviceStatusColor.STANDBY,
                                         },
                                         {
                                             status: "故障",
                                             explain: "设备存在故障或异常关机",
-                                            color: "#f56c6c",
+                                            color: deviceStatusColor.MALFUNCTION,
                                         },
                                         {
                                             status: "断连",
                                             explain: "通信断连",
-                                            color: "#909399",
+                                            color: deviceStatusColor.DISCONNECTED,
                                         },
                                         {
                                             status: "载入中",
                                             explain: "设备完成识别，特征信息采集过程中",
-                                            color: "#409eff",
+                                            color: deviceStatusColor.LOADING,
                                         },
                                     ]}
                                     columns={[
-                                        { title: "状态", dataIndex: "status" },
                                         {
                                             title: "颜色",
                                             dataIndex: "color",
@@ -301,6 +368,7 @@ const Log = () => {
                                                 );
                                             },
                                         },
+                                        { title: "状态", dataIndex: "status" },
                                         { title: "说明", dataIndex: "explain" },
                                     ]}
                                     pagination={false}

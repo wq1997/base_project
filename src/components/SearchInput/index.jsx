@@ -7,10 +7,12 @@ const SearchInput = ({
     inputWidth = 200,
     type = "input",
     options = [],
+    mode,
     fieldNames = {
         label: "displayName",
         value: "name",
     },
+    labelInValue = false,
     onChange = () => {},
 }) => {
     return (
@@ -25,6 +27,8 @@ const SearchInput = ({
                 />
             ) : (
                 <Select
+                    labelInValue={labelInValue}
+                    mode={mode}
                     value={value}
                     placeholder={placeholder || `请选择${label}`}
                     allowClear={true}

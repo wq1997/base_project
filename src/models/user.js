@@ -25,6 +25,7 @@ export default {
         *logout({ payload }, { call, put }) {
             localStorage.removeItem("Token");
             localStorage.removeItem("plantDraft");
+            localStorage.removeItem("deviceDraft");
             history.push("/login");
         },
     },

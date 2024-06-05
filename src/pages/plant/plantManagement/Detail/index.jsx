@@ -52,13 +52,12 @@ const baseItems = [
     },
     {
         label: "电站图片",
-        key: "photo	",
+        key: "photo",
     },
 ];
 
 const Company = ({ detailId, onClose }) => {
     const [items, setItems] = useState();
-
     const getDetail = async () => {
         const res = await getPlantInfoByIdServer(detailId);
         if (res?.data?.code == 200) {
@@ -69,7 +68,12 @@ const Company = ({ detailId, onClose }) => {
                     const value = plant?.[item.key];
                     return {
                         ...item,
-                        children: isPic ? <Image width={200} src={`${baseUrl}${value}`} /> : value,
+                        children:
+                            isPic && value ? (
+                                <Image width={200} src={`${baseUrl}${value}`} />
+                            ) : (
+                                value
+                            ),
                     };
                 })
             );

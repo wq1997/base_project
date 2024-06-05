@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { SearchInput } from "@/components";
-import { Button, Space, Table, Tooltip, DatePicker } from "antd";
+import { Button, Space, Table, Popconfirm, DatePicker, message } from "antd";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import AddPlant from "./AddPlant";
 import Detail from "./Detail";
 import dayjs from "dayjs";
-import styles from "./index.less";
 import {
     getPlantType as getPlantTypeServer,
     getPlantList as getPlantListServer,
+    deletePlantById as deletePlantByIdServer,
 } from "@/services/plant";
 
 const Log = () => {
@@ -77,15 +77,31 @@ const Log = () => {
                         >
                             编辑
                         </a>
-                        <a style={{ color: "#ff4d4f" }} onClick={() => {}}>
-                            删除
-                        </a>
+                        <Popconfirm
+                            title="操作确认"
+                            description="确定删除此电站？"
+                            onConfirm={() => deletePlant(id)}
+                            okText="确定"
+                            cancelText="取消"
+                        >
+                            <a style={{ color: "#ff4d4f" }}>删除</a>
+                        </Popconfirm>
                         <a onClick={() => setDetailId(id)}>详情</a>
                     </Space>
                 );
             },
         },
     ];
+
+    const deletePlant = async id => {
+        const res = await deletePlantByIdServer(id);
+        if (res?.data?.code == 200) {
+            getList();
+            message.info("删除成功");
+        } else {
+            message.info(res?.data?.description);
+        }
+    };
 
     const getPlantType = async () => {
         const res = await getPlantTypeServer();

@@ -22,6 +22,7 @@ import {
     savePlant as savePlantServer,
     updatePlant as updatePlantServer,
 } from "@/services/plant";
+import { ALL_SPACE_REG } from "@/utils/constants";
 import dayjs from "dayjs";
 
 const uploadUrl = process.env.API_URL_1 + "/api/v1/plant/upload";
@@ -136,6 +137,10 @@ const Plant = ({ open, editId, onClose }) => {
                                     required: true,
                                     message: "请输入所属公司",
                                 },
+                                {
+                                    pattern: ALL_SPACE_REG,
+                                    message: "请输入所属公司",
+                                },
                             ]}
                         >
                             <Input placeholder="请输入所属公司" />
@@ -148,6 +153,10 @@ const Plant = ({ open, editId, onClose }) => {
                             rules={[
                                 {
                                     required: true,
+                                    message: "请输入电站名称",
+                                },
+                                {
+                                    pattern: ALL_SPACE_REG,
                                     message: "请输入电站名称",
                                 },
                             ]}
@@ -219,6 +228,9 @@ const Plant = ({ open, editId, onClose }) => {
                             rules={[
                                 {
                                     required: true,
+                                    message: "请输入电站地址",
+                                }, {
+                                    pattern: ALL_SPACE_REG,
                                     message: "请输入电站地址",
                                 },
                             ]}

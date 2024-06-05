@@ -8,51 +8,99 @@ import {
     Modal,
     Row,
     Col,
-    Radio,
+    DatePicker,
     Space,
     InputNumber,
 } from "antd";
-// import {
-//     getUpdateInitData as getUpdateInitDataServer,
-//     getCityByProvince as getCityByProvinceServer,
-//     updateCompany as updateCompanyServer,
-// } from "@/services/company";
+import { ALL_SPACE_REG } from "@/utils/constants";
+import { getPlantNames as getPlantNamesServer } from "@/services/plant";
+import {
+    getDeviceType as getDeviceTypeServer,
+    getDeviceInfo as getDeviceInfoServer,
+    saveDevice as saveDeviceServer,
+    updateDevice as updateDeviceServer,
+} from "@/services/device";
+import dayjs from "dayjs";
+
+const formatTime = time => (time ? dayjs(time).format("YYYY-MM-DD") : undefined);
 
 const Device = ({ open, editId, onClose }) => {
     const [form] = Form.useForm();
     const [editData, setEditData] = useState();
-    const [provinces, setProvinces] = useState([]);
-    const [cities, setCities] = useState([]);
-    const [stationTypes, setStationTypes] = useState([]);
+    const [plantNamesOptions, setPlantNamesOptions] = useState([]);
+    const [deviceTypeOptions, setDeviceTypeOptions] = useState([]);
 
-    const getUpdateInitData = async () => {
-        const res = await getUpdateInitDataServer(editId);
-        if (res?.data?.status == "SUCCESS") {
-            const { editCompany, provinces, stationTypes } = res?.data?.data;
-            editCompany ? form.setFieldsValue(editCompany) : form.resetFields();
-            setEditData(editCompany);
-            setProvinces(provinces);
-            setStationTypes(stationTypes);
+    const getPlantNames = async () => {
+        const res = await getPlantNamesServer();
+        if (res?.data?.code == 200) {
+            setPlantNamesOptions(res?.data?.data);
+        }
+    };
+
+    const getDeviceType = async () => {
+        const res = await getDeviceTypeServer();
+        if (res?.data?.code == 200) {
+            setDeviceTypeOptions(res?.data?.data);
+        }
+    };
+
+    const getPlantInfo = async () => {
+        const res = await getDeviceInfoServer(editId);
+        if (res?.data?.code == 200) {
+            const values = res?.data?.data || {};
+            form.setFieldsValue({
+                ...values,
+                warrantyPeriod: dayjs(values?.warrantyPeriod, "YYYY-MM-DD"),
+            });
+            setEditData(values);
         }
     };
 
     const onFinish = async values => {
-        const res = await updateCompanyServer({
-            id: editId,
+        const fn = editId ? updateDeviceServer : saveDeviceServer;
+        const res = await fn({
+            id: editData?.id,
+            commit: true,
             ...values,
+            warrantyPeriod: formatTime(values?.warrantyPeriod),
         });
-
-        if (res?.data?.status == "SUCCESS") {
-            message.success(`${editId ? "编辑" : "添加"}成功`);
-            onClose(true);
+        if (res?.data?.code == 200) {
+            message.success(`${editData?.id ? "保存" : "添加"}成功`);
+            localStorage.removeItem("deviceDraft");
+            onCancel(true);
         } else {
-            message.info(res?.data?.msg);
+            message.info(res?.data?.description);
         }
     };
 
     useEffect(() => {
-        // open && getUpdateInitData();
+        getPlantNames();
+        getDeviceType();
+        if (open) {
+            if (editId) {
+                getPlantInfo();
+            } else {
+                const deviceDraft = JSON.parse(localStorage.getItem("deviceDraft"));
+                if (deviceDraft) {
+                    setEditData(deviceDraft);
+                    form.setFieldsValue({
+                        ...deviceDraft,
+                        warrantyPeriod: deviceDraft?.warrantyPeriod
+                            ? dayjs(deviceDraft?.warrantyPeriod, "YYYY-MM-DD")
+                            : undefined,
+                    });
+                }
+            }
+        }
     }, [open]);
+
+    const onCancel = isSaveOK => {
+        if (!editId && !isSaveOK) {
+            localStorage.setItem("deviceDraft", JSON.stringify(form.getFieldsValue()));
+        }
+        form.resetFields();
+        onClose();
+    };
 
     return (
         <Modal
@@ -61,7 +109,7 @@ const Device = ({ open, editId, onClose }) => {
             confirmLoading={true}
             open={open}
             footer={null}
-            onCancel={() => onClose(false)}
+            onCancel={() => onCancel(false)}
         >
             <Form
                 name="basic"
@@ -85,6 +133,10 @@ const Device = ({ open, editId, onClose }) => {
                                     required: true,
                                     message: "请输入设备名称",
                                 },
+                                {
+                                    pattern: ALL_SPACE_REG,
+                                    message: "请输入设备名称",
+                                },
                             ]}
                         >
                             <Input placeholder="请输入设备名称" />
@@ -93,7 +145,7 @@ const Device = ({ open, editId, onClose }) => {
                     <Col span={12}>
                         <Form.Item
                             label="设备类型"
-                            name="province"
+                            name="type"
                             rules={[
                                 {
                                     required: true,
@@ -101,7 +153,11 @@ const Device = ({ open, editId, onClose }) => {
                                 },
                             ]}
                         >
-                            <Select placeholder="请选择设备类型" options={[]} />
+                            <Select
+                                placeholder="请选择设备类型"
+                                options={deviceTypeOptions}
+                                fieldNames={{ label: "displayName", value: "name" }}
+                            />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -110,7 +166,7 @@ const Device = ({ open, editId, onClose }) => {
                     <Col span={12}>
                         <Form.Item
                             label="关联电站"
-                            name="province"
+                            name="plantId"
                             rules={[
                                 {
                                     required: true,
@@ -118,12 +174,16 @@ const Device = ({ open, editId, onClose }) => {
                                 },
                             ]}
                         >
-                            <Select placeholder="请选择关联电站" options={[]} />
+                            <Select
+                                placeholder="请选择关联电站"
+                                options={plantNamesOptions}
+                                fieldNames={{ label: "name", value: "id" }}
+                            />
                         </Form.Item>
-                    </Col>
+                    </Col>{" "}
                     <Col span={12}>
-                        <Form.Item label="电站地址" name="city">
-                            <Input disabled={true} />
+                        <Form.Item label="质保有效期" name="warrantyPeriod">
+                            <DatePicker format="YYYY-MM-DD" />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -131,35 +191,38 @@ const Device = ({ open, editId, onClose }) => {
                 <Row>
                     <Col span={12}>
                         <Form.Item
-                            label="设备型号"
-                            name="province"
+                            label="sn号码"
+                            name="snNumber"
                             rules={[
                                 {
                                     required: true,
-                                    message: "请选择设备型号",
+                                    message: "请输入sn号",
+                                },
+                                {
+                                    pattern: ALL_SPACE_REG,
+                                    message: "请输入sn号",
                                 },
                             ]}
                         >
-                            <Select placeholder="请选择设备型号" options={[]} />
+                            <Input placeholder="请输入sn号" />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
                         <Form.Item
-                            label="组串数量"
-                            name="province"
+                            label="设备型号"
+                            name="model"
                             rules={[
                                 {
                                     required: true,
-                                    message: "请输入组串数量",
+                                    message: "请输入设备型号",
+                                },
+                                {
+                                    pattern: ALL_SPACE_REG,
+                                    message: "请输入设备型号",
                                 },
                             ]}
                         >
-                            <InputNumber
-                                placeholder="请输入组串数量"
-                                style={{ width: "100%" }}
-                                min={0}
-                                precision={0}
-                            />
+                            <Input placeholder="请输入设备型号" />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -168,7 +231,7 @@ const Device = ({ open, editId, onClose }) => {
                     <Col span={12}>
                         <Form.Item
                             label="有功功率调节上限（kW）"
-                            name="province"
+                            name="activePowerUpperLimit"
                             rules={[
                                 {
                                     required: true,
@@ -178,6 +241,7 @@ const Device = ({ open, editId, onClose }) => {
                         >
                             <InputNumber
                                 placeholder="请输入有功功率调节上限"
+                                precision={1}
                                 style={{ width: "100%" }}
                             />
                         </Form.Item>
@@ -185,7 +249,7 @@ const Device = ({ open, editId, onClose }) => {
                     <Col span={12}>
                         <Form.Item
                             label="有功功率调节下限（kW）"
-                            name="province"
+                            name="activePowerLowerLimit"
                             rules={[
                                 {
                                     required: true,
@@ -195,6 +259,7 @@ const Device = ({ open, editId, onClose }) => {
                         >
                             <InputNumber
                                 placeholder="请输入有功功率调节下限"
+                                precision={1}
                                 style={{ width: "100%" }}
                             />
                         </Form.Item>
@@ -205,7 +270,7 @@ const Device = ({ open, editId, onClose }) => {
                     <Col span={12}>
                         <Form.Item
                             label="无功功率调节上限（kVar）"
-                            name="province"
+                            name="reactivePowerUpperLimit"
                             rules={[
                                 {
                                     required: true,
@@ -215,6 +280,7 @@ const Device = ({ open, editId, onClose }) => {
                         >
                             <InputNumber
                                 placeholder="请输入无功功率调节上限"
+                                precision={3}
                                 style={{ width: "100%" }}
                             />
                         </Form.Item>
@@ -222,7 +288,7 @@ const Device = ({ open, editId, onClose }) => {
                     <Col span={12}>
                         <Form.Item
                             label="无功功率调节下限（kVar）"
-                            name="province"
+                            name="reactivePowerLowerLimit"
                             rules={[
                                 {
                                     required: true,
@@ -232,6 +298,7 @@ const Device = ({ open, editId, onClose }) => {
                         >
                             <InputNumber
                                 placeholder="请输入无功功率调节下限"
+                                precision={3}
                                 style={{ width: "100%" }}
                             />
                         </Form.Item>
@@ -242,25 +309,42 @@ const Device = ({ open, editId, onClose }) => {
                     <Col span={12}>
                         <Form.Item
                             label="功率因数调节"
-                            name="province"
+                            name="powerFactorAdjustment"
                             rules={[
                                 {
                                     required: true,
                                     message: "请输入功率因数调节",
+                                },
+                                {
+                                    validator: (rule, value, callback) => {
+                                        if (
+                                            (value > -1.0 && value <= -0.8) ||
+                                            (value >= 0.8 && value <= 1.0)
+                                        ) {
+                                            callback();
+                                        } else {
+                                            callback("请输入合适范围");
+                                        }
+                                    },
                                 },
                             ]}
                         >
                             <InputNumber
                                 placeholder="请输入功率因数调节"
                                 style={{ width: "100%" }}
-                                min={-1}
-                                mix={1}
                                 precision={3}
                             />
-                            <div style={{ marginTop: "5px", color: "#999" }}>
-                                (-1.000 ~ -0.800] U [0.800 ~ 1.000]
-                            </div>
                         </Form.Item>
+                        <div
+                            style={{
+                                marginTop: "5px",
+                                color: "#999",
+                                position: "relative",
+                                left: "140px",
+                            }}
+                        >
+                            (-1.000 ~ -0.800] U [0.800 ~ 1.000]
+                        </div>
                     </Col>
                 </Row>
 
@@ -271,7 +355,7 @@ const Device = ({ open, editId, onClose }) => {
                     }}
                 >
                     <Space style={{ position: "relative", left: 8 }}>
-                        <Button onClick={() => onClose(false)}>取消</Button>
+                        <Button onClick={() => onCancel(false)}>取消</Button>
                         <Button type="primary" htmlType="submit">
                             确定
                         </Button>
