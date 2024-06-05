@@ -183,7 +183,7 @@ const Revenue = () => {
                         <Form.Item name="plantId">
                             <Select 
                                 options={[
-                                    {label: intl.formatMessage({id: '总收益'}), value: ''},
+                                    {label: intl.formatMessage({id: '电站总电量'}), value: ''},
                                     ...plantList
                                 ]}
                                 onChange={async plantId => {
@@ -217,7 +217,7 @@ const Revenue = () => {
                         <Form.Item name="device">
                             <Select 
                                 options={[
-                                    {label: intl.formatMessage({id: '总收益'}), value: ''},
+                                    {label: intl.formatMessage({id: '设备总电量'}), value: ''},
                                     ...devicesList
                                 ]}
                                 style={{width: '250px', height: 40}}
@@ -288,7 +288,7 @@ const Revenue = () => {
             </Flex>
             <Spin spinning={loading}>
                 <Space direction="vertical" style={{width: '100%'}}>
-                    <Title title={`${intl.formatMessage({id: '收益统计'})}(${intl.formatMessage({id: '元'})})`}/>
+                    <Title title={`${intl.formatMessage({id: '电量统计'})}(kW)`}/>
                     <div style={{width: '100%', height: 'calc(100vh - 250px)'}}>
                         {
                             dataSource?.length>0?

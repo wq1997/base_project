@@ -1966,4 +1966,8 @@ export default {
 'BUS侧电压':'BUS Side Voltage',  
 'BUS侧电流':'BUS Side Current',  
 'PV侧电流':'PV Side Current' ,
+'电站总电量': '',
+'设备总电量': '',
+'设备总收益': '',
+'电站总收益': '',
 } 

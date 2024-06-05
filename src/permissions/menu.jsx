@@ -23,9 +23,13 @@ const MenuList = [
     //     // permissions:'A/B',
     // },
     {
-        label: <FormattedMessage id='收益统计' />,
-        key: '/index/revenue',
+        label: <FormattedMessage id='数据统计' />,
+        key: '/index/statistics',
         icon: <BarChartOutlined />,
+        children: [
+            { label: <FormattedMessage id='电量统计' />, key: '/index/statistics/electricity', },
+            { label: <FormattedMessage id='收益统计' />, key: '/index/statistics/revenue', },
+        ]
     },
     {
         label: <FormattedMessage id='app.Alarm' />,

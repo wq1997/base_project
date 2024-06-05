@@ -1,7 +1,7 @@
 // 函数组件
 // 快捷键Ctrl+Win+i 添加注释
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { theme, Select, DatePicker, Button, Cascader, message } from "antd";
+import { theme, Select, DatePicker, Button, Tooltip, message } from "antd";
 import styles from './index.less'
 import ReactECharts from "echarts-for-react";
 import { CardModel } from "@/components";
@@ -267,16 +267,17 @@ function Com({deviceVersion}) {
                         }
                     </Select>
                     <span >{t('日期')}:</span>
-                    <DatePicker className={styles.margRL}
-                        style={{ width: 240 }}
-                        multiple
-                        maxTagCount={1}
-                        onChange={(val, str) => changeDate(val, str)}
-                        defaultValue={date}
-                        allowClear={false}
-                        needConfirm
-
-                    />
+                    <Tooltip title={t('最多选择7个对比项')}>
+                        <DatePicker className={styles.margRL}
+                            style={{ width: 240 }}
+                            multiple
+                            maxTagCount={1}
+                            onChange={(val, str) => changeDate(val, str)}
+                            defaultValue={date}
+                            allowClear={false}
+                            needConfirm
+                        />
+                    </Tooltip>
                     <Button type="primary" className={styles.firstButton} onClick={getChartData}>
                         {t('查询')}
                     </Button>

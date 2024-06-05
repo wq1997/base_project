@@ -17,8 +17,11 @@ export default [
     // },
     {
         name: '收益统计',
-        path: '/index/revenue',
-        component: '@/pages/revenue'
+        path: '/index/statistics',
+        routes: [
+            { name: '电量统计', path: '/index/statistics/electricity', component: "@/pages/statistics/electricity" },
+            { name: '历史告警', path: '/index/statistics/revenue', component: "@/pages/statistics/revenue" },
+        ]
     },
     {
         name: '告警中心',
