@@ -239,7 +239,7 @@ function Com(props) {
                             <div className={styles.oneData}>
                                 <div className={styles.key}>PCS</div>
                                 <div className={styles.value}>{allData?.pcs?.totalActivePower || '0'}</div>
-                                <div className={styles.value}>{allData?.inputCur || '0'}</div>
+                                <div className={styles.value}>{allData?.pcs?.inputCur || '0'}</div>
                             </div>
                             <div className={styles.oneData}>
                                 <div className={styles.key}>{t('BMS')}</div>
