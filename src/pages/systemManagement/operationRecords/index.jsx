@@ -34,11 +34,11 @@ const RealtimeAlarm = () => {
       dataIndex: 'username',
       key: 'username',
     },
-    {
-      title: t('描述'),
-      dataIndex: 'detail',
-      key: 'detail',
-    },
+    // {
+    //   title: t('描述'),
+    //   dataIndex: 'detail',
+    //   key: 'detail',
+    // },
     {
       title: t('动作'),
       dataIndex: 'describe',

@@ -186,6 +186,7 @@ function Com(props) {
             { name: "A相输出无功功率", value: "-", key: "phaseAReactivePower" },
             { name: "B相输出无功功率", value: "-", key: "phaseBReactivePower" },
             { name: "C相输出无功功率", value: "-", key: "phaseCReactivePower" },
+            { name: "C相输出有功功率", value: "-", key: "totalActivePower" },
         ],
     });
     const [bmsData, setBmsData] = useState({
@@ -331,7 +332,7 @@ function Com(props) {
         dealData(data?.data?.tmeter, meterData, setMeterData);
         dealData(data?.data?.gmeter, energyData, setEnergyData);
         dealData(data?.data?.bms, ic1Data, setlc1Data);
-        dealData(data?.data?.d2c?.[0], Dcdc2, setDcdc1);
+        dealData(data?.data?.d2c?.[0], Dcdc1, setDcdc1);
         dealData(data?.data?.d2c?.[1], Dcdc2, setDcdc2);
         let arr=[];
         let obj1={};

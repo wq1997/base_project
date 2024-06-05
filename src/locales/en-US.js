@@ -197,6 +197,7 @@ export default {
 'A相输出无功功率':'A-phase output reactive power',
 'B相输出无功功率':'B-phase output reactive power',
 'C相输出无功功率':'C-phase output reactive power',
+'C相输出有功功率':'C-phase output active power',
 '总输出无功功率':'Total output reactive power',
 'A 相输出视在功率':'PCS A-phase output in power',
 'B 相输出视在功率':'PCS B-phase output in power',
