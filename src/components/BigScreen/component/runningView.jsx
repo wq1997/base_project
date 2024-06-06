@@ -101,8 +101,8 @@ const RunningView = ({
                                     <div style={{color: item?.color, fontSize: 20}}>{item?.data}</div>
                                     <div style={{fontSize: 10, color: 'white'}}>{item?.unit}</div>
                                 </div>
-                                <div style={{color: 'white', margin: '10px 0', fontSize: 12, whiteSpace: 'nowrap'}}>{item?.description}</div>
-                                {/* <img src={item?.imgUrl} style={{width: 45}} /> */}
+                                <div style={{color: 'white', margin: '5px 0', fontSize: 12, whiteSpace: 'nowrap'}}>{item?.description}</div>
+                                <img src={item?.imgUrl} style={{width: 45}} />
                             </div>
                         </div>
                     )
