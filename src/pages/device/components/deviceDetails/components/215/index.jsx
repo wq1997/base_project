@@ -299,7 +299,7 @@ function Com(props) {
             { name: "模块最高温度", value: "-", key: "maxTemp" },
             { name: "PV侧电压", value: "-", key: "batVol" },
             { name: "BUS侧电压", value: "-", key: "busVol" },
-            { name: "BUS侧电流", value: "-", key: "BUS侧电流" },
+            { name: "BUS侧电流", value: "-", key: "busCur" },
             { name: "PV侧电流", value: "-", key: "batCur" },
         ],
     })
