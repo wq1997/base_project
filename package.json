@@ -3,7 +3,8 @@
   "author": "",
   "scripts": {
     "dev": "umi dev",
-    "build:prod-in": "cross-env UMI_ENV=prod LOCATION=in umi build",
+    "build:test": "cross-env UMI_ENV=test umi build",
+    "build:prod": "cross-env UMI_ENV=prod umi build",
     "build:prod-out": "cross-env UMI_ENV=prod LOCATION=out umi build",
     "postinstall": "umi setup",
     "setup": "umi setup",

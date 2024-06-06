@@ -11,6 +11,9 @@ function OutputPathName() {
   if (UMI_ENV&&LOCATION) {
     return `${UMI_ENV}-${LOCATION}-dist`
   }
+  if (UMI_ENV) {
+    return `${UMI_ENV}-dist`
+  }
   return 'dist'
 }
 

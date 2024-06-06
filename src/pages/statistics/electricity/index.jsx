@@ -1,5 +1,5 @@
 import { useIntl } from "umi";
-import { Form, Cascader, DatePicker, Button, Flex, Radio, theme, Space, message, Empty, Spin } from "antd";
+import { Form, Cascader, DatePicker, Button, Flex, Radio, theme, Space, message, Empty, Spin, Tooltip } from "antd";
 import { Title } from "@/components";
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect } from "react";
@@ -8,7 +8,7 @@ import * as echarts from "echarts";
 import moment from "moment";
 import {
     getRevenue as getRevenueServe,
-    getAllRevenueExcel as getAllRevenueExcelServe,
+    getAllElectricExcel as getAllRevenueExcelServe,
 } from "@/services";
 import {
     getDtusOfPlant as getDtusOfPlantServe
@@ -50,8 +50,8 @@ const Electricity = () => {
                 return;
             }
             params = {
-                plantId: currentPlantDevice?.[0],
-                dtuId: currentPlantDevice?.[1],
+                plantId: 3232||currentPlantDevice?.[0],
+                dtuId: 2075||currentPlantDevice?.[1],
                 startDate: dayjs(values.dayTime[0]).format(format),
                 endDate: dayjs(values.dayTime[1]).format(format),
                 dateType: timeType
@@ -70,7 +70,7 @@ const Electricity = () => {
             },
             grid: {
                 top: '40',
-                right: '3%',
+                right: '4%',
                 left: '5%',
                 bottom: '80'
             },
@@ -90,37 +90,91 @@ const Electricity = () => {
                     },
                 },
             }],
-            yAxis: [{
-                axisLabel: {
-                    formatter: '{value}',
-                    color: '#e2e9ff',
+            yAxis: [
+                {
+                    name: `${intl.formatMessage({id: '电量'})}(kWh)`,
+                    nameTextStyle: {
+                        color: 'white'
+                    },
+                    axisLabel: {
+                        formatter: '{value}',
+                        color: '#e2e9ff',
+                    },
+                    axisLine: {
+                        show: false
+                    },
+                    splitLine: {
+                        show: true,
+                        lineStyle: {
+                            color: '#233e64'
+                        }
+                    },
                 },
-                axisLine: {
-                    show: false
-                },
-                splitLine: {
-                     show: true,
-                     lineStyle: {
-                         color: '#233e64'
-                     }
-                },
-            }],
-            series: [{
-                type: 'bar',
-                data: dataSource?.map(item => item.number),
-                barWidth: 50,
-                itemStyle: {
-                    normal: {
-                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                            offset: 0,
-                            color: '#0787DB' // 0% 处的颜色
-                        }, {
-                            offset: 1,
-                            color: '#034FB4' // 100% 处的颜色
-                        }], false)
-                    }
+                {
+                    name: `${intl.formatMessage({id: '充放电效率'})}(%)`,
+                    nameTextStyle: {
+                        color: 'white'
+                    },
+                    axisLabel: {
+                        formatter: '{value}',
+                        color: '#e2e9ff',
+                    },
+                    axisLine: {
+                        show: false
+                    },
+                    splitLine: {
+                        show: true,
+                        lineStyle: {
+                            color: '#233e64'
+                        }
+                    },
                 }
-            }]
+            ],
+            series: [
+                {
+                    type: 'bar',
+                    data: dataSource?.map(item => item.dayChargeEnergy),
+                    barWidth: 40,
+                    name: `${intl.formatMessage({id: '充电量'})}(kWh)`,
+                    itemStyle: {
+                        normal: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                offset: 0,
+                                color: '#FFC47A' // 0% 处的颜色
+                            }, {
+                                offset: 1,
+                                color: '#FF670A' // 100% 处的颜色
+                            }], false)
+                        }
+                    }
+                },
+                {
+                    type: 'bar',
+                    data: dataSource?.map(item => item.dayDischargeEnergy),
+                    barWidth: 40,
+                    name: `${intl.formatMessage({id: '放电量'})}(kWh)`,
+                    itemStyle: {
+                        normal: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                offset: 0,
+                                color: '#00F3FB' // 0% 处的颜色
+                            }, {
+                                offset: 1,
+                                color: '#0050F9' // 100% 处的颜色
+                            }], false)
+                        }
+                    }
+                },
+                {
+                    type: 'line',
+                    data: dataSource?.map(item => item.cDEfficiency),
+                    yAxisIndex: 1,
+                    name: `${intl.formatMessage({id: '充放电效率'})}(%)`,
+                    lineStyle: {
+                        color: '#00FF05'
+                    }
+                },
+            ]
         };
         setOption(option);
     }
@@ -229,15 +283,17 @@ const Electricity = () => {
                                     const { timeType } = getFieldsValue(['timeType']);
                                     if(timeType==="day"){
                                         return (
-                                            <Form.Item 
-                                                name="dayTime"
-                                            >
-                                                <DatePicker.RangePicker 
-                                                    maxDate={dayjs(moment().subtract(1, 'day').format('YYYY-MM-DD'), 'YYYY-MM-DD')} 
-                                                    style={{width: '300px', height: 40}}
-                                                    allowClear={false}
-                                                />
-                                            </Form.Item>
+                                            <Tooltip title={intl.formatMessage({id: '日期范围最少选择5天最多选择12天！'})}>
+                                                <Form.Item 
+                                                    name="dayTime"
+                                                >
+                                                    <DatePicker.RangePicker 
+                                                        maxDate={dayjs(moment().subtract(1, 'day').format('YYYY-MM-DD'), 'YYYY-MM-DD')} 
+                                                        style={{width: '300px', height: 40}}
+                                                        allowClear={false}
+                                                    />
+                                                </Form.Item>
+                                            </Tooltip>
                                         )
                                     }
                                     return (
@@ -263,7 +319,9 @@ const Electricity = () => {
                 <Button 
                     onClick={async ()=>{
                         const params = await getParams();
-                        getDataSource(params);
+                        if(params){
+                            getDataSource(params);
+                        }
                     }}
                     type="primary"
                     style={{padding: '0 20px', height: 40}}
@@ -277,7 +335,7 @@ const Electricity = () => {
                         const res = await getAllRevenueExcelServe(params);
                         if(res?.data){
                             downloadFile({
-                                fileName: `${intl.formatMessage({id: '收益统计'})}.xlsx`,
+                                fileName: `${intl.formatMessage({id: '电量统计'})}.xlsx`,
                                 content: res?.data
                             })
                         }
@@ -289,7 +347,7 @@ const Electricity = () => {
             </Flex>
             <Spin spinning={loading}>
                 <Space direction="vertical" style={{width: '100%'}}>
-                    <Title title={`${intl.formatMessage({id: '电量统计'})}(kW)`}/>
+                    <Title title={`${intl.formatMessage({id: '电量统计'})}`}/>
                     <div style={{width: '100%', height: 'calc(100vh - 250px)'}}>
                         {
                             dataSource?.length>0?

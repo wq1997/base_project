@@ -262,7 +262,9 @@ const Revenue = () => {
                 <Button 
                     onClick={async ()=>{
                         const params = await getParams();
-                        getDataSource(params);
+                        if(params){
+                            getDataSource(params);
+                        }
                     }}
                     type="primary"
                     style={{padding: '0 20px', height: 40}}
