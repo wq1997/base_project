@@ -250,8 +250,8 @@ function Com(props) {
             { name: "A相视在功率", value: "-", key: "apparentAPower" },
             { name: "B相视在功率", value: "-", key: "apparentBPower" },
             { name: "C相视在功率", value: "-", key: "apparentCPower" },
-            { name: "总正向有功电能", value: "-", key: "apparentBPower" },
-            { name: "总反向有功电能", value: "-", key: "apparentCPower" },
+            { name: "总正向有功电能", value: "-", key: "totalChargeEnergy" },
+            { name: "总反向有功电能", value: "-", key: "totalDisChargeEnergy" },
         ],
     })
     const [energyData, setEnergyData] = useState({
