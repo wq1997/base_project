@@ -1,5 +1,5 @@
 import { useIntl } from "umi";
-import { Form, Cascader, DatePicker, Button, Flex, Radio, theme, Space, message, Empty, Spin } from "antd";
+import { Form, Cascader, DatePicker, Button, Flex, Radio, theme, Space, message, Empty, Spin, Tooltip } from "antd";
 import { Title } from "@/components";
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect } from "react";
@@ -9,13 +9,11 @@ import moment from "moment";
 import {
     getRevenue as getRevenueServe,
     getAllRevenueExcel as getAllRevenueExcelServe,
+    getFetchPlantList2 as getFetchPlantListServe
 } from "@/services";
 import {
     getDtusOfPlant as getDtusOfPlantServe
 } from "@/services/plant";
-import {
-    getFetchPlantList as getFetchPlantListServe,
-} from "@/services/deviceTotal";
 import { downloadFile } from "@/utils/utils";
 
 const defaultStartDate = dayjs(moment().subtract(5, 'day').format("YYYY-MM-DD"));
@@ -159,11 +157,11 @@ const Revenue = () => {
         const res = await getFetchPlantListServe();
         if(res?.data?.data){
             const data = res?.data?.data;
-            const plantList = data?.map(item => {
+            const plantList = data?.plantList?.map((item, index) => {
                 return {
                     value: item.plantId,
                     label: item.name,
-                    children: [
+                    children: data?.deviceCount?.[index]&&[
                         {
                             value: '',
                             label: ''
@@ -228,15 +226,17 @@ const Revenue = () => {
                                     const { timeType } = getFieldsValue(['timeType']);
                                     if(timeType==="day"){
                                         return (
-                                            <Form.Item 
-                                                name="dayTime"
-                                            >
-                                                <DatePicker.RangePicker 
-                                                    maxDate={dayjs(moment().subtract(1, 'day').format('YYYY-MM-DD'), 'YYYY-MM-DD')} 
-                                                    style={{width: '300px', height: 40}}
-                                                    allowClear={false}
-                                                />
-                                            </Form.Item>
+                                            <Tooltip title={intl.formatMessage({id: '日期范围最少选择5天最多选择12天！'})}>
+                                                <Form.Item 
+                                                    name="dayTime"
+                                                >
+                                                    <DatePicker.RangePicker 
+                                                        maxDate={dayjs(moment().subtract(1, 'day').format('YYYY-MM-DD'), 'YYYY-MM-DD')} 
+                                                        style={{width: '300px', height: 40}}
+                                                        allowClear={false}
+                                                    />
+                                                </Form.Item>
+                                            </Tooltip>
                                         )
                                     }
                                     return (
@@ -294,7 +294,7 @@ const Revenue = () => {
                     <div style={{width: '100%', height: 'calc(100vh - 250px)'}}>
                         {
                             dataSource?.length>0?
-                            <ReactECharts option={option} style={{width: '100%', height: '100%'}}/>
+                            <ReactECharts option={option} notMerge style={{width: '100%', height: '100%'}}/>
                             :
                             <div style={{position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)'}}>
                                 <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={intl.formatMessage({id: '暂无数据'})} />

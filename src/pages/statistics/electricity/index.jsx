@@ -9,13 +9,11 @@ import moment from "moment";
 import {
     getRevenue as getRevenueServe,
     getAllElectricExcel as getAllRevenueExcelServe,
+    getFetchPlantList2 as getFetchPlantListServe
 } from "@/services";
 import {
     getDtusOfPlant as getDtusOfPlantServe
 } from "@/services/plant";
-import {
-    getFetchPlantList as getFetchPlantListServe,
-} from "@/services/deviceTotal";
 import { downloadFile } from "@/utils/utils";
 
 const defaultStartDate = dayjs(moment().subtract(5, 'day').format("YYYY-MM-DD"));
@@ -214,11 +212,11 @@ const Electricity = () => {
         const res = await getFetchPlantListServe();
         if(res?.data?.data){
             const data = res?.data?.data;
-            const plantList = data?.map(item => {
+            const plantList = data?.plantList?.map((item, index) => {
                 return {
                     value: item.plantId,
                     label: item.name,
-                    children: [
+                    children: data?.deviceCount?.[index]&&[
                         {
                             value: '',
                             label: ''
@@ -351,7 +349,7 @@ const Electricity = () => {
                     <div style={{width: '100%', height: 'calc(100vh - 250px)'}}>
                         {
                             dataSource?.length>0?
-                            <ReactECharts option={option} style={{width: '100%', height: '100%'}}/>
+                            <ReactECharts option={option} notMerge style={{width: '100%', height: '100%'}}/>
                             :
                             <div style={{position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)'}}>
                                 <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={intl.formatMessage({id: '暂无数据'})} />

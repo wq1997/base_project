@@ -79,3 +79,7 @@ export const sendStrategySetting = (payload) => {
 export const updateData = (payload) => {
     return axiosInstance.get(`/minsys/strategy/updateData`, { params: payload })
 }
+
+export const getFetchPlantList2 = (payload) => {
+    return axiosInstance.post(`/energy/plant/getPlantList`, payload)
+}
