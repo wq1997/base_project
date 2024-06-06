@@ -1,22 +1,42 @@
 import React, { useState, useEffect, useRef } from "react";
 import { SearchInput } from "@/components";
-import { Button, Space, Table, Tag, Switch } from "antd";
+import { Button, Space, Table, Tag, Switch, message } from "antd";
+import {
+    getAlarmRule as getAlarmRuleServer,
+    saveAlarmRule as saveAlarmRuleServer,
+} from "@/services/alarm";
 
 const colors = {
-    prompt: "blue",
-    secondary: "orange",
-    important: "#EB2F96",
-    urgent: "#FA541C",
+    PROMPT: "blue",
+    MINOR: "orange",
+    IMPORTANT: "#EB2F96",
+    URGENT: "#FA541C",
 };
 
 const Log = () => {
     const [dataSource, setDataSource] = useState([
-        { level: "prompt", levelText: "提示", method: "", limit: "", status: false },
-        { level: "secondary", levelText: "次要", method: 1, limit: 1, status: false },
-        { level: "important", levelText: "重要", method: 2, limit: 2, status: true },
-        { level: "urgent", levelText: "紧急", method: "", limit: "", status: false },
+        { level: "PROMPT", levelText: "提示", disposeType: "", status: false },
+        { level: "MINOR", levelText: "次要", disposeType: "", status: false },
+        { level: "IMPORTANT", levelText: "重要", disposeType: "", status: false },
+        { level: "URGENT", levelText: "紧急", disposeType: "", status: false },
     ]);
     const [loading, setLoading] = useState(false);
+
+    const getAlarmRule = async () => {
+        const res = await getAlarmRuleServer();
+        if (res?.data?.code == 200) {
+            setDataSource(
+                dataSource?.map(item => {
+                    const findItem = res?.data?.data?.find(uu => uu?.level == item.level);
+                    return {
+                        ...item,
+                        disposeType: findItem?.disposeType,
+                        status: findItem?.status,
+                    };
+                })
+            );
+        }
+    };
 
     const columns = [
         {
@@ -28,43 +48,20 @@ const Log = () => {
         },
         {
             title: "推送方式",
-            dataIndex: "method",
+            dataIndex: "disposeType",
             render: (_, record, index) => {
                 return (
                     <SearchInput
                         label=""
-                        value={record?.method}
+                        value={record?.disposeType}
                         type="select"
                         options={[
-                            { name: "短信", code: 1 },
-                            { name: "邮件", code: 2 },
+                            { displayName: "短信", name: "MESSAGE" },
+                            { displayName: "邮件", name: "EMAIL" },
                         ]}
                         onChange={value => {
                             const _dataSource = [...dataSource];
-                            _dataSource[index].method = value;
-                            setDataSource(_dataSource);
-                        }}
-                    />
-                );
-            },
-        },
-        {
-            title: "每小时推送上限",
-            dataIndex: "limit",
-            render: (_, record, index) => {
-                return (
-                    <SearchInput
-                        label=""
-                        value={record?.limit}
-                        type="select"
-                        options={[
-                            { name: "1次", code: 1 },
-                            { name: "2次", code: 2 },
-                            { name: "3次", code: 3 },
-                        ]}
-                        onChange={value => {
-                            const _dataSource = [...dataSource];
-                            _dataSource[index].limit = value;
+                            _dataSource[index].disposeType = value;
                             setDataSource(_dataSource);
                         }}
                     />
@@ -79,7 +76,12 @@ const Log = () => {
                     <Switch
                         checkedChildren="开启"
                         unCheckedChildren="关闭"
-                        defaultChecked={record?.status}
+                        checked={record?.status}
+                        onChange={value => {
+                            const _dataSource = [...dataSource];
+                            _dataSource[index].status = value;
+                            setDataSource(_dataSource);
+                        }}
                     />
                 );
             },
@@ -93,19 +95,27 @@ const Log = () => {
         },
     ];
 
+    useEffect(() => {
+        getAlarmRule();
+    }, []);
+
     const getList = async () => {
         setLoading(true);
         try {
-            const res = await getOperationLogServe({
-                pageNum: current,
-                pageSize,
-                queryCmd: {},
-            });
-            if (res?.data?.status == "SUCCESS") {
+            const res = await saveAlarmRuleServer(
+                dataSource?.map(item => ({
+                    disposeType: item.disposeType,
+                    level: item?.level,
+                    status: item?.status,
+                    receivingUser: "admin",
+                }))
+            );
+            if (res?.data?.code == 200) {
+                message.info("保存成功");
             }
         } finally {
-            setLoading(false);
         }
+        setLoading(false);
     };
 
     return (
@@ -114,7 +124,8 @@ const Log = () => {
                 type="primary"
                 onClick={getList}
                 style={{
-                    marginBottom: "8px",
+                    margin: "15px 0 ",
+                    float: "right",
                 }}
             >
                 保存配置

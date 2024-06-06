@@ -113,7 +113,7 @@ const Index = ({ deviceInfo }) => {
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                        <Form.Item label="设备类型" name="typeZh">
+                        <Form.Item label="设备编码" name="code">
                             <Input />
                         </Form.Item>
                     </Col>
@@ -152,13 +152,18 @@ const Index = ({ deviceInfo }) => {
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                        <Form.Item label="组串数量" name="stringCount">
+                        <Form.Item label="设备类型" name="typeZh">
                             <Input />
                         </Form.Item>
                     </Col>
                 </Row>
 
                 <Row>
+                    <Col span={12}>
+                        <Form.Item label="组串数量" name="stringCount">
+                            <Input />
+                        </Form.Item>{" "}
+                    </Col>
                     <Col span={12}>
                         <Form.Item label="换机历史" name="deviceSwitchHistoryList">
                             <Input />

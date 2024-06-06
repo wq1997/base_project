@@ -12,7 +12,13 @@ const Index = ({ detailId, onClose }) => {
     const getDetail = async () => {
         const res = await getDeviceInfoServer(detailId);
         if (res?.data?.code == 200) {
-            setDeviceInfo(res?.data?.data);
+            const info = res?.data?.data || {};
+            setDeviceInfo({
+                ...info,
+                deviceSwitchHistoryList: info?.deviceSwitchHistoryList
+                    ?.map(item => item.snNumber)
+                    ?.join("，"),
+            });
         }
     };
 
@@ -44,6 +50,7 @@ const Index = ({ detailId, onClose }) => {
             title="设备详情"
             width={"calc(100% - 240px)"}
             open={Boolean(detailId)}
+            destroyOnClose={true}
             onClose={() => onClose()}
         >
             <Descriptions title={`设备名称：${deviceInfo?.name}`} />

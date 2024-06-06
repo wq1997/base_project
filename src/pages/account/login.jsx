@@ -29,7 +29,7 @@ const Login = () => {
                     },
                 },
             });
-            history.push("/overview-screen");
+            history.push("/plant-overview");
         } else {
             message.error(res?.data?.description);
         }

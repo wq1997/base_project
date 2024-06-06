@@ -4,17 +4,27 @@ import { PROJECT_NAME } from "@/utils/constants";
 import MyMenu from "@/permissions/menu";
 import styles from "./baseLayout.less";
 import useIcon from "@/hooks/useIcon";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import logo from "../../public/logo.png";
+import { getUserInfo as getUserInfoServer } from "@/services/user";
 
 const { Header, Sider, Content } = Layout;
 
 const BaseLayout = () => {
     const Icon = useIcon();
     const dispatch = useDispatch();
+    const [username, setUsername] = useState();
+
+    const getUserInfo = async () => {
+        const res = await getUserInfoServer();
+        if (res?.data?.code == 200) {
+            setUsername(res?.data?.data?.nickName);
+        }
+    };
 
     useEffect(() => {
         document.title = PROJECT_NAME;
+        getUserInfo();
     }, []);
 
     return (
@@ -62,7 +72,7 @@ const BaseLayout = () => {
                             >
                                 CR
                             </Avatar>
-                            <span style={{ fontSize: 20, marginLeft: 10 }}>用户名</span>
+                            <span style={{ fontSize: 20, marginLeft: 10 }}> {username}</span>
                         </Row>
                     </Dropdown>
                 </Header>

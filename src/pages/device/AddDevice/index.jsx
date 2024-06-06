@@ -144,20 +144,20 @@ const Device = ({ open, editId, onClose }) => {
                     </Col>
                     <Col span={12}>
                         <Form.Item
-                            label="设备类型"
-                            name="type"
+                            label="设备编码"
+                            name="code"
                             rules={[
                                 {
                                     required: true,
-                                    message: "请选择设备类型",
+                                    message: "请输入设备编码",
+                                },
+                                {
+                                    pattern: ALL_SPACE_REG,
+                                    message: "请输入设备编码",
                                 },
                             ]}
                         >
-                            <Select
-                                placeholder="请选择设备类型"
-                                options={deviceTypeOptions}
-                                fieldNames={{ label: "displayName", value: "name" }}
-                            />
+                            <Input placeholder="请输入设备编码" />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -180,10 +180,23 @@ const Device = ({ open, editId, onClose }) => {
                                 fieldNames={{ label: "name", value: "id" }}
                             />
                         </Form.Item>
-                    </Col>{" "}
+                    </Col>
                     <Col span={12}>
-                        <Form.Item label="质保有效期" name="warrantyPeriod">
-                            <DatePicker format="YYYY-MM-DD" />
+                        <Form.Item
+                            label="设备类型"
+                            name="type"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "请选择设备类型",
+                                },
+                            ]}
+                        >
+                            <Select
+                                placeholder="请选择设备类型"
+                                options={deviceTypeOptions}
+                                fieldNames={{ label: "displayName", value: "name" }}
+                            />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -223,6 +236,14 @@ const Device = ({ open, editId, onClose }) => {
                             ]}
                         >
                             <Input placeholder="请输入设备型号" />
+                        </Form.Item>
+                    </Col>
+                </Row>
+
+                <Row>
+                    <Col span={12}>
+                        <Form.Item label="质保有效期" name="warrantyPeriod">
+                            <DatePicker format="YYYY-MM-DD" />
                         </Form.Item>
                     </Col>
                 </Row>

@@ -36,6 +36,8 @@ const Log = () => {
     const deviceTypeRef = useRef();
     const [deviceType, setDeviceType] = useState();
     const [deviceTypeOptions, setDeviceTypeOptions] = useState([]);
+    const deviceCodeRef = useRef();
+    const [deviceCode, setDeviceCode] = useState();
     const deviceNameRef = useRef();
     const [deviceName, setDeviceName] = useState();
     const snRef = useRef();
@@ -55,6 +57,10 @@ const Log = () => {
         {
             title: "设备名称",
             dataIndex: "name",
+        },
+        {
+            title: "设备编码",
+            dataIndex: "code",
         },
         {
             title: "设备类型",
@@ -154,6 +160,7 @@ const Log = () => {
         const plantName = plantNameRef.current;
         const communicationStatus = communicationStatusRef?.current;
         const name = deviceNameRef?.current;
+        const code = deviceCodeRef?.current;
         const type = deviceTypeRef?.current;
         const sn = snRef?.current;
         const model = deviceModelRef?.current;
@@ -165,6 +172,7 @@ const Log = () => {
                 plantName,
                 communicationStatus,
                 name,
+                code,
                 type,
                 sn,
                 model,
@@ -178,8 +186,8 @@ const Log = () => {
                 setDataSource(records);
             }
         } finally {
-            setLoading(false);
         }
+        setLoading(false);
     };
 
     const handleReset = () => {
@@ -192,6 +200,8 @@ const Log = () => {
         setCommunicationStatus();
         deviceNameRef.current = undefined;
         setDeviceName();
+        deviceCodeRef.current = undefined;
+        setDeviceCode();
         snRef.current = undefined;
         setSn();
         deviceModelRef.current = undefined;
@@ -259,6 +269,16 @@ const Log = () => {
                     }}
                 />
                 <SearchInput
+                    label="设备编码"
+                    placeholder="请输入设备编码"
+                    inputWidth={250}
+                    value={deviceCode}
+                    onChange={value => {
+                        deviceCodeRef.current = value;
+                        setDeviceCode(value);
+                    }}
+                />
+                <SearchInput
                     label="设备类型"
                     value={deviceType}
                     type="select"
@@ -305,6 +325,10 @@ const Log = () => {
                         key: data?.id,
                     };
                 })}
+                onChange={pagination => {
+                    paginationRef.current = pagination;
+                    getList();
+                }}
                 columns={columns}
                 pagination={pagination}
                 title={() => (

@@ -1,15 +1,22 @@
 import React, { useState, useEffect, useRef } from "react";
 import { SearchInput } from "@/components";
-import { Button, Space, Table, Tabs, DatePicker } from "antd";
+import { Button, Space, Table, Tabs, DatePicker, message } from "antd";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import dayjs from "dayjs";
+import {
+    getAlarmList as getAlarmListServer,
+    getAlarmLevel as getAlarmLevelServer,
+} from "@/services/alarm";
+import { getDeviceType as getDeviceTypeServer } from "@/services/device";
+import Detail from "./Detail";
+import Clear from "./Clear";
 
 const Log = () => {
     const [dataSource, setDataSource] = useState([]);
     const [loading, setLoading] = useState(false);
     const [activeKey, setActiveKey] = useState("active");
-    const deviceNameRef = useRef();
-    const [deviceName, setDeviceName] = useState();
+    const alarmNameRef = useRef();
+    const [alarmName, setAlarmName] = useState();
     const deviceTypeRef = useRef();
     const [deviceType, setDeviceType] = useState();
     const [deviceTypeOptions, setDeviceTypeOptions] = useState([]);
@@ -20,69 +27,87 @@ const Log = () => {
     const [executeTime, setExecuteTime] = useState();
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
+    const [detailId, setDetailId] = useState();
+    const [clearId, setClearId] = useState();
 
     const columns = [
         {
-            title: "序号",
-            dataIndex: "",
+            title: "告警名称",
+            dataIndex: "name",
         },
         {
             title: "告警级别",
-            dataIndex: "",
-        },
-        {
-            title: "告警名称",
-            dataIndex: "",
+            dataIndex: "levelName",
         },
         {
             title: "设备名称",
-            dataIndex: "",
+            dataIndex: "deviceName",
         },
         {
             title: "设备类型",
-            dataIndex: "",
+            dataIndex: "deviceTypeName",
         },
         {
             title: "电站名称",
-            dataIndex: "",
+            dataIndex: "plantName",
         },
         {
             title: "发生时间",
-            dataIndex: "",
+            dataIndex: "createTime",
         },
     ];
 
+    const getDeviceType = async () => {
+        const res = await getDeviceTypeServer();
+        if (res?.data?.code == 200) {
+            setDeviceTypeOptions(res?.data?.data);
+        }
+    };
+
+    const getAlarmLevel = async () => {
+        const res = await getAlarmLevelServer();
+        if (res?.data?.code == 200) {
+            setAlarmLevelOptions(res?.data?.data);
+        }
+    };
+
     const getList = async () => {
         const { current, pageSize } = paginationRef.current;
-        const deviceName = deviceNameRef.current;
-        const pageName = pageRef.current;
-        const operationName = operationRef.current;
+        const deviceType = deviceTypeRef.current;
+        const level = alarmLevelRef.current;
+        const name = alarmNameRef.current;
+        const [startTime, endTime] = executeTimeRef.current || [];
+        if (!startTime) return message.info("请先选择日期");
         setLoading(true);
-        try {
-            const res = await getOperationLogServe({
-                pageNum: current,
-                pageSize,
-                queryCmd: {},
+        const res = await getAlarmListServer({
+            pageNo: current,
+            pageSize,
+            deviceType,
+            level,
+            name,
+            startTime,
+            endTime,
+            status: activeKey == "active" ? "ALARM" : "RECOVER",
+        });
+        if (res?.data?.code == 200) {
+            const { total, records } = res?.data?.data;
+            setPagination({
+                ...paginationRef.current,
+                total: parseInt(total),
             });
-            if (res?.data?.status == "SUCCESS") {
-                const { totalRecord, recordList } = res?.data?.data;
-                setPagination({
-                    ...paginationRef.current,
-                    total: parseInt(totalRecord),
-                });
-                setDataSource(recordList);
-            }
-        } finally {
-            setLoading(false);
+            setDataSource(records);
+        } else {
+            message.info(res?.data?.description);
         }
+        setLoading(false);
     };
 
     const handleReset = () => {
         paginationRef.current = DEFAULT_PAGINATION;
         deviceTypeRef.current = undefined;
         setDeviceType();
-        deviceNameRef.current = undefined;
-        setDeviceName();
+        alarmNameRef.current = undefined;
+        setAlarmName();
         alarmLevelRef.current = undefined;
         setAlarmLevel();
         executeTimeRef.current = undefined;
@@ -91,11 +116,29 @@ const Log = () => {
     };
 
     useEffect(() => {
-        //  getList();
+        handleReset();
+    }, [activeKey]);
+
+    useEffect(() => {
+        getDeviceType();
+        getAlarmLevel();
     }, []);
 
     return (
         <>
+            <Detail
+                detailId={detailId}
+                onClose={() => {
+                    setDetailId();
+                }}
+            />
+            <Clear
+                clearId={clearId}
+                onClose={() => {
+                    getList();
+                    setClearId();
+                }}
+            />
             <Tabs
                 activeKey={activeKey}
                 items={[
@@ -142,10 +185,10 @@ const Log = () => {
                     label="告警名称"
                     placeholder="请输入告警名称"
                     inputWidth={250}
-                    value={deviceName}
+                    value={alarmName}
                     onChange={value => {
-                        deviceNameRef.current = value;
-                        setDeviceName(value);
+                        alarmNameRef.current = value;
+                        setAlarmName(value);
                     }}
                 />
 
@@ -154,7 +197,7 @@ const Log = () => {
                         onChange={(date, dateStr) => {
                             paginationRef.current = DEFAULT_PAGINATION;
                             executeTimeRef.current = dateStr;
-                            setExecuteTime(dateStr);
+                            setExecuteTime(dateStr?.includes("") ? [] : dateStr);
                         }}
                         value={
                             executeTime && executeTime.length > 0
@@ -170,31 +213,35 @@ const Log = () => {
             </Space>
             <Table
                 loading={loading}
-                dataSource={[]}
+                dataSource={dataSource}
+                onChange={pagination => {
+                    paginationRef.current = pagination;
+                    getList();
+                }}
                 columns={[
                     ...columns,
                     ...(activeKey == "history"
                         ? [
-                            {
-                                title: "清除时间",
-                                dataIndex: "",
-                            },
-                            {
-                                title: "结束时间",
-                                dataIndex: "",
-                            },
-                        ]
+                              {
+                                  title: "清除时间",
+                                  dataIndex: "recoverTime",
+                              },
+                              {
+                                  title: "结束时间",
+                                  dataIndex: "End",
+                              },
+                          ]
                         : []),
                     {
                         title: "操作",
                         dataIndex: "operate",
                         fixed: "right",
-                        width: 200,
-                        render: (_, { }) => {
+                        width: 150,
+                        render: (_, { id }) => {
                             return (
                                 <Space>
-                                    <a>清除</a>
-                                    <a>详情</a>
+                                    <a onClick={() => setClearId(id)}>清除</a>
+                                    <a onClick={() => setDetailId(id)}>详情</a>
                                 </Space>
                             );
                         },

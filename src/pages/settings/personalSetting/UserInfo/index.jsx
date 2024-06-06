@@ -1,12 +1,15 @@
 import React from "react";
-import { Button, Checkbox, Form, Input } from "antd";
-import { TELPHONE_REG, EMAIL_REG } from "@/utils/constants";
+import { Button, message, Form, Input } from "antd";
+import { TELPHONE_REG, EMAIL_REG, ALL_SPACE_REG } from "@/utils/constants";
+import { changeUserInfo as changeUserInfoServer } from "@/services/user";
 
-const onFinish = values => {
-    console.log("Success:", values);
-};
-const onFinishFailed = errorInfo => {
-    console.log("Failed:", errorInfo);
+const onFinish = async values => {
+    const res = await changeUserInfoServer(values);
+    if (res?.data?.code == 200) {
+        message.info("修改成功");
+    } else {
+        message.info(res?.data?.description);
+    }
 };
 
 const Index = () => (
@@ -26,16 +29,32 @@ const Index = () => (
             remember: true,
         }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete="off"
     >
-        <Form.Item label="角色名称" name="username">
+        <Form.Item label="角色名" name="username" initialValue={"系统管理员"}>
             <Input disabled={true} />
         </Form.Item>
 
         <Form.Item
+            label="用户名"
+            name="nickName"
+            rules={[
+                {
+                    required: true,
+                    message: "请输入用户名",
+                },
+                {
+                    pattern: ALL_SPACE_REG,
+                    message: "请输入用户名",
+                },
+            ]}
+        >
+            <Input />
+        </Form.Item>
+
+        <Form.Item
             label="手机号"
-            name="password"
+            name="phoneNumber"
             rules={[
                 {
                     required: true,
@@ -52,7 +71,7 @@ const Index = () => (
 
         <Form.Item
             label="电子邮箱"
-            name="password"
+            name="email"
             rules={[
                 {
                     required: true,

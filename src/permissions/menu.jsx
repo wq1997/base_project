@@ -7,10 +7,6 @@ const { SubMenu } = Menu;
 
 const MenuList = [
     {
-        key: "/overview-screen",
-        label: "总览大屏",
-    },
-    {
         key: "/plant-monitoring",
         label: "电站监控",
         children: [

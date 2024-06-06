@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { SearchInput } from "@/components";
-import { Button, Space, Table, Tooltip, DatePicker } from "antd";
+import { Button, Space, Table, message, DatePicker } from "antd";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import dayjs from "dayjs";
+import { getPlantReportList as getPlantReportListServer } from "@/services/report";
 
 const Log = () => {
     const [dataSource, setDataSource] = useState([]);
@@ -11,9 +12,8 @@ const Log = () => {
     const [plantName, setPlantName] = useState();
     const timeDimensionRef = useRef();
     const [timeDimension, setTimeDimension] = useState();
-    const [timeDimensionOptions, setTimeDimensionOptions] = useState([]);
-    const executeTimeRef = useRef();
-    const [executeTime, setExecuteTime] = useState();
+    const timeRef = useRef();
+    const [time, setTime] = useState();
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
 
@@ -130,27 +130,28 @@ const Log = () => {
 
     const getList = async () => {
         const { current, pageSize } = paginationRef.current;
-        const plantName = plantNameRef.current;
-        const pageName = pageRef.current;
-        const operationName = operationRef.current;
+        const name = plantNameRef.current;
+        const timePeriod = timeDimensionRef.current;
+        const time = timeRef.current;
         setLoading(true);
-        try {
-            const res = await getOperationLogServe({
-                pageNum: current,
-                pageSize,
-                queryCmd: {},
+        const res = await getPlantReportListServer({
+            pageNo: current,
+            pageSize,
+            name,
+            time,
+            timePeriod,
+        });
+        if (res?.data?.code == 200) {
+            const { total, records } = res?.data?.data;
+            setPagination({
+                ...paginationRef.current,
+                total: parseInt(total),
             });
-            if (res?.data?.status == "SUCCESS") {
-                const { totalRecord, recordList } = res?.data?.data;
-                setPagination({
-                    ...paginationRef.current,
-                    total: parseInt(totalRecord),
-                });
-                setDataSource(recordList);
-            }
-        } finally {
-            setLoading(false);
+            setDataSource(records);
+        } else {
+            message.info(res?.data?.description);
         }
+        setLoading(false);
     };
 
     const handleReset = () => {
@@ -159,13 +160,13 @@ const Log = () => {
         setPlantName();
         timeDimensionRef.current = undefined;
         setTimeDimension();
-        executeTimeRef.current = undefined;
-        setExecuteTime([]);
+        timeRef.current = undefined;
+        setTime();
         getList();
     };
 
     useEffect(() => {
-        //  getList();
+        getList();
     }, []);
 
     return (
@@ -192,9 +193,9 @@ const Log = () => {
                     value={timeDimension}
                     type="select"
                     options={[
-                        { name: "按日统计", code: "day" },
-                        { name: "按月统计", code: "month" },
-                        { name: "按年统计", code: "year" },
+                        { name: "按日统计", code: "DAY" },
+                        { name: "按月统计", code: "MONTH" },
+                        { name: "按年统计", code: "YEAR" },
                     ]}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
@@ -203,17 +204,13 @@ const Log = () => {
                     }}
                 />
                 <div>
-                    <DatePicker.RangePicker
+                    <DatePicker
                         onChange={(date, dateStr) => {
                             paginationRef.current = DEFAULT_PAGINATION;
                             executeTimeRef.current = dateStr;
-                            setExecuteTime(dateStr);
+                            setTime(dateStr);
                         }}
-                        value={
-                            executeTime && executeTime.length > 0
-                                ? [dayjs(executeTime[0]), dayjs(executeTime[1])]
-                                : []
-                        }
+                        value={time ? dayjs(time) : null}
                     />
                 </div>
                 <Button type="primary" onClick={getList}>

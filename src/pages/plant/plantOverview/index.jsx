@@ -1,18 +1,39 @@
-import React, { useState, useEffect, useRef } from "react";
-import { SearchInput } from "@/components";
-import { Button, Space, Table, Tooltip, DatePicker } from "antd";
-import { DEFAULT_PAGINATION } from "@/utils/constants";
-import dayjs from "dayjs";
 import styles from "./index.less";
+import PlantKPI from "./PlantKPI";
+import PlantStatus from "./PlantStatus";
+import PlantAlarm from "./PlantAlarm";
+import OtherInfo from "./OtherInfo";
+import SocialContribution from "./SocialContribution";
+import PowerGeneration from "./PowerGeneration";
+import Ranking from "./Ranking";
+import Map from "./Map";
 
 const Index = () => {
     return (
-        <div>
-            <div className={styles.weather}>
-                <span className={styles.title}>电站概览</span>
+        <div className={styles.container}>
+            <div className={styles.plantKPI}>
+                <PlantKPI />
             </div>
-            <div>
-                
+            <div className={styles.plantStatus}>
+                <PlantStatus />
+            </div>
+            <div className={styles.plantAlarm}>
+                <PlantAlarm />
+            </div>
+            <div className={styles.map}>
+                <Map />
+            </div>
+            <div className={styles.powerGeneration}>
+                <PowerGeneration />
+            </div>
+            <div className={styles.ranking}>
+                <Ranking />
+            </div>
+            <div className={styles.socialContribution}>
+                <SocialContribution />
+            </div>
+            <div className={styles.otherInfo}>
+                <OtherInfo />
             </div>
         </div>
     );

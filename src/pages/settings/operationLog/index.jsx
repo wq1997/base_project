@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { SearchInput } from "@/components";
-import { Button, Space, Table, Tooltip, DatePicker } from "antd";
+import { Button, Space, Table, Tooltip, DatePicker, message } from "antd";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import dayjs from "dayjs";
 import styles from "./index.less";
+import { getOperateLog as getOperateLogServer } from "@/services/log";
 
 const Log = () => {
     const [dataSource, setDataSource] = useState([]);
@@ -17,76 +18,51 @@ const Log = () => {
 
     const columns = [
         {
-            title: "序号",
-            dataIndex: "operatorAccount",
-        },
-        {
             title: "用户名",
-            dataIndex: "operationPage",
+            dataIndex: "userName",
         },
         {
             title: "IP",
-            dataIndex: "operatorName",
+            dataIndex: "ip",
         },
         {
             title: "操作对象",
-            dataIndex: "operationKey",
+            dataIndex: "operateObject",
         },
         {
             title: "操作内容",
-            dataIndex: "operationCmd",
-            key: "operationCmd",
-            width: 400,
-            render(value) {
-                return (
-                    <Tooltip title={value}>
-                        <div
-                            style={{
-                                overflow: "hidden",
-                                whiteSpace: "nowrap",
-                                textOverflow: "ellipsis",
-                                width: 400,
-                            }}
-                        >
-                            {value}
-                        </div>
-                    </Tooltip>
-                );
-            },
+            dataIndex: "operateContent",
+            key: "operateContent",
         },
         {
             title: "操作时间",
-            dataIndex: "operationTime",
+            dataIndex: "operateTime",
         },
     ];
 
     const getList = async () => {
         const { current, pageSize } = paginationRef.current;
-        const account = accountRef.current;
-        const pageName = pageRef.current;
-        const operationName = operationRef.current;
+        const userName = accountRef.current;
+        const [startTime, endTime] = executeTimeRef.current || [];
         setLoading(true);
-        try {
-            const res = await getOperationLogServe({
-                pageNum: current,
-                pageSize,
-                queryCmd: {
-                    operatorAccount: account,
-                    operationPage: pageName,
-                    operatorName: operationName,
-                },
+        const res = await getOperateLogServer({
+            pageNo: current,
+            pageSize,
+            userName,
+            startTime,
+            endTime,
+        });
+        if (res?.data?.code == 200) {
+            const { total, records } = res?.data?.data;
+            setPagination({
+                ...paginationRef.current,
+                total: parseInt(total),
             });
-            if (res?.data?.status == "SUCCESS") {
-                const { totalRecord, recordList } = res?.data?.data;
-                setPagination({
-                    ...paginationRef.current,
-                    total: parseInt(totalRecord),
-                });
-                setDataSource(recordList);
-            }
-        } finally {
-            setLoading(false);
+            setDataSource(records);
+        } else {
+            message.info(res?.data?.description);
         }
+        setLoading(false);
     };
 
     const handleReset = () => {
@@ -99,7 +75,7 @@ const Log = () => {
     };
 
     useEffect(() => {
-        //  getList();
+        getList();
     }, []);
 
     return (
@@ -148,6 +124,10 @@ const Log = () => {
                         key: data?.id,
                     };
                 })}
+                onChange={pagination => {
+                    paginationRef.current = pagination;
+                    getList();
+                }}
                 columns={columns}
                 pagination={pagination}
             />

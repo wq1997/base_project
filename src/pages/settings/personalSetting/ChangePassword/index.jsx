@@ -1,10 +1,17 @@
 import React from "react";
-import { Button, Checkbox, Form, Input } from "antd";
-const onFinish = values => {
-    console.log("Success:", values);
-};
-const onFinishFailed = errorInfo => {
-    console.log("Failed:", errorInfo);
+import { Button, Checkbox, Form, Input, message } from "antd";
+import { changePassword as changePasswordServer } from "@/services/user";
+
+const onFinish = async values => {
+    if (values?.newPassword != values?.confirmPassword) {
+        return message.info("两次密码不一致");
+    }
+    const res = await changePasswordServer(values);
+    if (res?.data?.code == 200) {
+        message.info("修改成功");
+    } else {
+        message.info(res?.data?.description);
+    }
 };
 
 const Index = () => (
@@ -18,22 +25,18 @@ const Index = () => (
         }}
         style={{
             maxWidth: 600,
-            margin:'0 auto',
+            margin: "0 auto",
         }}
         initialValues={{
             remember: true,
         }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete="off"
     >
-        <Form.Item label="用户名" name="username">
-            <Input disabled={true} />
-        </Form.Item>
 
         <Form.Item
             label="旧密码"
-            name="password"
+            name="oldPassword"
             rules={[
                 {
                     required: true,
@@ -46,7 +49,7 @@ const Index = () => (
 
         <Form.Item
             label="新密码"
-            name="password"
+            name="newPassword"
             rules={[
                 {
                     required: true,
@@ -59,7 +62,7 @@ const Index = () => (
 
         <Form.Item
             label="确认密码"
-            name="password"
+            name="confirmPassword"
             rules={[
                 {
                     required: true,
