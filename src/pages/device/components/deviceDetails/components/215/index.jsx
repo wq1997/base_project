@@ -186,7 +186,7 @@ function Com(props) {
             { name: "A相输出无功功率", value: "-", key: "phaseAReactivePower" },
             { name: "B相输出无功功率", value: "-", key: "phaseBReactivePower" },
             { name: "C相输出无功功率", value: "-", key: "phaseCReactivePower" },
-            { name: "C相输出有功功率", value: "-", key: "totalActivePower" },
+            { name: "C相输出有功功率", value: "-", key: "phaseCActivePower" },
         ],
     });
     const [bmsData, setBmsData] = useState({
