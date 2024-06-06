@@ -20,7 +20,7 @@ function Com({ data,table }) {
     return (
         <div className='card_main' style={{padding:'16px 20px',marginBottom:'8px',borderRadius:'8px'}}>
             <div className='card_title' style={{ fontSize: '20px', marginBottom: '20px' }}>
-                <Icon type='icon-xiangyou' style={{ cursor: 'pointer',marginRight:'6px', transform: 'rotate(90deg)'}}></Icon>
+                <Icon type='icon-xiangyou' style={{ cursor: 'pointer',marginRight:'6px'}}></Icon>
                 {t(data.title)}
             </div>
             <div className='card_contain' style={{
