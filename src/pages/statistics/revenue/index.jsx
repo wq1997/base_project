@@ -104,6 +104,7 @@ const Revenue = () => {
                 },
             }],
             series: [{
+                name: `${intl.formatMessage({id: '收益'})}(${intl.formatMessage({id: '元'})})`,
                 type: 'bar',
                 data: dataSource?.map(item => item.number),
                 barWidth: 50,
