@@ -1,5 +1,5 @@
 import { useIntl } from "umi";
-import { Form, Cascader, DatePicker, Button, Flex, Radio, theme, Space, message, Empty, Spin, Tooltip } from "antd";
+import { Form, Cascader, DatePicker, Button, Flex, Radio, theme, Space, message, Empty, Spin, Tooltip, Table } from "antd";
 import { Title } from "@/components";
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect } from "react";
@@ -70,7 +70,7 @@ const Electricity = () => {
                 top: '40',
                 right: '4%',
                 left: '5%',
-                bottom: '80'
+                bottom: '30'
             },
             xAxis: [{
                 type: 'category',
@@ -169,7 +169,8 @@ const Electricity = () => {
                     yAxisIndex: 1,
                     name: `${intl.formatMessage({id: '充放电效率'})}(%)`,
                     lineStyle: {
-                        color: '#00FF05'
+                        color: '#00FF05',
+                        width: 4
                     }
                 },
             ]
@@ -250,7 +251,7 @@ const Electricity = () => {
     }, [])
 
     return (
-        <Space size={30} direction="vertical" style={{width: '100%', height:'100%', padding: 30}}>
+        <Space size={10} direction="vertical" style={{width: '100%', height:'100%', padding: 30}}>
             <Flex justify="center" align="center" gap={10}>
                 <span>{intl.formatMessage({id: '数据项'})}：</span>
                 <Form 
@@ -343,13 +344,28 @@ const Electricity = () => {
                     {intl.formatMessage({id:'导出'})} Excel
                 </Button>
             </Flex>
+            <Title title={`${intl.formatMessage({id: '电量统计'})}`}/>
             <Spin spinning={loading}>
                 <Space direction="vertical" style={{width: '100%'}}>
-                    <Title title={`${intl.formatMessage({id: '电量统计'})}`}/>
-                    <div style={{width: '100%', height: 'calc(100vh - 250px)'}}>
+                    <div style={{width: '100%', height: "calc(50vh - 150px)"}}>
                         {
                             dataSource?.length>0?
                             <ReactECharts option={option} notMerge style={{width: '100%', height: '100%'}}/>
+                            :
+                            <div style={{position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)'}}>
+                                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={intl.formatMessage({id: '暂无数据'})} />
+                            </div>
+                        }
+                    </div>
+                </Space>
+            </Spin>
+            <Title title={`${intl.formatMessage({id: '电量明细'})}`}/>
+            <Spin spinning={loading}>
+                <Space direction="vertical" style={{width: '100%'}}>
+                    <div style={{width: '100%', height: "calc(50vh - 150px)"}}>
+                        {
+                            dataSource?.length>0?
+                            <Table />
                             :
                             <div style={{position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)'}}>
                                 <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={intl.formatMessage({id: '暂无数据'})} />
