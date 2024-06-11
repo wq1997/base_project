@@ -123,10 +123,10 @@ export const optionType = [
     //     label: <FormattedMessage id='232户外柜' />,
     //     value: 13,
     // }, 
-    {
-        label: <FormattedMessage id='372户外柜' />,
-        value: 14,
-    }
+    // {
+    //     label: <FormattedMessage id='372户外柜' />,
+    //     value: 14,
+    // }
 ]
 
     export const userTable = [
