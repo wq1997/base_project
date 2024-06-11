@@ -28,7 +28,7 @@ instance.interceptors.response.use(response => {
     if (response.status === 200) {
         let {data}=response;
         if (data.code!==200) {
-            message.error(data.msg);
+            // message.error(data.msg);
             logout();
             // history.push('/login')
         }

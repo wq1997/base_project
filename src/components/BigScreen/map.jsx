@@ -24,10 +24,6 @@ function MapCom(props) {
         });
         return markerList;
     };
-    useEffect(()=>{
-    
-      console.log(props);
-    },[props.deviceType])
     const bind = useCallback((ref) => {
         if (!ref) return;
         ref.on('click', async params => {

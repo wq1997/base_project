@@ -209,14 +209,8 @@ function MapCom(props) {
     }
 
     useEffect(() => {
-        dispatch({ type: 'device/getAllPlants' });
-    }, [])
-    useEffect(() => {
         getOptions();
-
     }, [props.allPlant])
-
-
 
     return (
         <ReactECharts  
