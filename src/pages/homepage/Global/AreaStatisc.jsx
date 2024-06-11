@@ -2,8 +2,9 @@ import ReactECharts from "echarts-for-react";
 import { useEffect, useState } from "react";
 import { theme as antdTheme } from "antd";
 import { useSelector } from "umi";
+import * as echarts from "echarts";
 
-const colorList = ['#A893FF', '#61BEFB', '#FFAD57'];
+const colorList = [['#FFC35F', '#FF3725'], ['#FF82A1', '#C416F8'], ['#79FBFF', '#3595FF']];
 
 const AreaStatisc = ({ dataSource }) => {
     const { token } = antdTheme.useToken();
@@ -82,7 +83,20 @@ const AreaStatisc = ({ dataSource }) => {
                         return {
                             value: xItem,
                             itemStyle: {
-                                color: colorList[index]
+                                normal: {
+                                    color: new echarts.graphic.LinearGradient(
+                                        1, 0, 0, 0, [
+                                            {
+                                                offset: 0,
+                                                color: colorList?.[index]?.[0]||token.colorPrimary
+                                            },
+                                            {
+                                                offset: 1,
+                                                color: colorList?.[index]?.[1]||token.colorPrimary
+                                            }
+                                        ]
+                                    )
+                                }
                             }
                         }
                     }),

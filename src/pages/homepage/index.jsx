@@ -10,7 +10,7 @@ const HomePage = () => {
         user?.isSermatec && currentCompanyCode && user?.selfPermCodes?.includes('op:user_mode') ||
         !user?.isSermatec && !currentCompanyCode && user?.selfPermCodes?.includes('op:user_mode');
     return (
-        <div>
+        <div style={{width: '100%', height: '100%'}}>
             {isShowGlobal && <Global />}
             {isShowUser && <User />}
         </div>

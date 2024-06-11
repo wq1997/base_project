@@ -4,7 +4,7 @@ import * as echarts from "echarts";
 import { theme as antdTheme } from "antd";
 import { useSelector } from "umi";
 
-const colorList = ["#9E87FF", '#73DDFF', '#fe9a8b', '#F56948', '#9E87FF'];
+const colorList = ["#384FE8", '#FF5A40', '#FFD821', '#F56948', '#9E87FF'];
 const LoadStatisc = ({ dataSource }) => {
     const { token } = antdTheme.useToken();
     const [options, setOptions] = useState({});

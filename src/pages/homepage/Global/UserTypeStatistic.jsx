@@ -2,6 +2,9 @@ import ReactECharts from "echarts-for-react";
 import { useEffect, useState } from "react";
 import { theme as antdTheme } from "antd";
 import { useSelector } from "umi";
+import * as echarts from "echarts";
+
+const colorList = [['#79FBFF', '#3595FF'], ['#FFC35F', '#FF3725'], ['#FF82A1', '#C416F8']];
 
 const UserTypeStatistic = ({ dataSource }) => {
     const { token } = antdTheme.useToken();
@@ -10,19 +13,14 @@ const UserTypeStatistic = ({ dataSource }) => {
 
     const getOptions = () => {
         const nameList = dataSource?Object.keys(dataSource):[];
-        const data = nameList.map(name => {
-          return {
-            value: dataSource[name],
-            name
-          }
-        })
+
         setOptions({
             color: ['#384FE8', '#03B4B4', '#F3CE55'],
             tooltip: {
               trigger: 'item'
             },
             legend: {
-              top: '5%',
+              bottom: '5%',
               left: 'right',
               orient: 'vertical',
               textStyle: {
@@ -31,14 +29,13 @@ const UserTypeStatistic = ({ dataSource }) => {
             },
             series: [
               {
-                name: 'Access From',
                 type: 'pie',
-                radius: ['50%', '90%'],
+                radius: ['75%', '90%'],
                 avoidLabelOverlap: false,
+                padAngle: nameList?.length>1?5:0,
                 itemStyle: {
                   borderRadius: 10,
-                  borderColor: '#fff',
-                  borderWidth: 2
+                  borderWidth: 0
                 },
                 label: {
                   show: false,
@@ -54,7 +51,28 @@ const UserTypeStatistic = ({ dataSource }) => {
                 labelLine: {
                   show: false
                 },
-                data
+                data: nameList.map((name, index) => {
+                  return {
+                    value: dataSource[name],
+                    name,
+                    itemStyle: {
+                      normal: {
+                          color: new echarts.graphic.LinearGradient(
+                              1, 0, 0, 0, [
+                                  {
+                                      offset: 0,
+                                      color: colorList?.[index]?.[0]||token.colorPrimary
+                                  },
+                                  {
+                                      offset: 1,
+                                      color: colorList?.[index]?.[1]||token.colorPrimary
+                                  }
+                              ]
+                          )
+                      }
+                    } 
+                  }
+                })
               }
             ]
           })    

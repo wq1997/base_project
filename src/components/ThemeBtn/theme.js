@@ -1,9 +1,9 @@
 const theme = {
     dark: {
-        colorPrimary: '#384FE8',
-        layoutTopBackColor: 'linear-gradient( 90deg, #05142E 0%, #000000 100%) !important',
-        layoutLeftBackColor: 'linear-gradient( 180deg, #05142E 0%, #000000 100%) !important',
-        incomeOverviewCardColor: 'linear-gradient( 360deg, rgba(1,12,30,0) 0%, #07162F 100%) !important',
+        colorPrimary: '#39A3F3',
+        layoutTopBackColor: 'linear-gradient(180deg, #0B2042 0%, #041024 100%) !important',
+        layoutLeftBackColor: 'linear-gradient(180deg, #0B2042 0%, #041024 100%) !important',
+        incomeOverviewCardColor: 'none',
         color1: '#07162F',
         color2: '#D836FF',
         color3: '#23C5FF',
@@ -13,7 +13,7 @@ const theme = {
         color7: '#3DE2E2',
         color8: '#FFAF20',
         color9: '#D836FF',
-        color10: '#2D335E',
+        color10: '#182F54',
         color11: '#FFFFFF',
         color12: '#3C66FF',
         color13: '#23C5FF',
@@ -56,6 +56,9 @@ const theme = {
         color50: '#3392FF',
         color51: '#628CD0',
         color52: '#FF6600',
+        color53: '#031737',
+        color54: '#182F54',
+        color55: 'linear-gradient(180deg, #024B78 0%, #031737 100%)',
         components: {
             Modal: {
                 contentBg: '#0A182E',
@@ -71,10 +74,10 @@ const theme = {
         }
     },
     default: {
-        colorPrimary: '#384EE8',
-        layoutTopBackColor: 'linear-gradient( 90deg, #E9EFFB 0%, #FFFFFF 100%) !important',
-        layoutLeftBackColor: 'linear-gradient( 180deg, #E9EFFB 0%, #FFFFFF 100%) !important',
-        incomeOverviewCardColor: 'linear-gradient(360deg, rgba(248,251,255,0.5) 0%, #F8FBFF 100%, #F8FBFF 100%) !important',
+        colorPrimary: '#39A3F3',
+        layoutTopBackColor: 'linear-gradient(90deg, #E1EFFD 0%, #FFFFFF 100%) !important',
+        layoutLeftBackColor: 'linear-gradient(180deg, #E1EFFD 0%, #FFFFFF 100%) !important',
+        incomeOverviewCardColor: 'none',
         color1: '#F8FBFF',
         color2: '#A138FF',
         color3: '#2394FF',
@@ -84,7 +87,7 @@ const theme = {
         color7: '#03B4B4',
         color8: '#FF9800',
         color9: '#4F52ED',
-        color10: '#D4D9FF',
+        color10: '#EBF6FF',
         color11: '#333333',
         color12: '#385BF3',
         color13: '#22BAF6',
@@ -127,6 +130,9 @@ const theme = {
         color50: '#3392FF',
         color51: '#628CD0',
         color52: '#FF6600',
+        color53: '#FFFFFF',
+        color54: '#F0F7FF',
+        color55: 'linear-gradient(180deg, #DEEEFF 0%, #F2F8FF 100%)',
         components: {
             Modal: {
                 contentBg: 'white',

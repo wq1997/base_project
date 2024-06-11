@@ -43,7 +43,7 @@ function MapCom({allPlant}) {
         echarts.registerMap('map', china);
         setOptions({
             grid: {
-              top: 0,
+              top: 0
             },
             backgroundColor: "transparent",
             tooltip: {
@@ -65,19 +65,20 @@ function MapCom({allPlant}) {
                 map: "map",
                 roam: true,
                 selectedMode: 'single',
-                layoutCenter: ['45%', '50%'],
+                layoutCenter: ['50%', '50%'],
                 layoutSize: "60%",
                 itemStyle: {
                     normal: {
                         areaColor:'transparent',
-                        borderColor: token.colorPrimary,
+                        borderColor: '#384FE8',
                         borderWidth: 1.8
                     },
                 },
-                top: 5,
+                top: 0,
                 aspectScale: 0.9,
-                zoom: 1.5,
+                zoom: 1.7,
                 label: {
+                    fontSize: 9,
                     show: true,
                     color: token.color26
                 }
@@ -87,14 +88,14 @@ function MapCom({allPlant}) {
                     type: "effectScatter",
                     coordinateSystem: "geo",
                     data:convertData(),//传入的地图点数据
-                    symbolSize: 15,//涟漪大小
+                    symbolSize: 10,//涟漪大小
                     showEffectOn: "render",
                     //涟漪效应
                     rippleEffect: {
                         brushType: "stroke",
                         color: "#00CD97",
                         period: 10,//周期
-                        scale: 10//规模
+                        scale: 5//规模
                     },
                     hoverAnimation: true,//悬停动画
                     legendHoverLink: true,

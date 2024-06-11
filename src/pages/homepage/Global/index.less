@@ -1,78 +1,171 @@
-.top{
-    height: 600px;
-    display: flex;
-    justify-content: space-between;
-    gap: 4px;
-    .topLeft{
-        width: calc(45%);
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        gap: 4px;
-        .cardData{
-            width: 100%;
-            height: 108px;
-            display: flex;
-            gap: 4px;
-        }
-        :global{
-            .ant-card-body{
-                height: 100%;
-            }
-        }
-    }
-    .topRight{
-        width: calc(55%);
-        display: flex;
-        .topRightItem{
-            width: 50%;
-            height: 100%;
-        }
-        :global{
-            .ant-card-body{
-                display: flex;
-                height: 100%;
-            }
-        }
-    }
-}
-
-.center{
+.global {  
     width: 100%;
-    height: 400px;
-    margin: 8px 0;
-    .centerLoadStatisc{
-        height: calc(100% - 40px);
-    }
-    :global{
-        .ant-card-body{
-            height: 100%;
+    height: 100%;
+    display: grid; 
+    grid-auto-columns: 1fr; 
+    grid-template-columns: 1fr 1fr 0.9fr 1.1fr 1fr 1fr 1fr 1fr 1fr 1fr; 
+    grid-template-rows: 1.8fr 0.2fr 1fr 2.5fr 1.8fr 0.3fr 0.5fr 1.5fr 0.5fr 1fr; 
+    gap: 8px 8px; 
+    grid-template-areas: 
+        "area1 area1 area1 area1 area1 area1 area1 area1 area1 area1"
+        "area2 area2 area2 area2 area2 area2 area3 area3 area3 area3"
+        "area2 area2 area2 area2 area2 area2 area3 area3 area3 area3"
+        "area2 area2 area2 area2 area2 area2 area3 area3 area3 area3"
+        "area4 area4 area4 area4 area4 area5 area5 area5 area5 area5"
+        "area6 area6 area6 area6 area6 area6 area6 area6 area6 area6"
+        "area6 area6 area6 area6 area6 area6 area6 area6 area6 area6"
+        "area6 area6 area6 area6 area6 area6 area6 area6 area6 area6"
+        "area7 area7 area7 area7 area7 area7 area7 area7 area7 area7"
+        "area7 area7 area7 area7 area7 area7 area7 area7 area7 area7"; 
+  }
+  
+  .area2 { 
+        grid-area: area2; 
+        padding: 10px 0 0 10px; 
+        box-sizing: border-box;
+        .content{
+            height: calc(100% - 20px);
+            display: flex;
+            .contentLeft{
+                width: 50%;
+            }
+            .contentRight{
+                width: 50%;
+                position: relative;
+                .contentRightChart{
+                    position: absolute;
+                    top: -50px;
+                    bottom: -10px;
+                    width: 100%;
+                    height: calc(100% + 60px);
+                }
+            }
         }
-    }
-}
-
-.bottom{
-    height: 300px;
-    display: flex;
-    justify-content: space-between;
-    .bottomLeft{
-        width: calc(60% - 5px);
-
-        .bottomLeftContent{
+  }
+  
+  .area3 { 
+        grid-area: area3; 
+        padding: 10px; 
+        box-sizing: border-box;
+        .content{
             height: calc(100% - 30px);
         }
-    }
-
-    .bottomRight{
-        width: calc(40% - 5px);
-        .bottomRightContent{
+   }
+  
+  .area4 { 
+        grid-area: area4; 
+        padding: 10px; 
+        box-sizing: border-box;
+        .content{
             height: calc(100% - 30px);
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            grid-template-rows: 1fr;
+            gap: 10px;
+            margin-top: 10px;
+            .card{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                .cardTop{
+                    font-size: 30px;
+                    font-family: DingTalkJinBuTi;
+                }
+            }
         }
     }
-
-    :global{
-        .ant-card-body{
-            height: 100%;
+  
+  .area5 { 
+        grid-area: area5; 
+        padding: 10px; 
+        box-sizing: border-box;
+        .content{
+            height: calc(100% - 30px);
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr;
+            gap: 10px;
+            margin-top: 10px;
+            .card{
+                display: flex;
+                align-items: center;
+                padding-left: 30px;
+                box-sizing: border-box;
+                .cardLeft{
+                    width: 30%;
+                    margin-right: 10px;
+                    img{
+                        width: 100%;
+                    }
+                }
+                .cardRight{
+                    flex: 1;
+                    .cardRightTop{
+                        font-size: 30px;
+                        font-family: DingTalkJinBuTi;
+                        margin-bottom: 10px;
+                    }
+                }
+            }
         }
+  }
+  
+  .area6 { 
+        grid-area: area6; 
+        padding: 10px; 
+        box-sizing: border-box;
+        .content{
+            height: calc(100% - 20px);
+        }
+  }
+  
+  .area7 { 
+    grid-area: area7; 
+    padding: 10px; 
+    box-sizing: border-box;
+    .content{
+        height: calc(100% - 20px);
     }
-}
+  }
+  
+  .area1 { 
+        grid-area: area1; 
+        padding: 10px; 
+        box-sizing: border-box;
+        .content{
+            height: calc(100% - 30px);
+            padding: 10px 0 0 10px;
+            box-sizing: border-box;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            grid-template-rows: 1fr;
+            gap: 20px;
+            .card{
+                display: flex;
+                align-items: center;
+                padding: 10px 20px;
+                box-sizing: border-box;
+                border-radius: 8px;
+                .cardLeft{
+                    width: 15%;
+                    margin-right: 20px;
+                    img{
+                        width: 100%;
+                    }
+                }
+                .cardRight{
+                    width: calc(85% - 20px);
+                    .cardRightTop{
+                        margin-bottom: 5px;
+                        font-family: DingTalkJinBuTi;
+                        font-size: 28px;
+                    }
+                    .cardRightBottom{
+                        color: white;
+                    }
+                }
+            }
+        }
+  }
+  

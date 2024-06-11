@@ -13,37 +13,31 @@ import { useEffect } from "react";
 import { useSelector } from "umi";
 import { recordPage } from "@/utils/utils";
 import { useRequest } from "ahooks";
+import classNames from "classnames";
+import { useEmotionCss } from '@ant-design/use-emotion-css';
+import global1Img from "../../../assets/images/global1.svg";
+import global2Img from "../../../assets/images/global2.svg";
+import global3Img from "../../../assets/images/global3.svg";
+import global4Img from "../../../assets/images/global4.svg";
+import global5Img from "../../../assets/images/global5.svg";
+import global6Img from "../../../assets/images/global6.svg";
+import global7Img from "../../../assets/images/global7.svg";
+import global8Img from "../../../assets/images/global8.svg";
+import global9Img from "../../../assets/images/global9.svg";
+import global10Img from "../../../assets/images/global10.svg";
 
 const Global = () => {
     recordPage('op:global_mode');
     const { theme } = useSelector(state => state.global);
     const { token } = antdTheme.useToken();
-    const colorList = [
-        token.color2,
-        token.color3,
-        token.color4,
-        token.color5,
-        token.color6,
-        token.color5,
-        token.color7,
-        token.color8,
-        token.color7,
-        token.color9,
-        token.color3
-    ]
-    const backgroundColorList = [
-        token.color39, 
-        token.color40, 
-        token.color41, 
-        token.color42, 
-        token.color43, 
-        token.color44, 
-        token.color45, 
-        token.color46, 
-        token.color47, 
-        token.color48, 
-        token.color49
-    ]
+    const globalStyle = useEmotionCss(()=>{
+        return {
+            '.areaBackground': {
+                backgroundColor: token.color53
+            }
+        }
+    })
+
     const [data, setData] = useState({
         resource: {
             title: "资源分布统计",
@@ -51,18 +45,26 @@ const Global = () => {
                 {
                     label: "用户数量",
                     value: 0,
+                    img: global1Img,
+                    valueColor: '#39A3F3'
                 },
                 {
                     label: "设备资源",
                     value: 0,
+                    img: global2Img,
+                    valueColor: '#FF9120'
                 },
                 {
                     label: "签约容量(KW)",
                     value: 0,
+                    img: global3Img,
+                    valueColor: '#AD4AFE'
                 },
                 {
                     label: "最大可调负荷(KW)",
                     value: 0,
+                    img: global4Img,
+                    valueColor: '#39F36E'
                 },
             ],
         },
@@ -72,14 +74,23 @@ const Global = () => {
                 {
                     label: "累计收益(元)",
                     value: 0,
+                    defaultImg: global5Img,
+                    darkImg: global6Img,
+                    valueColor: '#AD4AFE'
                 },
                 {
                     label: "本年收益(元)",
                     value: 0,
+                    defaultImg: global7Img,
+                    darkImg: global8Img,
+                    valueColor: '#FF8520'
                 },
                 {
                     label: "次年预计收益(元)",
                     value: 0,
+                    defaultImg: global9Img,
+                    darkImg: global10Img,
+                    valueColor: '#39A3F3'
                 },
             ],
         },
@@ -89,18 +100,22 @@ const Global = () => {
                 {
                     label: "邀约总数",
                     value: 0,
+                    valueColor: '#FF8600'
                 },
                 {
                     label: "响应成功数",
                     value: 0,
+                    valueColor: '#03B4B4'
                 },
                 {
                     label: "响应成功率(%)",
                     value: 0,
+                    valueColor: '#39A3F3'
                 },
                 {
                     label: "有效响应功率(KW)",
                     value: 0,
+                    valueColor: '#FD76DD'
                 },
             ],
         },
@@ -143,106 +158,119 @@ const Global = () => {
     }, [theme])
 
     return (
-        <div>
-            <div className={styles.top}>
-                <div className={styles.topLeft}>
-                    {Object.keys(data)?.map(item => {
+        <div className={classNames(styles.global, globalStyle)}>
+            <div className={classNames(styles.area1, 'areaBackground')}>
+                <Title>资源分布统计</Title>
+                <div className={styles.content}>
+                    {data?.resource?.dataSource?.map(item => {
                         return (
-                            <Card style={{ flex: 1, height: "100%" }}>
-                                <Title
-                                    style={{ marginTop: 0, marginBottom: 20 }}
-                                >
-                                    {data[item].title}
-                                </Title>
-                                <div className={styles.cardData}>
-                                    {data[item].dataSource?.map((dataSource) => {
-                                        return (
-                                            <StaticsCard 
-                                                icon={dataSource.icon}
-                                                color={colorList.shift()}
-                                                label={dataSource.label}
-                                                value={dataSource.value}
-                                                backgroundColor={backgroundColorList.shift()}
-                                            />
-                                        );
-                                    })}
+                            <div className={styles.card} style={{background: token.color54}}>
+                                <div className={styles.cardLeft}>
+                                    <img src={item.img} />
                                 </div>
-                            </Card>
+                                <div className={styles.cardRight}>
+                                    <div className={styles.cardRightTop} style={{color: item.valueColor}}>
+                                        {item.value}
+                                    </div>
+                                    <div className={styles.cardRightBottom} style={{color: token.color11}}>
+                                        {item.label}
+                                    </div>
+                                </div>
+                            </div>
                         );
                     })}
                 </div>
-                <div className={styles.topRight}>
-                    <Card style={{ height: "100%", width: "100%" }}>
-                        <div className={styles.topRightItem}>
-                            <Title>
-                                用户分布统计(江苏省)
-                            </Title>
+            </div>
+            <div className={classNames(styles.area2, 'areaBackground')}>
+                <Title>用户分布统计(江苏省)</Title>
+                <div className={styles.content}>
+                    <div className={styles.contentLeft}>
+                        <AreaStatisc dataSource={dataSource?.area2CompanyCount}/>
+                    </div>
+                    <div className={styles.contentRight}>
+                        <div className={styles.contentRightChart}>
                             <JiangsuMap
                                 allPlant={dataSource?.companies}
                             />
                         </div>
-                        <div className={styles.topRightItem}>
-                            <AreaStatisc dataSource={dataSource?.area2CompanyCount}/>
-                        </div>
-                    </Card>
-                </div>
-            </div>
-
-            <div className={styles.center}>
-                <Card style={{ height: "100%", width: "100%" }}>
-                    <Title style={{ marginTop: 0, marginBottom: 20 }}>
-                        分时负荷统计
-                    </Title>
-                    <div className={styles.centerLoadStatisc}>
-                        <LoadStatisc dataSource={dataSource?.timeSharingLoad?.loads} />
                     </div>
-                </Card>
-            </div>
-
-            <div className={styles.bottom}>
-                <div className={styles.bottomLeft}>
-                    <Card style={{ height: "100%", width: "100%" }}>
-                        <Title style={{ marginTop: 0, marginBottom: 20 }}>
-                            用户响应汇总
-                        </Title>
-                        <div className={styles.bottomLeftContent}>
-                            <ScrollTable
-                                columns={[
-                                    {
-                                        title: "用户名",
-                                        key: 'companyName',
-                                    },
-                                    {
-                                        title: "任务派发数量",
-                                        key: 'taskCount',
-                                    },
-                                    {
-                                        title: "任务承接数量",
-                                        key: 'confirmTaskCount',
-                                    },
-                                    {
-                                        title: "任务完成数量",
-                                        key: 'executeSuccessTaskCount',
-                                    },
-                                    {
-                                        title: "有效响应容量(KW)",
-                                        key: 'responseCapacity',
-                                    },
-                                ]}
-                                dataSource={dataSource?.companyTaskSummaries||[]}
-                            />
-                        </div>
-                    </Card>
                 </div>
-                <div className={styles.bottomRight}>
-                    <Card style={{ height: "100%", width: "100%" }}>
-                        <Title style={{ marginTop: 0, marginBottom: 20 }}>
-                            接入用户类型
-                        </Title>
-                        <div className={styles.bottomRightContent}>
-                            <UserTypeStatistic dataSource={dataSource?.stationType2CompanyCount} />
-                        </div>
-                    </Card>
+            </div>
+            <div className={classNames(styles.area3, 'areaBackground')}>
+                <Title>接入用户类型</Title>
+                <div className={styles.content}>
+                    <UserTypeStatistic dataSource={dataSource?.stationType2CompanyCount} />
+                </div>
+            </div>
+            <div className={classNames(styles.area4, 'areaBackground')}>
+                <Title>响应执行统计</Title>
+                <div className={styles.content}>
+                    {data?.responseExecute?.dataSource?.map(item => {
+                        return (
+                            <div className={styles.card} style={{background: token.color55}}>
+                               <div className={styles.cardTop} style={{color: item.valueColor}}>{item.value}</div>
+                               <div className={styles.cardBottom} style={{color: token.color11}}>{item.label}</div>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+            <div className={classNames(styles.area5, 'areaBackground')}>
+                <Title>响应收益统计</Title>
+                <div className={styles.content}>
+                    {data?.responseIncome?.dataSource?.map(item => {
+                        return (
+                            <div className={styles.card}>
+                                <div className={styles.cardLeft}>
+                                    <img src={theme==="dark"?item.darkImg:item.defaultImg} />
+                                </div>
+                                <div className={styles.cardRight}>
+                                    <div className={styles.cardRightTop} style={{color: item.valueColor}}>
+                                        {item.value}
+                                    </div>
+                                    <div className={styles.cardRightBottom} style={{color: token.color11}}>
+                                        {item.label}
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+            <div className={classNames(styles.area6, 'areaBackground')}>
+                <Title>分时负荷统计</Title>
+                <div className={styles.content}>
+                    <LoadStatisc dataSource={dataSource?.timeSharingLoad?.loads} />
+                </div>
+            </div>
+            <div className={classNames(styles.area7, 'areaBackground')}>
+                <Title>用户响应汇总</Title>
+                <div className={styles.content}>
+                    <ScrollTable
+                        columns={[
+                            {
+                                title: "用户名",
+                                key: 'companyName',
+                            },
+                            {
+                                title: "任务派发数量",
+                                key: 'taskCount',
+                            },
+                            {
+                                title: "任务承接数量",
+                                key: 'confirmTaskCount',
+                            },
+                            {
+                                title: "任务完成数量",
+                                key: 'executeSuccessTaskCount',
+                            },
+                            {
+                                title: "有效响应容量(KW)",
+                                key: 'responseCapacity',
+                            },
+                        ]}
+                        dataSource={dataSource?.companyTaskSummaries||[]}
+                    />
                 </div>
             </div>
         </div>
