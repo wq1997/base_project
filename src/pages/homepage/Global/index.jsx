@@ -55,13 +55,13 @@ const Global = () => {
                     valueColor: '#FF9120'
                 },
                 {
-                    label: "签约容量(KW)",
+                    label: "签约容量(kW)",
                     value: 0,
                     img: global3Img,
                     valueColor: '#AD4AFE'
                 },
                 {
-                    label: "最大可调负荷(KW)",
+                    label: "最大可调负荷(kW)",
                     value: 0,
                     img: global4Img,
                     valueColor: '#39F36E'
