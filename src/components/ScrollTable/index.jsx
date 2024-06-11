@@ -64,7 +64,7 @@ const Table = ({
                 {
                     columns?.map(column => {
                         return (
-                            <div className={styles.tableHeaderTitle} style={{color: token.color21}}>{column?.title}</div>
+                            <div className={styles.tableHeaderTitle} style={{color: token.color11}}>{column?.title}</div>
                         )
                     })
                 }
