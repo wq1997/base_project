@@ -70,7 +70,8 @@ const AreaStatisc = ({ dataSource }) => {
             series: [
                 {
                     type: "bar",
-                    barWidth: 25,
+                    barWidth: 20,
+                    gap:15,
                     label: {
                         show: true,
                         position: "right",

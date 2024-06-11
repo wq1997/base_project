@@ -4,7 +4,7 @@
     display: grid; 
     grid-auto-columns: 1fr; 
     grid-template-columns: 1fr 1fr 0.9fr 1.1fr 1fr 1fr 1fr 1fr 1fr 1fr; 
-    grid-template-rows: 1.8fr 0.2fr 1fr 2.5fr 1.8fr 0.3fr 0.5fr 1.5fr 0.5fr 1fr; 
+    grid-template-rows: 1.8fr 0.2fr 1fr 2fr 1.8fr 0.8fr 0.5fr 1.1fr 0.9fr 1fr; 
     gap: 8px 8px; 
     grid-template-areas: 
         "area1 area1 area1 area1 area1 area1 area1 area1 area1 area1"
@@ -28,6 +28,8 @@
             display: flex;
             .contentLeft{
                 width: 50%;
+                padding-left: 30px;
+                box-sizing: border-box;
             }
             .contentRight{
                 width: 50%;
@@ -35,7 +37,7 @@
                 .contentRightChart{
                     position: absolute;
                     top: -50px;
-                    bottom: -10px;
+                    bottom: 0;
                     width: 100%;
                     height: calc(100% + 60px);
                 }
