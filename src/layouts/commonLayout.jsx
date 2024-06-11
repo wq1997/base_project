@@ -10,6 +10,7 @@ import {
 } from "@/services";
 import { useRequest } from "ahooks";
 import notificationImg from "../../public/images/notification.svg"
+import themeImg from "../../public/images/theme.svg"
 
 const { Header, Sider, Content } = Layout;
 
@@ -131,13 +132,9 @@ const CommonLayout = (props) => {
                                 }}
                             />
                         }
-                        <Icon
-                            type={theme==="default"?"icon-qiansezhuti":"icon-shensezhuti"}
-                            style={{
-                                fontSize: 23,
-                                cursor: "pointer",
-                                marginTop: 30
-                            }}
+                        <Avatar 
+                            src={themeImg} 
+                            style={{cursor: 'pointer'}}
                             onClick={()=>changeTheme(theme==="default"?"dark": "default")}
                         />
                         <Badge dot={count>0}>
