@@ -4,7 +4,7 @@ const path = ''
 
 // 获取电量统计 和收益
 export const getEnergyFeeByTime = (payload) => {
-    return axiosInstance.post(`${path}/getEnergyFeeByTime`, payload);
+    return axiosInstance.post(`${path}/getEnergy`, payload);
 }
 // 获取收益比列图
 export const getEarningsDistribution = (payload) => {

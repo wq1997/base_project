@@ -9,21 +9,23 @@ import { CardModel } from "@/components";
 import dayjs from 'dayjs';
 import { useSelector, useIntl } from "umi";
 import { BmsDataType, BmcDataType } from '@/utils/constants'
-import { obtainBMSClustersList, obtainBMSParameterData } from '@/services/deviceTotal'
-import { getQueryString,downLoadExcelMode } from "@/utils/utils";
+import { obtainBMSClustersList, getMonCurHistoryData, getDataParams } from '@/services/deviceTotal'
+import { getQueryString, downLoadExcelMode } from "@/utils/utils";
 
 const { Option } = Select;
 function Com({ id }) {
     const { token } = theme.useToken();
-    const [type, setType] = useState(BmsDataType[0].value);
+    const [type, setType] = useState();
     const [dataOption, setDataOption] = useState('');
     const [optionEchart, setOptionEchart] = useState({})
     const activitesRef = useRef([]);
     const [goalId, setGoalId] = useState(id);
-    const [title, setTitle] = useState('电压');
+    const [title, setTitle] = useState('');
     const [unit, setUnit] = useState('V')
     const [date, setDate] = useState(dayjs(new Date()));
-    const [excelData,setExcelData]=useState([]);
+    const [excelData, setExcelData] = useState([]);
+    const [optionsSelect, setOptionSelect] = useState([]);
+    const [dateStr, setDateStr] = useState([dayjs(new Date()).format('YYYY-MM-DD')]);
 
     const intl = useIntl();
     const t = (id) => {
@@ -34,46 +36,42 @@ function Com({ id }) {
         );
         return msg
     }
-    function onChange(date, dateString) {
-        setDate(date);
+    function onChange(val, str) {
+        setDateStr(str);
+        setDate(val);
     }
 
     useEffect(() => {
         // getOptions();
-    }, [token]);
+        getInitData();
+    }, [id]);
     useEffect(() => {
-        getClustersData().then(() => {
             getEchartsData(id);
-        });
     }, [id])
-    const getClustersData = async () => {
-        let { data } = await obtainBMSClustersList({ id })
-        getClusters(data.data);
-    }
-    const getEchartsData = async (id) => {
-        let { data } = await obtainBMSParameterData({
-            id,
-            type,
-            dateOne: dayjs(new Date()).format('YYYY-MM-DD'),
-            dateTwo: date.format('YYYY-MM-DD'),
+
+    const getEchartsData = async () => {
+        let { data } = await getMonCurHistoryData({
+            devId:id||getQueryString("id"),
+            dataId:type,
+            dateList:dateStr
         });
-        let excelData=[];
+        let excelData = [];
         let dataX = []
         let nowY = [];
         let toY = [];
-        data.data?.nowDay?.map((it,index) => {
+        data.data?.nowDay?.map((it, index) => {
             dataX.push(dayjs(it.time).format('HH:mm'));
             nowY.push(it.value);
             excelData.push({
-                time:dayjs(it.time).format('HH:mm'),
-                nowDay:it.value,
-                toDay:data.data?.toDay[index].value
+                time: dayjs(it.time).format('HH:mm'),
+                nowDay: it.value,
+                toDay: data.data?.toDay[index].value
             })
         })
-        dataX.length===0? data.data?.toDay?.map(it => {
+        dataX.length === 0 ? data.data?.toDay?.map(it => {
             toY.push(it.value);
             dataX.push(dayjs(it.time).format('HH:mm'))
-        }):data.data?.toDay?.map(it => {
+        }) : data.data?.toDay?.map(it => {
             toY.push(it.value);
         });
         setExcelData([...excelData]);
@@ -88,7 +86,7 @@ function Com({ id }) {
             legend: {
                 data: [`今日${title}`, `${date.format('YYYY-MM-DD')}${title}`],
                 textStyle: {
-                    color:token.smallTitleColor,
+                    color: token.smallTitleColor,
                 }
             },
             grid: {
@@ -178,76 +176,60 @@ function Com({ id }) {
             ]
         });
     };
-    const downLoadFoodModel = () => {  
-        let fileName =title;
+    const downLoadFoodModel = () => {
+        let fileName = title;
         let sheetData = excelData;
-        let sheetFilter = ['time', 'nowDay','toDay'];
-        let sheetHeader = ["时刻", dayjs(new Date()).format('YYYY-MM-DD'),dayjs(date)?.format('YYYY-MM-DD')];
+        let sheetFilter = ['time', 'nowDay', 'toDay'];
+        let sheetHeader = ["时刻", dayjs(new Date()).format('YYYY-MM-DD'), dayjs(date)?.format('YYYY-MM-DD')];
         downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader,)
     };
-    const getClusters = (data) => {
-        data.map(it => {
-            it.value = it.id;
-            it.label = it.name;
-        })
-        activitesRef.current = data;
-        setDataOption(BmsDataType);
-        setGoalId(data[0].id);
-    }
 
-    const changeCluster = (val) => {
-        let goal = activitesRef.current.find(it => it.id == val);
-        setGoalId(goal.id);
-        if (goal.type == '101') {
-            setDataOption(BmsDataType);
-            setType(BmsDataType[0].value)
-        } else {
-            setDataOption(BmcDataType);
-            setType(BmcDataType[0].value)
-        }
-    }
     const changeDataType = (val, label) => {
         setType(val);
-        setTitle(label?.label.props?.id);
-        setUnit(label?.unit)
-    } 
+        setTitle(label?.label);
+
+    }
+    const getInitData = async () => {
+        let { data } = await getDataParams({ devId: id || props?.id });
+        if (data.data) {
+            setOptionSelect([...data?.data]);
+            setTitle(data?.data?.[0]?.dataTypeDesc);
+            setType(data?.data?.[0]?.dataType)
+        }
+
+    }
     return (
         <div className={styles.monitoringCurves}>
             <div className={styles.searchHead}>
-                <span >{t('数据类型')}:</span>
-                <Select
-                    className={styles.margRL}
-                    style={{ width: 240 }}
-                    onChange={changeCluster}
-                    key={activitesRef.current[0]?.value}
-                    defaultValue={activitesRef.current[0]?.value}
-                >
-                    {activitesRef.current && activitesRef.current.map(item => {
-                        return (<Option key={item.value} value={item.value}>{t(item.label)}</Option>);
-                    })
-                    }
-                </Select>
                 {t('数据项')}:
-                <Select
+                {type && <Select
                     className={styles.margRL}
                     style={{ width: 240 }}
                     onChange={changeDataType}
-                    options={dataOption}
+                    options={optionsSelect.map(it => {
+                        return {
+                            value: it.dataType,
+                            label: it.dataTypeDesc
+                        }
+                    })}
                     defaultValue={type}
                 >
 
-                </Select>
-                <DatePicker onChange={onChange} defaultValue={date} />
+                </Select>}
+                <DatePicker 
+                    style={{ width: 240 }}
+                    maxTagCount={1}
+                    multiple onChange={(val, str) => onChange(val, str)} defaultValue={date} />
                 <Button type="primary" className={styles.firstButton} onClick={() => getEchartsData(goalId)}>
                     {t('查询')}
                 </Button>
-                <Button type="primary" style={{ backgroundColor: token.defaultBg }}  onClick={downLoadFoodModel} >
+                <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downLoadFoodModel} >
                     {t('导出')}excel
                 </Button>
             </div>
             <div className={styles.echartPart}>
                 <CardModel
-                    title={t(title)}
+                    title={title?t(title):''}
                     content={
                         <div className={styles.echartPartCardwrap}>
                             <ReactECharts option={optionEchart} style={{ height: '100%' }} />

@@ -129,7 +129,7 @@ function Com(props) {
     const { pathname } = location;
     const { token } = theme.useToken();
     const [pageType, setPageType] = useState(getQueryString("PageType") || defaultPageType)
-    const [pageKey, setPageKey] = useState(getQueryString("PageKey") || '0-0-0')
+    const [pageKey, setPageKey] = useState(getQueryString("PageKey") ||'0-0-0')
     const [tree, setTree] = useState([]);
     const [defaultDataFlag, setdefaultDataFlag] = useState(false);
     const [expandedKeys, setExpandedKeys] = useState([]);
@@ -229,7 +229,6 @@ function Com(props) {
         return loop(defaultData);
     }, [searchValue, defaultDataFlag]);
     const getPage = () => {
-        console.log( dataList.find(it => it.key == pageKey)?.id,dataList,'000000000');
         switch (pageType) {
             case "ALL"://总览
                 return <EnergyPCS id={
@@ -248,7 +247,9 @@ function Com(props) {
             case 9:
                 return <ViewOutdoor />;
             default:
-                return <Overview />
+                return <EnergyPCS id={
+                    dataList.find(it => it.key == pageKey)?.id
+                } />;
         }
     }
 

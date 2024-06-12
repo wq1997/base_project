@@ -39,12 +39,14 @@ function Com(props) {
     }
     useEffect(()=>{
         getInitData();
-        console.log(id,props,'ayk');
-    },[])
+    },[props])
     const getInitData=async()=>{
-        let {data}=await getDataParams({devId:id||props.id});
-        setOptionSelect([...data?.data]);
-        setTitle(data?.data?.[0].dataTypeDesc)
+        let {data}=await getDataParams({devId:id||props?.id});
+        if(data.data){
+            setOptionSelect([...data?.data]);
+            setTitle(data?.data?.[0]?.dataTypeDesc)
+        }
+   
     }
     const queryData = async () => {
         let { data } = await getMonCurHistoryData({
@@ -183,8 +185,7 @@ function Com(props) {
 
     useEffect(() => {
         queryData();
-    }, [token]);
-    console.log(optionsSelect,'optionsSelect');
+    }, [token,props]);
     return (
         <div className={styles.monitoringCurves}>
             <div className={styles.searchHead}>

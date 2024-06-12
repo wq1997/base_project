@@ -43,7 +43,7 @@ function Com({ id }) {
         let { data } = await obtainBMSClustersList({ id })
         let arr = [];
         data?.data?.map((it, i) => {
-            i === 0 ? null : arr.push({
+           arr.push({
                 ...it,
                 label: it.name,
                 value: it.id
