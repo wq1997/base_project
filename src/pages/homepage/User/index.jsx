@@ -12,7 +12,7 @@ import responseExecuteImg from "../../../../public/images/responseExecute.svg";
 import resourceDarkImg from "../../../../public/images/resourceDark.svg";
 import responseIncomeDarkImg from "../../../../public/images/responseIncomeDark.svg";
 import responseExecuteDarkImg from "../../../../public/images/responseExecuteDark.svg";
-import userHomepageRightImg from "../../../../public/images/user_homepage_right.jpg";
+import userHomepageRightImg from "../../../../public/images/user_homepage_right.png";
 import companyLevelImg from "../../../../public/images/companyLevel.svg";
 import companyLevelDarkImg from "../../../../public/images/companyLevelDark.svg";
 import companyLevelRightDarkImg from "../../../../public/images/companyLevelRightDark.svg";
