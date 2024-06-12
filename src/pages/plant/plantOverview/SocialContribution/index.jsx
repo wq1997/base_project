@@ -21,12 +21,16 @@ const Index = () => {
                 <div style={{ height: "100%", display: "flex" }}>
                     {datas?.map(item => (
                         <div className={styles.item}>
-                            <img src={item.pic} className={styles.pic} />
-                            <div className={styles.data}>
-                                {item.data}
-                                <span className={styles.unit}>{item.unit}</span>
+                            <div className={styles.picWrapper}>
+                                <img src={item.pic} className={styles.pic} />
                             </div>
-                            <div className={styles.name}>{item.name}</div>
+                            <div className={styles.right}>
+                                <div className={styles.data}>
+                                    {item.data}
+                                    <span className={styles.unit}>{item.unit}</span>
+                                </div>
+                                <div className={styles.name}>{item.name}</div>
+                            </div>
                         </div>
                     ))}
                 </div>

@@ -115,6 +115,7 @@ const MyMenu = () => {
         } else {
             newOpenKeys = newOpenKeys.concat([pathList.splice(0, 3).join("/")]);
         }
+        console.log('newOpenKeys',newOpenKeys)
         setOpenKeys(newOpenKeys);
     };
 

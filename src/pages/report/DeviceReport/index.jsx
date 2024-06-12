@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { SearchInput } from "@/components";
 import { Button, Space, Table, message, DatePicker } from "antd";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
+import { jsonToUrlParams } from "@/utils/utils";
 import dayjs from "dayjs";
 import { getDeviceReportList as getDeviceReportListServer } from "@/services/report";
 import { getDeviceType as getDeviceTypeServer } from "@/services/device";
@@ -72,7 +73,6 @@ const Log = () => {
         const time = timeRef.current;
         if (!time) return message.info("请先选择日期");
         setLoading(true);
-        console.log("timePeriod", timePeriod);
         const res = await getDeviceReportListServer({
             pageNo: current,
             pageSize,
@@ -120,7 +120,6 @@ const Log = () => {
             <Space
                 style={{
                     flexWrap: "wrap",
-                    marginBottom: "8px",
                 }}
             >
                 <SearchInput
@@ -185,11 +184,41 @@ const Log = () => {
                 </Button>
                 <Button onClick={handleReset}>重置</Button>
             </Space>
+
             <Table
                 loading={loading}
                 dataSource={dataSource}
                 columns={columns}
                 pagination={pagination}
+                title={() => (
+                    <div
+                        style={{
+                            textAlign: "right",
+                        }}
+                    >
+                        <Button
+                            type="primary"
+                            onClick={() => {
+                                const name = deviceNameRef.current;
+                                const type = deviceTypeRef?.current;
+                                const timePeriod = timeDimensionRef.current || "DAY";
+                                const time = timeRef.current;
+                                if (!time) return message.info("请先选择日期");
+                                let url = `${process.env.API_URL_1}/api/v1/report/export-device-report${jsonToUrlParams(
+                                    {
+                                        name,
+                                        type,
+                                        time,
+                                        timePeriod,
+                                    }
+                                )}`;
+                                window.open(url);
+                            }}
+                        >
+                            导出
+                        </Button>
+                    </div>
+                )}
             />
         </>
     );

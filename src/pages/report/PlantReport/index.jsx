@@ -91,95 +91,95 @@ const Log = () => {
 
     return (
         <>
-            <div
+            <Space
                 style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginBottom: "8px",
+                    flexWrap: "wrap",
                 }}
             >
-                <Space
-                    style={{
-                        flexWrap: "wrap",
+                <SearchInput
+                    label="电站名称"
+                    placeholder="请输入电站名称"
+                    inputWidth={250}
+                    value={plantName}
+                    onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        plantNameRef.current = value;
+                        setPlantName(value);
                     }}
-                >
-                    <SearchInput
-                        label="电站名称"
-                        placeholder="请输入电站名称"
-                        inputWidth={250}
-                        value={plantName}
-                        onChange={value => {
-                            paginationRef.current = DEFAULT_PAGINATION;
-                            plantNameRef.current = value;
-                            setPlantName(value);
-                        }}
-                    />
-                    <SearchInput
-                        label="时间维度"
-                        value={timeDimension}
-                        allowClear={false}
-                        type="select"
-                        options={[
-                            { displayName: "按日统计", name: "DAY" },
-                            { displayName: "按月统计", name: "MONTH" },
-                            { displayName: "按年统计", name: "YEAR" },
-                        ]}
-                        onChange={value => {
-                            paginationRef.current = DEFAULT_PAGINATION;
-                            timeDimensionRef.current = value;
-                            setTimeDimension(value);
-                            timeRef.current = undefined;
-                            setTime();
-                        }}
-                    />
-                    <div>
-                        <DatePicker
-                            picker={
-                                {
-                                    DAY: "day",
-                                    MONTH: "month",
-                                    YEAR: "year",
-                                }[timeDimension]
-                            }
-                            onChange={(date, dateStr) => {
-                                paginationRef.current = DEFAULT_PAGINATION;
-                                timeRef.current = dateStr;
-                                setTime(dateStr);
-                            }}
-                            value={time ? dayjs(time) : null}
-                        />
-                    </div>
-                    <Button type="primary" onClick={getList}>
-                        搜索
-                    </Button>
-                    <Button onClick={handleReset}>重置</Button>
-                </Space>
-                <Button
-                    type="primary"
-                    onClick={() => {
-                        const name = plantNameRef.current;
-                        const timePeriod = timeDimensionRef.current || "DAY";
-                        const time = timeRef.current;
-                        if (!time) return message.info("请先选择日期");
-                        let url = `${process.env.API_URL_1}/api/v1/report/export-plant-report${jsonToUrlParams(
+                />
+                <SearchInput
+                    label="时间维度"
+                    value={timeDimension}
+                    allowClear={false}
+                    type="select"
+                    options={[
+                        { displayName: "按日统计", name: "DAY" },
+                        { displayName: "按月统计", name: "MONTH" },
+                        { displayName: "按年统计", name: "YEAR" },
+                    ]}
+                    onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        timeDimensionRef.current = value;
+                        setTimeDimension(value);
+                        timeRef.current = undefined;
+                        setTime();
+                    }}
+                />
+                <div>
+                    <DatePicker
+                        picker={
                             {
-                                name,
-                                timePeriod,
-                                time,
-                            }
-                        )}`;
-                        window.open(url);
-                    }}
-                >
-                    导出
+                                DAY: "day",
+                                MONTH: "month",
+                                YEAR: "year",
+                            }[timeDimension]
+                        }
+                        onChange={(date, dateStr) => {
+                            paginationRef.current = DEFAULT_PAGINATION;
+                            timeRef.current = dateStr;
+                            setTime(dateStr);
+                        }}
+                        value={time ? dayjs(time) : null}
+                    />
+                </div>
+                <Button type="primary" onClick={getList}>
+                    搜索
                 </Button>
-            </div>
+                <Button onClick={handleReset}>重置</Button>
+            </Space>
+
             <Table
                 loading={loading}
                 dataSource={dataSource}
                 columns={columns}
                 pagination={pagination}
+                title={() => (
+                    <div
+                        style={{
+                            textAlign: "right",
+                        }}
+                    >
+                        <Button
+                            type="primary"
+                            onClick={() => {
+                                const name = plantNameRef.current;
+                                const timePeriod = timeDimensionRef.current || "DAY";
+                                const time = timeRef.current;
+                                if (!time) return message.info("请先选择日期");
+                                let url = `${process.env.API_URL_1}/api/v1/report/export-plant-report${jsonToUrlParams(
+                                    {
+                                        name,
+                                        timePeriod,
+                                        time,
+                                    }
+                                )}`;
+                                window.open(url);
+                            }}
+                        >
+                            导出
+                        </Button>
+                    </div>
+                )}
             />
         </>
     );
