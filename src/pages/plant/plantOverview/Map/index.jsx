@@ -52,7 +52,7 @@ const Index = ({ plants, activePosition, activePlant, setActivePlant }) => {
         >
             <div
                 style={{
-                    width: "50%",
+                    width: "200px",
                     height: "50px",
                     paddingLeft: "8px",
                     display: "flex",

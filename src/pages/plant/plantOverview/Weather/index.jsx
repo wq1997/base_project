@@ -22,7 +22,10 @@ const Index = ({ data }) => {
                     <div className={classnames(styles.item, styles.today)}>
                         <div className={styles.weather}>
                             <img src={tree} className={styles.pic} />
-                            <i class={`qi-${100}`} style={{ color: "blue", fontSize: "32px" }}></i>
+                            <i
+                                class={`qi-${100}`}
+                                style={{ color: "#1677ff", fontSize: "32px" }}
+                            ></i>
                             <span className={styles.date}>{data?.[0]?.textDay}</span>
                         </div>
                         <div className={styles.tempDate}>
