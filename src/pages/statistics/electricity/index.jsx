@@ -36,7 +36,8 @@ const Electricity = () => {
         if(timeType==="year"){
             format="YYYY";
             params = {
-                dtuId: device,
+                plantId: currentPlantDevice?.[0],
+                dtuId: currentPlantDevice?.[1],
                 date: dayjs(values.yearTime).format(format),
                 dateType: timeType
             }
@@ -58,7 +59,9 @@ const Electricity = () => {
         return params;
     }
 
-    const initOption = () => {
+    const initOption = async () => {
+        const values = await form.validateFields();
+        const { timeType } = values;
         const option = {
             tooltip: {
                 trigger: 'axis',
@@ -74,7 +77,7 @@ const Electricity = () => {
             },
             xAxis: [{
                 type: 'category',
-                data: dataSource?.map(item => moment(item.time).format("YYYY/MM/DD")),
+                data: dataSource?.map(item => moment(item.time).format(timeType==="day"?"YYYY/MM/DD":"YYYY/MM")),
                 axisLine: {
                     lineStyle: {
                         color: 'rgba(255,255,255,0.12)'
