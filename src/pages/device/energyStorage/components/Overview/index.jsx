@@ -50,6 +50,7 @@ function Overview(props) {
     const intl = useIntl();
     const pageType = getQueryString('pageType') || 'ALL';
     const id = getQueryString('id') || 0;
+    const dtuId = getQueryString('dtuId') || 0;
     const title = decodeURI(getQueryString('title')) || '储能总览';
     const t = (id) => {
         const msg = intl.formatMessage(
@@ -109,14 +110,14 @@ function Overview(props) {
         {
             label: '日收益',
             name: 'todayIncome',
-            unit: currentPlant.priceUnit,
+            unit: currentPlant?.priceUnit,
             color: '#03B4B4',
             icon: 'icon-qian'
         },
         {
             label: '周收益',
             name: 'weekIncome',
-            unit: currentPlant.priceUnit,
+            unit: currentPlant?.priceUnit,
             color: '#FF9D4F',
             icon: 'icon-qian1'
 
@@ -124,7 +125,7 @@ function Overview(props) {
         {
             label: '月收益',
             name: 'monthIncome',
-            unit: currentPlant.priceUnit,
+            unit: currentPlant?.priceUnit,
             color: '#EEC830',
             icon: 'icon-fenxiangzhuanshouyi'
 
@@ -132,7 +133,7 @@ function Overview(props) {
         {
             label: '累计收益',
             name: 'totalIncome',
-            unit: currentPlant.priceUnit,
+            unit: currentPlant?.priceUnit,
             color: '#71B4F2',
             icon: 'icon-qushi'
 
@@ -167,7 +168,7 @@ function Overview(props) {
     }, [pageType, id]);
     const getEnergy = async () => {
         let { data } = pageType === 'ALL' ? await getEnergySummary({ plantId: localStorage.getItem('plantId') }) :
-            await getEnergySummaryByDtu({ dtuId: id });
+            await getEnergySummaryByDtu({ dtuId});
         setEnergySummaryg(data.data);
     }
     const getRun = async () => {
@@ -177,17 +178,17 @@ function Overview(props) {
     }
     const getIncome = async () => {
         let { data } = pageType === 'ALL' ? await getIncomeByPlantId({ plantId: localStorage.getItem('plantId') }) :
-            await getIncomeByDtuId({ dtuId: id });
+            await getIncomeByDtuId({ dtuId });
         setIncome(data.data);
     }
     const getAlarms = async () => {
         let { data } = pageType === 'ALL' ? await getNowAlarmsByEnergy({ plantId: localStorage.getItem('plantId') }) :
-            await getNowAlarmsByDtu({ dtuId: id });
+            await getNowAlarmsByDtu({ dtuId });
         setAlarms(data.data);
     }
     const getAllElecty = async () => {
         let { data } = pageType === 'ALL' ? await getChargeDischargeEnergySevenDaysByPlantId({ plantId: localStorage.getItem('plantId') }) :
-            await getChargeDischargeEnergySevenDaysDtuId({ dtuId: id });
+            await getChargeDischargeEnergySevenDaysDtuId({ dtuId });
         let arrA = [];
         let arrB = [];
         let arrC = [];
