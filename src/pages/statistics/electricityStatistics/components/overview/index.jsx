@@ -15,6 +15,8 @@ function Com(props) {
     const [options, setOptions] = useState({});
     const [mode, setMode] = useState('date');
     const [time, setTime] = useState(dayjs(new Date()));
+    const [startTime, setStartTime] = useState(dayjs(new Date()));
+    const [endTime, setEndTime] = useState(dayjs(new Date()).add(5, 'day'));
     const [format, setFormat] = useState('YYYY-MM-DD');
     const [data, setData] = useState([]);
     const [dateX, setDateX] = useState([]);
@@ -160,7 +162,9 @@ function Com(props) {
             time: time.format(format),
             type: mode === 'date' ? 0 : mode === 'month' ? 2 : 3,
             plantId: localStorage.getItem('plantId'),
-            gridPointId:currntGrid
+            gridPointId:currntGrid,
+            startTime:startTime.format('YYYY-MM-DD'),
+            endTime:endTime.format('YYYY-MM-DD'),
         }
         let pvOutEnergy = [];
         let energyInEnergy = [];
@@ -280,7 +284,7 @@ function Com(props) {
                     </Select>
                 </div>
                 <div className={styles.date}>
-                    {mode == 'date' ? <RangePicker format={format} style={{ marginRight: "20px" }} /> : <DatePicker picker={mode} onChange={(val) => setTime(val)} defaultValue={time} format={format} style={{ marginRight: "20px" }} />}
+                    {mode == 'date' ? <RangePicker defaultValue={[dayjs(new Date()),dayjs(new Date()).add(5, 'day')]} format={format} style={{ marginRight: "20px" }} /> : <DatePicker picker={mode} onChange={(val) => setTime(val)} defaultValue={time} format={format} style={{ marginRight: "20px" }} />}
                     <Radio.Group value={mode} onChange={handleModelChange}>
                         <Radio.Button value="date">日</Radio.Button>
                         {/* <Radio.Button value="month">月</Radio.Button> */}
