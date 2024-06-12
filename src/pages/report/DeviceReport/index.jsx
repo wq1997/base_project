@@ -1,95 +1,97 @@
 import React, { useState, useEffect, useRef } from "react";
 import { SearchInput } from "@/components";
-import { Button, Space, Table, Tooltip, DatePicker } from "antd";
+import { Button, Space, Table, message, DatePicker } from "antd";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import dayjs from "dayjs";
+import { getDeviceReportList as getDeviceReportListServer } from "@/services/report";
+import { getDeviceType as getDeviceTypeServer } from "@/services/device";
 
 const Log = () => {
     const [dataSource, setDataSource] = useState([]);
     const [loading, setLoading] = useState(false);
-    const deviceNameRef = useRef();
-    const [deviceName, setDeviceName] = useState();
     const deviceTypeRef = useRef();
     const [deviceType, setDeviceType] = useState();
     const [deviceTypeOptions, setDeviceTypeOptions] = useState([]);
+    const deviceNameRef = useRef();
+    const [deviceName, setDeviceName] = useState();
     const timeDimensionRef = useRef();
-    const [timeDimension, setTimeDimension] = useState();
-    const [timeDimensionOptions, setTimeDimensionOptions] = useState([]);
-    const executeTimeRef = useRef();
-    const [executeTime, setExecuteTime] = useState();
+    const [timeDimension, setTimeDimension] = useState("DAY");
+    const timeRef = useRef();
+    const [time, setTime] = useState();
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
 
     const columns = [
         {
-            title: "序号",
-            dataIndex: "",
-        },
-        {
             title: "电站名称",
-            dataIndex: "",
+            dataIndex: "plantName",
         },
         {
             title: "设备名称",
-            dataIndex: "",
+            dataIndex: "name",
         },
         {
             title: "设备类型",
-            dataIndex: "",
-        },
-        {
-            title: "组串总容量(kWp)",
-            dataIndex: "",
+            dataIndex: "typeZh",
         },
         {
             title: "发电量(度)",
-            dataIndex: "",
+            dataIndex: "power",
         },
         {
             title: "累计发电量(度)",
-            dataIndex: "",
+            dataIndex: "totalPower",
         },
-        {
-            title: "等价发电时(kWh/kWp)",
-            dataIndex: "",
-        },
+
         {
             title: "峰值交流功率(kW)",
-            dataIndex: "",
+            dataIndex: "peakPower",
         },
         {
-            title: "并网时长(h)",
-            dataIndex: "",
+            title: "平均温度（°C）",
+            dataIndex: "averageTemperature",
         },
         {
-            title: "限电损失电量(度)",
-            dataIndex: "",
+            title: "系统效率PR(%)",
+            dataIndex: "efficiency",
         },
     ];
 
+    const getDeviceType = async () => {
+        const res = await getDeviceTypeServer();
+        if (res?.data?.code == 200) {
+            setDeviceTypeOptions(res?.data?.data);
+        }
+    };
+
     const getList = async () => {
         const { current, pageSize } = paginationRef.current;
-        const deviceName = deviceNameRef.current;
-        const pageName = pageRef.current;
-        const operationName = operationRef.current;
+        const name = deviceNameRef.current;
+        const type = deviceTypeRef?.current;
+        const timePeriod = timeDimensionRef.current || "DAY";
+        const time = timeRef.current;
+        if (!time) return message.info("请先选择日期");
         setLoading(true);
-        try {
-            const res = await getOperationLogServe({
-                pageNum: current,
-                pageSize,
-                queryCmd: {},
+        console.log("timePeriod", timePeriod);
+        const res = await getDeviceReportListServer({
+            pageNo: current,
+            pageSize,
+            name,
+            type,
+            time,
+            timePeriod,
+        });
+        if (res?.data?.code == 200) {
+            const { total, records } = res?.data?.data;
+            setPagination({
+                ...paginationRef.current,
+                total: parseInt(total),
             });
-            if (res?.data?.status == "SUCCESS") {
-                const { totalRecord, recordList } = res?.data?.data;
-                setPagination({
-                    ...paginationRef.current,
-                    total: parseInt(totalRecord),
-                });
-                setDataSource(recordList);
-            }
-        } finally {
-            setLoading(false);
+            setDataSource(records);
+        } else {
+            message.info(res?.data?.description);
         }
+        setLoading(false);
     };
 
     const handleReset = () => {
@@ -100,13 +102,17 @@ const Log = () => {
         setDeviceName();
         timeDimensionRef.current = undefined;
         setTimeDimension();
-        executeTimeRef.current = undefined;
-        setExecuteTime([]);
-        getList();
+        timeRef.current = undefined;
+        setTime();
+        setDataSource();
+        setPagination({
+            current: 1,
+            total: 0,
+        });
     };
 
     useEffect(() => {
-        //  getList();
+        getDeviceType();
     }, []);
 
     return (
@@ -134,38 +140,44 @@ const Log = () => {
                     inputWidth={250}
                     value={deviceName}
                     onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
                         deviceNameRef.current = value;
                         setDeviceName(value);
                     }}
                 />
-                加个设备型号选择
                 <SearchInput
                     label="时间维度"
                     value={timeDimension}
+                    allowClear={false}
                     type="select"
                     options={[
-                        { name: "按日统计", code: "day" },
-                        { name: "按月统计", code: "month" },
-                        { name: "按年统计", code: "year" },
+                        { displayName: "按日统计", name: "DAY" },
+                        { displayName: "按月统计", name: "MONTH" },
+                        { displayName: "按年统计", name: "YEAR" },
                     ]}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         timeDimensionRef.current = value;
                         setTimeDimension(value);
+                        timeRef.current = undefined;
+                        setTime();
                     }}
                 />
                 <div>
-                    <DatePicker.RangePicker
+                    <DatePicker
+                        picker={
+                            {
+                                DAY: "day",
+                                MONTH: "month",
+                                YEAR: "year",
+                            }[timeDimension]
+                        }
                         onChange={(date, dateStr) => {
                             paginationRef.current = DEFAULT_PAGINATION;
-                            executeTimeRef.current = dateStr;
-                            setExecuteTime(dateStr);
+                            timeRef.current = dateStr;
+                            setTime(dateStr);
                         }}
-                        value={
-                            executeTime && executeTime.length > 0
-                                ? [dayjs(executeTime[0]), dayjs(executeTime[1])]
-                                : []
-                        }
+                        value={time ? dayjs(time) : null}
                     />
                 </div>
                 <Button type="primary" onClick={getList}>
@@ -175,12 +187,9 @@ const Log = () => {
             </Space>
             <Table
                 loading={loading}
-                dataSource={[]}
+                dataSource={dataSource}
                 columns={columns}
                 pagination={pagination}
-                scroll={{
-                    x: 2500,
-                }}
             />
         </>
     );

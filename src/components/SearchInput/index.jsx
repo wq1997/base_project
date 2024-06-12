@@ -13,6 +13,7 @@ const SearchInput = ({
         value: "name",
     },
     labelInValue = false,
+    allowClear = true,
     onChange = () => {},
 }) => {
     return (
@@ -30,8 +31,9 @@ const SearchInput = ({
                     labelInValue={labelInValue}
                     mode={mode}
                     value={value}
+                    defaultValue={value}
                     placeholder={placeholder || `请选择${label}`}
-                    allowClear={true}
+                    allowClear={allowClear}
                     style={{ width: inputWidth }}
                     fieldNames={fieldNames}
                     options={options}

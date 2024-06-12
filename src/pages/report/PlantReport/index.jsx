@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { SearchInput } from "@/components";
 import { Button, Space, Table, message, DatePicker } from "antd";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
+import { jsonToUrlParams } from "@/utils/utils";
 import dayjs from "dayjs";
 import { getPlantReportList as getPlantReportListServer } from "@/services/report";
 
@@ -11,7 +12,7 @@ const Log = () => {
     const plantNameRef = useRef();
     const [plantName, setPlantName] = useState();
     const timeDimensionRef = useRef();
-    const [timeDimension, setTimeDimension] = useState();
+    const [timeDimension, setTimeDimension] = useState("DAY");
     const timeRef = useRef();
     const [time, setTime] = useState();
     const paginationRef = useRef(DEFAULT_PAGINATION);
@@ -19,121 +20,40 @@ const Log = () => {
 
     const columns = [
         {
-            title: "序号",
-            dataIndex: "",
-        },
-        {
             title: "电站名称",
-            dataIndex: "",
+            dataIndex: "name",
         },
         {
             title: "电站地址",
-            dataIndex: "",
+            dataIndex: "address",
         },
         {
             title: "组串总容量(kWp)",
-            dataIndex: "",
-        },
-        {
-            title: "总辐照量(kWh/m²)",
-            dataIndex: "",
-        },
-        {
-            title: "日照时长(h)",
-            dataIndex: "",
-        },
-        {
-            title: "平均温度(℃)",
-            dataIndex: "",
-        },
-        {
-            title: "理论发电量(度)",
-            dataIndex: "",
-        },
-        {
-            title: "PV发电量(度)",
-            dataIndex: "",
+            dataIndex: "capacity",
         },
         {
             title: "逆变器发电量(度)",
-            dataIndex: "",
+            dataIndex: "inverterPower",
         },
-        {
-            title: "计划发电量(度)",
-            dataIndex: "",
-        },
-        {
-            title: "等价发电时(kWh/kWp)",
-            dataIndex: "",
-        },
+
         {
             title: "网馈电量(度)",
-            dataIndex: "",
-        },
-        {
-            title: "充电电量(度)",
-            dataIndex: "",
-        },
-        {
-            title: "放电电量(度)",
-            dataIndex: "",
-        },
-        {
-            title: "限电损失电量(度)",
-            dataIndex: "",
-        },
-        {
-            title: "限电损失收益(元)",
-            dataIndex: "",
-        },
-        {
-            title: "自发自用电量(度)",
-            dataIndex: "",
-        },
-        {
-            title: "自发自用率(%)",
-            dataIndex: "",
+            dataIndex: "netFeedInPower",
         },
         {
             title: "峰值功率(kW)",
-            dataIndex: "",
-        },
-        {
-            title: "系统效率PR(%)",
-            dataIndex: "",
-        },
-        {
-            title: "负荷率(%)",
-            dataIndex: "",
-        },
-        {
-            title: "二氧化碳减排量(t)",
-            dataIndex: "",
-        },
-        {
-            title: "节约标准煤量(t)",
-            dataIndex: "",
-        },
-        {
-            title: "等效植树量(棵)",
-            dataIndex: "",
-        },
-        {
-            title: "收益(元)",
-            dataIndex: "",
-        },
-        {
-            title: "计划完成率(%)",
-            dataIndex: "",
+            dataIndex: "peakPower",
         },
     ];
 
     const getList = async () => {
         const { current, pageSize } = paginationRef.current;
         const name = plantNameRef.current;
-        const timePeriod = timeDimensionRef.current;
+        const timePeriod = timeDimensionRef.current || "DAY";
         const time = timeRef.current;
+        if (!time) return message.info("请先选择日期");
         setLoading(true);
+        console.log("timePeriod", timePeriod);
         const res = await getPlantReportListServer({
             pageNo: current,
             pageSize,
@@ -162,70 +82,104 @@ const Log = () => {
         setTimeDimension();
         timeRef.current = undefined;
         setTime();
-        getList();
+        setDataSource();
+        setPagination({
+            current: 1,
+            total: 0,
+        });
     };
-
-    useEffect(() => {
-        getList();
-    }, []);
 
     return (
         <>
-            <Space
+            <div
                 style={{
-                    flexWrap: "wrap",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
                     marginBottom: "8px",
                 }}
             >
-                <SearchInput
-                    label="电站名称"
-                    placeholder="请输入电站名称"
-                    inputWidth={250}
-                    value={plantName}
-                    onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
-                        plantNameRef.current = value;
-                        setPlantName(value);
+                <Space
+                    style={{
+                        flexWrap: "wrap",
                     }}
-                />
-                <SearchInput
-                    label="时间维度"
-                    value={timeDimension}
-                    type="select"
-                    options={[
-                        { name: "按日统计", code: "DAY" },
-                        { name: "按月统计", code: "MONTH" },
-                        { name: "按年统计", code: "YEAR" },
-                    ]}
-                    onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
-                        timeDimensionRef.current = value;
-                        setTimeDimension(value);
-                    }}
-                />
-                <div>
-                    <DatePicker
-                        onChange={(date, dateStr) => {
+                >
+                    <SearchInput
+                        label="电站名称"
+                        placeholder="请输入电站名称"
+                        inputWidth={250}
+                        value={plantName}
+                        onChange={value => {
                             paginationRef.current = DEFAULT_PAGINATION;
-                            executeTimeRef.current = dateStr;
-                            setTime(dateStr);
+                            plantNameRef.current = value;
+                            setPlantName(value);
                         }}
-                        value={time ? dayjs(time) : null}
                     />
-                </div>
-                <Button type="primary" onClick={getList}>
-                    搜索
+                    <SearchInput
+                        label="时间维度"
+                        value={timeDimension}
+                        allowClear={false}
+                        type="select"
+                        options={[
+                            { displayName: "按日统计", name: "DAY" },
+                            { displayName: "按月统计", name: "MONTH" },
+                            { displayName: "按年统计", name: "YEAR" },
+                        ]}
+                        onChange={value => {
+                            paginationRef.current = DEFAULT_PAGINATION;
+                            timeDimensionRef.current = value;
+                            setTimeDimension(value);
+                            timeRef.current = undefined;
+                            setTime();
+                        }}
+                    />
+                    <div>
+                        <DatePicker
+                            picker={
+                                {
+                                    DAY: "day",
+                                    MONTH: "month",
+                                    YEAR: "year",
+                                }[timeDimension]
+                            }
+                            onChange={(date, dateStr) => {
+                                paginationRef.current = DEFAULT_PAGINATION;
+                                timeRef.current = dateStr;
+                                setTime(dateStr);
+                            }}
+                            value={time ? dayjs(time) : null}
+                        />
+                    </div>
+                    <Button type="primary" onClick={getList}>
+                        搜索
+                    </Button>
+                    <Button onClick={handleReset}>重置</Button>
+                </Space>
+                <Button
+                    type="primary"
+                    onClick={() => {
+                        const name = plantNameRef.current;
+                        const timePeriod = timeDimensionRef.current || "DAY";
+                        const time = timeRef.current;
+                        if (!time) return message.info("请先选择日期");
+                        let url = `${process.env.API_URL_1}/api/v1/report/export-plant-report${jsonToUrlParams(
+                            {
+                                name,
+                                timePeriod,
+                                time,
+                            }
+                        )}`;
+                        window.open(url);
+                    }}
+                >
+                    导出
                 </Button>
-                <Button onClick={handleReset}>重置</Button>
-            </Space>
+            </div>
             <Table
                 loading={loading}
-                dataSource={[]}
+                dataSource={dataSource}
                 columns={columns}
                 pagination={pagination}
-                scroll={{
-                    x: 2500,
-                }}
             />
         </>
     );

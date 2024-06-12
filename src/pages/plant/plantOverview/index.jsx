@@ -1,39 +1,41 @@
 import styles from "./index.less";
-import PlantKPI from "./PlantKPI";
+import TotalData from "./TotalData";
 import PlantStatus from "./PlantStatus";
 import PlantAlarm from "./PlantAlarm";
 import OtherInfo from "./OtherInfo";
 import SocialContribution from "./SocialContribution";
 import PowerGeneration from "./PowerGeneration";
 import Ranking from "./Ranking";
+import Flowchart from "./Flowchart";
 import Map from "./Map";
 
 const Index = () => {
     return (
         <div className={styles.container}>
-            <div className={styles.plantKPI}>
-                <PlantKPI />
-            </div>
-            <div className={styles.plantStatus}>
-                <PlantStatus />
-            </div>
-            <div className={styles.plantAlarm}>
-                <PlantAlarm />
-            </div>
-            <div className={styles.map}>
-                <Map />
-            </div>
-            <div className={styles.powerGeneration}>
-                <PowerGeneration />
-            </div>
-            <div className={styles.ranking}>
-                <Ranking />
-            </div>
-            <div className={styles.socialContribution}>
-                <SocialContribution />
-            </div>
-            <div className={styles.otherInfo}>
-                <OtherInfo />
+            <div className={styles.header}></div>
+            <div className={styles.content}>
+                <div className={styles.left}>
+                    <div className={styles.map}>
+                        <Map />
+                    </div>
+                    <div className={styles.totalData}>
+                        <TotalData />
+                    </div>
+                    <div className={styles.PowerGeneration}>
+                        <PowerGeneration />
+                    </div>
+                </div>
+                <div className={styles.right}>
+                    <div className={styles.flowchart}>
+                        <Flowchart />
+                    </div>
+                    <div className={styles.socialContribution}>
+                        <SocialContribution />
+                    </div>
+                    <div className={styles.plantAlarm}>
+                        <PlantAlarm />
+                    </div>
+                </div>
             </div>
         </div>
     );

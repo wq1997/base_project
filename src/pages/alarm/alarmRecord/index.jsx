@@ -112,7 +112,11 @@ const Log = () => {
         setAlarmLevel();
         executeTimeRef.current = undefined;
         setExecuteTime([]);
-        getList();
+        setDataSource();
+        setPagination({
+            current: 1,
+            total: 0,
+        });
     };
 
     useEffect(() => {
