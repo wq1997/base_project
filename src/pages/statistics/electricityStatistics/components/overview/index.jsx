@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { DatePicker, Button, theme, Radio, Table,Select } from 'antd';
+import { DatePicker, Button, theme, Radio, Table, Select,message } from 'antd';
 // import Table from '@/components/Table.jsx'
 import dayjs from 'dayjs';
 import styles from './index.less'
@@ -158,34 +158,41 @@ function Com(props) {
 
     };
     const getData = async () => {
-        let httpData = {
-            time: time.format(format),
-            type: mode === 'date' ? 0 : mode === 'month' ? 2 : 3,
-            plantId: localStorage.getItem('plantId'),
-            gridPointId:currntGrid,
-            startTime:startTime.format('YYYY-MM-DD'),
-            endTime:endTime.format('YYYY-MM-DD'),
+        let start = dayjs(startTime);
+        if (Math.abs(start.diff(endTime, 'day'))>=5&&Math.abs(start.diff(endTime, 'day'))<=15||mode!=='date') {
+            let httpData = {
+                time: mode === 'date' ?undefined:time.format('YYYY'),
+                type: mode === 'date' ? 0 : mode === 'month' ? 2 : 3,
+                plantId: localStorage.getItem('plantId'),
+                gridPointId: currntGrid,
+                startTime: mode === 'date' ?startTime.format('YYYY-MM-DD'):undefined,
+                endTime: mode === 'date' ?endTime.format('YYYY-MM-DD'):undefined,
+            }
+            let pvOutEnergy = [];
+            let energyInEnergy = [];
+            let energyOutEnergy = [];
+            let pvInEnergy = [];
+            let chargeInEnergy = [];
+            let arrX = [];
+            let { data } = await getEnergyFeeByTime(httpData);
+            data?.data?.map((it) => {
+                pvOutEnergy.push(it.pvOutEnergy);
+                energyInEnergy.push(it.energyInEnergy);
+                energyOutEnergy.push(it.energyOutEnergy);
+                pvInEnergy.push(it.pvInEnergy);
+                chargeInEnergy.push(it.chargeInEnergy);
+                it.date = dayjs(it?.date).format('YYYY-MM-DD')
+                arrX.push(it?.date);
+    
+            })
+            setData(data.data);
+            setDateX(arrX);
+            setDataY({ pvOutEnergy, energyInEnergy, energyOutEnergy, pvInEnergy, chargeInEnergy });
+        }else{
+            message.warning(getTranslation('时间段应在5至15天'));
+            return
         }
-        let pvOutEnergy = [];
-        let energyInEnergy = [];
-        let energyOutEnergy = [];
-        let pvInEnergy = [];
-        let chargeInEnergy = [];
-        let arrX = [];
-        let { data } = await getEnergyFeeByTime(httpData);
-        data?.data?.map((it) => {
-            pvOutEnergy.push(it.pvOutEnergy);
-            energyInEnergy.push(it.energyInEnergy);
-            energyOutEnergy.push(it.energyOutEnergy);
-            pvInEnergy.push(it.pvInEnergy);
-            chargeInEnergy.push(it.chargeInEnergy);
-            it.date = dayjs(it?.date).format('YYYY-MM-DD')
-            arrX.push(it?.date);
-
-        })
-        setData(data.data);
-        setDateX(arrX);
-        setDataY({ pvOutEnergy, energyInEnergy, energyOutEnergy, pvInEnergy, chargeInEnergy });
+    
     }
 
     useEffect(() => {
@@ -259,13 +266,19 @@ function Com(props) {
         setGrids(grid?.data);
         setCurrntGrid(grid?.data?.[0]?.id);
     }
+    const changeRangeDate = (val, str) => {
+        setStartTime(str?.[0]);
+        setEndTime(str?.[1]);
+       
+        console.log(val, str, 'rangdate');
+    }
     useEffect(() => {
         getGrid();
     }, [token,])
- 
+
     return (
         <div className={styles.content}>
-            <div className={styles.heard} style={{ backgroundColor: token.titleCardBgc,color: token.colorNormal }}>
+            <div className={styles.heard} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal }}>
                 <div>
                     {getTranslation('并网点')}:
                     <Select
@@ -284,7 +297,7 @@ function Com(props) {
                     </Select>
                 </div>
                 <div className={styles.date}>
-                    {mode == 'date' ? <RangePicker defaultValue={[dayjs(new Date()),dayjs(new Date()).add(5, 'day')]} format={format} style={{ marginRight: "20px" }} /> : <DatePicker picker={mode} onChange={(val) => setTime(val)} defaultValue={time} format={format} style={{ marginRight: "20px" }} />}
+                    {mode == 'date' ? <RangePicker onChange={changeRangeDate} defaultValue={[dayjs(new Date()), dayjs(new Date()).add(5, 'day')]} format={format} style={{ marginRight: "20px" }} /> : <DatePicker picker={mode} onChange={(val) => setTime(val)} defaultValue={time} format={format} style={{ marginRight: "20px" }} />}
                     <Radio.Group value={mode} onChange={handleModelChange}>
                         <Radio.Button value="date">日</Radio.Button>
                         {/* <Radio.Button value="month">月</Radio.Button> */}
