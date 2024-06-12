@@ -2,7 +2,7 @@ import React, { useState, useEffect, } from 'react';
 import moment from "moment";
 import AMapLoader from '@amap/amap-jsapi-loader'
 import { MAP_KEY } from '@/utils/utils';
-import { WETHER_API, WETHER_KEY } from "@/utils/constants";
+import { WETHER_API, WETHER_KEY, SYSTEM_NAME } from "@/utils/constants";
 import styles from "./index.less";
 
 const dayEnum = {
@@ -135,7 +135,7 @@ const Header = ({
                     }
                 </div>
             </div>
-            <div className={styles.title}>采日能源数智化解决方案大屏</div>
+            <div className={styles.title}>{SYSTEM_NAME}</div>
             <div className={styles.headerRight}>
                 <div className={styles.headerRightLeft}>
                     <div>{moment(currentTime).format("MM 月 DD 日")}</div>
