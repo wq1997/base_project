@@ -20,10 +20,9 @@ const Flow = ({
         setFlowWidth(parentWidth);
         setFlowHeight(parentHeight);
     }
-
     useEffect(() => {
         const singleImgWidth = imgRef?.current?.clientWidth;
-        if(flowWidth < singleImgWidth){
+        if(flowWidth < singleImgWidth || singleImgWidth===0){
             setImgCount(10);
         }else{
             setImgCount(Math.floor(flowWidth/singleImgWidth)*10);

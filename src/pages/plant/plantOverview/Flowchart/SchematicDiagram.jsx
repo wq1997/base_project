@@ -6,12 +6,13 @@ import dlImg from "@/assets/imges/dl.svg";
 import fzxtlImg from "@/assets/imges/fzxtl.svg";
 import nyxtlImg from "@/assets/imges/nyxtl.svg";
 import nyxtlZeroImg from "@/assets/imges/outdoorCabinet.svg";
+import dwImg from "@/assets/imges/dw.svg";
 
-const loadSystemLineWidthPercent = 0.35; // 线的百分比，自定义
+const loadSystemLineWidthPercent = 0.45; // 线的百分比，自定义
 const schematicDiagramIconPrecent = 0.7; 
 const loadSystemAngle = 25; // 负载系统的角度
 
-const energySystemLineWidthPercent = 0.45;
+const energySystemLineWidthPercent = 0.5;
 const energySystemChargingAngle = 155; // 储能系统充电的角度
 const energySystemDisChargingAngle = 25; // 储能系统放电的角度
 const energySystemIconPrecent = 0.4; 
@@ -86,26 +87,27 @@ const SchematicDiagram = ({dataSource}) => {
             ref={schematicDiagramRef}
             style={{width: '100%', height: '100%', position: 'relative'}}
         >
-
+            {/* 光伏 */}
             <div
                 style={{
-                    width: '200px',
-                    height: '64px',
-                    background: '#08213E',
-                    border: '2px solid',
-                    borderImage: 'linear-gradient(135deg, rgba(87, 223, 254, 1), rgba(40, 104, 255, 1)) 2 2',
                     position: 'absolute',
                     left: '50%',
                     transform: 'translateX(-50%)',
-                    top: schematicDiagramColHardWidth - citySystemLineWidth - 64
+                    top: 20,
+                    zIndex: 1000
                 }}
             >
-                <div className={titleStyle} style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', whiteSpace: 'nowrap'}}>{intl.formatMessage({id: '市电系统'})}</div>
-                <div style={{position: 'absolute', left: 210, top: 20, textWrap: 'nowrap'}}>
-                    {intl.formatMessage({id:'功率'})}：{dataSource?.totalActivePower}
+                <img 
+                    src={fzxtlImg} 
+                    style={{
+                        width: loadSystemIconWidth,
+                    }} 
+                >
+                </img>
+                <div style={{position: 'absolute', left: 115, top: 50, textWrap: 'nowrap', color: '#9D9EA1'}}>
+                    光伏
                 </div>
             </div>
-            {/* 市电系统 */}
             <div className={centerStyle}>
                 <div 
                     style={{
@@ -115,7 +117,7 @@ const SchematicDiagram = ({dataSource}) => {
                         top: -citySystemLineWidth,
                         transform: `rotate(${citySystemChargingAngle}deg)`,
                         transformOrigin: '0px 3px',
-                        background: '#244A75'
+                        background: '#E4ECF9'
                     }}
                 >
                     {
@@ -125,7 +127,7 @@ const SchematicDiagram = ({dataSource}) => {
                 </div>
             </div>
 
-            {/* 储能系统 */}
+            {/* 负载 */}
             <div className={centerStyle}>
                 {/* 充电状态 */}
                 {
@@ -137,7 +139,7 @@ const SchematicDiagram = ({dataSource}) => {
                             height: '5px',
                             transform: `rotate(${energySystemChargingAngle}deg)`,
                             transformOrigin: '0px 0px',
-                            background: '#244A75',
+                            background: '#E4ECF9',
                             zIndex: 100
                         }}
                     >
@@ -171,7 +173,7 @@ const SchematicDiagram = ({dataSource}) => {
                         height: '5px',
                         transform: `rotate(${energySystemChargingAngle}deg)`,
                         transformOrigin: '0px 0px',
-                        background: powerData===0?'#244A75': 'transparent',
+                        background: powerData===0?'#E4ECF9': 'transparent',
                         zIndex: 200
                     }}
                 >
@@ -181,7 +183,7 @@ const SchematicDiagram = ({dataSource}) => {
                             position: 'absolute', 
                             right:  -energySystemIconWidth/2, 
                             top: -energySystemIconWidth/2-20,
-                            width: energySystemIconWidth,
+                            width: loadSystemIconWidth,
                             transform: `rotate(-${energySystemChargingAngle}deg)`,
                             zIndex: 200
                         }} 
@@ -189,27 +191,19 @@ const SchematicDiagram = ({dataSource}) => {
                     <div
                         style={{
                             position: 'absolute', 
-                            right: - energySystemIconWidth/2 - 200, 
+                            right: - energySystemIconWidth/2 - 30, 
                             top: Math.tan((180 - energySystemChargingAngle - 35) * Math.PI / 180) * (- energySystemIconWidth/2 - 200),
                             transform: `rotate(-${energySystemChargingAngle}deg)`,
+                            color: '#9D9EA1'
                         }} 
                     >
-                        <div className={titleStyle} style={{width: '200px', wordWrap: 'break-word'}}>
-                            {intl.formatMessage({id:'储能系统'})}
-                        </div>
-                        <div style={{margin: '10px 0'}}>
-                            {intl.formatMessage({id:'运行状态'})}：
-                            {powerData>0&&intl.formatMessage({id:'放电'})}
-                            {powerData<0&&intl.formatMessage({id:'充电'})}
-                            {powerData===0&&intl.formatMessage({id:'待机'})}
-                        </div>
-                        <div>{intl.formatMessage({id:'功率'})}：{dataSource?.power}</div>
+                        负载
                     </div>
                 </div>
             </div>
 
 
-            {/* 负载系统 */}
+            {/* 电网 */}
             <div className={centerStyle}>
                 <div 
                     style={{
@@ -218,16 +212,16 @@ const SchematicDiagram = ({dataSource}) => {
                         height: '5px',
                         transform: `rotate(${loadSystemAngle}deg)`,
                         transformOrigin: '0px 0px',
-                        background: '#244A75'
+                        background: '#E4ECF9'
                     }}>
                         {loadPowerData>0&&<Flow img={dlImg} />}
                         <img 
-                            src={fzxtlImg} 
+                            src={dwImg} 
                             style={{
                                 position: 'absolute', 
-                                right:  -loadSystemIconWidth/2, 
-                                top: -loadSystemIconWidth/2-20,
-                                width: loadSystemIconWidth,
+                                right:  -loadSystemIconWidth/2 + 20, 
+                                top: -loadSystemIconWidth/2 - 60,
+                                width: loadSystemIconWidth/1.2,
                                 transform: `rotate(-${loadSystemAngle}deg)`,
                             }} 
                         >
@@ -235,20 +229,13 @@ const SchematicDiagram = ({dataSource}) => {
                         <div
                             style={{
                                 position: 'absolute', 
-                                right:  - loadSystemIconWidth - 50, 
-                                top: Math.tan((loadSystemAngle + 10) * Math.PI / 180) * (- loadSystemIconWidth - 50),
+                                right:  - loadSystemIconWidth + 20, 
+                                top: Math.tan((loadSystemAngle + 5) * Math.PI / 180) * (- loadSystemIconWidth + 20),
                                 transform: `rotate(-${loadSystemAngle}deg)`,
+                                color: '#9D9EA1'
                             }} 
                         >
-                            <div className={titleStyle}>
-                                {intl.formatMessage({id:'负载系统'})}
-                            </div>
-                            <div style={{margin: '10px 0', width: 130}}>
-                                {intl.formatMessage({id:'运行状态'})}：
-                                {loadPowerData>0&&intl.formatMessage({id:'用电'})}
-                                {loadPowerData===0&&intl.formatMessage({id:'待机'})}
-                            </div>
-                            <div>{intl.formatMessage({id:'功率'})}：{dataSource?.loadPower}</div>
+                            电网
                         </div>
                     </div>
             </div>
