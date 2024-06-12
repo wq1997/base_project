@@ -93,7 +93,7 @@ const getMock=async()=>{
 
                     }
                 },
-                data: [...arrRy],
+                data: [...arrSy],
             },
             {
                 name:t('策略功率'),
@@ -104,7 +104,7 @@ const getMock=async()=>{
 
                     }
                 },
-                data: [...arrSy]
+                data: [...arrRy]
             },
         ]
     })
