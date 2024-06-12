@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Select, Space } from "antd";
 
-const Index = ({ plants, currentPosition }) => {
+const Index = ({ plants, activePosition, activePlant, setActivePlant }) => {
     const [map, setMap] = useState();
     const [center, setCenter] = useState();
     const defaultZoom = 5;
@@ -23,32 +23,65 @@ const Index = ({ plants, currentPosition }) => {
         });
     }, [plants]);
 
-    useEffect(() => {
-        if (!map || !plants) return;
-        const moveTo = JSON.parse(currentPosition);
-        map.panTo(moveTo);
-        map.setZoom(17);
-        setCenter(moveTo);
-    }, [currentPosition]);
-
     const addMarkers = (map, plants) => {
         map.clearMap();
         plants.forEach(item => {
             const marker = new AMap.Marker({
-                position: new AMap.LngLat(...JSON.parse(item.value)),
+                position: new AMap.LngLat(...item.position),
             });
             map.add(marker);
         });
     };
 
+    const onSelectPlant = value => {
+        setActivePlant(value);
+        const moveTo = plants?.find(item => item.value == value)?.position;
+        if (!map || !plants) return;
+        map.panTo(moveTo);
+        map.setZoom(17);
+        setCenter(moveTo);
+    };
+
     return (
         <div
-            id="map"
             style={{
                 width: "100%",
                 height: "100%",
+                position: "relative",
             }}
-        ></div>
+        >
+            <div
+                style={{
+                    width: "50%",
+                    height: "50px",
+                    paddingLeft: "8px",
+                    display: "flex",
+                    background: "linear-gradient(to right, #fff 0%,  transparent 100%)",
+                    // background:
+                    //     "linear-gradient(to right, transparent 0%, #FFF 50%, transparent 100%)",
+                    //  justifyContent: "center",
+                    alignItems: "center",
+                    position: "absolute",
+                    zIndex: 999,
+                }}
+            >
+                <Select
+                    placeholder="请选择电站"
+                    style={{ width: "200px", marginRight: "5px" }}
+                    allowClear={false}
+                    value={activePlant}
+                    onSelect={onSelectPlant}
+                    options={plants}
+                />
+            </div>
+            <div
+                id="map"
+                style={{
+                    width: "100%",
+                    height: "100%",
+                }}
+            ></div>
+        </div>
     );
 };
 

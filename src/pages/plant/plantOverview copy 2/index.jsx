@@ -7,7 +7,6 @@ import OtherInfo from "./OtherInfo";
 import SocialContribution from "./SocialContribution";
 import PowerGeneration from "./PowerGeneration";
 import Ranking from "./Ranking";
-import Weather from "./Weather";
 import Flowchart from "./Flowchart";
 import Map from "./Map";
 import { getPlantNames as getPlantNamesServer } from "@/services/plant";
@@ -54,29 +53,31 @@ const Index = () => {
 
     return (
         <div className={styles.container}>
-            <div className={styles.left}>
-                <div className={styles.map}>
-                    <Map plants={plants} setActivePlant={setActivePlant} />
-                </div>
-                <div className={styles.plantKPI}>
-                    <PlantKPI data={statisticsData?.plantKPI} />
-                </div>
-                <div className={styles.PowerGeneration}>
-                    <PowerGeneration />
-                </div>
+            <div className={styles.header}>
+                <Header plants={plants} setActivePlant={setActivePlant} activePlant={activePlant} />
             </div>
-            <div className={styles.right}>
-                <div className={styles.weather}>
-                    <Weather data={statisticsData?.weatherDaily} />
+            <div className={styles.content}>
+                <div className={styles.left}>
+                    <div className={styles.map}>
+                        <Map plants={plants} activePosition={activePosition} />
+                    </div>
+                    <div className={styles.plantKPI}>
+                        <PlantKPI data={statisticsData?.plantKPI} />
+                    </div>
+                    <div className={styles.PowerGeneration}>
+                        <PowerGeneration />
+                    </div>
                 </div>
-                <div className={styles.flowchart}>
-                    <Flowchart />
-                </div>
-                <div className={styles.socialContribution}>
-                    <SocialContribution data={statisticsData?.socialContribution} />
-                </div>
-                <div className={styles.plantAlarm}>
-                    <PlantAlarm />
+                <div className={styles.right}>
+                    <div className={styles.flowchart}>
+                        <Flowchart />
+                    </div>
+                    <div className={styles.socialContribution}>
+                        <SocialContribution data={statisticsData?.socialContribution} />
+                    </div>
+                    <div className={styles.plantAlarm}>
+                        <PlantAlarm />
+                    </div>
                 </div>
             </div>
         </div>

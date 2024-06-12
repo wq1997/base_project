@@ -1,45 +1,39 @@
 .container {
     height: 100%;
-    .header {
-        height: 80px;
-        background: #f5f9fe;
-        border-radius: 8px;
-        margin-bottom: 8px;
+    display: flex;
+    gap: 8px;
+    .left,
+    .right {
+        height: 100%;
     }
-    .content {
-        height: calc(100% - 80px);
-        display: flex;
-        gap: 8px;
-        .left,
-        .right {
-            height: 100%;
+    .left {
+        width: 70%;
+        .map {
+            height: 60%;
         }
-        .left {
-            width: 75%;
-
-            .map {
-                height: 60%;
-            }
-            .totalData {
-                height: 88px;
-                margin: 8px 0;
-            }
-            .PowerGeneration {
-                height: calc(40% - 88px);
-            }
+        .plantKPI {
+            height: 88px;
+            margin: 8px 0;
         }
-        .right {
-            width: 25%;
-            .flowchart {
-                height: 45%;
-            }
-            .socialContribution {
-                height: 150px;
-                margin: 8px 0;
-            }
-            .plantAlarm {
-                height: calc(55% - 150px);
-            }
+        .PowerGeneration {
+            height: calc(40% - 104px);
+        }
+    }
+    .right {
+        width: 30%;
+        .weather {
+            margin-bottom: 8px;
+            height: 100px;
+        }
+        .flowchart {
+            height: 40%;
+        }
+        .socialContribution {
+            height: 130px;
+            margin: 8px 0;
+        }
+        .plantAlarm {
+            height: calc(60% - 254px);
         }
     }
 }
