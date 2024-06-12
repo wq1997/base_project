@@ -35,6 +35,7 @@ export default defineConfig({
     { src: 'http://cdn.hcharts.cn/highcharts/highcharts.js',  },
     { src: 'http://cdn.hcharts.cn/highcharts/highcharts-more.js',  },
   ],
+  devtool: 'source-map',
   alias: {
     '@/permissions': path.resolve(__dirname,'src/permissions'),
     '@/hooks': path.resolve(__dirname,'src/hooks'),

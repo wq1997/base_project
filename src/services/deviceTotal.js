@@ -71,12 +71,33 @@ export const getBmsNowData = (payload) => {
 }
 // 获取bmC实时数据信息
 export const getBmcNowData = (payload) => {
-    return axiosInstance.get(`${path}/getBMCLiveData?devId=${payload.id}&cluster=${payload.cluster}`);
+    return axiosInstance.get(`${path}/getBMCLiveData?devId=${payload.id}`);
 }
 // 获取PCS实时数据
 export const getPcsNowDataById = (payload) => {
     return axiosInstance.get(`${path}/getPCSLiveData?devId=${payload.id}`);
 }
+// 获取监测曲线参数列表
+export const getDataParams = (payload) => {
+    return axiosInstance.get(`${path}/getDataParams?devId=${payload.devId}`);
+}
+// 获取检测曲线
+export const getMonCurHistoryData = (payload) => {
+    return axiosInstance.post(`/getHistoryData`, payload);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 // 获取pcs实时功率曲线
 export const getPcsNowPowerById = (payload) => {
     return axiosInstance.get(`${path}/getPcsNowPowerById?id=${payload.id}`);
@@ -96,8 +117,6 @@ export const obtainBMSParameterData = (payload) => {
 export const obtainBMSClustersList = (payload) => {
     return axiosInstance.get(`${path}/obtainBMSClustersList?id=${payload.id}`);
 }
-
-
 
 // 微网户外柜 监测曲线
 export const obtainMgOcParameterData = (payload) => {
@@ -152,23 +171,5 @@ export const obtainMeterParameterData = (payload) => {
 }
 
 
-// 户外柜实时数据
-export const liveSummary = (payload) => {
-    return axiosInstance.get(`minsys/outdoorCabinet/liveSummary?dtuId=${payload.id}`);
-}
 
 
-// 获取充电桩收益、电量
-export const getChargeStationEarning = (payload) => {
-    return axiosInstance.get(`/microgrid/chargeStation/getChargeStationEarning?plantId=${payload.plantId}`);
-}
-
-// 获取充电桩统计状态
-export const getChargeStationStatus = (payload) => {
-    return axiosInstance.get(`/microgrid/chargeStation/getChargeStationStatus?plantId=${payload.plantId}`);
-}
-
-// 获取充电桩列表
-export const getChargeStationList = (payload) => {
-    return axiosInstance.get(`/microgrid/chargeStation/getChargeStationList?plantId=${payload.plantId}`);
-}

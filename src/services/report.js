@@ -1,5 +1,6 @@
 import axiosInstance from "./request";
-const path = '/microgrid'
+// const path = '/microgrid'
+const path = ''
 
 // 获取电量统计 和收益
 export const getEnergyFeeByTime = (payload) => {

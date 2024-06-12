@@ -8,7 +8,7 @@ import * as echarts from "echarts";
 import { CardModel } from "@/components";
 import { pcsDataType } from '@/utils/constants';
 import { getQueryString, downLoadExcelMode } from "@/utils/utils";
-import { obtainPCSParameterData } from '@/services/deviceTotal';
+import { getMonCurHistoryData,getDataParams } from '@/services/deviceTotal';
 import dayjs from 'dayjs';
 import { useSelector, useIntl } from "umi";
 const { Option } = Select;
@@ -19,6 +19,7 @@ function Com(props) {
     const [type, setType] = useState(pcsDataType[0].value);
     const [title, setTitle] = useState('实时功率');
     const [excelData, setExcelData] = useState([]);
+    const [optionsSelect,setOptionSelect]=useState([]);
     const intl = useIntl();
     const id = getQueryString("id");
     const t = (id) => {
@@ -34,14 +35,22 @@ function Com(props) {
     }
     const changeType = (value, label) => {
         setType(value);
-        setTitle(label?.children.props?.id);
+        setTitle(label?.children);
+    }
+    useEffect(()=>{
+        getInitData();
+        console.log(id,props,'ayk');
+    },[])
+    const getInitData=async()=>{
+        let {data}=await getDataParams({devId:id||props.id});
+        setOptionSelect([...data?.data]);
+        setTitle(data?.data?.[0].dataTypeDesc)
     }
     const queryData = async () => {
-        let { data } = await obtainPCSParameterData({
-            id: id,
-            type,
-            dateOne: dayjs(new Date()).format('YYYY-MM-DD'),
-            dateTwo: date.format('YYYY-MM-DD'),
+        let { data } = await getMonCurHistoryData({
+            devId: props.id||id,
+            dataId:type,
+            dateList:[dayjs(new Date()).format('YYYY-MM-DD'),date.format('YYYY-MM-DD')]
         });
         let excelData = [];
         let dataX = []
@@ -175,23 +184,24 @@ function Com(props) {
     useEffect(() => {
         queryData();
     }, [token]);
+    console.log(optionsSelect,'optionsSelect');
     return (
         <div className={styles.monitoringCurves}>
             <div className={styles.searchHead}>
                 <span className={styles.margRL}> {t('对比日期')}:</span>
                 <DatePicker onChange={onChange} defaultValue={date} />
                 <span className={styles.margRL}>{t('数据项')}:</span>
-                <Select
+               {optionsSelect.length && <Select
                     className={styles.margR}
                     style={{ width: 240 }}
-                    defaultValue={pcsDataType[0]?.value}
+                    defaultValue={optionsSelect?.[0]?.dataType}
                     onChange={changeType}
                 >
-                    {pcsDataType && pcsDataType.map(item => {
-                        return (<Option key={item.value} value={item.value}>{item.label}</Option>);
+                    { optionsSelect?.map(item => {
+                        return (<Option key={item.dataType} value={item.dataType}>{item.dataTypeDesc}</Option>);
                     })
                     }
-                </Select>
+                </Select>}
                 <Button type="primary" className={styles.firstButton} onClick={queryData}>
                     {t('查询')}
                 </Button>

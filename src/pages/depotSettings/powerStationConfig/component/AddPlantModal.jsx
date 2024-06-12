@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef, } from 'react';
 import { DatePicker, Row, Col, Modal, Form, Input, Select, Switch, InputNumber } from 'antd';
 import { useSelector, useIntl } from "umi";
-import { getAlarmRuleInsertInitData } from '@/services/alarm'
 const { Option } = Select;
 
 const App = (props) => {
@@ -116,15 +115,10 @@ const App = (props) => {
   useEffect(() => {
     form.setFieldsValue(props?.formData);
   }, [props.formData]);
-  useEffect(() => {
-    getInitSearchData();
-  }, [])
+ 
   const formRef = useRef();
   const [form] = Form.useForm();
 
-  const getInitSearchData = async () => {
-    const { data } = await getAlarmRuleInsertInitData();
-  }
   const onFinish = async () => {
     try {
       const values = await form.validateFields();

@@ -6,7 +6,6 @@ import dayjs from 'dayjs';
 import { FORM_REQUIRED_RULE } from "@/utils/constants";
 
 function Com({ open, onChangeOpen, form }) {
-    const [xxx, setXxx] = useState('')
     useEffect(() => {
         console.log('函数组件来咯')
     }, [])

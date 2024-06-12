@@ -6,9 +6,7 @@ import { CardModel } from "@/components";
 import useIcon from "@/hooks/useIcon";
 import { useSelector, useIntl } from "umi";
 import { theme, Switch, Select, Descriptions } from "antd";
-import { getGridPointPower, getPlantEnergyFee } from '@/services/home'
 import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { getEnergyFeeByTime } from '@/services/report'
 import { getGridPointList,getOverviewLiveData } from '@/services/plant'
 import dayjs from 'dayjs';
 

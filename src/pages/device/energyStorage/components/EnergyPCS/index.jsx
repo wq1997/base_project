@@ -24,13 +24,13 @@ const Cabinet = (props) => {
         setActiveKey(key);
         history.push(`${pathname}?PageKey=${getQueryString("PageKey")}&pageType=${pageType}&activeKey=${key}&id=${id}`);
     };
-
+console.log(props,'aykpcs');
     return (
         <div style={{height: 'calc(100% - 56px)'}}>
             <Tab activeKey={activeKey} TabItem={PageTypeList} onChange={onChangeTab}/>
             <div className={styles.contents} style={{backgroundColor: token.cardBgc,padding:'40px 30px',borderRadius: '0px 16px 0px 0px'}}>
-                {activeKey==="MonitoringCurvesPcs"&&<MonitoringCurves/>}
-                {activeKey==="PcsDetails"&&<PcsDetails id={id||props.id}/>}
+                {activeKey==="MonitoringCurvesPcs"&&<MonitoringCurves id={props.id}/>}
+                {activeKey==="PcsDetails"&&<PcsDetails id={props.id}/>}
             </div>
         </div>
     )

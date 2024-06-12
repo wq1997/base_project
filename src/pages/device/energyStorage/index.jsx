@@ -7,8 +7,6 @@ import Overview from './components/Overview';
 import EnergyBMS from './components/EnergyBMS/index.jsx';
 import ElectricityMeter from './components/ElectricityMeter';
 import EnergyPCS from './components/EnergyPCS/index.jsx';
-import OutdoorCabinet from './components/OutdoorCabinet/index.jsx';
-import ViewEngrgy from './components/ViewEngrgy/index.jsx';
 import ViewOutdoor from './components/ViewOutdoor/index.jsx';
 import { root } from "./mock.js";
 import { getDeviceTree, getGridPointTree } from '@/services/deviceTotal'
@@ -173,7 +171,6 @@ function Com(props) {
             return null;
         })
             .filter((item, i, self) => !!(item && self.indexOf(item) === i));
-        console.log(newExpandedKeys, 1111111121212);
         setExpandedKeys(newExpandedKeys);
     }, [defaultDataFlag])
     useEffect(() => {
@@ -232,17 +229,18 @@ function Com(props) {
         return loop(defaultData);
     }, [searchValue, defaultDataFlag]);
     const getPage = () => {
+        console.log( dataList.find(it => it.key == pageKey)?.id,dataList,'000000000');
         switch (pageType) {
             case "ALL"://总览
-                return <Overview />;
+                return <EnergyPCS id={
+                    dataList.find(it => it.key == pageKey)?.id
+                } />;
             case "BMS":
                 return <EnergyBMS />;
             case "PCS"://
                 return <EnergyPCS id={
                     dataList.find(it => it.key == pageKey)?.id
                 } />;
-            case "OutPart":
-                return <OutdoorCabinet />
             case "Meter":
                 return <ElectricityMeter />;
             case 3:
