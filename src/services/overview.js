@@ -6,3 +6,8 @@ export const getPlanStatistics = plantId => {
     const url = `${API_URL_1}/api/v1/statistics/all/${plantId}`;
     return axiosInstance.get(url);
 };
+
+export const getPowerGeneration = payload => {
+    const url = `${API_URL_1}/api/v1/statistics/generation/chart/${payload?.id}${jsonToUrlParams(payload)}`;
+    return axiosInstance.get(url);
+};

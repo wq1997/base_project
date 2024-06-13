@@ -42,7 +42,7 @@ const Index = ({ data }) => {
                     </div>
                     <div className={styles.right}>
                         <div className={styles.data}>
-                            {item.value}
+                            <div className={styles.value}>{item.value}</div>
                             <span className={styles.unit}>{item.unit}</span>
                         </div>
                         <div className={styles.name}>{item.name}</div>

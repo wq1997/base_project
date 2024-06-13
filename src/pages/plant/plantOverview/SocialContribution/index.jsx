@@ -14,13 +14,13 @@ const Index = ({ data }) => {
         { name: "等效植树量", pic: tree, value: "", key: "tree", unit: "棵" },
     ]);
 
-    // useEffect(() => {
-    //     const _list = list?.map(item => ({
-    //         ...item,
-    //         value: data?.[item.key],
-    //     }));
-    //     setList(_list);
-    // }, [data]);
+    useEffect(() => {
+        const _list = list?.map(item => ({
+            ...item,
+            value: data?.[item.key],
+        }));
+        setList(_list);
+    }, [data]);
 
     return (
         <Card
@@ -34,7 +34,7 @@ const Index = ({ data }) => {
                             </div>
                             <div className={styles.right}>
                                 <div className={styles.data}>
-                                    <span className={styles.value}>{item.value}</span>
+                                    <div className={styles.value}>{item.value}</div>
                                     <span className={styles.unit}>{item.unit}</span>
                                 </div>
                                 <div className={styles.name}>{item.name}</div>

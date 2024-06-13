@@ -35,13 +35,23 @@ const Index = ({ deviceInfo }) => {
     useEffect(() => {
         if (!deviceInfo) return;
         const { inverterInfo, realtimeList } = deviceInfo;
-        const _dataSource = [["组串"], ["输入电压(V)"], ["输入电流(A)"]];
+        const _dataSource = [
+            {
+                title: "组串",
+                value: [],
+            },
+            { title: "输入电压(V)", value: [] },
+            {
+                title: "输入电流(A)",
+                value: [],
+            },
+        ];
         Object.keys(realtimeList || {})
             .sort((a, b) => Number(a.match(/\d+/g)[0]) - Number(b.match(/\d+/g)[0]))
             .forEach(key => {
-                _dataSource[0].push(key);
-                _dataSource[1].push(realtimeList?.[key]?.V);
-                _dataSource[2].push(realtimeList?.[key]?.A);
+                _dataSource[0]?.value?.push(key);
+                _dataSource[1]?.value?.push(realtimeList?.[key]?.V);
+                _dataSource[2]?.value?.push(realtimeList?.[key]?.A);
             });
         setDataSource(_dataSource);
         setRealData(
@@ -52,7 +62,9 @@ const Index = ({ deviceInfo }) => {
         );
         form.setFieldsValue({
             ...deviceInfo,
-            warrantyPeriod: dayjs(deviceInfo?.warrantyPeriod, "YYYY-MM-DD"),
+            warrantyPeriod: deviceInfo?.warrantyPeriod
+                ? dayjs(deviceInfo?.warrantyPeriod, "YYYY-MM-DD")
+                : null,
         });
     }, [deviceInfo]);
 
@@ -121,12 +133,25 @@ const Index = ({ deviceInfo }) => {
 
                 <Row>
                     <Col span={12}>
-                        <Form.Item label="关联电站" name="plantName">
+                        <Form.Item label="采集器编号" name="collectorCode">
                             <Input />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
+                        <Form.Item label="设备类型" name="typeZh">
+                            <Input />
+                        </Form.Item>
+                    </Col>
+                </Row>
+
+                <Row>
+                    <Col span={12}>
                         <Form.Item label="sn号" name="snNumber">
+                            <Input />
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item label="设备型号" name="model">
                             <Input />
                         </Form.Item>
                     </Col>
@@ -147,12 +172,7 @@ const Index = ({ deviceInfo }) => {
 
                 <Row>
                     <Col span={12}>
-                        <Form.Item label="设备型号" name="model">
-                            <Input />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item label="设备类型" name="typeZh">
+                        <Form.Item label="关联电站" name="plantName">
                             <Input />
                         </Form.Item>
                     </Col>
@@ -162,7 +182,7 @@ const Index = ({ deviceInfo }) => {
                     <Col span={12}>
                         <Form.Item label="组串数量" name="stringCount">
                             <Input />
-                        </Form.Item>{" "}
+                        </Form.Item>
                     </Col>
                     <Col span={12}>
                         <Form.Item label="换机历史" name="deviceSwitchHistoryList">
@@ -176,9 +196,12 @@ const Index = ({ deviceInfo }) => {
                     <div className="table">
                         {dataSource?.map(item => (
                             <div className="item">
-                                {item?.map(value => (
-                                    <div className="cell">{value}</div>
-                                ))}
+                                <div className="name">{item.title}</div>
+                                <div className="cell">
+                                    {item?.value?.map(value => (
+                                        <div className="value">{value}</div>
+                                    ))}
+                                </div>
                             </div>
                         ))}
                     </div>

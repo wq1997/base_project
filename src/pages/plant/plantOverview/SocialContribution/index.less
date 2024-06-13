@@ -5,6 +5,7 @@
 }
 .item {
     flex: 1;
+    width: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -21,15 +22,18 @@
     }
     .right {
         flex: 2;
+        width: 0;
         .data {
             font-weight: normal;
             font-family: DingTalkJinBuTi;
             font-size: 22px;
             color: #25598d;
+            display: flex;
             .value {
-                overflow: hidden; /* 确保超出容器的文本被裁剪 */
-                white-space: nowrap; /* 确保文本在一行内显示 */
-                text-overflow: ellipsis; /* 使用省略号表示文本超出 */
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                margin-bottom: 3px;
             }
             .unit {
                 font-weight: 400;

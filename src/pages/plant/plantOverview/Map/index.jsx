@@ -1,36 +1,112 @@
 import { useEffect, useState } from "react";
-import { Select, Space } from "antd";
+import { Select, Button } from "antd";
 
-const Index = ({ plants, activePosition, activePlant, setActivePlant }) => {
+const baseUrl = process.env.API_URL_1;
+
+const Index = ({ plants, activePlant, setActivePlant }) => {
     const [map, setMap] = useState();
-    const [center, setCenter] = useState();
     const defaultZoom = 5;
-    const defaultCenter = [109.7952138325958, 32.483775030606736];
 
     const reset = () => {
         map.setZoom(defaultZoom);
-        map.setCenter(defaultCenter);
     };
 
     useEffect(() => {
         const map = new AMap.Map("map", {
             zoom: defaultZoom,
-            center: defaultCenter,
+            pitch: 75,
+            // layers: [
+            //     new AMap.TileLayer.Satellite(),
+            //     new AMap.TileLayer.RoadNet(),
+            // ],
         });
         map.on("complete", async () => {
+            const infoWindow = new AMap.InfoWindow({ offset: new AMap.Pixel(0, -30) });
             setMap(map);
-            addMarkers(map, plants);
+            addMarkers(map, infoWindow, plants);
         });
     }, [plants]);
 
-    const addMarkers = (map, plants) => {
+    const addMarkers = (map, infoWindow, plants) => {
+        function markerClick(e) {
+            infoWindow.setContent(e.target.content);
+            infoWindow.open(map, e.target.getPosition());
+        }
         map.clearMap();
-        plants.forEach(item => {
+        plants.forEach((item, index) => {
             const marker = new AMap.Marker({
-                position: new AMap.LngLat(...item.position),
+                position: item.position,
+                map: map,
             });
-            map.add(marker);
+            marker.content = `
+            <div>
+                <div style="display:flex;align-items:center;margin-bottom:8px">
+                    <div
+                        style=" width: 0;
+                        height: 0;
+                        border-top: 8px solid transparent;
+                        border-left: 10px solid #49A2F8;
+                        border-bottom: 8px solid transparent;
+                        margin-right:10px
+                    "
+                    ></div>
+                    <span style="font-size:18px;color:#333">${item.label}</span>
+                </div>
+                <div
+                    style=" 
+                    width: 400px;
+                    height:130px;
+                    display: flex"
+                >
+                    <img
+                        style=" 
+                     width: 200px;
+                     height: 100%;
+                     margin-right:15px;
+                     border-radius:5px
+                    "
+                        src='${baseUrl}${item.photo}'
+                        alt=""
+                    />
+                    <div
+                        style="
+                      font-size: 12px;
+                      display: flex;
+                      flex-direction: column;
+                      justify-content: space-between;"
+                    >
+                        <div>
+                            <span style="color: #666">电站地址：</span>
+                            <span style="color: #999"> ${item.address}</span>
+                        </div>
+                        <div>
+                            <span style="color: #666">经度：</span>
+                            <span style="color: #999"> ${item.longitude}</span>
+                        </div>
+                        <div>
+                            <span style="color: #666">纬度：</span>
+                            <span style="color: #999"> ${item.latitude}</span>
+                        </div>
+                        <div>
+                            <span style="color: #666">电站类型：</span>
+                            <span style="color: #999"> ${item.type}</span>
+                        </div>
+                        <div>
+                            <span style="color: #666">并网时间：</span>
+                            <span style="color: #999"> ${item.gridTime}</span>
+                        </div>
+                        <div>
+                            <span style="color: #666">运行天数：</span>
+                            <span style="color: #999"> ${item.runningTime}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+            marker.on("click", markerClick);
+            // marker.emit("click", { target: marker });
         });
+        map.setFitView();
     };
 
     const onSelectPlant = value => {
@@ -38,8 +114,7 @@ const Index = ({ plants, activePosition, activePlant, setActivePlant }) => {
         const moveTo = plants?.find(item => item.value == value)?.position;
         if (!map || !plants) return;
         map.panTo(moveTo);
-        map.setZoom(17);
-        setCenter(moveTo);
+        map.setZoom(20);
     };
 
     return (
@@ -52,7 +127,7 @@ const Index = ({ plants, activePosition, activePlant, setActivePlant }) => {
         >
             <div
                 style={{
-                    width: "200px",
+                    width: "250px",
                     height: "50px",
                     paddingLeft: "8px",
                     display: "flex",
@@ -67,12 +142,15 @@ const Index = ({ plants, activePosition, activePlant, setActivePlant }) => {
             >
                 <Select
                     placeholder="请选择电站"
-                    style={{ width: "200px", marginRight: "5px" }}
+                    style={{ width: "250px", marginRight: "5px" }}
                     allowClear={false}
                     value={activePlant}
                     onSelect={onSelectPlant}
                     options={plants}
                 />
+                <Button type="default" onClick={reset} style={{ background: "transparent" }}>
+                    总览
+                </Button>
             </div>
             <div
                 id="map"

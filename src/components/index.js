@@ -10,6 +10,7 @@ import ToggleButton from "./ToggleButton";
 import SearchInput from './SearchInput'
 import MyUpload from "./MyUpload";
 import AuthImg from './AuthImg'
+import MyButton from './MyButton'
 
 export {
     ThemeBtn,
@@ -23,5 +24,6 @@ export {
     ToggleButton,
     SearchInput,
     MyUpload,
-    AuthImg
+    AuthImg,
+    MyButton
 }

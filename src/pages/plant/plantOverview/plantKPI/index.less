@@ -8,10 +8,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #F5F9FE;
+    background: #f5f9fe;
     border-radius: 4px;
     .picWrapper {
         flex: 1;
+        width: 0;
         text-align: right;
         .pic {
             width: 40px;
@@ -21,11 +22,20 @@
     }
     .right {
         flex: 2;
+        padding-right: 5px;
+        width: 0;
         .data {
             font-weight: normal;
             font-family: DingTalkJinBuTi;
             font-size: 22px;
             color: #25598d;
+            display: flex;
+            .value {
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                margin-bottom: 3px;
+            }
             .unit {
                 font-weight: 400;
                 font-family: normal;

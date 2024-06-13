@@ -63,6 +63,10 @@ const Log = () => {
             dataIndex: "code",
         },
         {
+            title: "采集器编号",
+            dataIndex: "collectorCode",
+        },
+        {
             title: "设备类型",
             dataIndex: "typeZh",
         },

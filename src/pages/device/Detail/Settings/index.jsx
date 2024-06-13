@@ -65,7 +65,7 @@ const Index = ({ deviceInfo, getDetail }) => {
     return (
         <>
             <PowerOnOff
-                deviceId={deviceInfo?.deviceId}
+                deviceId={deviceInfo?.id}
                 open={powerOnOffOpen}
                 isPowerOn={isPowerOn}
                 onClose={flag => {
@@ -74,7 +74,7 @@ const Index = ({ deviceInfo, getDetail }) => {
                 }}
             />
             <ChangeMachine
-                deviceId={deviceInfo?.deviceId}
+                deviceId={deviceInfo?.id}
                 open={changeMachineOpen}
                 onClose={flag => {
                     setChangeMachineOpen(false);
@@ -82,7 +82,7 @@ const Index = ({ deviceInfo, getDetail }) => {
                 }}
             />
             <DCArcFaultClear
-                deviceId={deviceInfo?.deviceId}
+                deviceId={deviceInfo?.id}
                 open={dCArcFaultClearOpen}
                 onClose={flag => {
                     setDCArcFaultClearOpen(false);
@@ -90,7 +90,7 @@ const Index = ({ deviceInfo, getDetail }) => {
                 }}
             />
             <FaultReset
-                deviceId={deviceInfo?.deviceId}
+                deviceId={deviceInfo?.id}
                 open={faultResetOpen}
                 onClose={flag => {
                     setFaultResetOpen(false);

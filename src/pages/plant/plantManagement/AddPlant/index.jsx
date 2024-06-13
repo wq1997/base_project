@@ -25,7 +25,8 @@ import {
 import { ALL_SPACE_REG } from "@/utils/constants";
 import dayjs from "dayjs";
 
-const uploadUrl = process.env.API_URL_1 + "/api/v1/plant/upload";
+const baseUrl = process.env.API_URL_1;
+const uploadUrl = baseUrl + "/api/v1/plant/upload";
 
 const formatTime = time => (time ? dayjs(time).format("YYYY-MM-DD") : undefined);
 
@@ -229,7 +230,8 @@ const Plant = ({ open, editId, onClose }) => {
                                 {
                                     required: true,
                                     message: "请输入电站地址",
-                                }, {
+                                },
+                                {
                                     pattern: ALL_SPACE_REG,
                                     message: "请输入电站地址",
                                 },
@@ -345,7 +347,7 @@ const Plant = ({ open, editId, onClose }) => {
                                 files={
                                     editData?.logo?.length
                                         ? editData?.logo?.map(item => ({
-                                              url: `http://192.168.1.32:8088${item?.fileName}`,
+                                              url: `${baseUrl}${item?.fileName}`,
                                               status: "done",
                                           }))
                                         : undefined
@@ -375,7 +377,7 @@ const Plant = ({ open, editId, onClose }) => {
                                 files={
                                     editData?.photo?.length
                                         ? editData?.photo?.map(item => ({
-                                              url: `http://192.168.1.32:8088${item?.fileName}`,
+                                              url: `${baseUrl}${item?.fileName}`,
                                               status: "done",
                                           }))
                                         : undefined

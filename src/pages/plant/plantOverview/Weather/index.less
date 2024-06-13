@@ -6,13 +6,14 @@
     background: #f5f9fe;
     padding: 0 10px;
     .item {
+        height: 60px;
         display: flex;
         padding: 0 10px;
         flex: 1;
         display: flex;
         justify-content: center;
-        align-items: center;
-        &.today{
+        align-items: space-between;
+        &.today {
             flex: 2;
             justify-content: space-around;
         }
@@ -34,25 +35,22 @@
             1 1;
     }
     .weather {
+        height: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
+        justify-content: space-between;
         margin-right: 10px;
-        .pic {
-            width: 35px;
-            height: 35px;
-            margin-bottom: 8px;
-        }
     }
     .tempDate {
-         
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
         .temp {
-            height: 35px;
-            line-height: 35px;
             font-size: 24px;
             color: #333333;
-            margin-bottom: 5px;
         }
     }
 }

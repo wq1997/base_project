@@ -3,27 +3,19 @@ import { Button, message, Popconfirm } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import classnames from "classnames";
 import styles from "./index.less";
-import tree from "../../../../../public/icons/tree.svg";
-import co2 from "../../../../../public/icons/CO₂.svg";
-import coal from "../../../../../public/icons/coal.svg";
-import Card from "../Card";
 import dayjs from "dayjs";
 
 const dateNums = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期日=五", "星期六"];
 
 const Index = ({ data }) => {
-    useEffect(() => {
-        console.log(data);
-    }, [data]);
     return (
         <div className={styles.index}>
             {data && (
                 <>
                     <div className={classnames(styles.item, styles.today)}>
                         <div className={styles.weather}>
-                            <img src={tree} className={styles.pic} />
                             <i
-                                class={`qi-${100}`}
+                                class={`qi-${data?.[0]?.iconDay} icon`}
                                 style={{ color: "#1677ff", fontSize: "32px" }}
                             ></i>
                             <span className={styles.date}>{data?.[0]?.textDay}</span>
@@ -42,7 +34,10 @@ const Index = ({ data }) => {
                         <>
                             <div className={styles.item}>
                                 <div className={styles.weather}>
-                                    <img src={tree} className={styles.pic} />
+                                    <i
+                                        class={`qi-${item?.iconDay} icon`}
+                                        style={{ color: "#1677ff", fontSize: "32px" }}
+                                    ></i>
                                     <span className={styles.date}>{item.fxDate}</span>
                                 </div>
                             </div>

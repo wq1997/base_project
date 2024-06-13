@@ -165,20 +165,20 @@ const Device = ({ open, editId, onClose }) => {
                 <Row>
                     <Col span={12}>
                         <Form.Item
-                            label="关联电站"
-                            name="plantId"
+                            label="采集器编号"
+                            name="collectorCode"
                             rules={[
                                 {
                                     required: true,
-                                    message: "请选择关联电站",
+                                    message: "请输入采集器编号",
+                                },
+                                {
+                                    pattern: ALL_SPACE_REG,
+                                    message: "请输入采集器编号",
                                 },
                             ]}
                         >
-                            <Select
-                                placeholder="请选择关联电站"
-                                options={plantNamesOptions}
-                                fieldNames={{ label: "name", value: "id" }}
-                            />
+                            <Input placeholder="请输入采集器编号" />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
@@ -244,6 +244,24 @@ const Device = ({ open, editId, onClose }) => {
                     <Col span={12}>
                         <Form.Item label="质保有效期" name="warrantyPeriod">
                             <DatePicker format="YYYY-MM-DD" />
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item
+                            label="关联电站"
+                            name="plantId"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "请选择关联电站",
+                                },
+                            ]}
+                        >
+                            <Select
+                                placeholder="请选择关联电站"
+                                options={plantNamesOptions}
+                                fieldNames={{ label: "name", value: "id" }}
+                            />
                         </Form.Item>
                     </Col>
                 </Row>

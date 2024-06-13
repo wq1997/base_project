@@ -16,7 +16,6 @@ import { useEffect, useState } from "react";
 
 const Index = () => {
     const [activePlant, setActivePlant] = useState();
-    const [activePosition, setActivePosition] = useState();
     const [plants, setPlants] = useState([]);
     const [statisticsData, setStatisticsData] = useState();
 
@@ -26,17 +25,20 @@ const Index = () => {
             const data = res?.data?.data;
             setPlants(
                 data?.map(item => ({
+                    ...item,
                     label: item.name,
                     position: [+item.longitude, +item.latitude],
                     value: item.id,
                 }))
             );
-            getPlanStatistics(data?.[0]?.id);
+            const defaultId = data?.[0]?.id;
+            getPlanStatistics(defaultId);
+            setActivePlant(defaultId);
         }
     };
 
     const getPlanStatistics = async plantId => {
-        const res = await getPlanStatisticsServer(51);
+        const res = await getPlanStatisticsServer(plantId);
         if (res?.data?.code == 200) {
             setStatisticsData(res?.data?.data);
         }
@@ -49,20 +51,23 @@ const Index = () => {
     useEffect(() => {
         if (!activePlant) return;
         getPlanStatistics(activePlant);
-        setActivePosition(plants?.find(item => item.value == activePlant)?.position);
     }, [activePlant]);
 
     return (
         <div className={styles.container}>
             <div className={styles.left}>
                 <div className={styles.map}>
-                    <Map plants={plants} setActivePlant={setActivePlant} />
+                    <Map
+                        plants={plants}
+                        activePlant={activePlant}
+                        setActivePlant={setActivePlant}
+                    />
                 </div>
                 <div className={styles.plantKPI}>
                     <PlantKPI data={statisticsData?.plantKPI} />
                 </div>
                 <div className={styles.PowerGeneration}>
-                    <PowerGeneration />
+                    <PowerGeneration activePlant={activePlant} />
                 </div>
             </div>
             <div className={styles.right}>
@@ -70,13 +75,18 @@ const Index = () => {
                     <Weather data={statisticsData?.weatherDaily} />
                 </div>
                 <div className={styles.flowchart}>
-                    <Flowchart />
+                    <Flowchart
+                        data={{
+                            deviceCount: statisticsData?.deviceCount,
+                            totalCapacity: statisticsData?.totalCapacity,
+                        }}
+                    />
                 </div>
                 <div className={styles.socialContribution}>
                     <SocialContribution data={statisticsData?.socialContribution} />
                 </div>
                 <div className={styles.plantAlarm}>
-                    <PlantAlarm />
+                    <PlantAlarm data={statisticsData?.alarm} />
                 </div>
             </div>
         </div>
