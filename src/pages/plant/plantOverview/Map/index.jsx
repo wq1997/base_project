@@ -1,20 +1,23 @@
 import { useEffect, useState } from "react";
 import { Select, Button } from "antd";
+import defalut from "@/assets/imges/default.jpg";
 
 const baseUrl = process.env.API_URL_1;
 
 const Index = ({ plants, activePlant, setActivePlant }) => {
     const [map, setMap] = useState();
     const defaultZoom = 5;
+    const [center, setCenter] = useState([108.9, 34.2]);
 
     const reset = () => {
         map.setZoom(defaultZoom);
+        map.setCenter(center);
     };
 
     useEffect(() => {
         const map = new AMap.Map("map", {
             zoom: defaultZoom,
-            pitch: 75,
+            center,
             // layers: [
             //     new AMap.TileLayer.Satellite(),
             //     new AMap.TileLayer.RoadNet(),
@@ -56,8 +59,21 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
                     style=" 
                     width: 400px;
                     height:130px;
-                    display: flex"
+                    display: flex;
+                    position:relative"
                 >
+                            <div
+                style='padding: 4px 13px;
+                    background: rgba(0,0,0,.4);
+                    color: #fff;
+                     border-radius:0 3px 3px 0 ;
+                     position:absolute ;
+                     font-size:11px;
+                     display:${item?.photo?'none':'block'}
+                     '
+            >
+                默认
+            </div>
                     <img
                         style=" 
                      width: 200px;
@@ -65,9 +81,10 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
                      margin-right:15px;
                      border-radius:5px
                     "
-                        src='${baseUrl}${item.photo}'
+                        src='${ item?.photo ? baseUrl + item?.photo : defalut}'
                         alt=""
                     />
+                  
                     <div
                         style="
                       font-size: 12px;
@@ -106,7 +123,7 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
             marker.on("click", markerClick);
             // marker.emit("click", { target: marker });
         });
-        map.setFitView();
+        ///map.setFitView();
     };
 
     const onSelectPlant = value => {
@@ -115,6 +132,7 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
         if (!map || !plants) return;
         map.panTo(moveTo);
         map.setZoom(20);
+        map.setCenter(moveTo);
     };
 
     return (
