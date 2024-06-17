@@ -119,7 +119,6 @@ const Index = ({ activePlant }) => {
     };
 
     useEffect(() => {
-        console.log(activePlant);
         if (!activePlant) return setOptions({});
         getPowerGeneration();
     }, [activePlant]);

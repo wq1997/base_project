@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { SearchInput } from "@/components";
-import { Button, Space, Table, Popconfirm, DatePicker } from "antd";
+import { Button, Space, Table, Popconfirm, notification } from "antd";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import AddDevice from "./AddDevice";
 import Detail from "./Detail";
@@ -13,6 +13,7 @@ import {
     deleteDevice as deleteDeviceServer,
 } from "@/services/device";
 import "./index.less";
+import { connectSocket } from "@/utils/subscribe";
 
 const deviceStatusColor = {
     RUNNING: "#67c23a",
@@ -224,6 +225,23 @@ const Log = () => {
         getDeviceType();
         getDeviceModel();
         getList();
+    }, []);
+
+    useEffect(() => {
+        connectSocket(
+            "ISSUE_COMMAND",
+            () => {},
+            res => {
+                if (res.hasOwnProperty("progress")) {
+                } else {
+                    notification[res.code === "ok" ? "success" : "error"]({
+                        message: t("执行结果"),
+                        description: res.msg,
+                    });
+                    //res.code === "ok" ? getHistory() : null;
+                }
+            }
+        );
     }, []);
 
     return (

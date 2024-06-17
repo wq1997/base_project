@@ -84,7 +84,7 @@ const Device = ({ isPowerOn, open, deviceInfo, onClose }) => {
                 <Form.Item
                     label="调节范围"
                     name="range"
-                    initialValue={`${deviceInfo?.activePowerUpperLimit} ~ ${deviceInfo?.activePowerLowerLimit}`}
+                    initialValue={`${deviceInfo?.activePowerLowerLimit} ~ ${deviceInfo?.activePowerUpperLimit}`}
                 >
                     <Input disabled={true} />
                 </Form.Item>

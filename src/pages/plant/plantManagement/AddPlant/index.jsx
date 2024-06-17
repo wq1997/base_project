@@ -62,7 +62,7 @@ const Plant = ({ open, editId, onClose }) => {
         if (!commit) values = form.getFieldsValue();
         const fn = editId ? updatePlantServer : savePlantServer;
         const res = await fn({
-            id: editData?.id,
+            id: editId,
             commit,
             ...values,
             gridTime: formatTime(values?.gridTime),
@@ -70,7 +70,7 @@ const Plant = ({ open, editId, onClose }) => {
             photo: values?.photo?.[0]?.fileName || null,
         });
         if (res?.data?.code == 200) {
-            message.success(`${editData?.id ? "保存" : "添加"}成功`);
+            message.success(`${editId ? "保存" : "添加"}成功`);
             localStorage.removeItem("plantDraft");
             onCancel(true);
         } else {
@@ -102,6 +102,7 @@ const Plant = ({ open, editId, onClose }) => {
         if (!editId && !isSaveOK) {
             localStorage.setItem("plantDraft", JSON.stringify(form.getFieldsValue()));
         }
+        setEditData();
         form.resetFields();
         onClose();
     };
@@ -144,7 +145,7 @@ const Plant = ({ open, editId, onClose }) => {
                                 },
                             ]}
                         >
-                            <Input placeholder="请输入所属公司" />
+                            <Input placeholder="请输入所属公司" disabled={Boolean(editId)} />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
@@ -174,16 +175,7 @@ const Plant = ({ open, editId, onClose }) => {
 
                 <Row>
                     <Col span={12}>
-                        <Form.Item
-                            label="电站类型"
-                            name="plantType"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "请选择电站类型",
-                                },
-                            ]}
-                        >
+                        <Form.Item label="电站类型" name="plantType">
                             <Select
                                 allowClear={true}
                                 placeholder="请选择电站类型"
@@ -216,7 +208,7 @@ const Plant = ({ open, editId, onClose }) => {
                     </Col>
                     <Col span={12}>
                         <Form.Item label="联系方式" name="contactWay">
-                            <Input placeholder="请输入联系方式" />
+                            <Input placeholder="请输入手机号或邮箱" />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -254,6 +246,7 @@ const Plant = ({ open, editId, onClose }) => {
                             <InputNumber
                                 placeholder="请输入电站组串总容量"
                                 style={{ width: "100%" }}
+                                min={0}
                             />
                         </Form.Item>
                     </Col>

@@ -1,8 +1,17 @@
-import { Upload, Button, message, Tooltip, Divider } from "antd";
+import { Upload, Image, message, Tooltip, Divider } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 
 const defaultFiles = [];
+
+const getBase64 = file => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+};
 
 const MyUpload = ({
     accept,
@@ -12,11 +21,21 @@ const MyUpload = ({
     maxCount = 3,
     maxSizeMB = 10,
 }) => {
+    const [previewOpen, setPreviewOpen] = useState(false);
+    const [previewImage, setPreviewImage] = useState("");
     const [fileList, setFileList] = useState([]);
 
     useEffect(() => {
         setFileList(files);
     }, [files]);
+
+    const handlePreview = async file => {
+        if (!file.url && !file.preview) {
+            file.preview = await getBase64(file.originFileObj);
+        }
+        setPreviewImage(file.url || file.preview);
+        setPreviewOpen(true);
+    };
 
     return (
         <>
@@ -35,6 +54,7 @@ const MyUpload = ({
                         return Upload.LIST_IGNORE;
                     }
                 }}
+                onPreview={handlePreview}
                 onChange={info => {
                     let newFiles = info?.fileList;
                     const isDone = info?.file?.status == "done";
@@ -63,6 +83,19 @@ const MyUpload = ({
                     </Tooltip>
                 )}
             </Upload>
+            {previewImage && (
+                <Image
+                    wrapperStyle={{
+                        display: "none",
+                    }}
+                    preview={{
+                        visible: previewOpen,
+                        onVisibleChange: visible => setPreviewOpen(visible),
+                        afterOpenChange: visible => !visible && setPreviewImage(""),
+                    }}
+                    src={previewImage}
+                />
+            )}
         </>
     );
 };

@@ -11,11 +11,11 @@ const MenuList = [
         label: "电站监控",
         children: [
             {
-                key: "/plant-overview",
+                key: "/plant-monitoring/plant-overview",
                 label: "电站概览",
             },
             {
-                key: "/plant-management",
+                key: "/plant-monitoring/plant-management",
                 label: "电站管理",
             },
         ],
@@ -29,11 +29,11 @@ const MenuList = [
         label: "告警管理",
         children: [
             {
-                key: "/active-record",
+                key: "/alarm-management/active-record",
                 label: "告警记录",
             },
             {
-                key: "/alarm-push",
+                key: "/alarm-management/alarm-push",
                 label: "告警推送",
             },
         ],
@@ -47,11 +47,11 @@ const MenuList = [
         label: "系统设置",
         children: [
             {
-                key: "/personal-settings",
+                key: "/system-settings/personal-setting",
                 label: "个人设置",
             },
             {
-                key: "/operation-log",
+                key: "/system-settings/operation-log",
                 label: "操作日志",
             },
         ],
@@ -110,12 +110,11 @@ const MyMenu = () => {
     const getOpenKeys = () => {
         const pathList = pathname.split("/");
         let newOpenKeys = [...openKeys];
-        if (pathList.length < 4) {
+        if (pathList.length <= 2) {
             newOpenKeys = newOpenKeys.concat([pathname]);
         } else {
-            newOpenKeys = newOpenKeys.concat([pathList.splice(0, 3).join("/")]);
+            newOpenKeys = newOpenKeys.concat([pathList.splice(0, 2).join("/")]);
         }
-        console.log('newOpenKeys',newOpenKeys)
         setOpenKeys(newOpenKeys);
     };
 

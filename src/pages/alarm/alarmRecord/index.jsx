@@ -244,7 +244,9 @@ const Log = () => {
                         render: (_, { id }) => {
                             return (
                                 <Space>
-                                    <a onClick={() => setClearId(id)}>清除</a>
+                                    {activeKey == "active" && (
+                                        <a onClick={() => setClearId(id)}>清除</a>
+                                    )}
                                     <a onClick={() => setDetailId(id)}>详情</a>
                                 </Space>
                             );

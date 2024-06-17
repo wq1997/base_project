@@ -123,7 +123,6 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
             marker.on("click", markerClick);
             // marker.emit("click", { target: marker });
         });
-        ///map.setFitView();
     };
 
     const onSelectPlant = value => {

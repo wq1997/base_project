@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 
 const Index = () => {
     const [activePlant, setActivePlant] = useState();
+    const [activePlantName, setActivePlantName] = useState();
     const [plants, setPlants] = useState([]);
     const [statisticsData, setStatisticsData] = useState();
 
@@ -51,6 +52,8 @@ const Index = () => {
 
     useEffect(() => {
         getPlanStatistics(activePlant);
+        const activePlantName = plants?.find(item => item.id == activePlant)?.name;
+        setActivePlantName(activePlantName);
     }, [activePlant]);
 
     return (
@@ -76,6 +79,7 @@ const Index = () => {
                 </div>
                 <div className={styles.flowchart}>
                     <Flowchart
+                        activePlantName={activePlantName}
                         data={{
                             deviceCount: statisticsData?.deviceCount,
                             totalCapacity: statisticsData?.totalCapacity,
