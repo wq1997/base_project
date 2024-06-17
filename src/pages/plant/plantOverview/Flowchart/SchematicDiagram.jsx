@@ -8,7 +8,7 @@ import nyxtlImg from "@/assets/imges/nyxtl.svg";
 import nyxtlZeroImg from "@/assets/imges/outdoorCabinet.svg";
 import dwImg from "@/assets/imges/dw.svg";
 
-const loadSystemLineWidthPercent = 0.25; // 线的百分比，自定义
+const loadSystemLineWidthPercent = 0.45; // 线的百分比，自定义
 const schematicDiagramIconPrecent = 0.7;
 const loadSystemAngle = 25; // 负载系统的角度
 
@@ -63,7 +63,7 @@ const SchematicDiagram = ({ dataSource }) => {
         const loadSystemDiagonalLength =
             loadSystemRowWidth * loadSystemRowWidth + loadSystemColWidth * loadSystemColWidth;
         const loadSystemLineWidth = Math.sqrt(loadSystemDiagonalLength);
-        setLoadSystemIconWidth(loadSystemLineWidth * schematicDiagramIconPrecent);
+        setLoadSystemIconWidth(loadSystemLineWidth * schematicDiagramIconPrecent / 1.5);
         setLoadSystemLineWidth(loadSystemLineWidth);
 
         const energySystemRowWidth = schematicDiagramRowHarfWidth * energySystemLineWidthPercent;
@@ -109,8 +109,8 @@ const SchematicDiagram = ({ dataSource }) => {
                 <div
                     style={{
                         position: "absolute",
-                        left: 105,
-                        top: 50,
+                        left: 82,
+                        top: 45,
                         textWrap: "nowrap",
                         color: "#9D9EA1",
                     }}
@@ -191,7 +191,7 @@ const SchematicDiagram = ({ dataSource }) => {
                         style={{
                             position: "absolute",
                             right: -energySystemIconWidth / 2,
-                            top: -energySystemIconWidth / 2 - 20,
+                            top: -energySystemIconWidth / 2 + 10,
                             width: loadSystemIconWidth,
                             transform: `rotate(-${energySystemChargingAngle}deg)`,
                             zIndex: 200,
@@ -231,7 +231,7 @@ const SchematicDiagram = ({ dataSource }) => {
                         style={{
                             position: "absolute",
                             right: -loadSystemIconWidth / 2 + 20,
-                            top: -loadSystemIconWidth / 2 - 60,
+                            top: -loadSystemIconWidth / 2 - 50,
                             width: loadSystemIconWidth / 1.2,
                             transform: `rotate(-${loadSystemAngle}deg)`,
                         }}
@@ -239,10 +239,10 @@ const SchematicDiagram = ({ dataSource }) => {
                     <div
                         style={{
                             position: "absolute",
-                            right: -loadSystemIconWidth + 20,
+                            right: -loadSystemIconWidth - 10,
                             top:
                                 Math.tan(((loadSystemAngle + 5) * Math.PI) / 180) *
-                                (-loadSystemIconWidth + 20),
+                                (-loadSystemIconWidth - 10),
                             transform: `rotate(-${loadSystemAngle}deg)`,
                             color: "#9D9EA1",
                         }}
