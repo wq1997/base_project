@@ -89,6 +89,10 @@ const Log = () => {
         });
     };
 
+    useEffect(()=>{
+        getList()
+    },[])
+
     return (
         <>
             <Space

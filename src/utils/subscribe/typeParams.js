@@ -10,9 +10,8 @@
 
 export default {
     ISSUE_COMMAND: {
-        subURL: "/ws/cmd_status_info",
-        topicURL: "/topic/cmd_status_info/user",
-        progressTopicURL: "/topic/cmd_progress_info/user",
+        subURL: "/ws/device-config",
+        topicURL: "/topic/device-config",
         commandIds: [8001, 8002, 8003, 8004, 8005, 8006, 8007, 8008],
     },
 };

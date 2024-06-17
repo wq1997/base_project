@@ -35,10 +35,6 @@ const Log = () => {
             dataIndex: "name",
         },
         {
-            title: "所属公司",
-            dataIndex: "company",
-        },
-        {
             title: "电站类型",
             dataIndex: "plantTypeName",
         },

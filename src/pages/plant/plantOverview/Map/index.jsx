@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Select, Button } from "antd";
 import defalut from "@/assets/imges/default.jpg";
+import styles from "./index.less";
 
 const baseUrl = process.env.API_URL_1;
 
@@ -35,11 +36,11 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
             infoWindow.setContent(e.target.content);
             infoWindow.open(map, e.target.getPosition());
         }
-        map.clearMap();
         plants.forEach((item, index) => {
             const marker = new AMap.Marker({
-                position: item.position,
+                position: new AMap.LngLat(...item.position),
                 map: map,
+                //content: `<div class=${styles["custom-content-marker"]}><div class=${styles.item}></div></div>`,
             });
             marker.content = `
             <div>

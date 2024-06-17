@@ -77,7 +77,6 @@ const Log = () => {
         const level = alarmLevelRef.current;
         const name = alarmNameRef.current;
         const [startTime, endTime] = executeTimeRef.current || [];
-        if (!startTime) return message.info("请先选择日期");
         setLoading(true);
         const res = await getAlarmListServer({
             pageNo: current,
@@ -117,6 +116,7 @@ const Log = () => {
             current: 1,
             total: 0,
         });
+        getList();
     };
 
     useEffect(() => {
@@ -126,6 +126,7 @@ const Log = () => {
     useEffect(() => {
         getDeviceType();
         getAlarmLevel();
+        getList();
     }, []);
 
     return (

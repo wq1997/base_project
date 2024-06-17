@@ -98,10 +98,6 @@ const Log = () => {
             dataIndex: "warrantyPeriod",
         },
         {
-            title: "通信状态",
-            dataIndex: "communicationStatusZh",
-        },
-        {
             title: "操作",
             dataIndex: "operate",
             width: 150,
@@ -232,13 +228,13 @@ const Log = () => {
             "ISSUE_COMMAND",
             () => {},
             res => {
+                console.log("res", res);
                 if (res.hasOwnProperty("progress")) {
                 } else {
                     notification[res.code === "ok" ? "success" : "error"]({
-                        message: t("执行结果"),
+                        message: "执行结果",
                         description: res.msg,
                     });
-                    //res.code === "ok" ? getHistory() : null;
                 }
             }
         );
@@ -270,7 +266,7 @@ const Log = () => {
                         setPlantName(value);
                     }}
                 />
-                <SearchInput
+                {/* <SearchInput
                     label="通信状态"
                     value={communicationStatus}
                     type="select"
@@ -279,7 +275,7 @@ const Log = () => {
                         communicationStatusRef.current = value;
                         setCommunicationStatus(value);
                     }}
-                />
+                /> */}
                 <SearchInput
                     label="设备名称"
                     placeholder="请输入设备名称"

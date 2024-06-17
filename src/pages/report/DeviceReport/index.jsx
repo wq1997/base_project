@@ -32,6 +32,10 @@ const Log = () => {
             dataIndex: "name",
         },
         {
+            title: "设备编码",
+            dataIndex: "code",
+        },
+        {
             title: "设备类型",
             dataIndex: "typeZh",
         },

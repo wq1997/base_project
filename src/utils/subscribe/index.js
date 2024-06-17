@@ -13,6 +13,7 @@ const DisSocket = function () {
     client = null;
 };
 let socketURL = process.env.API_URL_1;
+// let socketURL = "ws://192.168.1.82:8088";
 
 const connectSocket = function (type, connectedCallback, resultCallback) {
     DisSocket();
@@ -24,7 +25,7 @@ const connectSocket = function (type, connectedCallback, resultCallback) {
     client = Stomp.over(socketObj);
     let payload = JSON.stringify({ message: "Marco!" });
     if (!Array.isArray(commandIds)) commandIds = [commandIds];
-    client.connect({ token: getToken() }, () => {
+    client.connect({ token }, () => {
         connectedCallback();
         commandIds.forEach(cid => {
             let parmarsUrl;

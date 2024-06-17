@@ -59,8 +59,9 @@ const Index = ({ deviceInfo, getDetail }) => {
     };
 
     useEffect(() => {
-        getConfigs();
-    }, []);
+        // getConfigs();
+        setIsPowerOn(deviceInfo?.inverterInfo?.switchStatus == 1 ? true : false);
+    }, [deviceInfo]);
 
     return (
         <>

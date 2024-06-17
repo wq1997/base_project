@@ -49,6 +49,8 @@ const Plant = ({ open, editId, onClose }) => {
             form.setFieldsValue({
                 ...values,
                 gridTime: dayjs(values?.gridTime, "YYYY-MM-DD"),
+                logo: values?.logo ? [{ fileName: values?.logo }] : undefined,
+                photo: values?.photo ? [{ fileName: values?.photo }] : undefined,
             });
             setEditData({
                 ...values,
@@ -264,7 +266,13 @@ const Plant = ({ open, editId, onClose }) => {
                                 },
                             ]}
                         >
-                            <InputNumber placeholder="请输入经度" style={{ width: "100%" }} />
+                            <InputNumber
+                                placeholder="请输入经度"
+                                min={-180}
+                                max={180}
+                                precision={6}
+                                style={{ width: "100%" }}
+                            />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
@@ -278,7 +286,13 @@ const Plant = ({ open, editId, onClose }) => {
                                 },
                             ]}
                         >
-                            <InputNumber placeholder="请输入纬度" style={{ width: "100%" }} />
+                            <InputNumber
+                                placeholder="请输入纬度"
+                                min={-90}
+                                max={90}
+                                precision={6}
+                                style={{ width: "100%" }}
+                            />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -366,7 +380,7 @@ const Plant = ({ open, editId, onClose }) => {
                                 accept=".jpg,.png,.jpeg,.bmp"
                                 url={uploadUrl}
                                 maxCount={1}
-                                maxSizeMB={20}
+                                maxSizeMB={5}
                                 files={
                                     editData?.photo?.length
                                         ? editData?.photo?.map(item => ({
