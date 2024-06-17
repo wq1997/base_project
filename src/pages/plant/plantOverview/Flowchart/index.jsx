@@ -36,10 +36,15 @@ const Index = ({ data }) => {
                 padding: "10px",
             }}
         >
+            {" "}
+            <div style={{ fontSize: "18px", display: "flex", alignItems: "center" }}>
+                <img src={plant} alt="" style={{ marginRight: "3px" }} />
+                嘉蕴
+            </div>
             <div
                 style={{
                     position: "absolute",
-                    top: "10px",
+                    top: "50px",
                     left: "10px",
                 }}
             >

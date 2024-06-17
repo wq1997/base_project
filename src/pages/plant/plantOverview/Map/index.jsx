@@ -57,7 +57,7 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
                 </div>
                 <div
                     style=" 
-                    width: 400px;
+                    width: 360px;
                     height:130px;
                     display: flex;
                     position:relative"
@@ -69,7 +69,7 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
                      border-radius:0 3px 3px 0 ;
                      position:absolute ;
                      font-size:11px;
-                     display:${item?.photo?'none':'block'}
+                     display:${item?.photo ? "none" : "block"}
                      '
             >
                 默认
@@ -81,7 +81,7 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
                      margin-right:15px;
                      border-radius:5px
                     "
-                        src='${ item?.photo ? baseUrl + item?.photo : defalut}'
+                        src='${item?.photo ? baseUrl + item?.photo : defalut}'
                         alt=""
                     />
                   
@@ -128,6 +128,9 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
 
     const onSelectPlant = value => {
         setActivePlant(value);
+        if (!value) {
+            return reset();
+        }
         const moveTo = plants?.find(item => item.value == value)?.position;
         if (!map || !plants) return;
         map.panTo(moveTo);
@@ -161,14 +164,11 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
                 <Select
                     placeholder="请选择电站"
                     style={{ width: "250px", marginRight: "5px" }}
-                    allowClear={false}
+                    allowClear={true}
                     value={activePlant}
-                    onSelect={onSelectPlant}
+                    onChange={onSelectPlant}
                     options={plants}
                 />
-                <Button type="default" onClick={reset} style={{ background: "transparent" }}>
-                    总览
-                </Button>
             </div>
             <div
                 id="map"

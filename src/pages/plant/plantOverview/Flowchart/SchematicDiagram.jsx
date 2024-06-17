@@ -8,7 +8,7 @@ import nyxtlImg from "@/assets/imges/nyxtl.svg";
 import nyxtlZeroImg from "@/assets/imges/outdoorCabinet.svg";
 import dwImg from "@/assets/imges/dw.svg";
 
-const loadSystemLineWidthPercent = 0.45; // 线的百分比，自定义
+const loadSystemLineWidthPercent = 0.25; // 线的百分比，自定义
 const schematicDiagramIconPrecent = 0.7;
 const loadSystemAngle = 25; // 负载系统的角度
 
