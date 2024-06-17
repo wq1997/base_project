@@ -389,8 +389,8 @@ const Electricity = () => {
                                         title: intl.formatMessage({id: '日期'}),
                                         dataIndex: 'time',
                                         key: 'time',
-                                        render(data){
-                                            return moment(data).format("YYYY/MM/DD")
+                                        render: (data, record) =>{
+                                            return moment(data).format(record?.dateType==="year"?"YYYY/MM":"YYYY/MM/DD")
                                         }
                                     },
                                     {
