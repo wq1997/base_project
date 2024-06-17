@@ -6,6 +6,7 @@ import * as echarts from "echarts";
 import Card from "../Card";
 import dayjs from "dayjs";
 import { getPowerGeneration as getPowerGenerationServer } from "@/services/overview";
+import classnames from "classnames";
 
 const Index = ({ activePlant }) => {
     const dateRef = useRef();
@@ -13,6 +14,13 @@ const Index = ({ activePlant }) => {
     const [type, setType] = useState("DAY");
     const [date, setDate] = useState(dayjs().format("YYYY-MM-DD"));
     const [options, setOptions] = useState({});
+
+    const btns = [
+        { name: "日", type: "DAY" },
+        { name: "月", type: "MONTH" },
+        { name: "年", type: "YEAR" },
+        { name: "生命期", type: "TOTAL" },
+    ];
 
     const getPowerGeneration = async () => {
         if (type != "TOTAL" && !date) return message.info("请先选择日期");
@@ -111,6 +119,8 @@ const Index = ({ activePlant }) => {
     };
 
     useEffect(() => {
+        console.log(activePlant);
+        if (!activePlant) return setOptions({});
         getPowerGeneration();
     }, [activePlant]);
 
@@ -124,43 +134,27 @@ const Index = ({ activePlant }) => {
         <Card
             title="能量管理"
             others={
-                <div style={{ textAlign: "center" }}>
+                <div className={styles.powerGeneration} style={{ textAlign: "center" }}>
                     <Space>
-                        <Button
-                            size="small"
-                            type={type == "DAY" ? "primary" : "default"}
-                            ghost={type == "DAY" ? true : false}
-                            onClick={() => changeType("DAY")}
-                        >
-                            日
-                        </Button>
-                        <Button
-                            size="small"
-                            type={type == "MONTH" ? "primary" : "default"}
-                            ghost={type == "MONTH" ? true : false}
-                            onClick={() => changeType("MONTH")}
-                        >
-                            月
-                        </Button>
-                        <Button
-                            size="small"
-                            type={type == "YEAR" ? "primary" : "default"}
-                            ghost={type == "YEAR" ? true : false}
-                            onClick={() => changeType("YEAR")}
-                        >
-                            年
-                        </Button>
-                        <Button
-                            size="small"
-                            type={type == "TOTAL" ? "primary" : "default"}
-                            ghost={type == "TOTAL" ? true : false}
-                            onClick={() => changeType("TOTAL")}
-                        >
-                            生命期
-                        </Button>
+                        {btns?.map(item => (
+                            <div
+                                className={classnames(
+                                    styles.btn,
+
+                                    item?.type == type ? styles.active : ""
+                                )}
+                                onClick={() => changeType(item?.type)}
+                            >
+                                {item.name}
+                            </div>
+                        ))}
+
                         {type != "TOTAL" && (
                             <DatePicker
-                                style={{ background: "#FFF" }}
+                                style={{
+                                    background: "#FFF",
+                                    color: "rgba(0,0,0,0.35)",
+                                }}
                                 picker={
                                     {
                                         DAY: "day",
@@ -176,15 +170,12 @@ const Index = ({ activePlant }) => {
                                 value={date ? dayjs(date) : null}
                             />
                         )}
-
-                        <Button
-                            style={{ background: "#49A2F8;" }}
-                            size="small"
-                            type="primary"
+                        <div
+                            className={classnames(styles.btn, styles.search)}
                             onClick={getPowerGeneration}
                         >
                             查询
-                        </Button>
+                        </div>
                     </Space>
                 </div>
             }

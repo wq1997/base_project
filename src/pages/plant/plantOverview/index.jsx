@@ -38,6 +38,7 @@ const Index = () => {
     };
 
     const getPlanStatistics = async plantId => {
+        if (!plantId) return setStatisticsData(null);
         const res = await getPlanStatisticsServer(plantId);
         if (res?.data?.code == 200) {
             setStatisticsData(res?.data?.data);
@@ -49,7 +50,6 @@ const Index = () => {
     }, []);
 
     useEffect(() => {
-        if (!activePlant) return;
         getPlanStatistics(activePlant);
     }, [activePlant]);
 
