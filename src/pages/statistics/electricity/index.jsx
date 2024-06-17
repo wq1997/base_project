@@ -9,7 +9,8 @@ import moment from "moment";
 import {
     getRevenue as getRevenueServe,
     getAllElectricExcel as getAllRevenueExcelServe,
-    getFetchPlantList2 as getFetchPlantListServe
+    getFetchPlantList2 as getFetchPlantListServe,
+    showDataByTable as showDataByTableServe,
 } from "@/services";
 import {
     getDtusOfPlant as getDtusOfPlantServe
@@ -24,6 +25,7 @@ const Electricity = () => {
     const {token} = theme.useToken();
     const [form] = Form.useForm();
     const [dataSource, setDataSource] = useState([]);
+    const [tableData, setTableData] = useState([]);
     const [option, setOption] = useState({});
     const [plantDeviceList, setPlantDeviceList] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -49,8 +51,8 @@ const Electricity = () => {
                 return;
             }
             params = {
-                plantId: 3232||currentPlantDevice?.[0],
-                dtuId: 2075||currentPlantDevice?.[1],
+                plantId: currentPlantDevice?.[0],
+                dtuId: currentPlantDevice?.[1],
                 startDate: dayjs(values.dayTime[0]).format(format),
                 endDate: dayjs(values.dayTime[1]).format(format),
                 dateType: timeType
@@ -234,6 +236,15 @@ const Electricity = () => {
         }
     }
 
+    const getTableData = async () => {
+        const params = await getParams(); 
+        const res = await showDataByTableServe(params);
+        if(res?.data?.data?.data){
+            const data = res?.data?.data?.data;
+            setTableData(data);
+        }
+    }
+
     const getDataSource = async (params) => {
         setLoading(true);
         const res = await getRevenueServe(params);
@@ -251,6 +262,7 @@ const Electricity = () => {
 
     useEffect(()=>{
         initPlantDevice();
+        getTableData();
     }, [])
 
     return (
@@ -323,6 +335,7 @@ const Electricity = () => {
                         const params = await getParams();
                         if(params){
                             getDataSource(params);
+                            getTableData();
                         }
                     }}
                     type="primary"
@@ -368,7 +381,83 @@ const Electricity = () => {
                     <div style={{width: '100%', height: "calc(50vh - 150px)"}}>
                         {
                             dataSource?.length>0?
-                            <Table />
+                            <Table 
+                                pagination={false}
+                                dataSource={tableData}
+                                columns={[
+                                    {
+                                        title: intl.formatMessage({id: '日期'}),
+                                        dataIndex: 'time',
+                                        key: 'time',
+                                        render(data){
+                                            return moment(data).format("YYYY/MM/DD")
+                                        }
+                                    },
+                                    {
+                                        title: intl.formatMessage({id: '设备名称'}),
+                                        dataIndex: 'dtuName',
+                                        key: 'dtuName',
+                                    },
+                                    {
+                                        title: intl.formatMessage({id: 'sn号'}),
+                                        dataIndex: 'sn',
+                                        key: 'sn',
+                                    },
+                                    {
+                                        title: `${intl.formatMessage({id: '总充电量'})}/${intl.formatMessage({id: '总放电量'})}(kWh)`,
+                                        dataIndex: 'kWh',
+                                        key: 'kWh',
+                                        render(_,record){
+                                            return `${record?.dayChargeEnergy}/${record?.dayDischargeEnergy}`
+                                        }
+                                    },
+                                    {
+                                        title: `${intl.formatMessage({id: '充放电效率'})}(%)`,
+                                        dataIndex: 'cDEfficiency',
+                                        key: 'cDEfficiency',
+                                    },
+                                    {
+                                        title: `${intl.formatMessage({id: '收益'})}(元)`,
+                                        dataIndex: 'number',
+                                        key: 'number',
+                                    },
+                                    {
+                                        title: `${intl.formatMessage({id: '尖时段'})}${intl.formatMessage({id: '充电量'})}/${intl.formatMessage({id: '放电量'})}(kWh)`,
+                                        dataIndex: 'kWh',
+                                        key: 'kWh',
+                                        render(_,record){
+                                            return `${record?.tipChargeEnergy}/${record?.tipDischargeEnergy}`
+                                        }
+                                    },
+                                    {
+                                        title: `${intl.formatMessage({id: '峰时段'})}${intl.formatMessage({id: '充电量'})}/${intl.formatMessage({id: '放电量'})}(kWh)`,
+                                        dataIndex: 'kWh',
+                                        key: 'kWh',
+                                        render(_,record){
+                                            return `${record?.peakChargeEnergy}/${record?.peakDischargeEnergy}`
+                                        }
+                                    },
+                                    {
+                                        title: `${intl.formatMessage({id: '平时段'})}${intl.formatMessage({id: '充电量'})}/${intl.formatMessage({id: '放电量'})}(kWh)`,
+                                        dataIndex: 'kWh',
+                                        key: 'kWh',
+                                        render(_,record){
+                                            return `${record?.flatChargeEnergy}/${record?.flatDischargeEnergy}`
+                                        }
+                                    },
+                                    {
+                                        title: `${intl.formatMessage({id: '谷时段'})}${intl.formatMessage({id: '充电量'})}/${intl.formatMessage({id: '放电量'})}(kWh)`,
+                                        dataIndex: 'kWh',
+                                        key: 'kWh',
+                                        render(_,record){
+                                            return `${record?.valleyChargeEnergy}/${record?.valleyDischargeEnergy}`
+                                        }
+                                    },
+                                ]}
+                                scroll={{
+                                    y: 'calc(100vh - 820px)'
+                                }}
+                            />
                             :
                             <div style={{position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)'}}>
                                 <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={intl.formatMessage({id: '暂无数据'})} />

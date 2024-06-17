@@ -83,3 +83,7 @@ export const updateData = (payload) => {
 export const getFetchPlantList2 = (payload) => {
     return axiosInstance.post(`/energy/plant/getPlantList`, payload)
 }
+
+export const showDataByTable = (payload) => {
+    return axiosInstance.post(`/minsys/revenue/showDataByTable`, payload)
+}
