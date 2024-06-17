@@ -19,16 +19,16 @@ const Index = ({ deviceInfo }) => {
         { label: "逆变器额定功率", key: "ratedPower", value: "" },
         { label: "电网频率", key: "gridFrequency", value: "" },
         { label: "输出方式", key: "outputMode", value: "" },
-        { label: "内部温度", key: "internalTemperature", value: "" },
         { label: "电网A相电流", key: "gridCurrentA", value: "" },
-        { label: "电网A相电压", key: "gridVoltageA", value: "" },
         { label: "电网B相电流", key: "gridCurrentB", value: "" },
-        { label: "电网B相电压", key: "gridVoltageB	", value: "" },
         { label: "电网C相电流", key: "gridCurrentC", value: "" },
+        { label: "电网A相电压", key: "gridVoltageA", value: "" },
+        { label: "电网B相电压", key: "gridVoltageB	", value: "" },
         { label: "电网C相电压", key: "gridVoltageC", value: "" },
         { label: "开机时间", key: "inverterStartTime", value: "" },
         { label: "关机时间", key: "inverterStopTime", value: "" },
         { label: "绝缘阻抗值", key: "insulationResistance", value: "" },
+        { label: "内部温度", key: "internalTemperature", value: "" },
     ]);
     const [dataSource, setDataSource] = useState([]);
 
@@ -133,20 +133,7 @@ const Index = ({ deviceInfo }) => {
 
                 <Row>
                     <Col span={12}>
-                        <Form.Item label="采集器编号" name="collectorCode">
-                            <Input />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
                         <Form.Item label="设备类型" name="typeZh">
-                            <Input />
-                        </Form.Item>
-                    </Col>
-                </Row>
-
-                <Row>
-                    <Col span={12}>
-                        <Form.Item label="sn号" name="snNumber">
                             <Input />
                         </Form.Item>
                     </Col>
@@ -159,12 +146,12 @@ const Index = ({ deviceInfo }) => {
 
                 <Row>
                     <Col span={12}>
-                        <Form.Item label="质保有效期" name="warrantyPeriod">
-                            <DatePicker format="YYYY-MM-DD" disabled={false} />
+                        <Form.Item label="sn号" name="snNumber">
+                            <Input />
                         </Form.Item>
-                    </Col>
+                    </Col>{" "}
                     <Col span={12}>
-                        <Form.Item label="电站地址" name="plantAddress">
+                        <Form.Item label="采集器编号" name="collectorCode">
                             <Input />
                         </Form.Item>
                     </Col>
@@ -176,14 +163,27 @@ const Index = ({ deviceInfo }) => {
                             <Input />
                         </Form.Item>
                     </Col>
+                    <Col span={12}>
+                        <Form.Item label="电站地址" name="plantAddress">
+                            <Input />
+                        </Form.Item>
+                    </Col>
                 </Row>
 
                 <Row>
+                    <Col span={12}>
+                        <Form.Item label="质保有效期" name="warrantyPeriod">
+                            <DatePicker format="YYYY-MM-DD" disabled={false} />
+                        </Form.Item>
+                    </Col>
                     <Col span={12}>
                         <Form.Item label="组串数量" name="stringCount">
                             <Input />
                         </Form.Item>
                     </Col>
+                </Row>
+
+                <Row>
                     <Col span={12}>
                         <Form.Item label="换机历史" name="deviceSwitchHistoryList">
                             <Input />

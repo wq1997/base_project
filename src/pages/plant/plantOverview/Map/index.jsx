@@ -39,6 +39,7 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
         plants.forEach((item, index) => {
             const marker = new AMap.Marker({
                 position: new AMap.LngLat(...item.position),
+                icon:require('../../../../assets/imges/point.png'),
                 map: map,
                 //content: `<div class=${styles["custom-content-marker"]}><div class=${styles.item}></div></div>`,
             });
