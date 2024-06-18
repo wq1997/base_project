@@ -62,7 +62,7 @@ export const getGridPointTree = (payload) => {
 
 // 获取电表实时数据
 export const getMetersNowData = (payload) => {
-    return axiosInstance.get(`${path}/getMetersNowData?dtuId=${payload.id}`);
+    return axiosInstance.get(`${path}/getMETERLiveData?gridPointId=${payload.id}`);
 }
 
 // 获取bms实时数据信息
@@ -143,16 +143,16 @@ export const getPyPower = (payload) => {
 }
 // 获取微网bms高级分析 初始化数据类型
 export const getBmsAnalyticsInitData = (payload) => {
-    return axiosInstance.get(`/battery/getBmsAnalyticsInitData?id=${payload.id}`);
+    return axiosInstance.get(`/getBmsAnalyticsInitData?id=${payload.id}`);
 }
 // bms 高级分析 温差压差 曲线
 export const analyticsBmsDiffData = (payload) => {
-    return axiosInstance.post(`/battery/analyticsBmsDiffData`, payload);
+    return axiosInstance.post(`/getBmsDataDiff`, payload);
 }
 
 //bms 高级分析 温度 电压曲线  
 export const analyticsBmsData = (payload) => {
-    return axiosInstance.post(`/battery/analyticsBmsData`, payload);
+    return axiosInstance.post(`/getBmsVolTemp`, payload);
 }
 
 // 获取电芯实时数据

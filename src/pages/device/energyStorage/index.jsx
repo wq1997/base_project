@@ -60,10 +60,10 @@ const getTreeData = (data, treeData) => {
             it.dtuDevList?.map((item, i) => {
                 arr?.push({
                     title: item.name,
-                    id: item.id || it.dtuId || '',
+                    id: item.id ||it.id|| it.dtuId || '',
                     key: `0-${index}-${i}`,
                     type: getType(it, item),
-
+                    
                 })
             })
             oringal[0]?.children.push({
@@ -241,7 +241,9 @@ function Com(props) {
                     dataList.find(it => it.key == pageKey)?.id
                 } />;
             case "Meter":
-                return <ElectricityMeter />;
+                return <ElectricityMeter id={
+                    dataList.find(it => it.key == pageKey)?.id
+                }/>;
             case 3:
                 return <Overview />;
             case 9:

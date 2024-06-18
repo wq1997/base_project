@@ -17,11 +17,12 @@ function Com(props) {
     const [optionEchart, setOptionEchart] = useState({})
     const [date, setDate] = useState(dayjs(new Date()));
     const [type, setType] = useState(pcsDataType[0].value);
-    const [title, setTitle] = useState('实时功率');
+    const [title, setTitle] = useState('');
+    const [currentTitle, setCurrentTitle] = useState('');
     const [excelData, setExcelData] = useState([]);
     const [optionsSelect,setOptionSelect]=useState([]);
-    const intl = useIntl();
     const id = getQueryString("id");
+    const intl = useIntl();
     const t = (id) => {
         const msg = intl.formatMessage(
             {
@@ -35,20 +36,25 @@ function Com(props) {
     }
     const changeType = (value, label) => {
         setType(value);
-        setTitle(label?.children);
+        setCurrentTitle(label?.children);
     }
     useEffect(()=>{
         getInitData();
-    },[props])
+    },[token,props,id]);
+    useEffect(()=>{
+        queryData();
+    },[title])
     const getInitData=async()=>{
         let {data}=await getDataParams({devId:id||props?.id});
-        if(data.data){
+        if(data?.data){
             setOptionSelect([...data?.data]);
-            setTitle(data?.data?.[0]?.dataTypeDesc)
+            setTitle(data?.data?.[0]?.dataTypeDesc);
+            queryData();
         }
    
     }
     const queryData = async () => {
+        currentTitle? setTitle(currentTitle):null;
         let { data } = await getMonCurHistoryData({
             devId: props.id||id,
             dataId:type,
@@ -86,7 +92,7 @@ function Com(props) {
                 textStyle: {
                     color: token.smallTitleColor,
                 },
-                data: [`今日${title}`, `${date.format('YYYY-MM-DD')}${title}`]
+                data: [`${t('今日')}${title}`, `${date.format('YYYY-MM-DD')}${title}`]
             },
             grid: {
                 left: '3%',
@@ -114,7 +120,7 @@ function Com(props) {
             ],
             series: [
                 {
-                    name: `${t('今日')}${t(title)}`,
+                    name: `${t('今日')}${title}`,
                     type: 'line',
                     // stack: 'total',
                     symbol: 'circle',
@@ -182,10 +188,6 @@ function Com(props) {
         let sheetHeader = ["时刻", dayjs(new Date()).format('YYYY-MM-DD'), dayjs(date)?.format('YYYY-MM-DD')];
         downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader,)
     };
-
-    useEffect(() => {
-        queryData();
-    }, [token,props]);
     return (
         <div className={styles.monitoringCurves}>
             <div className={styles.searchHead}>
@@ -212,7 +214,7 @@ function Com(props) {
             </div>
             <div className={styles.echartPart}>
                 <CardModel
-                    title={t(title)}
+                    title={title}
                     content={
                         <div className={styles.echartPartCardwrap}>
                             <ReactECharts option={optionEchart} style={{ height: '100%' }} />

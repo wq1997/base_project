@@ -13,12 +13,12 @@ const PageTypeList = [
 ];
 const defaultActiveKey = "RealtimeData";
 
-const ElectricityMeter = () => {
+const ElectricityMeter = ({id}) => {
     const location = useLocation();
     const { pathname } = location;
     const [activeKey, setActiveKey] = useState(getQueryString("activeKey") || defaultActiveKey);
     const pageType = getQueryString("pageType")||"ALL";
-    const id = getQueryString("id");
+    // const id = getQueryString("id");
     const { token } = theme.useToken();
     const onChangeTab = key => {
         setActiveKey(key);
@@ -27,10 +27,11 @@ const ElectricityMeter = () => {
     };
     return (
         <div style={{height: '100%'}}>
-            <Tab activeKey={activeKey} TabItem={PageTypeList} onChange={onChangeTab}/>
+            {/* <Tab activeKey={activeKey} TabItem={PageTypeList} onChange={onChangeTab}/> */}
             <div className={styles.content} style={{backgroundColor: token.cardBgc,padding:'40px 30px',borderRadius: '0px 16px 0px 0px'}}>
-                {activeKey==="RealtimeData"&&<RealtimeData id={id}/>}
-                {activeKey==="HistoryData"&&<HistoryData id={id}/>}
+                {/* {activeKey==="RealtimeData"&&<RealtimeData id={id}/>} */}
+                {/* {activeKey==="HistoryData"&&<HistoryData id={id}/>} */}
+                <RealtimeData id={id}/>
             </div>
         </div>
     )

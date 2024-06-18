@@ -34,6 +34,7 @@
     "jsencrypt": "^3.3.2",
     "meta2d.js": "^1.0.40",
     "moment": "^2.29.4",
+    "nanoid": "^5.0.7",
     "qweather-icons": "^1.6.0",
     "react-amap": "^1.2.8",
     "styled-components": "^6.1.6",

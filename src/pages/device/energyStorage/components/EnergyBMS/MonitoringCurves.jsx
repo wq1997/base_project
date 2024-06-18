@@ -21,6 +21,7 @@ function Com({ id }) {
     const activitesRef = useRef([]);
     const [goalId, setGoalId] = useState(id);
     const [title, setTitle] = useState('');
+    const [currentTitle, setCurrentTitle] = useState('');
     const [unit, setUnit] = useState('V')
     const [date, setDate] = useState(dayjs(new Date()));
     const [excelData, setExcelData] = useState([]);
@@ -42,14 +43,14 @@ function Com({ id }) {
     }
 
     useEffect(() => {
-        // getOptions();
         getInitData();
-    }, [id]);
-    useEffect(() => {
-            getEchartsData(id);
-    }, [id])
+    }, [id,token]);
+    useEffect(()=>{
+        getEchartsData();
+    },[title])
 
     const getEchartsData = async () => {
+        currentTitle? setTitle(currentTitle):null;
         let { data } = await getMonCurHistoryData({
             devId:id||getQueryString("id"),
             dataId:type,
@@ -186,15 +187,16 @@ function Com({ id }) {
 
     const changeDataType = (val, label) => {
         setType(val);
-        setTitle(label?.label);
-
+        setCurrentTitle(label?.label);
     }
     const getInitData = async () => {
         let { data } = await getDataParams({ devId: id || props?.id });
-        if (data.data) {
+        if (data?.data) {
             setOptionSelect([...data?.data]);
             setTitle(data?.data?.[0]?.dataTypeDesc);
-            setType(data?.data?.[0]?.dataType)
+            setType(data?.data?.[0]?.dataType);
+            getEchartsData();
+
         }
 
     }

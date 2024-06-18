@@ -1,6 +1,6 @@
 import axiosInstance from "./request";
 // const path = '/microgrid'
-const path = '/mg48'
+const path = ''
 
 // 根据电站id分页查询实时告警
 export const getNowAlarmsWithPage = (payload) => {

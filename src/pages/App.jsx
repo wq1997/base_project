@@ -35,8 +35,8 @@ const App = () => {
                         autoComplete: 'off'
                     },
                     Modal: {
-                        contentBg: '#1C244C',
-                        headerBg: '#1C244C'
+                        contentBg: theme === 'dark'?'#1C244C':'#fff',
+                        headerBg: theme === 'dark'?'#1C244C':'#fff'
                     },
                 }
             }}

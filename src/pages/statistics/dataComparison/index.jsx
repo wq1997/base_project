@@ -5,7 +5,9 @@ import { theme, Select, DatePicker, Button, Cascader, message } from "antd";
 import styles from './index.less'
 import ReactECharts from "echarts-for-react";
 import { CardModel } from "@/components";
-import { getDataComparisonInit, getDataParams, getCompareData } from '@/services/report'
+import { getDataComparisonInit, getCompareData } from '@/services/report'
+import { getDataParams } from '@/services/deviceTotal';
+
 import dayjs from 'dayjs';
 import { getQueryString, downLoadExcelMode } from "@/utils/utils";
 import { useSelector, useIntl } from "umi";
@@ -54,9 +56,9 @@ function Com(props) {
 
   const getInitData = async () => {
     let { data } = await getDataComparisonInit({ plantId: localStorage.getItem('plantId') });
-    let { BMC, BMS, PCS, others } = data?.data;
+    let { BMS, PCS,PCSModule, others } = data?.data;
     let arr = [];
-    arr.push(delInitData(BMC, 'BMC'));
+    arr.push(delInitData(PCSModule, 'PCSModule'));
     arr.push(delInitData(BMS, 'BMS'));
     arr.push(delInitData(PCS, 'PCS'));
     arr.push(delInitData(others, 'others'));
@@ -69,7 +71,7 @@ function Com(props) {
       }
     });
     if (devId) {
-      let { data: subData } = await getDataParams({ plantId: localStorage.getItem('plantId'), devId: devId });
+      let { data: subData } = await getDataParams({  devId: devId });
       const index = arr.findIndex(item => item.value === currentValue);
       if (subData?.data?.length > 0) {
         arr[index].children[0].children = subData.data?.map(item => {
@@ -383,10 +385,9 @@ function Com(props) {
               </Select>
               <span >{t('数据项')}:</span>
               {
-                // cascaderValue?.length > 0 &&
                 <Cascader
                   className={styles.margRL}
-                  style={{ width: 240 }}
+                  style={{ width: 300 }}
                   onChange={changePack}
                   options={packList}
                   loadData={loadData}
@@ -394,7 +395,7 @@ function Com(props) {
                   maxTagCount={1}
                   showCheckedStrategy={SHOW_CHILD}
                   defaultValue={cascaderValue}
-                  key={way}
+                  key={cascaderValue}
                   allowClear={false}
                 >
                 </Cascader>

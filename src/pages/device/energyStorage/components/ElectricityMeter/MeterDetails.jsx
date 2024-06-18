@@ -28,7 +28,9 @@ function Com({ id }) {
   
     const getData = async () => {
         let { data } = await getMetersNowData({ id })
-        setData({...data?.data.tMeter,...data?.data.gMeter});
+        // let {asMeter,meter,tranMeter,pvMeter}=data?.data;
+
+        // setData({...data?.data?.tMeter,...data?.data?.gMeter});
     }
    
    

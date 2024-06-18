@@ -1,5 +1,5 @@
 import axiosInstance from "./request";
-const path = '/microgrid'
+const path = ''
 // 策略列表
 export const getStrategyList = (payload) => {
     return axiosInstance.get(`${path}/strategy/getStrategyList?gridPointId=${payload.gridPointId}`);
@@ -20,9 +20,9 @@ export const getStrategyNameList = (payload) => {
 export const deleteStrategy = (payload) => {
     return axiosInstance.get(`${path}/strategy/deleteStrategy?strategyId=${payload.strategyId}`);
 }
-// 策略详情（单个策略内容）
+// 策略列表
 export const getStrategyInfo = (payload) => {
-    return axiosInstance.get(`${path}/strategy/getStrategyInfo?strategyId=${payload.strategyId}`);
+    return axiosInstance.get(`${path}/strategy/getStrategyList?gridPointId=${payload.gridPointId}`);
 }
 // 获取日程列表
 export const getStrategyPlanList = (payload) => {

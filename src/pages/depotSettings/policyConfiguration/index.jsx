@@ -1,41 +1,32 @@
 
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { Strategy } from '@/components';
-import { CardModel } from "@/components";
 import Add from './components/addPolicy';
 import styles from './index.less'
-import { theme, Input, Space, Select, Form, message, Button, Table } from "antd";
+import { theme, Input, Space, Select, Form, message, Button, Table, Popconfirm } from "antd";
 import dayjs from 'dayjs';
 import { useSelector, useIntl } from "umi";
-import { getGridPointList, getStrategyPlanList, getStrategyList, getStrategyInfo, saveStrategyPlan, deleteStrategy, } from '@/services/policy'
+import {nanoid} from 'nanoid'
+import { getGridPointList, } from '@/services/plant'
+import { getStrategyInfo, saveStrategy } from '@/services/policy'
 const { Option } = Select;
 function Com(props) {
   const [seletOption, setSelectOption] = useState([]);
   const [gridId, setGridId] = useState();
   const [currentGrid, setCurrentGrid] = useState();
   const { token } = theme.useToken();
-  const [date, setDate] = useState(new Date());
+  const [title, setTitle] = useState('新增策略');
   const [form] = Form.useForm();
   const [form6] = Form.useForm(); // 策略详情
   const [editPlanOpen, setEditPlanOpen] = useState(false); // 策略详情
-  const [strategyId, setStrategyId] = useState(); // 策略Id
+  const [currentIndex, setCurrentIndex] = useState(); // 策略Id
   const [detailsData, setDetailsData] = useState(); // 策略详情
-  const [planList, setPlanList] = useState([]); // 日程列表
-
   useEffect(() => {
     getInit();
   }, []);
-  useEffect(() => {
-    getDetails();
-  }, [strategyId]);
-  useEffect(() => {
-    if (seletOption?.length) {
-      getStrategy();
-    }
-  }, [gridId])
-  const onSelect = (value, mode) => {
-    setDate(value)
-  };
+
+useEffect(()=>{
+  getDetails();
+},[gridId])
   const intl = useIntl();
   const t = (id) => {
     const msg = intl.formatMessage(
@@ -45,22 +36,31 @@ function Com(props) {
     );
     return msg
   }
-  const [strategyTreeData, setStrategyTreeData] = useState([
-    {
-      title: '我的策略',
-      key: '0-0',
-      selectable: false,
-      children: [
-      ],
-    },
-  ]);
+  const [strategyTableData, setStrategyTableData] = useState([]);
 
 
   const getDetails = async () => {
-    let { data } = await getStrategyInfo({ strategyId });
-    setDetailsData(data?.data)
+    let { data } = await getStrategyInfo({ gridPointId:gridId });
+    setDetailsData(data?.data);
+    form.setFieldsValue(data?.data);
+    setStrategyTableData(data?.data?.planList)
   }
-
+  const edit = (val, index) => {
+    form6.setFieldsValue(val);
+    let arr=[];
+    val?.contentList?.map(it=>{
+      let startTime=dayjs(it?.startTime,'HH:mm:ss');
+      let endTime=dayjs(it?.endTime,'HH:mm:ss');
+      arr.push({...it,startTime,endTime});
+    })
+    form6.setFieldValue('startDate',dayjs(val.startDate));
+    form6.setFieldValue('endDate',dayjs(val.endDate));
+    form6.setFieldValue('contentList',arr);
+    console.log(arr,1212);
+    setCurrentIndex(index)
+    setTitle('编辑策略');
+    setEditPlanOpen(true);
+  }
   const getInit = async () => {
     let { data } = await getGridPointList({ plantId: localStorage.getItem('plantId') });
     let arr = [];
@@ -74,56 +74,45 @@ function Com(props) {
     setSelectOption([...arr]);
     setGridId(arr[0]?.value);
     setCurrentGrid(arr[0]);
+    form.setFieldValue('gridPointId', arr[0]?.value)
+
   }
   const changeGrid = (val) => {
     setCurrentGrid(
       seletOption.find(it => it.value == val)
     )
     setGridId(val);
+    form.setFieldValue('gridPointId', val)
   }
-
-  const getPlanList = async (model) => {
-    let { data } = await getStrategyPlanList({ gridPointId: gridId });
-    let arr = [];
-    data.data?.map((it, index) => {
-      let i = model.findIndex(item => item.strategyId == it.strategyId)
-      arr.push({
-        id: it.planId,
-        strategyId: it.strategyId,
-        title: it.strategyName,
-        remarks: it.remarks,
-        allDay: true,
-        start: dayjs(it.startDate).format('YYYY-MM-DD'),
-        end: dayjs(it.endDate).add(1, 'day').format('YYYY-MM-DD'),
-        color: token.chartLineColor[i]
-      });
-      console.log(dayjs(it.endDate).add(1, 'day').format('YYYY-MM-DD'));
-    });
-    setPlanList([...arr]);
-
-  }
-  const getStrategy = async () => {
-    let { data } = await getStrategyList({ gridPointId: gridId });
-    let arr = [];
-    data.data.map((it, i) => {
-      arr.push({
-        ...it, title: it.strategyName, key: `0-0-${i}`
+  const saveAll = async () => {
+    try {
+      form.setFieldValue('planList', strategyTableData);
+      const values = await form.validateFields();
+      values?.planList.map(item => {
+        item.startDate = dayjs(item.startDate).format('YYYY-MM-DD');
+        item.endDate = dayjs(item.endDate).format('YYYY-MM-DD');
+        item?.contentList?.map(it => {
+          it.startTime = dayjs(it.startTime).format('HH:mm:ss');
+          it.endTime = dayjs(it.endTime).format('HH:mm:ss');
+        })
       })
-    })
-    setStrategyTreeData([{ ...strategyTreeData[0], children: [...arr] }]);
-    getPlanList(arr);
-  }
-  const delStrategy = async (val) => {
-    let { data } = await deleteStrategy({ strategyId: val?.strategyId });
-    if (data.code == '200') {
-      message.success(t('删除成功'), 2);
-      getStrategy();
-
-    } else {
-      message.error(t(data.msg), 2);
-
+      let { data } = await saveStrategy(values);
+      if (data?.data) {
+        message.success(t('保存成功'));
+      }else{
+        message.error(data.msg)
+      }
+      console.log(values, data, 121212);
+    } catch (errorInfo) {
+      console.log('Failed:', errorInfo);
     }
   }
+  const del=(record)=>{
+    const newData = strategyTableData.filter((item) => item?.planNo !== record?.planNo);
+    setStrategyTableData(newData);
+  }
+
+
   return (
     <div style={{ width: '100%', height: '100%' }}>
       <Form
@@ -132,29 +121,43 @@ function Com(props) {
         className={styles.contents}
       >
         <Space className={styles.hearder} direction="vertical" style={{ width: '100%', backgroundColor: token.titleCardBgc, padding: '20px 25px 0 0px', borderRadius: '8px' }}>
-          <Form.Item
-            name="ef"
-            label={t("并网点")}
-            style={{ width: '25%' }}
-            rules={[
-            ]}
-            labelCol={{ span: 6 }}
-            wrapperCol={{ span: 18 }}
-          >
-            <Select
-              key={seletOption[0]?.value}
-              defaultValue={seletOption[0]?.value}
-              onChange={changeGrid}
+          <div style={{ display: 'flex', justifyContent:'space-between',marginRight:'40px'}}>
+            <Form.Item
+              name="gridPointId"
+              label={t("并网点")}
+              style={{ width: '25%' }}
+              rules={[
+              ]}
+              labelCol={{ span: 6 }}
+              wrapperCol={{ span: 18 }}
             >
-              {seletOption && seletOption.map(item => {
-                return (<Option key={item.value} value={item.value}>{item.label}</Option>);
-              })
-              }
-            </Select>
-          </Form.Item>
+              <Select
+                key={seletOption[0]?.value}
+                defaultValue={seletOption[0]?.value}
+                onChange={changeGrid}
+              >
+                {seletOption && seletOption.map(item => {
+                  return (<Option key={item.value} value={item.value}>{item.label}</Option>);
+                })
+                }
+              </Select>
+            </Form.Item>
+            <Form.Item
+              wrapperCol={{
+                offset: 12,
+                span: 12,
+              }}
+            >
+              <Button type="primary" htmlType="submit" onClick={saveAll}>
+                {t('保存全部')}
+              </Button>
+            </Form.Item>
+          </div>
+
+
           <div className={styles.headBottom}>
             <Form.Item
-              name="ab"
+              name="transCap"
               label={t("变压器容量")}
               style={{ width: '100%' }}
               labelCol={{ span: 6 }}
@@ -165,7 +168,7 @@ function Com(props) {
               <Input />
             </Form.Item>
             <Form.Item
-              name="bc"
+              name="transProtectPercent"
               label={t("变压器容量保护比例")}
               labelCol={{ span: 10 }}
               wrapperCol={{ span: 14 }}
@@ -173,20 +176,20 @@ function Com(props) {
               <Input />
             </Form.Item>
             <Form.Item
-              name="cd"
+              name="powerMode"
               label={t("功率下发模式")}
               labelCol={{ span: 10 }}
               wrapperCol={{ span: 14 }}
             >
               <Select
                 options={[
-                  { label: '平均功率', value: 0 },
-                  { label: 'SOC动态平衡', value: 1 },
+                  { label: '平均功率', value: 1 },
+                  { label: 'SOC动态平衡', value: 2 },
                 ]}
               />
             </Form.Item>
             <Form.Item
-              name="bc"
+              name="loopInterval"
               label={t("策略运行周期") + '（ms）'}
               labelCol={{ span: 10 }}
               wrapperCol={{ span: 14 }}
@@ -198,82 +201,93 @@ function Com(props) {
 
         <div className={styles.content} style={{ backgroundColor: token.titleCardBgc, borderRadius: '8px' }}>
           <div style={{ width: '100%', display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
-            <Button type="primary" style={{ marginBottom: '10px' }} onClick={() => setEditPlanOpen(true)}>{t('新增策略')}</Button>
-
+            <Button type="primary" style={{ marginBottom: '10px' }} onClick={() => {
+              setEditPlanOpen(true); 
+              setTitle('新增策略');
+               form6.setFieldsValue({
+                planName: '',
+                planNo: nanoid(),
+                startDate: dayjs(new Date()),
+                endDate: dayjs(new Date()),
+                controlMode: 1,
+                contentList: []
+              })
+            }}>{t('新增策略')}</Button>
           </div>
           <Form.Item
-            name="tb"
+            name="planList"
           >
             <Table
               columns={[
                 {
                   title: t('编号'),
-                  dataIndex: 'num',
-                  key: 'num',
-                  render: (text, record, index) => index + 1,
+                  dataIndex: 'planNo',
+                  key: 'planNo',
+                  // render: (text, record, index) => index + 1,
                 },
                 {
                   title: t('策略名称'),
-                  dataIndex: 'name',
-                  key: 'name',
+                  dataIndex: 'planName',
+                  key: 'planName',
                 },
                 {
                   title: t('开始时间'),
-                  dataIndex: 'start',
-                  key: 'start',
+                  dataIndex: 'startDate',
+                  key: 'startDate',
+                  render: (text, record) => {
+                    return dayjs(record.start).format('YYYY-MM-DD')
+                  }
                 },
                 {
                   title: t('结束时间'),
-                  dataIndex: 'end',
-                  key: 'end',
+                  dataIndex: 'endDate',
+                  key: 'endDate',
+                  render: (text, record) => {
+                    return dayjs(record.start).format('YYYY-MM-DD')
+                  }
                 },
                 {
                   title: t('模式'),
-                  dataIndex: 'action',
-                  key: 'action',
+                  dataIndex: 'controlMode',
+                  key: 'controlMode',
+                  render: (text, record) => {
+                    let label = [{ value: 1, label: '白天-黑夜' }, { value: 2, label: '定时充放' },].find(it => it.value == record.controlMode)?.label
+                    return label
+                  }
                 },
                 {
                   title: t('操作'),
                   dataIndex: 'option',
                   key: 'option',
-                  render: (text, record) => {
+                  render: (text, record, index) => {
                     return (
                       <Space>
-                        <Button type="link" onClick={() => edit(record)}>{t('编辑')}</Button>
-                        <Button type="link" onClick={() => edit(record)}>{t('详情')}</Button>
-                        <Popconfirm title="Are you sure delete this task?" okText="Yes" cancelText="No">
-                          <Button type="link" danger onClick={() => changeIsOpenDel(record)}>{t('删除')}</Button>
+                        <Button type="link" onClick={() => edit(record, index)}>{t('编辑')}</Button>
+                        <Button type="link" onClick={() => edit(record, index)}>{t('详情')}</Button>
+                        <Popconfirm title="Are you sure delete this task?"  onConfirm={() => del(record)} okText="Yes" cancelText="No">
+                          <Button type="link" danger>{t('删除')}</Button>
                         </Popconfirm>
                       </Space>
                     )
                   }
                 },
               ]}
+              dataSource={strategyTableData}
             />
           </Form.Item>
         </div>
-        <div className={styles.bottom}>
-          <Form.Item
-            wrapperCol={{
-              offset: 12,
-              span: 12,
-            }}
-          >
-            <Button type="primary" htmlType="submit">
-              {t('保存')}
-            </Button>
-          </Form.Item>
-
-        </div>
-
       </Form>
       <Add
         form={form6}
         open={editPlanOpen}
-        detailsData={detailsData}
+        title={title}
         onChangeOpen={(value) => {
           setEditPlanOpen(value);
         }}
+        dataSource={strategyTableData}
+        index={currentIndex}
+        setStrategyTableData={(val) => setStrategyTableData([...strategyTableData, val])}
+        edit={(val) => setStrategyTableData([...val])}
       />
 
     </div>

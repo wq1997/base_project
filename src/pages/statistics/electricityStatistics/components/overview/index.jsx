@@ -200,7 +200,7 @@ function Com(props) {
     }, [currentTheme, dataY, dateX]);
     useEffect(() => {
         getData();
-    }, [])
+    }, [currntGrid])
     const handleModelChange = e => {
         setMode(e.target.value);
         if (e.target.value == 'date') {
@@ -265,6 +265,7 @@ function Com(props) {
         })
         setGrids(grid?.data);
         setCurrntGrid(grid?.data?.[0]?.id);
+        getData();
     }
     const changeRangeDate = (val, str) => {
         setStartTime(str?.[0]);
@@ -284,7 +285,9 @@ function Com(props) {
                     <Select
                         style={{
                             width: 200,
-                            marginRight: '10px'
+                            marginRight: '20px',
+                            marginLeft: '10px'
+
                         }}
                         key={grids[0]?.id}
                         defaultValue={grids[0]?.id}

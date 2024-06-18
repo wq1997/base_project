@@ -18,7 +18,7 @@ function Com(props) {
     const [date, setDate] = useState(dayjs(new Date()));
     const [dateStr, setDateStr] = useState(dayjs(new Date()).format('YYYY-MM-DD'));
     const [dateBottom, setDateBottom] = useState(dayjs(new Date()));
-    const [packReq, setPackReq] = useState([['0', '0-0']]);
+    const [packReq, setPackReq] = useState([]);
     const [packList, setPackList] = useState([]);
     const [cellList, setCellList] = useState([]);
     const [cellReq, setCellReq] = useState(['0-0', '0-0-0']);
@@ -29,6 +29,7 @@ function Com(props) {
     const [vAndTExcelTitle, setVAndTExcelTitle] = useState('');
     const [vAndTExcelData, setVAndTExcelData] = useState([]);
     const [diffData, setDiffData] = useState({});
+    const [packValueBottom, setPackValueBottom] = useState();
 
 
     const intl = useIntl();
@@ -58,30 +59,34 @@ function Com(props) {
     useEffect(() => {
         initOption();
         getInitData();
-        getChartData();
         getBottomChartData();
     }, [token, id]);
-
+    useEffect(() => {
+        getChartData();
+    }, [packReq]);
     const getInitData = async () => {
         let { data } = await getBmsAnalyticsInitData({ id });
-        setPackList(data?.data.packList);
+        setPackList(data?.data?.clusterPackList);
         setCellList(data?.data.cellList);
-        setVAndTExcelTitle(`${data?.data?.cellList[0]?.label}/${data?.data?.cellList[0]?.children[0]?.label}`)
+        setPackReq([data?.data?.clusterPackList?.[0]?.value]);
+        setPackValueBottom(data?.data?.clusterPackList?.[0]?.value)
+        console.log(data?.data?.clusterPackList?.[0]?.value,'data?.data?.clusterPackList?.[0]?.value');
+        getChartData();
+        setVAndTExcelTitle(`${data?.data?.cellList?.[0]?.label}/${data?.data?.cellList?.[0]?.children?.[0]?.label}`)
     }
     const getChartData = async () => {
         let dataTypeList = [];
         let dateList = [];
+        console.log(packReq,'packReq');
         if (way === 1) {
-            dataTypeList = packReq?.map(it => {
-                return it[1];
-            });
+            dataTypeList=packReq;
             dateList = [dateStr];
             if (dataTypeList.length > 3) {
                 message.warning(t('最多选择3个对比项'));
                 return
             }
         } else {
-            dataTypeList = [packReq[1]];
+            dataTypeList = [packReq];
             dateList = dateStr;
             if (dateList.length > 3) {
                 message.warning(t('最多选择3个对比项'));
@@ -89,9 +94,9 @@ function Com(props) {
             }
         }
         let { data } = await analyticsBmsDiffData({
-            id,
-            dataTypeList,
-            dateList
+            packValue:dataTypeList,
+            dateList,
+            type:way==1?2:1
         });
         let { tempInfo, volInfo } = data;
         handelData(volInfo, setOptionEchartVol, 1);
@@ -100,8 +105,8 @@ function Com(props) {
     }
     const getBottomChartData = async () => {
         let { data } = await analyticsBmsData({
-            id,
-            dataType: cellReq[1],
+            packValue:packValueBottom,
+            cellValue: cellReq,
             date: dateBottom.format('YYYY-MM-DD')
         });
         let excelArr = [];
@@ -216,13 +221,14 @@ function Com(props) {
         });
     }
     const changePack = (val, la) => {
-        setPackReq(val)
+        setPackReq(val);
+        console.log(val,la,'01010');
     }
     const changeWay = (val) => {
         setWay(val);
         setDate(dayjs(new Date()));
         setOptionEchartVol(baseOption);
-        val === 1 ? setPackReq([['0', '0-0']]) : setPackReq(['0', '0-0']);
+        val === 1 ? setPackReq([packList?.[0]?.value]) : setPackReq(packList?.[0]?.value);
         val === 1 ? setDateStr(dayjs(new Date()).format('YYYY-MM-DD')) : setDateStr([dayjs(new Date()).format('YYYY-MM-DD')]);
         getChartData();
     }
@@ -348,19 +354,18 @@ function Com(props) {
                     >
                     </Select>
                     <span >{t('电池pack')}:</span>
-                    <Cascader
+                    <Select
                         className={styles.margRL}
                         style={{ width: 240 }}
                         onChange={changePack}
                         options={packList}
-                        multiple={way === 1 ? true : false}
+                        mode={way === 1 ? 'multiple'  : null}
                         maxTagCount={1}
-                        showCheckedStrategy={SHOW_CHILD}
-                        defaultValue={[['0', '0-0']]}
-                        key={way}
+                        defaultValue={[packList?.[0]?.value]}
+                        key={packList?.[0]?.value}
                         allowClear={false}
                     >
-                    </Cascader>
+                    </Select>
                     <span >{t('对比日期')}:</span>
                     <DatePicker className={styles.margRL}
                         style={{ width: 240 }}
@@ -402,18 +407,29 @@ function Com(props) {
             </div>
             <div className={styles.advancedAnalytics}>
                 <div className={styles.searchHead}>
-                    <span >{t('PACK电芯')}:</span>
-                    <Cascader
+                    <span >{t('电池PACK')}:</span>
+                    <Select
                         className={styles.margRL}
                         style={{ width: 240 }}
-                        onChange={(val, arr) => { setCellReq(val); setVAndTExcelTitle(`${arr[0].label}/${arr[1].label}`); console.log(val, a); }}
-                        options={cellList}
-                        showCheckedStrategy={SHOW_CHILD}
-                        defaultValue={
-                            ['0-0', '0-0-0']
-                        }
+                        onChange={(val, arr) => { setPackValueBottom(val); setVAndTExcelTitle(); console.log(val, arr); }}
+                        options={packList}
+                        defaultValue={[packList?.[0]?.value]}
+                        key={packList?.[0]?.value}
                     >
-                    </Cascader>
+                    </Select>
+                    <span >{t('电芯')}:</span>
+                    <Select
+                        className={styles.margRL}
+                        style={{ width: 240 }}
+                        onChange={(val, arr) => { setCellReq(val); setVAndTExcelTitle(``); console.log(val, arr); }}
+                        options={cellList}
+                        defaultValue={
+                            cellList?.[0]?.value
+                        }
+                        key={cellList?.[0]?.value}
+
+                    >
+                    </Select>
                     <span >{t('对比日期')}:</span>
                     <DatePicker
                         className={styles.margRL}
