@@ -42,7 +42,7 @@ function Com(props) {
     const getPackData = async () => {
         let { data } = await getBurPackDetailInfo2({
             dtuId: id,
-            idxItem: getQueryString('type')=="14"?selectId:undefined,
+            // idxItem: getQueryString('type')=="14"?selectId:undefined,
         });
         setData(data.data)
     }
@@ -51,14 +51,13 @@ function Com(props) {
         fuseRight: '右侧熔断器温度',
         negativePoles: '负极极柱温度',
         positivePoles: '正极极柱温度',
-
     }
     const changePack = (val) => {
         setSelectId(val)
     }
     return (
         <div className={styles.pack} style={{width: '100%', height: 'auto', minHeight: '100%', padding: '40px 30px',  background: token.bgcColorB_l}}>
-            <Select
+            {/* <Select
                 className={styles.margRL}
                 style={{ width: 180 }}
                 options={options}
@@ -66,7 +65,7 @@ function Com(props) {
                 onChange={(val) => changePack(val)
                 }
             >
-            </Select>
+            </Select> */}
             <div className={styles.packContent}>
                 {data?.map((one, index) => {
                     return (<div className={styles.onePack}>

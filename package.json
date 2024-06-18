@@ -5,6 +5,7 @@
     "dev": "umi dev",
     "build:test": "cross-env UMI_ENV=test umi build",
     "build:prod": "cross-env UMI_ENV=prod umi build",
+    "build:preProd": "cross-env UMI_ENV=preProd umi build",
     "build:prod-out": "cross-env UMI_ENV=prod LOCATION=out umi build",
     "postinstall": "umi setup",
     "setup": "umi setup",

@@ -201,7 +201,6 @@ const Revenue = () => {
     return (
         <Space size={30} direction="vertical" style={{width: '100%', height:'100%', padding: 30}}>
             <Flex justify="center" align="center" gap={10}>
-                <span>{intl.formatMessage({id: '数据项'})}：</span>
                 <Form 
                     form={form} 
                     layout="inline"
@@ -213,7 +212,7 @@ const Revenue = () => {
                     }}
                 >
                     <Flex align="center">
-                        <Form.Item name={"currentPlantDevice"}>
+                        <Form.Item name={"currentPlantDevice"} label={intl.formatMessage({id: '设备'})}>
                             <Cascader 
                                 changeOnSelect
                                 options={plantDeviceList}
@@ -233,6 +232,7 @@ const Revenue = () => {
                                             <Tooltip title={intl.formatMessage({id: '日期范围最少选择5天最多选择12天！'})}>
                                                 <Form.Item 
                                                     name="dayTime"
+                                                    label={intl.formatMessage({id: '日期'})}
                                                 >
                                                     <DatePicker.RangePicker 
                                                         maxDate={dayjs(moment().subtract(1, 'day').format('YYYY-MM-DD'), 'YYYY-MM-DD')} 
@@ -244,7 +244,10 @@ const Revenue = () => {
                                         )
                                     }
                                     return (
-                                        <Form.Item name="yearTime">
+                                        <Form.Item 
+                                            name="yearTime"
+                                            label={intl.formatMessage({id: '日期'})}
+                                        >
                                             <DatePicker 
                                                 allowClear={false} 
                                                 maxDate={dayjs(moment().format('YYYY'))}
