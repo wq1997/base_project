@@ -73,7 +73,7 @@ const Index = ({ deviceInfo }) => {
             const res = await updateDeviceServer({
                 id: deviceInfo?.id,
                 name: values?.name,
-                warrantyPeriod: formatTime(values?.warrantyPeriod),
+                warrantyPeriod: values?.warrantyPeriod ? formatTime(values?.warrantyPeriod) : null,
             });
             if (res?.data?.code == 200) {
                 message.success(`更新成功`);
@@ -173,7 +173,7 @@ const Index = ({ deviceInfo }) => {
                 <Row>
                     <Col span={12}>
                         <Form.Item label="质保有效期" name="warrantyPeriod">
-                            <DatePicker format="YYYY-MM-DD" disabled={false} />
+                            <DatePicker format="YYYY-MM-DD" disabled={false} allowClear={false} />
                         </Form.Item>
                     </Col>
                     <Col span={12}>

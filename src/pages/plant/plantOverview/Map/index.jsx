@@ -39,84 +39,52 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
         plants.forEach((item, index) => {
             const marker = new AMap.Marker({
                 position: new AMap.LngLat(...item.position),
-                icon:require('../../../../assets/imges/point.png'),
+                // icon: require("../../../../assets/imges/point.png"),
+                icon: new AMap.Icon({
+                    image: require("../../../../assets/imges/point.gif"),
+                    size: new AMap.Size(64, 64), // 图片大小
+                    imageSize: new AMap.Size(64, 64), // 根据所设置的大小拉伸或压缩图片
+                }),
+                offset: new AMap.Pixel(-32, -32),
                 map: map,
                 //content: `<div class=${styles["custom-content-marker"]}><div class=${styles.item}></div></div>`,
             });
             marker.content = `
-            <div>
-                <div style="display:flex;align-items:center;margin-bottom:8px">
-                    <div
-                        style=" width: 0;
-                        height: 0;
-                        border-top: 8px solid transparent;
-                        border-left: 10px solid #49A2F8;
-                        border-bottom: 8px solid transparent;
-                        margin-right:10px
-                    "
-                    ></div>
-                    <span style="font-size:18px;color:#333">${item.label}</span>
+           <div class=${styles.infoWindow}>
+                <div class=${styles.header}>
+                    <div class=${styles.row}></div>
+                    <span class=${styles.plantName}>${item.label}</span>
                 </div>
-                <div
-                    style=" 
-                    width: 360px;
-                    height:130px;
-                    display: flex;
-                    position:relative"
-                >
-                            <div
-                style='padding: 4px 13px;
-                    background: rgba(0,0,0,.4);
-                    color: #fff;
-                     border-radius:0 3px 3px 0 ;
-                     position:absolute ;
-                     font-size:11px;
-                     display:${item?.photo ? "none" : "block"}
-                     '
-            >
-                默认
-            </div>
+                <div class=${styles.infoBox}>
+                    <div class=${styles.defalutText}>默认</div>
                     <img
-                        style=" 
-                     width: 200px;
-                     height: 100%;
-                     margin-right:15px;
-                     border-radius:5px
-                    "
-                        src='${item?.photo ? baseUrl + item?.photo : defalut}'
-                        alt=""
+                        class=${styles.plantImg}
+                        src="${item?.photo ? baseUrl + item?.photo : defalut}"
                     />
-                  
-                    <div
-                        style="
-                      font-size: 12px;
-                      display: flex;
-                      flex-direction: column;
-                      justify-content: space-between;"
-                    >
+                    <div class=${styles.info}>
                         <div>
-                            <span style="color: #666">电站地址：</span>
-                            <span style="color: #999"> ${item.address}</span>
+                            <span class=${styles.name}>电站地址：</span>
+                            <span class=${styles.value} > ${item.address}addressaddressaddressaddressaddressaddressaddress</span>
                         </div>
                         <div>
-                            <span style="color: #666">经度：</span>
-                            <span style="color: #999"> ${item.longitude}</span>
+                            <span class=${styles.name}">经度：</span>
+                            <span class=${styles.value}> ${item.longitude}</span>
                         </div>
                         <div>
-                            <span style="color: #666">纬度：</span>
-                            <span style="color: #999"> ${item.latitude}</span>
+                            <span class=${styles.name}>纬度：</span>
+                            <span class=${styles.value}> ${item.latitude}</span>
                         </div>
                         <div>
-                            <span style="color: #666">电站类型：</span>
-                            <span style="color: #999"> ${item.type}</span>
+                            <span class=${styles.name}>电站类型：</span>
+                            <span class=${styles.value}> ${item.type}</span>
                         </div>
                         <div>
-                            <span style="color: #666">并网时间：</span>
-                            <span style="color: #999"> ${item.gridTime}</span>
+                            <span class=${styles.name}>并网时间：</span>
+                            <span class=${styles.value}> ${item.gridTime}</span>
                         </div>
                         <div>
-                            <span style="color: #666">运行天数：</span>
-                            <span style="color: #999"> ${item.runningTime}</span>
+                            <span class=${styles.name}>运行天数：</span>
+                            <span class=${styles.value}> ${item.runningTime}</span>
                         </div>
                     </div>
                 </div>

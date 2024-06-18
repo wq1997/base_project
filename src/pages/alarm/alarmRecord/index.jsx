@@ -189,7 +189,6 @@ const Log = () => {
                 <SearchInput
                     label="告警名称"
                     placeholder="请输入告警名称"
-                    inputWidth={250}
                     value={alarmName}
                     onChange={value => {
                         alarmNameRef.current = value;

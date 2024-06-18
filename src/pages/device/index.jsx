@@ -259,7 +259,6 @@ const Log = () => {
                 <SearchInput
                     label="电站名称"
                     placeholder="请输入电站名称"
-                    inputWidth={250}
                     value={plantName}
                     onChange={value => {
                         plantNameRef.current = value;
@@ -279,7 +278,6 @@ const Log = () => {
                 <SearchInput
                     label="设备名称"
                     placeholder="请输入设备名称"
-                    inputWidth={250}
                     value={deviceName}
                     onChange={value => {
                         deviceNameRef.current = value;
@@ -289,7 +287,6 @@ const Log = () => {
                 <SearchInput
                     label="设备编码"
                     placeholder="请输入设备编码"
-                    inputWidth={250}
                     value={deviceCode}
                     onChange={value => {
                         deviceCodeRef.current = value;
@@ -310,7 +307,6 @@ const Log = () => {
                 <SearchInput
                     label="SN号"
                     placeholder="请输入SN号"
-                    inputWidth={250}
                     value={sn}
                     onChange={value => {
                         snRef.current = value;
@@ -321,7 +317,6 @@ const Log = () => {
                     label="设备型号"
                     placeholder="请选择设备型号"
                     type="select"
-                    inputWidth={250}
                     value={deviceModel}
                     options={deviceModelOptions}
                     onChange={value => {

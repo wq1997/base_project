@@ -13,6 +13,8 @@ const Log = () => {
     const deviceTypeRef = useRef();
     const [deviceType, setDeviceType] = useState();
     const [deviceTypeOptions, setDeviceTypeOptions] = useState([]);
+    const deviceCodeRef = useRef();
+    const [deviceCode, setDeviceCode] = useState();
     const deviceNameRef = useRef();
     const [deviceName, setDeviceName] = useState();
     const timeDimensionRef = useRef();
@@ -73,6 +75,7 @@ const Log = () => {
         const { current, pageSize } = paginationRef.current;
         const name = deviceNameRef.current;
         const type = deviceTypeRef?.current;
+        const code = deviceCodeRef?.current;
         const timePeriod = timeDimensionRef.current || "DAY";
         const time = timeRef.current;
         if (!time) return message.info("请先选择日期");
@@ -80,6 +83,7 @@ const Log = () => {
         const res = await getDeviceReportListServer({
             pageNo: current,
             pageSize,
+            code,
             name,
             type,
             time,
@@ -104,6 +108,8 @@ const Log = () => {
         setDeviceType();
         deviceNameRef.current = undefined;
         setDeviceName();
+        deviceCodeRef.current = undefined;
+        setDeviceCode();
         timeDimensionRef.current = undefined;
         setTimeDimension();
         timeRef.current = undefined;
@@ -127,6 +133,15 @@ const Log = () => {
                 }}
             >
                 <SearchInput
+                    label="设备编码"
+                    placeholder="请输入设备编码"
+                    value={deviceCode}
+                    onChange={value => {
+                        deviceCodeRef.current = value;
+                        setDeviceCode(value);
+                    }}
+                />
+                <SearchInput
                     label="设备类型"
                     value={deviceType}
                     type="select"
@@ -140,7 +155,6 @@ const Log = () => {
                 <SearchInput
                     label="设备名称"
                     placeholder="请输入设备名称"
-                    inputWidth={250}
                     value={deviceName}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
