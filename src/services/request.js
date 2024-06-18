@@ -30,12 +30,15 @@ instance.interceptors.response.use(response => {
         if (data.msg) {
             if(data.code&&data.code!=='ok'){
                 message.error(data.msg);
+                return
             }
             if((data.code==="ok"||data.msg==="ok")&&data.msg&&data.msg!=="ok"){
                 message.success(data.msg);
+                return
             }
             if(data.msg==="Please login！"){
                 logout();
+                return
             }
         }
         return Promise.resolve(response);

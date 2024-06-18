@@ -458,7 +458,7 @@ const Electricity = () => {
                                     },
                                 ]}
                                 scroll={{
-                                    y: 'calc(100vh - 820px)'
+                                    y: 'calc(50vh - 250px)'
                                 }}
                             />
                             :
