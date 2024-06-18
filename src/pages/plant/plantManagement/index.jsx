@@ -182,7 +182,6 @@ const Log = () => {
                 <SearchInput
                     label="所属公司"
                     placeholder="请输入所属公司"
-                    inputWidth={250}
                     value={company}
                     onChange={value => {
                         companyRef.current = value;
@@ -192,7 +191,6 @@ const Log = () => {
                 <SearchInput
                     label="电站名称"
                     placeholder="请输入电站名称"
-                    inputWidth={250}
                     value={plantName}
                     onChange={value => {
                         plantNameRef.current = value;
@@ -240,13 +238,11 @@ const Log = () => {
                     getList();
                 }}
                 title={() => (
-                    <Button
-                        type="primary"
-                        onClick={() => setAddPlantOpen(true)}
-                        style={{ float: "right", marginBottom: "8px" }}
-                    >
-                        新增电站
-                    </Button>
+                    <div style={{ textAlign: "right" }}>
+                        <Button type="primary" onClick={() => setAddPlantOpen(true)}>
+                            新增电站
+                        </Button>
+                    </div>
                 )}
             />
         </>

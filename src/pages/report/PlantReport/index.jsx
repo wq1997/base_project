@@ -103,7 +103,6 @@ const Log = () => {
                 <SearchInput
                     label="电站名称"
                     placeholder="请输入电站名称"
-                    inputWidth={250}
                     value={plantName}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;

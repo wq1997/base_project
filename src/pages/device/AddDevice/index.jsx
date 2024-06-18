@@ -105,7 +105,7 @@ const Device = ({ open, editId, onClose }) => {
     return (
         <Modal
             title="新增设备"
-            width={900}
+            width={950}
             confirmLoading={true}
             open={open}
             footer={null}
@@ -114,10 +114,10 @@ const Device = ({ open, editId, onClose }) => {
             <Form
                 name="basic"
                 labelCol={{
-                    span: 8,
+                    span: 10,
                 }}
                 wrapperCol={{
-                    span: 14,
+                    span: 12,
                 }}
                 form={form}
                 onFinish={onFinish}
@@ -269,13 +269,24 @@ const Device = ({ open, editId, onClose }) => {
                 <Row span={24}>
                     <Col span={12}>
                         <Form.Item
-                            label="有功功率调节上限（kW）"
+                            label="有功功率调节上限(kW)"
                             name="activePowerUpperLimit"
                             rules={[
                                 {
                                     required: true,
                                     message: "请输入有功功率调节上限",
                                 },
+                                ({ getFieldValue }) => ({
+                                    validator(_, value) {
+                                        if (
+                                            value &&
+                                            getFieldValue("activePowerLowerLimit") > value
+                                        ) {
+                                            return Promise.reject(new Error("上限不能小于下限"));
+                                        }
+                                        return Promise.resolve();
+                                    },
+                                }),
                             ]}
                         >
                             <InputNumber
@@ -287,13 +298,25 @@ const Device = ({ open, editId, onClose }) => {
                     </Col>
                     <Col span={12}>
                         <Form.Item
-                            label="有功功率调节下限（kW）"
+                            label="有功功率调节下限(kW)"
                             name="activePowerLowerLimit"
+                            dependencies={["password"]}
                             rules={[
                                 {
                                     required: true,
                                     message: "请输入有功功率调节下限",
                                 },
+                                ({ getFieldValue }) => ({
+                                    validator(_, value) {
+                                        if (
+                                            value &&
+                                            getFieldValue("activePowerUpperLimit") < value
+                                        ) {
+                                            return Promise.reject(new Error("下限不能大于上限"));
+                                        }
+                                        return Promise.resolve();
+                                    },
+                                }),
                             ]}
                         >
                             <InputNumber
@@ -308,13 +331,24 @@ const Device = ({ open, editId, onClose }) => {
                 <Row span={24}>
                     <Col span={12}>
                         <Form.Item
-                            label="无功功率调节上限（kVar）"
+                            label="无功功率调节上限(kVar)"
                             name="reactivePowerUpperLimit"
                             rules={[
                                 {
                                     required: true,
                                     message: "请输入无功功率调节上限",
                                 },
+                                ({ getFieldValue }) => ({
+                                    validator(_, value) {
+                                        if (
+                                            value &&
+                                            getFieldValue("reactivePowerLowerLimit") > value
+                                        ) {
+                                            return Promise.reject(new Error("上限不能小于下限"));
+                                        }
+                                        return Promise.resolve();
+                                    },
+                                }),
                             ]}
                         >
                             <InputNumber
@@ -326,13 +360,24 @@ const Device = ({ open, editId, onClose }) => {
                     </Col>
                     <Col span={12}>
                         <Form.Item
-                            label="无功功率调节下限（kVar）"
+                            label="无功功率调节下限(kVar)"
                             name="reactivePowerLowerLimit"
                             rules={[
                                 {
                                     required: true,
                                     message: "请输入无功功率调节下限",
                                 },
+                                ({ getFieldValue }) => ({
+                                    validator(_, value) {
+                                        if (
+                                            value &&
+                                            getFieldValue("reactivePowerUpperLimit") < value
+                                        ) {
+                                            return Promise.reject(new Error("下限不能大于上限"));
+                                        }
+                                        return Promise.resolve();
+                                    },
+                                }),
                             ]}
                         >
                             <InputNumber
@@ -393,7 +438,7 @@ const Device = ({ open, editId, onClose }) => {
                         span: 5,
                     }}
                 >
-                    <Space style={{ position: "relative", left: 8 }}>
+                    <Space style={{ position: "relative", left: 10 }}>
                         <Button onClick={() => onCancel(false)}>取消</Button>
                         <Button type="primary" htmlType="submit">
                             确定
