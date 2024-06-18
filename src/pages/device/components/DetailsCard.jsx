@@ -26,7 +26,7 @@ function Com({ data,table }) {
                 borderRadius:'8px',
                 backgroundColor: '#082B45'
             }}>
-            <div className='card_title' style={{ fontSize: '20px', marginBottom: '20px', marginLeft: 10 }}>
+            <div className='card_title' style={{ fontSize: '20px', marginBottom: '20px', marginLeft: 50 }}>
                 <Icon 
                     type='icon-xiangyou' 
                     style={{ 
@@ -48,7 +48,7 @@ function Com({ data,table }) {
                 {data.data.map(it => {
                     return (
                         <>
-                            <div style={{ marginBottom: '16px', marginTop: '16px', marginLeft: '20px'}}>
+                            <div style={{ marginBottom: '16px', marginTop: '16px', marginLeft: '60px'}}>
                                 {t(it.name)}{" "}:{" "}{t(it.value)}
                             </div>
                         </>
