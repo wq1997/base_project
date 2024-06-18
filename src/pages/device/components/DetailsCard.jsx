@@ -44,6 +44,7 @@ function Com({ data,table }) {
                 gridTemplateRows: height,
                 transition: 'all .3s',
                 overflow: 'hidden',
+                columnGap: 50
             }}>
                 {data.data.map(it => {
                     return (
