@@ -9,5 +9,6 @@
 .swc
 /test-dist
 /prod-dist
+/preProd-dist
 /.history
 .history

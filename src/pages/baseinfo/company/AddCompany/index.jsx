@@ -229,11 +229,11 @@ const Company = ({ open, editId, onClose }) => {
                         <Form.Item noStyle dependencies={['supportAutoExecute']}>
                             {({getFieldsValue}) => {
                                 const supportAutoExecute = getFieldsValue(['supportAutoExecute'])?.supportAutoExecute;
-                                if(supportAutoExecute){
-                                    form.setFieldsValue({
-                                        stationCode: ""
-                                    })
-                                }
+                                // if(supportAutoExecute){
+                                //     form.setFieldsValue({
+                                //         stationCode: ""
+                                //     })
+                                // }
                                 return (
                                     <Form.Item label="场站编号" name="stationCode">
                                         <Input placeholder="请输入采日云平台登记场站号" disabled={!supportAutoExecute}/>
@@ -249,11 +249,11 @@ const Company = ({ open, editId, onClose }) => {
                         <Form.Item noStyle dependencies={['supportAutoExecute']}>
                             {({getFieldsValue}) => {
                                 const supportAutoExecute = getFieldsValue(['supportAutoExecute'])?.supportAutoExecute;
-                                if(supportAutoExecute){
-                                    form.setFieldsValue({
-                                        autoConfirmTask: undefined
-                                    })
-                                }
+                                // if(supportAutoExecute){
+                                //     form.setFieldsValue({
+                                //         autoConfirmTask: undefined
+                                //     })
+                                // }
                                 return (
                                     <Form.Item
                                         label="是否默认确认任务"
