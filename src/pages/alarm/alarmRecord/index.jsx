@@ -132,6 +132,7 @@ const Log = () => {
     return (
         <>
             <Detail
+                activeKey={activeKey}
                 detailId={detailId}
                 onClose={() => {
                     setDetailId();
@@ -139,7 +140,16 @@ const Log = () => {
             />
             <Clear
                 clearId={clearId}
-                onClose={() => {
+                onClose={flag => {
+                    if (flag) {
+                        const { current } = paginationRef?.current;
+                        if (current != 1 && dataSource.length == 1) {
+                            (paginationRef.current.current = current - 1),
+                                setPagination({
+                                    current: current - 1,
+                                });
+                        }
+                    }
                     getList();
                     setClearId();
                 }}
@@ -232,7 +242,7 @@ const Log = () => {
                               },
                               {
                                   title: "结束时间",
-                                  dataIndex: "End",
+                                  dataIndex: "finishTime",
                               },
                           ]
                         : []),

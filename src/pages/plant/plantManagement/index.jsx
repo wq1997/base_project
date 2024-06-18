@@ -96,6 +96,13 @@ const Log = () => {
     const deletePlant = async id => {
         const res = await deletePlantByIdServer(id);
         if (res?.data?.code == 200) {
+            const { current } = paginationRef?.current;
+            if (current != 1 && dataSource.length == 1) {
+                (paginationRef.current.current = current - 1),
+                    setPagination({
+                        current: current - 1,
+                    });
+            }
             getList();
             message.info("删除成功");
         } else {

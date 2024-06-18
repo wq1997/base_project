@@ -190,7 +190,11 @@ const Index = ({ activePlant }) => {
                     >
                         当日发电量(截止目前)：{sum}度
                     </span>
-                    <ReactECharts option={options} style={{ width: "100%", height: "100%" }} />
+                    <ReactECharts
+                        option={options}
+                        notMerge={true}
+                        style={{ width: "100%", height: "100%" }}
+                    />
                 </div>
             }
         />

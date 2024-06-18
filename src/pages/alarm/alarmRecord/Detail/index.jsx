@@ -26,25 +26,15 @@ const baseItems = [
         label: "电站名称",
         key: "plantName",
     },
-    {
-        label: "发生时间",
-        key: "createTime",
-    },
 ];
 
-const Company = ({ detailId, onClose }) => {
-    const [items, setItems] = useState();
+const Company = ({ activeKey, detailId, onClose }) => {
+    const [detailInfo, setDetailInfo] = useState([]);
+
     const getDetail = async () => {
         const res = await getAlarmInfoServer(detailId);
         if (res?.data?.code == 200) {
-            setItems(
-                baseItems?.map(item => {
-                    return {
-                        ...item,
-                        children: res?.data?.data?.[item.key],
-                    };
-                })
-            );
+            setDetailInfo(res?.data?.data);
         }
     };
 
@@ -60,7 +50,44 @@ const Company = ({ detailId, onClose }) => {
             onOk={() => onClose()}
             onCancel={() => onClose()}
         >
-            <Descriptions title="告警详情" items={items} column={2} />
+            <Descriptions title="告警详情" column={2}>
+                {[
+                    ...baseItems,
+                    ...(activeKey == "history"
+                        ? [
+                              {
+                                  label: "清除时间",
+                                  key: "recoverTime",
+                              },
+                              {
+                                  label: "发生时间",
+                                  key: "createTime",
+                              },
+                              {
+                                  label: "结束时间",
+                                  key: "finishTime",
+                              },
+                              {
+                                  label: "处理意见",
+                                  key: "suggestion",
+                              },
+                              {
+                                  label: "维护经验",
+                                  key: "experience",
+                              },
+                          ]
+                        : [
+                              {
+                                  label: "发生时间",
+                                  key: "createTime",
+                              },
+                          ]),
+                ]?.map(item => (
+                    <Descriptions.Item label={item?.label}>
+                        {detailInfo[item?.key]}
+                    </Descriptions.Item>
+                ))}
+            </Descriptions>
         </Modal>
     );
 };

@@ -9,3 +9,4 @@ export const TELPHONE_REG = new RegExp(
 );
 export const EMAIL_REG = new RegExp(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(.[a-zA-Z0-9_-]+)+$/);
 export const ALL_SPACE_REG = new RegExp(/\S/);
+export const PASSWORD_RGE = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9a-zA-Z-`=\[\];',.~!@#$%^&*()_+|{}:"?]{8,16}$/;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { SearchInput } from "@/components";
-import { Button, Space, Table, Popconfirm, notification } from "antd";
+import { Button, Space, Table, Popconfirm, notification, message } from "antd";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import AddDevice from "./AddDevice";
 import Detail from "./Detail";
@@ -123,6 +123,13 @@ const Log = () => {
     const deleteDevice = async id => {
         const res = await deleteDeviceServer(id);
         if (res?.data?.code == 200) {
+            const { current } = paginationRef?.current;
+            if (current != 1 && dataSource.length == 1) {
+                (paginationRef.current.current = current - 1),
+                    setPagination({
+                        current: current - 1,
+                    });
+            }
             getList();
             message.info("删除成功");
         } else {

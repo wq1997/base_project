@@ -64,10 +64,10 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
                     <div class=${styles.info}>
                         <div>
                             <span class=${styles.name}>电站地址：</span>
-                            <span class=${styles.value} > ${item.address}addressaddressaddressaddressaddressaddressaddress</span>
+                            <span class=${styles.value} > ${item.address}</span>
                         </div>
                         <div>
-                            <span class=${styles.name}">经度：</span>
+                            <span class=${styles.name}>经度：</span>
                             <span class=${styles.value}> ${item.longitude}</span>
                         </div>
                         <div>

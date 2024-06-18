@@ -208,6 +208,10 @@ const Log = () => {
                 dataSource={dataSource}
                 columns={columns}
                 pagination={pagination}
+                onChange={pagination => {
+                    paginationRef.current = pagination;
+                    getList();
+                }}
                 title={() => (
                     <div
                         style={{

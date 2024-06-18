@@ -1,11 +1,9 @@
 import React from "react";
 import { Button, Checkbox, Form, Input, message } from "antd";
 import { changePassword as changePasswordServer } from "@/services/user";
+import { PASSWORD_RGE } from "@/utils/constants";
 
 const onFinish = async values => {
-    if (values?.newPassword != values?.confirmPassword) {
-        return message.info("两次密码不一致");
-    }
     const res = await changePasswordServer(values);
     if (res?.data?.code == 200) {
         message.info("修改成功");
@@ -33,7 +31,6 @@ const Index = () => (
         onFinish={onFinish}
         autoComplete="off"
     >
-
         <Form.Item
             label="旧密码"
             name="oldPassword"
@@ -55,6 +52,10 @@ const Index = () => (
                     required: true,
                     message: "请输入新密码",
                 },
+                {
+                    pattern: PASSWORD_RGE,
+                    message: "密码长度为8-16位，至少2种字符",
+                },
             ]}
         >
             <Input.Password />
@@ -63,11 +64,20 @@ const Index = () => (
         <Form.Item
             label="确认密码"
             name="confirmPassword"
+            dependencies={["newPassword"]}
             rules={[
                 {
                     required: true,
                     message: "请确认密码",
                 },
+                ({ getFieldValue }) => ({
+                    validator(_, value) {
+                        if (value && getFieldValue("newPassword") != value) {
+                            return Promise.reject(new Error("两次密码不一致"));
+                        }
+                        return Promise.resolve();
+                    },
+                }),
             ]}
         >
             <Input.Password />

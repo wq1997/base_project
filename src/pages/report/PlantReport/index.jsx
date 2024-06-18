@@ -89,9 +89,9 @@ const Log = () => {
         });
     };
 
-    useEffect(()=>{
-        getList()
-    },[])
+    useEffect(() => {
+        getList();
+    }, []);
 
     return (
         <>
@@ -156,6 +156,10 @@ const Log = () => {
                 dataSource={dataSource}
                 columns={columns}
                 pagination={pagination}
+                onChange={pagination => {
+                    paginationRef.current = pagination;
+                    getList();
+                }}
                 title={() => (
                     <div
                         style={{

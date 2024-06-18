@@ -97,17 +97,7 @@ const Device = ({ isPowerOn, open, deviceId, onClose }) => {
                     <Input placeholder="请输入设备型号" />
                 </Form.Item>
 
-                <Form.Item
-                    label="质保有效期"
-                    name="warrantyPeriod"
-                    htmlFor={null}
-                    rules={[
-                        {
-                            required: true,
-                            message: "请选择质保有效期",
-                        },
-                    ]}
-                >
+                <Form.Item label="质保有效期" name="warrantyPeriod" htmlFor={null}>
                     <DatePicker format="YYYY-MM-DD" />
                 </Form.Item>
 

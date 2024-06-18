@@ -25,15 +25,15 @@ const Index = ({ clearId, onClose }) => {
         });
         if (res?.data?.code == 200) {
             message.success(`清除成功`);
-            onCancel();
+            onCancel(true);
         } else {
             message.info(res?.data?.description);
         }
     };
 
-    const onCancel = () => {
+    const onCancel = flag => {
         form.resetFields();
-        onClose();
+        onClose(flag);
     };
 
     return (
