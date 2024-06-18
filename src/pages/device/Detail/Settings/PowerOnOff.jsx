@@ -27,7 +27,7 @@ const Device = ({ isPowerOn, open, deviceId, onClose }) => {
         });
         if (res?.data?.code == 200) {
             message.success(`设置成功`);
-            onCancel(true);
+            onCancel();
         } else {
             message.info(res?.data?.description);
         }

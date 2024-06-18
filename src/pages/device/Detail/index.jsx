@@ -6,7 +6,7 @@ import HistoryInfo from "./HistoryInfo";
 import Settings from "./Settings";
 import BaseData from "./BaseData";
 
-const Index = ({ detailId, onClose }) => {
+const Index = ({ num, detailId, onClose }) => {
     const [deviceInfo, setDeviceInfo] = useState();
 
     const getDetail = async () => {
@@ -50,12 +50,15 @@ const Index = ({ detailId, onClose }) => {
         },
     ];
 
+    useEffect(() => {
+        getDetail();
+    }, [num]);
+
     return (
         <Drawer
             title="设备详情"
             width={"calc(100% - 240px)"}
             open={Boolean(detailId)}
-            destroyOnClose={true}
             onClose={() => onClose()}
         >
             <Descriptions title={`设备名称：${deviceInfo?.name}`} />

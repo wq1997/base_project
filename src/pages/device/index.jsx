@@ -11,6 +11,7 @@ import {
     getDeviceType as getDeviceTypeServer,
     getDeviceModel as getDeviceModelServer,
     deleteDevice as deleteDeviceServer,
+    getDeviceInfo as getDeviceInfoServer,
 } from "@/services/device";
 import "./index.less";
 import { connectSocket } from "@/utils/subscribe";
@@ -28,7 +29,7 @@ const Log = () => {
     const [loading, setLoading] = useState(false);
     const [addDeviceOpen, setAddDeviceOpen] = useState(false);
     const [editId, setEditId] = useState();
-
+    const [num, setNum] = useState(0);
     const plantNameRef = useRef();
     const [plantName, setPlantName] = useState();
     const communicationStatusRef = useRef();
@@ -242,6 +243,9 @@ const Log = () => {
                         message: "执行结果",
                         description: res.msg,
                     });
+                    if (res.code === "ok") {
+                        setNum(num + 1);
+                    }
                 }
             }
         );
@@ -251,6 +255,7 @@ const Log = () => {
         <>
             <AddDevice open={addDeviceOpen} onClose={resFlag => onAddDeviceClose(resFlag)} />
             <Detail
+                num={num}
                 detailId={detailId}
                 onClose={() => {
                     setDetailId();

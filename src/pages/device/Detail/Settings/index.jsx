@@ -69,57 +69,50 @@ const Index = ({ deviceInfo, getDetail }) => {
                 deviceId={deviceInfo?.id}
                 open={powerOnOffOpen}
                 isPowerOn={isPowerOn}
-                onClose={flag => {
+                onClose={() => {
                     setPowerOnOffOpen(false);
-                    flag && getDetail();
                 }}
             />
             <ChangeMachine
                 deviceId={deviceInfo?.id}
                 open={changeMachineOpen}
-                onClose={flag => {
+                onClose={() => {
                     setChangeMachineOpen(false);
-                    flag && getDetail();
                 }}
             />
             <DCArcFaultClear
                 deviceId={deviceInfo?.id}
                 open={dCArcFaultClearOpen}
-                onClose={flag => {
+                onClose={() => {
                     setDCArcFaultClearOpen(false);
-                    flag && getDetail();
                 }}
             />
             <FaultReset
                 deviceId={deviceInfo?.id}
                 open={faultResetOpen}
-                onClose={flag => {
+                onClose={() => {
                     setFaultResetOpen(false);
-                    flag && getDetail();
                 }}
             />
             <ActivePowerAdjust
                 deviceInfo={deviceInfo}
                 open={activePowerAdjustOpen}
-                onClose={flag => {
+                onClose={() => {
                     setActivePowerAdjustOpen(false);
-                    flag && getDetail();
                 }}
             />
             <ReactivePowerAdjust
                 deviceInfo={deviceInfo}
                 open={reactivePowerAdjustOpen}
-                onClose={flag => {
+                onClose={() => {
                     setReactivePowerAdjustOpen(false);
-                    flag && getDetail();
                 }}
             />
             <PowerFactor
                 deviceInfo={deviceInfo}
                 open={powerFactorOpen}
-                onClose={flag => {
+                onClose={() => {
                     setPowerFactorOpen(false);
-                    flag && getDetail();
                 }}
             />
             <Descriptions title="设备配置" column={1}>

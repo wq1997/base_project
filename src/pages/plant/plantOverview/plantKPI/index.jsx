@@ -4,16 +4,16 @@ import { DownOutlined } from "@ant-design/icons";
 import styles from "./index.less";
 import power from "../../../../../public/icons/power.svg";
 import dayGeneration from "../../../../../public/icons/dayGeneration.svg";
-import dayIncome from "../../../../../public/icons/dayIncome.svg";
+import monthGeneration from "../../../../../public/icons/monthGeneration.svg";
 import cumulativeGeneration from "../../../../../public/icons/cumulativeGeneration.svg";
-import capacity from "../../../../../public/icons/capacity.svg";
+import yearGeneration from "../../../../../public/icons/yearGeneration.svg";
 import Card from "../Card";
 
 const Index = ({ data }) => {
     const [list, setList] = useState([
         { name: "当日发电量", pic: dayGeneration, key: "dailyGeneration", value: "", unit: "度" },
-        { name: "当月发电量", pic: dayGeneration, key: "monthGeneration", value: "", unit: "度" },
-        { name: "当年发电量", pic: dayGeneration, key: "yearGeneration", value: "", unit: "度" },
+        { name: "当月发电量", pic: monthGeneration, key: "monthGeneration", value: "", unit: "度" },
+        { name: "当年发电量", pic: yearGeneration, key: "yearGeneration", value: "", unit: "度" },
         {
             name: "累计发电量",
             pic: cumulativeGeneration,
