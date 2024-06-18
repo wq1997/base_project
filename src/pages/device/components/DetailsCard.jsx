@@ -50,7 +50,7 @@ function Com({ data,table }) {
                     return (
                         <>
                             <div style={{ marginBottom: '16px', marginTop: '16px', marginLeft: '60px'}}>
-                                {t(it.name)}{" "}:{" "}{t(it.value)}
+                                {t(it.name)}{" "}: {" "}{t(it.value)}
                             </div>
                         </>
                     )
