@@ -1,5 +1,5 @@
 import { ConfigProvider, theme as antdTheme } from "antd";
-import { Outlet, useSelector } from "umi";
+import { Outlet, useSelector, useLocation, history } from "umi";
 import { ThemeEnum, GlobalWrapperCss } from "@/components";
 import en_US from 'antd/locale/en_US';
 import zh_CN from 'antd/locale/zh_CN';
@@ -19,7 +19,12 @@ const localeEnum = {
 }
 
 const App = () => {
+    const location = useLocation();
     const { theme, locale } = useSelector(state => state.global);
+
+    if(location?.pathname==="/"){
+        history.push('/login');
+    }
 
     useEffect(() => {
         global.overtime = window.setInterval(OvertimeLogin(), 1000);
