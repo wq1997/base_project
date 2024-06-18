@@ -232,7 +232,15 @@ function Com({deviceVersion}) {
     }, [])
 
     return (
-        <div className={styles.details} style={{width: '100%', height: 'auto', minHeight: '100%', padding: '40px 30px',  background: token.bgcColorB_l}}>
+        <div 
+            className={styles.details} 
+            style={{
+                width: '100%', 
+                height: 'auto', 
+                minHeight: '100%', 
+                padding: '40px 85px',  
+                background: token.bgcColorB_l
+            }}>
             <DetalisCard data={pcsData} />
             <DetalisCard data={bmsData} />
             <DetalisCard data={measureMeterData} />
