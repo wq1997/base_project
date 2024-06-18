@@ -64,6 +64,9 @@ const Electricity = () => {
     const initOption = async () => {
         const values = await form.validateFields();
         const { timeType } = values;
+        let lMax = Number(Math.max(...dataSource?.map(item => item.dayChargeEnergy)||[]));
+        lMax = Math.ceil(lMax / 5) * 5 || 100;
+        const lInterval = lMax / 5;
         const option = {
             tooltip: {
                 trigger: 'axis',
@@ -112,6 +115,9 @@ const Electricity = () => {
                             color: '#233e64'
                         }
                     },
+                    min: 0,
+                    max: lMax,
+                    interval: lInterval
                 },
                 {
                     name: `${intl.formatMessage({id: '充放电效率'})}(%)`,
@@ -131,6 +137,9 @@ const Electricity = () => {
                             color: '#233e64'
                         }
                     },
+                    min:0,
+                    max: 100,
+                    splitNumber: 5
                 }
             ],
             series: [
