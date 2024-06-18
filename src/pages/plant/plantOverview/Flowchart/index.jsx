@@ -59,6 +59,10 @@ const Index = ({ activePlantName, data }) => {
                 style={{
                     width: "100%",
                     height: "100%",
+                    position: 'absolute',
+                    top: '65%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)'
                 }}
             >
                 <SchematicDiagram dataSource={{ totalActivePower: 1, power: -1, loadPower: 1 }} />
