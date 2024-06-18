@@ -58,6 +58,9 @@ const Index = ({ clearId, onClose }) => {
                 autoComplete="off"
             >
                 <Form.Item
+                    style={{
+                        marginBottom: "40px",
+                    }}
                     label="处理意见"
                     name="experience"
                     rules={[
@@ -71,10 +74,13 @@ const Index = ({ clearId, onClose }) => {
                         },
                     ]}
                 >
-                    <Input.TextArea placeholder="请输入处理意见" />
+                    <Input.TextArea placeholder="请输入处理意见" maxLength={50} showCount />
                 </Form.Item>
 
                 <Form.Item
+                    style={{
+                        marginBottom: "40px",
+                    }}
                     label="维护经验"
                     name="suggestion"
                     rules={[
@@ -84,7 +90,7 @@ const Index = ({ clearId, onClose }) => {
                         },
                     ]}
                 >
-                    <Input.TextArea placeholder="请输入维护经验" />
+                    <Input.TextArea placeholder="请输入维护经验" maxLength={500} showCount />
                 </Form.Item>
 
                 <Form.Item

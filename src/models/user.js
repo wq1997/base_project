@@ -1,22 +1,22 @@
 import { login } from "@/services/user";
 import { history } from "umi";
+import { getUserInfo } from "@/services/user";
 
 export default {
     namespace: "user",
 
     state: {
-        user: null,
+        userInfo: null,
     },
 
     effects: {
         *queryUser({ payload }, { call, put }) {
-            const userInfo = yield call(login, { username: "wangqing", password: "123456" });
-            console.log("queryUser", userInfo);
-            if (userInfo) {
+            const res = yield call(getUserInfo);
+            if (res?.data?.code == 200) {
                 yield put({
                     type: "updateState",
                     payload: {
-                        user: userInfo,
+                        userInfo: res?.data?.data,
                     },
                 });
             }

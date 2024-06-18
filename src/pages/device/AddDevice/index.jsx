@@ -424,7 +424,8 @@ const Device = ({ open, editId, onClose }) => {
                                 marginTop: "5px",
                                 color: "#999",
                                 position: "relative",
-                                left: "140px",
+                                left: "188px",
+                                top: "-15px",
                             }}
                         >
                             (-1.000 ~ -0.800] U [0.800 ~ 1.000]

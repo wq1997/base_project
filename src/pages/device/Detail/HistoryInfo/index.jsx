@@ -6,7 +6,7 @@ import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts";
 import dayjs from "dayjs";
 
-const Index = ({ signalPointTypes }) => {
+const Index = ({ deviceInfo, signalPointTypes }) => {
     const dateRef = useRef();
     const [date, setDate] = useState();
     const signalPointRef = useRef();
@@ -73,6 +73,8 @@ const Index = ({ signalPointTypes }) => {
             series: [
                 ...seriesData?.map(item => ({
                     ...item,
+                    smooth: true,
+                    showSymbol: false,
                     type: "line",
                 })),
             ],
@@ -83,7 +85,7 @@ const Index = ({ signalPointTypes }) => {
         if (!date) return message.info("请选择日期");
         if (!signalPoint?.length) return message.info("请选择信号点");
         const res = await getSignalChartServer({
-            id: 1,
+            id: deviceInfo?.id,
             date,
             types: signalPoint?.map(item => JSON.parse(item)[0]),
         });

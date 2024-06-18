@@ -47,6 +47,11 @@ const baseItems = [
         key: "latitude",
     },
     {
+        label: "电站简介",
+        key: "description",
+        span: 2,
+    },
+    {
         label: "电站logo",
         key: "logo",
     },

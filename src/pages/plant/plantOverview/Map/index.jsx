@@ -25,6 +25,7 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
             // ],
         });
         map.on("complete", async () => {
+            //map.setMapStyle("amap://styles/whitesmoke");
             const infoWindow = new AMap.InfoWindow({ offset: new AMap.Pixel(0, -30) });
             setMap(map);
             addMarkers(map, infoWindow, plants);

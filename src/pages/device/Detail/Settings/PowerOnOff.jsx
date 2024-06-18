@@ -22,7 +22,7 @@ const Device = ({ isPowerOn, open, deviceId, onClose }) => {
     const onFinish = async values => {
         const res = await setDeviceServer({
             id: deviceId,
-            deviceConfig: "POWER_ON",
+            deviceConfig: isPowerOn ? "POWER_OFF" : "POWER_ON",
             ...values,
         });
         if (res?.data?.code == 200) {

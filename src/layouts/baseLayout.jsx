@@ -1,4 +1,4 @@
-import { Outlet, useDispatch } from "umi";
+import { Outlet, useDispatch, useSelector } from "umi";
 import { Layout, Row, Avatar, Typography, Dropdown, Space, Image } from "antd";
 import { PROJECT_NAME } from "@/utils/constants";
 import MyMenu from "@/permissions/menu";
@@ -13,18 +13,13 @@ const { Header, Sider, Content } = Layout;
 const BaseLayout = () => {
     const Icon = useIcon();
     const dispatch = useDispatch();
-    const [username, setUsername] = useState();
-
-    const getUserInfo = async () => {
-        const res = await getUserInfoServer();
-        if (res?.data?.code == 200) {
-            setUsername(res?.data?.data?.nickName);
-        }
-    };
+    const { userInfo } = useSelector(state => state.user);
 
     useEffect(() => {
         document.title = PROJECT_NAME;
-        getUserInfo();
+        dispatch({
+            type: "user/queryUser",
+        });
     }, []);
 
     return (
@@ -72,7 +67,9 @@ const BaseLayout = () => {
                             >
                                 CR
                             </Avatar>
-                            <span style={{ fontSize: 20, marginLeft: 10 }}> {username}</span>
+                            <span style={{ fontSize: 20, marginLeft: 10 }}>
+                                {userInfo?.nickName}
+                            </span>
                         </Row>
                     </Dropdown>
                 </Header>

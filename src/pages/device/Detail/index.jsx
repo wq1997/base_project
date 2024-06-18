@@ -41,7 +41,12 @@ const Index = ({ detailId, onClose }) => {
             key: "2",
             label: "历史信息",
             children: "Content of Tab Pane 2",
-            children: <HistoryInfo signalPointTypes={deviceInfo?.signalPointTypes} />,
+            children: (
+                <HistoryInfo
+                    deviceInfo={deviceInfo}
+                    signalPointTypes={deviceInfo?.signalPointTypes}
+                />
+            ),
         },
     ];
 
