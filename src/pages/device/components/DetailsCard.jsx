@@ -18,9 +18,22 @@ function Com({ data,table }) {
         return msg
     }
     return (
-        <div className='card_main' style={{padding:'16px 20px',marginBottom:'8px',borderRadius:'8px'}}>
+        <div 
+            className='card_main' 
+            style={{
+                padding:'16px 20px',
+                marginBottom:'8px',
+                borderRadius:'8px',
+                backgroundColor: '#082B45'
+            }}>
             <div className='card_title' style={{ fontSize: '20px', marginBottom: '20px' }}>
-                <Icon type='icon-xiangyou' style={{ cursor: 'pointer',marginRight:'6px'}}></Icon>
+                <Icon 
+                    type='icon-xiangyou' 
+                    style={{ 
+                        cursor: 'pointer',
+                        marginRight:'6px',
+                    }}
+                />
                 {t(data.title)}
             </div>
             <div className='card_contain' style={{
