@@ -11,24 +11,24 @@ const Index = ({ deviceInfo }) => {
     const [form] = Form.useForm();
     const [realData, setRealData] = useState([
         { label: "设备状态", key: "inverterStatus", value: "" },
-        { label: "当日发电量", key: "dailyGeneration", value: "" },
-        { label: "累计发电量", key: "totalGeneration", value: "" },
-        { label: "功率因数", key: "powerFactor", value: "" },
-        { label: "有功功率", key: "activePower", value: "" },
-        { label: "无功功率", key: "reactivePower", value: "" },
-        { label: "逆变器额定功率", key: "ratedPower", value: "" },
-        { label: "电网频率", key: "gridFrequency", value: "" },
+        { label: "当日发电量(kWh)", key: "dailyGeneration", value: "" },
+        { label: "累计发电量(kWh)", key: "totalGeneration", value: "" },
+        { label: "功率因数", key: "powerFactor" },
+        { label: "有功功率(kW)", key: "activePower", value: "" },
+        { label: "无功功率(kVar)", key: "reactivePower", value: "" },
+        { label: "逆变器额定功率(kW)", key: "ratedPower", value: "" },
+        { label: "电网频率(Hz)", key: "gridFrequency", value: "" },
         { label: "输出方式", key: "outputMode", value: "" },
-        { label: "电网A相电流", key: "gridCurrentA", value: "" },
-        { label: "电网B相电流", key: "gridCurrentB", value: "" },
-        { label: "电网C相电流", key: "gridCurrentC", value: "" },
-        { label: "电网A相电压", key: "gridVoltageA", value: "" },
-        { label: "电网B相电压", key: "gridVoltageB	", value: "" },
-        { label: "电网C相电压", key: "gridVoltageC", value: "" },
+        { label: "电网A相电流(A)", key: "gridCurrentA", value: "" },
+        { label: "电网B相电流(A)", key: "gridCurrentB", value: "" },
+        { label: "电网C相电流(A)", key: "gridCurrentC", value: "" },
+        { label: "电网A相电压(V)", key: "gridVoltageA", value: "" },
+        { label: "电网B相电压(V)", key: "gridVoltageB	", value: "" },
+        { label: "电网C相电压(V)", key: "gridVoltageC", value: "" },
         { label: "开机时间", key: "inverterStartTime", value: "" },
         { label: "关机时间", key: "inverterStopTime", value: "" },
-        { label: "绝缘阻抗值", key: "insulationResistance", value: "" },
-        { label: "内部温度", key: "internalTemperature", value: "" },
+        { label: "绝缘阻抗值(MΩ)", key: "insulationResistance", value: "" },
+        { label: "内部温度(°C)", key: "internalTemperature", value: "" },
     ]);
     const [dataSource, setDataSource] = useState([]);
 
@@ -207,7 +207,9 @@ const Index = ({ deviceInfo }) => {
                     </div>
                 </Descriptions.Item>
                 {realData?.map(item => (
-                    <Descriptions.Item label={item.label}>{item.value}</Descriptions.Item>
+                    <Descriptions.Item label={item.label}>
+                        <span> {item.value}</span>
+                    </Descriptions.Item>
                 ))}
             </Descriptions>
         </>

@@ -9,4 +9,15 @@ export const TELPHONE_REG = new RegExp(
 );
 export const EMAIL_REG = new RegExp(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(.[a-zA-Z0-9_-]+)+$/);
 export const ALL_SPACE_REG = new RegExp(/\S/);
-export const PASSWORD_RGE = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9a-zA-Z-`=\[\];',.~!@#$%^&*()_+|{}:"?]{8,16}$/;
+export const PASSWORD_RGE =
+    /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9a-zA-Z-`=\[\];',.~!@#$%^&*()_+|{}:"?]{8,16}$/;
+/*  
+    8001->开机
+    8002->关机
+    8004->直流电弧故障清除
+    8005->故障复位
+    8006->有功调节
+    8007->无功调节
+    8008->功率因数调节
+*/
+export const COMMANDIDS = [8001, 8002, 8003, 8004, 8005, 8006, 8007, 8008];

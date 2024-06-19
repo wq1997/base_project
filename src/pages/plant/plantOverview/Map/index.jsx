@@ -40,13 +40,13 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
         plants.forEach((item, index) => {
             const marker = new AMap.Marker({
                 position: new AMap.LngLat(...item.position),
-                // icon: require("../../../../assets/imges/point.png"),
-                icon: new AMap.Icon({
-                    image: require("../../../../assets/imges/point.gif"),
-                    size: new AMap.Size(64, 64), // 图片大小
-                    imageSize: new AMap.Size(64, 64), // 根据所设置的大小拉伸或压缩图片
-                }),
-                offset: new AMap.Pixel(-32, -32),
+                icon: require("../../../../assets/imges/point.png"),
+                // icon: new AMap.Icon({
+                //     image: require("../../../../assets/imges/point.gif"),
+                //     size: new AMap.Size(64, 64), // 图片大小
+                //     imageSize: new AMap.Size(64, 64), // 根据所设置的大小拉伸或压缩图片
+                // }),
+                // offset: new AMap.Pixel(-32, -32),
                 map: map,
                 //content: `<div class=${styles["custom-content-marker"]}><div class=${styles.item}></div></div>`,
             });
@@ -92,6 +92,7 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
             </div>
             `;
             marker.on("click", markerClick);
+            //marker.setAnimation('AMAP_ANIMATION_BOUNCE');
             // marker.emit("click", { target: marker });
         });
     };

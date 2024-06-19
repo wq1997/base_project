@@ -11,15 +11,15 @@ import Card from "../Card";
 
 const Index = ({ data }) => {
     const [list, setList] = useState([
-        { name: "当日发电量", pic: dayGeneration, key: "dailyGeneration", value: "", unit: "度" },
-        { name: "当月发电量", pic: monthGeneration, key: "monthGeneration", value: "", unit: "度" },
-        { name: "当年发电量", pic: yearGeneration, key: "yearGeneration", value: "", unit: "度" },
+        { name: "当日发电量", pic: dayGeneration, key: "dailyGeneration", value: "", unit: "kWh" },
+        { name: "当月发电量", pic: monthGeneration, key: "monthGeneration", value: "", unit: "kWh" },
+        { name: "当年发电量", pic: yearGeneration, key: "yearGeneration", value: "", unit: "kWh" },
         {
             name: "累计发电量",
             pic: cumulativeGeneration,
             key: "totalGeneration",
             value: "",
-            unit: "度",
+            unit: "kWh",
         },
         { name: "当前功率", pic: power, key: "currentPower", value: "", unit: "kW" },
         { name: "逆变器额定功率", pic: dayGeneration, key: "ratedPower", value: "", unit: "kW" },

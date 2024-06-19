@@ -13,6 +13,7 @@ import Map from "./Map";
 import { getPlantNames as getPlantNamesServer } from "@/services/plant";
 import { getPlanStatistics as getPlanStatisticsServer } from "@/services/overview";
 import { useEffect, useState } from "react";
+import plant from "../../../../public/icons/plant.svg";
 
 const Index = () => {
     const [activePlant, setActivePlant] = useState();

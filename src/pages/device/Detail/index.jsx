@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Tabs, Drawer, Descriptions } from "antd";
+import { Tabs, Drawer, Descriptions, Spin } from "antd";
 import { getDeviceInfo as getDeviceInfoServer } from "@/services/device";
 import "./index.less";
 import HistoryInfo from "./HistoryInfo";
 import Settings from "./Settings";
 import BaseData from "./BaseData";
 
-const Index = ({ num, detailId, onClose }) => {
+const Index = ({ connectLoading, tip, num, detailId, onClose }) => {
     const [deviceInfo, setDeviceInfo] = useState();
 
     const getDetail = async () => {
@@ -32,7 +32,9 @@ const Index = ({ num, detailId, onClose }) => {
             label: "详细信息",
             children: (
                 <>
-                    <Settings deviceInfo={deviceInfo} getDetail={getDetail} />
+                    <Spin spinning={connectLoading} tip={tip}>
+                        <Settings deviceInfo={deviceInfo} getDetail={getDetail} />
+                    </Spin>
                     <BaseData deviceInfo={deviceInfo} />
                 </>
             ),

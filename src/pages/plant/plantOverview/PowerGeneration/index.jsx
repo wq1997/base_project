@@ -39,7 +39,7 @@ const Index = ({ activePlant }) => {
     const getOptions = data => {
         setOptions({
             legend: {
-                data: ["光伏发电功率"],
+                data: [`光伏发电${type == "DAY" ? "功率" : "量"}`],
                 textStyle: {
                     color: "#999",
                     fontSize: 12,
@@ -74,7 +74,7 @@ const Index = ({ activePlant }) => {
             },
             yAxis: {
                 type: "value",
-                name: "kW",
+                name: type == "DAY" ? "kW" : "kWh",
                 axisLabel: {
                     color: "#999",
                 },
@@ -103,15 +103,18 @@ const Index = ({ activePlant }) => {
                 {
                     data: Object.values(data),
                     type: type == "DAY" ? "line" : "bar",
-                    name: "光伏发电功率",
+                    name: `光伏发电${type == "DAY" ? "功率" : "量"}`,
                     barWidth: 20,
                     smooth: true,
                     showSymbol: false,
                     itemStyle: {
-                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                            { offset: 0, color: "#79E6FC" },
-                            { offset: 1, color: "#4499F5" },
-                        ]),
+                        color:
+                            type != "DAY"
+                                ? new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                      { offset: 0, color: "#79E6FC" },
+                                      { offset: 1, color: "#4499F5" },
+                                  ])
+                                : "#4499F5",
                     },
                 },
             ],
@@ -188,7 +191,10 @@ const Index = ({ activePlant }) => {
                             right: "20px",
                         }}
                     >
-                        当日发电量(截止目前)：{sum}度
+                        {type == "TOTAL"
+                            ? "总"
+                            : `当${btns?.find(item => item.type == type)?.name}`}
+                        发电量(截止目前)：{sum}kWh
                     </span>
                     <ReactECharts
                         option={options}

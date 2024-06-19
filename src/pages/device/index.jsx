@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { SearchInput } from "@/components";
 import { Button, Space, Table, Popconfirm, notification, message } from "antd";
-import { DEFAULT_PAGINATION } from "@/utils/constants";
+import { DEFAULT_PAGINATION, COMMANDIDS } from "@/utils/constants";
 import AddDevice from "./AddDevice";
 import Detail from "./Detail";
 import { QuestionCircleOutlined } from "@ant-design/icons";
@@ -50,6 +50,8 @@ const Log = () => {
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [detailId, setDetailId] = useState();
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
+    const [connectLoading, setConnectLoading] = useState(false);
+    const [tip, setTip] = useState();
 
     const columns = [
         {
@@ -232,20 +234,26 @@ const Log = () => {
     }, []);
 
     useEffect(() => {
+        setConnectLoading(true);
+        setTip("socket连接中...");
         connectSocket(
-            "ISSUE_COMMAND",
-            () => {},
-            res => {
-                console.log("res", res);
-                if (res.hasOwnProperty("progress")) {
-                } else {
-                    notification[res.code === "ok" ? "success" : "error"]({
-                        message: "执行结果",
-                        description: res.msg,
-                    });
-                    if (res.code === "ok") {
-                        setNum(num + 1);
-                    }
+            COMMANDIDS,
+            {
+                successCallback: () => {
+                    setConnectLoading(false);
+                },
+                failCallback: () => {
+                    message.info("socket连接失败，请刷新重试");
+                    setTip("socket连接失败，请刷新重试");
+                },
+            },
+            result => {
+                notification[result.code === "ok" ? "success" : "error"]({
+                    message: "执行结果",
+                    description: result.msg,
+                });
+                if (result.code === "ok") {
+                    setNum(num + 1);
                 }
             }
         );
@@ -256,6 +264,8 @@ const Log = () => {
             <AddDevice open={addDeviceOpen} onClose={resFlag => onAddDeviceClose(resFlag)} />
             <Detail
                 num={num}
+                connectLoading={connectLoading}
+                tip={tip}
                 detailId={detailId}
                 onClose={() => {
                     setDetailId();
