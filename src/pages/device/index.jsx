@@ -238,23 +238,20 @@ const Log = () => {
         setTip("socket连接中...");
         connectSocket(
             COMMANDIDS,
-            {
-                successCallback: () => {
-                    setConnectLoading(false);
-                },
-                failCallback: () => {
-                    message.info("socket连接失败，请刷新重试");
-                    setTip("socket连接失败，请刷新重试");
-                },
-            },
             result => {
-                notification[result.code === "ok" ? "success" : "error"]({
-                    message: "执行结果",
-                    description: result.msg,
-                });
-                if (result.code === "ok") {
-                    setNum(num + 1);
+                setConnectLoading(false);
+                if (result) {
+                    const { code, msg } = result;
+                    code === "ok" && setNum(num + 1);
+                    notification[code === "ok" ? "success" : "error"]({
+                        message: "执行结果",
+                        description: msg,
+                    });
                 }
+            },
+            failCallback => {
+                message.info("socket连接失败，请刷新重试");
+                setTip("socket连接失败，请刷新重试");
             }
         );
     }, []);

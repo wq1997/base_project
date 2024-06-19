@@ -23,7 +23,7 @@ const Index = ({ deviceInfo }) => {
         { label: "电网B相电流(A)", key: "gridCurrentB", value: "" },
         { label: "电网C相电流(A)", key: "gridCurrentC", value: "" },
         { label: "电网A相电压(V)", key: "gridVoltageA", value: "" },
-        { label: "电网B相电压(V)", key: "gridVoltageB	", value: "" },
+        { label: "电网B相电压(V)", key: "gridVoltageB", value: "" },
         { label: "电网C相电压(V)", key: "gridVoltageC", value: "" },
         { label: "开机时间", key: "inverterStartTime", value: "" },
         { label: "关机时间", key: "inverterStopTime", value: "" },

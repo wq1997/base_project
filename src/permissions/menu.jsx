@@ -9,6 +9,7 @@ const MenuList = [
     {
         key: "/plant-monitoring",
         label: "电站监控",
+        icon: "icon-wuliaoxuqiu",
         children: [
             {
                 key: "/plant-monitoring/plant-overview",
@@ -23,10 +24,12 @@ const MenuList = [
     {
         key: "/device-management",
         label: "设备管理",
+        icon: "icon-wuliaoxuqiu",
     },
     {
         key: "/alarm-management",
         label: "告警管理",
+        icon: "icon-wuliaoxuqiu",
         children: [
             {
                 key: "/alarm-management/active-record",
@@ -41,10 +44,12 @@ const MenuList = [
     {
         key: "/report-management",
         label: "报表管理",
+        icon: "icon-wuliaoxuqiu",
     },
     {
         key: "/system-settings",
         label: "系统设置",
+        icon: "icon-wuliaoxuqiu",
         children: [
             {
                 key: "/system-settings/personal-setting",

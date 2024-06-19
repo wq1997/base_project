@@ -53,7 +53,7 @@ const Index = ({ connectLoading, tip, num, detailId, onClose }) => {
     ];
 
     useEffect(() => {
-        getDetail();
+        detailId && getDetail();
     }, [num]);
 
     return (
@@ -61,6 +61,7 @@ const Index = ({ connectLoading, tip, num, detailId, onClose }) => {
             title="设备详情"
             width={"calc(100% - 240px)"}
             open={Boolean(detailId)}
+            destroyOnClose={true}
             onClose={() => onClose()}
         >
             <Descriptions title={`设备名称：${deviceInfo?.name}`} />

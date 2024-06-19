@@ -62,7 +62,7 @@ const Index = ({ clearId, onClose }) => {
                         marginBottom: "40px",
                     }}
                     label="处理意见"
-                    name="experience"
+                    name="suggestion"
                     rules={[
                         {
                             required: true,
@@ -82,7 +82,7 @@ const Index = ({ clearId, onClose }) => {
                         marginBottom: "40px",
                     }}
                     label="维护经验"
-                    name="suggestion"
+                    name="experience"
                     rules={[
                         {
                             pattern: ALL_SPACE_REG,

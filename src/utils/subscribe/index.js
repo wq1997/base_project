@@ -2,24 +2,20 @@ import "./lib/stomp.js";
 import "./lib/sockjs.js";
 import "./lib/modernizr-3.3.1.min.js";
 
-import typeParams from "./typeParams";
-const getToken = () => localStorage.getItem("Token");
-
-let client = null,
-    token = getToken();
+let client = null;
+const token = localStorage.getItem("Token"),
+    socketURL = process.env.API_URL_1,
+    subURL = "/ws/device-config",
+    topicURL = "/topic/device-config";
 
 const disconnectSocket = function () {
     client && client.disconnect("", token);
     client = null;
 };
-const socketURL = process.env.API_URL_1,
-    subURL = "/ws/device-config",
-    topicURL = "/topic/device-config";
 
-const connectSocket = function (ids, { successCallback, failCallback }, resultCallback) {
+const connectSocket = (ids, successCallback, failCallback) => {
     disconnectSocket();
     client = Stomp.over(new SockJS(socketURL + subURL));
-    console.log("client", client);
     client.connect(
         { token },
         connectCallback => {
@@ -29,7 +25,7 @@ const connectSocket = function (ids, { successCallback, failCallback }, resultCa
                 client.subscribe(
                     destination,
                     result => {
-                        resultCallback(JSON.parse(result.body));
+                        successCallback(JSON.parse(result.body));
                     },
                     { token }
                 );

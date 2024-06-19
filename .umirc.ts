@@ -26,7 +26,7 @@ export default defineConfig({
     define: {
         "process.env": {
             ...process.env,
-            API_URL_1: apiUrl[`${UMI_ENV}1`] || apiUrl[`test1`],
+            API_URL_1: apiUrl[`${UMI_ENV}`] || apiUrl[`test`],
         },
     },
     devtool: 'source-map',

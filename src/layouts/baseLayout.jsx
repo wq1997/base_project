@@ -31,9 +31,7 @@ const BaseLayout = () => {
                             src={logo}
                             style={{ width: "115px", height: "15px", marginRight: "15px" }}
                         />
-                        <Typography.Title level={3} className={styles.title}>
-                            {PROJECT_NAME}
-                        </Typography.Title>
+                        <span className={styles.title}>{PROJECT_NAME}</span>
                     </div>
                     <Dropdown
                         menu={{
