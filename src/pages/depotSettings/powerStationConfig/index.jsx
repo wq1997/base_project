@@ -108,8 +108,8 @@ function Com(props) {
         },
         {
             title: t('充电桩装机容量'),
-            dataIndex: 'chargePileTotal',
-            key: 'chargePileTotal',
+            dataIndex: 'chargePileCapacity',
+            key: 'chargePileCapacity',
             // width: 200
         },
         {

@@ -21,7 +21,7 @@ function Com(props) {
     const [packReq, setPackReq] = useState([]);
     const [packList, setPackList] = useState([]);
     const [cellList, setCellList] = useState([]);
-    const [cellReq, setCellReq] = useState(['0-0', '0-0-0']);
+    const [cellReq, setCellReq] = useState([]);
     const [optionEchartTem, setOptionEchartTem] = useState({})
     const [optionEchartVol, setOptionEchartVol] = useState({})
     const [optionEchartVolBot, setOptionEchartVolBot] = useState({})
@@ -59,19 +59,24 @@ function Com(props) {
     useEffect(() => {
         initOption();
         getInitData();
-        getBottomChartData();
     }, [token, id]);
     useEffect(() => {
         getChartData();
     }, [packReq]);
+    useEffect(() => {
+        getBottomChartData();
+
+    }, [packValueBottom,cellReq]);
     const getInitData = async () => {
         let { data } = await getBmsAnalyticsInitData({ id });
         setPackList(data?.data?.clusterPackList);
         setCellList(data?.data.cellList);
         setPackReq([data?.data?.clusterPackList?.[0]?.value]);
-        setPackValueBottom(data?.data?.clusterPackList?.[0]?.value)
-        console.log(data?.data?.clusterPackList?.[0]?.value,'data?.data?.clusterPackList?.[0]?.value');
+        setPackValueBottom(data?.data?.clusterPackList?.[0]?.value);
+        setCellReq(data?.data.cellList?.[0]?.value)
         getChartData();
+        getBottomChartData();
+
         setVAndTExcelTitle(`${data?.data?.cellList?.[0]?.label}/${data?.data?.cellList?.[0]?.children?.[0]?.label}`)
     }
     const getChartData = async () => {

@@ -1,7 +1,7 @@
 // 函数组件
 // 快捷键Ctrl+Win+i 添加注释
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { theme, Select, DatePicker, Button } from "antd";
+import { theme, Select, DatePicker, Button,message } from "antd";
 import styles from './index.less'
 import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts";
@@ -16,13 +16,10 @@ const { Option } = Select;
 function Com({ id }) {
     const { token } = theme.useToken();
     const [type, setType] = useState();
-    const [dataOption, setDataOption] = useState('');
     const [optionEchart, setOptionEchart] = useState({})
-    const activitesRef = useRef([]);
     const [goalId, setGoalId] = useState(id);
     const [title, setTitle] = useState('');
     const [currentTitle, setCurrentTitle] = useState('');
-    const [unit, setUnit] = useState('V')
     const [date, setDate] = useState(dayjs(new Date()));
     const [excelData, setExcelData] = useState([]);
     const [optionsSelect, setOptionSelect] = useState([]);
@@ -44,50 +41,11 @@ function Com({ id }) {
 
     useEffect(() => {
         getInitData();
-    }, [id,token]);
-    useEffect(()=>{
-        getEchartsData();
-    },[title])
-
-    const getEchartsData = async () => {
-        currentTitle? setTitle(currentTitle):null;
-        let { data } = await getMonCurHistoryData({
-            devId:id||getQueryString("id"),
-            dataId:type,
-            dateList:dateStr
-        });
-        let excelData = [];
-        let dataX = []
-        let nowY = [];
-        let toY = [];
-        data.data?.nowDay?.map((it, index) => {
-            dataX.push(dayjs(it.time).format('HH:mm'));
-            nowY.push(it.value);
-            excelData.push({
-                time: dayjs(it.time).format('HH:mm'),
-                nowDay: it.value,
-                toDay: data.data?.toDay[index].value
-            })
-        })
-        dataX.length === 0 ? data.data?.toDay?.map(it => {
-            toY.push(it.value);
-            dataX.push(dayjs(it.time).format('HH:mm'))
-        }) : data.data?.toDay?.map(it => {
-            toY.push(it.value);
-        });
-        setExcelData([...excelData]);
-
         setOptionEchart({
             tooltip: {
                 trigger: 'axis',
                 axisPointer: {
                     type: 'shadow'
-                }
-            },
-            legend: {
-                data: [`今日${title}`, `${date.format('YYYY-MM-DD')}${title}`],
-                textStyle: {
-                    color: token.smallTitleColor,
                 }
             },
             grid: {
@@ -99,7 +57,7 @@ function Com({ id }) {
             xAxis: [
                 {
                     type: 'category',
-                    data: dataX,
+                    data: [],
                     axisTick: {
                         alignWithLabel: true
                     }
@@ -109,79 +67,132 @@ function Com({ id }) {
                 {
                     type: 'value',
                     axisLabel: {
-                        formatter: `{value}${unit}`
+                        formatter: '{value} '
                     },
 
                 }
             ],
             series: [
-                {
-                    name: `今日${title}`,
-                    type: 'line',
-                    // stack: 'total',
-                    symbol: 'circle',
-                    symbolSize: 8,
+
+            ]
+        });
+    }, [id, token]);
+    useEffect(() => {
+        getEchartsData();
+    }, [title])
+
+    const getEchartsData = async () => {
+        if (!dateStr) {
+            message.warning(t('请选择日期'));
+            return
+        }
+        if (dateStr?.length > 7) {
+            message.warning(t('时间最多选7天'));
+            return
+        }
+        currentTitle ? setTitle(currentTitle) : null;
+        let { data } = await getMonCurHistoryData({
+            devId: id || getQueryString("id"),
+            dataId: type,
+            dateList: dateStr
+        });
+        let ser = [];
+        let dataLegend = [];
+        let unit = '';
+        let dataX = [];
+        let excelData = [];
+        data?.data?.map((it, i) => {
+            dataLegend.push(it.label);
+            unit = it?.unit;
+            let data = [];
+            dataX= dataX.length?[]:dataX;
+            it?.value?.map((item, index) => {
+                data.push([dayjs(item.time).format('HH:mm'), item.value]);
+               dataX.push(dayjs(item.time).format('HH:mm'));
+                excelData[index] = {
+                    ...excelData[index],
+                    time: dayjs(item.time).format('HH:mm'),
+                    [i]: `${item.value}${unit}`,
+                }
+            })
+            ser.push({
+                name: it.label,
+                type: 'line',
+                // stack: 'total',
+                symbol: 'circle',
+                symbolSize: 8,
+                itemStyle: {
+                    normal: {
+                        color: token.chartLineColor[i],
+                        lineStyle: {
+                            color: token.chartLineColor[i],
+                            width: 1
+                        },
+
+                    }
+                },
+                markPoint: {
                     itemStyle: {
                         normal: {
-                            color: token.colorPrimary,
-                            lineStyle: {
-                                color: token.colorPrimary,
-                                width: 1
-                            },
-                            areaStyle: {
-                                color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
-                                    offset: 0,
-                                    color: token.sub_innerBgc
-                                }, {
-                                    offset: 1,
-                                    color: token.colorPrimaryR
-                                }]),
-                            }
+                            color: 'red'
                         }
-                    },
-                    markPoint: {
-                        itemStyle: {
-                            normal: {
-                                color: 'red'
-                            }
-                        }
-                    },
-                    data: nowY
+                    }
                 },
+                data: [...data]
+            },)
+        })
+        setExcelData([...excelData]);
+        setOptionEchart({
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            legend: {
+                textStyle: {
+                    color: token.smallTitleColor,
+                },
+                data: [...dataLegend]
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: [
                 {
-                    name: `${date.format('YYYY-MM-DD')}${title}`,
-                    type: 'line',
-                    // stack: 'total',
-                    symbol: 'circle',
-                    symbolSize: 8,
-                    itemStyle: {
-                        normal: {
-                            color: '#FF8E07',
-                            lineStyle: {
-                                color: '#FF8E07',
-                                width: 1
-                            },
-                            areaStyle: {
-                                color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
-                                    offset: 0,
-                                    color: token.sub_innerBgc
-                                }, {
-                                    offset: 0.7,
-                                    color: ' #FF8E07'
-                                }]),
-                            }
-                        }
+                    type: 'category',
+                    axisTick: {
+                        alignWithLabel: true
                     },
-                    data: toY
-                },
+                    data: dataX
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: `{value} ${unit}`
+                    },
+
+                }
+            ],
+            series: [
+                ...ser
             ]
         });
     };
     const downLoadFoodModel = () => {
         let fileName = title;
         let sheetData = excelData;
-        let sheetFilter = ['time', 'nowDay', 'toDay'];
-        let sheetHeader = ["时刻", dayjs(new Date()).format('YYYY-MM-DD'), dayjs(date)?.format('YYYY-MM-DD')];
+        let sheetFilter = ['time',];
+        let sheetHeader = ["时刻", ];
+        dateStr?.map((it,i)=>{
+            sheetHeader.push(it);
+            sheetFilter.push(i)
+        })
         downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader,)
     };
 
@@ -203,9 +214,16 @@ function Com({ id }) {
     return (
         <div className={styles.monitoringCurves}>
             <div className={styles.searchHead}>
-                {t('数据项')}:
+                <span className={styles.margRL}> {t('对比日期')}:</span>
+                <DatePicker
+                    style={{ width: 240 }}
+                    maxTagCount={1}
+                    multiple
+                    onChange={(val, str) => onChange(val, str)}
+                    defaultValue={date} />
+                <span className={styles.margRL}>{t('数据项')}:</span>
                 {type && <Select
-                    className={styles.margRL}
+                    className={styles.margR}
                     style={{ width: 240 }}
                     onChange={changeDataType}
                     options={optionsSelect.map(it => {
@@ -216,12 +234,8 @@ function Com({ id }) {
                     })}
                     defaultValue={type}
                 >
-
                 </Select>}
-                <DatePicker 
-                    style={{ width: 240 }}
-                    maxTagCount={1}
-                    multiple onChange={(val, str) => onChange(val, str)} defaultValue={date} />
+
                 <Button type="primary" className={styles.firstButton} onClick={() => getEchartsData(goalId)}>
                     {t('查询')}
                 </Button>
@@ -231,7 +245,7 @@ function Com({ id }) {
             </div>
             <div className={styles.echartPart}>
                 <CardModel
-                    title={title?t(title):''}
+                    title={title ? t(title) : ''}
                     content={
                         <div className={styles.echartPartCardwrap}>
                             <ReactECharts option={optionEchart} style={{ height: '100%' }} />

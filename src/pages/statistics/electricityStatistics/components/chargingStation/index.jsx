@@ -283,10 +283,10 @@ function Com(props) {
                 </div>
                 <div className={styles.buttons}>
                     <Button type="primary" className={styles.firstButton} onClick={getData}>
-                        <FormattedMessage id='app.Query' />
+                        <FormattedMessage id='查询' />
                     </Button>
                     <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downLoadExcelModel} >
-                        <FormattedMessage id='app.Export' />excel
+                        <FormattedMessage id='导出' />excel
                     </Button>
                 </div>
 

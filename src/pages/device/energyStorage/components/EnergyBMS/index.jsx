@@ -8,14 +8,10 @@ import MonitoringCurves from "./MonitoringCurves";
 import AdvancedAnalytics from "./AdvancedAnalytics";
 import CellDetails from "./CellDetails";
 import { theme, } from "antd";
+import { useSelector, useIntl } from "umi";
 
 
-const PageTypeList = [
-    {label:'BMS数据',key:'RealtimeData'},
-    {label:'监测曲线',key:'MonitoringCurves'},
-    {label:'电芯详情',key:'CellDetails'},
-    {label:'高级分析',key:'AdvancedAnalytics'},
-];
+
 const defaultActiveKey = "RealtimeData";
 const Cabinet = () => {
     const location = useLocation();
@@ -28,6 +24,21 @@ const Cabinet = () => {
         setActiveKey(key);
         history.push(`${pathname}?PageKey=${getQueryString("PageKey")}&pageType=${pageType}&activeKey=${key}&id=${id}`);
     };
+    const intl = useIntl();
+    const t = (id) => {
+      const msg = intl.formatMessage(
+        {
+          id,
+        },
+      );
+      return msg
+    }
+    const PageTypeList = [
+        {label:t('BMS数据'),key:'RealtimeData'},
+        {label:t('监测曲线'),key:'MonitoringCurves'},
+        {label:t('电芯详情'),key:'CellDetails'},
+        {label:t('高级分析'),key:'AdvancedAnalytics'},
+    ];
     return (
         <div style={{height: '100%'}}>
             <Tab activeKey={activeKey} TabItem={PageTypeList} onChange={onChangeTab}/>

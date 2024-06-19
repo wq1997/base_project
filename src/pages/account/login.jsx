@@ -97,7 +97,7 @@ const Login = () => {
     >
       <img src={img} style={{ width: '100%', height: '100%', objectFit: 'cover', verticalAlign: 'middle' }} />
       <img src={img_title} style={{ height: '30px', position: 'absolute', top: '80px', left: '80px' }} alt="" />
-      <Title level={1} style={{ position: 'absolute', top: '80px', left: '80px', color: '#273667', fontFamily: 'DingTalkJinBuTi', fontSize: '64px' }}><FormattedMessage id="app.title" /></Title>
+      <Title level={1} style={{ position: 'absolute', top: '80px', left: '80px', color: '#273667', fontFamily: 'DingTalkJinBuTi', fontSize: '64px' }}><FormattedMessage id="采日能源储能管理系统" /></Title>
 
       <div
         style={{
@@ -119,7 +119,7 @@ const Login = () => {
             borderRadius: '24px',
           }}
         >
-          <Title level={2} style={{ marginBottom: 50, color: token.titleColor }}><FormattedMessage id="app.Welcometologin" /></Title>
+          <Title level={2} style={{ marginBottom: 50, color: token.titleColor }}><FormattedMessage id="欢迎登录!" /></Title>
           <Form
             onFinish={onFinish}
             autoComplete="off"

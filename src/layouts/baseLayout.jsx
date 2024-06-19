@@ -87,7 +87,7 @@ const BaseLayout = () => {
                         level={3}
                         className={styles.title}
                     >
-                        <FormattedMessage id="app.title" />
+                        <FormattedMessage id="采日能源储能管理系统" />
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         {

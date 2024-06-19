@@ -292,17 +292,17 @@ function Com(props) {
                 <div className={styles.date}>
                     <DatePicker picker={mode}  onChange={(val)=>setTime(val)} defaultValue={time} format={format} style={{ marginRight: "20px" }} />
                     <Radio.Group value={mode} onChange={handleModelChange}>
-                        <Radio.Button value="date">日</Radio.Button>
-                        <Radio.Button value="month">月</Radio.Button>
-                        <Radio.Button value="year">年</Radio.Button>
+                        <Radio.Button value="date"> <FormattedMessage id='日' /></Radio.Button>
+                        <Radio.Button value="month"><FormattedMessage id='月' /></Radio.Button>
+                        <Radio.Button value="year"><FormattedMessage id='年' /></Radio.Button>
                     </Radio.Group>
                 </div>
                 <div className={styles.buttons}>
                     <Button type="primary" className={styles.firstButton} onClick={getData}>
-                        <FormattedMessage id='app.Query' />
+                        <FormattedMessage id='查询' />
                     </Button>
                     <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downLoadExcelModel} >
-                        <FormattedMessage id='app.Export'  />excel
+                        <FormattedMessage id='导出'  />excel
                     </Button>
                 </div>
 

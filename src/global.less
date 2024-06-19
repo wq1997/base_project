@@ -80,3 +80,18 @@ th.darkTitleColorLeft{
     top: 100%;
     font-size: 12px;
   }
+  .ant-form-item-label {
+    display: flex;
+    justify-content: flex-end;
+    line-height: 16px;  //这个数值视具体情况而定
+    label {            //这是关键
+      white-space: normal;
+      text-align: right;
+    //   color: #8a8a8a;
+      padding-right: 10px;
+      font-size: 14px;
+      &:after {          
+        content: none !important;      //解决上面的样式label后面会有空格
+      }
+    }
+  }

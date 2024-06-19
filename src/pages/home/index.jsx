@@ -9,7 +9,7 @@ import { theme, Switch, Select, Descriptions } from "antd";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { getGridPointList,getOverviewLiveData } from '@/services/plant'
 import dayjs from 'dayjs';
-
+import Picture from '../react/Meta2d'
 function OverView(props) {
     const { token } = theme.useToken();
     const Icon = useIcon();
@@ -246,7 +246,6 @@ function OverView(props) {
     ]
     return (
         <>
-
             <div className={styles.container} style={{ color: token.titleColor }}>
                 <div className={styles.title} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal }}>
                     <div>
@@ -384,7 +383,7 @@ function OverView(props) {
                         }
                     />
                 </div>
-
+                <Picture/>
             </div>
         </>
 

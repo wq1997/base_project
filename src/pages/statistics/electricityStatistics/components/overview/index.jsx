@@ -163,8 +163,8 @@ function Com(props) {
             let httpData = {
                 time: mode === 'date' ?undefined:time.format('YYYY'),
                 type: mode === 'date' ? 0 : mode === 'month' ? 2 : 3,
-                plantId: localStorage.getItem('plantId'),
-                gridPointId: currntGrid,
+                plantId: currntGrid=='ALL'? +localStorage.getItem('plantId'):undefined,
+                gridPointId: currntGrid=='ALL'?undefined: currntGrid,
                 startTime: mode === 'date' ?startTime.format('YYYY-MM-DD'):undefined,
                 endTime: mode === 'date' ?endTime.format('YYYY-MM-DD'):undefined,
             }
@@ -257,20 +257,19 @@ function Com(props) {
         },
     ];
     const changeGrid = (e) => {
-        setCurrntGrid(e.target.value);
+        setCurrntGrid(e);
     };
     const getGrid = async () => {
         let { data: grid } = await getGridPointList({
             plantId: localStorage.getItem('plantId')
         })
-        setGrids(grid?.data);
-        setCurrntGrid(grid?.data?.[0]?.id);
+        setGrids([{id:"ALL",gridPointName:getTranslation('电站总计')},...grid?.data]);
+        setCurrntGrid('ALL');
         getData();
     }
     const changeRangeDate = (val, str) => {
         setStartTime(str?.[0]);
         setEndTime(str?.[1]);
-       
         console.log(val, str, 'rangdate');
     }
     useEffect(() => {
@@ -302,18 +301,18 @@ function Com(props) {
                 <div className={styles.date}>
                     {mode == 'date' ? <RangePicker onChange={changeRangeDate} defaultValue={[dayjs(new Date()), dayjs(new Date()).add(5, 'day')]} format={format} style={{ marginRight: "20px" }} /> : <DatePicker picker={mode} onChange={(val) => setTime(val)} defaultValue={time} format={format} style={{ marginRight: "20px" }} />}
                     <Radio.Group value={mode} onChange={handleModelChange}>
-                        <Radio.Button value="date">日</Radio.Button>
+                        <Radio.Button value="date"> <FormattedMessage id='日' /></Radio.Button>
                         {/* <Radio.Button value="month">月</Radio.Button> */}
-                        <Radio.Button value="year">年</Radio.Button>
+                        <Radio.Button value="year"><FormattedMessage id='年' /></Radio.Button>
                     </Radio.Group>
                 </div>
 
                 <div className={styles.buttons}>
                     <Button type="primary" className={styles.firstButton} onClick={getData}>
-                        <FormattedMessage id='app.Query' />
+                        <FormattedMessage id='查询' />
                     </Button>
                     <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downLoadExcelModel} >
-                        <FormattedMessage id='app.Export' />excel
+                        <FormattedMessage id='导出' />excel
                     </Button>
                 </div>
 

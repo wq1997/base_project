@@ -6,12 +6,10 @@ import Tab from '../../../components/Tab';
 import MonitoringCurves from './MonitoringCurves';
 import PcsDetails from "./PcsDetails";
 import { theme, } from "antd";
+import { useIntl } from "umi";
 
 
-const PageTypeList = [
-    {label:'PCS详情',key:'PcsDetails'},
-    {label:'监测曲线',key:'MonitoringCurvesPcs'},
-];
+
 const defaultActiveKey = "PcsDetails";
 const Cabinet = (props) => {
     const location = useLocation();
@@ -24,7 +22,19 @@ const Cabinet = (props) => {
         setActiveKey(key);
         history.push(`${pathname}?PageKey=${getQueryString("PageKey")}&pageType=${pageType}&activeKey=${key}&id=${id}`);
     };
-console.log(props,'aykpcs');
+    const intl = useIntl();
+    const t = (id) => {
+      const msg = intl.formatMessage(
+        {
+          id,
+        },
+      );
+      return msg
+    }
+const PageTypeList = [
+    {label:t('PCS详情'),key:'PcsDetails'},
+    {label:t('监测曲线'),key:'MonitoringCurvesPcs'},
+];
     return (
         <div style={{height: 'calc(100% - 56px)'}}>
             <Tab activeKey={activeKey} TabItem={PageTypeList} onChange={onChangeTab}/>
