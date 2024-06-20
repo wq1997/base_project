@@ -33,18 +33,13 @@ instance.interceptors.response.use(
     error => {
         const { config, code, request, response, isAxiosError, toJSON } = error;
         if (response) {
-            errorHandle(response.status, response.data.message);
-            return Promise.reject(response);
+            errorHandle(response?.status, response?.data?.message);
         } else {
-            if (error.message.includes("timeout")) {
+            if (error?.message?.includes("timeout")) {
                 console.log("请求超时");
-                return Promise.reject(error);
             }
-
             if (!window.navigator.onLine) {
                 console.log("断网了...");
-            } else {
-                return Promise.reject(error);
             }
         }
     }
@@ -60,7 +55,6 @@ const errorHandle = (status, message) => {
             break;
         case 403:
             console.log("权限不足，拒绝访问");
-            logout();
             break;
         case 404:
             console.log("请求的资源不存在或请求地址出错");

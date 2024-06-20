@@ -201,6 +201,11 @@ const Log = () => {
         setLoading(false);
     };
 
+    const handleSearch = () => {
+        paginationRef.current = DEFAULT_PAGINATION;
+        getList();
+    };
+
     const handleReset = () => {
         paginationRef.current = DEFAULT_PAGINATION;
         deviceTypeRef.current = undefined;
@@ -344,7 +349,7 @@ const Log = () => {
                     }}
                 />
 
-                <Button type="primary" onClick={getList}>
+                <Button type="primary" onClick={() => handleSearch()}>
                     搜索
                 </Button>
                 <Button onClick={handleReset}>重置</Button>

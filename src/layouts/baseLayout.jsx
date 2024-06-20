@@ -42,7 +42,10 @@ const BaseLayout = () => {
                                         <Space
                                             size={10}
                                             align="baseline"
-                                            onClick={() => dispatch({ type: "user/logout" })}
+                                            onClick={() => {
+                                                console.log('onClick')
+                                                dispatch({ type: "user/logout" })
+                                            }}
                                         >
                                             <Icon
                                                 type="icon-dengchu"
