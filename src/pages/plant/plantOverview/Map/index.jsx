@@ -25,7 +25,7 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
             // ],
         });
         map.on("complete", async () => {
-            //map.setMapStyle("amap://styles/whitesmoke");
+            // map.setMapStyle("amap://styles/whitesmoke");
             const infoWindow = new AMap.InfoWindow({ offset: new AMap.Pixel(0, -30) });
             setMap(map);
             addMarkers(map, infoWindow, plants);
@@ -57,7 +57,7 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
                     <span class=${styles.plantName}>${item.label}</span>
                 </div>
                 <div class=${styles.infoBox}>
-                    <div class=${styles.defalutText}>默认</div>
+                    <div class=${styles.defalutText} style='display:${item?.photo ? "none" : "block"}'>默认</div>
                     <img
                         class=${styles.plantImg}
                         src="${item?.photo ? baseUrl + item?.photo : defalut}"
@@ -65,7 +65,7 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
                     <div class=${styles.info}>
                         <div>
                             <span class=${styles.name}>电站地址：</span>
-                            <span class=${styles.value} > ${item.address}</span>
+                            <span class=${styles.value} title=${item.address}> ${item.address}</span>
                         </div>
                         <div>
                             <span class=${styles.name}>经度：</span>
