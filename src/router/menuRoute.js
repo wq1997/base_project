@@ -21,6 +21,7 @@ export default [
         routes: [
             { name: '电量统计', path: '/index/statistics/electricity', component: "@/pages/statistics/electricity" },
             { name: '历史告警', path: '/index/statistics/revenue', component: "@/pages/statistics/revenue" },
+            { name: '监测曲线', path: '/index/statistics/monitoringCurves', component: "@/pages/statistics/monitoringCurves" },
         ]
     },
     {

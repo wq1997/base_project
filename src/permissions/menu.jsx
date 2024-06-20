@@ -27,6 +27,7 @@ const MenuList = [
         key: '/index/statistics',
         icon: <BarChartOutlined />,
         children: [
+            { label: <FormattedMessage id='监测曲线' />, key: '/index/statistics/monitoringCurves' },
             { label: <FormattedMessage id='电量统计' />, key: '/index/statistics/electricity', },
             { label: <FormattedMessage id='收益统计' />, key: '/index/statistics/revenue', },
         ]
