@@ -302,7 +302,7 @@ const EditRowTable = ({
 
   useEffect(()=>{
     getDefaultDataSource();
-  }, [JSON.stringify(data)])
+  }, [data])
 
   return (
     <Space direction="vertical" size={20} style={{width: '100%'}}>

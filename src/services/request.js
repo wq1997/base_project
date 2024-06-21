@@ -34,7 +34,7 @@ instance.interceptors.response.use(response => {
             }
             if((data.code==="ok"||data.msg==="ok")&&data.msg&&data.msg!=="ok"){
                 message.success(data.msg);
-                return
+                return Promise.resolve(response);
             }
             if(data.msg==="Please login！"){
                 logout();
@@ -49,17 +49,12 @@ instance.interceptors.response.use(response => {
     const { config, code, request, response, isAxiosError, toJSON } = error;
     if (response) {
         errorHandle(response.status, response.data.error);
-        return Promise.reject(response);
     }else {
         if(error.message.includes('timeout')){
             console.log('请求超时')
-            return Promise.reject(error);
         }
-
         if (!window.navigator.onLine) {
             console.log('断网了...')
-        } else {
-            return Promise.reject(error);
         }
     }
 });

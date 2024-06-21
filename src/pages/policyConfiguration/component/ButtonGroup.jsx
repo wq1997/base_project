@@ -2,17 +2,18 @@ import { Button, Space } from "antd";
 import { useState, useEffect } from "react";
 
 const ButtonGroup = (props) => {
-    const {options, onChange, onControlledChange} = props;
+    const {options, disabled, onChange, onControlledChange} = props;
     const [value, setValue] = useState(props.value);
 
     const onMyClick = (value) => {
-        if(props.mode==="controlled"){
-            onControlledChange&&onControlledChange(value)
-        }else{
-            onChange&&onChange(value)
-            setValue(value);
+        if(!disabled){
+            if(props.mode==="controlled"){
+                onControlledChange&&onControlledChange(value)
+            }else{
+                onChange&&onChange(value)
+                setValue(value);
+            }
         }
-       
     }
 
     useEffect(()=>{

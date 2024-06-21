@@ -201,6 +201,7 @@ const PolicyConfiguration = ({deviceVersion}) => {
                                             <ButtonGroup 
                                                 value={runModePCSBMS}
                                                 mode={'controlled'}
+                                                disabled={!canIssue}
                                                 options={[
                                                     {label: intl.formatMessage({id: 'PCS开机'}), value: 1},
                                                     {label: intl.formatMessage({id: 'PCS关机'}), value: 0},
@@ -389,7 +390,7 @@ const PolicyConfiguration = ({deviceVersion}) => {
                                             <Col span={24/monthList.length}>
                                                 <div style={{marginBottom: 10}}>{month.label}</div>
                                                 <Form.Item name={month.value} layout="vertical" rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
-                                                    <Radio.Group>
+                                                    <Radio.Group disabled={!canIssue}>
                                                         <Space direction="vertical">
                                                             {strategyList?.map(strategy=><Radio value={strategy.value}>{strategy.label}</Radio>)}
                                                         </Space>

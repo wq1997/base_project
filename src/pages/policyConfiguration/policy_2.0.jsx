@@ -118,7 +118,7 @@ const PolicyConfiguration = ({deviceVersion}) => {
                     timeStramp: `${translateNmberToTime(item.startMin)}:${translateNmberToTime(item.startHour)}~${translateNmberToTime(item.endMin)}:${translateNmberToTime(item.endHour)}`
                 }
             })
-            const durationList = tabValue===0?durationList1:durationList2;
+            let durationList = (tabValue===0?durationList1:durationList2) || [];
             const params = {
                 mode: data?.mode,
                 enable: data?.enable,
@@ -138,7 +138,7 @@ const PolicyConfiguration = ({deviceVersion}) => {
                 params[item.value] = data?.policySelectList?.[index]
             });
             form.setFieldsValue(params);
-            setDurationList(durationList)
+            setDurationList([...durationList]);
             setMode(data?.mode);
         }
     }
@@ -204,6 +204,7 @@ const PolicyConfiguration = ({deviceVersion}) => {
                                             <ButtonGroup 
                                                 value={runModePCSBMS}
                                                 mode={'controlled'}
+                                                disabled={!canIssue}
                                                 options={[
                                                     {label: intl.formatMessage({id: 'PCS开机'}), value: 1},
                                                     {label: intl.formatMessage({id: 'PCS关机'}), value: 0},
@@ -225,7 +226,7 @@ const PolicyConfiguration = ({deviceVersion}) => {
                                             <Row gutter={24}>
                                                 <Col>
                                                     <Form.Item label={`${intl.formatMessage({id: 'PCS功率'})}(kW)`} name="pcsPower" rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
-                                                        <Input placeholder={intl.formatMessage({id: '请输入PCS功率'})} style={{width: 300}} />
+                                                        <Input disabled={!canIssue} placeholder={intl.formatMessage({id: '请输入PCS功率'})} style={{width: 300}} />
                                                     </Form.Item>
                                                 </Col>
                                                 <Col>
@@ -270,46 +271,46 @@ const PolicyConfiguration = ({deviceVersion}) => {
                                 <Row>
                                     <Col span={2}>
                                         <Form.Item label={intl.formatMessage({id: '并离网'})} name="switchOnOffGrid" rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
-                                            <Switch checkedChildren={intl.formatMessage({id: '并网'})} unCheckedChildren={intl.formatMessage({id: '离网'})} />
+                                            <Switch disabled={!canIssue} checkedChildren={intl.formatMessage({id: '并网'})} unCheckedChildren={intl.formatMessage({id: '离网'})} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={2}>
                                         <Form.Item label={intl.formatMessage({id: '防逆流'})} name="antiReflux" rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
-                                            <Switch />
+                                            <Switch disabled={!canIssue} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={2}>
                                         <Form.Item label={intl.formatMessage({id: '防过载'})} name="overload" rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
-                                            <Switch />
+                                            <Switch disabled={!canIssue} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={2}>
                                         <Form.Item label={intl.formatMessage({id: '扩容'})} name="expansion" rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
-                                            <Switch />
+                                            <Switch disabled={!canIssue} />
                                         </Form.Item>
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col span={7}>
                                         <Form.Item label={`${intl.formatMessage({id: '防逆流触发值'})}(kW)`} name="antiRefluxTriggerValue" rules={[{ ...FORM_REQUIRED_RULE }]}  style={{margin: 0}}>
-                                            <InputNumber placeholder={intl.formatMessage({id: '请输入防逆流触发值'})} style={{width: 300}} />
+                                            <InputNumber disabled={!canIssue} placeholder={intl.formatMessage({id: '请输入防逆流触发值'})} style={{width: 300}} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={7}>
                                         <Form.Item label={intl.formatMessage({id: '变压器容量'})} style={{margin: 0}}>
                                             <Space direction="horizontal">
                                                 <Form.Item style={{margin: 0}} name="tranCap" rules={[{ ...FORM_REQUIRED_RULE }]}>
-                                                    <InputNumber style={{width: 200}} placeholder="kW" />
+                                                    <InputNumber disabled={!canIssue} style={{width: 200}} placeholder="kW" />
                                                 </Form.Item>
                                                 <Form.Item style={{margin: 0}} name="tranCapPercent" rules={[{ ...FORM_REQUIRED_RULE }]}>
-                                                    <InputNumber style={{width: 200}} placeholder="%" min={0} max={100}/>
+                                                    <InputNumber disabled={!canIssue} style={{width: 200}} placeholder="%" min={0} max={100}/>
                                                 </Form.Item>
                                             </Space>
                                         </Form.Item>
                                     </Col>
                                     <Col span={7}>
                                         <Form.Item label={`${intl.formatMessage({id: '功率波动范围'})}(kW)`} name="pcsPowerWaveRange" rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
-                                            <InputNumber placeholder={intl.formatMessage({id: '请输入功率波动范围'})} style={{width: 300}} />
+                                            <InputNumber disabled={!canIssue} placeholder={intl.formatMessage({id: '请输入功率波动范围'})} style={{width: 300}} />
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -424,7 +425,7 @@ const PolicyConfiguration = ({deviceVersion}) => {
                                             <Col span={24/monthList.length}>
                                                 <div style={{marginBottom: 10}}>{month.label}</div>
                                                 <Form.Item name={month.value} layout="vertical" style={{margin: 0}}>
-                                                    <Radio.Group>
+                                                    <Radio.Group disabled={!canIssue}>
                                                         <Space direction="vertical">
                                                             {strategyList?.map(strategy=><Radio value={strategy.value}>{strategy.label}</Radio>)}
                                                         </Space>
@@ -608,7 +609,7 @@ const PolicyConfiguration = ({deviceVersion}) => {
                             res = await sendLiquidCoolerServe({...values, dtuId: id, type: deviceVersion})
                         }
                     }
-
+                    console.log("AAA", res)
                     if(res?.data?.code==="ok"){
                         setCheckModalOpen(false);
                         checkForm.resetFields();
@@ -649,11 +650,11 @@ const PolicyConfiguration = ({deviceVersion}) => {
                         }
                         {
                             checkModalType==="runModePCSBMS"&&nextRunModePCSBMS===2&&
-                            intl.formatMessage({id: '确定下发PCS待机命令吗?'})
+                            intl.formatMessage({id: '确定下发PCS复位命令吗?'})
                         }
                         {
                             checkModalType==="runModePCSBMS"&&nextRunModePCSBMS===3&&
-                            intl.formatMessage({id: '确定下发PCS复位命令吗?'})
+                            intl.formatMessage({id: '确定下发BMS关机命令吗?'})
                         }
                         {
                             checkModalType==="runModePCSBMS"&&nextRunModePCSBMS===4&&
@@ -661,7 +662,7 @@ const PolicyConfiguration = ({deviceVersion}) => {
                         }
                         {
                             checkModalType==="runModePCSBMS"&&nextRunModePCSBMS===5&&
-                            intl.formatMessage({id: '确定下发BMS关机命令吗?'})
+                            intl.formatMessage({id: '确定下发BMS复位命令吗?'})
                         }
                         {
                             checkModalType&&checkModalType!=="switchModes"&&checkModalType!=="runModePCSBMS"&&

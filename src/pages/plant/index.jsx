@@ -44,7 +44,6 @@ function Com(props) {
             it.label = `${it[str]}--${it.value}`
         });
         setInitSelectData({ ...data.data, timeZone: timeZoneList });
-        console.log(data.data,121212);
     }
     const t = (id) => {
         const msg = intl.formatMessage(
@@ -162,7 +161,7 @@ function Com(props) {
         setFormData({
             ...record,
             userName: initSelectData?.userList.find(it => it.label === record.userNames?.[0])?.value,
-            priceUnit: initSelectData?.currencyList.find(it => it.label === record.priceUnit)?.value || initSelectData.currencyList?.[0]?.value,
+            priceUnit: initSelectData?.currencyList.find(it => it.value === record.priceUnit)?.value || initSelectData.currencyList?.[0]?.value,
             timeZone: initSelectData?.timeZone.find(it => it.label === record.timeZone)?.value || initSelectData.timeZone?.[0]?.value,
             // networkDate: dayjs(record.networkDate),
             installDate: dayjs(record.installDate),
