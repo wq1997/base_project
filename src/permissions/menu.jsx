@@ -33,7 +33,7 @@ const MenuList = [
         key: "/alarm-management",
         label: "告警管理",
         icon: "icon-gaojing",
-        iconSize: "22px",
+        iconSize: "23px",
         children: [
             {
                 key: "/alarm-management/active-record",
@@ -55,7 +55,7 @@ const MenuList = [
         key: "/system-settings",
         label: "系统设置",
         icon: "icon-shezhi",
-        iconSize: "24px",
+        iconSize: "23px",
         children: [
             {
                 key: "/system-settings/personal-setting",
@@ -82,15 +82,17 @@ const MyMenu = () => {
                         key={menu.key}
                         title={menu.label}
                         icon={
-                            <Icon
-                                type={theme === "dark" ? menu.darkIcon || menu.icon : menu.icon}
-                                style={{
-                                    color: pathname?.includes(menu.key)
-                                        ? "#1677ff"
-                                        : "rgba(0, 0, 0, 0.88)",
-                                    fontSize: menu.iconSize,
-                                }}
-                            />
+                            <div style={{ width: "23px" }}>
+                                <Icon
+                                    type={theme === "dark" ? menu.darkIcon || menu.icon : menu.icon}
+                                    style={{
+                                        color: pathname?.includes(menu.key)
+                                            ? "#1677ff"
+                                            : "rgba(0, 0, 0, 0.88)",
+                                        fontSize: menu.iconSize,
+                                    }}
+                                />
+                            </div>
                         }
                     >
                         {getMenu(menu.children)}
@@ -101,15 +103,30 @@ const MyMenu = () => {
                     <Menu.Item
                         key={menu.key}
                         icon={
-                            <Icon
-                                type={theme === "dark" ? menu.darkIcon || menu.icon : menu.icon}
-                                style={{
-                                    fontSize: menu.iconSize,
-                                }}
-                            />
+                            menu.icon && (
+                                <div style={{ width: "23px" }}>
+                                    <Icon
+                                        type={
+                                            theme === "dark"
+                                                ? menu.darkIcon || menu.icon
+                                                : menu.icon
+                                        }
+                                        style={{
+                                            color: pathname?.includes(menu.key)
+                                                ? "#1677ff"
+                                                : "rgba(0, 0, 0, 0.88)",
+                                            fontSize: menu.iconSize,
+                                        }}
+                                    />
+                                </div>
+                            )
                         }
                     >
-                        <Link to={menu.key} target={menu?.target}>
+                        <Link
+                            to={menu.key}
+                            target={menu?.target}
+                            style={{ marginLeft: menu.icon ? "0px" : "12px" }}
+                        >
                             {menu.label}
                         </Link>
                     </Menu.Item>

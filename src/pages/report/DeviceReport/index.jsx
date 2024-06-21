@@ -42,11 +42,11 @@ const Log = () => {
             dataIndex: "typeZh",
         },
         {
-            title: "发电量(度)",
+            title: "发电量(kWh)",
             dataIndex: "power",
         },
         {
-            title: "累计发电量(度)",
+            title: "累计发电量(kWh)",
             dataIndex: "totalPower",
         },
 
@@ -55,7 +55,7 @@ const Log = () => {
             dataIndex: "peakPower",
         },
         {
-            title: "平均温度（°C）",
+            title: "平均温度(°C)",
             dataIndex: "averageTemperature",
         },
         {

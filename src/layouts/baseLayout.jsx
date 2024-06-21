@@ -43,8 +43,8 @@ const BaseLayout = () => {
                                             size={10}
                                             align="baseline"
                                             onClick={() => {
-                                                console.log('onClick')
-                                                dispatch({ type: "user/logout" })
+                                                console.log("onClick");
+                                                dispatch({ type: "user/logout" });
                                             }}
                                         >
                                             <Icon
@@ -75,7 +75,7 @@ const BaseLayout = () => {
                     </Dropdown>
                 </Header>
                 <Layout hasSider>
-                    <Sider className={styles.sider} width={240}>
+                    <Sider className={styles.sider} width={220}>
                         <div className={styles.siderContent}>
                             <MyMenu />
                         </div>

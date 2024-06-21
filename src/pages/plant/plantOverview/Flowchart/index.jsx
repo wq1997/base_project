@@ -1,6 +1,7 @@
 import SchematicDiagram from "./SchematicDiagram";
 import plant from "../../../../../public/icons/plant.svg";
 import { useEffect, useState } from "react";
+import { Tooltip } from 'antd';
 
 const Index = ({ activePlantName, data }) => {
     const [info, setInfo] = useState([
@@ -36,9 +37,29 @@ const Index = ({ activePlantName, data }) => {
                 padding: "10px",
             }}
         >
-            <div style={{ fontSize: "18px", display: "flex", alignItems: "center" }}>
+            <div
+                style={{
+                    width: "100%",
+                    fontSize: "18px",
+                    display: "flex",
+                    alignItems: "center",
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                    textOverflow: "ellipsis",
+                }}
+            >
                 <img src={plant} style={{ marginRight: "3px", width: "20px", height: "20px" }} />
-                {activePlantName}
+                <Tooltip title={activePlantName}>
+                    <div
+                        style={{
+                            overflow: "hidden",
+                            whiteSpace: "nowrap",
+                            textOverflow: "ellipsis",
+                        }}
+                    >
+                        {activePlantName}
+                    </div>
+                </Tooltip>
             </div>
             <div
                 style={{

@@ -20,4 +20,4 @@ export const PASSWORD_RGE =
     8007->无功调节
     8008->功率因数调节
 */
-export const COMMANDIDS = [8001, 8002, 8003, 8004, 8005, 8006, 8007, 8008];
+export const COMMANDIDS = [8001, 8002, 8003, 8005, 8006, 8007, 8008];

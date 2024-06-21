@@ -32,12 +32,12 @@ const Log = () => {
             dataIndex: "capacity",
         },
         {
-            title: "逆变器发电量(度)",
+            title: "逆变器发电量(kWh)",
             dataIndex: "inverterPower",
         },
 
         {
-            title: "网馈电量(度)",
+            title: "网馈电量(kWh)",
             dataIndex: "netFeedInPower",
         },
         {

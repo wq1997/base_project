@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, message, Popconfirm } from "antd";
-import { DownOutlined } from "@ant-design/icons";
+import { Tooltip } from "antd";
 import styles from "./index.less";
 import tree from "../../../../../public/icons/tree.svg";
 import co2 from "../../../../../public/icons/CO₂.svg";
@@ -34,7 +33,9 @@ const Index = ({ data }) => {
                             </div>
                             <div className={styles.right}>
                                 <div className={styles.data}>
-                                    <div className={styles.value}>{item.value}</div>
+                                    <Tooltip title={item.value}>
+                                        <div className={styles.value}>{item.value}</div>
+                                    </Tooltip>
                                     <span className={styles.unit}>{item.unit}</span>
                                 </div>
                                 <div className={styles.name}>{item.name}</div>

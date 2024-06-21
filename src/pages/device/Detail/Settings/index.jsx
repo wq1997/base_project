@@ -29,10 +29,10 @@ const Index = ({ deviceInfo, getDetail }) => {
             type: "换机",
             click: () => setChangeMachineOpen(true),
         },
-        {
-            type: "直流电弧故障清除",
-            click: () => setDCArcFaultClearOpen(true),
-        },
+        // {
+        //     type: "直流电弧故障清除",
+        //     click: () => setDCArcFaultClearOpen(true),
+        // },
         {
             type: "故障复位",
             click: () => setFaultResetOpen(true),

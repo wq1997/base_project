@@ -145,6 +145,7 @@ const Index = ({ data }) => {
                             justifyContent: "space-around",
                             height: "80%",
                             margin: "auto",
+                            //overflow:'scroll'
                         }}
                     >
                         {alarms?.map(item => (
