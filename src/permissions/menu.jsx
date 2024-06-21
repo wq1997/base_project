@@ -2,6 +2,7 @@ import { Menu } from "antd";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useSelector } from "umi";
 import useIcon from "@/hooks/useIcon";
+import { color } from "echarts";
 
 const { SubMenu } = Menu;
 
@@ -9,7 +10,8 @@ const MenuList = [
     {
         key: "/plant-monitoring",
         label: "电站监控",
-        icon: "icon-wuliaoxuqiu",
+        icon: "icon-dianzhangaikuang",
+        iconSize: "20px",
         children: [
             {
                 key: "/plant-monitoring/plant-overview",
@@ -24,12 +26,14 @@ const MenuList = [
     {
         key: "/device-management",
         label: "设备管理",
-        icon: "icon-wuliaoxuqiu",
+        icon: "icon-wodeshebei",
+        iconSize: "22px",
     },
     {
         key: "/alarm-management",
         label: "告警管理",
-        icon: "icon-wuliaoxuqiu",
+        icon: "icon-gaojing",
+        iconSize: "22px",
         children: [
             {
                 key: "/alarm-management/active-record",
@@ -44,12 +48,14 @@ const MenuList = [
     {
         key: "/report-management",
         label: "报表管理",
-        icon: "icon-wuliaoxuqiu",
+        icon: "icon-baobiao",
+        iconSize: "20px",
     },
     {
         key: "/system-settings",
         label: "系统设置",
-        icon: "icon-wuliaoxuqiu",
+        icon: "icon-shezhi",
+        iconSize: "24px",
         children: [
             {
                 key: "/system-settings/personal-setting",
@@ -79,8 +85,10 @@ const MyMenu = () => {
                             <Icon
                                 type={theme === "dark" ? menu.darkIcon || menu.icon : menu.icon}
                                 style={{
-                                    color: "black",
-                                    fontSize: 20,
+                                    color: pathname?.includes(menu.key)
+                                        ? "#1677ff"
+                                        : "rgba(0, 0, 0, 0.88)",
+                                    fontSize: menu.iconSize,
                                 }}
                             />
                         }
@@ -96,7 +104,7 @@ const MyMenu = () => {
                             <Icon
                                 type={theme === "dark" ? menu.darkIcon || menu.icon : menu.icon}
                                 style={{
-                                    fontSize: 20,
+                                    fontSize: menu.iconSize,
                                 }}
                             />
                         }

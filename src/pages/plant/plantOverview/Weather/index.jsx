@@ -6,7 +6,7 @@ import styles from "./index.less";
 import dayjs from "dayjs";
 import plant from "../../../../../public/icons/plant.svg";
 
-const dateNums = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期日=五", "星期六"];
+const dateNums = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
 
 const Index = ({ data }) => {
     return (
