@@ -17,7 +17,7 @@ const energySystemChargingAngle = 155; // 储能系统充电的角度
 const energySystemDisChargingAngle = 25; // 储能系统放电的角度
 const energySystemIconPrecent = 0.4;
 
-const citySystemLineWidthPercent = 0.5; // 线的百分比，自定义
+const citySystemLineWidthPercent = 0.6; // 线的百分比，自定义
 const citySystemChargingAngle = 90;
 
 const SchematicDiagram = ({ dataSource }) => {
@@ -231,7 +231,7 @@ const SchematicDiagram = ({ dataSource }) => {
                         style={{
                             position: "absolute",
                             right: -loadSystemIconWidth / 2 + 20,
-                            top: -loadSystemIconWidth / 2 - 50,
+                            top: -loadSystemIconWidth / 2 - 45,
                             width: loadSystemIconWidth / 1.2,
                             transform: `rotate(-${loadSystemAngle}deg)`,
                         }}
