@@ -10,6 +10,7 @@ import Ranking from "./Ranking";
 import Weather from "./Weather";
 import Flowchart from "./Flowchart";
 import Map from "./Map";
+import { Tooltip } from "antd";
 import { getPlantNames as getPlantNamesServer } from "@/services/plant";
 import { getPlanStatistics as getPlanStatisticsServer } from "@/services/overview";
 import { useEffect, useState } from "react";

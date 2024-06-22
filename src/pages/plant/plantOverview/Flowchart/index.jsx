@@ -1,7 +1,8 @@
 import SchematicDiagram from "./SchematicDiagram";
 import plant from "../../../../../public/icons/plant.svg";
 import { useEffect, useState } from "react";
-import { Tooltip } from 'antd';
+import { Tooltip } from "antd";
+import styles from "./index.less";
 
 const Index = ({ activePlantName, data }) => {
     const [info, setInfo] = useState([
@@ -16,7 +17,7 @@ const Index = ({ activePlantName, data }) => {
             key: "totalCapacity",
             value: "",
             unit: "kWp",
-        },
+        }, 
     ]);
 
     useEffect(() => {
@@ -37,7 +38,7 @@ const Index = ({ activePlantName, data }) => {
                 padding: "10px",
             }}
         >
-            <div
+            {/* <div
                 style={{
                     width: "100%",
                     fontSize: "18px",
@@ -48,9 +49,10 @@ const Index = ({ activePlantName, data }) => {
                     textOverflow: "ellipsis",
                 }}
             >
-                <img src={plant} style={{ marginRight: "3px", width: "20px", height: "20px" }} />
+                <img src={plant} style={{ marginRight: "3px", width: "18px", height: "18px" }} />
                 <Tooltip title={activePlantName}>
                     <div
+                        className={styles.plantName}
                         style={{
                             overflow: "hidden",
                             whiteSpace: "nowrap",
@@ -60,11 +62,11 @@ const Index = ({ activePlantName, data }) => {
                         {activePlantName}
                     </div>
                 </Tooltip>
-            </div>
+            </div> */}
             <div
                 style={{
                     position: "absolute",
-                    top: "50px",
+                    top: "10px",
                     left: "10px",
                 }}
             >

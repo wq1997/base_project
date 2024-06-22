@@ -107,7 +107,7 @@ const Log = () => {
             render: (_, { id }) => {
                 return (
                     <Space size={10}>
-                        <Popconfirm
+                        {/* <Popconfirm
                             title="操作确认"
                             description="确定删除此设备？"
                             onConfirm={() => deleteDevice(id)}
@@ -115,7 +115,7 @@ const Log = () => {
                             cancelText="取消"
                         >
                             <a style={{ color: "#ff4d4f" }}>删除</a>
-                        </Popconfirm>
+                        </Popconfirm> */}
                         <a onClick={() => setDetailId(id)}>详情</a>
                     </Space>
                 );

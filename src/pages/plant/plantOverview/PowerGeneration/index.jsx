@@ -95,7 +95,7 @@ const Index = ({ activePlant }) => {
             grid: {
                 left: "2%",
                 right: "2%",
-                top: "15%",
+                top: "20%",
                 bottom: "5%",
                 containLabel: true,
             },
@@ -134,7 +134,7 @@ const Index = ({ activePlant }) => {
 
     return (
         <Card
-            title="能量管理"
+            title="能量监测"
             others={
                 <div className={styles.powerGeneration} style={{ textAlign: "center" }}>
                     <Space>

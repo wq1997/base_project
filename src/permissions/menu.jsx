@@ -104,7 +104,7 @@ const MyMenu = () => {
                         key={menu.key}
                         icon={
                             menu.icon && (
-                                <div style={{ width: "23px" }}>
+                                <div style={{ width: menu.icon ? "23px" : 0 }}>
                                     <Icon
                                         type={
                                             theme === "dark"
@@ -125,7 +125,7 @@ const MyMenu = () => {
                         <Link
                             to={menu.key}
                             target={menu?.target}
-                            style={{ marginLeft: menu.icon ? "0px" : "12px" }}
+                            style={{ marginLeft: menu.icon ? "0px" : "5px" }}
                         >
                             {menu.label}
                         </Link>

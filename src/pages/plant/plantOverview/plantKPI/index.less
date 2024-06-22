@@ -5,50 +5,48 @@
 }
 .item {
     flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    padding: 0 10px;
     background: #f5f9fe;
     border-radius: 4px;
-    .picWrapper {
-        flex: 1;
-        width: 0;
-        text-align: right;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .picName {
+        display: flex;
+        align-items: center;
         .pic {
-            width: 40px;
-            height: 40px;
+            width: 23px;
+            height: 23px;
             margin-right: 8px;
         }
     }
-    .right {
-        flex: 2;
-        padding-right: 5px;
-        width: 0;
-        .data {
-            font-weight: normal;
-            font-family: DingTalkJinBuTi;
-            font-size: 22px;
-            color: #25598d;
-            display: flex;
-            .value {
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                margin-bottom: 3px;
-            }
-            .unit {
-                font-weight: 400;
-                font-family: normal;
-                font-size: 12px;
-                color: #999999;
-                margin-left: 5px;
-            }
+    .data {
+        display: flex;
+        align-items: flex-end;
+        font-weight: normal;
+        font-family: DingTalkJinBuTi;
+        color: #25598d;
+        display: flex;
+        margin-bottom: 5px;
+        .value {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            font-size: 24px;
         }
-        .name {
+        .unit {
             font-weight: 400;
-            font-size: 14px;
-            color: #666666;
+            font-family: normal;
+            font-size: 12px;
+            margin-left: 5px;
+            position: relative;
+            top: -2px;
         }
+    }
+    .name {
+        font-weight: 400;
+        font-size: 14px;
+        color: #666666;
     }
 }
 
@@ -57,7 +55,7 @@
         width: 20px !important;
         height: 20px !important;
     }
-    .data {
+    .value {
         font-size: 18px !important;
     }
     .name {

@@ -33,10 +33,6 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
     }, [plants]);
 
     const addMarkers = (map, infoWindow, plants) => {
-        function markerClick(e) {
-            infoWindow.setContent(e.target.content);
-            infoWindow.open(map, e.target.getPosition());
-        }
         plants.forEach((item, index) => {
             const marker = new AMap.Marker({
                 position: new AMap.LngLat(...item.position),
@@ -91,7 +87,10 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
                 </div>
             </div>
             `;
-            marker.on("click", markerClick);
+            marker.on("click", e => {
+                infoWindow.setContent(e.target.content);
+                infoWindow.open(map, e.target.getPosition());
+            });
             //marker.setAnimation('AMAP_ANIMATION_BOUNCE');
             // marker.emit("click", { target: marker });
         });

@@ -125,6 +125,7 @@ const Index = ({ data }) => {
                             }}
                         >
                             <div
+                                className={styles.totalCount}
                                 style={{
                                     fontSize: 30,
                                     fontFamily: "DingTalkJinBuTi",
@@ -134,7 +135,9 @@ const Index = ({ data }) => {
                             >
                                 {alarms?.reduce((prev, curr) => +prev + +curr?.value, 0)}
                             </div>
-                            <div style={{ color: "#666" }}>告警总数</div>
+                            <div className={styles.totalText} style={{ color: "#666" }}>
+                                告警总数
+                            </div>
                         </div>
                     </div>
                     <div
@@ -145,7 +148,6 @@ const Index = ({ data }) => {
                             justifyContent: "space-around",
                             height: "80%",
                             margin: "auto",
-                            //overflow:'scroll'
                         }}
                     >
                         {alarms?.map(item => (

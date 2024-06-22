@@ -25,20 +25,20 @@ const Index = ({ data }) => {
         <Card
             title="社会贡献"
             content={
-                <div style={{ height: "100%", display: "flex" }}>
+                <div style={{ height: "100%", display: "flex", padding: " 0 10px" }}>
                     {list?.map(item => (
                         <div className={styles.item}>
-                            <div className={styles.picName}>
+                            <div className={styles.picWrapper}>
                                 <img src={item.pic} className={styles.pic} />
-                                <span className={styles.name}>{item.name}</span>
                             </div>
-                            <div className={styles.data}>
-                                <div style={{ display: "flex", alignItems: "flex-end" }}>
+                            <div className={styles.right}>
+                                <div className={styles.data}>
                                     <Tooltip title={item.value}>
                                         <div className={styles.value}>{item.value}</div>
                                     </Tooltip>
                                     <span className={styles.unit}>{item.unit}</span>
                                 </div>
+                                <div className={styles.name}>{item.name}</div>
                             </div>
                         </div>
                     ))}

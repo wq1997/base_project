@@ -4,11 +4,11 @@
     align-items: center;
     justify-content: space-between;
     background: #f5f9fe;
-    padding: 0 10px;
     .item {
-        height: 60px;
+        padding: 10px;
+        box-sizing: border-box;
+        height: 100%;
         display: flex;
-        padding: 0 10px;
         flex: 1;
         display: flex;
         justify-content: center;
@@ -41,6 +41,10 @@
         align-items: center;
         justify-content: space-between;
         margin-right: 10px;
+        .icon {
+            font-size: 30px;
+            color: #1677ff;
+        }
     }
     .tempDate {
         height: 100%;
@@ -55,9 +59,11 @@
     }
 }
 
-// @media screen and (max-width: 1400px) {
-//     .temp {
-//         font-size: 20px;
-//         color: #333333;
-//     }
-// }
+@media screen and (max-width: 1500px), (max-height: 850px) {
+    .icon {
+        font-size: 25px !important;
+    }
+    .temp {
+        font-size: 16px !important;
+    }
+}
