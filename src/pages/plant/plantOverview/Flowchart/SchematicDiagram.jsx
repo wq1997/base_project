@@ -109,8 +109,8 @@ const SchematicDiagram = ({ dataSource }) => {
                 <div
                     style={{
                         position: "absolute",
-                        left: 82,
-                        top: 45,
+                        left: '120%',
+                        top: 20,
                         textWrap: "nowrap",
                         color: "#9D9EA1",
                     }}
@@ -231,7 +231,7 @@ const SchematicDiagram = ({ dataSource }) => {
                         style={{
                             position: "absolute",
                             right: -loadSystemIconWidth / 2 + 20,
-                            top: -loadSystemIconWidth / 2 - 45,
+                            top: -loadSystemIconWidth / 2 - 41,
                             width: loadSystemIconWidth / 1.2,
                             transform: `rotate(-${loadSystemAngle}deg)`,
                         }}
