@@ -82,7 +82,7 @@ const Index = ({ activePlantName, data }) => {
                     height: "100%",
                     position: "absolute",
                     top: "68%",
-                    left: "50%",
+                    left: "52%",
                     transform: "translate(-50%, -50%)",
                 }}
             >
