@@ -33,12 +33,10 @@ const Index = ({ data }) => {
                                 <span className={styles.name}>{item.name}</span>
                             </div>
                             <div className={styles.data}>
-                                <div style={{ display: "flex", alignItems: "flex-end" }}>
-                                    <Tooltip title={item.value}>
-                                        <div className={styles.value}>{item.value}</div>
-                                    </Tooltip>
-                                    <span className={styles.unit}>{item.unit}</span>
-                                </div>
+                                <Tooltip title={item.value}>
+                                    <div className={styles.value}>{item.value}</div>
+                                </Tooltip>
+                                <span className={styles.unit}>{item.unit}</span>
                             </div>
                         </div>
                     ))}

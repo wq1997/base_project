@@ -39,16 +39,14 @@ const Index = ({ data }) => {
     }, [data]);
 
     return (
-        <div style={{ height: "100%", display: "flex", gap: "8px" }}>
+        <div style={{ height: "100%", width: "100%", display: "flex", gap: "8px" }}>
             {list?.map(item => (
                 <div className={styles.item}>
                     <div className={styles.data}>
-                        <div style={{ display: "flex", alignItems: "flex-end" }}>
-                            <Tooltip title={item.value}>
-                                <div className={styles.value}>{item.value}11111111</div>
-                            </Tooltip>
-                            <span className={styles.unit}>{item.unit}</span>
-                        </div>
+                        <Tooltip title={item.value} className={styles.tooltip}>
+                            <div className={styles.value}>{item.value}</div>
+                        </Tooltip>
+                        <span className={styles.unit}>{item.unit}</span>
                     </div>
                     <div className={styles.picName}>
                         <img src={item.pic} className={styles.pic} />
