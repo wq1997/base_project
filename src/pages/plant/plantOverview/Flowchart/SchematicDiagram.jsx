@@ -96,7 +96,7 @@ const SchematicDiagram = ({ dataSource }) => {
                     position: "absolute",
                     left: "50%",
                     transform: "translateX(-50%)",
-                    top: 20,
+                    top: 10,
                     zIndex: 1000,
                 }}
             >
