@@ -28,15 +28,15 @@ const Index = ({ data }) => {
                 <div style={{ height: "100%", display: "flex" }}>
                     {list?.map(item => (
                         <div className={styles.item}>
-                            <div className={styles.picName}>
-                                <img src={item.pic} className={styles.pic} />
-                                <span className={styles.name}>{item.name}</span>
-                            </div>
                             <div className={styles.data}>
                                 <Tooltip title={item.value}>
                                     <div className={styles.value}>{item.value}</div>
                                 </Tooltip>
                                 <span className={styles.unit}>{item.unit}</span>
+                            </div>
+                            <div className={styles.picName}>
+                                <img src={item.pic} className={styles.pic} />
+                                <span className={styles.name}>{item.name}</span>
                             </div>
                         </div>
                     ))}
