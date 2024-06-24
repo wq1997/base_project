@@ -1,5 +1,6 @@
 export default Routes = [
     { path: "/login", component: "@/pages/account/login" },
+    { path: '/screen-plant-analysis', component: "@/pages/plantAnalysisScreen"},
     {
         path: "/",
         component: "@/pages/App",

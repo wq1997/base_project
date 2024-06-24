@@ -1,0 +1,33 @@
+.header{
+    position: relative;
+    background: transparent url(/images/header_bg.svg) center center no-repeat;
+    background-size: cover;
+    height: 93px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .headerLeft{
+        position: absolute;
+        box-sizing: border-box;
+        bottom: 0;
+        left: 0;
+        width: 22.9166%;
+        height: 36px;
+        display: flex;
+        .headerLeftLeftItem{
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            background-color: #0B3858;
+            cursor: pointer;
+            &:nth-last-child(1){
+                border-radius: 6px;
+            }
+            &:nth-child(1){
+                border-radius: 6px;
+            }
+        }
+    }
+}
