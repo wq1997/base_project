@@ -7,8 +7,7 @@ import dayjs from 'dayjs';
 import styles from './index.less'
 import { getPcsNowDataById, } from '@/services/deviceTotal'
 import { useSelector, useIntl } from "umi";
-import ReactECharts from "echarts-for-react";
-import * as echarts from "echarts";
+
 function Com({ id }) {
     const [data, setData] = useState('');
     const { token } = theme.useToken();
@@ -222,8 +221,6 @@ function Com({ id }) {
                     </>}
                 />
             </div>
-
-
         </div>
     )
 }

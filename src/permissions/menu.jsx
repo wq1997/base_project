@@ -50,9 +50,9 @@ const MenuList = [
         key: '/index/depotSettings',
         icon: <ControlOutlined />,
         children: [
-            { label: <FormattedMessage id='策略配置' />, key: '/index/depotSettings/policyConfiguration', component: "@/pages/depotSettings/policyConfiguration" },
-            { label: <FormattedMessage id='电站配置' />, key: '/index/depotSettings/powerStationConfig', component: "@/pages/depotSettings/powerStationConfig" },
-            { label: <FormattedMessage id='运维管理' />, key: '/index/depotSettings/operationManage', component: "@/pages/depotSettings/operationManage" },
+            { label: <FormattedMessage id='策略配置' />, key: '/index/depotSettings/policyConfiguration', component: "@/pages/depotSettings/policyConfiguration",auth:[2,3]},
+            { label: <FormattedMessage id='电站配置' />, key: '/index/depotSettings/powerStationConfig', component: "@/pages/depotSettings/powerStationConfig"},
+            { label: <FormattedMessage id='运维管理' />, key: '/index/depotSettings/operationManage', component: "@/pages/depotSettings/operationManage",auth:[2,3] },
         ]
     },
     {
@@ -75,7 +75,9 @@ const getMenu = menuList => {
     useEffect(() => {
         setCurrentDivice(plantDetails.model)
     }, [plantDetails])
-
+    const { user } = useSelector(function (state) {
+        return state.user
+    });
     return menuList.map(menu => {
         if (menu.children) {
             return (
@@ -84,14 +86,13 @@ const getMenu = menuList => {
                     title={menu.label}
                     icon={menu.icon}
                     style={{ fontSize: '18px' }}
-
                 >
                     {getMenu(menu.children)}
                 </SubMenu>
             );
         } else {
-            if (menu.type) {
-                if (currentDivice?.find(it => it === menu.type)) {
+            if (menu.auth) {
+                if (menu.auth?.find(it => it === user?.roleId)) {
                     return (
                         <Menu.Item key={menu.key}
                             style={{ fontSize: '16px' }}

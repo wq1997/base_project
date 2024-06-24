@@ -105,10 +105,9 @@ function Com({ id }) {
             dataLegend.push(it.label);
             unit = it?.unit;
             let data = [];
-            dataX= dataX.length?[]:dataX;
             it?.value?.map((item, index) => {
                 data.push([dayjs(item.time).format('HH:mm'), item.value]);
-               dataX.push(dayjs(item.time).format('HH:mm'));
+                it?.value.length !== 0 &&dataX.length!==it?.value.length? dataX.push(dayjs(item.time).format('HH:mm')) : null;
                 excelData[index] = {
                     ...excelData[index],
                     time: dayjs(item.time).format('HH:mm'),
@@ -240,7 +239,7 @@ function Com({ id }) {
                     {t('查询')}
                 </Button>
                 <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downLoadFoodModel} >
-                    {t('导出')}excel
+                    {t('导出')}Excel
                 </Button>
             </div>
             <div className={styles.echartPart}>

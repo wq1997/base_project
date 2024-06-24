@@ -1,0 +1,88 @@
+.WiringDiagram{
+    width: 100%;
+    height: 100%;
+}
+
+.wrap{
+    margin-top: 20px;
+    padding: 0 32px 0 32px;
+    width: 100%;
+    display: flex;
+    .theFirstLine{
+        height:8vh;
+        min-height: 70px;
+        width: 100%;
+        margin-left: 60px;
+    }
+    .theFirstContent{
+        width: 100%;
+        display:  grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+        gap: 8px 8px; 
+        // margin-bottom: 60px;
+    }
+    .module{
+        display:  flex;
+        .dataLeft{
+            width: 40px;
+            .pcsData{
+                height: 60px;
+                margin: 50px 0 50px 0;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            .bmsData{
+                height: 60px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+        .centerModule{
+            .onePcs{
+                width: 42px;
+                height: 60px;
+                border-radius: 2px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            .oneBms{
+                width: 42px;
+                height: 60px;
+                border-radius: 2px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            .line{
+                height: 50px;
+                width: calc(21px + 1.5px);
+            }
+        }
+       .dataRight{
+        width: 40px;
+        .pcsData{
+            height: 60px;
+            margin: 50px 0 50px 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .bmsData{
+            height: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+       }
+    }
+   
+}

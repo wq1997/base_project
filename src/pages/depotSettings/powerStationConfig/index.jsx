@@ -19,7 +19,9 @@ function Com(props) {
     const [selectId, setSelectId] = useState();
     const [initSelectData, setInitSelectData] = useState();
     const dateFormat = 'YYYY/MM/DD HH/hh/ss';
-
+    const { user } = useSelector(function (state) {
+        return state.user
+    });
     useEffect(() => {
         getData();
     }, [formData,])
@@ -138,10 +140,12 @@ function Com(props) {
             key: 'operation',
             render: (text, record) => {
                 return (
-                    <Space>
+                user.roleId==3?
+                <Space>
                         <Button type="primary" onClick={() => edit(record)}>{t('编辑')}</Button>
                         <Button type="primary" danger onClick={() => changeIsOpenDel(record)}>{t('删除')}</Button>
                     </Space>
+                    :null
                 )
             }
         }
@@ -219,7 +223,7 @@ function Com(props) {
                     t("电站配置")
                 }
                 filterPart={
-                    <Button type='primary' onClick={changIsOpen}>{t('新增')}</Button>
+                        user.roleId == 3 ?<Button type='primary' onClick={changIsOpen}>{t('新增')}</Button>:null
                 }
                 content={
                     <>

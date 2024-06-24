@@ -116,7 +116,7 @@ function Com(props) {
             let data = [];
             it?.value?.map((item, index) => {
                 data.push([dayjs(item.time).format('HH:mm'), item.value]);
-                i == 0 ? dataX.push(dayjs(item.time).format('HH:mm')) : null;
+                it?.value.length !== 0 &&dataX.length!==it?.value.length? dataX.push(dayjs(item.time).format('HH:mm')) : null;
                 excelData[index] = {
                     ...excelData[index],
                     time: dayjs(item.time).format('HH:mm'),
@@ -191,6 +191,7 @@ function Com(props) {
                 ...ser
             ]
         });
+        console.log(data,dataX,1212);
     }
     const downLoadFoodModel = () => {
         let fileName = title;
@@ -230,7 +231,7 @@ function Com(props) {
                     {t('查询')}
                 </Button>
                 <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downLoadFoodModel}>
-                    {t('导出')}excel
+                    {t('导出')}Excel
                 </Button>
             </div>
             <div className={styles.echartPart}>

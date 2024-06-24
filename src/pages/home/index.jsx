@@ -7,15 +7,15 @@ import useIcon from "@/hooks/useIcon";
 import { useSelector, useIntl } from "umi";
 import { theme, Switch, Select, Descriptions } from "antd";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { getGridPointList,getOverviewLiveData } from '@/services/plant'
-import dayjs from 'dayjs';
-import Picture from '../react/Meta2d'
+import { getGridPointList, getOverviewLiveData } from '@/services/plant'
+import LinePicture from './components/LinePicture'
 function OverView(props) {
     const { token } = theme.useToken();
     const Icon = useIcon();
     const [grids, setGrids] = useState([]);
     const [currntGrid, setCurrntGrid] = useState();
     const [allData, setAllData] = useState({});
+    const [checked, setChecked] = useState(true);
     const [power, setPower] = useState([
         {
             value: '0.000',
@@ -57,7 +57,9 @@ function OverView(props) {
     useEffect(() => {
         getOverviewData();
     }, [token, currntGrid])
-   
+    const changeCheck = (checked) => {
+        setChecked(checked)
+    }
     const contentStyle = useEmotionCss(({ token }) => {
         return {
             '.ant-descriptions-item-label': {
@@ -65,7 +67,7 @@ function OverView(props) {
             }
         }
     });
-  
+
     const getGrid = async () => {
         let { data: grid } = await getGridPointList({
             plantId: localStorage.getItem('plantId')
@@ -79,15 +81,15 @@ function OverView(props) {
             gridPointId: currntGrid
         });
         setAllData(data?.data);
-        power.map((it)=>{
-            it.value=data?.data?.[it.key];
+        power.map((it) => {
+            it.value = data?.data?.[it.key];
         });
 
     }
     const changeGrid = (e) => {
         setCurrntGrid(e.target.value);
     };
-    
+
     const gridData = [
         {
             key: 'lineAbVol',
@@ -160,27 +162,27 @@ function OverView(props) {
         {
             key: 'activePower',
             label: '有功功率',
-            unit: ''
+            unit:  '(kW)'
         },
         {
             key: 'totalDischargeEnergy',
             label: '总放电电量',
-            unit: ''
+            unit:  '(kWh)'
         },
         {
             key: 'totalChargeEnergy',
             label: '总充电电量',
-            unit: ''
+            unit:  '(kWh)'
         },
         {
             key: 'todayDischargeEnergy',
             label: '日放电电量',
-            unit: ''
+            unit:  '(kWh)'
         },
         {
             key: 'todayChargeEnergy',
             label: '日充电电量',
-            unit: ''
+            unit: '(kWh)'
         },
         {
             key: 'lineAbVol',
@@ -217,7 +219,7 @@ function OverView(props) {
             unit: '(A)'
 
         },
-      
+
     ];
     const pcsModel = [
         {
@@ -248,7 +250,7 @@ function OverView(props) {
         <>
             <div className={styles.container} style={{ color: token.titleColor }}>
                 <div className={styles.title} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal }}>
-                    <div>
+                    {checked ? <div>
                         {t('并网点')}:
                         <Select
                             style={{
@@ -257,133 +259,147 @@ function OverView(props) {
                             }}
                             key={grids[0]?.id}
                             defaultValue={grids[0]?.id}
-                        onChange={changeGrid}
+                            onChange={changeGrid}
                         >
                             {grids && grids.map(item => {
                                 return (<Option key={item.id} value={item.id}>{item.gridPointName}</Option>);
                             })
                             }
                         </Select>
-                    </div>
-                    <Switch className={styles.right} checkedChildren="总览列表" unCheckedChildren="接线图" defaultChecked />
+                    </div> : <div style={{ height: '32px' }}></div>}
+                    <Switch className={styles.right} checkedChildren={t("总览列表")} unCheckedChildren={t("接线图")} onChange={changeCheck} defaultChecked={checked} />
                 </div>
-                <div className={styles.heard} style={{ color: token.colorNormal }}>
-                    <div className={styles.headLeftPart} style={{ backgroundColor: token.titleCardBgc, }}>
-                        <div className={styles.line}>
-                            <span className={styles.label}>{t('总充电')}</span>
-                            <span className={styles.value} style={{ color: 'rgb(14, 116, 225)' }}>{allData?.totalCEnergy?.split(' ')?.[0]}<span className={styles.unit} style={{ color: token.colorNormal }}>{`(${allData?.totalCEnergy?.split(' ')?.[1]})`}</span></span>
-                            <Icon className={styles.icon} type='icon-zongchongdian' />
-                        </div>
-                        <div className={styles.line}>
-                            <span className={styles.label}>{t('总放电')}</span>
-                            <span className={styles.value} style={{ color: 'rgb(245, 221, 59)' }}>{allData?.totalDEnergy?.split(' ')?.[0]}<span className={styles.unit} style={{ color: token.colorNormal }}>{`(${allData?.totalDEnergy?.split(' ')?.[1]})`}</span></span>
-                            <Icon className={styles.icon} type='icon-zongfangdian' />
-                        </div>
-                    </div>
-                    <div className={styles.headLeftPart} style={{ backgroundColor: token.titleCardBgc, }}>
-                        <div className={styles.line}>
-                            <span className={styles.label}>{t('日充电')}</span>
-                            <span className={styles.value} style={{ color: 'rgb(11, 194, 213)' }}>{allData?.dayChargeEnergy?.split(' ')?.[0]}<span className={styles.unit} style={{ color: token.colorNormal }}>{`(${allData?.dayChargeEnergy?.split(' ')?.[1]})`}</span></span>
-                            <Icon className={styles.icon} type='icon-richongdian' />
-                        </div>
-                        <div className={styles.line}>
-                            <span className={styles.label}>{t('日放电')}</span>
-                            <span className={styles.value} style={{ color: 'rgb(254, 135, 51)' }}>{allData?.dayDischargeEnergy?.split(' ')?.[0]}<span className={styles.unit} style={{ color: token.colorNormal }}>{`(${allData?.dayDischargeEnergy?.split(' ')?.[1]})`}</span></span>
-                            <Icon className={styles.icon} type='icon-rifangdian' />
-                        </div>
-                    </div>
-                    {power.map(it => {
-                        return (
-                            <div className={styles.headrightPart} style={{ backgroundColor: token.titleCardBgc, }}>
-                                <div className={styles.value} style={{ color: it.color }}>
-                                    {it.value}
-                                    <span className={styles.unit} style={{ color: token.colorNormal }}>({it.unit})</span>
-                                    <div className={styles.label} style={{ color: token.colorNormal }}>{t(it.label)}</div>
-                                </div>
-                                <Icon className={styles.icon} style={{ color: it.color }} type={it.icon} />
+                {checked ? <div className={styles.contentWrap}>
+                     <> <div className={styles.heard} style={{ color: token.colorNormal }}>
+                        <div className={styles.headLeftPart} style={{ backgroundColor: token.titleCardBgc, }}>
+                            <div className={styles.line}>
+                                <span className={styles.label}>{t('总充电')}</span>
+                                <span className={styles.value} style={{ color: 'rgb(14, 116, 225)' }}>{allData?.totalCEnergy?.split(' ')?.[0]}<span className={styles.unit} style={{ color: token.colorNormal }}>{`(${allData?.totalCEnergy?.split(' ')?.[1]})`}</span></span>
+                                <Icon className={styles.icon} type='icon-zongchongdian' />
                             </div>
-                        )
-                    })}
-                </div>
-                <div className={styles.cneterPart} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal }}>
-                    <CardModel
-                        title='1#Transformer'
-                        content={
-                            <>
-                                <Descriptions
-                                    column={{
-                                        xs: 1,
-                                        sm: 2,
-                                        md: 3,
-                                        lg: 4,
-                                        xl: 5,
-                                        xxl: 5,
-                                    }}
-                                    items={gridData.map(it => {
-                                        return {
-                                            // label: t(it.label) + `${it.unit}`,
-                                            label: t(it.label) ,
-                                            key: it.key,
-                                            children: allData?.msc?.[0]?.[it.key]
-                                        }
-                                    })
-                                    }
-                                    className={contentStyle}
-                                />
-                            </>
-                        }
-                    />
-
-                </div>
-                <div className={styles.bottomPart} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal }}>
-                    <CardModel
-                        title='PCS1'
-                        content={
-                            <>
-                                <div className={styles.totalPcs} style={{ backgroundColor: token.lightTreeBgc }}>
-                                    <Descriptions
-                                        column={{
-                                            xs: 1,
-                                            sm: 2,
-                                            md: 3,
-                                            lg: 4,
-                                            xl: 5,
-                                            xxl: 5,
-                                        }}
-                                        items={pcsData.map(it => {
-                                            return {
-                                                label: t(it.label) + `${it.unit} `,
-                                                key: it.key,
-                                                children: allData?.msc?.[0]?.pcs?.[it.key]||'--'
-                                            }
-                                        })
-                                        }
-                                        className={contentStyle}
-                                    />
+                            <div className={styles.line}>
+                                <span className={styles.label}>{t('总放电')}</span>
+                                <span className={styles.value} style={{ color: 'rgb(245, 221, 59)' }}>{allData?.totalDEnergy?.split(' ')?.[0]}<span className={styles.unit} style={{ color: token.colorNormal }}>{`(${allData?.totalDEnergy?.split(' ')?.[1]})`}</span></span>
+                                <Icon className={styles.icon} type='icon-zongfangdian' />
+                            </div>
+                        </div>
+                        <div className={styles.headLeftPart} style={{ backgroundColor: token.titleCardBgc, }}>
+                            <div className={styles.line}>
+                                <span className={styles.label}>{t('日充电')}</span>
+                                <span className={styles.value} style={{ color: 'rgb(11, 194, 213)' }}>{allData?.dayChargeEnergy?.split(' ')?.[0]}<span className={styles.unit} style={{ color: token.colorNormal }}>{`(${allData?.dayChargeEnergy?.split(' ')?.[1]})`}</span></span>
+                                <Icon className={styles.icon} type='icon-richongdian' />
+                            </div>
+                            <div className={styles.line}>
+                                <span className={styles.label}>{t('日放电')}</span>
+                                <span className={styles.value} style={{ color: 'rgb(254, 135, 51)' }}>{allData?.dayDischargeEnergy?.split(' ')?.[0]}<span className={styles.unit} style={{ color: token.colorNormal }}>{`(${allData?.dayDischargeEnergy?.split(' ')?.[1]})`}</span></span>
+                                <Icon className={styles.icon} type='icon-rifangdian' />
+                            </div>
+                        </div>
+                        {power.map(it => {
+                            return (
+                                <div className={styles.headrightPart} style={{ backgroundColor: token.titleCardBgc, }}>
+                                    <div className={styles.value} style={{ color: it.color }}>
+                                        {it.value}
+                                        <span className={styles.unit} style={{ color: token.colorNormal }}>({it.unit})</span>
+                                        <div className={styles.label} style={{ color: token.colorNormal }}>{t(it.label)}</div>
+                                    </div>
+                                    <Icon className={styles.icon} style={{ color: it.color }} type={it.icon} />
                                 </div>
-                                <div className={styles.pcsModule}>
-                                    {allData?.msc?.[0]?.pcs?.branch?.map((item, i) => {
-                                        return <Descriptions
-                                            className={contentStyle}
-                                            style={{ backgroundColor: token.lightTreeBgc, padding: '16px 12px 8px 12px', borderRadius: '8px' }}
-                                            column={1}
-                                            title={"Module1#" + (i + 1)}
-                                            items={pcsModel.map(it => {
-                                                return {
-                                                    label: t(it.label) + `${it.unit}`,
-                                                    key: it.key,
-                                                    children: item[it.key] ||'--' 
+                            )
+                        })}
+                    </div>
+                        <div className={styles.oneGrid}>
+                            <div className={styles.cneterPart} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal }}>
+                                <CardModel
+                                    title='1#Transformer'
+                                    content={
+                                        <>
+                                            <Descriptions
+                                                column={{
+                                                    xs: 1,
+                                                    sm: 2,
+                                                    md: 3,
+                                                    lg: 4,
+                                                    xl: 5,
+                                                    xxl: 5,
+                                                }}
+                                                items={gridData.map(it => {
+                                                    return {
+                                                        label: t(it.label) + `${it.unit}`,
+                                                        // label: t(it.label),
+                                                        key: it.key,
+                                                        children: allData?.msc?.[0]?.[it.key]
+                                                    }
+                                                })
                                                 }
-                                            })
-                                            } />
-                                    })}
-                                </div>
+                                                className={contentStyle}
+                                            />
+                                        </>
+                                    }
+                                />
+                            </div>
+                            {
+                                allData?.msc?.map((onePcs, i) => {
+                                    return (
+                                        <div className={styles.onePcs}>
+                                            <div className={styles.bottomPart} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal }}>
+                                                <CardModel
+                                                    title={'PCS' + (i + 1)}
+                                                    content={
+                                                        <>
+                                                            <div className={styles.totalPcs} style={{ backgroundColor: token.lightTreeBgc }}>
+                                                                <Descriptions
+                                                                    column={{
+                                                                        xs: 1,
+                                                                        sm: 2,
+                                                                        md: 3,
+                                                                        lg: 4,
+                                                                        xl: 5,
+                                                                        xxl: 5,
+                                                                    }}
+                                                                    items={pcsData.map(it => {
+                                                                        return {
+                                                                            label: t(it.label) + `${it.unit} `,
+                                                                            key: it.key,
+                                                                            children: onePcs?.pcs?.[it.key] || '--'
+                                                                        }
+                                                                    })
+                                                                    }
+                                                                    className={contentStyle}
+                                                                />
+                                                            </div>
+                                                            <div className={styles.pcsModule}>
+                                                                {onePcs?.pcs?.branch?.map((item, i) => {
+                                                                    return <Descriptions
+                                                                        className={contentStyle}
+                                                                        style={{ backgroundColor: token.lightTreeBgc, padding: '16px 12px 8px 12px', borderRadius: '8px' }}
+                                                                        column={1}
+                                                                        title={"Module1#" + (i + 1)}
+                                                                        items={pcsModel.map(it => {
+                                                                            return {
+                                                                                label: t(it.label) + `${it.unit}`,
+                                                                                key: it.key,
+                                                                                children: item[it.key] || '--'
+                                                                            }
+                                                                        })
+                                                                        } />
+                                                                })}
+                                                            </div>
 
-                            </>
-                        }
-                    />
-                </div>
-                <Picture/>
+                                                        </>
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                            }
+
+                        </div>
+
+                    </> 
+                </div> :<LinePicture />}
+
             </div>
         </>
 

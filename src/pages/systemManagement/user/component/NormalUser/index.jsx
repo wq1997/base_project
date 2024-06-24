@@ -4,8 +4,8 @@ import { useSelector, useIntl, history } from "umi";
 import { Button, Modal, Form, Input, Select, theme, message } from 'antd';
 import { CardModel } from "@/components";
 import { apiSaveOrUpdateUser, } from '@/services/total'
-import { removeLocalStorage } from "@/utils/utils";
-import { getEncrypt,  } from "@/utils/utils";
+import { getEncrypt,removeLocalStorage } from "@/utils/utils";
+import { PASSWORD_RGE,  } from "@/utils/constants";
 
 function Com(props) {
     const { user } = useSelector(function (state) {
@@ -57,9 +57,10 @@ function Com(props) {
             key: 'password',
             type: 3,
             required: true,
-            rules: [{
-                // validator: validateToNextPassword,
-            },]
+            rules: {
+                pattern:PASSWORD_RGE,
+                message:t('密码长度为8-16位，至少2种字符，请重新输入')
+              },
         },
         {
             label: '确认密码',

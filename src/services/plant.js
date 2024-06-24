@@ -40,7 +40,9 @@ export const getOverviewLiveData = (payload) => {
   return axiosInstance.get(`${path}/getOverviewLiveData?gridPointId=${payload.gridPointId}`);
 }
 
-
-
+// 获取接线图
+export const getCircuitDiagram = (payload) => {
+  return axiosInstance.get(`${path}/getCircuitDiagram?plantId	=${payload.plantId}`);
+}
 
 

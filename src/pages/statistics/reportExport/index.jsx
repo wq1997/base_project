@@ -13,7 +13,7 @@ function Com() {
   const [form] = Form.useForm();
   const { token } = theme.useToken();
   const [way, setWay] = useState(0);
-  const [wayLabel, setWayLabel] = useState('日报表');
+  const [wayLabel, setWayLabel] = useState('日统计报表');
   const [picker, setPicker] = useState('date');
   const [date, setDate] = useState(dayjs(new Date()));
   const [dateStr, setDateStr] = useState(dayjs(new Date()).format('YYYY-MM-DD'));
@@ -22,29 +22,11 @@ function Com() {
   const [allData, setAllData] = useState({});
   const [currentModel, setCurrentModel] = useState([]);
   const [currentFormat, setCurrentFormat] = useState('YYYY-MM-DD');
+  const [runClum, setRunClum] = useState([]);
+  const [pcsClum, setPcsClum] = useState([]);
+  const [bmsClum, setBmsClum] = useState([]);
 
   const intl = useIntl();
-  const wayOption = [{
-    label: '日报表',
-    value: 0,
-  },
-  {
-    label: '周报表',
-    value: 1,
-  },
-  {
-    label: '月报表',
-    value: 2,
-  },
-  {
-    label: '年报表',
-    value: 3,
-  },
-  {
-    label: '总报表',
-    value: 4,
-  },
-  ]
   const t = (id) => {
     const msg = intl.formatMessage(
       {
@@ -53,10 +35,104 @@ function Com() {
     );
     return msg
   }
+  const wayOption = [{
+    label: t('日统计报表'),
+    value: 0,
+  },
+  {
+    label: t('周统计报表'),
+    value: 1,
+  },
+  {
+    label: t('月统计报表'),
+    value: 2,
+  },
+  {
+    label: t('年统计报表'),
+    value: 3,
+  },
+  {
+    label: t('总报表'),
+    value: 4,
+  },
+  ]
 
+  const run = [
+
+    {
+      title: t('时间'),
+      dataIndex: 'date',
+      key: 'date',
+
+    },
+    {
+      title: t('充电电量（kWh）'),
+      dataIndex: 'charge',
+      key: 'charge',
+    },
+    {
+      title: t('放电电量（kWh）'),
+      dataIndex: 'discharge',
+      key: 'discharge',
+    },
+    {
+      title: t('充放电效率（%）'),
+      dataIndex: 'efficiency',
+      key: 'efficiency',
+    },
+  ]
+
+  const pRun = [
+    {
+      title: t('储能单元名称'),
+      dataIndex: 'date',
+      key: 'date',
+    
+    },
+    {
+      title: t('储能单元编号'),
+      dataIndex: 'devNo',
+      key: 'pcsNo',
+    },
+    {
+      title: t('充电电量（kWh）'),
+      dataIndex: 'charge',
+      key: 'pcsCharge',
+    },
+    {
+      title: t('放电电量（kWh）'),
+      dataIndex: 'discharge',
+      key: 'pcsDischarge',
+    },
+
+  ];
+  const bRun = [
+    {
+      title: t('储能单元名称'),
+      dataIndex: 'date',
+      key: 'date',
+    
+    },
+    {
+      title: t('储能单元编号'),
+      dataIndex: 'devNo',
+      key: 'bmsNo',
+    },
+    {
+      title: t('充电电量（kWh）'),
+      dataIndex: 'charge',
+      key: 'bmsCharge',
+    },
+    {
+      title: t('放电电量（kWh）'),
+      dataIndex: 'discharge',
+      key: 'bmsDischarge',
+    },
+
+  ]
   useEffect(() => {
     getInitData();
-  }, [token, way, dataChoiceOpen,date]);
+  }, [token, way, dataChoiceOpen, date,]);
   useEffect(() => {
     if (way == 0) {
       setPicker('date');
@@ -71,7 +147,6 @@ function Com() {
       setCurrentFormat('YYYY')
       setPicker('year')
     };
-    console.log(dayjs(date).format('YYYY-MM-DD'), 111111);
   }, [way])
 
   const getInitData = async () => {
@@ -79,10 +154,10 @@ function Com() {
       plantId: localStorage.getItem('plantId'),
       type: way,
     });
-    setModelData(reqData.data);
+    setModelData(reqData?.data);
     let obj = {};
-    reqData?.data.map(it => {
-      it.children?.map(item => {
+    reqData?.data?.map(it => {
+      it?.children?.map(item => {
         obj[item.value] = item.state;
       })
     });
@@ -91,7 +166,23 @@ function Com() {
     data.runData.data = delBaseData(data.runData.data, obj);
     form.setFieldsValue({ ...obj });
     setCurrentModel({ ...obj });
-    console.log(data.runData.data, obj, 111111);
+    let arr = run?.filter(it => {
+      if (obj?.[it?.key]) {
+        return it
+      } 
+    });
+
+    setRunClum([...arr]);
+    setPcsClum(pRun?.filter(it => {
+      if (obj?.[it?.key]) {
+        return it
+      } 
+    }));
+    setBmsClum(bRun?.filter(it => {
+      if (obj?.[it?.key]) {
+        return it
+      } 
+    }))
     let currentDate = dayjs(date).format(currentFormat);
     let { data: allData } = await getDtuReport({
       plantId: localStorage.getItem('plantId'),
@@ -171,7 +262,7 @@ function Com() {
               {t('数据选择')}
             </Button>
             <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={exportData}>
-              {t('导出')}excel
+              {t('导出')}Excel
             </Button>
           </Space>
         </div>
@@ -183,67 +274,36 @@ function Com() {
             <div className={styles.content}>
               <div className={styles.contentItem}>
                 <div style={{ marginBottom: 10 }}>
-                  <Title title={data.baseData.title} />
+                  <Title title={t('运行数据')} />
                 </div>
-                {Object.keys(currentModel).length && <Descriptions
-                  items={data.baseData?.data.map(item => {
-                    return {
-                      ...item,
-                      children: allData?.plant?.[item?.value]
-                    }
-                  })}
-                />}
+                <Table
+                  columns={runClum}
+                  dataSource={allData?.runEnergy}
+                  pagination={false}
+                />
               </div>
               <div className={styles.contentItem}>
                 <div style={{ marginBottom: 10 }}>
-                  <Title title={data.runData.title} />
+                  <Title title={t('PCS运行指标')} />
                 </div>
-                {Object.keys(currentModel).length && <Descriptions
-                  items={data.runData.data.map(item => {
-                    return {
-                      ...item,
-                      children: allData?.run?.[item.value]
-                    }
-                  })}
-                />}
+                <Table
+                  columns={pcsClum}
+                  dataSource={allData?.pcsEnergy}
+                  pagination={false}
+                />
               </div>
               <div className={styles.contentItem}>
                 <div style={{ marginBottom: 10 }}>
-                  <Title title={data.electricReportData.title} />
+                  <Title title={t('BMS运行指标')} />
                 </div>
-                {Object.keys(energy).map((it,i) => {
-                  return (
-                    <>
-                      {
-                        currentModel[it] && <Table
-                          columns={energy[it]}
-                          dataSource={allData?.reportData?.[i]}
-                          pagination={false}
-                        />
-                      }
-                    </>
-                  )
-                })}
+                <Table
+                  columns={bmsClum}
+                  dataSource={allData?.bmsEnergy}
+                  pagination={false}
+                />
 
               </div>
-              <div className={styles.contentItem}>
-                <div style={{ marginBottom: 10 }}>
-                  <Title title={data.incomeData.title} />
-                </div>
-                {Object.keys(inCome).map((it,i)=> {
-                  return (
-                    <>
-                      {
-                        currentModel[it] && <Table
-                          columns={inCome[it]}
-                          dataSource={allData?.reportData?.[i]}
-                          pagination={false}
-                        />
-                      }
-                    </>
-                  )
-                })}
-              </div>
+         
             </div>
           </div>
         </div>
@@ -277,7 +337,7 @@ function Com() {
         <Form
           form={form}
         >
-          {modelData.map(item => {
+          {modelData?.map(item => {
             return (
               <div style={{ marginBottom: 30 }}>
                 <div style={{ marginBottom: 10 }}><Title title={item?.label} /></div>

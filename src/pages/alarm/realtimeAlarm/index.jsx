@@ -4,13 +4,18 @@ import { useEffect, useState } from 'react'
 import { useSelector, useIntl} from "umi";
 import { CardModel } from "@/components";
 import styles from "./index.less";
-import { Pagination, theme } from "antd"
+import { Pagination, theme,Select} from "antd"
 import { getNowAlarmsWithPage } from "@/services/alarm"
+import { getGridPointList,  } from '@/services/plant'
+
 let clum=[...alarmTableColums];
 clum[7]={};
 const RealtimeAlarm = () => {
   const [data, setData] = useState([]);
   const [current, setCurrent] = useState(1);
+  const [currntGrid, setCurrntGrid] = useState();
+  const [grids, setGrids] = useState([]);
+
   const { token } = theme.useToken();
   const intl = useIntl();
   const t = (id) => {
@@ -23,7 +28,11 @@ const RealtimeAlarm = () => {
   }
   useEffect(() => {
     getData();
+    getGrid();
   }, []);
+  useEffect(() => {
+    getData();
+  }, [currntGrid]);
   useEffect(() => {
     let timer = setInterval(() => {
       getData();
@@ -37,7 +46,9 @@ const RealtimeAlarm = () => {
     const { data } = await getNowAlarmsWithPage({
       currentPage: page || 1,
       pageSize: 20,
-      plantId:currentPlantId||localStorage.getItem('plantId')
+      plantId:currentPlantId||localStorage.getItem('plantId'),
+      gridPoint:currntGrid
+
     });
     setData(data.data);
   }
@@ -45,9 +56,35 @@ const RealtimeAlarm = () => {
     setCurrent(page);
     getData(page);
   }
-
+  const changeGrid = (e) => {
+    setCurrntGrid(e);
+  };
+  const getGrid = async () => {
+    let { data: grid } = await getGridPointList({
+        plantId: localStorage.getItem('plantId')
+    })
+    setGrids(grid?.data);
+    // setCurrntGrid(grid?.data?.[0]?.id);
+}
   return (
     <div style={{width:'100%',height:'100%',padding:'0 0 10px 0'}}>
+      <div className={styles.grid} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal, }}>
+            <Select
+              style={{
+                width: 200,
+                marginLeft: '10px'
+              }}
+              // key={grids[0]?.id}
+              // defaultValue={grids[0]?.id}
+              placeholder={t('并网点')}
+              onChange={changeGrid}
+            >
+              {grids && grids.map(item => {
+                return (<Option key={item.id} value={item.id}>{item.gridPointName}</Option>);
+              })
+              }
+            </Select>
+          </div>
       <CardModel
         title={
           t('实时告警')

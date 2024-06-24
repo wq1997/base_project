@@ -56,19 +56,24 @@ const App = (props) => {
       label: '储能装机容量',
       key: 'capacity',
       type: 2,
-      required: true
+      required: true,
+      min:0
     },
     {
       label: '光伏装机容量',
       key: 'pvCapacity',
       type: 2,
-      required: false
+      required: false,
+      min:0
+
     },
     {
       label: '充电桩装机容量',
-      key: 'chargePileTotal',
+      key: 'chargePileCapacity',
       type: 2,
-      required: false
+      required: false,
+      min:0
+
     },
     {
       label: '运行温度上限',
@@ -134,8 +139,6 @@ const App = (props) => {
       console.log('Failed:', errorInfo);
     }
   };
-  console.log( props.initSelectData?.languageList,form.getFieldsValue()
-    ,11111111);
   return (
     <>
       <Modal
@@ -164,7 +167,7 @@ const App = (props) => {
             maxWidth: 800,
           }}
         >
-          <Row gutter={[20, 0]}>
+          <Row gutter={[20, 25]}>
             {formList.map(it => {
               if (it.type === 1) {
                 return (
@@ -190,7 +193,7 @@ const App = (props) => {
                 return (
                   <Col className="gutter-row" span={12}>
                     <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.required }]} >
-                      <InputNumber defaultValue={0} style={{ width: '100%' }} />
+                      <InputNumber defaultValue={0} min={it.min} style={{ width: '100%' }} />
                     </Form.Item>
                   </Col>
                 )

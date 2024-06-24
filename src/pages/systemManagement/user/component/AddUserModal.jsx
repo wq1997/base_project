@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef, } from 'react';
-import { Button, Modal, Form, Input, Select } from 'antd';
+import { Button, Modal, Form, Input, Select, message } from 'antd';
 import { useSelector, useIntl } from "umi";
 import { getEncrypt,  } from "@/utils/utils";
+import { PASSWORD_RGE,  } from "@/utils/constants";
 
 const App = (props) => {
   const intl = useIntl();
@@ -23,13 +24,18 @@ const App = (props) => {
       label: '用户名',
       key: 'name',
       type: 1,
-      required: true
+      required: true,
+      rules:[]
     },
     {
       label: '密码',
       key: 'password',
       type: 1,
-      required: true
+      required: true,
+      rules:  [{
+        pattern:PASSWORD_RGE,
+        message:t('密码长度为8-16位，至少2种字符，请重新输入')
+      }]
     },
     {
       label: '角色',
@@ -46,7 +52,9 @@ const App = (props) => {
         value: '3',
         key: '管理员',
       },
-      ]
+      ],
+      rules:[]
+
     },
     {
       label: '场站类型',
@@ -63,31 +71,41 @@ const App = (props) => {
         value: '2',
         key: '光储充电站',
       },
-      ]
+      ],
+      rules:[]
+
     },
     {
       label: '手机',
       key: 'phone',
       type: 1,
-      required: false
+      required: false,
+      rules:[]
+
     },
     {
       label: '邮箱',
       key: 'mail',
       type: 1,
-      required: false
+      required: false,
+      rules:[]
+
     },
     {
       label: '公司',
       key: 'company',
       type: 1,
-      required: false
+      required: false,
+      rules:[]
+
     },
     {
       label: '描述',
       key: 'desc',
       type: 1,
-      required: false
+      required: false,
+      rules:[]
+
     },
   ]
   const onFinish = async () => {
@@ -134,7 +152,7 @@ const App = (props) => {
             if (it.type === 1) {
               return (
                 <>
-                  <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.required }]}>
+                  <Form.Item label={t(it.label)} name={it.key} rules={[...it.rules,{required:it.required}]}>
                     <Input />
                   </Form.Item>
                 </>

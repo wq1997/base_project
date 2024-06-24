@@ -1,5 +1,5 @@
 import { Form, Input, message, Checkbox, Button, Typography, theme } from "antd";
-import { FORM_REQUIRED_RULE, PUBLIC_FILE_PATH, SYSTEM_NAME } from "@/utils/constants";
+import { FORM_REQUIRED_RULE, PASSWORD_RGE, SYSTEM_NAME } from "@/utils/constants";
 import { UserOutlined, LockOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import {
   getPublicKey as getPublicKeySever,
@@ -140,7 +140,7 @@ const Login = () => {
             </Form.Item>
             <Form.Item
               name="password"
-              rules={[{ ...FORM_REQUIRED_RULE }]}
+              rules={[{ ...FORM_REQUIRED_RULE },{...PASSWORD_RGE}]}
               style={{ marginBottom: 40 }}
             >
               <Input.Password

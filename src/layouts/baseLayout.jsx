@@ -130,11 +130,11 @@ const BaseLayout = () => {
                                         key: 'logout',
                                         icon: <LogoutOutlined />,
                                     },
-                                    {
-                                        label: useLocale('切换电站'),
-                                        key: 'changeAccount',
-                                        icon: <UserSwitchOutlined />,
-                                    },
+                                    // {
+                                    //     label: useLocale('切换电站'),
+                                    //     key: 'changeAccount',
+                                    //     icon: <UserSwitchOutlined />,
+                                    // },
                                 ],
                                 onClick({ key }) {
                                     if (key === "logout") {
@@ -168,7 +168,7 @@ const BaseLayout = () => {
                     <Button
                         type="text"
                         icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                        onClick={() => {setCollapsed(!collapsed);localStorage.setItem('collased')}}
+                        onClick={() => {setCollapsed(!collapsed);}}
                         style={{
                             fontSize: '16px',
                             width: 64,

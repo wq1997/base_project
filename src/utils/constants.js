@@ -1,6 +1,6 @@
 import { FormattedMessage  } from 'umi'
 import dayjs from 'dayjs';
-
+export const PASSWORD_RGE = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9a-zA-Z-`=\[\];',.~!@#$%^&*()_+|{}:"?]{8,16}$/;
 export const DEFAULT_PAGINATION = { current: 1, pageSize: 10, total: 0, showQuickJumper: true };
 export const FORM_REQUIRED_RULE = { required: true, message: <FormattedMessage id='请输入必填字段'/> };
 export const FORM_FORBIDDEN_SPACE = { pattern: /^[^\s]*$/, message: '禁止输入空格' };
@@ -14,11 +14,11 @@ export const WETHER_API = 'https://devapi.qweather.com/v7/weather/3d?';
 export const AIR_API = 'https://devapi.qweather.com/v7/air/now?';
 export const WETHER_KEY = '4e50b674eed8402c8a70c8155690a0e1';
 export const alarmTableColums = [
-    {
-        title: <FormattedMessage id='设备类型'/>,
-        dataIndex: 'type',
-        key: 'type',
-    },
+    // {
+    //     title: <FormattedMessage id='设备类型'/>,
+    //     dataIndex: 'type',
+    //     key: 'type',
+    // },
     {
         title: <FormattedMessage id='告警等级'/>,
         dataIndex: 'priorName',

@@ -8,7 +8,7 @@ function Com(props) {
         setTabItem(props.TabItem);
     }, [tabItem])
     return (
-        <div className='content'>
+        <div className='contentTap'>
         <Tabs
             type="card"
             size='small'

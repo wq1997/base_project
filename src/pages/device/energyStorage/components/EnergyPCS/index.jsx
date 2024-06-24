@@ -38,7 +38,7 @@ const PageTypeList = [
     return (
         <div style={{height: 'calc(100% - 56px)'}}>
             <Tab activeKey={activeKey} TabItem={PageTypeList} onChange={onChangeTab}/>
-            <div className={styles.contents} style={{backgroundColor: token.cardBgc,padding:'40px 30px',borderRadius: '0px 16px 0px 0px'}}>
+            <div className={styles.contentPcs} style={{backgroundColor: token.cardBgc,padding:'40px 30px',borderRadius: '0px 16px 0px 0px'}}>
                 {activeKey==="MonitoringCurvesPcs"&&<MonitoringCurves id={props.id}/>}
                 {activeKey==="PcsDetails"&&<PcsDetails id={props.id}/>}
             </div>

@@ -56,13 +56,14 @@ function Com(props) {
 
   const getInitData = async () => {
     let { data } = await getDataComparisonInit({ plantId: localStorage.getItem('plantId') });
-    let { BMS, PCS,PCSModule, others } = data?.data;
+    let { BMS, PCS, PCSModule, others } = data?.data;
     let arr = [];
     arr.push(delInitData(PCSModule, 'PCSModule'));
     arr.push(delInitData(BMS, 'BMS'));
     arr.push(delInitData(PCS, 'PCS'));
     arr.push(delInitData(others, 'others'));
     let devId = "";
+    let gridPoint = "";
     let currentValue = "";
     arr?.forEach(item => {
       if (!devId) {
@@ -71,7 +72,7 @@ function Com(props) {
       }
     });
     if (devId) {
-      let { data: subData } = await getDataParams({  devId: devId });
+      let { data: subData } = await getDataParams({ devId: devId, });
       const index = arr.findIndex(item => item.value === currentValue);
       if (subData?.data?.length > 0) {
         arr[index].children[0].children = subData.data?.map(item => {
@@ -80,19 +81,21 @@ function Com(props) {
             label: item?.dataTypeDesc
           }
         });
-        setCascaderValue([[currentValue, arr[index]?.children?.[0].id, subData.data?.[0]?.dataType]]);
+        setCascaderValue([[currentValue, `${arr[index]?.children?.[0].id},${arr[index]?.children?.[0].gridPoint}`, subData.data?.[0]?.dataType]]);
         let { data } = await getCompareData({
-          dataParams: [{ devId:  arr[index]?.children?.[0].id, dataId: subData.data?.[0]?.dataType }],
+          dataParams: [{ devId: arr[index]?.children?.[0].id, dataId: subData.data?.[0]?.dataType, gridPoint:arr[index]?.children?.[0].id==0?gridPoint:undefined }],
           dateList: ["2024-05-08" || dateStr],
           compareType: way
         });
         setPackList(arr);
         setDataOfEchart(data?.data);
         handelData(data?.data, setOptionEchart);
+        console.log(way,arr,'way');
+        way == 1 ? setPackReq([[arr?.[0]?.value, `${arr?.[0]?.children?.[0]?.id},${arr?.[0]?.children?.[0]?.gridPoint}`, arr?.[0]?.children?.[0]?.children?.[0]?.value]]) : setPackReq([arr?.[0]?.value, `${arr?.[0]?.children?.[0]?.id},${arr?.[0]?.children?.[0]?.gridPoint}`, arr?.[0]?.children?.[0]?.children?.[0]?.value]);
       }
       return;
     }
-    setPackList(arr);
+   
   };
   const delInitData = (data, Name) => {
     let arr = [];
@@ -100,15 +103,17 @@ function Com(props) {
       arr.push({
         ...it,
         label: it.name,
-        value: it.id,
+        value: `${it.id},${it.gridPoint}`,
         isLeaf: false,
         // disableCheckbox: true,
+
       })
     });
     return {
       value: Name,
       label: Name,
       isLeaf: false,
+      disableCheckbox: true,
       children: [...arr]
     }
   }
@@ -122,26 +127,42 @@ function Com(props) {
       })
       targetOption.children = data.data;
       setPackList([...packList]);
+    } else {
+      console.log(selectedOptions.length, 12121212);
     };
   };
   const getChartData = async () => {
+    console.log(packReq,12121221);
     let dataTypeList = [];
     let dateList = [];
     if (way === 1) {
       dataTypeList = packReq?.map(it => {
-        return { devId: it[1], dataId: it[2] };
+        if (Array.isArray(it[1])) {
+          if (it?.[1]?.split(',')?.[0] == 0) {
+            return { devId: +it?.[1]?.split(',')?.[0], dataId: +it[2], gridPoint: +it?.[1]?.split(',')?.[1] };
+          } else {
+            return { devId: +it?.[1]?.split(',')?.[0], dataId: +it[2] };
+          }
+        } else {
+          return { devId: +it?.[1]?.split(',')?.[0], dataId: +it[2] };
+        }
       });
       dateList = [dateStr];
       if (dataTypeList.length > 3) {
         message.warning('最多选择3个对比项');
         return
       }
-      if (dataTypeList.find(it=>it.dataId==undefined)) {
+      if (dataTypeList.find(it => it.dataId == undefined)) {
         message.warning('请准确选择数据项');
         return
       }
     } else {
-      dataTypeList = [{ devId: packReq[1], dataId: packReq[2] }];
+      console.log(packReq);
+      if (packReq?.[1]?.split(',')?.[0] === 0) {
+        dataTypeList = [{ devId: packReq?.[1]?.split(',')?.[0], gridPoint: packReq?.[1]?.split(',')?.[1], dataId: packReq?.[2] }];
+      } else {
+        dataTypeList = [{ devId: packReq?.[1]?.split(',')?.[0], dataId: packReq?.[2] }];
+      }
       dateList = dateStr;
       if (dateList.length > 3) {
         message.warning('最多选择3个对比项');
@@ -206,13 +227,13 @@ function Com(props) {
     let yAxis = [];
     data?.map((one, index) => {
       let seriesData = [];
-      one.value?.map(it => {
+      one?.value?.map(it => {
         seriesData.push([
           dayjs(it.time).format('HH:mm'),
           it.value,
         ])
       })
-      if (one.value) {
+      if (one?.value) {
         series.push({
           name: way == 1 ? one?.label : dayjs(one?.value[0]?.time).format('YYYY-MM-DD'),
           type: 'line',
@@ -278,14 +299,16 @@ function Com(props) {
   const changePack = (val, selectedOptions) => {
     loadData(selectedOptions[selectedOptions.length - 1]);
     setPackReq(val);
+    console.log(val, selectedOptions);
   }
   const changeWay = (val) => {
+    console.log(packList, 12121);
     setWay(val);
     setDate(dayjs(new Date()));
     setOptionEchart(baseOption);
-    val === 1 ? setPackReq([['0', '0-0']]) : setPackReq(['0', '0-0']);
+    val === 1 ? setPackReq([[packList?.[0]?.value, `${packList?.[0]?.children?.[0]?.id},${packList?.[0]?.children?.[0]?.gridPoint}`, packList?.[0]?.children?.[0]?.children?.[0]?.value]]) : setPackReq([packList?.[0]?.value, `${packList?.[0]?.children?.[0]?.id},${packList?.[0]?.children?.[0]?.gridPoint}`, packList?.[0]?.children?.[0]?.children?.[0]?.value]);
     val === 1 ? setDateStr(dayjs(new Date()).format('YYYY-MM-DD')) : setDateStr([dayjs(new Date()).format('YYYY-MM-DD')]);
-    getChartData();
+    // getChartData();
   }
   const changeDate = (val, str) => {
     setDateStr(str);
@@ -395,7 +418,7 @@ function Com(props) {
                   maxTagCount={1}
                   showCheckedStrategy={SHOW_CHILD}
                   defaultValue={cascaderValue}
-                  key={cascaderValue}
+                  key={`${way}${cascaderValue}`}
                   allowClear={false}
                 >
                 </Cascader>
@@ -416,7 +439,7 @@ function Com(props) {
                 {t('查询')}
               </Button>
               <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downloadExcel}>
-                {t('导出')}excel
+                {t('导出')}Excel
               </Button>
             </div>
             <div className={styles.echartPart}>

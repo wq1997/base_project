@@ -49,6 +49,7 @@ function Com(props) {
         const Y = document.getElementById('table')?.clientHeight;
         if (Y) setScrollY(Y - 180); // 32为表头的高，应用时减去自己表格的表头高
     }, []);
+ 
     const getOptions = () => {
         setOptions({
             tooltip: {
@@ -64,12 +65,9 @@ function Com(props) {
                 containLabel: true
             },
             legend: {
-                data: [getTranslation('statistics.InternetPower'),
-                getTranslation('statistics.TheGridBuysElectricity'),
-                getTranslation('statistics.EnergyStorageCharge'),
-                getTranslation('statistics.EnergyStorageDischarge'),
-                getTranslation('statistics.PhotovoltaicPowerGeneration'),
-                getTranslation('statistics.TheAmountOfCharging'),
+                data: [
+                getTranslation('充电电量'),
+                getTranslation('放电电量'),
                 ],
                 textStyle: {//图例文字的样式
                     color: token.titleColor,
@@ -95,7 +93,7 @@ function Com(props) {
             ],
             series: [
                 {
-                    name: getTranslation('statistics.InternetPower'),
+                    name: getTranslation('充电电量'),
                     type: 'bar',
                     itemStyle: {
                         normal: {
@@ -107,7 +105,7 @@ function Com(props) {
                     data: dataY.pvOutEnergy
                 },
                 {
-                    name: getTranslation('statistics.EnergyStorageCharge'),
+                    name: getTranslation('放电电量'),
                     type: 'bar',
                     itemStyle: {
                         normal: {
@@ -118,41 +116,7 @@ function Com(props) {
                     barWidth: '8%',
                     data: dataY.energyInEnergy
                 },
-                {
-                    name: getTranslation('statistics.EnergyStorageDischarge'),
-                    type: 'bar',
-                    itemStyle: {
-                        normal: {
-                            color: token.barColor[3]
-
-                        }
-                    },
-                    barWidth: '8%',
-                    data: dataY.energyOutEnergy
-                },
-                {
-                    name: getTranslation('statistics.PhotovoltaicPowerGeneration'),
-                    type: 'bar',
-                    itemStyle: {
-                        normal: {
-                            color: token.barColor[4]
-
-                        }
-                    },
-                    barWidth: '8%',
-                    data: dataY.pvInEnergy
-                },
-                {
-                    name: getTranslation('statistics.TheAmountOfCharging'),
-                    type: 'bar',
-                    itemStyle: {
-                        normal: {
-                            color: token.barColor[5]
-                        }
-                    },
-                    barWidth: '8%',
-                    data: dataY.chargeInEnergy
-                }
+              
             ]
         });
 
@@ -197,7 +161,7 @@ function Com(props) {
 
     useEffect(() => {
         getOptions();
-    }, [currentTheme, dataY, dateX]);
+    }, [token,currentTheme, dataY, dateX]);
     useEffect(() => {
         getData();
     }, [currntGrid])
@@ -312,7 +276,7 @@ function Com(props) {
                         <FormattedMessage id='查询' />
                     </Button>
                     <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downLoadExcelModel} >
-                        <FormattedMessage id='导出' />excel
+                        <FormattedMessage id='导出' />Excel
                     </Button>
                 </div>
 

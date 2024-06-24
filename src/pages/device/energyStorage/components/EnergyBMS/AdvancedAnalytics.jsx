@@ -367,7 +367,7 @@ function Com(props) {
                         mode={way === 1 ? 'multiple'  : null}
                         maxTagCount={1}
                         defaultValue={[packList?.[0]?.value]}
-                        key={packList?.[0]?.value}
+                        key={`${way}${packList?.[0]?.value}`}
                         allowClear={false}
                     >
                     </Select>

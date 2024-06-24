@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, } from 'react';
-import { Button, Modal, Form, Input, Select, Switch, InputNumber } from 'antd';
+import { Button, Modal, Form, theme, Select, Switch, InputNumber } from 'antd';
 import { useSelector, useIntl } from "umi";
+import { getGridPointList, } from '@/services/plant'
 
 export const formList = [
   {
@@ -15,7 +16,7 @@ export const formList = [
     },
     {
       label: '普通',
-      value:2,
+      value: 2,
       key: 2,
     },
     {
@@ -68,6 +69,7 @@ export const formList = [
 ]
 const App = (props) => {
   const intl = useIntl();
+  const { token } = theme.useToken();
   const t = (id) => {
     const msg = intl.formatMessage(
       {
@@ -78,14 +80,22 @@ const App = (props) => {
   }
   useEffect(() => {
     form.setFieldsValue(props.formData)
-    console.log(props.formData,1111111111);
+    console.log(props.formData, 1111111111);
 
   }, [props.formData]);
-
+  useEffect(() => {
+    getGrid();
+  }, [token,])
   const formRef = useRef();
   const [form] = Form.useForm();
- 
 
+  const [grids, setGrids] = useState([]);
+  const getGrid = async () => {
+    let { data: grid } = await getGridPointList({
+      plantId: localStorage.getItem('plantId')
+    })
+    setGrids(grid?.data);
+  }
   const onFinish = async () => {
     try {
       const values = await form.validateFields();
@@ -128,6 +138,20 @@ const App = (props) => {
             maxWidth: 400,
           }}
         >
+          <Form.Item label={t('并网点')} name={'gridPointId'} rules={[{ required: true }]}>
+            <Select
+              key={grids?.length}
+              // defaultValue={grids[0]?.id}
+              placeholder={t('请选择并网的')}
+              options={grids?.map(item => {
+                return {
+                  value:item.id,
+                  label:item.gridPointName
+                }
+              })
+            }
+            /> 
+          </Form.Item>
           {formList.map(it => {
             if (it.type === 1) {
               return (

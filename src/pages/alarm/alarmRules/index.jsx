@@ -116,8 +116,10 @@ function Com(props) {
             ...record,
             prior: formList[0].data.find(it => it.label === record.prior)?.value,
             pushType: formList[1].data.find(it => it.label === record.pushType)?.value,
+            gridPointId:record?.id
             // status: '启用' ? true : false,
         });
+        console.log(record?.id,1212);
         setTitle('编辑告警规则');
         setIsOpen(!isOpen);
     }
@@ -127,8 +129,8 @@ function Com(props) {
       }
     const changeData = async (value) => {
         const { data } = await (title === '编辑告警规则' ?
-            getUpdateAlarmRule({ ...value, plantId: currentPlantId || localStorage.getItem('plantId') }) :
-            getInsertAlarmRule({ ...value, plantId: currentPlantId || localStorage.getItem('plantId') }))
+            getUpdateAlarmRule({ ...value,  }) :
+            getInsertAlarmRule({ ...value,  }))
         if (data.data) {
             setFormData(value);
         } else {

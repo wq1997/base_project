@@ -5,7 +5,7 @@ import styles from './index.less'
 import { theme, Input, Space, Select, Form, message, Button, Table, Popconfirm } from "antd";
 import dayjs from 'dayjs';
 import { useSelector, useIntl } from "umi";
-import {nanoid} from 'nanoid'
+import { nanoid } from 'nanoid'
 import { getGridPointList, } from '@/services/plant'
 import { getStrategyInfo, saveStrategy } from '@/services/policy'
 const { Option } = Select;
@@ -24,9 +24,9 @@ function Com(props) {
     getInit();
   }, []);
 
-useEffect(()=>{
-  getDetails();
-},[gridId])
+  useEffect(() => {
+    getDetails();
+  }, [gridId])
   const intl = useIntl();
   const t = (id) => {
     const msg = intl.formatMessage(
@@ -40,23 +40,23 @@ useEffect(()=>{
 
 
   const getDetails = async () => {
-    let { data } = await getStrategyInfo({ gridPointId:gridId });
+    let { data } = await getStrategyInfo({ gridPointId: gridId });
     setDetailsData(data?.data);
     form.setFieldsValue(data?.data);
     setStrategyTableData(data?.data?.planList)
   }
   const edit = (val, index) => {
     form6.setFieldsValue(val);
-    let arr=[];
-    val?.contentList?.map(it=>{
-      let startTime=dayjs(it?.startTime,'HH:mm:ss');
-      let endTime=dayjs(it?.endTime,'HH:mm:ss');
-      arr.push({...it,startTime,endTime});
+    let arr = [];
+    val?.contentList?.map(it => {
+      let startTime = dayjs(it?.startTime, 'HH:mm:ss');
+      let endTime = dayjs(it?.endTime, 'HH:mm:ss');
+      arr.push({ ...it, startTime, endTime });
     })
-    form6.setFieldValue('startDate',dayjs(val.startDate));
-    form6.setFieldValue('endDate',dayjs(val.endDate));
-    form6.setFieldValue('contentList',arr);
-    console.log(arr,1212);
+    form6.setFieldValue('startDate', dayjs(val.startDate));
+    form6.setFieldValue('endDate', dayjs(val.endDate));
+    form6.setFieldValue('contentList', arr);
+    console.log(arr, 1212);
     setCurrentIndex(index)
     setTitle('编辑策略');
     setEditPlanOpen(true);
@@ -99,15 +99,14 @@ useEffect(()=>{
       let { data } = await saveStrategy(values);
       if (data?.data) {
         message.success(t('保存成功'));
-      }else{
+      } else {
         message.error(data.msg)
       }
-      console.log(values, data, 121212);
     } catch (errorInfo) {
       console.log('Failed:', errorInfo);
     }
   }
-  const del=(record)=>{
+  const del = (record) => {
     const newData = strategyTableData.filter((item) => item?.planNo !== record?.planNo);
     setStrategyTableData(newData);
   }
@@ -121,7 +120,7 @@ useEffect(()=>{
         className={styles.contents}
       >
         <Space className={styles.hearder} direction="vertical" style={{ width: '100%', backgroundColor: token.titleCardBgc, padding: '20px 25px 0 0px', borderRadius: '8px' }}>
-          <div style={{ display: 'flex', justifyContent:'space-between',marginRight:'40px'}}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginRight: '40px' }}>
             <Form.Item
               name="gridPointId"
               label={t("并网点")}
@@ -165,7 +164,7 @@ useEffect(()=>{
               rules={[
               ]}
             >
-              <Input />
+              <Input disabled={true}/>
             </Form.Item>
             <Form.Item
               name="transProtectPercent"
@@ -173,7 +172,7 @@ useEffect(()=>{
               labelCol={{ span: 10 }}
               wrapperCol={{ span: 14 }}
             >
-              <Input />
+              <Input disabled={true}/>
             </Form.Item>
             <Form.Item
               name="powerMode"
@@ -202,16 +201,31 @@ useEffect(()=>{
         <div className={styles.content} style={{ backgroundColor: token.titleCardBgc, borderRadius: '8px' }}>
           <div style={{ width: '100%', display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
             <Button type="primary" style={{ marginBottom: '10px' }} onClick={() => {
-              setEditPlanOpen(true); 
+              setEditPlanOpen(true);
               setTitle('新增策略');
-               form6.setFieldsValue({
+              let No= Math.floor(Math.random()*1000 + 1);
+              
+             if (strategyTableData?.find(it=>it.planNo==No)) {
+              form6.setFieldsValue({
                 planName: '',
-                planNo: nanoid(),
+                planNo: Math.floor(Math.random()*1000 + 1),
                 startDate: dayjs(new Date()),
                 endDate: dayjs(new Date()),
                 controlMode: 1,
                 contentList: []
               })
+             }else{
+              form6.setFieldsValue({
+                planName: '',
+                planNo: No,
+                startDate: dayjs(new Date()),
+                endDate: dayjs(new Date()),
+                controlMode: 1,
+                contentList: []
+              })
+             } ;
+
+              
             }}>{t('新增策略')}</Button>
           </div>
           <Form.Item
@@ -235,7 +249,7 @@ useEffect(()=>{
                   dataIndex: 'startDate',
                   key: 'startDate',
                   render: (text, record) => {
-                    return dayjs(record.start).format('YYYY-MM-DD')
+                    return dayjs(record.startDate).format('YYYY-MM-DD')
                   }
                 },
                 {
@@ -243,7 +257,7 @@ useEffect(()=>{
                   dataIndex: 'endDate',
                   key: 'endDate',
                   render: (text, record) => {
-                    return dayjs(record.start).format('YYYY-MM-DD')
+                    return dayjs(record.endDate).format('YYYY-MM-DD')
                   }
                 },
                 {
@@ -264,7 +278,7 @@ useEffect(()=>{
                       <Space>
                         <Button type="link" onClick={() => edit(record, index)}>{t('编辑')}</Button>
                         <Button type="link" onClick={() => edit(record, index)}>{t('详情')}</Button>
-                        <Popconfirm title="Are you sure delete this task?"  onConfirm={() => del(record)} okText="Yes" cancelText="No">
+                        <Popconfirm title="Are you sure delete this task?" onConfirm={() => del(record)} okText="Yes" cancelText="No">
                           <Button type="link" danger>{t('删除')}</Button>
                         </Popconfirm>
                       </Space>
