@@ -8,6 +8,7 @@ export default Routes = [
                 component: "@/layouts/baseLayout",
                 routes: [
                     // { path: "/overview-screen", component: "@/pages/overview" },
+
                     {
                         path: "/workbench/management-roles",
                         component: "@/pages/workbench/managementRoles",
@@ -46,6 +47,14 @@ export default Routes = [
             {
                 path: "/test",
                 component: "@/pages/test",
+            },
+            {
+                path: "/maintenance-screen/plant-screen",
+                component: "@/pages/maintenanceScreen/plantScreen",
+            },
+            {
+                path: "/maintenance-screen/alarm-screen",
+                component: "@/pages/maintenanceScreen/alarmScreen",
             },
         ],
     },

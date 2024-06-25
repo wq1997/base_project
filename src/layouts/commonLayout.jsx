@@ -5,7 +5,6 @@ import useIcon from "@/hooks/useIcon";
 import { useEffect } from "react";
 import { useEmotionCss } from "@ant-design/use-emotion-css";
 import { setLocalStorage } from "@/utils/utils";
-import '../locales/DingTalk JinBuTi.ttf'
 
 const { Header, Sider, Content } = Layout;
 

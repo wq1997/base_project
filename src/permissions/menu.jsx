@@ -1,8 +1,8 @@
-import { Menu } from 'antd';
-import { useEffect, useState } from 'react';
-import { Link, useLocation, useSelector } from 'umi';
+import { Menu } from "antd";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useSelector } from "umi";
 import useIcon from "@/hooks/useIcon";
-import { FundFilled, FolderOpenFilled, AppstoreFilled, SettingFilled } from '@ant-design/icons';
+import { FundFilled, FolderOpenFilled, AppstoreFilled, SettingFilled } from "@ant-design/icons";
 
 const { SubMenu } = Menu;
 
@@ -12,6 +12,22 @@ const MenuList = [
     //     label: "采日运维大屏",
     //     icon: <FundFilled />
     // },
+    {
+        key: "/maintenance-screen",
+        label: "运维大屏",
+        icon: <FundFilled />,
+        darkIcon: "icon-wuliaoxuqiu-copy",
+        children: [
+            {
+                key: "/maintenance-screen/plant-screen",
+                label: "电站大屏",
+            },
+            {
+                key: "/maintenance-screen/alarm-screen",
+                label: "告警大屏",
+            },
+        ],
+    },
     {
         key: "/workbench",
         label: "运维工作台",
@@ -88,7 +104,8 @@ const MyMenu = () => {
                     <SubMenu
                         key={menu.key}
                         title={menu.label}
-                        icon={menu.icon
+                        icon={
+                            menu.icon
                             // <Icon
                             //     type={theme === 'dark' ? (menu.darkIcon||menu.icon) : menu.icon}
                             //     style={{
@@ -105,7 +122,8 @@ const MyMenu = () => {
                 return (
                     <Menu.Item
                         key={menu.key}
-                        icon={menu.icon
+                        icon={
+                            menu.icon
                             // <Icon
                             //     type={theme === 'dark' ? (menu.darkIcon || menu.icon) : menu.icon}
                             //     style={{
@@ -114,7 +132,9 @@ const MyMenu = () => {
                             // />
                         }
                     >
-                        <Link to={menu.key} target={menu?.target}>{menu.label}</Link>
+                        <Link to={menu.key} target={menu?.target}>
+                            {menu.label}
+                        </Link>
                     </Menu.Item>
                 );
             }
@@ -141,7 +161,7 @@ const MyMenu = () => {
     const getSelectKeys = () => {
         setSelectedKeys(pathname);
     };
-    console.log("openkeys", openKeys)
+    console.log("openkeys", openKeys);
     useEffect(() => {
         getSelectKeys();
         getOpenKeys();
