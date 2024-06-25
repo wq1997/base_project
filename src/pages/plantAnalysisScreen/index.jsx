@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Header from "./components/Header";
 import styles from "./index.less";
+import Business from "./components/Business";
 
 const typeList = [
     {
@@ -23,7 +24,7 @@ const PlantAnalysisScreen = () => {
                 onChangedType={(value)=>setCurrentType(value)}
             />
             <div className={styles.screenContent}>
-                {currentType==="Business"}
+                {currentType==="Business"&&<Business />}
             </div>
         </div>
     )
