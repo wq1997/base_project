@@ -141,23 +141,11 @@ function BigScreen() {
                     <CenterTopData deviceType={deviceType} areaType={areaType}/>
                 </div>
                 <div className={styles.contentBottomCenterBottom}>
-                    <AreaTemplate 
+                    {/* <AreaTemplate 
                         title="储能系统收益统计曲线图"
                     >
                         <IncomeCurve deviceType={deviceType} areaType={areaType}/>
-                    </AreaTemplate>
-                </div>
-                <div className={styles.contentBottomRight}>
-                    <AreaTemplate 
-                        title="智慧运维汇总"
-                    >
-                        <OperationAll deviceType={deviceType} areaType={areaType}/>
-                    </AreaTemplate>
-                    <AreaTemplate 
-                        title="智慧告警设备"
-                    >
-                        <AlarmData deviceType={deviceType} areaType={areaType}/>
-                    </AreaTemplate>
+                    </AreaTemplate> */}
                     <AreaTemplate 
                         title="告警列表"
                     >
@@ -190,6 +178,18 @@ function BigScreen() {
                                 })}
                             />
                         </div>
+                    </AreaTemplate>
+                </div>
+                <div className={styles.contentBottomRight}>
+                    <AreaTemplate 
+                        title="智慧运维汇总"
+                    >
+                        <OperationAll deviceType={deviceType} areaType={areaType}/>
+                    </AreaTemplate>
+                    <AreaTemplate 
+                        title="智慧告警设备"
+                    >
+                        <AlarmData deviceType={deviceType} areaType={areaType}/>
                     </AreaTemplate>
                     <AreaTemplate 
                         title="运维工单汇总"
