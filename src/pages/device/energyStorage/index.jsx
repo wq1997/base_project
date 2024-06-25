@@ -13,7 +13,7 @@ import { getDeviceTree, getGridPointTree } from '@/services/deviceTotal'
 import { history, useLocation, useIntl } from "umi";
 import styles from "./index.less";
 
-const defaultPageType = "PCS";
+const defaultPageType = "ALL";
 let defaultData = [];
 const getType = (father, child) => {
     if (father.deviceType == 6) {
@@ -53,7 +53,6 @@ const getType = (father, child) => {
 }
 const getTreeData = (data, treeData) => {
     let oringal = structuredClone(treeData);
-    console.log(oringal, 'oringal');
     data?.map((it, index) => {
         if (it.dtuDevList) {
             let arr = [];
@@ -129,7 +128,7 @@ function Com(props) {
     const { pathname } = location;
     const { token } = theme.useToken();
     const [pageType, setPageType] = useState(getQueryString("PageType") || defaultPageType)
-    const [pageKey, setPageKey] = useState(getQueryString("PageKey") ||'0-0-0')
+    const [pageKey, setPageKey] = useState(getQueryString("PageKey") ||'ALL')
     const [tree, setTree] = useState([]);
     const [defaultDataFlag, setdefaultDataFlag] = useState(false);
     const [expandedKeys, setExpandedKeys] = useState([]);
@@ -215,7 +214,7 @@ function Com(props) {
                         key: item.key,
                         id: item.id,
                         type: item.type,
-                        selectable: false,
+                        // selectable: false,
                         children: loop(item.children),
                     };
                 }
@@ -231,9 +230,7 @@ function Com(props) {
     const getPage = () => {
         switch (pageType) {
             case "ALL"://总览
-                return <EnergyPCS id={
-                    dataList.find(it => it.key == pageKey)?.id
-                } />;
+                return   <Overview />;
             case "BMS":
                 return <EnergyBMS />;
             case "PCS"://
@@ -249,9 +246,7 @@ function Com(props) {
             case 9:
                 return <ViewOutdoor />;
             default:
-                return <EnergyPCS id={
-                    dataList.find(it => it.key == pageKey)?.id
-                } />;
+                return <Overview />;
         }
     }
 

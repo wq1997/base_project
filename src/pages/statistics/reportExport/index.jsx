@@ -63,22 +63,29 @@ function Com() {
       title: t('时间'),
       dataIndex: 'date',
       key: 'date',
+      align:'center'
 
     },
     {
       title: t('充电电量（kWh）'),
       dataIndex: 'charge',
       key: 'charge',
+      align:'center'
+
     },
     {
       title: t('放电电量（kWh）'),
       dataIndex: 'discharge',
       key: 'discharge',
+      align:'center'
+
     },
     {
       title: t('充放电效率（%）'),
       dataIndex: 'efficiency',
       key: 'efficiency',
+      align:'center'
+
     },
   ]
 
@@ -87,22 +94,29 @@ function Com() {
       title: t('储能单元名称'),
       dataIndex: 'date',
       key: 'date',
+      align:'center'
     
     },
     {
       title: t('储能单元编号'),
       dataIndex: 'devNo',
       key: 'pcsNo',
+      align:'center'
+
     },
     {
       title: t('充电电量（kWh）'),
       dataIndex: 'charge',
       key: 'pcsCharge',
+      align:'center'
+
     },
     {
       title: t('放电电量（kWh）'),
       dataIndex: 'discharge',
       key: 'pcsDischarge',
+      align:'center'
+
     },
 
   ];
@@ -111,22 +125,29 @@ function Com() {
       title: t('储能单元名称'),
       dataIndex: 'date',
       key: 'date',
+      align:'center'
     
     },
     {
       title: t('储能单元编号'),
       dataIndex: 'devNo',
       key: 'bmsNo',
+      align:'center'
+
     },
     {
       title: t('充电电量（kWh）'),
       dataIndex: 'charge',
       key: 'bmsCharge',
+      align:'center'
+
     },
     {
       title: t('放电电量（kWh）'),
       dataIndex: 'discharge',
       key: 'bmsDischarge',
+      align:'center'
+
     },
 
   ]
@@ -280,6 +301,7 @@ function Com() {
                   columns={runClum}
                   dataSource={allData?.runEnergy}
                   pagination={false}
+                  scroll={{y:300}}
                 />
               </div>
               <div className={styles.contentItem}>
@@ -290,6 +312,8 @@ function Com() {
                   columns={pcsClum}
                   dataSource={allData?.pcsEnergy}
                   pagination={false}
+                  scroll={{y:300}}
+
                 />
               </div>
               <div className={styles.contentItem}>
@@ -300,6 +324,8 @@ function Com() {
                   columns={bmsClum}
                   dataSource={allData?.bmsEnergy}
                   pagination={false}
+                  scroll={{y:300}}
+
                 />
 
               </div>

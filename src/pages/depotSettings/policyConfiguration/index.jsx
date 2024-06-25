@@ -5,7 +5,6 @@ import styles from './index.less'
 import { theme, Input, Space, Select, Form, message, Button, Table, Popconfirm } from "antd";
 import dayjs from 'dayjs';
 import { useSelector, useIntl } from "umi";
-import { nanoid } from 'nanoid'
 import { getGridPointList, } from '@/services/plant'
 import { getStrategyInfo, saveStrategy } from '@/services/policy'
 const { Option } = Select;

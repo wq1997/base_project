@@ -72,7 +72,8 @@ const RealtimeAlarm = () => {
             <Select
               style={{
                 width: 200,
-                marginLeft: '10px'
+                marginLeft: '30px',
+                marginTop:'35px'
               }}
               // key={grids[0]?.id}
               // defaultValue={grids[0]?.id}
