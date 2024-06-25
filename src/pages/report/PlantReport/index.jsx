@@ -41,7 +41,7 @@ const Log = () => {
             dataIndex: "netFeedInPower",
         },
         {
-            title: "峰值功率(kW)",
+            title: "单设备峰值功率(kW)",
             dataIndex: "peakPower",
         },
     ];
