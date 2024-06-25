@@ -5,38 +5,41 @@ import styles from "./index.less";
 import { Pagination, theme, Select, Input, Button, DatePicker } from "antd"
 import { getNowAlarmsWithPage } from "@/services/alarm"
 import { alarmLevel } from "@/utils/constants"
+import {
+  getFetchPlantList2 as getFetchPlantListServe,
+} from "@/services";
 const alarmTableColums = [
   {
-      title: <FormattedMessage id='Sn' />,
-      dataIndex: 'sn',
-      key: 'Sn',
+    title: <FormattedMessage id='Sn' />,
+    dataIndex: 'sn',
+    key: 'Sn',
   },
   {
-      title: <FormattedMessage id='告警等级' />,
-      dataIndex: 'priorDesc',
-      key: '告警等级',
+    title: <FormattedMessage id='告警等级' />,
+    dataIndex: 'priorDesc',
+    key: '告警等级',
   },
   {
-      title: <FormattedMessage id='告警描述' />,
-      dataIndex: 'desc',
-      key: '告警描述',
+    title: <FormattedMessage id='告警描述' />,
+    dataIndex: 'desc',
+    key: '告警描述',
   },
   {
-      title: <FormattedMessage id='设备名称' />,
-      dataIndex: 'deviceName',
-      key: '设备名称',
-  },
-
-  {
-      title: <FormattedMessage id='电站名称' />,
-      dataIndex: 'plantName',
-      key: '电站名称',
+    title: <FormattedMessage id='设备名称' />,
+    dataIndex: 'deviceName',
+    key: '设备名称',
   },
 
   {
-      title: <FormattedMessage id='开始时间' />,
-      dataIndex: 'beginS',
-      key: '开始时间',
+    title: <FormattedMessage id='电站名称' />,
+    dataIndex: 'plantName',
+    key: '电站名称',
+  },
+
+  {
+    title: <FormattedMessage id='开始时间' />,
+    dataIndex: 'beginS',
+    key: '开始时间',
   },
 ];
 const RealtimeAlarm = () => {
@@ -45,6 +48,7 @@ const RealtimeAlarm = () => {
   const { token } = theme.useToken();
   const [level, setLevel] = useState();
   const [sn, setSn] = useState();
+  const [plantList, setPlantList] = useState([]);
   const intl = useIntl();
   const t = (id) => {
     const msg = intl.formatMessage(
@@ -54,7 +58,23 @@ const RealtimeAlarm = () => {
     );
     return msg
   }
+
+  const getPlanList = async () => {
+    const res = await getFetchPlantListServe();
+    if (res?.data?.data) {
+      const data = res?.data?.data;
+      const plantList = data?.plantList?.map((item, index) => {
+        return {
+          value: item.plantId,
+          label: item.name
+        }
+      })
+      setPlantList(plantList);
+    }
+  }
+
   useEffect(() => {
+    getPlanList();
     getData();
   }, []);
   useEffect(() => {
@@ -68,7 +88,7 @@ const RealtimeAlarm = () => {
       currentPage: page || 1,
       pageSize: 20,
       sn,
-      prior:level,
+      prior: level,
     });
     setData(data.data);
   }
@@ -80,18 +100,24 @@ const RealtimeAlarm = () => {
     setLevel(value);
   }
 
-  const changeSn=(e)=>{
+  const changeSn = (e) => {
     setSn(e.target.value);
   }
-  const upData=()=>{
+  const upData = () => {
     getData();
   }
   return (
-    <div style={{ width: '100%', height: '100%', paddingBottom: '10px' }}>
+    <div style={{ width: '100%', height: '100%', paddingBottom: '10px'}}>
       <div className={styles.alarmWrap} style={{ padding: '35px 35px' }}>
         <div className={styles.title}>
+          <Select
+              style={{ width: 180 }}
+              options={plantList}
+              placeholder={t('请选择电站')}
+              allowClear
+          />
           <div className={styles.sn}>
-            <Input placeholder={t('请输入') + t('设备编码')}  style={{ width: 240 }} onChange={changeSn}/>
+            <Input placeholder={t('请输入') + t('设备编码')} style={{ width: 240 }} onChange={changeSn} />
           </div>
           <div className={styles.level}>
             <Select

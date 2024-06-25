@@ -87,3 +87,11 @@ export const getFetchPlantList2 = (payload) => {
 export const showDataByTable = (payload) => {
     return axiosInstance.post(`/minsys/revenue/showDataByTable`, payload)
 }
+
+export const getCurveType = (payload) => {
+    return axiosInstance.get(`/minsys/curve/getCurveType`);
+}
+
+export const monitorCurve = (payload) => {
+    return axiosInstance.post(`/minsys/curve/monitorCurve`, payload)
+}

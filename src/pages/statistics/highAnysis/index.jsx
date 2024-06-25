@@ -17,7 +17,7 @@ import {
 } from "@/services/plant";
 import { downloadFile } from "@/utils/utils";
 
-const MonitoringCurves = () => {
+const HighAnysis = () => {
     const intl = useIntl();
     const {token} = theme.useToken();
     const [form] = Form.useForm();
@@ -314,4 +314,4 @@ const MonitoringCurves = () => {
     )
 }
 
-export default MonitoringCurves;
+export default HighAnysis;
