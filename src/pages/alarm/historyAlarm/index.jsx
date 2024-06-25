@@ -6,7 +6,11 @@ import styles from "./index.less";
 import { Pagination, Select, Input, theme, Button, DatePicker } from "antd"
 import { downLoadExcelMode } from "@/utils/utils"
 import { getHistoryAlarmsByOptionsWithPage, } from "@/services/alarm"
+import {
+  getFetchPlantList2 as getFetchPlantListServe,
+} from "@/services";
 import dayjs from 'dayjs';
+
 const RealtimeAlarm = () => {
   const { RangePicker } = DatePicker;
   const [data, setData] = useState([]);
@@ -17,6 +21,7 @@ const RealtimeAlarm = () => {
   const [time, setTime] = useState([null, null]);
   const { token } = theme.useToken();
   const [sn, setSn] = useState();
+  const [plantList, setPlantList] = useState([]);
   const { locale } = useSelector(state => state.global);
 
   const intl = useIntl();
@@ -29,13 +34,27 @@ const RealtimeAlarm = () => {
     return msg
   }
 
+  const getPlanList = async () => {
+    const res = await getFetchPlantListServe();
+    if (res?.data?.data) {
+      const data = res?.data?.data;
+      const plantList = data?.plantList?.map((item, index) => {
+        return {
+          value: item.plantId,
+          label: item.name
+        }
+      })
+      setPlantList(plantList);
+    }
+  }
+
   useEffect(() => {
     getTableListData(current);
   }, [current, level, type, time, pageSize]);
+
   useEffect(() => {
-
+    getPlanList();
   }, [])
-
 
   const downLoadFoodModel = () => {  // 菜品模板下载
     let fileName = t('历史告警');
@@ -85,6 +104,12 @@ const RealtimeAlarm = () => {
     <div className={styles.wrap}>
       <div className={styles.content}>
         <div className={styles.title}>
+          <Select
+              style={{ width: 180 }}
+              options={plantList}
+              placeholder={t('请选择电站')}
+              allowClear
+          />
           <div className={styles.sn}>
             <Input placeholder={t('请输入') + t('设备编码')} style={{ width: 240 }} onChange={changeSn} />
           </div>
