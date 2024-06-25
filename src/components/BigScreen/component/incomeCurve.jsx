@@ -35,8 +35,9 @@ const IncomeCurve = ({
     });
 
     const getOptions = () => {
-        const xData = myData?.map(item => item?.date)
-        const data =  myData?.map(item => item?.totalFee)
+        const newData = myData.reverse();
+        const xData = newData?.map(item => item?.date)
+        const data =  newData?.map(item => item?.totalFee)
         setOptions({
             grid: {
                 top: '10',
