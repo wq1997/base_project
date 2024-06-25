@@ -11,7 +11,6 @@ import SearchInput from './SearchInput'
 import MyUpload from "./MyUpload";
 import AuthImg from './AuthImg'
 import MyButton from './MyButton'
-import Charts3D from "./Charts3D";
 
 export {
     ThemeBtn,
@@ -27,5 +26,4 @@ export {
     MyUpload,
     AuthImg,
     MyButton,
-    Charts3D,
 }
