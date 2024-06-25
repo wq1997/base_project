@@ -4,7 +4,8 @@ import "echarts-gl";
 
 const Charts3D = ({
     colorList,
-    data
+    data,
+    autoRotate=true,
 }) => {
      // 颜色列表
     colorList = colorList.map(color => addColorAlpha(color, 0.9),)
@@ -186,9 +187,9 @@ const Charts3D = ({
                 }
             },
             grid3D: {
-                top: '-20%',
+                top: '-15%',
                 viewControl: {
-                    autoRotate: true, // 自动旋转
+                    autoRotate, // 自动旋转
                 },
                 width: '100%',
                 height: '100%',
