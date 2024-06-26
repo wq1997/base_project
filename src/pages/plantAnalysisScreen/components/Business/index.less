@@ -27,7 +27,6 @@
   
   .area4 { 
       grid-area: area4; 
-  
   }
   
   .area2 { grid-area: area2; }
@@ -40,7 +39,32 @@
   
   .area8 { grid-area: area8; }
   
-  .area7 { grid-area: area7; }
+  .area7 { 
+      grid-area: area7; 
+      position: relative;
+      .areaContent{
+        height: calc(100% - 40px);
+        background-color: #0B3858;
+        padding: 10px;
+        box-sizing: border-box;
+      }
+      .btn{
+        position: absolute;
+        right: 10px;
+        width: 100px;
+        height: 30px;
+        line-height: 30px;
+        background: transparent url(/images/area.svg) center center no-repeat;
+        background-size: cover;
+        text-align: center;
+        color: white;
+        cursor: pointer;
+      }
+      .table{
+        margin-top: 40px;
+        height: calc(100% - 40px);
+      }
+  }
   
   .area1 { 
       grid-area: area1; 
@@ -60,7 +84,7 @@
           margin: 0 20px;
           .areaContentDataItemData{
             .areaContentDataItemData1{
-              font-size: 25px;
+              font-size: 20px;
               font-family: DingTalkJinBuTi;
               color: #54CFFF;
               margin: 0  0  0 10px;

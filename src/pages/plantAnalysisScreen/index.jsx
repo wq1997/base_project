@@ -2,6 +2,7 @@ import { useState } from "react";
 import Header from "./components/Header";
 import styles from "./index.less";
 import Business from "./components/Business";
+import Network from "./components/Network";
 
 const typeList = [
     {
@@ -25,6 +26,7 @@ const PlantAnalysisScreen = () => {
             />
             <div className={styles.screenContent}>
                 {currentType==="Business"&&<Business />}
+                {currentType==="Network"&&<Network />}
             </div>
         </div>
     )
