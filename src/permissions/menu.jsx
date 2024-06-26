@@ -19,7 +19,7 @@ const MenuList = [
         darkIcon: "icon-wuliaoxuqiu-copy",
         children: [
             {
-                key: "/maintenance-screen/plant-screen",
+                key: "/screen-plant-analysis",
                 label: "电站大屏",
             },
             {

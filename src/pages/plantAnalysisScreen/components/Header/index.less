@@ -1,17 +1,11 @@
 .header{
+    height: 80px;
     position: relative;
     background: transparent url(/images/header_bg.svg) center center no-repeat;
     background-size: cover;
     display: flex;
     align-items: center;
     justify-content: center;
-    @media screen and (max-width: 2000px){
-        height: 100px;
-    }
-    
-    @media screen and (min-width: 2000px){
-        height: 120px;
-    }
     .headerLeft{
         position: absolute;
         box-sizing: border-box;
@@ -35,5 +29,14 @@
                 border-radius: 6px;
             }
         }
+    }
+}
+
+@media (min-width: 1800px) {
+    .header {
+        height: 103px !important;
+    }
+    .content {
+        height: calc(100% - 103px) !important;
     }
 }
