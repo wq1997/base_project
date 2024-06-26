@@ -8,6 +8,7 @@ import GlobalWrapperCss from "./GlobalWrapperCss";
 import Charts3D from "./Charts3D";
 import Charts2_5D from "./Charts2_5D";
 import MyTab from "./MyTab";
+import MyButtonGroup from "./MyButtonGroup";
 
 export {
     ThemeBtn,
@@ -20,4 +21,5 @@ export {
     Charts3D,
     Charts2_5D,
     MyTab,
+    MyButtonGroup,
 }

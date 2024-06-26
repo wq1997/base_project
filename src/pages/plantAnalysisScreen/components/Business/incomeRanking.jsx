@@ -155,13 +155,14 @@ const IncomeRanking = ({ data }) => {
 
     return (
         <div style={{width: '100%', height: '100%', position: 'relative'}}>
-            <div style={{display: 'flex', justifyContent: 'end', position: 'absolute', right: 5, top: 5}}>
+            <div style={{display: 'flex', justifyContent: 'end', position: 'absolute', right: 5, top: 5, zIndex: 100}}>
                 <MyTab 
                     value={currentType}
                     options={[
                         {value: '1', label: '正序'},
                         {value: '2', label: '倒序'},
                     ]}
+                    onChange={value => setCurrentType(value)}
                 />
             </div>
             <ReactECharts option={options} style={{height: 'calc(100% - 5px)'}} />

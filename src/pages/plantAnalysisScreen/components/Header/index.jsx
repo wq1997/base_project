@@ -13,7 +13,11 @@ const Header = ({
                         return (
                             <div 
                                 className={styles.headerLeftLeftItem} 
-                                style={{background:item?.value===currentType?'radial-gradient(359% 64% at 49% 50%, #0B3858 0%, #2BC4FF 100%)':'#0B3858'}}
+                                style={{
+                                    backgroundColor:'#0B3858',
+                                    background: item?.value===currentType&&`transparent url(/images/area.svg) center center no-repeat`,
+                                    backgroundSize: item?.value===currentType&&'cover'
+                                }}
                                 onClick={()=>onChangedType(item?.value)}
                             >
                                 {item?.title}

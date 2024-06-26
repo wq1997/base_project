@@ -4,6 +4,7 @@ import { Charts3D, Charts2_5D } from "@/components";
 import styles from "./index.less";
 import Circle from "./circle";
 import IncomeRanking from "./incomeRanking";
+import ElectricityRanking from "./electricityRanking";
 
 const Business = () => {
     return (
@@ -70,7 +71,12 @@ const Business = () => {
             <div className={styles.area2}>
                 <Title title={"电量排行"}/>
                 <div className={styles.areaContent}>
-                    
+                    <ElectricityRanking 
+                        data={[
+                            [10,20,30,20],
+                            [20,30,20,10]
+                        ]}
+                    />
                 </div>
             </div>
             <div className={styles.area3}>3</div>

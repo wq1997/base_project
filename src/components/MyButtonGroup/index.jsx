@@ -1,6 +1,5 @@
 
-
-const MyTab = ({
+const MyButtonGroup = ({
     value,
     options,
     onChange
@@ -29,4 +28,4 @@ const MyTab = ({
     )
 }
 
-export default MyTab;
+export default MyButtonGroup;
