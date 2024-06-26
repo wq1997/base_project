@@ -1,7 +1,10 @@
 import { theme, Table, Tooltip } from "antd";
 import styles from "./index.less";
 import Card from "../../Card";
-import total from "../../images/二氧化碳排放量.svg";
+import total from "../../images/工单总数.svg";
+import complete from "../../images/已完成工单.svg";
+import other from "../../images/在途其他工单.svg";
+import matter from "../../images/在途异常工单.svg";
 
 const Index = () => {
     const works = [
@@ -9,26 +12,26 @@ const Index = () => {
             name: "工单总数",
             pic: total,
             key: "",
-            value: "111",
+            value: "111111",
             color: "#20C2FF",
         },
         {
             name: "在途异常工单",
-            pic: total,
+            pic: matter,
             key: "",
             value: "222",
             color: "#FF5E00",
         },
         {
             name: "在途其他工单",
-            pic: total,
+            pic: other,
             key: "",
             value: "333",
             color: "#FF28DA",
         },
         {
             name: "已完成工单",
-            pic: total,
+            pic: complete,
             key: "",
             value: "444",
             color: "#01FF23",

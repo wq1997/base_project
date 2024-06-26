@@ -1,6 +1,6 @@
 import styles from "./index.less";
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Space, Table, message, Modal } from "antd";
+import { Button, Space, Table, message, Pagination } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { SearchInput } from "@/components";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
@@ -76,6 +76,132 @@ const Index = () => {
             plantName: "BMC_200063",
             startTime: "BMC_200063",
         },
+        {
+            type: "逆变器1逆变器1逆变器1逆变器1",
+            level: "紧急",
+            desc: "BMC_200063",
+            name: "BMC_200063",
+            grid: "BMC_200063",
+            plantName: "BMC_200063",
+            startTime: "BMC_200063",
+        },
+        {
+            type: "逆变器2",
+            level: "紧急",
+            desc: "BMC_200063",
+            name: "BMC_200063",
+            grid: "BMC_200063",
+            plantName: "BMC_200063",
+            startTime: "BMC_200063",
+        },
+        {
+            type: "逆变器1逆变器1逆变器1逆变器1",
+            level: "紧急",
+            desc: "BMC_200063",
+            name: "BMC_200063",
+            grid: "BMC_200063",
+            plantName: "BMC_200063",
+            startTime: "BMC_200063",
+        },
+        {
+            type: "逆变器2",
+            level: "紧急",
+            desc: "BMC_200063",
+            name: "BMC_200063",
+            grid: "BMC_200063",
+            plantName: "BMC_200063",
+            startTime: "BMC_200063",
+        },
+        {
+            type: "逆变器1逆变器1逆变器1逆变器1",
+            level: "紧急",
+            desc: "BMC_200063",
+            name: "BMC_200063",
+            grid: "BMC_200063",
+            plantName: "BMC_200063",
+            startTime: "BMC_200063",
+        },
+        {
+            type: "逆变器2",
+            level: "紧急",
+            desc: "BMC_200063",
+            name: "BMC_200063",
+            grid: "BMC_200063",
+            plantName: "BMC_200063",
+            startTime: "BMC_200063",
+        },
+        {
+            type: "逆变器1逆变器1逆变器1逆变器1",
+            level: "紧急",
+            desc: "BMC_200063",
+            name: "BMC_200063",
+            grid: "BMC_200063",
+            plantName: "BMC_200063",
+            startTime: "BMC_200063",
+        },
+        {
+            type: "逆变器2",
+            level: "紧急",
+            desc: "BMC_200063",
+            name: "BMC_200063",
+            grid: "BMC_200063",
+            plantName: "BMC_200063",
+            startTime: "BMC_200063",
+        },
+        {
+            type: "逆变器1逆变器1逆变器1逆变器1",
+            level: "紧急",
+            desc: "BMC_200063",
+            name: "BMC_200063",
+            grid: "BMC_200063",
+            plantName: "BMC_200063",
+            startTime: "BMC_200063",
+        },
+        {
+            type: "逆变器2",
+            level: "紧急",
+            desc: "BMC_200063",
+            name: "BMC_200063",
+            grid: "BMC_200063",
+            plantName: "BMC_200063",
+            startTime: "BMC_200063",
+        },
+        {
+            type: "逆变器1逆变器1逆变器1逆变器1",
+            level: "紧急",
+            desc: "BMC_200063",
+            name: "BMC_200063",
+            grid: "BMC_200063",
+            plantName: "BMC_200063",
+            startTime: "BMC_200063",
+        },
+        {
+            type: "逆变器2",
+            level: "紧急",
+            desc: "BMC_200063",
+            name: "BMC_200063",
+            grid: "BMC_200063",
+            plantName: "BMC_200063",
+            startTime: "BMC_200063",
+        },
+        {
+            type: "逆变器1逆变器1逆变器1逆变器1",
+            level: "紧急",
+            desc: "BMC_200063",
+            name: "BMC_200063",
+            grid: "BMC_200063",
+            plantName: "BMC_200063",
+            startTime: "BMC_200063",
+        },
+        {
+            type: "逆变器2",
+            level: "紧急",
+            desc: "BMC_200063",
+            name: "BMC_200063",
+            grid: "BMC_200063",
+            plantName: "BMC_200063",
+            startTime: "BMC_200063",
+        },
     ];
 
     const getList = async () => {
@@ -95,6 +221,27 @@ const Index = () => {
             });
             setCompanyList(recordList);
         }
+    };
+
+    // const getPageData = data => {
+    //     const { current, pageSize } = paginationRef.current;
+    //     const pageData = data.slice((current - 1) * pageSize, current * pageSize);
+    //     this.total = this.allData.length;
+    // };
+
+    const onChange = page => {
+        setPagination({
+            ...paginationRef.current,
+            current: page,
+        });
+    };
+
+    const handleSearch = () => {
+        setPagination({
+            ...paginationRef.current,
+            current: 1,
+        });
+        getList();
     };
 
     const handleReset = () => {
@@ -190,12 +337,14 @@ const Index = () => {
                                     setAlarmDesc(value);
                                 }}
                             />
-                            <div>
-                                <Button type="primary" onClick={getList}>
+                            <Space>
+                                <div className={styles.btn} onClick={handleSearch}>
                                     搜索
-                                </Button>
-                                <Button onClick={handleReset}>重置</Button>
-                            </div>
+                                </div>
+                                <div className={styles.btn} onClick={handleReset}>
+                                    重置
+                                </div>
+                            </Space>
                         </Space>
                         <div className={styles.table}>
                             <div className={styles.row}>
@@ -204,15 +353,7 @@ const Index = () => {
                                 ))}
                             </div>
                             <div className={styles.valueWrapper}>
-                                {[
-                                    ...values,
-                                    ...values,
-                                    ...values,
-                                    ...values,
-                                    ...values,
-                                    ...values,
-                                    ...values,
-                                ]?.map(value => (
+                                {values?.map((value, index) => (
                                     <div className={styles.row}>
                                         {columns?.map(column => (
                                             <div className={styles.value}>
@@ -221,6 +362,21 @@ const Index = () => {
                                         ))}
                                     </div>
                                 ))}
+                            </div>
+                            <div
+                                style={{
+                                    textAlign: "right",
+                                    padding: "8px 0 ",
+                                    boxSizing: "border-box",
+                                }}
+                            >
+                                <Pagination
+                                    current={pagination?.current}
+                                    pageSize={pagination?.pageSize}
+                                    total={values?.length}
+                                    size="small"
+                                    onChange={onChange}
+                                />
                             </div>
                         </div>
                     </div>

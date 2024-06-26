@@ -5,6 +5,19 @@
         width: calc(25% - 15px);
         margin-bottom: 8px;
     }
+    .btn {
+        width: 55px;
+        height: 28px;
+        line-height: 28px;
+        text-align: center;
+        background: radial-gradient(153% 66% at 50% 50%, #072f4c 0%, #04719c 100%);
+        border-radius: 2px;
+        border: 1px solid #54cfff5e;
+        cursor: pointer;
+        &:hover {
+            border: 1px solid #54cfff;
+        }
+    }
 }
 .table {
     height: calc(100% - 108px);
@@ -27,7 +40,7 @@
         }
     }
     .valueWrapper {
-        height: calc(100% - 34px);
+        height: calc(100% - 75.05px);
         overflow-y: scroll;
         &::-webkit-scrollbar {
             width: 0;
@@ -39,5 +52,11 @@
                 color: #bbdfff;
             }
         }
+    }
+}
+.ant-pagination-item-active {
+    background-color: transparent !important;
+    a {
+        color: rgb(32, 194, 255) !important;
     }
 }

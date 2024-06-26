@@ -1,4 +1,5 @@
 import { Input, Select } from "antd";
+import styles from "./index.less";
 
 const SearchInput = ({
     label = undefined,
@@ -18,16 +19,18 @@ const SearchInput = ({
 }) => {
     return (
         <div style={{ display: "flex", alignItems: "center", whiteSpace: "nowrap" }}>
-            {label && <span>{label}：</span>}
+            {label && <span>{label} </span>}
             {type == "input" ? (
                 <Input
                     value={value}
                     style={{ width: inputWidth }}
                     placeholder={placeholder || `请输入${label}`}
                     onChange={e => onChange(e.target.value)}
+                    className={styles.input}
                 />
             ) : (
                 <Select
+                    className={styles.input}
                     labelInValue={labelInValue}
                     mode={mode}
                     value={value}

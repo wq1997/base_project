@@ -7,7 +7,7 @@ const Index = () => {
     return (
         <div className={styles.index}>
             <div className={styles.header}>
-                <span className={styles.companyName}>储能电站运维大屏</span>
+                {/* <span className={styles.companyName}>储能电站告警分析大屏</span> */}
             </div>
             <div className={styles.content}>
                 <div className={styles.left}>
