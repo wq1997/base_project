@@ -5,7 +5,7 @@
     padding: 8px 16px 16px;
     box-sizing: border-box;
     .header {
-        height: 93px;
+        height: 70px;
         background: url("../images/告警分析标题.svg") no-repeat;
         background-size: 100% 100%;
         display: flex;
@@ -21,7 +21,7 @@
         }
     }
     .content {
-        height: calc(100% - 80px);
+        height: calc(100% - 70px);
         display: flex;
         gap: 10px;
         .left {
@@ -39,5 +39,13 @@
         .right {
             flex: 3;
         }
+    }
+}
+@media (min-width: 1800px) {
+    .header {
+        height: 103px !important;
+    }
+    .content {
+        height: calc(100% - 103px) !important;
     }
 }
