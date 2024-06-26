@@ -6,6 +6,7 @@ const Charts3D = ({
     colorList,
     data,
     autoRotate=true,
+    showLengend=false
 }) => {
      // 颜色列表
     colorList = colorList.map(color => addColorAlpha(color, 1),)
@@ -187,7 +188,7 @@ const Charts3D = ({
                 }
             },
             grid3D: {
-                top: '-15%',
+                top: '-10%',
                 viewControl: {
                     autoRotate, // 自动旋转
                 },
@@ -219,10 +220,29 @@ const Charts3D = ({
     let option = getPie3D(serData, 0.7);
 
     return (
-        <ReactEcharts
-            option={option}
-            style={{width: '100%', height: '100%'}}
-        />
+        <div style={{width: '100%', height: '100%', display: 'flex', flexDirection: 'column'}}>
+            <div style={{width: '100%', flex: 1}}>
+                <ReactEcharts
+                    option={option}
+                    style={{width: '100%', height: '100%'}}
+                />
+            </div>
+            {
+                showLengend&&data?.length<=4&&
+                <div style={{display: 'flex', justifyContent: 'space-around'}}>
+                    {
+                        data?.map((item, index) => {
+                            return (
+                                <div style={{display: 'flex', alignItems: 'center'}}>
+                                    <div style={{width: 10, height: 10, background: colorList[index], marginRight: 5}}/>
+                                    <div style={{color: 'white'}}>{item?.name?.length>2?item?.name.slice(0,2)+'...':item?.name}</div>
+                                </div>
+                            )
+                        })
+                    }
+                </div>
+            }
+        </div>
     )
 }
 

@@ -1,3 +1,4 @@
+import { Space } from "antd";
 
 const MyButtonGroup = ({
     value,
@@ -5,25 +6,27 @@ const MyButtonGroup = ({
     onChange
 }) => {
     return (
-        <div style={{display: 'flex', background: '#1B5680', cursor: 'pointer'}}>
-            {
-                options?.map(option => {
-                    return (
-                        <div 
-                            style={{
-                                color: 'white', 
-                                padding: '5px 15px', 
-                                background: value===option.value?'#FF9354': '#1B5680',
-                                borderRadius: 5,
-                                fontSize: 12
-                            }}
-                            onClick={()=>onChange&&onChange(option.value)}
-                        >
-                            {option.label}
-                        </div>
-                    )
-                })
-            }
+        <div style={{display: 'flex', cursor: 'pointer'}}>
+            <Space size={8}>
+                {
+                    options?.map(option => {
+                        return (
+                            <div 
+                                style={{
+                                    color: 'white', 
+                                    padding: '5px 15px', 
+                                    background: value===option.value?'#54CFFF': '#1B5680',
+                                    borderRadius: 5,
+                                    fontSize: 12
+                                }}
+                                onClick={()=>onChange&&onChange(option.value)}
+                            >
+                                {option.label}
+                            </div>
+                        )
+                    })
+                }
+            </Space>
         </div>
     )
 }

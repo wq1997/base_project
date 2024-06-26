@@ -63,7 +63,7 @@ const IncomeRanking = ({ data }) => {
                     {
                         "name": "",
                         "type": "pictorialBar",
-                        "symbolSize": [35, 15],
+                        "symbolSize": [30, 15],
                         "symbolOffset": [0, 10],
                         "z": 12,
                         itemStyle:{
@@ -79,7 +79,7 @@ const IncomeRanking = ({ data }) => {
                     {
                         name: '',
                         type: 'bar',
-                        barWidth: 35,
+                        barWidth: 30,
                         barGap: '-100%',
                         itemStyle: {
                             opacity:.7,
@@ -94,7 +94,7 @@ const IncomeRanking = ({ data }) => {
                     {
                         "name": "",
                         "type": "pictorialBar",
-                        "symbolSize": [35, 15],
+                        "symbolSize": [30, 15],
                         "symbolOffset": [0, -10],
                         "z": 12,
                         itemStyle:{
@@ -119,7 +119,7 @@ const IncomeRanking = ({ data }) => {
                     {
                         name: '',
                         type: 'bar',
-                        barWidth: 35,
+                        barWidth: 30,
                         barGap: '-100%',
                         z:0,
                         itemStyle: {
@@ -132,7 +132,7 @@ const IncomeRanking = ({ data }) => {
                     {
                       "name": "",
                       "type": "pictorialBar",
-                      "symbolSize": [35, 15],
+                      "symbolSize": [30, 15],
                       "symbolOffset": [0, -10],
                       "z": 12,
                       "symbolPosition": "end",

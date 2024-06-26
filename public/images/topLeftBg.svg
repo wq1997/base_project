@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="86px" height="22px" viewBox="0 0 86 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>矩形</title>
+    <defs>
+        <linearGradient x1="100%" y1="50%" x2="-7.45931095e-14%" y2="50%" id="linearGradient-1">
+            <stop stop-color="#0B3858" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#54A8FF" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="27.6429753%" y1="46.8297982%" x2="-7.45931095e-14%" y2="52.7681661%" id="linearGradient-2">
+            <stop stop-color="#0095FF" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#54CCFB" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="大屏" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="电站分析" transform="translate(-131.000000, -392.000000)" fill="url(#linearGradient-1)" stroke="url(#linearGradient-2)">
+            <polygon id="矩形" points="138 393 217 393 217 413 132 413"></polygon>
+        </g>
+    </g>
+</svg>

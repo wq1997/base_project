@@ -1,11 +1,12 @@
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect, useRef } from "react";
 import * as echarts from "echarts";
-import { MyTab } from "@/components";
+import { MyTab, MyButtonGroup } from "@/components";
 
 const ElectricityRanking = ({ data }) => {
     const ref = useRef();
     const [options, setOptions] = useState({});
+    const [currentOrder, setCurrentOrder] = useState('1');
     const [currentType, setCurrentType] = useState('1');
 
     const getOptions = () => {
@@ -111,7 +112,8 @@ const ElectricityRanking = ({ data }) => {
         var app = {
             currentIndex: -1,
         };
-        setInterval(function () {
+        if(window.electricityInterval) window.clearInterval(window.electricityInterval);
+        window.electricityInterval = setInterval(function () {
             var dataLen = options.series[0].data.length;
             // 取消之前高亮的图形
             myChart.dispatchAction({
@@ -137,14 +139,24 @@ const ElectricityRanking = ({ data }) => {
 
     return (
         <div style={{width: '100%', height: '100%', position: 'relative'}}>
-            <div style={{display: 'flex', justifyContent: 'end', position: 'absolute', right: 5, top: 5, zIndex: 100}}>
-                <MyTab 
+            <div style={{display: 'flex', justifyContent: 'end', position: 'absolute', left: 20, top: 5, zIndex: 100}}>
+                <MyButtonGroup 
                     value={currentType}
                     options={[
                         {value: '1', label: '正序'},
                         {value: '2', label: '倒序'},
                     ]}
                     onChange={value => setCurrentType(value)}
+                />
+            </div>
+            <div style={{display: 'flex', justifyContent: 'end', position: 'absolute', right: 5, top: 5, zIndex: 100}}>
+                <MyTab 
+                    value={currentOrder}
+                    options={[
+                        {value: '1', label: '正序'},
+                        {value: '2', label: '倒序'},
+                    ]}
+                    onChange={value => setCurrentOrder(value)}
                 />
             </div>
             <ReactECharts 
