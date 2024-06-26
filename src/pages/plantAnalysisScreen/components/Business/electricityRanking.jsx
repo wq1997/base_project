@@ -143,8 +143,8 @@ const ElectricityRanking = ({ data }) => {
                 <MyButtonGroup 
                     value={currentType}
                     options={[
-                        {value: '1', label: '正序'},
-                        {value: '2', label: '倒序'},
+                        {value: '1', label: '电量'},
+                        {value: '2', label: '效率'},
                     ]}
                     onChange={value => setCurrentType(value)}
                 />
