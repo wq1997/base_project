@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="23px" viewBox="0 0 24 23" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组 27</title>
+    <defs>
+        <radialGradient cx="51.6684665%" cy="45.7163222%" fx="51.6684665%" fy="45.7163222%" r="64.2128651%" id="radialGradient-1">
+            <stop stop-color="#026D9A" offset="0%"></stop>
+            <stop stop-color="#29E3FF" offset="100%"></stop>
+        </radialGradient>
+    </defs>
+    <g id="大屏" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="电站分析" transform="translate(-1473.000000, -136.000000)">
+            <g id="编组-11" transform="translate(1461.000000, 123.000000)">
+                <g id="编组-27" transform="translate(12.686292, 13.272078)">
+                    <rect id="矩形备份-14" fill="url(#radialGradient-1)" transform="translate(11.313708, 11.313708) rotate(45.000000) translate(-11.313708, -11.313708) " x="3.3137085" y="3.3137085" width="16" height="16" rx="2"></rect>
+                    <rect id="矩形备份-15" fill="#93CFFF" x="12.3137085" y="12.7279221" width="10" height="10" rx="1"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
