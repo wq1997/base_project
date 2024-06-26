@@ -1,7 +1,8 @@
-import { theme, Table, DatePicker } from "antd";
 import styles from "./index.less";
 import AlarmList from "./AlarmList";
 import WorkOrder from "./WorkOrder";
+import AlarmAnysis from "./AlarmAnysis";
+import DeviceStatus from "./DeviceStatus";
 
 const Index = () => {
     return (
@@ -11,9 +12,9 @@ const Index = () => {
             </div>
             <div className={styles.content}>
                 <div className={styles.left}>
+                    <AlarmAnysis />
                     <WorkOrder />
-                    <WorkOrder />
-                    <WorkOrder />
+                    <DeviceStatus />
                 </div>
                 <div className={styles.right}>
                     <AlarmList />

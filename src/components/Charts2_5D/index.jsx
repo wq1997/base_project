@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from 'react';
 import highcharts3d from "highcharts/highcharts-3d";
 highcharts3d(Highcharts);
 
-const Charts2_5D = ({size, depth, data, colors}) => {
+const Charts2_5D = ({size, depth, alpha=45, data, colors}) => {
     const ref = useRef(null);
     const pieSize = size;
     const initChart = () => {
@@ -18,8 +18,11 @@ const Charts2_5D = ({size, depth, data, colors}) => {
                 type: "pie",
                 options3d: {
                     enabled: true,
-                    alpha: 45,
+                    alpha,
                 },
+                spacingTop: 0,
+                spacingLeft: 0,
+                spacingRight: 0,
             },
             title: {
                 text: "",

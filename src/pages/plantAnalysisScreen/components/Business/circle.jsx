@@ -1,7 +1,7 @@
 
 import styles from "./circle.less";
 import ball1Img from "../../../../../public/images/ball1.svg";
-import ball2Img from "../../../../../public/images/ball2.svg";
+import ball2Img from "../../../../assets/ball2.gif";
 import ball3Img from "../../../../assets/ball3.gif";
 
 const Circle = () => {
