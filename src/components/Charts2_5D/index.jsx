@@ -60,7 +60,6 @@ const Charts2_5D = ({size, depth, data, colors}) => {
 
     useEffect(()=>{
         initChart();
-        window.addEventListener('resize', initChart);
     }, [])
     return (
         <div ref={ref}>
@@ -80,11 +79,11 @@ const Charts2_5D = ({size, depth, data, colors}) => {
                             <div style={{display: 'flex', alignItems: 'center'}}>
                                 <div 
                                     style={{
-                                        width: 30, 
+                                        width: 20, 
                                         height: 10,
                                         background: `linear-gradient(90deg, ${colors[index][0]} 0%, ${colors[index][1]} 100%)`
                                     }} />
-                                <div style={{color: 'white', marginLeft: 10}}>{item?.[0]}</div>
+                                <div style={{color: 'white', marginLeft: 5}}>{item?.[0]}</div>
                             </div>
                         )
                     })

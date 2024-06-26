@@ -3,6 +3,7 @@ import Title from "../Title";
 import { Charts3D, Charts2_5D } from "@/components";
 import styles from "./index.less";
 import Circle from "./circle";
+import IncomeRanking from "./incomeRanking";
 
 const Business = () => {
     return (
@@ -77,7 +78,7 @@ const Business = () => {
                 <Title title={"告警分析"} />
                 <div className={styles.areaContent}>
                     <Charts2_5D 
-                        size={180}
+                        size={170}
                         depth={40}
                         colors={[
                             ['#29FFB4', '#32F600'],
@@ -86,16 +87,21 @@ const Business = () => {
                             ['#FF00FF', '#DA00FF'],
                         ]}
                         data={[
-                            ['Work', 1],
-                            ['Eat', 2],
-                            ['Commute', 2],
-                            ['Watch TV', 2]
+                            ['低级', 1],
+                            ['中级', 2],
+                            ['高级', 2],
+                            ['严重', 2]
                         ]}
                     />
                 </div>
             </div>
             <div className={styles.area5}>
                 <Title title={"收益排行"}/>
+                <div className={styles.areaContent}>
+                    <IncomeRanking 
+                        data={[20,32,43,21]}
+                    />
+                </div>
             </div>
             <div className={styles.area8}>8</div>
             <div className={styles.area7}>7</div>

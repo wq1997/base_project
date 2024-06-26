@@ -7,6 +7,7 @@ import Title from './Title'
 import GlobalWrapperCss from "./GlobalWrapperCss";
 import Charts3D from "./Charts3D";
 import Charts2_5D from "./Charts2_5D";
+import MyTab from "./MyTab";
 
 export {
     ThemeBtn,
@@ -18,4 +19,5 @@ export {
     GlobalWrapperCss,
     Charts3D,
     Charts2_5D,
+    MyTab,
 }
