@@ -93,7 +93,7 @@ const Log = () => {
             >
                 <SearchInput
                     label="操作账号"
-                    placeholder="请输入账号名称关键词或编号"
+                    placeholder="请输入用户名"
                     value={account}
                     onChange={value => {
                         accountRef.current = value;
