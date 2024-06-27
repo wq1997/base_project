@@ -198,7 +198,7 @@ const Business = () => {
                     <div 
                         className={styles.btn}
                         onClick={()=>{
-                            history.push(`/maintenance-screen/alarm-screen`)
+                            history.push(`/large-screens/alarm-screen`)
                         }}
                     >
                         详情分析
