@@ -1,7 +1,7 @@
 import { Charts3D, Charts2_5D, ScrollTable } from "@/components";
 import Title from "../Title";
 import styles from "./index.less";
-import Map from "../map";
+import Map from "@/pages/largeScreens/components/map";
 import Header from "../Header";
 import classNames from "classnames";
 import { Form, Select, Input, Button } from "antd";
@@ -121,27 +121,27 @@ const Network = ({
             <div className={styles.networkBottom}>
                 <Title title={"项目列表"}/>
                 <div className={styles.areaContent}>
-                    <ScrollTable 
+                    <ScrollTable
                         columns={[
                             {
-                                title: '项目名称',
-                                key: '1'
+                                title: "项目名称",
+                                key: "1",
                             },
                             {
-                                title: '项目类型',
-                                key: '2'
+                                title: "项目类型",
+                                key: "2",
                             },
                             {
-                                title: '项目地址',
-                                key: '3'
+                                title: "项目地址",
+                                key: "3",
                             },
                         ]}
-                        dataSource={[1,2,3,4,5]?.map(item => {
+                        dataSource={[1, 2, 3, 4, 5]?.map(item => {
                             return {
-                                1: '一级',
-                                2: '普通',
-                                3: '宁夏回族自治区灵武市宁东镇狼南线国能宁东',
-                            }
+                                1: "一级",
+                                2: "普通",
+                                3: "宁夏回族自治区灵武市宁东镇狼南线国能宁东",
+                            };
                         })}
                     />
                 </div>
@@ -172,7 +172,7 @@ const Network = ({
                  <Button className={styles.btn}>搜索</Button>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default Network;

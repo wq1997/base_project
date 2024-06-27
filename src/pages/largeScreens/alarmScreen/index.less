@@ -1,0 +1,49 @@
+.index {
+    width: 100vw;
+    height: 100vh;
+    background: #0f293b;
+    padding: 8px 16px 16px;
+    box-sizing: border-box;
+    .header {
+        height: 70px;
+        background: url("@/assets/images/告警分析大标题.svg") no-repeat;
+        background-size: 100% 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .companyName {
+            font-size: 24px;
+            background-image: linear-gradient(to bottom, #d7f8ff, #74e1ff);
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 5px;
+            font-family: serif;
+        }
+    }
+    .content {
+        height: calc(100% - 70px);
+        display: flex;
+        gap: 10px;
+        .left {
+            height: 100%;
+            width: 24%;;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            > div {
+                flex: 1;
+            }
+        }
+        .right {
+            width: 76%;;
+        }
+    }
+}
+@media (min-width: 1800px) {
+    .header {
+        height: 103px !important;
+    }
+    .content {
+        height: calc(100% - 103px) !important;
+    }
+}

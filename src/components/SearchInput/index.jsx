@@ -26,11 +26,11 @@ const SearchInput = ({
                     style={{ width: inputWidth }}
                     placeholder={placeholder || `请输入${label}`}
                     onChange={e => onChange(e.target.value)}
-                    className={styles.input}
+                    className={styles.input1}
                 />
             ) : (
                 <Select
-                    className={styles.input}
+                    className={styles.input1}
                     labelInValue={labelInValue}
                     mode={mode}
                     value={value}

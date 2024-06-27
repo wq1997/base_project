@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="441px" height="49px" viewBox="0 0 441 49" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>标题底框</title>
+    <defs>
+        <linearGradient x1="100%" y1="50%" x2="-1.37910516e-14%" y2="50%" id="linearGradient-1">
+            <stop stop-color="#0B3858" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#0079A9" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="100%" y1="50%" x2="7.42461648e-14%" y2="50%" id="linearGradient-2">
+            <stop stop-color="#106666" stop-opacity="0.19798951" offset="0%"></stop>
+            <stop stop-color="#54CFFF" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="100%" y1="50%" x2="7.42461648e-14%" y2="50%" id="linearGradient-3">
+            <stop stop-color="#106666" stop-opacity="0.19798951" offset="0%"></stop>
+            <stop stop-color="#54CFFF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="大屏" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="电站分析" transform="translate(-20.000000, -122.000000)">
+            <g id="标题底框" transform="translate(20.000000, 122.000000)">
+                <polygon id="矩形" fill="url(#linearGradient-1)" points="1 1 310 1 340.146488 20.8701117 439.009062 20.8701117 439.009062 49 1 49"></polygon>
+                <rect id="矩形备份-26" fill="url(#linearGradient-2)" transform="translate(52.000000, 0.500000) scale(-1, 1) translate(-52.000000, -0.500000) " x="0" y="0" width="104" height="1"></rect>
+                <rect id="矩形备份-27" fill="url(#linearGradient-2)" x="206" y="0" width="104" height="1"></rect>
+                <rect id="矩形备份-28" fill="#54CFFF" transform="translate(155.000000, 1.000000) scale(-1, 1) translate(-155.000000, -1.000000) " x="112" y="0" width="86" height="2"></rect>
+                <g id="编组-28" transform="translate(322.406470, 0.000000)">
+                    <rect id="矩形备份-23" fill="url(#linearGradient-3)" transform="translate(67.593530, 15.500000) scale(-1, 1) translate(-67.593530, -15.500000) " x="17.5935298" y="15" width="100" height="1"></rect>
+                    <path d="M11,0 L11,11 L-2.27373675e-13,11 L-2.27373675e-13,0 L11,0 Z M33,0 L33,11 L13,11 L13,0 L33,0 Z M47,0 L47,11 L36,11 L36,0 L47,0 Z M59,0 L59,11 L49,11 L49,0 L59,0 Z M82,0 L82,11 L63,11 L63,0 L82,0 Z M94,0 L94,11 L84,11 L84,0 L94,0 Z M117.660389,0 L100,11 L98,11 L98,0 L117.660389,0 Z" id="形状结合备份-2" fill="#54CFFF" transform="translate(58.830194, 5.500000) scale(-1, 1) translate(-58.830194, -5.500000) "></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

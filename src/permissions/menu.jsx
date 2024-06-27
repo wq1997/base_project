@@ -13,20 +13,10 @@ const MenuList = [
     //     icon: <FundFilled />
     // },
     {
-        key: "/maintenance-screen",
-        label: "运维大屏",
+        key: "/screen-plant-analysis",
+        label: "电站运维大屏",
         icon: <FundFilled />,
         darkIcon: "icon-wuliaoxuqiu-copy",
-        children: [
-            {
-                key: "/screen-plant-analysis",
-                label: "电站大屏",
-            },
-            {
-                key: "/maintenance-screen/alarm-screen",
-                label: "告警大屏",
-            },
-        ],
     },
     {
         key: "/workbench",

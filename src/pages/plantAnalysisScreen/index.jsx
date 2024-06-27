@@ -1,9 +1,7 @@
 import { useState } from "react";
-import Header from "./components/Header";
 import styles from "./index.less";
 import Business from "./components/Business";
 import Network from "./components/Network";
-import Map from "./components/map";
 
 const typeList = [
     {

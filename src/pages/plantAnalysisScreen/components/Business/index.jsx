@@ -1,7 +1,7 @@
 import { history } from "umi";
 import { Badge } from "antd";
 import styles from "./index.less";
-import Map from "../map";
+import Map from "@/pages/largeScreens/components/map";
 import Header from "../Header";
 import { Charts3D, Charts2_5D, ScrollTable } from "@/components";
 import Circle from "./circle";
@@ -206,7 +206,7 @@ const Business = ({
                     <div 
                         className={styles.btn}
                         onClick={()=>{
-                            history.push(`/maintenance-screen/alarm-screen`)
+                            history.push(`/large-screens/alarm-screen`)
                         }}
                     >
                         详情分析

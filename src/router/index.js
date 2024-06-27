@@ -49,13 +49,10 @@ export default Routes = [
                 path: "/test",
                 component: "@/pages/test",
             },
+
             {
-                path: "/maintenance-screen/plant-screen",
-                component: "@/pages/maintenanceScreen/plantScreen",
-            },
-            {
-                path: "/maintenance-screen/alarm-screen",
-                component: "@/pages/maintenanceScreen/alarmScreen",
+                path: "/large-screens/alarm-screen",
+                component: "@/pages/largeScreens/alarmScreen",
             },
         ],
     },

@@ -1,3 +1,4 @@
+import Map from "@/pages/largeScreens/components/map";
 const CenterMap = ({ dataSource }) => {
     return (
         <div style={{ width: "100%", height: "100%", position: "relative", display: 'flex', gap: 4 }}>
