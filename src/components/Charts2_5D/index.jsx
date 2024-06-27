@@ -82,7 +82,7 @@ const Charts2_5D = ({size, depth, alpha=45, data, colors}) => {
                                     style={{
                                         width: 20, 
                                         height: 10,
-                                        background: `linear-gradient(90deg, ${colors[index][0]} 0%, ${colors[index][1]} 100%)`
+                                        background: `linear-gradient(90deg, ${colors[index]} 0%, ${colors[index]} 100%)`
                                     }} />
                                 <div style={{color: 'white', marginLeft: 5}}>{item?.[0]}</div>
                             </div>
