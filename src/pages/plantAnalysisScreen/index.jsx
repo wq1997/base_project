@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import styles from "./index.less";
 import Business from "./components/Business";
 import Network from "./components/Network";
+import Map from "./components/map";
 
 const typeList = [
     {
@@ -19,15 +20,8 @@ const PlantAnalysisScreen = () => {
     const [currentType, setCurrentType] = useState("Business");
     return (
         <div className={styles.screen}>
-            <Header
-                typeList={typeList}
-                currentType={currentType}
-                onChangedType={(value)=>setCurrentType(value)}
-            />
-            <div className={styles.screenContent}>
-                {currentType==="Business"&&<Business />}
-                {currentType==="Network"&&<Network />}
-            </div>
+            {currentType==="Business"&&<Business typeList={typeList} currentType={currentType} onChangedType={(value)=>setCurrentType(value)}/>}
+            {currentType==="Network"&&<Network typeList={typeList} currentType={currentType} onChangedType={(value)=>setCurrentType(value)}/>}
         </div>
     )
 }

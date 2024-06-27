@@ -16,7 +16,7 @@ const IncomeRanking = ({ data }) => {
             },
             grid:{
                 top: 55,
-                left: 50,
+                left: 40,
                 right: 0,
                 bottom: 30
             },
@@ -41,7 +41,7 @@ const IncomeRanking = ({ data }) => {
                 splitLine: {
                     show: true,
                     lineStyle:{
-                      color: '#18486F',
+                      color: '#00516F',
                       type: 'dashed'
                     }
                 },

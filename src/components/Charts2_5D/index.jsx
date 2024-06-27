@@ -1,5 +1,6 @@
 import Highcharts from 'highcharts';
 import { useEffect, useState, useRef } from 'react';
+import { debounce } from "lodash";
 import highcharts3d from "highcharts/highcharts-3d";
 highcharts3d(Highcharts);
 
@@ -35,19 +36,11 @@ const Charts2_5D = ({size, depth, alpha=45, data, colors}) => {
             },
             plotOptions: {
                 pie: {
-                    size: pieSize,
+                    size: size - 60,
                     innerSize: 0,
                     depth,
                     cursor: "pointer",
-                    colors: colors.map(color=>{
-                        return {
-                            linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
-                            stops: [
-                                [0, color[0]],
-                                [1, color[1]]
-                            ]
-                        }
-                    }),
+                    colors: colors,
                     dataLabels: {
                         enabled: false
                     }
@@ -61,8 +54,13 @@ const Charts2_5D = ({size, depth, alpha=45, data, colors}) => {
         });
     }
 
+    const onResize = debounce(() => {
+        initChart();
+    }, 1000);
+
     useEffect(()=>{
         initChart();
+        window.addEventListener('resize', onResize)
     }, [])
     return (
         <div ref={ref}>

@@ -1,76 +1,49 @@
-.container {
+.business{
+  width: 100%;
+  height: 100%;
+
+  .content{
     width: 100%;
-    height: 100%;  
-    display: grid;
-    grid-template-columns: 1fr 1fr 0.23fr 1.7fr 0.9fr 1fr 1.3fr 0.23fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 0.3fr 1.7fr 1fr 0.7fr 1.3fr 1fr 1fr;
-    grid-auto-columns: 1fr;
-    gap: 8px 8px;
-    grid-auto-flow: row;
-    grid-template-areas:
-      "area1 area1 area1 area8 area8 area8 area8 area4 area4 area4"
-      "area1 area1 area1 area8 area8 area8 area8 area4 area4 area4"
-      "area1 area1 area1 area8 area8 area8 area8 area4 area4 area4"
-      "area1 area1 area1 area8 area8 area8 area8 area4 area4 area4"
-      "area2 area2 area2 area8 area8 area8 area8 area5 area5 area5"
-      "area2 area2 area2 area8 area8 area8 area8 area5 area5 area5"
-      "area2 area2 area2 area8 area8 area8 area8 area5 area5 area5"
-      "area3 area3 area3 area7 area7 area7 area7 area6 area6 area6"
-      "area3 area3 area3 area7 area7 area7 area7 area6 area6 area6"
-      "area3 area3 area3 area7 area7 area7 area7 area6 area6 area6";
+    height: 100%;
+    background: linear-gradient( 180deg, rgba(2,65,92,0.75) 0%, rgba(0,81,111,0.75) 100%);
+    border-radius: 16px;
+    padding: 10px 10px;
+    box-sizing: border-box;
   }
 
   .areaContent{
-    height: calc(100% - 40px);
-    background-color: #0B3858;
+    width: 100%;
+    margin-top: 5px;
+    height: calc(100% - 30px);
   }
-  
-  .area4 { 
-      grid-area: area4; 
+
+  .header{
+    position: absolute;
+    top: 0;
+    left: 10px;
+    width: calc(100% - 20px);
+    height: 120px;
+    z-index: 10;
   }
-  
-  .area2 { grid-area: area2; }
-  
-  .area3 { grid-area: area3; }
-  
-  .area6 { grid-area: area6; }
-  
-  .area5 { grid-area: area5; }
-  
-  .area8 { grid-area: area8; }
-  
-  .area7 { 
-      grid-area: area7; 
-      position: relative;
-      .areaContent{
-        height: calc(100% - 40px);
-        background-color: #0B3858;
-        padding: 10px;
-        box-sizing: border-box;
+
+  .left{
+    width: 28%;
+    height: calc(100% - 120px - 8px - 8px);
+    position: absolute;
+    top: 128px; // 120是header的高度 8px是距离上面的高度
+    left: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .left1{
+      width: 100%;
+      height: calc(33.3333333% - 16px / 3);
+
+      .contentChart{
+        height: calc(100% - 60px);
       }
-      .btn{
-        position: absolute;
-        right: 10px;
-        width: 100px;
-        height: 30px;
-        line-height: 30px;
-        background: transparent url(/images/area.svg) center center no-repeat;
-        background-size: cover;
-        text-align: center;
-        color: white;
-        cursor: pointer;
-      }
-      .table{
-        margin-top: 30px;
-        height: calc(100% - 30px);
-      }
-  }
-  
-  .area1 { 
-      grid-area: area1; 
-      .areaContentChart{
-        height: calc(100% - 40px);
-      }
+
       .areaContentData{
         height: 40px;
         display: flex;
@@ -96,5 +69,80 @@
           }
         }
       }
+    }
+
+    .left2{
+      width: 100%;
+      height: calc(33.3333333% - 16px / 3);
+    }
+
+    .left3{
+      width: 100%;
+      height: calc(33.3333333% - 16px / 3);
+    }
   }
-  
+
+  .right{
+    width: 28%;
+    height: calc(100% - 120px - 8px - 8px);
+    position: absolute;
+    top: 128px; // 120是header的高度 8px是距离上面的高度
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .right1{
+      width: 100%;
+      height: calc(33.3333333% - 16px / 3);
+    }
+
+    .right2{
+      width: 100%;
+      height: calc(33.3333333% - 16px / 3);
+    }
+
+    .right3{
+      width: 100%;
+      height: calc(33.3333333% - 16px / 3);
+    }
+  }
+
+  .centerTop{
+    width: calc(44% - 36px);
+    height: 100px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 128px;
+  }
+
+  .centerBottom{
+    .content;
+    width: calc(44% - 36px);
+    height: calc(33% - 48px);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 8px;
+    .outBtn{
+      display: flex;
+      justify-content: end;
+      .btn{
+        width: 100px;
+        height: 30px;
+        line-height: 30px;
+        background: radial-gradient(153% 66% at 50% 50%, #072F4C 0%, #04719C 100%);
+        border-radius: 2px;
+        border: 1px solid #54CFFF;
+        text-align: center;
+        color: white;
+        cursor: pointer;
+      }
+    }
+    .table{
+      height: calc(100% - 70px);
+      margin-top: 10px;
+    }
+  }
+}

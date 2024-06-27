@@ -14,7 +14,7 @@ const MyTab = ({
                             style={{
                                 color: 'white', 
                                 padding: '5px 15px', 
-                                background: value===option.value?'#FF9354': '#1B5680',
+                                background: value===option.value?'#00DF50': '#1B5680',
                                 borderRadius: 5,
                                 fontSize: 12
                             }}

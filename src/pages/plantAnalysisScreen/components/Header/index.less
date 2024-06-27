@@ -1,18 +1,16 @@
 .header{
-    height: 80px;
+    width: 100%;
+    height: 100%;
     position: relative;
-    background: transparent url(/images/header_bg.svg) center center no-repeat;
-    background-size: cover;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background: transparent url(/images/header_bg.svg) no-repeat;
+    background-size: 100% 100%;
     .headerLeft{
         position: absolute;
         box-sizing: border-box;
         bottom: 0;
         left: 0;
-        width: calc(23% + 8px);
-        height: 36px;
+        width: 28%;
+        height: 45px;
         display: flex;
         .headerLeftLeftItem{
             flex: 1;
@@ -29,14 +27,5 @@
                 border-radius: 6px;
             }
         }
-    }
-}
-
-@media (min-width: 1800px) {
-    .header {
-        height: 103px !important;
-    }
-    .content {
-        height: calc(100% - 103px) !important;
     }
 }

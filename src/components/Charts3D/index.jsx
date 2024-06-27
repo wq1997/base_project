@@ -146,7 +146,7 @@ const Charts3D = ({
             },
             itemStyle: {
                 opacity: 1,
-                color: '#194E74',
+                color: '#216595',
             },
             parametricEquation: {
                 u: {
@@ -188,17 +188,17 @@ const Charts3D = ({
                 }
             },
             grid3D: {
-                top: '-10%',
+                top: '-20%',
                 viewControl: {
                     autoRotate, // 自动旋转
                 },
                 width: '100%',
                 height: '100%',
                 show: false,
-                boxHeight: 50,
+                boxHeight: 45,
                 // boxWidth和boxDepth这两个属性值保持一致，才可以在调整饼图宽度的时候保持水平，不然就会歪歪扭扭
-                boxWidth: 200,
-                boxDepth: 200,
+                boxWidth: 215,
+                boxDepth: 215,
             },
             series: series,
         };

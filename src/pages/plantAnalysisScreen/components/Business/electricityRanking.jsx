@@ -20,7 +20,7 @@ const ElectricityRanking = ({ data }) => {
             },
             grid:{
                 top: 55,
-                left: 50,
+                left: 40,
                 right: 0,
                 bottom: 30
             },
@@ -45,7 +45,7 @@ const ElectricityRanking = ({ data }) => {
                 splitLine: {
                     show: true,
                     lineStyle:{
-                      color: '#18486F',
+                      color: '#00516F',
                       type: 'dashed'
                     }
                 },
@@ -71,10 +71,10 @@ const ElectricityRanking = ({ data }) => {
                       normal: {
                           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                               offset: 0,
-                              color: '#3EFFF2'
+                              color: '#53DEFF'
                           }, {
                               offset: 1,
-                              color: '#4499F5'
+                              color: '#00B1FF'
                           }]),
                           barBorderRadius: 12,
                       },
@@ -89,10 +89,10 @@ const ElectricityRanking = ({ data }) => {
                       normal: {
                           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                               offset: 0,
-                              color: '#FEF826'
+                              color: '#00E7C8'
                           }, {
                               offset: 1,
-                              color: '#F57344'
+                              color: '#0038C6'
                           }]),
                           barBorderRadius: 12,
                       },
@@ -139,7 +139,7 @@ const ElectricityRanking = ({ data }) => {
 
     return (
         <div style={{width: '100%', height: '100%', position: 'relative'}}>
-            <div style={{display: 'flex', justifyContent: 'end', position: 'absolute', left: 20, top: 5, zIndex: 100}}>
+            <div style={{display: 'flex', justifyContent: 'end', position: 'absolute', left: 0, top: 5, zIndex: 100}}>
                 <MyButtonGroup 
                     value={currentType}
                     options={[
@@ -149,7 +149,7 @@ const ElectricityRanking = ({ data }) => {
                     onChange={value => setCurrentType(value)}
                 />
             </div>
-            <div style={{display: 'flex', justifyContent: 'end', position: 'absolute', right: 5, top: 5, zIndex: 100}}>
+            <div style={{display: 'flex', justifyContent: 'end', position: 'absolute', right: 0, top: 5, zIndex: 100}}>
                 <MyTab 
                     value={currentOrder}
                     options={[
