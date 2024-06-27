@@ -137,8 +137,9 @@ const Business = () => {
                 <Title title={"告警分析"} />
                 <div className={styles.areaContent}>
                     <Charts2_5D
-                        size={170}
+                        size={190}
                         depth={40}
+                        alpha={55}
                         colors={[
                             ["#29FFB4", "#32F600"],
                             ["#00F9FF", "#3962FF"],
