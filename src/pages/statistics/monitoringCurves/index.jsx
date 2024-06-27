@@ -65,13 +65,13 @@ const MonitoringCurves = () => {
         const values = await form.validateFields();
         let { date, currentPlantDevice, dataType } = values;
         date = date.map(item => dayjs(item).format(format));
-        if(date?.length>7){
-            message.error(intl.formatMessage({id: '最多选择7个对比项'}));
+        if(date?.length>3){
+            message.error(intl.formatMessage({id: '最多选择3个对比项'}));
             return;
         }
         let params = {
-            plantId: currentPlantDevice?.[0],
-            dtuId: currentPlantDevice?.[1],
+            // plantId: currentPlantDevice?.[0],
+            dtuId: 1807||currentPlantDevice?.[1],
             dataType,
             dateList: date
         }
@@ -79,15 +79,58 @@ const MonitoringCurves = () => {
     }
 
     const initOption = async () => {
+        let format="YYYY-MM-DD";
         const values = await form.validateFields();
-        let { dataType } = values;
+        let { dataType, date } = values;
         const currentData = dataProList.find(data => data.value==dataType);
         const name = `${currentData?.label}(${currentData?.unit})`;
         if(currentData) setTitle(name);
 
-        let legendData = [], series = [];
+        let legendData = [], series = [], xData = [];
+        date = date.map(item => dayjs(item).format(format));
+        xData = dataSource?.[0]?.timeList;
         if(dataType===100){
-            legendData = [intl.formatMessage({id: 'PCS功率'}), intl.formatMessage({id: 'BMS功率'}), intl.formatMessage({id: '电表功率'})];
+            const fieldList = [intl.formatMessage({id: 'PCS功率'}), intl.formatMessage({id: 'BMS功率'}), intl.formatMessage({id: '电表功率'})];
+            date?.forEach(item => {
+                fieldList.forEach(field=>{
+                    legendData.push(`${item} ${field}`);
+                })
+            })
+            legendData.forEach((legend, index) => {
+                const currentDate = legend?.split(' ')?.[0];
+                const currentData = dataSource?.find(item => item.date===currentDate);
+                const filed = index%3===0?"PCS":(index%3===1?"BMS":"Meter");
+                const data = currentData?.energyData?.[filed];
+                series.push({
+                    name: legend,
+                    type: 'line',
+                    stack: 'Total',
+                    showSymbol: false,
+                    data: data?.map(item => item[1])
+                })
+            })
+        }
+
+        if(dataType===183){
+            const fieldList = [intl.formatMessage({id: '电池SOC'})];
+            date?.forEach(item => {
+                fieldList.forEach(field=>{
+                    legendData.push(`${item} ${field}`);
+                })
+            })
+            legendData.forEach((legend, index) => {
+                const currentDate = legend?.split(' ')?.[0];
+                const currentData = dataSource?.find(item => item.date===currentDate);
+                const filed = "SOC";
+                const data = currentData?.energyData?.[filed];
+                series.push({
+                    name: legend,
+                    type: 'line',
+                    stack: 'Total',
+                    showSymbol: false,
+                    data: data?.map(item => item[1])
+                })
+            })
         }
 
         const option = {
@@ -98,7 +141,10 @@ const MonitoringCurves = () => {
                 }
             },
             legend: {
-                data: legendData
+                data: legendData,
+                textStyle: {
+                    color: 'white'
+                }
             },
             grid: {
                 top: '40',
@@ -108,7 +154,7 @@ const MonitoringCurves = () => {
             },
             xAxis: [{
                 type: 'category',
-                data: dataSource?.map(item => moment(item.time).format("YYYY/MM/DD")),
+                data: xData,
                 axisLine: {
                     lineStyle: {
                         color: 'rgba(255,255,255,0.12)'
@@ -204,8 +250,8 @@ const MonitoringCurves = () => {
     const getDataSource = async (params) => {
         setLoading(true);
         const res = await monitorCurveServe(params);
-        if(res?.data?.data?.data){
-            setDataSource(res?.data?.data?.data)
+        if(res?.data?.data){
+            setDataSource(res?.data?.data)
         }else{
             setDataSource([]);
         }
@@ -250,7 +296,7 @@ const MonitoringCurves = () => {
                                 style={{width: '250px', height: 40}}
                             />
                         </Form.Item>
-                        <Tooltip title={intl.formatMessage({id: '最多选择7个对比项'})}>
+                        <Tooltip title={intl.formatMessage({id: '最多选择3个对比项'})}>
                             <Form.Item 
                                 name="date"
                                 label={intl.formatMessage({id: '日期'})}
@@ -258,7 +304,7 @@ const MonitoringCurves = () => {
                                 <DatePicker 
                                     multiple
                                     maxTagCount={1}
-                                    maxDate={dayjs(moment().subtract(1, 'day').format('YYYY-MM-DD'), 'YYYY-MM-DD')} 
+                                    maxDate={dayjs(moment().format('YYYY-MM-DD'), 'YYYY-MM-DD')} 
                                     style={{width: '300px', height: 40}}
                                     allowClear={false}
                                 />

@@ -53,14 +53,7 @@ const Login = () => {
         setLocalStorage("userName", data?.userName);
         message.success(t('登录成功'));
         history.push("/index/device");
-        dispatch({
-          type: 'user/updateState',
-          payload: {
-            user: {
-              ...res.data.data
-            }
-          }
-        })
+        dispatch({type: 'user/getUserInfo'})
       } else {
         message.error(res.data.msg);
         if (res?.data.code === '407') {

@@ -418,13 +418,16 @@ const RealtimeAlarm = () => {
                 </div>
 
                 <div className={styles.content} >
-                    <div className={styles.title}>
-                        {(user?.roleId==2||user?.roleId==3)&&<div className={styles.buttons}>
-                            <Button type="primary" onClick={changIsOpen}>
-                                {t('新增')}
-                            </Button>
-                        </div>}
-                    </div>
+                    {
+                        (user?.roleId==2||user?.roleId==3)&&
+                        <div className={styles.title}>
+                            <div className={styles.buttons}>
+                                <Button type="primary" onClick={changIsOpen}>
+                                    {t('新增')}
+                                </Button>
+                            </div>
+                        </div>
+                    }
                     <Table
                         columns={tableColum}
                         dataSource={data}

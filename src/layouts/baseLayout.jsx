@@ -24,8 +24,7 @@ const BaseLayout = () => {
     const location = useLocation();
     const { pathname } = location;
     useEffect(()=>{
-
-        console.log();
+        dispatch({type: 'user/getUserInfo'})
     },[])
     const changeLanguage = (locale) => {
         setLocalStorage('locale', locale)

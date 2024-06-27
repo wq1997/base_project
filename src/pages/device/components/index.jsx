@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { getQueryString } from "@/utils/utils";
-import { history, useLocation, useIntl } from "umi";
+import { history, useLocation, useIntl, useSelector } from "umi";
 import styles from "./index.less";
 import DeviceDetails from './deviceDetails';
 import MonitoringCurves from "./monitoringCurves";
@@ -29,6 +29,9 @@ const Cabinet = () => {
     const id = getQueryString("id");
     const intl = useIntl();
     const location = useLocation();
+    const { user } = useSelector(function (state) {
+        return state.user
+    });
     const { pathname } = location;
     const [activeKey, setActiveKey] = useState(getQueryString("activeKey") || defaultActiveKey);
     const [deviceVersion, setDeviceVersion] = useState();
@@ -38,10 +41,9 @@ const Cabinet = () => {
         { label: t('设备详情'), key: 'DeviceDetails' },
         // { label: t('监测曲线'), key: 'MonitoringCurves' },
         { label: t('pack详情'), key: 'PackDetails' },
-        { label: t('策略配置'), key: 'Policy' },
+        (user?.roleId==2||user?.roleId==3)&&{ label: t('策略配置'), key: 'Policy' },
     ]);
     const [data, setData] = useState();
-
     const getInitData = async () => {
         let { data } = await getBurDtuDevInfo2({ dtuId: id });
         setData(data?.data?.[0])

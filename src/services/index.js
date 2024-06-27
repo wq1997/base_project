@@ -95,3 +95,7 @@ export const getCurveType = (payload) => {
 export const monitorCurve = (payload) => {
     return axiosInstance.post(`/minsys/curve/monitorCurve`, payload)
 }
+
+export const getUserInfo = () => {
+    return axiosInstance.get(`minsys/all/getUserInfo`);
+}

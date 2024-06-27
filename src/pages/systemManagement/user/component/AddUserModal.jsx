@@ -72,7 +72,7 @@ const App = (props) => {
       label: '所属上级',
       key: 'parentId',
       type: 2,
-      required: false,
+      required: true,
       // data: props.formData?.roleId==1?props.userUp:[]
       data: [...upData],
     },
