@@ -268,7 +268,7 @@ const Index = () => {
     }, []);
 
     return (
-        <div style={{ height: "100%", paddingTop: "10px", boxSizing: "border-box" }}>
+        <div style={{ height: "100%", boxSizing: "border-box" }}>
             <Card
                 title="告警列表"
                 content={

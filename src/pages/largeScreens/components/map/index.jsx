@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Select, Button } from "antd";
+import { Select, Tooltip } from "antd";
 import styles from "./index.less";
 
 const baseUrl = process.env.API_URL_1;
@@ -8,8 +8,8 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
     const [map, setMap] = useState();
     const defaultZoom = 5;
     const [center, setCenter] = useState([108.9, 34.2]);
-    const info = [
-        { name: "电池仓数量", key: "", value: "" },
+    window.info = [
+        { name: "电池仓数量", key: "", value: "杭州高特电子设备股份有限公司" },
         { name: "单台电池仓容量", key: "", value: "" },
         { name: "PCS一体机数量", key: "", value: "" },
         { name: "单台PCS最大功率", key: "", value: "" },
@@ -76,18 +76,31 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
             window.close = () => {
                 window.markers?.forEach(item => item.setLabel(null));
             };
+            window.getInfo = () => {
+                return window.info
+                    ?.slice(0, 13)
+                    ?.map(
+                        item => `<div class=${styles.item}>
+                           <div class=${styles.name}>${item.name}</div>
+                           <div class=${styles.value} title=${item.value}>
+                           ${item.value}</div>
+                        </div>`
+                    )
+                    ?.join("");
+            };
             marker.on("click", e => {
                 window.close();
                 marker.setLabel({
                     direction: "top",
                     content: `
-                      <div class=${styles.detail} >
+                      <div class=${styles.detail}>
                         <div class=${styles.header}>
                             项目信息
                             <span class=${styles.close} onclick="window.close()">X</span>
                         </div>
-                        <div>
-                            ${info?.map(item => <div>1</div>)}
+                        <div class=${styles.infoContent}>
+                            <div>${window.getInfo()}</div>
+                            <div>${window.getInfo()}</div>
                         </div>
                       </div>
                     `,

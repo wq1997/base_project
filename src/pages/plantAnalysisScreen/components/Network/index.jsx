@@ -6,21 +6,33 @@ import Header from "../Header";
 import classNames from "classnames";
 import { Form, Select, Input, Button } from "antd";
 
-const Network = ({
-    typeList,
-    currentType,
-    onChangedType,
-}) => {
+const Network = ({ typeList, currentType, onChangedType }) => {
     return (
         <div className={styles.network}>
-            <Map />
+            <Map
+                plants={[
+                    { plantName: "上海采日能源电站", position: [121.320789, 31.194111] },
+                    { plantName: "杭州采日能源电站", position: [120.212851, 30.291667] },
+                    { plantName: "南京采日能源电站", position: [118.798196, 31.968232] },
+                    { plantName: "合肥采日能源电站", position: [117.290268, 31.798907] },
+                    {
+                        plantName: "重庆采日能源电站重庆采日能源电站",
+                        position: [106.55081, 29.609201],
+                    },
+                    { plantName: "广州采日能源电站", position: [113.26932, 22.9885] },
+                ]}
+            />
             {/* 头部Header */}
             <div className={styles.header}>
-                <Header typeList={typeList} currentType={currentType} onChangedType={onChangedType}/>
+                <Header
+                    typeList={typeList}
+                    currentType={currentType}
+                    onChangedType={onChangedType}
+                />
             </div>
             {/* 左边 */}
             <div className={styles.left}>
-                <Title title={'电站概览'} />
+                <Title title={"电站概览"} />
                 <div className={classNames(styles.areaContent, styles.areaLeftContent)}>
                     <div className={styles.top}>
                         <div className={styles.data}>
@@ -28,38 +40,45 @@ const Network = ({
                             <span className={styles.value}>XXXXXXXXX</span>
                         </div>
                         <div className={styles.chart}>
-                            <Charts3D 
-                                colorList={['#00F69C', '#E6A5FF', '#76B3FF', '#FFEF72', '#34FFFD', '#4BE8FF']}
+                            <Charts3D
+                                colorList={[
+                                    "#00F69C",
+                                    "#E6A5FF",
+                                    "#76B3FF",
+                                    "#FFEF72",
+                                    "#34FFFD",
+                                    "#4BE8FF",
+                                ]}
                                 data={[
                                     {
-                                        name: 'PM2.5',
+                                        name: "PM2.5",
                                         value: 134,
                                     },
                                     {
-                                        name: 'VOC',
+                                        name: "VOC",
                                         value: 56,
                                     },
                                     {
-                                        name: 'T',
+                                        name: "T",
                                         value: 57,
                                     },
                                     {
-                                        name: 'CH2O',
+                                        name: "CH2O",
                                         value: 36,
-                                    }
+                                    },
                                 ]}
                                 autoRotate={false}
                                 showLengend={true}
                             />
-                            <Charts3D 
-                                colorList={['#00F9FF', '#FFF100']}
+                            <Charts3D
+                                colorList={["#00F9FF", "#FFF100"]}
                                 data={[
                                     {
-                                        name: '源侧',
+                                        name: "源侧",
                                         value: 134,
                                     },
                                     {
-                                        name: '网侧',
+                                        name: "网侧",
                                         value: 56,
                                     },
                                 ]}
@@ -74,38 +93,45 @@ const Network = ({
                             <span className={styles.value}>XXXXXXXXX</span>
                         </div>
                         <div className={styles.chart}>
-                            <Charts3D 
-                                colorList={['#00F69C', '#E6A5FF', '#76B3FF', '#FFEF72', '#34FFFD', '#4BE8FF']}
+                            <Charts3D
+                                colorList={[
+                                    "#00F69C",
+                                    "#E6A5FF",
+                                    "#76B3FF",
+                                    "#FFEF72",
+                                    "#34FFFD",
+                                    "#4BE8FF",
+                                ]}
                                 data={[
                                     {
-                                        name: 'PM2.5',
+                                        name: "PM2.5",
                                         value: 134,
                                     },
                                     {
-                                        name: 'VOC',
+                                        name: "VOC",
                                         value: 56,
                                     },
                                     {
-                                        name: 'T',
+                                        name: "T",
                                         value: 57,
                                     },
                                     {
-                                        name: 'CH2O',
+                                        name: "CH2O",
                                         value: 36,
-                                    }
+                                    },
                                 ]}
                                 autoRotate={false}
                                 showLengend={true}
                             />
-                            <Charts3D 
-                                colorList={['#00F9FF', '#FFF100']}
+                            <Charts3D
+                                colorList={["#00F9FF", "#FFF100"]}
                                 data={[
                                     {
-                                        name: '源侧',
+                                        name: "源侧",
                                         value: 134,
                                     },
                                     {
-                                        name: '网侧',
+                                        name: "网侧",
                                         value: 56,
                                     },
                                 ]}
@@ -119,7 +145,7 @@ const Network = ({
 
             {/* 底部 */}
             <div className={styles.networkBottom}>
-                <Title title={"项目列表"}/>
+                <Title title={"项目列表"} />
                 <div className={styles.areaContent}>
                     <ScrollTable
                         columns={[
@@ -149,27 +175,21 @@ const Network = ({
 
             {/* 地图搜索 */}
             <div className={styles.search}>
-                 <Form layout="inline">
+                <Form layout="inline">
                     <Form.Item label="项目类型">
-                        <Select 
-                            style={{width: 220, height: 40}}
-                            options={[
-                                {label: '1', value: 1}
-                            ]}
+                        <Select
+                            style={{ width: 220, height: 40 }}
+                            options={[{ label: "1", value: 1 }]}
                         />
                     </Form.Item>
                     <Form.Item label="项目名称">
-                        <Input 
-                            style={{width: 220, height: 40}}
-                        />
+                        <Input style={{ width: 220, height: 40 }} />
                     </Form.Item>
                     <Form.Item label="项目地址">
-                        <Input 
-                            style={{width: 220, height: 40}}
-                        />
+                        <Input style={{ width: 220, height: 40 }} />
                     </Form.Item>
-                 </Form>
-                 <Button className={styles.btn}>搜索</Button>
+                </Form>
+                <Button className={styles.btn}>搜索</Button>
             </div>
         </div>
     );
