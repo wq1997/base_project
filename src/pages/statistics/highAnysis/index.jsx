@@ -7,10 +7,11 @@ import dayjs from "dayjs";
 import * as echarts from "echarts";
 import moment from "moment";
 import {
-    monitorCurve as monitorCurveServe,
+    analyticsData as monitorCurveServe,
     getAllRevenueExcel as getAllRevenueExcelServe,
     getFetchPlantList2 as getFetchPlantListServe,
     getCurveType as getCurveTypeServe,
+    getAnalyticsInitData as getAnalyticsInitDataServe
 } from "@/services";
 import {
     getDtusOfPlant as getDtusOfPlantServe
@@ -24,38 +25,19 @@ const HighAnysis = () => {
     const [dataSource, setDataSource] = useState([]);
     const [option, setOption] = useState({});
     const [plantDeviceList, setPlantDeviceList] = useState([]);
+    const [packCellList, setPackCellList] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [title, setTitle] = useState(`${intl.formatMessage({id: '监测曲线'})}`);
+    const [title, setTitle] = useState(`${intl.formatMessage({id: '高级分析'})}`);
 
     const dataProList = [
         {
-            value: 100,
-            label: intl.formatMessage({id: '设备功率'}),
-            unit: 'kW'
-        },
-        {
-            value: 183,
-            label: intl.formatMessage({id: '电池SOC'}),
-            unit: '%'
-        },
-        {
-            value: 181,
-            label: intl.formatMessage({id: '电池电压'}),
+            value: 'vol',
+            label: intl.formatMessage({id: '单体电压'}),
             unit: 'V'
         },
         {
-            value: 182,
-            label: intl.formatMessage({id: '电池电流'}),
-            unit: 'A'
-        },
-        {
-            value: 414,
-            label: intl.formatMessage({id: '堆单体压差'}),
-            unit: 'V'
-        },
-        {
-            value: 415,
-            label: intl.formatMessage({id: '堆单体温差'}),
+            value: 'temp',
+            label: intl.formatMessage({id: '单体温度'}),
             unit: '℃'
         },
     ]
@@ -63,31 +45,82 @@ const HighAnysis = () => {
     const getParams = async() => {
         let format="YYYY-MM-DD";
         const values = await form.validateFields();
-        let { date, currentPlantDevice, dataType } = values;
+        let { date, currentPlantDevice, dataType, packCell } = values;
         date = date.map(item => dayjs(item).format(format));
-        if(date?.length>7){
-            message.error(intl.formatMessage({id: '最多选择7个对比项'}));
+        if(date?.length>3){
+            message.error(intl.formatMessage({id: '最多选择3个对比项'}));
+            return;
+        }
+        if(packCell?.length<2){
+            message.error(intl.formatMessage({id: '请选择电芯'}));
             return;
         }
         let params = {
-            plantId: currentPlantDevice?.[0],
+            // plantId: currentPlantDevice?.[0],
             dtuId: currentPlantDevice?.[1],
             dataType,
-            dateList: date
+            dateList: date,
+            packCell: packCell?.[1]
         }
         return params;
     }
 
     const initOption = async () => {
+        let format="YYYY-MM-DD";
         const values = await form.validateFields();
-        let { dataType } = values;
+        let { dataType, date } = values;
         const currentData = dataProList.find(data => data.value==dataType);
         const name = `${currentData?.label}(${currentData?.unit})`;
         if(currentData) setTitle(name);
 
-        let legendData = [], series = [];
-        if(dataType===100){
-            legendData = [intl.formatMessage({id: 'PCS功率'}), intl.formatMessage({id: 'BMS功率'}), intl.formatMessage({id: '电表功率'})];
+        let legendData = [], series = [], xData = [];
+        date = date.map(item => dayjs(item).format(format));
+        xData = dataSource?.[0]?.timeList;
+
+        if(dataType==='vol'){
+            const fieldList = [intl.formatMessage({id: '电压'})];
+
+            date?.forEach(item => {
+                fieldList.forEach(field=>{
+                    legendData.push(`${item} ${field}`);
+                })
+            })
+            legendData.forEach((legend, index) => {
+                const currentDate = legend?.split(' ')?.[0];
+                const currentData = dataSource?.find(item => item.date===currentDate);
+                const filed = "Vol";
+                const data = currentData?.energyData?.[filed];
+                series.push({
+                    name: legend,
+                    type: 'line',
+                    stack: 'Total',
+                    showSymbol: false,
+                    data: data?.map(item => item[1])
+                })
+            })
+        }
+
+        if(dataType==='temp'){
+            const fieldList = [intl.formatMessage({id: '温度'}), intl.formatMessage({id: '左侧熔断器温度'}), intl.formatMessage({id: '右侧熔断器温度'}), intl.formatMessage({id: '负极极柱温度'}), intl.formatMessage({id: '正极极柱温度'})];
+
+            date?.forEach(item => {
+                fieldList.forEach(field=>{
+                    legendData.push(`${item} ${field}`);
+                })
+            })
+            legendData.forEach((legend, index) => {
+                const currentDate = legend?.split(' ')?.[0];
+                const currentData = dataSource?.find(item => item.date===currentDate);
+                const filed = "Vol";
+                const data = currentData?.energyData?.[filed];
+                series.push({
+                    name: legend,
+                    type: 'line',
+                    stack: 'Total',
+                    showSymbol: false,
+                    data: data?.map(item => item[1])
+                })
+            })
         }
 
         const option = {
@@ -164,11 +197,17 @@ const HighAnysis = () => {
 
                 const currentPlantDevice = await form.getFieldValue("currentPlantDevice")
                 if(currentPlantDevice?.length===0){
-                    // const res = await getCurveTypeServe();
-                    // console.log("CCCCCC", res);
+                    let packCellList = [];
+                    const packCellListRes = await getAnalyticsInitDataServe({ dtuId: data?.[0]?.value });
+                    if(packCellListRes?.data?.data?.packCellList){
+                        const data = packCellListRes?.data?.data?.packCellList;
+                        packCellList = data;
+                    }
+                    setPackCellList(packCellList);
                     form.setFieldsValue({
-                        currentPlantDevice:[plantId, data[0].value],
-                        dataType: 100
+                        currentPlantDevice:[plantId, data?.[0]?.value],
+                        dataType: 'vol',
+                        packCell: [packCellList?.[0]?.value, packCellList?.[0]?.children?.[0]?.value]
                     })
                     const params = await getParams();
                     getDataSource(params);
@@ -230,6 +269,29 @@ const HighAnysis = () => {
                         currentPlantDevice: [],
                         date: [dayjs(moment().format("YYYY-MM-DD"))]
                     }}
+                    onValuesChange={async (value) => {
+                        if(value?.currentPlantDevice?.length===2){
+                            let packCellList = [];
+                            const packCellListRes = await getAnalyticsInitDataServe({ dtuId: value?.currentPlantDevice?.[1] });
+                            if(packCellListRes?.data?.data?.packCellList?.length>0){
+                                const data = packCellListRes?.data?.data?.packCellList;
+                                packCellList = data;
+                                setPackCellList(packCellList);
+                                form.setFieldsValue({
+                                    packCell: [packCellList?.[0]?.value, packCellList?.[0]?.children?.[0]?.value]
+                                })
+                                const params = await getParams();
+                                if(params){
+                                    getDataSource(params);
+                                }
+                            }else{
+                                setPackCellList([]);
+                                form.setFieldsValue({
+                                    packCell: []
+                                })
+                            }
+                        }
+                    }}
                 >
                     <Flex align="center">
                         <Form.Item name={"currentPlantDevice"} label={intl.formatMessage({id: '设备'})}>
@@ -250,7 +312,14 @@ const HighAnysis = () => {
                                 style={{width: '250px', height: 40}}
                             />
                         </Form.Item>
-                        <Tooltip title={intl.formatMessage({id: '最多选择7个对比项'})}>
+                        <Form.Item name={"packCell"} label={intl.formatMessage({id: 'pack'})}>
+                            <Cascader 
+                                changeOnSelect
+                                options={packCellList}
+                                style={{width: '250px', height: 40}}
+                            />
+                        </Form.Item>
+                        <Tooltip title={intl.formatMessage({id: '最多选择3个对比项'})}>
                             <Form.Item 
                                 name="date"
                                 label={intl.formatMessage({id: '日期'})}
@@ -258,7 +327,7 @@ const HighAnysis = () => {
                                 <DatePicker 
                                     multiple
                                     maxTagCount={1}
-                                    maxDate={dayjs(moment().subtract(1, 'day').format('YYYY-MM-DD'), 'YYYY-MM-DD')} 
+                                    maxDate={dayjs(moment().format('YYYY-MM-DD'), 'YYYY-MM-DD')} 
                                     style={{width: '300px', height: 40}}
                                     allowClear={false}
                                 />
@@ -285,7 +354,7 @@ const HighAnysis = () => {
                         const res = await getAllRevenueExcelServe(params);
                         if(res?.data){
                             downloadFile({
-                                fileName: `${intl.formatMessage({id: '监测曲线'})}.xlsx`,
+                                fileName: `${intl.formatMessage({id: '高级分析'})}.xlsx`,
                                 content: res?.data
                             })
                         }

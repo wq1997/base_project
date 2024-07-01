@@ -99,3 +99,11 @@ export const monitorCurve = (payload) => {
 export const getUserInfo = () => {
     return axiosInstance.get(`minsys/all/getUserInfo`);
 }
+
+export const getAnalyticsInitData = (payload) => {
+    return axiosInstance.get(`/minsys/analysis/getAnalyticsInitData`, { params: payload });
+}
+
+export const analyticsData = (payload) => {
+    return axiosInstance.post(`/minsys/analysis/analyticsData`, payload)
+}

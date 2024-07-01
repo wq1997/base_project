@@ -76,7 +76,7 @@ const Electricity = () => {
             },
             grid: {
                 top: '40',
-                right: '4%',
+                right: '7%',
                 left: '5%',
                 bottom: '30'
             },

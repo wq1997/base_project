@@ -525,7 +525,7 @@ const PolicyConfiguration = ({deviceVersion}) => {
                         // 策略配置
                         if(checkModalType==="sendStrategySetting"){
                             values = await form.validateFields(['durationList']);
-                            values = values?.durationList.map(value => {
+                            const durationList = values?.durationList.map(value => {
                                 const timeStramp = value.timeStramp;
                                 const timeStrampList = timeStramp.split("~");
                                 const time1 = timeStrampList[0].split(":");
@@ -548,7 +548,7 @@ const PolicyConfiguration = ({deviceVersion}) => {
                                     endMin: time2[1],
                                 }
                             })
-                            res = await sendStrategySettingServe({...values, strategyType: tabValue,dtuId: id, type: deviceVersion})
+                            res = await sendStrategySettingServe({durationList, strategyType: tabValue,dtuId: id, type: deviceVersion})
                         }
                         // 策略选择
                         if(checkModalType==="sendStrategySelect"){

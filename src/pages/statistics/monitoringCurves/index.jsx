@@ -71,7 +71,7 @@ const MonitoringCurves = () => {
         }
         let params = {
             // plantId: currentPlantDevice?.[0],
-            dtuId: 1807||currentPlantDevice?.[1],
+            dtuId: currentPlantDevice?.[1],
             dataType,
             dateList: date
         }
@@ -122,6 +122,94 @@ const MonitoringCurves = () => {
                 const currentDate = legend?.split(' ')?.[0];
                 const currentData = dataSource?.find(item => item.date===currentDate);
                 const filed = "SOC";
+                const data = currentData?.energyData?.[filed];
+                series.push({
+                    name: legend,
+                    type: 'line',
+                    stack: 'Total',
+                    showSymbol: false,
+                    data: data?.map(item => item[1])
+                })
+            })
+        }
+
+        if(dataType===181){
+            const fieldList = [intl.formatMessage({id: '电池电压'})];
+            date?.forEach(item => {
+                fieldList.forEach(field=>{
+                    legendData.push(`${item} ${field}`);
+                })
+            })
+            legendData.forEach((legend, index) => {
+                const currentDate = legend?.split(' ')?.[0];
+                const currentData = dataSource?.find(item => item.date===currentDate);
+                const filed = "Vol";
+                const data = currentData?.energyData?.[filed];
+                series.push({
+                    name: legend,
+                    type: 'line',
+                    stack: 'Total',
+                    showSymbol: false,
+                    data: data?.map(item => item[1])
+                })
+            })
+        }
+
+        if(dataType===182){
+            const fieldList = [intl.formatMessage({id: '电池电流'})];
+            date?.forEach(item => {
+                fieldList.forEach(field=>{
+                    legendData.push(`${item} ${field}`);
+                })
+            })
+            legendData.forEach((legend, index) => {
+                const currentDate = legend?.split(' ')?.[0];
+                const currentData = dataSource?.find(item => item.date===currentDate);
+                const filed = "Cur";
+                const data = currentData?.energyData?.[filed];
+                series.push({
+                    name: legend,
+                    type: 'line',
+                    stack: 'Total',
+                    showSymbol: false,
+                    data: data?.map(item => item[1])
+                })
+            })
+        }
+
+        if(dataType===414){
+            const fieldList = [intl.formatMessage({id: '最高电压'}), intl.formatMessage({id: '最低电压'}), intl.formatMessage({id: '压差'})];
+            date?.forEach(item => {
+                fieldList.forEach(field=>{
+                    legendData.push(`${item} ${field}`);
+                })
+            })
+            legendData.forEach((legend, index) => {
+                const currentDate = legend?.split(' ')?.[0];
+                const currentData = dataSource?.find(item => item.date===currentDate);
+                const filed = index%3===0?"VolMax":(index%3===1?"VolMin":"VolDiff");
+                const data = currentData?.energyData?.[filed];
+                series.push({
+                    name: legend,
+                    type: 'line',
+                    stack: 'Total',
+                    showSymbol: false,
+                    data: data?.map(item => item[1])
+                })
+            })
+        }
+
+        if(dataType===415){
+            const fieldList = [intl.formatMessage({id: '最高温度'}), intl.formatMessage({id: '最低温度'}), intl.formatMessage({id: '温差'})];
+            date?.forEach(item => {
+                fieldList.forEach(field=>{
+                    legendData.push(`${item} ${field}`);
+                })
+            })
+            legendData.forEach((legend, index) => {
+                const currentDate = legend?.split(' ')?.[0];
+                const currentData = dataSource?.find(item => item.date===currentDate);
+                const filed = index%3===0?"TempMax":(index%3===1?"TempMin":"TempDiff");
                 const data = currentData?.energyData?.[filed];
                 series.push({
                     name: legend,
