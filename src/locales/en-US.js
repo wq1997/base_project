@@ -1793,7 +1793,7 @@ export default {
 '储能系统':'Energy storage system',
 '负载系统':'Load system',
 '市电系统':'Mains power system',
-'SN号':'SN ',
+'SN号':'Device code',
 '并离网':'Grid or Off-grid',
 '并网':'Grid',
 '离网':'Off-grid',

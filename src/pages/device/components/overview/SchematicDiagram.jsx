@@ -101,7 +101,7 @@ const SchematicDiagram = ({dataSource}) => {
                 }}
             >
                 <div className={titleStyle} style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', whiteSpace: 'nowrap'}}>{intl.formatMessage({id: '市电系统'})}</div>
-                <div style={{position: 'absolute', left: 210, top: 20, textWrap: 'nowrap'}}>
+                <div style={{position: 'absolute', left: 230, top: 20, textWrap: 'nowrap'}}>
                     {intl.formatMessage({id:'功率'})}：{dataSource?.totalActivePower}
                 </div>
             </div>
@@ -189,8 +189,8 @@ const SchematicDiagram = ({dataSource}) => {
                     <div
                         style={{
                             position: 'absolute', 
-                            right: - energySystemIconWidth/2 - 200, 
-                            top: Math.tan((180 - energySystemChargingAngle - 35) * Math.PI / 180) * (- energySystemIconWidth/2 - 200),
+                            right: - energySystemIconWidth/2 - 130, 
+                            top: Math.tan((180 - energySystemChargingAngle - 35) * Math.PI / 180) * (- energySystemIconWidth/2 - 130),
                             transform: `rotate(-${energySystemChargingAngle}deg)`,
                         }} 
                     >

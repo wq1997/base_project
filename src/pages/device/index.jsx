@@ -172,11 +172,10 @@ const RealtimeAlarm = () => {
             title: t('操作'),
             dataIndex: 'operation',
             key: 'operation',
-            align:'center',
             render: (text, record) => {
                 return (
                      <Space>
-                        <Button type="link" style={{ color: token.colorPrimary }} onClick={() => edit(record)}>{t('编辑')}</Button>
+                        <div type="link" style={{ color: token.colorPrimary, cursor: 'pointer' }} onClick={() => edit(record)}>{t('编辑')}</div>
                         <Button type="link" danger onClick={() => changeIsOpenDel(record)}>{t('删除')}</Button>
                     </Space> 
                 )
@@ -186,20 +185,17 @@ const RealtimeAlarm = () => {
             title: t('详情'),
             dataIndex: 'details',
             key: 'details',
-            align:'center',
             render: (text, record) => {
                 return (
-                    <Space>
-                        <Button 
-                            type="link" 
-                            style={{ color: token.colorPrimary }} 
-                            onClick={() => { 
-                                history.push(`/device?activeKey=OverView&id=${record.id}&title=${record.name||""}&type=${record.deviceTypeId||""}`)
-                            }}
-                        >
-                            {t('详情')}
-                        </Button>
-                    </Space>
+                    <div 
+                        type="link" 
+                        style={{ color: token.colorPrimary, cursor: 'pointer' }} 
+                        onClick={() => { 
+                            history.push(`/device?activeKey=OverView&id=${record.id}&title=${record.name||""}&type=${record.deviceTypeId||""}`)
+                        }}
+                    >
+                        {t('详情')}
+                    </div>
                 )
             }
         },

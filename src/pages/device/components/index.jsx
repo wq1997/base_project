@@ -40,8 +40,8 @@ const Cabinet = () => {
         { label: t('总览'), key: 'OverView' },
         { label: t('设备详情'), key: 'DeviceDetails' },
         // { label: t('监测曲线'), key: 'MonitoringCurves' },
-        { label: t('pack详情'), key: 'PackDetails' },
-        (user?.roleId==2||user?.roleId==3)&&{ label: t('策略配置'), key: 'Policy' },
+        { label: t('PACK详情'), key: 'PackDetails' },
+        { label: t('策略配置'), key: 'Policy' },
     ]);
     const [data, setData] = useState();
     const getInitData = async () => {
@@ -68,7 +68,7 @@ const Cabinet = () => {
     }, [])
 
     return (
-        <div style={{ height: '100%', background: '#0A1328' }}>
+        <div className={styles.deviceDetail} style={{ height: '100%', background: '#0A1328' }}>
             <Tabs className={styles.tab} activeKey={activeKey} items={PageTypeList} onChange={onChangeTab} />
             <div className={styles.content} style={{ borderRadius: '16px 16px 0px 0px' }}>
                 {activeKey === "OverView" && <OverView sn={sn} deviceVersion={deviceVersion} />}

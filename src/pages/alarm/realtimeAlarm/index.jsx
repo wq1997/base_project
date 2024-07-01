@@ -2,12 +2,16 @@ import Table from '@/components/Table.jsx'
 import { useEffect, useState } from 'react'
 import { FormattedMessage, useIntl } from "umi";
 import styles from "./index.less";
-import { Pagination, theme, Select, Input, Button, DatePicker } from "antd"
-import { getNowAlarmsWithPage } from "@/services/alarm"
+import { Pagination, theme, Select, Cascader, Button, DatePicker } from "antd"
 import { alarmLevel } from "@/utils/constants"
 import {
   getFetchPlantList2 as getFetchPlantListServe,
+  get215NowAlarm as get215NowAlarmServe,
 } from "@/services";
+import {
+  getDtusOfPlant as getDtusOfPlantServe
+} from "@/services/plant";
+
 const alarmTableColums = [
   {
     title: <FormattedMessage id='Sn' />,
@@ -49,6 +53,9 @@ const RealtimeAlarm = () => {
   const [level, setLevel] = useState();
   const [sn, setSn] = useState();
   const [plantList, setPlantList] = useState([]);
+  const [plantId, setPlantId] = useState(null);
+  const [plantDeviceList, setPlantDeviceList] = useState([]);
+  const [plantDeviceValue, setPlantDeviceValue] = useState([]);
   const intl = useIntl();
   const t = (id) => {
     const msg = intl.formatMessage(
@@ -59,22 +66,52 @@ const RealtimeAlarm = () => {
     return msg
   }
 
-  const getPlanList = async () => {
+  const getDtusOfPlant = async (plantList, plantId) => {
+    const res = await getDtusOfPlantServe({ plantId });
+    if (res?.data?.data) {
+      let data = res?.data?.data;
+      if (data) {
+        try {
+          data = JSON.parse(data);
+        } catch {
+          data = [];
+        }
+        data = data?.length > 0 ? data?.map(item => {
+          return {
+            value: item.id,
+            label: item.name || intl.formatMessage({ id: '设备无名称' })
+          }
+        }) : [];
+        const currentIndex = plantList?.findIndex(item => item.value === plantId);
+        plantList[currentIndex].children = data;
+        setPlantDeviceList([...plantList]);
+      }
+    }
+  }
+
+  const initPlantDevice = async () => {
     const res = await getFetchPlantListServe();
     if (res?.data?.data) {
       const data = res?.data?.data;
       const plantList = data?.plantList?.map((item, index) => {
         return {
           value: item.plantId,
-          label: item.name
+          label: item.name,
+          disabled: data?.deviceCount?.[index] === 0,
+          children: data?.deviceCount?.[index] && [
+            {
+              value: '',
+              label: ''
+            }
+          ]
         }
       })
-      setPlantList(plantList);
+      setPlantDeviceList(plantList);
     }
   }
 
   useEffect(() => {
-    getPlanList();
+    initPlantDevice();
     getData();
   }, []);
   useEffect(() => {
@@ -84,11 +121,12 @@ const RealtimeAlarm = () => {
     return () => clearInterval(timer)
   }, [])
   const getData = async (page) => {
-    const { data } = await getNowAlarmsWithPage({
+    const { data } = await get215NowAlarmServe({
       currentPage: page || 1,
       pageSize: 20,
-      sn,
       prior: level,
+      plantId: plantDeviceValue?.[0],
+      sn: plantDeviceValue?.[1],
     });
     setData(data.data);
   }
@@ -98,6 +136,10 @@ const RealtimeAlarm = () => {
   }
   const changeLevel = (value) => {
     setLevel(value);
+  }
+
+  const changePlant = (value) => {
+    setPlantId(value);
   }
 
   const changeSn = (e) => {
@@ -110,15 +152,28 @@ const RealtimeAlarm = () => {
     <div style={{ width: '100%', height: '100%', paddingBottom: '10px'}}>
       <div className={styles.alarmWrap} style={{ padding: '35px 35px' }}>
         <div className={styles.title}>
-          <Select
+          {/* <Select
               style={{ width: 180 }}
               options={plantList}
               placeholder={t('请选择电站')}
               allowClear
+              onChange={changePlant}
           />
           <div className={styles.sn}>
             <Input placeholder={t('请输入') + t('设备编码')} style={{ width: 240 }} onChange={changeSn} />
-          </div>
+          </div> */}
+          <Cascader 
+              changeOnSelect
+              options={plantDeviceList}
+              onChange={async value => {
+                  if(value?.length===1){
+                      getDtusOfPlant(plantDeviceList,value[0])
+                  }
+                  setPlantDeviceValue(value);
+              }}
+              style={{width: '250px', marginRight: 30}}
+              placeholder={`${t('请选择电站')} / ${t('设备')}`}
+          />
           <div className={styles.level}>
             <Select
               style={{ width: 180 }}

@@ -99,7 +99,7 @@ const PolicyConfiguration = ({deviceVersion}) => {
                         2: '平',
                         3: '谷'
                     }[item.timeType],
-                    timeStramp: `${translateNmberToTime(item.startMin)}:${translateNmberToTime(item.startHour)}~${translateNmberToTime(item.endMin)}:${translateNmberToTime(item.endHour)}`
+                    timeStramp: `${translateNmberToTime(item.startHour)}:${translateNmberToTime(item.startMin)}~${translateNmberToTime(item.endHour)}:${translateNmberToTime(item.endMin)}`
                 }
             })
             const durationList2 = data?.durationList2?.map(item => {
@@ -115,7 +115,7 @@ const PolicyConfiguration = ({deviceVersion}) => {
                         2: '平',
                         3: '谷'
                     }[item.timeType],
-                    timeStramp: `${translateNmberToTime(item.startMin)}:${translateNmberToTime(item.startHour)}~${translateNmberToTime(item.endMin)}:${translateNmberToTime(item.endHour)}`
+                    timeStramp: `${translateNmberToTime(item.startHour)}:${translateNmberToTime(item.startMin)}~${translateNmberToTime(item.endHour)}:${translateNmberToTime(item.endMin)}`
                 }
             })
             let durationList = (tabValue===0?durationList1:durationList2) || [];

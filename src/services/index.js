@@ -107,3 +107,11 @@ export const getAnalyticsInitData = (payload) => {
 export const analyticsData = (payload) => {
     return axiosInstance.post(`/minsys/analysis/analyticsData`, payload)
 }
+
+export const get215HistoryAlarm = (payload) => {
+    return axiosInstance.post(`/energy/get215HistoryAlarm`, payload);
+}
+
+export const get215NowAlarm = (payload) => {
+    return axiosInstance.post(`/energy/get215NowAlarm`, payload);
+}

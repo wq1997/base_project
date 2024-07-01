@@ -166,7 +166,7 @@ const OverView = ({deviceVersion, sn}) => {
 
     const [pcsInfoDataSource, setPcsInfoDataSource] = useState([
         {
-          title: intl.formatMessage({id: '电流'}),
+          title: `${intl.formatMessage({id: '电流'})}(A)`,
           A: 0,
           B: 0,
           C: 0,
@@ -175,7 +175,7 @@ const OverView = ({deviceVersion, sn}) => {
 
     const [pcsInfoDataSource2, setPcsInfoDataSource2] = useState([
         {
-            title: intl.formatMessage({id: '电压'}),
+            title: `${intl.formatMessage({id: '电压'})}(V)`,
             AB: 0,
             BC: 0,
             AC: 0,
@@ -296,7 +296,7 @@ const OverView = ({deviceVersion, sn}) => {
                     <div className={styles.centerLeft}>
                         <div className={styles.centerLeftOne}>
                             <div className={styles.title}>
-                                <Title title={`${intl.formatMessage({id: '计量电表电量'})}/kWh`} />
+                                <Title title={`${intl.formatMessage({id: '电表电量'})}/kWh`} />
                             </div>
                             <div className={styles.centerLeftOneArea}>
                                 <div  className={styles.centerLeftOneAreaLeft}>
@@ -324,7 +324,7 @@ const OverView = ({deviceVersion, sn}) => {
                                         electricityStatisticsDataSourceRight?.map(item => {
                                             return (
                                                 <div className={styles.item}>
-                                                    <img src={leftTopBg2Img} className={styles.backgroundImg}/>
+                                                    {/* <img src={leftTopBg2Img} className={styles.backgroundImg}/> */}
                                                     <div className={styles.data}>
                                                         <div className={styles.data1} style={{color: item.color}}>{item.data}%</div>
                                                         <div className={styles.data2} >{intl.formatMessage({id: item.title})}</div>
@@ -338,7 +338,7 @@ const OverView = ({deviceVersion, sn}) => {
                         </div>
                         <div className={styles.centerLeftTwo}>
                             <div className={styles.title}>
-                                <Title title={intl.formatMessage({id: 'PCS电量统计'})} />
+                                <Title title={`${intl.formatMessage({id: 'PCS电量'})}/kWh`} />
                             </div>
                             <div className={styles.centerLeftTwoArea}>
                                 {
@@ -348,7 +348,7 @@ const OverView = ({deviceVersion, sn}) => {
                                                {
                                                  item.type==="left"?
                                                     <>
-                                                        <img src={leftTopBg2Img} className={styles.backgroundImg}/>
+                                                        {/* <img src={leftTopBg2Img} className={styles.backgroundImg}/> */}
                                                         <div className={styles.data}>
                                                             <div className={styles.data1} style={{color: item.color}}>{item.data}%</div>
                                                             <div className={styles.data2} >{intl.formatMessage({id: item.title})}</div>
@@ -384,7 +384,7 @@ const OverView = ({deviceVersion, sn}) => {
                                         return (
                                             <div className={styles.item}>
                                                 <img src={item.backgroundImg} className={styles.backgroundImg}/>
-                                                <img src={item.img}  className={styles.img} style={{bottom: '-7px'}}/>
+                                                {/* <img src={item.img}  className={styles.img} style={{bottom: '5px'}}/> */}
                                                 <div className={styles.data}>
                                                     <div className={styles.data1} style={{color: item.color}}>{item.data}</div>
                                                     <div className={styles.data2}>{intl.formatMessage({id: item.title})}</div>

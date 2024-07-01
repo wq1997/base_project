@@ -260,6 +260,7 @@ const MonitoringCurves = () => {
                 axisLabel: {
                     formatter: '{value}',
                     color: '#e2e9ff',
+                    fontSize: 14
                 },
                 axisLine: {
                     show: false

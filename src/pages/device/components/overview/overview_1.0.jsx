@@ -145,7 +145,7 @@ const OverView = ({deviceVersion, sn}) => {
 
     const [pcsInfoDataSource, setPcsInfoDataSource] = useState([
         {
-          title: intl.formatMessage({id: '电流'}),
+          title: `${intl.formatMessage({id: '电流'})}(A)`,
           A: 0,
           B: 0,
           C: 0,
@@ -154,7 +154,7 @@ const OverView = ({deviceVersion, sn}) => {
 
     const [pcsInfoDataSource2, setPcsInfoDataSource2] = useState([
         {
-            title: intl.formatMessage({id: '电压'}),
+            title: `${intl.formatMessage({id: '电压'})}(V)`,
             AB: 0,
             BC: 0,
             AC: 0,
@@ -340,7 +340,7 @@ const OverView = ({deviceVersion, sn}) => {
                                         return (
                                             <div className={styles.item}>
                                                 <img src={item.backgroundImg} className={styles.backgroundImg}/>
-                                                <img src={item.img}  className={styles.img} style={{bottom: '-7px'}}/>
+                                                {/* <img src={item.img}  className={styles.img} style={{bottom: '-7px'}}/> */}
                                                 <div className={styles.data}>
                                                     <div className={styles.data1} style={{color: item.color}}>{item.data}</div>
                                                     <div className={styles.data2}>{intl.formatMessage({id: item.title})}</div>

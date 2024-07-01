@@ -88,7 +88,7 @@ const HighAnysis = () => {
             legendData.forEach((legend, index) => {
                 const currentDate = legend?.split(' ')?.[0];
                 const currentData = dataSource?.find(item => item.date===currentDate);
-                const filed = "Vol";
+                const filed = "vol";
                 const data = currentData?.energyData?.[filed];
                 series.push({
                     name: legend,
@@ -111,8 +111,9 @@ const HighAnysis = () => {
             legendData.forEach((legend, index) => {
                 const currentDate = legend?.split(' ')?.[0];
                 const currentData = dataSource?.find(item => item.date===currentDate);
-                const filed = "Vol";
+                const filed = index%4===0?"temp":(index%4===1?"tempLeft":(index%4===2?"tempRight":index%4===3?"tempNeg":"tempPos"));
                 const data = currentData?.energyData?.[filed];
+                console.log("CCCAAA", currentData)
                 series.push({
                     name: legend,
                     type: 'line',
@@ -121,6 +122,7 @@ const HighAnysis = () => {
                     data: data?.map(item => item[1])
                 })
             })
+            console.log("CCCC", series)
         }
 
         const option = {
@@ -131,7 +133,10 @@ const HighAnysis = () => {
                 }
             },
             legend: {
-                data: legendData
+                data: legendData,
+                textStyle: {
+                    color: 'white'
+                }
             },
             grid: {
                 top: '40',
@@ -141,7 +146,7 @@ const HighAnysis = () => {
             },
             xAxis: [{
                 type: 'category',
-                data: dataSource?.map(item => moment(item.time).format("YYYY/MM/DD")),
+                data: xData,
                 axisLine: {
                     lineStyle: {
                         color: 'rgba(255,255,255,0.12)'
@@ -159,6 +164,7 @@ const HighAnysis = () => {
                 axisLabel: {
                     formatter: '{value}',
                     color: '#e2e9ff',
+                    fontSize: 14
                 },
                 axisLine: {
                     show: false
@@ -243,8 +249,8 @@ const HighAnysis = () => {
     const getDataSource = async (params) => {
         setLoading(true);
         const res = await monitorCurveServe(params);
-        if(res?.data?.data?.data){
-            setDataSource(res?.data?.data?.data)
+        if(res?.data?.data){
+            setDataSource(res?.data?.data)
         }else{
             setDataSource([]);
         }

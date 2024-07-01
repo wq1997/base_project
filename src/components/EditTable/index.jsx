@@ -44,7 +44,6 @@ const EditRowTable = ({
   const [editingKey, setEditingKey] = useState(-1);
   const isEditing = (record) => record.key === editingKey;
   const hasEditing = editingKey>0;
-
   const EditableCell = (props) => {
     const {
         title,

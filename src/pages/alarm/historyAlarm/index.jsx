@@ -3,12 +3,15 @@ import { alarmTableColums, alarmLevel } from '@/utils/constants'
 import { useEffect, useState } from 'react'
 import { useIntl, useSelector } from "umi";
 import styles from "./index.less";
-import { Pagination, Select, Input, theme, Button, DatePicker } from "antd"
+import { Pagination, Select, Cascader, theme, Button, DatePicker } from "antd"
 import { downLoadExcelMode } from "@/utils/utils"
-import { getHistoryAlarmsByOptionsWithPage, } from "@/services/alarm"
 import {
   getFetchPlantList2 as getFetchPlantListServe,
+  get215HistoryAlarm as get215HistoryAlarmServe,
 } from "@/services";
+import {
+  getDtusOfPlant as getDtusOfPlantServe
+} from "@/services/plant";
 import dayjs from 'dayjs';
 
 const RealtimeAlarm = () => {
@@ -22,6 +25,9 @@ const RealtimeAlarm = () => {
   const { token } = theme.useToken();
   const [sn, setSn] = useState();
   const [plantList, setPlantList] = useState([]);
+  const [plantId, setPlantId] = useState(null);
+  const [plantDeviceList, setPlantDeviceList] = useState([]);
+  const [plantDeviceValue, setPlantDeviceValue] = useState([]);
   const { locale } = useSelector(state => state.global);
 
   const intl = useIntl();
@@ -48,12 +54,57 @@ const RealtimeAlarm = () => {
     }
   }
 
+  const getDtusOfPlant = async (plantList, plantId) => {
+    const res = await getDtusOfPlantServe({ plantId });
+    if (res?.data?.data) {
+      let data = res?.data?.data;
+      if (data) {
+        try {
+          data = JSON.parse(data);
+        } catch {
+          data = [];
+        }
+        data = data?.length > 0 ? data?.map(item => {
+          return {
+            value: item.id,
+            label: item.name || intl.formatMessage({ id: '设备无名称' })
+          }
+        }) : [];
+        const currentIndex = plantList?.findIndex(item => item.value === plantId);
+        plantList[currentIndex].children = data;
+        setPlantDeviceList([...plantList]);
+      }
+    }
+  }
+
+  const initPlantDevice = async () => {
+    const res = await getFetchPlantListServe();
+    if (res?.data?.data) {
+      const data = res?.data?.data;
+      const plantList = data?.plantList?.map((item, index) => {
+        return {
+          value: item.plantId,
+          label: item.name,
+          disabled: data?.deviceCount?.[index] === 0,
+          children: data?.deviceCount?.[index] && [
+            {
+              value: '',
+              label: ''
+            }
+          ]
+        }
+      })
+      setPlantDeviceList(plantList);
+    }
+  }
+
   useEffect(() => {
     getTableListData(current);
   }, [current, level, type, time, pageSize]);
 
   useEffect(() => {
-    getPlanList();
+    initPlantDevice()
+    // getPlanList();
   }, [])
 
   const downLoadFoodModel = () => {  // 菜品模板下载
@@ -71,13 +122,14 @@ const RealtimeAlarm = () => {
   };
 
   const getTableListData = async (page) => {
-    const { data } = await getHistoryAlarmsByOptionsWithPage({
-      sn,
+    const { data } = await get215HistoryAlarmServe({
       currentPage: page || 1,
       pageSize,
       prior: level,
       begin: time?.length ? time[0]?.format('YYYY-MM-DD HH:mm:ss') : null,
-      end: time?.length ? time[1]?.format('YYYY-MM-DD HH:mm:ss') : null
+      end: time?.length ? time[1]?.format('YYYY-MM-DD HH:mm:ss') : null,
+      plantId: plantDeviceValue?.[0],
+      sn: plantDeviceValue?.[1],
     });
     setData(data.data);
   }
@@ -87,6 +139,10 @@ const RealtimeAlarm = () => {
   }
   const changeLevel = (value) => {
     setLevel(value);
+  }
+
+  const changePlant = (value) => {
+    setPlantId(value);
   }
 
   const changeTime = (value) => {
@@ -104,15 +160,28 @@ const RealtimeAlarm = () => {
     <div className={styles.wrap}>
       <div className={styles.content}>
         <div className={styles.title}>
-          <Select
-              style={{ width: 180 }}
-              options={plantList}
-              placeholder={t('请选择电站')}
-              allowClear
-          />
-          <div className={styles.sn}>
+          {/* <Select
+            style={{ width: 180 }}
+            options={plantList}
+            placeholder={t('请选择电站')}
+            allowClear
+            onChange={changePlant}
+          /> */}
+          {/* <div className={styles.sn}>
             <Input placeholder={t('请输入') + t('设备编码')} style={{ width: 240 }} onChange={changeSn} />
-          </div>
+          </div> */}
+          <Cascader
+            changeOnSelect
+            options={plantDeviceList}
+            onChange={async value => {
+              if (value?.length === 1) {
+                getDtusOfPlant(plantDeviceList, value[0])
+              }
+              setPlantDeviceValue(value);
+            }}
+            style={{ width: '250px', marginRight: 30 }}
+            placeholder={`${t('请选择电站')} / ${t('设备')}`}
+          />
           <div className={styles.level}>
             <Select
               style={{ width: 180 }}
@@ -143,7 +212,7 @@ const RealtimeAlarm = () => {
           columns={alarmTableColums}
           data={data?.list}
           pagination={false}
-          scroll={{y:"calc(100vh - 350px)"}}
+          scroll={{ y: "calc(100vh - 350px)" }}
         />
         <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} total={data?.total} pageSizeOptions={[10, 20, 30]} onChange={changPage} />
       </div>

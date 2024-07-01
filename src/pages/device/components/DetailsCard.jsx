@@ -39,7 +39,6 @@ function Com({ data,table }) {
             <div className='card_contain' style={{
                 display: 'grid',
                 gridTemplateColumns: '1fr 1fr 1fr 1fr ',
-                marginBottom: '16px',
                 padding: '0 20px',
                 gridTemplateRows: height,
                 transition: 'all .3s',
