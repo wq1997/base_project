@@ -120,7 +120,7 @@ const Business = ({ typeList, currentType, onChangedType }) => {
                         />
                     </div>
                 </div>
-                {/* 电量排行 */}
+                {/* 社会效益 */}
                 <div className={classNames(styles.left3, styles.content)}>
                     <Title title={"社会效益"} />
                     <div className={styles.areaContent}>
@@ -169,7 +169,7 @@ const Business = ({ typeList, currentType, onChangedType }) => {
                 </div>
                 {/* 收益排行 */}
                 <div className={classNames(styles.right2, styles.content)}>
-                    <Title title={"告警分析"} />
+                    <Title title={"收益排行"} />
                     <div className={styles.areaContent}>
                         <IncomeRanking data={[20, 32, 43, 21]} />
                     </div>
