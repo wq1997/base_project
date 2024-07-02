@@ -1,8 +1,9 @@
 .searchBar {
     flex-wrap: wrap;
     margin-bottom: 8px;
+    width: 100%;
     > div {
-        width: calc(25% - 15px);
+        width: calc(20% - 15px);
         margin-bottom: 8px;
     }
     .btn {
@@ -58,5 +59,21 @@
     background-color: transparent !important;
     a {
         color: rgb(32, 194, 255) !important;
+    }
+}
+
+@media (max-width: 1800px) {
+    .searchBar {
+        > div {
+            width: calc(33.3% - 15px) !important;
+        }
+    }
+}
+
+@media (min-width: 1800px) {
+    .searchBar {
+        > div {
+            width: calc(25% - 15px) !important;
+        }
     }
 }

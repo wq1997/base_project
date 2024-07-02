@@ -1,5 +1,6 @@
-import { Input, Select } from "antd";
+import { Input, Select, DatePicker } from "antd";
 import styles from "./index.less";
+import dayjs from "dayjs";
 
 const SearchInput = ({
     label = undefined,
@@ -9,18 +10,14 @@ const SearchInput = ({
     type = "input",
     options = [],
     mode,
-    fieldNames = {
-        label: "displayName",
-        value: "name",
-    },
     labelInValue = false,
     allowClear = true,
     onChange = () => {},
 }) => {
     return (
         <div style={{ display: "flex", alignItems: "center", whiteSpace: "nowrap" }}>
-            {label && <span>{label} </span>}
-            {type == "input" ? (
+            {label && <span style={{ marginRight: "5px" }}>{label} </span>}
+            {type == "input" && (
                 <Input
                     value={value}
                     style={{ width: inputWidth }}
@@ -28,7 +25,8 @@ const SearchInput = ({
                     onChange={e => onChange(e.target.value)}
                     className={styles.input}
                 />
-            ) : (
+            )}
+            {type == "select" && (
                 <Select
                     className={styles.input}
                     labelInValue={labelInValue}
@@ -38,9 +36,30 @@ const SearchInput = ({
                     placeholder={placeholder || `请选择${label}`}
                     allowClear={allowClear}
                     style={{ width: inputWidth, flex: 1 }}
-                    fieldNames={fieldNames}
                     options={options}
                     onChange={value => onChange(value)}
+                />
+            )}
+            {type == "picker" && (
+                <DatePicker
+                    className={styles.input}
+                    placeholder={placeholder || `请选择${label}`}
+                    style={{ width: inputWidth, flex: 1 }}
+                    onChange={(date, dateStr) => {
+                        onChange(dateStr);
+                    }}
+                    value={value ? dayjs(value) : null}
+                />
+            )}
+            {type == "rangePicker" && (
+                <DatePicker.RangePicker
+                    className={styles.input}
+                    placeholder={placeholder}
+                    style={{ width: inputWidth, flex: 1 }}
+                    onChange={(date, dateStr) => {
+                        onChange(dateStr?.includes("") ? [] : dateStr);
+                    }}
+                    value={value && value.length > 0 ? [dayjs(value[0]), dayjs(value[1])] : []}
                 />
             )}
         </div>

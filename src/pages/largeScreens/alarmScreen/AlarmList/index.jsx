@@ -1,25 +1,28 @@
 import styles from "./index.less";
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Space, Table, Tooltip, Pagination } from "antd";
+import { Button, Space, DatePicker, Tooltip, Pagination } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { SearchInput } from "@/components";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import "./index.less";
 import Card from "../../components/Card";
+import {
+    getAlarmList as getAlarmListServer,
+    getAlarmInitData as getAlarmInitDataServer,
+} from "@/services/alarmScreen";
+import dayjs from "dayjs";
 
 const Index = () => {
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
-    const deviceTypeRef = useRef();
-    const [deviceType, setDeviceType] = useState();
     const alarmLevelRef = useRef();
     const [alarmLevel, setAlarmLevel] = useState();
+    const [alarmLevelOptions, setAlarmLevelOptions] = useState();
     const deviceNameRef = useRef();
     const [deviceName, setDeviceName] = useState();
-    const gridPointRef = useRef();
-    const [gridPoint, setGridPoint] = useState();
     const plantNameRef = useRef();
     const [plantName, setPlantName] = useState();
+    const [plantNameOptions, setPlantNameOptions] = useState();
     const startTimeRef = useRef();
     const [startTime, setStartTime] = useState();
     const alarmDescRef = useRef();
@@ -28,24 +31,16 @@ const Index = () => {
 
     const columns = [
         {
-            title: "设备类型",
-            dataIndex: "type",
-        },
-        {
-            title: "告警等级",
-            dataIndex: "level",
-        },
-        {
             title: "告警描述",
             dataIndex: "desc",
         },
         {
-            title: "设备名称",
-            dataIndex: "name",
+            title: "告警等级",
+            dataIndex: "signalName",
         },
         {
-            title: "并网点",
-            dataIndex: "grid",
+            title: "设备名称",
+            dataIndex: "deviceName",
         },
         {
             title: "电站名称",
@@ -53,165 +48,48 @@ const Index = () => {
         },
         {
             title: "开始时间",
-            dataIndex: "startTime",
+            dataIndex: "begin",
         },
     ];
 
-    const values = [
-        {
-            type: "逆变器1逆变器1逆变器1逆变器1",
-            level: "紧急",
-            desc: "BMC_200063",
-            name: "BMC_200063",
-            grid: "BMC_200063",
-            plantName: "BMC_200063",
-            startTime: "BMC_200063",
-        },
-        {
-            type: "逆变器2",
-            level: "紧急",
-            desc: "BMC_200063",
-            name: "BMC_200063",
-            grid: "BMC_200063",
-            plantName: "BMC_200063",
-            startTime: "BMC_200063",
-        },
-        {
-            type: "逆变器1逆变器1逆变器1逆变器1",
-            level: "紧急",
-            desc: "BMC_200063",
-            name: "BMC_200063",
-            grid: "BMC_200063",
-            plantName: "BMC_200063",
-            startTime: "BMC_200063",
-        },
-        {
-            type: "逆变器2",
-            level: "紧急",
-            desc: "BMC_200063",
-            name: "BMC_200063",
-            grid: "BMC_200063",
-            plantName: "BMC_200063",
-            startTime: "BMC_200063",
-        },
-        {
-            type: "逆变器1逆变器1逆变器1逆变器1",
-            level: "紧急",
-            desc: "BMC_200063",
-            name: "BMC_200063",
-            grid: "BMC_200063",
-            plantName: "BMC_200063",
-            startTime: "BMC_200063",
-        },
-        {
-            type: "逆变器2",
-            level: "紧急",
-            desc: "BMC_200063",
-            name: "BMC_200063",
-            grid: "BMC_200063",
-            plantName: "BMC_200063",
-            startTime: "BMC_200063",
-        },
-        {
-            type: "逆变器1逆变器1逆变器1逆变器1",
-            level: "紧急",
-            desc: "BMC_200063",
-            name: "BMC_200063",
-            grid: "BMC_200063",
-            plantName: "BMC_200063",
-            startTime: "BMC_200063",
-        },
-        {
-            type: "逆变器2",
-            level: "紧急",
-            desc: "BMC_200063",
-            name: "BMC_200063",
-            grid: "BMC_200063",
-            plantName: "BMC_200063",
-            startTime: "BMC_200063",
-        },
-        {
-            type: "逆变器1逆变器1逆变器1逆变器1",
-            level: "紧急",
-            desc: "BMC_200063",
-            name: "BMC_200063",
-            grid: "BMC_200063",
-            plantName: "BMC_200063",
-            startTime: "BMC_200063",
-        },
-        {
-            type: "逆变器2",
-            level: "紧急",
-            desc: "BMC_200063",
-            name: "BMC_200063",
-            grid: "BMC_200063",
-            plantName: "BMC_200063",
-            startTime: "BMC_200063",
-        },
-        {
-            type: "逆变器1逆变器1逆变器1逆变器1",
-            level: "紧急",
-            desc: "BMC_200063",
-            name: "BMC_200063",
-            grid: "BMC_200063",
-            plantName: "BMC_200063",
-            startTime: "BMC_200063",
-        },
-        {
-            type: "逆变器2",
-            level: "紧急",
-            desc: "BMC_200063",
-            name: "BMC_200063",
-            grid: "BMC_200063",
-            plantName: "BMC_200063",
-            startTime: "BMC_200063",
-        },
-        {
-            type: "逆变器1逆变器1逆变器1逆变器1",
-            level: "紧急",
-            desc: "BMC_200063",
-            name: "BMC_200063",
-            grid: "BMC_200063",
-            plantName: "BMC_200063",
-            startTime: "BMC_200063",
-        },
-        {
-            type: "逆变器2",
-            level: "紧急",
-            desc: "BMC_200063",
-            name: "BMC_200063",
-            grid: "BMC_200063",
-            plantName: "BMC_200063",
-            startTime: "BMC_200063",
-        },
-        {
-            type: "逆变器1逆变器1逆变器1逆变器1",
-            level: "紧急",
-            desc: "BMC_200063",
-            name: "BMC_200063",
-            grid: "BMC_200063",
-            plantName: "BMC_200063",
-            startTime: "BMC_200063",
-        },
-        {
-            type: "逆变器2",
-            level: "紧急",
-            desc: "BMC_200063",
-            name: "BMC_200063",
-            grid: "BMC_200063",
-            plantName: "BMC_200063",
-            startTime: "BMC_200063",
-        },
-    ];
+    const getAlarmInitData = async () => {
+        const res = await getAlarmInitDataServer();
+        if (res?.data?.status == "SUCCESS") {
+            const { signalNames, plans } = res?.data?.data;
+            setAlarmLevelOptions(
+                signalNames?.map(item => ({
+                    label: item,
+                    value: item,
+                }))
+            );
+            setPlantNameOptions(
+                plans.map(item => ({
+                    label: item?._2,
+                    value: item?._1,
+                }))
+            );
+        }
+    };
 
     const getList = async () => {
-        return;
+        console.log(paginationRef.current.current);
         const { current, pageSize } = paginationRef.current;
-        const name = nameRef.current;
-        const res = await getCompanyListServer({
+        const signalName = alarmLevelRef.current;
+        const deviceNameLike = deviceNameRef.current;
+        const plantId = plantNameRef.current;
+        const descLike = alarmDescRef.current;
+        const [beginStartDate, beginEndDate] = startTimeRef.current || [];
+        const res = await getAlarmListServer({
             pageNum: current,
             pageSize,
-            queryCmd: { keyword: name },
+            queryCmd: {
+                signalName,
+                deviceNameLike,
+                plantId,
+                descLike,
+                beginStartDate,
+                beginEndDate,
+            },
         });
         if (res?.data?.status == "SUCCESS") {
             const { totalRecord, recordList } = res?.data?.data;
@@ -219,24 +97,21 @@ const Index = () => {
                 ...paginationRef.current,
                 total: parseInt(totalRecord),
             });
-            setCompanyList(recordList);
+            setListData(recordList);
         }
     };
 
-    // const getPageData = data => {
-    //     const { current, pageSize } = paginationRef.current;
-    //     const pageData = data.slice((current - 1) * pageSize, current * pageSize);
-    //     this.total = this.allData.length;
-    // };
-
     const onChange = page => {
+        paginationRef.current.current = page;
         setPagination({
             ...paginationRef.current,
             current: page,
         });
+        getList();
     };
 
     const handleSearch = () => {
+        paginationRef.current.current = 1;
         setPagination({
             ...paginationRef.current,
             current: 1,
@@ -245,25 +120,26 @@ const Index = () => {
     };
 
     const handleReset = () => {
-        paginationRef.current = DEFAULT_PAGINATION;
-        nameRef.current = "";
-        setDeviceType();
+        paginationRef.current.current = 1;
         alarmLevelRef.current = "";
         setAlarmLevel();
         deviceNameRef.current = "";
         setDeviceName();
-        gridPointRef.current = "";
-        setGridPoint();
         plantNameRef.current = "";
         setPlantName();
         startTimeRef.current = "";
         setStartTime();
         alarmDescRef.current = "";
         setAlarmDesc();
+        setPagination({
+            current: 1,
+            total: 0,
+        });
         getList();
     };
 
     useEffect(() => {
+        getAlarmInitData();
         getList();
     }, []);
 
@@ -275,20 +151,13 @@ const Index = () => {
                     <div style={{ height: "100%", padding: "16px", boxSizing: "border-box" }}>
                         <Space className={styles.searchBar}>
                             <SearchInput
-                                label="设备类型"
-                                value={deviceType}
-                                placeholder="请选择设备类型"
-                                onChange={value => {
-                                    deviceTypeRef.current = value;
-                                    setDeviceType(value);
-                                }}
-                            />
-                            <SearchInput
                                 label="告警等级"
                                 value={alarmLevel}
+                                type="select"
+                                options={alarmLevelOptions}
                                 placeholder="请选择告警等级"
                                 onChange={value => {
-                                    deviceTypeRef.current = value;
+                                    alarmLevelRef.current = value;
                                     setAlarmLevel(value);
                                 }}
                             />
@@ -302,18 +171,11 @@ const Index = () => {
                                 }}
                             />
                             <SearchInput
-                                label="并网点"
-                                value={gridPoint}
-                                placeholder="请选择并网点"
-                                onChange={value => {
-                                    gridPointRef.current = value;
-                                    setGridPoint(value);
-                                }}
-                            />
-                            <SearchInput
                                 label="电站名称"
                                 value={plantName}
+                                type="select"
                                 placeholder="请选择电站名称"
+                                options={plantNameOptions}
                                 onChange={value => {
                                     plantNameRef.current = value;
                                     setPlantName(value);
@@ -322,12 +184,15 @@ const Index = () => {
                             <SearchInput
                                 label="开始时间"
                                 value={startTime}
-                                placeholder="请选择开始时间"
+                                type="rangePicker"
+                                placeholder={["起始时间", "结束时间"]}
+                                options={plantNameOptions}
                                 onChange={value => {
                                     startTimeRef.current = value;
                                     setStartTime(value);
                                 }}
                             />
+
                             <SearchInput
                                 label="告警描述"
                                 value={alarmDesc}
@@ -353,7 +218,7 @@ const Index = () => {
                                 ))}
                             </div>
                             <div className={styles.valueWrapper}>
-                                {values?.map((value, index) => (
+                                {listData?.map((value, index) => (
                                     <div className={styles.row}>
                                         {columns?.map(column => (
                                             <div className={styles.value}>
@@ -375,7 +240,7 @@ const Index = () => {
                                 <Pagination
                                     current={pagination?.current}
                                     pageSize={pagination?.pageSize}
-                                    total={values?.length}
+                                    total={pagination?.total}
                                     size="small"
                                     onChange={onChange}
                                 />
