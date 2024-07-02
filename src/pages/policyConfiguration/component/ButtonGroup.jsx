@@ -2,7 +2,7 @@ import { Button, Space } from "antd";
 import { useState, useEffect } from "react";
 
 const ButtonGroup = (props) => {
-    const {options, disabled, onChange, onControlledChange} = props;
+    const {options, disabled, onChange, onControlledChange, style} = props;
     const [value, setValue] = useState(props.value);
 
     const onMyClick = (value) => {
@@ -28,8 +28,11 @@ const ButtonGroup = (props) => {
                         <Button 
                             onClick={()=>onMyClick(option.value)}
                             style={{
+                                height: 'unset',
+                                fontSize: 14,
                                 background:value===option.value?"linear-gradient(90deg, #0787DB 0%, #034FB4 100%)":"rgba(0,0,0,0.15)",
-                                border: 'none'
+                                border: 'none',
+                                ...style
                             }}
                         >
                             {option.label}

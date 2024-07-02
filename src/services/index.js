@@ -115,3 +115,11 @@ export const get215HistoryAlarm = (payload) => {
 export const get215NowAlarm = (payload) => {
     return axiosInstance.post(`/energy/get215NowAlarm`, payload);
 }
+
+export const exportCurve = (payload) => {
+    return axiosInstance.post(`/minsys/curve/exportCurve`, payload, {responseType: 'blob'})
+}
+
+export const exportAnalytics = (payload) => {
+    return axiosInstance.post(`/minsys/analysis/exportAnalytics`, payload, {responseType: 'blob'})
+}

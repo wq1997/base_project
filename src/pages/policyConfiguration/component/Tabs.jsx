@@ -24,7 +24,7 @@ const Tabs = (props) => {
                             <Badge 
                                 style={{display: 'flex', alignItems: 'center', cursor: 'pointer'}}
                                 color={item?.value===value?token.colorPrimary:'#0D517E'} 
-                                text={<div style={{color: item?.value===value?token.colorPrimary:'white'}}>{item.label}</div>} 
+                                text={<div style={{color: item?.value===value?token.colorPrimary:'white', fontSize: 14}}>{item.label}</div>} 
                             />
                         </div>
                     )

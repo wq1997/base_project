@@ -189,7 +189,6 @@ const EditRowTable = ({
         newColumns.push({
             title: intl.formatMessage({id: '操作'}),
             dataIndex: 'operation',
-            align: 'center',
             render: (_, record) => {
               return (
                   <Space size={20}>

@@ -20,9 +20,7 @@ const App = (props) => {
       required: true,
       data:props.initSelectData?.userList,
       disabled:props.title=='编辑电站'?true:false
-
     },
-
     {
       label: '建站日期',
       key: 'installDate',
@@ -42,7 +40,20 @@ const App = (props) => {
       type: 1,
       required: true,
       data:props.initSelectData?.currencyList
-
+    },
+    {
+      label: '经度',
+      key: 'longitude',
+      type: 3,
+      required: true,
+      data:props.initSelectData?.longitude
+    },
+    {
+      label: '纬度',
+      key: 'latitude',
+      type: 3,
+      required: true,
+      data:props.initSelectData?.latitude
     },
     {
       label: '电站位置',

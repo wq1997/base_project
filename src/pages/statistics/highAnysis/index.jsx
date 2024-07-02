@@ -8,9 +8,8 @@ import * as echarts from "echarts";
 import moment from "moment";
 import {
     analyticsData as monitorCurveServe,
-    getAllRevenueExcel as getAllRevenueExcelServe,
+    exportAnalytics as exportAnalyticsServe,
     getFetchPlantList2 as getFetchPlantListServe,
-    getCurveType as getCurveTypeServe,
     getAnalyticsInitData as getAnalyticsInitDataServe
 } from "@/services";
 import {
@@ -357,7 +356,7 @@ const HighAnysis = () => {
                     type="primary"
                     onClick={async ()=>{
                         const params = await getParams();
-                        const res = await getAllRevenueExcelServe(params);
+                        const res = await exportAnalyticsServe(params);
                         if(res?.data){
                             downloadFile({
                                 fileName: `${intl.formatMessage({id: '高级分析'})}.xlsx`,

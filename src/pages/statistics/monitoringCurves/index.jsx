@@ -10,7 +10,7 @@ import {
     monitorCurve as monitorCurveServe,
     getAllRevenueExcel as getAllRevenueExcelServe,
     getFetchPlantList2 as getFetchPlantListServe,
-    getCurveType as getCurveTypeServe,
+    exportCurve as exportCurveServe,
 } from "@/services";
 import {
     getDtusOfPlant as getDtusOfPlantServe
@@ -417,7 +417,7 @@ const MonitoringCurves = () => {
                     type="primary"
                     onClick={async ()=>{
                         const params = await getParams();
-                        const res = await getAllRevenueExcelServe(params);
+                        const res = await exportCurveServe(params);
                         if(res?.data){
                             downloadFile({
                                 fileName: `${intl.formatMessage({id: '监测曲线'})}.xlsx`,

@@ -8,6 +8,7 @@ import CustomDatePicker from "./CustomDatePicker";
 import Flow from "./Flow";
 import ToggleButton from "./ToggleButton";
 import ScrollTable from "./ScrollTable";
+import GlobalWrapperCss from "./GlobalWrapperCss";
 
 export {
     ThemeBtn,
@@ -20,4 +21,5 @@ export {
     Flow,
     ToggleButton,
     ScrollTable,
+    GlobalWrapperCss,
 }

@@ -9,8 +9,10 @@
 
     .packContent {
         .onePack {
-            // margin-top: 40px;
-
+            margin-top: 40px;
+            &:first-child{
+                margin-top: 0px;
+            }
             .title1 {
                 font-size: 20px;
                 padding-left: calc(100% / 13 / 2 - 24px);
@@ -28,7 +30,7 @@
 
                 .oneContent {
                     display: grid;
-                    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+                    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
                     justify-items: start;
                     padding-left: calc(100% / 13 / 2);
 

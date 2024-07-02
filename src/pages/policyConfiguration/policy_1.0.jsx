@@ -176,7 +176,7 @@ const PolicyConfiguration = ({deviceVersion}) => {
                             </Button>
                         </div>
                         <Space style={{width: '100%'}} direction="vertical">
-                            <Form.Item label={intl.formatMessage({id: '策略模式'})} name="mode"  rules={[{ ...FORM_REQUIRED_RULE }]}>
+                            <Form.Item label={<span style={{fontSize: 20}}>{intl.formatMessage({id: '策略模式'})}</span>} name="mode"  rules={[{ ...FORM_REQUIRED_RULE }]}>
                                 <ButtonGroup 
                                     value={mode}
                                     mode={'controlled'}
@@ -189,6 +189,7 @@ const PolicyConfiguration = ({deviceVersion}) => {
                                         setCheckModalOpen(true);
                                         setCheckModalType('switchModes');
                                     }}
+                                    style={{fontSize: 20}}
                                 />
                             </Form.Item>
                             <Space style={{width: '100%'}} direction="vertical" size={20}>

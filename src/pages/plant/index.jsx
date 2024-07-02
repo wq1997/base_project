@@ -100,6 +100,18 @@ function Com(props) {
             // width: 200
         },
         {
+            title: t('经度'),
+            dataIndex: 'longitude',
+            key: 'longitude',
+            // width: 200
+        },
+        {
+            title: t('纬度'),
+            dataIndex: 'latitude',
+            key: 'latitude',
+            // width: 200
+        },
+        {
             title: t('电站位置'),
             dataIndex: 'position',
             key: 'position',

@@ -75,6 +75,11 @@ const Electricity = () => {
                     type: 'shadow'
                 }
             },
+            legend: {
+                textStyle: {
+                    color: 'white'
+                }
+            },
             grid: {
                 top: '40',
                 right: '7%',
