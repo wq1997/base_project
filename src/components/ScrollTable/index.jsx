@@ -13,18 +13,20 @@ const Table = ({
     const [tableContentHeight, setTableContentHeight] = useState(0);
 
     const startScroll = () => {
-        const tableContentScrollHeight = tableContentRef?.current?.scrollHeight;
+        const parentHeight = tableRef?.current?.parentElement?.clientHeight;
+        const tableHeaderHeight = tableHeaderRef?.current?.clientHeight;
+        const tableContentHeight = tableContentRef?.current?.clientHeight;
         let scrollTop = 0;
         let newTimer = null
         newTimer = setInterval(()=>{
             if(tableContentRef?.current?.style){
                 tableContentRef.current.style.top = `-${scrollTop}px`;
-                if(scrollTop>=tableContentScrollHeight-5){
+                if(scrollTop >= tableHeaderHeight + tableContentHeight - parentHeight){
                     scrollTop=0;
                 }
                 scrollTop++;
             }
-        }, 50)
+        }, 100)
         setTimer(newTimer);
     }
 

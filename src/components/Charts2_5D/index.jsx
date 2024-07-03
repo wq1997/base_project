@@ -61,7 +61,7 @@ const Charts2_5D = ({size, depth, alpha=45, data, colors}) => {
     useEffect(()=>{
         initChart();
         window.addEventListener('resize', onResize)
-    }, [])
+    }, [data])
     return (
         <div ref={ref}>
             <div id="wq-2_5D"/>
