@@ -228,6 +228,7 @@ const Electricity = () => {
                     form.setFieldsValue({ currentPlantDevice: [plantId, data[0].value] })
                     const params = await getParams();
                     getDataSource(params);
+                    getTableData();
                 }
             }
         }
@@ -281,7 +282,6 @@ const Electricity = () => {
 
     useEffect(() => {
         initPlantDevice();
-        getTableData();
     }, [])
 
     return (
