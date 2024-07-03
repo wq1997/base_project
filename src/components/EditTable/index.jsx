@@ -180,7 +180,9 @@ const EditRowTable = ({
         }
     })
     setDataSource(newDataSource);
-    onChange(newDataSource);
+    if(newDataSource?.length>0){
+      onChange(newDataSource);
+    }
   }
 
   const getDefaultColoums = () => {
