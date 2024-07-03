@@ -27,10 +27,10 @@ function Com(props) {
     let arr1 = [];
     let series = [];
     let titles = [];
-    data.data[0].list?.map(it => {
+    data?.data?.[0]?.list?.map(it => {
       arr.push(dayjs(it.date).format('MM-DD'));
     })
-    data.data[1].list?.map(it => {
+    data?.data?.[1]?.list?.map(it => {
       arr1.push(dayjs(it.date).format('MM-DD'));
     })
     data.data.map((item, index) => {

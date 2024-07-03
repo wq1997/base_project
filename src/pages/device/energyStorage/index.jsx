@@ -67,7 +67,7 @@ const getTreeData = (data, treeData) => {
             })
             oringal[0]?.children.push({
                 title: it.gridPointName,
-                id: it.id,
+                id: it.dtuId,
                 key: `0-${index}`,
                 type: it.type || it?.deviceType,
                 children: [
@@ -77,7 +77,7 @@ const getTreeData = (data, treeData) => {
         } else {
             oringal[0]?.children.push({
                 title: it.gridPointName,
-                id: it.id,
+                id: it.dtuId,
                 key: `0-${index}`,
                 type: it.type || it?.deviceType,
                 children: [

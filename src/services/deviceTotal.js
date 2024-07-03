@@ -28,7 +28,7 @@ export const getChargeDischargeEnergySevenDaysByPlantId = (payload) => {
 }
 // 获取运行指标
 export const getRunMetrics = (payload) => {
-    return axiosInstance.get(`${path}/getRunMetrics    ?plantId=${payload.plantId}`);
+    return axiosInstance.get(`${path}/getRunMetrics?plantId=${payload.plantId}`);
 }
 // 获取所有设备充放电量
 export const getEnergySummary = (payload) => {

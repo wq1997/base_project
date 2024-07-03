@@ -59,7 +59,6 @@ const Login = () => {
         }
       });
       getData();
-      history.push("/index/home");
 
     } else {
       message.error(res.data.msg);
@@ -72,6 +71,8 @@ const Login = () => {
   const getData = async () => {
     const { data } = await apigetPlantList();
     localStorage.setItem('plantId',data.data?.[0].plantId);
+    history.push("/index/home");
+
 }
   const getPublicKey = async () => {
     const res = await getPublicKeySever();
