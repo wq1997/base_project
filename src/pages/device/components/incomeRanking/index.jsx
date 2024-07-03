@@ -1,12 +1,32 @@
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect, } from "react";
 import * as echarts from "echarts";
+import moment from "moment";
+import {
+    getRevenue as getRevenueServe,
+} from "@/services";
 
-const IncomeRanking = ({ data }) => {
+const IncomeRanking = ({currentPlantId}) => {
     const [options, setOptions] = useState({});
 
-    const getOptions = () => {
-        const xData = ['2024/07/02','2024/07/03','2024/07/04','2024/07/05']
+    const getOptions = async () => {
+        if(!currentPlantId) return;
+        let data = [];
+        const data1 = moment().subtract(5, 'days').format("YYYY-MM-DD");
+        const data2 = moment().subtract(4, 'days').format("YYYY-MM-DD");
+        const data3 = moment().subtract(3, 'days').format("YYYY-MM-DD");
+        const data4 = moment().subtract(2, 'days').format("YYYY-MM-DD");
+        const data5 = moment().subtract(1, 'days').format("YYYY-MM-DD");
+        const xData = [data1, data2, data3, data4, data5]
+        const res = await getRevenueServe({
+            startDate: data1,
+            endDate: data5,
+            plantId: currentPlantId,
+            dateType: 'day'
+        })
+        if (res?.data?.data?.data) {
+            data = res?.data?.data?.data?.map(item => item.number);
+        }
         setOptions({
             tooltip: {
                 trigger: 'item',
@@ -118,7 +138,7 @@ const IncomeRanking = ({ data }) => {
 
     useEffect(() => {
         getOptions();
-    }, []);
+    }, [currentPlantId]);
 
     return (
         <ReactECharts 

@@ -241,40 +241,6 @@ const RealtimeAlarm = () => {
         setDatadataTotal(deviceStats?.data);
         setDataEle(dataEnergy?.data);
     }
-    const topData = [
-        {
-            icon: <PieChartOutlined />,
-            name: t("设备总数"),
-            color: '#00C1BE',
-            key: 'deviceCount',
-            value: '',
-            unit: t('个')
-        },
-        {
-            icon: <AlertOutlined />,
-            name: t("实时告警"),
-            color: '#FFA049',
-            key: 'nowAlarmCount',
-            value: '',
-            unit: t('个')
-        },
-        {
-            icon: <ScheduleOutlined />,
-            name: t("在线"),
-            color: '#F8CC00',
-            key: 'onlineCount',
-            value: '',
-            unit: t('个')
-        },
-        {
-            icon: <HistoryOutlined />,
-            name: t("离线"),
-            color: '#00C1BE',
-            key: 'offlineCount',
-            value: '',
-            unit: t('个')
-        },
-    ];
 
     if (tableColum.length === 7 && user?.roleId == 1) {
         tableColum[5] = {};
@@ -313,8 +279,8 @@ const RealtimeAlarm = () => {
                             plants={[
                                 {
                                     ...currentPlant,
-                                    longitude: currentPlant?.longitude, 
-                                    latitude: currentPlant?.latitude,
+                                    longitude: currentPlant?.longitude||0, 
+                                    latitude: currentPlant?.latitude||0,
                                     plantName: currentPlant?.name,
                                     installDate: dayjs(currentPlant?.installDate).format('YYYY-MM-DD')
                                 }
@@ -400,16 +366,14 @@ const RealtimeAlarm = () => {
                 <div className={classNames(styles.rightItem, styles.rightItem2)}>
                     <Title title={`${t('收益统计')}(${t('元')})`} />
                     <div className={styles.cardContent}>
-                        <IncomeRanking
-                            data={[10, 20, 30, 40, 50]}
-                        />
+                        <IncomeRanking currentPlantId={currentPlantId||dataOption[0]?.value}/>
                     </div>
                 </div>
                 <div className={classNames(styles.rightItem, styles.rightItem3)}>
                     <Title title={`${t('电量统计')}(${t('kWh')})`} />
                     <div className={styles.cardContent}>
                         <ElectricityRanking
-                            data={[[10, 20, 30, 40, 50], [10, 20, 30, 40, 50]]}
+                            currentPlantId={currentPlantId||dataOption[0]?.value}
                         />
                     </div>
                 </div>

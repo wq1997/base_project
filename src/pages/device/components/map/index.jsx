@@ -41,10 +41,10 @@ const Index = ({ plants, showInfo, panTo }) => {
     useEffect(() => {
         if (map) {
             if (panTo) {
-                map.setZoom(18);
+                map.setZoom(defaultZoom);
                 map.panTo(panTo);
             } else {
-                map.setZoom(5);
+                map.setZoom(defaultZoom);
             }
         }
     }, [panTo]);
@@ -117,7 +117,7 @@ const Index = ({ plants, showInfo, panTo }) => {
             style={{
                 width: "100%",
                 height: "100%",
-                backgroundColor: "#0B3858",
+                backgroundColor: "white",
             }}
         ></div>
     );

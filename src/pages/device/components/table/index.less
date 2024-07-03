@@ -1,6 +1,6 @@
 .table {
     height: 100%;
-    background: #124c76;
+    background: #0F446A;
     font-size: 13px;
     .row {
         display: flex;
@@ -9,8 +9,8 @@
         .value {
             flex: 1;
             width: 0;
-            text-align: center;
-            padding: 5px;
+            padding: 5px 10px;
+            box-sizing: border-box;
             border-right: 1px solid #175785;
             overflow: hidden;
             white-space: nowrap;
@@ -18,19 +18,25 @@
         }
     }
     .valueWrapper {
+        width: 100%;
         height: calc(100% - 40px);
         overflow-y: scroll;
         &::-webkit-scrollbar {
             width: 0;
         }
         .row {
-            background: url("/images/tableBg.svg") center center no-repeat;
-            background-size: cover;
+            background: #17537F;
             .value {
-                color: #bbdfff;
+                width: 80%;
+                color: #BBDFFF;
                 display: flex;
                 align-items: center;
-                justify-content: center;
+                justify-content: left;
+                padding: 0 10px;
+                box-sizing: border-box;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
             }
         }
     }

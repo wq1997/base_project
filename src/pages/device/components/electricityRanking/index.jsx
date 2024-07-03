@@ -2,12 +2,33 @@ import ReactECharts from "echarts-for-react";
 import { useState, useEffect, useRef } from "react";
 import * as echarts from "echarts";
 import { useIntl } from "umi";
+import {
+    getRevenue as getRevenueServe,
+} from "@/services";
+import moment from "moment";
 
-const ElectricityRanking = ({ data }) => {
+const ElectricityRanking = ({ currentPlantId }) => {
     const intl = useIntl();
     const [options, setOptions] = useState({});
-    const getOptions = () => {
-        const xData = ['2024/07/02','2024/07/03','2024/07/04','2024/07/05']
+    const getOptions = async() => {
+        if(!currentPlantId) return;
+        let data_1 = [], data_2 = [];
+        const data1 = moment().subtract(4, 'days').format("YYYY-MM-DD");
+        const data2 = moment().subtract(3, 'days').format("YYYY-MM-DD");
+        const data3 = moment().subtract(2, 'days').format("YYYY-MM-DD");
+        const data4 = moment().subtract(1, 'days').format("YYYY-MM-DD");
+        const data5 = moment().format("YYYY-MM-DD");
+        const xData = [data1, data2, data3, data4, data5]
+        const res = await getRevenueServe({
+            startDate: data1,
+            endDate: data5,
+            plantId: currentPlantId,
+            dateType: 'day'
+        })
+        if (res?.data?.data?.data) {
+            data_1 = res?.data?.data?.data?.map(item => item.dayChargeEnergy);
+            data_2 = res?.data?.data?.data?.map(item => item.dayDischargeEnergy);
+        }
         setOptions({
             tooltip: {
                 trigger: 'axis',
@@ -82,7 +103,7 @@ const ElectricityRanking = ({ data }) => {
                           barBorderRadius: 12,
                       },
                     },
-                    data: data?.[0]
+                    data: data_1
                 },
                 {
                     name: intl.formatMessage({id: '放电量'}),
@@ -100,7 +121,7 @@ const ElectricityRanking = ({ data }) => {
                           barBorderRadius: 12,
                       },
                     },
-                    data: data?.[1]
+                    data: data_2
                 }
             ]
         });
@@ -108,7 +129,7 @@ const ElectricityRanking = ({ data }) => {
 
     useEffect(() => {
         getOptions();
-    }, []);
+    }, [currentPlantId]);
 
     return (
         <ReactECharts 
