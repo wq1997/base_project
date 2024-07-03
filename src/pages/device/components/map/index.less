@@ -26,7 +26,7 @@
 }
 
 .detail {
-    width: 400px;
+    width: 350px;
     background: rgba(11,56,88,0.85);
     border-radius: 16px;
     padding: 20px 30px;
@@ -35,10 +35,20 @@
         color: #54cfff;
         font-size: 16px;
         display: flex;
-        justify-content: end;
+        justify-content: space-between;
         align-items: center;
         padding-left: 10px;
         box-sizing: border-box;
+        margin-bottom: 10px;
+        &::before {
+            content: "";
+            width: 4px;
+            height: 14px;
+            background: #54cfff;
+            border-radius: 2px;
+            position: absolute;
+            left: 30px;
+        }
         .close {
             cursor: pointer;
         }
@@ -58,16 +68,15 @@
             display: flex;
             .name {
                 width: 160px;
-                color: #ffffffc4;
+                color: #FFFFFF;
             }
             .value {
                 flex: 1;
-                width: 0;
                 text-align: left;
                 overflow: hidden;
                 white-space: nowrap;
                 text-overflow: ellipsis;
-                color: #bbdfff;
+                color: #FFFFFF;
             }
         }
     }

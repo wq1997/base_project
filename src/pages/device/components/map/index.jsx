@@ -1,19 +1,21 @@
+import { useIntl } from "umi";
 import { useEffect, useState } from "react";
 import styles from "./index.less";
 
 const Index = ({ plants, showInfo, panTo }) => {
+    const intl = useIntl();
     const [map, setMap] = useState();
     const [infoWindow, setInfoWindow] = useState();
     const defaultZoom = 5;
     const defaultCenter = [108.9, 34.2];
 
     window.info = [
-        { name: "电站名称", key: "plantName", value: "" },
-        { name: "建站日期", key: "", value: "" },
-        { name: "设备总数", key: "", value: "" },
-        { name: "时区", key: "", value: "" },
-        { name: "货币", key: "", value: "" },
-        { name: "电站位置", key: "", value: "" }
+        { name: "电站名称", key: "name", value: "" },
+        { name: "建站日期", key: "installDate", value: "" },
+        { name: "设备总数", key: "dtuSize", value: "" },
+        { name: "时区", key: "timeZone", value: "" },
+        { name: "货币", key: "priceUnit", value: "" },
+        { name: "电站位置", key: "position", value: "" }
     ];
 
     useEffect(() => {
@@ -92,10 +94,11 @@ const Index = ({ plants, showInfo, panTo }) => {
             marker.content = `
                    <div class=${styles.detail}>
                         <div class=${styles.header}>
+                            ${intl.formatMessage({id: '电站信息'})}
                             <span class=${styles.close} onclick="window.close()">X</span>
                         </div>
                         <div class=${styles.infoContent}>
-                            <div>${window.getInfo(window.info?.slice(0, 13), item)}</div>
+                            <div>${window.getInfo(window.info, item)}</div>
                         </div>
                     </div>
             `;

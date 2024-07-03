@@ -8,6 +8,9 @@ import { getFetchPlantList, deleteDtu, updateDtus } from "@/services/deviceTotal
 import { getAllRevenue as getAllRevenueServe } from "@/services";
 import { getBurEnergyStats2, getDeviceStats, getDtusOfPlant } from "@/services/plant"
 import {
+    getFetchPlantList2 as getFetchPlantListServe,
+} from "@/services";
+import {
     HistoryOutlined,
     PieChartOutlined,
     ScheduleOutlined,
@@ -26,6 +29,7 @@ import bottomLeft1 from "../../../public/images/bottomLeft1.svg";
 import bottomLeft2 from "../../../public/images/bottomLeft2.svg";
 import bottomLeft3 from "../../../public/images/bottomLeft3.svg";
 import Map from './components/map';
+import dayjs from 'dayjs';
 const { Option } = Select;
 
 const RealtimeAlarm = () => {
@@ -34,8 +38,6 @@ const RealtimeAlarm = () => {
     const [dataEle, setDataEle] = useState([]);
     const [dataOption, setDataOption] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
-    const activitesRef = useRef([]);
-    const [current, setCurrent] = useState(1);
     const [title, setTitle] = useState('新增设备');
     const [formData, setFormData] = useState();
     const [isOpenDel, setIsOpenDel] = useState(false);
@@ -210,22 +212,22 @@ const RealtimeAlarm = () => {
         }
     }
     const getAllPlant = async () => {
-        const { data } = await getFetchPlantList();
-        let arr = [];
-        data.data?.map(it => {
-            arr.push({
-                ...it,
-                label: it.name,
-                value: it.plantId,
-                key: it.plantId
+        const { data } = await getFetchPlantListServe();
+        if(data?.data){
+            const result = data?.data;
+            let arr = [];
+            result?.plantList?.map((it, index) => {
+                arr.push({
+                    ...it,
+                    label: it.name,
+                    value: it.plantId,
+                    key: it.plantId,
+                    dtuSize: result?.deviceCount?.[index]
+                })
             })
-        })
-        activitesRef.current = arr;
-        setDataOption([...arr]);
-        changePlant(arr[0].value, arr);
-    }
-    const changPage = (page) => {
-        setCurrent(page);
+            setDataOption([...arr]);
+            changePlant(arr[0].value, arr);
+        }
     }
     const changePlant = async (val) => {
         if(!val) return;
@@ -313,7 +315,8 @@ const RealtimeAlarm = () => {
                                     ...currentPlant,
                                     longitude: currentPlant?.longitude, 
                                     latitude: currentPlant?.latitude,
-                                    plantName: currentPlant?.name
+                                    plantName: currentPlant?.name,
+                                    installDate: dayjs(currentPlant?.installDate).format('YYYY-MM-DD')
                                 }
                             ]}
                             showInfo={true} 
