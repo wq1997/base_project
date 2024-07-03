@@ -5,34 +5,44 @@ import total from "@/assets/images/工单总数.svg";
 import complete from "@/assets/images/已完成工单.svg";
 import other from "@/assets/images/在途其他工单.svg";
 import matter from "@/assets/images/在途异常工单.svg";
+import { useState, useEffect } from "react";
 
-const Index = () => {
-    const works = [
+const Index = ({ data }) => {
+    const [works, setWorks] = useState([
         {
             name: "工单总数",
             pic: total,
-            key: "",
-            value: "111111",
+            key: "totalCount",
+            value: "",
         },
         {
             name: "在途异常工单",
             pic: matter,
-            key: "",
-            value: "222",
+            key: "inTransitAbnormalCount",
+            value: "",
         },
         {
             name: "在途其他工单",
             pic: other,
-            key: "",
-            value: "333",
+            key: "inTransitOtherCount",
+            value: "",
         },
         {
             name: "已完成工单",
             pic: complete,
-            key: "",
-            value: "444",
+            key: "completedCount3",
+            value: "",
         },
-    ];
+    ]);
+
+    useEffect(() => {
+        if (!data) return;
+        const _works = [...works]?.map(item => ({
+            ...item,
+            value: data?.[item.key],
+        }));
+        setWorks(_works);
+    }, [data]);
 
     return (
         <Card

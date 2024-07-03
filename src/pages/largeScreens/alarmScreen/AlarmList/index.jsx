@@ -6,13 +6,10 @@ import { SearchInput } from "@/components";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import "./index.less";
 import Card from "../../components/Card";
-import {
-    getAlarmList as getAlarmListServer,
-    getAlarmInitData as getAlarmInitDataServer,
-} from "@/services/alarmScreen";
+import { getAlarmScreenList as getAlarmScreenListServer } from "@/services/largeScreen";
 import dayjs from "dayjs";
 
-const Index = () => {
+const Index = ({ initData }) => {
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const alarmLevelRef = useRef();
@@ -52,34 +49,14 @@ const Index = () => {
         },
     ];
 
-    const getAlarmInitData = async () => {
-        const res = await getAlarmInitDataServer();
-        if (res?.data?.status == "SUCCESS") {
-            const { signalNames, plans } = res?.data?.data;
-            setAlarmLevelOptions(
-                signalNames?.map(item => ({
-                    label: item,
-                    value: item,
-                }))
-            );
-            setPlantNameOptions(
-                plans.map(item => ({
-                    label: item?._2,
-                    value: item?._1,
-                }))
-            );
-        }
-    };
-
     const getList = async () => {
-        console.log(paginationRef.current.current);
         const { current, pageSize } = paginationRef.current;
         const signalName = alarmLevelRef.current;
         const deviceNameLike = deviceNameRef.current;
         const plantId = plantNameRef.current;
         const descLike = alarmDescRef.current;
         const [beginStartDate, beginEndDate] = startTimeRef.current || [];
-        const res = await getAlarmListServer({
+        const res = await getAlarmScreenListServer({
             pageNum: current,
             pageSize,
             queryCmd: {
@@ -139,7 +116,23 @@ const Index = () => {
     };
 
     useEffect(() => {
-        getAlarmInitData();
+        if (!initData) return;
+        const { signalNames, plans } = initData;
+        setAlarmLevelOptions(
+            signalNames?.map(item => ({
+                label: item,
+                value: item,
+            }))
+        );
+        setPlantNameOptions(
+            plans.map(item => ({
+                label: item?._2,
+                value: item?._1,
+            }))
+        );
+    }, [initData]);
+
+    useEffect(() => {
         getList();
     }, []);
 

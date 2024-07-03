@@ -3,38 +3,22 @@ import AlarmList from "./AlarmList";
 import WorkOrder from "./WorkOrder";
 import AlarmAnysis from "./AlarmAnysis";
 import DeviceStatus from "./DeviceStatus";
-import {
-    getAlarmList as getAlarmListServer,
-    getAlarmInitData as getAlarmInitDataServer,
-} from "@/services/alarmScreen";
-import { useEffect } from "react";
+import { getAlarmScreenData as getAlarmScreenDataServer } from "@/services/largeScreen";
+import { useState, useEffect } from "react";
 
 const Index = () => {
-
     const [initData, setInitData] = useState();
 
-    const getAlarmInitData = async () => {
-        const res = await getAlarmInitDataServer();
+    const getInitData = async () => {
+        const res = await getAlarmScreenDataServer();
         if (res?.data?.status == "SUCCESS") {
-            const { signalNames, plans } = res?.data?.data;
-            setAlarmLevelOptions(
-                signalNames?.map(item => ({
-                    label: item,
-                    value: item,
-                }))
-            );
-            setPlantNameOptions(
-                plans.map(item => ({
-                    label: item?._2,
-                    value: item?._1,
-                }))
-            );
+            setInitData(res?.data?.data);
         }
     };
 
-    useEffect(()=>{
-        getAlarmInitData()
-    },[])
+    useEffect(() => {
+        getInitData();
+    }, []);
 
     return (
         <div className={styles.index}>
@@ -44,11 +28,11 @@ const Index = () => {
             <div className={styles.content}>
                 <div className={styles.left}>
                     <AlarmAnysis />
-                    <WorkOrder />
+                    <WorkOrder data={initData?.workOrderSummery} />
                     <DeviceStatus />
                 </div>
                 <div className={styles.right}>
-                    <AlarmList />
+                    <AlarmList initData={initData} />
                 </div>
             </div>
         </div>

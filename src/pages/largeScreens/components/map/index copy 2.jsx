@@ -4,7 +4,7 @@ import styles from "./index.less";
 
 const baseUrl = process.env.API_URL_1;
 
-const Index = ({ plants, showInfo, panTo }) => {
+const Index = ({ plants, showInfo, searchParams }) => {
     const [map, setMap] = useState();
     const [infoWindow, setInfoWindow] = useState();
     const defaultZoom = 5;
@@ -39,54 +39,59 @@ const Index = ({ plants, showInfo, panTo }) => {
     ];
 
     useEffect(() => {
-        const _map =
-            map ||
-            new AMap.Map("map", {
-                mapStyle: "amap://styles/blue",
-                zoom: defaultZoom,
-                center: defaultCenter,
-            });
-        if (!map) {
-            setMap(_map);
-        }
-        _map.on("complete", async () => {});
-    }, []);
-
-    useEffect(() => {
-        if (map) {
-            addMarkers(map, plants);
-        }
-    }, [plants]);
-
-    useEffect(() => {
-        if (map) {
-            if (panTo) {
-                map.setZoom(18);
-                map.panTo(panTo);
-            } else {
-                map.setZoom(5);
-            }
-        }
-    }, [panTo]);
-
-    const addMarkers = (map, plants) => {
-        const _infoWindow =
-            infoWindow ||
-            new AMap.InfoWindow({
+        const map = new AMap.Map("map", {
+            mapStyle: "amap://styles/blue",
+            zoom: defaultZoom,
+            center: defaultCenter,
+        });
+        map.on("complete", async () => {
+            const infoWindow = new AMap.InfoWindow({
                 isCustom: true,
                 offset: new AMap.Pixel(0, -30),
             });
-        if (!infoWindow) {
-            setInfoWindow(_infoWindow);
+            setInfoWindow(infoWindow);
+            setMap(map);
+            addMarkers(map, plants);
+        });
+    }, [plants]);
+
+    useEffect(() => {
+        if (!plants) return;
+        let filterPlants;
+        if (searchParams) {
+            filterPlants = plants?.filter(plant => {
+                for (let key in searchParams) {
+                    if (searchParams[key] && !plant[key]?.includes(searchParams[key])) {
+                        return false;
+                    }
+                }
+                return true;
+            });
+            if (filterPlants?.length == 1) {
+                const { longitude, latitude } = filterPlants[0];
+                map.setZoom(18);
+                map.panTo([longitude, latitude]);
+                map.setCenter([longitude, latitude]);
+            }
+        } else {
+            filterPlants = plants;
+            map.setZoom(defaultZoom);
+            map.setCenter(defaultCenter);
         }
+        addMarkers(map, filterPlants);
+    }, [searchParams]);
+
+    const addMarkers = (map, plants) => {
         map.clearMap();
         plants?.forEach((item, index) => {
             const marker = new AMap.Marker({
                 position: new AMap.LngLat(item.longitude, item.latitude),
                 icon: new AMap.Icon({
                     image: require("../../../../assets/images/mapPoint.png"),
-                    imageSize: new AMap.Size(15, 20),
+                    // size: new AMap.Size(25, 20), // 图片大小
+                    imageSize: new AMap.Size(15, 20), // 根据所设置的大小拉伸或压缩图片
                 }),
+                // offset: new AMap.Pixel(-32, -32),
                 map: map,
                 label: {
                     direction: "top",
@@ -99,7 +104,7 @@ const Index = ({ plants, showInfo, panTo }) => {
                 },
             });
             window.close = () => {
-                _infoWindow.close();
+                infoWindow.close();
             };
             window.getInfo = (arr, plant) => {
                 return arr
@@ -125,8 +130,8 @@ const Index = ({ plants, showInfo, panTo }) => {
             `;
             marker.on("click", e => {
                 if (showInfo) {
-                    _infoWindow.setContent(e.target.content);
-                    _infoWindow.open(map, e.target.getPosition());
+                    infoWindow.setContent(e.target.content);
+                    infoWindow.open(map, e.target.getPosition());
                 }
             });
         });
