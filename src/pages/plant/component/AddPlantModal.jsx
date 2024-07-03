@@ -86,7 +86,6 @@ const App = (props) => {
   const onFinish = async () => {
     try {
       const values = await form.validateFields();
-      console.log(values,1111111);
         props.changeData({  ...values,
           userId:[values.userName],
           type:values.typeName,

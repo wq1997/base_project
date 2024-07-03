@@ -65,7 +65,7 @@ const EditRowTable = ({
         }
         switch(inputType){
             case "InputNumber":
-                return <InputNumber {...props} />
+                return <InputNumber {...props} min={0} />
             case "CustomDatePicker":
                 return <CustomDatePicker {...props} />
             case "Select":

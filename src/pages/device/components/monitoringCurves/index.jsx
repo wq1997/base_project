@@ -153,7 +153,6 @@ function Com({deviceVersion}) {
         setDataType(val);
         setUnit(unit);
         // setTitle(a.children);
-        console.log(a,val);
     }
     const changeDate = (val, str) => {
         setDateStr(str);

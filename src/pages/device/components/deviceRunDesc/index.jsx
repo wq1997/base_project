@@ -9,21 +9,21 @@ const DeviceRunDesc = ({dataSource}) => {
         <div className={styles.circle}>
             {/* 正常 */}
             <div className={styles.ball1}>
-                <div className={styles.data1} style={{color: '#01FF23'}}>{dataSource?.normal||0}</div>
+                <div className={styles.data1} style={{color: '#01FF23'}}>{(dataSource?.deviceCount - dataSource?.nowAlarmCount)||0}</div>
                 <div className={styles.font}>正常</div>
                 <img src={ball1Img} />
             </div>
 
             {/* 告警 */}
             <div className={styles.ball2}>
-                <div className={styles.data2} style={{color: '#FF0000'}}>{dataSource?.warn||0}</div>
+                <div className={styles.data2} style={{color: '#FF0000'}}>{dataSource?.nowAlarmCount||0}</div>
                 <div className={styles.font}>告警</div>
                 <img src={ball2Img} />
             </div>
 
             {/* 离线 */}
             <div className={styles.ball3}>
-                <div className={styles.data3} style={{color: '#E3E3E3'}}>{dataSource?.offline||0}</div>
+                <div className={styles.data3} style={{color: '#E3E3E3'}}>{dataSource?.offlineCount||0}</div>
                 <div className={styles.font}>离线</div>
                 <img src={ball3Img} />
             </div>

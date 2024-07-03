@@ -1,19 +1,18 @@
 import styles from "./index.less";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Tooltip } from "antd";
-import { getDtusOfPlant } from "@/services/plant"
 import { useIntl, history } from "umi";
 import { Space, Button, theme } from "antd";
 import "./index.less";
+import { useEffect } from "react";
 
 const Table = ({
-    plantId,
+    dataSource,
     changeIsOpenDel,
     edit,
 }) => {
     const intl = useIntl();
-    const { token } = theme.useToken();
-    const [listData, setListData] = useState([]);
+    const [listData, setListData] = useState(dataSource);
 
     const t = (id) => {
         const msg = intl.formatMessage(
@@ -83,17 +82,9 @@ const Table = ({
         },
     ]
 
-    const getList = async () => {
-        let { data } = await getDtusOfPlant({
-            plantId
-        });
-        data?.data === '' ? setListData([]) : setListData(JSON.parse(String(data?.data)))
-    };
-
-    useEffect(() => {
-        getList();
-    }, [plantId]);
-
+    useEffect(()=>{
+        setListData(dataSource);
+    }, [dataSource]);
     return (
         <div className={styles.table}>
             <div className={styles.row}>

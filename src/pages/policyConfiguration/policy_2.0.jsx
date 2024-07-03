@@ -34,7 +34,7 @@ const PolicyConfiguration = ({deviceVersion}) => {
     const [checkModalOpen, setCheckModalOpen] = useState(false);
     const [checkModalType, setCheckModalType] = useState('');
     const [durationList, setDurationList] = useState([]);
-    const canIssue = mode===1;
+    const canIssue = mode===0;
 
     const strategyList = [
         {label: intl.formatMessage({id: '策略1'}), value: 0},
@@ -91,7 +91,8 @@ const PolicyConfiguration = ({deviceVersion}) => {
                     ...item,
                     action: {
                         0: '充电',
-                        1: '放电'
+                        1: '放电',
+                        2: '待机'
                     }[item.action],
                     timeType: {
                         0: '尖',
@@ -107,7 +108,8 @@ const PolicyConfiguration = ({deviceVersion}) => {
                     ...item,
                     action: {
                         0: '充电',
-                        1: '放电'
+                        1: '放电',
+                        2: '待机'
                     }[item.action],
                     timeType: {
                         0: '尖',
@@ -184,8 +186,8 @@ const PolicyConfiguration = ({deviceVersion}) => {
                                     value={mode}
                                     mode={'controlled'}
                                     options={[
-                                        {label: intl.formatMessage({id: '自动'}), value: 0},
-                                        {label: intl.formatMessage({id: '手动'}), value: 1},
+                                        {label: intl.formatMessage({id: '自动'}), value: 1},
+                                        {label: intl.formatMessage({id: '手动'}), value: 0},
                                     ]}
                                     onControlledChange={async value=>{
                                         setNextMode(value);
@@ -363,6 +365,7 @@ const PolicyConfiguration = ({deviceVersion}) => {
                                             options: [
                                                 {value: '充电', label: intl.formatMessage({id: '充电'})},
                                                 {value: '放电', label: intl.formatMessage({id: '放电'})},
+                                                {value: '待机', label: intl.formatMessage({id: '待机'})},
                                             ]
                                         },
                                         {
@@ -578,7 +581,8 @@ const PolicyConfiguration = ({deviceVersion}) => {
                                     ...value,
                                     action: {
                                         '充电': 0,
-                                        '放电': 1
+                                        '放电': 1,
+                                        '待机': 2,
                                     }[value.action],
                                     timeType: {
                                         '尖': 0,
@@ -610,7 +614,6 @@ const PolicyConfiguration = ({deviceVersion}) => {
                             res = await sendLiquidCoolerServe({...values, dtuId: id, type: deviceVersion})
                         }
                     }
-                    console.log("AAA", res)
                     if(res?.data?.code==="ok"){
                         setCheckModalOpen(false);
                         checkForm.resetFields();

@@ -58,11 +58,11 @@ const OverView = ({deviceVersion, sn}) => {
     ])
 
     const [electricityStatisticsDataSourceRight, setElectricityStatisticsDataSourceRight] = useState([
-        {
-            title: '前一日效率',
-            data: 0,
-            color: '#B95CFC'
-        },
+        // {
+        //     title: '效率',
+        //     data: 0,
+        //     color: '#B95CFC'
+        // },
         {
             title: '累计效率',
             data: 0,
@@ -228,8 +228,8 @@ const OverView = ({deviceVersion, sn}) => {
         newElectricityStatisticsDataSourceLeft[2].data = dataSource?.gmeter?.totalCEnergy||0;
         newElectricityStatisticsDataSourceLeft[3].data = dataSource?.gmeter?.totalDEnergy||0;
 
-        newElectricityStatisticsDataSourceRight[0].data = dataSource?.meterEfficiency||0;
-        newElectricityStatisticsDataSourceRight[1].data = dataSource?.meterAllEfficiency||0;
+        // newElectricityStatisticsDataSourceRight[0].data = dataSource?.meterEfficiency||0;
+        newElectricityStatisticsDataSourceRight[0].data = dataSource?.meterAllEfficiency||0;
 
         // PCS电量统计
         newSystemEfficiencyDataSource[0].data = dataSource?.pcsEfficiency||0;
@@ -324,7 +324,7 @@ const OverView = ({deviceVersion, sn}) => {
                                         electricityStatisticsDataSourceRight?.map(item => {
                                             return (
                                                 <div className={styles.item}>
-                                                    {/* <img src={leftTopBg2Img} className={styles.backgroundImg}/> */}
+                                                    <img src={leftTopBg2Img} className={styles.backgroundImg}/>
                                                     <div className={styles.data}>
                                                         <div className={styles.data1} style={{color: item.color}}>{item.data}%</div>
                                                         <div className={styles.data2} >{intl.formatMessage({id: item.title})}</div>

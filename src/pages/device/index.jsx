@@ -1,12 +1,12 @@
 // import Table from '@/components/Table.jsx'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useMemo } from 'react'
 import { useSelector, useIntl, history } from "umi";
 import styles from "./index.less";
 import { Select, Space, theme, Button, Modal, message } from "antd"
 import { CardModel } from "@/components";
 import { getFetchPlantList, deleteDtu, updateDtus } from "@/services/deviceTotal"
 import { getAllRevenue as getAllRevenueServe } from "@/services";
-import { getBurEnergyStats2, getDeviceStats,getDtusOfPlant } from "@/services/plant"
+import { getBurEnergyStats2, getDeviceStats, getDtusOfPlant } from "@/services/plant"
 import {
     HistoryOutlined,
     PieChartOutlined,
@@ -43,9 +43,8 @@ const RealtimeAlarm = () => {
     const [record, setRecord] = useState([]);
     const [currentPlantId, setCurrentPlantId] = useState();
     const { token } = theme.useToken();
-    const [screenH, setScreenH] = useState('');
-    const [scroolY, setScroolY] = useState(200);
     const intl = useIntl();
+    const [mapPanTo, setPanTo] = useState();
     const t = (id) => {
         const msg = intl.formatMessage(
             {
@@ -57,87 +56,48 @@ const RealtimeAlarm = () => {
     const { user } = useSelector(function (state) {
         return state.user
     });
-    useEffect(() => {
-        setScreenH(document.documentElement.clientHeight || document.body.clientHeight)
-        window.addEventListener("resize", handleWindowResize)
-        return () => {
-          window.removeEventListener("resize", handleWindowResize)
-        }
-      }, [])
-    
-      const handleWindowResize = () => {
-        setScreenH(document.documentElement.clientHeight || document.body.clientHeight)
-      }
-      useEffect(() => {
-        if (screenH < 1000) {
-          setScroolY(200);
-        } else if (screenH > 1000 && screenH < 1300) {
-          setScroolY(400);
-        } else if (screenH > 1300) {
-          setScroolY(500);
-        }
-      }, [screenH])
+
     const eleData = [
         {
-            label: t('日充电量'),
-            name: 'dailyCharge',
-            value: '',
-            unit: 'kWh',
-            color: '#FF9D4F'
+            label: `${t('日充/放电量')}(${t('kWh')})`,
+            name: ['dailyCharge', 'dailyDisCharge'],
+            value: [0, 0],
+            color: '#20C2FF'
         },
         {
-            label: t('月充电量'),
-            name: 'monthCharge',
-            value: '',
-            unit: 'kWh',
-            color: '#03B4B4'
+            label: `${t('月充/放电量')}(${t('kWh')})`,
+            name: ['monthCharge', 'monthDisCharge'],
+            value: [0, 0],
+            color: '#01FF23'
         },
         {
-            label: t('累计充电量'),
-            name: 'totalCharge',
-            value: '',
-            unit: 'kWh',
-            color: '#DE83C4'
-        },
-        {
-            label: t('日放电量'),
-            name: 'dailyDisCharge',
-            value: '',
-            unit: 'kWh',
-            color: '#FF9D4F'
-        },
-        {
-            label: t('月放电量'),
-            name: 'monthDisCharge',
-            value: '',
-            unit: 'kWh',
-            color: '#03B4B4'
-        },
-        {
-            label: t('累计放电量'),
-            name: 'totalDisCharge',
-            value: '',
-            unit: 'kWh',
-            color: '#DE83C4'
-        },
-
+            label: `${t('累计充/放电量')}(${t('kWh')})`,
+            name: ['totalDisCharge', 'totalDisCharge'],
+            value: [0, 0],
+            color: '#FF5E00'
+        }
     ];
 
     const [incomeData, setIncomeData] = useState([
         {
             label: t('日收益'),
             value: 0,
-            color: '#0082FF'
+            color: '#20C2FF'
         },
         {
             label: t('月收益'),
             value: 0,
-            color: '#EEC830'
+            color: '#FF5E00'
+        },
+        {
+            label: t('年收益'),
+            value: 0,
+            color: '#FF28DA'
         },
         {
             label: t('累计收益'),
             value: 0,
-            color: '#DE83C4'
+            color: '#01FF23'
         }
     ])
 
@@ -185,10 +145,10 @@ const RealtimeAlarm = () => {
             key: 'operation',
             render: (text, record) => {
                 return (
-                     <Space>
+                    <Space>
                         <div type="link" style={{ color: token.colorPrimary, cursor: 'pointer' }} onClick={() => edit(record)}>{t('编辑')}</div>
                         <Button type="link" danger onClick={() => changeIsOpenDel(record)}>{t('删除')}</Button>
-                    </Space> 
+                    </Space>
                 )
             }
         },
@@ -198,11 +158,11 @@ const RealtimeAlarm = () => {
             key: 'details',
             render: (text, record) => {
                 return (
-                    <div 
-                        type="link" 
-                        style={{ color: token.colorPrimary, cursor: 'pointer' }} 
-                        onClick={() => { 
-                            history.push(`/device?activeKey=OverView&id=${record.id}&title=${record.name||""}&type=${record.deviceTypeId||""}`)
+                    <div
+                        type="link"
+                        style={{ color: token.colorPrimary, cursor: 'pointer' }}
+                        onClick={() => {
+                            history.push(`/device?activeKey=OverView&id=${record.id}&title=${record.name || ""}&type=${record.deviceTypeId || ""}`)
                         }}
                     >
                         {t('详情')}
@@ -231,10 +191,10 @@ const RealtimeAlarm = () => {
         setTitle('新增设备');
         setIsOpen(!isOpen);
     }
- 
+
     const delDevice = async () => {
         let { data } = await deleteDtu({ id: record.id });
-        if (data.code=='ok') {
+        if (data.code == 'ok') {
             changePlant(currentPlantId)
         } else {
             message.error(data.code)
@@ -254,6 +214,7 @@ const RealtimeAlarm = () => {
         let arr = [];
         data.data?.map(it => {
             arr.push({
+                ...it,
                 label: it.name,
                 value: it.plantId,
                 key: it.plantId
@@ -261,12 +222,13 @@ const RealtimeAlarm = () => {
         })
         activitesRef.current = arr;
         setDataOption([...arr]);
-        changePlant(arr[0].value);
+        changePlant(arr[0].value, arr);
     }
     const changPage = (page) => {
         setCurrent(page);
     }
     const changePlant = async (val) => {
+        if(!val) return;
         let { data } = await getDtusOfPlant({
             plantId: val
         });
@@ -277,7 +239,7 @@ const RealtimeAlarm = () => {
         setDatadataTotal(deviceStats?.data);
         setDataEle(dataEnergy?.data);
     }
-    const topData =[
+    const topData = [
         {
             icon: <PieChartOutlined />,
             name: t("设备总数"),
@@ -312,39 +274,111 @@ const RealtimeAlarm = () => {
         },
     ];
 
-    if (tableColum.length===7&&user?.roleId == 1) {
-        tableColum[5]={};
+    if (tableColum.length === 7 && user?.roleId == 1) {
+        tableColum[5] = {};
     }
 
     const getAllRevenue = async () => {
-        const res = await getAllRevenueServe({plantId: currentPlantId});
-        if(res?.data?.data){
+        const res = await getAllRevenueServe({ plantId: currentPlantId });
+        if (res?.data?.data) {
             const data = res?.data?.data;
             const newIncomeData = JSON.parse(JSON.stringify(incomeData));
-            newIncomeData[0].value = data?.dayEarning;
-            newIncomeData[1].value = data?.monthEarning;
-            newIncomeData[2].value = data?.allEarning;
+            newIncomeData[0].value = data?.dayEarning || 0;
+            newIncomeData[1].value = data?.monthEarning || 0;
+            newIncomeData[2].value = data?.yearEarning || 0;
+            newIncomeData[3].value = data?.allEarning || 0;
             setIncomeData(newIncomeData);
         }
     }
 
-    useEffect(()=>{
-        if(currentPlantId) getAllRevenue();
+    const currentPlant = dataOption?.find(plant => (plant?.value===(currentPlantId||dataOption[0]?.value)))
+    useEffect(() => {
+        if (currentPlant){
+            getAllRevenue();
+            setPanTo([currentPlant?.longitude||108.9, currentPlant?.latitude||34.2]);
+        }
     }, [currentPlantId])
 
     return (
         <div
             className={styles.content}
-        >  
+        >
             <div className={styles.left}>
                 <div className={classNames(styles.leftItem, styles.leftItem1)}>
-                    <Map />
+                    {
+                        currentPlant&&
+                        <Map
+                            plants={[
+                                {
+                                    ...currentPlant,
+                                    longitude: currentPlant?.longitude, 
+                                    latitude: currentPlant?.latitude,
+                                    plantName: currentPlant?.name
+                                }
+                            ]}
+                            showInfo={true} 
+                            panTo={mapPanTo}
+                        />
+                    }
+                    <div className={styles.plantSelect}>
+                        <Select
+                            style={{ width: 300 }}
+                            onChange={(val) => {
+                                changePlant(val)
+                            }}
+                            key={dataOption[0]?.value}
+                            defaultValue={dataOption[0]?.value}
+                        >
+                            {dataOption && dataOption?.map(item => {
+                                return (<Option key={item.value} value={item.value}>{item.label}</Option>);
+                            })
+                            }
+                        </Select>
+                    </div>
+                    <div className={styles.mapRight}>
+                        {
+                            incomeData?.map(item => {
+                                return (
+                                    <div className={styles.mapRightItem}>
+                                        <div>
+                                            <div className={styles.mapRightItemTop}>
+                                                <div style={{ color: item.color }} className={styles.mapRightItemTopValue}>{item?.value}</div>
+                                                <div className={styles.mapRightItemTopUnit}>{t('元')}</div>
+                                            </div>
+                                            <div className={styles.mapRightItemBottom}>{item.label}</div>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+                    <div className={styles.mapBottom}>
+                        {
+                            eleData?.map(item => {
+                                return (
+                                    <div className={styles.mapBottomItem}>
+                                        <div style={{ color: item.color }} className={styles.mapBottomItemData}>{item?.name?.map(name => dataEle[name] || 0).join('/')}</div>
+                                        <div className={styles.mapBottomItemLabel}>{item?.label}</div>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
                 </div>
                 <div className={classNames(styles.rightItem, styles.leftItem2)}>
-                    <Title title={t('设备列表')}/>
+                    <Title title={t('设备列表')} />
+                    {
+                        user?.roleId===3&&
+                        <div 
+                            onClick={changIsOpen}
+                            className={styles.add}
+                        >
+                            {t('新增')}
+                        </div>
+                    }
                     <div className={styles.cardContent}>
-                        <Table 
-                            plantId={currentPlantId}
+                        <Table
+                            dataSource={data}
                             changeIsOpenDel={changeIsOpenDel}
                             edit={edit}
                         />
@@ -353,31 +387,31 @@ const RealtimeAlarm = () => {
             </div>
             <div className={styles.right}>
                 <div className={classNames(styles.rightItem, styles.rightItem1)}>
-                    <Title title={t('设备运行情况')}/>
+                    <Title title={t('设备运行情况')} />
                     <div className={styles.cardContent}>
-                        <DeviceRunDesc 
-                            dataSource={{normal: 8, warn: 0, offline: 0}}
+                        <DeviceRunDesc
+                            dataSource={dataTotal}
                         />
                     </div>
                 </div>
                 <div className={classNames(styles.rightItem, styles.rightItem2)}>
-                    <Title title={`${t('收益统计')}(${t('元')})`}/>
+                    <Title title={`${t('收益统计')}(${t('元')})`} />
                     <div className={styles.cardContent}>
-                        <IncomeRanking 
-                            data={[10,20,30,40,50]}
+                        <IncomeRanking
+                            data={[10, 20, 30, 40, 50]}
                         />
                     </div>
                 </div>
                 <div className={classNames(styles.rightItem, styles.rightItem3)}>
-                    <Title title={`${t('电量统计')}(${t('kWh')})`}/>
+                    <Title title={`${t('电量统计')}(${t('kWh')})`} />
                     <div className={styles.cardContent}>
-                        <ElectricityRanking 
-                            data={[[10,20,30,40,50], [10,20,30,40,50]]}
+                        <ElectricityRanking
+                            data={[[10, 20, 30, 40, 50], [10, 20, 30, 40, 50]]}
                         />
                     </div>
                 </div>
                 <div className={classNames(styles.rightItem, styles.rightItem4)}>
-                    <Title title={t('社会效益')}/>
+                    <Title title={t('社会效益')} />
                     <div className={styles.cardContent}>
                         <SocialBenefits
                             data={[
@@ -415,7 +449,7 @@ const RealtimeAlarm = () => {
                 onOk={() => delDevice()}
                 onCancel={changeIsOpenDel}
             >
-               {t('数据删除后将无法恢复，是否确认删除该条数据？')} 
+                {t('数据删除后将无法恢复，是否确认删除该条数据？')}
             </Modal>
         </div>
     )

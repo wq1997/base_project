@@ -91,7 +91,8 @@ const PolicyConfiguration = ({deviceVersion}) => {
                     ...item,
                     action: {
                         0: '充电',
-                        1: '放电'
+                        1: '放电',
+                        2: '待机'
                     }[item.action],
                     timeType: {
                         0: '尖',
@@ -107,7 +108,8 @@ const PolicyConfiguration = ({deviceVersion}) => {
                     ...item,
                     action: {
                         0: '充电',
-                        1: '放电'
+                        1: '放电',
+                        2: '待机'
                     }[item.action],
                     timeType: {
                         0: '尖',
@@ -328,6 +330,7 @@ const PolicyConfiguration = ({deviceVersion}) => {
                                             options: [
                                                 {value: '充电', label: intl.formatMessage({id: '充电'})},
                                                 {value: '放电', label: intl.formatMessage({id: '放电'})},
+                                                {value: '待机', label: intl.formatMessage({id: '待机'})},
                                             ]
                                         },
                                         {
@@ -535,7 +538,8 @@ const PolicyConfiguration = ({deviceVersion}) => {
                                     ...value,
                                     action: {
                                         '充电': 0,
-                                        '放电': 1
+                                        '放电': 1,
+                                        '待机': 2
                                     }[value.action],
                                     timeType: {
                                         '尖': 0,

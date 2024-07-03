@@ -104,7 +104,6 @@ const App = (props) => {
     const values = formRef.current?.getFieldsValue();
     try {
       const values = await form.validateFields();
-      console.log('Success:', values);
       if (props.formData.f0102_Id) {
         props.changeData({ f0102_Id: props.formData.f0102_Id, ...values })
       } else {

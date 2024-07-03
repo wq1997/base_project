@@ -68,7 +68,6 @@ const App = (props) => {
     const onFinish = async () => {
         try {
             const values = await form1.validateFields();
-            console.log('Success:', values, props);
             props.delUserData({ f0102_Id: props.formData?.f0102_Id, 
                 oldPswd:getEncrypt(publicKey, values.oldPswd),
                 newPswd:getEncrypt(publicKey, values.newPswd),

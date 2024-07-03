@@ -112,7 +112,6 @@ const HighAnysis = () => {
                 const currentData = dataSource?.find(item => item.date===currentDate);
                 const filed = index%4===0?"temp":(index%4===1?"tempLeft":(index%4===2?"tempRight":index%4===3?"tempNeg":"tempPos"));
                 const data = currentData?.energyData?.[filed];
-                console.log("CCCAAA", currentData)
                 series.push({
                     name: legend,
                     type: 'line',
@@ -121,7 +120,6 @@ const HighAnysis = () => {
                     data: data?.map(item => item[1])
                 })
             })
-            console.log("CCCC", series)
         }
 
         const option = {

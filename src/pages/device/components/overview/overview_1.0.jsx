@@ -311,7 +311,7 @@ const OverView = ({deviceVersion, sn}) => {
                         </div>
                         <div className={styles.centerLeftTwo}>
                             <div className={styles.title}>
-                                <Title title={intl.formatMessage({id: '系统效率(前一日)'})} />
+                                <Title title={intl.formatMessage({id: '系统效率'})} />
                             </div>
                             <div className={styles.centerLeftTwoArea}>
                                 {

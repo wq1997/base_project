@@ -26,29 +26,19 @@
 }
 
 .detail {
-    width: 912px;
-    background: #004764cc;
+    width: 400px;
+    background: rgba(11,56,88,0.85);
     border-radius: 16px;
     padding: 20px 30px;
     box-sizing: border-box;
     .header {
-        height: 30px;
         color: #54cfff;
         font-size: 16px;
         display: flex;
-        justify-content: space-between;
+        justify-content: end;
         align-items: center;
         padding-left: 10px;
         box-sizing: border-box;
-        &::before {
-            content: "";
-            width: 4px;
-            height: 14px;
-            background: #54cfff;
-            border-radius: 2px;
-            position: absolute;
-            left: 33px;
-        }
         .close {
             cursor: pointer;
         }
@@ -58,12 +48,6 @@
         width: 100%;
         font-size: 14px;
         color: #fff;
-        > :first-child {
-            border-right: 2px solid #195e8f;
-            flex: 3;
-            padding-right: 20px;
-            box-sizing: border-box;
-        }
         > :nth-child(2) {
             flex: 4;
             padding-left: 40px;
