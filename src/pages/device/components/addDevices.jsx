@@ -64,6 +64,7 @@ const App = (props) => {
     ]
 
     useEffect(() => {
+        form.resetFields();
         form.setFieldsValue(props.formData);
     }, [props.formData]);
     useEffect(() => {

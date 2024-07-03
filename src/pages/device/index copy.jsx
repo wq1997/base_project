@@ -2,7 +2,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { useSelector, useIntl, history } from "umi";
 import styles from "./index.less";
-import { Select, Space, theme, Button, Modal, message } from "antd"
+import { Table, Select, Space, theme, Button, Modal, message } from "antd"
 import { CardModel } from "@/components";
 import { getFetchPlantList, deleteDtu, updateDtus } from "@/services/deviceTotal"
 import { getAllRevenue as getAllRevenueServe } from "@/services";
@@ -15,17 +15,6 @@ import {
     ExclamationCircleFilled
 } from '@ant-design/icons';
 import Add from './components/addDevices'
-import classNames from 'classnames';
-import Title from './components/Title';
-import DeviceRunDesc from './components/deviceRunDesc';
-import IncomeRanking from './components/incomeRanking';
-import ElectricityRanking from './components/electricityRanking';
-import SocialBenefits from './components/socialBenefits';
-import Table from "./components/table";
-import bottomLeft1 from "../../../public/images/bottomLeft1.svg";
-import bottomLeft2 from "../../../public/images/bottomLeft2.svg";
-import bottomLeft3 from "../../../public/images/bottomLeft3.svg";
-import Map from './components/map';
 const { Option } = Select;
 
 const RealtimeAlarm = () => {
@@ -333,77 +322,116 @@ const RealtimeAlarm = () => {
     }, [currentPlantId])
 
     return (
-        <div
-            className={styles.content}
-        >  
-            <div className={styles.left}>
-                <div className={classNames(styles.leftItem, styles.leftItem1)}>
-                    <Map />
+        <>
+            <div className={styles.head}>
+                <Select
+                    style={{width: 240,}}
+                    onChange={(val) => changePlant(val)}
+                    key={dataOption[0]?.value}
+                    defaultValue={dataOption[0]?.value}
+                >
+                    {dataOption && dataOption?.map(item => {
+                        return (<Option key={item.value} value={item.value}>{item.label}</Option>);
+                    })
+                    }
+                </Select>
+            </div>
+            <div className={styles.wrap}>
+                <div className={styles.first}>
+                    <CardModel
+                        title={t('电量统计')}
+                        bgc={'#0D1430'}
+                        content={
+                            <div className={styles.topContent} style={{ backgroundColor: token.areaCardBgc, borderRadius: 8 }}>
+                                {eleData.map(it => {
+                                    return (
+                                        <div className={styles.topItem} style={{ color: it.color,  }}>
+                                            <div className={styles.topItemTitle}>
+                                                <span style={{ color: token.smallTitleColor, fontWeight: 500, marginLeft: '3px' }}>{it.label}</span>
+                                            </div>
+                                            <div className={styles.topVaue} style={{  fontWeight: 400, }} >
+                                                {dataEle[it.name]}
+                                                <span style={{ fontSize: '16px', fontWeight: 400, marginLeft: '10px', height: '10%', lineHeight: '150%' }}>{it.unit}</span>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+
+                            </div>
+                        }
+                    />
                 </div>
-                <div className={classNames(styles.rightItem, styles.leftItem2)}>
-                    <Title title={t('设备列表')}/>
-                    <div className={styles.cardContent}>
-                        <Table 
-                            plantId={currentPlantId}
-                            changeIsOpenDel={changeIsOpenDel}
-                            edit={edit}
-                        />
-                    </div>
+                <div className={styles.second}>
+                    <CardModel
+                        title={t('设备统计')}
+                        bgc={'#0D1430'}
+                        content={
+                            <div className={styles.secondContent}>
+                                {topData.map(it => {
+                                    return (
+                                        <div className={styles.topItem} style={{ color: it.color, backgroundColor: token.areaCardBgc, borderRadius: 8}}>
+                                            <div className={styles.leftIcon}>
+                                                {it.icon}
+                                            </div>
+                                            <div className={styles.rightAll}>
+                                                <div className={styles.topItemTitle}>
+                                                    <span style={{ color: token.smallTitleColor, fontWeight: 500,  marginLeft: '3px' }}>{it.name}</span>
+                                                </div>
+                                                <div className={styles.topVaue} style={{  fontWeight: 400, }} >
+                                                    {dataTotal[it.key]}
+                                                    <span style={{ fontSize: '16px', fontWeight: 400, marginLeft: '10px', height: '10%', lineHeight: '150%' }}>{it.unit}</span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    )
+                                })}
+
+                            </div>
+                        }
+                    />
+                </div>
+
+                <div className={styles.third}>
+                    <CardModel
+                        title={t('收益统计')}
+                        bgc={'#0D1430'}
+                        content={
+                            <div className={styles.content}>
+                                <div className={styles.contentLeft}>
+                                    {incomeData?.map(item => {
+                                        return <div>{item.label}</div>
+                                    })}
+                                </div>
+                                <div className={styles.contentRight}>
+                                    {incomeData?.map(item => {
+                                        return <div><span style={{color:item.color, fontSize: 20}}>{item.value}</span> {t('元')}</div>
+                                    })}
+                                </div>
+                            </div>
+                        }
+                    />
+                </div>
+
+                <div className={styles.content} >
+                    {
+                        (user?.roleId==2||user?.roleId==3)&&
+                        <div className={styles.title}>
+                            <div className={styles.buttons}>
+                                <Button type="primary" onClick={changIsOpen}>
+                                    {t('新增')}
+                                </Button>
+                            </div>
+                        </div>
+                    }
+                    <Table
+                        columns={tableColum}
+                        dataSource={data}
+                        scroll={{ y: scroolY }}
+                    />
                 </div>
             </div>
-            <div className={styles.right}>
-                <div className={classNames(styles.rightItem, styles.rightItem1)}>
-                    <Title title={t('设备运行情况')}/>
-                    <div className={styles.cardContent}>
-                        <DeviceRunDesc 
-                            dataSource={{normal: 8, warn: 0, offline: 0}}
-                        />
-                    </div>
-                </div>
-                <div className={classNames(styles.rightItem, styles.rightItem2)}>
-                    <Title title={`${t('收益统计')}(${t('元')})`}/>
-                    <div className={styles.cardContent}>
-                        <IncomeRanking 
-                            data={[10,20,30,40,50]}
-                        />
-                    </div>
-                </div>
-                <div className={classNames(styles.rightItem, styles.rightItem3)}>
-                    <Title title={`${t('电量统计')}(${t('kWh')})`}/>
-                    <div className={styles.cardContent}>
-                        <ElectricityRanking 
-                            data={[[10,20,30,40,50], [10,20,30,40,50]]}
-                        />
-                    </div>
-                </div>
-                <div className={classNames(styles.rightItem, styles.rightItem4)}>
-                    <Title title={t('社会效益')}/>
-                    <div className={styles.cardContent}>
-                        <SocialBenefits
-                            data={[
-                                {
-                                    icon: bottomLeft1,
-                                    data: 0,
-                                    unit: t('吨'),
-                                    label: t('节约标准煤'),
-                                },
-                                {
-                                    icon: bottomLeft2,
-                                    data: 0,
-                                    unit: t('吨'),
-                                    label: t('CO2减排量'),
-                                },
-                                {
-                                    icon: bottomLeft3,
-                                    data: 0,
-                                    unit: t('棵'),
-                                    label: t('等效植树量'),
-                                },
-                            ]}
-                        />
-                    </div>
-                </div>
-            </div>
+
             <Add isOpen={isOpen} title={title} formData={formData} onRef={cancle}
                 changeData={(value) => changeData(value)}
                 initSelectData={initSelectData}
@@ -417,7 +445,7 @@ const RealtimeAlarm = () => {
             >
                {t('数据删除后将无法恢复，是否确认删除该条数据？')} 
             </Modal>
-        </div>
+        </>
     )
 }
 

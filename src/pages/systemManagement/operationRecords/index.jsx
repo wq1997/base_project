@@ -112,7 +112,7 @@ const RealtimeAlarm = () => {
         <div className={styles.dataItem}>
           <Input placeholder={t('IP')} onChange={changeIp} enterButton />
         </div>
-        {user.roleId!=1&&<div className={styles.dataItem}>
+        {user?.roleId!=1&&<div className={styles.dataItem}>
           <Search placeholder={t('用户名')} onSearch={onSearch} enterButton />
         </div>}
         <Button type="primary" onClick={downLoadFoodModel} style={{ backgroundColor: token.defaultBg, marginLeft: '30px' }} >

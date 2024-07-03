@@ -65,7 +65,9 @@ const Electricity = () => {
     const initOption = async () => {
         const values = await form.validateFields();
         const { timeType } = values;
-        let lMax = Number(Math.max(...dataSource?.map(item => item.dayChargeEnergy) || []));
+        let lMax1 = Number(Math.max(...dataSource?.map(item => item.dayChargeEnergy) || []));
+        let lMax2 = Number(Math.max(...dataSource?.map(item => item.dayDischargeEnergy))||[]);
+        let lMax = lMax1>lMax2?lMax1:lMax2;
         lMax = Math.ceil(lMax / 5) * 5 || 100;
         const lInterval = lMax / 5;
         const option = {

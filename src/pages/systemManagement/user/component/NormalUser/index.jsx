@@ -156,7 +156,7 @@ function Com(props) {
                     />
                 }
             />
-            {user.roleId==2&& <CardModel
+            {user?.roleId==2&& <CardModel
                 title={
                     t("下属用户")
                 }

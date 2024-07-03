@@ -73,7 +73,7 @@ const getMenu = menuList => {
                 </SubMenu>
             );
         } else {
-            if(menu.permissions&&menu.permissions==user.roleId || !menu.permissions){
+            if(menu.permissions&&menu.permissions==user?.roleId || !menu.permissions){
                 return (
                     <Menu.Item key={menu.key} icon={menu.icon}
                         style={{ fontSize: menu.icon ? '18px' : '16px' }}
