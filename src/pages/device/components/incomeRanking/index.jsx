@@ -27,6 +27,7 @@ const IncomeRanking = ({currentPlantId}) => {
         if (res?.data?.data?.data) {
             data = res?.data?.data?.data?.map(item => item.number);
         }
+
         setOptions({
             tooltip: {
                 trigger: 'item',
@@ -111,8 +112,8 @@ const IncomeRanking = ({currentPlantId}) => {
                     {
                         "name": "",
                         "type": "pictorialBar",
-                        "symbolSize": [30, 15],
-                        "symbolOffset": [0, -10],
+                        "symbolSize": [30, -15],
+                        "symbolOffset": [0, 0],
                         "z": 12,
                         itemStyle:{
                             opacity:1,
@@ -127,6 +128,7 @@ const IncomeRanking = ({currentPlantId}) => {
                           "normal": {
                               "show": true,
                               "position": 'top',
+                              "offset": [0,-5],
                               "formatter": "{c}",
                               "color": 'white'
                           }
