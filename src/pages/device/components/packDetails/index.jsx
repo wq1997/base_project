@@ -73,7 +73,7 @@ function Com(props) {
                             <Icon type='icon-xiangyou' style={{ cursor: 'pointer',marginRight:'6px' }}></Icon>
                             PACK{one.packNo + 1}</div>
                         <div className={styles.vol}>
-                            <div className={styles.title2}>{t("单体电压/mV")}</div>
+                            <div className={styles.title2}>{t("单体电压/V")}</div>
                             <div className={styles.oneContent}>
                                 {one.vols?.map((it, index) => {
                                     return (

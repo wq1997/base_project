@@ -326,7 +326,11 @@ const RealtimeAlarm = () => {
                             eleData?.map(item => {
                                 return (
                                     <div className={styles.mapBottomItem}>
-                                        <div style={{ color: item.color }} className={styles.mapBottomItemData}>{item?.name?.map(name => dataEle[name] || 0).join('/')}</div>
+                                        <div className={styles.mapBottomItemData}>
+                                            <span style={{ color: item.color }}>{dataEle[item?.name?.[0]]}</span>
+                                            <span style={{color: '#999'}}> / </span>
+                                            <span style={{ color: 'white' }}>{dataEle[item?.name?.[1]]}</span>
+                                        </div>
                                         <div className={styles.mapBottomItemLabel}>{item?.label}</div>
                                     </div>
                                 )

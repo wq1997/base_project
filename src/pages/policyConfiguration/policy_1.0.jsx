@@ -160,14 +160,16 @@ const PolicyConfiguration = ({deviceVersion}) => {
                         <div
                             style={{
                                 display: 'flex',
-                                justifyContent: 'end'
                             }}
                         >
                             <Button
                                 style={{
                                     background: '#03B417',
                                     border: 'none',
-                                    marginBottom: 20
+                                    marginBottom: 30,
+                                    fontSize: 20,
+                                    height: '45px',
+                                    width: '90px',
                                 }}
                                 onClick={async () => {
                                     await updateDataServe({dtuId: id, type: deviceVersion});
