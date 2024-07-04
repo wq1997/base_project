@@ -91,7 +91,10 @@ const IncomeRanking = ({currentPlantId}) => {
                                 { offset: 0.7,  color: '#00B7FF'}
                             ], false),
                         },
-                        "data": new Array(xData?.length).fill(1)
+                        "data": new Array(xData?.length).fill(1),
+                        tooltip: {
+                            show: false
+                        }
                     },
                     //数据圆柱
                     {

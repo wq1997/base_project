@@ -107,7 +107,8 @@ const EditRowTable = ({
     let newData = cloneObject(dataSource);
     newData[index] = {};
     setDataSource(newData);
-    onChange(newData)
+    onChange(newData);
+    setEditingKey(-1);
   };
 
   const handleDelete = (key) => {
@@ -117,6 +118,7 @@ const EditRowTable = ({
     newData = newData?.filter(item => item);
     setDataSource(newData);
     onChange(newData);
+    setEditingKey(-1);
   }
 
   const save = async (key) => {

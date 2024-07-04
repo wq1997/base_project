@@ -40,14 +40,14 @@ const Table = ({
             key: 'version',
         },
         {
-            title: t('设备状态'),
-            dataIndex: 'online',
-            key: 'online',
-        },
-        {
             title: t('安装位置'),
             dataIndex: 'address',
             key: 'address',
+        },
+        {
+            title: t('设备状态'),
+            dataIndex: 'online',
+            key: 'online',
         },
         {
             title: t('操作'),

@@ -9,8 +9,8 @@ const DeviceRunDesc = ({dataSource}) => {
         <div className={styles.circle}>
             {/* 正常 */}
             <div className={styles.ball1}>
-                <div className={styles.data1} style={{color: '#01FF23'}}>{(dataSource?.deviceCount - dataSource?.nowAlarmCount)||0}</div>
-                <div className={styles.font}>正常</div>
+                <div className={styles.data1} style={{color: '#01FF23'}}>{dataSource?.onlineCount||0}</div>
+                <div className={styles.font}>在线</div>
                 <img src={ball1Img} />
             </div>
 
