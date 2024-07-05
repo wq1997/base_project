@@ -27,9 +27,9 @@ const Index = () => {
             </div>
             <div className={styles.content}>
                 <div className={styles.left}>
-                    <AlarmAnysis />
+                    <AlarmAnysis data={initData?.signalName2Count} />
                     <WorkOrder data={initData?.workOrderSummery} />
-                    <DeviceStatus />
+                    <DeviceStatus data={initData?.deviceStatusCount} />
                 </div>
                 <div className={styles.right}>
                     <AlarmList initData={initData} />

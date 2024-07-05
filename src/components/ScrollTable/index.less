@@ -1,10 +1,10 @@
-.table{
+.table {
     height: 100%;
     overflow: hidden;
-    .tableHeader{
+    .tableHeader {
         display: flex;
         background-color: #004764;
-        .tableHeaderTitle{
+        .tableHeaderTitle {
             flex: 1;
             text-align: center;
             font-size: 13px;
@@ -12,14 +12,15 @@
             font-family: electronicFont;
         }
     }
-    .tableOuterContent{
+    .tableOuterContent {
         overflow: hidden;
-        .tableContent{
+        .tableContent {
             position: relative;
-            .tableContentRow{
+            .tableContentRow {
                 display: flex;
                 margin-bottom: 10px;
-                .tableContentCol{
+                background: transparent url(@/assets/images/tableArea.svg) center center no-repeat;
+                .tableContentCol {
                     flex: 1;
                     padding: 10px 0;
                     text-align: center;
@@ -29,7 +30,7 @@
                     font-size: 13px;
                 }
             }
-            &::-webkit-scrollbar{
+            &::-webkit-scrollbar {
                 display: none;
             }
         }

@@ -90,7 +90,7 @@ const Charts3D = ({
         let k = typeof internalDiameterRatio !== 'undefined' ? (1 - internalDiameterRatio) / (1 + internalDiameterRatio) : 1 / 3;
 
         // 为每一个饼图数据，生成一个 series-surface 配置
-        for (let i = 0; i < pieData.length; i++) {
+        for (let i = 0; i < pieData?.length; i++) {
             sumValue += pieData[i].value;
 
             let seriesItem = {
@@ -121,13 +121,13 @@ const Charts3D = ({
 
         // 使用上一次遍历时，计算出的数据和 sumValue，调用 getParametricEquation 函数，
         // 向每个 series-surface 传入不同的参数方程 series-surface.parametricEquation，也就是实现每一个扇形。
-        for (let i = 0; i < series.length; i++) {
+        for (let i = 0; i < series?.length; i++) {
             endValue = startValue + series[i].pieData.value;
             series[i].pieData.startRatio = startValue / sumValue;
             series[i].pieData.endRatio = endValue / sumValue;
             series[i].parametricEquation = getParametricEquation(
-                series[i].pieData.startRatio,
-                series[i].pieData.endRatio,
+                series[i].pieData?.startRatio,
+                series[i].pieData?.endRatio,
                 false,
                 false,
                 k,
@@ -205,7 +205,7 @@ const Charts3D = ({
         return option;
     }
 
-    const serData = data.map((dItem, index) => {
+    const serData = data?.map((dItem, index) => {
         return {
             ...dItem,
             value: Number(dItem.value),

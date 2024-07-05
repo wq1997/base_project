@@ -5,6 +5,7 @@ import styles from "./index.less";
 const baseUrl = process.env.API_URL_1;
 
 const Index = ({ plants, showInfo, panTo }) => {
+    const markers = [];
     const [map, setMap] = useState();
     const [infoWindow, setInfoWindow] = useState();
     const defaultZoom = 5;
@@ -91,7 +92,7 @@ const Index = ({ plants, showInfo, panTo }) => {
                 label: {
                     direction: "top",
                     content: `
-                        <div class=${styles.content} title=${item.name}>
+                        <div onclick='window.onclick(${index})' class=${styles.content} title=${item.name}>
                             <div class=${styles.row}></div>
                             <span class=${styles.plantName}>${item.name}</span>
                         </div>
@@ -123,12 +124,19 @@ const Index = ({ plants, showInfo, panTo }) => {
                         </div>
                     </div>
             `;
-            marker.on("click", e => {
+            window.onclick = index => {
                 if (showInfo) {
-                    _infoWindow.setContent(e.target.content);
-                    _infoWindow.open(map, e.target.getPosition());
+                    const target = markers[index];
+                    _infoWindow.setContent(target.content);
+                    _infoWindow.open(map, target.getPosition());
                 }
+            };
+            marker.on("click", e => {
+                // _infoWindow.setContent(e.target.content);
+                // _infoWindow.open(map, e.target.getPosition());
+                onclick(index);
             });
+            markers[index] = marker;
         });
     };
 

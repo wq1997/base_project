@@ -4,11 +4,12 @@ import styles from "./index.less";
 import Map from "@/pages/largeScreens/components/map";
 import Header from "../Header";
 import classNames from "classnames";
-import { Form, Select, Input, Button } from "antd";
+import { Form, Select, Input, Badge } from "antd";
 import { useState, useEffect } from "react";
 import { getNetScreenData as getNetScreenDataServer } from "@/services/largeScreen";
 import WorkOrder from "@/pages/largeScreens/alarmScreen/WorkOrder";
 import Card from "@/pages/largeScreens/components/Card";
+import PlantOverview from "../../../components/PlantOverview";
 
 const Network = ({ typeList, currentType, onChangedType }) => {
     const [initData, setInitData] = useState();
@@ -76,84 +77,53 @@ const Network = ({ typeList, currentType, onChangedType }) => {
             </div>
             {/* 左边 */}
             <div className={styles.left}>
-                <Card
-                    title="电站概览"
-                    content={
-                        <div className={classNames(styles.areaContent, styles.areaLeftContent)}>
-                            <div className={styles.top}>
-                                <div className={styles.data}>
-                                    <span className={styles.label}>总装机容量：</span>
-                                    <span className={styles.value}>XXXXXXXXX</span>
-                                </div>
-                                <div className={styles.chart}>
-                                    <Charts3D
-                                        colorList={["#00F9FF", "#FFF100"]}
-                                        data={[
-                                            {
-                                                name: "源侧",
-                                                value: 134,
-                                            },
-                                            {
-                                                name: "网侧",
-                                                value: 56,
-                                            },
-                                        ]}
-                                        autoRotate={false}
-                                        showLengend={true}
-                                    />
-                                    <Charts3D
-                                        colorList={["#00F9FF", "#FFF100"]}
-                                        data={[
-                                            {
-                                                name: "源侧",
-                                                value: 134,
-                                            },
-                                            {
-                                                name: "网侧",
-                                                value: 56,
-                                            },
-                                        ]}
-                                        autoRotate={false}
-                                        showLengend={true}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    }
+                <PlantOverview
+                    data={{
+                        total: initData?.cityCapacitySta?.map(city => {
+                            return {
+                                ...city,
+                                value: city.count,
+                            };
+                        }),
+                        totalCapacity: initData?.totalCapacity,
+                        totalPlant: initData?.totalPlant,
+                    }}
                 />
                 <WorkOrder data={initData?.workOrderSummery} />
             </div>
 
             {/* 底部 */}
             <div className={styles.networkBottom}>
-                <Title title={"信息汇总"} />
-                <div className={styles.areaContent}>
-                    <ScrollTable
-                        columns={[
-                            {
-                                title: "地区",
-                                key: "province",
-                            },
-                            {
-                                title: "总装机容量(MW)",
-                                key: "capacity",
-                            },
-                            {
-                                title: "电源侧/电网侧(MW)",
-                                key: "supplyGridCapacity",
-                            },
-                            {
-                                title: "电站总数(个)",
-                                key: "plantCount",
-                            },
-                            {
-                                title: "电源侧/电网侧(个)",
-                                key: "supplyGridPlantCount",
-                            },
-                        ]}
-                        dataSource={initData?.infoSummary}
-                    />
-                </div>
+                <Card
+                    title="项目汇总"
+                    content={
+                        <ScrollTable
+                            columns={[
+                                {
+                                    title: "地区",
+                                    key: "province",
+                                },
+                                {
+                                    title: "总装机容量(MW)",
+                                    key: "capacity",
+                                },
+                                {
+                                    title: "电源侧/电网侧(MW)",
+                                    key: "supplyGridCapacity",
+                                },
+                                {
+                                    title: "电站总数(个)",
+                                    key: "plantCount",
+                                },
+                                {
+                                    title: "电源侧/电网侧(个)",
+                                    key: "supplyGridPlantCount",
+                                },
+                            ]}
+                            dataSource={initData?.infoSummary}
+                        />
+                    }
+                />
             </div>
 
             {/* 地图搜索 */}
@@ -161,7 +131,7 @@ const Network = ({ typeList, currentType, onChangedType }) => {
                 <Form layout="inline">
                     <Form.Item label="项目类型">
                         <Select
-                            style={{ width: 220, height: 32 }}
+                            className={styles.input}
                             options={[
                                 { label: "电网侧", value: "电网侧" },
                                 { label: "电源侧", value: "电源侧" },
@@ -173,7 +143,7 @@ const Network = ({ typeList, currentType, onChangedType }) => {
                     </Form.Item>
                     <Form.Item label="项目名称">
                         <Input
-                            style={{ width: 220, height: 32 }}
+                            lassName={styles.input}
                             value={name}
                             onChange={e => {
                                 setName(e.target.value);
@@ -183,7 +153,7 @@ const Network = ({ typeList, currentType, onChangedType }) => {
                     <Form.Item label="项目地址">
                         <Input
                             value={address}
-                            style={{ width: 220, height: 32 }}
+                            lassName={styles.input}
                             onChange={e => {
                                 setAddress(e.target.value);
                             }}

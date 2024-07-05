@@ -20,27 +20,56 @@
     .header {
         position: absolute;
         top: 0;
-        left: 10px;
         width: calc(100% - 20px);
-        height: 120px;
+        height: 70px;
         z-index: 10;
     }
 
     .left {
-        .content;
-        width: 28%;
-        height: calc(60% - 45px);
+        padding: 10px 0 0 10px;
+        box-sizing: border-box;
+        width: 22%;
+        height: calc(70% - 88px);
         position: absolute;
-        top: 128px; // 120是header的高度 8px是距离上面的高度
+        top: 82px; // 120是header的高度 8px是距离上面的高度
         display: flex;
         flex-direction: column;
         gap: 8px;
         > div {
             flex: 1;
         }
+        .areaContentData {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            top: -20px;
+            .areaContentDataItem {
+                display: flex;
+                align-items: flex-end;
+                margin: 0 20px;
+                .areaContentDataItemData {
+                    position: relative;
+                    top: 10px;
+                    .areaContentDataItemData1 {
+                        font-size: 20px;
+                        font-family: DingTalkJinBuTi;
+                        color: #54cfff;
+                        margin: 0 0 0 10px;
+                        margin-right: 5px;
+                    }
+                    .areaContentDataItemData2 {
+                        font-size: 15px;
+                        color: white;
+                    }
+                }
+            }
+        }
         .areaLeftContent {
             display: flex;
             flex-direction: column;
+
             .top {
                 width: 100%;
                 height: calc(50% - 5px);
@@ -99,20 +128,32 @@
     .networkBottom {
         .content;
         width: calc(100% - 20px);
-        height: calc(40% - 80px);
+        height: 31%;
         position: absolute;
-        bottom: 10px;
+        bottom: 0px;
     }
 
     .search {
-        width: calc(72% - 10px);
+        width: 50%;
+        min-width: 800px;
+        margin: 0 auto;
         position: absolute;
-        top: 128px;
+        top: 100px;
         right: 20px;
+        left: 30%;
         display: flex;
         justify-content: center;
         align-items: center;
+
         :global {
+            .ant-form-inline {
+                flex-wrap: nowrap;
+                width: 100%;
+            }
+            .ant-form-item {
+                height: 32px;
+                flex: 1;
+            }
             .ant-form-item .ant-form-item-label > label {
                 color: white;
             }
@@ -160,5 +201,28 @@
                 color: white;
             }
         }
+    }
+}
+
+@media (max-width: 1800px) {
+    .centerTop {
+        height: 80px !important;
+    }
+}
+
+@media (min-width: 1800px) {
+    .search {
+        top: 126px !important;
+    }
+    .header {
+        height: 95px !important;
+    }
+    .centerTop {
+        top: 106px !important;
+    }
+    .left,
+    .right {
+        top: 96px !important;
+        height: calc(70% - 106px) !important;
     }
 }
