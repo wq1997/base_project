@@ -86,7 +86,7 @@ const PolicyConfiguration = ({deviceVersion}) => {
         const res = await getBurCmdHistory2Serve({dtuId:id,type:deviceVersion});
         if(res?.data?.data){
             const data = res?.data?.data;
-            const durationList1 = data?.durationList1?.map(item => {
+            const policyDurationList1 = data?.policyDurationList1?.map(item => {
                 return {
                     ...item,
                     action: {
@@ -103,7 +103,7 @@ const PolicyConfiguration = ({deviceVersion}) => {
                     timeStramp: `${translateNmberToTime(item.startHour)}:${translateNmberToTime(item.startMin)}~${translateNmberToTime(item.endHour)}:${translateNmberToTime(item.endMin)}`
                 }
             })
-            const durationList2 = data?.durationList2?.map(item => {
+            const policyDurationList2 = data?.policyDurationList2?.map(item => {
                 return {
                     ...item,
                     action: {
@@ -120,13 +120,14 @@ const PolicyConfiguration = ({deviceVersion}) => {
                     timeStramp: `${translateNmberToTime(item.startHour)}:${translateNmberToTime(item.startMin)}~${translateNmberToTime(item.endHour)}:${translateNmberToTime(item.endMin)}`
                 }
             })
-            let durationList = (tabValue===0?durationList1:durationList2) || [];
+            let durationList = (tabValue===0?policyDurationList1:policyDurationList2) || [];
             const params = {
                 mode: data?.mode,
                 enable: data?.enable,
-                cap: data?.cap,
+                tranCap: data?.tranCap,
+                tranCapPercent: data?.tranCapPercent,
                 durationList,
-                pcsPower: data?.power,
+                pcsPower: data?.pcsPower,
                 tempStart: data?.tempStart,
                 tempStop: data?.tempStop,
                 humStart: data?.humStart,
@@ -134,7 +135,9 @@ const PolicyConfiguration = ({deviceVersion}) => {
                 coolingPoint: data?.coolingPoint,
                 heatPoint: data?.heatPoint,
                 coolingDiffPoint: data?.coolingDiffPoint,
-                heatDiffPoint: data?.heatDiffPoint
+                heatDiffPoint: data?.heatDiffPoint,
+                antiRefluxTriggerValue: data?.antiRefluxTriggerValue,
+                pcsPowerWaveRange: data?.pcsPowerWaveRange
             }
             monthList?.forEach((item, index) => {
                 params[item.value] = data?.policySelectList?.[index]
@@ -274,7 +277,7 @@ const PolicyConfiguration = ({deviceVersion}) => {
                                 <Row>
                                     <Col span={2}>
                                         <Form.Item label={intl.formatMessage({id: '并离网'})} name="switchOnOffGrid" rules={[{ ...FORM_REQUIRED_RULE }]} style={{margin: 0}}>
-                                            <Switch disabled={!canIssue} checkedChildren={intl.formatMessage({id: '并网'})} unCheckedChildren={intl.formatMessage({id: '离网'})} />
+                                            <Switch disabled={!canIssue} checkedChildren={intl.formatMessage({id: '离网'})} unCheckedChildren={intl.formatMessage({id: '并网'})} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={2}>
@@ -572,6 +575,7 @@ const PolicyConfiguration = ({deviceVersion}) => {
                         // 策略配置
                         if(checkModalType==="sendStrategySetting"){
                             values = await form.validateFields(['durationList']);
+                            console.log("values", values)
                             const durationList = values?.durationList.map(value => {
                                 const timeStramp = value.timeStramp;
                                 const timeStrampList = timeStramp.split("~");
@@ -596,7 +600,18 @@ const PolicyConfiguration = ({deviceVersion}) => {
                                     endMin: time2[1],
                                 }
                             })
-                            res = await sendStrategySettingServe({durationList, strategyType: tabValue,dtuId: id, type: deviceVersion})
+                            let params = { 
+                                strategyType: tabValue,
+                                dtuId: id, 
+                                type: deviceVersion
+                            }
+                            if(tabValue===0){
+                                params.policyDurationList1 = durationList;
+                            }
+                            if(tabValue===1){
+                                params.policyDurationList2 = durationList;
+                            }
+                            res = await sendStrategySettingServe(params)
                         }
                         // 策略选择
                         if(checkModalType==="sendStrategySelect"){
