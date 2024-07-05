@@ -92,7 +92,6 @@ const HighAnysis = () => {
                 series.push({
                     name: legend,
                     type: 'line',
-                    stack: 'Total',
                     showSymbol: false,
                     data: data?.map(item => item[1])
                 })
@@ -115,7 +114,6 @@ const HighAnysis = () => {
                 series.push({
                     name: legend,
                     type: 'line',
-                    stack: 'Total',
                     showSymbol: false,
                     data: data?.map(item => item[1])
                 })

@@ -86,7 +86,6 @@ const SchematicDiagram = ({dataSource}) => {
             ref={schematicDiagramRef}
             style={{width: '100%', height: '100%', position: 'relative'}}
         >
-
             <div
                 style={{
                     width: '200px',
@@ -189,8 +188,8 @@ const SchematicDiagram = ({dataSource}) => {
                     <div
                         style={{
                             position: 'absolute', 
-                            right: - energySystemIconWidth/2 - 130, 
-                            top: Math.tan((180 - energySystemChargingAngle - 35) * Math.PI / 180) * (- energySystemIconWidth/2 - 130),
+                            right: - energySystemIconWidth/2 - 170, 
+                            top: Math.tan((180 - energySystemChargingAngle - 35) * Math.PI / 180) * (- energySystemIconWidth/2 - 170),
                             transform: `rotate(-${energySystemChargingAngle}deg)`,
                         }} 
                     >

@@ -104,7 +104,6 @@ const MonitoringCurves = () => {
                 series.push({
                     name: legend,
                     type: 'line',
-                    stack: 'Total',
                     showSymbol: false,
                     data: data?.map(item => item[1])
                 })
@@ -126,7 +125,6 @@ const MonitoringCurves = () => {
                 series.push({
                     name: legend,
                     type: 'line',
-                    stack: 'Total',
                     showSymbol: false,
                     data: data?.map(item => item[1])
                 })
@@ -148,7 +146,6 @@ const MonitoringCurves = () => {
                 series.push({
                     name: legend,
                     type: 'line',
-                    stack: 'Total',
                     showSymbol: false,
                     data: data?.map(item => item[1])
                 })
@@ -170,7 +167,6 @@ const MonitoringCurves = () => {
                 series.push({
                     name: legend,
                     type: 'line',
-                    stack: 'Total',
                     showSymbol: false,
                     data: data?.map(item => item[1])
                 })
@@ -192,7 +188,6 @@ const MonitoringCurves = () => {
                 series.push({
                     name: legend,
                     type: 'line',
-                    stack: 'Total',
                     showSymbol: false,
                     data: data?.map(item => item[1])
                 })
@@ -214,7 +209,6 @@ const MonitoringCurves = () => {
                 series.push({
                     name: legend,
                     type: 'line',
-                    stack: 'Total',
                     showSymbol: false,
                     data: data?.map(item => item[1])
                 })
@@ -249,7 +243,6 @@ const MonitoringCurves = () => {
                     }
                 },
                 axisLabel: {
-                    margin: 10,
                     color: 'white',
                     textStyle: {
                         fontSize: 14

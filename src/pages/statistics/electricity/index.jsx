@@ -480,7 +480,7 @@ const Electricity = () => {
                                                 key: 'cDEfficiency',
                                             },
                                             {
-                                                title: `${intl.formatMessage({ id: '收益' })}(元)`,
+                                                title: `${intl.formatMessage({ id: '收益' })}(${intl.formatMessage({id: '元'})})`,
                                                 dataIndex: 'number',
                                                 key: 'number',
                                             },
