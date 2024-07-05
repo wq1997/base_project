@@ -74,7 +74,7 @@ const RealtimeAlarm = () => {
         },
         {
             label: `${t('累计充/放电量')}(${t('kWh')})`,
-            name: ['totalDisCharge', 'totalDisCharge'],
+            name: ['totalCharge', 'totalDisCharge'],
             value: [0, 0],
             color: '#FF5E00'
         }
