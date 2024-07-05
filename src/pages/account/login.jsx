@@ -1,5 +1,5 @@
 import { Form, Input, message, Checkbox, Radio, Button, Typography, theme, Divider } from "antd";
-import { FORM_REQUIRED_RULE, PUBLIC_FILE_PATH, SYSTEM_NAME } from "@/utils/constants";
+import { FORM_REQUIRED_RULE, PASSWORD_RGE, SYSTEM_NAME } from "@/utils/constants";
 import { UserOutlined, LockOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import {
   getPublicKey as getPublicKeySever,
@@ -38,7 +38,7 @@ const Login = () => {
   }
   const onFinish = async (values) => {
     const publicKeyRes = await getPublicKeySever();
-    if(publicKeyRes?.data){
+    if (publicKeyRes?.data) {
       const publicKey = publicKeyRes?.data;
       const res = await loginSever({
         ...values,
@@ -53,7 +53,7 @@ const Login = () => {
         setLocalStorage("userName", data?.userName);
         message.success(t('登录成功'));
         history.push("/index/device");
-        dispatch({type: 'user/getUserInfo'})
+        dispatch({ type: 'user/getUserInfo' })
       } else {
         message.error(res.data.msg);
         if (res?.data.code === '407') {
@@ -107,7 +107,7 @@ const Login = () => {
 
           }}
         >
-          <Divider style={{ fontSize: '32px', marginBottom: 0,color:'#fff' }}>欢迎登录</Divider>
+          <Divider style={{ fontSize: '32px', marginBottom: 0, color: '#fff' }}>欢迎登录</Divider>
           <p style={{ fontSize: '14px', textAlign: 'center', marginTop: 0 }}>WELCOME TO LOGIN</p>
           <Form
             onFinish={onFinish}
@@ -129,7 +129,13 @@ const Login = () => {
             </Form.Item>
             <Form.Item
               name="password"
-              rules={[{ ...FORM_REQUIRED_RULE }]}
+              rules={[
+                { ...FORM_REQUIRED_RULE },
+                {
+                  pattern: PASSWORD_RGE,
+                  message: t('要求8-16个字符、由数字、字母、特殊字符三种中的两种组成')
+                }
+              ]}
               style={{ marginBottom: 40 }}
             >
               <Input.Password
@@ -178,7 +184,7 @@ const Login = () => {
           </Form>
         </div>
       </div>
-      <span className={styles.bottom}>{t('上海采日能源科技有限公司 - 沪ICP备')}<a style={{textDecoration:'none',color: 'inherit'}} href="https://beian.miit.gov.cn/" target="_blank">17053140</a>{t('号')}</span>
+      <span className={styles.bottom}>{t('上海采日能源科技有限公司 - 沪ICP备')}<a style={{ textDecoration: 'none', color: 'inherit' }} href="https://beian.miit.gov.cn/" target="_blank">17053140</a>{t('号')}</span>
     </div>
   )
 }

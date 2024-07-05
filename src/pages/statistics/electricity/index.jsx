@@ -70,6 +70,11 @@ const Electricity = () => {
         let lMax = lMax1>lMax2?lMax1:lMax2;
         lMax = Math.ceil(lMax / 5) * 5 || 100;
         const lInterval = lMax / 5;
+
+        let rMax = Number(Math.max(...dataSource?.map(item => item.cDEfficiency) || []));
+        rMax = Math.ceil(rMax / 5) * 5 || 100;
+        const rInterval = rMax / 5;
+
         const option = {
             tooltip: {
                 trigger: 'axis',
@@ -148,8 +153,8 @@ const Electricity = () => {
                         }
                     },
                     min: 0,
-                    max: 100,
-                    splitNumber: 5
+                    max: rMax,
+                    interval: rInterval
                 }
             ],
             series: [

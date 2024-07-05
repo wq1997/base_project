@@ -2,7 +2,7 @@ import { useEffect, useState, } from 'react'
 import { useSelector, useIntl } from "umi";
 import styles from "./index.less";
 import { Table, Select, Input, Button, theme, Space, message, Modal } from "antd"
-import { getBurUserWithRole2, getAllUserRoot, updateUserAndInfos } from "@/services/user"
+import { getBurUserWithRole2, getAllUserRoot, updateUserAndInfos2 as updateUserAndInfos } from "@/services/user"
 import AddUser from '../AddUserModal'
 import { apiDeleteUserById, } from '@/services/user'
 import { ExclamationCircleFilled } from '@ant-design/icons';

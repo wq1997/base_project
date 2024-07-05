@@ -1,8 +1,8 @@
 
 import styles from "./index.less";
-import ball1Img from "../../../../../public/images/ball1Img.svg";
-import ball2Img from "../../../../../public/images/ball2Img.svg";
-import ball3Img from "../../../../../public/images/ball3Img.svg";
+import ball1Img from "../../../../../public/images/ball.gif";
+import ball2Img from "../../../../../public/images/ball.gif";
+import ball3Img from "../../../../../public/images/ball.gif";
 import { useIntl } from "umi";
 
 const DeviceRunDesc = ({dataSource}) => {

@@ -95,12 +95,12 @@ const ElectricityRanking = ({ currentPlantId }) => {
                       normal: {
                           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                               offset: 0,
-                              color: '#3EFFF2'
+                              color: '#82FFF7'
                           }, {
                               offset: 1,
-                              color: '#4499F5'
+                              color: '#00F9BD'
                           }]),
-                          barBorderRadius: 12,
+                          barBorderRadius: 2,
                       },
                     },
                     data: data_1
@@ -113,12 +113,12 @@ const ElectricityRanking = ({ currentPlantId }) => {
                       normal: {
                           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                               offset: 0,
-                              color: '#FFF700'
+                              color: '#00E7C8'
                           }, {
                               offset: 1,
-                              color: '#D65527'
+                              color: '#0038C6'
                           }]),
-                          barBorderRadius: 12,
+                          barBorderRadius: 2,
                       },
                     },
                     data: data_2

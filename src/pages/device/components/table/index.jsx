@@ -40,14 +40,14 @@ const Table = ({
             key: 'version',
         },
         {
-            title: t('安装位置'),
-            dataIndex: 'address',
-            key: 'address',
-        },
-        {
             title: t('设备状态'),
             dataIndex: 'online',
             key: 'online',
+        },
+        {
+            title: t('安装位置'),
+            dataIndex: 'address',
+            key: 'address',
         },
         {
             title: t('操作'),
@@ -87,7 +87,7 @@ const Table = ({
     }, [dataSource]);
     return (
         <div className={styles.table}>
-            <div className={styles.row}>
+            <div className={styles.row} style={{background: '#125686'}}>
                 {columns?.map(column => (
                     <div className={styles.tableTitle}>{column?.title}</div>
                 ))}
@@ -98,13 +98,13 @@ const Table = ({
                         {columns?.map(column => {
                             if(column.render){
                                 return (
-                                    <div className={styles.value}>
+                                    <div className={styles.value} style={{borderLeft: '2px solid #175785', borderTop: '2px solid #175785'}}>
                                         {column.render('',value)}
                                     </div>
                                 );
                             }else{
                                 return (
-                                    <div className={styles.value}>
+                                    <div className={styles.value} style={{borderLeft: '2px solid #175785', borderTop: '2px solid #175785'}}>
                                         <Tooltip title={value[column.dataIndex]}>
                                             {value[column.dataIndex]}
                                         </Tooltip>

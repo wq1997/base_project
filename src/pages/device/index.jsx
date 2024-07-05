@@ -89,17 +89,17 @@ const RealtimeAlarm = () => {
         {
             label: t('月收益'),
             value: 0,
-            color: '#FF5E00'
+            color: '#20C2FF'
         },
         {
             label: t('年收益'),
             value: 0,
-            color: '#FF28DA'
+            color: '#20C2FF'
         },
         {
             label: t('累计收益'),
             value: 0,
-            color: '#01FF23'
+            color: '#20C2FF'
         }
     ])
 
@@ -327,9 +327,9 @@ const RealtimeAlarm = () => {
                                 return (
                                     <div className={styles.mapBottomItem}>
                                         <div className={styles.mapBottomItemData}>
-                                            <span style={{ color: item.color }}>{dataEle[item?.name?.[0]]}</span>
-                                            <span style={{color: '#999'}}> / </span>
-                                            <span style={{ color: 'white' }}>{dataEle[item?.name?.[1]]}</span>
+                                            <span style={{ color: '#20C2FF' }}>{dataEle[item?.name?.[0]]}</span>
+                                            <span style={{color: '#0B6AA8'}}>/</span>
+                                            <span style={{ color: '#4AEDFF' }}>{dataEle[item?.name?.[1]]}</span>
                                         </div>
                                         <div className={styles.mapBottomItemLabel}>{item?.label}</div>
                                     </div>
@@ -388,19 +388,19 @@ const RealtimeAlarm = () => {
                             data={[
                                 {
                                     icon: bottomLeft1,
-                                    data: 0,
+                                    data: 28,
                                     unit: t('吨'),
                                     label: t('节约标准煤'),
                                 },
                                 {
                                     icon: bottomLeft2,
-                                    data: 0,
+                                    data: 127,
                                     unit: t('吨'),
                                     label: t('CO2减排量'),
                                 },
                                 {
                                     icon: bottomLeft3,
-                                    data: 0,
+                                    data: 3289,
                                     unit: t('棵'),
                                     label: t('等效植树量'),
                                 },
