@@ -12,7 +12,7 @@ const AlarmAnysis = ({ data }) => {
                             size={200}
                             depth={50}
                             alpha={50}
-                            colors={["#34FFFD", "#E6A5FF", "#FFEF72", "#4BE8FF"]}
+                            colors={["#E6A5FF", "#34FFFD", "#FFEF72", "#4BE8FF"]}
                             data={data}
                         />
                     }
