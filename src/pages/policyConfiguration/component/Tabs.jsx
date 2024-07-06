@@ -1,14 +1,20 @@
-import { Space, theme, Badge } from "antd";
+import { Space, theme, Badge, message } from "antd";
 import { useState, useEffect } from "react";
+import { useIntl } from "umi";
 
 const Tabs = (props) => {
+    const intl = useIntl();
     const { token } = theme.useToken();
-    const { items, onChange } = props;
+    const { items, onChange, canChange=true, messageId } = props;
     const [value, setValue] = useState(props.value);
 
     const onMyClick = (value) => {
-        onChange&&onChange(value);
-        setValue(value);
+        if(canChange){
+            onChange&&onChange(value);
+            setValue(value);
+        }else{
+            message.error(intl.formatMessage({id: messageId}));
+        }
     }
 
     useEffect(()=>{

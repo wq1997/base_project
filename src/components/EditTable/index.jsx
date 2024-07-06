@@ -312,7 +312,11 @@ const EditRowTable = ({
           <Tabs 
               value={tabValue}
               items={strategyList}
-              onChange={onChangeTabs}
+              canChange={!hasEditing}
+              messageId={"当前在编辑状态，不可操作"}
+              onChange={(value) => {
+                onChangeTabs&&onChangeTabs(value);
+              }}
           />
           <Button 
               style={{background: 'linear-gradient(90deg, #0787DB 0%, #034FB4 100%)', border: 'none'}}
