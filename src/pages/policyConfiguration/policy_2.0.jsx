@@ -90,7 +90,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                 return {
                     ...item,
                     action: {
-                        0: '充电',
+                        3: '充电',
                         1: '放电',
                         2: '待机'
                     }[item.action],
@@ -107,7 +107,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                 return {
                     ...item,
                     action: {
-                        0: '充电',
+                        3: '充电',
                         1: '放电',
                         2: '待机'
                     }[item.action],
@@ -586,7 +586,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                 return {
                                     ...value,
                                     action: {
-                                        '充电': 0,
+                                        '充电': 3,
                                         '放电': 1,
                                         '待机': 2,
                                     }[value.action],
