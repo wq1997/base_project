@@ -3,24 +3,21 @@ import { useState, useEffect } from "react";
 import * as echarts from "echarts";
 import { MyTab } from "@/components";
 
-const IncomeRanking = ({ data }) => {
+const IncomeRanking = ({ data={} }) => {
     const [options, setOptions] = useState({});
     const [currentType, setCurrentType] = useState("1");
 
-    const getOptions = currentType => {
-        const { profitTop5, profitBottom5 } = data;
-        const profitData = currentType == "1" ? profitTop5 : profitBottom5;
-        const xData = profitData?.map(item => item.plantName);
-        const fee = profitData?.map(item => item.fee);
-        const backData = new Array(profitData?.length).fill(Math.max(...fee) + 2);
-        console.log('backData',backData)
+    const getOptions = (dataSource) => {
+        const profitData = currentType === "1" ? (dataSource?.profitTop5) : (dataSource?.profitBottom5);
+        const xData = profitData?.map(item => item.plantName)||[];
+        const data = profitData?.map(item => ((item?.fee||0)/10000).toFixed(2))||[];
         setOptions({
             tooltip: {
                 trigger: "item",
             },
             grid: {
                 top: 55,
-                left: 40,
+                left: 30,
                 right: 0,
                 bottom: 30,
             },
@@ -42,6 +39,10 @@ const IncomeRanking = ({ data }) => {
                 },
             },
             yAxis: {
+                name: '万元',
+                nameTextStyle: {
+                    color: '#fff'
+                },
                 splitLine: {
                     show: true,
                     lineStyle: {
@@ -65,129 +66,71 @@ const IncomeRanking = ({ data }) => {
             series: [
                 // 数据圆柱的下边圆形
                 {
-                    name: "",
-                    type: "pictorialBar",
-                    symbolSize: [30, 15],
-                    symbolOffset: [0, 10],
-                    z: 12,
-                    itemStyle: {
-                        opacity: 1,
-                        color: new echarts.graphic.LinearGradient(
-                            0,
-                            0,
-                            0,
-                            1,
-                            [
-                                { offset: 0, color: "#02FAFF" },
-                                { offset: 0.7, color: "#00B7FF" },
-                            ],
-                            false
-                        ),
+                    "name": "",
+                    "type": "pictorialBar",
+                    "symbolSize": [30, 15],
+                    "symbolOffset": [0, 10],
+                    "z": 12,
+                    itemStyle:{
+                        opacity:1,
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0,  color: '#02FAFF'}, 
+                            { offset: 0.7,  color: '#00B7FF'}
+                        ], false),
                     },
-                    data: new Array(xData?.length).fill(1),
+                    "data": new Array(xData?.length).fill(1),
+                    tooltip: {
+                        show: false
+                    }
                 },
                 //数据圆柱
                 {
-                    name: "",
-                    type: "bar",
+                    name: '',
+                    type: 'bar',
                     barWidth: 30,
-                    barGap: "-100%",
+                    barGap: '-100%',
                     itemStyle: {
-                        opacity: 0.7,
-                        color: new echarts.graphic.LinearGradient(
-                            0,
-                            0,
-                            0,
-                            1,
-                            [
-                                { offset: 0, color: "#02FAFF" },
-                                { offset: 0.7, color: "#00B7FF" },
-                            ],
-                            false
-                        ),
+                        opacity:.7,
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0,  color: '#02FAFF'}, 
+                            { offset: 0.7,  color: '#00B7FF'}
+                        ], false)
                     },
-                    data:[],
+                    data
                 },
                 // 数据上半部分的圆形
                 {
-                    name: "",
-                    type: "pictorialBar",
-                    symbolSize: [30, 15],
-                    symbolOffset: [0, -10],
-                    z: 12,
-                    itemStyle: {
-                        opacity: 1,
-                        color: new echarts.graphic.LinearGradient(
-                            0,
-                            0,
-                            0,
-                            1,
-                            [
-                                { offset: 0, color: "#02FFEF" },
-                                { offset: 0.7, color: "#009EFF" },
-                            ],
-                            false
-                        ),
+                    "name": "",
+                    "type": "pictorialBar",
+                    "symbolSize": [30, -15],
+                    "symbolOffset": [0, 0],
+                    "z": 12,
+                    itemStyle:{
+                        opacity:1,
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0,  color: '#02FFEF'}, 
+                            { offset: 0.7,  color: '#009EFF'}
+                        ], false),
                     },
-                    symbolPosition: "end",
-                    data: data,
-                    label: {
-                        normal: {
-                            show: true,
-                            position: "top",
-                            formatter: "{c}",
-                            color: "white",
-                        },
-                    },
+                    "symbolPosition": "end",
+                    "data": data,
+                    "label": {
+                      "normal": {
+                          "show": true,
+                          "position": 'top',
+                          "offset": [0,-5],
+                          "formatter": "{c}",
+                          "color": 'white'
+                      }
+                  },
                 },
-                // 数据圆柱体背景的圆柱体
-                {
-                    name: "",
-                    type: "bar",
-                    barWidth: 30,
-                    barGap: "-100%",
-                    z: 0,
-                    itemStyle: {
-                        color: "#26859B",
-                        opacity: 0.5,
-                    },
-                    data: backData,
-                },
-                // 数据圆柱体背景的圆柱体上面的圆形
-                {
-                    name: "",
-                    type: "pictorialBar",
-                    symbolSize: [30, 15],
-                    symbolOffset: [0, -10],
-                    z: 12,
-                    symbolPosition: "end",
-                    itemStyle: {
-                        color: new echarts.graphic.LinearGradient(
-                            0,
-                            0,
-                            0,
-                            1,
-                            [
-                                { offset: 0, color: "#54FCFF" },
-                                { offset: 0.7, color: "#00B7FF" },
-                            ],
-                            false
-                        ),
-                        opacity: 1,
-                    },
-                    data: backData,
-                },
-            ],
+            ]
         });
     };
 
     useEffect(() => {
-        getOptions(currentType);
-    }, [data]);
-
-    useEffect(() => {
-        getOptions(currentType);
-    }, [currentType]);
+        getOptions(data);
+    }, [data, currentType]);
 
     return (
         <div style={{ width: "100%", height: "100%", position: "relative" }}>

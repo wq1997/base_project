@@ -26,9 +26,6 @@
     }
     .left,
     .right {
-        > div {
-            flex: 1;
-        }
         width: 22%;
         height: calc(100% - 96px);
         position: absolute;
@@ -39,10 +36,18 @@
     }
     .left {
         left: 10px;
+        .leftItem{
+            width: 100%;
+            height: calc(33.3333333% - 8px);
+        }
     }
 
     .right {
         right: 10px;
+        .rightItem{
+            width: 100%;
+            height: calc(33.3333333% - 8px);
+        }
     }
 
     .centerTop {
@@ -56,11 +61,11 @@
 
     .centerBottom {
         width: calc(56% - 36px);
-        height: calc((100% - 20px - 70px - 16px - 8px) / 3);
+        height: calc((100% - 20px - 70px - 16px - 8px - 30px) / 3);
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
-        bottom: 10px;
+        bottom: 17px;
         .btn {
             width: 80px;
             height: 25px;

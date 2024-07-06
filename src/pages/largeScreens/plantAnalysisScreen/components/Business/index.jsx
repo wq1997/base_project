@@ -58,89 +58,104 @@ const Business = ({ typeList, currentType, onChangedType }) => {
                         />
                     </div>
                     <div className={styles.left}>
-                        <PlantOverview
-                            data={{
-                                total: Object.keys(
-                                    dataSource?.plantSummery?.province2PlantCount || {}
-                                )?.map(city => {
-                                    return {
-                                        name: city,
-                                        value: dataSource?.plantSummery?.province2PlantCount?.[
-                                            city
-                                        ],
-                                    };
-                                }),
-                                totalCapacity: dataSource?.plantSummery?.totalCapacity,
-                                totalPlant: dataSource?.plantSummery?.count,
-                            }}
-                        />
-                        <Card
-                            title="电量排行"
-                            content={
-                                <ElectricityRanking
-                                    value={{
-                                        dischargeCapacityTop5: dataSource?.dischargeCapacityTop5,
-                                        dischargeCapacityBottom5:
-                                            dataSource?.dischargeCapacityBottom5,
-                                        dischargeEfficiencyTop5:
-                                            dataSource?.dischargeEfficiencyTop5,
-                                        dischargeEfficiencyBottom5:
-                                            dataSource?.dischargeEfficiencyBottom5,
-                                    }}
-                                />
-                            }
-                        />
-                        <Card
-                            title="社会效益"
-                            content={
-                                <>
-                                    <SocialBenefits
-                                        data={[
-                                            {
-                                                icon: bottomLeft1,
-                                                data: dataSource?.socialEffect?.ele || 0,
-                                                unit: "吨",
-                                                label: "节约标准煤",
-                                            },
-                                            {
-                                                icon: bottomLeft2,
-                                                data: dataSource?.socialEffect?.co2 || 0,
-                                                unit: "吨",
-                                                label: "CO2减排量",
-                                            },
-                                            {
-                                                icon: bottomLeft3,
-                                                data: dataSource?.socialEffect?.tree || 0,
-                                                unit: "棵",
-                                                label: "等效植树量",
-                                            },
-                                        ]}
+                        <div className={styles.leftItem}>
+                            <PlantOverview
+                                data={{
+                                    total: Object.keys(
+                                        dataSource?.plantSummery?.province2PlantCount || {}
+                                    )?.map(city => {
+                                        return {
+                                            name: city,
+                                            value: dataSource?.plantSummery?.province2PlantCount?.[
+                                                city
+                                            ],
+                                        };
+                                    }),
+                                    totalCapacity: dataSource?.plantSummery?.totalCapacity,
+                                    totalPlant: dataSource?.plantSummery?.count,
+                                }}
+                            />
+                        </div>
+                        <div className={styles.leftItem}>
+                            <Card
+                                title="电量排行"
+                                content={
+                                    <ElectricityRanking
+                                        value={{
+                                            dischargeCapacityTop5: dataSource?.dischargeCapacityTop5,
+                                            dischargeCapacityBottom5:
+                                                dataSource?.dischargeCapacityBottom5,
+                                            dischargeEfficiencyTop5:
+                                                dataSource?.dischargeEfficiencyTop5,
+                                            dischargeEfficiencyBottom5:
+                                                dataSource?.dischargeEfficiencyBottom5,
+                                        }}
                                     />
-                                </>
-                            }
-                        />
+                                }
+                            />
+                        </div>
+                        <div className={styles.leftItem}>
+                            <Card
+                                title="社会效益"
+                                content={
+                                    <>
+                                        <SocialBenefits
+                                            data={[
+                                                {
+                                                    icon: bottomLeft1,
+                                                    data: dataSource?.socialEffect?.ele || 0,
+                                                    unit: "吨",
+                                                    label: "节约标准煤",
+                                                },
+                                                {
+                                                    icon: bottomLeft2,
+                                                    data: dataSource?.socialEffect?.co2 || 0,
+                                                    unit: "吨",
+                                                    label: "CO2减排量",
+                                                },
+                                                {
+                                                    icon: bottomLeft3,
+                                                    data: dataSource?.socialEffect?.tree || 0,
+                                                    unit: "棵",
+                                                    label: "等效植树量",
+                                                },
+                                            ]}
+                                        />
+                                    </>
+                                }
+                            />
+                        </div>
                     </div>
                     <div className={styles.right}>
-                        <AlarmAnysis
-                            data={[
-                                ["一般", dataSource?.signalName2Count?.["一般告警"] || 0],
-                                ["严重", dataSource?.signalName2Count?.["严重告警"] || 0],
-                            ]}
-                        />
-                        <Card
-                            title="收益排行"
-                            content={
-                                <>
-                                    {/* <IncomeRanking
-                                    data={{
-                                        profitTop5: dataSource?.profitTop5,
-                                        profitBottom5: dataSource?.profitBottom5,
-                                    }}
-                                /> */}
-                                </>
-                            }
-                        />
-                        <DeviceStatus data={dataSource?.deviceStatusCount} />
+                        <div className={styles.rightItem}>
+                            <AlarmAnysis
+                                data={dataSource&&[
+                                    ["一般", dataSource?.signalName2Count?.["一般告警"] || 0],
+                                    ["严重", dataSource?.signalName2Count?.["严重告警"] || 0],
+                                ]}
+                            />
+                        </div>
+                        <div className={styles.rightItem}>
+                            <Card
+                                title="收益排行"
+                                content={
+                                    <>
+                                        {
+                                            dataSource&&
+                                            <IncomeRanking
+                                                data={{
+                                                    profitTop5: dataSource?.profitTop5,
+                                                    profitBottom5: dataSource?.profitBottom5,
+                                                }}
+                                            />
+                                        }
+                                    </>
+                                }
+                            />
+                        </div>
+                        <div className={styles.rightItem}>
+                            <DeviceStatus data={dataSource?.deviceStatusCount} />
+                        </div>
                     </div>
 
                     {/* 中间顶部 */}

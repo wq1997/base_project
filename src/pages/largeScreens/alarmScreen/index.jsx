@@ -28,7 +28,7 @@ const Index = () => {
             <div className={styles.content}>
                 <div className={styles.left}>
                     <AlarmAnysis
-                        data={[
+                        data={initData&&[
                             ["一般", initData?.signalName2Count?.["一般告警"] || 0],
                             ["严重", initData?.signalName2Count?.["严重告警"] || 0],
                         ]}

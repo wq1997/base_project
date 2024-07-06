@@ -6,13 +6,16 @@ const AlarmAnysis = ({ data }) => {
             title={"告警分析"}
             content={
                 <div style={{ height: "100%", padding: "16px", boxSizing: "border-box" }}>
-                    <Charts2_5D
-                        size={200}
-                        depth={50}
-                        alpha={50}
-                        colors={["#34FFFD", "#E6A5FF", "#FFEF72", "#4BE8FF"]}
-                        data={data}
-                    />
+                    {
+                        data&&
+                        <Charts2_5D
+                            size={200}
+                            depth={50}
+                            alpha={50}
+                            colors={["#34FFFD", "#E6A5FF", "#FFEF72", "#4BE8FF"]}
+                            data={data}
+                        />
+                    }
                 </div>
             }
         />
