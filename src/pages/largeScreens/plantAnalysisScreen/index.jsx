@@ -15,7 +15,7 @@ const typeList = [
 ];
 
 const PlantAnalysisScreen = () => {
-    const [currentType, setCurrentType] = useState("Network");
+    const [currentType, setCurrentType] = useState("Business");
     return (
         <div className={styles.screen}>
             {currentType === "Business" && (

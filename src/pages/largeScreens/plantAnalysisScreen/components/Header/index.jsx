@@ -1,5 +1,6 @@
 import styles from "./index.less";
 import classNames from "classnames";
+import area from "@/assets/images/area.svg";
 
 const Header = ({ typeList, currentType, onChangedType }) => {
     return (
@@ -14,7 +15,7 @@ const Header = ({ typeList, currentType, onChangedType }) => {
                             )}
                             style={{
                                 backgroundColor: "#0B3858",
-
+                              //  background: `url('../../../../../assets/images/area.svg') center center no-repeat`,
                                 backgroundSize: item?.value === currentType && "cover",
                             }}
                             onClick={() => onChangedType(item?.value)}

@@ -4,7 +4,6 @@ import styles from "./index.less";
 import Map from "@/pages/largeScreens/components/map";
 import Header from "../Header";
 import { Charts3D, Charts2_5D, ScrollTable } from "@/components";
-import Circle from "./Circle";
 import IncomeRanking from "./incomeRanking";
 import ElectricityRanking from "./electricityRanking";
 import SocialBenefits from "./SocialBenefits";
@@ -23,6 +22,8 @@ import { useState, useEffect } from "react";
 import { useRequest } from "ahooks";
 import Card from "../../../components/Card";
 import PlantOverview from "../../../components/PlantOverview";
+import AlarmAnysis from "../../../components/AlarmAnysis";
+import DeviceStatus from "../../../components/DeviceStatus";
 
 const Business = ({ typeList, currentType, onChangedType }) => {
     const [dataSource, setDataSource] = useState();
@@ -120,27 +121,11 @@ const Business = ({ typeList, currentType, onChangedType }) => {
                         />
                     </div>
                     <div className={styles.right}>
-                        <Card
-                            title="告警分析"
-                            content={
-                                <>
-                                    {/* <Charts2_5D
-                                        depth={40}
-                                        alpha={55}
-                                        colors={["#34FFFD", "#E6A5FF", "#FFEF72", "#4BE8FF"]}
-                                        data={[
-                                            [
-                                                "一般",
-                                                dataSource?.signalName2Count?.["一般告警"] || 0,
-                                            ],
-                                            [
-                                                "严重",
-                                                dataSource?.signalName2Count?.["严重告警"] || 0,
-                                            ],
-                                        ]}
-                                    /> */}
-                                </>
-                            }
+                        <AlarmAnysis
+                            data={[
+                                ["一般", dataSource?.signalName2Count?.["一般告警"] || 0],
+                                ["严重", dataSource?.signalName2Count?.["严重告警"] || 0],
+                            ]}
                         />
                         <Card
                             title="收益排行"
@@ -155,10 +140,7 @@ const Business = ({ typeList, currentType, onChangedType }) => {
                                 </>
                             }
                         />
-                        <Card
-                            title="设备运行情况"
-                            content={<Circle dataSource={dataSource?.deviceStatusCount} />}
-                        />
+                        <DeviceStatus data={dataSource?.deviceStatusCount} />
                     </div>
 
                     {/* 中间顶部 */}

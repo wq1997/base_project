@@ -11,10 +11,7 @@ const AlarmAnysis = ({ data }) => {
                         depth={50}
                         alpha={50}
                         colors={["#34FFFD", "#E6A5FF", "#FFEF72", "#4BE8FF"]}
-                        data={[
-                            ["一般", data?.["一般告警"] || 0],
-                            ["严重", data?.["严重告警"] || 0],
-                        ]}
+                        data={data}
                     />
                 </div>
             }
