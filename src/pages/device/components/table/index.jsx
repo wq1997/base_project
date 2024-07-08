@@ -1,7 +1,7 @@
 import styles from "./index.less";
 import React, { useState } from "react";
 import { Tooltip } from "antd";
-import { useIntl, history } from "umi";
+import { useIntl, history, useSelector } from "umi";
 import { Space, Button, theme } from "antd";
 import "./index.less";
 import { useEffect } from "react";
@@ -13,6 +13,10 @@ const Table = ({
 }) => {
     const intl = useIntl();
     const [listData, setListData] = useState(dataSource);
+
+    const { user } = useSelector(function (state) {
+        return state.user
+    });
 
     const t = (id) => {
         const msg = intl.formatMessage(
@@ -49,7 +53,7 @@ const Table = ({
             dataIndex: 'address',
             key: 'address',
         },
-        {
+        user?.roleId===3&&{
             title: t('操作'),
             dataIndex: 'operation',
             key: 'operation',
@@ -88,14 +92,14 @@ const Table = ({
     return (
         <div className={styles.table}>
             <div className={styles.row} style={{background: '#125686'}}>
-                {columns?.map(column => (
+                {columns?.filter(item => item)?.map(column => (
                     <div className={styles.tableTitle}>{column?.title}</div>
                 ))}
             </div>
             <div className={styles.valueWrapper}>
                 {listData?.map((value, index) => (
                     <div className={styles.row}>
-                        {columns?.map(column => {
+                        {columns?.filter(item => item)?.map(column => {
                             if(column.render){
                                 return (
                                     <div className={styles.value} style={{borderLeft: '2px solid #175785', borderTop: '2px solid #175785'}}>

@@ -115,6 +115,7 @@ const RealtimeAlarm = () => {
     const cancle = () => {
         setIsOpen(!isOpen);
     }
+
     const tableColum = [
         {
             title: t('设备编码'),
