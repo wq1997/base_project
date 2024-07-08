@@ -418,10 +418,8 @@ const PolicyConfiguration = ({deviceVersion}) => {
                                     className={distributeStyle}
                                     onClick={async ()=>{
                                         await form.validateFields(['tempStart', 'tempStop', 'humStart', 'humStop']);
-                                        if(canIssue){
-                                            setCheckModalOpen(true);
-                                            setCheckModalType('sendDehumidifier');
-                                        }
+                                        setCheckModalOpen(true);
+                                        setCheckModalType('sendDehumidifier');
                                     }}
                                 >
                                     {intl.formatMessage({id: '下发'})}
@@ -460,10 +458,8 @@ const PolicyConfiguration = ({deviceVersion}) => {
                                     className={distributeStyle}
                                     onClick={async ()=>{
                                         await form.validateFields(['coolingPoint', 'heatPoint', 'coolingDiffPoint', 'heatDiffPoint']);
-                                        if(canIssue){
-                                            setCheckModalOpen(true);
-                                            setCheckModalType('sendLiquidCooler');
-                                        }
+                                        setCheckModalOpen(true);
+                                        setCheckModalType('sendLiquidCooler');
                                     }}
                                 >
                                     {intl.formatMessage({id: '下发'})}

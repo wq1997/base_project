@@ -278,46 +278,104 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                             <Space style={{ width: '100%' }} direction="vertical" size={30}>
                                 <Row>
                                     <Col span={2}>
-                                        <Form.Item label={intl.formatMessage({ id: '并离网' })} name="switchOnOffGrid" rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
-                                            <Switch disabled={!canIssue} checkedChildren={intl.formatMessage({ id: '离网' })} unCheckedChildren={intl.formatMessage({ id: '并网' })} />
+                                        <Form.Item label={intl.formatMessage({ id: '并离网' })} name="switchOnOffGrid" style={{ margin: 0 }}>
+                                            <Switch checkedChildren={intl.formatMessage({ id: '离网' })} unCheckedChildren={intl.formatMessage({ id: '并网' })} />
                                         </Form.Item>
                                     </Col>
-                                    <Col span={2}>
-                                        <Form.Item label={intl.formatMessage({ id: '防逆流' })} name="antiReflux" rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
-                                            <Switch disabled={!canIssue} />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col span={2}>
-                                        <Form.Item label={intl.formatMessage({ id: '防过载' })} name="overload" rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
-                                            <Switch disabled={!canIssue} />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col span={2}>
-                                        <Form.Item label={intl.formatMessage({ id: '扩容' })} name="expansion" rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
-                                            <Switch disabled={!canIssue} />
-                                        </Form.Item>
-                                    </Col>
+                                    <Form.Item
+                                        noStyle
+                                        dependencies={['switchOnOffGrid']}
+                                    >
+                                        {({getFieldsValue})=>{
+                                            let disabled=false
+                                            const { switchOnOffGrid } = getFieldsValue('switchOnOffGrid');
+                                            if(mode===1&&switchOnOffGrid){
+                                                disabled=true;
+                                            }
+                                            return (
+                                                <>
+                                                    <Col span={2}>
+                                                        <Form.Item label={intl.formatMessage({ id: '防逆流' })} name="antiReflux" style={{ margin: 0 }}>
+                                                            <Switch disabled={disabled}/>
+                                                        </Form.Item>
+                                                    </Col>
+                                                    <Col span={2}>
+                                                        <Form.Item label={intl.formatMessage({ id: '防过载' })} name="overload" style={{ margin: 0 }}>
+                                                            <Switch disabled={disabled}/>
+                                                        </Form.Item>
+                                                    </Col>
+                                                    <Form.Item
+                                                        noStyle
+                                                        dependencies={['overload']}
+                                                    >
+                                                        {({getFieldsValue})=>{
+                                                            let disabled=false
+                                                            const { overload } = getFieldsValue('overload');
+                                                            if(mode===1&&!overload){
+                                                                disabled=true;
+                                                            }
+                                                            return (
+                                                                <Col span={2}>
+                                                                    <Form.Item label={intl.formatMessage({ id: '扩容' })} name="expansion" style={{ margin: 0 }}>
+                                                                        <Switch disabled={disabled}/>
+                                                                    </Form.Item>
+                                                                </Col>
+                                                            )
+                                                        }}
+                                                    </Form.Item>
+                                                </>
+                                            )
+                                        }}
+                                    </Form.Item>
                                 </Row>
                                 <Row>
+                                    <Form.Item
+                                        noStyle
+                                        dependencies={['antiReflux']}
+                                    >
+                                        {({getFieldsValue})=>{
+                                            let disabled=false
+                                            const { antiReflux } = getFieldsValue('antiReflux');
+                                            if(mode===1&&antiReflux){
+                                                disabled=true;
+                                            }
+                                            return (
+                                                <Col span={7}>
+                                                    <Form.Item label={`${intl.formatMessage({ id: '防逆流触发值' })}(kW)`} name="antiRefluxTriggerValue" style={{ margin: 0 }}>
+                                                        <InputNumber disabled={!disabled} placeholder={intl.formatMessage({ id: '请输入防逆流触发值' })} style={{ width: 300 }} />
+                                                    </Form.Item>
+                                                </Col>
+                                            )
+                                        }}
+                                    </Form.Item>
+                                    <Form.Item
+                                        noStyle
+                                        dependencies={['expansion']}
+                                    >
+                                        {({getFieldsValue})=>{
+                                            let disabled=false
+                                            const { expansion } = getFieldsValue('expansion');
+                                            if(mode===1&&!expansion){
+                                                disabled=true;
+                                            }
+                                            return (
+                                                <Col span={7}>
+                                                    <Form.Item label={intl.formatMessage({ id: '变压器容量' })} style={{ margin: 0 }}>
+                                                        <Space direction="horizontal">
+                                                            <Form.Item style={{ margin: 0 }} name="tranCap">
+                                                                <InputNumber disabled={disabled} style={{ width: 200 }} placeholder="kW" />
+                                                            </Form.Item>
+                                                            <Form.Item style={{ margin: 0 }} name="tranCapPercent">
+                                                                <InputNumber disabled={disabled} style={{ width: 200 }} placeholder="%" min={0} max={100} />
+                                                            </Form.Item>
+                                                        </Space>
+                                                    </Form.Item>
+                                                </Col>
+                                            )
+                                        }}
+                                    </Form.Item>
                                     <Col span={7}>
-                                        <Form.Item label={`${intl.formatMessage({ id: '防逆流触发值' })}(kW)`} name="antiRefluxTriggerValue" rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
-                                            <InputNumber disabled={!canIssue} placeholder={intl.formatMessage({ id: '请输入防逆流触发值' })} style={{ width: 300 }} />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col span={7}>
-                                        <Form.Item label={intl.formatMessage({ id: '变压器容量' })} style={{ margin: 0 }}>
-                                            <Space direction="horizontal">
-                                                <Form.Item style={{ margin: 0 }} name="tranCap" rules={[{ ...FORM_REQUIRED_RULE }]}>
-                                                    <InputNumber disabled={!canIssue} style={{ width: 200 }} placeholder="kW" />
-                                                </Form.Item>
-                                                <Form.Item style={{ margin: 0 }} name="tranCapPercent" rules={[{ ...FORM_REQUIRED_RULE }]}>
-                                                    <InputNumber disabled={!canIssue} style={{ width: 200 }} placeholder="%" min={0} max={100} />
-                                                </Form.Item>
-                                            </Space>
-                                        </Form.Item>
-                                    </Col>
-                                    <Col span={7}>
-                                        <Form.Item label={`${intl.formatMessage({ id: '功率波动范围' })}(kW)`} name="pcsPowerWaveRange" rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
+                                        <Form.Item label={`${intl.formatMessage({ id: '功率波动范围' })}(kW)`} name="pcsPowerWaveRange" style={{ margin: 0 }}>
                                             <InputNumber disabled={!canIssue} placeholder={intl.formatMessage({ id: '请输入功率波动范围' })} style={{ width: 300 }} />
                                         </Form.Item>
                                     </Col>
@@ -456,10 +514,8 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                     className={distributeStyle}
                                     onClick={async () => {
                                         await form.validateFields(['tempStart', 'tempStop', 'humStart', 'humStop']);
-                                        if (canIssue) {
-                                            setCheckModalOpen(true);
-                                            setCheckModalType('sendDehumidifier');
-                                        }
+                                        setCheckModalOpen(true);
+                                        setCheckModalType('sendDehumidifier');
                                     }}
                                 >
                                     {intl.formatMessage({ id: '下发' })}
@@ -498,10 +554,8 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                     className={distributeStyle}
                                     onClick={async () => {
                                         await form.validateFields(['coolingPoint', 'heatPoint', 'coolingDiffPoint', 'heatDiffPoint']);
-                                        if (canIssue) {
-                                            setCheckModalOpen(true);
-                                            setCheckModalType('sendLiquidCooler');
-                                        }
+                                        setCheckModalOpen(true);
+                                        setCheckModalType('sendLiquidCooler');
                                     }}
                                 >
                                     {intl.formatMessage({ id: '下发' })}
