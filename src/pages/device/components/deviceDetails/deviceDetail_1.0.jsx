@@ -152,6 +152,7 @@ function Com({deviceVersion}) {
             { name: "谷时段月放电电量", value: "-", key: "monValleyDEnergy" },
             { name: "日收益", value: "-", key: "dayEarning" },
             { name: "月收益", value: "-", key: "monEarning" },
+            { name: "总收益", value: "-", key: "sumEarning" },
         ]
     })
 

@@ -73,6 +73,8 @@ function Com({deviceVersion}) {
             { name: "BMS堆硬件版本", value: "-", key: "hardwareVersion" },
             { name: "BCMU最高软件版本", value: "-", key: "bcmuMaxSoftwareVersion" },
             { name: "BCMU最高硬件版本", value: "-", key: "bcmuMaxHardwareVersion" },
+            { name: "BCMU最低软件版本", value: "-", key: "bcmuMinSoftwareVersion" },
+            { name: "BCMU最低硬件版本", value: "-", key: "bcmuMinHardwareVersion" },
         ]
     })
 
