@@ -60,7 +60,6 @@ const PolicyConfiguration = ({deviceVersion}) => {
         return {
             background: token.bgcColorB_l,
             padding: '40px 30px',
-            borderRadius: '16px'
         }
     })
 
@@ -170,6 +169,8 @@ const PolicyConfiguration = ({deviceVersion}) => {
                                     fontSize: 20,
                                     height: '45px',
                                     width: '90px',
+                                    position: 'relative',
+                                    bottom: '15px'
                                 }}
                                 onClick={async () => {
                                     await updateDataServe({dtuId: id, type: deviceVersion});

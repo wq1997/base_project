@@ -24,7 +24,6 @@ function Com({ data,table }) {
                 padding:'16px 20px',
                 marginBottom:'8px',
                 borderRadius:'8px',
-                backgroundColor: '#082B45'
             }}>
             <div className='card_title' style={{ fontSize: '20px', marginBottom: '20px', marginLeft: 50 }}>
                 <Icon 
@@ -38,7 +37,7 @@ function Com({ data,table }) {
             </div>
             <div className='card_contain' style={{
                 display: 'grid',
-                gridTemplateColumns: '1fr 1fr 1fr 1fr ',
+                gridTemplateColumns: '1fr 1fr 1fr 1fr',
                 padding: '0 20px',
                 gridTemplateRows: height,
                 transition: 'all .3s',
