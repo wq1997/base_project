@@ -34,7 +34,7 @@ const OverView = ({deviceVersion, sn}) => {
     const intl = useIntl();
     const { token } = theme.useToken();
     const [dataSource, setDataSource] = useState({});
-    const [currentElectricType, setCurrentElectricType] = useState('PCS');
+    const [currentElectricType, setCurrentElectricType] = useState('JLDB');
 
     const [electricityStatisticsDataSource, setElectricityStatisticsDataSource] = useState([
         {
@@ -61,14 +61,14 @@ const OverView = ({deviceVersion, sn}) => {
 
     const [systemEfficiencyDataSource, setSystemEfficiencyDataSource] = useState([
         {
-            title: "PCS",
-            data: 0,
-            color: '#B95CFC'
-        },
-        {
             title: "计量电表",
             data: 0,
             color: '#37EEFF'
+        },
+        {
+            title: "PCS",
+            data: 0,
+            color: '#B95CFC'
         }
     ]);
 
@@ -283,8 +283,8 @@ const OverView = ({deviceVersion, sn}) => {
                                         value={currentElectricType}
                                         onChange={e=>setCurrentElectricType(e.target.value)}
                                     >
-                                        <Radio value={"PCS"}>PCS</Radio>
                                         <Radio value={"JLDB"}>{intl.formatMessage({id: '计量电表'})}</Radio>
+                                        <Radio value={"PCS"}>PCS</Radio>
                                     </Radio.Group>
                                 </div>
                             </div>
