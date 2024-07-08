@@ -233,8 +233,8 @@ const OverView = ({deviceVersion, sn}) => {
 
         // PCS电量统计
         newSystemEfficiencyDataSource[0].data = dataSource?.pcsEfficiency||0;
-        newSystemEfficiencyDataSource[1].data = dataSource?.pcs?.totalCEnergy||0;
-        newSystemEfficiencyDataSource[2].data = dataSource?.pcs?.totalDEnergy||0;
+        newSystemEfficiencyDataSource[1].data = dataSource?.pcs?.ACTotalChEnergy||0;
+        newSystemEfficiencyDataSource[2].data = dataSource?.pcs?.ACTotalDischEnergy||0;
 
         //收益统计
         newBenefitStatisticsDataSource[0].data = dataSource?.revenue?.dayEarning||0;
