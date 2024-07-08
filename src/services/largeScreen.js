@@ -15,3 +15,13 @@ export const getNetScreenData = () => {
     const url = `${API_URL}/web-api/dashboard/get-ywc-dashboard-data`;
     return axiosInstance.get(url);
 };
+
+export const getPlantAccessInfo = plantId => {
+    const url = `${API_URL}/web-api/dashboard/get-plant-access-info?plantId=${plantId}`;
+    return axiosInstance.get(url);
+};
+
+export const jumpLogin = payload => {
+    const url = `${payload?.url}`;
+    return axiosInstance.post(url, payload);
+};

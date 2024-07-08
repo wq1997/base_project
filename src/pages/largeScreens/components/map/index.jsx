@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
-import { Select, Tooltip } from "antd";
+import { Select, Tooltip, message } from "antd";
+import {
+    getPlantAccessInfo as getPlantAccessInfoServer,
+    jumpLogin as jumpLoginServer,
+} from "@/services/largeScreen";
 import styles from "./index.less";
 
 const baseUrl = process.env.API_URL_1;
 
-const Index = ({ plants, showInfo, panTo }) => {
+const Index = ({ plants, needJump, showInfo, panTo }) => {
     const markers = [];
     const [map, setMap] = useState();
     const [infoWindow, setInfoWindow] = useState();
@@ -38,6 +42,23 @@ const Index = ({ plants, showInfo, panTo }) => {
         { name: "消防厂家", key: "firefightingFactory", value: "" },
         { name: "EMS厂家", key: "emsFactory", value: "" },
     ];
+
+    const getPlantAccessInfo = async plantId => {
+        let res = await getPlantAccessInfoServer(plantId);
+        if (res?.data?.status == "SUCCESS") {
+            const jumpRes = await jumpLoginServer(res?.data?.data);
+            if (jumpRes?.data?.data?.token) {
+                window.open(
+                    `https://www.sermatec-cloud.com/containerIndex?token=${jumpRes?.data?.data?.token}`,
+                    "_blank"
+                );
+            } else {
+                message.info("token失效，暂不可跳转");
+            }
+        } else {
+            message.info("获取电站信息出错，暂不可跳转");
+        }
+    };
 
     useEffect(() => {
         const _map =
@@ -134,6 +155,9 @@ const Index = ({ plants, showInfo, panTo }) => {
             marker.on("click", e => {
                 // _infoWindow.setContent(e.target.content);
                 // _infoWindow.open(map, e.target.getPosition());
+                if (needJump) {
+                    getPlantAccessInfo(item.plantId);
+                }
                 onclick(index);
             });
             markers[index] = marker;

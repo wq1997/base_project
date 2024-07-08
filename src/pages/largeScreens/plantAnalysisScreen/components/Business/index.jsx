@@ -48,7 +48,7 @@ const Business = ({ typeList, currentType, onChangedType }) => {
         <>
             {true && (
                 <div className={styles.business}>
-                    <Map plants={dataSource?.plants} />
+                    <Map plants={dataSource?.plants} needJump={true} />
                     {/* 头部Header */}
                     <div className={styles.header}>
                         <Header
@@ -82,7 +82,8 @@ const Business = ({ typeList, currentType, onChangedType }) => {
                                 content={
                                     <ElectricityRanking
                                         value={{
-                                            dischargeCapacityTop5: dataSource?.dischargeCapacityTop5,
+                                            dischargeCapacityTop5:
+                                                dataSource?.dischargeCapacityTop5,
                                             dischargeCapacityBottom5:
                                                 dataSource?.dischargeCapacityBottom5,
                                             dischargeEfficiencyTop5:
@@ -129,10 +130,12 @@ const Business = ({ typeList, currentType, onChangedType }) => {
                     <div className={styles.right}>
                         <div className={styles.rightItem}>
                             <AlarmAnysis
-                                data={dataSource&&[
-                                    ["一般", dataSource?.signalName2Count?.["一般告警"] || 0],
-                                    ["严重", dataSource?.signalName2Count?.["严重告警"] || 0],
-                                ]}
+                                data={
+                                    dataSource && [
+                                        ["一般", dataSource?.signalName2Count?.["一般告警"] || 0],
+                                        ["严重", dataSource?.signalName2Count?.["严重告警"] || 0],
+                                    ]
+                                }
                             />
                         </div>
                         <div className={styles.rightItem}>
@@ -140,15 +143,14 @@ const Business = ({ typeList, currentType, onChangedType }) => {
                                 title="收益排行"
                                 content={
                                     <>
-                                        {
-                                            dataSource&&
+                                        {dataSource && (
                                             <IncomeRanking
                                                 data={{
                                                     profitTop5: dataSource?.profitTop5,
                                                     profitBottom5: dataSource?.profitBottom5,
                                                 }}
                                             />
-                                        }
+                                        )}
                                     </>
                                 }
                             />

@@ -28,18 +28,6 @@ const Index = ({ data: { total, totalCapacity, totalPlant } }) => {
                         <div className={styles.areaContentDataItem}>
                             <Badge
                                 color="#54CFFF"
-                                text={<span style={{ color: "#FFFFFF" }}>总装机容量</span>}
-                            />
-                            <div className={styles.areaContentDataItemData}>
-                                <span className={styles.areaContentDataItemData1}>
-                                    {totalCapacity}
-                                </span>
-                                <span className={styles.areaContentDataItemData2}>MW</span>
-                            </div>
-                        </div>
-                        <div className={styles.areaContentDataItem}>
-                            <Badge
-                                color="#54CFFF"
                                 text={<span style={{ color: "#FFFFFF" }}>电站个数</span>}
                             />
                             <div className={styles.areaContentDataItemData}>
@@ -47,6 +35,18 @@ const Index = ({ data: { total, totalCapacity, totalPlant } }) => {
                                     {totalPlant}
                                 </span>
                                 <span className={styles.areaContentDataItemData2}>个</span>
+                            </div>
+                        </div>
+                        <div className={styles.areaContentDataItem}>
+                            <Badge
+                                color="#54CFFF"
+                                text={<span style={{ color: "#FFFFFF" }}>总装机容量</span>}
+                            />
+                            <div className={styles.areaContentDataItemData}>
+                                <span className={styles.areaContentDataItemData1}>
+                                    {totalCapacity}
+                                </span>
+                                <span className={styles.areaContentDataItemData2}>MW</span>
                             </div>
                         </div>
                     </div>

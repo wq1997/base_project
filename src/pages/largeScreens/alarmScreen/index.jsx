@@ -27,12 +27,16 @@ const Index = () => {
             </div>
             <div className={styles.content}>
                 <div className={styles.left}>
-                    <AlarmAnysis
-                        data={initData&&[
-                            ["一般", initData?.signalName2Count?.["一般告警"] || 0],
-                            ["严重", initData?.signalName2Count?.["严重告警"] || 0],
-                        ]}
-                    />
+                    <div className={styles.alarmWrapper}>
+                        <AlarmAnysis
+                            data={
+                                initData && [
+                                    ["一般", initData?.signalName2Count?.["一般告警"] || 0],
+                                    ["严重", initData?.signalName2Count?.["严重告警"] || 0],
+                                ]
+                            }
+                        />
+                    </div>
                     <WorkOrder data={initData?.workOrderSummery} />
                     <DeviceStatus data={initData?.deviceStatusCount} />
                 </div>
