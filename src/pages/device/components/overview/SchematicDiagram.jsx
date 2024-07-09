@@ -118,7 +118,7 @@ const SchematicDiagram = ({dataSource}) => {
                     }}
                 >
                     {
-                        totalActivePowerData>0&&
+                        powerData>0&&
                         <Flow img={dlImg} />
                     }
                 </div>
@@ -128,7 +128,7 @@ const SchematicDiagram = ({dataSource}) => {
             <div className={centerStyle}>
                 {/* 充电状态 */}
                 {
-                    powerData<0&&
+                    totalActivePowerData<0&&
                     <div 
                         style={{
                             position: 'absolute',
@@ -146,7 +146,7 @@ const SchematicDiagram = ({dataSource}) => {
 
                 {/* 放电状态 */}
                 {
-                    powerData>0&&
+                    totalActivePowerData>0&&
                     <div 
                         style={{
                             position: 'absolute',
@@ -198,11 +198,11 @@ const SchematicDiagram = ({dataSource}) => {
                         </div>
                         <div style={{margin: '10px 0'}}>
                             {intl.formatMessage({id:'运行状态'})}：
-                            {powerData>0&&intl.formatMessage({id:'放电'})}
-                            {powerData<0&&intl.formatMessage({id:'充电'})}
-                            {powerData===0&&intl.formatMessage({id:'待机'})}
+                            {totalActivePowerData>0&&intl.formatMessage({id:'放电'})}
+                            {totalActivePowerData<0&&intl.formatMessage({id:'充电'})}
+                            {totalActivePowerData===0&&intl.formatMessage({id:'待机'})}
                         </div>
-                        <div>{intl.formatMessage({id:'功率'})}：{dataSource?.power}</div>
+                        <div>{intl.formatMessage({id:'功率'})}：{dataSource?.totalActivePower}</div>
                     </div>
                 </div>
             </div>
