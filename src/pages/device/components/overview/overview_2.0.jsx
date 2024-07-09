@@ -237,9 +237,9 @@ const OverView = ({deviceVersion, sn}) => {
         newSystemEfficiencyDataSource[2].data = dataSource?.pcs?.ACTotalDischEnergy||0;
 
         //收益统计
-        newBenefitStatisticsDataSource[0].data = dataSource?.revenue?.dayEarning||0;
-        newBenefitStatisticsDataSource[1].data = dataSource?.revenue?.monthEarning||0;
-        newBenefitStatisticsDataSource[2].data = dataSource?.revenue?.allEarning||0;
+        newBenefitStatisticsDataSource[0].data = dataSource?.gmeter?.dayEarning||0;
+        newBenefitStatisticsDataSource[1].data = dataSource?.gmeter?.monEarning||0;
+        newBenefitStatisticsDataSource[2].data = dataSource?.gmeter?.sumEarning||0;
 
         //BMS信息
         newBmsInfoDataSource[0].data[0].value = dataSource?.bms?.cellTempMax||0;

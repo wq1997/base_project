@@ -234,8 +234,8 @@ const SchematicDiagram = ({dataSource}) => {
                         <div
                             style={{
                                 position: 'absolute', 
-                                right:  - loadSystemIconWidth - 50, 
-                                top: Math.tan((loadSystemAngle + 10) * Math.PI / 180) * (- loadSystemIconWidth - 50),
+                                right:  - loadSystemIconWidth - 75, 
+                                top: Math.tan((loadSystemAngle) * Math.PI / 180) * (- loadSystemIconWidth - 75),
                                 transform: `rotate(-${loadSystemAngle}deg)`,
                             }} 
                         >
@@ -247,7 +247,7 @@ const SchematicDiagram = ({dataSource}) => {
                                 {loadPowerData>0&&intl.formatMessage({id:'用电'})}
                                 {loadPowerData===0&&intl.formatMessage({id:'待机'})}
                             </div>
-                            <div>{intl.formatMessage({id:'功率'})}：{dataSource?.loadPower}</div>
+                            {/* <div>{intl.formatMessage({id:'功率'})}：{dataSource?.loadPower}</div> */}
                         </div>
                     </div>
             </div>

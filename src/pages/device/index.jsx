@@ -254,8 +254,8 @@ const RealtimeAlarm = () => {
             const newIncomeData = JSON.parse(JSON.stringify(incomeData));
             newIncomeData[0].value = data?.dayEarning || 0;
             newIncomeData[1].value = data?.monthEarning || 0;
-            newIncomeData[2].value = data?.yearEarning || 0;
-            newIncomeData[3].value = data?.allEarning || 0;
+            // newIncomeData[2].value = data?.yearEarning || 0;
+            newIncomeData[2].value = data?.allEarning || 0;
             setIncomeData(newIncomeData);
         }
     }
