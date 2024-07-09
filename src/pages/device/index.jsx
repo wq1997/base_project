@@ -61,19 +61,19 @@ const RealtimeAlarm = () => {
 
     const eleData = [
         {
-            label: `${t('日充/放电量')}(${t('kWh')})`,
+            label: `${t('日充')}/${t('放电量')}(${t('kWh')})`,
             name: ['dailyCharge', 'dailyDisCharge'],
             value: [0, 0],
             color: '#20C2FF'
         },
         {
-            label: `${t('月充/放电量')}(${t('kWh')})`,
+            label: `${t('月充')}/${t('放电量')}(${t('kWh')})`,
             name: ['monthCharge', 'monthDisCharge'],
             value: [0, 0],
             color: '#01FF23'
         },
         {
-            label: `${t('累计充/放电量')}(${t('kWh')})`,
+            label: `${t('累计充')}/${t('放电量')}(${t('kWh')})`,
             name: ['totalCharge', 'totalDisCharge'],
             value: [0, 0],
             color: '#FF5E00'
@@ -91,11 +91,11 @@ const RealtimeAlarm = () => {
             value: 0,
             color: '#20C2FF'
         },
-        {
-            label: t('年收益'),
-            value: 0,
-            color: '#20C2FF'
-        },
+        // {
+        //     label: t('年收益'),
+        //     value: 0,
+        //     color: '#20C2FF'
+        // },
         {
             label: t('累计收益'),
             value: 0,

@@ -1194,6 +1194,7 @@ export default {
 '系统正极最小绝缘电阻阻值/kohm':'System anode min insulation resistance/kohm',
 '系统负极最小绝缘电阻阻值/kohm':'System cathode min insulation resistance/kohm',
 '单体电压/mV':'Monomer voltage/mV',
+'单体电压/V':'Monomer voltage/V',
 '单体温度/℃':'Monomer temperature/℃',
 '堆单体压差/mV':'Heap single pressure difference/mV',
 '堆单体温差/℃':'Heap single temperature difference/℃',
@@ -2003,4 +2004,6 @@ export default {
 '总充': 'Total Charging Capacity',
 '收益': 'Revenue',
 'PACK详情': 'Pack Details',
+'刷新': 'Refresh',
+'PCS/BMS设置': 'PCS/BMS settings',
 } 

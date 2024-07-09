@@ -430,7 +430,7 @@ const Electricity = () => {
                                                 key: 'dtuName',
                                             },
                                             {
-                                                title: `${intl.formatMessage({ id: '尖时段' })}${intl.formatMessage({ id: '充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
+                                                title: `${intl.formatMessage({ id: '尖时段充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
                                                 dataIndex: 'kWh',
                                                 key: 'kWh',
                                                 render(_, record) {
@@ -438,7 +438,7 @@ const Electricity = () => {
                                                 }
                                             },
                                             {
-                                                title: `${intl.formatMessage({ id: '峰时段' })}${intl.formatMessage({ id: '充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
+                                                title: `${intl.formatMessage({ id: '峰时段充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
                                                 dataIndex: 'kWh',
                                                 key: 'kWh',
                                                 render(_, record) {
@@ -446,7 +446,7 @@ const Electricity = () => {
                                                 }
                                             },
                                             {
-                                                title: `${intl.formatMessage({ id: '平时段' })}${intl.formatMessage({ id: '充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
+                                                title: `${intl.formatMessage({ id: '平时段充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
                                                 dataIndex: 'kWh',
                                                 key: 'kWh',
                                                 render(_, record) {
@@ -454,7 +454,7 @@ const Electricity = () => {
                                                 }
                                             },
                                             {
-                                                title: `${intl.formatMessage({ id: '谷时段' })}${intl.formatMessage({ id: '充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
+                                                title: `${intl.formatMessage({ id: '谷时段充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
                                                 dataIndex: 'kWh',
                                                 key: 'kWh',
                                                 render(_, record) {
