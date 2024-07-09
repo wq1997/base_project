@@ -450,7 +450,7 @@ const OverView = ({deviceVersion, sn}) => {
                                 {Object.values(pcsInfoDataSource[0]||{}).map(item=><div className={styles.areaItemContent}>{item}</div>)}
                             </div>
                             <div className={classNames(styles.areaItem, styles.areaItemHeader)}>
-                                {['','AB','BC','AC'].map(item=><div className={styles.areaItemContent}>{item}</div>)}
+                                {['','A','B','C'].map(item=><div className={styles.areaItemContent}>{item}</div>)}
                             </div>
                             <div className={classNames(styles.areaItem, styles.areaItemContent)}>
                                 {Object.values(pcsInfoDataSource2[0]||{}).map(item=><div className={styles.areaItemContent}>{item}</div>)}

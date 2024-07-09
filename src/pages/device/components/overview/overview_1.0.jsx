@@ -61,12 +61,12 @@ const OverView = ({deviceVersion, sn}) => {
 
     const [systemEfficiencyDataSource, setSystemEfficiencyDataSource] = useState([
         {
-            title: "计量电表",
+            title: "PCS",
             data: 0,
             color: '#37EEFF'
         },
         {
-            title: "PCS",
+            title: "计量电表",
             data: 0,
             color: '#B95CFC'
         }
