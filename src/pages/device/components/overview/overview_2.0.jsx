@@ -257,9 +257,9 @@ const OverView = ({deviceVersion, sn}) => {
         newPcsInfoDataSource[0].B = dataSource?.pcs?.phaseBCur||0;
         newPcsInfoDataSource[0].C = dataSource?.pcs?.phaseCCur||0;
 
-        newPcsInfoDataSource2[0].AB = dataSource?.pcs?.lineAbVol||0;
-        newPcsInfoDataSource2[0].BC = dataSource?.pcs?.lineBcVol||0;
-        newPcsInfoDataSource2[0].AC = dataSource?.pcs?.lineAcVol||0;
+        newPcsInfoDataSource2[0].AB = dataSource?.pcs?.lineAVol||0;
+        newPcsInfoDataSource2[0].BC = dataSource?.pcs?.lineBVol||0;
+        newPcsInfoDataSource2[0].AC = dataSource?.pcs?.lineCVol||0;
 
         //通讯状态
         newCommunicationStatusDataSource[0].checked = dataSource?.Status?.bms||0;
