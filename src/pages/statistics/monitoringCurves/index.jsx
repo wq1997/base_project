@@ -69,6 +69,10 @@ const MonitoringCurves = () => {
             message.error(intl.formatMessage({id: '最多选择3个对比项'}));
             return;
         }
+        if(currentPlantDevice?.length<2){
+            message.error(intl.formatMessage({id: '请选择电站下具体设备'}));
+            return;
+        };
         let params = {
             // plantId: currentPlantDevice?.[0],
             dtuId: currentPlantDevice?.[1],
