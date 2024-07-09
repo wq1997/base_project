@@ -81,15 +81,14 @@ function Com(props) {
                             </div>
                             <div className={styles.theFirstLine} style={{ borderBottom: `3px solid ${token.colorLittle}` }}></div>
                             <div className={styles.theFirstContent}>
-                                {[1, 2, 3, 4, 5, 6, 7, 8].map(it => {
+                               {[1, 2, 3, 4, 5, 6, 7, 8].map((it, index) => {
                                     return (
                                         <div className={styles.module}>
                                             <div className={styles.dataLeft}>
                                                 <div className={styles.pcsData}>
+                                                    <div>I(A)</div>
+                                                    <div>U(V)</div>
                                                     <div>P(kW)</div>
-                                                    <div>Ua(V)</div>
-                                                    <div>Ub(V)</div>
-                                                    <div>Uc(V)</div>
                                                 </div>
                                                 <div className={styles.bmsData}>
                                                     <div>I(A)</div>
@@ -100,26 +99,25 @@ function Com(props) {
                                             <div className={styles.centerModule}>
                                                 <div className={styles.line} style={{ borderRight: `3px solid ${token.colorLittle}` }}></div>
                                                 <div className={styles.onePcs} style={{ border: `3px solid ${token.colorLittle}` }}>
-                                                    <div>PCS</div>
-                                                    <div>#{it}</div>
+                                                    <div style={{textAlign:'center'}}>{data?.[1]?.[index]?.pcsName}</div>
+                                                    {/* <div>#{it}</div> */}
                                                 </div>
                                                 <div className={styles.line} style={{ borderRight: `3px solid ${token.colorLittle}` }}></div>
                                                 <div className={styles.oneBms} style={{ border: `3px solid ${token.colorLittle}` }}>
-                                                    <div>BMS</div>
-                                                    <div>#{it}</div>
+                                                <div style={{textAlign:'center'}}>{data?.[1]?.[index]?.bmsName}</div>
+
                                                 </div>
                                             </div>
                                             <div className={styles.dataRight}>
                                                 <div className={styles.pcsData}>
-                                                    <div>P(kW)</div>
-                                                    <div>Ua(V)</div>
-                                                    <div>Ub(V)</div>
-                                                    <div>Uc(V)</div>
+                                                    <div>{data?.[1]?.[index]?.pcsCur}</div>
+                                                    <div>{data?.[1]?.[index]?.pcsVol}</div>
+                                                    <div>{data?.[1]?.[index]?.pcsPower}</div>
                                                 </div>
                                                 <div className={styles.bmsData}>
-                                                    <div>I(A)</div>
-                                                    <div>U(V)</div>
-                                                    <div>P(kW)</div>
+                                                <div>{data?.[1]?.[index]?.bmsCur}</div>
+                                                    <div>{data?.[1]?.[index]?.bmsVol}</div>
+                                                    <div>{data?.[1]?.[index]?.bmsPower}</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -128,49 +126,47 @@ function Com(props) {
                             </div>
                             <div className={styles.theFirstLine} style={{ borderBottom: `3px solid ${token.colorLittle}` }}></div>
                             <div className={styles.theFirstContent}>
-                                {[1, 2, 3, 4, 5, 6, 7, 8].map(it => {
-                                    return (
-                                        <div className={styles.module}>
-                                            <div className={styles.dataLeft}>
-                                                <div className={styles.pcsData}>
-                                                    <div>P(kW)</div>
-                                                    <div>Ua(V)</div>
-                                                    <div>Ub(V)</div>
-                                                    <div>Uc(V)</div>
-                                                </div>
-                                                <div className={styles.bmsData}>
-                                                    <div>I(A)</div>
-                                                    <div>U(V)</div>
-                                                    <div>P(kW)</div>
-                                                </div>
+                                {[1, 2, 3, 4, 5, 6, 7, 8].map((it,index) => {
+                                   return (
+                                    <div className={styles.module}>
+                                        <div className={styles.dataLeft}>
+                                            <div className={styles.pcsData}>
+                                                <div>I(A)</div>
+                                                <div>U(V)</div>
+                                                <div>P(kW)</div>
                                             </div>
-                                            <div className={styles.centerModule}>
-                                                <div className={styles.line} style={{ borderRight: `3px solid ${token.colorLittle}` }}></div>
-                                                <div className={styles.onePcs} style={{ border: `3px solid ${token.colorLittle}` }}>
-                                                    <div>PCS</div>
-                                                    <div>#{it}</div>
-                                                </div>
-                                                <div className={styles.line} style={{ borderRight: `3px solid ${token.colorLittle}` }}></div>
-                                                <div className={styles.oneBms} style={{ border: `3px solid ${token.colorLittle}` }}>
-                                                    <div>BMS</div>
-                                                    <div>#{it}</div>
-                                                </div>
-                                            </div>
-                                            <div className={styles.dataRight}>
-                                                <div className={styles.pcsData}>
-                                                    <div>P(kW)</div>
-                                                    <div>Ua(V)</div>
-                                                    <div>Ub(V)</div>
-                                                    <div>Uc(V)</div>
-                                                </div>
-                                                <div className={styles.bmsData}>
-                                                    <div>I(A)</div>
-                                                    <div>U(V)</div>
-                                                    <div>P(kW)</div>
-                                                </div>
+                                            <div className={styles.bmsData}>
+                                                <div>I(A)</div>
+                                                <div>U(V)</div>
+                                                <div>P(kW)</div>
                                             </div>
                                         </div>
-                                    )
+                                        <div className={styles.centerModule}>
+                                            <div className={styles.line} style={{ borderRight: `3px solid ${token.colorLittle}` }}></div>
+                                            <div className={styles.onePcs} style={{ border: `3px solid ${token.colorLittle}` }}>
+                                                <div style={{textAlign:'center'}}>{data?.[2]?.[index]?.pcsName}</div>
+                                                {/* <div>#{it}</div> */}
+                                            </div>
+                                            <div className={styles.line} style={{ borderRight: `3px solid ${token.colorLittle}` }}></div>
+                                            <div className={styles.oneBms} style={{ border: `3px solid ${token.colorLittle}` }}>
+                                            <div style={{textAlign:'center'}}>{data?.[2]?.[index]?.bmsName}</div>
+
+                                            </div>
+                                        </div>
+                                        <div className={styles.dataRight}>
+                                            <div className={styles.pcsData}>
+                                                <div>{data?.[2]?.[index]?.pcsCur}</div>
+                                                <div>{data?.[2]?.[index]?.pcsVol}</div>
+                                                <div>{data?.[2]?.[index]?.pcsPower}</div>
+                                            </div>
+                                            <div className={styles.bmsData}>
+                                            <div>{data?.[2]?.[index]?.bmsCur}</div>
+                                                <div>{data?.[2]?.[index]?.bmsVol}</div>
+                                                <div>{data?.[2]?.[index]?.bmsPower}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
                                 })}
                             </div>
                         </div>

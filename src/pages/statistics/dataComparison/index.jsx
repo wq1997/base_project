@@ -29,14 +29,7 @@ function Com(props) {
   const [cascaderValue, setCascaderValue] = useState([]);
 
   const intl = useIntl();
-  const wayOption = [{
-    label: '相同时间 不同数据项',
-    value: 1,
-  },
-  {
-    label: '不同时间  相同数据项',
-    value: 2,
-  },]
+
   const t = (id) => {
     const msg = intl.formatMessage(
       {
@@ -45,6 +38,14 @@ function Com(props) {
     );
     return msg
   }
+  const wayOption = [{
+    label: t('相同时间 不同数据项'),
+    value: 1,
+},
+{
+    label: t('不同时间  相同数据项'),
+    value: 2,
+},]
   const initOption = () => {
     setOptionEchartTem(baseOption);
   };
@@ -137,9 +138,9 @@ function Com(props) {
     let dateList = [];
     if (way === 1) {
       dataTypeList = packReq?.map(it => {
-        if (Array.isArray(it[1])) {
+        if (Array.isArray(it)) {
           if (it?.[1]?.split(',')?.[0] == 0) {
-            return { devId: +it?.[1]?.split(',')?.[0], dataId: +it[2], gridPoint: +it?.[1]?.split(',')?.[1] };
+            return { devId: +it?.[1]?.split(',')?.[0], dataId: +it[2], gridPointId: +it?.[1]?.split(',')?.[1] };
           } else {
             return { devId: +it?.[1]?.split(',')?.[0], dataId: +it[2] };
           }

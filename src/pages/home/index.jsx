@@ -257,8 +257,8 @@ function OverView(props) {
                                 width: 200,
                                 marginLeft: '10px'
                             }}
-                            key={grids[0]?.id}
-                            defaultValue={grids[0]?.id}
+                            key={grids?.[0]?.id}
+                            defaultValue={grids?.[0]?.id}
                             onChange={changeGrid}
                         >
                             {grids && grids.map(item => {

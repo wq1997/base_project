@@ -33,9 +33,9 @@ function Com(props) {
     data?.data?.[1]?.list?.map(it => {
       arr1.push(dayjs(it.date).format('MM-DD'));
     })
-    data.data.map((item, index) => {
+    data?.data?.map((item, index) => {
       let arry = [];
-      item.list.map(it => {
+      item?.list?.map(it => {
         arry.push([dayjs(it.date).format('MM-DD'),it.efficiency]);
       });
       titles.push(t(item.title));

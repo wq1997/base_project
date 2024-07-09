@@ -15,6 +15,8 @@ const RealtimeAlarm = () => {
   const [current, setCurrent] = useState(1);
   const [currntGrid, setCurrntGrid] = useState();
   const [grids, setGrids] = useState([]);
+  const [scroolY, setScroolY] = useState(200);
+  const [screenH, setScreenH] = useState('');
 
   const { token } = theme.useToken();
   const intl = useIntl();
@@ -25,6 +27,25 @@ const RealtimeAlarm = () => {
           },
       );
       return msg
+  }
+  useEffect(() => {
+    setScreenH(document.documentElement.clientHeight || document.body.clientHeight)
+    window.addEventListener("resize", handleWindowResize)
+    return () => {
+      window.removeEventListener("resize", handleWindowResize)
+    }
+  }, [])
+  useEffect(() => {
+    if (screenH < 1000) {
+      setScroolY(300);
+    } else if (screenH > 1000 && screenH < 1300) {
+      setScroolY(400);
+    } else if (screenH > 1300) {
+      setScroolY(500);
+    }
+  }, [screenH])
+  const handleWindowResize = () => {
+    setScreenH(document.documentElement.clientHeight || document.body.clientHeight)
   }
   useEffect(() => {
     getData();
@@ -67,7 +88,7 @@ const RealtimeAlarm = () => {
     // setCurrntGrid(grid?.data?.[0]?.id);
 }
   return (
-    <div style={{width:'100%',height:'100%',padding:'0 0 10px 0'}}>
+    <div style={{width:'100%',height:'calc(100% - 67px)',padding:'0 0 10px 0'}}>
       <div className={styles.grid} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal, }}>
             <Select
               style={{
@@ -91,12 +112,12 @@ const RealtimeAlarm = () => {
           t('实时告警')
         }
         content={
-          <div className={styles.alarmWrap}>
+          <div className={styles.alarmWrap} style={{height:'calc(100% - 87px)'}}>
             <Table
               columns={clum}
               data={data.records}
               pagination={false}
-              scroll={{ x: 'max-content' }}
+              scroll={{ y: scroolY }}
             />
             <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} total={data.total} pageSize={data.size} onChange={changPage} />
           </div>

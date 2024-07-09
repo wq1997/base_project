@@ -8,7 +8,9 @@ export const getBaseUrl = () => {
 };
 const getToken = () => localStorage.getItem("Token");
 const instance = axios.create({
-    baseURL: 'http://192.168.1.42/api',
+    // baseURL: 'http://192.168.1.42/api',
+    baseURL: 'http://47.111.104.162:40109/api',
+
     timeout: 10000,
     headers: {
         Authorization: getToken(),

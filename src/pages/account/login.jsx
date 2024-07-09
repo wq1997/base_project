@@ -33,52 +33,53 @@ const Login = () => {
   }
   const changeCodeImgUrl = () => {
     setCodeImgUrl('');
-    setTimeout(_ => (setCodeImgUrl(`${getBaseUrl()}/user/getKaptchaImage`)
+    setTimeout(_ => (setCodeImgUrl(`http://192.168.1.42/api/user/getKaptchaImage`)
     ), 0);
   }
   const onFinish = async (values) => {
-    const res = await loginSever({
-      ...values,
-      password: getEncrypt(publicKey, values.password),
-      clientType: 3,
-      remember: false,
-      language: 1,
-    });
-    if (res?.data?.data?.token) {
-      const data = res?.data.data;
-      setLocalStorage("Token", data?.token);
-      setLocalStorage("userName", data?.userName);
-      setLocalStorage("sceneType", data?.sceneType);
-      message.success('登录成功');
-      dispatch({
-        type: 'user/updateState',
-        payload: {
-          user: {
-            ...res.data.data
-          }
-        }
+    if (publicKey) {
+      const res = await loginSever({
+        ...values,
+        password: getEncrypt(publicKey, values.password),
+        // clientType: 3,
+        // remember: false,
+        language: 1,
       });
-      getData();
-
-    } else {
-      message.error(res.data.msg);
-      if (res?.data.code === '407') {
-        setShowImg(true)
+      if (res?.data?.data) {
+        const data = res?.data.data;
+        setLocalStorage("Token", data.token);
+        // setLocalStorage("userName", data?.userName);
+        // setLocalStorage("sceneType", data?.sceneType);
+        message.success('登录成功');
+        dispatch({
+          type: 'user/updateState',
+          payload: {
+            user: {
+              ...res.data.data
+            }
+          }
+        });
+        getData();
+  
       } else {
+        message.error(res.data.msg);
       }
+    }else{
+      getPublicKey();
     }
+   
   }
   const getData = async () => {
     const { data } = await apigetPlantList();
-    localStorage.setItem('plantId',data.data?.[0].plantId);
+    localStorage.setItem('plantId',data?.data?.[0]?.plantId);
     history.push("/index/home");
 
 }
   const getPublicKey = async () => {
     const res = await getPublicKeySever();
-    if (res?.data) {
-      setPublicKey(res?.data);
-      localStorage.setItem('publicKey',res?.data)
+    if (res?.data?.data) {
+      setPublicKey(res?.data?.data);
+      localStorage.setItem('publicKey',res?.data?.data)
     }
   }
 

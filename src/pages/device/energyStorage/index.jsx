@@ -68,6 +68,7 @@ const getTreeData = (data, treeData) => {
             oringal[0]?.children.push({
                 title: it.gridPointName,
                 id: it.dtuId,
+                gridPointId:it.id,
                 key: `0-${index}`,
                 type: it.type || it?.deviceType,
                 children: [
@@ -78,6 +79,7 @@ const getTreeData = (data, treeData) => {
             oringal[0]?.children.push({
                 title: it.gridPointName,
                 id: it.dtuId,
+                gridPointId:it.id,
                 key: `0-${index}`,
                 type: it.type || it?.deviceType,
                 children: [
@@ -146,7 +148,7 @@ function Com(props) {
     const onSelect = (selectedKeys, e) => {
         setPageType(e.node.type);
         setPageKey(e.node.key);
-        history.push(`${pathname}?PageKey=${e.node.key}&id=${e.node.id}&PageType=${e.node.type}&title=${e.node.title.props.children[2]}`);
+        history.push(`${pathname}?PageKey=${e.node.key}&id=${e.node.id}&gridPointId=${e.node.gridPointId}&PageType=${e.node.type}&title=${e.node.title.props.children[2]}`);
     }
     const onExpand = (newExpandedKeys) => {
         setExpandedKeys(newExpandedKeys);
@@ -214,6 +216,7 @@ function Com(props) {
                         key: item.key,
                         id: item.id,
                         type: item.type,
+                        gridPointId:item.gridPointId,
                         // selectable: false,
                         children: loop(item.children),
                     };

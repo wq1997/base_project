@@ -1,11 +1,11 @@
-import axiosInstance from "./req";
+import axiosInstance from "./request";
 
 export const login = (payload) => {
-   return axiosInstance.post('/user/loginWithCode', payload)
+   return axiosInstance.post('/open/login', payload)
 }
 
 export const getPublicKey = ()=>{
-  return axiosInstance.get("/user/getPublicKey");
+  return axiosInstance.get("/open/getPublicKey");
 }
 
 

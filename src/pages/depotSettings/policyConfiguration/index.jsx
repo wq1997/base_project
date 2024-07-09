@@ -42,7 +42,9 @@ function Com(props) {
     let { data } = await getStrategyInfo({ gridPointId: gridId });
     setDetailsData(data?.data);
     form.setFieldsValue(data?.data);
-    setStrategyTableData(data?.data?.planList)
+    if (data?.data?.planList) {
+      setStrategyTableData(data?.data?.planList)
+    }
   }
   const edit = (val, index) => {
     form6.setFieldsValue(val);
@@ -55,7 +57,6 @@ function Com(props) {
     form6.setFieldValue('startDate', dayjs(val.startDate));
     form6.setFieldValue('endDate', dayjs(val.endDate));
     form6.setFieldValue('contentList', arr);
-    console.log(arr, 1212);
     setCurrentIndex(index)
     setTitle('编辑策略');
     setEditPlanOpen(true);
@@ -63,7 +64,7 @@ function Com(props) {
   const getInit = async () => {
     let { data } = await getGridPointList({ plantId: localStorage.getItem('plantId') });
     let arr = [];
-    data?.data.map(it => {
+    data?.data?.map(it => {
       arr.push({
         label: it.gridPointName,
         value: it.id,
@@ -87,12 +88,15 @@ function Com(props) {
     try {
       form.setFieldValue('planList', strategyTableData);
       const values = await form.validateFields();
-      values?.planList.map(item => {
-        item.startDate = dayjs(item.startDate).format('YYYY-MM-DD');
-        item.endDate = dayjs(item.endDate).format('YYYY-MM-DD');
+      values?.planList?.map(item => {
+        item.startDate = dayjs(item.startDate).format('MM-DD');
+        item.endDate = dayjs(item.endDate).format('MM-DD');
         item?.contentList?.map(it => {
-          it.startTime = dayjs(it.startTime).format('HH:mm:ss');
+          if (typeof it.startTime==='string') {
+            it.startTime = dayjs(it.startTime).format('HH:mm:ss');
           it.endTime = dayjs(it.endTime).format('HH:mm:ss');
+          }
+          
         })
       })
       let { data } = await saveStrategy(values);
@@ -163,7 +167,7 @@ function Com(props) {
               rules={[
               ]}
             >
-              <Input disabled={true}/>
+              <Input disabled={true} />
             </Form.Item>
             <Form.Item
               name="transProtectPercent"
@@ -171,7 +175,7 @@ function Com(props) {
               labelCol={{ span: 10 }}
               wrapperCol={{ span: 14 }}
             >
-              <Input disabled={true}/>
+              <Input disabled={true} />
             </Form.Item>
             <Form.Item
               name="powerMode"
@@ -202,29 +206,29 @@ function Com(props) {
             <Button type="primary" style={{ marginBottom: '10px' }} onClick={() => {
               setEditPlanOpen(true);
               setTitle('新增策略');
-              let No= Math.floor(Math.random()*1000 + 1);
-              
-             if (strategyTableData?.find(it=>it.planNo==No)) {
-              form6.setFieldsValue({
-                planName: '',
-                planNo: Math.floor(Math.random()*1000 + 1),
-                startDate: dayjs(new Date()),
-                endDate: dayjs(new Date()),
-                controlMode: 1,
-                contentList: []
-              })
-             }else{
-              form6.setFieldsValue({
-                planName: '',
-                planNo: No,
-                startDate: dayjs(new Date()),
-                endDate: dayjs(new Date()),
-                controlMode: 1,
-                contentList: []
-              })
-             } ;
+              let No = Math.floor(Math.random() * 1000 + 1);
 
-              
+              if (strategyTableData?.find(it => it.planNo == No)) {
+                form6.setFieldsValue({
+                  planName: '',
+                  planNo: Math.floor(Math.random() * 1000 + 1),
+                  startDate: dayjs(new Date()),
+                  endDate: dayjs(new Date()),
+                  controlMode: 1,
+                  contentList: []
+                })
+              } else {
+                form6.setFieldsValue({
+                  planName: '',
+                  planNo: No,
+                  startDate: dayjs(new Date()),
+                  endDate: dayjs(new Date()),
+                  controlMode: 1,
+                  contentList: []
+                })
+              };
+
+
             }}>{t('新增策略')}</Button>
           </div>
           <Form.Item
@@ -248,7 +252,7 @@ function Com(props) {
                   dataIndex: 'startDate',
                   key: 'startDate',
                   render: (text, record) => {
-                    return dayjs(record.startDate).format('YYYY-MM-DD')
+                    return dayjs(record.startDate).format('MM-DD')
                   }
                 },
                 {
@@ -256,7 +260,7 @@ function Com(props) {
                   dataIndex: 'endDate',
                   key: 'endDate',
                   render: (text, record) => {
-                    return dayjs(record.endDate).format('YYYY-MM-DD')
+                    return dayjs(record.endDate).format('MM-DD')
                   }
                 },
                 {

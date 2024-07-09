@@ -185,7 +185,7 @@ function Com(props) {
     };
     const profitTable = [
         {
-            title: '序号',
+            title: getTranslation('序号'),
             dataIndex: 'id',
             key: 'id',
             width: 100,
@@ -234,7 +234,6 @@ function Com(props) {
     const changeRangeDate = (val, str) => {
         setStartTime(str?.[0]);
         setEndTime(str?.[1]);
-        console.log(val, str, 'rangdate');
     }
     useEffect(() => {
         getGrid();

@@ -63,42 +63,42 @@ function Overview(props) {
 
     const eleData = [
         {
-            label: '今日充电量',
+            label: t('今日充电量'),
             name: 'dayChargeEnergy',
             value: '',
             unit: 'kWh',
             color: '#03B4B4'
         },
         {
-            label: '今日放电量',
+            label: t('今日放电量'),
             name: 'dayDischargeEnergy',
             value: '',
             unit: 'kWh',
             color: '#FF9D4F'
         },
         {
-            label: '累计充电量',
+            label: t('累计充电量'),
             name: 'totalChargeEnergy',
             value: '',
             unit: 'kWh',
             color: '#71B4F2'
         },
         {
-            label: '累计放电量',
+            label: t('累计放电量'),
             name: 'totalDischargeEnergy',
             value: '',
             unit: 'kWh',
             color: '#EEC830'
         },
         {
-            label: '今日充放电效率',
+            label: t('今日充放电效率'),
             name: 'dayEfficiency',
             value: '',
             unit: '%',
             color: '#03B4B4'
         },
         {
-            label: '累计充放电效率',
+            label: t('累计充放电效率'),
             name: 'totalEfficiency',
             value: '',
             unit: '%',
@@ -107,22 +107,22 @@ function Overview(props) {
     ];
     const profitData = [
         {
-            label: '日收益',
+            label: t('日收益'),
             name: 'todayIncome',
             unit: currentPlant?.priceUnit,
             color: '#03B4B4',
             icon: 'icon-qian'
         },
         {
-            label: '周收益',
-            name: 'weekIncome',
+            label: t('周收益'),
+            name: 'weekIncome',                                                                                                                        
             unit: currentPlant?.priceUnit,
             color: '#FF9D4F',
             icon: 'icon-qian1'
 
         },
         {
-            label: '月收益',
+            label: t('月收益'),
             name: 'monthIncome',
             unit: currentPlant?.priceUnit,
             color: '#EEC830',
@@ -130,7 +130,7 @@ function Overview(props) {
 
         },
         {
-            label: '累计收益',
+            label: t('累计收益'),
             name: 'totalIncome',
             unit: currentPlant?.priceUnit,
             color: '#71B4F2',
@@ -172,7 +172,7 @@ function Overview(props) {
     }
     const getRun = async () => {
         let { data } = pageType === 'ALL' ? await getRunMetrics({ plantId: localStorage.getItem('plantId') }) :
-            await getRunMetricsj({ gridPointId: id });
+            await getRunMetricsj({ gridPointId: getQueryString('gridPointId') });
         setRunning(data.data);
     }
     const getIncome = async () => {
@@ -241,12 +241,12 @@ function Overview(props) {
                         }
                         content={
                             <div className={styles.elewrap} style={{ backgroundColor: token.lightTreeLineBgc }}>
-                                {eleData.map(it => {
+                                {eleData?.map(it => {
                                     return (<div className={styles.item} style={{ backgroundColor: token.lightTreeBgc }}>
-                                        <Tooltip title={t(it.label)} >
-                                            <div className={styles.itemTitle} style={{ color: token.titleColor }}>{t(it.label)}</div>
+                                        <Tooltip title={it?.label} >
+                                            <div className={styles.itemTitle} style={{ color: token.titleColor }}>{it.label}</div>
                                         </Tooltip>
-                                        <Tooltip title={energySummary[it.name] + it.unit} >
+                                        <Tooltip title={energySummary[it?.name] + it.unit} >
                                             <div className={styles.itemValue} style={{ color: it.color }}>{energySummary[it.name]} <span className={styles.itemUnit} style={{ color: token.titleColor }}>{it.unit}</span></div>
                                         </Tooltip>
 
@@ -293,16 +293,16 @@ function Overview(props) {
                                     return (
                                         <>
                                             <div className={styles.itemProfit} style={{ backgroundColor: token.lightTreeBgc }}>
-                                                <Tooltip title={t(it.label)} >
+                                                <Tooltip title={it.label} >
                                                     <div className={styles.titleProfit}>
                                                         <Icon type={it.icon} style={{ color: it.color }}></Icon>
-                                                        {t(it.label)}
+                                                        {it.label}
                                                     </div>
                                                 </Tooltip>
 
 
                                                 <div className={styles.valueProfit} style={{ color: it.color }}>
-                                                    {income[it.name]} <span style={{ color: token.titleColor }}>{t(it.unit)}</span>
+                                                    {income[it.name]} <span style={{ color: token.titleColor }}>{it.unit}</span>
                                                 </div>
                                             </div>
                                         </>
@@ -370,16 +370,6 @@ function Overview(props) {
                         }
                         content={
                             <div className={styles.alarmWrap}>
-                                {/* {alarmData.map(it => {
-                                    return (
-                                        <div className={styles.itemAlarm}>
-                                            <Icon type={it.icon} style={{ color: it.color }} />
-                                            <span>{t(it.label)}:</span>
-                                            {it.value}
-                                        </div>
-                                    )
-                                })} */}
-
                                 <Table className={styles.alarmTable} columns={clum} dataSource={alarms} size="middle" scroll={{ y: scroolY }} />
                             </div>
                         } />

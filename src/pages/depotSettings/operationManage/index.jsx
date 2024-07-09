@@ -1,4 +1,4 @@
-import { theme, Select, Row, Space, Button, Modal, Form, Input, message, InputNumber } from "antd";
+import { theme, Select, Row, Space, Button, Modal, Form, Input, message, Tabs,InputNumber } from "antd";
 import { Title } from "@/components";
 import { getGridPointList, getOMCommands, sendOMCommands } from '@/services/policy'
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
@@ -26,6 +26,10 @@ const OperationManage = () => {
     const [initData, setInitData] = useState([]);
     const [cmdKey, setCmdKey] = useState();
     const [devId, setDevId] = useState();
+    const [keyObj, setKeyObj] = useState();
+    const [valueObj, setValueObj] = useState();
+    const [dtuId, setDtuId] = useState();
+
     const intl = useIntl();
     const t = (id) => {
         const msg = intl.formatMessage(
@@ -36,17 +40,19 @@ const OperationManage = () => {
         return msg
     }
 
-    const MyButton = ({ text, cmdKey, devId, onClick }) => {
+    const MyButton = ({ text,keyObj,valueObj, cmdKey, devId, onClick,color }) => {
         const onBtnClick = () => {
-            setTitle(text);
+            setTitle(t(text));
             setOtherOpen(true);
             setCmdKey(cmdKey);
             setDevId(devId)
+            setKeyObj(keyObj);
+            setValueObj(valueObj);
             onClick && onClick();
         }
         return (
             <div
-                style={{ width: 132, height: 48, borderRadius: 4, background: '#D1D9EF', color: '#6978A1', fontSize: 18, lineHeight: '48px', textAlign: 'center', cursor: 'pointer' }}
+                style={{ width: 132, height: 48, borderRadius: 4, background: color?.background||'#D1D9EF', color: color?.color||'#6978A1', fontSize: 18, lineHeight: '48px', textAlign: 'center', cursor: 'pointer' }}
                 onClick={onBtnClick}
             >
                 {t(text)}
@@ -64,6 +70,7 @@ const OperationManage = () => {
             seletOption.find(it => it.value == val)
         )
         setGridId(val);
+        setDtuId( seletOption.find(it => it.value == val).dtuId)
     }
     const getInit = async () => {
         let { data } = await getGridPointList({ plantId: localStorage.getItem('plantId') });
@@ -78,11 +85,58 @@ const OperationManage = () => {
         setSelectOption([...arr]);
         setGridId(arr[0]?.value);
         setCurrentGrid(arr[0]);
+        setDtuId(data?.data?.[0]?.dtuId);
+
     }
 
     const getInitData = async () => {
         let { data: res } = await getOMCommands({ gridPointId: gridId });
         setInitData(res?.data)
+    }
+    const onChange = (key) => {
+        console.log(key);
+    };
+    const getChildren = (item) => {
+        return (<>
+            <div style={{ backgroundColor: token.titleCardBgc, padding: '24px 37px', boxSizing: 'border-box' }}>
+                <Row justify="space-between" style={{ marginTop: 20 }}>
+                    <Space size={38}>
+                        <MyButton text="开机" keyObj='pcsStartStop' valueObj={1} cmdKey='7002' devId={item.devId} color={{background:token.barColor[0],color:'#fff'}}/>
+                        <MyButton text="关机" keyObj='pcsStartStop' valueObj={2} cmdKey='7002' devId={item.devId} color={{background:token.barColor[0],color:'#fff'}}/>
+                        <MyButton text="复位" keyObj='pcsStartStop' valueObj={3} cmdKey='7002'devId={item.devId} color={{background:token.barColor[0],color:'#fff'}}/>
+                        <MyButton text="BMS开机" keyObj='pcsStartStop' valueObj={4}  cmdKey='7016' devId={item.devId} color={{background:token.barColor[5],color:'#fff'}}/>
+                        <MyButton text="分闸" keyObj='mcsSwitchOnOff' valueObj={0}  cmdKey='7015'  devId={item.mcsDevId}  color={{background:token.barColor[6],color:'#fff'}}/>
+                        <MyButton text="合闸" keyObj='mcsSwitchOnOff' valueObj={1}  cmdKey='7015' devId={item.mcsDevId}  color={{background:token.barColor[6],color:'#fff'}}/>
+                        <MyButton text="功率设置"  keyObj='pcsPower' cmdKey='7019' devId={item.devId}/>
+                        <span>{item.pcsStatus}</span>
+                        <span>{item.power}</span>
+                        <span>{item.g3CircuitBreakerState}</span>
+                    </Space>
+                </Row>
+            </div>
+            {
+                            item?.branchList?.map((it, index) => {
+                                return (
+                                    <div style={{ backgroundColor: token.titleCardBgc, padding: '20px 37px', boxSizing: 'border-box' }}>
+                                        <Title title={it.name} />
+                                        <Space size={40} direction="vertical" style={{ width: '100%', marginTop:'20px'}}>
+                                            <Row justify="space-between">
+                                                <Space size={32}>
+                                                    <MyButton text="开机" keyObj='pcsStartStop' valueObj={1}  cmdKey='7004' devId={it.devId} />
+                                                    <MyButton text="关机" keyObj='pcsStartStop' valueObj={2}  cmdKey='7004'devId={it.devId} />
+                                                    <MyButton text="BMS开机"keyObj='bmsStartStop' valueObj={1}  cmdKey='7003' devId={it.bmsDevId} />
+                                                    <MyButton text="BMS关机" keyObj='bmsStartStop' valueObj={2}  cmdKey='7003' devId={it.bmsDevId} />
+                                                    <MyButton text="功率设置" keyObj='pcsPower'   cmdKey='7001' devId={it.devId} />
+                                                    <span>{t('状态')}：{it?.bmcStatus}</span>
+                                                    <span>{t('功率')}：{it?.bmcPower}</span>
+                                                </Space>
+                                            </Row>
+                                        </Space>
+                                    </div>
+                                )
+                            })
+                        }
+        </>)
     }
     return (
         <div style={{ color: token.titleColor }}>
@@ -111,82 +165,29 @@ const OperationManage = () => {
                         </Space>
                     </Space>
                 </div>
-
-                {initData?.branchDataList?.map(item => {
-                    return (<>
-                        <div style={{ backgroundColor: token.titleCardBgc, padding: '24px 37px', boxSizing: 'border-box' }}>
-                            <Title title={item?.tranDevName} />
-                            <Row justify="space-between" style={{ marginTop: 20 }}>
-                                <Space size={38}>
-                                    <span>{t('通讯状态')}：{item.transformComState == 1 ? t('连接') : t('断开')}</span>
-                                    <span>{t('低压侧有功功率')}：{item.lowVolSidePower}</span>
-                                    <span>{t('高压侧有功功率')}：{item.highVolSidePower}</span>
-                                    <span>{t('低压侧频率')}：{item.lowVolSideFreq}</span>
-                                    <span>{t('高压侧频率')}：{item.highVolSideFreq}</span>
-                                </Space>
-                                <Space>
-                                    <MyButton text="低压分闸" cmdKey='7' devId={item.devId} />
-                                    <MyButton text="低压合闸" cmdKey='8' devId={item.devId} />
-                                    <MyButton text="高压分闸" cmdKey='9' devId={item.devId} />
-                                    <MyButton text="高压合闸" cmdKey='10' devId={item.devId} />
-                                </Space>
-                            </Row>
-                        </div>
-                        {
-                            item.branchInfoList?.map((it, index) => {
-                                return (
-                                    <div style={{ backgroundColor: token.titleCardBgc, padding: '24px 37px', boxSizing: 'border-box' }}>
-                                        <Title title={`第${index + 1}分支`} />
-                                        <Space size={40} direction="vertical" style={{ width: '100%' }}>
-                                            <Row justify="space-between">
-                                                <Space size={38}>
-                                                    <span>{t('设备名称')}：{it?.pcsDevName}</span>
-                                                    <span>{t('通讯状态')}：{it?.pcsComState == 1 ? '正常' : '断开 '}</span>
-                                                    <span>{t('运行状态')}：{it?.pcsState == 0 ? '开机' : (it?.pcsState == 1 ? '关机' : '待机')}</span>
-                                                    <span>{t('有功功率')}：{it?.pcsPower}kW</span>
-                                                </Space>
-                                                <Space>
-                                                    <MyButton text="功率设置" cmdKey='4' devId={item.devId} />
-                                                    <MyButton text="开机" cmdKey='1' devId={item.devId} />
-                                                    <MyButton text="关机" cmdKey='2' devId={item.devId} />
-                                                    <MyButton text="复位" cmdKey='3' devId={item.devId} />
-                                                </Space>
-                                            </Row>
-                                            <Row justify="space-between">
-                                                <Space size={38}>
-                                                    <span>{t('设备名称')}：{it?.bmsDevName}</span>
-                                                    <span>{t('通讯状态')}：{it?.bmsComState == 1 ? '正常' : '断开 '}</span>
-                                                    <span>{t('运行状态')}：{it?.bmsState == 0 ? '开机' : (it?.bmsState == 1 ? '关机' : '待机')}</span>
-                                                    <span>SOC: {it?.bmsSoc}%</span>
-                                                </Space>
-                                                <Space>
-                                                    <MyButton text="开机" cmdKey='12' devId={item.devId} />
-                                                    <MyButton text="关机" cmdKey='13' devId={item.devId} />
-                                                    <MyButton text="复位" cmdKey='14' devId={item.devId} />
-                                                </Space>
-                                            </Row>
-                                        </Space>
-                                    </div>
-                                )
-                            })
+                <Tabs defaultActiveKey={initData?.[0]?.id} items={
+                    initData?.map((it) => {
+                        return {
+                            key: it.id,
+                            label: it.name,
+                            children: getChildren(it),
                         }
-                    </>)
-
-                })}
-
+                    })
+                } onChange={onChange} />
             </Space>
 
             <Modal
                 open={controlModeOpen}
-                title={<Title title="控制模式" />}
+                title={<Title title={t("控制模式")} />}
                 onOk={async () => {
                     const values = await form1.validateFields();
                     // console.log('控制模式', values);
                     let { data } = await sendOMCommands({
-                        cmdKey: 11,
+                        cmdTypeId: 7000,
                         gridPointId: gridId,
                         password: getEncrypt(localStorage.getItem('publicKey'), values.password),
-                        keyData: values.mode
+                        mode: values.mode,
+                        dtuId,
                     });
                     if (data.code == 200) {
                         message.success(t('命令下发成功'));
@@ -204,16 +205,16 @@ const OperationManage = () => {
                 <Form
                     form={form1}
                 >
-                    <Form.Item name={"password"} label="请输入密码" rules={[FORM_REQUIRED_RULE]}>
-                        <Input className="pwd" placeholder="请输入密码" />
+                    <Form.Item name={"password"} label={t("请输入密码")} rules={[FORM_REQUIRED_RULE]}>
+                        <Input className="pwd" placeholder={t("请输入密码")} />
                     </Form.Item>
-                    <Form.Item name={"mode"} label="请选择模式" rules={[FORM_REQUIRED_RULE]}>
+                    <Form.Item name={"mode"} label={t("请选择模式")} rules={[FORM_REQUIRED_RULE]}>
                         <Select
                             options={[
-                                { label: '手动', value: '1' },
-                                { label: '自动', value: '2' }
+                                { label: t('手动'), value: 0 },
+                                { label: t('自动'), value: 1 }
                             ]}
-                            placeholder="请选择模式"
+                            placeholder={t("请选择模式")}
                         />
                     </Form.Item>
                 </Form>
@@ -221,15 +222,16 @@ const OperationManage = () => {
 
             <Modal
                 open={powerOffOpen || powerOnOpen}
-                title={<Title title={powerOffOpen ? 'PCS总关机' : "PCS总开机"} />}
+                title={<Title title={powerOffOpen ? t('PCS总关机') : t("PCS总开机")} />}
                 onOk={async () => {
                     const values = await form2.validateFields();
                     // console.log('总关机|总开机', values);
                     let { data } = await sendOMCommands({
-                        cmdKey: powerOffOpen ? 6 : 5,
+                        cmdTypeId: 7018,
                         gridPointId: gridId,
                         password: getEncrypt(localStorage.getItem('publicKey'), values.password),
-
+                        pcsTotalStartStop:powerOffOpen?0:1,
+                        dtuId,
                     });
                     if (data.code == 200) {
                         message.success(t('命令下发成功'));
@@ -249,25 +251,25 @@ const OperationManage = () => {
                 <Form
                     form={form2}
                 >
-                    <Form.Item label="请输入密码" name={"password"} rules={[FORM_REQUIRED_RULE]}>
-                        <Input className="pwd" placeholder="请输入密码" />
+                    <Form.Item label={t("请输入密码")} name={"password"} rules={[FORM_REQUIRED_RULE]}>
+                        <Input className="pwd" placeholder={t("请输入密码")}/>
                     </Form.Item>
-                    <span>确定下发PCS总{powerOffOpen ? '关机' : '开机'}指令吗？</span>
+                    <span>{t('确定下发指令吗？')}</span>
                 </Form>
             </Modal>
 
             <Modal
                 open={powerSettingOpen}
-                title={<Title title={"总功率设置"} />}
+                title={<Title title={t("总功率设置")} />}
                 onOk={async () => {
                     const values = await form3.validateFields();
                     // console.log('总功率设置', values);
                     let { data } = await sendOMCommands({
-                        cmdKey: 15,
+                        cmdTypeId: 7017,
                         gridPointId: gridId,
                         password: getEncrypt(localStorage.getItem('publicKey'), values.password),
-
-                        keyData: values.power
+                        pcsTotalPower: values.power,
+                        dtuId,
                     });
                     if (data.code == 200) {
                         message.success(t('命令下发成功'));
@@ -288,11 +290,11 @@ const OperationManage = () => {
                         span: 6
                     }}
                 >
-                    <Form.Item label="请输入密码" name={"password"} rules={[FORM_REQUIRED_RULE]}>
-                        <Input className="pwd" type="text" placeholder="请输入密码" />
+                    <Form.Item label={t("请输入密码")} name={"password"} rules={[FORM_REQUIRED_RULE]}>
+                        <Input className="pwd" type="text" placeholder={t("请输入密码")} />
                     </Form.Item>
-                    <Form.Item label="请输入功率(kW)" name={"power"} rules={[FORM_REQUIRED_RULE]}>
-                        <Input placeholder="请输入功率" />
+                    <Form.Item label={`${t("请输入功率")}(kW)`} name={"power"} rules={[FORM_REQUIRED_RULE]}>
+                        <Input placeholder={t("请输入功率")} />
                     </Form.Item>
                 </Form>
             </Modal>
@@ -303,12 +305,13 @@ const OperationManage = () => {
                 title={<Title title={title} />}
                 onOk={async () => {
                     const values = await form4.validateFields();
-                    // console.log('其他', values);
                     let { data } = await sendOMCommands({
+                        [keyObj]:values?.power?values?.power:valueObj,
                         devId,
-                        cmdKey,
+                        cmdTypeId:cmdKey,
                         gridPointId: gridId,
                         password: getEncrypt(localStorage.getItem('publicKey'), values.password),
+                        dtuId
                     });
                     if (data.code == 200) {
                         message.success(t('命令下发成功'));
@@ -326,15 +329,15 @@ const OperationManage = () => {
                 <Form
                     form={form4}
                 >
-                    <Form.Item label="请输入密码" name={"password"} rules={[FORM_REQUIRED_RULE]}>
-                        <Input className="pwd" placeholder="请输入密码" />
+                    <Form.Item label={t("请输入密码")} name={"password"} rules={[FORM_REQUIRED_RULE]}>
+                        <Input className="pwd" placeholder={t("请输入密码")} />
                     </Form.Item>
-                    {cmdKey == 4 && <Form.Item label="请输入功率" name={"power"} rules={[FORM_REQUIRED_RULE]}>
+                    {(cmdKey == 7019||cmdKey == 7017||cmdKey == 7001) && <Form.Item label={t("请输入功率")} name={"power"} rules={[FORM_REQUIRED_RULE]}>
                         <InputNumber style={{
                             width: '100%',
-                        }} placeholder="请输入功率" />
+                        }} placeholder={t("请输入功率")} />
                     </Form.Item>}
-                    <span>确定下发指令吗？</span>
+                    <span>{t('确定下发指令吗？')}</span>
                 </Form>
             </Modal>
         </div>

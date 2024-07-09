@@ -67,21 +67,21 @@ function Com() {
 
     },
     {
-      title: t('充电电量（kWh）'),
+      title: `${t('充电电量')}（kWh）`,
       dataIndex: 'charge',
       key: 'charge',
       align:'center'
 
     },
     {
-      title: t('放电电量（kWh）'),
+      title:`${t('放电电量')}（kWh）`,
       dataIndex: 'discharge',
       key: 'discharge',
       align:'center'
 
     },
     {
-      title: t('充放电效率（%）'),
+      title: `${t('充放电效率')}（%）`,
       dataIndex: 'efficiency',
       key: 'efficiency',
       align:'center'
@@ -105,14 +105,14 @@ function Com() {
 
     },
     {
-      title: t('充电电量（kWh）'),
+      title: `${t('充电电量')}（kWh）`,
       dataIndex: 'charge',
       key: 'pcsCharge',
       align:'center'
 
     },
     {
-      title: t('放电电量（kWh）'),
+      title:`${t('放电电量')}（kWh）`,
       dataIndex: 'discharge',
       key: 'pcsDischarge',
       align:'center'
@@ -136,14 +136,14 @@ function Com() {
 
     },
     {
-      title: t('充电电量（kWh）'),
+      title: `${t('充电电量')}（kWh）`,
       dataIndex: 'charge',
       key: 'bmsCharge',
       align:'center'
 
     },
     {
-      title: t('放电电量（kWh）'),
+      title:`${t('放电电量')}（kWh）`,
       dataIndex: 'discharge',
       key: 'bmsDischarge',
       align:'center'
