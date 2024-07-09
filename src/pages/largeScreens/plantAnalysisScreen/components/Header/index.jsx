@@ -15,7 +15,7 @@ const Header = ({ typeList, currentType, onChangedType }) => {
                             )}
                             style={{
                                 backgroundColor: "#0B3858",
-                              //  background: `url('../../../../../assets/images/area.svg') center center no-repeat`,
+                                //  background: `url('../../../../../assets/images/area.svg') center center no-repeat`,
                                 backgroundSize: item?.value === currentType && "cover",
                             }}
                             onClick={() => onChangedType(item?.value)}

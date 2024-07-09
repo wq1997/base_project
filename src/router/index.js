@@ -1,5 +1,5 @@
 export default Routes = [
-    { path: '/screen-plant-analysis', component: "@/pages/largeScreens/plantAnalysisScreen"},
+    { path: "/screen-plant-analysis", component: "@/pages/largeScreens/plantAnalysisScreen" },
     {
         path: "/",
         component: "@/pages/App",
@@ -49,7 +49,6 @@ export default Routes = [
                 path: "/test",
                 component: "@/pages/test",
             },
-
             {
                 path: "/large-screens/alarm-screen",
                 component: "@/pages/largeScreens/alarmScreen",
