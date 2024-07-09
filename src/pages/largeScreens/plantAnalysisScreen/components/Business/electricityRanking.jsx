@@ -27,8 +27,7 @@ const ElectricityRanking = ({ value }) => {
             },
         };
         const data = typeData[currentType][currentOrder];
-        const xData = data?.map(item => item._1);
-        console.log("xData", xData);
+        const xData = data?.map(item => item._1) || [];
         setOptions({
             tooltip: {
                 trigger: "axis",
@@ -58,6 +57,12 @@ const ElectricityRanking = ({ value }) => {
                         fontSize: 10,
                     },
                     margin: 20, //刻度标签与轴线之间的距离。
+                    formatter: function (value) {
+                        if (value.length > 5) {
+                            return value.substring(0, 3) + "...";
+                        }
+                        return value;
+                    },
                 },
             },
             yAxis: {
@@ -65,6 +70,7 @@ const ElectricityRanking = ({ value }) => {
                 nameTextStyle: {
                     color: "#fff",
                     fontSize: 10,
+                    padding: [0, 25, 0, 0],
                 },
 
                 splitLine: {

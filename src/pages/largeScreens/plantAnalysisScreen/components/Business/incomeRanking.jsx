@@ -3,14 +3,14 @@ import { useState, useEffect } from "react";
 import * as echarts from "echarts";
 import { MyTab } from "@/components";
 
-const IncomeRanking = ({ data={} }) => {
+const IncomeRanking = ({ data = {} }) => {
     const [options, setOptions] = useState({});
     const [currentType, setCurrentType] = useState("1");
 
-    const getOptions = (dataSource) => {
-        const profitData = currentType === "1" ? (dataSource?.profitTop5) : (dataSource?.profitBottom5);
-        const xData = profitData?.map(item => item.plantName)||[];
-        const data = profitData?.map(item => ((item?.fee||0)/10000).toFixed(2))||[];
+    const getOptions = dataSource => {
+        const profitData = currentType === "1" ? dataSource?.profitTop5 : dataSource?.profitBottom5;
+        const xData = profitData?.map(item => item.plantName) || [];
+        const data = profitData?.map(item => ((item?.fee || 0) / 10000).toFixed(2)) || [];
         setOptions({
             tooltip: {
                 trigger: "item",
@@ -36,12 +36,20 @@ const IncomeRanking = ({ data={} }) => {
                         fontSize: 10,
                     },
                     margin: 20, //刻度标签与轴线之间的距离。
+                    formatter: function (value) {
+                        if (value.length > 5) {
+                            return value.substring(0, 3) + "...";
+                        }
+                        return value;
+                    },
                 },
             },
             yAxis: {
-                name: '万元',
+                name: "万元",
                 nameTextStyle: {
-                    color: '#fff'
+                    color: "#fff",
+                    fontSize: 10,
+                    padding: [0, 25, 5, 0],
                 },
                 splitLine: {
                     show: true,
@@ -66,65 +74,86 @@ const IncomeRanking = ({ data={} }) => {
             series: [
                 // 数据圆柱的下边圆形
                 {
-                    "name": "",
-                    "type": "pictorialBar",
-                    "symbolSize": [30, 15],
-                    "symbolOffset": [0, 10],
-                    "z": 12,
-                    itemStyle:{
-                        opacity:1,
-                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                            { offset: 0,  color: '#02FAFF'}, 
-                            { offset: 0.7,  color: '#00B7FF'}
-                        ], false),
+                    name: "",
+                    type: "pictorialBar",
+                    symbolSize: [30, 15],
+                    symbolOffset: [0, 10],
+                    z: 12,
+                    itemStyle: {
+                        opacity: 1,
+                        color: new echarts.graphic.LinearGradient(
+                            0,
+                            0,
+                            0,
+                            1,
+                            [
+                                { offset: 0, color: "#02FAFF" },
+                                { offset: 0.7, color: "#00B7FF" },
+                            ],
+                            false
+                        ),
                     },
-                    "data": new Array(xData?.length).fill(1),
+                    data: new Array(xData?.length).fill(1),
                     tooltip: {
-                        show: false
-                    }
+                        show: false,
+                    },
                 },
                 //数据圆柱
                 {
-                    name: '',
-                    type: 'bar',
+                    name: "",
+                    type: "bar",
                     barWidth: 30,
-                    barGap: '-100%',
+                    barGap: "-100%",
                     itemStyle: {
-                        opacity:.7,
-                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                            { offset: 0,  color: '#02FAFF'}, 
-                            { offset: 0.7,  color: '#00B7FF'}
-                        ], false)
+                        opacity: 0.7,
+                        color: new echarts.graphic.LinearGradient(
+                            0,
+                            0,
+                            0,
+                            1,
+                            [
+                                { offset: 0, color: "#02FAFF" },
+                                { offset: 0.7, color: "#00B7FF" },
+                            ],
+                            false
+                        ),
                     },
-                    data
+                    data,
                 },
                 // 数据上半部分的圆形
                 {
-                    "name": "",
-                    "type": "pictorialBar",
-                    "symbolSize": [30, -15],
-                    "symbolOffset": [0, 0],
-                    "z": 12,
-                    itemStyle:{
-                        opacity:1,
-                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                            { offset: 0,  color: '#02FFEF'}, 
-                            { offset: 0.7,  color: '#009EFF'}
-                        ], false),
+                    name: "",
+                    type: "pictorialBar",
+                    symbolSize: [30, -15],
+                    symbolOffset: [0, 0],
+                    z: 12,
+                    itemStyle: {
+                        opacity: 1,
+                        color: new echarts.graphic.LinearGradient(
+                            0,
+                            0,
+                            0,
+                            1,
+                            [
+                                { offset: 0, color: "#02FFEF" },
+                                { offset: 0.7, color: "#009EFF" },
+                            ],
+                            false
+                        ),
                     },
-                    "symbolPosition": "end",
-                    "data": data,
-                    "label": {
-                      "normal": {
-                          "show": true,
-                          "position": 'top',
-                          "offset": [0,-5],
-                          "formatter": "{c}",
-                          "color": 'white'
-                      }
-                  },
+                    symbolPosition: "end",
+                    data: data,
+                    label: {
+                        normal: {
+                            show: true,
+                            position: "top",
+                            offset: [0, -5],
+                            formatter: "{c}",
+                            color: "white",
+                        },
+                    },
                 },
-            ]
+            ],
         });
     };
 
@@ -139,12 +168,17 @@ const IncomeRanking = ({ data={} }) => {
                     display: "flex",
                     justifyContent: "end",
                     position: "absolute",
-                    right: 5,
+                    right: 0,
                     top: 5,
                     zIndex: 100,
                 }}
             >
                 <MyTab
+                    btnStyle={{
+                        fontSize: "10px",
+                        borderRadius: "3px",
+                        padding: "4px 10px",
+                    }}
                     value={currentType}
                     options={[
                         { value: "1", label: "正序" },

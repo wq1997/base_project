@@ -59,7 +59,7 @@ const SocialBenefits = ({ data }) => {
                                         textOverflow: "ellipsis",
                                     }}
                                 >
-                                    {item?.data}
+                                    {((item?.data || 0) / 10000).toFixed(2)}
                                 </div>
                                 <span
                                     style={{

@@ -112,7 +112,7 @@ const Network = ({ typeList, currentType, onChangedType }) => {
                                     key: "supplyGridCapacity",
                                 },
                                 {
-                                    title: "电站总数(个)",
+                                    title: "总电站个数(个)",
                                     key: "plantCount",
                                 },
                                 {

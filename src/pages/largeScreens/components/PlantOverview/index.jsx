@@ -28,7 +28,7 @@ const Index = ({ data: { total, totalCapacity, totalPlant } }) => {
                         <div className={styles.areaContentDataItem}>
                             <Badge
                                 color="#54CFFF"
-                                text={<span style={{ color: "#FFFFFF" }}>电站个数</span>}
+                                text={<span style={{ color: "#FFFFFF" }}>总电站个数</span>}
                             />
                             <div className={styles.areaContentDataItemData}>
                                 <span className={styles.areaContentDataItemData1}>

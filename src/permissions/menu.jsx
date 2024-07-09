@@ -17,6 +17,7 @@ const MenuList = [
         label: "电站运维大屏",
         icon: <FundFilled />,
         darkIcon: "icon-wuliaoxuqiu-copy",
+        target: "_blank",
     },
     {
         key: "/workbench",

@@ -62,13 +62,12 @@ const Business = ({ typeList, currentType, onChangedType }) => {
                             <PlantOverview
                                 data={{
                                     total: Object.keys(
-                                        dataSource?.plantSummery?.province2PlantCount || {}
+                                        dataSource?.plantSummery?.province2PlantCapacity || {}
                                     )?.map(city => {
                                         return {
                                             name: city,
-                                            value: dataSource?.plantSummery?.province2PlantCount?.[
-                                                city
-                                            ],
+                                            value: dataSource?.plantSummery
+                                                ?.province2PlantCapacity?.[city],
                                         };
                                     }),
                                     totalCapacity: dataSource?.plantSummery?.totalCapacity,
@@ -105,19 +104,19 @@ const Business = ({ typeList, currentType, onChangedType }) => {
                                                 {
                                                     icon: bottomLeft1,
                                                     data: dataSource?.socialEffect?.ele || 0,
-                                                    unit: "吨",
+                                                    unit: "万吨",
                                                     label: "节约标准煤",
                                                 },
                                                 {
                                                     icon: bottomLeft2,
                                                     data: dataSource?.socialEffect?.co2 || 0,
-                                                    unit: "吨",
+                                                    unit: "万吨",
                                                     label: "CO2减排量",
                                                 },
                                                 {
                                                     icon: bottomLeft3,
                                                     data: dataSource?.socialEffect?.tree || 0,
-                                                    unit: "棵",
+                                                    unit: "万棵",
                                                     label: "等效植树量",
                                                 },
                                             ]}
@@ -204,7 +203,7 @@ const Business = ({ typeList, currentType, onChangedType }) => {
                                     <div
                                         className={styles.btn}
                                         onClick={() => {
-                                            history.push(`/large-screens/alarm-screen`);
+                                            window.open("/large-screens/alarm-screen", "_blank");
                                         }}
                                     >
                                         详情分析
