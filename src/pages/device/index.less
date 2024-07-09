@@ -39,7 +39,7 @@
                 gap: 10px;
 
                 .mapRightItem{
-                    padding: 0 70px;
+                    width: 250px;
                     background-color: #0B3858;
                     display: flex;
                     align-items: center;
@@ -50,9 +50,13 @@
                         display: flex;
                         align-items: baseline;
                         .mapRightItemTopValue{
+                            max-width: 150px;
                             font-family: DingTalkJinBuTi;
                             font-size: 30px;
                             margin-bottom: 10px;
+                            white-space: nowrap; 
+                            overflow: hidden;
+                            text-overflow: ellipsis;
                         }
                     }
 

@@ -2,7 +2,7 @@
 import { useEffect, useState, useRef, useMemo } from 'react'
 import { useSelector, useIntl, history } from "umi";
 import styles from "./index.less";
-import { Select, Space, theme, Button, Modal, message } from "antd"
+import { Select, Space, theme, Button, Modal, message, Tooltip } from "antd"
 import { CardModel } from "@/components";
 import { getFetchPlantList, deleteDtu, updateDtus } from "@/services/deviceTotal"
 import { getAllRevenue as getAllRevenueServe } from "@/services";
@@ -312,7 +312,9 @@ const RealtimeAlarm = () => {
                                     <div className={styles.mapRightItem}>
                                         <div>
                                             <div className={styles.mapRightItemTop}>
-                                                <div style={{ color: item.color }} className={styles.mapRightItemTopValue}>{item?.value}</div>
+                                                <Tooltip title={item?.value}>
+                                                    <div style={{ color: item.color }} className={styles.mapRightItemTopValue}>{item?.value}</div>
+                                                </Tooltip>
                                                 <div className={styles.mapRightItemTopUnit}>{t('元')}</div>
                                             </div>
                                             <div className={styles.mapRightItemBottom}>{item.label}</div>
