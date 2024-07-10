@@ -1,4 +1,4 @@
-import { Form, theme, Space, Row, Modal, Col, Switch, Input, Radio, InputNumber, Button } from "antd";
+import { Form, theme, Space, Row, Modal, Col, Switch, Input, Radio, InputNumber, Button, message } from "antd";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { Title, EditTable } from "@/components";
 import { useIntl } from "umi";
@@ -59,7 +59,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
     const areaStyle = useEmotionCss(() => {
         return {
             background: token.bgcColorB_l,
-            padding: '40px 30px',
+            padding: '30px 30px',
         }
     })
 
@@ -391,17 +391,21 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                 <div
                                     className={canIssue ? distributeStyle : disabledDistributeStyle}
                                     onClick={async () => {
-                                        await form.validateFields(['durationList']);
-                                        if (canIssue) {
-                                            setCheckModalOpen(true);
-                                            setCheckModalType('sendStrategySetting');
+                                        const { durationList } = await form.getFieldsValue("durationList");
+                                        if(durationList&&durationList?.length>0){
+                                            if (canIssue) {
+                                                setCheckModalOpen(true);
+                                                setCheckModalType('sendStrategySetting');
+                                            }
+                                        }else{
+                                            message.error(intl.formatMessage({ id: '请至少添加一条策略' }))
                                         }
                                     }}
                                 >
                                     {intl.formatMessage({ id: '下发' })}
                                 </div>
                             </Row>
-                            <Form.Item name="durationList" rules={[{ ...FORM_REQUIRED_RULE }]}>
+                            <Form.Item name="durationList" validateTrigger={false} rules={[{ ...FORM_REQUIRED_RULE }]}>
                                 <EditTable.EditRowTable
                                     showAdd={canIssue}
                                     showClear={canIssue}

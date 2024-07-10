@@ -239,7 +239,7 @@ function Com({deviceVersion}) {
                 width: '100%', 
                 height: 'auto', 
                 minHeight: '100%', 
-                padding: '40px 85px',  
+                padding: '0px 85px',  
                 background: token.bgcColorB_l
             }}>
             <DetalisCard data={pcsData} />

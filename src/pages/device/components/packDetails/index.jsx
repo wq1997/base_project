@@ -56,7 +56,7 @@ function Com(props) {
         setSelectId(val)
     }
     return (
-        <div className={styles.pack} style={{width: '100%', height: 'auto', minHeight: '100%', padding: '40px 30px',  background: token.bgcColorB_l}}>
+        <div className={styles.pack} style={{width: '100%', height: 'auto', minHeight: '100%', padding: '10px 30px',  background: token.bgcColorB_l}}>
             {/* <Select
                 className={styles.margRL}
                 style={{ width: 180 }}

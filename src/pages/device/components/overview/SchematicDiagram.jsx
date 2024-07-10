@@ -170,12 +170,12 @@ const SchematicDiagram = ({dataSource}) => {
                         height: '5px',
                         transform: `rotate(${energySystemChargingAngle}deg)`,
                         transformOrigin: '0px 0px',
-                        background: powerData===0?'#244A75': 'transparent',
+                        background: totalActivePowerData===0?'#244A75': 'transparent',
                         zIndex: 200
                     }}
                 >
                     <img 
-                        src={powerData===0?nyxtlZeroImg:nyxtlImg} 
+                        src={totalActivePowerData===0?nyxtlZeroImg:nyxtlImg} 
                         style={{
                             position: 'absolute', 
                             right:  -energySystemIconWidth/2, 
@@ -245,7 +245,7 @@ const SchematicDiagram = ({dataSource}) => {
                             <div style={{margin: '10px 0', width: 130}}>
                                 {intl.formatMessage({id:'运行状态'})}：
                                 {loadPowerData>0&&intl.formatMessage({id:'用电'})}
-                                {loadPowerData===0&&intl.formatMessage({id:'待机'})}
+                                {/* {loadPowerData===0&&intl.formatMessage({id:'待机'})} */}
                             </div>
                             {/* <div>{intl.formatMessage({id:'功率'})}：{dataSource?.loadPower}</div> */}
                         </div>
