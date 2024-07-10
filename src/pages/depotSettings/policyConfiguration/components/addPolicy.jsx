@@ -18,31 +18,31 @@ function Com({ open,
     const onFinish = async () => {
         try {
             const values = await form.validateFields();
-            if (title == '新增策略') {
-                let flag = values?.contentList?.map((item, index) => {
-                    let length = values?.contentList?.map((it,i) => {
-                        if (index < values?.contentList.length - 1&&i>index) {
-                            if (isOverlap(dayjs(item.startTime).format('HH:mm:ss'), dayjs(item.endTime).format('HH:mm:ss'), dayjs(values?.contentList[i].startTime).format('HH:mm:ss'), dayjs(values?.contentList[i].endTime).format('HH:mm:ss'))) {
-                                return true
-                            } else {
-                                return false;
-                            }
-                        }else{
-                            let startTime = parseInt(dayjs(item.startTime).format('HH:mm:ss').split(':')[0] + dayjs(item.startTime).format('HH:mm:ss').split(':')[1] + dayjs(item.startTime).format('HH:mm:ss').split(':')[2])    //900
-                            let endTime = parseInt(dayjs(item.endTime).format('HH:mm:ss').split(':')[0] + dayjs(item.endTime).format('HH:mm:ss').split(':')[1] + dayjs(item.endTime).format('HH:mm:ss').split(':')[2])    //1800
-                            if (startTime === endTime) {
-                                return false
-                              }
+            let flag = values?.contentList?.map((item, index) => {
+                let length = values?.contentList?.map((it,i) => {
+                    if (index < values?.contentList.length - 1&&i>index) {
+                        if (isOverlap(dayjs(item.startTime).format('HH:mm:ss'), dayjs(item.endTime).format('HH:mm:ss'), dayjs(values?.contentList[i].startTime).format('HH:mm:ss'), dayjs(values?.contentList[i].endTime).format('HH:mm:ss'))) {
+                            return true
+                        } else {
+                            return false;
                         }
-                    })
-                   return length.find(it=>it===false)
-                });
-                if (flag.findIndex(it=>it===false)!==-1) {
-                    return message.warning('时段重叠,请修改')
-                };
-                if (!is24HoursInOneDay(values?.contentList)) {
-                    return message.warning('时段不满24小时')
-                };
+                    }else{
+                        let startTime = parseInt(dayjs(item.startTime).format('HH:mm:ss').split(':')[0] + dayjs(item.startTime).format('HH:mm:ss').split(':')[1] + dayjs(item.startTime).format('HH:mm:ss').split(':')[2])    //900
+                        let endTime = parseInt(dayjs(item.endTime).format('HH:mm:ss').split(':')[0] + dayjs(item.endTime).format('HH:mm:ss').split(':')[1] + dayjs(item.endTime).format('HH:mm:ss').split(':')[2])    //1800
+                        if (startTime === endTime) {
+                            return false
+                          }
+                    }
+                })
+               return length.find(it=>it===false)
+            });
+            if (flag.findIndex(it=>it===false)!==-1) {
+                return message.warning(t('时段重叠,请修改'))
+            };
+            if (!is24HoursInOneDay(values?.contentList)) {
+                return message.warning(t('时段不满24小时'))
+            };
+            if (title == '新增策略') {
                 setStrategyTableData(values);
             } else {
                 let arr = structuredClone(dataSource)

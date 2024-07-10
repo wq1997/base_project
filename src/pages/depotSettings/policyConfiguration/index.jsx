@@ -92,11 +92,12 @@ function Com(props) {
         item.startDate = dayjs(item.startDate).format('MM-DD');
         item.endDate = dayjs(item.endDate).format('MM-DD');
         item?.contentList?.map(it => {
-          if (typeof it.startTime==='string') {
+          console.log(typeof it.startTime,1111111);
+          if (typeof it.startTime === 'string') {
             it.startTime = dayjs(it.startTime).format('HH:mm:ss');
-          it.endTime = dayjs(it.endTime).format('HH:mm:ss');
+            it.endTime = dayjs(it.endTime).format('HH:mm:ss');
           }
-          
+
         })
       })
       let { data } = await saveStrategy(values);
