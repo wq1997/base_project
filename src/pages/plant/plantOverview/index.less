@@ -8,15 +8,18 @@
     }
     .left {
         width: 70%;
+        display: flex;
+        flex-direction: column;
         .map {
-            height: 58%;
+            flex: 1;
         }
         .plantKPI {
             height: 88px;
             margin: 8px 0;
         }
         .PowerGeneration {
-            height: calc(42% - 104px);
+            height: 33%;
+            min-height: 200px;
         }
     }
     .right {

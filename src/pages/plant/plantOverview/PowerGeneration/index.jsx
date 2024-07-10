@@ -30,16 +30,16 @@ const Index = ({ activePlant }) => {
             date,
         });
         if (res?.data?.code == 200) {
-            const { sum, chart } = res?.data?.data;
-            getOptions(chart || {});
+            const { sum, chart, predict } = res?.data?.data;
+            getOptions({ data: chart, predictData: predict });
             setSum(sum);
         }
     };
 
-    const getOptions = data => {
+    const getOptions = ({ data, predictData }) => {
         setOptions({
             legend: {
-                data: [`光伏发电${type == "DAY" ? "功率" : "量"}`],
+                data: [`光伏发电${type == "DAY" ? "功率" : "量"}`, "功率预测"],
                 textStyle: {
                     color: "#999",
                     fontSize: 12,
@@ -101,7 +101,7 @@ const Index = ({ activePlant }) => {
             },
             series: [
                 {
-                    data: Object.values(data),
+                    data: Object.values(data || {}),
                     type: type == "DAY" ? "line" : "bar",
                     name: `光伏发电${type == "DAY" ? "功率" : "量"}`,
                     barWidth: 20,
@@ -114,7 +114,50 @@ const Index = ({ activePlant }) => {
                                       { offset: 0, color: "#79E6FC" },
                                       { offset: 1, color: "#4499F5" },
                                   ])
-                                : "#4499F5",
+                                : new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                      { offset: 0, color: "#79E6FC" },
+                                      { offset: 1, color: "#4499F5" },
+                                  ]),
+                    },
+                    lineStyle: {
+                        width: 1.8,
+                    },
+                    areaStyle: {
+                        normal: {
+                            color: new echarts.graphic.LinearGradient(
+                                0,
+                                0,
+                                0,
+                                1,
+                                [
+                                    {
+                                        offset: 0,
+                                        color: "rgba(199, 237, 250,0.5)",
+                                    },
+                                    {
+                                        offset: 1,
+                                        color: "rgba(199, 237, 250,0.2)",
+                                    },
+                                ],
+                                false
+                            ),
+                        },
+                    },
+                },
+                type == "DAY" && {
+                    data: Object.values(predictData || {}),
+                    type: "line",
+                    name: "功率预测",
+                    smooth: true,
+                    showSymbol: false,
+                    itemStyle: {
+                        normal: {
+                            color: "#EE6666",
+                        },
+                    },
+                    lineStyle: {
+                        type: "dashed",
+                        width: 0.6,
                     },
                 },
             ],
