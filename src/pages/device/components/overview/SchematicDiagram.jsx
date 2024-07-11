@@ -19,7 +19,7 @@ const energySystemIconPrecent = 0.4;
 const citySystemLineWidthPercent = 0.5; // 线的百分比，自定义
 const citySystemChargingAngle = 90;
 
-const SchematicDiagram = ({dataSource}) => {
+const SchematicDiagram = ({dataSource, allData}) => {
     const intl = useIntl();
     const schematicDiagramRef = useRef();
     dataSource.totalActivePower=dataSource?.totalActivePower||0;
@@ -198,9 +198,10 @@ const SchematicDiagram = ({dataSource}) => {
                         </div>
                         <div style={{margin: '10px 0'}}>
                             {intl.formatMessage({id:'运行状态'})}：
-                            {totalActivePowerData>0&&intl.formatMessage({id:'放电'})}
+                            {/* {totalActivePowerData>0&&intl.formatMessage({id:'放电'})}
                             {totalActivePowerData<0&&intl.formatMessage({id:'充电'})}
-                            {totalActivePowerData===0&&intl.formatMessage({id:'待机'})}
+                            {totalActivePowerData===0&&intl.formatMessage({id:'待机'})} */}
+                            {allData?.pcs?.pcsState||intl.formatMessage({id:'待机'})}
                         </div>
                         <div>{intl.formatMessage({id:'功率'})}：{dataSource?.totalActivePower}</div>
                     </div>
