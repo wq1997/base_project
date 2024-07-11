@@ -1,9 +1,7 @@
-import { history } from "umi";
-import { Badge } from "antd";
 import styles from "./index.less";
 import Map from "@/pages/largeScreens/components/map";
 import Header from "../Header";
-import { Charts3D, Charts2_5D, ScrollTable } from "@/components";
+import { ScrollTable } from "@/components";
 import IncomeRanking from "./incomeRanking";
 import ElectricityRanking from "./electricityRanking";
 import SocialBenefits from "./SocialBenefits";
@@ -14,8 +12,6 @@ import center1 from "@/assets/images/center1.svg";
 import center2 from "@/assets/images/center2.svg";
 import center3 from "@/assets/images/center3.svg";
 import center4 from "@/assets/images/center4.svg";
-import classNames from "classnames";
-import Title from "../Title";
 import CenterMap from "./CenterMap";
 import { getDcDashboardData as getDcDashboardDataServe } from "@/services";
 import { useState, useEffect } from "react";
@@ -27,7 +23,6 @@ import DeviceStatus from "../../../components/DeviceStatus";
 
 const Business = ({ typeList, currentType, onChangedType }) => {
     const [dataSource, setDataSource] = useState();
-
     const { data, run } = useRequest(getDcDashboardDataServe, {
         manual: true,
     });
@@ -35,7 +30,6 @@ const Business = ({ typeList, currentType, onChangedType }) => {
     useEffect(() => {
         if (data?.data?.data) {
             const dataSource = data?.data?.data;
-            console.log("dataSource", dataSource);
             setDataSource(dataSource);
         }
     }, [data]);
@@ -43,7 +37,7 @@ const Business = ({ typeList, currentType, onChangedType }) => {
     useEffect(() => {
         run();
     }, []);
-    console.log("CCCC", dataSource);
+
     return (
         <>
             {true && (
@@ -70,7 +64,8 @@ const Business = ({ typeList, currentType, onChangedType }) => {
                                                 ?.province2PlantCapacity?.[city],
                                         };
                                     }),
-                                    totalCapacity: dataSource?.plantSummery?.totalCapacity,
+                                    //  totalCapacity: dataSource?.plantSummery?.totalCapacity,
+                                    totalCapacity: 515.36,
                                     totalPlant: dataSource?.plantSummery?.count,
                                 }}
                             />

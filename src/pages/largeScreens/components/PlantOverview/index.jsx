@@ -5,7 +5,7 @@ import styles from "./index.less";
 import Card from "../Card";
 import { Charts3D, Charts2_5D, ScrollTable } from "@/components";
 
-const Index = ({ data: { total, totalCapacity, totalPlant } }) => {
+const Index = ({ showCount, data: { total, totalCapacity, totalPlant } }) => {
     return (
         <Card
             title="电站概览"
@@ -25,18 +25,20 @@ const Index = ({ data: { total, totalCapacity, totalPlant } }) => {
                         />
                     </div>
                     <div className={styles.areaContentData}>
-                        <div className={styles.areaContentDataItem}>
-                            <Badge
-                                color="#54CFFF"
-                                text={<span style={{ color: "#FFFFFF" }}>总电站个数</span>}
-                            />
-                            <div className={styles.areaContentDataItemData}>
-                                <span className={styles.areaContentDataItemData1}>
-                                    {totalPlant}
-                                </span>
-                                <span className={styles.areaContentDataItemData2}>个</span>
+                        {showCount && (
+                            <div className={styles.areaContentDataItem}>
+                                <Badge
+                                    color="#54CFFF"
+                                    text={<span style={{ color: "#FFFFFF" }}>总电站个数</span>}
+                                />
+                                <div className={styles.areaContentDataItemData}>
+                                    <span className={styles.areaContentDataItemData1}>
+                                        {totalPlant}
+                                    </span>
+                                    <span className={styles.areaContentDataItemData2}>个</span>
+                                </div>
                             </div>
-                        </div>
+                        )}
                         <div className={styles.areaContentDataItem}>
                             <Badge
                                 color="#54CFFF"

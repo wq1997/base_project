@@ -1,4 +1,3 @@
-import Map from "@/pages/largeScreens/components/map";
 import styles from "./index.less";
 
 const CenterMap = ({ dataSource }) => {

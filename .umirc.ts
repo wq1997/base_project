@@ -31,7 +31,9 @@ export default defineConfig({
         "@/hooks": path.resolve(__dirname, "src/hooks"),
         "@/utils": path.resolve(__dirname, "src/utils"),
     },
-    headScripts: ["https://webapi.amap.com/maps?v=1.4.15&key=2dca0cb2ced6ced6030c26376186faee"],
+    headScripts: [
+        "https://webapi.amap.com/maps?v=1.4.15&key=2dca0cb2ced6ced6030c26376186faee&plugin=AMap.MarkerCluster",
+    ],
     chainWebpack: config => {
         config
             .plugin("replace")

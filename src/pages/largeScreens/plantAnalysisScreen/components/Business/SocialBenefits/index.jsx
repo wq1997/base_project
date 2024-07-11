@@ -18,22 +18,6 @@ const SocialBenefits = ({ data }) => {
                         <div
                             style={{
                                 display: "flex",
-                                justifyContent: "center",
-                                width: "100%",
-                            }}
-                        >
-                            <img
-                                className={styles.pic}
-                                style={{
-                                    width: "30px",
-                                    height: "30px",
-                                }}
-                                src={item?.icon}
-                            />
-                        </div>
-                        <div
-                            style={{
-                                display: "flex",
                                 alignItems: "baseline",
                                 justifyContent: "center",
                                 margin: "15px 0",
@@ -57,14 +41,15 @@ const SocialBenefits = ({ data }) => {
                                         overflow: "hidden",
                                         whiteSpace: "nowrap",
                                         textOverflow: "ellipsis",
+                                        color: "rgb(84, 209, 255)",
                                     }}
                                 >
                                     {((item?.data || 0) / 10000).toFixed(2)}
                                 </div>
                                 <span
                                     style={{
-                                        fontSize: 14,
-                                        color: "#999",
+                                        fontSize: 12,
+                                        color: "#fff",
                                         marginLeft: 2,
                                         position: "relative",
                                         top: -2,
@@ -73,6 +58,23 @@ const SocialBenefits = ({ data }) => {
                                     {item?.unit}
                                 </span>
                             </div>
+                        </div>
+                        <div
+                            style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                width: "100%",
+                            }}
+                        >
+                            <img
+                                className={styles.pic}
+                                style={{
+                                    width: "30px",
+                                    height: "30px",
+                                    marginBottom: "10px",
+                                }}
+                                src={item?.icon}
+                            />
                         </div>
                         <div
                             className={styles.label}

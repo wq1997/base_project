@@ -77,31 +77,6 @@ const Index = ({ plants, needJump, showInfo, panTo }) => {
     useEffect(() => {
         if (map) {
             addMarkers(map, plants);
-            // map.plugin(["AMap.MarkerCluster"], function () {
-            //     cluster = new AMap.MarkerCluster(
-            //         map, //地图实例
-            //         [
-            //             { weight: 8, lnglat: ["116.506647", "39.795337"] },
-            //             { weight: 1, lnglat: ["116.843352", "40.377362"] },
-            //             { weight: 1, lnglat: ["116.637122", "40.324272"] },
-            //             { weight: 1, lnglat: ["116.105381", "39.937183"] },
-            //             { weight: 1, lnglat: ["116.653525", "40.128936"] },
-            //             { weight: 1, lnglat: ["116.486409", "39.921489"] },
-            //             { weight: 1, lnglat: ["116.658603", "39.902486"] },
-            //             { weight: 1, lnglat: ["116.338033", "39.728908"] },
-            //             { weight: 1, lnglat: ["116.235906", "40.218085"] },
-            //             { weight: 1, lnglat: ["116.366794", "39.915309"] },
-            //             { weight: 1, lnglat: ["116.418757", "39.917544"] },
-            //             { weight: 1, lnglat: ["116.139157", "39.735535"] },
-            //             { weight: 1, lnglat: ["116.195445", "39.914601"] },
-            //             { weight: 1, lnglat: ["116.310316", "39.956074"] },
-            //             { weight: 1, lnglat: ["116.286968", "39.863642"] },
-            //         ],
-            //         {
-            //             gridSize: 60, //数据聚合计算时网格的像素大小
-            //         }
-            //     );
-            // });
         }
     }, [plants]);
 

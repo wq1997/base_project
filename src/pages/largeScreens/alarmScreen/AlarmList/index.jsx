@@ -1,6 +1,6 @@
 import styles from "./index.less";
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Space, DatePicker, Tooltip, Pagination } from "antd";
+import { Button, Space, Spin, Tooltip, Pagination } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { SearchInput } from "@/components";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
@@ -12,6 +12,7 @@ import dayjs from "dayjs";
 const Index = ({ initData }) => {
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
+    const [loading, setLoading] = useState(false);
     const alarmLevelRef = useRef();
     const [alarmLevel, setAlarmLevel] = useState();
     const [alarmLevelOptions, setAlarmLevelOptions] = useState();
@@ -50,6 +51,7 @@ const Index = ({ initData }) => {
     ];
 
     const getList = async () => {
+        setLoading(true);
         const { current, pageSize } = paginationRef.current;
         const signalName = alarmLevelRef.current;
         const deviceNameLike = deviceNameRef.current;
@@ -68,6 +70,7 @@ const Index = ({ initData }) => {
                 beginEndDate,
             },
         });
+        setLoading(false);
         if (res?.data?.status == "SUCCESS") {
             const { totalRecord, recordList } = res?.data?.data;
             setPagination({
@@ -204,41 +207,56 @@ const Index = ({ initData }) => {
                                 </div>
                             </Space>
                         </Space>
-                        <div className={styles.table}>
-                            <div className={styles.row}>
-                                {columns?.map(column => (
-                                    <div className={styles.tableTitle}>{column?.title}</div>
-                                ))}
-                            </div>
-                            <div className={styles.valueWrapper}>
-                                {listData?.map((value, index) => (
-                                    <div className={styles.row}>
-                                        {columns?.map(column => (
-                                            <div className={styles.value}>
-                                                <Tooltip title={value[column.dataIndex]}>
-                                                    {value[column.dataIndex]}
-                                                </Tooltip>
+                        <Spin spinning={loading}>
+                            <div className={styles.table}>
+                                <div className={styles.row}>
+                                    {columns?.map(column => (
+                                        <div className={styles.tableTitle}>{column?.title}</div>
+                                    ))}
+                                </div>
+                                <div className={styles.valueWrapper}>
+                                    {listData?.length ? (
+                                        listData?.map((value, index) => (
+                                            <div className={styles.row}>
+                                                {columns?.map(column => (
+                                                    <div className={styles.value}>
+                                                        <Tooltip title={value[column.dataIndex]}>
+                                                            {value[column.dataIndex]}
+                                                        </Tooltip>
+                                                    </div>
+                                                ))}
                                             </div>
-                                        ))}
-                                    </div>
-                                ))}
+                                        ))
+                                    ) : (
+                                        <div
+                                            style={{
+                                                width: "100%",
+                                                textAlign: "center",
+                                                color: "#999",
+                                                margin: "20px 0",
+                                            }}
+                                        >
+                                            暂无数据
+                                        </div>
+                                    )}
+                                </div>
+                                <div
+                                    style={{
+                                        textAlign: "right",
+                                        padding: "8px 0 ",
+                                        boxSizing: "border-box",
+                                    }}
+                                >
+                                    <Pagination
+                                        current={pagination?.current}
+                                        pageSize={pagination?.pageSize}
+                                        total={pagination?.total}
+                                        size="small"
+                                        onChange={onChange}
+                                    />
+                                </div>
                             </div>
-                            <div
-                                style={{
-                                    textAlign: "right",
-                                    padding: "8px 0 ",
-                                    boxSizing: "border-box",
-                                }}
-                            >
-                                <Pagination
-                                    current={pagination?.current}
-                                    pageSize={pagination?.pageSize}
-                                    total={pagination?.total}
-                                    size="small"
-                                    onChange={onChange}
-                                />
-                            </div>
-                        </div>
+                        </Spin>
                     </div>
                 }
             />
