@@ -66,7 +66,7 @@ const ElectricityRanking = ({ value }) => {
                 },
             },
             yAxis: {
-                name: currentType == "1" ? "GW" : "%",
+                name: currentType == "1" ? "GWh" : "%",
                 nameTextStyle: {
                     color: "#fff",
                     fontSize: 10,

@@ -32,7 +32,8 @@ export default defineConfig({
         "@/utils": path.resolve(__dirname, "src/utils"),
     },
     headScripts: [
-        "https://webapi.amap.com/maps?v=1.4.15&key=2dca0cb2ced6ced6030c26376186faee&plugin=AMap.MarkerCluster",
+        //  "https://webapi.amap.com/maps?v=1.4.15&key=2dca0cb2ced6ced6030c26376186faee&plugin=AMap.MarkerCluster",
+        "https://webapi.amap.com/maps?v=2.0&key=703e127456c7052706f27a37144c9c4d&plugin=AMap.MarkerCluster",
     ],
     chainWebpack: config => {
         config
