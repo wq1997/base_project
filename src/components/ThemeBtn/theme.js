@@ -29,6 +29,7 @@ const theme = {
                 headerBg: "#05305C",
             },
         },
+        fontColor: 'white'
     },
     default: {
         colorPrimary: "#384EE8",
@@ -50,6 +51,7 @@ const theme = {
                 headerBg: "#F6F8FD",
             },
         },
+        fontColor: 'black'
     },
 };
 export default theme;
