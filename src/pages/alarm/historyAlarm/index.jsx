@@ -6,7 +6,7 @@ import styles from "./index.less";
 import { Pagination, Select, Cascader, theme, Button, DatePicker } from "antd"
 import { downLoadExcelMode } from "@/utils/utils"
 import {
-  getFetchPlantList2 as getFetchPlantListServe,
+  getFetchPlantList3 as getFetchPlantListServe,
   get215HistoryAlarm as get215HistoryAlarmServe,
 } from "@/services";
 import {

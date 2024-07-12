@@ -5,7 +5,7 @@ import styles from "./index.less";
 import { Pagination, theme, Select, Cascader, Button, DatePicker } from "antd"
 import { alarmLevel } from "@/utils/constants"
 import {
-  getFetchPlantList2 as getFetchPlantListServe,
+  getFetchPlantList3 as getFetchPlantListServe,
   get215NowAlarm as get215NowAlarmServe,
 } from "@/services";
 import {
