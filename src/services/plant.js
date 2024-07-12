@@ -2,16 +2,13 @@ import axiosInstance from "./request";
 const path = '/total'
 // 获取电站列表
 export const apigetPlantList = (payload) => {
-  return axiosInstance.post(`/energy/fetchPlantListByRoot`,payload);
+  return axiosInstance.post(`/energy/fetchPlantListByRoot215`,payload);
 }
-
 
 // 新增电站
 export const apiInsertPlant = (payload) => {
-    return axiosInstance.post(`${path}/insertPlant`, payload);
-  }
-  
-
+   return axiosInstance.post(`${path}/insertPlant`, payload);
+}
 
 // 编辑电站
 export const apiUpdatePlant = (payload) => {

@@ -309,7 +309,7 @@ const PolicyConfiguration = ({deviceVersion}) => {
                                     {intl.formatMessage({id: '下发'})}
                                 </div>
                             </Row> 
-                            <Form.Item name="durationList" rules={[{ ...FORM_REQUIRED_RULE }]}>
+                            <Form.Item name="durationList" validateTrigger={false} rules={[{ ...FORM_REQUIRED_RULE }]}>
                                 <EditTable.EditRowTable
                                     showAdd={canIssue}
                                     showClear={canIssue}
