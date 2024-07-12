@@ -275,7 +275,7 @@ function Com(props) {
                         <FormattedMessage id='查询' />
                     </Button>
                     <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downLoadExcelModel} >
-                        <FormattedMessage id='导出' />Excel
+                        {getTranslation('导出')}{" Excel"}
                     </Button>
                 </div>
 

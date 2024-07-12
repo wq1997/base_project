@@ -169,7 +169,7 @@ function Com(props) {
                 changeData={(value) => changeData(value)}
             />
             <Modal
-                title={[<><ExclamationCircleFilled style={{color:'#FAAD14',marginRight:'10px'}}/>系统提示</>]}
+                title={[<><ExclamationCircleFilled style={{color:'#FAAD14',marginRight:'10px'}}/>{t("系统提示")}</>]}
                 open={isOpenDel}
                 onOk={del}
                 onCancel={changeIsOpenDel}

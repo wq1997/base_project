@@ -43,13 +43,13 @@ const App = (props) => {
       type: 2,
       required: true,
       data: [{
-        label: '普通用户',
-        value: '1',
+        label: t('普通用户'),
+        value: 1,
         key: '普通用户',
       },
       {
-        label: '管理员',
-        value: '3',
+        label: t('管理员'),
+        value: 3,
         key: '管理员',
       },
       ],

@@ -150,7 +150,7 @@ function Com(props) {
       });
       dateList = [dateStr];
       if (dataTypeList.length > 3) {
-        message.warning('最多选择3个对比项');
+        message.warning(t('最多选择3个对比项'));
         return
       }
       if (dataTypeList.find(it => it.dataId == undefined)) {
@@ -166,7 +166,7 @@ function Com(props) {
       }
       dateList = dateStr;
       if (dateList.length > 3) {
-        message.warning('最多选择3个对比项');
+        message.warning(t('最多选择3个对比项'));
         return
       }
     }
@@ -440,7 +440,7 @@ function Com(props) {
                 {t('查询')}
               </Button>
               <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downloadExcel}>
-                {t('导出')}Excel
+              {t('导出')}{" "}Excel
               </Button>
             </div>
             <div className={styles.echartPart}>

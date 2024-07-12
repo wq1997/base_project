@@ -283,14 +283,14 @@ function Com() {
               {t('数据选择')}
             </Button>
             <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={exportData}>
-              {t('导出')}Excel
+              {t('导出')}{" "}Excel
             </Button>
           </Space>
         </div>
         <div className={styles.echartPart}>
           <div className={styles.echartPartCardwrap}>
             <Row justify="center">
-              <Typography.Title level={3} style={{ marginTop: 0, marginBottom: 27 }}>{dayjs(new Date()).format('YYYY.MM.DD')}{t(wayLabel)}</Typography.Title>
+              <Typography.Title level={3} style={{ marginTop: 0, marginBottom: 27 }}>{dayjs(new Date()).format('YYYY.MM.DD')}{" "}{t(wayLabel)}</Typography.Title>
             </Row>
             <div className={styles.content}>
               <div className={styles.contentItem}>

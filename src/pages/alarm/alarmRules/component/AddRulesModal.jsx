@@ -159,7 +159,12 @@ const App = (props) => {
                   <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.required }]}>
                     <Select
                       defaultValue={it.data[0].value}
-                      options={it.data}
+                      options={it.data.map(item => {
+                        return {
+                          value:item.value,
+                          label:t(item.label)
+                        }
+                      })}
                     />
                   </Form.Item>
                 </>

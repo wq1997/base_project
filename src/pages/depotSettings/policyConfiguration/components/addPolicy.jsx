@@ -18,6 +18,9 @@ function Com({ open,
     const onFinish = async () => {
         try {
             const values = await form.validateFields();
+            if (dayjs(values.startDate).diff(dayjs(values.endDate))>0) {
+                return message.warning(t('结束日期大于等于开始日期'))
+            }
             let flag = values?.contentList?.map((item, index) => {
                 let length = values?.contentList?.map((it,i) => {
                     if (index < values?.contentList.length - 1&&i>index) {
@@ -42,6 +45,10 @@ function Com({ open,
             if (!is24HoursInOneDay(values?.contentList)) {
                 return message.warning(t('时段不满24小时'))
             };
+            values.contentList.map(it=>{
+                it.startTime=dayjs(it.startTime).format('HH:mm:ss');
+                it.endTime=dayjs(it.endTime).format('HH:mm:ss')
+            })
             if (title == '新增策略') {
                 setStrategyTableData(values);
             } else {
@@ -76,10 +83,10 @@ function Com({ open,
                 key: 'startTime',
                 render(text, field) {
                     return <Form.Item
-                        rules={[{ required: true, message: t('请输入开始时间') }]}
+                        rules={[{ required: true, message: t('请输入')+" "+t('开始时间') }]}
                         name={[field.name, 'startTime']}
                     >
-                        <TimePicker placeholder={t('请输入开始时间')} />
+                        <TimePicker placeholder={t('请输入')+" "+t('开始时间')} />
                     </Form.Item>
                 }
             },
@@ -89,10 +96,10 @@ function Com({ open,
                 key: 'endTime',
                 render(text, field) {
                     return <Form.Item
-                        rules={[{ required: true, message: t('请输入结束时间') }]}
+                        rules={[{ required: true, message: t('请输入')+" "+t('结束时间')}]}
                         name={[field.name, 'endTime']}
                     >
-                        <TimePicker type='time' placeholder={t('请输入结束时间')} />
+                        <TimePicker type='time' placeholder={t('请输入')+" "+t('结束时间')} />
                     </Form.Item>
                 }
             },
@@ -109,7 +116,7 @@ function Com({ open,
                 }
             },
             {
-                title: t('功率（kW）'),
+                title: t('功率')+'（kW）',
                 dataIndex: 'power',
                 render(text, field) {
                     return <Form.Item
@@ -121,14 +128,14 @@ function Com({ open,
                 }
             },
             {
-                title: t('目标SOC（%）'),
+                title: t('目标SOC')+'（%）',
                 dataIndex: 'soc',
                 render(text, field) {
                     return <Form.Item
-                        rules={[{ required: true, message: t('请输入目标SOC') }]}
+                        rules={[{ required: true, message: t('请输入')+' '+t('目标SOC')}]}
                         name={[field.name, 'soc']}
                     >
-                        <InputNumber placeholder={t('请输入目标SOC')} allowClear />
+                        <InputNumber placeholder={t('请输入')+' '+t('目标SOC')} allowClear />
                     </Form.Item>
                 }
             },
@@ -225,27 +232,27 @@ function Com({ open,
                     <Row gutter={[48, 24]}>
                         <Col span={12} >
                             <Form.Item label={t("策略名称")} labelCol={{ span: 5 }} name="planName" rules={[FORM_REQUIRED_RULE]}>
-                                <Input placeholder={t("请输入策略名称")} style={{ maxWidth: 320, width: '60%' }} />
+                                <Input placeholder={t("请输入")+" "+t('策略名称')} style={{ maxWidth: 320, width: '60%' }} />
                             </Form.Item>
                         </Col>
                         <Col span={12} >
                             <Form.Item label={t("策略编号")} labelCol={{ span: 5 }} name="planNo" rules={[FORM_REQUIRED_RULE]}>
-                                <Input placeholder={t("请输入策略编号")} disabled={true} style={{ maxWidth: 320, width: '60%' }} />
+                                <Input placeholder={t("请输入")+" "+t('策略编号')} disabled={true} style={{ maxWidth: 320, width: '60%' }} />
                             </Form.Item>
                         </Col>
                         <Col span={12} >
                             <Form.Item label={t("开始日期")} labelCol={{ span: 5 }} name="startDate" rules={[FORM_REQUIRED_RULE]}>
-                                <DatePicker format={'MM-DD'} placeholder={t("请输入开始日期")} style={{ width: '60%', }} />
+                                <DatePicker format={'MM-DD'} placeholder={t("请输入")+" "+t('开始日期')} style={{ width: '60%', }} />
                             </Form.Item>
                         </Col>
                         <Col span={12} >
                             <Form.Item label={t("结束日期")} labelCol={{ span: 5 }} name="endDate" rules={[FORM_REQUIRED_RULE]}>
-                                <DatePicker format={'MM-DD'} placeholder={t("请输入结束日期")} style={{ maxWidth: 320, width: '60%' }} />
+                                <DatePicker format={'MM-DD'} placeholder={t("请输入")+" "+t('结束日期')} style={{ maxWidth: 320, width: '60%' }} />
                             </Form.Item>
                         </Col>
                         <Col span={12} >
                             <Form.Item label={t("模式")} labelCol={{ span: 5 }} name="controlMode" rules={[FORM_REQUIRED_RULE]}>
-                                <Select placeholder={t("请选择模式")} disabled={disabled} options={[{ value: 1, label: '白天-黑夜' }, { value: 2, label: '定时充放' },]} style={{ maxWidth: 320, width: '60%' }} />
+                                <Select placeholder={t("请选择模式")} disabled={disabled} options={[{ value: 1, label: t('白天-黑夜') }, { value: 2, label: t('定时充放') },]} style={{ maxWidth: 320, width: '60%' }} />
                             </Form.Item>
                         </Col>
 

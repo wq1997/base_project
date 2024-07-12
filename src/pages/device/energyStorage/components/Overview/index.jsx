@@ -344,7 +344,7 @@ function Overview(props) {
                 <div className={styles.profitAll}>
                     <CardModel
                         title={
-                            t("收益统计") + '(元)'
+                            t("收益统计") + "("+currentPlant?.priceUnit+")"
                         }
                         content={
                             <div className={styles.profitAllWrap}>

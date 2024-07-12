@@ -239,7 +239,7 @@ function Com({ id }) {
                     {t('查询')}
                 </Button>
                 <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downLoadFoodModel} >
-                    {t('导出')}Excel
+                {t('导出')}{" "}Excel
                 </Button>
             </div>
             <div className={styles.echartPart}>

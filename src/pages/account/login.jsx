@@ -50,7 +50,7 @@ const Login = () => {
         setLocalStorage("Token", data.token);
         // setLocalStorage("userName", data?.userName);
         // setLocalStorage("sceneType", data?.sceneType);
-        message.success('登录成功');
+        message.success(t('登录成功'));
         dispatch({
           type: 'user/updateState',
           payload: {

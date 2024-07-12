@@ -197,7 +197,7 @@ function Com(props) {
         let fileName = title;
         let sheetData = excelData;
         let sheetFilter = ['time',];
-        let sheetHeader = ["时刻", ];
+        let sheetHeader = [t("时间"), ];
         date?.map((it,i)=>{
             sheetHeader.push(it);
             sheetFilter.push(i)
@@ -231,7 +231,7 @@ function Com(props) {
                     {t('查询')}
                 </Button>
                 <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downLoadFoodModel}>
-                    {t('导出')}Excel
+                {t('导出')}{" "}Excel
                 </Button>
             </div>
             <div className={styles.echartPart}>

@@ -91,15 +91,8 @@ function Com(props) {
       values?.planList?.map(item => {
         item.startDate = dayjs(item.startDate).format('MM-DD');
         item.endDate = dayjs(item.endDate).format('MM-DD');
-        item?.contentList?.map(it => {
-          console.log(typeof it.startTime,1111111);
-          if (typeof it.startTime === 'string') {
-            it.startTime = dayjs(it.startTime).format('HH:mm:ss');
-            it.endTime = dayjs(it.endTime).format('HH:mm:ss');
-          }
-
-        })
       })
+      console.log(values,'请求');
       let { data } = await saveStrategy(values);
       if (data?.data) {
         message.success(t('保存成功'));

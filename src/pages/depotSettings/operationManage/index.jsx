@@ -86,7 +86,6 @@ const OperationManage = () => {
         setGridId(arr[0]?.value);
         setCurrentGrid(arr[0]);
         setDtuId(data?.data?.[0]?.dtuId);
-
     }
 
     const getInitData = async () => {

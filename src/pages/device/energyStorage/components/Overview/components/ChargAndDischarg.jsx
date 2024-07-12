@@ -28,10 +28,10 @@ const getMock=async()=>{
     
     let arrSy=[];
     let arrRy=[]
-    data.data.strategyPower?.map(it=>{
+    data?.data?.strategyPower?.map(it=>{
         arrRy.push([dayjs(it.time).format('HH:mm'),it.value]);
     });
-    data.data.gridPointPower?.map(it=>{
+    data?.data?.gridPointPower?.map(it=>{
         arrSy.push([dayjs(it.time).format('HH:mm'),it.value])
     });
     setOptions({
@@ -48,7 +48,7 @@ const getMock=async()=>{
             containLabel: true
         },
         legend: {
-            data: [t('运行功率'),t('策略功率'),],
+            // data: [t('运行功率'),t('策略功率'),],
             textStyle:{
                 color: token.titleColor//字体颜色
                 },
