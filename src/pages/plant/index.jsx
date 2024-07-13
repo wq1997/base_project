@@ -187,7 +187,7 @@ function Com(props) {
         setSelectPlantId(record.plantId)
     }
     const changeData = async (value) => {
-        const { data } = await apiUpdatePlant({ ...value, plantId: selectPlantId,deviceTypeId:14 }) 
+        const { data } = await apiUpdatePlant({ ...value, plantId: selectPlantId,deviceTypeId:21 }) 
         if (data.data) {
             getData();
         } else {
