@@ -43,8 +43,7 @@ const Login = () => {
       const res = await loginSever({
         ...values,
         password: getEncrypt(publicKey, values.password),
-        clientType: 6,
-        // clientType: 4,
+        clientType: 21,
         remember: false,
         language,
       });
