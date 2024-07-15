@@ -196,6 +196,7 @@ const MonitoringCurves = () => {
                     data: data?.map(item => item[1])
                 })
             })
+            console.log("AAAA", series)
         }
 
         if(dataType===415){
