@@ -192,6 +192,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                 onClick={async () => {
                                     await updateDataServe({ dtuId: id, type: deviceVersion });
                                     await getInitData();
+                                    await getAliveStatus();
                                 }}
                             >
                                 {intl.formatMessage({ id: '刷新' })}
