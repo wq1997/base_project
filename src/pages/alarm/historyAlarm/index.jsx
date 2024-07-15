@@ -129,7 +129,7 @@ const RealtimeAlarm = () => {
       begin: time?.length ? time[0]?.format('YYYY-MM-DD HH:mm:ss') : null,
       end: time?.length ? time[1]?.format('YYYY-MM-DD HH:mm:ss') : null,
       plantId: plantDeviceValue?.[0],
-      sn: plantDeviceValue?.[1],
+      dtuId: plantDeviceValue?.[1],
     });
     setData(data.data);
   }

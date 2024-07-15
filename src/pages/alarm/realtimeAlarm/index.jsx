@@ -126,7 +126,7 @@ const RealtimeAlarm = () => {
       pageSize: 20,
       prior: level,
       plantId: plantDeviceValue?.[0],
-      sn: plantDeviceValue?.[1],
+      dtuId: plantDeviceValue?.[1],
     });
     setData(data.data);
   }
