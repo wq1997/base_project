@@ -12,6 +12,10 @@ export const getAllRevenue = (payload) => {
     return axiosInstance.get(`/minsys/revenue/getPlantRevenue`, { params: payload })
 }
 
+export const isLive = (payload) => {
+    return axiosInstance.get(`/minsys/all/isLive`, { params: payload })
+}
+
 export const getDeviceTypeByDtuId = (payload) => {
     return axiosInstance.get(`/minsys/dtu/getDeviceTypeByDtuId`, { params: payload })
 }

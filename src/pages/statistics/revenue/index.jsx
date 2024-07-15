@@ -154,12 +154,12 @@ const Revenue = () => {
                 plantList[currentIndex].children = data;
                 setPlantDeviceList([...plantList]);
 
-                // const currentPlantDevice = await form.getFieldValue("currentPlantDevice")
-                // if (currentPlantDevice?.length === 0) {
-                //     form.setFieldsValue({ currentPlantDevice: '' })
-                //     const params = await getParams();
-                //     getDataSource(params);
-                // }
+                const currentPlantDevice = await form.getFieldValue("currentPlantDevice")
+                if (currentPlantDevice?.length === 0) {
+                    form.setFieldsValue({ currentPlantDevice: [plantId, data[0].value] });
+                    const params = await getParams();
+                    getDataSource(params);
+                }
             }
         }
     }
@@ -181,11 +181,7 @@ const Revenue = () => {
                 }
             })
             if (plantList?.length > 0) {
-                setPlantDeviceList([{value: '', label: intl.formatMessage({id: '电站总收益'})},...plantList]);
-
-                form.setFieldsValue({ currentPlantDevice: [''] })
-                const params = await getParams();
-                getDataSource(params);
+                getDtusOfPlant(plantList, plantList?.[0]?.value);
             }
         }
     }
@@ -217,7 +213,7 @@ const Revenue = () => {
                         form={form}
                         layout="inline"
                         initialValues={{
-                            currentPlantDevice: [''],
+                            currentPlantDevice: [],
                             dayTime: [defaultStartDate, defaultEndDate],
                             yearTime: dayjs(),
                             timeType: 'day'
@@ -229,7 +225,7 @@ const Revenue = () => {
                                     changeOnSelect
                                     options={plantDeviceList}
                                     onChange={async value => {
-                                        if (value?.length === 1 && value[0]) {
+                                        if (value?.length === 1) {
                                             getDtusOfPlant(plantDeviceList, value[0])
                                         }
                                     }}

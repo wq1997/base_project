@@ -24,7 +24,7 @@ export const getAllUserByAdmin = ()=>{
 }
 // 获取用户列表 (root)
 export const getAllUserRoot = (payload)=>{
-  return axiosInstance.get(`/user/getAllUserRoot?roleId=${payload.roleId}`);
+  return axiosInstance.get(`/user/getAllUser215Root?roleId=${payload.roleId}`);
 }
 // 密码修改
 export const changePassword = (payload) => {

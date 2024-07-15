@@ -18,6 +18,7 @@ import {
     sendLiquidCooler as sendLiquidCoolerServe,
     switchModes as switchModesServe,
     sendStrategySetting as sendStrategySettingServe,
+    isLive as isLiveServe
 } from "@/services";
 
 const PolicyConfiguration = ({ deviceVersion }) => {
@@ -34,6 +35,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
     const [checkModalOpen, setCheckModalOpen] = useState(false);
     const [checkModalType, setCheckModalType] = useState('');
     const [durationList, setDurationList] = useState([]);
+    const [isLive, setIsLive] = useState(false);
     const canIssue = mode === 0;
 
     const strategyList = [
@@ -80,6 +82,11 @@ const PolicyConfiguration = ({ deviceVersion }) => {
             backgroundColor: '#2C638F',
         }
     })
+
+    const getAliveStatus = async () => {
+        const res = await isLiveServe({ dtuId: id });
+        setIsLive(res?.data);
+    }
 
     const getInitData = async () => {
         const res = await getBurCmdHistory2Serve({ dtuId: id, type: deviceVersion });
@@ -151,6 +158,10 @@ const PolicyConfiguration = ({ deviceVersion }) => {
         getInitData();
     }, [tabValue])
 
+    useEffect(() => {
+        getAliveStatus();
+    }, [])
+
     return (
         <>
             <Form
@@ -191,6 +202,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                 <ButtonGroup
                                     value={mode}
                                     mode={'controlled'}
+                                    disabled={!isLive}
                                     options={[
                                         { label: intl.formatMessage({ id: '自动' }), value: 1 },
                                         { label: intl.formatMessage({ id: '手动' }), value: 0 },
@@ -213,7 +225,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                             <ButtonGroup
                                                 value={runModePCSBMS}
                                                 mode={'controlled'}
-                                                disabled={!canIssue}
+                                                disabled={!canIssue || !isLive}
                                                 options={[
                                                     { label: intl.formatMessage({ id: 'PCS开机' }), value: 1 },
                                                     { label: intl.formatMessage({ id: 'PCS关机' }), value: 0 },
@@ -235,15 +247,15 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                             <Row gutter={24}>
                                                 <Col>
                                                     <Form.Item label={`${intl.formatMessage({ id: 'PCS功率' })}(kW)`} name="pcsPower" rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
-                                                        <Input disabled={!canIssue} placeholder={intl.formatMessage({ id: '请输入PCS功率' })} style={{ width: 300 }} />
+                                                        <Input disabled={!canIssue || !isLive} placeholder={intl.formatMessage({ id: '请输入PCS功率' })} style={{ width: 300 }} />
                                                     </Form.Item>
                                                 </Col>
                                                 <Col>
                                                     <div
-                                                        className={canIssue ? distributeStyle : disabledDistributeStyle}
+                                                        className={canIssue && isLive ? distributeStyle : disabledDistributeStyle}
                                                         onClick={async () => {
                                                             await form.validateFields(['pcsPower']);
-                                                            if (canIssue) {
+                                                            if (canIssue && isLive) {
                                                                 setCheckModalOpen(true);
                                                                 setCheckModalType('pcsPower');
                                                             }
@@ -264,10 +276,10 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                             <Row justify="space-between">
                                 <Title title={intl.formatMessage({ id: '参数设置' })} />
                                 <div
-                                    className={canIssue ? distributeStyle : disabledDistributeStyle}
+                                    className={canIssue && isLive ? distributeStyle : disabledDistributeStyle}
                                     onClick={async () => {
-                                        await form.validateFields(['switchOnOffGrid', 'antiReflux', 'overload', 'expansion', 'antiRefluxTriggerValue', 'tranCap', 'tranCapPercent', 'pcsPowerWaveRange']);
-                                        if (canIssue) {
+                                        if (canIssue && isLive) {
+                                            await form.validateFields(['switchOnOffGrid', 'antiReflux', 'overload', 'expansion', 'antiRefluxTriggerValue', 'tranCap', 'tranCapPercent', 'pcsPowerWaveRange']);
                                             setCheckModalOpen(true);
                                             setCheckModalType('sendParamSetting');
                                         }
@@ -280,45 +292,45 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                 <Row>
                                     <Col span={2}>
                                         <Form.Item label={intl.formatMessage({ id: '并离网' })} name="switchOnOffGrid" style={{ margin: 0 }}>
-                                            <Switch checkedChildren={intl.formatMessage({ id: '离网' })} unCheckedChildren={intl.formatMessage({ id: '并网' })} />
+                                            <Switch disabled={!isLive} checkedChildren={intl.formatMessage({ id: '离网' })} unCheckedChildren={intl.formatMessage({ id: '并网' })} />
                                         </Form.Item>
                                     </Col>
                                     <Form.Item
                                         noStyle
                                         dependencies={['switchOnOffGrid']}
                                     >
-                                        {({getFieldsValue})=>{
-                                            let disabled=false
+                                        {({ getFieldsValue }) => {
+                                            let disabled = false
                                             const { switchOnOffGrid } = getFieldsValue('switchOnOffGrid');
-                                            if(mode===1&&switchOnOffGrid){
-                                                disabled=true;
+                                            if (mode === 1 && switchOnOffGrid) {
+                                                disabled = true;
                                             }
                                             return (
                                                 <>
                                                     <Col span={2}>
                                                         <Form.Item label={intl.formatMessage({ id: '防逆流' })} name="antiReflux" style={{ margin: 0 }}>
-                                                            <Switch disabled={disabled}/>
+                                                            <Switch disabled={disabled || !isLive} />
                                                         </Form.Item>
                                                     </Col>
                                                     <Col span={2}>
                                                         <Form.Item label={intl.formatMessage({ id: '防过载' })} name="overload" style={{ margin: 0 }}>
-                                                            <Switch disabled={disabled}/>
+                                                            <Switch disabled={disabled || !isLive} />
                                                         </Form.Item>
                                                     </Col>
                                                     <Form.Item
                                                         noStyle
                                                         dependencies={['overload']}
                                                     >
-                                                        {({getFieldsValue})=>{
-                                                            let disabled=false
+                                                        {({ getFieldsValue }) => {
+                                                            let disabled = false
                                                             const { overload } = getFieldsValue('overload');
-                                                            if(mode===1&&!overload){
-                                                                disabled=true;
+                                                            if (mode === 1 && !overload) {
+                                                                disabled = true;
                                                             }
                                                             return (
                                                                 <Col span={2}>
                                                                     <Form.Item label={intl.formatMessage({ id: '扩容' })} name="expansion" style={{ margin: 0 }}>
-                                                                        <Switch disabled={disabled}/>
+                                                                        <Switch disabled={disabled || !isLive} />
                                                                     </Form.Item>
                                                                 </Col>
                                                             )
@@ -334,16 +346,16 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                         noStyle
                                         dependencies={['antiReflux']}
                                     >
-                                        {({getFieldsValue})=>{
-                                            let disabled=false
+                                        {({ getFieldsValue }) => {
+                                            let disabled = false
                                             const { antiReflux } = getFieldsValue('antiReflux');
-                                            if(mode===1&&antiReflux){
-                                                disabled=true;
+                                            if (mode === 1 && antiReflux) {
+                                                disabled = true;
                                             }
                                             return (
                                                 <Col span={7}>
                                                     <Form.Item label={`${intl.formatMessage({ id: '防逆流触发值' })}(kW)`} name="antiRefluxTriggerValue" style={{ margin: 0 }}>
-                                                        <InputNumber disabled={!disabled} placeholder={intl.formatMessage({ id: '请输入防逆流触发值' })} style={{ width: 300 }} />
+                                                        <InputNumber disabled={!disabled || !isLive} placeholder={intl.formatMessage({ id: '请输入防逆流触发值' })} style={{ width: 300 }} />
                                                     </Form.Item>
                                                 </Col>
                                             )
@@ -353,21 +365,21 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                         noStyle
                                         dependencies={['expansion']}
                                     >
-                                        {({getFieldsValue})=>{
-                                            let disabled=false
+                                        {({ getFieldsValue }) => {
+                                            let disabled = false
                                             const { expansion } = getFieldsValue('expansion');
-                                            if(mode===1&&!expansion){
-                                                disabled=true;
+                                            if (mode === 1 && !expansion) {
+                                                disabled = true;
                                             }
                                             return (
                                                 <Col span={7}>
                                                     <Form.Item label={intl.formatMessage({ id: '变压器容量' })} style={{ margin: 0 }}>
                                                         <Space direction="horizontal">
                                                             <Form.Item style={{ margin: 0 }} name="tranCap">
-                                                                <InputNumber disabled={disabled} style={{ width: 200 }} placeholder="kW" />
+                                                                <InputNumber disabled={disabled || !isLive} style={{ width: 200 }} placeholder="kW" />
                                                             </Form.Item>
                                                             <Form.Item style={{ margin: 0 }} name="tranCapPercent">
-                                                                <InputNumber disabled={disabled} style={{ width: 200 }} placeholder="%" min={0} max={100} />
+                                                                <InputNumber disabled={disabled || !isLive} style={{ width: 200 }} placeholder="%" min={0} max={100} />
                                                             </Form.Item>
                                                         </Space>
                                                     </Form.Item>
@@ -377,7 +389,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                     </Form.Item>
                                     <Col span={7}>
                                         <Form.Item label={`${intl.formatMessage({ id: '功率波动范围' })}(kW)`} name="pcsPowerWaveRange" style={{ margin: 0 }}>
-                                            <InputNumber disabled={!canIssue} placeholder={intl.formatMessage({ id: '请输入功率波动范围' })} style={{ width: 300 }} />
+                                            <InputNumber disabled={!canIssue || !isLive} placeholder={intl.formatMessage({ id: '请输入功率波动范围' })} style={{ width: 300 }} />
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -389,16 +401,16 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                             <Row justify="space-between">
                                 <Title title={intl.formatMessage({ id: '策略配置' })} />
                                 <div
-                                    className={canIssue ? distributeStyle : disabledDistributeStyle}
+                                    className={canIssue && isLive ? distributeStyle : disabledDistributeStyle}
                                     onClick={async () => {
-                                        const { durationList } = await form.getFieldsValue("durationList");
-                                        if(durationList&&durationList?.length>0){
-                                            if (canIssue) {
+                                        if (canIssue && isLive) {
+                                            const { durationList } = await form.getFieldsValue("durationList");
+                                            if (durationList && durationList?.length > 0) {
                                                 setCheckModalOpen(true);
                                                 setCheckModalType('sendStrategySetting');
+                                            } else {
+                                                message.error(intl.formatMessage({ id: '请至少添加一条策略' }))
                                             }
-                                        }else{
-                                            message.error(intl.formatMessage({ id: '请至少添加一条策略' }))
                                         }
                                     }}
                                 >
@@ -407,10 +419,10 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                             </Row>
                             <Form.Item name="durationList" validateTrigger={false} rules={[{ ...FORM_REQUIRED_RULE }]}>
                                 <EditTable.EditRowTable
-                                    showAdd={canIssue}
-                                    showClear={canIssue}
-                                    showEdit={canIssue}
-                                    showDelete={canIssue}
+                                    showAdd={canIssue && isLive}
+                                    showClear={canIssue && isLive}
+                                    showEdit={canIssue && isLive}
+                                    showDelete={canIssue && isLive}
                                     data={durationList}
                                     columns={[
                                         {
@@ -478,10 +490,10 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                             <Row justify="space-between" align="middle">
                                 <Title title={intl.formatMessage({ id: '策略选择' })} />
                                 <div
-                                    className={canIssue ? distributeStyle : disabledDistributeStyle}
+                                    className={canIssue && isLive ? distributeStyle : disabledDistributeStyle}
                                     onClick={async () => {
-                                        await form.validateFields(monthList.map(month => month.value));
-                                        if (canIssue) {
+                                        if (canIssue && isLive) {
+                                            await form.validateFields(monthList.map(month => month.value));
                                             setCheckModalOpen(true);
                                             setCheckModalType('sendStrategySelect');
                                         }
@@ -497,7 +509,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                             <Col span={24 / monthList.length}>
                                                 <div style={{ marginBottom: 10 }}>{month.label}</div>
                                                 <Form.Item name={month.value} layout="vertical" style={{ margin: 0 }}>
-                                                    <Radio.Group disabled={!canIssue}>
+                                                    <Radio.Group disabled={!canIssue||!isLive}>
                                                         <Space direction="vertical">
                                                             {strategyList?.map(strategy => <Radio value={strategy.value}>{strategy.label}</Radio>)}
                                                         </Space>
@@ -516,12 +528,13 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                             <Row justify="space-between" align="middle">
                                 <Title title={intl.formatMessage({ id: '除湿机参数设置' })} />
                                 <div
-                                    className={distributeStyle}
+                                    className={isLive ? distributeStyle : disabledDistributeStyle}
                                     onClick={async () => {
                                         await form.validateFields(['tempStart', 'tempStop', 'humStart', 'humStop']);
                                         setCheckModalOpen(true);
                                         setCheckModalType('sendDehumidifier');
                                     }}
+
                                 >
                                     {intl.formatMessage({ id: '下发' })}
                                 </div>
@@ -529,22 +542,22 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                             <Row gutter={50}>
                                 <Col span={6}>
                                     <Form.Item name="tempStart" label={intl.formatMessage({ id: '除湿机温度启动值(℃)' })} rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
-                                        <Input style={{ width: "100%" }} placeholder={intl.formatMessage({ id: '请输入除湿机温度启动值' })} />
+                                        <Input style={{ width: "100%" }} disabled={!isLive} placeholder={intl.formatMessage({ id: '请输入除湿机温度启动值' })} />
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
                                     <Form.Item name="tempStop" label={intl.formatMessage({ id: '除湿机温度停止值(℃)' })} rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
-                                        <Input style={{ width: "100%" }} placeholder={intl.formatMessage({ id: '请输入除湿机温度停止值' })} />
+                                        <Input style={{ width: "100%" }} disabled={!isLive} placeholder={intl.formatMessage({ id: '请输入除湿机温度停止值' })} />
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
                                     <Form.Item name="humStart" label={intl.formatMessage({ id: '除湿机湿度启动值(%rh)' })} rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
-                                        <Input style={{ width: "100%" }} placeholder={intl.formatMessage({ id: '请输入除湿机湿度启动值' })} />
+                                        <Input style={{ width: "100%" }} disabled={!isLive} placeholder={intl.formatMessage({ id: '请输入除湿机湿度启动值' })} />
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
                                     <Form.Item name="humStop" label={intl.formatMessage({ id: '除湿机湿度停止值(%rh)' })} rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
-                                        <Input style={{ width: "100%" }} placeholder={intl.formatMessage({ id: '请输入除湿机湿度停止值' })} />
+                                        <Input style={{ width: "100%" }} disabled={!isLive} placeholder={intl.formatMessage({ id: '请输入除湿机湿度停止值' })} />
                                     </Form.Item>
                                 </Col>
                             </Row>
@@ -556,7 +569,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                             <Row justify="space-between" align="middle">
                                 <Title title={intl.formatMessage({ id: '液冷机参数设置' })} />
                                 <div
-                                    className={distributeStyle}
+                                    className={isLive ? distributeStyle : disabledDistributeStyle}
                                     onClick={async () => {
                                         await form.validateFields(['coolingPoint', 'heatPoint', 'coolingDiffPoint', 'heatDiffPoint']);
                                         setCheckModalOpen(true);
@@ -569,22 +582,22 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                             <Row gutter={50}>
                                 <Col span={6}>
                                     <Form.Item name="coolingPoint" label={intl.formatMessage({ id: '液冷制冷点(℃)' })} rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
-                                        <Input style={{ width: "100%" }} placeholder={intl.formatMessage({ id: '请输入液冷制冷点' })} />
+                                        <Input style={{ width: "100%" }} disabled={!isLive} placeholder={intl.formatMessage({ id: '请输入液冷制冷点' })} />
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
                                     <Form.Item name="heatPoint" label={intl.formatMessage({ id: '液冷加热点(℃)' })} rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
-                                        <Input style={{ width: "100%" }} placeholder={intl.formatMessage({ id: '请输入液冷加热点' })} />
+                                        <Input style={{ width: "100%" }} disabled={!isLive} placeholder={intl.formatMessage({ id: '请输入液冷加热点' })} />
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
                                     <Form.Item name="coolingDiffPoint" label={intl.formatMessage({ id: '液冷制冷回差(℃)' })} rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
-                                        <Input style={{ width: "100%" }} placeholder={intl.formatMessage({ id: '请输入液冷制冷回差' })} />
+                                        <Input style={{ width: "100%" }} disabled={!isLive} placeholder={intl.formatMessage({ id: '请输入液冷制冷回差' })} />
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
                                     <Form.Item name="heatDiffPoint" label={intl.formatMessage({ id: '液冷加热回差(℃)' })} rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
-                                        <Input style={{ width: "100%" }} placeholder={intl.formatMessage({ id: '请输入液冷加热回差' })} />
+                                        <Input style={{ width: "100%" }} disabled={!isLive} placeholder={intl.formatMessage({ id: '请输入液冷加热回差' })} />
                                     </Form.Item>
                                 </Col>
                             </Row>

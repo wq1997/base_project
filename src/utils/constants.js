@@ -101,9 +101,9 @@ export const alarmLevel = [
         key: '高级',
     },
     {
-        label: <FormattedMessage id='中等' />,
+        label: <FormattedMessage id='中级' />,
         value: '3',
-        key: '中等',
+        key: '中级',
     },
     {
         label: <FormattedMessage id='低级' />,
