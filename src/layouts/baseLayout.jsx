@@ -5,6 +5,7 @@ import MyMenu from "@/permissions/menu";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import styles from "./baseLayout.less";
 import { setLocalStorage, removeLocalStorage } from "@/utils/utils";
+import { updateLanguage } from "@/services/user";
 import useLocale from "@/hooks/useLocale"
 import languageChineseSvg from "../assets/svg/language-chinese.svg";
 import languageEnglishSvg from "../assets/svg/language-english.svg";
@@ -24,14 +25,20 @@ const BaseLayout = () => {
     const { token } = theme.useToken();
     const global = useSelector(state => state.global);
     const [collapsed, setCollapsed] = useState(false);
-    const changeLanguage = (locale) => {
-        setLocalStorage('locale', locale)
-        dispatch({
-            type: 'global/changeLanguage',
-            payload: {
-                locale
-            }
-        })
+    const changeLanguage = async (locale) => {
+        let flag = false;
+        if (locale === 'zh-CN') {
+            let { data } = await updateLanguage({ language: 1 });
+            flag = data;
+        } else if (locale === 'en-US') {
+            let { data } = await updateLanguage({ language: 3 });
+            flag = data;
+        }
+        if (flag) {
+            window.location.reload();
+            setLocalStorage('locale', locale);
+        }
+
     }
     const changeTheme = (theme) => {
         setLocalStorage("theme", theme);
@@ -155,29 +162,29 @@ const BaseLayout = () => {
                     </div>
                 </Header>
                 <Layout hasSider>
-                    <div style={{height:'100%',position:'relative', background: token.bgcColorB_l,}}>
-                    <Sider className={siderContentStyle}
-                        style={{ background: token.bgcColorB_l,  height: 'calc(100% - 94px)' }}
-                        width={240}
-                        trigger={null} collapsible collapsed={collapsed}>
-                        <div className={styles.siderContent}>
-                            <MyMenu />
-                        </div>
-                   
-                    </Sider>
-                    <Button
-                        type="text"
-                        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                        onClick={() => {setCollapsed(!collapsed);}}
-                        style={{
-                            fontSize: '16px',
-                            width: 64,
-                            height: 64,
-                            position: 'absolute',
-                            bottom: '20px',
-                            right: '10px'
-                        }}
-                    />
+                    <div style={{ height: '100%', position: 'relative', background: token.bgcColorB_l, }}>
+                        <Sider className={siderContentStyle}
+                            style={{ background: token.bgcColorB_l, height: 'calc(100% - 94px)' }}
+                            width={240}
+                            trigger={null} collapsible collapsed={collapsed}>
+                            <div className={styles.siderContent}>
+                                <MyMenu />
+                            </div>
+
+                        </Sider>
+                        <Button
+                            type="text"
+                            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                            onClick={() => { setCollapsed(!collapsed); }}
+                            style={{
+                                fontSize: '16px',
+                                width: 64,
+                                height: 64,
+                                position: 'absolute',
+                                bottom: '20px',
+                                right: '10px'
+                            }}
+                        />
                     </div>
                     <Content className={styles.content}
                         style={{ background: token.bgcColorl_B }}>

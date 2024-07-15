@@ -1030,7 +1030,7 @@ export default {
 "负极极柱温度": "Negative pole temperature",
 "正极极柱温度": "Positive pole temperature",
 "电池PACK": "Battery PACK",
-"电芯": "Battery cell",
+"电芯": "Battery cell",    
 "充电桩充电量":"Charging pile charging capacity",
 "请准确选择数据项":"Please select data items accurately"
 }

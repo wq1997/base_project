@@ -18,3 +18,7 @@ export const apiGetAllUserAndInfos = ()=>{
   return axiosInstance.get(`/user/getAllUserAndInfos` );
 }
 
+// 切换语言
+export const updateLanguage = (payload)=>{
+  return axiosInstance.get(`/updateLanguage?language=${payload.language}` );
+}
