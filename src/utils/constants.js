@@ -15,7 +15,7 @@ export const WETHER_KEY = '4e50b674eed8402c8a70c8155690a0e1';
 export const PASSWORD_RGE = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9a-zA-Z-`=\[\];',.~!@#$%^&*()_+|{}:"?]{8,16}$/;
 export const alarmTableColums = [
     {
-        title: <FormattedMessage id='Sn' />,
+        title: <FormattedMessage id='SN号' />,
         dataIndex: 'sn',
         key: 'Sn',
     },
@@ -91,14 +91,9 @@ export const pcsDataType = [
 
 export const alarmLevel = [
     {
-        label: <FormattedMessage id='低级' />,
-        value: '4',
-        key: '低级',
-    },
-    {
-        label: <FormattedMessage id='普通' />,
-        value: '3',
-        key: '普通',
+        label: <FormattedMessage id='严重' />,
+        value: '1',
+        key: '严重',
     },
     {
         label: <FormattedMessage id='高级' />,
@@ -106,10 +101,15 @@ export const alarmLevel = [
         key: '高级',
     },
     {
-        label: <FormattedMessage id='严重' />,
-        value: '1',
-        key: '严重',
+        label: <FormattedMessage id='中等' />,
+        value: '3',
+        key: '中等',
     },
+    {
+        label: <FormattedMessage id='低级' />,
+        value: '4',
+        key: '低级',
+    }
 ];
 export const optionType = [
     {

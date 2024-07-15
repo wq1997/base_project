@@ -428,6 +428,23 @@ const Electricity = () => {
                                                 title: intl.formatMessage({ id: '设备名称' }),
                                                 dataIndex: 'dtuName',
                                                 key: 'dtuName',
+                                                width: '10%',
+                                                render(value){
+                                                    return (
+                                                        <Tooltip title={value}>
+                                                            <div 
+                                                                style={{
+                                                                    overflow: 'hidden',
+                                                                    whiteSpace: 'nowrap',
+                                                                    textOverflow: 'ellipsis',
+                                                                    width: '100%',
+                                                                }}
+                                                            >
+                                                                {value}
+                                                            </div>
+                                                        </Tooltip>
+                                                    )
+                                                }
                                             },
                                             {
                                                 title: `${intl.formatMessage({ id: '尖时段充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,

@@ -14,7 +14,7 @@ import {
 
 const alarmTableColums = [
   {
-    title: <FormattedMessage id='Sn' />,
+    title: <FormattedMessage id='SN号' />,
     dataIndex: 'sn',
     key: 'Sn',
   },

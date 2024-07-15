@@ -103,7 +103,7 @@ const HighAnysis = () => {
         }
 
         if(dataType==='temp'){
-            const fieldList = [intl.formatMessage({id: '温度'}), intl.formatMessage({id: '左侧熔断器温度'}), intl.formatMessage({id: '右侧熔断器温度'}), intl.formatMessage({id: '负极极柱温度'}), intl.formatMessage({id: '正极极柱温度'})];
+            const fieldList = [intl.formatMessage({id: '单体温度'}), intl.formatMessage({id: '左侧熔断器温度'}), intl.formatMessage({id: '右侧熔断器温度'}), intl.formatMessage({id: '负极极柱温度'}), intl.formatMessage({id: '正极极柱温度'})];
 
             date?.forEach(item => {
                 fieldList.forEach(field=>{

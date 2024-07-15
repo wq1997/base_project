@@ -37,8 +37,8 @@ const Revenue = () => {
         if (timeType === "year") {
             format = "YYYY";
             params = {
-                plantId: currentPlantDevice?.[0],
-                dtuId: currentPlantDevice?.[1],
+                plantId: currentPlantDevice?.[0]||undefined,
+                dtuId: currentPlantDevice?.[1]||undefined,
                 date: dayjs(values.yearTime).format(format),
                 dateType: timeType
             }
@@ -50,8 +50,8 @@ const Revenue = () => {
                 return;
             }
             params = {
-                plantId: currentPlantDevice?.[0],
-                dtuId: currentPlantDevice?.[1],
+                plantId: currentPlantDevice?.[0]||undefined,
+                dtuId: currentPlantDevice?.[1]||undefined,
                 startDate: dayjs(values.dayTime[0]).format(format),
                 endDate: dayjs(values.dayTime[1]).format(format),
                 dateType: timeType
@@ -154,12 +154,12 @@ const Revenue = () => {
                 plantList[currentIndex].children = data;
                 setPlantDeviceList([...plantList]);
 
-                const currentPlantDevice = await form.getFieldValue("currentPlantDevice")
-                if (currentPlantDevice?.length === 0) {
-                    form.setFieldsValue({ currentPlantDevice: [plantId, data[0].value] })
-                    const params = await getParams();
-                    getDataSource(params);
-                }
+                // const currentPlantDevice = await form.getFieldValue("currentPlantDevice")
+                // if (currentPlantDevice?.length === 0) {
+                //     form.setFieldsValue({ currentPlantDevice: '' })
+                //     const params = await getParams();
+                //     getDataSource(params);
+                // }
             }
         }
     }
@@ -168,7 +168,7 @@ const Revenue = () => {
         const res = await getFetchPlantListServe();
         if (res?.data?.data) {
             const data = res?.data?.data;
-            const plantList = data?.plantList?.map((item, index) => {
+            let plantList = data?.plantList?.map((item, index) => {
                 return {
                     value: item.plantId,
                     label: item.name,
@@ -181,7 +181,11 @@ const Revenue = () => {
                 }
             })
             if (plantList?.length > 0) {
-                getDtusOfPlant(plantList, plantList?.[0]?.value)
+                setPlantDeviceList([{value: '', label: intl.formatMessage({id: '电站总收益'})},...plantList]);
+
+                form.setFieldsValue({ currentPlantDevice: [''] })
+                const params = await getParams();
+                getDataSource(params);
             }
         }
     }
@@ -213,7 +217,7 @@ const Revenue = () => {
                         form={form}
                         layout="inline"
                         initialValues={{
-                            currentPlantDevice: [],
+                            currentPlantDevice: [''],
                             dayTime: [defaultStartDate, defaultEndDate],
                             yearTime: dayjs(),
                             timeType: 'day'
@@ -225,7 +229,7 @@ const Revenue = () => {
                                     changeOnSelect
                                     options={plantDeviceList}
                                     onChange={async value => {
-                                        if (value?.length === 1) {
+                                        if (value?.length === 1 && value[0]) {
                                             getDtusOfPlant(plantDeviceList, value[0])
                                         }
                                     }}
