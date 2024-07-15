@@ -244,9 +244,7 @@ const SchematicDiagram = ({dataSource, allData}) => {
                                 {intl.formatMessage({id:'负载系统'})}
                             </div>
                             <div style={{margin: '10px 0', width: 130}}>
-                                {intl.formatMessage({id:'运行状态'})}：
-                                {loadPowerData>0&&intl.formatMessage({id:'用电'})}
-                                {loadPowerData===0&&intl.formatMessage({id:'待机'})}
+                                {loadPowerData>0&&intl.formatMessage({id:'运行状态: 用电'})}
                             </div>
                             {/* <div>{intl.formatMessage({id:'功率'})}：{dataSource?.loadPower}</div> */}
                         </div>
