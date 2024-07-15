@@ -31,7 +31,6 @@ const App = () => {
             top: 100,
             duration: 2,
             maxCount: 3,
-            rtl: true,
             prefixCls: 'my-message',
         });
     }, [])
