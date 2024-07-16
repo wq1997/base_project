@@ -5,7 +5,7 @@ import styles from "./index.less";
 import Card from "../Card";
 import { Charts3D, Charts2_5D, ScrollTable } from "@/components";
 
-const Index = ({ showCount, data: { total, totalCapacity, totalPlant } }) => {
+const Index = ({ data: { total, totalCapacity, totalPlant } }) => {
     return (
         <Card
             title="电站概览"
@@ -25,20 +25,18 @@ const Index = ({ showCount, data: { total, totalCapacity, totalPlant } }) => {
                         />
                     </div>
                     <div className={styles.areaContentData}>
-                        {showCount && (
-                            <div className={styles.areaContentDataItem}>
-                                <Badge
-                                    color="#54CFFF"
-                                    text={<span style={{ color: "#FFFFFF" }}>总电站个数</span>}
-                                />
-                                <div className={styles.areaContentDataItemData}>
-                                    <span className={styles.areaContentDataItemData1}>
-                                        {totalPlant}
-                                    </span>
-                                    <span className={styles.areaContentDataItemData2}>个</span>
-                                </div>
+                        <div className={styles.areaContentDataItem}>
+                            <Badge
+                                color="#54CFFF"
+                                text={<span style={{ color: "#FFFFFF" }}>总电站个数</span>}
+                            />
+                            <div className={styles.areaContentDataItemData}>
+                                <span className={styles.areaContentDataItemData1}>
+                                    {totalPlant}
+                                </span>
+                                <span className={styles.areaContentDataItemData2}>个</span>
                             </div>
-                        )}
+                        </div>
                         <div className={styles.areaContentDataItem}>
                             <Badge
                                 color="#54CFFF"
@@ -46,6 +44,7 @@ const Index = ({ showCount, data: { total, totalCapacity, totalPlant } }) => {
                             />
                             <div className={styles.areaContentDataItemData}>
                                 <span className={styles.areaContentDataItemData1}>
+                                    {/* {((totalCapacity || 0) / 10000).toFixed(3)} */}
                                     {totalCapacity}
                                 </span>
                                 <span className={styles.areaContentDataItemData2}>MW</span>

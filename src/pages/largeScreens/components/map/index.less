@@ -1,22 +1,33 @@
-.content {
+.markerWrapper {
+    text-align: center;
+    .positionPic {
+        width: 17px;
+        height: 17px;
+        margin-top: 5px;
+    }
+}
+.content,
+.cloudContent {
     display: flex;
     align-items: center;
-    padding: 8px 10px;
-    background: linear-gradient(to right, #154b72 0%, transparent 120%);
-    border-radius: 5px;
-    min-width: 90px;
-    max-width: 300px;
-    box-shadow: 3px 3px 8px rgba(0, 234, 255, 0.25);
+    border-radius: 3px;
+    // min-width: 90px;
+    // max-width: 300px;
+    padding: 6px 10px;
+    background-color: #fff;
+    background: linear-gradient(to right, #154b72 0%, transparent 110%);
+    display: flex;
+    align-items: center;
     .row {
         width: 0;
         height: 0;
-        border-top: 6px solid transparent;
-        border-left: 7px solid #49a2f8;
-        border-bottom: 6px solid transparent;
+        border-top: 5px solid transparent;
+        border-left: 6px solid #fff !important;
+        border-bottom: 5px solid transparent;
         margin-right: 5px;
     }
     .plantName {
-        font-size: 15px;
+        font-size: 13px;
         color: #fff;
         overflow: hidden;
         white-space: nowrap;
@@ -24,7 +35,14 @@
         font-family: DingTalkJinBuTi;
     }
 }
-
+.cloudContent {
+    // box-shadow: 3px 3px 8px #00eaff40;
+    background: #13c2c2e6 !important;
+    background: linear-gradient(to right, #13c2c2e6 0%, transparent 110%)!important;
+    .plantName {
+        color: #fff !important;
+    }
+}
 .detail {
     width: 800px;
     background: #004764;

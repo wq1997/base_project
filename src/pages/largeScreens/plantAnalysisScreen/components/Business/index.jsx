@@ -42,7 +42,7 @@ const Business = ({ typeList, currentType, onChangedType }) => {
         <>
             {true && (
                 <div className={styles.business}>
-                    <Map plants={dataSource?.plants} needJump={true} />
+                    <Map plants={dataSource?.plants} />
                     {/* 头部Header */}
                     <div className={styles.header}>
                         <Header
@@ -65,7 +65,7 @@ const Business = ({ typeList, currentType, onChangedType }) => {
                                         };
                                     }),
                                     //  totalCapacity: dataSource?.plantSummery?.totalCapacity,
-                                    totalCapacity: 515.36,
+                                    totalCapacity: 517.32,
                                     totalPlant: dataSource?.plantSummery?.count,
                                 }}
                             />

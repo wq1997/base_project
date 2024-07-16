@@ -6,9 +6,6 @@ import {
 } from "@/services/largeScreen";
 import styles from "./index.less";
 import classNames from "classnames";
-import positionPic from "../../../../assets/images/定位.png";
-import positionPic1 from "../../../../assets/images/定位1.png";
-import positionPic2 from "../../../../assets/images/定位2.png";
 
 const baseUrl = process.env.API_URL_1;
 
@@ -108,98 +105,75 @@ const Index = ({ plants, panTo }) => {
         }
         cluster && cluster.setMap(null);
         map.clearMap();
-        window.close = () => {
-            _infoWindow.close();
-        };
-        window.getInfo = (arr, plant) => {
-            return arr
-                ?.map(
-                    item => `
-                        <div class=${styles.item}>
+        plants?.forEach((item, index) => {
+            const marker = new AMap.Marker({
+                position: new AMap.LngLat(item.longitude, item.latitude),
+                icon: new AMap.Icon({
+                    image: require(`../../../../assets/images/定位${item.haveCloud ? 1 : ""}.png`),
+                    imageSize: new AMap.Size(20, 20),
+                }),
+                map: map,
+                label: {
+                    direction: "top",
+                    content: `
+                        <div onclick='window.openInfoWindow(${markers[index]?.marker})' class=${item.haveCloud ? styles.cloudContent : styles.content} title=${item.name}>
+                            <div class=${styles.row}></div>
+                            <span class=${styles.plantName} >${item.name}</span>
+                        </div>
+                    `,
+                },
+            });
+            window.close = () => {
+                _infoWindow.close();
+            };
+            window.getInfo = (arr, plant) => {
+                return arr
+                    ?.map(
+                        item => `<div class=${styles.item}>
                            <div class=${styles.name}>${item.name}</div>
                            <div class=${styles.value} title=${plant[item.key]}>${plant[item.key] || ""}</div>
-                        </div>
-                       `
-                )
-                ?.join("");
-        };
-        window.markerClick = plantId => {
-            const plant = plants?.find(item => item.id == plantId);
-            if (plant.haveCloud) {
-                getPlantAccessInfo(plantId);
-            } else {
-                const detailContent = `
-                    <div class=${styles.detail}>
+                        </div>`
+                    )
+                    ?.join("");
+            };
+            marker.content = `
+                   <div class=${styles.detail}>
                         <div class=${styles.header}>
                             项目信息
                             <span class=${styles.close} onclick="window.close()">X</span>
                         </div>
                         <div class=${styles.infoContent}>
-                            <div>${window.getInfo(window.info?.slice(0, 13), plant)}</div>
-                            <div>${window.getInfo(window.info?.slice(13, 26), plant)}</div>
+                            <div>${window.getInfo(window.info?.slice(0, 13), item)}</div>
+                            <div>${window.getInfo(window.info?.slice(13, 26), item)}</div>
                         </div>
                     </div>
-                `;
-                _infoWindow.setContent(detailContent);
-                _infoWindow.open(map, [plant.longitude, plant.latitude]);
-            }
-        };
-        map.plugin(["AMap.MarkerCluster"], function () {
-            const _cluster = new AMap.MarkerCluster(
-                map,
-                plants?.map(item => ({
-                    ...item,
-                    weight: item?.capacity2,
-                    lnglat: [item.longitude, item.latitude],
-                })),
-                {
-                    gridSize: 30, //数据聚合计算时网格的像素大小
-                    renderClusterMarker: context => {
-                        // 聚合中点个数
-                        var count = plants?.length;
-                        var clusterCount = context.count;
-                        var div = document.createElement("div");
-                        div.style.backgroundColor = "rgba(84, 209, 255,0.4)";
-                        var size = Math.round(25 + Math.pow(clusterCount / count, 1 / 5) * 40);
-                        div.style.width = div.style.height = size + "px";
-                        div.style.borderRadius = size / 2 + "px";
-                        div.innerHTML = context.count;
-                        div.style.lineHeight = size + "px";
-                        div.style.color = "#ffffff";
-                        div.style.fontSize = "20px";
-                        div.style.textAlign = "center";
-                        div.style.fontFamily = "DingTalkJinBuTi";
-                        context.marker.setOffset(new AMap.Pixel(-size / 2, -size / 2));
-                        context.marker.setContent(div);
-                    },
-                    renderMarker: context => {
-                        const plant = context?.data?.[0];
-                        var content = `
-                            <div class=${styles.markerWrapper}  onclick='window.markerClick(${plant?.id})' >
-                                <div class=${plant.haveCloud ? styles.cloudContent : styles.content} title=${plant.name}>
-                                    <div class=${styles.row}></div>
-                                    <span class=${styles.plantName} >${plant.name}</span>
-                                </div>
-                                <img class=${styles.positionPic} src=${plant?.haveCloud ? positionPic : positionPic}></img>
-                            </div>
-                        `;
-
-                        var offset = new AMap.Pixel(-0, 0);
-                        context.marker.setOffset(offset);
-                        context.marker.setAnchor("bottom-center");
-                        context.marker.setContent(content);
-                    },
-                    // clusterIndexSet: {
-                    //     province: {
-                    //         minZoom: 2,
-                    //         maxZoom: 15,
-                    //     },
-                    // },
-                    //
+            `;
+            window.openInfoWindow = target => {
+                _infoWindow.setContent(target.content);
+                _infoWindow.open(map, target.getPosition());
+            };
+            marker.on("click", e => {
+                if (item.haveCloud) {
+                    getPlantAccessInfo(item.id);
+                } else {
+                    window.openInfoWindow(e.target);
                 }
-            );
-            setCluster(_cluster);
+            });
+            markers[index] = {
+                marker,
+                lnglat: [item.longitude, item.latitude],
+            };
         });
+        // map.plugin(["AMap.MarkerCluster"], function () {
+        //     const _cluster =
+        //         cluster ||
+        //         new AMap.MarkerCluster(map, markers, {
+        //             gridSize: 60, //数据聚合计算时网格的像素大小
+        //         });
+        //     if (!cluster) {
+        //         setCluster(_cluster);
+        //     }
+        // });
     };
 
     return (

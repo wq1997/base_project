@@ -153,7 +153,7 @@ const Index = ({ plants, panTo }) => {
                     lnglat: [item.longitude, item.latitude],
                 })),
                 {
-                    gridSize: 30, //数据聚合计算时网格的像素大小
+                    gridSize: 60, //数据聚合计算时网格的像素大小
                     renderClusterMarker: context => {
                         // 聚合中点个数
                         var count = plants?.length;
@@ -174,20 +174,21 @@ const Index = ({ plants, panTo }) => {
                     },
                     renderMarker: context => {
                         const plant = context?.data?.[0];
-                        var content = `
-                            <div class=${styles.markerWrapper}  onclick='window.markerClick(${plant?.id})' >
-                                <div class=${plant.haveCloud ? styles.cloudContent : styles.content} title=${plant.name}>
+                        context.marker.setLabel({
+                            direction: "top",
+                            content: `
+                                <div   class=${plant.haveCloud ? styles.cloudContent : styles.content} title=${plant.name}>
                                     <div class=${styles.row}></div>
                                     <span class=${styles.plantName} >${plant.name}</span>
                                 </div>
-                                <img class=${styles.positionPic} src=${plant?.haveCloud ? positionPic : positionPic}></img>
-                            </div>
-                        `;
-
-                        var offset = new AMap.Pixel(-0, 0);
-                        context.marker.setOffset(offset);
-                        context.marker.setAnchor("bottom-center");
-                        context.marker.setContent(content);
+                            `,
+                        });
+                        context.marker.setIcon(
+                            new AMap.Icon({
+                                image: require(`../../../../assets/images/定位.png`),
+                                imageSize: new AMap.Size(20, 20),
+                            })
+                        );
                     },
                     // clusterIndexSet: {
                     //     province: {
@@ -195,7 +196,7 @@ const Index = ({ plants, panTo }) => {
                     //         maxZoom: 15,
                     //     },
                     // },
-                    //
+                    //  <img class=${styles.positionPic} src=${plant?.haveCloud ? positionPic : positionPic}></img>
                 }
             );
             setCluster(_cluster);

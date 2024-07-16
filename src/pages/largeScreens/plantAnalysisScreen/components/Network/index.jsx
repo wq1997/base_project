@@ -66,14 +66,7 @@ const Network = ({ typeList, currentType, onChangedType }) => {
 
     return (
         <div className={styles.network}>
-            <Map
-                plants={mapPlants?.map(item => ({
-                    ...item,
-                    lnglat: [item.longitude, item.latitude],
-                }))}
-                showInfo={true}
-                panTo={mapPanTo}
-            />
+            <Map plants={mapPlants} panTo={mapPanTo} />
             {/* 头部Header */}
             <div className={styles.header}>
                 <Header
@@ -85,7 +78,6 @@ const Network = ({ typeList, currentType, onChangedType }) => {
             {/* 左边 */}
             <div className={styles.left}>
                 <PlantOverview
-                    showCount={true}
                     data={{
                         total: initData?.cityCapacitySta?.map(city => {
                             return {
