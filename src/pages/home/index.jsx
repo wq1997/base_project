@@ -228,19 +228,19 @@ function OverView(props) {
             unit: ''
         },
         {
-            key: 'startState',
+            key: 'power',
             label: '直流功率',
             unit: '(kW)'
 
         },
         {
-            key: 'startState',
+            key: 'soc',
             label: 'SOC',
             unit: '(%)'
 
         },
         {
-            key: 'startState',
+            key: 'soh',
             label: 'SOH',
             unit: '(%)'
 
