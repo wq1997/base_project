@@ -37,7 +37,7 @@ export const oc372ChangePassword = (payload) => {
 }
 // 获取所有超级用户 和 root用户
 export const getBurUserWithRole2 = (payload)=>{
-  return axiosInstance.get(`/user/getBurUserWithRole2`);
+  return axiosInstance.get(`/user/getBurUserWithRole215`);
 }
 
 // 新增或更新用户信息

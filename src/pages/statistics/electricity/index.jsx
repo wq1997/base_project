@@ -409,7 +409,7 @@ const Electricity = () => {
                 <Title title={`${intl.formatMessage({ id: '电量明细' })}`} />
                 <Spin spinning={loading}>
                     <Space direction="vertical" style={{ width: '100%' }}>
-                        <div style={{ width: '100%', height: "calc(50vh - 150px)" }}>
+                        <div style={{ width: '100%', height: "calc(50vh - 200px)" }}>
                             {
                                 dataSource?.length > 0 ?
                                     <Table

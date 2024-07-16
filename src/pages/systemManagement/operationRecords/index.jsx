@@ -90,8 +90,8 @@ const RealtimeAlarm = () => {
   const downLoadFoodModel = () => {  // 菜品模板下载
     let fileName = t('操作记录');
     let sheetName = t('操作记录');
-    let sheetFilter = ['username', 'detail', 'describe', 'ip', 'time'];
-    let sheetHeader = [t('用户名'), t('描述'), t('动作'), 'IP', t('操作时间')];
+    let sheetFilter = ['username', 'describe', 'ip', 'time'];
+    let sheetHeader = [t('用户名'), t('动作'), 'IP', t('操作时间')];
     let exportData = data.list;
 
     downLoadExcelMode(fileName, exportData, sheetFilter, sheetHeader, sheetName);

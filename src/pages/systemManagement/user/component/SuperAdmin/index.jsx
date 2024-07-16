@@ -93,12 +93,11 @@ const RealtimeAlarm = () => {
       })
     });
     arr.push({
-      label: data.data?.root.name,
-      value: data.data?.root.f0102_Id,
+      label: data.data?.root?.name,
+      value: data.data?.root?.f0102_Id,
       roleId: 3,
       disabled:false,
     })
-
     setUserUp(arr)
   }
 

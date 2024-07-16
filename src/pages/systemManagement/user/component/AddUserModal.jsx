@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, } from 'react';
 import { Row, Col, Modal, Form, Input, Select } from 'antd';
 import { useSelector, useIntl } from "umi";
+import { PASSWORD_RGE } from "@/utils/constants";
 const { Option } = Select;
 
 const App = (props) => {
@@ -59,13 +60,13 @@ const App = (props) => {
           arr.push(
             props.userUp?.find(it => it.roleId == 2)
           )
-        }else{
+        } else {
           arr.push(
             props.userUp?.find(it => it.roleId == 3)
           )
         };
-        console.log(arr,22222);
-        setUpData(arr); 
+        form.setFieldsValue({ parentId: undefined })
+        setUpData(arr);
       }
     },
     {
@@ -107,7 +108,7 @@ const App = (props) => {
       if (props.formData.f0102_Id) {
         props.changeData({ f0102_Id: props.formData.f0102_Id, ...values })
       } else {
-        props.changeData({...values, active:true })
+        props.changeData({ ...values, active: true })
       }
       props.onRef();
     } catch (errorInfo) {
@@ -131,56 +132,51 @@ const App = (props) => {
           form={form}
           name="wrap"
           ref={formRef}
-          labelCol={{ flex: '110px' }}
           labelAlign="right"
-          labelWrap
-          wrapperCol={{ flex: 1 }}
+          labelCol={{
+            span: 6
+          }}
+          wrapperCol={{
+            span: 14
+          }}
           colon={false}
-          style={{ maxWidth: 500 }}
           initialValues={props.formData}
         >
-          <Row gutter={[20, 0]}>
-
-            {formList.map(it => {
-              if (it.type === 1) {
-                return (
-                  <>
-                    <Col className="gutter-row" span={20}>
-
-                      <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.required }]}>
-                        <Input disabled={it.disabled} />
-                      </Form.Item>
-                    </Col>
-
-                  </>
-                )
-              } else if (it.type === 2) {
-                return (
-                  <>
-                    <Col className="gutter-row" span={20}>
-                      <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.required }]}>
-                        <Select onChange={it.onchange}>
-                          {
-                            it?.data?.map(it => {
-                              return <Option key={it.value} value={it.value}>{
-                                it.label
-                              }</Option>
-                            })
-
-                          }
-
-                        </Select>
-                      </Form.Item>
-                    </Col>
-
-                  </>
-                )
-              }
-
-            })
+          {formList.map(it => {
+            if (it.type === 1) {
+              return (
+                <Form.Item
+                  label={t(it.label)}
+                  name={it.key}
+                  rules={[
+                    { required: it.required },
+                    it?.key === "password" &&
+                    {
+                      pattern: PASSWORD_RGE,
+                      message: t('要求8-16个字符、由数字、字母、特殊字符三种中的两种组成')
+                    }
+                  ]}
+                >
+                  <Input disabled={it.disabled} />
+                </Form.Item>
+              )
+            } else if (it.type === 2) {
+              return (
+                <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.required }]}>
+                  <Select onChange={it.onchange}>
+                    {
+                      it?.data?.map(it => {
+                        return <Option key={it.value} value={it.value}>{
+                          it.label
+                        }</Option>
+                      })
+                    }
+                  </Select>
+                </Form.Item>
+              )
             }
-          </Row>
-
+          })
+          }
         </Form>
       </Modal>
     </>

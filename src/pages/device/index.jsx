@@ -213,7 +213,8 @@ const RealtimeAlarm = () => {
         }
     }
     const getAllPlant = async () => {
-        const { data } = await getFetchPlantListServe();
+        const res = await getFetchPlantListServe();
+        const data = res?.data;
         if(data?.data){
             const result = data?.data;
             let arr = [];
@@ -344,7 +345,7 @@ const RealtimeAlarm = () => {
                 <div className={classNames(styles.rightItem, styles.leftItem2)}>
                     <Title title={t('设备列表')} />
                     {
-                        user?.roleId===3&&
+                        (user?.roleId===2||user?.roleId===3)&&
                         <div 
                             onClick={changIsOpen}
                             className={styles.add}

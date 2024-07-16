@@ -1,5 +1,5 @@
 import { useIntl } from "umi";
-import { Form, Cascader, DatePicker, Button, Flex, Radio, theme, Space, message, Empty, Spin, Tooltip } from "antd";
+import { Form, Cascader, DatePicker, Button, Flex, Radio, theme, Space, message, Empty, Spin, Tooltip, Table } from "antd";
 import { Title } from "@/components";
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect } from "react";
@@ -9,7 +9,8 @@ import moment from "moment";
 import {
     getRevenue as getRevenueServe,
     getAllRevenueExcel as getAllRevenueExcelServe,
-    getFetchPlantList2 as getFetchPlantListServe
+    getFetchPlantList2 as getFetchPlantListServe,
+    showDataByTable as showDataByTableServe,
 } from "@/services";
 import {
     getDtusOfPlant as getDtusOfPlantServe
@@ -28,6 +29,7 @@ const Revenue = () => {
     const [option, setOption] = useState({});
     const [plantDeviceList, setPlantDeviceList] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [tableData, setTableData] = useState([]);
 
     const getParams = async () => {
         let format = "YYYY-MM-DD";
@@ -37,8 +39,8 @@ const Revenue = () => {
         if (timeType === "year") {
             format = "YYYY";
             params = {
-                plantId: currentPlantDevice?.[0]||undefined,
-                dtuId: currentPlantDevice?.[1]||undefined,
+                plantId: currentPlantDevice?.[0] || undefined,
+                dtuId: currentPlantDevice?.[1] || undefined,
                 date: dayjs(values.yearTime).format(format),
                 dateType: timeType
             }
@@ -50,8 +52,8 @@ const Revenue = () => {
                 return;
             }
             params = {
-                plantId: currentPlantDevice?.[0]||undefined,
-                dtuId: currentPlantDevice?.[1]||undefined,
+                plantId: currentPlantDevice?.[0] || undefined,
+                dtuId: currentPlantDevice?.[1] || undefined,
                 startDate: dayjs(values.dayTime[0]).format(format),
                 endDate: dayjs(values.dayTime[1]).format(format),
                 dateType: timeType
@@ -159,6 +161,7 @@ const Revenue = () => {
                     form.setFieldsValue({ currentPlantDevice: [plantId, data[0].value] });
                     const params = await getParams();
                     getDataSource(params);
+                    getTableData();
                 }
             }
         }
@@ -183,6 +186,15 @@ const Revenue = () => {
             if (plantList?.length > 0) {
                 getDtusOfPlant(plantList, plantList?.[0]?.value);
             }
+        }
+    }
+
+    const getTableData = async () => {
+        const params = await getParams();
+        const res = await showDataByTableServe(params);
+        if (res?.data?.data?.data) {
+            const data = res?.data?.data?.data;
+            setTableData(data);
         }
     }
 
@@ -279,6 +291,7 @@ const Revenue = () => {
                             const params = await getParams();
                             if (params) {
                                 getDataSource(params);
+                                getTableData();
                             }
                         }}
                         type="primary"
@@ -303,13 +316,86 @@ const Revenue = () => {
                         {intl.formatMessage({ id: '导出' })} Excel
                     </Button>
                 </Flex>
+                <Title title={`${intl.formatMessage({ id: '收益统计' })}(${intl.formatMessage({ id: '元' })})`} />
                 <Spin spinning={loading}>
                     <Space direction="vertical" style={{ width: '100%' }}>
-                        <Title title={`${intl.formatMessage({ id: '收益统计' })}(${intl.formatMessage({ id: '元' })})`} />
-                        <div style={{ width: '100%', height: 'calc(100vh - 250px)' }}>
+                        <div style={{ width: '100%', height: "calc(50vh - 150px)" }}>
                             {
                                 dataSource?.length > 0 ?
                                     <ReactECharts option={option} notMerge style={{ width: '100%', height: '100%' }} />
+                                    :
+                                    <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}>
+                                        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={intl.formatMessage({ id: '暂无数据' })} />
+                                    </div>
+                            }
+                        </div>
+                    </Space>
+                </Spin>
+                <Title title={`${intl.formatMessage({ id: '收益明细' })}`} />
+                <Spin spinning={loading}>
+                    <Space direction="vertical" style={{ width: '100%' }}>
+                        <div style={{ width: '100%', height: "calc(50vh - 200px)" }}>
+                            {
+                                dataSource?.length > 0 ?
+                                    <Table
+                                        pagination={false}
+                                        dataSource={tableData}
+                                        columns={[
+                                            {
+                                                title: intl.formatMessage({ id: '日期' }),
+                                                dataIndex: 'time',
+                                                key: 'time',
+                                                render: (data, record) => {
+                                                    return moment(data).format(record?.dateType === "year" ? "YYYY/MM" : "YYYY/MM/DD")
+                                                }
+                                            },
+                                            {
+                                                title: intl.formatMessage({ id: '设备名称' }),
+                                                dataIndex: 'dtuName',
+                                                key: 'dtuName',
+                                                width: '10%',
+                                                render(value) {
+                                                    return (
+                                                        <Tooltip title={value}>
+                                                            <div
+                                                                style={{
+                                                                    overflow: 'hidden',
+                                                                    whiteSpace: 'nowrap',
+                                                                    textOverflow: 'ellipsis',
+                                                                    width: '100%',
+                                                                }}
+                                                            >
+                                                                {value}
+                                                            </div>
+                                                        </Tooltip>
+                                                    )
+                                                }
+                                            },
+                                            {
+                                                title: intl.formatMessage({ id: 'SN号' }),
+                                                dataIndex: 'sn',
+                                                key: 'sn'
+                                            },
+                                            {
+                                                title: intl.formatMessage({ id: '充电成本(元)' }),
+                                                dataIndex: 'inFee',
+                                                key: 'inFee'
+                                            },
+                                            {
+                                                title: intl.formatMessage({ id: '放电收入(元)' }),
+                                                dataIndex: 'outFee',
+                                                key: 'outFee'
+                                            },
+                                            {
+                                                title: intl.formatMessage({ id: '收益(元)' }),
+                                                dataIndex: 'number',
+                                                key: 'number'
+                                            },
+                                        ]}
+                                        scroll={{
+                                            y: 'calc(50vh - 250px)'
+                                        }}
+                                    />
                                     :
                                     <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}>
                                         <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={intl.formatMessage({ id: '暂无数据' })} />
