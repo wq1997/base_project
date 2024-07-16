@@ -76,7 +76,7 @@ const HighAnysis = () => {
         const name = `${currentData?.label}(${currentData?.unit})`;
         if(currentData) setTitle(name);
 
-        let legendData = [], series = [], xData = [];
+        let legendData = [], series = [], xData = [], min=0, max=100, splitNumber=5;
         date = date.map(item => dayjs(item).format(format));
         xData = dataSource?.[0]?.timeList;
 
@@ -100,6 +100,9 @@ const HighAnysis = () => {
                     data: data?.map(item => item[1])
                 })
             })
+            min=2.5;
+            max=4;
+            splitNumber=10;
         }
 
         if(dataType==='temp'){
@@ -122,6 +125,10 @@ const HighAnysis = () => {
                     data: data?.map(item => item[1])
                 })
             })
+
+            min=10;
+            max=40;
+            splitNumber=5;
         }
 
         const option = {
@@ -174,6 +181,9 @@ const HighAnysis = () => {
                          color: '#233e64'
                      }
                 },
+                min,
+                max,
+                splitNumber
             }],
             series
         };

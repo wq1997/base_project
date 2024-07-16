@@ -42,8 +42,6 @@ export const getBurEnergyStats2 = (payload) => {
 
 // 设备统计
 export const getDeviceStats = (payload) => {
-  return axiosInstance.get(`/energy/getDeviceStats?plantId=${payload.plantId}`);
+  return axiosInstance.get(`/energy/plant/getDeviceStats215?plantId=${payload.plantId}`);
 }
-
-
 

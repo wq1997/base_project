@@ -55,7 +55,7 @@ const Login = () => {
         history.push("/index/device");
         dispatch({ type: 'user/getUserInfo' })
       } else {
-        message.error(res.data.msg);
+        message.error(res?.data?.msg);
         if (res?.data.code === '407') {
           setShowImg(true)
         }
