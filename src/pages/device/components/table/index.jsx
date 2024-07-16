@@ -53,7 +53,7 @@ const Table = ({
             dataIndex: 'address',
             key: 'address',
         },
-        user?.roleId===3&&{
+        (user?.roleId===2||user?.roleId===3)&&{
             title: t('操作'),
             dataIndex: 'operation',
             key: 'operation',

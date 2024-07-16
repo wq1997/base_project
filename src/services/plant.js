@@ -22,7 +22,7 @@ export const apigetPlantById = (payload) => {
   }
 // 根据id删除电站
 export const apideletePlantById = (payload) => {
-    return axiosInstance.get(`/energy/deletePlant?plantId=${payload.plantId}`);
+    return axiosInstance.get(`/energy/plant/deletePlant?plantId=${payload.plantId}`);
   }
 // 获取选项初始值
 export const getInsertPlantInitData = () => {

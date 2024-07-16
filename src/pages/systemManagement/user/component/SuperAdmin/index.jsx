@@ -149,7 +149,8 @@ const RealtimeAlarm = () => {
 
   }
   const changeData = async (value) => {
-    const { data } = await updateUserAndInfos(value)
+    const res = await updateUserAndInfos(value);
+    const data = res?.data;
     if (data?.data) {
       setFormData(value);
       message.success(title=='编辑用户'?t('编辑成功'):t('新增成功'))
