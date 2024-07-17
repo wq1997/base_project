@@ -317,6 +317,10 @@ function Com(props) {
         data.data.pcsBranch[1].power2 = data.data.pcsBranch[1].power;
         data.data.pcsBranch[1].cur2 = data.data.pcsBranch[1].cur;
         data.data.pcsBranch[1].vol2 = data.data.pcsBranch[1].vol;
+        data.data.pcsBranch[1].statusAll = data.data.pcsBranch[0]?.statusAll;
+        data.data.pcsBranch[1].power = data.data.pcsBranch[0].power;
+        data.data.pcsBranch[1].cur = data.data.pcsBranch[0].cur;
+        data.data.pcsBranch[1].vol = data.data.pcsBranch[0].vol;
         data.data.bmc[1].BMC2bmuHighestSoftwareVersion = data.data.bmc[1].bmuHighestSoftwareVersion;
         data.data.bmc[1].BMC2bmuLowestSoftwareVersion = data.data.bmc[1].bmuLowestSoftwareVersion;
         data.data.bmc[1].BMC2bmuHighestHardwareVersion = data.data.bmc[1].bmuHighestHardwareVersion;
@@ -349,6 +353,7 @@ function Com(props) {
         dealData(data?.data?.energy, energyData, setEnergyData);
         dealData(data?.data?.bmc[0], ic1Data, setlc1Data);
         dealData(data?.data?.bmc[1], ic2Data, setlc2Data);
+        console.log(pcsData,data.data,'pcsDatapcsData');
         let arr=[];
         let obj1={};
         let obj2={};
@@ -365,7 +370,12 @@ function Com(props) {
     }
     const dealData = (data, baseData, handlBase) => {
         baseData.data.map(it => {
-            data[it.key] ? it.value = data[it.key] : null
+            data[it.key] ? it.value = data[it.key] : null;
+            if (baseData.title==='PCS信息') {
+                console.log(data,11111);
+            console.log(it.key,it.value, data[it.key],'aaa');
+                
+            }
         });
         handlBase({ ...baseData });
     };
