@@ -157,7 +157,7 @@ const Index = ({ activePlant }) => {
                     },
                     lineStyle: {
                         type: "dashed",
-                        width: 0.6,
+                        width: 1,
                     },
                 },
             ],
