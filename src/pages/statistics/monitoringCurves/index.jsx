@@ -1,4 +1,4 @@
-import { useIntl } from "umi";
+import { useIntl, useSelector } from "umi";
 import { Form, Cascader, DatePicker, Button, Flex, Radio, theme, Space, message, Empty, Spin, Tooltip, Select } from "antd";
 import { Title } from "@/components";
 import ReactECharts from "echarts-for-react";
@@ -20,6 +20,7 @@ import { downloadFile } from "@/utils/utils";
 const MonitoringCurves = () => {
     const intl = useIntl();
     const {token} = theme.useToken();
+    const global = useSelector(state => state.global);
     const [form] = Form.useForm();
     const [dataSource, setDataSource] = useState([]);
     const [option, setOption] = useState({});
@@ -93,6 +94,26 @@ const MonitoringCurves = () => {
         let legendData = [], series = [], xData = [];
         date = date.map(item => dayjs(item).format(format));
         xData = dataSource?.[0]?.timeList;
+
+        let yAxis = [
+            {
+                axisLabel: {
+                    formatter: '{value}',
+                    color: '#e2e9ff',
+                    fontSize: 14
+                },
+                axisLine: {
+                    show: false
+                },
+                splitLine: {
+                     show: true,
+                     lineStyle: {
+                         color: '#233e64'
+                     }
+                },
+            }
+        ];
+
         if(dataType===100){
             const fieldList = [intl.formatMessage({id: 'PCS功率'}), intl.formatMessage({id: 'BMS功率'}), intl.formatMessage({id: '电表功率'})];
             date?.forEach(item => {
@@ -179,6 +200,35 @@ const MonitoringCurves = () => {
 
         if(dataType===414){
             const fieldList = [intl.formatMessage({id: '最高电压'}), intl.formatMessage({id: '最低电压'}), intl.formatMessage({id: '压差'})];
+            yAxis[0].name=`${intl.formatMessage({id: '最高电压'})}/${intl.formatMessage({id: '最低电压'})}`;
+            yAxis[0].nameTextStyle = {
+                color: 'white'
+            };
+            yAxis[0].splitNumber = 5;
+            yAxis[0].nameGap = 20;
+
+            yAxis[1]= {
+                name: intl.formatMessage({id: '压差'}),
+                nameTextStyle: {
+                    color: 'white'
+                },
+                nameGap: 20,
+                axisLabel: {
+                    formatter: '{value}',
+                    color: '#e2e9ff',
+                    fontSize: 14
+                },
+                axisLine: {
+                    show: false
+                },
+                splitLine: {
+                     show: true,
+                     lineStyle: {
+                         color: '#233e64'
+                     }
+                },
+                splitNumber: 5
+            }
             date?.forEach(item => {
                 fieldList.forEach(field=>{
                     legendData.push(`${item} ${field}`);
@@ -190,17 +240,47 @@ const MonitoringCurves = () => {
                 const filed = index%3===0?"VolMax":(index%3===1?"VolMin":"VolDiff");
                 const data = currentData?.energyData?.[filed];
                 series.push({
+                    yAxisIndex: index%3===0?0:(index%3===1?0:1),
                     name: legend,
                     type: 'line',
                     showSymbol: false,
                     data: data?.map(item => item[1])
                 })
             })
-            console.log("AAAA", series)
         }
 
         if(dataType===415){
             const fieldList = [intl.formatMessage({id: '最高温度'}), intl.formatMessage({id: '最低温度'}), intl.formatMessage({id: '温差'})];
+            yAxis[0].name=`${intl.formatMessage({id: '最高温度'})}/${intl.formatMessage({id: '最低温度'})}`;
+            yAxis[0].nameTextStyle = {
+                color: 'white'
+            };
+            yAxis[0].splitNumber = 5;
+            yAxis[0].nameGap = 20;
+
+            yAxis[1]= {
+                name: intl.formatMessage({id: '温差'}),
+                nameGap: 20,
+                nameTextStyle: {
+                    color: 'white'
+                },
+                axisLabel: {
+                    formatter: '{value}',
+                    color: '#e2e9ff',
+                    fontSize: 14
+                },
+                axisLine: {
+                    show: false
+                },
+                splitLine: {
+                     show: true,
+                     lineStyle: {
+                         color: '#233e64'
+                     }
+                },
+                splitNumber: 5
+            }
+
             date?.forEach(item => {
                 fieldList.forEach(field=>{
                     legendData.push(`${item} ${field}`);
@@ -212,6 +292,7 @@ const MonitoringCurves = () => {
                 const filed = index%3===0?"TempMax":(index%3===1?"TempMin":"TempDiff");
                 const data = currentData?.energyData?.[filed];
                 series.push({
+                    yAxisIndex: index%3===0?0:(index%3===1?0:1),
                     name: legend,
                     type: 'line',
                     showSymbol: false,
@@ -235,8 +316,8 @@ const MonitoringCurves = () => {
             },
             grid: {
                 top: '40',
-                right: '3%',
-                left: '5%',
+                right: global.locale==="en-US"&&(dataType===414||dataType===415)?'80':'3%',
+                left: global.locale==="en-US"&&(dataType===414||dataType===415)?'180': '5%',
                 bottom: '80'
             },
             xAxis: [{
@@ -254,22 +335,7 @@ const MonitoringCurves = () => {
                     },
                 },
             }],
-            yAxis: [{
-                axisLabel: {
-                    formatter: '{value}',
-                    color: '#e2e9ff',
-                    fontSize: 14
-                },
-                axisLine: {
-                    show: false
-                },
-                splitLine: {
-                     show: true,
-                     lineStyle: {
-                         color: '#233e64'
-                     }
-                },
-            }],
+            yAxis,
             series
         };
         setOption(option);

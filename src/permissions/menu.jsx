@@ -1,18 +1,18 @@
-import { Menu } from 'antd';
-import { Link, useLocation, useSelector, FormattedMessage } from 'umi';
+import { Menu, Tooltip } from 'antd';
+import { Link, useLocation, useSelector, FormattedMessage, useIntl } from 'umi';
 import { ToolOutlined, AlertOutlined, LineChartOutlined, BarChartOutlined, SettingOutlined } from '@ant-design/icons';
 
 const { SubMenu } = Menu;
 
 const MenuList = [
     {
-        label: <FormattedMessage id='app.Plant' />,
+        label: 'app.Plant',
         key: '/index/plant',
         icon: <LineChartOutlined />,
-        permissions:'3',
+        permissions: '3',
     },
     {
-        label: <FormattedMessage id='电站概览' />,
+        label: '电站概览',
         key: '/index/device',
         icon: <ToolOutlined />,
     },
@@ -23,71 +23,39 @@ const MenuList = [
     //     // permissions:'A/B',
     // },
     {
-        label: <FormattedMessage id='数据统计' />,
+        label: '数据统计',
         key: '/index/statistics',
         icon: <BarChartOutlined />,
         children: [
-            { label: <FormattedMessage id='监测曲线' />, key: '/index/statistics/monitoringCurves' },
-            { label: <FormattedMessage id='电芯详情' />, key: '/index/statistics/highAnysis', },
-            { label: <FormattedMessage id='电量统计' />, key: '/index/statistics/electricity', },
-            { label: <FormattedMessage id='收益统计' />, key: '/index/statistics/revenue', },
+            { label: '监测曲线', key: '/index/statistics/monitoringCurves' },
+            { label: '电芯详情', key: '/index/statistics/highAnysis', },
+            { label: '电量统计', key: '/index/statistics/electricity', },
+            { label: '收益统计', key: '/index/statistics/revenue', },
         ]
     },
     {
-        label: <FormattedMessage id='app.Alarm' />,
+        label: 'app.Alarm',
         key: '/index/alarm',
         icon: <AlertOutlined />,
         children: [
-            { label: <FormattedMessage id='app.RealTimeAlerts' />, key: '/index/alarm/realtimeAlarm', },
-            { label: <FormattedMessage id='app.HistoricalAlerts' />, key: '/index/alarm/historyAlarm', },
+            { label: 'app.RealTimeAlerts', key: '/index/alarm/realtimeAlarm', },
+            { label: 'app.HistoricalAlerts', key: '/index/alarm/historyAlarm', },
         ]
     },
 
     {
-        label: <FormattedMessage id='app.SystemAdministration' />,
+        label: 'app.SystemAdministration',
         key: '/index/systemManagement',
         icon: <SettingOutlined />,
         children: [
-            { label: <FormattedMessage id='app.UserManagement' />, key: '/index/systemManagement/user', },
-            { label: <FormattedMessage id='app.RecordsOfOperations' />, key: '/index/systemManagement/operationRecords', },
+            { label: 'app.UserManagement', key: '/index/systemManagement/user', },
+            { label: 'app.RecordsOfOperations', key: '/index/systemManagement/operationRecords', },
         ]
     },
 ]
 
-const getMenu = menuList => {
-    const { user } = useSelector(function (state) {
-        return state.user
-    });
-
-    return menuList.map(menu => {
-        if (menu.children) {
-            return (
-                <SubMenu
-                    key={menu.key}
-                    title={menu.label}
-                    icon={menu.icon}
-                    style={{ fontSize: '18px' }}
-
-                >
-                    {getMenu(menu.children)}
-                </SubMenu>
-            );
-        } else {
-            if(menu.permissions&&menu.permissions==user?.roleId || !menu.permissions){
-                return (
-                    <Menu.Item key={menu.key} icon={menu.icon}
-                        style={{ fontSize: menu.icon ? '18px' : '16px' }}
-                    >
-                        <Link to={menu.key}>{menu.label}</Link>
-                    </Menu.Item>
-                );
-            }
-            return null;
-        }
-    });
-};
-
 const MyMenu = () => {
+    const intl = useIntl();
     const location = useLocation();
     const { pathname } = location;
     const getDefaultOpenKeys = () => {
@@ -98,6 +66,61 @@ const MyMenu = () => {
             return [pathList.splice(0, 3).join("/")]
         }
     }
+    const getMenu = menuList => {
+        const { user } = useSelector(function (state) {
+            return state.user
+        });
+    
+        return menuList.map(menu => {
+            if (menu.children) {
+                return (
+                    <SubMenu
+                        key={menu.key}
+                        title={
+                            <div 
+                                title={intl.formatMessage({id: menu.label})}
+                                style={{
+                                    overflow: 'hidden',
+                                    whiteSpace: 'nowrap',
+                                    textOverflow: 'ellipsis'
+                                }}
+                            >
+                                {intl.formatMessage({id: menu.label})}
+                            </div>
+                        }
+                        icon={menu.icon}
+                        style={{ fontSize: '18px' }}
+                    >
+                        {getMenu(menu.children)}
+                    </SubMenu>
+                );
+            } else {
+                if (menu.permissions && menu.permissions == user?.roleId || !menu.permissions) {
+                    return (
+                        <Menu.Item 
+                            key={menu.key} 
+                            icon={menu.icon}
+                            style={{ fontSize: menu.icon ? '18px' : '16px' }}
+                            title={menu.label}
+                        >
+                            <div 
+                                title={intl.formatMessage({id: menu.label})}
+                                style={{
+                                    overflow: 'hidden',
+                                    whiteSpace: 'nowrap',
+                                    textOverflow: 'ellipsis'
+                                }}
+                            >
+                                <Link to={menu.key}>{intl.formatMessage({id: menu.label})}</Link>
+                            </div>
+                        </Menu.Item>
+                    );
+                }
+                return null;
+            }
+        });
+    };
+
     return (
         <Menu
             mode="inline"

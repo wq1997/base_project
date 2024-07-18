@@ -1661,8 +1661,8 @@ export default {
 '高级':'Advanced',
 '严重':'Critical',
 '查询':'Query',
-'导出':'Export',
-'导出Excel':'Export Excel',
+'导出':'Download',
+'导出Excel':'Download Excel',
 '数据删除后将无法恢复，是否确认删除该条数据？':"After deleting the data, it can't be recovered. Are you sure you want to delete the data ?",
 '备注':'Remark',
 '自动':'Automate',
@@ -2027,4 +2027,7 @@ export default {
 '最高电压': 'Maximum Voltage Level',
 '最低电压': 'Minimum Voltage Level',
 '压差': 'Voltage Differential',
+"最高温度": 'Maximum temperature',
+"最低温度": 'Minimum temperature',
+'温差': 'Temperature difference',
 } 
