@@ -17,7 +17,7 @@ const Index = ({ plants, panTo }) => {
     const [map, setMap] = useState();
     const [cluster, setCluster] = useState();
     const [infoWindow, setInfoWindow] = useState();
-    const defaultZoom = 9;
+    const [defaultZoom, setDefaultZoom] = useState(8);
     const defaultCenter = [120.678256, 31.314382];
     window.info = [
         { name: "电池仓数量", key: "batteryNum", value: "" },
@@ -153,14 +153,14 @@ const Index = ({ plants, panTo }) => {
                     lnglat: [item.longitude, item.latitude],
                 })),
                 {
-                    gridSize: 30, //数据聚合计算时网格的像素大小
+                    gridSize: 50, //数据聚合计算时网格的像素大小
                     renderClusterMarker: context => {
                         // 聚合中点个数
                         var count = plants?.length;
                         var clusterCount = context.count;
                         var div = document.createElement("div");
                         div.style.backgroundColor = "rgba(84, 209, 255,0.4)";
-                        var size = Math.round(25 + Math.pow(clusterCount / count, 1 / 5) * 40);
+                        var size = Math.round(20 + Math.pow(clusterCount / count, 1 / 5) * 40);
                         div.style.width = div.style.height = size + "px";
                         div.style.borderRadius = size / 2 + "px";
                         div.innerHTML = context.count;
@@ -171,10 +171,17 @@ const Index = ({ plants, panTo }) => {
                         div.style.fontFamily = "DingTalkJinBuTi";
                         context.marker.setOffset(new AMap.Pixel(-size / 2, -size / 2));
                         context.marker.setContent(div);
+                        context.marker.on("click", e => {
+                            let curZoom = map.getZoom();
+                            if (curZoom < 20) {
+                                curZoom += 4;
+                            }
+                            map.setZoomAndCenter(curZoom, e.lnglat);
+                        });
                     },
                     renderMarker: context => {
                         const plant = context?.data?.[0];
-                        var content = `
+                        const content = `
                             <div class=${styles.markerWrapper}  onclick='window.markerClick(${plant?.id})' >
                                 <div class=${plant.haveCloud ? styles.cloudContent : styles.content} title=${plant.name}>
                                     <div class=${styles.row}></div>
@@ -183,8 +190,7 @@ const Index = ({ plants, panTo }) => {
                                 <img class=${styles.positionPic} src=${plant?.haveCloud ? positionPic : positionPic}></img>
                             </div>
                         `;
-
-                        var offset = new AMap.Pixel(-0, 0);
+                        var offset = new AMap.Pixel(-0, -0);
                         context.marker.setOffset(offset);
                         context.marker.setAnchor("bottom-center");
                         context.marker.setContent(content);

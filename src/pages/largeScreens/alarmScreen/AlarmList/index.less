@@ -21,7 +21,7 @@
     }
 }
 .table {
-    height: calc(100% - 108px);
+    height: 100%;
     // background: #124c76;
     padding: 8px;
     font-size: 13px;
@@ -41,7 +41,7 @@
         }
     }
     .valueWrapper {
-        height: calc(100% - 75.05px);
+        height: 100%;
         overflow-y: scroll;
         &::-webkit-scrollbar {
             width: 0;
@@ -82,5 +82,9 @@
 :global {
     .ant-spin-dot-item {
         background-color: #54cfff !important;
+    }
+    .ant-spin-nested-loading,
+    .ant-spin-container {
+        height: calc(100% - 96px) !important;
     }
 }

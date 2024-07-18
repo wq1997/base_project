@@ -207,7 +207,7 @@ const Index = ({ initData }) => {
                                 </div>
                             </Space>
                         </Space>
-                        <Spin spinning={loading}>
+                        <Spin spinning={loading} style={{ height: "100%" }}>
                             <div className={styles.table}>
                                 <div className={styles.row}>
                                     {columns?.map(column => (
