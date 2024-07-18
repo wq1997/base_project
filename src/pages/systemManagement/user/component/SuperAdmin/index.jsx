@@ -58,12 +58,12 @@ const RealtimeAlarm = () => {
       title: t('备注'),
       dataIndex: 'desc',
       key: 'desc',
-      // width: 200
     },
     {
       title: t('操作'),
       dataIndex: 'operation',
       key: 'operation',
+      width: 200,
       render: (text, record) => {
         return (
           <Space>

@@ -32,25 +32,25 @@ const Table = ({
             title: t('设备编码'),
             dataIndex: 'sn',
             key: 'sn',
-            width: '10%'
-        },
-        {
-            title: t('设备名称'),
-            dataIndex: 'name',
-            key: 'name',
-            width: '10%'
+            width: '180px'
         },
         {
             title: t('设备类型'),
             dataIndex: 'version',
             key: 'version',
-            width: '15%'
+            width: '230px'
         },
         {
             title: t('设备状态'),
             dataIndex: 'online',
             key: 'online',
             width: '120px'
+        },
+        {
+            title: t('设备名称'),
+            dataIndex: 'name',
+            key: 'name',
+            width: '150px'
         },
         {
             title: t('安装位置'),
@@ -64,7 +64,7 @@ const Table = ({
             title: t('操作'),
             dataIndex: 'operation',
             key: 'operation',
-            width: '15%',
+            width: '150px',
             render: (text, record) => {
                 return (
                     <Space>
@@ -78,7 +78,7 @@ const Table = ({
             title: t('详情'),
             dataIndex: 'details',
             key: 'details',
-            width: '10%',
+            width: '100px',
             render: (text, record) => {
                 return (
                     <div

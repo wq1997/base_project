@@ -71,18 +71,18 @@ function Com(props) {
             title: t('设备总数'),
             dataIndex: 'dtuSize',
             key: 'dtuSize',
-            width: 200
+            width: 150
         },    {
             title: t('设备在线'),
             dataIndex: 'onlines',
             key: 'onlines',
-            width: 200
+            width: 100
         },
         {
             title: t('建站日期'),
             dataIndex: 'installDate',
             key: 'installDate',
-            width: 200,
+            width: 150,
             render:(val)=>{
                 return dayjs(val).format('YYYY-MM-DD')
             }
@@ -91,25 +91,25 @@ function Com(props) {
             title: t('时区'),
             dataIndex: 'timeZone',
             key: 'timeZone',
-            // width: 200
+            width: 100
         },
         {
             title: t('货币'),
             dataIndex: 'priceUnit',
             key: 'priceUnit',
-            // width: 200
+            width: 100
         },
         {
             title: t('经度'),
             dataIndex: 'longitude',
             key: 'longitude',
-            // width: 200
+            width: 100
         },
         {
             title: t('纬度'),
             dataIndex: 'latitude',
             key: 'latitude',
-            // width: 200
+            width: 100
         },
         {
             title: t('电站位置'),

@@ -44,6 +44,7 @@ const alarmTableColums = [
     title: <FormattedMessage id='开始时间' />,
     dataIndex: 'beginS',
     key: '开始时间',
+    width: '200px'
   },
 ];
 const RealtimeAlarm = () => {

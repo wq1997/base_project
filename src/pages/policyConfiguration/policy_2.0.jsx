@@ -96,15 +96,15 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                 return {
                     ...item,
                     action: {
-                        3: '充电',
-                        1: '放电',
-                        2: '待机'
+                        3: intl.formatMessage({id: '充电'}),
+                        1: intl.formatMessage({id: '放电'}),
+                        2: intl.formatMessage({id: '待机'})
                     }[item.action],
                     timeType: {
-                        0: '尖',
-                        1: '峰',
-                        2: '平',
-                        3: '谷'
+                        0: intl.formatMessage({ id: '尖' }),
+                        1: intl.formatMessage({ id: '峰' }),
+                        2: intl.formatMessage({ id: '平' }),
+                        3: intl.formatMessage({ id: '谷' })
                     }[item.timeType],
                     timeStramp: `${translateNmberToTime(item.startHour)}:${translateNmberToTime(item.startMin)}~${translateNmberToTime(item.endHour)}:${translateNmberToTime(item.endMin)}`
                 }
@@ -113,15 +113,15 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                 return {
                     ...item,
                     action: {
-                        3: '充电',
-                        1: '放电',
-                        2: '待机'
+                        3: intl.formatMessage({id: '充电'}),
+                        1: intl.formatMessage({id: '放电'}),
+                        2: intl.formatMessage({id: '待机'})
                     }[item.action],
                     timeType: {
-                        0: '尖',
-                        1: '峰',
-                        2: '平',
-                        3: '谷'
+                        0: intl.formatMessage({ id: '尖' }),
+                        1: intl.formatMessage({ id: '峰' }),
+                        2: intl.formatMessage({ id: '平' }),
+                        3: intl.formatMessage({ id: '谷' })
                     }[item.timeType],
                     timeStramp: `${translateNmberToTime(item.startHour)}:${translateNmberToTime(item.startMin)}~${translateNmberToTime(item.endHour)}:${translateNmberToTime(item.endMin)}`
                 }
@@ -432,10 +432,10 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                             editable: true,
                                             inputType: 'Select',
                                             options: [
-                                                { value: '尖', label: intl.formatMessage({ id: '尖' }) },
-                                                { value: '峰', label: intl.formatMessage({ id: '峰' }) },
-                                                { value: '平', label: intl.formatMessage({ id: '平' }) },
-                                                { value: '谷', label: intl.formatMessage({ id: '谷' }) }
+                                                { value: intl.formatMessage({ id: '尖' }), label: intl.formatMessage({ id: '尖' }) },
+                                                { value: intl.formatMessage({ id: '峰' }), label: intl.formatMessage({ id: '峰' }) },
+                                                { value: intl.formatMessage({ id: '平' }), label: intl.formatMessage({ id: '平' }) },
+                                                { value: intl.formatMessage({ id: '谷' }), label: intl.formatMessage({ id: '谷' }) }
                                             ]
                                         },
                                         {
@@ -444,9 +444,9 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                             editable: true,
                                             inputType: 'Select',
                                             options: [
-                                                { value: '充电', label: intl.formatMessage({ id: '充电' }) },
-                                                { value: '放电', label: intl.formatMessage({ id: '放电' }) },
-                                                { value: '待机', label: intl.formatMessage({ id: '待机' }) },
+                                                { value: intl.formatMessage({id: '充电'}), label: intl.formatMessage({ id: '充电' }) },
+                                                { value: intl.formatMessage({id: '放电'}), label: intl.formatMessage({ id: '放电' }) },
+                                                { value: intl.formatMessage({id: '待机'}), label: intl.formatMessage({ id: '待机' }) },
                                             ]
                                         },
                                         {
@@ -659,15 +659,15 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                 return {
                                     ...value,
                                     action: {
-                                        '充电': 3,
-                                        '放电': 1,
-                                        '待机': 2,
+                                        [intl.formatMessage({id: '充电'})]: 3,
+                                        [intl.formatMessage({id: '放电'})]: 1,
+                                        [intl.formatMessage({id: '待机'})]: 2,
                                     }[value.action],
                                     timeType: {
-                                        '尖': 0,
-                                        '峰': 1,
-                                        '平': 2,
-                                        '谷': 3
+                                        [intl.formatMessage({ id: '尖' })]: 0,
+                                        [intl.formatMessage({ id: '峰' })]: 1,
+                                        [intl.formatMessage({ id: '平' })]: 2,
+                                        [intl.formatMessage({ id: '谷' })]: 3
                                     }[value.timeType],
                                     startHour: time1[0],
                                     startMin: time1[1],

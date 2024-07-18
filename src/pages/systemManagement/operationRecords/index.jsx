@@ -47,12 +47,13 @@ const RealtimeAlarm = () => {
     {
       title: 'IP',
       dataIndex: 'ip',
-      key: 'ip',
+      key: 'ip'
     },
     {
       title: t('操作时间'),
       dataIndex: 'time',
       key: 'time',
+      width: 220
     },
   ]
   const { user } = useSelector(function (state) {
