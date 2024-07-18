@@ -131,3 +131,7 @@ export const exportCurve = (payload) => {
 export const exportAnalytics = (payload) => {
     return axiosInstance.post(`/minsys/analysis/exportAnalytics`, payload, {responseType: 'blob'})
 }
+
+export const getSocialBenefit = (payload) => {
+    return axiosInstance.get(`/minsys/save/getSocialBenefit`, { params: payload });
+}

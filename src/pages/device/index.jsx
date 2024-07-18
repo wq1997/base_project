@@ -9,12 +9,9 @@ import { getAllRevenue as getAllRevenueServe } from "@/services";
 import { getBurEnergyStats2, getDeviceStats, getDtusOfPlant } from "@/services/plant"
 import {
     getFetchPlantList2 as getFetchPlantListServe,
+    getSocialBenefit as getSocialBenefitServe,
 } from "@/services";
 import {
-    HistoryOutlined,
-    PieChartOutlined,
-    ScheduleOutlined,
-    AlertOutlined,
     ExclamationCircleFilled
 } from '@ant-design/icons';
 import Add from './components/addDevices'
@@ -44,6 +41,7 @@ const RealtimeAlarm = () => {
     const [initSelectData, setInitSelectData] = useState();
     const [record, setRecord] = useState([]);
     const [currentPlantId, setCurrentPlantId] = useState();
+    const [socialBenefit, setSocialBenefit] = useState();
     const { token } = theme.useToken();
     const intl = useIntl();
     const [mapPanTo, setPanTo] = useState();
@@ -106,7 +104,6 @@ const RealtimeAlarm = () => {
     useEffect(() => {
         getAllPlant();
     }, [])
-
 
     const changeIsOpenDel = (record) => {
         setIsOpenDel(!isOpenDel)
@@ -189,7 +186,7 @@ const RealtimeAlarm = () => {
             type: '',
             sn: '',
             plantId: '',
-            address: '',
+            address: currentPlant?.position||"",
         });
         setTitle('新增设备');
         setIsOpen(!isOpen);
@@ -231,6 +228,7 @@ const RealtimeAlarm = () => {
             changePlant(arr[0].value, arr);
         }
     }
+
     const changePlant = async (val) => {
         if(!val) return;
         let { data } = await getDtusOfPlant({
@@ -238,10 +236,12 @@ const RealtimeAlarm = () => {
         });
         data?.data === '' ? setData([]) : setData(JSON.parse(String(data?.data)))
         setCurrentPlantId(val);
-        let { data: dataEnergy } = await getBurEnergyStats2({ plantId: val });
-        let { data: deviceStats } = await getDeviceStats({ plantId: val });
-        setDatadataTotal(deviceStats?.data);
-        setDataEle(dataEnergy?.data);
+        let res1 = await getBurEnergyStats2({ plantId: val });
+        let res2 = await getDeviceStats({ plantId: val });
+        let res3 = await getSocialBenefitServe({ plantId: val });
+        setDataEle(res1?.data?.dataEnergy?.data);
+        setDatadataTotal(res2?.data?.deviceStats?.data);
+        setSocialBenefit(res3?.data?.data);
     }
 
     if (tableColum.length === 7 && user?.roleId == 1) {
@@ -267,7 +267,7 @@ const RealtimeAlarm = () => {
             getAllRevenue();
             setPanTo([currentPlant?.longitude||108.9, currentPlant?.latitude||34.2]);
         }
-    }, [currentPlantId])
+    }, [currentPlantId]);
 
     return (
         <div
@@ -331,9 +331,9 @@ const RealtimeAlarm = () => {
                                 return (
                                     <div className={styles.mapBottomItem}>
                                         <div className={styles.mapBottomItemData}>
-                                            <span style={{ color: '#20C2FF' }}>{dataEle[item?.name?.[0]]}</span>
+                                            <span style={{ color: '#20C2FF' }}>{dataEle?.[item?.name?.[0]]}</span>
                                             <span style={{color: '#0B6AA8'}}>/</span>
-                                            <span style={{ color: '#4AEDFF' }}>{dataEle[item?.name?.[1]]}</span>
+                                            <span style={{ color: '#4AEDFF' }}>{dataEle?.[item?.name?.[1]]}</span>
                                         </div>
                                         <div className={styles.mapBottomItemLabel}>{item?.label}</div>
                                     </div>
@@ -344,15 +344,9 @@ const RealtimeAlarm = () => {
                 </div>
                 <div className={classNames(styles.rightItem, styles.leftItem2)}>
                     <Title title={t('设备列表')} />
-                    {
-                        (user?.roleId===2||user?.roleId===3)&&
-                        <div 
-                            onClick={changIsOpen}
-                            className={styles.add}
-                        >
-                            {t('新增')}
-                        </div>
-                    }
+                    <div className={styles.add}>
+                        {(user?.roleId===2||user?.roleId===3)&&<div onClick={changIsOpen} className={styles.addBtn}>{t('新增设备')}</div>}
+                    </div>
                     <div className={styles.cardContent}>
                         <Table
                             dataSource={data}
@@ -392,19 +386,19 @@ const RealtimeAlarm = () => {
                             data={[
                                 {
                                     icon: bottomLeft1,
-                                    data: 28,
+                                    data: socialBenefit?.coal||0,
                                     unit: t('吨'),
                                     label: t('节约标准煤'),
                                 },
                                 {
                                     icon: bottomLeft2,
-                                    data: 127,
+                                    data: socialBenefit?.co2||0,
                                     unit: t('吨'),
                                     label: t('CO2减排量'),
                                 },
                                 {
                                     icon: bottomLeft3,
-                                    data: 3289,
+                                    data: socialBenefit?.tree||0,
                                     unit: t('棵'),
                                     label: t('等效植树量'),
                                 },

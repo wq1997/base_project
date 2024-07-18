@@ -12,11 +12,11 @@ const IncomeRanking = ({currentPlantId}) => {
     const getOptions = async () => {
         if(!currentPlantId) return;
         let data = [];
-        const data1 = moment().subtract(5, 'days').format("YYYY-MM-DD");
-        const data2 = moment().subtract(4, 'days').format("YYYY-MM-DD");
-        const data3 = moment().subtract(3, 'days').format("YYYY-MM-DD");
-        const data4 = moment().subtract(2, 'days').format("YYYY-MM-DD");
-        const data5 = moment().subtract(1, 'days').format("YYYY-MM-DD");
+        const data1 = moment().subtract(4, 'days').format("YYYY-MM-DD");
+        const data2 = moment().subtract(3, 'days').format("YYYY-MM-DD");
+        const data3 = moment().subtract(2, 'days').format("YYYY-MM-DD");
+        const data4 = moment().subtract(1, 'days').format("YYYY-MM-DD");
+        const data5 = moment().format("YYYY-MM-DD");
         const xData = [data1, data2, data3, data4, data5]
         const res = await getRevenueServe({
             startDate: data1,

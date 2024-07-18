@@ -81,14 +81,14 @@ const App = (props) => {
       label: '手机',
       key: 'phone',
       type: 1,
-      required: true,
+      required: false,
       disabled: false
     },
     {
       label: '邮箱',
       key: 'mail',
       type: 1,
-      required: true,
+      required: false,
       disabled: false
 
     },
@@ -134,7 +134,7 @@ const App = (props) => {
           ref={formRef}
           labelAlign="right"
           labelCol={{
-            span: 6
+            span: 8
           }}
           wrapperCol={{
             span: 14

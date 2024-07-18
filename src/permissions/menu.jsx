@@ -12,7 +12,7 @@ const MenuList = [
         permissions:'3',
     },
     {
-        label: <FormattedMessage id='app.Device' />,
+        label: <FormattedMessage id='电站概览' />,
         key: '/index/device',
         icon: <ToolOutlined />,
     },
