@@ -102,11 +102,11 @@ const RealtimeAlarm = () => {
   }
 
   const searchData = async () => {
-    const { data } = await getAllUserRoot({
+    const res = await getAllUserRoot({
       name: textLike,
       roleId: level || 0
     });
-    setData(data?.data);
+    setData(res?.data?.data);
   }
   const changIsOpen = () => {
     setFormData({

@@ -21,6 +21,7 @@ const App = (props) => {
     form.setFieldsValue(props.formData);
     setUpData([...props.userUp])
   }, [props.formData])
+
   const formRef = useRef();
   const [form] = Form.useForm();
   const formList = [
@@ -57,13 +58,17 @@ const App = (props) => {
       onchange: (val) => {
         let arr = [];
         if (val == 1) {
-          arr.push(
-            props.userUp?.find(it => it.roleId == 2)
-          )
+          props?.userUp?.forEach(it => {
+            if(it.roleId == 2||it.roleId == 3){
+              arr.push(it);
+            }
+          })
         } else {
-          arr.push(
-            props.userUp?.find(it => it.roleId == 3)
-          )
+          props?.userUp?.forEach(it => {
+            if(it.roleId == 3){
+              arr.push(it);
+            }
+          })
         };
         form.setFieldsValue({ parentId: undefined })
         setUpData(arr);

@@ -45,7 +45,7 @@ const HighAnysis = () => {
         let format="YYYY-MM-DD";
         const values = await form.validateFields();
         let { date, currentPlantDevice, dataType, packCell } = values;
-        date = date.map(item => dayjs(item).format(format));
+        date = date?.map(item => dayjs(item).format(format));
         if(date?.length>3){
             message.error(intl.formatMessage({id: '最多选择3个对比项'}));
             return;

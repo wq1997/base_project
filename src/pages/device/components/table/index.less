@@ -4,8 +4,7 @@
     .row {
         display: flex;
         .tableTitle,
-        .value {
-            flex: 1;
+        .rowItem {
             width: 0;
             padding: 10px 10px;
             box-sizing: border-box;
@@ -23,19 +22,16 @@
         }
         .row {
             background: #0F446A;
+            height: 40px;
             .value {
-                width: 80%;
                 color: #BBDFFF;
-                display: flex;
-                align-items: center;
-                justify-content: left;
                 padding: 5px 10px;
                 box-sizing: border-box;
                 overflow: hidden;
                 white-space: nowrap;
                 text-overflow: ellipsis;
-                // border-right: 2px solid #175785;
-                // border-top: 2px solid #175785;
+                align-items: center;
+                line-height: 30px;
             }
         }
     }

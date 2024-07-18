@@ -1760,7 +1760,7 @@ export default {
 '编辑用户':'Edit the user',
 '新增用户':'Add a new user',
 '普通用户':'Regular users',
-'管理员':'Administrator',
+'管理员':'Dealer',
 '个人信息':'Personal Information',
 '下属用户':'Subordinate User',
 '修改密码':'Change Password',

@@ -45,8 +45,8 @@ const Cabinet = () => {
     ]);
     const [data, setData] = useState();
     const getInitData = async () => {
-        let { data } = await getBurDtuDevInfo2({ dtuId: id });
-        setData(data?.data?.[0])
+        let res = await getBurDtuDevInfo2({ dtuId: id });
+        setData(res?.data?.data?.data?.[0])
     }
 
     const getDeviceType = async () => {

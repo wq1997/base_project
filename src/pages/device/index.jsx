@@ -224,8 +224,13 @@ const RealtimeAlarm = () => {
                     dtuSize: result?.deviceCount?.[index]
                 })
             })
+            let initPlantId = arr[0].value;
+            let localStoragePlantId = parseInt(localStorage.getItem("currentPlant")||0);
+            if(arr?.map(item=>item.key)?.includes(localStoragePlantId)){
+                initPlantId = localStoragePlantId;
+            }
             setDataOption([...arr]);
-            changePlant(arr[0].value, arr);
+            changePlant(initPlantId, arr);
         }
     }
 
@@ -239,9 +244,11 @@ const RealtimeAlarm = () => {
         let res1 = await getBurEnergyStats2({ plantId: val });
         let res2 = await getDeviceStats({ plantId: val });
         let res3 = await getSocialBenefitServe({ plantId: val });
-        setDataEle(res1?.data?.dataEnergy?.data);
-        setDatadataTotal(res2?.data?.deviceStats?.data);
+
+        setDataEle(res1?.data?.data);
+        setDatadataTotal(res2?.data?.data);
         setSocialBenefit(res3?.data?.data);
+        localStorage.setItem("currentPlant", val);
     }
 
     if (tableColum.length === 7 && user?.roleId == 1) {
@@ -297,8 +304,7 @@ const RealtimeAlarm = () => {
                             onChange={(val) => {
                                 changePlant(val)
                             }}
-                            key={dataOption[0]?.value}
-                            defaultValue={dataOption[0]?.value}
+                            value={currentPlantId}
                         >
                             {dataOption && dataOption?.map(item => {
                                 return (<Option key={item.value} value={item.value}>{item.label}</Option>);
