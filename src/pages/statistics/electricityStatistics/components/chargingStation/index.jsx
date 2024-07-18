@@ -226,7 +226,7 @@ function Com(props) {
         let arrOut = [];
         let arrX = [];
         let excel=[];
-
+        
         let { data } = await getEnergyFeeByTime(httpData);
         data?.data.map((it) => {
             arrIn.push(it.dayInEnergy);
