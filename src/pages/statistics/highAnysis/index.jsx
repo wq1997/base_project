@@ -54,7 +54,7 @@ const HighAnysis = () => {
             message.error(intl.formatMessage({ id: '请选择电芯' }));
             return;
         }
-        if (currentPlantDevice?.length < 2) {
+        if (!currentPlantDevice||currentPlantDevice?.length < 2) {
             message.error(intl.formatMessage({ id: '请选择电站下具体设备' }));
             return;
         };
