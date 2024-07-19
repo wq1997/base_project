@@ -1787,7 +1787,7 @@ export default {
 '密码修改成功':'Password Changed Successfully',
 '执行结果':'Execution Result',
 '关口表':'Checkpoint table',
-'系统效率(前一日)':'System efficiency (previous day)',
+'系统效率':'System efficiency',
 '单体最高':'Single highest',
 '单体最低':'The lowest monomer',
 '计量代表':'Measurement representative',
@@ -2030,4 +2030,5 @@ export default {
 "最高温度": 'Maximum temperature',
 "最低温度": 'Minimum temperature',
 '温差': 'Temperature difference',
+'电站信息': 'Power Station Information',
 } 

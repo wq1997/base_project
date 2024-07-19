@@ -85,7 +85,7 @@ const Index = ({ plants, showInfo, panTo }) => {
                 return arr
                     ?.map(
                         item => `<div class=${styles.item}>
-                           <div class=${styles.name}>${item.name}</div>
+                           <div class=${styles.name}>${intl.formatMessage({id: item.name})}</div>
                            <div class=${styles.value} title=${plant[item.key]}>${plant[item.key] || ""}</div>
                         </div>`
                     )
