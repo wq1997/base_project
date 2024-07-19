@@ -2003,7 +2003,7 @@ export default {
 '谷时段充': 'Trough-Period Charging Capacity',
 '总充': 'Total Charging Capacity',
 '收益': 'Revenue',
-'PACK详情': 'Pack Details',
+'PACK详情': 'PACK Details',
 '刷新': 'Refresh',
 'PCS/BMS设置': 'PCS/BMS settings',
 '经度': 'Longitude',
