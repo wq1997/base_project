@@ -120,7 +120,7 @@ const Index = ({ activePlant }) => {
                                   ]),
                     },
                     lineStyle: {
-                        width: 1.8,
+                        width: 2,
                     },
                     areaStyle: {
                         normal: {
@@ -185,7 +185,6 @@ const Index = ({ activePlant }) => {
                             <div
                                 className={classnames(
                                     styles.btn,
-
                                     item?.type == type ? styles.active : ""
                                 )}
                                 onClick={() => changeType(item?.type)}
