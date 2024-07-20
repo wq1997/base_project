@@ -6,6 +6,7 @@ import { apiGetAllUserAndInfos } from "@/services/user"
 import AddUser from '../AddUserModal'
 import { apiSaveOrUpdateUser, apiDeleteUserById,apiResetPassword, apiUpdatePassword, apiListUserWithOptions } from '@/services/total'
 import  { ExclamationCircleFilled } from '@ant-design/icons';
+import { render } from 'react-dom';
 const RealtimeAlarm = () => {
   const { Search } = Input;
   const [data, setData] = useState([]);

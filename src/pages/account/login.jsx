@@ -7,7 +7,7 @@ import {
 } from "@/services/user";
 import { getEncrypt, setLocalStorage } from "@/utils/utils";
 import styles from "./index.less";
-import { history, useDispatch, FormattedMessage,useIntl} from "umi";
+import { history, useDispatch, FormattedMessage,useIntl,useSelector} from "umi";
 import { useEffect, useState } from "react";
 import { getBaseUrl } from '@/services/request'
 import img from '../../../src/assets/imges/login.png'
@@ -22,6 +22,7 @@ const Login = () => {
   const [publicKey, setPublicKey] = useState('');
   const [codeImgUrl, setCodeImgUrl] = useState(`${getBaseUrl()}/user/getKaptchaImage`);
   const [showImg, setShowImg] = useState(false);
+  const global = useSelector(state => state.global);
   const intl = useIntl();
   const t = (id) => {
       const msg = intl.formatMessage(
@@ -43,7 +44,7 @@ const Login = () => {
         password: getEncrypt(publicKey, values.password),
         // clientType: 3,
         // remember: false,
-        language: 1,
+        language:  global.locale === "zh-CN" ?1:3,
       });
       if (res?.data?.data) {
         const data = res?.data.data;

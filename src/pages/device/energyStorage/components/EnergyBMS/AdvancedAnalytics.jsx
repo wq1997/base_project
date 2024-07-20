@@ -420,7 +420,7 @@ return (
                     {t('查询')}
                 </Button>
                 <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downLoadVAndTDiff}>
-                    {t('导出')}excel
+                    {t('导出')}{" "}Excel
                 </Button>
             </div>
             <div className={styles.echartPart}>
@@ -479,7 +479,7 @@ return (
                     {t('查询')}
                 </Button>
                 <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downLoadVAndT}>
-                    {t('导出')}excel
+                {t('导出')}{" "}Excel
                 </Button>
             </div>
             <div className={styles.echartPart}>

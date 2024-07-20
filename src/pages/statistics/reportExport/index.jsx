@@ -238,7 +238,7 @@ function Com() {
     link.style.display = "none"
     link.href = url
     // fileName 文件名后缀记得添加
-    link.setAttribute('download', `${wayLabel}.xls`)
+    link.setAttribute('download', `${t(wayLabel)}.xls`)
     document.body.appendChild(link)
     link.click()
     //下载完成移除元素

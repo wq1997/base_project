@@ -179,8 +179,8 @@ function Com(props) {
             >
               <Select
                 options={[
-                  { label: '平均功率', value: 1 },
-                  { label: 'SOC动态平衡', value: 2 },
+                  { label: t('平均功率'), value: 1 },
+                  { label: t('SOC动态平衡'), value: 2 },
                 ]}
               />
             </Form.Item>
@@ -262,7 +262,7 @@ function Com(props) {
                   dataIndex: 'controlMode',
                   key: 'controlMode',
                   render: (text, record) => {
-                    let label = [{ value: 1, label: '白天-黑夜' }, { value: 2, label: '定时充放' },].find(it => it.value == record.controlMode)?.label
+                    let label = [{ value: 1, label: t('白天-黑夜') }, { value: 2, label: t('定时充放') },].find(it => it.value == record.controlMode)?.label
                     return label
                   }
                 },

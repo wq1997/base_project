@@ -1032,5 +1032,12 @@ export default {
 "电池PACK": "Battery PACK",
 "电芯": "Battery cell",    
 "充电桩充电量":"Charging pile charging capacity",
-"请准确选择数据项":"Please select data items accurately"
+"请准确选择数据项":"Please select data items accurately",
+"SOC动态平衡":"SOC dynamic balance",
+"命令下发成功":"Command issued successfully",
+"场站类型":"Station type",
+"储能电站":"Energy storage power station",
+"光储充电站":" Light storage charging station",
+"温差压差":"Temperature difference and pressure difference",
+
 }
