@@ -17,7 +17,7 @@ const MyUpload = ({ url, files = defaultFiles, onChange, maxCount = 3, maxSizeMB
                 accept={accept}
                 action={url}
                 headers={{
-                    Authorization: localStorage.getItem("Token"),
+                    Authorization: 'Bearer '+localStorage.getItem("Token"),
                 }}
                 fileList={newFiles}
                 maxCount={maxCount}

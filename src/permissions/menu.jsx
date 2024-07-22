@@ -61,7 +61,7 @@ const MyMenu = () => {
             permissions: "menu:bas_data",
             children: [
                 {
-                    key: "/vpp/baseinfo/company",
+                    key: "/vpp/baseinfo/station/stationList",
                     label: "场站配置",
                     permissions: "menu:load_resource",
                 },
@@ -170,7 +170,9 @@ const MyMenu = () => {
             setSelectedKeys("/vpp/demandResponse/income/overview");
         } else if (pathname.startsWith("/vpp/demandResponse/invitation")) {
             setSelectedKeys("/vpp/demandResponse/invitation/invitationList");
-        } else {
+        } else if(pathname.startsWith("/vpp/baseinfo/station")){
+            setSelectedKeys("/vpp/baseinfo/station/stationList");
+        }else {
             setSelectedKeys(pathname);
         }
     };

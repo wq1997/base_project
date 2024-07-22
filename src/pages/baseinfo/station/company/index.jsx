@@ -7,13 +7,12 @@ import AddCompany from "./AddCompany";
 import {
     getCompanyList as getCompanyListServer,
     deleteCompany as deleteCompanyServer,
-} from "@/services/company";
+} from "@/services/sz_index";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
-import { hasPerm, recordPage } from "@/utils/utils";
+import { hasPerm } from "@/utils/utils";
 import "./index.less";
 
 const Company = () => {
-    recordPage('menu:company');
     const nameRef = useRef();
     const [editId, setEditId] = useState();
     const { user } = useSelector(state => state.user);
@@ -26,35 +25,38 @@ const Company = () => {
 
     const columns = [
         {
+            title: "公司类型",
+            dataIndex: "companyType"
+        },
+        {
             title: "公司名称",
-            dataIndex: "name",
+            dataIndex: "userName",
         },
         {
-            title: "公司编号",
-            dataIndex: "code",
+            title: "公司税号",
+            dataIndex: "creditCode",
         },
         {
-            title: "是否默认确认任务",
-            dataIndex: "autoConfirmTask",
-            render: value => (value ? "是" : "否"),
+            title: "注册地址",
+            dataIndex: "operatorAddress",
         },
         {
-            title: "平台分润比例",
-            dataIndex: "profitSharingRatio",
+            title: "联系人",
+            dataIndex: "operator",
         },
         {
-            title: "紧急联系人",
-            dataIndex: "contactPerson",
+            title: "联系电话1",
+            dataIndex: "operatorTel1",
         },
         {
-            title: "紧急联系电话",
-            dataIndex: "contractPhone",
+            title: "联系电话2",
+            dataIndex: "operatorTel2",
         },
         {
             title: "操作",
             dataIndex: "operate",
             render: (_, record) =>
-                record?.code != "SERMATEC" &&
+                !record?.aggregator &&
                 hasPerm(user, "op:company_edit") && (
                     <a
                         onClick={() => {
