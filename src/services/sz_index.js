@@ -37,6 +37,11 @@ export const updateCompany = payload => {
     return axiosInstance.post(url, payload);
 };
 
+export const updateStation = payload => {
+    const url = `${API_URL_1}/load-resource/save-or-update`;
+    return axiosInstance.post(url, payload);
+};
+
 export const getEditPageInitData = () => {
     const url = `${API_URL_1}/load-resource/get-search-page-init-data`;
     return axiosInstance.get(url);

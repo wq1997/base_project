@@ -25,7 +25,7 @@ const CommonLayout = (props) => {
 
     const { data: result, run, cancel } = useRequest(getNotificationCountServe, {
         manual: true,
-        pollingInterval: 1000 * 10,
+        pollingInterval: 1000 * 60 * 5,
         refreshDeps: [theme]
     });
 

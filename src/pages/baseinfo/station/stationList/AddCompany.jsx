@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import { message, Button, Select, Form, Input, Modal, Row, Col, Radio, Space, InputNumber } from "antd";
 import {
     getStationUpdateInitData as getUpdateInitDataServer,
-    getCityByProvince as getCityByProvinceServer,
-    updateCompany as updateCompanyServer,
+    updateStation as updateCompanyServer,
     getUpdateInitData as getCompanyUpdateInitDataServer
 } from "@/services/sz_index";
 import { MyUpload } from "@/components";
@@ -15,13 +14,14 @@ const Company = ({ open, editId, initData, onClose }) => {
     const [editData, setEditData] = useState();
     const [provinces, setProvinces] = useState([]);
     const [cities, setCities] = useState([]);
+    const [cityList, setCityList] = useState([]);
     const [stationTypes, setStationTypes] = useState([]);
 
     const getUpdateInitData = async () => {
         const res = await getUpdateInitDataServer({ id: editId });
         if (res?.data?.status == "SUCCESS") {
-            const { editData, provinces, stationTypes } = res?.data?.data;
-            editData ? form.setFieldsValue(editData) : form.resetFields();
+            const { editData, provinces, stationTypes, province2Cities} = res?.data?.data;
+            editData ? form.setFieldsValue({...editData, longitude: editData?.location?.longitude, latitude: editData?.location?.latitude}) : form.resetFields();
             if (editData?.companyId) {
                 const res = await getCompanyUpdateInitDataServer({ id: editData?.companyId });
                 if (res?.data?.data) {
@@ -35,20 +35,22 @@ const Company = ({ open, editId, initData, onClose }) => {
             }
             setEditData(editData);
             setProvinces(provinces);
+            setCityList(province2Cities);
             setStationTypes(stationTypes);
         }
     };
 
     const getCityByProvince = async province => {
-        const res = await getCityByProvinceServer({province});
-        if (res?.data?.status == "SUCCESS") {
-            setCities(res?.data?.data || []);
-        }
+        setCities(cityList[province]);
     };
 
     const onFinish = async values => {
         const res = await updateCompanyServer({
             id: editId,
+            location:{
+                longitude: values?.longitude,
+                latitude: values?.latitude
+            },
             ...values,
         });
 
@@ -165,6 +167,37 @@ const Company = ({ open, editId, initData, onClose }) => {
                                 placeholder="请选择所在市"
                                 options={cities?.map(item => ({ label: item, value: item }))}
                             />
+                        </Form.Item>
+                    </Col>
+                </Row>
+
+                <Row>
+                    <Col span={12}>
+                        <Form.Item
+                            label="详细地址"
+                            name="address"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "请输入详细地址",
+                                },
+                            ]}
+                        >
+                            <Input placeholder="请输入详细地址"/>
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item
+                            label="用电户号"
+                            name="resourceId"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "请输入用电户号",
+                                },
+                            ]}
+                        >
+                            <Input placeholder="请输入用电户号"/>
                         </Form.Item>
                     </Col>
                 </Row>

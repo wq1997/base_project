@@ -8,12 +8,11 @@ import {
 } from "@/services/task";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import { history, useLocation, useSelector } from "umi";
-import { hasPerm, recordPage } from "@/utils/utils";
+import { hasPerm } from "@/utils/utils";
 import dayjs from "dayjs";
 import "./index.less";
 
 const Account = () => {
-    recordPage('op:task_list');
     const location = useLocation();
     const { user } = useSelector(state => state.user);
     const endTimeRef = useRef();

@@ -1,9 +1,10 @@
 import { Outlet, history, useLocation, useSelector } from "umi";
 import { Tabs } from "antd";
 import { CardPage } from "@/components";
-import { hasPerm } from "@/utils/utils";
+import { hasPerm, recordPage } from "@/utils/utils";
 
 const Task = () => {
+    recordPage('op:task_confirm');
     const location = useLocation();
     const { user } = useSelector(state => state.user);
     const { pathname } = location;
