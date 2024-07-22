@@ -114,9 +114,9 @@ function Com(props) {
     const edit = (record) => {
         setFormData({
             ...record,
-            prior: formList[0].data.find(it => it.label === record.prior)?.value,
-            pushType: formList[1].data.find(it => it.label === record.pushType)?.value,
-            gridPointId:record?.id
+            prior: formList[0].data.find(it => t(it.label) === t(record.prior))?.value,
+            pushType: formList[1].data.find(it => t(it.label) === t(record.pushType))?.value,
+            gridPointId:record?.gridPointId
             // status: '启用' ? true : false,
         });
         console.log(record?.id,1212);
