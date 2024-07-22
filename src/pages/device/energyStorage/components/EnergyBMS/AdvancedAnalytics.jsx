@@ -189,7 +189,7 @@ const downLoadVAndT = () => {
     let sheetData = vAndTExcelData;
     let sheetName = dateBottom.format('YYYY-MM-DD');
     let sheetFilter = ['time', 'volInfo', 'tempInfo','leftTemp','rightTemp','negativeTemp','positiveTemp'];
-    let sheetHeader = [t("时刻"), `${t('电压')}V`, `${t('采样点温度')}℃`,`${t('左侧熔断器温度')}℃`,`${t('右侧熔断器温度')}℃`,`${t('负极极柱温度')}℃`,`${t('正极极柱温度')}℃`];
+    let sheetHeader = [t("时间"), `${t('电压')}V`, `${t('采样点温度')}℃`,`${t('左侧熔断器温度')}℃`,`${t('右侧熔断器温度')}℃`,`${t('负极极柱温度')}℃`,`${t('正极极柱温度')}℃`];
     downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader, sheetName)
 };
 const downLoadVAndTDiff = () => {
@@ -210,7 +210,7 @@ const downLoadVAndTDiff = () => {
             sheetData: data,
             sheetName: item?.desc,
             sheetFilter: ['time', 'volInfo', 'tempInfo'],
-            sheetHeader: [t("时刻"), `${t('压差')}V`, `${t('温差')}℃`],
+            sheetHeader: [t("时间"), `${t('压差')}V`, `${t('温差')}℃`],
             columnWidths: ['8', '4'],
         })
     })

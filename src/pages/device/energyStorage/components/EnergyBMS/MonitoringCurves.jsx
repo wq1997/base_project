@@ -187,7 +187,7 @@ function Com({ id }) {
         let fileName = title;
         let sheetData = excelData;
         let sheetFilter = ['time',];
-        let sheetHeader = ["时刻", ];
+        let sheetHeader = ["时间", ];
         dateStr?.map((it,i)=>{
             sheetHeader.push(it);
             sheetFilter.push(i)
