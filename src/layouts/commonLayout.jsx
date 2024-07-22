@@ -105,7 +105,7 @@ const CommonLayout = (props) => {
                     </div>
                     <Space size={40} align="center">
                         {
-                            user?.isSermatec&&
+                            user?.aggregator&&
                             <Select 
                                 style={{width: 300}}
                                 options={[
