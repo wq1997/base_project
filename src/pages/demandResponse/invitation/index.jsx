@@ -10,11 +10,11 @@ const Invitation = () => {
     const { pathname } = location;
 
     const items = [
-        hasPerm(user, "op:invite_list") && {
+        hasPerm(user, "op:invitation_list") && {
             key: "/vpp/demandResponse/invitation/invitationList",
             label: "邀约列表",
         },
-        hasPerm(user, "op:invite_task") && {
+        hasPerm(user, "op:invitation_resource_plan_list") && {
             key: "/vpp/demandResponse/invitation/allTaskList",
             label: "任务清单",
         },

@@ -29,18 +29,12 @@ const MyMenu = () => {
             permissions: "menu:demand_response",
             children: [
                 {
-                    key: hasPerm(user, "op:invite_list")
-                        ? "/vpp/demandResponse/invitation/invitationList"
-                        : "/vpp/demandResponse/invitation/allTaskList",
+                    key: "/vpp/demandResponse/invitation/invitationList",
                     label: "邀约管理",
                     permissions: "menu:invitation",
                 },
                 {
-                    key: hasPerm(user, "op:profit_dashboard")
-                        ? "/vpp/demandResponse/task/search"
-                        : hasPerm(user, "op:profit_invite")
-                            ? "/vpp/demandResponse/income/invitation"
-                            : "/vpp/demandResponse/income/task",
+                    key: "/vpp/demandResponse/task/search",
                     label: "任务管理",
                     permissions: "menu:resource_plan",
                 },
@@ -68,8 +62,8 @@ const MyMenu = () => {
             children: [
                 {
                     key: "/vpp/baseinfo/company",
-                    label: "公司配置",
-                    permissions: "menu:company",
+                    label: "场站配置",
+                    permissions: "menu:load_resource",
                 },
                 {
                     key: "/vpp/baseinfo/role",
@@ -81,11 +75,11 @@ const MyMenu = () => {
                     label: "账号管理",
                     permissions: "menu:user",
                 },
-                {
-                    key: "/vpp/baseinfo/level",
-                    label: "公司评级管理",
-                    permissions: "menu:company_ratings",
-                },
+                // {
+                //     key: "/vpp/baseinfo/level",
+                //     label: "公司评级管理",
+                //     permissions: "menu:company_ratings",
+                // },
             ],
         },
         {

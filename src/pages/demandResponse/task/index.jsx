@@ -9,7 +9,7 @@ const Task = () => {
     const { pathname } = location;
 
     const items = [
-        hasPerm(user, "op:task_list") && {
+        hasPerm(user, "op:resource_plan_list") && {
             key: "/vpp/demandResponse/task/list",
             label: "任务列表",
         },
@@ -17,7 +17,7 @@ const Task = () => {
             key: "/vpp/demandResponse/task/search",
             label: "任务查询",
         },
-        hasPerm(user, "op:task_confirm") && {
+        hasPerm(user, "op:resource_plan_confirm") && {
             key: "/vpp/demandResponse/task/confirm",
             label: "任务确认",
         },
