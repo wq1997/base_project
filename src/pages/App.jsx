@@ -48,7 +48,10 @@ const App = () => {
                     },
                     Cascader: {
                         optionSelectedBg: '#0D4D77',
-                    }
+                    },
+                    // Drawer: {
+                    //     colorBgElevated: '#0D4D77'
+                    // }
                 }
             }}
         >

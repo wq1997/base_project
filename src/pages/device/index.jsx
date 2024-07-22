@@ -1,10 +1,9 @@
 // import Table from '@/components/Table.jsx'
-import { useEffect, useState, useRef, useMemo } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector, useIntl, history } from "umi";
 import styles from "./index.less";
-import { Select, Space, theme, Button, Modal, message, Tooltip } from "antd"
-import { CardModel } from "@/components";
-import { getFetchPlantList, deleteDtu, updateDtus } from "@/services/deviceTotal"
+import { Select, Space, theme, Button, Modal, message, Tooltip, Drawer } from "antd"
+import { deleteDtu, updateDtus } from "@/services/deviceTotal"
 import { getAllRevenue as getAllRevenueServe } from "@/services";
 import { getBurEnergyStats2, getDeviceStats, getDtusOfPlant } from "@/services/plant"
 import {
@@ -26,6 +25,7 @@ import bottomLeft1 from "../../../public/images/bottomLeft1.svg";
 import bottomLeft2 from "../../../public/images/bottomLeft2.svg";
 import bottomLeft3 from "../../../public/images/bottomLeft3.svg";
 import Map from './components/map';
+import BatchPolicyConfiguration from "../policyConfiguration/batch_index";
 import dayjs from 'dayjs';
 const { Option } = Select;
 
@@ -42,6 +42,7 @@ const RealtimeAlarm = () => {
     const [record, setRecord] = useState([]);
     const [currentPlantId, setCurrentPlantId] = useState();
     const [socialBenefit, setSocialBenefit] = useState();
+    const [batchPolicyOpen, setBatchPolicyOpen] = useState(false);
     const { token } = theme.useToken();
     const intl = useIntl();
     const [mapPanTo, setPanTo] = useState();
@@ -351,6 +352,7 @@ const RealtimeAlarm = () => {
                 <div className={classNames(styles.rightItem, styles.leftItem2)}>
                     <Title title={t('设备列表')} />
                     <div className={styles.add}>
+                        <div className={styles.addBtn} onClick={()=>setBatchPolicyOpen(true)}>{t('策略配置')}</div>
                         {(user?.roleId===2||user?.roleId===3)&&<div onClick={changIsOpen} className={styles.addBtn}>{t('新增设备')}</div>}
                     </div>
                     <div className={styles.cardContent}>
@@ -426,6 +428,15 @@ const RealtimeAlarm = () => {
             >
                 {t('数据删除后将无法恢复，是否确认删除该条数据？')}
             </Modal>
+            <Drawer
+                width={1200}
+                title={t('策略配置')}
+                open={batchPolicyOpen}
+                destroyOnClose={true}
+                onClose={()=>setBatchPolicyOpen(false)}
+            >
+                <BatchPolicyConfiguration deviceList={data}/>
+            </Drawer>
         </div>
     )
 }
