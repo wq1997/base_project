@@ -33,7 +33,7 @@ const MyMenu = () => {
                         ? "/vpp/demandResponse/invitation/invitationList"
                         : "/vpp/demandResponse/invitation/allTaskList",
                     label: "邀约管理",
-                    permissions: "menu:invite",
+                    permissions: "menu:invitation",
                 },
                 {
                     key: hasPerm(user, "op:profit_dashboard")
@@ -42,13 +42,13 @@ const MyMenu = () => {
                             ? "/vpp/demandResponse/income/invitation"
                             : "/vpp/demandResponse/income/task",
                     label: "任务管理",
-                    permissions: "menu:task",
+                    permissions: "menu:resource_plan",
                 },
-                {
-                    key: "/vpp/demandResponse/income/overview",
-                    label: "收益管理",
-                    permissions: "menu:profit",
-                },
+                // {
+                //     key: "/vpp/demandResponse/income/overview",
+                //     label: "收益管理",
+                //     permissions: "menu:profit",
+                // },
             ],
         },
         // {
@@ -103,7 +103,7 @@ const MyMenu = () => {
                 {
                     key: "/vpp/setting/notification",
                     label: "系统通知",
-                    permissions: "menu:notice",
+                    permissions: "menu:notification",
                 },
             ],
         },
