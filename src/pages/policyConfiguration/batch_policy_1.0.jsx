@@ -8,6 +8,7 @@ import {
     getBurCmdHistory2 as getBurCmdHistory2Serve,
     verifyPassword as verifyPasswordServe,
     sendPCSSetting as sendPCSSettingServe,
+    sendBMSSetting as sendBMSSettingServe,
     updateData as updateDataServe,
     sendPCSPower as sendPCSPowerServe,
     sendParamSetting as sendParamSettingServe,
@@ -30,12 +31,14 @@ const PolicyConfiguration = ({ deviceVersion }) => {
     const [mode, setMode] = useState();
     const [tabValue, setTabValue] = useState(0);
     const [nextMode, setNextMode] = useState();
-    const [runModePCSBMS, setRunModePCSBMS] = useState();
-    const [nextRunModePCSBMS, setNextRunModePCSBMS] = useState();
+    const [runModePCS, setRunModePCS] = useState();
+    const [runModeBMS, setRunModeBMS] = useState();
+    const [nextRunModePCS, setNextRunModePCS] = useState();
+    const [nextRunModeBMS, setNextRunModeBMS] = useState();
     const [checkModalOpen, setCheckModalOpen] = useState(false);
     const [checkModalType, setCheckModalType] = useState('');
     const [durationList, setDurationList] = useState([]);
-    const [isLive, setIsLive] = useState(true);
+    const [isLive, setIsLive] = useState(false);
     const canIssue = mode === 1;
 
     const strategyList = [
@@ -140,7 +143,9 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                 coolingPoint: data?.coolingPoint,
                 heatPoint: data?.heatPoint,
                 coolingDiffPoint: data?.coolingDiffPoint,
-                heatDiffPoint: data?.heatDiffPoint
+                heatDiffPoint: data?.heatDiffPoint,
+                runModePCS: data?.pcsStatus,
+                runModeBMS: data?.bmsStatus
             }
             monthList?.forEach((item, index) => {
                 params[item.value] = data?.policySelectList?.[index]
@@ -148,6 +153,8 @@ const PolicyConfiguration = ({ deviceVersion }) => {
             form.setFieldsValue(params);
             setDurationList(durationList)
             setMode(data?.mode);
+            setRunModePCS(data?.pcsStatus);
+            setRunModeBMS(data?.bmsStatus)
         }
     }
 
@@ -156,7 +163,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
     }, [tabValue])
 
     useEffect(() => {
-        // getAliveStatus();
+        getAliveStatus();
     }, [])
 
     return (
@@ -167,7 +174,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
             >
                 <Space style={{ width: '100%', height: 'auto', minHeight: '100%', background: "#0A1328" }} direction="vertical" size={12}>
                     <div className={areaStyle}>
-                        {/* <div
+                        <div
                             style={{
                                 display: 'flex',
                             }}
@@ -191,7 +198,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                             >
                                 {intl.formatMessage({ id: '刷新' })}
                             </Button>
-                        </div> */}
+                        </div>
                         <Space style={{ width: '100%' }} direction="vertical">
                             <Form.Item label={<span style={{ fontSize: 20 }}>{intl.formatMessage({ id: '策略模式' })}</span>} name="mode" rules={[{ ...FORM_REQUIRED_RULE }]}>
                                 <ButtonGroup
@@ -216,23 +223,37 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                 </Row>
                                 <Space style={{ width: '100%', padding: '0 20px' }} direction="vertical" size={30}>
                                     <Row>
-                                        <Form.Item label={intl.formatMessage({ id: 'PCS/BMS设置' })} name="runModePCSBMS" style={{ margin: 0 }}>
+                                        <Form.Item label={intl.formatMessage({ id: 'PCS/BMS设置' })} name="runModePCS" style={{ margin: 0 }}>
                                             <ButtonGroup
-                                                value={runModePCSBMS}
+                                                value={runModePCS}
                                                 mode={'controlled'}
                                                 disabled={!canIssue || !isLive}
                                                 options={[
-                                                    { label: intl.formatMessage({ id: 'PCS开机' }), value: 1 },
                                                     { label: intl.formatMessage({ id: 'PCS关机' }), value: 0 },
+                                                    { label: intl.formatMessage({ id: 'PCS开机' }), value: 1 },
                                                     { label: intl.formatMessage({ id: 'PCS待机' }), value: 2 },
                                                     { label: intl.formatMessage({ id: 'PCS复位' }), value: 3 },
-                                                    { label: intl.formatMessage({ id: 'BMS开机' }), value: 4 },
-                                                    { label: intl.formatMessage({ id: 'BMS关机' }), value: 5 },
                                                 ]}
                                                 onControlledChange={async value => {
-                                                    setNextRunModePCSBMS(value);
+                                                    setNextRunModePCS(value);
                                                     setCheckModalOpen(true);
-                                                    setCheckModalType('runModePCSBMS');
+                                                    setCheckModalType('runModePCS');
+                                                }}
+                                            />
+                                        </Form.Item>
+                                        <Form.Item name="runModeBMS" style={{ margin: 0 }}>
+                                            <ButtonGroup
+                                                value={runModeBMS}
+                                                mode={'controlled'}
+                                                disabled={!canIssue || !isLive}
+                                                options={[
+                                                    { label: intl.formatMessage({ id: 'BMS开机' }), value: 1 },
+                                                    { label: intl.formatMessage({ id: 'BMS关机' }), value: 2 },
+                                                ]}
+                                                onControlledChange={async value => {
+                                                    setNextRunModeBMS(value);
+                                                    setCheckModalOpen(true);
+                                                    setCheckModalType('runModeBMS');
                                                 }}
                                             />
                                         </Form.Item>
@@ -284,7 +305,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                 </div>
                             </Row>
                             <Row>
-                                <Col span={5}>
+                                <Col span={2}>
                                     <Form.Item label={intl.formatMessage({ id: '扩容' })} name="enable" valuePropName="checked" style={{ margin: 0 }}>
                                         <Switch disabled={!canIssue || !isLive} defaultValue={false} />
                                     </Form.Item>
@@ -445,23 +466,23 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                     {intl.formatMessage({ id: '下发' })}
                                 </div>
                             </Row>
-                            <Row gutter={[20, 20]}>
-                                <Col span={12}>
+                            <Row gutter={50}>
+                                <Col span={6}>
                                     <Form.Item name="tempStart" label={intl.formatMessage({ id: '除湿机温度启动值(℃)' })} rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
                                         <InputNumber disabled={!isLive} style={{ width: "100%" }} placeholder={intl.formatMessage({ id: '请输入除湿机温度启动值' })} />
                                     </Form.Item>
                                 </Col>
-                                <Col span={12}>
+                                <Col span={6}>
                                     <Form.Item name="tempStop" label={intl.formatMessage({ id: '除湿机温度停止值(℃)' })} rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
                                         <InputNumber disabled={!isLive} style={{ width: "100%" }} placeholder={intl.formatMessage({ id: '请输入除湿机温度停止值' })} />
                                     </Form.Item>
                                 </Col>
-                                <Col span={12}>
+                                <Col span={6}>
                                     <Form.Item name="humStart" label={intl.formatMessage({ id: '除湿机湿度启动值(%rh)' })} rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
                                         <InputNumber disabled={!isLive} style={{ width: "100%" }} placeholder={intl.formatMessage({ id: '请输入除湿机湿度启动值' })} />
                                     </Form.Item>
                                 </Col>
-                                <Col span={12}>
+                                <Col span={6}>
                                     <Form.Item name="humStop" label={intl.formatMessage({ id: '除湿机湿度停止值(%rh)' })} rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
                                         <InputNumber disabled={!isLive} style={{ width: "100%" }} placeholder={intl.formatMessage({ id: '请输入除湿机湿度停止值' })} />
                                     </Form.Item>
@@ -487,23 +508,23 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                     {intl.formatMessage({ id: '下发' })}
                                 </div>
                             </Row>
-                            <Row gutter={[20, 20]}>
-                                <Col span={12}>
+                            <Row gutter={50}>
+                                <Col span={6}>
                                     <Form.Item name="coolingPoint" label={intl.formatMessage({ id: '液冷制冷点(℃)' })} rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
                                         <InputNumber disabled={!isLive} style={{ width: "100%" }} placeholder={intl.formatMessage({ id: '请输入液冷制冷点' })} />
                                     </Form.Item>
                                 </Col>
-                                <Col span={12}>
+                                <Col span={6}>
                                     <Form.Item name="heatPoint" label={intl.formatMessage({ id: '液冷加热点(℃)' })} rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
                                         <InputNumber disabled={!isLive} style={{ width: "100%" }} placeholder={intl.formatMessage({ id: '请输入液冷加热点' })} />
                                     </Form.Item>
                                 </Col>
-                                <Col span={12}>
+                                <Col span={6}>
                                     <Form.Item name="coolingDiffPoint" label={intl.formatMessage({ id: '液冷制冷回差(℃)' })} rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
                                         <InputNumber disabled={!isLive} style={{ width: "100%" }} placeholder={intl.formatMessage({ id: '请输入液冷制冷回差' })} />
                                     </Form.Item>
                                 </Col>
-                                <Col span={12}>
+                                <Col span={6}>
                                     <Form.Item name="heatDiffPoint" label={intl.formatMessage({ id: '液冷加热回差(℃)' })} rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
                                         <InputNumber disabled={!isLive} style={{ width: "100%" }} placeholder={intl.formatMessage({ id: '请输入液冷加热回差' })} />
                                     </Form.Item>
@@ -531,10 +552,15 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                             values = { mode: nextMode }
                             res = await switchModesServe({ ...values, dtuId: id, type: deviceVersion });
                         }
-                        // 设备命令-PCS/BMS设置
-                        if (checkModalType === "runModePCSBMS") {
-                            values = { pcsAndBmsMode: nextRunModePCSBMS }
+                        // 设备命令-PCS设置
+                        if (checkModalType === "runModePCS") {
+                            values = { pcsMode: nextRunModePCS }
                             res = await sendPCSSettingServe({ ...values, dtuId: id, type: deviceVersion });
+                        }
+                        // 设备命令-BMS设置
+                        if (checkModalType === "runModeBMS") {
+                            values = { bmsMode: nextRunModeBMS }
+                            res = await sendBMSSettingServe({ ...values, dtuId: id, type: deviceVersion });
                         }
                         // 设备命令-PCS功率
                         if (checkModalType === "pcsPower") {
@@ -599,9 +625,10 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                             setMode(nextMode);
                             form.setFieldsValue({ mode: nextMode })
                         }
-                        if (checkModalType === "runModePCSBMS") {
-                            setRunModePCSBMS(nextRunModePCSBMS);
-                            form.setFieldsValue({ runModePCSBMS: nextRunModePCSBMS })
+                        if (checkModalType === "runModePCS"||checkModalType === "runModeBMS") {
+                            setTimeout(()=>{
+                                getInitData();
+                            }, 1000*60*2);
                         }
                     }
                 }}
@@ -623,31 +650,27 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                             intl.formatMessage({ id: '确定切换为手动模式吗?' })
                         }
                         {
-                            checkModalType === "runModePCSBMS" && nextRunModePCSBMS === 1 &&
+                            checkModalType === "runModePCS" && nextRunModePCS === 1 &&
                             intl.formatMessage({ id: '确定下发PCS开机命令吗?' })
                         }
                         {
-                            checkModalType === "runModePCSBMS" && nextRunModePCSBMS === 0 &&
+                            checkModalType === "runModePCS" && nextRunModePCS === 0 &&
                             intl.formatMessage({ id: '确定下发PCS关机命令吗?' })
                         }
                         {
-                            checkModalType === "runModePCSBMS" && nextRunModePCSBMS === 2 &&
+                            checkModalType === "runModePCS" && nextRunModePCS === 2 &&
                             intl.formatMessage({ id: '确定下发PCS待机命令吗?' })
                         }
                         {
-                            checkModalType === "runModePCSBMS" && nextRunModePCSBMS === 3 &&
-                            intl.formatMessage({ id: '确定下发PCS复位命令吗?' })
-                        }
-                        {
-                            checkModalType === "runModePCSBMS" && nextRunModePCSBMS === 4 &&
+                            checkModalType === "runModeBMS" && nextRunModeBMS === 1 &&
                             intl.formatMessage({ id: '确定下发BMS开机命令吗?' })
                         }
                         {
-                            checkModalType === "runModePCSBMS" && nextRunModePCSBMS === 5 &&
+                            checkModalType === "runModeBMS" && nextRunModeBMS === 2 &&
                             intl.formatMessage({ id: '确定下发BMS关机命令吗?' })
                         }
                         {
-                            checkModalType && checkModalType !== "switchModes" && checkModalType !== "runModePCSBMS" &&
+                            checkModalType && checkModalType !== "switchModes" && checkModalType !== "runModePCS" && checkModalType !== "runModeBMS" &&
                             intl.formatMessage({ id: '确定执行该操作吗?' })
                         }
                     </div>

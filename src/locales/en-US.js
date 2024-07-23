@@ -2031,4 +2031,6 @@ export default {
 "最低温度": 'Minimum temperature',
 '温差': 'Temperature difference',
 '电站信息': 'Power Station Information',
+'负载电表': '',
+'负载电表通讯状态': '',
 } 

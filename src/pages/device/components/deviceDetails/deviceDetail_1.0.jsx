@@ -12,6 +12,7 @@ import DetalisCard from "../DetailsCard";
 function Com({deviceVersion}) {
     const { token } = theme.useToken();
     const id = getQueryString("id");
+    const [showLoadMeterData, setShowLoadMeterData] = useState(false);
 
     const [pcsData, setPcsData] = useState({
         title: "PCS信息",
@@ -82,6 +83,33 @@ function Com({deviceVersion}) {
             { name: "放电功率限值", value: "-", key: "allowMaxDischargePower" },
             { name: "正极最小绝缘电阻", value: "-", key: "positiveMinInResistance" },
             { name: "负极最小绝缘电阻", value: "-", key: "cathodeMinInResistance" },
+        ],
+    });
+
+    const [loadMeterData, setLoadMeterData] = useState({
+        title: "负载电表",
+        data: [
+            { name: "总有功功率", value: "-", key: "totalActivePower" },
+            { name: "A相有功功率", value: "-", key: "phaseAActivePower" },
+            { name: "B相有功功率", value: "-", key: "phaseBActivePower" },
+            { name: "C相有功功率", value: "-", key: "phaseCActivePower" },
+            { name: "总无功功率", value: "-", key: "totalReactivePower" },
+            { name: "A相无功功率", value: "-", key: "phaseAReactivePower" },
+            { name: "B相无功功率", value: "-", key: "phaseBReactivePower" },
+            { name: "C相无功功率", value: "-", key: "phaseCReactivePower" },
+            { name: "总视在功率", value: "-", key: "totalApparentPower" },
+            { name: "A相视在功率", value: "-", key: "apparentAPower" },
+            { name: "B相视在功率", value: "-", key: "apparentBPower" },
+            { name: "C相视在功率", value: "-", key: "apparentCPower" },
+            { name: "A相电压", value: "-", key: "phaseAVol" },
+            { name: "B相电压", value: "-", key: "phaseBVol" },
+            { name: "C相电压", value: "-", key: "phaseCVol" },
+            { name: "A相电流", value: "-", key: "phaseACur" },
+            { name: "B相电流", value: "-", key: "phaseBCur" },
+            { name: "C相电流", value: "-", key: "phaseCCur" },
+            { name: "总频率", value: "-", key: "totalFreq" },
+            { name: "总功率因数", value: "-", key: "totalFactor" },
+            { name: "负载电表通讯状态", value: "-", key: "loadMeterState" },
         ],
     });
 
@@ -185,6 +213,7 @@ function Com({deviceVersion}) {
         const res = await getDtuDetailInfoServe({dtuId: id, type: deviceVersion});
         if(res?.data?.data){
             const data = res?.data?.data;
+            setShowLoadMeterData(data?.hasOwnProperty("load-meter"));
             const newPcsData = cloneObject(pcsData); // PCS信息
             newPcsData.data = newPcsData.data?.map(item => {
                 const newItem = cloneObject(item);
@@ -206,6 +235,14 @@ function Com({deviceVersion}) {
                 return newItem;
             })
 
+            const newLoadMeterData = cloneObject(loadMeterData); // 负载电表
+            newLoadMeterData.data = newLoadMeterData.data?.map(item => {
+                const newItem = cloneObject(item);
+                newItem.value = data.tmeter[newItem.key]||"-";
+                return newItem;
+            })
+
+
             const newMeasureDataData = cloneObject(measureDataData); // 计量数据
             newMeasureDataData.data = newMeasureDataData.data?.map(item => {
                 const newItem = cloneObject(item);
@@ -225,6 +262,7 @@ function Com({deviceVersion}) {
             setMeasureMeterData(newMeasureMeterData);
             setMeasureDataData(newMeasureDataData);
             setOtherData(newOtherData);
+            setLoadMeterData(newLoadMeterData);
         }
     }
 
@@ -245,6 +283,7 @@ function Com({deviceVersion}) {
             <DetalisCard data={pcsData} />
             <DetalisCard data={bmsData} />
             <DetalisCard data={measureMeterData} />
+            {showLoadMeterData&&<DetalisCard data={loadMeterData} />}
             <DetalisCard data={measureDataData} />
             <DetalisCard data={otherData} />
         </div>
