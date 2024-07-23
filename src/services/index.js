@@ -135,3 +135,39 @@ export const exportAnalytics = (payload) => {
 export const getSocialBenefit = (payload) => {
     return axiosInstance.get(`/minsys/save/getSocialBenefit`, { params: payload });
 }
+
+export const batchSendPCSSetting = (payload) => {
+    return axiosInstance.post(`/minsys/strategy/sendMultiPCSSetting`, payload)
+}
+
+export const batchSendBMSSetting = (payload) => {
+    return axiosInstance.post(`/minsys/strategy/sendMultiBMSSetting`, payload)
+}
+
+export const batchSendParamSetting = (payload) => {
+    return axiosInstance.post(`/minsys/strategy/sendMultiParamSetting`, payload)
+}
+
+export const batchSendStrategySelect = (payload) => {
+    return axiosInstance.post(`/minsys/strategy/sendMultiStrategySelect`, payload);
+}
+
+export const batchSendDehumidifier = (payload) => {
+    return axiosInstance.post(`/minsys/strategy/sendMultiDehumidifier`, payload);
+}
+
+export const batchSendLiquidCooler = (payload) => {
+    return axiosInstance.post(`/minsys/strategy/sendMultiLiquidCooler`, payload);
+}
+
+export const batchSwitchModes = (payload) => {
+    return axiosInstance.post(`/minsys/strategy/switchMultiModes`, payload);
+}
+
+export const batchSendStrategySetting = (payload) => {
+    return axiosInstance.post(`/minsys/strategy/sendMultiStrategySetting`, payload);
+}
+
+export const btachSendPCSPower = (payload) => {
+    return axiosInstance.post(`/minsys/strategy/sendMultiPCSPower`, payload);
+}

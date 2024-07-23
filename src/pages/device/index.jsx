@@ -429,7 +429,7 @@ const RealtimeAlarm = () => {
                 {t('数据删除后将无法恢复，是否确认删除该条数据？')}
             </Modal>
             <Drawer
-                width={1200}
+                width={1500}
                 title={t('策略配置')}
                 open={batchPolicyOpen}
                 destroyOnClose={true}

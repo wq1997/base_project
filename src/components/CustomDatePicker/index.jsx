@@ -11,7 +11,6 @@ const CustomDatePicker = (props) => {
     const intl = useIntl();
     const [form] = Form.useForm();
     const { onChange, value } = props;
-
     useEffect(()=>{
         if(value){
             const timeList = value.split("~");
@@ -73,7 +72,7 @@ const CustomDatePicker = (props) => {
                                 ]}
                             >
                                 <Select 
-                                    style={{width: '100%'}}
+                                    style={{width: '100%', minWidth: 30}}
                                     options={rangeTime(24).map(item => {
                                         return {
                                             value: item,
@@ -94,7 +93,7 @@ const CustomDatePicker = (props) => {
                                 ]}
                             >
                                 <Select  
-                                    style={{width: '100%'}}
+                                    style={{width: '100%', minWidth: 30}}
                                     options={rangeTime(60).map(item => {
                                         return {
                                             value: item,
@@ -117,7 +116,7 @@ const CustomDatePicker = (props) => {
                                 ]}
                             >
                                 <Select  
-                                    style={{width: '100%'}}
+                                    style={{width: '100%', minWidth: 30}}
                                     options={rangeTime(24).map(item => {
                                         return {
                                             value: item,
@@ -138,7 +137,7 @@ const CustomDatePicker = (props) => {
                                 ]}
                             >
                                 <Select  
-                                    style={{width: '100%'}}
+                                    style={{width: '100%', minWidth: 30}}
                                     options={rangeTime(60).map(item => {
                                         return {
                                             value: item,

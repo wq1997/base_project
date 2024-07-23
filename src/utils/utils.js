@@ -118,6 +118,6 @@ export function download(url, filename) {
 export const cloneObject = (object) => JSON.parse(JSON.stringify(object));
 
 export const translateNmberToTime = (value) => {
-  if(value<=9) return `0${value}`;
+  if(Number(value)<=9) return `0${value}`;
   return `${value}`;
 }

@@ -272,7 +272,7 @@ const EditRowTable = ({
     setDataSource(newData);
     onChange(newData);
   };
-
+  console.log("AAAA", dataSource)
   const components = {
     body: {
       cell: EditableCell,
