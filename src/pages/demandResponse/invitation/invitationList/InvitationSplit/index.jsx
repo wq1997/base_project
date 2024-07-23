@@ -18,6 +18,7 @@ let oldTaskList = [];
 
 const Company = ({ invitationSplitId, onClose }) => {
     const [modal, contextHolder] = Modal.useModal();
+    const [whPrice, setWhPrice] = useState();
     const [addTaskOpen, setAddTaskOpen] = useState();
     const [isReSplit, setIsReSplit] = useState(false);
     const [editTask, setEditTask] = useState();
@@ -158,7 +159,7 @@ const Company = ({ invitationSplitId, onClose }) => {
             },
         },
     ];
- 
+
     useEffect(() => {
         invitationSplitId && getSplitInviteInitData();
     }, [invitationSplitId]);
@@ -211,36 +212,6 @@ const Company = ({ invitationSplitId, onClose }) => {
         const _taskList = [...taskList];
         _taskList.splice(index, 1);
         setTaskList(_taskList);
-    };
-
-    const sureDeadline = () => {
-        modal.confirm({
-            title: `请选择截止时间`,
-            icon: <ExclamationCircleOutlined />,
-            content: (
-                <DatePicker
-                    showTime={{
-                        format: "HH:mm",
-                    }}
-                    format="YYYY-MM-DD HH:mm"
-                    style={{ width: "100%" }}
-                    onChange={(_, dateStr) => (dateValue = dateStr)}
-                />
-            ),
-            okText: "确认",
-            cancelText: "取消",
-            onOk: async () => {
-                if (!dateValue) {
-                    message.info(`请选择截止时间`);
-                    return Promise.reject();
-                } else {
-                    setDeadline(dateValue);
-                }
-            },
-            onCancel: () => {
-                setDeadline(deadline);
-            },
-        });
     };
 
     const getDisabledCompanyCodes = () => {
@@ -328,19 +299,14 @@ const Company = ({ invitationSplitId, onClose }) => {
                         </div>
                         <div className="item">
                             <span>度电报价(元)：</span>
-                            <span>{inviteInfo?.whPrice}</span>
-                        </div>
-                        <div className="item">
-                            <span>响应功率(kW)：</span>
-                            <span>{inviteInfo?.responsePower}</span>
-                        </div>
-                        <div className="item">
-                            <span>约定开始时间：</span>
-                            <span>{inviteInfo?.appointedTimeFrom}</span>
-                        </div>
-                        <div className="item">
-                            <span>约定结束时间：</span>
-                            <span>{inviteInfo?.appointedTimeTo}</span>
+                            <span>
+                                <Input
+                                    value={whPrice}
+                                    style={{ width: 200 }}
+                                    placeholder="请输入度电报价"
+                                    onChange={e => setWhPrice(e.target.value)}
+                                />
+                            </span>
                         </div>
                     </div>
                     <div className="title">任务拆解</div>
@@ -358,9 +324,6 @@ const Company = ({ invitationSplitId, onClose }) => {
                             onClick={() => handleUseAI()}
                         >
                             AI智能拆解
-                        </Button>
-                        <Button type="primary" onClick={() => sureDeadline()}>
-                            确认截止时间
                         </Button>
                         <div>
                             已拆分任务：{hasSplitCount}KW 剩余任务：

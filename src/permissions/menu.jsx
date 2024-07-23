@@ -29,7 +29,7 @@ const MyMenu = () => {
             permissions: "menu:demand_response",
             children: [
                 {
-                    key: hasPerm(user, "op:invite_list")
+                    key: hasPerm(user, "op:invitation_list")
                         ? "/vpp/demandResponse/invitation/invitationList"
                         : "/vpp/demandResponse/invitation/allTaskList",
                     label: "邀约管理",

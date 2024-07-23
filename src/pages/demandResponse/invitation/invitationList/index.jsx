@@ -3,7 +3,6 @@ import { Button, Space, Table, message, Modal, DatePicker, Tooltip, Input } from
 import { PlusOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { history, useLocation, useSelector } from "umi";
 import { SearchInput } from "@/components";
-import EnterRecord from "./EnterRecord";
 import InvitationSplit from "./InvitationSplit";
 import Detail from "./Detail";
 import {
@@ -21,7 +20,7 @@ import dayjs from "dayjs";
 let invalidReason = undefined;
 
 const Account = () => {
-    recordPage('op:invite_list');
+    recordPage("op:invite_list");
     const location = useLocation();
     const initCode = location?.search.split("=")[1];
     const { user } = useSelector(state => state.user);
@@ -52,13 +51,12 @@ const Account = () => {
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [userList, setUserList] = useState([]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-    const [enterRecordOpen, setEnterRecordOpen] = useState(false);
-    const [invitationSplitId, setInvitationSplitId] = useState();
+    const [invitationSplitId, setInvitationSplitId] = useState(2);
     const [detailId, setDetailId] = useState(false);
 
     const columns = [
         {
-            title: "邀约编号",
+            title: "邀约计划ID",
             dataIndex: "code",
             width: 200,
             render(_, recode) {
@@ -66,18 +64,18 @@ const Account = () => {
                     <a
                         onClick={_ =>
                             history.push(
-                                `/vpp/demandResponse/invitation/allTaskList?inviteCode=${recode.code}`
+                                `/vpp/demandResponse/invitation/allTaskList?inviteCode=${recode.invitationId}`
                             )
                         }
                     >
-                        {recode.code}
+                        {recode.invitationId}
                     </a>
                 );
             },
         },
         {
-            title: "邀约确认状态",
-            dataIndex: "confirmStatusZh",
+            title: "上游确认状态",
+            dataIndex: "szConfirmStatusZh",
             width: 200,
         },
         {
@@ -96,28 +94,47 @@ const Account = () => {
             width: 200,
         },
         {
-            title: "响应要求",
-            dataIndex: "responseTimeTypeZh",
+            title: "全网邀约电量(KWh)",
+            dataIndex: "totalMrPower",
             width: 200,
         },
         {
             title: "度电报价(元)",
             dataIndex: "whPrice",
             width: 200,
+            render(_, recode) {
+                return <span>{recode?.responsePlan?.averagePrice}</span>;
+            },
         },
         {
-            title: "响应功率(kW)",
+            title: "计划申报量(KWh)",
             dataIndex: "responsePower",
             width: 200,
+            render(_, recode) {
+                return <span>{recode?.responsePlan?.totalRegulatedPower}</span>;
+            },
+        },
+        {
+            title: "实际下发量(KWh)",
+            dataIndex: "responsePower",
+            width: 200,
+            render(_, recode) {
+                return <span>{recode?.dayaheadPlan?.totalRegulatedPower}</span>;
+            },
+        },
+        {
+            title: "确认截止时间",
+            dataIndex: "replyTime",
+            width: 300,
         },
         {
             title: "约定开始时间",
-            dataIndex: "appointedTimeFrom",
+            dataIndex: "startTime",
             width: 300,
         },
         {
             title: "约定结束时间",
-            dataIndex: "appointedTimeTo",
+            dataIndex: "endTime",
             width: 200,
         },
         {
@@ -151,7 +168,7 @@ const Account = () => {
             render: (_, { id, supportSplit, supportReSplit }) => {
                 return (
                     <Space>
-                        {hasPerm(user, "op:invite_split") && (
+                        {hasPerm(user, "op:invitation_split") && (
                             <a onClick={() => setInvitationSplitId(id)}>
                                 {supportSplit ? "邀约拆分" : supportReSplit ? "重新拆分" : ""}
                             </a>
@@ -176,11 +193,11 @@ const Account = () => {
     const getSearchInitData = async () => {
         const res = await getSearchInitDataServer();
         if (res?.data?.status == "SUCCESS") {
-            const { confirmStatuses, splitStatuses, responseTypes, responseTimeTypes } =
+            const { szConfirmStatus, splitStatus, ExchangeTypes, responseTimeTypes } =
                 res?.data?.data;
-            setConfirmStatusList(confirmStatuses);
-            setSplitStatusList(splitStatuses);
-            setResponseTypeList(responseTypes);
+            setConfirmStatusList(szConfirmStatus);
+            setSplitStatusList(splitStatus);
+            setResponseTypeList(ExchangeTypes);
             setResponseTimeTypeList(responseTimeTypes);
         }
     };
@@ -217,7 +234,12 @@ const Account = () => {
                 ...paginationRef.current,
                 total: parseInt(totalRecord),
             });
-            setUserList(recordList);
+            setUserList(
+                recordList?.map(item => ({
+                    ...item,
+                    ...item.invitation,
+                }))
+            );
         }
     };
 
@@ -340,13 +362,6 @@ const Account = () => {
 
     return (
         <div>
-            <EnterRecord
-                open={enterRecordOpen}
-                onClose={resFlag => {
-                    setEnterRecordOpen(false);
-                    resFlag && getInviteList();
-                }}
-            />
             <Detail
                 detailId={detailId}
                 onClose={() => {
@@ -371,9 +386,9 @@ const Account = () => {
                         }}
                         value={
                             releaseTime &&
-                                releaseTime.length > 0 &&
-                                releaseTime[0] &&
-                                releaseTime[1]
+                            releaseTime.length > 0 &&
+                            releaseTime[0] &&
+                            releaseTime[1]
                                 ? [dayjs(releaseTime[0]), dayjs(releaseTime[1])]
                                 : []
                         }
@@ -389,7 +404,7 @@ const Account = () => {
                     }}
                 />
                 <SearchInput
-                    label="邀约确认状态"
+                    label="上游确认状态"
                     value={confirmStatus}
                     type="select"
                     options={confirmStatusList}
@@ -420,23 +435,14 @@ const Account = () => {
                         }}
                         value={
                             executeTime &&
-                                executeTime.length > 0 &&
-                                executeTime[0] &&
-                                executeTime[1]
+                            executeTime.length > 0 &&
+                            executeTime[0] &&
+                            executeTime[1]
                                 ? [dayjs(executeTime[0]), dayjs(executeTime[1])]
                                 : []
                         }
                     />
                 </div>
-                <SearchInput
-                    label="响应功率(kW)"
-                    value={responsePower}
-                    onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
-                        responsePowerRef.current = value;
-                        setResponsePower(value);
-                    }}
-                />
                 <SearchInput
                     label="响应类型"
                     type="select"
@@ -446,17 +452,6 @@ const Account = () => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         responseTypeRef.current = value;
                         setResponseType(value);
-                    }}
-                />
-                <SearchInput
-                    label="响应要求"
-                    type="select"
-                    options={responseTimeTypeList}
-                    value={responseTimeType}
-                    onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
-                        responseTimeTypeRef.current = value;
-                        setResponseTimeType(value);
                     }}
                 />
                 <Button type="primary" onClick={getInviteList}>
@@ -485,34 +480,6 @@ const Account = () => {
                 }}
                 title={() => (
                     <Space className="table-title">
-                        {hasPerm(user, "op:invite_add") && (
-                            <Button
-                                type="primary"
-                                icon={<PlusOutlined />}
-                                onClick={() => setEnterRecordOpen(true)}
-                            >
-                                手工录入
-                            </Button>
-                        )}
-                        {hasPerm(user, "op:invite_confirm") && (
-                            <Tooltip
-                                placement="bottom"
-                                title="只有邀约状态为【未确认】的数据可以确认"
-                            >
-                                <Button
-                                    type="primary"
-                                    disabled={!canSure}
-                                    onClick={() => handleOperate(0)}
-                                >
-                                    邀约确认
-                                    {selectedRowKeys?.length ? (
-                                        <span>({selectedRowKeys?.length})</span>
-                                    ) : (
-                                        ""
-                                    )}
-                                </Button>
-                            </Tooltip>
-                        )}
                         {hasPerm(user, "op:invite_delete") && (
                             <Tooltip
                                 placement="bottom"
@@ -525,26 +492,6 @@ const Account = () => {
                                     onClick={() => handleOperate(1)}
                                 >
                                     批量删除
-                                    {selectedRowKeys?.length ? (
-                                        <span>({selectedRowKeys?.length})</span>
-                                    ) : (
-                                        ""
-                                    )}
-                                </Button>
-                            </Tooltip>
-                        )}
-                        {hasPerm(user, "op:invite_invalid") && (
-                            <Tooltip
-                                placement="bottom"
-                                title="只有邀约确认状态为【已确认】的数据可以作废"
-                            >
-                                <Button
-                                    type="primary"
-                                    danger
-                                    disabled={!canInvalid}
-                                    onClick={handleInvalid}
-                                >
-                                    批量作废
                                     {selectedRowKeys?.length ? (
                                         <span>({selectedRowKeys?.length})</span>
                                     ) : (

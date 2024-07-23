@@ -26,7 +26,7 @@ const SearchInput = ({
                     allowClear={true}
                     style={{ width: inputWidth }}
                     fieldNames={{
-                        label: "name",
+                        label: "showStr",
                         value: "code",
                     }}
                     options={options}

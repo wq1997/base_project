@@ -3,12 +3,12 @@ import axiosInstance from "./request";
 const { API_URL_1, API_URL_2 } = process.env;
 
 export const getInviteList = payload => {
-    const url = `${API_URL_2}/invite/find-page`;
+    const url = `${API_URL_2}/invitation/find-page`;
     return axiosInstance.post(url, payload);
 };
 
 export const getSearchInitData = () => {
-    const url = `${API_URL_2}/invite/get-search-page-init-data`;
+    const url = `${API_URL_2}/invitation/get-search-page-init-data`;
     return axiosInstance.get(url);
 };
 
@@ -51,5 +51,3 @@ export const saveSplitInvite = payload => {
     const url = `${API_URL_2}/invite/save-split-result`;
     return axiosInstance.post(url, payload);
 };
-
- 
