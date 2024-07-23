@@ -27,8 +27,6 @@ const DemandResponseIncomeOverview = "@/pages/demandResponse/income/overview";
 const DemandResponseIncomeInvitation = "@/pages/demandResponse/income/invitationIncome";
 // 任务收入明细
 const DemandResponseIncomeTask = "@/pages/demandResponse/income/taskIncome";
-// 公司管理
-const BaseinfoCompany = "@/pages/baseinfo/company";
 // 角色管理
 const BaseinfoRole = "@/pages/baseinfo/role";
 // 账号管理
@@ -56,6 +54,11 @@ const TransactionReport = "@/pages/transaction/report";
 const TransactionExecute = "@/pages/transaction/execute";
 // 经营看板
 const TransactionBoard = "@/pages/transaction/board";
+
+// 场站配置
+const BaseinfoStation = "@/pages/baseinfo/station";
+const BaseinfoStationList = "@/pages/baseinfo/station/stationList";
+const BaseinfoStationCompany = "@/pages/baseinfo/station/company";
 
 export default Routes = [
     {
@@ -117,7 +120,20 @@ export default Routes = [
                             },
                         ],
                     },
-                    { path: "/vpp/baseinfo/company", component: BaseinfoCompany },
+                    {
+                        path: "/vpp/baseinfo/station",
+                        component: BaseinfoStation,
+                        routes:[
+                            {
+                                path: "/vpp/baseinfo/station/stationList",
+                                component: BaseinfoStationList,
+                            },
+                            {
+                                path: "/vpp/baseinfo/station/companyList",
+                                component: BaseinfoStationCompany,
+                            },
+                        ]
+                    },
                     { path: "/vpp/baseinfo/role", component: BaseinfoRole },
                     { path: "/vpp/baseinfo/account", component: BaseinfoAccount },
                     { path: "/vpp/baseinfo/level", component: BaseinfoLevel },

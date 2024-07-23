@@ -10,7 +10,7 @@ import {
 import { history } from "umi";
 
 const Notification = () => {
-    recordPage('menu:notice');
+    recordPage('menu:notification');
     const [dataSource, setDataSource] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -92,6 +92,7 @@ const Notification = () => {
             const res = await getNotificationListServe({
                 pageNum: current,
                 pageSize,
+                queryCmd: {}
             });
             if (res?.data?.status == "SUCCESS") {
                 const { totalRecord, recordList } = res?.data?.data;

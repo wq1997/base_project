@@ -36,11 +36,7 @@ const MyMenu = () => {
                     permissions: "menu:invitation",
                 },
                 {
-                    key: hasPerm(user, "op:profit_dashboard")
-                        ? "/vpp/demandResponse/task/search"
-                        : hasPerm(user, "op:profit_invite")
-                            ? "/vpp/demandResponse/income/invitation"
-                            : "/vpp/demandResponse/income/task",
+                    key: "/vpp/demandResponse/task/search",
                     label: "任务管理",
                     permissions: "menu:resource_plan",
                 },
@@ -67,9 +63,9 @@ const MyMenu = () => {
             permissions: "menu:bas_data",
             children: [
                 {
-                    key: "/vpp/baseinfo/company",
-                    label: "公司配置",
-                    permissions: "menu:company",
+                    key: "/vpp/baseinfo/station/stationList",
+                    label: "场站配置",
+                    permissions: "menu:load_resource",
                 },
                 {
                     key: "/vpp/baseinfo/role",
@@ -81,11 +77,11 @@ const MyMenu = () => {
                     label: "账号管理",
                     permissions: "menu:user",
                 },
-                {
-                    key: "/vpp/baseinfo/level",
-                    label: "公司评级管理",
-                    permissions: "menu:company_ratings",
-                },
+                // {
+                //     key: "/vpp/baseinfo/level",
+                //     label: "公司评级管理",
+                //     permissions: "menu:company_ratings",
+                // },
             ],
         },
         {
@@ -176,7 +172,9 @@ const MyMenu = () => {
             setSelectedKeys("/vpp/demandResponse/income/overview");
         } else if (pathname.startsWith("/vpp/demandResponse/invitation")) {
             setSelectedKeys("/vpp/demandResponse/invitation/invitationList");
-        } else {
+        } else if(pathname.startsWith("/vpp/baseinfo/station")){
+            setSelectedKeys("/vpp/baseinfo/station/stationList");
+        }else {
             setSelectedKeys(pathname);
         }
     };

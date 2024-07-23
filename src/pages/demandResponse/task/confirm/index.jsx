@@ -22,11 +22,10 @@ import {
     getTaskist as getTaskistServer,
 } from "@/services/task";
 import { history, useLocation } from "umi";
-import { recordPage, getUrlParams } from "@/utils/utils";
+import { getUrlParams } from "@/utils/utils";
 
 const colorList = ["#9E87FF", "#73DDFF", "#fe9a8b", "rgb(56, 91, 243)", "#9E87FF"];
 const Confirm = () => {
-    recordPage('op:task_confirm');
     const { search, pathname } = useLocation();
     const { token } = antdTheme.useToken();
     const { theme } = useSelector(state => state.global);

@@ -25,7 +25,7 @@ const CommonLayout = (props) => {
 
     const { data: result, run, cancel } = useRequest(getNotificationCountServe, {
         manual: true,
-        pollingInterval: 1000 * 10,
+        pollingInterval: 1000 * 60 * 5,
         refreshDeps: [theme]
     });
 
@@ -105,7 +105,7 @@ const CommonLayout = (props) => {
                     </div>
                     <Space size={40} align="center">
                         {
-                            user?.isSermatec&&
+                            user?.aggregator&&
                             <Select 
                                 style={{width: 300}}
                                 options={[
