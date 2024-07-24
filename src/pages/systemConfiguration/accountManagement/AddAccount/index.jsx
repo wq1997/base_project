@@ -17,23 +17,19 @@ import {
 import dayjs from "dayjs";
 import { Title } from "@/components";
 import { ExclamationCircleOutlined, CaretRightOutlined } from "@ant-design/icons";
+import { getAccountUpdateIndexData as getAccountUpdateIndexDataServer } from "@/services/user";
 import "./index.less";
 
 const { Panel } = Collapse;
 
-const AddProject = ({ open, onClose }) => {
+const AddProject = ({ open, editId, onClose }) => {
     const [form] = Form.useForm();
     const [currentStep, setCurrentStep] = useState(3);
-    const [checkGroup, setCheckGroup] = useState([]);
-    const [responseTypeList, setResponseTypeList] = useState();
-    const [responseTimeTypeList, setResponseTimeTypeList] = useState();
 
-    const getSearchInitData = async () => {
-        const res = await getSearchInitDataServer();
+    const getInitData = async () => {
+        const res = await getAccountUpdateIndexDataServer();
         if (res?.data?.status == "SUCCESS") {
             const { responseTypes, responseTimeTypes } = res?.data?.data;
-            setResponseTypeList(responseTypes);
-            setResponseTimeTypeList(responseTimeTypes);
         }
     };
 
@@ -53,7 +49,9 @@ const AddProject = ({ open, onClose }) => {
         }
     };
 
-    useEffect(() => { }, [open]);
+    useEffect(() => {
+        getInitData();
+    }, [open]);
 
     return (
         <Modal

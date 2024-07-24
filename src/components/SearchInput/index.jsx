@@ -34,6 +34,10 @@ const SearchInput = ({
                     value={value}
                     defaultValue={value}
                     placeholder={placeholder || `请选择${label}`}
+                    fieldNames={{
+                        label: "name",
+                        value: "code",
+                    }}
                     allowClear={allowClear}
                     style={{ width: inputWidth, flex: 1 }}
                     options={options}
