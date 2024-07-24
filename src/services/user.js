@@ -52,5 +52,5 @@ export const updateUserAndInfos2 = (payload) => {
 
 // 根据id删除
 export const apiDeleteUserById = (payload) => {
-  return axiosInstance.get(`/user/deleteUser?userId=${payload.userId}`,);
+  return axiosInstance.get(`/user/standardUser/deleteUser?userId=${payload.userId}`,);
 }

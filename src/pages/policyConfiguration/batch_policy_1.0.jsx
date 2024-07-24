@@ -10,7 +10,7 @@ import {
     batchSendPCSSetting as sendPCSSettingServe,
     batchSendBMSSetting as sendBMSSettingServe,
     updateData as updateDataServe,
-    sendPCSPower as sendPCSPowerServe,
+    btachSendPCSPower as sendPCSPowerServe,
     batchSendParamSetting as sendParamSettingServe,
     batchSendStrategySelect as sendStrategySelectServe,
     batchSendDehumidifier as sendDehumidifierServe,
@@ -566,6 +566,11 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
                         if (checkModalType === "runModeBMS") {
                             values = { bmsMode: nextRunModeBMS }
                             res = await sendBMSSettingServe({ ...values, dtuIds: deviceList, type: deviceVersion });
+                        }
+                        // 设备命令-PCS功率
+                        if (checkModalType === "pcsPower") {
+                            values = await form.validateFields(['pcsPower']);
+                            res = await sendPCSPowerServe({ power: values?.pcsPower, dtuIds: deviceList, type: deviceVersion });
                         }
                         // 参数设置
                         if (checkModalType === "sendParamSetting") {

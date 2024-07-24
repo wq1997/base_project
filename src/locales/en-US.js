@@ -2031,6 +2031,9 @@ export default {
 "最低温度": 'Minimum temperature',
 '温差': 'Temperature difference',
 '电站信息': 'Power Station Information',
-'负载电表': '',
-'负载电表通讯状态': '',
+'负载电表': 'Load Meter',
+'负载电表通讯状态': 'Load Meter Communication Status',
+'电站策略配置': 'Power station strategy configuration',
+'选择设备': 'Select device',
+'请选择设备': 'Please select a device',
 } 

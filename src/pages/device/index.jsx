@@ -352,7 +352,7 @@ const RealtimeAlarm = () => {
                 <div className={classNames(styles.rightItem, styles.leftItem2)}>
                     <Title title={t('设备列表')} />
                     <div className={styles.add}>
-                        <div className={styles.addBtn} onClick={()=>setBatchPolicyOpen(true)}>{t('策略配置')}</div>
+                        <div className={styles.addBtn} onClick={()=>setBatchPolicyOpen(true)}>{t('电站策略配置')}</div>
                         {(user?.roleId===2||user?.roleId===3)&&<div onClick={changIsOpen} className={styles.addBtn}>{t('新增设备')}</div>}
                     </div>
                     <div className={styles.cardContent}>
@@ -430,7 +430,7 @@ const RealtimeAlarm = () => {
             </Modal>
             <Drawer
                 width={1500}
-                title={t('策略配置')}
+                title={t('电站策略配置')}
                 open={batchPolicyOpen}
                 destroyOnClose={true}
                 onClose={()=>setBatchPolicyOpen(false)}
