@@ -80,8 +80,6 @@ const App = (props) => {
   }
   useEffect(() => {
     form.setFieldsValue(props.formData)
-    console.log(props.formData, 1111111111);
-
   }, [props.formData]);
   useEffect(() => {
     getGrid();
@@ -102,7 +100,6 @@ const App = (props) => {
       console.log('Success:', values);
       if (props.formData.id) {
         props.changeData({ id: props.formData.id, ...values })
-
       } else {
         props.changeData(values)
       }
