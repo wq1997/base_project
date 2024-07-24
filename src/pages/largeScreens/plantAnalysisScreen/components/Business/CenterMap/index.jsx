@@ -12,15 +12,16 @@ const CenterMap = ({ dataSource }) => {
                             flex: 1,
                             width:0,
                             height: "100%",
-                            border: "1px solid",
-                            borderImage:
-                                "linear-gradient(180deg, rgba(84, 207, 255, 1), rgba(8, 57, 85, 1), rgba(128, 183, 242, 1), rgba(12, 65, 94, 1), rgba(117, 180, 255, 1)) 1 1",
+                            // border: "1px solid",
+                            // borderImage:
+                            //     "linear-gradient(180deg, rgba(84, 207, 255, 1), rgba(8, 57, 85, 1), rgba(128, 183, 242, 1), rgba(12, 65, 94, 1), rgba(117, 180, 255, 1)) 1 1",
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
                             padding: "40px 0",
                             boxSizing: "border-box",
-                            borderRadius: 10,
+                            background: 'rgba(3,44,61,0.6)',
+                            borderRadius: 12
                         }}
                     >
                         <img className={styles.img} src={data?.icon} style={{ width: "50px", marginRight: 15 }} />
@@ -28,7 +29,7 @@ const CenterMap = ({ dataSource }) => {
                             <div
                                 className={styles.value}
                                 style={{
-                                    color: "#54D1FF",
+                                    color: "#01fff5",
                                     fontFamily: "DingTalkJinBuTi",
                                     fontSize: 28,
                                 }}

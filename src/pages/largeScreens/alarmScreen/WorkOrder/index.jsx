@@ -1,10 +1,10 @@
 import { theme, Table, Tooltip } from "antd";
 import styles from "./index.less";
 import Card from "../../components/Card";
-import total from "@/assets/images/工单总数.svg";
-import complete from "@/assets/images/已完成工单.svg";
-import other from "@/assets/images/在途其他工单.svg";
-import matter from "@/assets/images/在途异常工单.svg";
+import total from "@/assets/images/center1.svg";
+import complete from "@/assets/images/center2.svg";
+import other from "@/assets/images/center3.svg";
+import matter from "@/assets/images/center4.svg";
 import { useState, useEffect } from "react";
 
 const Index = ({ data }) => {

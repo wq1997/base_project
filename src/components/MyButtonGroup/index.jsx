@@ -16,7 +16,7 @@ const MyButtonGroup = ({
                                 style={{
                                     color: 'white', 
                                     padding: '5px 15px', 
-                                    background: value===option.value?'#54CFFF': '#1B5680',
+                                    background: value===option.value?'rgb(14, 204, 197)': '#1B5680',
                                     borderRadius: 5,
                                     fontSize: 12,
                                     ...btnStyle

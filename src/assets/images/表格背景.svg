@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="1838px" height="32px" viewBox="0 0 1838 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>矩形</title>
+<svg width="1316px" height="32px" viewBox="0 0 1316 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>矩形备份 119</title>
     <defs>
-        <radialGradient cx="50%" cy="50%" fx="50%" fy="50%" r="70.1657825%" gradientTransform="translate(0.500000,0.500000),scale(0.017410,1.000000),rotate(90.000000),scale(1.000000,48.127958),translate(-0.500000,-0.500000)" id="radialGradient-1">
+        <radialGradient cx="50%" cy="50%" fx="50%" fy="50%" r="70.1657825%" gradientTransform="translate(0.500000,0.500000),scale(0.024316,1.000000),rotate(90.000000),scale(1.000000,47.517111),translate(-0.500000,-0.500000)" id="radialGradient-1">
             <stop stop-color="#0E66A5" stop-opacity="0" offset="0%"></stop>
-            <stop stop-color="#54CFFF" offset="100%"></stop>
+            <stop stop-color="#01FFF5" offset="100%"></stop>
         </radialGradient>
     </defs>
-    <g id="大屏" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.702892485">
-        <g id="电站分析备份-2" transform="translate(-34.000000, -691.000000)" fill="url(#radialGradient-1)">
-            <polygon id="矩形" points="34 691 1872 691 1871.95874 723 34 723"></polygon>
+    <g id="大屏" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.75">
+        <g id="告警列表" transform="translate(-525.000000, -383.000000)" fill="url(#radialGradient-1)">
+            <polygon id="矩形备份-119" points="525 383 1841 383 1840.97046 415 525 415"></polygon>
         </g>
     </g>
 </svg>

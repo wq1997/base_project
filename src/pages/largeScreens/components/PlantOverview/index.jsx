@@ -6,6 +6,7 @@ import Card from "../Card";
 import { Charts3D, Charts2_5D, ScrollTable } from "@/components";
 
 const Index = ({ data: { total, totalCapacity, totalPlant } }) => {
+    console.log("total", total)
     return (
         <Card
             title="电站概览"
@@ -14,12 +15,12 @@ const Index = ({ data: { total, totalCapacity, totalPlant } }) => {
                     <div style={{ flex: 1 }}>
                         <Charts3D
                             colorList={[
+                                "#76B3FF", // 蓝色
                                 "#34FFFD",
-                                "#FFF073",
-                                "#76B3FF",
+                                "#FF9960", // 橙色
                                 "#E8A7FF",
                                 "#01F29B",
-                                "#FF9960",
+                                "#FFF073", // 黄色
                             ]}
                             data={total}
                         />
@@ -27,7 +28,7 @@ const Index = ({ data: { total, totalCapacity, totalPlant } }) => {
                     <div className={styles.areaContentData}>
                         <div className={styles.areaContentDataItem}>
                             <Badge
-                                color="#54CFFF"
+                                color="#01fff5"
                                 text={<span style={{ color: "#FFFFFF" }}>总电站个数</span>}
                             />
                             <div className={styles.areaContentDataItemData}>
@@ -39,7 +40,7 @@ const Index = ({ data: { total, totalCapacity, totalPlant } }) => {
                         </div>
                         <div className={styles.areaContentDataItem}>
                             <Badge
-                                color="#54CFFF"
+                                color="#01fff5"
                                 text={<span style={{ color: "#FFFFFF" }}>总装机容量</span>}
                             />
                             <div className={styles.areaContentDataItemData}>

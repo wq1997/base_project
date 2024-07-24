@@ -41,7 +41,7 @@ const SocialBenefits = ({ data }) => {
                                         overflow: "hidden",
                                         whiteSpace: "nowrap",
                                         textOverflow: "ellipsis",
-                                        color: "rgb(84, 209, 255)",
+                                        color: "#01fff5",
                                     }}
                                 >
                                     {((item?.data || 0) / 10000).toFixed(2)}

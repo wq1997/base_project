@@ -67,7 +67,7 @@ const CommonLayout = props => {
             },
             ".ant-menu-item-selected": {
                 background:
-                    "linear-gradient( 270deg, rgba(18,88,175,0.25) 0%, #1676EF 100%) !important",
+                    "linear-gradient(270deg, rgb(10 45 60) 0%, rgb(1 180 160) 100%) !important",
                 ".anticon,a": {
                     color: "#fff",
                 },

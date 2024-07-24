@@ -96,72 +96,72 @@ const ElectricityRanking = ({ value }) => {
             series:
                 currentType == "1"
                     ? [
-                          {
-                              name: "充电量",
-                              type: "bar",
-                              barWidth: "15%",
-                              itemStyle: {
-                                  normal: {
-                                      color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                                          {
-                                              offset: 0,
-                                              color: "#53DEFF",
-                                          },
-                                          {
-                                              offset: 1,
-                                              color: "#00B1FF",
-                                          },
-                                      ]),
-                                      barBorderRadius: 12,
-                                  },
-                              },
-                              data: data?.map(item => parseFloat(item._2 / 1000000).toFixed(3)),
-                          },
-                          {
-                              name: "放电量",
-                              type: "bar",
-                              barWidth: "15%",
-                              itemStyle: {
-                                  normal: {
-                                      color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                                          {
-                                              offset: 0,
-                                              color: "#00E7C8",
-                                          },
-                                          {
-                                              offset: 1,
-                                              color: "#0038C6",
-                                          },
-                                      ]),
-                                      barBorderRadius: 12,
-                                  },
-                              },
-                              data: data?.map(item => parseFloat(item._3 / 1000000).toFixed(3)),
-                          },
-                      ]
+                        {
+                            name: "充电量",
+                            type: "bar",
+                            barWidth: "30%",
+                            itemStyle: {
+                                normal: {
+                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                        {
+                                            offset: 0,
+                                            color: "#23eefb",
+                                        },
+                                        {
+                                            offset: 1,
+                                            color: "#00fff1",
+                                        },
+                                    ]),
+                                    barBorderRadius: 6,
+                                },
+                            },
+                            data: data?.map(item => parseFloat(item._2 / 1000000).toFixed(3)),
+                        },
+                        {
+                            name: "放电量",
+                            type: "bar",
+                            barWidth: "30%",
+                            itemStyle: {
+                                normal: {
+                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                        {
+                                            offset: 0,
+                                            color: "#00e0ff",
+                                        },
+                                        {
+                                            offset: 1,
+                                            color: "#007ac6",
+                                        },
+                                    ]),
+                                    barBorderRadius: 6,
+                                },
+                            },
+                            data: data?.map(item => parseFloat(item._3 / 1000000).toFixed(3)),
+                        },
+                    ]
                     : [
-                          {
-                              name: "效率",
-                              type: "bar",
-                              barWidth: "15%",
-                              itemStyle: {
-                                  normal: {
-                                      color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                                          {
-                                              offset: 0,
-                                              color: "#53DEFF",
-                                          },
-                                          {
-                                              offset: 1,
-                                              color: "#00B1FF",
-                                          },
-                                      ]),
-                                      barBorderRadius: 12,
-                                  },
-                              },
-                              data: data?.map(item => item._2 * 100),
-                          },
-                      ],
+                        {
+                            name: "效率",
+                            type: "bar",
+                            barWidth: "30%",
+                            itemStyle: {
+                                normal: {
+                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                        {
+                                            offset: 0,
+                                            color: "#00e0ff",
+                                        },
+                                        {
+                                            offset: 1,
+                                            color: "#007ac6",
+                                        },
+                                    ]),
+                                    barBorderRadius: 6,
+                                },
+                            },
+                            data: data?.map(item => item._2 * 100),
+                        },
+                    ],
         });
     };
 

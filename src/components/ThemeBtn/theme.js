@@ -1,8 +1,8 @@
 const theme = {
     dark: {
-        colorPrimary: "#384FE8",
-        layoutTopBackColor: "#00254A !important",
-        layoutLeftBackColor: "#00254A !important",
+        colorPrimary: "#01fff5",
+        layoutTopBackColor: "rgb(10 45 60) !important",
+        layoutLeftBackColor: "rgb(10 45 60) !important",
         incomeOverviewCardColor:
             "linear-gradient( 360deg, rgba(1,12,30,0) 0%, #07162F 100%) !important",
         color1: "#FFF",
