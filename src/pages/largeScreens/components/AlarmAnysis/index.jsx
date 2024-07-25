@@ -1,6 +1,7 @@
 import { Charts2_5D } from "@/components";
 import Card from "../../components/Card";
 const AlarmAnysis = ({ data }) => {
+    console.log(data)
     return (
         <Card
             title={"告警分析"}
@@ -10,9 +11,16 @@ const AlarmAnysis = ({ data }) => {
                         <Charts2_5D
                             size={200}
                             depth={50}
-                            alpha={50}
-                            colors={["#1FDBFF", "#E8A7FF"]}
+                            alpha={65}
+                            colors={["#1bbfb8","#ccc40e", "#d96b35"]}
                             data={data}
+                            // data={
+                            //     [
+                            //         ['一般', data?.[0]?.[1]+10],
+                            //         ['中度', 40],
+                            //         ['严重', data?.[1]?.[1]-40]
+                            //     ]
+                            // }
                         />
                     )}
                 </div>

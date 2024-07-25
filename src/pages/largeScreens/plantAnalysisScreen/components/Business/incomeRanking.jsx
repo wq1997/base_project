@@ -87,8 +87,8 @@ const IncomeRanking = ({ data = {} }) => {
                             0,
                             1,
                             [
-                                { offset: 0, color: "#02FAFF" },
-                                { offset: 0.7, color: "#00B7FF" },
+                                { offset: 0, color: "#00cbff" },
+                                { offset: 0.7, color: "#02ffd6" },
                             ],
                             false
                         ),
@@ -105,15 +105,15 @@ const IncomeRanking = ({ data = {} }) => {
                     barWidth: 30,
                     barGap: "-100%",
                     itemStyle: {
-                        opacity: 0.7,
+                        opacity: 0.6,
                         color: new echarts.graphic.LinearGradient(
                             0,
                             0,
                             0,
                             1,
                             [
-                                { offset: 0, color: "#02FAFF" },
-                                { offset: 0.7, color: "#00B7FF" },
+                                { offset: 0, color: "#02ffd6" },
+                                { offset: 0.7, color: "#00cbff" },
                             ],
                             false
                         ),
@@ -135,8 +135,8 @@ const IncomeRanking = ({ data = {} }) => {
                             0,
                             1,
                             [
-                                { offset: 0, color: "#02FFEF" },
-                                { offset: 0.7, color: "#009EFF" },
+                                { offset: 0, color: "#02ffbe" },
+                                { offset: 0.7, color: "#00dcff" },
                             ],
                             false
                         ),

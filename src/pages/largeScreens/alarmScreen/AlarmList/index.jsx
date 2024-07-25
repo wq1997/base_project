@@ -245,6 +245,7 @@ const Index = ({ initData }) => {
                                         textAlign: "right",
                                         padding: "8px 0 ",
                                         boxSizing: "border-box",
+                                        marginTop: 10
                                     }}
                                 >
                                     <Pagination
