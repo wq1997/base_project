@@ -7,7 +7,7 @@ import {
 } from "@/services/user";
 import "./index.less";
 
-const Index = ({ open, editId, onClose }) => {
+const Index = ({ open, editRow, onClose }) => {
     const [form] = Form.useForm();
     const [treeData, setTreeData] = useState([]);
     const [checkedKeys, setCheckedKeys] = useState([]);
@@ -15,27 +15,37 @@ const Index = ({ open, editId, onClose }) => {
     const getRolePerms = async () => {
         const res = await getRolePermsServer();
         if (res?.data?.status == "SUCCESS") {
-            setTreeData(res?.data?.data);
+            const data = res?.data?.data;
+            setTreeData(data);
         }
     };
 
     const onFinish = async values => {
         const res = await updateRoleServer({
             ...values,
-            id: editId || 0,
+            id: editRow?.id || undefined,
             permCodes: checkedKeys,
         });
         if (res?.data?.status == "SUCCESS") {
-            message.success("添加成功");
-            onClose(true);
+            message.success("操作成功");
+            onClose();
         } else {
             message.info(res?.data?.msg);
         }
     };
 
     useEffect(() => {
-        getRolePerms();
+        if (open) {
+            getRolePerms();
+        } else {
+            form.resetFields();
+        }
     }, [open]);
+
+    useEffect(() => {
+        setCheckedKeys(editRow?.permCodes);
+        form.setFieldsValue(editRow);
+    }, [editRow]);
 
     return (
         <Modal
@@ -44,7 +54,7 @@ const Index = ({ open, editId, onClose }) => {
             confirmLoading={true}
             open={open}
             footer={null}
-            onCancel={() => onClose(false)}
+            onCancel={() => onClose()}
         >
             <Form
                 style={{
@@ -72,19 +82,6 @@ const Index = ({ open, editId, onClose }) => {
                     ]}
                 >
                     <Input style={{ width: "100%" }} placeholder="请输入角色名称" />
-                </Form.Item>
-
-                <Form.Item
-                    label="角色编号"
-                    name="code"
-                    rules={[
-                        {
-                            required: true,
-                            message: "请输入角色编号",
-                        },
-                    ]}
-                >
-                    <Input style={{ width: "100%" }} placeholder="请输入角色编号" />
                 </Form.Item>
 
                 <Form.Item label="权限配置" name="permCodes">

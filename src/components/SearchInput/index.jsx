@@ -16,7 +16,7 @@ const SearchInput = ({
 }) => {
     return (
         <div style={{ display: "flex", alignItems: "center", whiteSpace: "nowrap" }}>
-            {label && <span style={{ marginRight: "5px" }}>{label} </span>}
+            {label && <span style={{ marginRight: "8px" }}>{label} </span>}
             {type == "input" && (
                 <Input
                     value={value}

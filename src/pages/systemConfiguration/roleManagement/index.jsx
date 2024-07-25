@@ -5,7 +5,7 @@ import { SearchInput } from "@/components";
 import AddRole from "./AddRole";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import "./index.less";
-import { getRoleList as getRoleListServer } from "@/services/user";
+import { getRoleList as getRoleListServer, deleteRole as deleteRoleServer } from "@/services/user";
 
 const Account = () => {
     const nameRef = useRef();
@@ -15,7 +15,7 @@ const Account = () => {
     const [list, setList] = useState([]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [addRoleOpen, setAddRoleOpen] = useState(false);
-    const [editId, setEditId] = useState();
+    const [editRow, setEditRow] = useState();
 
     const columns = [
         {
@@ -33,9 +33,17 @@ const Account = () => {
         {
             title: "操作",
             dataIndex: "operate",
+            width: 200,
             render: (_, row) => {
                 return (
-                    <Button type="link" danger>
+                    <Button
+                        type="link"
+                        danger
+                        onClick={() => {
+                            setAddRoleOpen(true);
+                            setEditRow(row);
+                        }}
+                    >
                         编辑
                     </Button>
                 );
@@ -74,30 +82,17 @@ const Account = () => {
         getList();
     };
 
-    const handleDelete = typeId => {
-        const operates = {
-            0: {
-                type: "确认",
-                tip: "邀约确认后不可取消",
-                fn: sureInviteServer,
-            },
-            1: {
-                type: "删除",
-                tip: "删除后不可恢复",
-                fn: deleteInviteServer,
-            },
-        };
-        const { type, tip, fn } = operates[typeId];
+    const handleDelete = () => {
         if (selectedRowKeys?.length == 0) {
-            return message.info(`请先勾选需要${type}的数据`);
+            return message.info(`请先勾选需要删除的数据`);
         }
         Modal.confirm({
-            title: `确定${type}？`,
-            content: tip,
+            title: `确定删除？`,
+            content: "删除后无法恢复",
             onOk: async () => {
-                const res = await fn(selectedRowKeys);
+                const res = await deleteRoleServer(selectedRowKeys);
                 if (res?.data?.status == "SUCCESS") {
-                    message.success(`${type}成功`);
+                    message.success(`删除成功`);
                     setPagination({
                         current: 1,
                     });
@@ -114,7 +109,15 @@ const Account = () => {
 
     return (
         <div className="electronic-archives">
-            <AddRole open={addRoleOpen} editId={editId} onClose={() => setAddRoleOpen(false)} />
+            <AddRole
+                open={addRoleOpen}
+                editRow={editRow}
+                onClose={() => {
+                    setAddRoleOpen(false);
+                    setEditRow();
+                    getList();
+                }}
+            />
             <Space className="search">
                 <SearchInput
                     label="角色名称"

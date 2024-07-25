@@ -17,56 +17,60 @@ import {
 import dayjs from "dayjs";
 import { Title } from "@/components";
 import { ExclamationCircleOutlined, CaretRightOutlined } from "@ant-design/icons";
-import { getAccountUpdateIndexData as getAccountUpdateIndexDataServer } from "@/services/user";
+import {
+    getAccountUpdateIndexData as getAccountUpdateIndexDataServer,
+    updateAccount as updateAccountServer,
+} from "@/services/user";
 import "./index.less";
 
 const { Panel } = Collapse;
 
 const AddProject = ({ open, editId, onClose }) => {
     const [form] = Form.useForm();
-    const [currentStep, setCurrentStep] = useState(3);
+    const [roleOptions, setRoleOptions] = useState([]);
+    const [regionsOptions, setRegionOptions] = useState([]);
 
     const getInitData = async () => {
-        const res = await getAccountUpdateIndexDataServer();
+        const res = await getAccountUpdateIndexDataServer(editId || "");
         if (res?.data?.status == "SUCCESS") {
-            const { responseTypes, responseTimeTypes } = res?.data?.data;
+            const { editUser, roles, regions } = res?.data?.data;
+            setRoleOptions(roles);
+            setRegionOptions(regions);
+            form.setFieldsValue(editUser);
         }
     };
 
     const onFinish = async values => {
-        return;
-        const { appointedTimeFrom, appointedTimeTo } = values;
-        const res = await saveEnterRecordServer({
+        const res = await updateAccountServer({
             ...values,
-            appointedTimeFrom: dayjs(appointedTimeFrom).format("YYYY-MM-DD HH:mm"),
-            appointedTimeTo: dayjs(appointedTimeTo).format("YYYY-MM-DD HH:mm"),
+            id: editId || undefined,
         });
         if (res?.data?.status == "SUCCESS") {
-            message.success("录入成功");
-            onClose(true);
+            message.success("操作成功");
+            onClose();
         } else {
             message.info(res?.data?.msg);
         }
     };
 
     useEffect(() => {
-        getInitData();
+        if (open) {
+            getInitData();
+        } else {
+            form.resetFields();
+        }
     }, [open]);
 
     return (
         <Modal
-            title={<Title>新增巡检项</Title>}
+            title={<Title>{`${editId ? "编辑" : "新增"}账号`}</Title>}
             width={800}
             confirmLoading={true}
             open={open}
             footer={null}
-            onCancel={() => onClose(false)}
+            onCancel={() => onClose()}
         >
             <Form
-                style={{
-                    width: currentStep == 1 || currentStep == 3 ? "100%" : "50%",
-                    margin: "0 auto",
-                }}
                 name="basic"
                 labelCol={{
                     span: 7,
@@ -88,7 +92,11 @@ const AddProject = ({ open, editId, onClose }) => {
                         },
                     ]}
                 >
-                    <Input style={{ width: "100%" }} placeholder="请输入账号" />
+                    <Input
+                        style={{ width: "100%" }}
+                        disabled={Boolean(editId)}
+                        placeholder="请输入账号"
+                    />
                 </Form.Item>
 
                 <Form.Item
@@ -105,8 +113,21 @@ const AddProject = ({ open, editId, onClose }) => {
                 </Form.Item>
 
                 <Form.Item
+                    label="密码"
+                    name="password"
+                    rules={[
+                        {
+                            required: !Boolean(editId),
+                            message: "请输入密码",
+                        },
+                    ]}
+                >
+                    <Input style={{ width: "100%" }} placeholder="请输入密码" />
+                </Form.Item>
+
+                <Form.Item
                     label="关联手机号"
-                    name="phone"
+                    name="phoneNo"
                     rules={[
                         {
                             required: true,
@@ -118,32 +139,29 @@ const AddProject = ({ open, editId, onClose }) => {
                 </Form.Item>
 
                 <Form.Item
-                    label="所属区域"
-                    name="area"
+                    label="管辖区域"
+                    name="regions"
                     rules={[
                         {
                             required: true,
-                            message: "请选择所属区域",
+                            message: "请选择管辖区域",
                         },
                     ]}
                 >
                     <Select
-                        placeholder="请选择所属区域"
+                        mode="multiple"
+                        placeholder="请选择管辖区域"
                         fieldNames={{
                             label: "name",
                             value: "code",
                         }}
-                        options={[
-                            { name: "江苏", code: 0 },
-                            { name: "浙江", code: 1 },
-                            { name: "上海", code: 1 },
-                        ]}
+                        options={regionsOptions}
                     />
                 </Form.Item>
 
                 <Form.Item
                     label="绑定角色"
-                    name="role"
+                    name="roleCodes"
                     rules={[
                         {
                             required: true,
@@ -152,38 +170,32 @@ const AddProject = ({ open, editId, onClose }) => {
                     ]}
                 >
                     <Select
+                        mode="multiple"
                         placeholder="请选择绑定角色"
                         fieldNames={{
                             label: "name",
                             value: "code",
                         }}
-                        options={[
-                            { name: "业务操作人员", code: 0 },
-                            { name: "管理人员", code: 1 },
-                        ]}
+                        options={roleOptions}
                     />
                 </Form.Item>
 
-                <Form.Item
-                    label="备注"
-                    name="desc"
-                    rules={[
-                        {
-                            required: true,
-                            message: "请输入备注",
-                        },
-                    ]}
-                >
+                <Form.Item label="备注" name="remark">
                     <Input style={{ width: "100%" }} placeholder="请输入备注" />
                 </Form.Item>
 
                 <Form.Item
                     wrapperCol={{
-                        offset: 11,
+                        offset: 16,
                         span: 5,
                     }}
                 >
-                    <Space>
+                    <Space
+                        style={{
+                            position: "relative",
+                            left: "-15px",
+                        }}
+                    >
                         <Button onClick={() => onClose(false)}>取消</Button>
                         <Button type="primary" htmlType="submit">
                             确定

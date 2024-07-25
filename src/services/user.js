@@ -6,6 +6,7 @@ export const login = payload => {
     return axiosInstance.post(url, payload);
 };
 
+// 账号
 export const getAccountList = payload => {
     const url = `${API_URL}/user/find-page`;
     return axiosInstance.post(url, payload);
@@ -21,6 +22,17 @@ export const getAccountUpdateIndexData = id => {
     return axiosInstance.get(url);
 };
 
+export const updateAccount = payload => {
+    const url = `${API_URL}/user/save-or-update`;
+    return axiosInstance.post(url, payload);
+};
+
+export const unBindWx = ids => {
+    const url = `${API_URL}/user/unbind`;
+    return axiosInstance.post(url, ids);
+};
+
+// 角色
 export const getRoleList = payload => {
     const url = `${API_URL}/role/find-page`;
     return axiosInstance.post(url, payload);
@@ -34,4 +46,9 @@ export const updateRole = payload => {
 export const getRolePerms = () => {
     const url = `${API_URL}/role/get-perm-for-edit`;
     return axiosInstance.get(url);
+};
+
+export const deleteRole = ids => {
+    const url = `${API_URL}/role/delete`;
+    return axiosInstance.post(url, ids);
 };

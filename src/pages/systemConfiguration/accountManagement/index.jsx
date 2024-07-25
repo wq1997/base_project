@@ -9,7 +9,7 @@ import {
     Tooltip,
     Input,
     Radio,
-    Dropdown,
+    Popconfirm,
 } from "antd";
 import {
     EllipsisOutlined,
@@ -30,6 +30,7 @@ import dayjs from "dayjs";
 import {
     getAccountSearchIndexData as getAccountSearchIndexDataServer,
     getAccountList as getAccountListServer,
+    unBindWx as unBindWxServer,
 } from "@/services/user";
 
 const Account = () => {
@@ -40,11 +41,15 @@ const Account = () => {
     const roleCodeRef = useRef();
     const [roleOptions, setRoleOptions] = useState([]);
     const [roleCode, setRoleCode] = useState();
+    const regionRef = useRef();
+    const [regionsOptions, setRegionOptions] = useState([]);
+    const [region, setRegion] = useState();
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [userList, setUserList] = useState([]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [addAccountOpen, setAddAccountOpen] = useState(false);
+    const [editId, setEditId] = useState();
 
     const columns = [
         {
@@ -60,8 +65,11 @@ const Account = () => {
             dataIndex: "phoneNo",
         },
         {
-            title: "所属区域",
-            dataIndex: "",
+            title: "管辖区域",
+            dataIndex: "regionVos",
+            render: (_, { regionVos }) => {
+                return regionVos?.map(item => item.name)?.join("，");
+            },
         },
         {
             title: "绑定角色",
@@ -77,17 +85,42 @@ const Account = () => {
         {
             title: "操作",
             dataIndex: "operate",
-            render: (_, row) => {
+            width: 180,
+            render: (_, { id, wxOpenId }) => {
                 return (
-                    <Space>
-                        <Button type="link" danger>
+                    <Space size="middle">
+                        <a
+                            onClick={() => {
+                                setAddAccountOpen(true);
+                                setEditId(id);
+                            }}
+                        >
                             编辑
-                        </Button>
+                        </a>
+                        {wxOpenId && (
+                            <Popconfirm
+                                title="系统提示"
+                                description="确定解绑此微信账号?"
+                                onConfirm={id => handleUnbind([id])}
+                                okText="Yes"
+                                cancelText="No"
+                            >
+                                <a style={{ color: "#F5222D" }}>解绑</a>
+                            </Popconfirm>
+                        )}
                     </Space>
                 );
             },
         },
     ];
+
+    const handleUnbind = async ids => {
+        const res = await unBindWxServer(ids);
+        if (res?.data?.status == "SUCCESS") {
+            message.success("操作成功");
+            getList();
+        }
+    };
 
     const onSelectChange = (newSelectedRowKeys, newSelectedRows) => {
         setSelectedRowKeys(newSelectedRowKeys);
@@ -96,19 +129,26 @@ const Account = () => {
     const getSearchInitData = async () => {
         const res = await getAccountSearchIndexDataServer();
         if (res?.data?.status == "SUCCESS") {
-            const { roles } = res?.data?.data;
+            const { roles, regions } = res?.data?.data;
             setRoleOptions(roles);
+            setRegionOptions(regions);
         }
     };
 
     const getList = async () => {
         const { current, pageSize } = paginationRef.current;
         const account = accountRef.current;
+        const name = nameRef.current;
+        const region = regionRef.current;
+        const roleCode = roleCodeRef?.current;
         const res = await getAccountListServer({
             pageNum: current,
             pageSize,
             queryCmd: {
                 account,
+                name,
+                region,
+                roleCode,
             },
         });
         if (res?.data?.status == "SUCCESS") {
@@ -125,33 +165,26 @@ const Account = () => {
         paginationRef.current = DEFAULT_PAGINATION;
         accountRef.current = undefined;
         setAccount();
+        nameRef.current = undefined;
+        setName();
+        roleCodeRef.current = undefined;
+        setRoleCode();
+        regionRef.current = undefined;
+        setRegion();
         getList();
     };
 
-    const handleDelete = typeId => {
-        const operates = {
-            0: {
-                type: "确认",
-                tip: "邀约确认后不可取消",
-                fn: sureInviteServer,
-            },
-            1: {
-                type: "删除",
-                tip: "删除后不可恢复",
-                fn: deleteInviteServer,
-            },
-        };
-        const { type, tip, fn } = operates[typeId];
+    const handleDelete = () => {
         if (selectedRowKeys?.length == 0) {
-            return message.info(`请先勾选需要${type}的数据`);
+            return message.info(`请先勾选需要删除的数据`);
         }
         Modal.confirm({
-            title: `确定${type}？`,
-            content: tip,
+            title: `确定删除？`,
+            content: "删除后无法恢复",
             onOk: async () => {
-                const res = await fn(selectedRowKeys);
+                const res = await deleteRoleServer(selectedRowKeys);
                 if (res?.data?.status == "SUCCESS") {
-                    message.success(`${type}成功`);
+                    message.success(`删除成功`);
                     setPagination({
                         current: 1,
                     });
@@ -171,8 +204,11 @@ const Account = () => {
         <div className="electronic-archives">
             <AddAccount
                 open={addAccountOpen}
-                onClose={resFlag => {
-                    setAddAccount(false);
+                editId={editId}
+                onClose={() => {
+                    setAddAccountOpen(false);
+                    setEditId();
+                    getList();
                 }}
             />
             <Space className="search">
@@ -202,8 +238,20 @@ const Account = () => {
                         setRoleCode(value);
                     }}
                 />
-                <Button type="primary">搜索</Button>
-                <Button>重置</Button>
+                <SearchInput
+                    label="管辖区域"
+                    type="select"
+                    value={region}
+                    options={regionsOptions}
+                    onChange={value => {
+                        regionRef.current = value;
+                        setRegion(value);
+                    }}
+                />
+                <Button type="primary" onClick={getList}>
+                    搜索
+                </Button>
+                <Button onClick={handleReset}>重置</Button>
             </Space>
             <Table
                 rowKey="id"
@@ -231,9 +279,9 @@ const Account = () => {
                         <Button
                             type="primary"
                             icon={<PlusCircleFilled style={{ fontSize: 13 }} />}
-                            onClick={() => setAddRoleOpen(true)}
+                            onClick={() => setAddAccountOpen(true)}
                         >
-                            新增角色
+                            新增账号
                         </Button>
                         <Button type="primary" danger onClick={handleDelete}>
                             批量删除
