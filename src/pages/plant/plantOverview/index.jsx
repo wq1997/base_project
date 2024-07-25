@@ -10,13 +10,14 @@ import Ranking from "./Ranking";
 import Weather from "./Weather";
 import Flowchart from "./Flowchart";
 import Map from "./Map";
-import { Tooltip } from "antd";
+import { theme } from "antd";
 import { getPlantNames as getPlantNamesServer } from "@/services/plant";
 import { getPlanStatistics as getPlanStatisticsServer } from "@/services/overview";
 import { useEffect, useState } from "react";
 import plant from "../../../../public/icons/plant.svg";
 
 const Index = () => {
+    const { token } = theme.useToken();
     const [activePlant, setActivePlant] = useState();
     const [activePlantName, setActivePlantName] = useState();
     const [plants, setPlants] = useState([]);
@@ -59,7 +60,7 @@ const Index = () => {
     }, [activePlant]);
 
     return (
-        <div className={styles.container}>
+        <div className={styles.container} style={{background: token.overviewBgColor}}>
             <div className={styles.left}>
                 <div className={styles.map}>
                     <Map

@@ -179,7 +179,7 @@ const Index = ({ activePlant }) => {
         <Card
             title="能量监测"
             others={
-                <div className={styles.powerGeneration} style={{ textAlign: "center" }}>
+                <div className={styles.powerGeneration} style={{ textAlign: "center"}}>
                     <Space>
                         {btns?.map(item => (
                             <div

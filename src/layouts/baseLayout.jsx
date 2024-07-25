@@ -6,11 +6,14 @@ import styles from "./baseLayout.less";
 import useIcon from "@/hooks/useIcon";
 import { useEffect, useState } from "react";
 import logo from "../../public/logo.png";
-import { getUserInfo as getUserInfoServer } from "@/services/user";
+import { theme } from "antd";
+import { useEmotionCss } from '@ant-design/use-emotion-css';
+import classNames from "classnames";
 
 const { Header, Sider, Content } = Layout;
 
 const BaseLayout = () => {
+    const { token } = theme.useToken();
     const Icon = useIcon();
     const dispatch = useDispatch();
     const { userInfo } = useSelector(state => state.user);
@@ -22,10 +25,22 @@ const BaseLayout = () => {
         });
     }, []);
 
+    const headerStyle = useEmotionCss(()=>{
+        return {
+            background: token.headerBackground,
+        }
+    })
+
+    const siderStyle = useEmotionCss(() => {
+        return {
+            background: token.sideBackgroud,
+        }
+    });
+
     return (
         <div className={styles.baseLayout}>
             <Layout className={styles.layout}>
-                <Header className={styles.header}>
+                <Header className={classNames(styles.header, headerStyle)}>
                     <div style={{ display: "flex", alignItems: "center" }}>
                         <img
                             src={logo}
@@ -75,13 +90,13 @@ const BaseLayout = () => {
                     </Dropdown>
                 </Header>
                 <Layout hasSider>
-                    <Sider className={styles.sider} width={180}>
+                    <Sider className={classNames(styles.sider, siderStyle)} width={180}>
                         <div className={styles.siderContent}>
                             <MyMenu />
                         </div>
                     </Sider>
-                    <Content className={styles.content}>
-                        <div className={styles.inContent}>
+                    <Content className={styles.content} style={{background: token.contentBgColor}}>
+                        <div className={styles.inContent} style={{background: token.contentInnerBgColor}}>
                             <Outlet />
                         </div>
                     </Content>

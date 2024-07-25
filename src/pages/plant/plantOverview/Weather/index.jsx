@@ -1,17 +1,18 @@
 import { useState, useEffect } from "react";
-import { Button, message, Popconfirm } from "antd";
+import { theme } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import classnames from "classnames";
 import styles from "./index.less";
 import dayjs from "dayjs";
-import plant from "../../../../../public/icons/plant.svg";
+import { useEmotionCss } from '@ant-design/use-emotion-css';
 
 const dateNums = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
 
 const Index = ({ data }) => {
+    const { token } = theme.useToken();
     return (
         <>
-            <div className={styles.index}>
+            <div className={styles.index} style={{backgroundColor: token.overviewCardBg}}>
                 {data && (
                     <>
                         <div className={classnames(styles.item, styles.today)}>

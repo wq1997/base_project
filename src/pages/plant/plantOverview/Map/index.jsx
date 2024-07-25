@@ -26,6 +26,7 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
         });
         map.on("complete", async () => {
             // map.setMapStyle("amap://styles/whitesmoke");
+            map.setMapStyle("amap://styles/blue");
             const infoWindow = new AMap.InfoWindow({ offset: new AMap.Pixel(0, -30) });
             setMap(map);
             addMarkers(map, infoWindow, plants);
@@ -122,7 +123,7 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
                     height: "50px",
                     paddingLeft: "8px",
                     display: "flex",
-                    background: "linear-gradient(to right, #fff 0%,  transparent 100%)",
+                    // background: "linear-gradient(to right, #fff 0%,  transparent 100%)",
                     // background:
                     //     "linear-gradient(to right, transparent 0%, #FFF 50%, transparent 100%)",
                     //  justifyContent: "center",

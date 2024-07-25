@@ -1,10 +1,11 @@
 import SchematicDiagram from "./SchematicDiagram";
 import plant from "../../../../../public/icons/plant.svg";
 import { useEffect, useState } from "react";
-import { Tooltip } from "antd";
+import { theme } from "antd";
 import styles from "./index.less";
 
 const Index = ({ activePlantName, data }) => {
+    const { token } = theme.useToken();
     const [info, setInfo] = useState([
         {
             name: "设备总数",
@@ -36,6 +37,7 @@ const Index = ({ activePlantName, data }) => {
                 position: "relative",
                 background: "#F5F9FE",
                 padding: "10px",
+                backgroundColor: token.overviewCardBg
             }}
         >
             {/* <div

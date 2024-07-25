@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Tooltip } from "antd";
+import { Tooltip, theme } from "antd";
 import styles from "./index.less";
 import tree from "../../../../../public/icons/tree.svg";
 import co2 from "../../../../../public/icons/CO₂.svg";
@@ -7,6 +7,7 @@ import coal from "../../../../../public/icons/coal.svg";
 import Card from "../Card";
 
 const Index = ({ data }) => {
+    const { token } = theme.useToken();
     const [list, setList] = useState([
         { name: "节约标准煤", pic: coal, value: "", key: "ele", unit: "吨" },
         { name: "CO₂减排量", pic: co2, value: "", key: "co2", unit: "吨" },
@@ -27,7 +28,7 @@ const Index = ({ data }) => {
             content={
                 <div style={{ height: "100%", display: "flex" }}>
                     {list?.map(item => (
-                        <div className={styles.item}>
+                        <div className={styles.item} style={{backgroundColor: token.overviewCardBg}}>
                             <div className={styles.data}>
                                 <Tooltip title={item.value}>
                                     <div className={styles.value}>{item.value}</div>

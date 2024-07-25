@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Tooltip } from "antd";
+import { Tooltip, theme } from "antd";
 import styles from "./index.less";
 import power from "../../../../../public/icons/power.svg";
 import dayGeneration from "../../../../../public/icons/dayGeneration.svg";
@@ -9,6 +9,7 @@ import yearGeneration from "../../../../../public/icons/yearGeneration.svg";
 import Card from "../Card";
 
 const Index = ({ data }) => {
+    const { token } = theme.useToken();
     const [list, setList] = useState([
         { name: "当日发电量", pic: dayGeneration, key: "dailyGeneration", value: "", unit: "kWh" },
         {
@@ -41,7 +42,7 @@ const Index = ({ data }) => {
     return (
         <div style={{ height: "100%", width: "100%", display: "flex", gap: "8px" }}>
             {list?.map(item => (
-                <div className={styles.item}>
+                <div className={styles.item} style={{backgroundColor: token.overviewCardBg}}>
                     <div className={styles.data}>
                         <Tooltip title={item.value} className={styles.tooltip}>
                             <div className={styles.value}>{item.value}</div>
