@@ -238,7 +238,7 @@ function Com({deviceVersion}) {
             const newLoadMeterData = cloneObject(loadMeterData); // 负载电表
             newLoadMeterData.data = newLoadMeterData.data?.map(item => {
                 const newItem = cloneObject(item);
-                newItem.value = data?.["load-meter"][newItem.key]||"-";
+                newItem.value = data?.["load-meter"]?.[newItem.key]||"-";
                 return newItem;
             })
 
