@@ -17,42 +17,9 @@ let oldDeadline = undefined;
 let oldTaskList = [];
 
 const Company = ({ invitationSplitId, onClose }) => {
-    const [modal, contextHolder] = Modal.useModal();
-    const [whPrice, setWhPrice] = useState();
-    const [addTaskOpen, setAddTaskOpen] = useState();
-    const [isReSplit, setIsReSplit] = useState(false);
-    const [editTask, setEditTask] = useState();
-    const [inviteInfo, setInviteInfo] = useState();
-    const [taskList, setTaskList] = useState([]);
-    const [deadline, setDeadline] = useState();
-    const [hasSplitCount, setHasSplitCount] = useState(0);
-    const [remainCount, setRemainCount] = useState(0);
-    const [baseLineArgs, setBaseLineArgs] = useState(0);
-
-    const getSplitInviteInitData = async () => {
-        const res = await getSplitInviteInitDataServer(invitationSplitId);
-        if (res?.data?.status == "SUCCESS") {
-            const { companies, invite } = res?.data?.data;
-            const confirmationDeadline = invite?.tasks?.[0]?.confirmationDeadline;
-            setIsReSplit(invite?.splitStatus == "SPLIT");
-            setInviteInfo(invite);
-            setDeadline(confirmationDeadline);
-            oldDeadline = confirmationDeadline;
-            oldTaskList = invite?.tasks;
-            setTaskList(
-                invite?.tasks?.map(item => ({
-                    ...item,
-                    contractedResponsePower: companies?.find(
-                        uu => uu?.company?.code == item.companyCode
-                    )?.contractedResponsePower,
-                }))
-            );
-        }
-    };
-
-    const columns = [
+    const baseColumns = [
         {
-            title: "公司名称",
+            title: "场站名称",
             dataIndex: "companyName",
             key: "companyName",
             width: 300,
@@ -74,47 +41,14 @@ const Company = ({ invitationSplitId, onClose }) => {
             },
         },
         {
-            title: "任务确认状态",
-            dataIndex: "statusZh",
-            isReSplit: true,
-            width: 150,
-        },
-        {
-            title: "签约响应功率(kW)",
-            dataIndex: "contractedResponsePower",
+            title: "最大上升功率(kW)",
+            dataIndex: "increaseRate",
             width: 200,
         },
         {
-            title: "分配任务功率(kW)",
-            dataIndex: "responsePower",
+            title: "设备容量(kWh)",
+            dataIndex: "deviceMaximumCapacity",
             width: 200,
-        },
-        {
-            title: "确认截止时间",
-            dataIndex: "confirmationDeadline",
-            render: () => <span>{deadline}</span>,
-            width: 200,
-        },
-        {
-            title: "任务备注",
-            dataIndex: "remark",
-            width: 200,
-            render(value) {
-                return (
-                    <Tooltip title={value}>
-                        <div
-                            style={{
-                                overflow: "hidden",
-                                whiteSpace: "nowrap",
-                                textOverflow: "ellipsis",
-                                width: 200,
-                            }}
-                        >
-                            {value}
-                        </div>
-                    </Tooltip>
-                );
-            },
         },
         {
             title: "操作",
@@ -159,6 +93,49 @@ const Company = ({ invitationSplitId, onClose }) => {
             },
         },
     ];
+
+    const [modal, contextHolder] = Modal.useModal();
+    const [whPrice, setWhPrice] = useState();
+    const [addTaskOpen, setAddTaskOpen] = useState();
+    const [isReSplit, setIsReSplit] = useState(false);
+    const [editTask, setEditTask] = useState();
+    const [inviteInfo, setInviteInfo] = useState();
+    const [taskList, setTaskList] = useState([]);
+    const [deadline, setDeadline] = useState();
+    const [hasSplitCount, setHasSplitCount] = useState(0);
+    const [remainCount, setRemainCount] = useState(0);
+    const [baseLineArgs, setBaseLineArgs] = useState(0);
+    const [columns, setColumns] = useState(baseColumns);
+
+    const getSplitInviteInitData = async () => {
+        const res = await getSplitInviteInitDataServer(invitationSplitId);
+        if (res?.data?.status == "SUCCESS") {
+            const data = res?.data?.data;
+            setInviteInfo(data);
+            setTaskList(
+                data?.resources4split?.map(item => ({
+                    ...item,
+                    ...item?.baseLineFullInfo.map(uu => ({
+                        [uu.time]: uu.baseLinePower,
+                    })),
+                }))
+            );
+            console.log(data?.resources4split?.map(item => ({
+                ...item,
+                ...item?.baseLineFullInfo.map(uu => ({
+                    [uu.time]: uu.baseLinePower,
+                })),
+            })))
+            const timeSolt = data?.resources4split[0]?.baseLineFullInfo?.map(item => ({
+                title: item.time,
+                dataIndex: item.time,
+                width: 200,
+            }));
+            const _columns = [...baseColumns];
+            _columns.splice(3, 0, ...timeSolt);
+            setColumns(_columns);
+        }
+    };
 
     useEffect(() => {
         invitationSplitId && getSplitInviteInitData();
@@ -286,16 +263,12 @@ const Company = ({ invitationSplitId, onClose }) => {
                 onOk={handleOk}
                 onCancel={() => onClose(false)}
             >
-                <div style={{ padding: "20px" }}>
+                <div style={{ padding: "10px 0" }}>
                     <div className="title">邀约信息</div>
                     <div className="info">
                         <div className="item">
                             <span>响应类型：</span>
                             <span>{inviteInfo?.responseTypeZh}</span>
-                        </div>
-                        <div className="item">
-                            <span>响应要求：</span>
-                            <span>{inviteInfo?.responseTimeTypeZh}</span>
                         </div>
                         <div className="item">
                             <span>度电报价(元)：</span>
@@ -334,7 +307,7 @@ const Company = ({ invitationSplitId, onClose }) => {
                     <Table
                         rowKey="id"
                         dataSource={taskList}
-                        columns={isReSplit ? columns : columns?.filter(column => !column.isReSplit)}
+                        columns={columns}
                         title={() => <Space className="table-title"></Space>}
                         pagination={false}
                         scroll={{

@@ -95,7 +95,7 @@ const Company = ({ detailId, onClose }) => {
         >
             <div style={{padding: '20px'}}>
                 <div className="title">邀约信息</div>
-                <div className="info">
+                <div className="info1">
                     <div className="item">
                         <span>响应类型：</span>
                         <span>{inviteInfo?.responseTypeZh}</span>
