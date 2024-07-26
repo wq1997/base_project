@@ -1,72 +1,63 @@
 import React, { useState, useEffect } from "react";
-import {
-    message,
-    Button,
-    Form,
-    Input,
-    Modal,
-    Steps,
-    DatePicker,
-    Space,
-    Select,
-    Row,
-    Col,
-    Radio,
-    Collapse,
-} from "antd";
-import dayjs from "dayjs";
+import { message, Button, Form, Input, Modal, Space, Tree } from "antd";
 import { Title } from "@/components";
-import { ExclamationCircleOutlined, CaretRightOutlined } from "@ant-design/icons";
+import {
+    updateRole as updateRoleServer,
+    getRolePerms as getRolePermsServer,
+} from "@/services/user";
 import "./index.less";
 
-const { Panel } = Collapse;
-
-const AddProject = ({ open, onClose }) => {
+const Index = ({ open, editRow, onClose }) => {
     const [form] = Form.useForm();
-    const [currentStep, setCurrentStep] = useState(3);
-    const [checkGroup, setCheckGroup] = useState([]);
-    const [responseTypeList, setResponseTypeList] = useState();
-    const [responseTimeTypeList, setResponseTimeTypeList] = useState();
+    const [treeData, setTreeData] = useState([]);
+    const [checkedKeys, setCheckedKeys] = useState([]);
 
-    const getSearchInitData = async () => {
-        const res = await getSearchInitDataServer();
+    const getRolePerms = async () => {
+        const res = await getRolePermsServer();
         if (res?.data?.status == "SUCCESS") {
-            const { responseTypes, responseTimeTypes } = res?.data?.data;
-            setResponseTypeList(responseTypes);
-            setResponseTimeTypeList(responseTimeTypes);
+            const data = res?.data?.data;
+            setTreeData(data);
         }
     };
 
     const onFinish = async values => {
-        return;
-        const { appointedTimeFrom, appointedTimeTo } = values;
-        const res = await saveEnterRecordServer({
+        const res = await updateRoleServer({
             ...values,
-            appointedTimeFrom: dayjs(appointedTimeFrom).format("YYYY-MM-DD HH:mm"),
-            appointedTimeTo: dayjs(appointedTimeTo).format("YYYY-MM-DD HH:mm"),
+            id: editRow?.id || undefined,
+            permCodes: checkedKeys,
         });
         if (res?.data?.status == "SUCCESS") {
-            message.success("录入成功");
-            onClose(true);
+            message.success("操作成功");
+            onClose();
         } else {
             message.info(res?.data?.msg);
         }
     };
 
-    useEffect(() => {}, [open]);
+    useEffect(() => {
+        if (open) {
+            getRolePerms();
+        } else {
+            form.resetFields();
+        }
+    }, [open]);
+
+    useEffect(() => {
+        setCheckedKeys(editRow?.permCodes);
+        form.setFieldsValue(editRow);
+    }, [editRow]);
 
     return (
         <Modal
-            title={<Title>新增巡检项</Title>}
+            title={<Title>新增角色</Title>}
             width={800}
             confirmLoading={true}
             open={open}
             footer={null}
-            onCancel={() => onClose(false)}
+            onCancel={() => onClose()}
         >
             <Form
                 style={{
-                    width: currentStep == 1 || currentStep == 3 ? "100%" : "50%",
                     margin: "0 auto",
                 }}
                 name="basic"
@@ -82,7 +73,7 @@ const AddProject = ({ open, onClose }) => {
             >
                 <Form.Item
                     label="角色名称"
-                    name="account"
+                    name="name"
                     rules={[
                         {
                             required: true,
@@ -93,22 +84,20 @@ const AddProject = ({ open, onClose }) => {
                     <Input style={{ width: "100%" }} placeholder="请输入角色名称" />
                 </Form.Item>
 
-                <Form.Item
-                    label="角色编号"
-                    name="name"
-                    rules={[
-                        {
-                            required: true,
-                            message: "请输入角色编号",
-                        },
-                    ]}
-                >
-                    <Input style={{ width: "100%" }} placeholder="请输入角色编号" />
+                <Form.Item label="权限配置" name="permCodes">
+                    <Tree
+                        treeData={treeData}
+                        checkable
+                        checkedKeys={checkedKeys}
+                        onCheck={checkedKeys => {
+                            setCheckedKeys(checkedKeys);
+                        }}
+                    />
                 </Form.Item>
 
                 <Form.Item
                     label="角色说明"
-                    name="phone"
+                    name="remark"
                     rules={[
                         {
                             required: true,
@@ -137,4 +126,4 @@ const AddProject = ({ open, onClose }) => {
     );
 };
 
-export default AddProject;
+export default Index;

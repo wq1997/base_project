@@ -16,7 +16,7 @@ const SearchInput = ({
 }) => {
     return (
         <div style={{ display: "flex", alignItems: "center", whiteSpace: "nowrap" }}>
-            {label && <span style={{ marginRight: "5px" }}>{label} </span>}
+            {label && <span style={{ marginRight: "8px" }}>{label} </span>}
             {type == "input" && (
                 <Input
                     value={value}
@@ -34,6 +34,10 @@ const SearchInput = ({
                     value={value}
                     defaultValue={value}
                     placeholder={placeholder || `请选择${label}`}
+                    fieldNames={{
+                        label: "name",
+                        value: "code",
+                    }}
                     allowClear={allowClear}
                     style={{ width: inputWidth, flex: 1 }}
                     options={options}
