@@ -2036,4 +2036,5 @@ export default {
 '电站策略配置': 'Power station strategy configuration',
 '选择设备': 'Select device',
 '请选择设备': 'Please select a device',
+'子用户': 'Sub users',
 } 
