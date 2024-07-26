@@ -6,7 +6,6 @@ import Card from "../Card";
 import { Charts3D, Charts2_5D, ScrollTable } from "@/components";
 
 const Index = ({ data: { total, totalCapacity, totalPlant } }) => {
-    console.log("total", total)
     return (
         <Card
             title="电站概览"
@@ -22,7 +21,7 @@ const Index = ({ data: { total, totalCapacity, totalPlant } }) => {
                                 "#01F29B",
                                 "#FFF073", // 黄色
                             ]}
-                            data={total}
+                            data={total?.sort((a,b)=>b.value-a.value)}
                         />
                     </div>
                     <div className={styles.areaContentData}>
