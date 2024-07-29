@@ -61,11 +61,11 @@ const Business = ({ typeList, currentType, onChangedType }) => {
                                         return {
                                             name: city,
                                             value: dataSource?.plantSummery
-                                                ?.province2PlantCapacity?.[city],
+                                                ?.province2PlantCapacity?.[city]?._1,
                                         };
                                     }),
                                     //  totalCapacity: dataSource?.plantSummery?.totalCapacity,
-                                    totalCapacity: 517.32,
+                                    totalCapacity: dataSource?.plantSummery?.totalCapacity,
                                     totalPlant: dataSource?.plantSummery?.count,
                                 }}
                             />

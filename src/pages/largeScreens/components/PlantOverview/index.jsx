@@ -44,10 +44,14 @@ const Index = ({ data: { total, totalCapacity, totalPlant } }) => {
                             />
                             <div className={styles.areaContentDataItemData}>
                                 <span className={styles.areaContentDataItemData1}>
-                                    {/* {((totalCapacity || 0) / 10000).toFixed(3)} */}
-                                    {totalCapacity}
+                                    {totalCapacity?._1}
                                 </span>
                                 <span className={styles.areaContentDataItemData2}>MW</span>
+                                /
+                                <span className={styles.areaContentDataItemData1}>
+                                    {totalCapacity?._2}
+                                </span>
+                                <span className={styles.areaContentDataItemData2}>MWH</span>
                             </div>
                         </div>
                     </div>
