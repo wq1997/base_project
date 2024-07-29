@@ -96,18 +96,18 @@ const BaseLayout = () => {
 
                                     type='icon-shense'
                                     // src={themeDefaultSvg}
-                                    style={{ cursor: 'pointer', fontSize: "30px" }}
+                                    style={{ cursor: 'pointer', fontSize: "30px",margin: '0px 40px' }}
                                     onClick={() => changeTheme('dark')}
                                 />
                                 :
                                 <Icon
                                     // src={themeDarkSvg}
                                     type='icon-qianse'
-                                    style={{ cursor: 'pointer', fontSize: "30px", }}
+                                    style={{ cursor: 'pointer', fontSize: "30px",margin: '0px 40px' }}
                                     onClick={() => changeTheme('default')}
                                 />
                         }
-                        {
+                        {/* {
                             global.locale === "zh-CN" ?
                                 <img
                                     src={languageEnglishSvg}
@@ -120,7 +120,7 @@ const BaseLayout = () => {
                                     style={{ cursor: 'pointer', margin: '0px 40px' }}
                                     onClick={() => changeLanguage('zh-CN')}
                                 />
-                        }
+                        } */}
                         <Dropdown
                             placement="bottom"
                             menu={{
