@@ -1,47 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { message, Button, Form, Input, Modal, Select, Space, InputNumber } from "antd";
-import { getSplitInviteInitData as getSplitInviteInitDataServer } from "@/services/invitation";
 import { Title } from "@/components";
- 
 
-const Company = ({ open, inviteId, editTask, remainCount, disabledCompanyCodes, onClose }) => {
+const Company = ({
+    open,
+    resources,
+
+    editTask,
+
+    disabledResourceIds,
+    onClose,
+}) => {
     const [form] = Form.useForm();
     const [companies, setCompanies] = useState();
-    const [contractedResponsePower, setContractedResponsePower] = useState();
-    const getSplitInviteInitData = async () => {
-        const res = await getSplitInviteInitDataServer(inviteId);
-        if (res?.data?.status == "SUCCESS") {
-            const { companies } = res?.data?.data;
-            setCompanies(
-                companies?.map(item => ({
-                    ...item.company,
-                    ...item,
-                    disabled: disabledCompanyCodes.includes(item.company.code),
-                }))
-            );
-        }
-    };
 
     const onFinish = async values => {
-        const { name } = companies?.find(item => item.code == values?.companyCode);
+        const item = resources?.find(item => item.resourceId == values?.resourceId);
         onClose({
-            ...values,
             index: editTask?.index,
-            companyName: name,
-            contractedResponsePower,
-            statusZh: "待确认",
+            ...item,
         });
     };
 
     useEffect(() => {
-        open && getSplitInviteInitData();
-        if (editTask) {
-            form?.setFieldsValue(editTask);
-            setContractedResponsePower(editTask?.contractedResponsePower);
-        } else {
-            form.resetFields();
-            setContractedResponsePower();
-        }
+        form.resetFields();
     }, [open]);
 
     return (
@@ -67,7 +49,7 @@ const Company = ({ open, inviteId, editTask, remainCount, disabledCompanyCodes, 
             >
                 <Form.Item
                     label="公司"
-                    name="companyCode"
+                    name="resourceId"
                     rules={[
                         {
                             required: true,
@@ -78,57 +60,14 @@ const Company = ({ open, inviteId, editTask, remainCount, disabledCompanyCodes, 
                     <Select
                         placeholder="请选择公司"
                         fieldNames={{
-                            label: "name",
-                            value: "code",
+                            label: "companyName",
+                            value: "resourceId",
                         }}
-                        options={companies}
-                        onChange={value => {
-                            const { contractedResponsePower } = companies?.find(
-                                item => item?.code == value
-                            );
-                            setContractedResponsePower(contractedResponsePower);
-                        }}
+                        options={resources?.map(item => ({
+                            ...item,
+                            disabled: disabledResourceIds.includes(item.resourceId),
+                        }))}
                     />
-                </Form.Item>
-
-                <Form.Item label="签约响应功率(kW)" name="contractedResponsePower">
-                    <div
-                        style={{
-                            color: "rgba(0, 0, 0, 0.25)",
-                            backgroundColor: "rgba(0, 0, 0, 0.04)",
-                            borderRadius: "6px",
-                            border: "1px solid #d9d9d9",
-                            boxShadow: "none",
-                            padding: "4px 11px",
-                            cursor: "not-allowed",
-                            boxSizing: "border-box",
-                            height: "32px",
-                            opacity: 1,
-                        }}
-                    >
-                        {contractedResponsePower}
-                    </div>
-                </Form.Item>
-
-                <Form.Item
-                    label="分配任务功率(kW)"
-                    name="responsePower"
-                    rules={[
-                        {
-                            required: true,
-                            message: "请输入分配任务功率",
-                        },
-                    ]}
-                >
-                    <InputNumber
-                        style={{ width: "100%" }}
-                        placeholder="请输入分配任务功率"
-                        step="0.01"
-                    />
-                </Form.Item>
-
-                <Form.Item label="备注" name="remark">
-                    <Input.TextArea placeholder="请输入备注" />
                 </Form.Item>
 
                 <Form.Item

@@ -51,7 +51,7 @@ const Account = () => {
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [userList, setUserList] = useState([]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-    const [invitationSplitId, setInvitationSplitId] = useState('20220225削峰计划1');
+    const [invitationSplitId, setInvitationSplitId] = useState("20220225削峰计划5");
     const [detailId, setDetailId] = useState(false);
 
     const columns = [
