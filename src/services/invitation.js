@@ -43,11 +43,11 @@ export const intellectSplitInvite = id => {
 };
 
 export const getInviteDetail = id => {
-    const url = `${API_URL_2}/invitation/get-info?id=${id}`;
+    const url = `${API_URL_2}/invitation/get-info?invitationId=${id}`;
     return axiosInstance.get(url);
 };
 
 export const saveSplitInvite = payload => {
-    const url = `${API_URL_2}/invitation/save-split-result`;
+    const url = `${API_URL_2}/response-plan/split`;
     return axiosInstance.post(url, payload);
 };

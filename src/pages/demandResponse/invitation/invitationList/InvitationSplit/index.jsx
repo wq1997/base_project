@@ -4,10 +4,11 @@ import { PlusOutlined, ExclamationCircleOutlined, AndroidOutlined } from "@ant-d
 import {
     getSplitInviteInitData as getSplitInviteInitDataServer,
     saveSplitInvite as saveSplitInviteServer,
+    getInviteDetail as getInviteDetailServer,
 } from "@/services/invitation";
 import { Title } from "@/components";
 import AddTask from "./AddTask";
-import BaseLine from "./BaseLine";
+import BaseLine from "../BaseLine";
 import dayjs from "dayjs";
 import "./index.less";
 import ReactECharts from "echarts-for-react";
@@ -21,7 +22,6 @@ const Company = ({ invitationSplitId, onClose }) => {
             title: "场站名称",
             dataIndex: "companyName",
             key: "companyName",
-            width: 300,
             render(value) {
                 return (
                     <Tooltip title={value}>
@@ -30,7 +30,6 @@ const Company = ({ invitationSplitId, onClose }) => {
                                 overflow: "hidden",
                                 whiteSpace: "nowrap",
                                 textOverflow: "ellipsis",
-                                width: 300,
                             }}
                         >
                             {value}
@@ -42,12 +41,10 @@ const Company = ({ invitationSplitId, onClose }) => {
         {
             title: "最大上升功率(kW)",
             dataIndex: "increaseRate",
-            width: 200,
         },
         {
             title: "设备容量(kWh)",
             dataIndex: "deviceMaximumCapacity",
-            width: 200,
         },
     ];
     const { token } = theme.useToken();
@@ -62,7 +59,6 @@ const Company = ({ invitationSplitId, onClose }) => {
     const [baseLineArgs, setBaseLineArgs] = useState(0);
     const [options, setOptions] = useState({});
     const [columns, setColumns] = useState([]);
-    const [planKWhs, setPlanKWhs] = useState([]);
 
     const getSplitInviteInitData = async () => {
         const res = await getSplitInviteInitDataServer(invitationSplitId);
@@ -124,45 +120,47 @@ const Company = ({ invitationSplitId, onClose }) => {
             });
             const _taskList = resources?.map(item => {
                 item?.baseLineFullInfo.forEach(uu => {
-                    item[uu.timeRange] = uu.baseLinePower;
+                    item[uu.timeRange] = uu.basePower;
                 });
                 return item;
             });
             setTaskList(_taskList);
-            const timeSolt = resources[0]?.baseLineFullInfo?.map((item, itemIndex) => ({
-                title: item.timeRange,
-                dataIndex: item.timeRange,
-                width: 200,
-                render(_, record, index) {
-                    return (
-                        <InputNumber
-                            style={{ width: "100%" }}
-                            placeholder={item.baseLinePower + "kW"}
-                            precision={2}
-                            onChange={value => {
-                                item.power = value;
-                                const [start, end] = item.timeRange.split("~");
-                                const intervalHour =
-                                    dayjs(`2023-04-01 ${end}`).diff(
-                                        `2023-04-01 ${start}`,
-                                        "minute"
-                                    ) / 60;
-                                const kWh = intervalHour * Math.abs(value - item.baseLinePower);
-                                _taskList[index][itemIndex] = kWh;
-                                console.log(_taskList)
-                                setTaskList(_taskList);
-                                // const _planKWhs = [...planKWhs];
-                                // console.log(index,itemIndex)
-                                // if (_planKWhs[index] == undefined) {
-                                //     _planKWhs[index] = [];
-                                // }
-                                // _planKWhs[index][itemIndex] = kWh;
-                                // setPlanKWhs(_planKWhs);
-                            }}
-                        ></InputNumber>
-                    );
-                },
-            }));
+            const timeSolt =
+                resources[0]?.baseLineFullInfo?.map((item, itemIndex) => {
+                    return {
+                        title: item.timeRange,
+                        dataIndex: item.timeRange,
+                        width: 200,
+                        render(_, record, index) {
+                            const currentTask = _taskList[index].baseLineFullInfo[itemIndex];
+                            return (
+                                <InputNumber
+                                    style={{ width: "100%" }}
+                                    placeholder={currentTask?.basePower + "kW"}
+                                    precision={2}
+                                    onChange={value => {
+                                        const [start, end] = currentTask.timeRange.split("~");
+                                        const intervalHour =
+                                            dayjs(`2023-04-01 ${end}`).diff(
+                                                `2023-04-01 ${start}`,
+                                                "minute"
+                                            ) / 60;
+
+                                        const KWh =
+                                            value == null
+                                                ? 0
+                                                : intervalHour *
+                                                  Math.abs(value - currentTask.basePower);
+                                        _taskList[index].baseLineFullInfo[itemIndex].KWh = KWh;
+                                        _taskList[index].baseLineFullInfo[itemIndex].targetPower =
+                                            value;
+                                        setTaskList([..._taskList]);
+                                    }}
+                                ></InputNumber>
+                            );
+                        },
+                    };
+                }) || [];
             setColumns([...baseColumns, ...timeSolt]);
         }
     };
@@ -174,11 +172,18 @@ const Company = ({ invitationSplitId, onClose }) => {
     const AddTaskColse = data => {
         if (data) {
             const index = data?.index;
+            const _data = {
+                ...data,
+                baseLineFullInfo: data?.baseLineFullInfo?.map(item => ({
+                    ...item,
+                    power: null,
+                })),
+            };
             if (index == undefined) {
-                setTaskList([...taskList, data]);
+                setTaskList([...taskList, _data]);
             } else {
                 const _taskList = [...taskList];
-                _taskList[index] = data;
+                _taskList[index] = _data;
                 setTaskList([..._taskList]);
             }
         }
@@ -216,9 +221,16 @@ const Company = ({ invitationSplitId, onClose }) => {
 
     const save = async () => {
         const res = await saveSplitInviteServer({
-            inviteId: invitationSplitId,
-            confirmationDeadline: deadline,
-            splitItems: taskList,
+            invitationId: invitationSplitId,
+            kwPrice: whPrice,
+            resourcePlans: taskList?.map(item => ({
+                resourceId: item.resourceId,
+                time2TargetPower: item?.baseLineFullInfo?.map(uu => ({
+                    time: uu.time,
+                    power: uu.targetPower,
+                    timeRange: uu.timeRange,
+                })),
+            })),
         });
         if (res?.data?.status == "SUCCESS") {
             message.success(`拆解成功`);
@@ -227,8 +239,8 @@ const Company = ({ invitationSplitId, onClose }) => {
     };
 
     const handleOk = async () => {
-        return console.log(taskList);
         if (!taskList?.length) return message.info(`请拆解任务`);
+        if (!whPrice) return message.info(`请输入度电报价`);
         if (isReSplit && !isEqual()) {
             await modal.confirm({
                 title: "系统提示",
@@ -257,11 +269,11 @@ const Company = ({ invitationSplitId, onClose }) => {
             />
             <BaseLine baseLineArgs={baseLineArgs} onClose={() => setBaseLineArgs(null)} />
             <Modal
-                title={<Title>{isReSplit ? "重新拆分" : "邀约拆分"}</Title>}
+                title={<Title> {isReSplit ? "重新拆分" : "邀约拆分"}</Title>}
                 width={1000}
                 open={Boolean(invitationSplitId)}
                 onOk={handleOk}
-                onCancel={() => onClose(false)}
+                onCancel={() => onClose()}
                 destroyOnClose={true}
             >
                 <div style={{ padding: "10px 0" }}>
@@ -301,7 +313,14 @@ const Company = ({ invitationSplitId, onClose }) => {
                         </Button>
                         <div>
                             计划申报量：
-                            {JSON.stringify(taskList?.map(item => item))}
+                            {eval(
+                                taskList
+                                    ?.map(item => item?.baseLineFullInfo?.map(uu => uu.KWh))
+                                    .flat(Infinity)
+                                    ?.filter(item => item != null)
+                                    .join("+")
+                            )?.toFixed(2)}
+                            kWh
                         </div>
                     </Space>
                     <Table
@@ -333,7 +352,6 @@ const Company = ({ invitationSplitId, onClose }) => {
                                                 type="primary"
                                                 onClick={() => {
                                                     handleDelete(index);
-                                                    console.log("taskList", taskList);
                                                 }}
                                             >
                                                 删除
@@ -341,18 +359,11 @@ const Company = ({ invitationSplitId, onClose }) => {
                                             <a
                                                 type="primary"
                                                 onClick={() =>
-                                                    setBaseLineArgs({
-                                                        id: invitationSplitId,
-                                                        companyCode: taskList[index]?.companyCode,
-                                                        responsePeriod: [
-                                                            dayjs(
-                                                                inviteInfo?.appointedTimeFrom
-                                                            ).format("HH:mm"),
-                                                            dayjs(
-                                                                inviteInfo?.appointedTimeTo
-                                                            ).format("HH:mm"),
-                                                        ],
-                                                    })
+                                                    setBaseLineArgs(
+                                                        detailId
+                                                            ? record?.details
+                                                            : record?.baseLineFullInfo
+                                                    )
                                                 }
                                             >
                                                 基线

@@ -24,9 +24,7 @@ const Account = () => {
     const location = useLocation();
     const initCode = location?.search.split("=")[1];
     const { user } = useSelector(state => state.user);
-    const [canSure, setCanSure] = useState(true);
     const [canDelete, setCanDelete] = useState(true);
-    const [canInvalid, setCanInvalid] = useState(true);
     const releaseTimeRef = useRef();
     const executeTimeRef = useRef();
     const codeRef = useRef(initCode);
@@ -51,8 +49,8 @@ const Account = () => {
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [userList, setUserList] = useState([]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-    const [invitationSplitId, setInvitationSplitId] = useState("20220225削峰计划5");
-    const [detailId, setDetailId] = useState(false);
+    const [invitationSplitId, setInvitationSplitId] = useState();
+    const [detailId, setDetailId] = useState();
 
     const columns = [
         {
@@ -103,7 +101,13 @@ const Account = () => {
             dataIndex: "whPrice",
             width: 200,
             render(_, recode) {
-                return <span>{recode?.responsePlan?.averagePrice}</span>;
+                return (
+                    <span>
+                        {recode?.responsePlan?.averagePrice
+                            ? recode?.responsePlan?.averagePrice / 1000
+                            : ""}
+                    </span>
+                );
             },
         },
         {
@@ -173,7 +177,7 @@ const Account = () => {
                                 {supportSplit ? "邀约拆分" : supportReSplit ? "重新拆分" : ""}
                             </a>
                         )}
-                        <a onClick={() => setDetailId(id)}>详情</a>
+                        <a onClick={() => setDetailId(encodeURIComponent(invitationId))}>详情</a>
                     </Space>
                 );
             },
@@ -181,12 +185,8 @@ const Account = () => {
     ];
 
     const onSelectChange = (newSelectedRowKeys, newSelectedRows) => {
-        const hasNoSure = Boolean(newSelectedRows?.some(item => item.supportConfirm == false));
-        setCanSure(!hasNoSure);
         const hasNoDelete = Boolean(newSelectedRows?.some(item => item.supportDelete == false));
         setCanDelete(!hasNoDelete);
-        const hasNoInvalid = Boolean(newSelectedRows?.some(item => item.supportInvalid == false));
-        setCanInvalid(!hasNoInvalid);
         setSelectedRowKeys(newSelectedRowKeys);
     };
 
@@ -265,61 +265,8 @@ const Account = () => {
         getInviteList();
     };
 
-    const handleInvalid = () => {
-        if (selectedRowKeys?.length == 0) {
-            return message.info("请先勾选需要作废的数据");
-        }
-        Modal.confirm({
-            title: "批量作废",
-            icon: <ExclamationCircleOutlined />,
-            width: 500,
-            content: (
-                <div>
-                    <div style={{ marginBottom: "10px" }}>
-                        作废邀约，关联任务将被同步作废，不再统计进入流水，请输入作废原因
-                    </div>
-                    <Input.TextArea
-                        rows={4}
-                        placeholder="请输入作废原因，最多50字"
-                        maxLength={50}
-                        onChange={e => (invalidReason = e.target.value)}
-                    />
-                </div>
-            ),
-            okText: "确认",
-            cancelText: "取消",
-            onOk: async () => {
-                if (!invalidReason) {
-                    message.info("请输入作废原因");
-                    return Promise.reject();
-                }
-                const res = await invalidInviteServer({
-                    ids: selectedRowKeys,
-                    reason: invalidReason,
-                });
-                if (res?.data?.status == "SUCCESS") {
-                    message.success("作废成功");
-                    setPagination({
-                        current: 1,
-                    });
-                    setSelectedRowKeys([]);
-                    getInviteList();
-                    invalidReason = undefined;
-                }
-            },
-            onCancel: () => {
-                invalidReason = undefined;
-            },
-        });
-    };
-
     const handleOperate = typeId => {
         const operates = {
-            0: {
-                type: "确认",
-                tip: "邀约确认后不可取消",
-                fn: sureInviteServer,
-            },
             1: {
                 type: "删除",
                 tip: "删除后不可恢复",
@@ -354,9 +301,7 @@ const Account = () => {
 
     useEffect(() => {
         if (selectedRowKeys?.length === 0) {
-            setCanSure(true);
             setCanDelete(true);
-            setCanInvalid(true);
         }
     }, [selectedRowKeys]);
 
@@ -370,9 +315,9 @@ const Account = () => {
             />
             <InvitationSplit
                 invitationSplitId={invitationSplitId}
-                onClose={resFlag => {
+                onClose={() => {
                     setInvitationSplitId();
-                    resFlag && getInviteList();
+                    getInviteList();
                 }}
             />
             <Space className="search">
@@ -460,7 +405,7 @@ const Account = () => {
                 <Button onClick={handleReset}>重置</Button>
             </Space>
             <Table
-                rowKey="id"
+                rowKey="invitationId"
                 dataSource={userList}
                 columns={columns}
                 pagination={pagination}
@@ -480,10 +425,10 @@ const Account = () => {
                 }}
                 title={() => (
                     <Space className="table-title">
-                        {hasPerm(user, "op:invite_delete") && (
+                        {hasPerm(user, "op:invitation_delete") && (
                             <Tooltip
                                 placement="bottom"
-                                title="只有邀约确认状态为【未确认】【已过期】的数据可以删除"
+                                title="只有拆分状态为【未拆分】的数据可以删除"
                             >
                                 <Button
                                     type="primary"

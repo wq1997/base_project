@@ -18,17 +18,20 @@ const BaseLine = ({ baseLineArgs, onClose }) => {
     };
 
     const Summary = () => {
-        const summaryData = [
-            { name: "关口负载功率", data: data?.gatewayBaseLinePowers },
-            { name: `${data?.responseTypeZh}能力`, data: data?.responsePowers },
-            { name: "储能计划出力功率", data: data?.energyStoragePlanPower },
-        ];
+        const xData = [];
+        const baseYData = [];
+        const runYData = [];
+        baseLineArgs?.forEach(item => {
+            xData.push(item.timeRange);
+            baseYData.push(item.basePower);
+            runYData.push(item.targetPower);
+        });
         const options = {
             legend: {
-                data: summaryData?.map(item => item?.name),
+                data: ["基线功率", "执行功率"],
                 textStyle: {
-                    color: token.color11
-                }
+                    color: token.color11,
+                },
             },
             grid: {
                 top: "10%",
@@ -40,30 +43,11 @@ const BaseLine = ({ baseLineArgs, onClose }) => {
                 },
             },
             toolbox: {
-                show: true,
-                feature: {
-                    saveAsImage: {},
-                },
+                show: false,
             },
             xAxis: {
                 type: "category",
-                boundaryGap: false,
-                axisLabel: {
-                    interval: 0,
-                    rotate: -45,
-                    formatter: function (value) {
-                        return value;
-                    },
-                },
-                data: data?.times?.map(time => {
-                    return {
-                        value: time,
-                        textStyle: {
-                            fontSize: isInTimes(time, baseLineArgs?.responsePeriod) ? 10 : 8,
-                            color: isInTimes(time, baseLineArgs?.responsePeriod) ? "red" : token.color11,
-                        },
-                    };
-                }),
+                data: xData,
             },
             yAxis: {
                 type: "value",
@@ -74,27 +58,31 @@ const BaseLine = ({ baseLineArgs, onClose }) => {
                     snap: true,
                 },
             },
-            series: summaryData?.map((item, index) => ({
-                name: item?.name,
-                type: "line",
-                smooth: false,
-                data: item?.data,
-                symbol: "none",
-                lineStyle: {
-                    width: 3,
+            series: [
+                {
+                    name: "基线功率",
+                    type: "line",
+                    smooth: false,
+                    data: baseYData,
+                    symbol: "none",
+                    lineStyle: {
+                        width: 3,
+                    },
                 },
-            })),
+                {
+                    name: "执行功率",
+                    type: "line",
+                    smooth: false,
+                    data: runYData,
+                    symbol: "none",
+                    lineStyle: {
+                        width: 3,
+                    },
+                },
+            ],
         };
 
-        return (
-            <div>
-                <div>
-                    最大负载：{data?.maxLoad}KW 响应能力：
-                    {data?.responsePower}KW
-                </div>
-                <ReactECharts option={options} style={{ width: "100%", height: "600px" }} />
-            </div>
-        );
+        return <ReactECharts option={options} style={{ width: "1000px", height: "600px" }} />;
     };
 
     const Listory = () => {
@@ -112,8 +100,8 @@ const BaseLine = ({ baseLineArgs, onClose }) => {
             legend: {
                 data: historyData?.map(item => item?.name),
                 textStyle: {
-                    color: token.color11
-                }
+                    color: token.color11,
+                },
             },
             tooltip: {
                 trigger: "axis",
@@ -160,25 +148,17 @@ const BaseLine = ({ baseLineArgs, onClose }) => {
                 data: item?.data,
                 symbol: "none",
                 lineStyle: {
-                    width: 3
+                    width: 3,
                 },
             })),
         };
         return <ReactECharts option={options} style={{ width: "100%", height: "600px" }} />;
     };
 
-    const getCompanyBaseLine = async () => {
-        let res = await getCompanyBaseLineServer(baseLineArgs);
-        if (res?.data?.status == "SUCCESS") {
-            console.log(res?.data?.data);
-            setData(res?.data?.data);
-        }
-    };
-
     useEffect(() => {
+        console.log("baseLineArgs", baseLineArgs);
         if (baseLineArgs) {
             setOpen(true);
-            getCompanyBaseLine();
         } else {
             setOpen(false);
         }
@@ -200,20 +180,13 @@ const BaseLine = ({ baseLineArgs, onClose }) => {
     return (
         <Modal
             title="查看基线"
-            width={"80%"}
+            width={1000}
             confirmLoading={true}
             open={open}
             footer={null}
             onCancel={() => onClose(false)}
         >
-            <div
-                style={{
-                    textAlign: "center",
-                }}
-            >
-                响应时段：{baseLineArgs?.responsePeriod?.join(" - ")}
-            </div>
-            <Tabs defaultActiveKey="1" items={items} />
+            <Summary />
         </Modal>
     );
 };
