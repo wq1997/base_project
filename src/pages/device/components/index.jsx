@@ -33,9 +33,9 @@ const Cabinet = () => {
     useEffect(() => {
         getInitData();
     }, [])
-    const getInitData = async () => {
-        let { data } = await getBurDtuDevInfo2({ dtuId: id });
-        Object.keys(data.data[0]?.devInfo).length !==0 ? setPageTypeList([
+    const getInitData =  () => {
+        // let { data } = await getBurDtuDevInfo2({ dtuId: id });
+        getQueryString("type")==14 ? setPageTypeList([
             { label: t('总览'), key: 'OverView' },
             { label: t('设备详情'), key: 'DeviceDetails' },
             { label: t('监测曲线'), key: 'MonitoringCurves' },

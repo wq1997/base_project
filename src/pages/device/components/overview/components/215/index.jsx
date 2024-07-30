@@ -86,15 +86,15 @@ function Com(props) {
                                 <div className={styles.pcsOneBody}>
                                     <div className={styles.oneData}>
                                         <div className={styles.key}>A</div>
-                                        <div className={styles.value}>{allData.pcs?.phaseACur}</div>
+                                        <div className={styles.value}>{allData.pcs?.phaseACur || '0'}</div>
                                     </div>
                                     <div className={styles.oneData}>
                                         <div className={styles.key}>B</div>
-                                        <div className={styles.value}>{allData.pcs?.phaseBCur}</div>
+                                        <div className={styles.value}>{allData.pcs?.phaseBCur || '0'}</div>
                                     </div>
                                     <div className={styles.oneData}>
                                         <div className={styles.key}>C</div>
-                                        <div className={styles.value}>{allData.pcs?.phaseCCur}</div>
+                                        <div className={styles.value}>{allData.pcs?.phaseCCur || '0'}</div>
                                     </div>
                                 </div>
                             </div>
@@ -107,13 +107,13 @@ function Com(props) {
                                 </div>
                                 <div className={styles.pcsOneBody}>
                                     <div className={styles.oneData}>
-                                        <div className={styles.value}>{allData.pcs?.phaseAVol}</div>
+                                        <div className={styles.value}>{allData.pcs?.phaseAVol || '0'}</div>
                                     </div>
                                     <div className={styles.oneData}>
-                                        <div className={styles.value}>{allData.pcs?.phaseBVol}</div>
+                                        <div className={styles.value}>{allData.pcs?.phaseBVol || '0'}</div>
                                     </div>
                                     <div className={styles.oneData}>
-                                        <div className={styles.value}>{allData.pcs?.phaseCVol}</div>
+                                        <div className={styles.value}>{allData.pcs?.phaseCVol || '0'}</div>
                                     </div>
                                 </div>
                             </div>
@@ -137,22 +137,22 @@ function Com(props) {
                                     <div className={styles.value}>
                                         <div className={styles.valueOne}>
                                             <div className={styles.left}>
-                                                <span>{t("温度/℃")}</span>
-                                                <span>{allData?.bms?.cellTempMax || '-'}</span>
+                                                <span className={styles.key}>{t("温度/℃")}</span>
+                                                <span style={{textAlign:'right',width:'80px'}}>{allData?.bms?.cellTempMax || '0'}</span>
                                             </div>
                                             <div className={styles.right}>
                                                 <span>{t("No.")}</span>
-                                                <span>{allData?.bms?.cellTempMaxNo || '-'}</span>
+                                                <span>{allData?.bms?.cellTempMaxNo || '0'}</span>
                                             </div>
                                         </div>
                                         <div className={styles.valueOne}>
                                             <div className={styles.left}>
-                                                <span>{t("电压/mV")}</span>
-                                                <span>{allData?.bms?.cellVolMax || '-'}</span>
+                                                <span className={styles.key}>{t("电压/mV")}</span>
+                                                <span style={{textAlign:'right',width:'80px'}}>{allData?.bms?.cellVolMax || '0'}</span>
                                             </div>
                                             <div className={styles.right}>
                                                 <span>{t("No.")}</span>
-                                                <span>{allData?.bms?.cellVolMaxNo || '-'}</span>
+                                                <span>{allData?.bms?.cellVolMaxNo || '0'}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -168,22 +168,22 @@ function Com(props) {
                                     <div className={styles.value}>
                                         <div className={styles.valueOne}>
                                             <div className={styles.left}>
-                                                <span>{t("温度/℃")}</span>
-                                                <span>{allData?.bms?.cellTempMin || '-'}</span>
+                                                <span className={styles.key}>{t("温度/℃")}</span>
+                                                <span style={{textAlign:'right',width:'80px'}}>{allData?.bms?.cellTempMin || '0'}</span>
                                             </div>
                                             <div className={styles.right}>
                                                 <span>{t("No.")}</span>
-                                                <span>{allData?.bms?.cellTempMinNo || '-'}</span>
+                                                <span>{allData?.bms?.cellTempMinNo || '0'}</span>
                                             </div>
                                         </div>
                                         <div className={styles.valueOne}>
                                             <div className={styles.left}>
-                                                <span>{t("电压/mV")}</span>
-                                                <span>{allData?.bms?.cellVolMin || '-'}</span>
+                                                <span className={styles.key}>{t("电压/mV")}</span>
+                                                <span style={{textAlign:'right',width:'80px'}}>{allData?.bms?.cellVolMin || '0'}</span>
                                             </div>
                                             <div className={styles.right}>
                                                 <span>{t("No.")}</span>
-                                                <span>{allData?.bms?.cellVolMinNo || '-'}</span>
+                                                <span>{allData?.bms?.cellVolMinNo || '0'}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -205,7 +205,7 @@ function Com(props) {
                                 {t('今日充电')}
                             </div>
                             <div className={styles.value} >
-                                <span style={{ color: '#03B4B4' }}>{allData.gmeter?.dayChargeEnergy}</span>
+                                <span style={{ color: '#03B4B4' }}>{allData.gmeter?.dayChargeEnergy || '0'}</span>
                                 <span className={styles.unit}>kWh</span>
                             </div>
                         </div>
@@ -215,7 +215,7 @@ function Com(props) {
                                 {t('今日放电')}
                             </div>
                             <div className={styles.value} >
-                                <span style={{ color: '#F08416' }}>{allData.gmeter?.dayDischargeEnergy}</span>
+                                <span style={{ color: '#F08416' }}>{allData.gmeter?.dayDischargeEnergy || '0'} </span>
                                 <span className={styles.unit}>kWh</span>
                             </div>
                         </div>

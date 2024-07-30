@@ -116,10 +116,11 @@ export const optionType = [
         label: <FormattedMessage id='215户外柜' />,
         value: 16,
     },
-    {
-        label: <FormattedMessage id='232户外柜' />,
-        value: 13,
-    }, {
+    // {
+    //     label: <FormattedMessage id='232户外柜' />,
+    //     value: 13,
+    // },
+     {
         label: <FormattedMessage id='372户外柜' />,
         value: 14,
     }]

@@ -86,15 +86,15 @@ function Com(props) {
                                 <div className={styles.pcsOneBody}>
                                     <div className={styles.oneData}>
                                         <div className={styles.key}>A</div>
-                                        <div className={styles.value}>{allData.pcs?.phaseACur}</div>
+                                        <div className={styles.value}>{allData.pcs?.phaseACur || '0'}</div>
                                     </div>
                                     <div className={styles.oneData}>
                                         <div className={styles.key}>B</div>
-                                        <div className={styles.value}>{allData.pcs?.phaseBCur}</div>
+                                        <div className={styles.value}>{allData.pcs?.phaseBCur || '0'}</div>
                                     </div>
                                     <div className={styles.oneData}>
                                         <div className={styles.key}>C</div>
-                                        <div className={styles.value}>{allData.pcs?.phaseCCur}</div>
+                                        <div className={styles.value}>{allData.pcs?.phaseCCur || '0'}</div>
                                     </div>
                                 </div>
                             </div>
@@ -108,15 +108,15 @@ function Com(props) {
                                 <div className={styles.pcsOneBody}>
                                     <div className={styles.oneData}>
                                         <div className={styles.key}>AB</div>
-                                        <div className={styles.value}>{allData.pcs?.lineAbVol}</div>
+                                        <div className={styles.value}>{allData.pcs?.lineAbVol || '0'}</div>
                                     </div>
                                     <div className={styles.oneData}>
                                         <div className={styles.key}>BC</div>
-                                        <div className={styles.value}>{allData.pcs?.lineBcVol}</div>
+                                        <div className={styles.value}>{allData.pcs?.lineBcVol || '0'}</div>
                                     </div>
                                     <div className={styles.oneData}>
                                         <div className={styles.key}>CA</div>
-                                        <div className={styles.value}>{allData.pcs?.lineCaVol}</div>
+                                        <div className={styles.value}>{allData.pcs?.lineCaVol || '0'}</div>
                                     </div>
                                 </div>
                             </div>
@@ -140,22 +140,22 @@ function Com(props) {
                                     <div className={styles.value}>
                                         <div className={styles.valueOne}>
                                             <div className={styles.left}>
-                                                <span>{t("温度/℃")}</span>
-                                                <span>{allData?.bmc[0]?.cellTempMax || '-'}</span>
+                                                <span  className={styles.key}>{t("温度/℃")}</span>
+                                                <span>{allData?.bmc[0]?.cellTempMax || '0'}</span>
                                             </div>
                                             <div className={styles.right}>
                                                 <span>{t("No.")}</span>
-                                                <span>{allData?.bmc[0]?.cellTempMaxNo || '-'}</span>
+                                                <span>{allData?.bmc[0]?.cellTempMaxNo || '0'}</span>
                                             </div>
                                         </div>
                                         <div className={styles.valueOne}>
                                             <div className={styles.left}>
-                                                <span>{t("电压/mV")}</span>
-                                                <span>{allData?.bmc[0]?.cellVolMax || '-'}</span>
+                                                <span  className={styles.key}>{t("电压/mV")}</span>
+                                                <span>{allData?.bmc[0]?.cellVolMax || '0'}</span>
                                             </div>
                                             <div className={styles.right}>
                                                 <span>{t("No.")}</span>
-                                                <span>{allData?.bmc[0]?.cellVolMaxNo || '-'}</span>
+                                                <span>{allData?.bmc[0]?.cellVolMaxNo || '0'}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -171,22 +171,22 @@ function Com(props) {
                                     <div className={styles.value}>
                                         <div className={styles.valueOne}>
                                             <div className={styles.left}>
-                                                <span>{t("温度/℃")}</span>
-                                                <span>{allData?.bmc[0]?.cellTempMin || '-'}</span>
+                                                <span className={styles.key}>{t("温度/℃")}</span>
+                                                <span>{allData?.bmc[0]?.cellTempMin || '0'}</span>
                                             </div>
                                             <div className={styles.right}>
                                                 <span>{t("No.")}</span>
-                                                <span>{allData?.bmc[0]?.cellTempMinNo || '-'}</span>
+                                                <span>{allData?.bmc[0]?.cellTempMinNo || '0'}</span>
                                             </div>
                                         </div>
                                         <div className={styles.valueOne}>
                                             <div className={styles.left}>
-                                                <span>{t("电压/mV")}</span>
-                                                <span>{allData?.bmc[0]?.cellVolMin || '-'}</span>
+                                                <span  className={styles.key}>{t("电压/mV")}</span>
+                                                <span>{allData?.bmc[0]?.cellVolMin || '0'}</span>
                                             </div>
                                             <div className={styles.right}>
                                                 <span>{t("No.")}</span>
-                                                <span>{allData?.bmc[0]?.cellVolMinNo || '-'}</span>
+                                                <span>{allData?.bmc[0]?.cellVolMinNo || '0'}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -212,22 +212,22 @@ function Com(props) {
                                     <div className={styles.value}>
                                         <div className={styles.valueOne}>
                                             <div className={styles.left}>
-                                                <span>{t("温度/℃")}</span>
-                                                <span>{allData?.bmc[1]?.cellTempMax || '-'}</span>
+                                                <span className={styles.key}>{t("温度/℃")}</span>
+                                                <span>{allData?.bmc[1]?.cellTempMax || '0'}</span>
                                             </div>
                                             <div className={styles.right}>
                                                 <span>{t("No.")}</span>
-                                                <span>{allData?.bmc[1]?.cellTempMaxNo || '-'}</span>
+                                                <span>{allData?.bmc[1]?.cellTempMaxNo || '0'}</span>
                                             </div>
                                         </div>
                                         <div className={styles.valueOne}>
                                             <div className={styles.left}>
-                                                <span>{t("电压/mV")}</span>
-                                                <span>{allData?.bmc[1]?.cellVolMax || '-'}</span>
+                                                <span className={styles.key}>{t("电压/mV")}</span>
+                                                <span>{allData?.bmc[1]?.cellVolMax || '0'}</span>
                                             </div>
                                             <div className={styles.right}>
                                                 <span>{t("No.")}</span>
-                                                <span>{allData?.bmc[1]?.cellVolMaxNo || '-'}</span>
+                                                <span>{allData?.bmc[1]?.cellVolMaxNo || '0'}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -243,22 +243,22 @@ function Com(props) {
                                     <div className={styles.value}>
                                         <div className={styles.valueOne}>
                                             <div className={styles.left}>
-                                                <span>{t("温度/℃")}</span>
-                                                <span>{allData?.bmc[1]?.cellTempMin || '-'}</span>
+                                                <span className={styles.key}>{t("温度/℃")}</span>
+                                                <span>{allData?.bmc[1]?.cellTempMin || '0'}</span>
                                             </div>
                                             <div className={styles.right}>
                                                 <span>{t("No.")}</span>
-                                                <span>{allData?.bmc[1]?.cellTempMinNo || '-'}</span>
+                                                <span>{allData?.bmc[1]?.cellTempMinNo || '0'}</span>
                                             </div>
                                         </div>
                                         <div className={styles.valueOne}>
                                             <div className={styles.left}>
-                                                <span>{t("电压/mV")}</span>
-                                                <span>{allData?.bmc[1]?.cellVolMin || '-'}</span>
+                                                <span className={styles.key}>{t("电压/mV")}</span>
+                                                <span>{allData?.bmc[1]?.cellVolMin || '0'}</span>
                                             </div>
                                             <div className={styles.right}>
                                                 <span>{t("No.")}</span>
-                                                <span>{allData?.bmc[1]?.cellVolMinNo || '-'}</span>
+                                                <span>{allData?.bmc[1]?.cellVolMinNo || '0'}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -275,21 +275,21 @@ function Com(props) {
                     content={<div className={styles.entityWrap}>
                         <div className={styles.Box}>
                             <div className={styles.boxTitle}>
-                                <Icon type='icon-shandian1' style={{ color: '#03B4B4' }}></Icon>
+                                <Icon type='icon0shandian1' style={{ color: '#03B4B4' }}></Icon>
                                 {t('今日充电')}
                             </div>
                             <div className={styles.value} >
-                                <span style={{ color: '#03B4B4' }}>{allData.energy?.dayChargeEnergy}</span>
+                                <span style={{ color: '#03B4B4' }}>{allData.energy?.dayChargeEnergy || '0'}</span>
                                 <span className={styles.unit}>kWh</span>
                             </div>
                         </div>
                         <div className={styles.Box}>
                             <div className={styles.boxTitle}>
-                                <Icon type='icon-shandian1' style={{ color: '#F08416' }}></Icon>
+                                <Icon type='icon0shandian1' style={{ color: '#F08416' }}></Icon>
                                 {t('今日放电')}
                             </div>
                             <div className={styles.value} >
-                                <span style={{ color: '#F08416' }}>{allData.energy?.dayDischargeEnergy}</span>
+                                <span style={{ color: '#F08416' }}>{allData.energy?.dayDischargeEnergy || '0'}</span>
                                 <span className={styles.unit}>kWh</span>
                             </div>
                         </div>
