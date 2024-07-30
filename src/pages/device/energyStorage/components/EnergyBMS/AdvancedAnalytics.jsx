@@ -94,8 +94,8 @@ function Com(props) {
             dateList
         });
         let { tempInfo, volInfo } = data;
-        handelData(volInfo, setOptionEchartVol, 1);
-        handelData(tempInfo, setOptionEchartTem, 2);
+        handelData(tempInfo, setOptionEchartVol, 1);
+        handelData(volInfo, setOptionEchartTem, 2);
         setDiffData(data);
     }
     const getBottomChartData = async () => {
@@ -180,10 +180,10 @@ function Com(props) {
         let series = []
         data?.map((one, index) => {
             let seriesData = [];
-            one.data?.map(it => {
+            one?.data?.map(it => {
                 seriesData.push([
                     it.time,
-                    it.diff,
+                    it.minPackValue,
                 ])
             })
             series.push({

@@ -193,7 +193,7 @@ function OverView(props) {
                         }
                     },
                     barWidth: '8%',
-                    data: dataY.energyInEnergy
+                    data:energyInEnergy
                 },
                 {
                     name: t('储能日放'),
@@ -205,7 +205,7 @@ function OverView(props) {
                         }
                     },
                     barWidth: '8%',
-                    data: dataY.energyOutEnergy
+                    data: energyOutEnergy
                 },
                 {
                     name: t('光伏日发电量'),
@@ -217,7 +217,7 @@ function OverView(props) {
                         }
                     },
                     barWidth: '8%',
-                    data: dataY.pvInEnergy
+                    data: pvInEnergy
 
                 },
                 {
@@ -230,7 +230,7 @@ function OverView(props) {
                         }
                     },
                     barWidth: '8%',
-                    data: dataY.chargeInEnergy
+                    data: chargeInEnergy
                 },
 
             ]
