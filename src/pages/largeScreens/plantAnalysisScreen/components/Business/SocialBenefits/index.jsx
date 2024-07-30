@@ -1,3 +1,4 @@
+import { Tooltip } from "antd";
 import styles from "./index.less";
 
 const SocialBenefits = ({ data }) => {
@@ -35,17 +36,19 @@ const SocialBenefits = ({ data }) => {
                                     justifyContent: "center",
                                 }}
                             >
-                                <div
-                                    className={styles.data}
-                                    style={{
-                                        overflow: "hidden",
-                                        whiteSpace: "nowrap",
-                                        textOverflow: "ellipsis",
-                                        color: "#01fff5",
-                                    }}
-                                >
-                                    {((item?.data || 0) / 10000).toFixed(2)}
-                                </div>
+                                <Tooltip title={((item?.data || 0) / 10000).toFixed(2)}>
+                                    <div
+                                        className={styles.data}
+                                        style={{
+                                            overflow: "hidden",
+                                            whiteSpace: "nowrap",
+                                            textOverflow: "ellipsis",
+                                            color: "#01fff5",
+                                        }}
+                                    >
+                                        {((item?.data || 0) / 10000).toFixed(2)}
+                                    </div>
+                                </Tooltip>
                                 <span
                                     style={{
                                         fontSize: 12,
@@ -53,6 +56,7 @@ const SocialBenefits = ({ data }) => {
                                         marginLeft: 2,
                                         position: "relative",
                                         top: -2,
+                                        whiteSpace: "nowrap", 
                                     }}
                                 >
                                     {item?.unit}
@@ -78,7 +82,7 @@ const SocialBenefits = ({ data }) => {
                         </div>
                         <div
                             className={styles.label}
-                            style={{ display: "flex", justifyContent: "center", color: "#FFFFFF" }}
+                            style={{ display: "flex", justifyContent: "center", color: "#FFFFFF"}}
                         >
                             {item?.label}
                         </div>

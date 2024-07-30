@@ -9755,6 +9755,7 @@ packages:
     name: pify
     version: 4.0.1
     engines: {node: '>=6'}
+    requiresBuild: true
 
   registry.npmjs.org/pino-abstract-transport@0.5.0:
     resolution: {integrity: sha512-+KAgmVeqXYbTtU2FScx1XS3kNyfZ5TrXY07V96QnUSFqo2gAqlvmaxH67Lj7SWazqsMabf+58ctdTcBgnOLUOQ==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/pino-abstract-transport/-/pino-abstract-transport-0.5.0.tgz}
