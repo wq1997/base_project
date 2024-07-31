@@ -3,12 +3,12 @@ import axiosInstance from "./request";
 const { API_URL_1, API_URL_2 } = process.env;
 
 export const getTaskist = payload => {
-    const url = `${API_URL_2}/invite-task/find-page`;
+    const url = `${API_URL_2}/response-plan/find-resource-plan-page`;
     return axiosInstance.post(url, payload);
 };
 
 export const getSearchInitData = () => {
-    const url = `${API_URL_2}/invite-task/get-search-page-init-data`;
+    const url = `${API_URL_2}/response-plan/get-search-page-init-data`;
     return axiosInstance.get(url);
 };
 
@@ -18,12 +18,12 @@ export const getWaitConfirmTasks = () => {
 };
 
 export const confirmTask = payload => {
-    const url = `${API_URL_2}/invite-task/confirm`;
+    const url = `${API_URL_2}/response-plan/confirm-resource-plan-batch`;
     return axiosInstance.post(url, payload);
 };
 
 export const refuseTask = payload => {
-    const url = `${API_URL_2}/invite-task/refuse`;
+    const url = `${API_URL_2}/response-plan/refuse-resource-plan-batch`;
     return axiosInstance.post(url, payload);
 };
 

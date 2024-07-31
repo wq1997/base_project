@@ -359,11 +359,7 @@ const Company = ({ invitationSplitId, onClose }) => {
                                             <a
                                                 type="primary"
                                                 onClick={() =>
-                                                    setBaseLineArgs(
-                                                        detailId
-                                                            ? record?.details
-                                                            : record?.baseLineFullInfo
-                                                    )
+                                                    setBaseLineArgs(record?.baseLineFullInfo)
                                                 }
                                             >
                                                 基线

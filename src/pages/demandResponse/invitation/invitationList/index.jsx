@@ -30,9 +30,7 @@ const Account = () => {
     const codeRef = useRef(initCode);
     const confirmStatusRef = useRef();
     const splitStatusRef = useRef();
-    const responsePowerRef = useRef();
     const responseTypeRef = useRef();
-    const responseTimeTypeRef = useRef();
     const [code, setCode] = useState(initCode);
     const [releaseTime, setReleaseTime] = useState();
     const [executeTime, setExecuteTime] = useState();
@@ -40,11 +38,8 @@ const Account = () => {
     const [confirmStatusList, setConfirmStatusList] = useState();
     const [splitStatus, setSplitStatus] = useState();
     const [splitStatusList, setSplitStatusList] = useState();
-    const [responsePower, setResponsePower] = useState();
     const [responseType, setResponseType] = useState();
     const [responseTypeList, setResponseTypeList] = useState();
-    const [responseTimeType, setResponseTimeType] = useState();
-    const [responseTimeTypeList, setResponseTimeTypeList] = useState();
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [userList, setUserList] = useState([]);
@@ -83,7 +78,7 @@ const Account = () => {
         },
         {
             title: "邀约发布时间",
-            dataIndex: "createdTime",
+            dataIndex: "invitationTime",
             width: 300,
         },
         {
@@ -193,39 +188,33 @@ const Account = () => {
     const getSearchInitData = async () => {
         const res = await getSearchInitDataServer();
         if (res?.data?.status == "SUCCESS") {
-            const { szConfirmStatus, splitStatus, ExchangeTypes, responseTimeTypes } =
-                res?.data?.data;
+            const { szConfirmStatus, splitStatus, ExchangeTypes } = res?.data?.data;
             setConfirmStatusList(szConfirmStatus);
             setSplitStatusList(splitStatus);
             setResponseTypeList(ExchangeTypes);
-            setResponseTimeTypeList(responseTimeTypes);
         }
     };
 
-    const getInviteList = async () => {
+    const getList = async () => {
         const { current, pageSize } = paginationRef.current;
         const [createdTimeFrom, createdTimeTo] = releaseTimeRef.current || [];
         const [appointedTimeRangeStart, appointedTimeRangeEnd] = executeTimeRef.current || [];
         const code = codeRef.current;
         const confirmStatus = confirmStatusRef.current;
         const splitStatus = splitStatusRef.current;
-        const responsePower = +responsePowerRef.current;
         const responseType = responseTypeRef.current;
-        const responseTimeType = responseTimeTypeRef.current;
         const res = await getInviteListServer({
             pageNum: current,
             pageSize,
             queryCmd: {
-                createdTimeFrom,
-                createdTimeTo,
-                appointedTimeRangeStart,
-                appointedTimeRangeEnd,
-                code,
-                confirmStatus,
-                splitStatus,
-                responsePower,
-                responseType,
-                responseTimeType,
+                invitationTimeFrom: createdTimeFrom,
+                invitationTimeTo: createdTimeTo,
+                invitationId: code,
+                szConfirmStatusIn: confirmStatus ? [confirmStatus] : null,
+                splitStatusIn: splitStatus ? [splitStatus] : null,
+                startTimeFrom: appointedTimeRangeStart,
+                startTimeTo: appointedTimeRangeEnd,
+                exchangeType: responseType,
             },
         });
         if (res?.data?.status == "SUCCESS") {
@@ -256,13 +245,14 @@ const Account = () => {
         setConfirmStatus();
         splitStatusRef.current = undefined;
         setSplitStatus();
-        responsePowerRef.current = undefined;
-        setResponsePower();
         responseTypeRef.current = undefined;
         setResponseType();
-        responseTimeTypeRef.current = undefined;
-        setResponseTimeType();
-        getInviteList();
+        getList();
+    };
+
+    const handleSearch = () => {
+        paginationRef.current = DEFAULT_PAGINATION;
+        getList();
     };
 
     const handleOperate = typeId => {
@@ -288,14 +278,14 @@ const Account = () => {
                         current: 1,
                     });
                     setSelectedRowKeys([]);
-                    getInviteList();
+                    getList();
                 }
             },
         });
     };
 
     useEffect(() => {
-        getInviteList();
+        getList();
         getSearchInitData();
     }, []);
 
@@ -317,7 +307,7 @@ const Account = () => {
                 invitationSplitId={invitationSplitId}
                 onClose={() => {
                     setInvitationSplitId();
-                    getInviteList();
+                    getList();
                 }}
             />
             <Space className="search">
@@ -325,7 +315,6 @@ const Account = () => {
                     <span>邀约发布时间：</span>
                     <DatePicker.RangePicker
                         onChange={(date, dateStr) => {
-                            paginationRef.current = DEFAULT_PAGINATION;
                             releaseTimeRef.current = dateStr;
                             setReleaseTime(dateStr);
                         }}
@@ -343,7 +332,6 @@ const Account = () => {
                     label="邀约编号"
                     value={code}
                     onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
                         codeRef.current = value;
                         setCode(value);
                     }}
@@ -354,7 +342,6 @@ const Account = () => {
                     type="select"
                     options={confirmStatusList}
                     onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
                         confirmStatusRef.current = value;
                         setConfirmStatus(value);
                     }}
@@ -365,16 +352,14 @@ const Account = () => {
                     value={splitStatus}
                     options={splitStatusList}
                     onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
                         splitStatusRef.current = value;
                         setSplitStatus(value);
                     }}
                 />
                 <div>
-                    <span>约定执行时间：</span>
+                    <span>约定开始时间：</span>
                     <DatePicker.RangePicker
                         onChange={(date, dateStr) => {
-                            paginationRef.current = DEFAULT_PAGINATION;
                             executeTimeRef.current = dateStr;
                             setExecuteTime(dateStr);
                         }}
@@ -399,7 +384,7 @@ const Account = () => {
                         setResponseType(value);
                     }}
                 />
-                <Button type="primary" onClick={getInviteList}>
+                <Button type="primary" onClick={handleSearch}>
                     搜索
                 </Button>
                 <Button onClick={handleReset}>重置</Button>
@@ -418,7 +403,7 @@ const Account = () => {
                 }}
                 onChange={pagination => {
                     paginationRef.current = pagination;
-                    getInviteList();
+                    getList();
                 }}
                 scroll={{
                     x: "100%",
