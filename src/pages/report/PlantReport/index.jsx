@@ -5,6 +5,7 @@ import { DEFAULT_PAGINATION } from "@/utils/constants";
 import { jsonToUrlParams } from "@/utils/utils";
 import dayjs from "dayjs";
 import { getPlantReportList as getPlantReportListServer } from "@/services/report";
+import moment from "moment";
 
 const Log = () => {
     const [dataSource, setDataSource] = useState([]);
@@ -14,7 +15,7 @@ const Log = () => {
     const timeDimensionRef = useRef();
     const [timeDimension, setTimeDimension] = useState("DAY");
     const timeRef = useRef();
-    const [time, setTime] = useState();
+    const [time, setTime] = useState(dayjs());
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
 
@@ -50,7 +51,7 @@ const Log = () => {
         const { current, pageSize } = paginationRef.current;
         const name = plantNameRef.current;
         const timePeriod = timeDimensionRef.current || "DAY";
-        const time = timeRef.current;
+        const time = timeRef.current||moment().format("YYYY-MM-DD");
         if (!time) return message.info("请先选择日期");
         setLoading(true);
         console.log("timePeriod", timePeriod);

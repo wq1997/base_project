@@ -13,7 +13,20 @@ const GlobalWrapperCss = (props) => {
             },
             '.ant-checkbox-checked': {
                 background: token.colorPrimary
-            }
+            },
+           'input:-webkit-autofill': {
+             '-webkit-animation': 'autofill-fix 1s infinite !important',
+             '-webkit-text-fill-color': token.fontColor,
+             'caret-color': token.fontColor,
+             '-webkit-transition': 'background-color 50000s ease-in-out 0s !important',
+             '-webkit-box-shadow': '0 0 0 1000px transparent inset!important',
+             transition: 'background-color 50000s ease-in-out 0s !important',
+             'background-color': 'transparent !important',
+             'background-image': 'none !important'
+           },
+            '.ant-picker-input': {
+                color: token.color1
+            },
         }
     })
     return (

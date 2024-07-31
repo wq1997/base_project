@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { Select, Button } from "antd";
+import { useSelector } from "umi";
 import defalut from "@/assets/imges/default.jpg";
 import styles from "./index.less";
 
 const baseUrl = process.env.API_URL_1;
 
 const Index = ({ plants, activePlant, setActivePlant }) => {
+    const { theme } = useSelector(state => state.global);
     const [map, setMap] = useState();
     const defaultZoom = 5;
     const [center, setCenter] = useState([108.9, 34.2]);
@@ -25,13 +27,16 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
             // ],
         });
         map.on("complete", async () => {
-            // map.setMapStyle("amap://styles/whitesmoke");
-            map.setMapStyle("amap://styles/blue");
+            if(theme==="default"){
+                map.setMapStyle("amap://styles/white");
+            }else{
+                map.setMapStyle("amap://styles/blue");
+            }
             const infoWindow = new AMap.InfoWindow({ offset: new AMap.Pixel(0, -30) });
             setMap(map);
             addMarkers(map, infoWindow, plants);
         });
-    }, [plants]);
+    }, [plants, theme]);
 
     const addMarkers = (map, infoWindow, plants) => {
         plants.forEach((item, index) => {

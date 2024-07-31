@@ -1,10 +1,7 @@
-import { useState, useEffect } from "react";
 import { theme } from "antd";
-import { DownOutlined } from "@ant-design/icons";
 import classnames from "classnames";
 import styles from "./index.less";
 import dayjs from "dayjs";
-import { useEmotionCss } from '@ant-design/use-emotion-css';
 
 const dateNums = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
 
@@ -21,10 +18,10 @@ const Index = ({ data }) => {
                                     class={`qi-${data?.[0]?.iconDay} icon`}
                                     style={{ color: "#1677ff", fontSize: "32px" }}
                                 ></i>
-                                <span className={styles.date}>{data?.[0]?.textDay}</span>
+                                <span className={styles.date} style={{color: token.descriptionColor}}>{data?.[0]?.textDay}</span>
                             </div>
                             <div className={styles.tempDate}>
-                                <div className={styles.temp}>
+                                <div className={styles.temp} style={{color: token.color1}}>
                                     {data?.[0]?.tempMin} ~ {data?.[0]?.tempMax} ℃
                                 </div>
                                 <div className={styles.date}>

@@ -37,6 +37,7 @@ const Log = () => {
         {
             title: "操作时间",
             dataIndex: "operateTime",
+            width: '350px'
         },
     ];
 

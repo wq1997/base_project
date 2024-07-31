@@ -74,9 +74,9 @@ const Index = ({ activePlantName, data }) => {
             >
                 {info?.map(item => (
                     <div style={{ marginBottom: "5px", fontSize: "14px" }}>
-                        <span style={{ color: "#999" }}>{item.name}：</span>
+                        <span style={{ color: token.descriptionColor }}>{item.name}：</span>
                         <span style={{ marginRight: "3px" }}>{item.value}</span>
-                        <span style={{ color: "#999" }}>{item.unit}</span>
+                        <span style={{ color: token.descriptionColor }}>{item.unit}</span>
                     </div>
                 ))}
             </div>

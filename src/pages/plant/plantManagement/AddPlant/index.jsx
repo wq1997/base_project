@@ -299,16 +299,18 @@ const Plant = ({ open, editId, onClose }) => {
 
                 <Row span={24}>
                     <Col span={12}>
-                        <Tooltip
-                            style={{ position: "relative" }}
-                            title="逆变器统计时，电站累计发电量从设备并网发电时刻开始统计"
-                        >
-                            <QuestionCircleOutlined
-                                style={{ position: "absolute", top: "-6px", left: "160px" }}
-                            />
-                        </Tooltip>
                         <Form.Item
-                            label="累计发电量统计模式"
+                            label={
+                                <Row>
+                                    <span style={{marginRight: 5}}>累计发电量统计模式</span>
+                                    <Tooltip
+                                        style={{ position: "relative" }}
+                                        title="逆变器统计时，电站累计发电量从设备并网发电时刻开始统计"
+                                    >
+                                        <QuestionCircleOutlined/>
+                                    </Tooltip>
+                                </Row>
+                            }
                             name="statisticalModel"
                             initialValue={"逆变器统计"}
                         >

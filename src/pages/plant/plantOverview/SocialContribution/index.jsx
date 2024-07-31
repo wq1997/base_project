@@ -26,18 +26,18 @@ const Index = ({ data }) => {
         <Card
             title="社会贡献"
             content={
-                <div style={{ height: "100%", display: "flex" }}>
+                <div style={{ height: "100%", display: "flex", alignItems: 'center' }}>
                     {list?.map(item => (
                         <div className={styles.item} style={{backgroundColor: token.overviewCardBg}}>
                             <div className={styles.data}>
                                 <Tooltip title={item.value}>
-                                    <div className={styles.value}>{item.value}</div>
+                                    <div className={styles.value} style={{color: token.fontColor}}>{item.value}</div>
                                 </Tooltip>
-                                <span className={styles.unit}>{item.unit}</span>
+                                <span className={styles.unit} style={{color: token.unitColor}}>{item.unit}</span>
                             </div>
                             <div className={styles.picName}>
                                 <img src={item.pic} className={styles.pic} />
-                                <span className={styles.name}>{item.name}</span>
+                                <span className={styles.name} style={{color: token.descriptionColor}}>{item.name}</span>
                             </div>
                         </div>
                     ))}
