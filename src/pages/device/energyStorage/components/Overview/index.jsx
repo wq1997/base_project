@@ -303,7 +303,7 @@ function Overview(props) {
 
 
                                                 <div className={styles.valueProfit} style={{ color: it.color }}>
-                                                    {income[it.name]} <span style={{ color: token.titleColor }}>{t(it.unit)}</span>
+                                                    {income[it.name]} <span style={{ color: token.titleColor }}>{it.unit}</span>
                                                 </div>
                                             </div>
                                         </>
