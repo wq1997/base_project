@@ -19,13 +19,8 @@ import Title from './components/Title';
 import DeviceRunDesc from './components/deviceRunDesc';
 import IncomeRanking from './components/incomeRanking';
 import ElectricityRanking from './components/electricityRanking';
-import SocialBenefits from './components/socialBenefits';
 import Table from "./components/table";
-import bottomLeft1 from "../../../public/images/bottomLeft1.svg";
-import bottomLeft2 from "../../../public/images/bottomLeft2.svg";
-import bottomLeft3 from "../../../public/images/bottomLeft3.svg";
 import Map from './components/map';
-// import BatchPolicyConfiguration from "../policyConfiguration/batch_index";
 import dayjs from 'dayjs';
 const { Option } = Select;
 
@@ -42,7 +37,6 @@ const RealtimeAlarm = () => {
     const [record, setRecord] = useState([]);
     const [currentPlantId, setCurrentPlantId] = useState();
     const [socialBenefit, setSocialBenefit] = useState();
-    const [batchPolicyOpen, setBatchPolicyOpen] = useState(false);
     const { token } = theme.useToken();
     const intl = useIntl();
     const [mapPanTo, setPanTo] = useState();
@@ -60,24 +54,50 @@ const RealtimeAlarm = () => {
 
     const eleData = [
         {
-            label: `${t('日充')}/${t('放电量')}(${t('kWh')})`,
-            name: ['dailyCharge', 'dailyDisCharge'],
-            value: [0, 0],
-            color: '#20C2FF'
+            label: t('日充电量'),
+            name: 'dailyCharge',
+            value: '',
+            unit: 'kWh',
+            color: '#FF9D4F'
         },
         {
-            label: `${t('月充')}/${t('放电量')}(${t('kWh')})`,
-            name: ['monthCharge', 'monthDisCharge'],
-            value: [0, 0],
-            color: '#01FF23'
+            label: t('月充电量'),
+            name: 'monthCharge',
+            value: '',
+            unit: 'kWh',
+            color: '#03B4B4'
         },
         {
-            label: `${t('累计充')}/${t('放电量')}(${t('kWh')})`,
-            name: ['totalCharge', 'totalDisCharge'],
-            value: [0, 0],
-            color: '#FF5E00'
-        }
+            label: t('累计充电量'),
+            name: 'totalCharge',
+            value: '',
+            unit: 'kWh',
+            color: '#DE83C4'
+        },
+        {
+            label: t('日放电量'),
+            name: 'dailyDisCharge',
+            value: '',
+            unit: 'kWh',
+            color: '#FF9D4F'
+        },
+        {
+            label: t('月放电量'),
+            name: 'monthDisCharge',
+            value: '',
+            unit: 'kWh',
+            color: '#03B4B4'
+        },
+        {
+            label: t('累计放电量'),
+            name: 'totalDisCharge',
+            value: '',
+            unit: 'kWh',
+            color: '#DE83C4'
+        },
+
     ];
+
 
     const [incomeData, setIncomeData] = useState([
         {
@@ -313,49 +333,14 @@ const RealtimeAlarm = () => {
                             }
                         </Select>
                     </div>
-                    <div className={styles.mapRight}>
-                        {
-                            incomeData?.map(item => {
-                                return (
-                                    <div className={styles.mapRightItem}>
-                                        <div>
-                                            <div className={styles.mapRightItemTop}>
-                                                <Tooltip title={item?.value}>
-                                                    <div style={{ color: item.color }} className={styles.mapRightItemTopValue}>{item?.value}</div>
-                                                </Tooltip>
-                                                <div className={styles.mapRightItemTopUnit}>{t('元')}</div>
-                                            </div>
-                                            <div className={styles.mapRightItemBottom}>{item.label}</div>
-                                        </div>
-                                    </div>
-                                )
-                            })
-                        }
-                    </div>
-                    <div className={styles.mapBottom}>
-                        {
-                            eleData?.map(item => {
-                                return (
-                                    <div className={styles.mapBottomItem}>
-                                        <div className={styles.mapBottomItemData}>
-                                            <span style={{ color: '#20C2FF' }}>{dataEle?.[item?.name?.[0]]}</span>
-                                            <span style={{color: '#0B6AA8'}}>/</span>
-                                            <span style={{ color: '#4AEDFF' }}>{dataEle?.[item?.name?.[1]]}</span>
-                                        </div>
-                                        <div className={styles.mapBottomItemLabel}>{item?.label}</div>
-                                    </div>
-                                )
-                            })
-                        }
-                    </div>
+           
                 </div>
                 <div className={classNames(styles.rightItem, styles.leftItem2)}>
                     <Title title={t('设备列表')} />
                     <div className={styles.add}>
-                        <div className={styles.addBtn} onClick={()=>setBatchPolicyOpen(true)}>{t('电站策略配置')}</div>
                         {(user?.roleId===2||user?.roleId===3)&&<div onClick={changIsOpen} className={styles.addBtn}>{t('新增设备')}</div>}
                     </div>
-                    <div className={styles.cardContent}>
+                    <div className={styles.cardContent} style={{backgroundColor:token.darkbgc}}>
                         <Table
                             dataSource={data}
                             changeIsOpenDel={changeIsOpenDel}
@@ -365,55 +350,30 @@ const RealtimeAlarm = () => {
                 </div>
             </div>
             <div className={styles.right}>
-                <div className={classNames(styles.rightItem, styles.rightItem1)}>
+                <div className={classNames(styles.rightItem, styles.rightItem1)} style={{backgroundColor:token.darkbgc}}>
                     <Title title={t('设备运行情况')} />
+
                     <div className={styles.cardContent}>
                         <DeviceRunDesc
                             dataSource={dataTotal}
                         />
                     </div>
                 </div>
-                <div className={classNames(styles.rightItem, styles.rightItem2)}>
-                    <Title title={`${t('收益统计')}(${t('元')})`} />
+                <div className={classNames(styles.rightItem, styles.rightItem2)}style={{backgroundColor:token.darkbgc}}>
+                    <Title title={`${t('实时电量')}(${t('kWh')})`} />
                     <div className={styles.cardContent}>
                         <IncomeRanking currentPlantId={currentPlantId||dataOption[0]?.value}/>
                     </div>
                 </div>
-                <div className={classNames(styles.rightItem, styles.rightItem3)}>
-                    <Title title={`${t('电量统计')}(${t('kWh')})`} />
+                <div className={classNames(styles.rightItem, styles.rightItem3)}style={{backgroundColor:token.darkbgc}}>
+                    <Title title={`${t('历史电量')}(${t('kWh')})`} />
                     <div className={styles.cardContent}>
                         <ElectricityRanking
                             currentPlantId={currentPlantId||dataOption[0]?.value}
                         />
                     </div>
                 </div>
-                <div className={classNames(styles.rightItem, styles.rightItem4)}>
-                    <Title title={t('社会效益')} />
-                    <div className={styles.cardContent}>
-                        <SocialBenefits
-                            data={[
-                                {
-                                    icon: bottomLeft1,
-                                    data: socialBenefit?.coal||0,
-                                    unit: t('吨'),
-                                    label: t('节约标准煤'),
-                                },
-                                {
-                                    icon: bottomLeft2,
-                                    data: socialBenefit?.co2||0,
-                                    unit: t('吨'),
-                                    label: t('CO2减排量'),
-                                },
-                                {
-                                    icon: bottomLeft3,
-                                    data: socialBenefit?.tree||0,
-                                    unit: t('棵'),
-                                    label: t('等效植树量'),
-                                },
-                            ]}
-                        />
-                    </div>
-                </div>
+           
             </div>
             <Add isOpen={isOpen} title={title} formData={formData} onRef={cancle}
                 changeData={(value) => changeData(value)}
@@ -428,15 +388,7 @@ const RealtimeAlarm = () => {
             >
                 {t('数据删除后将无法恢复，是否确认删除该条数据？')}
             </Modal>
-            <Drawer
-                width={1500}
-                title={t('电站策略配置')}
-                open={batchPolicyOpen}
-                destroyOnClose={true}
-                onClose={()=>setBatchPolicyOpen(false)}
-            >
-                {/* <BatchPolicyConfiguration deviceList={data}/> */}
-            </Drawer>
+           
         </div>
     )
 }

@@ -1,127 +1,157 @@
-.head {
-    width: 100%;
-    height: 100px;
+.content{
+    background-color: #000000;
+    width: calc(100%);
+    height: calc(100%);
+    position: absolute;
+    top: 0px;
+    left: 0px;
     display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    gap: 8px;
 
-.wrap {
-    width: 100%;
-    height: calc(100% - 100px);
-    padding-bottom: 10px;
-    padding: 0px 30px 35px 30px;
-    display: grid;
-    grid-template-columns: 1fr 1fr ;
-    grid-template-rows: 1.25fr 1fr 1fr;
-    gap: 8px 8px;
-    grid-template-areas:
-        "first second "
-        "content content "
-        "content content ";
-
-    .first {
-        grid-area: first;
-        width: 100%;
+    .left{
+        width: calc(70% - 4px);
         height: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
 
-        .topContent {
-            width: 100%;
-            height: 100%;
-            display: grid;
-            grid-template-columns: 1fr 1fr  1fr;
-            grid-template-rows: 1fr 1fr ;
-            grid-gap: 10px;
-            margin-bottom: 8px;
-            align-items: center;
-            justify-items: center;
-        }
-        .topItemTitle{
-            min-width: 130px;
-            text-align: center;
-
-        }
-        .topVaue{
-            text-align: center;
-            min-width: 130px;
-        }
-    }
-
-    .second {
-        grid-area: second;
-        width: 100%;
-        height: 100%;
-
-        .secondContent {
-            width: 100%;
-            height: 100%;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
-            grid-gap: 10px;
-            margin-bottom: 8px;
-
-            .topItem {
-                width: 100%;
-                height: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-
-                .leftIcon {
-                    font-size: 34px;
-                    margin-right: 30px;
-                }
-                .rightAll{
-                    min-width: 100px;
+        .plantSelect{
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            :global{
+                .ant-select-selector{
+                    border: 1px solid #00FFFB;
                 }
             }
         }
-    }
-    .content {
-        grid-area: content;
-        height: 100%;
-        .title {
-            display: flex;
-            position: relative;
-            width: 100%;
-            height: 40px;
-            margin: 35px 0 20px 0;
 
-            .buttons {
+        .leftItem1{
+            height: calc(80% - 4px);
+
+            .mapRight{
+                height: calc(75% - 5px);
                 position: absolute;
-                right: 0px;
+                right: 0;
+                top: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+
+                .mapRightItem{
+                    width: 250px;
+                    background-color: #111838;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: calc(33.333333333333%);
+                    border-radius: 8px;
+                    .mapRightItemTop{
+                        display: flex;
+                        align-items: baseline;
+                        .mapRightItemTopValue{
+                            max-width: 150px;
+                            font-family: DingTalkJinBuTi;
+                            font-size: 30px;
+                            margin-bottom: 10px;
+                            white-space: nowrap; 
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                        }
+                    }
+
+                    .mapRightItemBottom{
+                        text-align: center;
+                    }
+                }
             }
 
+            .mapBottom{
+                width: 100%;
+                height: calc(25% - 5px);
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                display: flex;
+                justify-content: space-between;
+                .mapBottomItem{
+                    width: calc(33% - 5px);
+                    height: 100%;
+                    background-color: #0B3858;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 8px;
+
+                    .mapBottomItemData{
+                        font-family: DingTalkJinBuTi;
+                        font-size: 30px;
+                        margin-bottom: 10px;
+                    }
+                }
+            }
+        }
+
+        .leftItem2{
+            height: calc(35% - 4px);
+            position: relative;
+            .add{
+                display: flex;
+                position: absolute;
+                gap: 10px;
+                right: 10px;
+                top: 5px;
+                .addBtn{
+                    background: radial-gradient(153% 66% at 50% 50%, #072F4C 0%, #04719C 100%);
+                    border-radius: 2px;
+                    border: 1px solid #54CFFF;
+                    padding: 5px 20px;
+                    box-sizing: border-box;
+                    cursor: pointer;
+                }
+            }
         }
     }
-}
 
-@media screen and (min-width: 2000px) {
-    .topVaue{
-        font-size: 24px;
+    .leftItem{
+        width: 100%;
+        background: #111838;
+        border: 1px solid #111838;
+        position: relative;
     }
-   .topItemTitle{
-    font-size: 16px;
-   }
-}
 
-@media screen and (min-width: 1000px) and (max-width: 2000px) {
-    .topVaue{
-        font-size: 20px;
-
+    .rightItem{
+        width: 100%;
+        background: #111838;
+        border: 1px solid #111838;
     }
-    .topItemTitle{
-        font-size: 14px;
-       }
-}
 
-@media screen and (max-width: 1000px) {
-    .topVaue{
-        font-size: 16px;
+    .right{
+        width: calc(30% - 4px);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        
+        gap: 8px;
 
+        .rightItem1{
+            height: calc(20% - 6px);
+        }
+        
+        .rightItem2{
+            height: calc(50% - 6px);
+        }
+
+        .rightItem3{
+            height: calc(30% - 6px);
+        }
     }
-    .topItemTitle{
-        font-size: 12px;
-       }
+
+    .cardContent{
+        padding: 10px;
+        box-sizing: border-box;
+        width: 100%;
+        height: calc(100% - 40px);
+    }
 }

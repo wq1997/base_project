@@ -290,7 +290,7 @@ const Electricity = () => {
     }, [])
 
     return (
-        <div className={styles.content}>
+        <div className={styles.content} style={{backgroundColor:  token.titleCardBgc}}>
             <Space size={10} direction="vertical" style={{ width: '100%', height: '100%', padding: 30 }}>
                 <Flex justify="center" align="center" gap={10}>
                     <Form

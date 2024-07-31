@@ -100,9 +100,9 @@ const Table = ({
     }, [dataSource]);
     return (
         <div className={styles.table}>
-            <div className={styles.row} style={{ background: '#125686' }}>
+            <div className={styles.row} style={{  }}>
                 {columns?.filter(item => item)?.map(column => (
-                    <div className={styles.rowItem} style={{ width: column?.width, ...column?.style }}>{column?.title}</div>
+                    <div className={styles.rowItem} style={{ width: column?.width,background:'#1B2553', ...column?.style }}>{column?.title}</div>
                 ))}
             </div>
             <div className={styles.valueWrapper}>
@@ -111,14 +111,14 @@ const Table = ({
                         {columns?.filter(item => item)?.map(column => {
                             if (column.render) {
                                 return (
-                                    <div className={styles.value} style={{ width: column?.width, borderLeft: '2px solid #175785', borderTop: '2px solid #175785', ...column?.style }}>
+                                    <div className={styles.value} style={{ width: column?.width,background:'rgb(30,49,100)', borderLeft: '2px solid rgb(37,59,128)', borderTop: '2px solid rgb(37,59,128)', ...column?.style }}>
                                         {column.render('', value)}
                                     </div>
                                 );
                             } else {
                                 return (
                                     <Tooltip title={value[column.dataIndex]}>
-                                        <div className={styles.value} style={{ width: column?.width, borderLeft: '2px solid #175785', borderTop: '2px solid #175785', ...column?.style }}>
+                                        <div className={styles.value} style={{ width: column?.width,background:'rgb(30,49,100)', borderLeft: '2px solid rgb(37,59,128)', borderTop: '2px solid rgb(37,59,128)', ...column?.style }}>
                                             {value[column.dataIndex]}
                                         </div>
                                     </Tooltip>
