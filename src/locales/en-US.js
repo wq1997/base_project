@@ -1828,4 +1828,8 @@ export default {
 'BUS侧电压':'BUS Side Voltage',  
 'BUS侧电流':'BUS Side Current',  
 'PV侧电流':'PV Side Current' ,
+'电站概览': 'Overview of the power station',
+'数据统计': 'Data Statistics',
+'电芯详情':'Cell Details',
+
 } 

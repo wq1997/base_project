@@ -1,20 +1,32 @@
 // import Table from '@/components/Table.jsx'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector, useIntl, history } from "umi";
 import styles from "./index.less";
-import { Table, Select, Space, theme, Button, Modal } from "antd"
-import { CardModel } from "@/components";
-import { getFetchPlantList, deleteDtu, updateDtus } from "@/services/deviceTotal"
-import { getBurEnergyStats2, getDeviceStats,getDtusOfPlant } from "@/services/plant"
-import { optionType } from '@/utils/constants'
+import { Select, Space, theme, Button, Modal, message, Tooltip, Drawer } from "antd"
+import { deleteDtu, updateDtus } from "@/services/deviceTotal"
+import { getAllRevenue as getAllRevenueServe } from "@/services";
+import { getBurEnergyStats2, getDeviceStats, getDtusOfPlant } from "@/services/plant"
 import {
-    HistoryOutlined,
-    PieChartOutlined,
-    ScheduleOutlined,
-    AlertOutlined,
+    getFetchPlantList2 as getFetchPlantListServe,
+    getSocialBenefit as getSocialBenefitServe,
+} from "@/services";
+import {
     ExclamationCircleFilled
 } from '@ant-design/icons';
 import Add from './components/addDevices'
+import classNames from 'classnames';
+import Title from './components/Title';
+import DeviceRunDesc from './components/deviceRunDesc';
+import IncomeRanking from './components/incomeRanking';
+import ElectricityRanking from './components/electricityRanking';
+import SocialBenefits from './components/socialBenefits';
+import Table from "./components/table";
+import bottomLeft1 from "../../../public/images/bottomLeft1.svg";
+import bottomLeft2 from "../../../public/images/bottomLeft2.svg";
+import bottomLeft3 from "../../../public/images/bottomLeft3.svg";
+import Map from './components/map';
+// import BatchPolicyConfiguration from "../policyConfiguration/batch_index";
+import dayjs from 'dayjs';
 const { Option } = Select;
 
 const RealtimeAlarm = () => {
@@ -23,18 +35,17 @@ const RealtimeAlarm = () => {
     const [dataEle, setDataEle] = useState([]);
     const [dataOption, setDataOption] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
-    const activitesRef = useRef([]);
-    const [current, setCurrent] = useState(1);
     const [title, setTitle] = useState('新增设备');
     const [formData, setFormData] = useState();
     const [isOpenDel, setIsOpenDel] = useState(false);
     const [initSelectData, setInitSelectData] = useState();
     const [record, setRecord] = useState([]);
     const [currentPlantId, setCurrentPlantId] = useState();
+    const [socialBenefit, setSocialBenefit] = useState();
+    const [batchPolicyOpen, setBatchPolicyOpen] = useState(false);
     const { token } = theme.useToken();
-    const [screenH, setScreenH] = useState('');
-    const [scroolY, setScroolY] = useState(200);
     const intl = useIntl();
+    const [mapPanTo, setPanTo] = useState();
     const t = (id) => {
         const msg = intl.formatMessage(
             {
@@ -46,76 +57,54 @@ const RealtimeAlarm = () => {
     const { user } = useSelector(function (state) {
         return state.user
     });
-    useEffect(() => {
-        setScreenH(document.documentElement.clientHeight || document.body.clientHeight)
-        window.addEventListener("resize", handleWindowResize)
-        return () => {
-          window.removeEventListener("resize", handleWindowResize)
-        }
-      }, [])
-    
-      const handleWindowResize = () => {
-        setScreenH(document.documentElement.clientHeight || document.body.clientHeight)
-      }
-      useEffect(() => {
-        if (screenH < 1000) {
-          setScroolY(200);
-        } else if (screenH > 1000 && screenH < 1300) {
-          setScroolY(400);
-        } else if (screenH > 1300) {
-          setScroolY(500);
-        }
-      }, [screenH])
+
     const eleData = [
         {
-            label: t('日充电量'),
-            name: 'dailyCharge',
-            value: '',
-            unit: 'kWh',
-            color: '#FF9D4F'
+            label: `${t('日充')}/${t('放电量')}(${t('kWh')})`,
+            name: ['dailyCharge', 'dailyDisCharge'],
+            value: [0, 0],
+            color: '#20C2FF'
         },
         {
-            label: t('月充电量'),
-            name: 'monthCharge',
-            value: '',
-            unit: 'kWh',
-            color: '#03B4B4'
+            label: `${t('月充')}/${t('放电量')}(${t('kWh')})`,
+            name: ['monthCharge', 'monthDisCharge'],
+            value: [0, 0],
+            color: '#01FF23'
         },
         {
-            label: t('累计充电量'),
-            name: 'totalCharge',
-            value: '',
-            unit: 'kWh',
-            color: '#DE83C4'
-        },
-        {
-            label: t('日放电量'),
-            name: 'dailyDisCharge',
-            value: '',
-            unit: 'kWh',
-            color: '#FF9D4F'
-        },
-        {
-            label: t('月放电量'),
-            name: 'monthDisCharge',
-            value: '',
-            unit: 'kWh',
-            color: '#03B4B4'
-        },
-        {
-            label: t('累计放电量'),
-            name: 'totalDisCharge',
-            value: '',
-            unit: 'kWh',
-            color: '#DE83C4'
-        },
-
+            label: `${t('累计充')}/${t('放电量')}(${t('kWh')})`,
+            name: ['totalCharge', 'totalDisCharge'],
+            value: [0, 0],
+            color: '#FF5E00'
+        }
     ];
+
+    const [incomeData, setIncomeData] = useState([
+        {
+            label: t('日收益'),
+            value: 0,
+            color: '#20C2FF'
+        },
+        {
+            label: t('月收益'),
+            value: 0,
+            color: '#20C2FF'
+        },
+        // {
+        //     label: t('年收益'),
+        //     value: 0,
+        //     color: '#20C2FF'
+        // },
+        {
+            label: t('累计收益'),
+            value: 0,
+            color: '#20C2FF'
+        }
+    ])
 
     useEffect(() => {
         getAllPlant();
     }, [])
-
 
     const changeIsOpenDel = (record) => {
         setIsOpenDel(!isOpenDel)
@@ -124,6 +113,7 @@ const RealtimeAlarm = () => {
     const cancle = () => {
         setIsOpen(!isOpen);
     }
+
     const tableColum = [
         {
             title: t('设备编码'),
@@ -154,13 +144,12 @@ const RealtimeAlarm = () => {
             title: t('操作'),
             dataIndex: 'operation',
             key: 'operation',
-            align:'center',
             render: (text, record) => {
                 return (
-                     <Space>
-                        <Button type="link" style={{ color: token.colorPrimary }} onClick={() => edit(record)}>{t('编辑')}</Button>
+                    <Space>
+                        <div type="link" style={{ color: token.colorPrimary, cursor: 'pointer' }} onClick={() => edit(record)}>{t('编辑')}</div>
                         <Button type="link" danger onClick={() => changeIsOpenDel(record)}>{t('删除')}</Button>
-                    </Space> 
+                    </Space>
                 )
             }
         },
@@ -168,12 +157,17 @@ const RealtimeAlarm = () => {
             title: t('详情'),
             dataIndex: 'details',
             key: 'details',
-            align:'center',
             render: (text, record) => {
                 return (
-                    <Space>
-                        <Button type="link" style={{ color: token.colorPrimary }} onClick={() => { history.push(`/device?activeKey=OverView&id=${record.id}&title=${record.name}&sn=${record.sn}&type=${record.type}`) }}>{t('详情')}</Button>
-                    </Space>
+                    <div
+                        type="link"
+                        style={{ color: token.colorPrimary, cursor: 'pointer' }}
+                        onClick={() => {
+                            history.push(`/device?activeKey=OverView&id=${record.id}&title=${record.name || ""}&type=${record.deviceTypeId || ""}`)
+                        }}
+                    >
+                        {t('详情')}
+                    </div>
                 )
             }
         },
@@ -193,15 +187,15 @@ const RealtimeAlarm = () => {
             type: '',
             sn: '',
             plantId: '',
-            address: '',
+            address: currentPlant?.position||"",
         });
         setTitle('新增设备');
         setIsOpen(!isOpen);
     }
- 
+
     const delDevice = async () => {
         let { data } = await deleteDtu({ id: record.id });
-        if (data.code=='ok') {
+        if (data.code == 'ok') {
             changePlant(currentPlantId)
         } else {
             message.error(data.code)
@@ -217,157 +211,210 @@ const RealtimeAlarm = () => {
         }
     }
     const getAllPlant = async () => {
-        const { data } = await getFetchPlantList();
-        let arr = [];
-        data.data?.map(it => {
-            arr.push({
-                label: it.name,
-                value: it.plantId,
-                key: it.plantId
+        const res = await getFetchPlantListServe();
+        const data = res?.data;
+        if(data?.data){
+            const result = data?.data;
+            let arr = [];
+            result?.plantList?.map((it, index) => {
+                arr.push({
+                    ...it,
+                    label: it.name,
+                    value: it.plantId,
+                    key: it.plantId,
+                    dtuSize: result?.deviceCount?.[index]
+                })
             })
-        })
-        activitesRef.current = arr;
-        setDataOption([...arr]);
-        changePlant(arr[0].value);
+            let initPlantId = arr[0].value;
+            let localStoragePlantId = parseInt(localStorage.getItem("currentPlant")||0);
+            if(arr?.map(item=>item.key)?.includes(localStoragePlantId)){
+                initPlantId = localStoragePlantId;
+            }
+            setDataOption([...arr]);
+            changePlant(initPlantId, arr);
+        }
     }
-    const changPage = (page) => {
-        setCurrent(page);
-    }
+
     const changePlant = async (val) => {
+        if(!val) return;
         let { data } = await getDtusOfPlant({
             plantId: val
         });
         data?.data === '' ? setData([]) : setData(JSON.parse(String(data?.data)))
         setCurrentPlantId(val);
-        let { data: dataEnergy } = await getBurEnergyStats2({ plantId: val });
-        let { data: deviceStats } = await getDeviceStats({ plantId: val });
-        setDatadataTotal(deviceStats?.data);
-        setDataEle(dataEnergy?.data);
+        let res1 = await getBurEnergyStats2({ plantId: val });
+        let res2 = await getDeviceStats({ plantId: val });
+        let res3 = await getSocialBenefitServe({ plantId: val });
+
+        setDataEle(res1?.data?.data);
+        setDatadataTotal(res2?.data?.data);
+        setSocialBenefit(res3?.data?.data);
+        localStorage.setItem("currentPlant", val);
     }
-    const topData =[
-        {
-            icon: <PieChartOutlined />,
-            name: t("设备总数"),
-            color: '#00C1BE',
-            key: 'deviceCount',
-            value: '',
-            unit: t('个')
-        },
-        {
-            icon: <AlertOutlined />,
-            name: t("实时告警"),
-            color: '#FFA049',
-            key: 'nowAlarmCount',
-            value: '',
-            unit: t('个')
-        },
-        {
-            icon: <ScheduleOutlined />,
-            name: t("在线"),
-            color: '#F8CC00',
-            key: 'onlineCount',
-            value: '',
-            unit: t('个')
-        },
-        {
-            icon: <HistoryOutlined />,
-            name: t("离线"),
-            color: '#00C1BE',
-            key: 'offlineCount',
-            value: '',
-            unit: t('个')
-        },
-    ];
-    if (tableColum.length===7&&user?.roleId == 1) {
-        tableColum[5]={};
+
+    if (tableColum.length === 7 && user?.roleId == 1) {
+        tableColum[5] = {};
     }
+
+    const getAllRevenue = async () => {
+        const res = await getAllRevenueServe({ plantId: currentPlantId });
+        if (res?.data?.data) {
+            const data = res?.data?.data;
+            const newIncomeData = JSON.parse(JSON.stringify(incomeData));
+            newIncomeData[0].value = data?.dayEarning || 0;
+            newIncomeData[1].value = data?.monthEarning || 0;
+            // newIncomeData[2].value = data?.yearEarning || 0;
+            newIncomeData[2].value = data?.allEarning || 0;
+            setIncomeData(newIncomeData);
+        }
+    }
+
+    const currentPlant = dataOption?.find(plant => (plant?.value===(currentPlantId||dataOption[0]?.value)))
+    useEffect(() => {
+        if (currentPlant){
+            getAllRevenue();
+            setPanTo([currentPlant?.longitude||108.9, currentPlant?.latitude||34.2]);
+        }
+    }, [currentPlantId]);
+
     return (
-        <>
-            <div className={styles.head} style={{ backgroundColor: token.titleCardBgc }}>
-                <Select
-                    style={{width: 240,}}
-                    onChange={(val) => changePlant(val)}
-                    key={dataOption[0]?.value}
-                    defaultValue={dataOption[0]?.value}
-                >
-                    {dataOption && dataOption?.map(item => {
-                        return (<Option key={item.value} value={item.value}>{item.label}</Option>);
-                    })
+        <div
+            className={styles.content}
+        >
+            <div className={styles.left}>
+                <div className={classNames(styles.leftItem, styles.leftItem1)}>
+                    {
+                        currentPlant&&
+                        <Map
+                            plants={[
+                                {
+                                    ...currentPlant,
+                                    longitude: currentPlant?.longitude||0, 
+                                    latitude: currentPlant?.latitude||0,
+                                    plantName: currentPlant?.name,
+                                    installDate: dayjs(currentPlant?.installDate).format('YYYY-MM-DD')
+                                }
+                            ]}
+                            showInfo={true} 
+                            panTo={mapPanTo}
+                        />
                     }
-                </Select>
-            </div>
-            <div className={styles.wrap} style={{ backgroundColor: token.titleCardBgc }}>
-                <div className={styles.first}>
-                    <CardModel
-                        title={t('电量统计')}
-                        bgc={'#0D1430'}
-                        content={
-                            <div className={styles.topContent} style={{ backgroundColor: token.titleCardBgc }}>
-                                {eleData.map(it => {
-                                    return (
-                                        <div className={styles.topItem} style={{ color: it.color,  }}>
-                                            <div className={styles.topItemTitle}>
-                                                <span style={{ color: token.smallTitleColor, fontWeight: 500, marginLeft: '3px' }}>{it.label}</span>
-                                            </div>
-                                            <div className={styles.topVaue} style={{  fontWeight: 400, }} >
-                                                {dataEle[it.name]}
-                                                <span style={{ fontSize: '16px', fontWeight: 400, marginLeft: '10px', height: '10%', lineHeight: '150%' }}>{it.unit}</span>
-                                            </div>
-                                        </div>
-                                    )
-                                })}
-
-                            </div>
-                        }
-                    />
-                </div>
-                <div className={styles.second}>
-                    <CardModel
-                        title={t('设备统计')}
-                        bgc={'#0D1430'}
-                        content={
-                            <div className={styles.secondContent}>
-                                {topData.map(it => {
-                                    return (
-                                        <div className={styles.topItem} style={{ color: it.color, backgroundColor: token.titleCardBgc, }}>
-                                            <div className={styles.leftIcon}>
-                                                {it.icon}
-                                            </div>
-                                            <div className={styles.rightAll}>
-                                                <div className={styles.topItemTitle}>
-                                                    <span style={{ color: token.smallTitleColor, fontWeight: 500,  marginLeft: '3px' }}>{it.name}</span>
-                                                </div>
-                                                <div className={styles.topVaue} style={{  fontWeight: 400, }} >
-                                                    {dataTotal[it.key]}
-                                                    <span style={{ fontSize: '16px', fontWeight: 400, marginLeft: '10px', height: '10%', lineHeight: '150%' }}>{it.unit}</span>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    )
-                                })}
-
-                            </div>
-                        }
-                    />
-                </div>
-
-                <div className={styles.content} >
-                    <div className={styles.title}>
-                        {(user?.roleId==2||user?.roleId==3)&&<div className={styles.buttons}>
-                            <Button type="primary" onClick={changIsOpen}>
-                                {t('新增')}
-                            </Button>
-                        </div>}
+                    <div className={styles.plantSelect}>
+                        <Select
+                            style={{ width: 300 }}
+                            onChange={(val) => {
+                                changePlant(val)
+                            }}
+                            value={currentPlantId}
+                        >
+                            {dataOption && dataOption?.map(item => {
+                                return (<Option key={item.value} value={item.value}>{item.label}</Option>);
+                            })
+                            }
+                        </Select>
                     </div>
-                    <Table
-                        columns={tableColum}
-                        dataSource={data}
-                        scroll={{ y: scroolY }}
-                    />
+                    <div className={styles.mapRight}>
+                        {
+                            incomeData?.map(item => {
+                                return (
+                                    <div className={styles.mapRightItem}>
+                                        <div>
+                                            <div className={styles.mapRightItemTop}>
+                                                <Tooltip title={item?.value}>
+                                                    <div style={{ color: item.color }} className={styles.mapRightItemTopValue}>{item?.value}</div>
+                                                </Tooltip>
+                                                <div className={styles.mapRightItemTopUnit}>{t('元')}</div>
+                                            </div>
+                                            <div className={styles.mapRightItemBottom}>{item.label}</div>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+                    <div className={styles.mapBottom}>
+                        {
+                            eleData?.map(item => {
+                                return (
+                                    <div className={styles.mapBottomItem}>
+                                        <div className={styles.mapBottomItemData}>
+                                            <span style={{ color: '#20C2FF' }}>{dataEle?.[item?.name?.[0]]}</span>
+                                            <span style={{color: '#0B6AA8'}}>/</span>
+                                            <span style={{ color: '#4AEDFF' }}>{dataEle?.[item?.name?.[1]]}</span>
+                                        </div>
+                                        <div className={styles.mapBottomItemLabel}>{item?.label}</div>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+                </div>
+                <div className={classNames(styles.rightItem, styles.leftItem2)}>
+                    <Title title={t('设备列表')} />
+                    <div className={styles.add}>
+                        <div className={styles.addBtn} onClick={()=>setBatchPolicyOpen(true)}>{t('电站策略配置')}</div>
+                        {(user?.roleId===2||user?.roleId===3)&&<div onClick={changIsOpen} className={styles.addBtn}>{t('新增设备')}</div>}
+                    </div>
+                    <div className={styles.cardContent}>
+                        <Table
+                            dataSource={data}
+                            changeIsOpenDel={changeIsOpenDel}
+                            edit={edit}
+                        />
+                    </div>
                 </div>
             </div>
-
+            <div className={styles.right}>
+                <div className={classNames(styles.rightItem, styles.rightItem1)}>
+                    <Title title={t('设备运行情况')} />
+                    <div className={styles.cardContent}>
+                        <DeviceRunDesc
+                            dataSource={dataTotal}
+                        />
+                    </div>
+                </div>
+                <div className={classNames(styles.rightItem, styles.rightItem2)}>
+                    <Title title={`${t('收益统计')}(${t('元')})`} />
+                    <div className={styles.cardContent}>
+                        <IncomeRanking currentPlantId={currentPlantId||dataOption[0]?.value}/>
+                    </div>
+                </div>
+                <div className={classNames(styles.rightItem, styles.rightItem3)}>
+                    <Title title={`${t('电量统计')}(${t('kWh')})`} />
+                    <div className={styles.cardContent}>
+                        <ElectricityRanking
+                            currentPlantId={currentPlantId||dataOption[0]?.value}
+                        />
+                    </div>
+                </div>
+                <div className={classNames(styles.rightItem, styles.rightItem4)}>
+                    <Title title={t('社会效益')} />
+                    <div className={styles.cardContent}>
+                        <SocialBenefits
+                            data={[
+                                {
+                                    icon: bottomLeft1,
+                                    data: socialBenefit?.coal||0,
+                                    unit: t('吨'),
+                                    label: t('节约标准煤'),
+                                },
+                                {
+                                    icon: bottomLeft2,
+                                    data: socialBenefit?.co2||0,
+                                    unit: t('吨'),
+                                    label: t('CO2减排量'),
+                                },
+                                {
+                                    icon: bottomLeft3,
+                                    data: socialBenefit?.tree||0,
+                                    unit: t('棵'),
+                                    label: t('等效植树量'),
+                                },
+                            ]}
+                        />
+                    </div>
+                </div>
+            </div>
             <Add isOpen={isOpen} title={title} formData={formData} onRef={cancle}
                 changeData={(value) => changeData(value)}
                 initSelectData={initSelectData}
@@ -379,9 +426,18 @@ const RealtimeAlarm = () => {
                 onOk={() => delDevice()}
                 onCancel={changeIsOpenDel}
             >
-               {t('数据删除后将无法恢复，是否确认删除该条数据？')} 
+                {t('数据删除后将无法恢复，是否确认删除该条数据？')}
             </Modal>
-        </>
+            <Drawer
+                width={1500}
+                title={t('电站策略配置')}
+                open={batchPolicyOpen}
+                destroyOnClose={true}
+                onClose={()=>setBatchPolicyOpen(false)}
+            >
+                {/* <BatchPolicyConfiguration deviceList={data}/> */}
+            </Drawer>
+        </div>
     )
 }
 

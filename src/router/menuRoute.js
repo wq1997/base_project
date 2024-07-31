@@ -15,16 +15,16 @@ export default [
     //     path: '/index/policyConfiguration',
     //     component: "@/pages/policyConfiguration"
     // },
-    // {
-    //     name: '收益统计',
-    //     path: '/index/statistics',
-    //     routes: [
-    //         { name: '电量统计', path: '/index/statistics/electricity', component: "@/pages/statistics/electricity" },
-    //         { name: '高级分析', path: '/index/statistics/highAnysis', component: "@/pages/statistics/highAnysis"},
-    //         { name: '历史告警', path: '/index/statistics/revenue', component: "@/pages/statistics/revenue" },
-    //         { name: '监测曲线', path: '/index/statistics/monitoringCurves', component: "@/pages/statistics/monitoringCurves" },
-    //     ]
-    // },
+    {
+        name: '收益统计',
+        path: '/index/statistics',
+        routes: [
+            { name: '电量统计', path: '/index/statistics/electricity', component: "@/pages/statistics/electricity" },
+            { name: '高级分析', path: '/index/statistics/highAnysis', component: "@/pages/statistics/highAnysis"},
+            { name: '历史告警', path: '/index/statistics/revenue', component: "@/pages/statistics/revenue" },
+            { name: '监测曲线', path: '/index/statistics/monitoringCurves', component: "@/pages/statistics/monitoringCurves" },
+        ]
+    },
     {
         name: '告警中心',
         path: '/index/alarm',
