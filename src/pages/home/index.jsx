@@ -43,6 +43,7 @@ function OverView(props) {
         },
     ]);
     const intl = useIntl();
+    let currentPlant = JSON.parse(localStorage.getItem('current'));
     const t = (id) => {
         const msg = intl.formatMessage(
             {

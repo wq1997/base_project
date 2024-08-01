@@ -63,7 +63,7 @@ function Com(props) {
 
                                                 </div>
                                             </div>
-                                            <div className={styles.dataRight}>
+                                            <div className={styles.dataRight} style={{marginLeft:'0.1563rem',width:'2.0833rem',}}>
                                                 <div className={styles.pcsData}>
                                                     <div>{data?.[0]?.[index]?.pcsCur}</div>
                                                     <div>{data?.[0]?.[index]?.pcsVol}</div>
@@ -108,8 +108,8 @@ function Com(props) {
 
                                                 </div>
                                             </div>
-                                            <div className={styles.dataRight}>
-                                                <div className={styles.pcsData}>
+                                            <div className={styles.dataRight} style={{marginLeft:'0.1563rem',width:'2.0833rem',}}>
+                                                <div className={styles.pcsData} >
                                                     <div>{data?.[1]?.[index]?.pcsCur}</div>
                                                     <div>{data?.[1]?.[index]?.pcsVol}</div>
                                                     <div>{data?.[1]?.[index]?.pcsPower}</div>
@@ -153,7 +153,7 @@ function Com(props) {
 
                                             </div>
                                         </div>
-                                        <div className={styles.dataRight}>
+                                        <div className={styles.dataRight} style={{marginLeft:'0.1563rem',width:'1.5265rem',}}>
                                             <div className={styles.pcsData}>
                                                 <div>{data?.[2]?.[index]?.pcsCur}</div>
                                                 <div>{data?.[2]?.[index]?.pcsVol}</div>
