@@ -9,6 +9,7 @@ import localeData from "dayjs/plugin/localeData";
 // import 'qweather-icons/font/qweather-icons.css';
 import 'dayjs/locale/zh-cn';
 import { useEffect } from "react";
+import "@/utils/flexible";
 dayjs.extend(weekday);
 dayjs.extend(localeData);
 

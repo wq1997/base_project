@@ -7,6 +7,7 @@
 /src/.umi-test
 /dist
 .swc
+.vscode
 /test-dist
 /prod-dist
 /preProd-dist
