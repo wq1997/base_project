@@ -90,7 +90,7 @@ const RealtimeAlarm = () => {
 
   useEffect(() => {
     getTableListData(current);
-  }, [current, level, type, time, pageSize]);
+  }, [current, type, time, pageSize]);
 
   useEffect(() => {
     initPlantDevice()
@@ -183,6 +183,7 @@ const RealtimeAlarm = () => {
           />
           <div className={styles.level}>
             <Select
+              value={level}
               style={{ width: 180 }}
               onChange={changeLevel}
               options={alarmLevel}
