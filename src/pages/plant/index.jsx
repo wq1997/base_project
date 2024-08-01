@@ -21,7 +21,7 @@ function Com(props) {
     const [selectPlantId, setSelectPlantId] = useState();
     const [initSelectData, setInitSelectData] = useState();
     const [allUser, setAllUser] = useState([]);
-    const dateFormat = 'YYYY-MM-DD HH:hh:ss';
+
     const [textSearch, setTextSearch] = useState('');
     useEffect(() => {
         getData();
@@ -31,9 +31,7 @@ function Com(props) {
         getAllUser();
 
     }, [locale])
-    useEffect(() => {
-        getData();
-    }, [textSearch,selectId])
+
     const { locale } = useSelector(state => state.global);
     const intl = useIntl();
 
@@ -146,11 +144,11 @@ function Com(props) {
         setAllUser(arr)
     }
     const getData = async () => {
-        const { data } = await apigetPlantList({
+        const res = await apigetPlantList({
             UserId: selectId,
             plantName: textSearch
         });
-        setData(data.data);
+        setData(res?.data?.data);
     }
     const changIsOpen = () => {
         setFormData({
@@ -201,10 +199,10 @@ function Com(props) {
         };
         setIsOpenDel(!isOpenDel)
     }
-    const onSearch = (value) => {
-        setTextSearch(value);
+    const onChangeText = (e) => {
+        setTextSearch(e.target.value);
     }
-    const onSelect = (value) => {
+    const onChangeSelectId = (value) => {
         setSelectId(value);
     }
     return (
@@ -215,15 +213,20 @@ function Com(props) {
                         style={{
                             width: 180,
                         }}
+                        value={selectId}
                         placeholder={t('选择用户') }
-                          options={allUser}
-                          onChange={onSelect}
-                          allowClear
+                        options={allUser}
+                        onChange={onChangeSelectId}
+                        allowClear
                     />
                 </div>
-                <Search style={{width: 180,}} placeholder={t("电站名筛选")} onSearch={onSearch} enterButton />
+                <Input style={{width: 180}} value={textSearch} onChange={onChangeText} placeholder={t("电站名筛选")} allowClear />
 
                 <div className={styles.dataItem}>
+                    <Button type='primary' onClick={getData}>{t('查询')}</Button>
+                </div>
+ 
+                <div className={styles.search}>
                     <Button type='primary' onClick={changIsOpen} >{t('新增')}</Button>
                 </div>
             </div>

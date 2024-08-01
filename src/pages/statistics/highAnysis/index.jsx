@@ -41,23 +41,25 @@ const HighAnysis = () => {
         },
     ]
 
-    const getParams = async () => {
+    const getParams = async (showMessage=true) => {
         let format = "YYYY-MM-DD";
         const values = await form.validateFields();
         let { date, currentPlantDevice, dataType, packCell } = values;
         date = date?.map(item => dayjs(item).format(format));
+        let flag = false;
         if (date?.length > 3) {
-            message.error(intl.formatMessage({ id: '最多选择3个对比项' }));
-            return;
+            showMessage&&message.error(intl.formatMessage({ id: '最多选择3个对比项' }));
+            flag=true;
         }
         if (packCell?.length < 2) {
-            message.error(intl.formatMessage({ id: '请选择电芯' }));
-            return;
+            showMessage&&message.error(intl.formatMessage({ id: '请选择电芯' }));
+            flag=true;
         }
         if (!currentPlantDevice||currentPlantDevice?.length < 2) {
-            message.error(intl.formatMessage({ id: '请选择电站下具体设备' }));
-            return;
+            showMessage&&message.error(intl.formatMessage({ id: '请选择电站下具体设备' }));
+            flag=true;
         };
+        if(flag) return Promise.reject("参数错误");
         let params = {
             // plantId: currentPlantDevice?.[0],
             dtuId: currentPlantDevice?.[1],
@@ -224,8 +226,10 @@ const HighAnysis = () => {
                         dataType: 'vol',
                         packCell: [packCellList?.[0]?.value, packCellList?.[0]?.children?.[0]?.value]
                     })
-                    const params = await getParams();
-                    getDataSource(params);
+                    setTimeout(async()=>{
+                        const params = await getParams(false);
+                        getDataSource(params);
+                    }, 200)
                 }
             }
         }
@@ -384,12 +388,8 @@ const HighAnysis = () => {
                     <Title title={title} />
                     <div style={{ width: '100%', height: 'calc(100vh - 250px)' }}>
                         {
-                            dataSource?.length > 0 ?
+                            dataSource?.length > 0 &&
                                 <ReactECharts option={option} notMerge style={{ width: '100%', height: '100%' }} />
-                                :
-                                <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}>
-                                    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={intl.formatMessage({ id: '暂无数据' })} />
-                                </div>
                         }
                     </div>
                 </Space>

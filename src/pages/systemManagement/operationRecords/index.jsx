@@ -61,7 +61,7 @@ const RealtimeAlarm = () => {
 });
   useEffect(() => {
     getData(current);
-  }, [current, startTime, endTime, username, Ip, pageSize]);
+  }, [current, startTime, endTime, pageSize]);
   const getData = async (page) => {
     const { data } = await apiListLogWithPage({
       pageNum: page,
@@ -81,8 +81,8 @@ const RealtimeAlarm = () => {
     setStartTime(dateString[0]);
     setEndTime(dateString[1]);
   }
-  const onSearch = async (value, _e, info) => {
-    setUserName(value);
+  const onSearch = async (e) => {
+    setUserName(e.target.value);
   }
   const changeIp = (val) => {
     setIp(val.target.value);
@@ -111,14 +111,17 @@ const RealtimeAlarm = () => {
           />
         </div>
         <div className={styles.dataItem}>
-          <Input placeholder={t('IP')} onChange={changeIp} enterButton />
+          <Input placeholder={t('IP')} value={Ip} onChange={changeIp} allowClear />
         </div>
         {user?.roleId!=1&&<div className={styles.dataItem}>
-          <Search placeholder={t('用户名')} onSearch={onSearch} enterButton />
+          <Input placeholder={t('用户名')} value={username} onChange={onSearch} allowClear />
         </div>}
-        <Button type="primary" onClick={downLoadFoodModel} style={{ backgroundColor: token.defaultBg, marginLeft: '30px' }} >
-          {t('导出')} Excel
-        </Button>
+        <div style={{marginLeft: 20, display: 'flex', gap:10}}>
+          <Button type="primary" onClick={()=>getData(current)}>{t('查询')}</Button>
+          <Button type="primary" onClick={downLoadFoodModel} style={{ backgroundColor: token.defaultBg }} >
+            {t('导出')} Excel
+          </Button>
+        </div>
       </div>
       <div className={styles.tablePart} style={{height: "calc(100% - 102px)" }}>
         <Table

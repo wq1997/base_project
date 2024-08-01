@@ -54,9 +54,10 @@ const RealtimeAlarm = () => {
   const [level, setLevel] = useState();
   const [sn, setSn] = useState();
   const [plantList, setPlantList] = useState([]);
+  const [deviceList, setDeviceList] = useState([]);
   const [plantId, setPlantId] = useState(null);
-  const [plantDeviceList, setPlantDeviceList] = useState([]);
-  const [plantDeviceValue, setPlantDeviceValue] = useState([]);
+  const [deviceId, setDeviceId] = useState(null);
+
   const intl = useIntl();
   const t = (id) => {
     const msg = intl.formatMessage(
@@ -83,9 +84,7 @@ const RealtimeAlarm = () => {
             label: item.name || intl.formatMessage({ id: '设备无名称' })
           }
         }) : [];
-        const currentIndex = plantList?.findIndex(item => item.value === plantId);
-        plantList[currentIndex].children = data;
-        setPlantDeviceList([...plantList]);
+        setDeviceList(data);
       }
     }
   }
@@ -94,20 +93,13 @@ const RealtimeAlarm = () => {
     const res = await getFetchPlantListServe();
     if (res?.data?.data) {
       const data = res?.data?.data;
-      const plantList = data?.plantList?.map((item, index) => {
+      let plantList = data?.plantList?.map((item, index) => {
         return {
           value: item.plantId,
-          label: item.name,
-          disabled: data?.deviceCount?.[index] === 0,
-          children: data?.deviceCount?.[index] && [
-            {
-              value: '',
-              label: ''
-            }
-          ]
+          label: item.name
         }
       })
-      setPlantDeviceList(plantList);
+      setPlantList(plantList);
     }
   }
 
@@ -115,19 +107,14 @@ const RealtimeAlarm = () => {
     initPlantDevice();
     getData();
   }, []);
-  useEffect(() => {
-    let timer = setInterval(() => {
-      getData();
-    }, 24000);
-    return () => clearInterval(timer)
-  }, [])
+
   const getData = async (page) => {
     const { data } = await get215NowAlarmServe({
       currentPage: page || 1,
-      pageSize: 20,
+      pageSize: 10,
       prior: level,
-      plantId: plantDeviceValue?.[0],
-      dtuId: plantDeviceValue?.[1],
+      plantId,
+      dtuId: deviceId,
     });
     setData(data.data);
   }
@@ -150,7 +137,7 @@ const RealtimeAlarm = () => {
     getData();
   }
   return (
-    <div style={{ width: '100%', height: '100%', paddingBottom: '10px'}}>
+    <div style={{ width: '100%', height: '100%', paddingBottom: '10px' }}>
       <div className={styles.alarmWrap} style={{ padding: '35px 35px' }}>
         <div className={styles.title}>
           {/* <Select
@@ -163,17 +150,27 @@ const RealtimeAlarm = () => {
           <div className={styles.sn}>
             <Input placeholder={t('请输入') + t('设备编码')} style={{ width: 240 }} onChange={changeSn} />
           </div> */}
-          <Cascader 
-              changeOnSelect
-              options={plantDeviceList}
-              onChange={async value => {
-                  if(value?.length===1){
-                      getDtusOfPlant(plantDeviceList,value[0])
-                  }
-                  setPlantDeviceValue(value);
-              }}
-              style={{width: '250px', marginRight: 30}}
-              placeholder={`${t('请选择电站')} / ${t('设备')}`}
+          <Select
+            options={plantList}
+            onChange={async value => {
+              if (value) {
+                getDtusOfPlant(plantId, value)
+              }
+              setPlantId(value);
+              setDeviceId(undefined);
+            }}
+            style={{ width: '250px', marginRight: 30 }}
+            placeholder={`${t('请选择电站')}`}
+            value={plantId}
+          />
+          <Select
+            options={deviceList}
+            onChange={async value => {
+              setDeviceId(value);
+            }}
+            style={{ width: '250px', marginRight: 30 }}
+            placeholder={`${t('请选择设备')}`}
+            value={deviceId}
           />
           <div className={styles.level}>
             <Select

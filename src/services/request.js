@@ -63,7 +63,7 @@ instance.interceptors.response.use(response => {
 });
 
 const errorHandle = (status,msg) => {
-    message.error(msg);
+    console.log(msg);
     // switch (status) {
     //     case 400:
     //         console.log("请求错误");
