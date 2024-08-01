@@ -110,39 +110,39 @@ const Login = () => {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%,-50%)',
-            padding: '40px 60px 70px 60px',
+            padding: '2.0833rem 3.125rem 3.6458rem 3.125rem',
 
           }}
         >
-          <Divider style={{ fontSize: '32px', marginBottom: 0,color:'#fff' }}>欢迎登录</Divider>
-          <p style={{ fontSize: '14px', textAlign: 'center', marginTop: 0 }}>WELCOME TO LOGIN</p>
+          <Divider style={{ fontSize: '1.6667rem', marginBottom: 0,color:'#fff' }}>欢迎登录</Divider>
+          <p style={{ fontSize: '0.7292rem', textAlign: 'center', marginTop: 0 }}>WELCOME TO LOGIN</p>
           <Form
             onFinish={onFinish}
             autoComplete="off"
             style={{
-              width: 320, marginTop: 70
+              width: '16.6667rem', marginTop: '3.6458rem'
             }}
           >
             <Form.Item
               name="userName"
               rules={[{ ...FORM_REQUIRED_RULE }]}
-              style={{ marginBottom: 40 }}
+              style={{ marginBottom: '2.0833rem' }}
             >
               <Input
                 prefix={<UserOutlined style={{ fontSize: 15, color: '#73787F' }} />}
                 placeholder={t("请输入") + ' ' + t('账号')}
-                style={{ height: 40 }}
+                style={{ height: '2.0833rem' }}
               />
             </Form.Item>
             <Form.Item
               name="password"
               rules={[{ ...FORM_REQUIRED_RULE }]}
-              style={{ marginBottom: 40 }}
+              style={{ marginBottom: '2.0833rem' }}
             >
               <Input.Password
-                prefix={<LockOutlined style={{ fontSize: 15, color: '#73787F' }} />}
+                prefix={<LockOutlined style={{ fontSize: '.7813rem', color: '#73787F' }} />}
                 placeholder={t("请输入") + ' ' + t('密码')}
-                style={{ height: 40 }}
+                style={{ height: '2.0833rem' }}
               />
             </Form.Item>
             {showImg && <Form.Item
@@ -154,11 +154,11 @@ const Login = () => {
                 <Input
                   prefix={<ExclamationCircleOutlined style={{ fontSize: 15, color: '#73787F' }} />}
                   placeholder={t("请输入") + ' ' + t('验证码')}
-                  style={{ height: 40, width: 300 }}
+                  style={{ height: '2.0833rem', width: '15.625rem' }}
                 />
               </Form.Item>
               <img
-                style={{ height: 38, width: 100, position: 'absolute', top: 1, right: 0 }}
+                style={{ height: '1.9792rem', width:' 5.2083rem', position: 'absolute', top: 1, right: 0 }}
                 src={codeImgUrl}
                 onClick={changeCodeImgUrl} />
             </Form.Item>
@@ -172,7 +172,7 @@ const Login = () => {
               <Checkbox>{t('记住密码')}</Checkbox>
             </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit" style={{ width: '100%', height: 40 }}>
+              <Button type="primary" htmlType="submit" style={{ width: '100%', height: '2.0833rem' }}>
                 {t('登录')}
               </Button>
             </Form.Item>

@@ -56,7 +56,7 @@ const Cabinet = () => {
     return (
         <div style={{ height: '100%', backgroundColor: '#03081D', }}>
             <Tabs className={styles.tab} activeKey={activeKey} items={PageTypeList} onChange={onChangeTab} />
-            <div className={styles.content} style={{ padding: '40px 30px', borderRadius: '0px 16px 0px 0px' }}>
+            <div className={styles.content} style={{ backgroundColor:token.titleCardBgc  }}>
                 {activeKey === "OverView" && <OverView id={id} />}
                 {activeKey === "DeviceDetails" && <DeviceDetails />}
                 {activeKey === "MonitoringCurves" && <MonitoringCurves />}

@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import styles from './index.less'
 import { Pagination, Select, Space, theme, Button, DatePicker } from "antd"
 import { history, useLocation, useIntl } from "umi";
-import  CardModel  from "../CardModel/index";
+import { CardModel } from "@/components";
 import titleImg from '@/assets/imges/titlep.png'
 import BMS from '@/assets/imges/BMS.png'
 import useIcon from "@/hooks/useIcon";
@@ -66,7 +66,7 @@ function Com(props) {
     ])
 
     return (
-        <div className={styles.content} style={{backgroundColor:token.titleCardBgc}}>
+        <div className={styles.content}>
             <div className={styles.title} style={{ backgroundColor: token.darkbgc }}>{decodeURI(getQueryString("title"))}
                 <div className={styles.sn}><span>SN:</span><span>{decodeURI(getQueryString("sn"))}</span></div>
             </div>

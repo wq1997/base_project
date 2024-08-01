@@ -1,5 +1,5 @@
 import { useIntl } from "umi";
-import { Form, Cascader, DatePicker, Button, Flex, Radio, theme, Space, message, Empty, Spin, Tooltip, Table } from "antd";
+import { Form, Select, DatePicker, Button, Flex, Radio, theme, Space, message, Empty, Spin, Tooltip, Table } from "antd";
 import { Title } from "@/components";
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect } from "react";
@@ -27,20 +27,21 @@ const Revenue = () => {
     const [form] = Form.useForm();
     const [dataSource, setDataSource] = useState([]);
     const [option, setOption] = useState({});
-    const [plantDeviceList, setPlantDeviceList] = useState([]);
     const [loading, setLoading] = useState(false);
     const [tableData, setTableData] = useState([]);
+    const [plantList, setPlantList] = useState([]);
+    const [deviceList, setDeviceList] = useState([]);
 
     const getParams = async () => {
         let format = "YYYY-MM-DD";
         const values = await form.validateFields();
-        const { timeType, currentPlantDevice } = values;
+        const { timeType, plantId, deviceId } = values;
         let params = {};
         if (timeType === "year") {
             format = "YYYY";
             params = {
-                plantId: currentPlantDevice?.[0] || undefined,
-                dtuId: currentPlantDevice?.[1] || undefined,
+                plantId,
+                dtuId: deviceId,
                 date: dayjs(values.yearTime).format(format),
                 dateType: timeType
             }
@@ -52,8 +53,8 @@ const Revenue = () => {
                 return;
             }
             params = {
-                plantId: currentPlantDevice?.[0] || undefined,
-                dtuId: currentPlantDevice?.[1] || undefined,
+                plantId,
+                dtuId: deviceId,
                 startDate: dayjs(values.dayTime[0]).format(format),
                 endDate: dayjs(values.dayTime[1]).format(format),
                 dateType: timeType
@@ -137,6 +138,7 @@ const Revenue = () => {
     }
 
     const getDtusOfPlant = async (plantList, plantId) => {
+        form.setFieldsValue({deviceId: undefined});
         const res = await getDtusOfPlantServe({ plantId });
         if (res?.data?.data) {
             let data = res?.data?.data;
@@ -152,16 +154,17 @@ const Revenue = () => {
                         label: item.name || intl.formatMessage({ id: '设备无名称' })
                     }
                 }) : [];
-                const currentIndex = plantList?.findIndex(item => item.value === plantId);
-                plantList[currentIndex].children = data;
-                setPlantDeviceList([...plantList]);
+                setPlantList(plantList);
+                setDeviceList(data);
 
-                const currentPlantDevice = await form.getFieldValue("currentPlantDevice")
-                if (currentPlantDevice?.length === 0) {
-                    form.setFieldsValue({ currentPlantDevice: [plantId, data[0].value] });
-                    const params = await getParams();
-                    getDataSource(params);
-                    getTableData();
+                const { plantId: currentPlantId } = await form.getFieldsValue(["plantId"])
+                if (!currentPlantId) {
+                    form.setFieldsValue({ plantId, deviceId: data?.[0]?.value })
+                    setTimeout(async () => {
+                        const params = await getParams();
+                        getDataSource(params);
+                        getTableData();
+                    }, 200)
                 }
             }
         }
@@ -219,28 +222,34 @@ const Revenue = () => {
 
     return (
         <div className={styles.content}>
-            <Space size={10} direction="vertical" style={{ width: '100%', height: '100%', padding: 30,backgroundColor:  token.titleCardBgc }}>
+            <Space size={10} direction="vertical" style={{ width: '100%', height: '100%', padding: 30 }}>
                 <Flex justify="center" align="center" gap={10}>
                     <Form
                         form={form}
                         layout="inline"
                         initialValues={{
-                            currentPlantDevice: [],
+                            plantId: undefined,
+                            deviceId: undefined,
                             dayTime: [defaultStartDate, defaultEndDate],
                             yearTime: dayjs(),
                             timeType: 'day'
                         }}
                     >
                         <Flex align="center">
-                            <Form.Item name={"currentPlantDevice"} label={intl.formatMessage({ id: '设备' })}>
-                                <Cascader
-                                    changeOnSelect
-                                    options={plantDeviceList}
+                            <Form.Item name={"plantId"} label={intl.formatMessage({ id: '电站' })}>
+                                <Select
+                                    options={plantList}
                                     onChange={async value => {
-                                        if (value?.length === 1) {
-                                            getDtusOfPlant(plantDeviceList, value[0])
+                                        if (value) {
+                                            getDtusOfPlant(plantList, value)
                                         }
                                     }}
+                                    style={{ width: '250px', height: 40 }}
+                                />
+                            </Form.Item>
+                            <Form.Item name={"deviceId"} label={intl.formatMessage({ id: '设备' })}>
+                                <Select
+                                    options={deviceList}
                                     style={{ width: '250px', height: 40 }}
                                 />
                             </Form.Item>
@@ -321,12 +330,8 @@ const Revenue = () => {
                     <Space direction="vertical" style={{ width: '100%' }}>
                         <div style={{ width: '100%', height: "calc(50vh - 150px)" }}>
                             {
-                                dataSource?.length > 0 ?
-                                    <ReactECharts option={option} notMerge style={{ width: '100%', height: '100%' }} />
-                                    :
-                                    <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}>
-                                        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={intl.formatMessage({ id: '暂无数据' })} />
-                                    </div>
+                                dataSource?.length > 0 &&
+                                <ReactECharts option={option} notMerge style={{ width: '100%', height: '100%' }} />
                             }
                         </div>
                     </Space>

@@ -7,9 +7,8 @@ import { deleteDtu, updateDtus } from "@/services/deviceTotal"
 import { getAllRevenue as getAllRevenueServe } from "@/services";
 import { getBurEnergyStats2, getDeviceStats, getDtusOfPlant } from "@/services/plant"
 import {
-    getFetchPlantList2 as getFetchPlantListServe,
-    getSocialBenefit as getSocialBenefitServe,
-} from "@/services";
+    getFetchPlantList as getFetchPlantListServe,
+} from "@/services/deviceTotal";
 import {
     ExclamationCircleFilled
 } from '@ant-design/icons';
@@ -234,24 +233,16 @@ const RealtimeAlarm = () => {
         const res = await getFetchPlantListServe();
         const data = res?.data;
         if(data?.data){
-            const result = data?.data;
             let arr = [];
-            result?.plantList?.map((it, index) => {
+            data.data?.map(it => {
                 arr.push({
-                    ...it,
                     label: it.name,
                     value: it.plantId,
-                    key: it.plantId,
-                    dtuSize: result?.deviceCount?.[index]
+                    key: it.plantId
                 })
             })
-            let initPlantId = arr[0].value;
-            let localStoragePlantId = parseInt(localStorage.getItem("currentPlant")||0);
-            if(arr?.map(item=>item.key)?.includes(localStoragePlantId)){
-                initPlantId = localStoragePlantId;
-            }
             setDataOption([...arr]);
-            changePlant(initPlantId, arr);
+            changePlant(arr[0].value);
         }
     }
 
@@ -264,11 +255,11 @@ const RealtimeAlarm = () => {
         setCurrentPlantId(val);
         let res1 = await getBurEnergyStats2({ plantId: val });
         let res2 = await getDeviceStats({ plantId: val });
-        let res3 = await getSocialBenefitServe({ plantId: val });
+        // let res3 = await getSocialBenefitServe({ plantId: val });
 
         setDataEle(res1?.data?.data);
         setDatadataTotal(res2?.data?.data);
-        setSocialBenefit(res3?.data?.data);
+        // setSocialBenefit(res3?.data?.data);
         localStorage.setItem("currentPlant", val);
     }
 
@@ -361,8 +352,20 @@ const RealtimeAlarm = () => {
                 </div>
                 <div className={classNames(styles.rightItem, styles.rightItem2)}style={{backgroundColor:token.darkbgc}}>
                     <Title title={`${t('实时电量')}(${t('kWh')})`} />
-                    <div className={styles.cardContent}>
-                        <IncomeRanking currentPlantId={currentPlantId||dataOption[0]?.value}/>
+                    <div className={styles.realEle}>
+                    {eleData.map(it => {
+                                    return (
+                                        <div className={styles.topItem} style={{ color:'#00FFFB',  }}>
+                                            <div className={styles.topVaue} style={{  fontWeight: 400, }} >
+                                                {dataEle[it.name]}
+                                                <span style={{ fontSize: '16px', fontWeight: 400, marginLeft: '10px', height: '10%', lineHeight: '150%' }}>{it.unit}</span>
+                                            </div>
+                                            <div className={styles.topItemTitle}>
+                                                <span style={{ color: token.smallTitleColor, fontWeight: 500, marginLeft: '3px' }}>{it.label}</span>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
                     </div>
                 </div>
                 <div className={classNames(styles.rightItem, styles.rightItem3)}style={{backgroundColor:token.darkbgc}}>

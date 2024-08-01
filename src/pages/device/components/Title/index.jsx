@@ -1,8 +1,8 @@
 import styles from "./index.less";
 
-const Title = ({title}) => {
+const  Title = ({title}) => {
     return (
-        <div className={styles.title}>
+        <div className={styles.title} style={{width:'100%'}} >
             <span>{title}</span>
         </div>
     )

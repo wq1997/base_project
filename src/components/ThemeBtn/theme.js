@@ -22,8 +22,8 @@ const theme = {
         treeBgb:'#03081D',
         lightTreeBgc:'#212849 ',
         lightTreeLineBgc:'#333F62',
-        contentBgc:'#111838',
-        darkbgc:'#0C122E',
+        contentBgc:'#171F44',
+        darkbgc:'#171F44',
         chartLineColor:['#03B4B4','#ED750E','#A97DFF','#4D4DF4','#EE3059','#2DD51E','#F4D81B','#4D4DF4']
 
     },
@@ -48,8 +48,8 @@ const theme = {
         treeBgb:'#E9EBF3',
         lightTreeBgc:'#F2F4F9',
         lightTreeLineBgc:'#E6E9F2',
-        contentBgc:'#111838',
-        darkbgc:'#0C122E',
+        contentBgc:'#171F44',
+        darkbgc:'#171F44',
         chartLineColor:['#03B4B4','#ED750E','#A97DFF','#4D4DF4','#EE3059','#2DD51E','#F4D81B','#4D4DF4']
 
     }

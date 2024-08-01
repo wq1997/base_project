@@ -3,25 +3,27 @@
 
     .Title {
         position: absolute;
-        left: 83px;
+        left: 4.3229rem;
         font-family: DingTalkJinBuTi;
         color: #FFFFFF;
-        line-height: 72px;
-        text-shadow: 4px 8px 4px #000000;
+        line-height: 3.75rem;
+        text-shadow: .2083rem .4167rem .2083rem #000000;
+        font-size: 2.1875rem;
     }
 .bottom{
     position: absolute;
-    bottom: 30px;
+    bottom: 1.5625rem;
     display: block;
     width: 100%;
     display: flex;
     justify-content: center;
+    
 }
     .formCard {
         background: rgba(0, 0, 0, 0.3);
-        box-shadow: 8px 8px 8px 0px rgba(0, 0, 0, 0.16);
-        border-radius: 16px;
-        backdrop-filter: blur(6px);
+        box-shadow: .4167rem .4167rem .4167remx 0px rgba(0, 0, 0, 0.16);
+        border-radius: .833333rem /* 16/19.2 */;
+        backdrop-filter: blur(.3125rem);
         }
 p{
     font-family: PingFangRegular;
@@ -30,7 +32,7 @@ p{
     :global {
         .ant-input-password {
             &::placeholder {
-                line-height: 40px;
+                line-height: 2.0833rem;
             }
         }
 
@@ -39,22 +41,5 @@ p{
         }
     }
 }
-@media screen and (min-width: 2000px) {
-    .Title{
-        font-size: 60px;
-    }
-   
-}
 
-@media screen and (min-width: 1000px) and (max-width: 2000px) {
-    .Title{
-        font-size: 42px;
-    }
-}
 
-@media screen and (max-width: 1000px) {
-    .Title{
-        font-size: 36px;
-    }
-
-}

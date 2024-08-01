@@ -9,6 +9,7 @@ import weekday from "dayjs/plugin/weekday";
 import localeData from "dayjs/plugin/localeData";
 // import 'qweather-icons/font/qweather-icons.css';
 import 'dayjs/locale/zh-cn';
+import '@/utils/flexible.js'
 dayjs.extend(weekday);
 dayjs.extend(localeData);
 dayjs.locale('zh-cn');
