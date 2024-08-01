@@ -16,7 +16,7 @@ const Index = ({ data }) => {
                             <div className={styles.weather}>
                                 <i
                                     class={`qi-${data?.[0]?.iconDay} icon`}
-                                    style={{ color: "#1677ff", fontSize: "32px" }}
+                                    style={{ color: token.color7, fontSize: "32px" }}
                                 ></i>
                                 <span className={styles.date} style={{color: token.descriptionColor}}>{data?.[0]?.textDay}</span>
                             </div>
@@ -36,7 +36,7 @@ const Index = ({ data }) => {
                                     <div className={styles.weather}>
                                         <i
                                             class={`qi-${item?.iconDay} icon`}
-                                            style={{ color: "#1677ff", fontSize: "32px" }}
+                                            style={{ color: token.color7, fontSize: "32px" }}
                                         ></i>
                                         <span className={styles.date}>{item.fxDate}</span>
                                     </div>

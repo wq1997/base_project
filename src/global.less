@@ -1,76 +1,77 @@
 @import "./foot.less";
 
-body{
+body {
     margin: 0;
     padding: 0;
 }
 
-.ant-menu{
+.ant-menu {
     background-color: unset;
 }
 
-.ant-menu-light.ant-menu-inline .ant-menu-sub.ant-menu-inline, :where(.css-dev-only-do-not-override-1sn0ohr).ant-menu-light>.ant-menu.ant-menu-inline .ant-menu-sub.ant-menu-inline{
+.ant-menu-light.ant-menu-inline .ant-menu-sub.ant-menu-inline,
+:where(.css-dev-only-do-not-override-1sn0ohr).ant-menu-light>.ant-menu.ant-menu-inline .ant-menu-sub.ant-menu-inline {
     background-color: unset;
 }
 
-.ant-btn-default:not(:disabled):not(.ant-btn-disabled):hover{
+.ant-btn-default:not(:disabled):not(.ant-btn-disabled):hover {
     color: unset;
 }
 
-.ant-menu-light:not(.ant-menu-horizontal) .ant-menu-item:not(.ant-menu-item-selected):hover{
+.ant-menu-light:not(.ant-menu-horizontal) .ant-menu-item:not(.ant-menu-item-selected):hover {
     background-color: unset;
 }
 
-.ant-menu-title-content{
+.ant-menu-title-content {
     margin-left: 7px;
     font-size: 16px;
 }
 
-.ant-menu-inline{
+.ant-menu-inline {
     border-inline-end: none !important;
 }
 
-.ant-card-body{
+.ant-card-body {
     padding: 16px !important;
 }
 
-.ant-card-bordered{
+.ant-card-bordered {
     border: none !important;
 }
 
-.ant-picker-outlined{
+.ant-picker-outlined {
     background: none;
 }
 
-.ant-picker-outlined:focus-within{
+.ant-picker-outlined:focus-within {
     background: none !important;
 }
 
-.ant-input-outlined{
+.ant-input-outlined {
     background: none;
 }
 
-.ant-select-selector{
+.ant-select-selector {
     background: none !important;
 }
 
-.ant-checkbox-inner{
+.ant-checkbox-inner {
     background: none !important;
 }
 
-.ant-table-wrapper .ant-table{
+.ant-table-wrapper .ant-table {
     background: none !important;
 }
 
-.ant-input-number-outlined{
+.ant-input-number-outlined {
     background: none !important;
 }
 
-.ant-table-wrapper .ant-table-tbody>tr.ant-table-placeholder{
+.ant-table-wrapper .ant-table-tbody>tr.ant-table-placeholder {
     background: none !important;
 }
 
-.ant-tree{
+.ant-tree {
     background: none !important;
 }
 
@@ -94,21 +95,36 @@ body{
     border-radius: 32px;
 }
 
-.amap-copyright{
+.amap-copyright {
     display: none !important;
 }
 
-.ant-menu.ant-menu-root.ant-menu-vertical{
+.ant-menu.ant-menu-root.ant-menu-vertical {
     border-inline-end: none !important;
 }
 
-a{
+a {
     color: #49A2F8;
-    &:hover{
+
+    &:hover {
         color: #49A2F8;
     }
 }
 
-.ant-table-placeholder{
+.ant-table-placeholder {
     display: none;
+}
+
+.amap-marker-label {
+    border: 0;
+    background-color: transparent;
+    line-height: normal;
+}
+
+.amap-logo {
+    display: none !important; //去掉高德地图logo
+}
+
+.amap-copyright {
+    opacity: 0; //去掉高德的版本号
 }

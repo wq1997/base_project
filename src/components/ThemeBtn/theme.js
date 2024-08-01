@@ -16,6 +16,10 @@ const theme = {
         color4: '#fff',
         color5: '#27475f',
         color6: '#DDE2E5',
+        color7: '#E0F0FF',
+        color8: '#1A4C68',
+        color9: '#FFFFFF',
+        color10: '#D2D2D2',
         components: {
             Table:{
                 headerBg: '#3C5E76',
@@ -67,6 +71,10 @@ const theme = {
         color4: 'rgba(0, 0, 0, 0.88)',
         color5: '#fff',
         color6: '#49A2F8',
+        color7: "#1677ff",
+        color8: '#ffffff',
+        color9: '#999',
+        color10: '#666',
         components: {
             Table:{
                 headerBg: '#fafafa',

@@ -27,6 +27,9 @@ const GlobalWrapperCss = (props) => {
             '.ant-picker-input': {
                 color: token.color1
             },
+            '.amap-info-content': {
+                background: token.color8
+            }
         }
     })
     return (
