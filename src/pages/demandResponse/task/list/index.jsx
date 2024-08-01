@@ -1,159 +1,144 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Button, Space, Table, message, Modal, DatePicker, Tooltip, Input } from "antd";
-import { PlusOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
+import { history, useLocation, useSelector } from "umi";
 import { SearchInput } from "@/components";
 import {
     getTaskist as getTaskistServer,
     getSearchInitData as getSearchInitDataServer,
+    confirmTask as confirmTaskServer,
+    refuseTask as refuseTaskServer,
 } from "@/services/task";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
-import { history, useLocation, useSelector } from "umi";
-import { hasPerm } from "@/utils/utils";
-import dayjs from "dayjs";
+import { hasPerm, recordPage } from "@/utils/utils";
 import "./index.less";
+import dayjs from "dayjs";
 
 const Account = () => {
-    const location = useLocation();
+    recordPage("op:invite_task");
     const { user } = useSelector(state => state.user);
-    const endTimeRef = useRef();
-    const executeTimeRef = useRef();
-    const codeRef = useRef();
-    const statusRef = useRef();
+    const releaseTimeRef = useRef();
+    const [releaseTime, setReleaseTime] = useState();
+    const invitationIdRef = useRef();
+    const [invitationId, setInvitationId] = useState();
+    const taskCodeRef = useRef();
+    const [taskCode, setTaskCode] = useState();
+    const stationNameRef = useRef();
+    const [stationName, setStationName] = useState();
+    const [stationNameList, setStationNameList] = useState();
+    const deadlineTimeRef = useRef();
+    const [deadlineTime, setDeadlineTime] = useState();
+    const userConfirmStatusRef = useRef();
+    const [userConfirmStatus, setUserConfirmStatus] = useState();
+    const [userConfirmStatusList, setUserConfirmStatusList] = useState();
+    const szConfirmStatusRef = useRef();
+    const [szConfirmStatus, setSzConfirmStatus] = useState();
+    const [szConfirmStatusList, setSzConfirmStatusList] = useState();
     const responseTypeRef = useRef();
-    const responseTimeTypeRef = useRef();
-    const [code, setCode] = useState();
-    const [endTime, setEndTime] = useState();
-    const [executeTime, setExecuteTime] = useState();
-    const [status, setStatus] = useState();
-    const [statusList, setStatusList] = useState();
     const [responseType, setResponseType] = useState();
     const [responseTypeList, setResponseTypeList] = useState();
-    const [responseTimeType, setResponseTimeType] = useState();
-    const [responseTimeTypeList, setResponseTimeTypeList] = useState();
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [userList, setUserList] = useState([]);
 
     const columns = [
         {
-            title: "任务编号",
-            dataIndex: "code",
-            width: 150,
+            title: "邀约编号",
+            dataIndex: "invitationId",
+            render: (_, { resourcePlan }) => {
+                return resourcePlan?.invitationId;
+            },
         },
         {
-            title: "状态",
-            dataIndex: "statusZh",
-            key: "statusZh",
-            width: 150,
+            title: "任务编号",
+            dataIndex: "id",
+            render: (_, { resourcePlan }) => {
+                return resourcePlan?.id;
+            },
+        },
+        {
+            title: "响应场站名称",
+            dataIndex: "resourceName",
+            render: (_, { resourcePlan }) => {
+                return resourcePlan?.resourceName;
+            },
+        },
+        {
+            title: "用户确认状态",
+            dataIndex: "userConfirmStatusZh",
+            render: (_, { resourcePlan }) => {
+                return resourcePlan?.userConfirmStatusZh;
+            },
+        },
+        {
+            title: "上游确认状态",
+            dataIndex: "szConfirmStatusZh",
+            render: (_, { resourcePlan }) => {
+                return resourcePlan?.szConfirmStatusZh;
+            },
+        },
+        {
+            title: "任务发布时间",
+            dataIndex: "createdTime",
+            render: (_, { invitation }) => {
+                return invitation?.invitationTime;
+            },
         },
         {
             title: "确认截止时间",
-            dataIndex: "confirmationDeadline",
-            width: 200,
+            dataIndex: "replyTime",
+            render: (_, { invitation }) => {
+                return invitation?.replyTime;
+            },
         },
         {
             title: "响应类型",
             dataIndex: "responseTypeZh",
-            width: 150,
-        },
-        {
-            title: "响应要求",
-            dataIndex: "responseTimeTypeZh",
-            width: 150,
+            render: (_, { invitation }) => {
+                return invitation?.responseTypeZh;
+            },
         },
         {
             title: "度电报价(元)",
             dataIndex: "whPrice",
-            width: 150,
+            render: (_, { resourcePlan }) => {
+                return resourcePlan?.priceKWh;
+            },
         },
         {
-            title: "约定响应功率(kW)",
+            title: "计划申报量(kWh)",
             dataIndex: "responsePower",
-            width: 150,
+            render: (_, { resourcePlan }) => {
+                return resourcePlan?.capacityKWh;
+            },
         },
         {
-            title: "实际执行功率(kW)",
-            dataIndex: "actualAveragePower",
-            width: 150,
-        },
-        {
-            title: "实际完成比例",
-            dataIndex: "actualCompletionRatio",
-            render: (_, { actualCompletionRatio }) => actualCompletionRatio + "%",
-            width: 150,
+            title: "实际下发量(kWh)",
+            dataIndex: "capacityKWh",
+            render: (_, { dayaheadResourcePlan }) => {
+                return dayaheadResourcePlan?.capacityKWh;
+            },
         },
         {
             title: "约定开始时间",
-            dataIndex: "appointedTimeFrom",
-            width: 150,
+            dataIndex: "appointedTimeTo",
+            render: (_, { invitation }) => {
+                return invitation?.startTime;
+            },
         },
         {
             title: "约定结束时间",
             dataIndex: "appointedTimeTo",
-            width: 150,
-        },
-        {
-            title: "任务响应公司",
-            dataIndex: "companyName",
-            key: "companyName",
-            ellipsis: true,
-            width: 400,
-            render(value) {
-                return (
-                    <Tooltip title={value}>
-                        <div
-                            style={{
-                                overflow: "hidden",
-                                whiteSpace: "nowrap",
-                                textOverflow: "ellipsis",
-                                width: 400,
-                            }}
-                        >
-                            {value}
-                        </div>
-                    </Tooltip>
-                );
+            render: (_, { invitation }) => {
+                return invitation?.endTime;
             },
         },
         {
-            title: "任务备注",
+            title: "备注",
             dataIndex: "remark",
             key: "remark",
             ellipsis: true,
-            width: 400,
-            render(value) {
-                return (
-                    <Tooltip title={value}>
-                        <div
-                            style={{
-                                overflow: "hidden",
-                                whiteSpace: "nowrap",
-                                textOverflow: "ellipsis",
-                                width: 400,
-                            }}
-                        >
-                            {value}
-                        </div>
-                    </Tooltip>
-                );
-            },
-        },
-        {
-            title: "失败原因",
-            dataIndex: "executeResult",
-            width: 400,
-            render(value) {
-                if (!value?.success) {
-                    return value?.resultDetail
-                        ?.filter(item => !item?._1)
-                        ?.map((item, index) => {
-                            return (
-                                <div>
-                                    未满足“{item?._2}”
-                                </div>
-                            );
-                        });
-                }
+            render: (_, { invitation }) => {
+                return invitation?.remark;
             },
         },
         {
@@ -161,31 +146,34 @@ const Account = () => {
             dataIndex: "operate",
             fixed: "right",
             width: 200,
-            render: (_, { id, status, supportConfirm }) => {
-                if (supportConfirm) {
-                    return (
-                        hasPerm(user, "op:task_confirm") && (
+            render: (_, record) => {
+                return (
+                    <Space>
+                        {hasPerm(user, "op:resource_plan_confirm") &&
+                            record?.resourcePlan?.supportRefuseOrConfirm && (
+                                <a
+                                    onClick={() => {
+                                        history.push(
+                                            `/vpp/demandResponse/task/confirm?taskId=${record?.resourcePlan?.id}`
+                                        );
+                                    }}
+                                >
+                                    前往确认
+                                </a>
+                            )}
+                        {!record?.resourcePlan?.supportRefuseOrConfirm && (
                             <a
                                 onClick={() => {
-                                    history.push(`/vpp/demandResponse/task/confirm?taskId=${id}`);
+                                    history.push(
+                                        `/vpp/demandResponse/task/detail?taskId=${record?.resourcePlan?.id}`
+                                    );
                                 }}
                             >
-                                前往确认
+                                详情
                             </a>
-                        )
-                    );
-                }
-                if (status == "EXECUTED_FAIL" || status == "EXECUTED_SUCCESS") {
-                    return (
-                        <a
-                            onClick={() => {
-                                history.push(`/vpp/demandResponse/task/search?taskId=${id}`);
-                            }}
-                        >
-                            查询执行情况
-                        </a>
-                    );
-                }
+                        )}
+                    </Space>
+                );
             },
         },
     ];
@@ -193,35 +181,44 @@ const Account = () => {
     const getSearchInitData = async () => {
         const res = await getSearchInitDataServer();
         if (res?.data?.status == "SUCCESS") {
-            const { statuses, responseTypes, responseTimeTypes } = res?.data?.data;
-            setStatusList(statuses);
-            setResponseTypeList(responseTypes);
-            setResponseTimeTypeList(responseTimeTypes);
+            const { exchangeTypes, szConfirmStatus, userConfirmStatus, loadResources } =
+                res?.data?.data;
+            setUserConfirmStatusList(userConfirmStatus);
+            setSzConfirmStatusList(szConfirmStatus);
+            setResponseTypeList(exchangeTypes);
+            setStationNameList(
+                loadResources?.map(item => ({
+                    code: item?.resourceId,
+                    showStr: item?.resourceName,
+                }))
+            );
         }
     };
 
-    const getInviteList = async () => {
-        const taskCode = location?.search.split("=")[1];
-        setCode(taskCode);
+    const getList = async () => {
         const { current, pageSize } = paginationRef.current;
-        const [confirmationDeadlineFrom, confirmationDeadlineTo] = endTimeRef.current || [];
-        const [appointedTimeRangeStart, appointedTimeRangeEnd] = executeTimeRef.current || [];
-        const code = taskCode || codeRef.current;
-        const status = statusRef.current;
-        const responseType = responseTypeRef.current;
-        const responseTimeType = responseTimeTypeRef?.current;
+        const [releaseTimeFrom, releaseTimeStartTo] = releaseTimeRef.current || [];
+        const invitationId = invitationIdRef.current;
+        const taskCode = taskCodeRef.current;
+        const responseType = responseTypeRef?.current;
+        const stationName = stationNameRef.current;
+        const [deadlineTimeFrom, deadlineTimeTo] = deadlineTimeRef.current || [];
+        const userConfirmStatus = userConfirmStatusRef.current;
+        const szConfirmStatus = szConfirmStatusRef.current;
         const res = await getTaskistServer({
             pageNum: current,
             pageSize,
             queryCmd: {
-                confirmationDeadlineFrom,
-                confirmationDeadlineTo,
-                appointedTimeRangeStart,
-                appointedTimeRangeEnd,
-                code,
-                status,
-                responseType,
-                responseTimeType,
+                createdTimeFrom: releaseTimeFrom,
+                createdTimeTo: releaseTimeStartTo,
+                invitationId,
+                code: taskCode,
+                exchangeType: responseType,
+                resourceName: stationName,
+                confirmDeadlineFrom: deadlineTimeFrom,
+                confirmDeadlineTo: deadlineTimeTo,
+                userConfirmStatus: userConfirmStatus ? [userConfirmStatus] : null,
+                szConfirmStatus: szConfirmStatus ? [szConfirmStatus] : null,
             },
         });
         if (res?.data?.status == "SUCCESS") {
@@ -230,29 +227,44 @@ const Account = () => {
                 ...paginationRef.current,
                 total: parseInt(totalRecord),
             });
-            setUserList(recordList);
+            setUserList(
+                recordList?.map(item => ({
+                    ...item,
+                    id: item.resourcePlan?.id,
+                }))
+            );
         }
     };
 
     const handleReset = () => {
+        history.push("/vpp/demandResponse/task/list");
         paginationRef.current = DEFAULT_PAGINATION;
-        endTimeRef.current = undefined;
-        setEndTime([]);
-        executeTimeRef.current = undefined;
-        setExecuteTime([]);
-        codeRef.current = undefined;
-        setCode();
-        statusRef.current = undefined;
-        setStatus();
+        releaseTimeRef.current = undefined;
+        setReleaseTime([]);
+        invitationIdRef.current = undefined;
+        setInvitationId();
+        taskCodeRef.current = undefined;
+        setTaskCode();
         responseTypeRef.current = undefined;
         setResponseType();
-        responseTimeTypeRef.current = undefined;
-        setResponseTimeType();
-        getInviteList();
+        stationNameRef.current = undefined;
+        setStationName();
+        deadlineTimeRef.current = undefined;
+        setDeadlineTime();
+        userConfirmStatusRef.current = undefined;
+        setUserConfirmStatus();
+        szConfirmStatusRef.current = undefined;
+        setSzConfirmStatus();
+        getList();
+    };
+
+    const handleSearch = () => {
+        paginationRef.current = DEFAULT_PAGINATION;
+        getList();
     };
 
     useEffect(() => {
-        getInviteList();
+        getList();
         getSearchInitData();
     }, []);
 
@@ -260,82 +272,96 @@ const Account = () => {
         <div>
             <Space className="search">
                 <div>
-                    <span>确认截止时间：</span>
+                    <span>任务发布时间：</span>
                     <DatePicker.RangePicker
                         onChange={(date, dateStr) => {
-                            paginationRef.current = DEFAULT_PAGINATION;
-                            endTimeRef.current = dateStr;
-                            setEndTime(dateStr);
+                            releaseTimeRef.current = dateStr;
+                            setReleaseTime(dateStr);
                         }}
                         value={
-                            endTime && endTime.length > 0 && endTime[0] && endTime[1]
-                                ? [dayjs(endTime[0]), dayjs(endTime[1])]
+                            releaseTime &&
+                            releaseTime.length > 0 &&
+                            releaseTime[0] &&
+                            releaseTime[1]
+                                ? [dayjs(releaseTime[0]), dayjs(releaseTime[1])]
                                 : []
                         }
                     />
                 </div>
+                <SearchInput
+                    label="邀约编号"
+                    value={invitationId}
+                    onChange={value => {
+                        invitationIdRef.current = value;
+                        setInvitationId(value);
+                    }}
+                />
                 <SearchInput
                     label="任务编号"
-                    value={code}
+                    value={taskCode}
                     onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
-                        codeRef.current = value;
-                        setCode(value);
+                        taskCodeRef.current = value;
+                        setTaskCode(value);
                     }}
                 />
-                <SearchInput
-                    label="任务状态"
-                    value={status}
-                    type="select"
-                    options={statusList}
-                    onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
-                        statusRef.current = value;
-                        setStatus(value);
-                    }}
-                />
-
-                <div>
-                    <span>约定执行时间：</span>
-                    <DatePicker.RangePicker
-                        onChange={(date, dateStr) => {
-                            paginationRef.current = DEFAULT_PAGINATION;
-                            executeTimeRef.current = dateStr;
-                            setExecuteTime(dateStr);
-                        }}
-                        value={
-                            executeTime &&
-                            executeTime.length > 0 &&
-                            executeTime[0] &&
-                            executeTime[1]
-                                ? [dayjs(executeTime[0]), dayjs(executeTime[1])]
-                                : []
-                        }
-                    />
-                </div>
                 <SearchInput
                     label="响应类型"
                     type="select"
                     options={responseTypeList}
                     value={responseType}
                     onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
                         responseTypeRef.current = value;
                         setResponseType(value);
                     }}
                 />
                 <SearchInput
-                    label="响应要求"
+                    label="场站名称"
                     type="select"
-                    options={responseTimeTypeList}
-                    value={responseTimeType}
+                    options={stationNameList}
+                    value={stationName}
                     onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
-                        responseTimeTypeRef.current = value;
-                        setResponseTimeType(value);
+                        stationNameRef.current = value;
+                        setStationName(value);
                     }}
                 />
-                <Button type="primary" onClick={getInviteList}>
+                <div>
+                    <span>确认截止时间：</span>
+                    <DatePicker.RangePicker
+                        onChange={(date, dateStr) => {
+                            deadlineTimeRef.current = dateStr;
+                            setDeadlineTime(dateStr);
+                        }}
+                        value={
+                            deadlineTime &&
+                            deadlineTime.length > 0 &&
+                            deadlineTime[0] &&
+                            deadlineTime[1]
+                                ? [dayjs(deadlineTime[0]), dayjs(deadlineTime[1])]
+                                : []
+                        }
+                    />
+                </div>
+                <SearchInput
+                    label="用户确认状态"
+                    type="select"
+                    value={userConfirmStatus}
+                    options={userConfirmStatusList}
+                    onChange={value => {
+                        userConfirmStatusRef.current = value;
+                        setUserConfirmStatus(value);
+                    }}
+                />
+                <SearchInput
+                    label="上游确认状态"
+                    type="select"
+                    value={szConfirmStatus}
+                    options={szConfirmStatusList}
+                    onChange={value => {
+                        szConfirmStatusRef.current = value;
+                        setSzConfirmStatus(value);
+                    }}
+                />
+                <Button type="primary" onClick={handleSearch}>
                     搜索
                 </Button>
                 <Button onClick={handleReset}>重置</Button>
@@ -347,7 +373,7 @@ const Account = () => {
                 pagination={pagination}
                 onChange={pagination => {
                     paginationRef.current = pagination;
-                    getInviteList();
+                    getList();
                 }}
                 scroll={{
                     x: "100%",

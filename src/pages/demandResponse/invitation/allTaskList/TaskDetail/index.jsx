@@ -11,36 +11,41 @@ const BaseLine = ({ taskDetailData, onClose }) => {
             dataIndex: "timeRange",
         },
         {
-            title: "执行功率(kW)",
-            dataIndex: "targetPower",
-        },
-        {
             title: "基线功率(kW)",
             dataIndex: "basePower",
         },
         {
-            title: "计划申报量(kW)",
+            title: "执行功率(kW)",
+            dataIndex: "targetPower",
+        },
+        {
+            title: "申报报价(kWh/元)",
+            dataIndex: "priceKWh",
+        },
+        {
+            title: "申报量(kW)",
             dataIndex: "regulatedPower",
+        },
+        {
+            title: "实际报价(kWh/元)",
+            dataIndex: "realPriceKWh",
         },
         {
             title: "实际下发量(kW)",
             dataIndex: "realRegulatedPower",
-        },
-        {
-            title: "度电报价(kWh/元)",
-            dataIndex: "priceKWh",
         },
     ];
 
     useEffect(() => {
         if (taskDetailData) {
             setOpen(true);
-            const { resourcePlan, responsePlan } = taskDetailData;
             setDataSource(
-                resourcePlan?.details?.map((item, index) => ({
+                taskDetailData?.resourcePlan?.details?.map((item, index) => ({
                     ...item,
-                    priceKWh: resourcePlan?.priceKWh,
-                    realRegulatedPower: responsePlan[index]?.regulatedPower,
+                    priceKWh: taskDetailData?.resourcePlan?.priceKWh,
+                    realPriceKWh: taskDetailData?.dayaheadResourcePlan?.priceKWh,
+                    realRegulatedPower:
+                        taskDetailData?.dayaheadResourcePlan?.details[index]?.regulatedPower,
                 }))
             );
         } else {

@@ -4,7 +4,7 @@ import { CardPage } from "@/components";
 import { hasPerm, recordPage } from "@/utils/utils";
 
 const Task = () => {
-    recordPage('op:task_confirm');
+    recordPage("op:task_confirm");
     const location = useLocation();
     const { user } = useSelector(state => state.user);
     const { pathname } = location;
@@ -14,13 +14,13 @@ const Task = () => {
             key: "/vpp/demandResponse/task/list",
             label: "任务列表",
         },
-        {
-            key: "/vpp/demandResponse/task/search",
-            label: "任务查询",
-        },
         hasPerm(user, "op:resource_plan_confirm") && {
             key: "/vpp/demandResponse/task/confirm",
             label: "任务确认",
+        },
+        {
+            key: "/vpp/demandResponse/task/detail",
+            label: "任务详情",
         },
     ];
 
@@ -30,7 +30,12 @@ const Task = () => {
 
     return (
         <CardPage>
-            <Tabs activeKey={pathname} defaultActiveKey={pathname} items={items} onChange={onChange} />
+            <Tabs
+                activeKey={pathname}
+                defaultActiveKey={pathname}
+                items={items}
+                onChange={onChange}
+            />
             <Outlet />
         </CardPage>
     );

@@ -17,14 +17,29 @@ export const getWaitConfirmTasks = () => {
     return axiosInstance.get(url);
 };
 
-export const confirmTask = payload => {
+export const batchConfirmTask = payload => {
     const url = `${API_URL_2}/response-plan/confirm-resource-plan-batch`;
     return axiosInstance.post(url, payload);
 };
 
-export const refuseTask = payload => {
+export const batchRefuseTask = payload => {
     const url = `${API_URL_2}/response-plan/refuse-resource-plan-batch`;
     return axiosInstance.post(url, payload);
+};
+
+export const singleConfirmTask = payload => {
+    const url = `${API_URL_2}/response-plan/confirm-resource-plan`;
+    return axiosInstance.post(url, payload);
+};
+
+export const singleRefuseTask = payload => {
+    const url = `${API_URL_2}/response-plan/refuse-resource-plan`;
+    return axiosInstance.post(url, payload);
+};
+
+export const getTaskDetail = id => {
+    const url = `${API_URL_2}/response-plan/get-resource-plan-info?id=${id}`;
+    return axiosInstance.get(url);
 };
 
 export const getTaskDashboardById = parmasUrl => {
@@ -32,7 +47,7 @@ export const getTaskDashboardById = parmasUrl => {
     return axiosInstance.get(url);
 };
 
-export const getWaitTaskDashboard = () => {
-    const url = `${API_URL_2}/invite-task/get-wait-confirm-invite-task-dashboard-vo`;
+export const getWaitTaskList = () => {
+    const url = `${API_URL_2}/response-plan/find-wait-confirm-resource-plan-list`;
     return axiosInstance.get(url);
 };

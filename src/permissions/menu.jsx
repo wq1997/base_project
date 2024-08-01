@@ -36,7 +36,7 @@ const MyMenu = () => {
                     permissions: "menu:invitation",
                 },
                 {
-                    key: "/vpp/demandResponse/task/search",
+                    key: "/vpp/demandResponse/task/list",
                     label: "任务管理",
                     permissions: "menu:resource_plan",
                 },
@@ -167,7 +167,7 @@ const MyMenu = () => {
 
     const getSelectKeys = () => {
         if (pathname.startsWith("/vpp/demandResponse/task")) {
-            setSelectedKeys("/vpp/demandResponse/task/search");
+            setSelectedKeys("/vpp/demandResponse/task/list");
         } else if (pathname.startsWith("/vpp/demandResponse/income")) {
             setSelectedKeys("/vpp/demandResponse/income/overview");
         } else if (pathname.startsWith("/vpp/demandResponse/invitation")) {

@@ -19,6 +19,8 @@ const DemandResponseTask = "@/pages/demandResponse/task";
 const TaskConfirm = "@/pages/demandResponse/task/confirm";
 // 任务列表
 const TaskList = "@/pages/demandResponse/task/list";
+// 任务详情
+const TaskDetail = "@/pages/demandResponse/task/detail";
 // 收益管理
 const DemandResponseIncome = "@/pages/demandResponse/income";
 // 收益看板
@@ -93,8 +95,8 @@ export default Routes = [
                                 component: TaskConfirm,
                             },
                             {
-                                path: "/vpp/demandResponse/task/search",
-                                component: TaskConfirm,
+                                path: "/vpp/demandResponse/task/detail",
+                                component: TaskDetail,
                             },
                             {
                                 path: "/vpp/demandResponse/task/list",
@@ -123,7 +125,7 @@ export default Routes = [
                     {
                         path: "/vpp/baseinfo/station",
                         component: BaseinfoStation,
-                        routes:[
+                        routes: [
                             {
                                 path: "/vpp/baseinfo/station/stationList",
                                 component: BaseinfoStationList,
@@ -132,7 +134,7 @@ export default Routes = [
                                 path: "/vpp/baseinfo/station/companyList",
                                 component: BaseinfoStationCompany,
                             },
-                        ]
+                        ],
                     },
                     { path: "/vpp/baseinfo/role", component: BaseinfoRole },
                     { path: "/vpp/baseinfo/account", component: BaseinfoAccount },

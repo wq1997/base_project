@@ -5,8 +5,8 @@ import { SearchInput } from "@/components";
 import {
     getTaskist as getTaskistServer,
     getSearchInitData as getSearchInitDataServer,
-    confirmTask as confirmTaskServer,
-    refuseTask as refuseTaskServer,
+    batchConfirmTask as batchConfirmTaskServer,
+    batchRefuseTask as batchRefuseTaskServer,
 } from "@/services/task";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import { hasPerm, recordPage } from "@/utils/utils";
@@ -259,12 +259,12 @@ const Account = () => {
             0: {
                 type: "确认",
                 tip: "任务确认后不可取消",
-                fn: confirmTaskServer,
+                fn: batchConfirmTaskServer,
             },
             1: {
                 type: "拒绝",
                 tip: "任务拒绝后不可取消",
-                fn: refuseTaskServer,
+                fn: batchRefuseTaskServer,
             },
         };
         const { type, tip, fn } = operates[typeId];

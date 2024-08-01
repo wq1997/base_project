@@ -3,7 +3,7 @@ import { Title } from "@/components";
 import useIcon from "@/hooks/useIcon";
 import styles from "./index.less";
 
-const StaticsCard = (props) => {
+const StaticsCard = props => {
     const { icon, color, iconColor, value, label, backgroundColor } = props;
     const { token } = theme.useToken();
     const Icon = useIcon();
@@ -16,77 +16,74 @@ const StaticsCard = (props) => {
         >
             <div>
                 <div
-                    style={{ 
-                        margin: 0, 
-                        color, 
-                        textAlign: 'center',
-                        fontFamily: 'DingTalkJinBuTi',
+                    style={{
+                        margin: 0,
+                        color,
+                        textAlign: "center",
+                        fontFamily: "DingTalkJinBuTi",
                         fontSize: 30,
-                        marginBottom: 10
+                        marginBottom: 10,
                     }}
                 >
-                    {value}
+                    {value == undefined ? <span style={{ opacity: 0 }}>0</span> : value}
                 </div>
                 <div
                     style={{
-                        width: '100%',
-                        display: 'flex',
-                        justifyContent: 'center'
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "center",
                     }}
                 >
-                    <div style={{color: token.color11}}>{label}</div>
-                    {
-                        icon&&
+                    <div style={{ color: token.color11 }}>{label}</div>
+                    {icon && (
                         <Icon
                             type={icon}
                             style={{
                                 fontSize: 15,
-                                color: iconColor||color,
-                                marginLeft: 25
+                                color: iconColor || color,
+                                marginLeft: 15,
                             }}
                         />
-                    }
+                    )}
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-const SubStaticsCard = (props) => {
+const SubStaticsCard = props => {
     const { image, color, value, label } = props;
     const { token } = theme.useToken();
     return (
-        <div 
-            className={styles.card}
-        >
-            <div style={{height: '100%', width: '100%'}}>
+        <div className={styles.card}>
+            <div style={{ height: "100%", width: "100%" }}>
                 <div
                     style={{
-                        color, 
-                        textAlign: 'center',
-                        fontFamily: 'DingTalkJinBuTi',
+                        color,
+                        textAlign: "center",
+                        fontFamily: "DingTalkJinBuTi",
                         fontSize: 30,
-                        height: 'calc(100% - 10px)',
+                        height: "calc(100% - 10px)",
                         backgroundImage: `url(${image})`,
-                        backgroundRepeat: 'no-repeat',
-                        backgroundPosition: 'bottom',
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition: "bottom",
                     }}
                 >
                     {value}
                 </div>
-                <div 
+                <div
                     style={{
-                        height: '10px',
+                        height: "10px",
                         color: token.color38,
-                        textAlign: 'center'
+                        textAlign: "center",
                     }}
                 >
                     {label}
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 StaticsCard.SubStaticsCard = SubStaticsCard;
 

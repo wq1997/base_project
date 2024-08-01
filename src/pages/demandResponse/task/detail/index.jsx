@@ -45,24 +45,32 @@ const Confirm = () => {
             color: token.color4,
             icon: "icon-renwugongshuai",
         },
+        {
+            label: "实际下发量(kWh)",
+            value: "",
+            color: token.color7,
+            icon: "icon-yujishouyi",
+        },
     ]);
-    const [taskList, setTaskList] = useState();
+
     const [curTask, setCurTask] = useState();
-    const [curTaskIndex, setCurTaskIndex] = useState(0);
 
     const getOptions = () => {
         if (!curTask) return;
+        const { resourcePlan, dayaheadResourcePlan } = curTask;
         const xData = [];
         const baseYData = [];
-        const runYData = [];
-        curTask?.resourcePlan?.details?.forEach(item => {
+        const planYData = [];
+        const realYData = [];
+        resourcePlan?.details?.forEach((item, index) => {
             xData.push(item.timeRange);
             baseYData.push(item.basePower);
-            runYData.push(item.targetPower);
+            planYData.push(item.targetPower);
+            realYData.push(dayaheadResourcePlan?.details?.[index].targetPower);
         });
         setOptions({
             legend: {
-                data: ["基线功率", "申报执行功率"],
+                data: ["基线功率", "申报执行功率", "实际执行功率"],
                 textStyle: {
                     color: token.color11,
                 },
@@ -107,7 +115,17 @@ const Confirm = () => {
                     name: "申报执行功率",
                     type: "line",
                     smooth: false,
-                    data: runYData,
+                    data: planYData,
+                    symbol: "none",
+                    lineStyle: {
+                        width: 3,
+                    },
+                },
+                {
+                    name: "实际执行功率",
+                    type: "line",
+                    smooth: false,
+                    data: realYData,
                     symbol: "none",
                     lineStyle: {
                         width: 3,
@@ -117,31 +135,14 @@ const Confirm = () => {
         });
     };
 
-    const getTaskDashboard = async taskId => {
+    const getTaskDetail = async taskId => {
         if (taskId) {
             let res = await getTaskDetailServer(taskId);
             if (res?.data?.status == "SUCCESS") {
                 const data = res?.data?.data;
-                setCurTaskIndex(0);
                 setCurTask(data);
-                setTaskList([data]);
-            }
-        } else {
-            let res = await getWaitTaskListServer();
-            if (res?.data?.status == "SUCCESS") {
-                const list = res?.data?.data;
-                setCurTaskIndex(0);
-                setCurTask(list[0]);
-                setTaskList(list);
             }
         }
-    };
-
-    const changeCurTask = num => {
-        const newIndex = curTaskIndex + num;
-        if (newIndex < 0 || newIndex == taskList?.length) return;
-        setCurTaskIndex(newIndex);
-        setCurTask(taskList[newIndex]);
     };
 
     useEffect(() => {
@@ -149,11 +150,12 @@ const Confirm = () => {
         const _taskAskData = [...taskAskData];
         _taskAskData[0].value = curTask?.invitation?.responseTypeZh;
         _taskAskData[1].value = curTask?.resourcePlan?.capacityKWh;
+        _taskAskData[2].value = curTask?.dayaheadResourcePlan?.capacityKWh;
         setTaskAskData(_taskAskData);
     }, [curTask]);
 
     useEffect(() => {
-        getTaskDashboard(getUrlParams(search)?.taskId);
+        getTaskDetail(getUrlParams(search)?.taskId);
     }, []);
 
     useEffect(() => {
@@ -166,82 +168,13 @@ const Confirm = () => {
         };
     });
 
-    const handleRefuse = () => {
-        Modal.confirm({
-            title: "系统提示",
-            content: "确定拒绝该任务？",
-            onOk: async () => {
-                let res = await singleRefuseTaskServer({
-                    id: curTask?.resourcePlan?.id,
-                    remark: "string",
-                });
-                if (res?.data?.status == "SUCCESS") {
-                    message.success(`拒绝成功`);
-                    if (getUrlParams(search)?.taskId) {
-                        history.push(`/vpp/demandResponse/task/list`);
-                    } else {
-                        getTaskDashboard();
-                    }
-                }
-            },
-        });
-    };
-
-    const handleConfirm = () => {
-        Modal.confirm({
-            title: "系统提示",
-            content: "确定接受该任务？",
-            onOk: async () => {
-                let res = await singleConfirmTaskServer({
-                    id: curTask?.resourcePlan?.id,
-                    remark: "string",
-                });
-                if (res?.data?.status == "SUCCESS") {
-                    message.success(`确认成功`);
-                    if (getUrlParams(search)?.taskId) {
-                        history.push(`/vpp/demandResponse/task/list`);
-                    } else {
-                        getTaskDashboard();
-                    }
-                }
-            },
-        });
-    };
-
     return (
         <div style={{ width: "100%", height: "100%" }}>
-            {taskList?.length > 0 ? (
+            {curTask ? (
                 <div className="confirm-task">
                     <div className={classNames("wait-confirm", cardStyle)}>
                         <div className="title">
-                            <Title>
-                                <div>
-                                    待处理任务
-                                    {taskList?.length > 1 && (
-                                        <>
-                                            ({taskList?.length})
-                                            <CaretLeftOutlined
-                                                style={{
-                                                    cursor:
-                                                        curTaskIndex == 0
-                                                            ? "not-allowed"
-                                                            : "pointer",
-                                                }}
-                                                onClick={() => changeCurTask(-1)}
-                                            />
-                                            <CaretRightOutlined
-                                                style={{
-                                                    cursor:
-                                                        curTaskIndex == taskList?.length - 1
-                                                            ? "not-allowed"
-                                                            : "pointer",
-                                                }}
-                                                onClick={() => changeCurTask(1)}
-                                            />
-                                        </>
-                                    )}
-                                </div>
-                            </Title>
+                            <Title>任务要求</Title>
                             <div className="company" style={{ color: token.color11 }}>
                                 <span style={{ color: "gray", marginRight: "5px" }}>
                                     {curTask?.resourcePlan?.resourceId}
@@ -279,23 +212,11 @@ const Confirm = () => {
                                 </div>
                                 <div>确认截止时间：{curTask?.invitation?.replyTime}</div>
                             </div>
-                            {curTask && (
-                                <div className="btns">
-                                    <Space>
-                                        <Button type="primary" danger onClick={handleRefuse}>
-                                            拒绝
-                                        </Button>
-                                        <Button type="primary" onClick={handleConfirm}>
-                                            确认响应
-                                        </Button>
-                                    </Space>
-                                </div>
-                            )}
                         </div>
                     </div>
                     <div className={classNames("response-suggest", cardStyle)}>
                         <div className="title">
-                            <Title>响应建议</Title>
+                            <Title>任务状态</Title>
                         </div>
                         <div className="content">
                             <div
@@ -308,20 +229,17 @@ const Confirm = () => {
                                 }}
                             >
                                 <Title.Description icon={"icon-zhihangqingkuang"}>
-                                    预计执行成功率
+                                    确认状态
                                 </Title.Description>
                                 <div
-                                    className="percent value"
+                                    className="statusZh value"
                                     style={{
                                         color: token.color12,
                                         fontFamily: "DingTalkJinBuTi",
                                     }}
                                 >
-                                    {curTask ? `95 %` : ""}
+                                    {curTask?.resourcePlan?.statusZh}
                                 </div>
-                                {curTask?.projectedExecuteSuccessRate >= 60 && (
-                                    <div className="suggest">建议参与响应</div>
-                                )}
                             </div>
                             <div
                                 className="illustrate contentItem"
@@ -333,15 +251,13 @@ const Confirm = () => {
                                 }}
                             >
                                 <Title.Description icon={"icon-zhihangshuoming"}>
-                                    执行说明
+                                    任务收益
                                 </Title.Description>
                                 <div
                                     className="value"
-                                    style={{ color: token.color11, fontSize: 16 }}
+                                    style={{ color: token.color11, fontSize: 15 }}
                                 >
-                                    <div>
-                                        响应成功率为根据响应能力及响应历史行为得出，高于60%建议确认响应。
-                                    </div>
+                                    请登录深圳虚拟电厂管理平台查询本次任务收益情况
                                 </div>
                             </div>
                         </div>
@@ -372,7 +288,7 @@ const Confirm = () => {
                         justifyContent: "center",
                     }}
                 >
-                    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={"暂无待确认任务"} />
+                    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={"暂无待查询任务"} />
                 </div>
             )}
         </div>

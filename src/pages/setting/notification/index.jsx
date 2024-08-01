@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import { CardPage } from "@/components";
-import { Button, Space, Table, Tooltip, Card} from "antd";
+import { Button, Space, Table, Tooltip, Card } from "antd";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import { recordPage } from "@/utils/utils";
-import { 
+import {
     getNotificationList as getNotificationListServe,
-    changeNotificationStatus as changeNotificationStatusServe
+    changeNotificationStatus as changeNotificationStatusServe,
 } from "@/services";
 import { history } from "umi";
 
 const Notification = () => {
-    recordPage('menu:notification');
+    recordPage("menu:notification");
     const [dataSource, setDataSource] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -21,64 +21,70 @@ const Notification = () => {
         {
             title: "序号",
             dataIndex: "name",
-            render(text, record, index){
+            render(text, record, index) {
                 return (pagination.current - 1) * pagination.pageSize + index + 1;
-            }
+            },
         },
         {
             title: "处理状态",
             dataIndex: "statusZh",
         },
         {
-            title: "发布时间",
-            dataIndex: "createdTime",
+            title: "通知类型",
+            dataIndex: "typeZh",
         },
         {
-            title: '通知详情',
-            dataIndex: 'detail',
-            key: 'detail',
+            title: "通知详情",
+            dataIndex: "detail",
+            key: "detail",
             width: 400,
-            render(value){
+            render(value) {
                 return (
                     <Tooltip title={value}>
-                        <div 
+                        <div
                             style={{
-                                overflow: 'hidden',
-                                whiteSpace: 'nowrap',
-                                textOverflow: 'ellipsis',
+                                overflow: "hidden",
+                                whiteSpace: "nowrap",
+                                textOverflow: "ellipsis",
                                 width: 400,
                             }}
                         >
                             {value}
                         </div>
                     </Tooltip>
-                )
-            }
+                );
+            },
+        },
+        {
+            title: "发布时间",
+            dataIndex: "createdTime",
         },
         {
             title: "操作",
             dataIndex: "operate",
-            render: (text,record) => {
+            render: (text, record) => {
                 const { status, id, businessKey, businessType } = record;
-                if(status === "WAIT_PROCESSING"){
+                if (status === "WAIT_PROCESSING") {
                     return (
-                        <Button 
+                        <Button
                             type="link"
-                            onClick={async ()=>{
+                            onClick={async () => {
                                 const res = await changeNotificationStatusServe(id);
-                                if(res?.data){
-                                    if(businessType==="TASK_CONFIRM"){
+                                if (res?.data) {
+                                    if (businessType === "TASK_CONFIRM") {
                                         history.push(`/vpp/demandResponse/task/confirm`);
                                     }
-                                    if(businessType==="TASK_EXECUTED"){
-                                        history.push(`/vpp/demandResponse/task/search?code=${businessKey}`);
+                                    if (businessType === "TASK_EXECUTED") {
+                                        history.push(
+                                            `/vpp/demandResponse/task/search?code=${businessKey}`
+                                        );
                                     }
                                 }
                             }}
                         >
                             去处理
                         </Button>
-                    )
+                    );
                 }
                 return null;
             },
@@ -88,11 +94,11 @@ const Notification = () => {
     const getList = async () => {
         const { current, pageSize } = paginationRef.current;
         setLoading(true);
-        try{
+        try {
             const res = await getNotificationListServe({
                 pageNum: current,
                 pageSize,
-                queryCmd: {}
+                queryCmd: {},
             });
             if (res?.data?.status == "SUCCESS") {
                 const { totalRecord, recordList } = res?.data?.data;
@@ -102,30 +108,30 @@ const Notification = () => {
                 });
                 setDataSource(recordList);
             }
-        }finally{
+        } finally {
             setLoading(false);
         }
-    }
+    };
 
-    useEffect(()=>{
+    useEffect(() => {
         getList();
-    }, [])
+    }, []);
 
     return (
         <CardPage>
             <Table
                 loading={loading}
-                dataSource={dataSource?.map(data=> {
+                dataSource={dataSource?.map(data => {
                     return {
                         ...data,
-                        key: data?.id
-                    }
+                        key: data?.id,
+                    };
                 })}
                 columns={columns}
                 pagination={pagination}
             />
         </CardPage>
-    )
-}
+    );
+};
 
 export default Notification;
