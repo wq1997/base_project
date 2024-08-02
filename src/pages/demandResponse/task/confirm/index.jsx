@@ -117,9 +117,9 @@ const Confirm = () => {
         });
     };
 
-    const getTaskDashboard = async taskId => {
-        if (taskId) {
-            let res = await getTaskDetailServer(taskId);
+    const getTaskDashboard = async params => {
+        if (params) {
+            let res = await getTaskDetailServer(params);
             if (res?.data?.status == "SUCCESS") {
                 const data = res?.data?.data;
                 setCurTaskIndex(0);
@@ -153,7 +153,15 @@ const Confirm = () => {
     }, [curTask]);
 
     useEffect(() => {
-        getTaskDashboard(getUrlParams(search)?.taskId);
+        const params = getUrlParams(search);
+        getTaskDashboard(
+            params
+                ? {
+                      id: params?.taskId,
+                      code: params?.businessKey,
+                  }
+                : undefined
+        );
     }, []);
 
     useEffect(() => {
@@ -177,7 +185,7 @@ const Confirm = () => {
                 });
                 if (res?.data?.status == "SUCCESS") {
                     message.success(`拒绝成功`);
-                    if (getUrlParams(search)?.taskId) {
+                    if (getUrlParams(search)) {
                         history.push(`/vpp/demandResponse/task/list`);
                     } else {
                         getTaskDashboard();
@@ -198,7 +206,7 @@ const Confirm = () => {
                 });
                 if (res?.data?.status == "SUCCESS") {
                     message.success(`确认成功`);
-                    if (getUrlParams(search)?.taskId) {
+                    if (getUrlParams(search)) {
                         history.push(`/vpp/demandResponse/task/list`);
                     } else {
                         getTaskDashboard();
@@ -282,12 +290,16 @@ const Confirm = () => {
                             {curTask && (
                                 <div className="btns">
                                     <Space>
-                                        <Button type="primary" danger onClick={handleRefuse}>
-                                            拒绝
-                                        </Button>
-                                        <Button type="primary" onClick={handleConfirm}>
-                                            确认响应
-                                        </Button>
+                                        {hasPerm(user, "op:resource_plan_refuse") && (
+                                            <Button type="primary" danger onClick={handleRefuse}>
+                                                拒绝
+                                            </Button>
+                                        )}
+                                        {hasPerm(user, "op:resource_plan_confirm") && (
+                                            <Button type="primary" onClick={handleConfirm}>
+                                                确认响应
+                                            </Button>
+                                        )}
                                     </Space>
                                 </div>
                             )}

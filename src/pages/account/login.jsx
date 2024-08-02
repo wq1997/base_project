@@ -32,7 +32,7 @@ const Login = () => {
             }
         }
       })
-      history.push("/vpp/homepage")
+      history.push("/vpp/demandResponse/invitation/invitationList")
     }
   }
 

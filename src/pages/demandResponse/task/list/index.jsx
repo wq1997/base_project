@@ -14,7 +14,7 @@ import "./index.less";
 import dayjs from "dayjs";
 
 const Account = () => {
-    recordPage("op:invite_task");
+    recordPage("op:resource_plan_list");
     const { user } = useSelector(state => state.user);
     const releaseTimeRef = useRef();
     const [releaseTime, setReleaseTime] = useState();

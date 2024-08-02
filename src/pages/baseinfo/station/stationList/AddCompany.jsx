@@ -1,9 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { message, Button, Select, Form, Input, Modal, Row, Col, Radio, Space, InputNumber } from "antd";
+import {
+    message,
+    Button,
+    Select,
+    Form,
+    Input,
+    Modal,
+    Row,
+    Col,
+    Radio,
+    Space,
+    InputNumber,
+} from "antd";
 import {
     getStationUpdateInitData as getUpdateInitDataServer,
     updateStation as updateCompanyServer,
-    getUpdateInitData as getCompanyUpdateInitDataServer
+    getUpdateInitData as getCompanyUpdateInitDataServer,
 } from "@/services/sz_index";
 import { MyUpload } from "@/components";
 
@@ -15,13 +27,21 @@ const Company = ({ open, editId, initData, onClose }) => {
     const [provinces, setProvinces] = useState([]);
     const [cities, setCities] = useState([]);
     const [cityList, setCityList] = useState([]);
+    const [cloudPlants, setCloudPlants] = useState([]);
     const [stationTypes, setStationTypes] = useState([]);
 
     const getUpdateInitData = async () => {
         const res = await getUpdateInitDataServer({ id: editId });
         if (res?.data?.status == "SUCCESS") {
-            const { editData, provinces, stationTypes, province2Cities} = res?.data?.data;
-            editData ? form.setFieldsValue({...editData, longitude: editData?.location?.longitude, latitude: editData?.location?.latitude}) : form.resetFields();
+            const { editData, provinces, stationTypes, province2Cities, sePlants } =
+                res?.data?.data;
+            editData
+                ? form.setFieldsValue({
+                      ...editData,
+                      longitude: editData?.location?.longitude,
+                      latitude: editData?.location?.latitude,
+                  })
+                : form.resetFields();
             if (editData?.companyId) {
                 const res = await getCompanyUpdateInitDataServer({ id: editData?.companyId });
                 if (res?.data?.data) {
@@ -29,14 +49,15 @@ const Company = ({ open, editId, initData, onClose }) => {
                     form.setFieldsValue({
                         operator: data?.operator,
                         operatorTel2: data?.operatorTel2,
-                        operatorTel1: data?.operatorTel1
-                    })
+                        operatorTel1: data?.operatorTel1,
+                    });
                 }
             }
             setEditData(editData);
             setProvinces(provinces);
             setCityList(province2Cities);
             setStationTypes(stationTypes);
+            setCloudPlants(sePlants);
         }
     };
 
@@ -47,9 +68,9 @@ const Company = ({ open, editId, initData, onClose }) => {
     const onFinish = async values => {
         const res = await updateCompanyServer({
             id: editId,
-            location:{
+            location: {
                 longitude: values?.longitude,
-                latitude: values?.latitude
+                latitude: values?.latitude,
             },
             ...values,
         });
@@ -115,17 +136,20 @@ const Company = ({ open, editId, initData, onClose }) => {
                             ]}
                         >
                             <Select
-                                options={initData?.companies?.map(item => ({ label: item?.userName, value: item?.id }))}
+                                options={initData?.companies?.map(item => ({
+                                    label: item?.userName,
+                                    value: item?.id,
+                                }))}
                                 placeholder="请选择关联公司"
-                                onChange={async (value) => {
+                                onChange={async value => {
                                     const res = await getCompanyUpdateInitDataServer({ id: value });
                                     if (res?.data?.data) {
                                         const data = res?.data?.data?.editData;
                                         form.setFieldsValue({
                                             operator: data?.operator,
                                             operatorTel2: data?.operatorTel2,
-                                            operatorTel1: data?.operatorTel1
-                                        })
+                                            operatorTel1: data?.operatorTel1,
+                                        });
                                     }
                                 }}
                             />
@@ -183,7 +207,7 @@ const Company = ({ open, editId, initData, onClose }) => {
                                 },
                             ]}
                         >
-                            <Input placeholder="请输入详细地址"/>
+                            <Input placeholder="请输入详细地址" />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
@@ -197,7 +221,7 @@ const Company = ({ open, editId, initData, onClose }) => {
                                 },
                             ]}
                         >
-                            <Input placeholder="请输入用电户号"/>
+                            <Input placeholder="请输入用电户号" />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -214,7 +238,7 @@ const Company = ({ open, editId, initData, onClose }) => {
                                 },
                             ]}
                         >
-                            <Input placeholder="请输入站点经度"/>
+                            <Input placeholder="请输入站点经度" />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
@@ -228,7 +252,7 @@ const Company = ({ open, editId, initData, onClose }) => {
                                 },
                             ]}
                         >
-                            <Input placeholder="请输入站点纬度"/>
+                            <Input placeholder="请输入站点纬度" />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -296,7 +320,13 @@ const Company = ({ open, editId, initData, onClose }) => {
                                 },
                             ]}
                         >
-                            <Input placeholder="请输入采日云平台登记场站号" />
+                            <Select
+                                options={cloudPlants?.map(item => ({
+                                    label: item?.name,
+                                    value: item?.plantId,
+                                }))}
+                                placeholder="请选择云平台场站"
+                            />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
@@ -330,7 +360,12 @@ const Company = ({ open, editId, initData, onClose }) => {
                                 },
                             ]}
                         >
-                            <InputNumber placeholder="请输入最大调节功率，要求整数" style={{ width: '100%' }} min={0} precision={0} />
+                            <InputNumber
+                                placeholder="请输入最大调节功率，要求整数"
+                                style={{ width: "100%" }}
+                                min={0}
+                                precision={0}
+                            />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
@@ -344,7 +379,11 @@ const Company = ({ open, editId, initData, onClose }) => {
                                 },
                             ]}
                         >
-                            <InputNumber placeholder="请输入设备最大容量" style={{ width: '100%' }} min={0} />
+                            <InputNumber
+                                placeholder="请输入设备最大容量"
+                                style={{ width: "100%" }}
+                                min={0}
+                            />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -361,7 +400,12 @@ const Company = ({ open, editId, initData, onClose }) => {
                                 },
                             ]}
                         >
-                            <InputNumber placeholder="请输入最大上升速率，要求两位小数" style={{ width: '100%' }} min={0} precision={2} />
+                            <InputNumber
+                                placeholder="请输入最大上升速率，要求两位小数"
+                                style={{ width: "100%" }}
+                                min={0}
+                                precision={2}
+                            />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
@@ -375,7 +419,12 @@ const Company = ({ open, editId, initData, onClose }) => {
                                 },
                             ]}
                         >
-                            <InputNumber placeholder="请输入最大下降速率，要求两位小数" style={{ width: '100%' }} min={0} precision={2} />
+                            <InputNumber
+                                placeholder="请输入最大下降速率，要求两位小数"
+                                style={{ width: "100%" }}
+                                min={0}
+                                precision={2}
+                            />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -392,7 +441,13 @@ const Company = ({ open, editId, initData, onClose }) => {
                                 },
                             ]}
                         >
-                            <Select placeholder="请选择响应时间级别" options={initData?.responseLevels?.map(item=>({label: item?.showStr,value: item?.code}))} />
+                            <Select
+                                placeholder="请选择响应时间级别"
+                                options={initData?.responseLevels?.map(item => ({
+                                    label: item?.showStr,
+                                    value: item?.code,
+                                }))}
+                            />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
@@ -403,10 +458,15 @@ const Company = ({ open, editId, initData, onClose }) => {
                                 {
                                     required: true,
                                     message: "请输入邀约平台分润比例",
-                                }
+                                },
                             ]}
                         >
-                            <InputNumber placeholder="请输入邀约平台分润比例" style={{ width: '100%' }} min={0} max={100} />
+                            <InputNumber
+                                placeholder="请输入邀约平台分润比例"
+                                style={{ width: "100%" }}
+                                min={0}
+                                max={100}
+                            />
                         </Form.Item>
                     </Col>
                 </Row>

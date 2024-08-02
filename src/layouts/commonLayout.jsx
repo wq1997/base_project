@@ -1,95 +1,105 @@
 import { Outlet, useDispatch, useSelector, history } from "umi";
-import { Layout, Row, Avatar, Typography, Dropdown, Space, theme as antdTheme, Select, Badge } from "antd";
+import {
+    Layout,
+    Row,
+    Avatar,
+    Typography,
+    Dropdown,
+    Space,
+    theme as antdTheme,
+    Select,
+    Badge,
+} from "antd";
 import styles from "./commonLayout.less";
 import useIcon from "@/hooks/useIcon";
 import { useEffect, useState } from "react";
-import { useEmotionCss } from '@ant-design/use-emotion-css';
+import { useEmotionCss } from "@ant-design/use-emotion-css";
 import { setLocalStorage } from "@/utils/utils";
-import {
-    getNotificationCount as getNotificationCountServe
-} from "@/services";
+import { getNotificationCount as getNotificationCountServe } from "@/services";
 import { useRequest } from "ahooks";
-import notificationImg from "../../public/images/notification.svg"
-import themeImg from "../../public/images/theme.svg"
+import notificationImg from "../../public/images/notification.svg";
+import themeImg from "../../public/images/theme.svg";
 
 const { Header, Sider, Content } = Layout;
 
-const CommonLayout = (props) => {
+const CommonLayout = props => {
     const { token } = antdTheme.useToken();
     const { theme } = useSelector(state => state.global);
-    const [ count, setCount ] = useState(0);
+    const [count, setCount] = useState(0);
     const { user, currentCompanyCode } = useSelector(state => state.user);
     const Icon = useIcon();
     const dispatch = useDispatch();
     const { title, MyMenu } = props;
 
-    const { data: result, run, cancel } = useRequest(getNotificationCountServe, {
+    const {
+        data: result,
+        run,
+        cancel,
+    } = useRequest(getNotificationCountServe, {
         manual: true,
         pollingInterval: 1000 * 60 * 5,
-        refreshDeps: [theme]
+        refreshDeps: [theme],
     });
 
-    useEffect(()=>{
-        if(result?.data?.status==="SUCCESS"){
+    useEffect(() => {
+        if (result?.data?.status === "SUCCESS") {
             setCount(result?.data?.data);
         }
-    }, [result])
+    }, [result]);
 
-    useEffect(()=>{
+    useEffect(() => {
         run();
-        document.title= title;
-    }, [])
+        document.title = title;
+    }, []);
 
-    const changeTheme=(theme)=>{
+    const changeTheme = theme => {
         setLocalStorage("theme", theme);
         dispatch({
-            type: 'global/changeTheme',
-            payload:{
-                theme
-            }
-        })
-    }
+            type: "global/changeTheme",
+            payload: {
+                theme,
+            },
+        });
+    };
 
-    const headerStyle = useEmotionCss(()=>{
+    const headerStyle = useEmotionCss(() => {
         return {
-            padding: '24px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
+            padding: "24px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
             zIndex: 1,
             background: token.layoutTopBackColor,
-            '.logo': {
-                width: '143px',
-                height: '15px',
-                marginRight: '20px'
+            ".logo": {
+                width: "143px",
+                height: "15px",
+                marginRight: "20px",
             },
-            '.title': {
-                margin: 0
-            }
-        }
-    })
+            ".title": {
+                margin: 0,
+            },
+        };
+    });
 
     const siderStyle = useEmotionCss(() => {
         return {
-            padding: '24px 0',
+            padding: "24px 0",
             background: token.layoutLeftBackColor,
-            '.siderContent': {
-                height: '100%', 
-                width: '100%' ,
-                overflowY: 'scroll', 
-                '&::-webkit-scrollbar':{
-                    display: 'none'
-                }
-            }
-        }
+            ".siderContent": {
+                height: "100%",
+                width: "100%",
+                overflowY: "scroll",
+                "&::-webkit-scrollbar": {
+                    display: "none",
+                },
+            },
+        };
     });
 
     return (
         <div className={styles.baseLayout}>
             <Layout className={styles.layout}>
-                <Header 
-                    className={headerStyle}
-                >
+                <Header className={headerStyle}>
                     <div style={{ display: "flex", alignItems: "center" }}>
                         {/* <img src={logo} className={"logo"} /> */}
                         <Typography.Title
@@ -97,14 +107,14 @@ const CommonLayout = (props) => {
                             style={{
                                 color: token.colorPrimary,
                                 fontSize: "28px",
-                                fontFamily: 'DingTalkJinBuTi',
+                                fontFamily: "DingTalkJinBuTi",
                             }}
                         >
                             {title}
                         </Typography.Title>
                     </div>
                     <Space size={40} align="center">
-                        {
+                        {/* {
                             user?.aggregator&&
                             <Select 
                                 style={{width: 300}}
@@ -131,17 +141,17 @@ const CommonLayout = (props) => {
                                     }, 0.2 * 1000)
                                 }}
                             />
-                        }
-                        <Avatar 
-                            src={themeImg} 
-                            style={{cursor: 'pointer'}}
-                            onClick={()=>changeTheme(theme==="default"?"dark": "default")}
+                        } */}
+                        <Avatar
+                            src={themeImg}
+                            style={{ cursor: "pointer" }}
+                            onClick={() => changeTheme(theme === "default" ? "dark" : "default")}
                         />
-                        <Badge dot={count>0}>
-                            <Avatar 
-                                src={notificationImg} 
-                                style={{cursor: 'pointer'}}
-                                onClick={()=>{
+                        <Badge dot={count > 0}>
+                            <Avatar
+                                src={notificationImg}
+                                style={{ cursor: "pointer" }}
+                                onClick={() => {
                                     history.push("/vpp/setting/notification");
                                 }}
                             />
@@ -152,10 +162,7 @@ const CommonLayout = (props) => {
                                     {
                                         key: "logout",
                                         label: (
-                                            <Space
-                                                size={10}
-                                                align="center"
-                                            >
+                                            <Space size={10} align="center">
                                                 <Icon
                                                     type="icon-dengchu"
                                                     style={{
@@ -167,11 +174,11 @@ const CommonLayout = (props) => {
                                         ),
                                     },
                                 ],
-                                onClick:(info) => {
-                                    if(info?.key==="logout"){
-                                        dispatch({ type: "user/logout" })
+                                onClick: info => {
+                                    if (info?.key === "logout") {
+                                        dispatch({ type: "user/logout" });
                                     }
-                                }
+                                },
                             }}
                             placement="bottom"
                         >
@@ -187,7 +194,11 @@ const CommonLayout = (props) => {
                                     {user?.selfUser?.name?.[0]}
                                 </Avatar>
                                 <span
-                                    style={{ fontSize: 20, color: token.colorPrimary, marginLeft: 10 }}
+                                    style={{
+                                        fontSize: 20,
+                                        color: token.colorPrimary,
+                                        marginLeft: 10,
+                                    }}
                                 >
                                     {user?.selfUser?.name}
                                 </span>
@@ -196,11 +207,8 @@ const CommonLayout = (props) => {
                     </Space>
                 </Header>
                 <Layout hasSider>
-                    <Sider 
-                        className={siderStyle}
-                        width={240}
-                    >
-                        <div className={'siderContent'}>
+                    <Sider className={siderStyle} width={240}>
+                        <div className={"siderContent"}>
                             <MyMenu />
                         </div>
                     </Sider>

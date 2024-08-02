@@ -156,7 +156,6 @@ const BaseLine = ({ baseLineArgs, onClose }) => {
     };
 
     useEffect(() => {
-        console.log("baseLineArgs", baseLineArgs);
         if (baseLineArgs) {
             setOpen(true);
         } else {

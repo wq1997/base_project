@@ -14,13 +14,13 @@ const MyMenu = () => {
     const { user } = useSelector(state => state.user);
 
     const MenuList = [
-        {
-            key: "/vpp/homepage",
-            label: "首页",
-            icon: "icon-shujuhoutaixitong",
-            darkIcon: "icon-shujuhoutaixitong-copy",
-            permissions: "menu:home",
-        },
+        // {
+        //     key: "/vpp/homepage",
+        //     label: "首页",
+        //     icon: "icon-shujuhoutaixitong",
+        //     darkIcon: "icon-shujuhoutaixitong-copy",
+        //     permissions: "menu:home",
+        // },
         {
             key: "/vpp/demandResponse",
             label: "需求侧响应",

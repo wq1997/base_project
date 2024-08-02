@@ -13,16 +13,17 @@ import {
     invalidInvite as invalidInviteServer,
 } from "@/services/invitation";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
-import { hasPerm, recordPage } from "@/utils/utils";
+import { hasPerm, recordPage, getUrlParams } from "@/utils/utils";
 import "./index.less";
 import dayjs from "dayjs";
 
 let invalidReason = undefined;
 
 const Account = () => {
-    recordPage("op:invite_list");
+    recordPage("op:invitation_list");
     const location = useLocation();
-    const initCode = location?.search.split("=")[1];
+    const paramsCode = location?.search.split("=")[1];
+    const initCode = paramsCode ? decodeURIComponent(paramsCode) : null;
     const { user } = useSelector(state => state.user);
     const [canDelete, setCanDelete] = useState(true);
     const releaseTimeRef = useRef();

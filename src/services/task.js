@@ -37,8 +37,9 @@ export const singleRefuseTask = payload => {
     return axiosInstance.post(url, payload);
 };
 
-export const getTaskDetail = id => {
-    const url = `${API_URL_2}/response-plan/get-resource-plan-info?id=${id}`;
+export const getTaskDetail = ({ id, code }) => {
+    const params = id ? `id=${id}` : `code=${code}`;
+    const url = `${API_URL_2}/response-plan/get-resource-plan-info?${params}`;
     return axiosInstance.get(url);
 };
 

@@ -63,22 +63,27 @@ const Notification = () => {
             title: "操作",
             dataIndex: "operate",
             render: (text, record) => {
-                const { status, id, businessKey, businessType } = record;
+                const { status, id, businessKey, type } = record;
                 if (status === "WAIT_PROCESSING") {
                     return (
                         <Button
                             type="link"
                             onClick={async () => {
-                                const res = await changeNotificationStatusServe(id);
-                                if (res?.data) {
-                                    if (businessType === "TASK_CONFIRM") {
-                                        history.push(`/vpp/demandResponse/task/confirm`);
-                                    }
-                                    if (businessType === "TASK_EXECUTED") {
-                                        history.push(
-                                            `/vpp/demandResponse/task/search?code=${businessKey}`
-                                        );
-                                    }
+                                const res = await changeNotificationStatusServe({ id });
+                                if (type === "INVITE_SPLIT") {
+                                    history.push(
+                                        `/vpp/demandResponse/invitation/invitationList?businessKey=${businessKey}`
+                                    );
+                                }
+                                if (type === "RESOURCE_PLAN_CONFIRM") {
+                                    history.push(
+                                        `/vpp/demandResponse/task/confirm?businessKey=${businessKey}`
+                                    );
+                                }
+                                if (type === "PLAN_EXECUTED") {
+                                    history.push(
+                                        `/vpp/demandResponse/task/detail?businessKey=${businessKey}`
+                                    );
                                 }
                             }}
                         >

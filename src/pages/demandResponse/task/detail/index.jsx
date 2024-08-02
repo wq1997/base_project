@@ -135,9 +135,9 @@ const Confirm = () => {
         });
     };
 
-    const getTaskDetail = async taskId => {
-        if (taskId) {
-            let res = await getTaskDetailServer(taskId);
+    const getTaskDetail = async params => {
+        if (params) {
+            let res = await getTaskDetailServer(params);
             if (res?.data?.status == "SUCCESS") {
                 const data = res?.data?.data;
                 setCurTask(data);
@@ -155,7 +155,15 @@ const Confirm = () => {
     }, [curTask]);
 
     useEffect(() => {
-        getTaskDetail(getUrlParams(search)?.taskId);
+        const params = getUrlParams(search);
+        getTaskDetail(
+            params
+                ? {
+                      id: params?.taskId,
+                      code: params?.businessKey,
+                  }
+                : undefined
+        );
     }, []);
 
     useEffect(() => {
