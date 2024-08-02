@@ -1,8 +1,8 @@
 const theme = {
     dark: {
-        colorPrimary: "#01fff5",
-        layoutTopBackColor: "rgb(10 45 60) !important",
-        layoutLeftBackColor: "rgb(10 45 60) !important",
+        colorPrimary: "#0EBCB6",
+        layoutTopBackColor: "#02232E !important",
+        layoutLeftBackColor: "#02232E !important",
         incomeOverviewCardColor:
             "linear-gradient( 360deg, rgba(1,12,30,0) 0%, #07162F 100%) !important",
         color1: "#FFF",
@@ -16,42 +16,13 @@ const theme = {
         color9: 'rgba(255,255,255,0.15)',
         color10: '#ED9C0D',
         color11: '#2AC5F2',
-        components: {
-            Modal: {
-                contentBg: "#021A33",
-                footerBg: "#0A182E",
-                headerBg: "#0A182E",
-            },
-            Button: {
-                defaultBg: "none",
-            },
-            Table: {
-                headerBg: "#05305C",
-            },
-        },
+        color12: '#02232E',
+        color13: '#072F3B',
+        color14: '#021C24',
+        color15: '#093846',
         fontColor: 'white'
     },
     default: {
-        colorPrimary: "#384EE8",
-        layoutTopBackColor: "linear-gradient( 90deg, #E9EFFB 0%, #FFFFFF 100%) !important",
-        layoutLeftBackColor: "linear-gradient( 180deg, #E9EFFB 0%, #FFFFFF 100%) !important",
-        incomeOverviewCardColor:
-            "linear-gradient(360deg, rgba(248,251,255,0.5) 0%, #F8FBFF 100%, #F8FBFF 100%) !important",
-        color1: "#FFF",
-        components: {
-            Modal: {
-                contentBg: "white",
-                footerBg: "white",
-                headerBg: "white",
-            },
-            Button: {
-                defaultBg: "none",
-            },
-            Table: {
-                headerBg: "#F6F8FD",
-            },
-        },
-        fontColor: 'black'
     },
 };
 export default theme;

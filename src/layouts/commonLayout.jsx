@@ -66,8 +66,7 @@ const CommonLayout = props => {
                 },
             },
             ".ant-menu-item-selected": {
-                background:
-                    "linear-gradient(270deg, rgb(10 45 60) 0%, rgb(1 180 160) 100%) !important",
+                background: 'linear-gradient( 270deg, rgba(7,47,59,0) 0%, #0ED7CF 100%)',
                 ".anticon,a": {
                     color: "#fff",
                 },
@@ -161,8 +160,8 @@ const CommonLayout = props => {
                             <MyMenu />
                         </div>
                     </Sider>
-                    <Content className={styles.content}>
-                        <div className={styles.inContent}>
+                    <Content className={styles.content} style={{background: token.color14}}>
+                        <div className={styles.inContent} style={{background: token.color12}}>
                             <Outlet />
                         </div>
                     </Content>

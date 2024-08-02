@@ -1,9 +1,10 @@
-import { Table, Space } from "antd";
+import { Table, theme } from "antd";
 import { SearchInput } from "@/components";
 import ReactECharts from "echarts-for-react";
 import "./index.less";
 
 const PersonnelTasks = () => {
+    const { token } = theme.useToken();
     const myWorkorders = [
         { name: "接受工单总数", value: "15", color: "#1098EF" },
         { name: "执行工单总数", value: "52", color: "#ED9C0D" },
@@ -74,7 +75,7 @@ const PersonnelTasks = () => {
     ];
 
     return (
-        <div className="personnel-tasks">
+        <div className="personnel-tasks" style={{background: token.color12}}>
             <div className="title">
                 <span>负责项目统计</span>
             </div>

@@ -71,12 +71,12 @@ const Total = () => {
     };
 
     return (
-        <div className="total">
+        <div className="total" style={{background: token.color12}}>
             <div className="my">
                 <div className="title">我的待办</div>
                 <div className="content">
                     {myWorkorders.map(item => (
-                        <div className="order">
+                        <div className="order" style={{background: token.color13}}>
                             <span>{item.name}</span>
                             <span className="value" style={{ color: item.color }}>
                                 {item.value}

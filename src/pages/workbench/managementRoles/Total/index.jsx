@@ -77,11 +77,11 @@ const Total = () => {
 
     return (
         <div className={styles.total}>
-            <div className={classNames(styles.all, styles.workorders)}>
+            <div className={classNames(styles.all, styles.workorders)} style={{background: token.color12}}>
                 <div className={"title"}>全部在途工单</div>
                 <div className={styles.content}>
                     {allWorkorders.map(item => (
-                        <div className={styles.order}>
+                        <div className={styles.order} style={{background: token.color13}}>
                             <span>{item.name}</span>
                             <span className={styles.value} style={{ color: item.color }}>
                                 {item.value}
@@ -90,11 +90,11 @@ const Total = () => {
                     ))}
                 </div>
             </div>
-            <div className={classNames(styles.my, styles.workorders)}>
+            <div className={classNames(styles.my, styles.workorders)} style={{background: token.color12}}>
                 <div className={"title"}>我发起的</div>
                 <div className={styles.content}>
                     {myWorkorders.map(item => (
-                        <div className={styles.order}>
+                        <div className={styles.order} style={{background: token.color13}}>
                             <span>{item.name}</span>
                             <span className={styles.value} style={{ color: item.color }}>
                                 {item.value}
@@ -103,7 +103,7 @@ const Total = () => {
                     ))}
                 </div>
             </div>
-            <div className={styles.taskBoard}>
+            <div className={styles.taskBoard} style={{background: token.color12}}>
                 <div className={"title"}>
                     <span>任务过程看板</span>
                     <Radio.Group defaultValue={type} onChange={e => setType(e.target.value)}>

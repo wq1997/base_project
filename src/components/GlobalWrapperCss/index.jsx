@@ -24,6 +24,9 @@ const GlobalWrapperCss = (props) => {
                 transition: 'background-color 50000s ease-in-out 0s !important',
                 'background-color': 'transparent !important',
                 'background-image': 'none !important'
+            },
+            '.ant-table-wrapper .ant-table-thead >tr>th': {
+                background: token.color15
             }
         }
     })

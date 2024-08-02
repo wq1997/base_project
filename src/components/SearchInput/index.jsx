@@ -1,4 +1,4 @@
-import { Input, Select, DatePicker } from "antd";
+import { Input, Select, DatePicker, theme } from "antd";
 import styles from "./index.less";
 import dayjs from "dayjs";
 
@@ -14,9 +14,10 @@ const SearchInput = ({
     allowClear = true,
     onChange = () => {},
 }) => {
+    const { token } = theme.useToken();
     return (
         <div style={{ display: "flex", alignItems: "center", whiteSpace: "nowrap" }}>
-            {label && <span style={{ marginRight: "8px" }}>{label} </span>}
+            {label && <span style={{ marginRight: "8px", color: token.fontColor }}>{label} </span>}
             {type == "input" && (
                 <Input
                     value={value}

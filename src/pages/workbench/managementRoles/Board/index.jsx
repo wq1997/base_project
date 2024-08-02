@@ -7,7 +7,6 @@ import "./index.less";
 
 const Board = () => {
     const chartRef = useRef(null);
-
     const [options, setOpitons] = useState({});
 
     useEffect(() => {
@@ -90,7 +89,7 @@ const Board = () => {
     };
 
     return (
-        <div className="board">
+        <div className="board" style={{background: token.color12}}>
             <div className="title">
                 <span>在途项目看板</span>
                 <SearchInput

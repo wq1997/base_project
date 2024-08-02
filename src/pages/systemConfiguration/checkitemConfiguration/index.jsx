@@ -389,7 +389,7 @@ const Account = () => {
                     }}
                 />
                 <Button type="primary">搜索</Button>
-                <Button>重置</Button>
+                <Button type="primary" danger>重置</Button>
             </Space>
             <Table
                 rowKey="id"

@@ -82,7 +82,7 @@ const PersonnelTasks = () => {
     };
 
     return (
-        <div className="personnel-tasks">
+        <div className="personnel-tasks" style={{background: token.color12}}>
             <div className="title">
                 <span>人员任务统计</span>
                 <Space>

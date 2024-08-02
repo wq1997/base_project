@@ -251,7 +251,7 @@ const Account = () => {
                 <Button type="primary" onClick={getList}>
                     搜索
                 </Button>
-                <Button onClick={handleReset}>重置</Button>
+                <Button onClick={handleReset} type="primary" danger>重置</Button>
             </Space>
             <Table
                 rowKey="id"
