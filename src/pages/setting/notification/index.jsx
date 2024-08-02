@@ -129,6 +129,10 @@ const Notification = () => {
                 })}
                 columns={columns}
                 pagination={pagination}
+                onChange={pagination => {
+                    paginationRef.current = pagination;
+                    getList();
+                }}
             />
         </CardPage>
     );
