@@ -119,6 +119,17 @@
        display: grid;
        grid-template-columns: 1fr 1fr;
        grid-template-rows: 1fr 1fr 1fr;
+       .oneCard{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        .label{
+            padding-left: .7813rem;
+            background: no-repeat left url('../../../../../../assets/svg/leftDes.svg');
+            // background-position:-0.5208rem
+        }
+       }
     }
 }
 
@@ -250,7 +261,23 @@
 
 .center{
     grid-area: center;
-
+    padding: 1.0417rem 1.5625rem;
+    display: grid;
+    grid-template-rows: 6.7708rem 1fr;
+    .topData{
+        
+    }
+    .bottomPic{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        img{
+            width: 18.8021rem;
+            height: 27.9167rem;
+        }
+    }
 }
 @media screen and (min-width: 2000px) {
     .title {

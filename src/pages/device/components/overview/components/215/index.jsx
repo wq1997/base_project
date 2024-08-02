@@ -4,9 +4,9 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import styles from './index.less'
 import { Pagination, Select, Space, theme, Button, DatePicker } from "antd"
 import { history, useLocation, useIntl } from "umi";
-import  CardModel  from "../CardModel/index";
+import CardModel from "../CardModel/index";
 import titleImg from '@/assets/imges/titlep.png'
-import BMS from '@/assets/imges/BMS.png'
+import OutDoor from '@/assets/svg/outDoor.svg'
 import useIcon from "@/hooks/useIcon";
 import { getBurOverview2 } from '@/services/deviceTotal'
 import { getQueryString } from "@/utils/utils";
@@ -65,36 +65,37 @@ function Com(props) {
         }
     ])
 
-    const todayData=[
+    const todayData = [
         {
-        key:'dayChargeEnergy',
-        color:'',
-        label:'日充电电量'
-    },
-    {
-        key:'dayDischargeEnergy',
-        color:'',
-        label:'日放电电量'
-    },  {
-        key:'',
-        color:'',
-        label:''
-    },  {
-        key:'',
-        color:'',
-        label:''
-    },  {
-        key:'',
-        color:'',
-        label:''
-    },  {
-        key:'',
-        color:'',
-        label:''
-    },
-]
+            key: 'dayChargeEnergy',
+            color: '#25FF00',
+            label: '日充电电量'
+        },
+        {
+            key: 'dayDischargeEnergy',
+            color: '#FF6300',
+            label: '日放电电量'
+        }, {
+            key: 'monChargeEnergy',
+            color: '#00CBFF',
+            label: '月充电电量'
+        }, {
+            key: 'monDischargeEnergy',
+            color: '#00CBFF',
+            label: '月放电电量'
+        }, {
+            key: 'totalCEnergy',
+            color: '#00CBFF',
+            label: '总充电电量'
+        }, {
+            key: 'totalDEnergy',
+            color: '#00CBFF',
+            label: '总放电电量'
+        },
+    ];
+ 
     return (
-        <div className={styles.content} style={{backgroundColor:token.titleCardBgc}}>
+        <div className={styles.content} style={{ backgroundColor: token.titleCardBgc }}>
             <div className={styles.title} style={{ backgroundColor: token.darkbgc }}>{decodeURI(getQueryString("title"))}
                 <div className={styles.sn}><span>SN:</span><span>{decodeURI(getQueryString("sn"))}</span></div>
             </div>
@@ -103,7 +104,7 @@ function Com(props) {
                     title={t('PCS信息')}
                     content={
                         <div className={styles.pcsWrap}>
-                            <div className={styles.pcsOne} style={{width:'66.7%'}}>
+                            <div className={styles.pcsOne} style={{ width: '66.7%' }}>
                                 <div className={styles.pcsOneTitle}>
                                     <span style={{ paddingLeft: '30px' }}></span>
                                     <span>
@@ -125,7 +126,7 @@ function Com(props) {
                                     </div>
                                 </div>
                             </div>
-                            <div className={styles.pcsOne } style={{width:'33.3%'}}>
+                            <div className={styles.pcsOne} style={{ width: '33.3%' }}>
                                 <div className={styles.pcsOneTitle}>
                                     {/* <span style={{ paddingLeft: '30px' }}></span> */}
                                     <span>
@@ -163,22 +164,22 @@ function Com(props) {
                                     <div className={styles.value}>
                                         <div className={styles.valueOne}>
                                             <div className={styles.left}>
-                                                <span className={styles.key} style={{lineHeight:'2.9167rem'}}>{t("温度/℃")}</span>
-                                                <span style={{textAlign:'left',width:'60%',color:'#00CBFF',fontSize:'2.0833rem'}}>{allData?.bms?.cellTempMax || '0'}</span>
+                                                <span className={styles.key} style={{ lineHeight: '2.9167rem' }}>{t("温度/℃")}</span>
+                                                <span style={{ textAlign: 'left', width: '60%', color: '#00CBFF', fontSize: '2.0833rem' }}>{allData?.bms?.cellTempMax || '0'}</span>
                                             </div>
                                             <div className={styles.right}>
-                                                <span style={{lineHeight:'2.9167rem'}}>{t("No.")}</span>
-                                                <span style={{textAlign:'left',color:'#00CBFF',width:'40%',fontSize:'2.0833rem'}}>{allData?.bms?.cellTempMaxNo || '0'}</span>
+                                                <span style={{ lineHeight: '2.9167rem' }}>{t("No.")}</span>
+                                                <span style={{ textAlign: 'left', color: '#00CBFF', width: '40%', fontSize: '2.0833rem' }}>{allData?.bms?.cellTempMaxNo || '0'}</span>
                                             </div>
                                         </div>
                                         <div className={styles.valueOne}>
                                             <div className={styles.left}>
-                                                <span className={styles.key} style={{lineHeight:'2.9167rem'}}>{t("电压/mV")}</span>
-                                                <span style={{textAlign:'left',width:'60%',color:'#00CBFF',fontSize:'2.0833rem'}}>{allData?.bms?.cellVolMax || '0'}</span>
+                                                <span className={styles.key} style={{ lineHeight: '2.9167rem' }}>{t("电压/mV")}</span>
+                                                <span style={{ textAlign: 'left', width: '60%', color: '#00CBFF', fontSize: '2.0833rem' }}>{allData?.bms?.cellVolMax || '0'}</span>
                                             </div>
                                             <div className={styles.right}>
-                                                <span style={{lineHeight:'2.9167rem'}}>{t("No.")}</span>
-                                                <span style={{textAlign:'left',color:'#00CBFF',width:'40%',fontSize:'2.0833rem'}}>{allData?.bms?.cellVolMaxNo || '0'}</span>
+                                                <span style={{ lineHeight: '2.9167rem' }}>{t("No.")}</span>
+                                                <span style={{ textAlign: 'left', color: '#00CBFF', width: '40%', fontSize: '2.0833rem' }}>{allData?.bms?.cellVolMaxNo || '0'}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -194,22 +195,22 @@ function Com(props) {
                                     <div className={styles.value}>
                                         <div className={styles.valueOne}>
                                             <div className={styles.left}>
-                                                <span className={styles.key} style={{lineHeight:'2.9167rem'}}>{t("温度/℃")}</span>
-                                                <span style={{textAlign:'left',width:'60%',color:'#00CBFF',fontSize:'2.0833rem'}}>{allData?.bms?.cellTempMin || '0'}</span>
+                                                <span className={styles.key} style={{ lineHeight: '2.9167rem' }}>{t("温度/℃")}</span>
+                                                <span style={{ textAlign: 'left', width: '60%', color: '#00CBFF', fontSize: '2.0833rem' }}>{allData?.bms?.cellTempMin || '0'}</span>
                                             </div>
                                             <div className={styles.right}>
-                                                <span style={{lineHeight:'2.9167rem'}}>{t("No.")}</span>
-                                                <span style={{textAlign:'left',color:'#00CBFF',width:'40%',fontSize:'2.0833rem'}}>{allData?.bms?.cellTempMinNo || '0'}</span>
+                                                <span style={{ lineHeight: '2.9167rem' }}>{t("No.")}</span>
+                                                <span style={{ textAlign: 'left', color: '#00CBFF', width: '40%', fontSize: '2.0833rem' }}>{allData?.bms?.cellTempMinNo || '0'}</span>
                                             </div>
                                         </div>
                                         <div className={styles.valueOne}>
                                             <div className={styles.left}>
-                                                <span className={styles.key} style={{lineHeight:'2.9167rem'}}>{t("电压/mV")}</span>
-                                                <span style={{textAlign:'left',width:'60%',color:'#00CBFF',fontSize:'2.0833rem'}}>{allData?.bms?.cellVolMin || '0'}</span>
+                                                <span className={styles.key} style={{ lineHeight: '2.9167rem' }}>{t("电压/mV")}</span>
+                                                <span style={{ textAlign: 'left', width: '60%', color: '#00CBFF', fontSize: '2.0833rem' }}>{allData?.bms?.cellVolMin || '0'}</span>
                                             </div>
                                             <div className={styles.right}>
-                                                <span style={{lineHeight:'2.9167rem'}}>{t("No.")}</span>
-                                                <span style={{textAlign:'left',color:'#00CBFF',width:'40%',fontSize:'2.0833rem'}}>{allData?.bms?.cellVolMinNo || '0'}</span>
+                                                <span style={{ lineHeight: '2.9167rem' }}>{t("No.")}</span>
+                                                <span style={{ textAlign: 'left', color: '#00CBFF', width: '40%', fontSize: '2.0833rem' }}>{allData?.bms?.cellVolMinNo || '0'}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -219,12 +220,31 @@ function Com(props) {
                     }
                 />
             </div>}
-            <div className={styles.center} style={{ backgroundColor: token.darkbgc }}></div>
+            <div className={styles.center} style={{ backgroundColor: token.darkbgc }}>
+                    <div className={styles.topData}>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div className={styles.bottomPic}>
+                       <img src={OutDoor} alt="" />
+                    </div>
+            </div>
             <div className={styles.TodayEntity} style={{ backgroundColor: token.darkbgc }}>
                 <CardModel
                     title={t('今日电能')}
                     content={<div className={styles.entityWrap}>
-
+                        {todayData.map(it => {
+                            return <>
+                                <div className={styles.oneCard}>
+                                    <div style={{ color: it.color, fontSize: '2.0833rem' }}>
+                                        {allData?.gmeter?.[it?.key]}
+                                    </div>
+                                    <div className={styles.label} >
+                                        {t(it.label)}
+                                    </div>
+                                </div>
+                            </>
+                        })}
 
                     </div>}
                 />
