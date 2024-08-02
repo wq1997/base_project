@@ -41,7 +41,7 @@ const Electricity = () => {
             format = "YYYY";
             params = {
                 plantId,
-                dtuId:deviceId,
+                dtuId: deviceId,
                 date: dayjs(values.yearTime).format(format),
                 dateType: timeType
             }
@@ -209,7 +209,7 @@ const Electricity = () => {
     }
 
     const getDtusOfPlant = async (plantList, plantId) => {
-        form.setFieldsValue({deviceId: undefined});
+        form.setFieldsValue({ deviceId: undefined });
         const res = await getDtusOfPlantServe({ plantId });
         if (res?.data?.data) {
             let data = res?.data?.data;
@@ -409,107 +409,100 @@ const Electricity = () => {
                 <Spin spinning={loading}>
                     <Space direction="vertical" style={{ width: '100%' }}>
                         <div style={{ width: '100%', height: "calc(50vh - 200px)" }}>
-                            {
-                                dataSource?.length > 0 ?
-                                    <Table
-                                        pagination={false}
-                                        dataSource={tableData}
-                                        columns={[
-                                            {
-                                                title: intl.formatMessage({ id: '日期' }),
-                                                dataIndex: 'time',
-                                                key: 'time',
-                                                render: (data, record) => {
-                                                    return moment(data).format(record?.dateType === "year" ? "YYYY/MM" : "YYYY/MM/DD")
-                                                }
-                                            },
-                                            {
-                                                title: intl.formatMessage({ id: '设备名称' }),
-                                                dataIndex: 'dtuName',
-                                                key: 'dtuName',
-                                                width: '10%',
-                                                render(value) {
-                                                    return (
-                                                        <Tooltip title={value}>
-                                                            <div
-                                                                style={{
-                                                                    overflow: 'hidden',
-                                                                    whiteSpace: 'nowrap',
-                                                                    textOverflow: 'ellipsis',
-                                                                    width: '100%',
-                                                                }}
-                                                            >
-                                                                {value}
-                                                            </div>
-                                                        </Tooltip>
-                                                    )
-                                                }
-                                            },
-                                            {
-                                                title: `${intl.formatMessage({ id: '尖时段充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
-                                                dataIndex: 'kWh',
-                                                key: 'kWh',
-                                                render(_, record) {
-                                                    return `${record?.tipChargeEnergy}/${record?.tipDischargeEnergy}`
-                                                }
-                                            },
-                                            {
-                                                title: `${intl.formatMessage({ id: '峰时段充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
-                                                dataIndex: 'kWh',
-                                                key: 'kWh',
-                                                render(_, record) {
-                                                    return `${record?.peakChargeEnergy}/${record?.peakDischargeEnergy}`
-                                                }
-                                            },
-                                            {
-                                                title: `${intl.formatMessage({ id: '平时段充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
-                                                dataIndex: 'kWh',
-                                                key: 'kWh',
-                                                render(_, record) {
-                                                    return `${record?.flatChargeEnergy}/${record?.flatDischargeEnergy}`
-                                                }
-                                            },
-                                            {
-                                                title: `${intl.formatMessage({ id: '谷时段充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
-                                                dataIndex: 'kWh',
-                                                key: 'kWh',
-                                                render(_, record) {
-                                                    return `${record?.valleyChargeEnergy}/${record?.valleyDischargeEnergy}`
-                                                }
-                                            },
-                                            // {
-                                            //     title: intl.formatMessage({id: 'sn号'}),
-                                            //     dataIndex: 'sn',
-                                            //     key: 'sn',
-                                            // },
-                                            {
-                                                title: `${intl.formatMessage({ id: '总充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
-                                                dataIndex: 'kWh',
-                                                key: 'kWh',
-                                                render(_, record) {
-                                                    return `${record?.dayChargeEnergy}/${record?.dayDischargeEnergy}`
-                                                }
-                                            },
-                                            {
-                                                title: `${intl.formatMessage({ id: '充放电效率' })}(%)`,
-                                                dataIndex: 'cDEfficiency',
-                                                key: 'cDEfficiency',
-                                            },
-                                            {
-                                                title: `${intl.formatMessage({ id: '收益' })}(${intl.formatMessage({ id: '元' })})`,
-                                                dataIndex: 'number',
-                                                key: 'number',
-                                            },
-                                        ]}
-                                        scroll={{
-                                            y: 'calc(50vh - 250px)'
-                                        }}
-                                    />
-                                    :
-                                    <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}>
-                                        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={intl.formatMessage({ id: '暂无数据' })} />
-                                    </div>
-                            }
+                            <Table
+                                pagination={false}
+                                dataSource={tableData}
+                                columns={[
+                                    {
+                                        title: intl.formatMessage({ id: '日期' }),
+                                        dataIndex: 'time',
+                                        key: 'time',
+                                        render: (data, record) => {
+                                            return moment(data).format(record?.dateType === "year" ? "YYYY/MM" : "YYYY/MM/DD")
+                                        }
+                                    },
+                                    {
+                                        title: intl.formatMessage({ id: '设备名称' }),
+                                        dataIndex: 'dtuName',
+                                        key: 'dtuName',
+                                        width: '10%',
+                                        render(value) {
+                                            return (
+                                                <Tooltip title={value}>
+                                                    <div
+                                                        style={{
+                                                            overflow: 'hidden',
+                                                            whiteSpace: 'nowrap',
+                                                            textOverflow: 'ellipsis',
+                                                            width: '100%',
+                                                        }}
+                                                    >
+                                                        {value}
+                                                    </div>
+                                                </Tooltip>
+                                            )
+                                        }
+                                    },
+                                    {
+                                        title: `${intl.formatMessage({ id: '尖时段充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
+                                        dataIndex: 'kWh',
+                                        key: 'kWh',
+                                        render(_, record) {
+                                            return `${record?.tipChargeEnergy}/${record?.tipDischargeEnergy}`
+                                        }
+                                    },
+                                    {
+                                        title: `${intl.formatMessage({ id: '峰时段充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
+                                        dataIndex: 'kWh',
+                                        key: 'kWh',
+                                        render(_, record) {
+                                            return `${record?.peakChargeEnergy}/${record?.peakDischargeEnergy}`
+                                        }
+                                    },
+                                    {
+                                        title: `${intl.formatMessage({ id: '平时段充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
+                                        dataIndex: 'kWh',
+                                        key: 'kWh',
+                                        render(_, record) {
+                                            return `${record?.flatChargeEnergy}/${record?.flatDischargeEnergy}`
+                                        }
+                                    },
+                                    {
+                                        title: `${intl.formatMessage({ id: '谷时段充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
+                                        dataIndex: 'kWh',
+                                        key: 'kWh',
+                                        render(_, record) {
+                                            return `${record?.valleyChargeEnergy}/${record?.valleyDischargeEnergy}`
+                                        }
+                                    },
+                                    // {
+                                    //     title: intl.formatMessage({id: 'sn号'}),
+                                    //     dataIndex: 'sn',
+                                    //     key: 'sn',
+                                    // },
+                                    {
+                                        title: `${intl.formatMessage({ id: '总充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
+                                        dataIndex: 'kWh',
+                                        key: 'kWh',
+                                        render(_, record) {
+                                            return `${record?.dayChargeEnergy}/${record?.dayDischargeEnergy}`
+                                        }
+                                    },
+                                    {
+                                        title: `${intl.formatMessage({ id: '充放电效率' })}(%)`,
+                                        dataIndex: 'cDEfficiency',
+                                        key: 'cDEfficiency',
+                                    },
+                                    {
+                                        title: `${intl.formatMessage({ id: '收益' })}(${intl.formatMessage({ id: '元' })})`,
+                                        dataIndex: 'number',
+                                        key: 'number',
+                                    },
+                                ]}
+                                scroll={{
+                                    y: 'calc(50vh - 250px)'
+                                }}
+                            />
                         </div>
                     </Space>
                 </Spin>
