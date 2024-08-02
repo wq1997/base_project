@@ -62,7 +62,7 @@ const Login = () => {
                     }}
                 >
                     <Title level={2} style={{ marginBottom: 50, color: token.colorPrimary }}>
-                        电池诊断工具
+                        采日能源电池诊断工具
                     </Title>
                     <Form
                         onFinish={onFinish}

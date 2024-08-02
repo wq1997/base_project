@@ -1,4 +1,4 @@
-export const PROJECT_NAME = "电池诊断工具";
+export const PROJECT_NAME = "采日能源电池诊断工具";
 export const DEFAULT_LOCALE = "zh_CN";
 export const PUBLIC_FILE_PATH = "https://energy.sermatec-cloud.com/static/";
 export const DEFAULT_PAGINATION = { current: 1, pageSize: 10, total: 0, showQuickJumper: true };
