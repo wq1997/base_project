@@ -2,15 +2,16 @@
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 0.23fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 5.2083rem 1fr 1fr 1fr;
     grid-auto-columns: 1fr;
-    gap: 8px 8px;
+    gap: .8333rem .8333rem;
     grid-auto-flow: row;
     grid-template-areas:
-        "title title title"
-        "PcsData Bms1 Bms1"
-        "TodayEntity powerA status";
+        "title title title title"
+        "PcsData center center status"
+        'TodayEntity center center Bms1'
+        'TodayEntity center center Bms1';
 
     >div {
         border-radius: 16px;
@@ -40,10 +41,9 @@
 
     .pcsWrap {
         width: 100%;
-        height: 100%;
+        height:calc(100% - 0.8333rem);
         display: flex;
         border-radius: 16px;
-        border: 1px solid #212849;
 
         .pcsOne {
             width: 50%;
@@ -51,7 +51,7 @@
             .pcsOneTitle {
                 height: 50px;
                 line-height: 50px;
-                background-color: #212849;
+                // background-color: #212849;
                 display: flex;
                 justify-content: space-around;
 
@@ -66,6 +66,9 @@
                 .oneData {
                     display: flex;
                     justify-content: space-around;
+                    .value{
+                        color: #00CBFF;
+                    }
                 }
             }
         }
@@ -111,43 +114,11 @@
     grid-area: TodayEntity;
 
     .entityWrap {
-        padding: 35px 40px;
         width: 100%;
         height: 100%;
-        display: flex;
-        justify-content: space-around;
-
-        .Box {
-            height: 100%;
-            width: calc(50% - 30px);
-            border-radius: 8px;
-            border: 1px solid #212849;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            .boxTitle {
-                // width: 50%;
-                min-width: 50%;
-                height: 34px;
-                background-color: #252D51;
-                padding: 0 10px;
-                display: flex;
-                justify-content: center;
-                position: absolute;
-                top: -17px;
-                line-height: 34px;
-                // left: 25%;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                -o-text-overflow: ellipsis;
-
-            }
-
-
-        }
+       display: grid;
+       grid-template-columns: 1fr 1fr;
+       grid-template-rows: 1fr 1fr 1fr;
     }
 }
 
@@ -208,7 +179,8 @@
         display: flex;
         flex-direction: column;
         justify-content: space-around;
-        height: 100%;
+        height:calc(100% - 0.8333rem);
+
 
         .statusOne {
             display: flex;
@@ -228,15 +200,13 @@
     width: 100%;
     height: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
 
     .bmsOne {
         padding: 10px 20px;
-        height: 100%;
-        width: calc(50% - 10px);
-        border-radius: 4px;
-        border: 1px solid #212849;
-
+        width: 100%;
+        height:calc(100% - 0.8333rem);
         .bmsTitle {
             width: 100%;
 
@@ -258,18 +228,17 @@
             }
 
             .value {
-                width: 65%;
+                width: 100%;
                 height: 100%;
                 display: flex;
                 justify-content: space-around;
                 flex-direction: column;
 
                 .valueOne {
-                    display: flex;
-                    justify-content: space-around;
-
+                 width: 100%;
+                display: flex;
                     div {
-                        width: 30%;
+                        width: 100%;
                         display: flex;
                         justify-content: space-around;
                     }
@@ -279,6 +248,10 @@
     }
 }
 
+.center{
+    grid-area: center;
+
+}
 @media screen and (min-width: 2000px) {
     .title {
         font-size: 36px;

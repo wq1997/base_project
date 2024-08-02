@@ -8,7 +8,7 @@ function Com(props) {
     }, [])
 
     return (
-        <div className={styles.card} style={{ backgroundColor: props.bgc ? props.bgc : token.contentBgc }}>
+        <div className={styles.card} style={{ backgroundColor: props.bgc ? props.bgc : token.darkbgc }}>
             <div className={styles.header} style={{ width: '100%' }}>
                 <div className={styles.title} style={{ width: '100%',}} >
                     <span>{props.title}</span>
