@@ -19,7 +19,8 @@ npm start
 
 # 目前项目对应分支
 main_mofs_view：MOFS大屏  
-main-battery-tools：电池诊断工具  
+main-battery-tools：电池诊断工具(本地)  
+battery-tool-identity-check: 电池诊断工具  
 main-caietong：采e通web  
 main-large-screen：运维大屏  
 main-run-maintenance：运维管理系统  
