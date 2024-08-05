@@ -191,10 +191,11 @@ const RealtimeAlarm = () => {
         });
         setTitle('新增设备');
         setIsOpen(!isOpen);
+        setRecord([])
     }
 
     const delDevice = async () => {
-        let { data } = await deleteDtu({ id: record.id });
+        let { data } = await deleteDtu({ id: record?.id });
         if (data.code == 'ok') {
             changePlant(currentPlantId)
         } else {
@@ -203,8 +204,8 @@ const RealtimeAlarm = () => {
         setIsOpenDel(!isOpenDel);
     };
     const changeData = async (value) => {
-        const { data } = await updateDtus({ ...value, id: record.id });
-        if (data.data) {
+        const res = await updateDtus({ ...value, id: record.id });
+        if (res?.data?.data) {
             changePlant(currentPlantId)
         } else {
             message.error(data.msg)
