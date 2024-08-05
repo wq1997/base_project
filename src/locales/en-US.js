@@ -2037,4 +2037,5 @@ export default {
 '选择设备': 'Select device',
 '请选择设备': 'Please select a device',
 '子用户': 'Sub users',
+'告警类型': 'Alarm Type',
 } 

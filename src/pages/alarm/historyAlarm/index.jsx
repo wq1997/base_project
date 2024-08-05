@@ -78,10 +78,11 @@ const RealtimeAlarm = () => {
     const res = await getFetchPlantListServe();
     if (res?.data?.data) {
       const data = res?.data?.data;
-      const plantList = data?.plantList?.map((item, index) => {
+      const plantList = data?.plantVoList?.map((item, index) => {
         return {
           value: item.plantId,
           label: item.name,
+          alarms: item?.alarms
         }
       })
       setPlantList(plantList);
@@ -119,7 +120,7 @@ const RealtimeAlarm = () => {
       end: time?.length ? time[1]?.format('YYYY-MM-DD HH:mm:ss') : null,
       plantId,
       dtuId: deviceId,
-    });
+    })||{};
     setData(data.data);
   }
   const changPage = (page, pageSize) => {
@@ -167,6 +168,7 @@ const RealtimeAlarm = () => {
               }
               setPlantId(value);
               setDeviceId(undefined);
+              setLevel(undefined);
             }}
             style={{ width: '250px', marginRight: 30 }}
             placeholder={`${t('请选择电站')}`}
@@ -182,13 +184,18 @@ const RealtimeAlarm = () => {
             value={deviceId}
           />
           <div className={styles.level}>
-            <Select
-              value={level}
+          <Select
               style={{ width: 180 }}
               onChange={changeLevel}
-              options={alarmLevel}
+              options={plantId?alarmLevel?.filter(level=>{
+                let value = level?.value;
+                const plant = plantList?.find(plant=>plant?.value===plantId);
+                const alarmList = plant?.alarms?.split(',');
+                return alarmList?.includes(value);
+              }):alarmLevel}
               allowClear
               placeholder={t('告警等级')}
+              value={level}
             />
           </div>
           <div className={styles.date}>

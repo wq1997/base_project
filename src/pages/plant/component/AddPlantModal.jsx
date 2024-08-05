@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, } from 'react';
 import { DatePicker,Row,Col, Modal, Form, Input, Select, Switch, InputNumber } from 'antd';
 import { useSelector, useIntl } from "umi";
-// import { getAlarmRuleInsertInitData } from '@/services/alarm'
+import { alarmLevel } from '@/utils/constants'
 import dayjs from 'dayjs';
 
 const App = (props) => {
@@ -46,14 +46,19 @@ const App = (props) => {
       key: 'longitude',
       type: 3,
       required: true,
-      data:props.initSelectData?.longitude
     },
     {
       label: '纬度',
       key: 'latitude',
       type: 3,
+      required: true
+    },
+    {
+      label: '告警类型',
+      key: 'alarms',
+      type: 5,
       required: true,
-      data:props.initSelectData?.latitude
+      data: alarmLevel
     },
     {
       label: '电站位置',
@@ -72,7 +77,11 @@ const App = (props) => {
     return msg
   }
   useEffect(() => {
-    form.setFieldsValue(props.formData)
+    form.resetFields();
+    form.setFieldsValue({
+      ...props.formData,
+      alarms: props?.formData?.alarms?props?.formData?.alarms?.split(","):[]
+    })
   }, [props.formData]);
   useEffect(() => {
     getInitSearchData();
@@ -90,7 +99,9 @@ const App = (props) => {
           userId:[values.userName],
           type:values.typeName,
           installDate:dayjs(values.installDate).format('YYYY-MM-DD HH:mm:ss'),
-          networkDate:dayjs(values.networkDate).format('YYYY-MM-DD HH:mm:ss')})
+          networkDate:dayjs(values.networkDate).format('YYYY-MM-DD HH:mm:ss'),
+          alarms:values?.alarms?.join(",")
+        }),
       props.onRef();
     } catch (errorInfo) {
       console.log('Failed:', errorInfo);
@@ -164,6 +175,14 @@ const App = (props) => {
                 <Col className="gutter-row" span={20}>
                   <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.required }]} >
                     <DatePicker showTime style={{ width: '100%' }}/>
+                  </Form.Item>
+                </Col>
+              )
+            }else if (it.type === 5) {
+              return (
+                <Col className="gutter-row" span={20}>
+                  <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.required }]} >
+                    <Select mode="multiple" style={{ width: '100%' }} options={it?.data}/>
                   </Form.Item>
                 </Col>
               )

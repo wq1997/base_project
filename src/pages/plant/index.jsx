@@ -6,7 +6,7 @@ import { useSelector, useIntl } from "umi";
 import AddPlantModal, { formList } from './component/AddPlantModal'
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import dayjs from 'dayjs';
-import { timeZoneList } from '@/utils/constants'
+import { timeZoneList, alarmLevel } from '@/utils/constants'
 import { fetchAllUsersList } from '@/services/user'
 
 function Com(props) {
@@ -36,7 +36,7 @@ function Com(props) {
     const intl = useIntl();
 
     const getInitData = async () => {
-        let { data } = await getInsertPlantInitData();
+        let { data } = await getInsertPlantInitData()||{};
         let str = locale === 'zh-CN' ? 'desc' : 'enDesc'
         data.data?.currencyList?.map(it => {
             it.label = `${it[str]}--${it.value}`
@@ -108,6 +108,20 @@ function Com(props) {
             dataIndex: 'latitude',
             key: 'latitude',
             width: 100
+        },
+        {
+            title: t('告警类型'),
+            dataIndex: 'alarms',
+            key: 'alarms',
+            width: 200,
+            render(value){
+                const valueList = value?value?.split(","):[];
+                const labelList = valueList?.map((item, index) => {
+                    const level = alarmLevel?.filter(level => level.value===item);
+                    return t(level?.[0]?.label?.props?.id)+(index===valueList?.length-1?"":', ');
+                })
+                return labelList;
+            }
         },
         {
             title: t('电站位置'),

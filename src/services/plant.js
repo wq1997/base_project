@@ -12,7 +12,7 @@ export const apiInsertPlant = (payload) => {
 
 // 编辑电站
 export const apiUpdatePlant = (payload) => {
-    return axiosInstance.post(`/energy/updatePlant`, payload);
+    return axiosInstance.post(`/energy/plant/addOrUpdatePlant`, payload);
   }
 
 
