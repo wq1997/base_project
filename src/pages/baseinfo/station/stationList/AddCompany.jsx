@@ -18,6 +18,7 @@ import {
     getUpdateInitData as getCompanyUpdateInitDataServer,
 } from "@/services/sz_index";
 import { MyUpload } from "@/components";
+import { longitude_REG, latitude_RGE } from "@/utils/constants";
 
 const uploadUrl = process.env.API_URL_1 + "/attachment/upload2";
 
@@ -78,8 +79,6 @@ const Company = ({ open, editId, initData, onClose }) => {
         if (res?.data?.status == "SUCCESS") {
             message.success(`${editId ? "编辑" : "添加"}成功`);
             onClose(true);
-        } else {
-            message.info(res?.data?.msg);
         }
     };
 
@@ -90,7 +89,7 @@ const Company = ({ open, editId, initData, onClose }) => {
     return (
         <Modal
             title={`${editId ? "编辑" : "新增"}场站`}
-            width={900}
+            width={1200}
             confirmLoading={true}
             open={open}
             footer={null}
@@ -236,6 +235,10 @@ const Company = ({ open, editId, initData, onClose }) => {
                                     required: true,
                                     message: "请输入站点经度",
                                 },
+                                {
+                                    pattern: longitude_REG,
+                                    message: '数值在-180~180之间,小数部分最多6位'
+                                }
                             ]}
                         >
                             <Input placeholder="请输入站点经度" />
@@ -250,6 +253,10 @@ const Company = ({ open, editId, initData, onClose }) => {
                                     required: true,
                                     message: "请输入站点纬度",
                                 },
+                                {
+                                    pattern: latitude_RGE,
+                                    message: '数值在-90~90之间,小数部分最多6位'
+                                }
                             ]}
                         >
                             <Input placeholder="请输入站点纬度" />
@@ -476,12 +483,6 @@ const Company = ({ open, editId, initData, onClose }) => {
                         <Form.Item
                             label="紧急联系人"
                             name="operator"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "请输入紧急联系人",
-                                },
-                            ]}
                         >
                             <Input placeholder="请输入紧急联系人名称" disabled />
                         </Form.Item>
@@ -490,12 +491,6 @@ const Company = ({ open, editId, initData, onClose }) => {
                         <Form.Item
                             label="紧急联系人电话1"
                             name="operatorTel1"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "请输入紧急联系人电话",
-                                },
-                            ]}
                         >
                             <Input placeholder="请输入紧急联系人电话" disabled />
                         </Form.Item>
@@ -507,12 +502,6 @@ const Company = ({ open, editId, initData, onClose }) => {
                         <Form.Item
                             label="紧急联系人电话2"
                             name="operatorTel2"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "请输入紧急联系人电话",
-                                },
-                            ]}
                         >
                             <Input placeholder="请输入紧急联系人电话" disabled />
                         </Form.Item>

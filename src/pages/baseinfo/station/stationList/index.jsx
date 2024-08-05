@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Space, Table, message, Modal, Card } from "antd";
+import { Button, Space, Table, message, Modal, Tooltip } from "antd";
 import { useSelector } from "umi";
 import { PlusOutlined } from "@ant-design/icons";
 import { SearchInput, CardPage } from "@/components";
@@ -29,6 +29,23 @@ const Company = () => {
         {
             title: "场站名称",
             dataIndex: "resourceName",
+            width: 300,
+            render(value) {
+                return (
+                    <Tooltip title={value}>
+                        <div
+                            style={{
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                                width: 300,
+                            }}
+                        >
+                            {value}
+                        </div>
+                    </Tooltip>
+                )
+            }
         },
         {
             title: "场站编号",
@@ -37,9 +54,23 @@ const Company = () => {
         {
             title: "关联公司",
             dataIndex: "company",
-            render(_,record){
-                return record?.company?.userName
-            }
+            width: 300,
+            render(_,record) {
+                return (
+                    <Tooltip title={record?.company?.userName}>
+                        <div
+                            style={{
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                                width: 300,
+                            }}
+                        >
+                            {record?.company?.userName}
+                        </div>
+                    </Tooltip>
+                )
+            },
         },
         {
             title: "用电户号",

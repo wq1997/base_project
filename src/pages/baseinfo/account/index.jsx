@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Space, Table, message, Modal, Card } from "antd";
+import { Button, Space, Table, message, Modal, Tooltip } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useSelector } from "umi";
 import { SearchInput, CardPage } from "@/components";
@@ -35,11 +35,11 @@ const Account = () => {
 
     const columns = [
         {
-            title: "账号",
+            title: "用户名",
             dataIndex: "account",
         },
         {
-            title: "姓名",
+            title: "账号昵称",
             dataIndex: "name",
         },
         {
@@ -49,7 +49,7 @@ const Account = () => {
         {
             title: "所属公司",
             dataIndex: "company",
-            render: value => value?.name,
+            render: value => value?.userName,
         },
         {
             title: "绑定角色",
@@ -59,6 +59,23 @@ const Account = () => {
         {
             title: "备注",
             dataIndex: "remark",
+            width: 400,
+            render(value) {
+                return (
+                    <Tooltip title={value}>
+                        <div
+                            style={{
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                                width: 400,
+                            }}
+                        >
+                            {value}
+                        </div>
+                    </Tooltip>
+                )
+            }
         },
         {
             title: "操作",
@@ -92,8 +109,18 @@ const Account = () => {
         const res = await getSearchInitDataServer();
         if (res?.data?.status == "SUCCESS") {
             const { companies, roles } = res?.data?.data;
-            setCompanyList(companies);
-            setRoleList(roles);
+            setCompanyList(companies?.map(item => {
+                return {
+                    code: item?.code,
+                    showStr: item?.name
+                }
+            }));
+            setRoleList(roles?.map(item => {
+                return {
+                    code: item?.code,
+                    showStr: item?.name
+                }
+            }));
         }
     };
 
@@ -166,7 +193,7 @@ const Account = () => {
             />
             <Space className="search">
                 <SearchInput
-                    label="账号"
+                    label="用户名"
                     value={account}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
@@ -175,7 +202,7 @@ const Account = () => {
                     }}
                 />
                 <SearchInput
-                    label="姓名"
+                    label="账号昵称"
                     value={name}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
