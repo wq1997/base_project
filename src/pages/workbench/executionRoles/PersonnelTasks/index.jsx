@@ -80,7 +80,7 @@ const PersonnelTasks = () => {
                 <span>负责项目统计</span>
             </div>
             <div className="content">
-                <Table dataSource={dataSource} columns={columns} style={{ width: "100%" }} />;
+                <Table dataSource={dataSource} columns={columns} style={{ width: "100%" }} />
             </div>
         </div>
     );

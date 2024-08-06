@@ -9,7 +9,7 @@ import {
     Tooltip,
     Input,
     Radio,
-    Dropdown,
+    theme,
 } from "antd";
 import {
     EllipsisOutlined,
@@ -45,6 +45,7 @@ import img13 from "./imgs/13.png";
 let invalidReason = undefined;
 
 const Account = () => {
+    const { token } = theme.useToken();
     const location = useLocation();
     const initCode = location?.search.split("=")[1];
     const [canSure, setCanSure] = useState(true);
@@ -193,15 +194,15 @@ const Account = () => {
             dataIndex: "end",
         },
         {
-            title: "管理项目名称",
+            title: "关联项目名称",
             dataIndex: "projectName",
         },
         {
-            title: "任务接收人",
+            title: "工单接收人",
             dataIndex: "accept",
         },
         {
-            title: "任务发起人",
+            title: "工单发起人",
             dataIndex: "launch",
         },
         {
@@ -214,10 +215,10 @@ const Account = () => {
             render: (_, row) => {
                 return (
                     <Space>
-                        <Button type="link" danger>
+                        <Button type="link">
                             去处理
                         </Button>
-                        <Button type="link" onClick={() => setDetailRow(row)}>
+                        <Button type="link" style={{color: token.colorPrimary}} onClick={() => setDetailRow(row)}>
                             查看详情
                         </Button>
                     </Space>
@@ -521,6 +522,7 @@ const Account = () => {
                         >
                             手工新增工单
                         </Button>
+                        <Button type="primary" danger>批量删除工单</Button>
                     </Space>
                 )}
             ></Table>

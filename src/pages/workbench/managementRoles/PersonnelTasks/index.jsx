@@ -1,6 +1,7 @@
 import { theme, Space } from "antd";
 import { SearchInput } from "@/components";
 import ReactECharts from "echarts-for-react";
+import * as echarts from "echarts";
 import "./index.less";
 
 const PersonnelTasks = () => {
@@ -68,6 +69,20 @@ const PersonnelTasks = () => {
                 barWidth: 40,
                 stack: "Ad",
                 data: [8, 5, 7, 5, 5, 6, 2, 6, 5, 7, 2, 6, 8, 3, 5, 5, 1, 2, 3, 2],
+                itemStyle: {
+                    normal: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: "#0DB2FF",
+                            },
+                            {
+                                offset: 1,
+                                color: "#00D5CF",
+                            },
+                        ]),
+                    },
+                },
             },
             {
                 name: "运维工单",
@@ -77,6 +92,20 @@ const PersonnelTasks = () => {
                 data: [
                     67, 65, 60, 60, 59, 56, 58, 54, 50, 46, 48, 43, 40, 42, 40, 40, 38, 36, 33, 32,
                 ],
+                itemStyle: {
+                    normal: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: "#47CCFF",
+                            },
+                            {
+                                offset: 1,
+                                color: "#00FFF8",
+                            },
+                        ]),
+                    },
+                },
             },
         ],
     };
@@ -105,6 +134,10 @@ const PersonnelTasks = () => {
                             {
                                 name: "年",
                                 code: "1",
+                            },
+                            {
+                                name: "月",
+                                code: "2",
                             },
                         ]}
                     />

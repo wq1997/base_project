@@ -73,3 +73,10 @@ export const getUrlParams = url => {
     }
     return obj;
 };
+
+export const cloneObject = (object) => JSON.parse(JSON.stringify(object));
+
+export const translateNmberToTime = (value) => {
+  if(Number(value)<=9) return `0${value}`;
+  return `${value}`;
+}

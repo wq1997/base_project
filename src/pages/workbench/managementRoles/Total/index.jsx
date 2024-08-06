@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Select, Radio, theme } from "antd";
 import ReactECharts from "echarts-for-react";
-import dayjs from "dayjs";
+import * as echarts from "echarts";
 import styles from "./index.less";
 import classNames from "classnames";
 
@@ -10,13 +10,18 @@ const Total = () => {
     const [type, setType] = useState("week");
 
     const allWorkorders = [
-        { name: "在途异常工单", value: "1", color: token.color4 },
-        { name: "在途其他工单", value: "37", color: token.color5 },
+        { name: "在途异常工单", value: "1", color: token.color16 },
+        { name: "在途其他工单", value: "37", color: token.color17 },
     ];
 
     const myWorkorders = [
-        { name: "发起工单数", value: "128", color: token.color7 },
-        { name: "已执行总数", value: "128", color: token.color6 },
+        { name: "发起工单数", value: "128", color: token.color18 },
+        { name: "已执行总数", value: "128", color: token.color19 },
+    ];
+
+    const todoList = [
+        { name: "待执行工单总数", value: "8", color: token.color20 },
+        { name: "待执行异常工单", value: "28", color: token.color21 },
     ];
 
     const options = {
@@ -64,6 +69,20 @@ const Total = () => {
                 stack: "Ad",
                 barWidth: 40,
                 data: type == "week" ? [8, 6, 2, 10, 5, 2, 4, 3] : [5, 3, 21, 4],
+                itemStyle: {
+                    normal: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: "#FBD576",
+                            },
+                            {
+                                offset: 1,
+                                color: "#EF6E39",
+                            },
+                        ]),
+                    },
+                },
             },
             {
                 name: "已完成",
@@ -71,6 +90,20 @@ const Total = () => {
                 stack: "Ad",
                 barWidth: 40,
                 data: type == "week" ? [6, 5, 0, 5, 2, 5, 3, 7] : [135, 208, 155, 31],
+                itemStyle: {
+                    normal: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: "#73FFF7",
+                            },
+                            {
+                                offset: 1,
+                                color: "#39AAEF",
+                            },
+                        ]),
+                    },
+                },
             },
         ],
     };
@@ -94,6 +127,19 @@ const Total = () => {
                 <div className={"title"}>我发起的</div>
                 <div className={styles.content}>
                     {myWorkorders.map(item => (
+                        <div className={styles.order} style={{background: token.color13}}>
+                            <span>{item.name}</span>
+                            <span className={styles.value} style={{ color: item.color }}>
+                                {item.value}
+                            </span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            <div className={classNames(styles.todoList, styles.workorders)} style={{background: token.color12}}>
+                <div className={"title"}>我待办的</div>
+                <div className={styles.content}>
+                    {todoList.map(item => (
                         <div className={styles.order} style={{background: token.color13}}>
                             <span>{item.name}</span>
                             <span className={styles.value} style={{ color: item.color }}>

@@ -17,7 +17,7 @@ const Board = () => {
     const { token } = theme.useToken();
     const getOptions = () => {
         const options = {
-            color: ['#1676EF', '#E29611'],
+            color: ["#00FFF8", "#8FC0FF"],
             tooltip: {
                 trigger: "item",
             },
@@ -32,11 +32,11 @@ const Board = () => {
             series: [
                 {
                     type: "pie",
-                    radius: "50%",
+                    radius: ["50%", "70%"],
                     selectedMode: "single",
                     data: [
                         { value: 53, name: "维保项目" },
-                        { value: 2, name: "实施项目", selected: true },
+                        { value: 2, name: "实施项目" },
                     ],
                     emphasis: {
                         itemStyle: {
@@ -98,6 +98,10 @@ const Board = () => {
                     type="select"
                     value={"2"}
                     options={[
+                        {
+                            name: "项目阶段图",
+                            code: "1",
+                        },
                         {
                             name: "项目类型图",
                             code: "2",

@@ -16,7 +16,7 @@ const Board = () => {
     const { token } = theme.useToken();
     const getOptions = () => {
         const options = {
-            color: ["#1676EF", "#E29611"],
+            color: ["#00FFF8", "#8FC0FF"],
             tooltip: {
                 trigger: "item",
             },
@@ -31,19 +31,19 @@ const Board = () => {
             series: [
                 {
                     type: "pie",
-                    radius: "50%",
+                    radius: ["50%", "70%"],
                     selectedMode: "single",
                     data: [
                         { value: 1285, name: "维保项目" },
-                        { value: 85, name: "实施项目", selected: true },
+                        { value: 85, name: "实施项目" },
                     ],
-                    emphasis: {
-                        itemStyle: {
-                            shadowBlur: 10,
-                            shadowOffsetX: 0,
-                            shadowColor: "rgba(0, 0, 0, 0.5)",
-                        },
-                    },
+                    // emphasis: {
+                    //     itemStyle: {
+                    //         shadowBlur: 10,
+                    //         shadowOffsetX: 0,
+                    //         shadowColor: "rgba(0, 0, 0, 0.5)",
+                    //     },
+                    // },
                     label: {
                         normal: {
                             textStyle: {
@@ -69,19 +69,19 @@ const Board = () => {
                             },
                         },
                     },
-                    labelLayout: function (params) {
-                        const isLeft =
-                            params.labelRect.x <
-                            chartRef.current.getEchartsInstance().getWidth() / 2;
-                        const points = params.labelLinePoints;
-                        // Update the end point.
-                        points[2][0] = isLeft
-                            ? params.labelRect.x
-                            : params.labelRect.x + params.labelRect.width;
-                        return {
-                            labelLinePoints: points,
-                        };
-                    },
+                    // labelLayout: function (params) {
+                    //     const isLeft =
+                    //         params.labelRect.x <
+                    //         chartRef.current.getEchartsInstance().getWidth() / 2;
+                    //     const points = params.labelLinePoints;
+                    //     // Update the end point.
+                    //     points[2][0] = isLeft
+                    //         ? params.labelRect.x
+                    //         : params.labelRect.x + params.labelRect.width;
+                    //     return {
+                    //         labelLinePoints: points,
+                    //     };
+                    // },
                 },
             ],
         };
@@ -97,6 +97,10 @@ const Board = () => {
                     type="select"
                     value={"2"}
                     options={[
+                        {
+                            name: "项目阶段图",
+                            code: "1",
+                        },
                         {
                             name: "项目类型图",
                             code: "2",

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Select, Radio, theme } from "antd";
 import ReactECharts from "echarts-for-react";
-import dayjs from "dayjs";
+import * as echarts from "echarts";
 import "./index.less";
 
 const Total = () => {
@@ -9,9 +9,9 @@ const Total = () => {
     const [type, setType] = useState("week");
 
     const myWorkorders = [
-        { name: "工单总数", value: "285", color: "#1098EF" },
-        { name: "已执行工单", value: "283", color: "#10EF12" },
-        { name: "待执行工单", value: "2", color: "#ED9C0D" },
+        { name: "工单总数", value: "285", color: token.color22 },
+        { name: "已执行工单", value: "283", color: token.color23 },
+        { name: "待执行工单", value: "2", color: token.color24 },
     ];
 
     const options = {
@@ -59,6 +59,20 @@ const Total = () => {
                 stack: "Ad",
                 barWidth: 40,
                 data: type == "week" ? [1, 1, 0, 1, 0, 0, 0, 1] : [0, 0, 2, 0],
+                itemStyle: {
+                    normal: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: "#FBD576",
+                            },
+                            {
+                                offset: 1,
+                                color: "#EF6E39",
+                            },
+                        ]),
+                    },
+                },
             },
             {
                 name: "已完成",
@@ -66,6 +80,20 @@ const Total = () => {
                 stack: "Ad",
                 barWidth: 40,
                 data: type == "week" ? [0, 1, 0, 1, 0, 2, 2, 0] : [15, 16, 12, 21],
+                itemStyle: {
+                    normal: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: "#73FFF7",
+                            },
+                            {
+                                offset: 1,
+                                color: "#39AAEF",
+                            },
+                        ]),
+                    },
+                },
             },
         ],
     };

@@ -9,6 +9,7 @@ import Charts3D from "./Charts3D";
 import Charts2_5D from "./Charts2_5D";
 import MyTab from "./MyTab";
 import MyButtonGroup from "./MyButtonGroup";
+import EditTable from "./EditTable";
 
 export {
     ThemeBtn,
@@ -22,4 +23,5 @@ export {
     Charts2_5D,
     MyTab,
     MyButtonGroup,
+    EditTable,
 }
