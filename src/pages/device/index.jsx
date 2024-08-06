@@ -326,12 +326,12 @@ const RealtimeAlarm = () => {
                     </div>
            
                 </div>
-                <div className={classNames(styles.rightItem, styles.leftItem2)}>
+                <div className={classNames(styles.rightItem, styles.leftItem2)} style={{backgroundColor: token.titleCardBgc}}>
                     <Title title={t('设备列表')} />
                     <div className={styles.add}>
                         {(user?.roleId===2||user?.roleId===3)&&<div onClick={changIsOpen} className={styles.addBtn}>{t('新增设备')}</div>}
                     </div>
-                    <div className={styles.cardContent} style={{backgroundColor:token.darkbgc}}>
+                    <div className={styles.cardContent} style={{backgroundColor:token.darkbgc,  height: 'calc(100% - 3.8021rem)'}}>
                         <Table
                             dataSource={data}
                             changeIsOpenDel={changeIsOpenDel}
@@ -341,7 +341,7 @@ const RealtimeAlarm = () => {
                 </div>
             </div>
             <div className={styles.right}>
-                <div className={classNames(styles.rightItem, styles.rightItem1)} style={{backgroundColor:token.darkbgc}}>
+                <div className={classNames(styles.rightItem, styles.rightItem1)} style={{backgroundColor: token.titleCardBgc}}>
                     <Title title={t('设备运行情况')} />
 
                     <div className={styles.cardContent}>
@@ -350,7 +350,7 @@ const RealtimeAlarm = () => {
                         />
                     </div>
                 </div>
-                <div className={classNames(styles.rightItem, styles.rightItem2)}style={{backgroundColor:token.darkbgc}}>
+                <div className={classNames(styles.rightItem, styles.rightItem2)}style={{backgroundColor: token.titleCardBgc}}>
                     <Title title={`${t('实时电量')}(${t('kWh')})`} />
                     <div className={styles.realEle}>
                     {eleData.map(it => {
@@ -368,7 +368,7 @@ const RealtimeAlarm = () => {
                                 })}
                     </div>
                 </div>
-                <div className={classNames(styles.rightItem, styles.rightItem3)}style={{backgroundColor:token.darkbgc}}>
+                <div className={classNames(styles.rightItem, styles.rightItem3)}style={{backgroundColor: token.titleCardBgc}}>
                     <Title title={`${t('历史电量')}(${t('kWh')})`} />
                     <div className={styles.cardContent}>
                         <ElectricityRanking

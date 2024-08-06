@@ -263,9 +263,26 @@
     grid-area: center;
     padding: 1.0417rem 1.5625rem;
     display: grid;
-    grid-template-rows: 6.7708rem 1fr;
+    grid-template-rows: 5.2083rem 1fr;
     .topData{
-        
+        display: flex;
+        .topOne{
+            width: 25%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            padding-top: .7813rem;
+           font-size: .8333rem;
+           .bottomDes{
+            width:'100%';
+            height:0.834rem;
+            background:no-repeat center url('../../../../../../assets/svg/bottomDes.svg')
+           }
+           .label{
+            text-align: center;
+           }
+        }
     }
     .bottomPic{
         width: 100%;

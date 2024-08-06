@@ -1,12 +1,12 @@
 .table {
-    height: 100%;
-    font-size: 13px;
+    height: calc(100% - 1.0417rem);
+    font-size: .6771rem;
     .row {
         display: flex;
         .tableTitle,
         .rowItem {
             width: 0;
-            padding: 10px 10px;
+            padding: .5208rem .5208rem;
             box-sizing: border-box;
             overflow: hidden;
             white-space: nowrap;
@@ -15,23 +15,23 @@
     }
     .valueWrapper {
         width: 100%;
-        height: calc(100% - 40px);
+        height: calc(100% - 2.0833rem);
         overflow-y: scroll;
         &::-webkit-scrollbar {
             width: 0;
         }
         .row {
             // background: #0F446A;
-            height: 40px;
+            height: 2.0833rem;
             .value {
                 // color: #BBDFFF;
-                padding: 5px 10px;
+                padding: .2604rem .5208rem;
                 box-sizing: border-box;
                 overflow: hidden;
                 white-space: nowrap;
                 text-overflow: ellipsis;
                 align-items: center;
-                line-height: 30px;
+                line-height: 1.5625rem;
             }
         }
     }

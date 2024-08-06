@@ -138,7 +138,7 @@ const Revenue = () => {
     }
 
     const getDtusOfPlant = async (plantList, plantId) => {
-        form.setFieldsValue({deviceId: undefined});
+        form.setFieldsValue({ deviceId: undefined });
         const res = await getDtusOfPlantServe({ plantId });
         if (res?.data?.data) {
             let data = res?.data?.data;
@@ -221,7 +221,7 @@ const Revenue = () => {
     }, [])
 
     return (
-        <div className={styles.content}>
+        <div className={styles.content} style={{ backgroundColor: token.titleCardBgc }}>
             <Space size={10} direction="vertical" style={{ width: '100%', height: '100%', padding: 30 }}>
                 <Flex justify="center" align="center" gap={10}>
                     <Form
@@ -340,72 +340,65 @@ const Revenue = () => {
                 <Spin spinning={loading}>
                     <Space direction="vertical" style={{ width: '100%' }}>
                         <div style={{ width: '100%', height: "calc(50vh - 200px)" }}>
-                            {
-                                dataSource?.length > 0 ?
-                                    <Table
-                                        pagination={false}
-                                        dataSource={tableData}
-                                        columns={[
-                                            {
-                                                title: intl.formatMessage({ id: '日期' }),
-                                                dataIndex: 'time',
-                                                key: 'time',
-                                                render: (data, record) => {
-                                                    return moment(data).format(record?.dateType === "year" ? "YYYY/MM" : "YYYY/MM/DD")
-                                                }
-                                            },
-                                            {
-                                                title: intl.formatMessage({ id: '设备名称' }),
-                                                dataIndex: 'dtuName',
-                                                key: 'dtuName',
-                                                width: '10%',
-                                                render(value) {
-                                                    return (
-                                                        <Tooltip title={value}>
-                                                            <div
-                                                                style={{
-                                                                    overflow: 'hidden',
-                                                                    whiteSpace: 'nowrap',
-                                                                    textOverflow: 'ellipsis',
-                                                                    width: '100%',
-                                                                }}
-                                                            >
-                                                                {value}
-                                                            </div>
-                                                        </Tooltip>
-                                                    )
-                                                }
-                                            },
-                                            {
-                                                title: intl.formatMessage({ id: 'SN号' }),
-                                                dataIndex: 'sn',
-                                                key: 'sn'
-                                            },
-                                            {
-                                                title: intl.formatMessage({ id: '充电成本(元)' }),
-                                                dataIndex: 'inFee',
-                                                key: 'inFee'
-                                            },
-                                            {
-                                                title: intl.formatMessage({ id: '放电收入(元)' }),
-                                                dataIndex: 'outFee',
-                                                key: 'outFee'
-                                            },
-                                            {
-                                                title: intl.formatMessage({ id: '收益(元)' }),
-                                                dataIndex: 'number',
-                                                key: 'number'
-                                            },
-                                        ]}
-                                        scroll={{
-                                            y: 'calc(50vh - 250px)'
-                                        }}
-                                    />
-                                    :
-                                    <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}>
-                                        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={intl.formatMessage({ id: '暂无数据' })} />
-                                    </div>
-                            }
+                            <Table
+                                pagination={false}
+                                dataSource={tableData}
+                                columns={[
+                                    {
+                                        title: intl.formatMessage({ id: '日期' }),
+                                        dataIndex: 'time',
+                                        key: 'time',
+                                        render: (data, record) => {
+                                            return moment(data).format(record?.dateType === "year" ? "YYYY/MM" : "YYYY/MM/DD")
+                                        }
+                                    },
+                                    {
+                                        title: intl.formatMessage({ id: '设备名称' }),
+                                        dataIndex: 'dtuName',
+                                        key: 'dtuName',
+                                        width: '10%',
+                                        render(value) {
+                                            return (
+                                                <Tooltip title={value}>
+                                                    <div
+                                                        style={{
+                                                            overflow: 'hidden',
+                                                            whiteSpace: 'nowrap',
+                                                            textOverflow: 'ellipsis',
+                                                            width: '100%',
+                                                        }}
+                                                    >
+                                                        {value}
+                                                    </div>
+                                                </Tooltip>
+                                            )
+                                        }
+                                    },
+                                    {
+                                        title: intl.formatMessage({ id: 'SN号' }),
+                                        dataIndex: 'sn',
+                                        key: 'sn'
+                                    },
+                                    {
+                                        title: intl.formatMessage({ id: '充电成本(元)' }),
+                                        dataIndex: 'inFee',
+                                        key: 'inFee'
+                                    },
+                                    {
+                                        title: intl.formatMessage({ id: '放电收入(元)' }),
+                                        dataIndex: 'outFee',
+                                        key: 'outFee'
+                                    },
+                                    {
+                                        title: intl.formatMessage({ id: '收益(元)' }),
+                                        dataIndex: 'number',
+                                        key: 'number'
+                                    },
+                                ]}
+                                scroll={{
+                                    y: 'calc(50vh - 250px)'
+                                }}
+                            />
                         </div>
                     </Space>
                 </Spin>

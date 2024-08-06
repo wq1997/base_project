@@ -4,12 +4,16 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import styles from './index.less'
 import { Pagination, Select, Space, theme, Button, DatePicker } from "antd"
 import { history, useLocation, useIntl } from "umi";
-import { CardModel } from "@/components";
+import CardModel from "../CardModel/index";
 import titleImg from '@/assets/imges/titlep.png'
-import BMS from '@/assets/imges/BMS.png'
+import OutDoor from '@/assets/svg/outDoor.svg'
 import useIcon from "@/hooks/useIcon";
 import { getBurOverview2 } from '@/services/deviceTotal'
 import { getQueryString } from "@/utils/utils";
+import ReactECharts from "echarts-for-react";
+import * as echarts from "echarts";
+import "echarts-liquidfill/src/liquidFill.js";
+
 
 function Com(props) {
     const [allData, setAllData] = useState([])
@@ -29,10 +33,83 @@ function Com(props) {
         );
         return msg
     }
-
+const [option, setOption] = useState({})
     const getData = async () => {
         let { data } = await getBurOverview2({ id });
         setAllData(data?.data);
+        setOption({
+            title: {
+                text: '',
+            },
+    
+            series: [
+                {
+                    type: 'liquidFill',
+                    radius: '100%',
+                    center: ['50%', '50%'],
+                    label: {
+                        normal: {
+                            formatter: '',
+                        }
+                    },
+                    backgroundStyle: {
+                        color: {
+                            type: 'radial',
+                            x: 0.5,
+                            y: 0.5,
+                            r: 0.5,
+                            colorStops: [{
+                                offset: 0,
+                                color: 'rgba(44,190,255, 0)' // 0% 处的颜色
+                            }, {
+                                offset: 0.5,
+                                color: 'rgba(44,190,255, 0.1)' // 0% 处的颜色
+                            }, {
+                                offset: 1,
+                                color: 'rgba(44,190,255, 1)'// 100% 处的颜色
+                            }],
+                            globalCoord: false // 缺省为 false
+                        }
+                    },
+                    data: [data?.data?.bms?.soc/100||0, data?.data?.bms?.soc/100||0,], // data个数代表波浪数
+                    label: {
+                        formatter: data?.data?.bms?.soc/100||0,
+                        fontSize: '1.2rem',
+                        color: '#fff'
+                    },
+                    outline: {
+                        borderDistance: 2,
+                        itemStyle: {
+                            borderWidth: 0,
+                            borderColor: {
+                                type: 'linear',
+                                x: 0,
+                                y: 0,
+                                x2: 0,
+                                y2: 1,
+                                colorStops: [
+    
+                                    {
+                                        offset: 0,
+                                        color: 'rgba(22,31,69,1)', // 0% 处的颜色
+                                    },
+                                    {
+                                        offset: 1,
+                                        color: 'rgba(44,190,255, 1)', // 100% 处的颜色
+                                    },
+                                ],
+                                // globalCoord: false
+                            },
+                            shadowBlur: 20,
+                            shadowColor: 'red',
+                        }
+    
+                    },
+                },
+            ],
+        }
+    
+        )
         let arr = [];
         status.map((it, index) => {
             if (index === 0) {
@@ -65,18 +142,46 @@ function Com(props) {
         }
     ])
 
+    const todayData = [
+        {
+            key: 'dayChargeEnergy',
+            color: '#25FF00',
+            label: '日充电电量'
+        },
+        {
+            key: 'dayDischargeEnergy',
+            color: '#FF6300',
+            label: '日放电电量'
+        }, {
+            key: 'monChargeEnergy',
+            color: '#00CBFF',
+            label: '月充电电量'
+        }, {
+            key: 'monDischargeEnergy',
+            color: '#00CBFF',
+            label: '月放电电量'
+        }, {
+            key: 'totalCEnergy',
+            color: '#00CBFF',
+            label: '总充电电量'
+        }, {
+            key: 'totalDEnergy',
+            color: '#00CBFF',
+            label: '总放电电量'
+        },
+    ];
+
     return (
-        <div className={styles.content}>
+        <div className={styles.content} style={{ backgroundColor: token.titleCardBgc }}>
             <div className={styles.title} style={{ backgroundColor: token.darkbgc }}>{decodeURI(getQueryString("title"))}
                 <div className={styles.sn}><span>SN:</span><span>{decodeURI(getQueryString("sn"))}</span></div>
             </div>
             <div className={styles.PcsData} style={{ backgroundColor: token.darkbgc }}>
                 <CardModel
                     title={t('PCS信息')}
-                    bgc={'#0D1430'}
                     content={
                         <div className={styles.pcsWrap}>
-                            <div className={styles.pcsOne}>
+                            <div className={styles.pcsOne} style={{ width: '66.7%' }}>
                                 <div className={styles.pcsOneTitle}>
                                     <span style={{ paddingLeft: '30px' }}></span>
                                     <span>
@@ -98,25 +203,22 @@ function Com(props) {
                                     </div>
                                 </div>
                             </div>
-                            <div className={styles.pcsOne}>
+                            <div className={styles.pcsOne} style={{ width: '33.3%' }}>
                                 <div className={styles.pcsOneTitle}>
-                                    <span style={{ paddingLeft: '30px' }}></span>
+                                    {/* <span style={{ paddingLeft: '30px' }}></span> */}
                                     <span>
                                         {t('电压/V')}
                                     </span>
                                 </div>
                                 <div className={styles.pcsOneBody}>
                                     <div className={styles.oneData}>
-                                        <div className={styles.key}>AB</div>
-                                        <div className={styles.value}>{allData.pcs?.lineAbVol || '0'}</div>
+                                        <div className={styles.value}>{allData.pcs?.phaseAVol || '0'}</div>
                                     </div>
                                     <div className={styles.oneData}>
-                                        <div className={styles.key}>BC</div>
-                                        <div className={styles.value}>{allData.pcs?.lineBcVol || '0'}</div>
+                                        <div className={styles.value}>{allData.pcs?.phaseBVol || '0'}</div>
                                     </div>
                                     <div className={styles.oneData}>
-                                        <div className={styles.key}>CA</div>
-                                        <div className={styles.value}>{allData.pcs?.lineCaVol || '0'}</div>
+                                        <div className={styles.value}>{allData.pcs?.phaseCVol || '0'}</div>
                                     </div>
                                 </div>
                             </div>
@@ -127,7 +229,6 @@ function Com(props) {
             {allData?.bmc && <div className={styles.Bms1} style={{ backgroundColor: token.darkbgc }}>
                 <CardModel
                     title={t('BMS簇1信息')}
-                    bgc={'#0D1430'}
                     content={
                         <div className={styles.bmsContent}>
                             <div className={styles.bmsOne}>
@@ -136,26 +237,26 @@ function Com(props) {
                                     {t('单体最高')}
                                 </div>
                                 <div className={styles.bmsBody}>
-                                    <img src={BMS} alt="" />
+                                    {/* <img src={BMS} alt="" /> */}
                                     <div className={styles.value}>
                                         <div className={styles.valueOne}>
                                             <div className={styles.left}>
-                                                <span  className={styles.key}>{t("温度/℃")}</span>
-                                                <span>{allData?.bmc[0]?.cellTempMax || '0'}</span>
+                                                <span className={styles.key} style={{ lineHeight: '1.09rem' }}>{t("温度/℃")}</span>
+                                                <span style={{ textAlign: 'left', width: '60%', color: '#00CBFF', fontSize: '0.9375rem' }}>{allData?.bmc?.[0]?.cellTempMax || '0'}</span>
                                             </div>
                                             <div className={styles.right}>
-                                                <span>{t("No.")}</span>
-                                                <span>{allData?.bmc[0]?.cellTempMaxNo || '0'}</span>
+                                                <span style={{ lineHeight: '1.09rem'  }}>{t("No.")}</span>
+                                                <span style={{ textAlign: 'left', color: '#00CBFF', width: '40%', fontSize: '0.9375rem' }}>{allData?.bmc?.[0]?.cellTempMaxNo || '0'}</span>
                                             </div>
                                         </div>
                                         <div className={styles.valueOne}>
                                             <div className={styles.left}>
-                                                <span  className={styles.key}>{t("电压/mV")}</span>
-                                                <span>{allData?.bmc[0]?.cellVolMax || '0'}</span>
+                                                <span className={styles.key} style={{ lineHeight:  '1.09rem'  }}>{t("电压/mV")}</span>
+                                                <span style={{ textAlign: 'left', width: '60%', color: '#00CBFF', fontSize: '0.9375rem' }}>{allData?.bmc?.[0]?.cellVolMax || '0'}</span>
                                             </div>
                                             <div className={styles.right}>
-                                                <span>{t("No.")}</span>
-                                                <span>{allData?.bmc[0]?.cellVolMaxNo || '0'}</span>
+                                                <span style={{ lineHeight:  '1.09rem'  }}>{t("No.")}</span>
+                                                <span style={{ textAlign: 'left', color: '#00CBFF', width: '40%', fontSize: '0.9375rem' }}>{allData?.bmc?.[0]?.cellVolMaxNo || '0'}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -167,26 +268,26 @@ function Com(props) {
                                     {t('单体最低')}
                                 </div>
                                 <div className={styles.bmsBody}>
-                                    <img src={BMS} alt="" />
+                                    {/* <img src={BMS} alt="" /> */}
                                     <div className={styles.value}>
                                         <div className={styles.valueOne}>
                                             <div className={styles.left}>
-                                                <span className={styles.key}>{t("温度/℃")}</span>
-                                                <span>{allData?.bmc[0]?.cellTempMin || '0'}</span>
+                                                <span className={styles.key} style={{ lineHeight:  '1.09rem'  }}>{t("温度/℃")}</span>
+                                                <span style={{ textAlign: 'left', width: '60%', color: '#00CBFF', fontSize: '0.9375rem' }}>{allData?.bmc?.[0]?.cellTempMin || '0'}</span>
                                             </div>
                                             <div className={styles.right}>
-                                                <span>{t("No.")}</span>
-                                                <span>{allData?.bmc[0]?.cellTempMinNo || '0'}</span>
+                                                <span style={{ lineHeight:  '1.09rem'  }}>{t("No.")}</span>
+                                                <span style={{ textAlign: 'left', color: '#00CBFF', width: '40%', fontSize: '0.9375rem' }}>{allData?.bmc?.[0]?.cellTempMinNo || '0'}</span>
                                             </div>
                                         </div>
                                         <div className={styles.valueOne}>
                                             <div className={styles.left}>
-                                                <span  className={styles.key}>{t("电压/mV")}</span>
-                                                <span>{allData?.bmc[0]?.cellVolMin || '0'}</span>
+                                                <span className={styles.key} style={{ lineHeight:  '1.09rem'  }}>{t("电压/mV")}</span>
+                                                <span style={{ textAlign: 'left', width: '60%', color: '#00CBFF', fontSize: '0.9375rem' }}>{allData?.bmc?.[0]?.cellVolMin || '0'}</span>
                                             </div>
                                             <div className={styles.right}>
-                                                <span>{t("No.")}</span>
-                                                <span>{allData?.bmc[0]?.cellVolMinNo || '0'}</span>
+                                                <span style={{ lineHeight:  '1.09rem'  }}>{t("No.")}</span>
+                                                <span style={{ textAlign: 'left', color: '#00CBFF', width: '40%', fontSize:'0.9375rem' }}>{allData?.bmc?.[0]?.cellVolMinNo || '0'}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -199,7 +300,6 @@ function Com(props) {
             {allData?.bmc && <div className={styles.Bms2} style={{ backgroundColor: token.darkbgc }}>
                 <CardModel
                     title={t('BMS簇2信息')}
-                    bgc={'#0D1430'}
                     content={
                         <div className={styles.bmsContent}>
                             <div className={styles.bmsOne}>
@@ -208,26 +308,26 @@ function Com(props) {
                                     {t('单体最高')}
                                 </div>
                                 <div className={styles.bmsBody}>
-                                    <img src={BMS} alt="" />
+                                    {/* <img src={BMS} alt="" /> */}
                                     <div className={styles.value}>
                                         <div className={styles.valueOne}>
                                             <div className={styles.left}>
-                                                <span className={styles.key}>{t("温度/℃")}</span>
-                                                <span>{allData?.bmc[1]?.cellTempMax || '0'}</span>
+                                                <span className={styles.key} style={{ lineHeight: '1.09rem' }}>{t("温度/℃")}</span>
+                                                <span style={{ textAlign: 'left', width: '60%', color: '#00CBFF', fontSize: '0.9375rem' }}>{allData?.bmc?.[1]?.cellTempMax || '0'}</span>
                                             </div>
                                             <div className={styles.right}>
-                                                <span>{t("No.")}</span>
-                                                <span>{allData?.bmc[1]?.cellTempMaxNo || '0'}</span>
+                                                <span style={{ lineHeight: '1.09rem'  }}>{t("No.")}</span>
+                                                <span style={{ textAlign: 'left', color: '#00CBFF', width: '40%', fontSize: '0.9375rem' }}>{allData?.bmc?.[1]?.cellTempMaxNo || '0'}</span>
                                             </div>
                                         </div>
                                         <div className={styles.valueOne}>
                                             <div className={styles.left}>
-                                                <span className={styles.key}>{t("电压/mV")}</span>
-                                                <span>{allData?.bmc[1]?.cellVolMax || '0'}</span>
+                                                <span className={styles.key} style={{ lineHeight:  '1.09rem'  }}>{t("电压/mV")}</span>
+                                                <span style={{ textAlign: 'left', width: '60%', color: '#00CBFF', fontSize: '0.9375rem' }}>{allData?.bmc?.[1]?.cellVolMax || '0'}</span>
                                             </div>
                                             <div className={styles.right}>
-                                                <span>{t("No.")}</span>
-                                                <span>{allData?.bmc[1]?.cellVolMaxNo || '0'}</span>
+                                                <span style={{ lineHeight:  '1.09rem'  }}>{t("No.")}</span>
+                                                <span style={{ textAlign: 'left', color: '#00CBFF', width: '40%', fontSize: '0.9375rem' }}>{allData?.bmc?.[1]?.cellVolMaxNo || '0'}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -239,26 +339,26 @@ function Com(props) {
                                     {t('单体最低')}
                                 </div>
                                 <div className={styles.bmsBody}>
-                                    <img src={BMS} alt="" />
+                                    {/* <img src={BMS} alt="" /> */}
                                     <div className={styles.value}>
                                         <div className={styles.valueOne}>
                                             <div className={styles.left}>
-                                                <span className={styles.key}>{t("温度/℃")}</span>
-                                                <span>{allData?.bmc[1]?.cellTempMin || '0'}</span>
+                                                <span className={styles.key} style={{ lineHeight:  '1.09rem'  }}>{t("温度/℃")}</span>
+                                                <span style={{ textAlign: 'left', width: '60%', color: '#00CBFF', fontSize: '0.9375rem' }}>{allData?.bmc?.[1]?.cellTempMin || '0'}</span>
                                             </div>
                                             <div className={styles.right}>
-                                                <span>{t("No.")}</span>
-                                                <span>{allData?.bmc[1]?.cellTempMinNo || '0'}</span>
+                                                <span style={{ lineHeight:  '1.09rem'  }}>{t("No.")}</span>
+                                                <span style={{ textAlign: 'left', color: '#00CBFF', width: '40%', fontSize: '0.9375rem' }}>{allData?.bmc?.[1]?.cellTempMinNo || '0'}</span>
                                             </div>
                                         </div>
                                         <div className={styles.valueOne}>
                                             <div className={styles.left}>
-                                                <span className={styles.key}>{t("电压/mV")}</span>
-                                                <span>{allData?.bmc[1]?.cellVolMin || '0'}</span>
+                                                <span className={styles.key} style={{ lineHeight:  '1.09rem'  }}>{t("电压/mV")}</span>
+                                                <span style={{ textAlign: 'left', width: '60%', color: '#00CBFF', fontSize: '0.9375rem' }}>{allData?.bmc?.[1]?.cellVolMin || '0'}</span>
                                             </div>
                                             <div className={styles.right}>
-                                                <span>{t("No.")}</span>
-                                                <span>{allData?.bmc[1]?.cellVolMinNo || '0'}</span>
+                                                <span style={{ lineHeight:  '1.09rem'  }}>{t("No.")}</span>
+                                                <span style={{ textAlign: 'left', color: '#00CBFF', width: '40%', fontSize:'0.9375rem' }}>{allData?.bmc?.[1]?.cellVolMinNo || '0'}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -268,72 +368,62 @@ function Com(props) {
                     }
                 />
             </div>}
+            <div className={styles.center} style={{ backgroundColor: token.darkbgc }}>
+                <div className={styles.topData}>
+                    <div  style={{ width: '20%' }}>
+                        <ReactECharts option={option} notMerge style={{ width: '100%', height: 'calc(100% - 1.0417rem)' }} />
+                        <div style={{textAlign:'center' }}>{t('电池SOC')}</div>
+                    </div>
+                    <div style={{ width: '80%',display:'flex' }}>
+                        <div className={styles.topOne}>
+                            <div style={{color:"rgba(0, 255, 4, 1)",fontSize:'1.4583rem',textAlign:'center'}}>{allData?.bms?.soc || '0'}</div>
+                            <div className={styles.label}>{t('PCS状态')}</div>
+                            <div className={styles.bottomDes} ></div>
+                        </div>
+                        <div className={styles.topOne}>
+                            <div style={{color:"rgba(0, 203, 255, 1)",fontSize:'1.4583rem',textAlign:'center'}}>{allData?.tmeter?.totalActivePower || '0'}</div>
+                            <div className={styles.label}>{t('电表功率/kW')}</div>
+                            <div className={styles.bottomDes} ></div>
+                        </div>
+                        <div className={styles.topOne}>
+                            <div style={{color:"rgba(0, 203, 255, 1)",fontSize:'1.4583rem',textAlign:'center'}}>{allData?.pcs?.totalActivePower || '0'}</div>
+                            <div className={styles.label}>{t('PCS功率/kW')}</div>
+                            <div className={styles.bottomDes} ></div>
+                        </div>
+                        <div className={styles.topOne}>
+                            <div style={{color:"rgba(0, 203, 255, 1)",fontSize:'1.4583rem',textAlign:'center'}}>{allData?.bms?.power || '0'}</div>
+                            <div className={styles.label}>{t('BMS功率/kW')}</div>
+                            <div className={styles.bottomDes} ></div>
+                        </div>
+                    </div>
+                </div>
+                <div className={styles.bottomPic}>
+                    <img src={OutDoor} alt="" />
+                </div>
+            </div>
             <div className={styles.TodayEntity} style={{ backgroundColor: token.darkbgc }}>
                 <CardModel
                     title={t('今日电能')}
-                    bgc={'#0D1430'}
                     content={<div className={styles.entityWrap}>
-                        <div className={styles.Box}>
-                            <div className={styles.boxTitle}>
-                                <Icon type='icon0shandian1' style={{ color: '#03B4B4' }}></Icon>
-                                {t('今日充电')}
-                            </div>
-                            <div className={styles.value} >
-                                <span style={{ color: '#03B4B4' }}>{allData.energy?.dayChargeEnergy || '0'}</span>
-                                <span className={styles.unit}>kWh</span>
-                            </div>
-                        </div>
-                        <div className={styles.Box}>
-                            <div className={styles.boxTitle}>
-                                <Icon type='icon0shandian1' style={{ color: '#F08416' }}></Icon>
-                                {t('今日放电')}
-                            </div>
-                            <div className={styles.value} >
-                                <span style={{ color: '#F08416' }}>{allData.energy?.dayDischargeEnergy || '0'}</span>
-                                <span className={styles.unit}>kWh</span>
-                            </div>
-                        </div>
+                        {todayData.map(it => {
+                            return <>
+                                <div className={styles.oneCard}>
+                                    <div style={{ color: it.color, fontSize: '2.0833rem' }}>
+                                        {allData?.energy?.[it?.key]|| '0'}
+                                    </div>
+                                    <div className={styles.label} >
+                                        {t(it.label)}
+                                    </div>
+                                </div>
+                            </>
+                        })}
 
                     </div>}
                 />
             </div>
-            {allData?.bmc && <div className={styles.powerA} style={{ backgroundColor: token.darkbgc }}>
-                <div className={styles.pcsWrap}>
-                    <div className={styles.pcsOne}>
-                        <div className={styles.pcsOneTitle}>
-                            <span style={{ paddingLeft: '80px' }}></span>
-                            <span>
-                                {t('功率/kW')}
-                            </span>
-                            <span>
-                                {t('电流/A')}
-                            </span>
-                        </div>
-                        <div className={styles.pcsOneBody}>
-                            <div className={styles.oneData}>
-                                <div className={styles.key}>PCS</div>
-                                <div className={styles.value}>{allData?.pcs?.activePower || '0'}</div>
-                                <div className={styles.value}>{allData?.pcsCur || '0'}</div>
-                            </div>
-                            <div className={styles.oneData}>
-                                <div className={styles.key}>{t('BMS簇1')}</div>
-                                <div className={styles.value}>{allData?.bmc[0]?.power || '0'}</div>
-                                <div className={styles.value}>{allData?.bmc[0]?.cur || '0'}</div>
-                            </div>
-                            <div className={styles.oneData}>
-                                <div className={styles.key}>{t('BMS簇2')}</div>
-                                <div className={styles.value}>{allData?.bmc[1]?.power || '0'}</div>
-                                <div className={styles.value}>{allData?.bmc[1]?.cur || '0'}</div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>}
             <div className={styles.status} style={{ backgroundColor: token.darkbgc }}>
                 <CardModel
                     title={t('通讯状态')}
-                    bgc={'#0D1430'}
                     content={<div className={styles.statusWrap}>
                         {status.map(it => {
                             return <div className={styles.statusOne}>

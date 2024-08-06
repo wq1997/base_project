@@ -10,6 +10,10 @@ import OutDoor from '@/assets/svg/outDoor.svg'
 import useIcon from "@/hooks/useIcon";
 import { getBurOverview2 } from '@/services/deviceTotal'
 import { getQueryString } from "@/utils/utils";
+import ReactECharts from "echarts-for-react";
+import * as echarts from "echarts";
+import "echarts-liquidfill/src/liquidFill.js";
+
 
 function Com(props) {
     const [allData, setAllData] = useState([])
@@ -29,10 +33,83 @@ function Com(props) {
         );
         return msg
     }
-
+const [option, setOption] = useState({})
     const getData = async () => {
         let { data } = await getBurOverview2({ id });
         setAllData(data?.data);
+        setOption({
+            title: {
+                text: '',
+            },
+    
+            series: [
+                {
+                    type: 'liquidFill',
+                    radius: '100%',
+                    center: ['50%', '50%'],
+                    label: {
+                        normal: {
+                            formatter: '',
+                        }
+                    },
+                    backgroundStyle: {
+                        color: {
+                            type: 'radial',
+                            x: 0.5,
+                            y: 0.5,
+                            r: 0.5,
+                            colorStops: [{
+                                offset: 0,
+                                color: 'rgba(44,190,255, 0)' // 0% 处的颜色
+                            }, {
+                                offset: 0.5,
+                                color: 'rgba(44,190,255, 0.1)' // 0% 处的颜色
+                            }, {
+                                offset: 1,
+                                color: 'rgba(44,190,255, 1)'// 100% 处的颜色
+                            }],
+                            globalCoord: false // 缺省为 false
+                        }
+                    },
+                    data: [data?.data?.bms?.soc/100||0, data?.data?.bms?.soc/100||0,], // data个数代表波浪数
+                    label: {
+                        formatter: data?.data?.bms?.soc/100||0,
+                        fontSize: '1.2rem',
+                        color: '#fff'
+                    },
+                    outline: {
+                        borderDistance: 2,
+                        itemStyle: {
+                            borderWidth: 0,
+                            borderColor: {
+                                type: 'linear',
+                                x: 0,
+                                y: 0,
+                                x2: 0,
+                                y2: 1,
+                                colorStops: [
+    
+                                    {
+                                        offset: 0,
+                                        color: 'rgba(22,31,69,1)', // 0% 处的颜色
+                                    },
+                                    {
+                                        offset: 1,
+                                        color: 'rgba(44,190,255, 1)', // 100% 处的颜色
+                                    },
+                                ],
+                                // globalCoord: false
+                            },
+                            shadowBlur: 20,
+                            shadowColor: 'red',
+                        }
+    
+                    },
+                },
+            ],
+        }
+    
+        )
         let arr = [];
         status.map((it, index) => {
             if (index === 0) {
@@ -93,7 +170,7 @@ function Com(props) {
             label: '总放电电量'
         },
     ];
- 
+
     return (
         <div className={styles.content} style={{ backgroundColor: token.titleCardBgc }}>
             <div className={styles.title} style={{ backgroundColor: token.darkbgc }}>{decodeURI(getQueryString("title"))}
@@ -221,13 +298,37 @@ function Com(props) {
                 />
             </div>}
             <div className={styles.center} style={{ backgroundColor: token.darkbgc }}>
-                    <div className={styles.topData}>
-                        <div></div>
-                        <div></div>
+                <div className={styles.topData}>
+                    <div  style={{ width: '20%' }}>
+                        <ReactECharts option={option} notMerge style={{ width: '100%', height: 'calc(100% - 1.0417rem)' }} />
+                        <div style={{textAlign:'center' }}>{t('电池SOC')}</div>
                     </div>
-                    <div className={styles.bottomPic}>
-                       <img src={OutDoor} alt="" />
+                    <div style={{ width: '80%',display:'flex' }}>
+                        <div className={styles.topOne}>
+                            <div style={{color:"rgba(0, 255, 4, 1)",fontSize:'1.4583rem',textAlign:'center'}}>{allData?.bms?.soc || '0'}</div>
+                            <div className={styles.label}>{t('PCS状态')}</div>
+                            <div className={styles.bottomDes} ></div>
+                        </div>
+                        <div className={styles.topOne}>
+                            <div style={{color:"rgba(0, 203, 255, 1)",fontSize:'1.4583rem',textAlign:'center'}}>{allData?.tmeter?.totalActivePower || '0'}</div>
+                            <div className={styles.label}>{t('电表功率/kW')}</div>
+                            <div className={styles.bottomDes} ></div>
+                        </div>
+                        <div className={styles.topOne}>
+                            <div style={{color:"rgba(0, 203, 255, 1)",fontSize:'1.4583rem',textAlign:'center'}}>{allData?.pcs?.totalActivePower || '0'}</div>
+                            <div className={styles.label}>{t('PCS功率/kW')}</div>
+                            <div className={styles.bottomDes} ></div>
+                        </div>
+                        <div className={styles.topOne}>
+                            <div style={{color:"rgba(0, 203, 255, 1)",fontSize:'1.4583rem',textAlign:'center'}}>{allData?.bms?.power || '0'}</div>
+                            <div className={styles.label}>{t('BMS功率/kW')}</div>
+                            <div className={styles.bottomDes} ></div>
+                        </div>
                     </div>
+                </div>
+                <div className={styles.bottomPic}>
+                    <img src={OutDoor} alt="" />
+                </div>
             </div>
             <div className={styles.TodayEntity} style={{ backgroundColor: token.darkbgc }}>
                 <CardModel
@@ -237,7 +338,7 @@ function Com(props) {
                             return <>
                                 <div className={styles.oneCard}>
                                     <div style={{ color: it.color, fontSize: '2.0833rem' }}>
-                                        {allData?.gmeter?.[it?.key]}
+                                        {allData?.gmeter?.[it?.key]|| '0'}
                                     </div>
                                     <div className={styles.label} >
                                         {t(it.label)}

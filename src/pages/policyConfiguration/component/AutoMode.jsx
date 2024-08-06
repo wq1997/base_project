@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Button, Form, InputNumber, Popconfirm, Modal, Table, theme, message, Input } from 'antd';
+import { Button, Form, InputNumber, Popconfirm, Modal, Table, theme, message, Input, Flex } from 'antd';
 import { useSelector, useIntl, history } from "umi";
 import styles from './index.less'
 import { sendBurCmd2 } from '@/services/policy'
@@ -546,6 +546,20 @@ const App = ({ devId, dtuId, historyAllData }) => {
 
   return (
     <div className={styles.manual}>
+      {devId.pcsDevId && <div className={styles.power}>
+        <Flex gap={18}>
+          <div className={styles.label}>{t('功率波动范围')}:</div>
+          <Flex gap={30}>
+            <InputNumber style={{
+              width: '105px',
+            }}
+              defaultValue={allPolicy.pcsPowerWaveRange}
+              onChange={(value) => changeInput(value, 'pcsPowerWaveRange')}
+            />
+            <div className={styles.selectionBox} style={{ backgroundColor: token.defaultBg }} onClick={() => showModal(devId.pcsDevId, 'pcsPowerWaveRange', 'pcsPowerWaveRange', allPolicy.pcsPowerWaveRange, t('功率波动范围'))} >{t('下发')}</div>
+          </Flex>
+        </Flex>
+      </div>}
       <Button type="primary" onClick={() => setIsModalOpen(true)} style={{ backgroundColor: token.defaultBg, marginBottom: "30px", display: 'block', marginLeft: 'auto' }}>{t("下发")}</Button>
       <Table
         components={components}
@@ -577,44 +591,44 @@ const App = ({ devId, dtuId, historyAllData }) => {
         open={isModalOpen}
         title={<Title title={t("自动模式下发")} />}
         onOk={async () => {
-    const publicKeyRes = await getPublicKeySever();
-    if(publicKeyRes?.data){
-      const publicKey = publicKeyRes?.data;
-
-          let monPowers = [], tuePowers = [], wedPowers = [], thuPowers = [], friPowers = [], satPowers = [], sunPowers = [];
-          dataSource?.map((it, index) => {
-            monPowers?.push(it?.monPowers);
-            tuePowers?.push(it?.tuePowers);
-            wedPowers?.push(it?.wedPowers);
-            thuPowers?.push(it?.thuPowers);
-            friPowers?.push(it?.friPowers);
-            satPowers?.push(it?.satPowers);
-            sunPowers?.push(it?.sunPowers);
-          });
-          const values = await form1.validateFields();
-          let { data } = await sendBurCmd2({
-            mode: 1,
-            dtuId,
-            cmdTypeId: 7013,
-            devId: devId.pcsDevId,
-            monPowers,
-            tuePowers,
-            wedPowers,
-            thuPowers,
-            friPowers,
-            satPowers,
-            sunPowers,
-            password: getEncrypt(publicKey, values.password),
-          });
-          if (data.code == 'ok') {
-            message.success(t('命令下发成功'));
-          } else {
-            message.warning(data?.msg);
+          const publicKeyRes = await getPublicKeySever();
+          if (publicKeyRes?.data) {
+            const publicKey = publicKeyRes?.data;
+            let monPowers = [], tuePowers = [], wedPowers = [], thuPowers = [], friPowers = [], satPowers = [], sunPowers = [];
+            dataSource?.map((it, index) => {
+              monPowers?.push(it?.monPowers);
+              tuePowers?.push(it?.tuePowers);
+              wedPowers?.push(it?.wedPowers);
+              thuPowers?.push(it?.thuPowers);
+              friPowers?.push(it?.friPowers);
+              satPowers?.push(it?.satPowers);
+              sunPowers?.push(it?.sunPowers);
+            });
+            const values = await form1.validateFields();
+            let { data } = await sendBurCmd2({
+              mode: 1,
+              dtuId,
+              cmdTypeId: 7013,
+              devId: devId.pcsDevId,
+              monPowers,
+              tuePowers,
+              wedPowers,
+              thuPowers,
+              friPowers,
+              satPowers,
+              sunPowers,
+              password: getEncrypt(publicKey, values.password),
+            });
+            if (data.code == 'ok') {
+              message.success(t('命令下发成功'));
+            } else {
+              message.warning(data?.msg);
+            }
+            setIsModalOpen(false);
+            form1.resetFields();
           }
-          setIsModalOpen(false);
-          form1.resetFields();
-        }}
-      }
+        }
+        }
         onCancel={() => {
           setIsModalOpen(false);
           form1.resetFields();
@@ -622,12 +636,12 @@ const App = ({ devId, dtuId, historyAllData }) => {
       >
         <Form
           form={form1}
-          style={{marginTop:'32px'}}
+          style={{ marginTop: '32px' }}
         >
           <Form.Item name={"password"} label={t("请输入密码")} rules={[FORM_REQUIRED_RULE]}>
             <Input className="pwd" placeholder={t("请输入密码")} />
           </Form.Item>
-          <span   style={{marginLeft:'10px'}}>{t('确定下发自动模式指令吗？')}</span>
+          <span style={{ marginLeft: '10px' }}>{t('确定下发自动模式指令吗？')}</span>
         </Form>
       </Modal>
 

@@ -279,7 +279,7 @@ const HighAnysis = () => {
     }, [])
 
     return (
-        <Space size={30} direction="vertical" style={{ width: '100%', height: '100%', padding: 30 }}>
+        <Space size={30} direction="vertical" style={{ width: '100%', height: '100%', padding: 30,backgroundColor: token.titleCardBgc }}>
             <Flex justify="center" align="center" gap={10}>
                 <Form
                     form={form}

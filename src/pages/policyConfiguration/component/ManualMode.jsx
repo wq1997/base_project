@@ -16,10 +16,10 @@ function Com({ devId, dtuId, historyAllData, mode }) {
     const [form1] = Form.useForm();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [allPolicy, setAllPolicy] = useState({
-        allBranch: 1,
-        branchOne: 1,
-        branchTwo: 1,
-        bms: 1,
+        allBranch: '',
+        branchOne:'',
+        branchTwo: '',
+        bms:'',
         pcsPowerOne: 0,
         pcsPowerTow: 0,
         pcsPowerWaveRange: historyAllData?.pcsPowerWaveRange || 0
@@ -141,20 +141,7 @@ function Com({ devId, dtuId, historyAllData, mode }) {
                         </Flex>
                     </Flex>
                 </div>}
-                {devId.pcsDevId && <div className={styles.power}>
-                    <Flex gap={18}>
-                        <div className={styles.label}>{t('功率波动范围')}:</div>
-                        <Flex gap={30}>
-                            <InputNumber style={{
-                                width: '105px',
-                            }}
-                                defaultValue={allPolicy.pcsPowerWaveRange}
-                                onChange={(value) => changeInput(value, 'pcsPowerWaveRange')}
-                            />
-                            <div className={styles.selectionBox} style={{ backgroundColor: token.defaultBg }} onClick={() => showModal(devId.pcsDevId, 'pcsPowerWaveRange', 'pcsPowerWaveRange', allPolicy.pcsPowerWaveRange, t('功率波动范围'))} >{t('下发')}</div>
-                        </Flex>
-                    </Flex>
-                </div>}
+               
             </Space>
             <Modal
                 open={isModalOpen}
