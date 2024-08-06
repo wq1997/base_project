@@ -129,11 +129,7 @@ const App = (props) => {
           labelCol={{ flex: '130px' }}
           labelAlign="right"
           labelWrap
-          wrapperCol={{ flex: 1 }}
           colon={false}
-          style={{
-            maxWidth: 500,
-          }}
         >
           <Row gutter={[20, 0]}>
           {formList.map(it => {
