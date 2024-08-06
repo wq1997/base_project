@@ -7,7 +7,6 @@ import { DEFAULT_PAGINATION } from "@/utils/constants";
 import "./index.less";
 import Card from "../../components/Card";
 import { getAlarmScreenList as getAlarmScreenListServer } from "@/services/largeScreen";
-import dayjs from "dayjs";
 
 const Index = ({ initData }) => {
     const paginationRef = useRef(DEFAULT_PAGINATION);
@@ -123,18 +122,18 @@ const Index = ({ initData }) => {
         const { signalNames, plans } = initData;
         setAlarmLevelOptions(
             signalNames?.map(item => ({
-                label: item,
-                value: item,
+                name: item,
+                code: item,
             }))
         );
         setPlantNameOptions(
             plans.map(item => ({
-                label: item?._2,
-                value: item?._1,
+                name: item?._2,
+                code: item?._1,
             }))
         );
     }, [initData]);
-
+    
     useEffect(() => {
         getList();
     }, []);
