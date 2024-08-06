@@ -1,4 +1,4 @@
-import { login } from "@/services/user"
+import { login } from "@/services/index"
 import { history } from "umi";
 
 export default {

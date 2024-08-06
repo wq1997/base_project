@@ -1,16 +1,16 @@
-import { Menu } from 'antd';
-import { useEffect, useState } from 'react';
-import { Link, useLocation, useSelector } from 'umi';
+import { Menu } from "antd";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useSelector } from "umi";
 import useIcon from "@/hooks/useIcon";
 
 const { SubMenu } = Menu;
 
 const MenuList = [
     {
-        key: '/cet/home',
-        label: '首页'
-    }
-]
+        key: "/cet/user",
+        label: "用户管理",
+    },
+];
 
 const MyMenu = () => {
     const Icon = useIcon();
@@ -26,7 +26,7 @@ const MyMenu = () => {
                         title={menu.label}
                         icon={
                             <Icon
-                                type={theme === 'dark' ? (menu.darkIcon||menu.icon) : menu.icon}
+                                type={theme === "dark" ? menu.darkIcon || menu.icon : menu.icon}
                                 style={{
                                     color: "black",
                                     fontSize: 20,
@@ -43,14 +43,16 @@ const MyMenu = () => {
                         key={menu.key}
                         icon={
                             <Icon
-                                type={theme === 'dark' ? (menu.darkIcon||menu.icon) : menu.icon}
+                                type={theme === "dark" ? menu.darkIcon || menu.icon : menu.icon}
                                 style={{
                                     fontSize: 20,
                                 }}
                             />
                         }
                     >
-                        <Link to={menu.key} target={menu?.target}>{menu.label}</Link>
+                        <Link to={menu.key} target={menu?.target}>
+                            {menu.label}
+                        </Link>
                     </Menu.Item>
                 );
             }

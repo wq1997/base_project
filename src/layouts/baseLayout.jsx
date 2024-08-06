@@ -58,7 +58,7 @@ const BaseLayout = () => {
                     </Dropdown>
                 </Header>
                 <Layout hasSider>
-                    <Sider className={styles.sider} width={240}>
+                    <Sider className={styles.sider} width={200}>
                         <div className={styles.siderContent}>
                             <MyMenu />
                         </div>
