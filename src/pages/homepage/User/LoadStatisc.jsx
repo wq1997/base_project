@@ -13,8 +13,9 @@ const LoadStatisc = ({ dataSource }) => {
     const getOptions = () => {
         const x = dataSource?.map(data => data?.time);
         const data1 = dataSource?.map(data => data?.load);
-        const data2 = dataSource?.map(data => data?.heightPeakCutDayBefore);
-        const data3 = dataSource?.map(data => data?.lowPeakCutDayBefore);
+        const data2 = dataSource?.map(data => data?.todayLoad);
+        const data3 = dataSource?.map(data => data?.energySoc);
+        const data4 = dataSource?.map(data => data?.energyLoad);
         setOptions({
             legend: {
                 icon: 'circle',
@@ -122,13 +123,14 @@ const LoadStatisc = ({ dataSource }) => {
                     color: token.color11
                 }
             }],
-            series: [{
-                    name: '前一日负载(KW)',
-                    type: 'line',
+            series: [
+                {
+                    name: "前一日负载(kW)",
+                    type: "line",
                     data: data1,
                     symbolSize: 1,
-                    symbol: 'circle',
-                    smooth: false,
+                    symbol: "circle",
+                    smooth: true,
                     yAxisIndex: 0,
                     showSymbol: false,
                     lineStyle: {
@@ -146,16 +148,17 @@ const LoadStatisc = ({ dataSource }) => {
                     itemStyle: {
                         normal: {
                             color: colorList[0],
-                            borderColor: colorList[0]
-                        }
-                    }
-                }, {
-                    name: '削峰签约能力(kW)',
-                    type: 'line',
+                            borderColor: colorList[0],
+                        },
+                    },
+                },
+                {
+                    name: "当日实时负载(kW)",
+                    type: "line",
                     data: data2,
                     symbolSize: 1,
-                    symbol: 'circle',
-                    smooth: false,
+                    symbol: "circle",
+                    smooth: true,
                     yAxisIndex: 0,
                     showSymbol: false,
                     lineStyle: {
@@ -173,17 +176,17 @@ const LoadStatisc = ({ dataSource }) => {
                     itemStyle: {
                         normal: {
                             color: colorList[1],
-                            borderColor: colorList[1]
-                        }
-                    }
+                            borderColor: colorList[1],
+                        },
+                    },
                 },
                 {
-                    name: '填谷签约能力(kW)',
-                    type: 'line',
+                    name: "设备实时SOC(%)",
+                    type: "line",
                     data: data3,
                     symbolSize: 1,
-                    symbol: 'circle',
-                    smooth: false,
+                    symbol: "circle",
+                    smooth: true,
                     showSymbol: false,
                     lineStyle: {
                         width: 2,
@@ -200,11 +203,38 @@ const LoadStatisc = ({ dataSource }) => {
                     itemStyle: {
                         normal: {
                             color: colorList[2],
-                            borderColor: colorList[2]
-                        }
-                    }
-                }
-            ]
+                            borderColor: colorList[2],
+                        },
+                    },
+                },
+                {
+                    name: "储能出力(kW)",
+                    type: "line",
+                    data: data4,
+                    symbolSize: 1,
+                    symbol: "circle",
+                    smooth: true,
+                    showSymbol: false,
+                    lineStyle: {
+                        width: 2,
+                        // color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+                        //         offset: 0,
+                        //         color: '#fe9a'
+                        //     },
+                        //     {
+                        //         offset: 1,
+                        //         color: '#fe9a8b'
+                        //     }
+                        // ])
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: colorList[3],
+                            borderColor: colorList[3],
+                        },
+                    },
+                },
+            ],
         })
     }
     
