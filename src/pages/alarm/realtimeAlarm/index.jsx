@@ -178,12 +178,12 @@ const RealtimeAlarm = () => {
             <Select
               style={{ width: 180 }}
               onChange={changeLevel}
-              options={plantId?alarmLevel?.filter(level=>{
+              options={plantId ? alarmLevel?.filter(level => {
                 let value = level?.value;
-                const plant = plantList?.find(plant=>plant?.value===plantId);
+                const plant = plantList?.find(plant => plant?.value === plantId);
                 const alarmList = plant?.alarms?.split(',');
                 return alarmList?.includes(value);
-              }):alarmLevel}
+              }) : alarmLevel}
               allowClear
               placeholder={t('告警等级')}
               value={level}
@@ -196,7 +196,10 @@ const RealtimeAlarm = () => {
           data={data?.list}
           pagination={false}
         />
-        <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} total={data?.total} pageSize={data?.size} onChange={changPage} />
+        {
+          data?.list?.length > 0 &&
+          <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} total={data?.total} pageSize={data?.size} onChange={changPage} />
+        }
       </div>
     </div>
 

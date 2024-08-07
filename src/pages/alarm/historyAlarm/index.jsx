@@ -120,7 +120,7 @@ const RealtimeAlarm = () => {
       end: time?.length ? time[1]?.format('YYYY-MM-DD HH:mm:ss') : null,
       plantId,
       dtuId: deviceId,
-    })||{};
+    }) || {};
     setData(data.data);
   }
   const changPage = (page, pageSize) => {
@@ -184,15 +184,15 @@ const RealtimeAlarm = () => {
             value={deviceId}
           />
           <div className={styles.level}>
-          <Select
+            <Select
               style={{ width: 180 }}
               onChange={changeLevel}
-              options={plantId?alarmLevel?.filter(level=>{
+              options={plantId ? alarmLevel?.filter(level => {
                 let value = level?.value;
-                const plant = plantList?.find(plant=>plant?.value===plantId);
+                const plant = plantList?.find(plant => plant?.value === plantId);
                 const alarmList = plant?.alarms?.split(',');
                 return alarmList?.includes(value);
-              }):alarmLevel}
+              }) : alarmLevel}
               allowClear
               placeholder={t('告警等级')}
               value={level}
@@ -221,7 +221,10 @@ const RealtimeAlarm = () => {
           pagination={false}
           scroll={{ y: "calc(100vh - 350px)" }}
         />
-        <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} total={data?.total} pageSizeOptions={[10, 20, 30]} onChange={changPage} />
+        {
+          data?.list?.length > 0 &&
+          <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} total={data?.total} pageSizeOptions={[10, 20, 30]} onChange={changPage} />
+        }
       </div>
     </div>
   )
