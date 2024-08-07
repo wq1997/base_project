@@ -53,12 +53,12 @@ const MenuList = [
             },
             {
                 key: "/project-management/task-list",
-                label: "项目工单列表",
+                label: "工单列表",
             },
-            // {
-            //     key: "/project-management/workorder-details",
-            //     label: "工单详情",
-            // },
+            {
+                key: '/project-management/spare-parts-management',
+                label: '备件管理'
+            }
         ],
     },
     {

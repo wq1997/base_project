@@ -31,6 +31,10 @@ export default Routes = [
                         component: "@/pages/projectManagement/workorderDetails",
                     },
                     {
+                        path: '/project-management/spare-parts-management',
+                        component: '@/pages/projectManagement/sparePartsManagement',
+                    },
+                    {
                         path: "/system-configuration/account-management",
                         component: "@/pages/systemConfiguration/accountManagement",
                     },

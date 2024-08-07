@@ -517,12 +517,11 @@ const Account = () => {
                     <Space className="table-title">
                         <Button
                             type="primary"
-                            icon={<PlusCircleFilled style={{ fontSize: 13 }} />}
                             onClick={() => setAddProjectOpen(true)}
                         >
                             手工新增工单
                         </Button>
-                        <Button type="primary" danger>批量删除工单</Button>
+                        <Button type="primary" danger>删除工单</Button>
                     </Space>
                 )}
             ></Table>
