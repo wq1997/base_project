@@ -5,7 +5,7 @@ import {
     updateUser as updateUserServer,
 } from "@/services/account";
 import { Title } from "@/components";
-import { PASSWORD_RGE } from "@/utils/constants";
+import { PASSWORD_RGE, TELPHONE_NUMBER_REG } from "@/utils/constants";
 
 const Company = ({ open, editId, onClose }) => {
     const [form] = Form.useForm();
@@ -79,22 +79,21 @@ const Company = ({ open, editId, onClose }) => {
                             },
                         ]}
                     >
-                        <Input placeholder="请输入用户名" />
+                        <Input placeholder="请输入用户名"/>
                     </Form.Item>
-
                 }
 
                 <Form.Item
-                    label="姓名"
+                    label="账号昵称"
                     name="name"
                     rules={[
                         {
                             required: true,
-                            message: "请输入姓名",
+                            message: "请输入账号昵称",
                         },
                     ]}
                 >
-                    <Input placeholder="请输入姓名" />
+                    <Input placeholder="请输入账号昵称" />
                 </Form.Item>
 
                 {
@@ -120,6 +119,10 @@ const Company = ({ open, editId, onClose }) => {
                             required: true,
                             message: "请输入用户手机号",
                         },
+                        {
+                            pattern: TELPHONE_NUMBER_REG,
+                            message: '手机号格式不正确'
+                        }
                     ]}
                 >
                     <Input placeholder="请输入用户手机号" />

@@ -4,7 +4,7 @@ import {
     getUpdateInitData as getUpdateInitDataServer,
     updateCompany as updateCompanyServer,
 } from "@/services/sz_index";
-import { FORM_REQUIRED_RULE } from "@/utils/constants";
+import { FORM_REQUIRED_RULE, TELPHONE_NUMBER_REG } from "@/utils/constants";
 
 const Company = ({ open, editId, onClose }) => {
     const [form] = Form.useForm();
@@ -68,10 +68,29 @@ const Company = ({ open, editId, onClose }) => {
                     <Form.Item label={"联系人"} name={"operator"} rules={[{ ...FORM_REQUIRED_RULE }]}>
                         <Input />
                     </Form.Item>
-                    <Form.Item label={"联系人电话1"} name={"operatorTel1"} rules={[{ ...FORM_REQUIRED_RULE }]}>
+                    <Form.Item 
+                        label={"联系人电话1"} 
+                        name={"operatorTel1"} 
+                        rules={[
+                            { ...FORM_REQUIRED_RULE },
+                            {
+                                pattern: TELPHONE_NUMBER_REG,
+                                message: '电话格式不正确'
+                            }
+                        ]}
+                    >
                         <Input />
                     </Form.Item>
-                    <Form.Item label={"联系人电话2"} name={"operatorTel2"}>
+                    <Form.Item 
+                        label={"联系人电话2"} 
+                        name={"operatorTel2"}
+                        rules={[
+                            {
+                                pattern: TELPHONE_NUMBER_REG,
+                                message: '电话格式不正确'
+                            }
+                        ]}
+                    >
                         <Input />
                     </Form.Item>
                     <Form.Item

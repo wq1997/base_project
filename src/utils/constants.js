@@ -6,3 +6,5 @@ export const FORM_ONLY_NUMBER = { pattern: /^[1-9]\d*$/, message: "只能输入�
 export const TELPHONE_NUMBER_REG = /^1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[0-35-9])\d{8}$/;
 export const PASSWORD_RGE = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9a-zA-Z-`=\[\];',.~!@#$%^&*()_+|{}:"?]{8,16}$/;
 export const EXCAPE_TIME = 0.5;
+export const longitude_REG = /^(\-|\+)?(((\d|[1-9]\d|1[0-7]\d|0{1,3})\.\d{0,6})|(\d|[1-9]\d|1[0-7]\d|0{1,3})|180\.0{0,6}|180)$/;
+export const latitude_RGE = /^(\-|\+)?([0-8]?\d{1}\.\d{0,6}|90\.0{0,6}|[0-8]?\d{1}|90)$/;

@@ -87,7 +87,7 @@ const Log = () => {
                 queryCmd: { 
                     operatorAccount: account,
                     operationPage: pageName,
-                    operatorName: operationName
+                    operationName: operationName
                 },
             });
             if (res?.data?.status == "SUCCESS") {

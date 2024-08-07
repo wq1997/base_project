@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Space, Table, message, Modal, Card } from "antd";
+import { Button, Space, Table, message, Modal, Tooltip } from "antd";
 import { useSelector } from "umi";
 import { PlusOutlined } from "@ant-design/icons";
 import { SearchInput, CardPage } from "@/components";
@@ -31,6 +31,23 @@ const Company = () => {
         {
             title: "公司名称",
             dataIndex: "userName",
+            width: 300,
+            render(value) {
+                return (
+                    <Tooltip title={value}>
+                        <div
+                            style={{
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                                width: 300,
+                            }}
+                        >
+                            {value}
+                        </div>
+                    </Tooltip>
+                )
+            }
         },
         {
             title: "公司税号",
@@ -39,6 +56,23 @@ const Company = () => {
         {
             title: "注册地址",
             dataIndex: "operatorAddress",
+            width: 300,
+            render(value) {
+                return (
+                    <Tooltip title={value}>
+                        <div
+                            style={{
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                                width: 300,
+                            }}
+                        >
+                            {value}
+                        </div>
+                    </Tooltip>
+                )
+            }
         },
         {
             title: "联系人",
@@ -142,7 +176,7 @@ const Company = () => {
                     label="公司"
                     value={name}
                     inputWidth={250}
-                    placeholder="请输入公司名称或公司编号"
+                    placeholder="请输入公司名称"
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         nameRef.current = value;

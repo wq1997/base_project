@@ -158,10 +158,16 @@ const Role = () => {
 
     const onDelete = async () => {
         if (selectedRowKeys && selectedRowKeys?.length > 0) {
-            const res = await deleteRoleServe(selectedRowKeys);
-            if (res?.data?.status == "SUCCESS") {
-                getList();
-            }
+            Modal.confirm({
+                title: "确定删除?",
+                content: "删除后不可恢复",
+                onOk: async () => {
+                    const res = await deleteRoleServe(selectedRowKeys);
+                    if (res?.data?.status == "SUCCESS") {
+                        getList();
+                    }
+                },
+            });
         } else {
             message.error("请选择需要删除的角色");
         }
