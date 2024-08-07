@@ -95,7 +95,7 @@ const Company = ({ detailId, onClose }) => {
                 yAxis: {
                     type: "value",
                     axisLabel: {
-                        formatter: "{value} kW",
+                        formatter: "{value} MW",
                     },
                     axisPointer: {
                         snap: true,
@@ -165,7 +165,7 @@ const Company = ({ detailId, onClose }) => {
                         </div>
                     </div>
                     <div>
-                        <div>全网需求总量</div>
+                        <div>全网需求总量 (负值表示削峰，正值表示填谷)</div>
                         <ReactECharts
                             option={options}
                             style={{ width: "950px", height: "280px" }}

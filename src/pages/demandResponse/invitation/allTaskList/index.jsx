@@ -16,11 +16,13 @@ import TaskDetail from "./TaskDetail";
 
 const Account = () => {
     recordPage("op:resource_plan_list");
+    const paramsCode = location?.search.split("=")[1];
+    const initId = paramsCode ? decodeURIComponent(paramsCode) : null;
     const { user } = useSelector(state => state.user);
     const releaseTimeRef = useRef();
     const [releaseTime, setReleaseTime] = useState();
-    const invitationIdRef = useRef();
-    const [invitationId, setInvitationId] = useState();
+    const invitationIdRef = useRef(initId);
+    const [invitationId, setInvitationId] = useState(initId);
     const taskCodeRef = useRef();
     const [taskCode, setTaskCode] = useState();
     const stationNameRef = useRef();

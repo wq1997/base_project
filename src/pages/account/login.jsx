@@ -14,6 +14,10 @@ const Login = () => {
     const [publicKey, setPublicKey] = useState("");
 
     const onFinish = async values => {
+        const keyRes = await getPublicKeySever();
+        if (keyRes?.data) {
+            setPublicKey(keyRes?.data);
+        }
         const res = await loginSever({
             ...values,
             password: values.password || getEncrypt(publicKey, values.password),
@@ -33,16 +37,6 @@ const Login = () => {
         }
     };
 
-    const getPublicKey = async () => {
-        const res = await getPublicKeySever();
-        if (res?.data) {
-            setPublicKey(res?.data);
-        }
-    };
-
-    useEffect(() => {
-        getPublicKey();
-    }, []);
     return (
         <div
             style={{

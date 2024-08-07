@@ -51,14 +51,14 @@ const Account = () => {
     const columns = [
         {
             title: "邀约计划ID",
-            dataIndex: "code",
+            dataIndex: "invitationId",
             width: 200,
             render(_, recode) {
                 return (
                     <a
                         onClick={_ =>
                             history.push(
-                                `/vpp/demandResponse/invitation/allTaskList?inviteCode=${recode.invitationId}`
+                                `/vpp/demandResponse/invitation/allTaskList?invitationId=${recode.invitationId}`
                             )
                         }
                     >
