@@ -163,7 +163,7 @@ const Account = () => {
 
     const columns = [
         {
-            title: "任务发布时间",
+            title: "工单发布时间",
             dataIndex: "time",
         },
         {
@@ -409,7 +409,7 @@ const Account = () => {
             />
             <Space className="search">
                 <div>
-                    <span style={{ color: "#FFF" }}>任务发布时间：</span>
+                    <span style={{ color: "#FFF" }}>工单发布时间：</span>
                     <DatePicker />
                 </div>
                 <SearchInput
@@ -465,7 +465,7 @@ const Account = () => {
                     }}
                 />
                 <SearchInput
-                    label="任务接收人"
+                    label="工单接收人"
                     type="select"
                     options={[{ name: "**", code: 1 }]}
                     onChange={value => {
@@ -475,7 +475,7 @@ const Account = () => {
                     }}
                 />
                 <SearchInput
-                    label="任务发起人"
+                    label="工单发起人"
                     type="select"
                     options={[{ name: "**", code: 1 }]}
                     onChange={value => {

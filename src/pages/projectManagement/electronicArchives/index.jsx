@@ -546,10 +546,6 @@ const Account = () => {
                 editCurrentStep={currentStep}
             />
             <Space className="search">
-                <div>
-                    <span style={{ color: "#FFF" }}>立项时间：</span>
-                    <DatePicker />
-                </div>
                 <SearchInput
                     label="项目名称"
                     value={code}
@@ -559,6 +555,10 @@ const Account = () => {
                         setCode(value);
                     }}
                 />
+                <div>
+                    <span style={{ color: "#FFF" }}>立项时间：</span>
+                    <DatePicker />
+                </div>
                 <SearchInput
                     label="项目阶段"
                     value={confirmStatus}
@@ -692,7 +692,7 @@ const Account = () => {
                     const values = await supplierForm.validateFields();
                 }}
             >
-                <div style={{minHeight: 300}}>
+                <div style={{ minHeight: 300 }}>
                     <Form form={supplierForm}>
                         <Form.Item name="supplierDataSource" validateTrigger={false}>
                             <EditTable.EditRowTable
