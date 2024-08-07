@@ -13,6 +13,12 @@ import {
 } from "antd";
 import {
     ExclamationCircleOutlined,
+    FileSearchOutlined,
+    FileProtectOutlined,
+    UnorderedListOutlined,
+    UserOutlined,
+    DeleteOutlined,
+    EllipsisOutlined,
 } from "@ant-design/icons";
 import { history, useLocation } from "umi";
 import { SearchInput, EditTable } from "@/components";
@@ -297,69 +303,69 @@ const Account = () => {
             title: "运维负责人",
             dataIndex: "operationsManager",
         },
-        // {
-        //     title: "操作",
-        //     dataIndex: "operate",
-        //     render: (_, row) => {
-        //         const edit = key => {
-        //             setCurrentStep(key);
-        //             setAddProjectOpen(true);
-        //             setDetailRow(row);
-        //         };
-        //         return (
-        //             <Dropdown
-        //                 menu={{
-        //                     items: [
-        //                         {
-        //                             key: "1",
-        //                             label: <div onClick={() => edit(0)}>基础信息维护</div>,
-        //                             icon: <FileSearchOutlined />,
-        //                         },
-        //                         {
-        //                             key: "2",
-        //                             label: <div onClick={() => edit(1)}>详细信息维护</div>,
-        //                             icon: <FileProtectOutlined />,
-        //                         },
-        //                         {
-        //                             key: "3",
-        //                             label: <div onClick={() => edit(2)}>实施管理</div>,
-        //                             icon: <UnorderedListOutlined />,
-        //                         },
-        //                         {
-        //                             key: "4",
-        //                             label: <div onClick={() => edit(3)}>巡检管理</div>,
-        //                             icon: <UserOutlined />,
-        //                         },
-        //                         {
-        //                             key: "5",
-        //                             label: (
-        //                                 <div
-        //                                     onClick={() => {
-        //                                         Modal.confirm({
-        //                                             title: "系统提示",
-        //                                             content:
-        //                                                 "删除此条记录不可恢复，请确认后再删除！",
-        //                                             onOk() {
-        //                                                 message.success("删除成功！");
-        //                                             },
-        //                                         });
-        //                                     }}
-        //                                 >
-        //                                     删除项目
-        //                                 </div>
-        //                             ),
-        //                             icon: <DeleteOutlined />,
-        //                         },
-        //                     ],
-        //                 }}
-        //             >
-        //                 <a onClick={e => e.preventDefault()}>
-        //                     <EllipsisOutlined style={{ color: "#FFF" }} />
-        //                 </a>
-        //             </Dropdown>
-        //         );
-        //     },
-        // },
+        {
+            title: "操作",
+            dataIndex: "operate",
+            render: (_, row) => {
+                const edit = key => {
+                    setCurrentStep(key);
+                    setAddProjectOpen(true);
+                    setDetailRow(row);
+                };
+                return (
+                    <Dropdown
+                        menu={{
+                            items: [
+                                {
+                                    key: "1",
+                                    label: <div onClick={() => edit(0)}>基础信息维护</div>,
+                                    icon: <FileSearchOutlined />,
+                                },
+                                {
+                                    key: "2",
+                                    label: <div onClick={() => edit(1)}>详细信息维护</div>,
+                                    icon: <FileProtectOutlined />,
+                                },
+                                {
+                                    key: "3",
+                                    label: <div onClick={() => edit(2)}>实施管理</div>,
+                                    icon: <UnorderedListOutlined />,
+                                },
+                                {
+                                    key: "4",
+                                    label: <div onClick={() => edit(3)}>巡检管理</div>,
+                                    icon: <UserOutlined />,
+                                },
+                                {
+                                    key: "5",
+                                    label: (
+                                        <div
+                                            onClick={() => {
+                                                Modal.confirm({
+                                                    title: "系统提示",
+                                                    content:
+                                                        "删除此条记录不可恢复，请确认后再删除！",
+                                                    onOk() {
+                                                        message.success("删除成功！");
+                                                    },
+                                                });
+                                            }}
+                                        >
+                                            删除项目
+                                        </div>
+                                    ),
+                                    icon: <DeleteOutlined />,
+                                },
+                            ],
+                        }}
+                    >
+                        <a onClick={e => e.preventDefault()}>
+                            <EllipsisOutlined style={{ color: "#FFF" }} />
+                        </a>
+                    </Dropdown>
+                );
+            },
+        },
     ];
 
     const onSelectChange = (newSelectedRowKeys, newSelectedRows) => {

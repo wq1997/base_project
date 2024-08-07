@@ -413,7 +413,7 @@ const Account = () => {
                     <DatePicker />
                 </div>
                 <SearchInput
-                    label="处理进度"
+                    label="处理状态"
                     type="select"
                     options={[
                         { name: "全部", code: 1 },
