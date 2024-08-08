@@ -373,7 +373,7 @@ const HighAnysis = () => {
                         const res = await exportAnalyticsServe(params);
                         if (res?.data) {
                             downloadFile({
-                                fileName: `${intl.formatMessage({ id: '高级分析' })}.xlsx`,
+                                fileName: `${intl.formatMessage({ id: '电芯详情' })}.xlsx`,
                                 content: res?.data
                             })
                         }
