@@ -47,6 +47,10 @@ const Index = ({ initData }) => {
             title: "开始时间",
             dataIndex: "begin",
         },
+        {
+            title: "结束时间",
+            dataIndex: "end",
+        },
     ];
 
     const getList = async () => {
