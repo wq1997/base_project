@@ -35,6 +35,10 @@ export default Routes = [
                         component: '@/pages/projectManagement/sparePartsManagement',
                     },
                     {
+                        path: '/project-management/abnormal',
+                        component: '@/pages/projectManagement/abnormal'
+                    },
+                    {
                         path: "/system-configuration/account-management",
                         component: "@/pages/systemConfiguration/accountManagement",
                     },

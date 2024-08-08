@@ -58,7 +58,11 @@ const MenuList = [
             {
                 key: '/project-management/spare-parts-management',
                 label: '备件管理'
-            }
+            },
+            {
+                key: '/project-management/abnormal',
+                label: '异常复盘'
+            },
         ],
     },
     {
