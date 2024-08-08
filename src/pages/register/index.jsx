@@ -1,19 +1,30 @@
-import { Form, Input, Checkbox, Button, Typography, theme, Tooltip } from "antd";
+import { Form, Input, Checkbox, Button, Typography, theme, Tooltip, message } from "antd";
 import { FORM_REQUIRED_RULE, PUBLIC_FILE_PATH, PROJECT_NAME } from "@/utils/constants";
 import { UserOutlined, PhoneOutlined, AuditOutlined, BranchesOutlined } from "@ant-design/icons";
-import { getEncrypt, setLocalStorage } from "@/utils/utils";
+import { getUrlParams, setLocalStorage } from "@/utils/utils";
 import styles from "./index.less";
-import { history, useDispatch } from "umi";
+import { register as registerSever } from "@/services";
+import { history, useLocation } from "umi";
 import { useEffect, useState } from "react";
 const { Title } = Typography;
 
-const Login = () => {
+const Index = () => {
     const { token } = theme.useToken();
-    const dispatch = useDispatch();
+    const location = useLocation();
 
     const onFinish = async values => {
-        setLocalStorage("Token", "token");
-        history.push("/cet/user");
+        const { serial, secret } = getUrlParams(location?.search);
+        if (!serial || !secret) return message.info("缺少参数");
+        const res = await registerSever({
+            ...values,
+            cpuSerial: serial,
+            cpuSerialHmac: secret,
+        });
+        if (res?.data?.code == 0) {
+            message.info("注册成功，等待审批结果");
+        } else {
+            message.info(res?.data?.message);
+        }
     };
 
     return (
@@ -73,7 +84,7 @@ const Login = () => {
                         }}
                     >
                         <Form.Item
-                            name="name"
+                            name="username"
                             rules={[{ ...FORM_REQUIRED_RULE }]}
                             style={{ marginBottom: 20 }}
                         >
@@ -84,7 +95,7 @@ const Login = () => {
                             />
                         </Form.Item>
                         <Form.Item
-                            name="phone"
+                            name="phoneNumber"
                             rules={[{ ...FORM_REQUIRED_RULE }]}
                             style={{ marginBottom: 20 }}
                         >
@@ -97,7 +108,7 @@ const Login = () => {
                             />
                         </Form.Item>
                         <Form.Item
-                            name="phone"
+                            name="jobTitle"
                             rules={[{ ...FORM_REQUIRED_RULE }]}
                             style={{ marginBottom: 20 }}
                         >
@@ -110,7 +121,7 @@ const Login = () => {
                             />
                         </Form.Item>
                         <Form.Item
-                            name="phone"
+                            name="department"
                             rules={[{ ...FORM_REQUIRED_RULE }]}
                             style={{ marginBottom: 20 }}
                         >
@@ -138,4 +149,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default Index;

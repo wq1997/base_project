@@ -1,4 +1,4 @@
 export default apiUrl = {
-    test: 'test-url',
+    test: 'http://192.168.1.82:8888',
     prod: 'pod-url'
 }

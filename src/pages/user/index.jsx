@@ -1,29 +1,45 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Space, Table, message, Modal, DatePicker, Tooltip, Input } from "antd";
+import { Button, Space, Table, message, Modal, DatePicker, Radio, Popconfirm } from "antd";
 import { PlusOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { SearchInput } from "@/components";
 import {
-    getTaskist as getTaskistServer,
-    getSearchInitData as getSearchInitDataServer,
+    getUserist as getUseristServer,
+    handleApprove as handleApproveServer,
+    handleDelete as handleDeleteServer,
 } from "@/services/index";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import { history, useLocation, useSelector } from "umi";
 import dayjs from "dayjs";
 
+const enumStatus = {
+    0: {
+        text: "未通过",
+        color: "",
+    },
+    1: {
+        text: "已通过",
+        color: "#52c41a",
+    },
+    2: {
+        text: "待审批",
+        color: "#1677ff",
+    },
+};
+
 const Account = () => {
-    const location = useLocation();
     const { user } = useSelector(state => state.user);
-    const endTimeRef = useRef();
-    const executeTimeRef = useRef();
-    const codeRef = useRef();
+    const [pass, setPass] = useState();
+    const [applicationId, setApplicationId] = useState();
     const statusRef = useRef();
-    const responseTypeRef = useRef();
-    const responseTimeTypeRef = useRef();
-    const [code, setCode] = useState();
     const [status, setStatus] = useState();
-    const [statusList, setStatusList] = useState();
-    const [responseType, setResponseType] = useState();
-    const [responseTypeList, setResponseTypeList] = useState();
+    const usernameRef = useRef();
+    const [username, setUsername] = useState();
+    const phoneNumberRef = useRef();
+    const [phoneNumber, setPhoneNumber] = useState();
+    const cpuSerialRef = useRef();
+    const [cpuSerial, setCpuSerial] = useState();
+    const applyTimeRef = useRef();
+    const [applyTime, setApplyTime] = useState([]);
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [userList, setUserList] = useState([]);
@@ -31,38 +47,43 @@ const Account = () => {
     const columns = [
         {
             title: "申请状态",
-            dataIndex: "code",
+            dataIndex: "applicationStatus",
             width: 150,
+            render(value) {
+                return (
+                    <span style={{ color: enumStatus[value].color }}>{enumStatus[value].text}</span>
+                );
+            },
         },
         {
             title: "姓名",
             dataIndex: "姓名",
-            key: "statusZh",
+            key: "username",
             width: 150,
         },
         {
             title: "手机号",
-            dataIndex: "confirmationDeadline",
+            dataIndex: "phoneNumber",
             width: 200,
         },
         {
             title: "职务",
-            dataIndex: "responseTypeZh",
+            dataIndex: "jobTitle",
             width: 150,
         },
         {
             title: "所在末级部门",
-            dataIndex: "responseTimeTypeZh",
+            dataIndex: "department",
             width: 150,
         },
         {
             title: "绑定设备序列号",
-            dataIndex: "whPrice",
+            dataIndex: "cpuSerial",
             width: 150,
         },
         {
-            title: "是否具备用户管理权限",
-            dataIndex: "responsePower",
+            title: "申请时间",
+            dataIndex: "createTime",
             width: 150,
         },
         {
@@ -70,77 +91,124 @@ const Account = () => {
             dataIndex: "operate",
             fixed: "right",
             width: 120,
-            render: (_, { supportConfirm }) => {
-                if (supportConfirm) {
-                    return <a onClick={() => {}}>前往确认</a>;
-                }
+            render: (_, { id }) => {
+                return (
+                    <Space>
+                        <a
+                            onClick={() => {
+                                setApplicationId(id);
+                            }}
+                        >
+                            审批
+                        </a>
+                        <Popconfirm
+                            title="确认删除？"
+                            onConfirm={() => {
+                                handleDelete(id);
+                            }}
+                            okText="Yes"
+                            cancelText="No"
+                        >
+                            <a style={{ color: "#F5222D" }}>删除</a>
+                        </Popconfirm>
+                    </Space>
+                );
             },
         },
     ];
 
-    const getSearchInitData = async () => {
-        const res = await getSearchInitDataServer();
-        if (res?.data?.status == "SUCCESS") {
-            const { statuses, responseTypes, responseTimeTypes } = res?.data?.data;
-            setStatusList(statuses);
-            setResponseTypeList(responseTypes);
-            setResponseTimeTypeList(responseTimeTypes);
-        }
-    };
-
-    const getInviteList = async () => {
-        const taskCode = location?.search.split("=")[1];
-        setCode(taskCode);
+    const getList = async () => {
         const { current, pageSize } = paginationRef.current;
-
-        const code = taskCode || codeRef.current;
-        const status = statusRef.current;
-        const responseType = responseTypeRef.current;
-        const responseTimeType = responseTimeTypeRef?.current;
-        const res = await getTaskistServer({
+        const applicationStatus = statusRef.current;
+        const username = usernameRef?.current;
+        const cpuSerial = cpuSerialRef.current;
+        const phoneNumber = phoneNumberRef.current;
+        const [applyTimeFrom, applyTimeTo] = applyTimeRef.current || [];
+        const res = await getUseristServer({
             pageNum: current,
             pageSize,
-            queryCmd: {
-                code,
-                status,
-                responseType,
-                responseTimeType,
+            queryParam: {
+                applicationStatus,
+                username,
+                phoneNumber,
+                cpuSerial,
+                applyTimeFrom,
+                applyTimeTo,
             },
         });
-        if (res?.data?.status == "SUCCESS") {
-            const { totalRecord, recordList } = res?.data?.data;
+        if (res?.data?.data) {
+            const { total, items } = res?.data?.data;
             setPagination({
                 ...paginationRef.current,
-                total: parseInt(totalRecord),
+                total: parseInt(total),
             });
-            setUserList(recordList);
+            setUserList(items);
         }
     };
 
     const handleReset = () => {
         paginationRef.current = DEFAULT_PAGINATION;
-        endTimeRef.current = undefined;
-        setEndTime([]);
-        executeTimeRef.current = undefined;
-        setExecuteTime([]);
-        codeRef.current = undefined;
-        setCode();
         statusRef.current = undefined;
         setStatus();
-        responseTypeRef.current = undefined;
-        setResponseType();
-        responseTimeTypeRef.current = undefined;
-        setResponseTimeType();
-        getInviteList();
+        usernameRef.current = undefined;
+        setUsername();
+        phoneNumberRef.current = undefined;
+        setPhoneNumber();
+        cpuSerialRef.current = undefined;
+        setCpuSerial();
+        applyTimeRef.current = undefined;
+        setApplyTime([]);
+        getList();
+    };
+
+    const handleDelete = async id => {
+        const res = await handleDeleteServer(id);
+        if (res?.data?.code == 0) {
+            getList();
+        } else {
+            message.info(res?.data?.message);
+        }
+    };
+
+    const handlesApplication = async () => {
+        const res = await handleApproveServer({
+            id: applicationId,
+            status: pass,
+        });
+        if (res?.data?.code == 0) {
+            setApplicationId(null);
+            setPass(null);
+            getList();
+        } else {
+            message.info(res?.data?.message);
+        }
     };
 
     useEffect(() => {
-        getInviteList();
-        getSearchInitData();
+        getList();
     }, []);
 
     return (
         <div>
+            <Modal
+                title="账号审批"
+                open={Boolean(applicationId)}
+                onOk={handlesApplication}
+                onCancel={() => {
+                    setApplicationId(null);
+                    setPass(null);
+                }}
+            >
+                <Radio.Group
+                    onChange={e => {
+                        setPass(e.target.value);
+                    }}
+                    value={pass}
+                >
+                    <Radio value={1}>通过</Radio>
+                    <Radio value={0}>拒绝</Radio>
+                </Radio.Group>
+            </Modal>
             <Space
                 className="search"
                 style={{
@@ -152,9 +220,12 @@ const Account = () => {
                     label="申请状态"
                     value={status}
                     type="select"
-                    options={statusList}
+                    options={[
+                        { name: "已通过", code: 1 },
+                        { name: "未通过", code: 0 },
+                        { name: "待审批", code: 2 },
+                    ]}
                     onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
                         statusRef.current = value;
                         setStatus(value);
                     }}
@@ -162,47 +233,47 @@ const Account = () => {
 
                 <SearchInput
                     label="姓名"
-                    value={code}
+                    value={username}
                     onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
-                        codeRef.current = value;
-                        setCode(value);
+                        usernameRef.current = value;
+                        setUsername(value);
                     }}
                 />
 
                 <SearchInput
                     label="手机号"
-                    value={code}
+                    value={phoneNumber}
                     onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
-                        codeRef.current = value;
-                        setCode(value);
+                        phoneNumberRef.current = value;
+                        setPhoneNumber(value);
                     }}
                 />
 
                 <SearchInput
                     label="绑定用户序列号"
-                    value={code}
+                    value={cpuSerial}
                     onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
-                        codeRef.current = value;
-                        setCode(value);
+                        cpuSerialRef.current = value;
+                        setCpuSerial(value);
                     }}
                 />
 
-                <SearchInput
-                    label="是否具备管理员权限"
-                    type="select"
-                    options={responseTypeList}
-                    value={responseType}
-                    onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
-                        responseTypeRef.current = value;
-                        setResponseType(value);
-                    }}
-                />
+                <div>
+                    <span>申请时间：</span>
+                    <DatePicker.RangePicker
+                        onChange={(date, dateStr) => {
+                            applyTimeRef.current = dateStr;
+                            setApplyTime(dateStr);
+                        }}
+                        value={
+                            applyTime && applyTime.length > 0 && applyTime[0] && applyTime[1]
+                                ? [dayjs(applyTime[0]), dayjs(applyTime[1])]
+                                : []
+                        }
+                    />
+                </div>
 
-                <Button type="primary" onClick={getInviteList}>
+                <Button type="primary" onClick={getList}>
                     搜索
                 </Button>
                 <Button onClick={handleReset}>重置</Button>
@@ -214,7 +285,7 @@ const Account = () => {
                 pagination={pagination}
                 onChange={pagination => {
                     paginationRef.current = pagination;
-                    getInviteList();
+                    getList();
                 }}
                 scroll={{
                     x: "100%",

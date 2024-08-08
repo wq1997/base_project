@@ -2,33 +2,26 @@ import axiosInstance from "./request";
 const { API_URL } = process.env;
 
 export const login = payload => {
-    return new Promise(resolve => {
-        setTimeout(() => {
-            resolve({
-                userName: "wangqing",
-                age: 20,
-            });
-        }, 2000);
-    });
-    //  axiosInstance.post('/login', payload)
-};
-
-export const getTaskist = payload => {
-    const url = `${API_URL}/invite-task/find-page`;
+    const url = `${API_URL}/user/login`;
     return axiosInstance.post(url, payload);
 };
 
-export const getSearchInitData = () => {
-    const url = `${API_URL}/invite-task/get-search-page-init-data`;
-    return axiosInstance.get(url);
-};
-
-export const getWaitConfirmTasks = () => {
-    const url = `${API_URL}/invite-task/get-wait-confirm-invite-task-dashboard-vo`;
-    return axiosInstance.get(url);
-};
-
-export const confirmTask = payload => {
-    const url = `${API_URL}/invite-task/confirm`;
+export const register = payload => {
+    const url = `${API_URL}/cpu-registration/register`;
     return axiosInstance.post(url, payload);
+};
+
+export const getUserist = payload => {
+    const url = `${API_URL}/cpu-registration/find-page`;
+    return axiosInstance.post(url, payload);
+};
+
+export const handleApprove = payload => {
+    const url = `${API_URL}/cpu-registration/approve`;
+    return axiosInstance.post(url, payload);
+};
+
+export const handleDelete = id => {
+    const url = `${API_URL}/cpu-registration/delete/${id}`;
+    return axiosInstance.delete(url);
 };

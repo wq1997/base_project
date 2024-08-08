@@ -1,7 +1,8 @@
 const App = "@/pages/App";
 const Layout = "@/layouts/baseLayout";
 const User = "@/pages/user";
-const Login = "@/pages/account/login";
+const Login = "@/pages/login";
+const Register = "@/pages/register";
 const Test = "@/pages/test";
 
 export default Routes = [
@@ -15,6 +16,7 @@ export default Routes = [
                 routes: [{ path: "/cet/user", component: User }],
             },
             { path: "/login", component: Login },
+            { path: "/register", component: Register },
             {
                 path: "/test",
                 component: Test,
