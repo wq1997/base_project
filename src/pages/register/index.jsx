@@ -20,11 +20,7 @@ const Index = () => {
             cpuSerial: serial,
             cpuSerialHmac: secret,
         });
-        if (res?.data?.code == 0) {
-            message.info("注册成功，等待审批结果");
-        } else {
-            message.info(res?.data?.message);
-        }
+        message.info(res?.data?.message);
     };
 
     return (
