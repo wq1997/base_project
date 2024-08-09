@@ -110,14 +110,6 @@ const Login = () => {
                                 style={{ height: 40 }}
                             />
                         </Form.Item>
-                        <div style={{ textAlign: "right", marginBottom: 10 }}>
-                            <span
-                                style={{ cursor: "pointer" }}
-                                onClick={() => history.push("/register")}
-                            >
-                                注册
-                            </span>
-                        </div>
                         <Form.Item>
                             <Button
                                 type="primary"

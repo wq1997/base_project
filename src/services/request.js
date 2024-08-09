@@ -60,7 +60,7 @@ const errorHandle = (status, message) => {
             console.log("请求错误");
             break;
         case 401:
-            // logout();
+            logout();
             break;
         case 403:
             console.log("权限不足，拒绝访问");
