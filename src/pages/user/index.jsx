@@ -250,7 +250,7 @@ const Account = () => {
                 />
 
                 <SearchInput
-                    label="绑定用户序列号"
+                    label="绑定设备序列号"
                     value={cpuSerial}
                     onChange={value => {
                         cpuSerialRef.current = value;
