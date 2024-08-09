@@ -69,7 +69,7 @@ const Table = ({
                 return (
                     <Space>
                         <div type="link" style={{ color: '#FF0000', cursor: 'pointer' }} onClick={() => edit(record)}>{t('编辑')}</div>
-                        <Button type="link" style={{ color: '#06FF00' }} onClick={() => changeIsOpenDel(record)}>{t('删除')}</Button>
+                        <div type="link" style={{ color: '#06FF00', cursor: 'pointer' }} onClick={() => changeIsOpenDel(record)}>{t('删除')}</div>
                     </Space>
                 )
             }
@@ -100,7 +100,7 @@ const Table = ({
     }, [dataSource]);
     return (
         <div className={styles.table}>
-            <div className={styles.row} style={{  }}>
+            <div className={styles.row} style={{ background:'rgba(27, 37, 83, 1)' }}>
                 {columns?.filter(item => item)?.map(column => (
                     <div className={styles.rowItem} style={{ width: column?.width, ...column?.style }}>{column?.title}</div>
                 ))}
@@ -111,14 +111,14 @@ const Table = ({
                         {columns?.filter(item => item)?.map(column => {
                             if (column.render) {
                                 return (
-                                    <div className={styles.value} style={{ width: column?.width, borderLeft: '2px solid #24306A', borderTop: '2px solid #24306A', ...column?.style }}>
+                                    <div className={styles.value} style={{ width: column?.width, borderLeft: '1px solid #24306A', borderTop: '1px solid #24306A',borderBottom: '1px solid #24306A',borderRight: '1px solid #24306A',...column?.style }}>
                                         {column.render('', value)}
                                     </div>
                                 );
                             } else {
                                 return (
                                     <Tooltip title={value[column.dataIndex]}>
-                                        <div className={styles.value} style={{ width: column?.width, borderLeft: '2px solid #24306A', borderTop: '2px solid #24306A', ...column?.style }}>
+                                        <div className={styles.value} style={{ width: column?.width, borderLeft: '1px solid #24306A', borderTop: '1px solid #24306A',borderBottom: '1px solid #24306A',  ...column?.style }}>
                                             {value[column.dataIndex]}
                                         </div>
                                     </Tooltip>

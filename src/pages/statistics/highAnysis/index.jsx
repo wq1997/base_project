@@ -9,12 +9,15 @@ import moment from "moment";
 import {
     analyticsData as monitorCurveServe,
     exportAnalytics as exportAnalyticsServe,
-    getFetchPlantList2 as getFetchPlantListServe,
+    // getFetchPlantList2 as getFetchPlantListServe,
     getAnalyticsInitData as getAnalyticsInitDataServe
 } from "@/services";
 import {
     getDtusOfPlant as getDtusOfPlantServe
 } from "@/services/plant";
+import {
+    getFetchPlantList as getFetchPlantListServe,
+} from "@/services/deviceTotal";
 import { downloadFile } from "@/utils/utils";
 
 const HighAnysis = () => {
@@ -65,7 +68,7 @@ const HighAnysis = () => {
             dtuId: currentPlantDevice?.[1],
             dataType,
             dateList: date,
-            packCell: packCell?.[1]
+            packCell: packCell?.[2]
         }
         return params;
     }
@@ -224,7 +227,7 @@ const HighAnysis = () => {
                     form.setFieldsValue({
                         currentPlantDevice: [plantId, data?.[0]?.value],
                         dataType: 'vol',
-                        packCell: [packCellList?.[0]?.value, packCellList?.[0]?.children?.[0]?.value]
+                        packCell: [packCellList?.[0]?.value, packCellList?.[0]?.children?.[0]?.value,packCellList?.[0]?.children?.[0]?.children?.[0]?.value]
                     })
                     setTimeout(async()=>{
                         const params = await getParams(false);
@@ -239,7 +242,7 @@ const HighAnysis = () => {
         const res = await getFetchPlantListServe();
         if (res?.data?.data) {
             const data = res?.data?.data;
-            const plantList = data?.plantList?.map((item, index) => {
+            const plantList = data?.map((item, index) => {
                 return {
                     value: item.plantId,
                     label: item.name,
@@ -261,13 +264,16 @@ const HighAnysis = () => {
 
     const getDataSource = async (params) => {
         setLoading(true);
-        const res = await monitorCurveServe(params);
-        if (res?.data?.data) {
-            setDataSource(res?.data?.data)
-        } else {
-            setDataSource([]);
+        try{
+            const res = await monitorCurveServe(params);
+            if (res?.data?.data) {
+                setDataSource(res?.data?.data)
+            } else {
+                setDataSource([]);
+            }
+        }finally{
+            setLoading(false);
         }
-        setLoading(false);
     }
 
     useEffect(() => {
@@ -297,7 +303,7 @@ const HighAnysis = () => {
                                 packCellList = data;
                                 setPackCellList(packCellList);
                                 form.setFieldsValue({
-                                    packCell: [packCellList?.[0]?.value, packCellList?.[0]?.children?.[0]?.value]
+                                    packCell: [packCellList?.[0]?.value, packCellList?.[0]?.children?.[0]?.value, packCellList?.[0]?.children?.[0]?.children?.[0]?.value]
                                 })
                                 const params = await getParams();
                                 if (params) {
@@ -373,7 +379,7 @@ const HighAnysis = () => {
                         const res = await exportAnalyticsServe(params);
                         if (res?.data) {
                             downloadFile({
-                                fileName: `${intl.formatMessage({ id: '高级分析' })}.xlsx`,
+                                fileName: `${intl.formatMessage({ id: '电芯详情' })}.xlsx`,
                                 content: res?.data
                             })
                         }

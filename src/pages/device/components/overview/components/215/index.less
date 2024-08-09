@@ -3,15 +3,17 @@
     height: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 5.2083rem 1fr 1fr 1fr;
+    grid-template-rows:  5.2083rem 8.3333rem 1fr 1fr 1fr 1fr;
     grid-auto-columns: 1fr;
     gap: .8333rem .8333rem;
     grid-auto-flow: row;
     grid-template-areas:
-        "title title title title"
-        "PcsData center center status"
-        'TodayEntity center center Bms1'
-        'TodayEntity center center Bms1';
+    "title title title title"
+    "PcsData center center status"
+    'PcsData center center Bms1'
+    'TodayEntity center center Bms1'
+    'TodayEntity center center Bms1'
+    'TodayEntity center center Bms1';
 
     >div {
         border-radius: 16px;
@@ -81,14 +83,35 @@
 
     .valueOne {
         .left {
-            min-width: 180px;
+            min-width: 5.2083rem;
+
             .key{
-                min-width: 100px;
+                min-width: 5.2083rem;
+            }
+            .value{
+                text-align: center;
+                width: 60%;
+                color: #00CBFF;
+                font-size:1.3542rem;
+                font-family: DingTalkJinBuTi;
+
             }
         }
 
         .right {
-            min-width: 100px;
+            min-width: 5.2083rem;
+            .key{
+                min-width: 5.2083rem;
+                text-align: center;
+            }
+            .value{
+                text-align: center;
+                width:60%;
+                color: #00CBFF;
+                font-size:1.3542rem;
+                font-family: DingTalkJinBuTi;
+            }
+          
         }
     }
 
@@ -186,19 +209,25 @@
 .status {
     grid-area: status;
 
+    
     .statusWrap {
         display: flex;
-        flex-direction: column;
+        // flex-direction: column;
         justify-content: space-around;
+        align-items: center;
         height:calc(100% - 0.8333rem);
 
 
         .statusOne {
             display: flex;
             justify-content: space-around;
-
+            background-color: rgba(33, 42, 82, 1);
+            width: 30%;
+            height: 30%;
+            border-radius: .2083rem;
             .title {
-                min-width: 150px;
+                // min-width: 150px;
+                font-size: 1.0417rem;
 
             }
 
@@ -215,14 +244,14 @@
     justify-content: space-between;
 
     .bmsOne {
-        padding: 10px 20px;
+        padding:1.3021rem 1.0417rem;
         width: 100%;
         height:calc(100% - 0.8333rem);
         .bmsTitle {
             width: 100%;
 
             img {
-                margin-right: 5px;
+                margin-right: .2604rem;
                 
             }
         }
@@ -272,7 +301,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-around;
-            padding-top: .7813rem;
+            padding-top: 15px;
            font-size: .8333rem;
            .bottomDes{
             width:'100%';
@@ -281,6 +310,11 @@
            }
            .label{
             text-align: center;
+           }
+           .value{
+            font-size: 1.4583rem;
+            text-align: center;
+            font-family: DingTalkJinBuTi;
            }
         }
     }

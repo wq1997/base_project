@@ -91,14 +91,9 @@ export const pcsDataType = [
 
 export const alarmLevel = [
     {
-        label: <FormattedMessage id='低级' />,
-        value: '4',
-        key: '低级',
-    },
-    {
-        label: <FormattedMessage id='普通' />,
-        value: '3',
-        key: '普通',
+        label: <FormattedMessage id='严重' />,
+        value: '1',
+        key: '严重',
     },
     {
         label: <FormattedMessage id='高级' />,
@@ -106,10 +101,15 @@ export const alarmLevel = [
         key: '高级',
     },
     {
-        label: <FormattedMessage id='严重' />,
-        value: '1',
-        key: '严重',
+        label: <FormattedMessage id='中级' />,
+        value: '3',
+        key: '中级',
     },
+    {
+        label: <FormattedMessage id='低级' />,
+        value: '4',
+        key: '低级',
+    }
 ];
 export const optionType = [
     {

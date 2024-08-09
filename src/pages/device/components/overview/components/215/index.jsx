@@ -174,7 +174,8 @@ const [option, setOption] = useState({})
     return (
         <div className={styles.content} style={{ backgroundColor: token.titleCardBgc }}>
             <div className={styles.title} style={{ backgroundColor: token.darkbgc }}>{decodeURI(getQueryString("title"))}
-                <div className={styles.sn}><span>SN:</span><span>{decodeURI(getQueryString("sn"))}</span></div>
+            <div className={styles.sn}><span>SN:</span><span>{props?.sn}</span></div>
+
             </div>
             <div className={styles.PcsData} style={{ backgroundColor: token.darkbgc }}>
                 <CardModel
@@ -242,21 +243,21 @@ const [option, setOption] = useState({})
                                         <div className={styles.valueOne}>
                                             <div className={styles.left}>
                                                 <span className={styles.key} style={{ lineHeight: '2.9167rem' }}>{t("温度/℃")}</span>
-                                                <span style={{ textAlign: 'left', width: '60%', color: '#00CBFF', fontSize: '2.0833rem' }}>{allData?.bms?.cellTempMax || '0'}</span>
+                                                <span className={styles.value} >{allData?.bms?.cellTempMax || '0'}</span>
                                             </div>
                                             <div className={styles.right}>
-                                                <span style={{ lineHeight: '2.9167rem' }}>{t("No.")}</span>
-                                                <span style={{ textAlign: 'left', color: '#00CBFF', width: '40%', fontSize: '2.0833rem' }}>{allData?.bms?.cellTempMaxNo || '0'}</span>
+                                                <span  className={styles.key} style={{ lineHeight: '2.9167rem' }}>{t("No.")}</span>
+                                                <span className={styles.value} >{allData?.bms?.cellTempMaxNo || '0'}</span>
                                             </div>
                                         </div>
                                         <div className={styles.valueOne}>
                                             <div className={styles.left}>
                                                 <span className={styles.key} style={{ lineHeight: '2.9167rem' }}>{t("电压/mV")}</span>
-                                                <span style={{ textAlign: 'left', width: '60%', color: '#00CBFF', fontSize: '2.0833rem' }}>{allData?.bms?.cellVolMax || '0'}</span>
+                                                <span className={styles.value}>{allData?.bms?.cellVolMax || '0'}</span>
                                             </div>
                                             <div className={styles.right}>
-                                                <span style={{ lineHeight: '2.9167rem' }}>{t("No.")}</span>
-                                                <span style={{ textAlign: 'left', color: '#00CBFF', width: '40%', fontSize: '2.0833rem' }}>{allData?.bms?.cellVolMaxNo || '0'}</span>
+                                                <span className={styles.key} style={{ lineHeight: '2.9167rem' }}>{t("No.")}</span>
+                                                <span className={styles.value}>{allData?.bms?.cellVolMaxNo || '0'}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -273,21 +274,21 @@ const [option, setOption] = useState({})
                                         <div className={styles.valueOne}>
                                             <div className={styles.left}>
                                                 <span className={styles.key} style={{ lineHeight: '2.9167rem' }}>{t("温度/℃")}</span>
-                                                <span style={{ textAlign: 'left', width: '60%', color: '#00CBFF', fontSize: '2.0833rem' }}>{allData?.bms?.cellTempMin || '0'}</span>
+                                                <span className={styles.value}>{allData?.bms?.cellTempMin || '0'}</span>
                                             </div>
                                             <div className={styles.right}>
-                                                <span style={{ lineHeight: '2.9167rem' }}>{t("No.")}</span>
-                                                <span style={{ textAlign: 'left', color: '#00CBFF', width: '40%', fontSize: '2.0833rem' }}>{allData?.bms?.cellTempMinNo || '0'}</span>
+                                                <span  className={styles.key} style={{ lineHeight: '2.9167rem' }}>{t("No.")}</span>
+                                                <span className={styles.value}>{allData?.bms?.cellTempMinNo || '0'}</span>
                                             </div>
                                         </div>
                                         <div className={styles.valueOne}>
                                             <div className={styles.left}>
                                                 <span className={styles.key} style={{ lineHeight: '2.9167rem' }}>{t("电压/mV")}</span>
-                                                <span style={{ textAlign: 'left', width: '60%', color: '#00CBFF', fontSize: '2.0833rem' }}>{allData?.bms?.cellVolMin || '0'}</span>
+                                                <span className={styles.value}>{allData?.bms?.cellVolMin || '0'}</span>
                                             </div>
                                             <div className={styles.right}>
-                                                <span style={{ lineHeight: '2.9167rem' }}>{t("No.")}</span>
-                                                <span style={{ textAlign: 'left', color: '#00CBFF', width: '40%', fontSize: '2.0833rem' }}>{allData?.bms?.cellVolMinNo || '0'}</span>
+                                                <span  className={styles.key} style={{ lineHeight: '2.9167rem' }}>{t("No.")}</span>
+                                                <span className={styles.value}>{allData?.bms?.cellVolMinNo || '0'}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -305,22 +306,22 @@ const [option, setOption] = useState({})
                     </div>
                     <div style={{ width: '80%',display:'flex' }}>
                         <div className={styles.topOne}>
-                            <div style={{color:"rgba(0, 255, 4, 1)",fontSize:'1.4583rem',textAlign:'center'}}>{allData?.bms?.soc || '0'}</div>
+                            <div className={styles.value} style={{color:"rgba(0, 255, 4, 1)",fontSize:'1.4583rem',textAlign:'center'}}>{allData?.pcs?.onlineState?(allData?.pcs?.onlineState==1?t('在线'):t('离线')): '-'}</div>
                             <div className={styles.label}>{t('PCS状态')}</div>
                             <div className={styles.bottomDes} ></div>
                         </div>
                         <div className={styles.topOne}>
-                            <div style={{color:"rgba(0, 203, 255, 1)",fontSize:'1.4583rem',textAlign:'center'}}>{allData?.tmeter?.totalActivePower || '0'}</div>
+                            <div className={styles.value} style={{color:"rgba(0, 203, 255, 1)",}}>{allData?.tmeter?.totalActivePower || '0'}</div>
                             <div className={styles.label}>{t('电表功率/kW')}</div>
                             <div className={styles.bottomDes} ></div>
                         </div>
                         <div className={styles.topOne}>
-                            <div style={{color:"rgba(0, 203, 255, 1)",fontSize:'1.4583rem',textAlign:'center'}}>{allData?.pcs?.totalActivePower || '0'}</div>
+                            <div className={styles.value} style={{color:"rgba(0, 203, 255, 1)",fontSize:'1.4583rem',textAlign:'center'}}>{allData?.pcs?.totalActivePower || '0'}</div>
                             <div className={styles.label}>{t('PCS功率/kW')}</div>
                             <div className={styles.bottomDes} ></div>
                         </div>
                         <div className={styles.topOne}>
-                            <div style={{color:"rgba(0, 203, 255, 1)",fontSize:'1.4583rem',textAlign:'center'}}>{allData?.bms?.power || '0'}</div>
+                            <div className={styles.value} style={{color:"rgba(0, 203, 255, 1)",fontSize:'1.4583rem',textAlign:'center'}}>{allData?.bms?.power || '0'}</div>
                             <div className={styles.label}>{t('BMS功率/kW')}</div>
                             <div className={styles.bottomDes} ></div>
                         </div>
@@ -332,12 +333,12 @@ const [option, setOption] = useState({})
             </div>
             <div className={styles.TodayEntity} style={{ backgroundColor: token.darkbgc }}>
                 <CardModel
-                    title={t('今日电能')}
+                    title={t('今日电能')+'(kWh)'}
                     content={<div className={styles.entityWrap}>
                         {todayData.map(it => {
                             return <>
                                 <div className={styles.oneCard}>
-                                    <div style={{ color: it.color, fontSize: '2.0833rem' }}>
+                                    <div style={{ color: it.color, fontSize: '2.0833rem',fontFamily:'DingTalkJinBuTi' }}>
                                         {allData?.gmeter?.[it?.key]|| '0'}
                                     </div>
                                     <div className={styles.label} >
@@ -357,7 +358,7 @@ const [option, setOption] = useState({})
                         {status.map(it => {
                             return <div className={styles.statusOne}>
                                 <span className={styles.title}>{it.title}</span>
-                                <Icon className={styles.value} type={it.value ? 'icon-danxuan-xuanzhong' : 'icon-danxuan'} style={{ color: it.value ? '#03B4B4' : '#fff', }} ></Icon>
+                                <Icon className={styles.value   } type={it.value ? 'icon-danxuan-xuanzhong' : 'icon-danxuan'} style={{ color: it.value ? '#03B4B4' : '#fff', }} ></Icon>
                             </div>
                         })}
                     </div>}

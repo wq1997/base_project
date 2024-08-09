@@ -9,12 +9,16 @@ import moment from "moment";
 import {
     getRevenue as getRevenueServe,
     getAllElectricExcel as getAllRevenueExcelServe,
-    getFetchPlantList2 as getFetchPlantListServe,
+    // getFetchPlantList2 as getFetchPlantListServe,
     showDataByTable as showDataByTableServe,
 } from "@/services";
 import {
-    getDtusOfPlant as getDtusOfPlantServe
+    getDtusOfPlant as getDtusOfPlantServe,
+
 } from "@/services/plant";
+import {
+    getFetchPlantList as getFetchPlantListServe,
+} from "@/services/deviceTotal";
 import { downloadFile } from "@/utils/utils";
 import styles from "./index.less";
 
@@ -246,12 +250,12 @@ const Electricity = () => {
         const res = await getFetchPlantListServe();
         if (res?.data?.data) {
             const data = res?.data?.data;
-            const plantList = data?.plantList?.map(item => {
+            const plantList = data?.map(item => {
                 return {
                     value: item.plantId,
                     label: item.name
                 }
-            })
+            });
             if (plantList?.length > 0) {
                 getDtusOfPlant(plantList, plantList?.[0]?.value)
             }

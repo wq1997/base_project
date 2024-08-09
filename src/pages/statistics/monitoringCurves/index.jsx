@@ -9,12 +9,14 @@ import moment from "moment";
 import {
     monitorCurve as monitorCurveServe,
     getAllRevenueExcel as getAllRevenueExcelServe,
-    getFetchPlantList2 as getFetchPlantListServe,
     exportCurve as exportCurveServe,
 } from "@/services";
 import {
     getDtusOfPlant as getDtusOfPlantServe
 } from "@/services/plant";
+import {
+    getFetchPlantList as getFetchPlantListServe,
+} from "@/services/deviceTotal";
 import { downloadFile } from "@/utils/utils";
 
 const MonitoringCurves = () => {
@@ -384,12 +386,12 @@ const MonitoringCurves = () => {
         const res = await getFetchPlantListServe();
         if (res?.data?.data) {
             const data = res?.data?.data;
-            const plantList = data?.plantList?.map((item, index) => {
+            const plantList = data?.map((item, index) => {
                 return {
                     value: item.plantId,
                     label: item.name,
                     disabled: data?.deviceCount?.[index] === 0,
-                    children: data?.deviceCount?.[index] && [
+                    children:  [
                         {
                             value: '',
                             label: ''

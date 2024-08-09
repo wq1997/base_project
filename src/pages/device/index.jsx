@@ -236,9 +236,10 @@ const RealtimeAlarm = () => {
             let arr = [];
             data.data?.map(it => {
                 arr.push({
+                    ...it,
                     label: it.name,
                     value: it.plantId,
-                    key: it.plantId
+                    key: it.plantId,
                 })
             })
             setDataOption([...arr]);
@@ -287,7 +288,7 @@ const RealtimeAlarm = () => {
             setPanTo([currentPlant?.longitude||108.9, currentPlant?.latitude||34.2]);
         }
     }, [currentPlantId]);
-
+    console.log("CCCCCC", currentPlant)
     return (
         <div
             className={styles.content}
@@ -331,7 +332,7 @@ const RealtimeAlarm = () => {
                     <div className={styles.add}>
                         {(user?.roleId===2||user?.roleId===3)&&<div onClick={changIsOpen} className={styles.addBtn}>{t('新增设备')}</div>}
                     </div>
-                    <div className={styles.cardContent} style={{backgroundColor:token.darkbgc,  height: 'calc(100% - 3.8021rem)'}}>
+                    <div className={styles.cardContent} style={{backgroundColor:token.titleCardBgc,  height: 'calc(100% - 2.3438rem)'}}>
                         <Table
                             dataSource={data}
                             changeIsOpenDel={changeIsOpenDel}

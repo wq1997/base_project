@@ -19,6 +19,7 @@ const Index = ({ plants, showInfo, panTo }) => {
     ];
 
     useEffect(() => {
+        console.log(plants,showInfo,panTo,12122);
         const _map =
             map ||
             new AMap.Map("map", {

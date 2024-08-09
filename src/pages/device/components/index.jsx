@@ -38,14 +38,14 @@ const Cabinet = () => {
         getQueryString("type")==14 ? setPageTypeList([
             { label: t('总览'), key: 'OverView' },
             { label: t('设备详情'), key: 'DeviceDetails' },
-            { label: t('监测曲线'), key: 'MonitoringCurves' },
+            // { label: t('监测曲线'), key: 'MonitoringCurves' },
             { label: t('pack详情'), key: 'PackDetails' },
             { label: t('策略配置'), key: 'Policy' },
 
         ]) : setPageTypeList([
             { label: t('总览'), key: 'OverView' },
             { label: t('设备详情'), key: 'DeviceDetails' },
-            { label: t('监测曲线'), key: 'MonitoringCurves' },
+            // { label: t('监测曲线'), key: 'MonitoringCurves' },
             { label: t('pack详情'), key: 'PackDetails' },
         ]);
     }
@@ -59,7 +59,7 @@ const Cabinet = () => {
             <div className={styles.content} style={{ backgroundColor:token.titleCardBgc  }}>
                 {activeKey === "OverView" && <OverView id={id} />}
                 {activeKey === "DeviceDetails" && <DeviceDetails />}
-                {activeKey === "MonitoringCurves" && <MonitoringCurves />}
+                {/* {activeKey === "MonitoringCurves" && <MonitoringCurves />} */}
                 {activeKey === "PackDetails" && <PackDetails />}
                 {activeKey === "Policy" && <Policy id={id} />}
             </div>

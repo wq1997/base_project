@@ -101,6 +101,32 @@ function Com(props) {
             // width: 200
         },
         {
+            title: t('经度'),
+            dataIndex: 'longitude',
+            key: 'longitude',
+            width: 100
+        },
+        {
+            title: t('纬度'),
+            dataIndex: 'latitude',
+            key: 'latitude',
+            width: 100
+        },
+        {
+            title: t('告警类型'),
+            dataIndex: 'alarms',
+            key: 'alarms',
+            width: 200,
+            render(value){
+                const valueList = value?value?.split(","):[];
+                const labelList = valueList?.map((item, index) => {
+                    const level = alarmLevel?.filter(level => level.value===item);
+                    return t(level?.[0]?.label?.props?.id)+(index===valueList?.length-1?"":', ');
+                })
+                return labelList;
+            }
+        },
+        {
             title: t('电站位置'),
             dataIndex: 'position',
             key: 'position',

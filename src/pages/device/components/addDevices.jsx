@@ -25,7 +25,7 @@ const App = (props) => {
             required: true,
             data: props.initSelectData?.userList,
             option:props.plantSelect,
-            disabled:props.title=='编辑设备'? true:false,
+            // disabled:props.title=='编辑设备'? true:false,
         },
         {
             label: '设备编码',
@@ -64,6 +64,7 @@ const App = (props) => {
     ]
 
     useEffect(() => {
+        form.resetFields();
         form.setFieldsValue(props.formData);
     }, [props.formData]);
     useEffect(() => {
