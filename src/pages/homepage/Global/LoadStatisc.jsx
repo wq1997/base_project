@@ -14,6 +14,7 @@ const LoadStatisc = ({ dataSource }) => {
         const x = dataSource?.map(data => data?.time);
         const data1 = dataSource?.map(data => data?.load);
         const data2 = dataSource?.map(data => data?.todayLoad);
+        const data3 = dataSource?.map(data => data?.energySoc);
         const data4 = dataSource?.map(data => data?.energyLoad);
         setOptions({
             legend: {
@@ -188,6 +189,7 @@ const LoadStatisc = ({ dataSource }) => {
                         },
                     },
                 },
+
                 {
                     name: "储能出力(kW)",
                     type: "line",
@@ -210,8 +212,8 @@ const LoadStatisc = ({ dataSource }) => {
                     },
                     itemStyle: {
                         normal: {
-                            color: colorList[2],
-                            borderColor: colorList[2],
+                            color: colorList[3],
+                            borderColor: colorList[3],
                         },
                     },
                 },

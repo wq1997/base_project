@@ -1,5 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { message, Button, Select, Form, Input, Modal, Row, Col, Radio, Space, InputNumber } from "antd";
+import {
+    message,
+    Button,
+    Select,
+    Form,
+    Input,
+    Modal,
+    Row,
+    Col,
+    Radio,
+    Space,
+    InputNumber,
+} from "antd";
 import {
     getUpdateInitData as getUpdateInitDataServer,
     getCityByProvince as getCityByProvinceServer,
@@ -17,15 +29,17 @@ const Company = ({ open, editId, onClose }) => {
     const [provinces, setProvinces] = useState([]);
     const [cities, setCities] = useState([]);
     const [stationTypes, setStationTypes] = useState([]);
+    const [cloudPlants, setCloudPlants] = useState([]);
 
     const getUpdateInitData = async () => {
         const res = await getUpdateInitDataServer(editId);
         if (res?.data?.status == "SUCCESS") {
-            const { editCompany, provinces, stationTypes } = res?.data?.data;
+            const { editCompany, provinces, stationTypes, sePlants } = res?.data?.data;
             editCompany ? form.setFieldsValue(editCompany) : form.resetFields();
             setEditData(editCompany);
             setProvinces(provinces);
             setStationTypes(stationTypes);
+            setCloudPlants(sePlants);
         }
     };
 
@@ -226,29 +240,11 @@ const Company = ({ open, editId, onClose }) => {
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                        <Form.Item noStyle dependencies={['supportAutoExecute']}>
-                            {({getFieldsValue}) => {
-                                const supportAutoExecute = getFieldsValue(['supportAutoExecute'])?.supportAutoExecute;
-                                // if(supportAutoExecute){
-                                //     form.setFieldsValue({
-                                //         stationCode: ""
-                                //     })
-                                // }
-                                return (
-                                    <Form.Item label="场站编号" name="stationCode">
-                                        <Input placeholder="请输入采日云平台登记场站号" disabled={!supportAutoExecute}/>
-                                    </Form.Item>
-                                )
-                            }}
-                        </Form.Item>
-                    </Col>
-                </Row>
-
-                <Row span={24}>
-                    <Col span={12}>
-                        <Form.Item noStyle dependencies={['supportAutoExecute']}>
-                            {({getFieldsValue}) => {
-                                const supportAutoExecute = getFieldsValue(['supportAutoExecute'])?.supportAutoExecute;
+                        <Form.Item noStyle dependencies={["supportAutoExecute"]}>
+                            {({ getFieldsValue }) => {
+                                const supportAutoExecute = getFieldsValue([
+                                    "supportAutoExecute",
+                                ])?.supportAutoExecute;
                                 // if(supportAutoExecute){
                                 //     form.setFieldsValue({
                                 //         autoConfirmTask: undefined
@@ -270,10 +266,33 @@ const Company = ({ open, editId, onClose }) => {
                                             <Radio value={false}>否</Radio>
                                         </Radio.Group>
                                     </Form.Item>
-                                )
+                                );
                             }}
                         </Form.Item>
                     </Col>
+                </Row>
+
+                <Row span={24}>
+                    <Col span={12}>
+                        <Form.Item
+                            label="最大容量(kWh)"
+                            name="maxCapacity"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "请输入最大负载量",
+                                },
+                            ]}
+                        >
+                            <InputNumber
+                                placeholder="请输入最大容量"
+                                style={{ width: "100%" }}
+                                min={0}
+                                precision={2}
+                            />
+                        </Form.Item>
+                    </Col>
+
                     <Col span={12}>
                         <Form.Item
                             label="最大负载量(KW)"
@@ -285,16 +304,66 @@ const Company = ({ open, editId, onClose }) => {
                                 },
                             ]}
                         >
-                            <InputNumber placeholder="请输入签约响应功率，要求整数" style={{ width: '100%' }} min={0} precision={0} />
+                            <InputNumber
+                                placeholder="请输入签约响应功率，要求整数"
+                                style={{ width: "100%" }}
+                                min={0}
+                                precision={0}
+                            />
                         </Form.Item>
                     </Col>
                 </Row>
 
                 <Row span={24}>
                     <Col span={12}>
-                        <Form.Item noStyle dependencies={['supportAutoExecute']}>
-                            {({getFieldsValue}) => {
-                                const supportAutoExecute = getFieldsValue(['supportAutoExecute'])?.supportAutoExecute;
+                        <Form.Item
+                            label="关联云平台场站"
+                            name="stationCode"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "请选择关联云平台场站",
+                                },
+                            ]}
+                        >
+                            <Select
+                                options={cloudPlants?.map(item => ({
+                                    label: item?.name,
+                                    value: item?.plantId,
+                                }))}
+                                placeholder="请选择云平台场站"
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item
+                            label="响应设备数"
+                            name="deviceCount"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "请输入响应设备数",
+                                },
+                            ]}
+                        >
+                            <InputNumber
+                                placeholder="请输入0-1000以内数字"
+                                style={{ width: "100%" }}
+                                min={0}
+                                max={1000}
+                                precision={0}
+                            />
+                        </Form.Item>
+                    </Col>
+                </Row>
+
+                <Row span={24}>
+                    <Col span={12}>
+                        <Form.Item noStyle dependencies={["supportAutoExecute"]}>
+                            {({ getFieldsValue }) => {
+                                const supportAutoExecute = getFieldsValue([
+                                    "supportAutoExecute",
+                                ])?.supportAutoExecute;
                                 return (
                                     <Form.Item
                                         label="紧急联系人"
@@ -308,14 +377,16 @@ const Company = ({ open, editId, onClose }) => {
                                     >
                                         <Input placeholder="请输入紧急联系人名称" />
                                     </Form.Item>
-                                )
+                                );
                             }}
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                        <Form.Item noStyle dependencies={['supportAutoExecute']}>
-                            {({getFieldsValue}) => {
-                                const supportAutoExecute = getFieldsValue(['supportAutoExecute'])?.supportAutoExecute;
+                        <Form.Item noStyle dependencies={["supportAutoExecute"]}>
+                            {({ getFieldsValue }) => {
+                                const supportAutoExecute = getFieldsValue([
+                                    "supportAutoExecute",
+                                ])?.supportAutoExecute;
                                 return (
                                     <Form.Item
                                         label="紧急联系人电话"
@@ -325,12 +396,15 @@ const Company = ({ open, editId, onClose }) => {
                                                 required: !supportAutoExecute,
                                                 message: "请输入紧急联系人电话",
                                             },
-                                            { pattern: TELPHONE_NUMBER_REG, message: '请输入正确的号码' }
+                                            {
+                                                pattern: TELPHONE_NUMBER_REG,
+                                                message: "请输入正确的号码",
+                                            },
                                         ]}
                                     >
                                         <Input placeholder="请输入紧急联系人电话" />
                                     </Form.Item>
-                                )
+                                );
                             }}
                         </Form.Item>
                     </Col>
@@ -348,30 +422,23 @@ const Company = ({ open, editId, onClose }) => {
                                 },
                             ]}
                         >
-                            <InputNumber placeholder="请输入0-100以内数字" style={{ width: '100%' }} min={0} max={100} />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item
-                            label="响应设备数"
-                            name="deviceCount"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "请输入响应设备数",
-                                },
-                            ]}
-                        >
-                            <InputNumber placeholder="请输入0-1000以内数字" style={{ width: '100%' }} min={0} max={1000} precision={0} />
+                            <InputNumber
+                                placeholder="请输入0-100以内数字"
+                                style={{ width: "100%" }}
+                                min={0}
+                                max={100}
+                            />
                         </Form.Item>
                     </Col>
                 </Row>
 
                 <Row span={24}>
                     <Col span={24}>
-                        <Form.Item noStyle dependencies={['supportAutoExecute']}>
-                            {({getFieldsValue}) => {
-                                const supportAutoExecute = getFieldsValue(['supportAutoExecute'])?.supportAutoExecute;
+                        <Form.Item noStyle dependencies={["supportAutoExecute"]}>
+                            {({ getFieldsValue }) => {
+                                const supportAutoExecute = getFieldsValue([
+                                    "supportAutoExecute",
+                                ])?.supportAutoExecute;
                                 return (
                                     <Form.Item
                                         label="响应能力统计"
@@ -388,9 +455,12 @@ const Company = ({ open, editId, onClose }) => {
                                             },
                                         ]}
                                     >
-                                        <ResCapTable data={editData?.responsivenessDetail} supportAutoExecute={supportAutoExecute} />
+                                        <ResCapTable
+                                            data={editData?.responsivenessDetail}
+                                            supportAutoExecute={supportAutoExecute}
+                                        />
                                     </Form.Item>
-                                )
+                                );
                             }}
                         </Form.Item>
                     </Col>

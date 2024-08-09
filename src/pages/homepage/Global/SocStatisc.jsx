@@ -12,9 +12,9 @@ const LoadStatisc = ({ dataSource }) => {
 
     const getOptions = () => {
         const x = dataSource?.map(data => data?.time);
-        const data1 = dataSource?.map(data => data?.load);
-        const data2 = dataSource?.map(data => data?.todayLoad);
-        const data4 = dataSource?.map(data => data?.energyLoad);
+
+        const data3 = dataSource?.map(data => data?.energySoc);
+
         setOptions({
             legend: {
                 icon: "circle",
@@ -113,7 +113,8 @@ const LoadStatisc = ({ dataSource }) => {
             ],
             yAxis: [
                 {
-                    name: "kW",
+                    name: "%",
+
                     type: "value",
                     axisTick: {
                         show: false,
@@ -131,84 +132,27 @@ const LoadStatisc = ({ dataSource }) => {
                         color: token.color11,
                     },
                 },
-                 
             ],
             series: [
                 {
-                    name: "前一日负载(kW)",
+                    name: "设备实时SOC(%)",
                     type: "line",
-                    data: data1,
+                    data: data3,
+            
                     symbolSize: 1,
                     symbol: "circle",
-         
-                    yAxisIndex: 0,
-                    showSymbol: false,
-                    lineStyle: {
-                        width: 2,
-                        // color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
-                        //         offset: 0,
-                        //         color: '#9effff'
-                        //     },
-                        //     {
-                        //         offset: 1,
-                        //         color: '#9E87FF'
-                        //     }
-                        // ])
-                    },
-                    itemStyle: {
-                        normal: {
-                            color: colorList[0],
-                            borderColor: colorList[0],
-                        },
-                    },
-                },
-                {
-                    name: "当日实时负载(kW)",
-                    type: "line",
-                    data: data2,
-                    symbolSize: 1,
-                    symbol: "circle",
-     
-                    yAxisIndex: 0,
-                    showSymbol: false,
-                    lineStyle: {
-                        width: 2,
-                        // color: new echarts.graphic.LinearGradient(1, 1, 0, 0, [{
-                        //         offset: 0,
-                        //         color: '#73DD39'
-                        //     },
-                        //     {
-                        //         offset: 1,
-                        //         color: '#73DDFF'
-                        //     }
-                        // ])
-                    },
-                    itemStyle: {
-                        normal: {
-                            color: colorList[1],
-                            borderColor: colorList[1],
-                        },
-                    },
-                },
-                {
-                    name: "储能出力(kW)",
-                    type: "line",
-                    data: data4,
-                    symbolSize: 1,
-                    symbol: "circle",
-          
+
                     showSymbol: false,
                     lineStyle: {
                         width: 2,
                     },
                     itemStyle: {
                         normal: {
-                            color: colorList[3],
-                            borderColor: colorList[3],
+                            color: colorList[2],
+                            borderColor: colorList[2],
                         },
                     },
                 },
-                
             ],
         });
     };
