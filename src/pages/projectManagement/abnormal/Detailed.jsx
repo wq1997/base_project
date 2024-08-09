@@ -1,9 +1,8 @@
-import { Space, Button, Table, theme, Modal, Form, DatePicker, Row, Input, InputNumber, Drawer } from "antd";
-import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE } from "@/utils/constants";
+import { Space, Button, Table, theme, DatePicker, Row } from "antd";
+import { DEFAULT_PAGINATION } from "@/utils/constants";
 import { SearchInput } from "@/components";
 import React, { useState, useEffect, useRef } from "react";
 import ReactECharts from "echarts-for-react";
-import * as echarts from "echarts";
 import styles from "./index.less";
 
 const Detailed = () => {
