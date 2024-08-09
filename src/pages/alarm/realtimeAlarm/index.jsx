@@ -173,6 +173,7 @@ const RealtimeAlarm = () => {
             style={{ width: '250px', marginRight: 30 }}
             placeholder={`${t('请选择设备')}`}
             value={deviceId}
+            allowClear
           />
           <div className={styles.level}>
             <Select

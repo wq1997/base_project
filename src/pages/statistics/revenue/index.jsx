@@ -251,6 +251,7 @@ const Revenue = () => {
                                 <Select
                                     options={deviceList}
                                     style={{ width: '250px', height: 40 }}
+                                    allowClear
                                 />
                             </Form.Item>
                             <Form.Item noStyle dependencies={['timeType']}>

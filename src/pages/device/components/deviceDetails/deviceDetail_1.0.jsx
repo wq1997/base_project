@@ -217,21 +217,21 @@ function Com({deviceVersion}) {
             const newPcsData = cloneObject(pcsData); // PCS信息
             newPcsData.data = newPcsData.data?.map(item => {
                 const newItem = cloneObject(item);
-                newItem.value = data.pcs[newItem.key]||"-";
+                newItem.value = data?.pcs?.[newItem.key]||"-";
                 return newItem;
             })
 
             const newBmsData = cloneObject(bmsData); // BMS信息
             newBmsData.data = newBmsData.data?.map(item => {
                 const newItem = cloneObject(item);
-                newItem.value = data.bms[newItem.key]||"-";
+                newItem.value = data?.bms?.[newItem.key]||"-";
                 return newItem;
             })
 
             const newMeasureMeterData = cloneObject(measureMeterData); // 计量电表
             newMeasureMeterData.data = newMeasureMeterData.data?.map(item => {
                 const newItem = cloneObject(item);
-                newItem.value = data.tmeter[newItem.key]||"-";
+                newItem.value = data?.tmeter?.[newItem.key]||"-";
                 return newItem;
             })
 
@@ -246,14 +246,14 @@ function Com({deviceVersion}) {
             const newMeasureDataData = cloneObject(measureDataData); // 计量数据
             newMeasureDataData.data = newMeasureDataData.data?.map(item => {
                 const newItem = cloneObject(item);
-                newItem.value = data.gmeter[newItem.key]||"-";
+                newItem.value = data?.gmeter?.[newItem.key]||"-";
                 return newItem;
             })
 
             const newOtherData = cloneObject(otherData); //其他设备
             newOtherData.data = newOtherData.data?.map(item => {
                 const newItem = cloneObject(item);
-                newItem.value = data.bms[newItem.key]||"-";
+                newItem.value = data?.bms?.[newItem.key]||"-";
                 return newItem;
             })
 
