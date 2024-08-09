@@ -54,7 +54,7 @@ const Index = ({ data }) => {
                 {
                     name: "Access From",
                     type: "pie",
-                    radius: ["70%", "80%"],
+                    radius: ["65%", "75%"],
                     avoidLabelOverlap: false,
                     padAngle: _alarms?.length > 1 ? 2 : 0,
                     itemStyle: {
@@ -135,7 +135,7 @@ const Index = ({ data }) => {
                             >
                                 {alarms?.reduce((prev, curr) => +prev + +curr?.value, 0)}
                             </div>
-                            <div className={styles.totalText} style={{ color: "#666" }}>
+                            <div className={styles.totalText} style={{color: token.descriptionColor}}>
                                 告警总数
                             </div>
                         </div>
@@ -160,8 +160,8 @@ const Index = ({ data }) => {
                                         background: item.color,
                                     }}
                                 ></div>
-                                <div className={styles.name}> {item.name}</div>
-                                <div className={styles.value}>{item.value}</div>
+                                <div className={styles.name} style={{color: token.descriptionColor}}> {item.name}</div>
+                                <div className={styles.value} style={{color: token.color1}}>{item.value}</div>
                             </div>
                         ))}
                     </div>

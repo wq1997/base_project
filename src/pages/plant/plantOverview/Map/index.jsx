@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
-import { Select, Button } from "antd";
+import { Select, theme as antdTheme } from "antd";
+import { useSelector } from "umi";
 import defalut from "@/assets/imges/default.jpg";
 import styles from "./index.less";
+import { useEmotionCss } from '@ant-design/use-emotion-css';
+import classNames from "classnames";
 
 const baseUrl = process.env.API_URL_1;
 
 const Index = ({ plants, activePlant, setActivePlant }) => {
+    const { token } = antdTheme.useToken();
+    const { theme } = useSelector(state => state.global);
     const [map, setMap] = useState();
     const defaultZoom = 5;
     const [center, setCenter] = useState([108.9, 34.2]);
@@ -14,6 +19,18 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
         map.setZoom(defaultZoom);
         map.setCenter(center);
     };
+
+    const fontColor = useEmotionCss(()=>{
+        return {
+            color: token.color9
+        }
+    })
+
+    const dataColor = useEmotionCss(()=>{
+        return {
+            color: token.color10
+        }
+    })
 
     useEffect(() => {
         const map = new AMap.Map("map", {
@@ -25,12 +42,16 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
             // ],
         });
         map.on("complete", async () => {
-            // map.setMapStyle("amap://styles/whitesmoke");
+            if(theme==="default"){
+                map.setMapStyle("amap://styles/white");
+            }else{
+                map.setMapStyle("amap://styles/blue");
+            }
             const infoWindow = new AMap.InfoWindow({ offset: new AMap.Pixel(0, -30) });
             setMap(map);
             addMarkers(map, infoWindow, plants);
         });
-    }, [plants]);
+    }, [plants, theme]);
 
     const addMarkers = (map, infoWindow, plants) => {
         plants.forEach((item, index) => {
@@ -60,28 +81,28 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
                     />
                     <div class=${styles.info}>
                         <div>
-                            <span class=${styles.name}>电站地址：</span>
-                            <span class=${styles.value} title=${item.address}> ${item.address}</span>
+                            <span class=${classNames(styles.name, fontColor)}>电站地址：</span>
+                            <span class=${classNames(styles.value, dataColor)} title=${item.address}> ${item.address}</span>
                         </div>
                         <div>
-                            <span class=${styles.name}>经度：</span>
-                            <span class=${styles.value}> ${item.longitude}</span>
+                            <span class=${classNames(styles.name, fontColor)}>经度：</span>
+                            <span class=${classNames(styles.value, dataColor)}> ${item.longitude}</span>
                         </div>
                         <div>
-                            <span class=${styles.name}>纬度：</span>
-                            <span class=${styles.value}> ${item.latitude}</span>
+                            <span class=${classNames(styles.name, fontColor)}>纬度：</span>
+                            <span class=${classNames(styles.value, dataColor)}> ${item.latitude}</span>
                         </div>
                         <div>
-                            <span class=${styles.name}>电站类型：</span>
-                            <span class=${styles.value}> ${item.type}</span>
+                            <span class=${classNames(styles.name, fontColor)}>电站类型：</span>
+                            <span class=${classNames(styles.value, dataColor)}> ${item.type}</span>
                         </div>
                         <div>
-                            <span class=${styles.name}>并网时间：</span>
-                            <span class=${styles.value}> ${item.gridTime}</span>
+                            <span class=${classNames(styles.name, fontColor)}>并网时间：</span>
+                            <span class=${classNames(styles.value, dataColor)}> ${item.gridTime}</span>
                         </div>
                         <div>
-                            <span class=${styles.name}>运行天数：</span>
-                            <span class=${styles.value}> ${item.runningTime}</span>
+                            <span class=${classNames(styles.name, fontColor)}>运行天数：</span>
+                            <span class=${classNames(styles.value, dataColor)}> ${item.runningTime}</span>
                         </div>
                     </div>
                 </div>
@@ -122,7 +143,7 @@ const Index = ({ plants, activePlant, setActivePlant }) => {
                     height: "50px",
                     paddingLeft: "8px",
                     display: "flex",
-                    background: "linear-gradient(to right, #fff 0%,  transparent 100%)",
+                    // background: "linear-gradient(to right, #fff 0%,  transparent 100%)",
                     // background:
                     //     "linear-gradient(to right, transparent 0%, #FFF 50%, transparent 100%)",
                     //  justifyContent: "center",

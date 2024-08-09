@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Button, DatePicker, Space, message } from "antd";
+import { theme, DatePicker, Space, message } from "antd";
 import styles from "./index.less";
 import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts";
@@ -9,6 +9,7 @@ import { getPowerGeneration as getPowerGenerationServer } from "@/services/overv
 import classnames from "classnames";
 
 const Index = ({ activePlant }) => {
+    const { token } = theme.useToken();
     const dateRef = useRef();
     const [sum, setSum] = useState();
     const [type, setType] = useState("DAY");
@@ -122,27 +123,27 @@ const Index = ({ activePlant }) => {
                     lineStyle: {
                         width: 2,
                     },
-                    areaStyle: {
-                        normal: {
-                            color: new echarts.graphic.LinearGradient(
-                                0,
-                                0,
-                                0,
-                                1,
-                                [
-                                    {
-                                        offset: 0,
-                                        color: "rgba(199, 237, 250,0.5)",
-                                    },
-                                    {
-                                        offset: 1,
-                                        color: "rgba(199, 237, 250,0.2)",
-                                    },
-                                ],
-                                false
-                            ),
-                        },
-                    },
+                    // areaStyle: {
+                    //     normal: {
+                    //         color: new echarts.graphic.LinearGradient(
+                    //             0,
+                    //             0,
+                    //             0,
+                    //             1,
+                    //             [
+                    //                 {
+                    //                     offset: 0,
+                    //                     color: "rgba(199, 237, 250,0.5)",
+                    //                 },
+                    //                 {
+                    //                     offset: 1,
+                    //                     color: "rgba(199, 237, 250,0.2)",
+                    //                 },
+                    //             ],
+                    //             false
+                    //         ),
+                    //     },
+                    // },
                 },
                 type == "DAY" && {
                     data: Object.values(predictData || {}),
@@ -156,8 +157,8 @@ const Index = ({ activePlant }) => {
                         },
                     },
                     lineStyle: {
-                        type: "dashed",
-                        width: 1,
+                        // type: "dashed",
+                        width: 2,
                     },
                 },
             ],
@@ -179,7 +180,7 @@ const Index = ({ activePlant }) => {
         <Card
             title="能量监测"
             others={
-                <div className={styles.powerGeneration} style={{ textAlign: "center" }}>
+                <div className={styles.powerGeneration} style={{ textAlign: "center"}}>
                     <Space>
                         {btns?.map(item => (
                             <div
@@ -187,6 +188,10 @@ const Index = ({ activePlant }) => {
                                     styles.btn,
                                     item?.type == type ? styles.active : ""
                                 )}
+                                style={{
+                                    border: item?.type == type ? "1px solid #49A2F8": `1px solid ${token.color2}`,
+                                    color: item?.type == type ? "#49A2F8": token.color2
+                                }}
                                 onClick={() => changeType(item?.type)}
                             >
                                 {item.name}
@@ -196,7 +201,6 @@ const Index = ({ activePlant }) => {
                         {type != "TOTAL" && (
                             <DatePicker
                                 style={{
-                                    background: "#FFF",
                                     color: "rgba(0,0,0,0.35)",
                                 }}
                                 picker={
@@ -227,10 +231,11 @@ const Index = ({ activePlant }) => {
                 <div style={{ height: "100%", position: "relative" }}>
                     <span
                         style={{
-                            color: "#666",
+                            color: token.descriptionColor,
                             fontSize: "12px",
                             position: "absolute",
                             right: "20px",
+                            top: 10
                         }}
                     >
                         {type == "TOTAL"

@@ -42,6 +42,7 @@ const Log = () => {
         {
             title: "告警级别",
             dataIndex: "levelText",
+            width: '25%',
             render: (_, record, index) => {
                 return <span style={{ color: colors[record?.level] }}>{record?.levelText}</span>;
             },
@@ -49,6 +50,7 @@ const Log = () => {
         {
             title: "推送方式",
             dataIndex: "disposeType",
+            width: '25%',
             render: (_, record, index) => {
                 return (
                     <SearchInput
@@ -70,6 +72,7 @@ const Log = () => {
         },
         {
             title: "状态",
+            width: '25%',
             dataIndex: "status",
             render: (_, record, index) => {
                 return (
@@ -88,6 +91,7 @@ const Log = () => {
         },
         {
             title: "接收用户",
+            width: '25%',
             dataIndex: "user",
             render: (_, record, index) => {
                 return "系统管理员";

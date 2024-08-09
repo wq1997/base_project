@@ -1,29 +1,27 @@
-import { useState, useEffect } from "react";
-import { Button, message, Popconfirm } from "antd";
-import { DownOutlined } from "@ant-design/icons";
+import { theme } from "antd";
 import classnames from "classnames";
 import styles from "./index.less";
 import dayjs from "dayjs";
-import plant from "../../../../../public/icons/plant.svg";
 
 const dateNums = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
 
 const Index = ({ data }) => {
+    const { token } = theme.useToken();
     return (
         <>
-            <div className={styles.index}>
+            <div className={styles.index} style={{backgroundColor: token.overviewCardBg}}>
                 {data && (
                     <>
                         <div className={classnames(styles.item, styles.today)}>
                             <div className={styles.weather}>
                                 <i
                                     class={`qi-${data?.[0]?.iconDay} icon`}
-                                    style={{ color: "#1677ff", fontSize: "32px" }}
+                                    style={{ color: token.color7, fontSize: "32px" }}
                                 ></i>
-                                <span className={styles.date}>{data?.[0]?.textDay}</span>
+                                <span className={styles.date} style={{color: token.descriptionColor}}>{data?.[0]?.textDay}</span>
                             </div>
                             <div className={styles.tempDate}>
-                                <div className={styles.temp}>
+                                <div className={styles.temp} style={{color: token.color1}}>
                                     {data?.[0]?.tempMin} ~ {data?.[0]?.tempMax} ℃
                                 </div>
                                 <div className={styles.date}>
@@ -38,7 +36,7 @@ const Index = ({ data }) => {
                                     <div className={styles.weather}>
                                         <i
                                             class={`qi-${item?.iconDay} icon`}
-                                            style={{ color: "#1677ff", fontSize: "32px" }}
+                                            style={{ color: token.color7, fontSize: "32px" }}
                                         ></i>
                                         <span className={styles.date}>{item.fxDate}</span>
                                     </div>

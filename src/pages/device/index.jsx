@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { SearchInput } from "@/components";
-import { Button, Space, Table, Popconfirm, notification, message } from "antd";
+import { Button, Space, Table, theme, notification, message } from "antd";
 import { DEFAULT_PAGINATION, COMMANDIDS } from "@/utils/constants";
 import AddDevice from "./AddDevice";
 import Detail from "./Detail";
@@ -25,6 +25,7 @@ const deviceStatusColor = {
 };
 
 const Log = () => {
+    const { token } = theme.useToken();
     const [dataSource, setDataSource] = useState([]);
     const [loading, setLoading] = useState(false);
     const [addDeviceOpen, setAddDeviceOpen] = useState(false);
@@ -381,7 +382,7 @@ const Log = () => {
                                 <QuestionCircleOutlined style={{ marginRight: "5px" }} />
                                 设备状态说明
                             </div>
-                            <div className="explainTable">
+                            <div className="explainTable" style={{background: token.color5}}>
                                 <Table
                                     bordered
                                     size="small"

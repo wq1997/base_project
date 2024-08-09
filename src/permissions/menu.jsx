@@ -1,8 +1,12 @@
-import { Menu } from "antd";
+import { Menu, theme as antdTheme } from "antd";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useSelector } from "umi";
 import useIcon from "@/hooks/useIcon";
-import { color } from "echarts";
+import icon1 from "../assets/imges/电站监控.svg";
+import icon2 from "../assets/imges/设备管理.svg";
+import icon3 from "../assets/imges/告警管理.svg";
+import icon4 from "../assets/imges/报表管理.svg";
+import icon5 from "../assets/imges/系统设置.svg";
 
 const { SubMenu } = Menu;
 
@@ -10,7 +14,7 @@ const MenuList = [
     {
         key: "/plant-monitoring",
         label: "电站监控",
-        icon: "icon-dianzhangaikuang",
+        icon: icon1,
         iconSize: "20px",
         children: [
             {
@@ -26,13 +30,13 @@ const MenuList = [
     {
         key: "/device-management",
         label: "设备管理",
-        icon: "icon-wodeshebei",
+        icon: icon2,
         iconSize: "22px",
     },
     {
         key: "/alarm-management",
         label: "告警管理",
-        icon: "icon-gaojing",
+        icon: icon3,
         iconSize: "23px",
         children: [
             {
@@ -48,13 +52,13 @@ const MenuList = [
     {
         key: "/report-management",
         label: "报表管理",
-        icon: "icon-baobiao",
+        icon: icon4,
         iconSize: "20px",
     },
     {
         key: "/system-settings",
         label: "系统设置",
-        icon: "icon-shezhi",
+        icon: icon5,
         iconSize: "23px",
         children: [
             {
@@ -71,6 +75,7 @@ const MenuList = [
 
 const MyMenu = () => {
     const Icon = useIcon();
+    const { token } = antdTheme.useToken();
     const [selectedKeys, setSelectedKeys] = useState("");
     const { theme } = useSelector(state => state.global);
 
@@ -83,15 +88,7 @@ const MyMenu = () => {
                         title={menu.label}
                         icon={
                             <div style={{ width: "23px" }}>
-                                <Icon
-                                    type={theme === "dark" ? menu.darkIcon || menu.icon : menu.icon}
-                                    style={{
-                                        color: pathname?.includes(menu.key)
-                                            ? "#1677ff"
-                                            : "rgba(0, 0, 0, 0.88)",
-                                        fontSize: menu.iconSize,
-                                    }}
-                                />
+                                <img src={menu.icon} style={{ width: "100%" }}/>
                             </div>
                         }
                     >
@@ -103,23 +100,10 @@ const MyMenu = () => {
                     <Menu.Item
                         key={menu.key}
                         icon={
-                            menu.icon && (
-                                <div style={{ width: menu.icon ? "23px" : 0 }}>
-                                    <Icon
-                                        type={
-                                            theme === "dark"
-                                                ? menu.darkIcon || menu.icon
-                                                : menu.icon
-                                        }
-                                        style={{
-                                            color: pathname?.includes(menu.key)
-                                                ? "#1677ff"
-                                                : "rgba(0, 0, 0, 0.88)",
-                                            fontSize: menu.iconSize,
-                                        }}
-                                    />
-                                </div>
-                            )
+                            menu.icon&&
+                            <div style={{ width: "23px" }}>
+                                <img src={menu.icon} style={{ width: "100%" }}/>
+                            </div>
                         }
                     >
                         <Link

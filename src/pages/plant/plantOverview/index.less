@@ -1,7 +1,13 @@
 .container {
-    height: 100%;
+    width: calc(100% - 12px);
+    height: calc(100% - 10px);
     display: flex;
     gap: 8px;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    padding: 8px;
+    box-sizing: border-box;
     .left,
     .right {
         height: 100%;
@@ -24,19 +30,21 @@
     }
     .right {
         width: 30%;
+        display: flex;
+        flex-direction: column;
         .weather {
             margin-bottom: 8px;
-            height: 80px;
+            height: 100px;
         }
         .flowchart {
-            height: 38%;
+            flex: 1;
         }
         .socialContribution {
             margin: 8px 0;
-            height: 130px;
+            height: 20%;
         }
         .plantAlarm {
-            height: calc(62% - 234px);
+            height: 33%;
         }
     }
 }
