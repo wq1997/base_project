@@ -57,7 +57,7 @@ const Account = () => {
         },
         {
             title: "姓名",
-            dataIndex: "姓名",
+            dataIndex: "username",
             key: "username",
             width: 150,
         },
