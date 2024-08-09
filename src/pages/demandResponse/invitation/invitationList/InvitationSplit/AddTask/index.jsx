@@ -33,6 +33,7 @@ const Company = ({
             confirmLoading={true}
             open={open}
             footer={null}
+            destroyOnClose={true}
             onCancel={() => onClose(false)}
         >
             <Form

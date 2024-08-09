@@ -273,7 +273,10 @@ const Company = ({ invitationSplitId, onClose }) => {
                 width={1000}
                 open={Boolean(invitationSplitId)}
                 onOk={handleOk}
-                onCancel={() => onClose()}
+                onCancel={() => {
+                    setWhPrice();
+                    onClose();
+                }}
                 destroyOnClose={true}
             >
                 <div style={{ padding: "10px 0" }}>
@@ -286,11 +289,12 @@ const Company = ({ invitationSplitId, onClose }) => {
                         <div className="item">
                             <span>度电报价(元)：</span>
                             <span>
-                                <Input
+                                <InputNumber
                                     value={whPrice}
+                                    precision={2}
                                     style={{ width: 200 }}
                                     placeholder="请输入度电报价"
-                                    onChange={e => setWhPrice(e.target.value)}
+                                    onChange={value => setWhPrice(value)}
                                 />
                             </span>
                         </div>

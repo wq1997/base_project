@@ -183,6 +183,7 @@ const BaseLine = ({ baseLineArgs, onClose }) => {
             confirmLoading={true}
             open={open}
             footer={null}
+            destroyOnClose={true}
             onCancel={() => onClose(false)}
         >
             <Summary />

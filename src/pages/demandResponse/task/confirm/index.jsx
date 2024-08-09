@@ -22,11 +22,12 @@ import {
     getTaskist as getTaskistServer,
 } from "@/services/task";
 import { history, useLocation } from "umi";
-import { getUrlParams } from "@/utils/utils";
+import { getUrlParams, hasPerm } from "@/utils/utils";
 import TaskDetail from "./TaskDetail";
 
 const colorList = ["#9E87FF", "#73DDFF", "#fe9a8b", "rgb(56, 91, 243)", "#9E87FF"];
 const Confirm = () => {
+    const { user } = useSelector(state => state.user);
     const { search, pathname } = useLocation();
     const { token } = antdTheme.useToken();
     const { theme } = useSelector(state => state.global);

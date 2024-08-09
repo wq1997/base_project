@@ -50,9 +50,9 @@ const Account = () => {
         },
         {
             title: "任务编号",
-            dataIndex: "id",
+            dataIndex: "code",
             render: (_, { resourcePlan }) => {
-                return resourcePlan?.id;
+                return resourcePlan?.code;
             },
         },
         {
@@ -214,11 +214,11 @@ const Account = () => {
                 invitationId,
                 code: taskCode,
                 exchangeType: responseType,
-                resourceName: stationName,
+                resourceId: stationName,
                 confirmDeadlineFrom: deadlineTimeFrom,
                 confirmDeadlineTo: deadlineTimeTo,
-                userConfirmStatus: userConfirmStatus ? [userConfirmStatus] : null,
-                szConfirmStatus: szConfirmStatus ? [szConfirmStatus] : null,
+                userConfirmStatusIn: userConfirmStatus ? [userConfirmStatus] : null,
+                szConfirmStatusIn: szConfirmStatus ? [szConfirmStatus] : null,
             },
         });
         if (res?.data?.status == "SUCCESS") {

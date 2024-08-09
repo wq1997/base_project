@@ -21,6 +21,7 @@ const localeEnum = {
 const App = () => {
     const location = useLocation();
     const { theme, locale } = useSelector(state => state.global);
+    console.log(locale, localeEnum[locale]);
 
     if (location?.pathname === "/") {
         history.push("/login");
