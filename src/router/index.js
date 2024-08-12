@@ -43,6 +43,10 @@ export default Routes = [
                         component: '@/pages/projectManagement/resourcesInventory'
                     },
                     {
+                        path: '/knowledgeBase',
+                        component: '@/pages/knowledgeBase'
+                    },
+                    {
                         path: "/system-configuration/account-management",
                         component: "@/pages/systemConfiguration/accountManagement",
                     },

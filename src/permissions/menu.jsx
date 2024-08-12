@@ -2,7 +2,7 @@ import { Menu } from "antd";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useSelector } from "umi";
 import useIcon from "@/hooks/useIcon";
-import { FundFilled, FolderOpenFilled, AppstoreFilled, SettingFilled } from "@ant-design/icons";
+import { FundFilled, FolderOpenFilled, AppstoreFilled, SettingFilled, DatabaseFilled } from "@ant-design/icons";
 
 const { SubMenu } = Menu;
 
@@ -68,6 +68,11 @@ const MenuList = [
                 label: '人力资源复盘'
             }
         ],
+    },
+    {
+        key: '/knowledgeBase',
+        label: '知识库',
+        icon: <DatabaseFilled />,
     },
     {
         key: "/system-configuration",
