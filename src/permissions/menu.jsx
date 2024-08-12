@@ -81,16 +81,16 @@ const MenuList = [
         darkIcon: "icon-wuliaoxuqiu-copy",
         children: [
             {
-                key: "/system-configuration/checkitem-configuration",
-                label: "巡检项配置",
-            },
-            {
                 key: "/system-configuration/account-management",
                 label: "账号管理",
             },
             {
                 key: "/system-configuration/role-management",
                 label: "角色管理",
+            },
+            {
+                key: "/system-configuration/checkitem-configuration",
+                label: "巡检项配置",
             },
         ],
     },
