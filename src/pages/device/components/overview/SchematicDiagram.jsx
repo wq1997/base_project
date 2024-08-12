@@ -203,7 +203,7 @@ const SchematicDiagram = ({dataSource, allData}) => {
                             {totalActivePowerData===0&&intl.formatMessage({id:'待机'})} */}
                             {allData?.pcs?.pcsState||intl.formatMessage({id:'待机'})}
                         </div>
-                        <div>{intl.formatMessage({id:'功率'})}：{dataSource?.totalActivePower}</div>
+                        <div>{intl.formatMessage({id:'功率'})}：{dataSource?.totalActivePower}kW</div>
                     </div>
                 </div>
             </div>

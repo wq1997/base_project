@@ -129,7 +129,7 @@ const HighAnysis = () => {
             })
 
             min = 10;
-            max = 40;
+            max = 45;
             splitNumber = 5;
         }
 

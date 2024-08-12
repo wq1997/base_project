@@ -124,7 +124,8 @@ const OverView = ({deviceVersion, sn}) => {
             data: [
                 {
                     title: "温度",
-                    value: 0
+                    value: 0,
+                    unit: '℃'
                 },
                 {
                     title: "No.",
@@ -132,7 +133,8 @@ const OverView = ({deviceVersion, sn}) => {
                 },
                 {
                     title: "电压",
-                    value: 0
+                    value: 0,
+                    unit: 'V'
                 },
                 {
                     title: "No.",
@@ -146,7 +148,8 @@ const OverView = ({deviceVersion, sn}) => {
             data: [
                 {
                     title: "温度",
-                    value: 0
+                    value: 0,
+                    unit: '℃'
                 },
                 {
                     title: "No.",
@@ -154,7 +157,8 @@ const OverView = ({deviceVersion, sn}) => {
                 },
                 {
                     title: "电压",
-                    value: 0
+                    value: 0,
+                    unit: 'V'
                 },
                 {
                     title: "No.",
@@ -427,7 +431,7 @@ const OverView = ({deviceVersion, sn}) => {
                                                             return (
                                                                 <div className={styles.subAreaRightItem}>
                                                                     <div className={styles.subAreaRightItemTitle}>{intl.formatMessage({id: item.title})}</div>
-                                                                    <div className={styles.subAreaRightItemValue}>{item.value}</div>
+                                                                    <div className={styles.subAreaRightItemValue}>{item.value}{item?.unit}</div>
                                                                 </div>
                                                             )
                                                         })
