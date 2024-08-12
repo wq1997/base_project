@@ -44,7 +44,6 @@ function Com(props) {
             it.label = `${it[str]}--${it.value}`
         });
         setInitSelectData({ ...data.data, timeZone: timeZoneList });
-        console.log(data.data,121212);
     }
     const t = (id) => {
         const msg = intl.formatMessage(
@@ -72,18 +71,15 @@ function Com(props) {
             title: t('设备总数'),
             dataIndex: 'dtuSize',
             key: 'dtuSize',
-            width: 200
         },    {
             title: t('设备在线'),
             dataIndex: 'onlines',
             key: 'onlines',
-            width: 200
         },
         {
             title: t('建站日期'),
             dataIndex: 'installDate',
             key: 'installDate',
-            width: 200,
             render:(val)=>{
                 return dayjs(val).format('YYYY-MM-DD')
             }
@@ -104,19 +100,16 @@ function Com(props) {
             title: t('经度'),
             dataIndex: 'longitude',
             key: 'longitude',
-            width: 100
         },
         {
             title: t('纬度'),
             dataIndex: 'latitude',
             key: 'latitude',
-            width: 100
         },
         {
             title: t('告警类型'),
             dataIndex: 'alarms',
             key: 'alarms',
-            width: 200,
             render(value){
                 const valueList = value?value?.split(","):[];
                 const labelList = valueList?.map((item, index) => {
@@ -188,7 +181,7 @@ function Com(props) {
         setFormData({
             ...record,
             userName: initSelectData?.userList.find(it => it.label === record.userNames?.[0])?.value,
-            priceUnit: initSelectData?.currencyList.find(it => it.label === record.priceUnit)?.value || initSelectData.currencyList?.[0]?.value,
+            priceUnit: initSelectData?.currencyList.find(it => it.value === record.priceUnit)?.value || initSelectData.currencyList?.[0]?.value,
             timeZone: initSelectData?.timeZone.find(it => it.label === record.timeZone)?.value || initSelectData.timeZone?.[0]?.value,
             // networkDate: dayjs(record.networkDate),
             installDate: dayjs(record.installDate),

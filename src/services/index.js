@@ -97,7 +97,7 @@ export const showDataByTable = (payload) => {
 }
 
 export const getCurveType = (payload) => {
-    return axiosInstance.get(`/minsys/curve/getCurveType`);
+    return axiosInstance.get(`/minsys/curve/getCurveType?deviceType=${payload.deviceType}`);
 }
 
 export const monitorCurve = (payload) => {

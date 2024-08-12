@@ -242,7 +242,7 @@ const HighAnysis = () => {
         const res = await getFetchPlantListServe();
         if (res?.data?.data) {
             const data = res?.data?.data;
-            const plantList = data?.map((item, index) => {
+            const plantList =  data?.plantList?.map((item, index) => {
                 return {
                     value: item.plantId,
                     label: item.name,

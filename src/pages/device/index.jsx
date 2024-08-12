@@ -232,9 +232,9 @@ const RealtimeAlarm = () => {
     const getAllPlant = async () => {
         const res = await getFetchPlantListServe();
         const data = res?.data;
-        if(data?.data){
+        if(data?.data?.plantList){
             let arr = [];
-            data.data?.map(it => {
+            data.data?.plantList.map(it => {
                 arr.push({
                     ...it,
                     label: it.name,
@@ -252,7 +252,8 @@ const RealtimeAlarm = () => {
         let { data } = await getDtusOfPlant({
             plantId: val
         });
-        data?.data === '' ? setData([]) : setData(JSON.parse(String(data?.data)))
+        data?.data === '' ? setData([]) : setData(JSON.parse(String(data?.data)));
+
         setCurrentPlantId(val);
         let res1 = await getBurEnergyStats2({ plantId: val });
         let res2 = await getDeviceStats({ plantId: val });
@@ -304,7 +305,8 @@ const RealtimeAlarm = () => {
                                     longitude: currentPlant?.longitude||0, 
                                     latitude: currentPlant?.latitude||0,
                                     plantName: currentPlant?.name,
-                                    installDate: dayjs(currentPlant?.installDate).format('YYYY-MM-DD')
+                                    installDate: dayjs(currentPlant?.installDate).format('YYYY-MM-DD'),
+                                    dtuSize:data?.length
                                 }
                             ]}
                             showInfo={true} 

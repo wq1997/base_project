@@ -10,6 +10,7 @@ import {
     monitorCurve as monitorCurveServe,
     getAllRevenueExcel as getAllRevenueExcelServe,
     exportCurve as exportCurveServe,
+    getCurveType as getCurveTypeServe
 } from "@/services";
 import {
     getDtusOfPlant as getDtusOfPlantServe
@@ -30,7 +31,7 @@ const MonitoringCurves = () => {
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState(`${intl.formatMessage({ id: '监测曲线' })}`);
 
-    const dataProList = [
+    const [dataProList,serDataProList] = useState([
         {
             value: 100,
             label: intl.formatMessage({ id: '设备功率' }),
@@ -61,7 +62,7 @@ const MonitoringCurves = () => {
             label: intl.formatMessage({ id: '堆单体温差' }),
             unit: '℃'
         },
-    ]
+    ]);
 
     const getParams = async (showMessage=true) => {
         let format = "YYYY-MM-DD";
@@ -358,7 +359,8 @@ const MonitoringCurves = () => {
                 data = data?.length > 0 ? data?.map(item => {
                     return {
                         value: item.id,
-                        label: item.name || intl.formatMessage({ id: '设备无名称' })
+                        label: item.name || intl.formatMessage({ id: '设备无名称' }),
+                        type:item.deviceTypeId
                     }
                 }) : [];
                 const currentIndex = plantList?.findIndex(item => item.value === plantId);
@@ -367,8 +369,6 @@ const MonitoringCurves = () => {
 
                 const currentPlantDevice = await form.getFieldValue("currentPlantDevice")
                 if (currentPlantDevice?.length === 0) {
-                    // const res = await getCurveTypeServe();
-                    // console.log("CCCCCC", res);
                     form.setFieldsValue({
                         currentPlantDevice: [plantId, data[0].value],
                         dataType: 100
@@ -386,12 +386,12 @@ const MonitoringCurves = () => {
         const res = await getFetchPlantListServe();
         if (res?.data?.data) {
             const data = res?.data?.data;
-            const plantList = data?.map((item, index) => {
+            const plantList = data?.plantList?.map((item, index) => {
                 return {
                     value: item.plantId,
                     label: item.name,
                     disabled: data?.deviceCount?.[index] === 0,
-                    children:  [
+                    children:  data?.deviceCount?.[index] &&[
                         {
                             value: '',
                             label: ''
@@ -443,8 +443,13 @@ const MonitoringCurves = () => {
                                 options={plantDeviceList}
                                 onChange={async value => {
                                     if (value?.length === 1) {
-                                        getDtusOfPlant(plantDeviceList, value[0])
+                                        getDtusOfPlant(plantDeviceList, value[0]);
                                     }
+                                    let currentPlant=plantDeviceList.find(it=>it.value==value[0]);
+                                    let currentDevice=currentPlant.children.find(it=>it.value==value[1]);
+                                        if (currentDevice.type) {
+                                         const res = await getCurveTypeServe({deviceType:currentDevice.type});
+                                                serDataProList(res?.data?.data)                                        }
                                 }}
                                 style={{ width: '250px', height: 40 }}
                             />

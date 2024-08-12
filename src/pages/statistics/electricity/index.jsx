@@ -250,7 +250,7 @@ const Electricity = () => {
         const res = await getFetchPlantListServe();
         if (res?.data?.data) {
             const data = res?.data?.data;
-            const plantList = data?.map(item => {
+            const plantList = data?.plantList?.map(item => {
                 return {
                     value: item.plantId,
                     label: item.name

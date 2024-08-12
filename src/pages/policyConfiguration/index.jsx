@@ -41,7 +41,7 @@ function Com({ id }) {
     }, []);
     useEffect(() => {
         getHistory();
-    }, [id])
+    }, [id,mode])
     useEffect(() => {
         connectSocket(
             ISSUE_COMMAND,

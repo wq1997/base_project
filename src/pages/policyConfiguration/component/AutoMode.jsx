@@ -336,6 +336,9 @@ const EditableCell = ({
 const App = ({ devId, dtuId, historyAllData }) => {
   const { token } = theme.useToken();
   const [dataSource, setDataSource] = useState(modelData);
+  const [rangePower, setRangePower] = useState(0);
+  const [cmdTypeId, setCmdTypeId] = useState(0);
+
   const intl = useIntl();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form1] = Form.useForm();
@@ -469,7 +472,6 @@ const App = ({ devId, dtuId, historyAllData }) => {
       ...row,
     });
     setDataSource(newData);
-    console.log(newData);
   };
   const components = {
     body: {
@@ -525,6 +527,8 @@ const App = ({ devId, dtuId, historyAllData }) => {
   }
   const initData = () => {
     let arr = [];
+    console.log(historyAllData?.pcsPowerWaveRange,12212);
+    setRangePower(historyAllData?.pcsPowerWaveRange);
     modelData?.map((it, index) => {
       if (index !== 23 && historyAllData.monPowers?.length) {
         arr.push({
@@ -553,14 +557,14 @@ const App = ({ devId, dtuId, historyAllData }) => {
             <InputNumber style={{
               width: '105px',
             }}
-              defaultValue={allPolicy.pcsPowerWaveRange}
-              onChange={(value) => changeInput(value, 'pcsPowerWaveRange')}
+              defaultValue={historyAllData.pcsPowerWaveRange}
+              onChange={(value) => setRangePower(value)}
             />
-            <div className={styles.selectionBox} style={{ backgroundColor: token.defaultBg }} onClick={() => showModal(devId.pcsDevId, 'pcsPowerWaveRange', 'pcsPowerWaveRange', allPolicy.pcsPowerWaveRange, t('功率波动范围'))} >{t('下发')}</div>
+                  <Button type="primary" onClick={() => {setIsModalOpen(true);setCmdTypeId(7011)}}  style={{ backgroundColor: token.defaultBg,  display: 'block', marginLeft: 'auto' }}>{t("下发")}</Button>
           </Flex>
         </Flex>
       </div>}
-      <Button type="primary" onClick={() => setIsModalOpen(true)} style={{ backgroundColor: token.defaultBg, marginBottom: "30px", display: 'block', marginLeft: 'auto' }}>{t("下发")}</Button>
+      <Button type="primary" onClick={() => {setIsModalOpen(true);setCmdTypeId(7013)}} style={{ backgroundColor: token.defaultBg, marginBottom: "30px", display: 'block', marginLeft: 'auto' }}>{t("下发")}</Button>
       <Table
         components={components}
         rowClassName={() => 'editable-row'}
@@ -594,7 +598,8 @@ const App = ({ devId, dtuId, historyAllData }) => {
           const publicKeyRes = await getPublicKeySever();
           if (publicKeyRes?.data) {
             const publicKey = publicKeyRes?.data;
-            let monPowers = [], tuePowers = [], wedPowers = [], thuPowers = [], friPowers = [], satPowers = [], sunPowers = [];
+            if (cmdTypeId==7013) {
+              let monPowers = [], tuePowers = [], wedPowers = [], thuPowers = [], friPowers = [], satPowers = [], sunPowers = [];
             dataSource?.map((it, index) => {
               monPowers?.push(it?.monPowers);
               tuePowers?.push(it?.tuePowers);
@@ -608,7 +613,7 @@ const App = ({ devId, dtuId, historyAllData }) => {
             let { data } = await sendBurCmd2({
               mode: 1,
               dtuId,
-              cmdTypeId: 7013,
+              cmdTypeId,
               devId: devId.pcsDevId,
               monPowers,
               tuePowers,
@@ -624,6 +629,23 @@ const App = ({ devId, dtuId, historyAllData }) => {
             } else {
               message.warning(data?.msg);
             }
+            }else{
+              const values = await form1.validateFields();
+              let { data } = await sendBurCmd2({
+                mode: 1,
+                dtuId,
+                cmdTypeId,
+                devId: devId.pcsDevId,
+                pcsPowerWaveRange:rangePower,
+                password: getEncrypt(publicKey, values.password),
+              });
+              if (data.code == 'ok') {
+                message.success(t('命令下发成功'));
+              } else {
+                message.warning(data?.msg);
+              }
+            }
+           
             setIsModalOpen(false);
             form1.resetFields();
           }
