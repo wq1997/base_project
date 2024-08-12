@@ -3,11 +3,11 @@ const path = '/microgrid'
 
 // 获取并网点汇充放电量、效率、收益图
 export const getChargeDischargeEnergySevenDaysDtuId = (payload) => {
-    return axiosInstance.get(`${path}/getChargeDischargeEnergySevenDaysDtuId?dtuId=${payload.dtuId}`);
+    return axiosInstance.get(`${path}/getChargeDischargeEnergySevenDaysGridPointId?gridPointId=${payload.dtuId}`);
 }
 // 获取当前并网点所有在线告警
 export const getNowAlarmsByDtu = (payload) => {
-    return axiosInstance.get(`${path}/getNowAlarmsByDtu?dtuId=${payload.dtuId}`);
+    return axiosInstance.get(`${path}/getNowAlarmsByGridPointId?gridPointId=${payload.dtuId}`);
 }
 // 获取并网点运行指标
 export const getRunMetricsj = (payload) => {
@@ -15,11 +15,11 @@ export const getRunMetricsj = (payload) => {
 }
 // 获取并网点获取收益
 export const getIncomeByDtuId = (payload) => {
-    return axiosInstance.get(`${path}/getIncomeByDtuId?dtuId=${payload.dtuId}`);
+    return axiosInstance.get(`${path}/getIncomeByGridPointId?gridPointId=${payload.dtuId}`);
 }
 // 获取设备电量
 export const getEnergySummaryByDtu = (payload) => {
-    return axiosInstance.get(`${path}/getEnergySummaryByDtu?dtuId=${payload.dtuId}`);
+    return axiosInstance.get(`${path}/getEnergySummaryByGridPointId?gridPointId=${payload.dtuId}`);
 }
 // 获取电站下所有设备充放电量、效率、收益图
 export const getChargeDischargeEnergySevenDaysByPlantId = (payload) => {
