@@ -92,6 +92,10 @@ const MenuList = [
                 key: "/system-configuration/checkitem-configuration",
                 label: "巡检项配置",
             },
+            {
+                key: '/system-configuration/alarm-configuration',
+                label: '项目告警配置'
+            }
         ],
     },
 ];

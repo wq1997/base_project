@@ -58,6 +58,10 @@ export default Routes = [
                         path: "/system-configuration/checkitem-configuration",
                         component: "@/pages/systemConfiguration/checkitemConfiguration",
                     },
+                    {
+                        path: '/system-configuration/alarm-configuration',
+                        component: '@/pages/systemConfiguration/alarmConfiguration'
+                    }
                 ],
             },
             { path: "/login", component: "@/pages/account/login" },

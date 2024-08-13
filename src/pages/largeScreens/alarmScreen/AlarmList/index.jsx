@@ -33,7 +33,7 @@ const Index = ({ initData }) => {
         },
         {
             title: "告警等级",
-            dataIndex: "signalName",
+            dataIndex: "priorZh",
         },
         {
             title: "设备名称",
@@ -47,10 +47,10 @@ const Index = ({ initData }) => {
             title: "开始时间",
             dataIndex: "begin",
         },
-        {
-            title: "结束时间",
-            dataIndex: "end",
-        },
+        // {
+        //     title: "结束时间",
+        //     dataIndex: "end",
+        // },
     ];
 
     const getList = async () => {
@@ -65,7 +65,7 @@ const Index = ({ initData }) => {
             pageNum: current,
             pageSize,
             queryCmd: {
-                signalName,
+                prior: signalName,
                 deviceNameLike,
                 plantId,
                 descLike,
@@ -123,11 +123,11 @@ const Index = ({ initData }) => {
 
     useEffect(() => {
         if (!initData) return;
-        const { signalNames, plans } = initData;
+        const { priors, plans } = initData;
         setAlarmLevelOptions(
-            signalNames?.map(item => ({
-                name: item,
-                code: item,
+            priors?.map(item => ({
+                name: item?._2,
+                code: item?._1,
             }))
         );
         setPlantNameOptions(

@@ -12,19 +12,12 @@ const AlarmAnysis = ({ data }) => {
                             size={200}
                             depth={50}
                             alpha={65}
-                            colors={["#1bbfb8","#ccc40e", "#d96b35"]}
+                            colors={["#F09D9D", "#BCBDE5", "#EEDFAF", "#80D9D3"]}
                             data={data}
-                            // data={
-                            //     [
-                            //         ['一般', data?.[0]?.[1]+10],
-                            //         ['中度', 40],
-                            //         ['严重', data?.[1]?.[1]-40]
-                            //     ]
-                            // }
                         />
                     )}
                 </div>
-            }
+            }xq
         />
     );
 };

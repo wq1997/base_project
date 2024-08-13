@@ -125,10 +125,9 @@ const Business = ({ typeList, currentType, onChangedType }) => {
                         <div className={styles.rightItem}>
                             <AlarmAnysis
                                 data={
-                                    dataSource && [
-                                        ["一般", dataSource?.signalName2Count?.["一般告警"] || 0],
-                                        ["严重", dataSource?.signalName2Count?.["严重告警"] || 0],
-                                    ]
+                                    dataSource && Object?.keys(dataSource?.prior2Count||{})?.map(item => {
+                                        return [item, dataSource?.prior2Count?.[item||0]]
+                                    })
                                 }
                             />
                         </div>
@@ -219,7 +218,7 @@ const Business = ({ typeList, currentType, onChangedType }) => {
                                             },
                                             {
                                                 title: "告警等级",
-                                                key: "signalName",
+                                                key: "priorZh",
                                             },
                                             {
                                                 title: "告警描述",
