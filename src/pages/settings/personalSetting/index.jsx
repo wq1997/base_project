@@ -7,7 +7,7 @@ const Index = () => {
     const items = [
         {
             key: "ChangePassword",
-            label: "修改密码", 
+            label: "修改密码",
             children: <ChangePassword />,
         },
         {

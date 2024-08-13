@@ -34,24 +34,24 @@ const MenuList = [
         iconSize: "22px",
     },
     {
-        key: "/alarm-management",
-        label: "告警管理",
+        key: "/alarm-center",
+        label: "告警中心",
         icon: icon3,
         iconSize: "23px",
         children: [
             {
-                key: "/alarm-management/active-record",
+                key: "/alarm-center/active-record",
                 label: "告警记录",
             },
-            {
-                key: "/alarm-management/alarm-push",
-                label: "告警推送",
-            },
+            // {
+            //     key: "/alarm-management/alarm-push",
+            //     label: "告警推送",
+            // },
         ],
     },
     {
-        key: "/report-management",
-        label: "报表管理",
+        key: "/report-statistics",
+        label: "报表统计",
         icon: icon4,
         iconSize: "20px",
     },

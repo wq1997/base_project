@@ -18,11 +18,11 @@ export default Routes = [
                     },
                     { path: "/device-management", component: "@/pages/device" },
                     {
-                        path: "/alarm-management/active-record",
+                        path: "/alarm-center/active-record",
                         component: "@/pages/alarm/alarmRecord",
                     },
-                    { path: "/alarm-management/alarm-push", component: "@/pages/alarm/alarmPush" },
-                    { path: "/report-management", component: "@/pages/report" },
+                    { path: "/alarm-center/alarm-push", component: "@/pages/alarm/alarmPush" },
+                    { path: "/report-statistics", component: "@/pages/report" },
                     {
                         path: "/system-settings/personal-setting",
                         component: "@/pages/settings/personalSetting",
