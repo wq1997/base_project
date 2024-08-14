@@ -214,6 +214,7 @@ const Electricity = () => {
 
     const getDtusOfPlant = async (plantList, plantId) => {
         form.setFieldsValue({ deviceId: undefined });
+        console.log(plantList,122,plantId);
         const res = await getDtusOfPlantServe({ plantId });
         if (res?.data?.data) {
             let data = res?.data?.data;
@@ -235,7 +236,9 @@ const Electricity = () => {
                 // 如果是没选择 默认第一个
                 const { plantId: currentPlantId } = await form.getFieldsValue(["plantId"])
                 if (!currentPlantId) {
-                    form.setFieldsValue({ plantId, deviceId: data?.[0]?.value })
+                    form.setFieldsValue({ plantId, deviceId: data?.[0]?.value });
+        console.log(plantList,122,plantId);
+
                     setTimeout(async () => {
                         const params = await getParams();
                         getDataSource(params);
