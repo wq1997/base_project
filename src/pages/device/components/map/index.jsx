@@ -22,7 +22,7 @@ const Index = ({ plants, showInfo, panTo }) => {
         const _map =
             map ||
             new AMap.Map("map", {
-                mapStyle: "amap://styles/grey",
+                mapStyle: "amap://styles/darkblue",   //darkblue  blue  grey
                 zoom: defaultZoom,
                 center: defaultCenter,
             });

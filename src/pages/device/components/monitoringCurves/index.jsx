@@ -148,8 +148,6 @@ function Com(props) {
         let unit = options.find(it => it.value == val).unit
         setDataType(val);
         setUnit(unit);
-        // setTitle(a.children);
-        console.log(a,val);
     }
     const changeDate = (val, str) => {
         setDateStr(str);
@@ -158,7 +156,6 @@ function Com(props) {
     const downLoadFoodModel = () => {  // 菜品模板下载
         let fileName = options.find(it => it.value == dataType)?.label;
         let sheetName = options.find(it => it.value == dataType)?.label;
-      
         if (dataType==999) {
             let sheetFilter = ['time','charge','discharge'];
             let sheetHeader = ["Time",t('充电电量'),t('放电电量')];

@@ -3,7 +3,7 @@
     height: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows:  5.2083rem 8.3333rem 1fr 1fr 1fr 1fr;
+    grid-template-rows:  4.1667rem 8.3333rem 1fr 1fr 1fr 1fr;
     grid-auto-columns: 1fr;
     gap: .8333rem .8333rem;
     grid-auto-flow: row;
@@ -16,7 +16,7 @@
     'TodayEntity center center Bms1';
 
     >div {
-        border-radius: 16px;
+        border-radius: .8333rem;
     }
 }
 
@@ -26,14 +26,15 @@
     justify-content: center;
     align-items: center;
     position: relative;
+    font-size: 1.6667rem;
 
     .sn {
         position: absolute;
-        bottom: 10px;
+        bottom: .5208rem;
         right: 3%;
-
+        font-size: 1.25rem;
         span {
-            margin-right: 15px;
+            margin-right: .7813rem;
         }
     }
 }
@@ -45,31 +46,32 @@
         width: 100%;
         height:calc(100% - 0.8333rem);
         display: flex;
-        border-radius: 16px;
+        border-radius: .8333rem;
 
         .pcsOne {
             width: 50%;
 
             .pcsOneTitle {
-                height: 50px;
-                line-height: 50px;
-                // background-color: #212849;
+                height: 2.6042rem;
+                line-height: 2.6042rem;
                 display: flex;
                 justify-content: space-around;
-
             }
 
             .pcsOneBody {
-                height: calc(100% - 50px);
+                height: calc(100% - 2.6042rem);
                 display: flex;
                 flex-direction: column;
                 justify-content: space-around;
-
                 .oneData {
                     display: flex;
                     justify-content: space-around;
+                    .key{
+                        font-size: 1.0417rem;
+                    }
                     .value{
                         color: #00CBFF;
+                        font-size: 1.0417rem;
                     }
                 }
             }
@@ -84,31 +86,34 @@
     .valueOne {
         .left {
             min-width: 5.2083rem;
+            font-size: .7292rem;
 
             .key{
-                min-width: 5.2083rem;
+                min-width: 5.7292rem;
             }
             .value{
-                text-align: center;
-                width: 60%;
+                text-align: left;
+                width: 45%;
                 color: #00CBFF;
-                font-size:1.3542rem;
+                font-size: 1.0417rem;
                 font-family: DingTalkJinBuTi;
-
             }
         }
 
         .right {
             min-width: 5.2083rem;
+            text-align: left;
+            font-size: .7292rem;
+
             .key{
                 min-width: 5.2083rem;
                 text-align: center;
             }
             .value{
-                text-align: center;
+                text-align: left;
                 width:60%;
                 color: #00CBFF;
-                font-size:1.3542rem;
+                font-size: 1.0417rem;
                 font-family: DingTalkJinBuTi;
             }
           
@@ -118,20 +123,7 @@
 
 }
 
-.Bms2 {
-    grid-area: Bms2;
 
-    .left {
-        min-width: 180px;
-        .key{
-            min-width: 100px;
-        }
-    }
-
-    .right {
-        min-width: 100px;
-    }
-}
 
 .TodayEntity {
     grid-area: TodayEntity;
@@ -150,72 +142,25 @@
         .label{
             padding-left: .7813rem;
             background: no-repeat left url('../../../../../../assets/svg/leftDes.svg');
-            // background-position:-0.5208rem
+            font-size: .7292rem;
+        }
+        .value {
+            font-family: DingTalkJinBuTi;
         }
        }
     }
 }
 
-.powerA {
-    grid-area: powerA;
 
-    .pcsWrap {
-        width: 100%;
-        height: 100%;
-        padding: 26px 34px;
-        display: flex;
-        background-color: #0D1430;
-
-        .pcsOne {
-            width: 100%;
-            height: 100%;
-            border-radius: 16px;
-            border: 1px solid #212849;
-            font-size: 20px;
-
-            .pcsOneTitle {
-                width: 100%;
-                background-color: #212849;
-                padding: 10px 0;
-                display: flex;
-                justify-content: space-around;
-            }
-
-            .pcsOneBody {
-                height: calc(100% - 50px);
-                display: flex;
-                flex-direction: column;
-                justify-content: space-around;
-
-                .oneData {
-                    display: flex;
-                    justify-content: space-around;
-
-                    .key {
-                        width: 140px;
-                    }
-
-                    .value {
-                        width: 80px;
-
-                    }
-                }
-            }
-        }
-
-    }
-}
 
 .status {
     grid-area: status;
-
-    
     .statusWrap {
         display: flex;
-        // flex-direction: column;
         justify-content: space-around;
         align-items: center;
         height:calc(100% - 0.8333rem);
+        padding-top: 1.1458rem;
 
 
         .statusOne {
@@ -223,14 +168,16 @@
             justify-content: space-around;
             background-color: rgba(33, 42, 82, 1);
             width: 30%;
-            height: 30%;
+            height: 40%;
             border-radius: .2083rem;
-            .title {
-                // min-width: 150px;
-                font-size: 1.0417rem;
-
+             .title {
+                font-size: .8333rem!important;
             }
-
+    
+            .value {
+                font-size: .8333rem  !important;
+    
+            }
 
         }
     }
@@ -247,21 +194,21 @@
         padding:1.3021rem 1.0417rem;
         width: 100%;
         height:calc(100% - 0.8333rem);
+
         .bmsTitle {
             width: 100%;
-
+            font-size: 1.0417rem;
+            margin: 1.0417rem 0;
             img {
                 margin-right: .2604rem;
-                
             }
         }
-
         .bmsBody {
             display: flex;
             justify-content: space-around;
             align-items: center;
-            height: calc(100% - 30px);
-
+            height: calc(100% - 3.125rem);
+            font-size: .9375rem;
             img {
                 height: 20%;
                 min-height: 40px;
@@ -301,7 +248,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-around;
-            padding-top: 15px;
+            padding-top: .7813rem;
            font-size: .8333rem;
            .bottomDes{
             width:'100%';
@@ -310,6 +257,7 @@
            }
            .label{
             text-align: center;
+            font-size: .7292rem;
            }
            .value{
             font-size: 1.4583rem;
@@ -326,7 +274,7 @@
         align-items: center;
         img{
             width: 18.8021rem;
-            height: 27.9167rem;
+            height: 26.0417rem;
         }
     }
 }

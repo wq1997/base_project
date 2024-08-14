@@ -3,7 +3,7 @@
     height: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 5.2083rem 8.3333rem 1fr 1fr 1fr 1fr;
+    grid-template-rows:  4.1667rem 8.3333rem 1fr 1fr 1fr 1fr;
     grid-auto-columns: 1fr;
     gap: .8333rem .8333rem;
     grid-auto-flow: row;
@@ -14,7 +14,6 @@
         'TodayEntity center center Bms1'
         'TodayEntity center center Bms2'
         'TodayEntity center center Bms2';
-
     >div {
         border-radius: .8333rem;
     }
@@ -53,10 +52,8 @@
             .pcsOneTitle {
                 height: 2.6042rem;
                 line-height: 2.6042rem;
-                // background-color: #212849;
                 display: flex;
                 justify-content: space-around;
-
             }
 
             .pcsOneBody {
@@ -68,9 +65,12 @@
                 .oneData {
                     display: flex;
                     justify-content: space-around;
-
-                    .value {
+                    .key{
+                        font-size: 1.0417rem;
+                    }
+                    .value{
                         color: #00CBFF;
+                        font-size: 1.0417rem;
                     }
                 }
             }
@@ -82,22 +82,26 @@
 .Bms1 {
     grid-area: Bms1;
     display: flex;
-
+.bmsTitle{
+    margin-bottom: .5208rem;
+}
     .valueOne {
         .left {
             min-width: 9.375rem;
+            text-align: left;
+            font-size: .7292rem;
             .key {
                 min-width: 5.2083rem;
                 text-align: left;
-                font-size: .8333rem;
+                line-height:  1.0417rem;
 
             }
 
             .value {
-                text-align: center;
-                width: 60%;
+                text-align: left;
+                width: 50%;
                 color: #00CBFF;
-                font-size: .8333rem;
+                font-size: 1.0417rem;
                 font-family: DingTalkJinBuTi;
 
             }
@@ -106,13 +110,21 @@
         .right {
             min-width: 5.2083rem;
             text-align: left;
-            font-size: .8333rem;
+            font-size: .7292rem;
+            margin-right: 20%;
 
+            .key{
+                width:2.6042rem;
+                // display: inline-block;
+                text-align: left;
+                line-height:  1.0417rem;
+            }
             .value {
-                text-align: center;
-                width: 60%;
+                text-align: left;
+
+                width: 50%;
                 color: #00CBFF;
-                font-size: .8333rem;
+                font-size: 1.0417rem;
                 font-family: DingTalkJinBuTi;
     
             }
@@ -124,24 +136,28 @@
 
 .Bms2 {
     grid-area: Bms2;
-
+    .bmsTitle{
+        margin-bottom: .5208rem;
+        // text-align: right;
+    }
     .valueOne {
         .left {
             min-width: 9.375rem;
+            text-align: left;
+            font-size: .7292rem;
 
             .key {
                 min-width: 5.2083rem;
                 text-align: left;
-                font-size: .8333rem;
+                line-height:  1.0417rem;
 
             }
 
             .value {
-                text-align: center;
-                width: 60%;
+                text-align: left;
+                width: 50%;
                 color: #00CBFF;
-                font-size: .8333rem;
-
+                font-size: 1.0417rem;
                 font-family: DingTalkJinBuTi;
 
             }
@@ -149,15 +165,21 @@
 
         .right {
             min-width: 5.2083rem;
-            text-align: center;
-            font-size: .8333rem;
+            text-align: left;
+            font-size: .7292rem;
+            margin-right: 20%;
 
+            .key{
+                width:2.6042rem;
+                // display: inline-block;
+                text-align: left;
+                line-height:  1.0417rem;
+            }
             .value {
-                text-align: center;
-                width: 60%;
+                text-align: left;
+                width: 50%;
                 color: #00CBFF;
-                font-size: .8333rem;
-
+                font-size: 1.0417rem;
                 font-family: DingTalkJinBuTi;
     
             }
@@ -184,7 +206,8 @@
             .label {
                 padding-left: .7813rem;
                 background: no-repeat left url('../../../../../../assets/svg/leftDes.svg');
-                // background-position:-0.5208rem
+                font-size: .7292rem;
+
             }
 
             .value {
@@ -194,65 +217,17 @@
     }
 }
 
-.powerA {
-    grid-area: powerA;
 
-    .pcsWrap {
-        width: 100%;
-        height: 100%;
-        padding: 26px 34px;
-        display: flex;
-        background-color: #0D1430;
-
-        .pcsOne {
-            width: 100%;
-            height: 100%;
-            border-radius: 16px;
-            border: 1px solid #212849;
-            font-size: 20px;
-
-            .pcsOneTitle {
-                width: 100%;
-                background-color: #212849;
-                padding: 10px 0;
-                display: flex;
-                justify-content: space-around;
-            }
-
-            .pcsOneBody {
-                height: calc(100% - 50px);
-                display: flex;
-                flex-direction: column;
-                justify-content: space-around;
-
-                .oneData {
-                    display: flex;
-                    justify-content: space-around;
-
-                    .key {
-                        width: 140px;
-                    }
-
-                    .value {
-                        width: 80px;
-
-                    }
-                }
-            }
-        }
-
-    }
-}
 
 .status {
     grid-area: status;
 
     .statusWrap {
         display: flex;
-        // flex-direction: column;
         justify-content: space-around;
         align-items: center;
         height: calc(100% - 0.8333rem);
+        padding-top: 1.1458rem;
 
 
         .statusOne {
@@ -260,7 +235,7 @@
             justify-content: space-around;
             background-color: rgba(33, 42, 82, 1);
             width: 30%;
-            height: 30%;
+            height: 40%;
             border-radius: .2083rem;
             .title {
                 font-size: .8333rem!important;
@@ -282,11 +257,6 @@
     flex-direction: column;
     justify-content: space-between;
 
-    .bmsOne:first-child {
-        // border-right: .1042rem solid rgba(32, 40, 79, 1);
-
-    }
-
     .bmsOne {
         padding: 10px 20px;
         width: 100%;
@@ -294,9 +264,9 @@
 
         .bmsTitle {
             width: 100%;
-            font-size: .9375rem;
+            font-size: 1.0417rem;
             img {
-                margin-right: 5px;
+                margin-right: .2604rem;
 
             }
         }
@@ -358,9 +328,15 @@ font-size: .9375rem;
                 background: no-repeat center url('../../../../../../assets/svg/bottomDes.svg')
             }
 
-            .label {
+            .label{
                 text-align: center;
-            }
+                font-size: .7292rem;
+               }
+               .value{
+                font-size: 1.4583rem;
+                text-align: center;
+                font-family: DingTalkJinBuTi;
+               }
         }
     }
 

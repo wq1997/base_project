@@ -3,12 +3,14 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { getBurPackDetailInitData2, getBurPackDetailInfo2 } from '@/services/deviceTotal'
 import { getQueryString } from "@/utils/utils";
-import { theme, Select, message } from "antd";
+import { theme, Select, message,Tooltip  } from "antd";
 import { useSelector, useIntl } from "umi";
 import styles from './index.less'
 import DetalisCard from "../DetailsCard";
 import useIcon from "@/hooks/useIcon";
-
+import {
+    QuestionCircleOutlined
+} from '@ant-design/icons';
 function Com(props) {
     const [options, setOptions] = useState([])
     const [selectId, setSelectId] = useState('0,0')
@@ -56,6 +58,20 @@ function Com(props) {
     const changePack = (val) => {
         setSelectId(val)
     }
+    let maxVol = '', minVol = '', maxTemp = '', minTemp = '';
+    let allVol = [], allTemp = [];
+    data?.forEach(one => {
+        allVol = allVol.concat(one?.vols || []);
+        allTemp = allTemp.concat(one?.tmps || []);
+    })
+    const volList = allVol?.filter(item => !isNaN(Number(item))) || [];
+    maxVol = Math.max(...volList);
+    minVol = Math.min(...volList);
+
+    const tempList = allTemp?.filter(item => !isNaN(Number(item))) || [];
+    maxTemp = Math.max(...tempList);
+    minTemp = Math.min(...tempList);
+
     return (
         <div className={styles.pack}>
           { getQueryString('type')=="14"&&<Select
@@ -72,15 +88,17 @@ function Com(props) {
                     return (<div className={styles.onePack}>
                         <div className={styles.title1}>
                             <Icon type='icon-xiangyou' style={{ cursor: 'pointer',marginRight:'6px' }}></Icon>
-                            PACK{one.packNo + 1}</div>
+                            <span style={{marginRight: 5}}>PACK{one.packNo + 1}</span>
+                            {index === 0 && <Tooltip title={`${t('说明')}: ${t('红色代表单体电压/温度最高, 绿色代表单体电压/温度最低')}`}><QuestionCircleOutlined /></Tooltip>}
+                            </div>
                         <div className={styles.vol}>
-                            <div className={styles.title2}>{t("单体电压/mV")}</div>
+                            <div className={styles.title2}>{t("单体电压/V")}</div>
                             <div className={styles.oneContent}>
                                 {one.vols?.map((it, index) => {
                                     return (
-                                        <div className={styles.oneData}>
-                                            {t("电芯")}{index}:<span style={{marginLeft:'10px'}}>{it}</span>
-                                        </div>
+                                        <div className={styles.oneData} style={{ color: it === maxVol ? '#FF3333' : (it === minVol ? '#15FF35' : '') }}>
+                                        {t("电芯")}{index}:<span style={{ marginLeft: '10px' }}>{it}</span>
+                                    </div>
                                     )
                                 })}
                             </div>
@@ -90,22 +108,28 @@ function Com(props) {
                             <div className={styles.oneContent}>
                                 {one.tmps?.map((it, index) => {
                                     return (
-                                        <div className={styles.oneData}>
-                                            {index < 10 ? `0${index}` : index}{' '}:{' '}{it}
+                                        <div className={styles.oneData} style={{ color: it === maxTemp ? '#FF3333' : (it === minTemp ? '#15FF35' : '') }}>
+                                            {t('采样点')}{index}:<span style={{ marginLeft: '10px' }}>{it}</span>
                                         </div>
                                     )
                                 })}
                             </div>
-                            <div className={styles.tempContent}>
+                          
+                        </div>
+                        <div className={styles.packTem}>
+                        <div className={styles.title2}>{t("PACK温度/℃")}</div>
+
+                        <div className={styles.tempContent}>
                                 {Object.keys(one?.extraPackData).map((it, index) => {
                                     return (
                                         <div className={styles.oneData}>
-                                            {t(temObj[it])}{' '}:{' '}{one?.extraPackData[it]}
-                                        </div>
+                                        {t(temObj[it])}:<span style={{ marginLeft: '10px' }}>{one?.extraPackData[it]}</span>
+                                    </div>
                                     )
                                 })}
                             </div>
                         </div>
+                       
                     </div>)
                 })}
 

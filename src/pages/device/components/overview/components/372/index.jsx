@@ -5,7 +5,8 @@ import styles from './index.less'
 import { Pagination, Select, Space, theme, Button, DatePicker } from "antd"
 import { history, useLocation, useIntl } from "umi";
 import CardModel from "../CardModel/index";
-import titleImg from '@/assets/imges/titlep.png'
+import high from '@/assets/imges/high.svg'
+import low from '@/assets/imges/low.svg'
 import OutDoor from '@/assets/svg/outDoor.svg'
 import useIcon from "@/hooks/useIcon";
 import { getBurOverview2 } from '@/services/deviceTotal'
@@ -60,18 +61,19 @@ const [option, setOption] = useState({})
                             r: 0.5,
                             colorStops: [{
                                 offset: 0,
-                                color: 'rgba(44,190,255, 0)' // 0% 处的颜色
+                                color: 'rgba(22,31,69,0)' // 0% 处的颜色
                             }, {
                                 offset: 0.5,
-                                color: 'rgba(44,190,255, 0.1)' // 0% 处的颜色
+                                color: 'rgba(44,255,204,0.1)' // 0% 处的颜色
                             }, {
                                 offset: 1,
-                                color: 'rgba(44,190,255, 1)'// 100% 处的颜色
+                                color: 'rgba(44,255,204,1)'// 100% 处的颜色
                             }],
                             globalCoord: false // 缺省为 false
                         }
                     },
                     data: [data?.data?.bms?.soc/100||0, data?.data?.bms?.soc/100||0,], // data个数代表波浪数
+                    color: ['rgba(44,255,204,0.8)', 'rgba(44,255,204,0.6)', 'rgba(44,255,204,1)'],//设置颜色系列
                     label: {
                         formatter: data?.data?.bms?.soc/100||0,
                         fontSize: '1.2rem',
@@ -95,7 +97,7 @@ const [option, setOption] = useState({})
                                     },
                                     {
                                         offset: 1,
-                                        color: 'rgba(44,190,255, 1)', // 100% 处的颜色
+                                        color: 'rgba(44,255,204,1)', // 100% 处的颜色
                                     },
                                 ],
                                 // globalCoord: false
@@ -126,6 +128,11 @@ const [option, setOption] = useState({})
 
     const [status, setStatus] = useState([
         {
+            title: t('计量电表'),
+            value: false,
+            index: 'meterStatus'
+        },
+        {
             title: t('BMS'),
             value: false,
             index: 'BMS'
@@ -135,11 +142,7 @@ const [option, setOption] = useState({})
             value: false,
             index: 'pcsStatus'
         },
-        {
-            title: t('计量电表'),
-            value: false,
-            index: 'meterStatus'
-        }
+       
     ])
 
     const todayData = [
@@ -233,62 +236,66 @@ const [option, setOption] = useState({})
                         <div className={styles.bmsContent}>
                             <div className={styles.bmsOne}>
                                 <div className={styles.bmsTitle} >
-                                    <img src={titleImg} />
+                                    <img src={high} />
                                     {t('单体最高')}
                                 </div>
                                 <div className={styles.bmsBody}>
                                     {/* <img src={BMS} alt="" /> */}
                                     <div className={styles.value}>
                                         <div className={styles.valueOne}>
+                                        <div className={styles.right}>
+                                                <span className={styles.key} style={{   }}>{t("No.")}</span>
+                                                <span className={styles.value}>{allData?.bmc?.[0]?.cellTempMaxNo || '0'}</span>
+                                            </div>
                                             <div className={styles.left}>
                                                 <span className={styles.key} style={{  }}>{t("温度/℃")}</span>
                                                 <span className={styles.value}>{allData?.bmc?.[0]?.cellTempMax || '0'}</span>
                                             </div>
-                                            <div className={styles.right}>
-                                                <span className={styles.key} style={{   }}>{t("No.")}</span>
-                                                <span className={styles.value}>{allData?.bmc?.[0]?.cellTempMaxNo || '0'}</span>
-                                            </div>
+                                         
                                         </div>
                                         <div className={styles.valueOne}>
+                                        <div className={styles.right}>
+                                                <span className={styles.key} style={{   }}>{t("No.")}</span>
+                                                <span className={styles.value}>{allData?.bmc?.[0]?.cellVolMaxNo || '0'}</span>
+                                            </div>
                                             <div className={styles.left}>
                                                 <span className={styles.key} style={{   }}>{t("电压/mV")}</span>
                                                 <span className={styles.value}>{allData?.bmc?.[0]?.cellVolMax || '0'}</span>
                                             </div>
-                                            <div className={styles.right}>
-                                                <span className={styles.key} style={{   }}>{t("No.")}</span>
-                                                <span className={styles.value}>{allData?.bmc?.[0]?.cellVolMaxNo || '0'}</span>
-                                            </div>
+                                           
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div className={styles.bmsOne}>
                                 <div className={styles.bmsTitle} >
-                                    <img src={titleImg} />
+                                    <img src={low} />
                                     {t('单体最低')}
                                 </div>
                                 <div className={styles.bmsBody}>
                                     {/* <img src={BMS} alt="" /> */}
                                     <div className={styles.value}>
                                         <div className={styles.valueOne}>
+                                        <div className={styles.right}>
+                                                <span className={styles.key} style={{   }}>{t("No.")}</span>
+                                                <span className={styles.value}>{allData?.bmc?.[0]?.cellTempMinNo || '0'}</span>
+                                            </div>
                                             <div className={styles.left}>
                                                 <span className={styles.key} style={{   }}>{t("温度/℃")}</span>
                                                 <span className={styles.value}>{allData?.bmc?.[0]?.cellTempMin || '0'}</span>
                                             </div>
-                                            <div className={styles.right}>
-                                                <span style={{   }}>{t("No.")}</span>
-                                                <span className={styles.value}>{allData?.bmc?.[0]?.cellTempMinNo || '0'}</span>
-                                            </div>
+                                           
                                         </div>
                                         <div className={styles.valueOne}>
+                                        <div className={styles.right}>
+                                                <span  className={styles.key} style={{   }}>{t("No.")}</span>
+                                                <span className={styles.value}>{allData?.bmc?.[0]?.cellVolMinNo || '0'}</span>
+                                            </div>
                                             <div className={styles.left}>
                                                 <span className={styles.key} style={{   }}>{t("电压/mV")}</span>
                                                 <span className={styles.value}>{allData?.bmc?.[0]?.cellVolMin || '0'}</span>
                                             </div>
-                                            <div className={styles.right}>
-                                                <span style={{   }}>{t("No.")}</span>
-                                                <span className={styles.value}>{allData?.bmc?.[0]?.cellVolMinNo || '0'}</span>
-                                            </div>
+                                          
                                         </div>
                                     </div>
                                 </div>
@@ -304,62 +311,66 @@ const [option, setOption] = useState({})
                         <div className={styles.bmsContent}>
                             <div className={styles.bmsOne}>
                                 <div className={styles.bmsTitle} >
-                                    <img src={titleImg} />
+                                    <img src={high} />
                                     {t('单体最高')}
                                 </div>
                                 <div className={styles.bmsBody}>
                                     {/* <img src={BMS} alt="" /> */}
                                     <div className={styles.value}>
                                         <div className={styles.valueOne}>
+                                        <div className={styles.right}>
+                                                <span className={styles.key} style={{   }}>{t("No.")}</span>
+                                                <span className={styles.value}>{allData?.bmc?.[1]?.cellTempMaxNo || '0'}</span>
+                                            </div>
                                             <div className={styles.left}>
                                                 <span className={styles.key} style={{  }}>{t("温度/℃")}</span>
                                                 <span className={styles.value}>{allData?.bmc?.[1]?.cellTempMax || '0'}</span>
                                             </div>
-                                            <div className={styles.right}>
-                                                <span className={styles.key} style={{   }}>{t("No.")}</span>
-                                                <span className={styles.value}>{allData?.bmc?.[1]?.cellTempMaxNo || '0'}</span>
-                                            </div>
+                                           
                                         </div>
                                         <div className={styles.valueOne}>
+                                        <div className={styles.right}>
+                                                <span className={styles.key} style={{   }}>{t("No.")}</span>
+                                                <span className={styles.value}>{allData?.bmc?.[1]?.cellVolMaxNo || '0'}</span>
+                                            </div>
                                             <div className={styles.left}>
                                                 <span className={styles.key} style={{   }}>{t("电压/mV")}</span>
                                                 <span className={styles.value}>{allData?.bmc?.[1]?.cellVolMax || '0'}</span>
                                             </div>
-                                            <div className={styles.right}>
-                                                <span className={styles.key} style={{   }}>{t("No.")}</span>
-                                                <span className={styles.value}>{allData?.bmc?.[1]?.cellVolMaxNo || '0'}</span>
-                                            </div>
+                                           
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div className={styles.bmsOne}>
                                 <div className={styles.bmsTitle} >
-                                    <img src={titleImg} />
+                                    <img src={low} />
                                     {t('单体最低')}
                                 </div>
                                 <div className={styles.bmsBody}>
                                     {/* <img src={BMS} alt="" /> */}
                                     <div className={styles.value}>
                                         <div className={styles.valueOne}>
-                                            <div className={styles.left}>
-                                                <span className={styles.key} style={{   }}>{t("温度/℃")}</span>
-                                                <span className={styles.value}>{allData?.bmc?.[1]?.cellTempMin || '0'}</span>
-                                            </div>
+                                           
                                             <div className={styles.right}>
                                                 <span className={styles.key}  style={{   }}>{t("No.")}</span>
                                                 <span className={styles.value}>{allData?.bmc?.[1]?.cellTempMinNo || '0'}</span>
                                             </div>
+                                            <div className={styles.left}>
+                                                <span className={styles.key} style={{   }}>{t("温度/℃")}</span>
+                                                <span className={styles.value}>{allData?.bmc?.[1]?.cellTempMin || '0'}</span>
+                                            </div>
                                         </div>
                                         <div className={styles.valueOne}>
+                                        <div className={styles.right}>
+                                                <span className={styles.key} style={{   }}>{t("No.")}</span>
+                                                <span className={styles.value}>{allData?.bmc?.[1]?.cellVolMinNo || '0'}</span>
+                                            </div>
                                             <div className={styles.left}>
                                                 <span className={styles.key} style={{   }}>{t("电压/mV")}</span>
                                                 <span className={styles.value}>{allData?.bmc?.[1]?.cellVolMin || '0'}</span>
                                             </div>
-                                            <div className={styles.right}>
-                                                <span className={styles.key} style={{   }}>{t("No.")}</span>
-                                                <span className={styles.value}>{allData?.bmc?.[1]?.cellVolMinNo || '0'}</span>
-                                            </div>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -372,26 +383,26 @@ const [option, setOption] = useState({})
                 <div className={styles.topData}>
                     <div  style={{ width: '20%' }}>
                         <ReactECharts option={option} notMerge style={{ width: '100%', height: 'calc(100% - 1.0417rem)' }} />
-                        <div style={{textAlign:'center' }}>{t('电池SOC')}</div>
+                        <div style={{textAlign:'center',fontSize:'0.7292rem' }}>{t('电池SOC')}</div>
                     </div>
                     <div style={{ width: '80%',display:'flex' }}>
                         <div className={styles.topOne}>
-                            <div  style={{color:"rgba(0, 255, 4, 1)",fontSize:'1.4583rem',textAlign:'center',fontFamily:'DingTalkJinBuTi'}}>{allData?.pcs?.online?(allData?.pcs?.online==1?t('在线'):t('离线')): '-'}</div>
+                            <div  style={{color:"rgba(44,255,204,1)",textAlign:'center',fontFamily:'DingTalkJinBuTi'}}>{allData?.pcs?.online?(allData?.pcs?.online==1?t('在线'):t('离线')): '-'}</div>
                             <div className={styles.label}>{t('PCS状态')}</div>
                             <div className={styles.bottomDes} ></div>
                         </div>
                         <div className={styles.topOne}>
-                            <div style={{color:"rgba(0, 203, 255, 1)",fontSize:'1.4583rem',textAlign:'center',fontFamily:'DingTalkJinBuTi'}}>{allData?.tmeter?.totalActivePower || '0'}</div>
+                            <div style={{color:"rgba(0, 203, 255, 1)",fontSize:'1.0417rem',textAlign:'center',fontFamily:'DingTalkJinBuTi'}}>{allData?.tmeter?.totalActivePower || '0'}</div>
                             <div className={styles.label}>{t('电表功率/kW')}</div>
                             <div className={styles.bottomDes} ></div>
                         </div>
                         <div className={styles.topOne}>
-                            <div style={{color:"rgba(0, 203, 255, 1)",fontSize:'1.4583rem',textAlign:'center',fontFamily:'DingTalkJinBuTi'}}>{allData?.pcs?.totalActivePower || '0'}</div>
+                            <div style={{color:"rgba(0, 203, 255, 1)",fontSize:'1.0417rem',textAlign:'center',fontFamily:'DingTalkJinBuTi'}}>{allData?.pcs?.totalActivePower || '0'}</div>
                             <div className={styles.label}>{t('PCS功率/kW')}</div>
                             <div className={styles.bottomDes} ></div>
                         </div>
                         <div className={styles.topOne}>
-                            <div style={{color:"rgba(0, 203, 255, 1)",fontSize:'1.4583rem',textAlign:'center',fontFamily:'DingTalkJinBuTi'}}>{allData?.bms?.power || '0'}</div>
+                            <div style={{color:"rgba(0, 203, 255, 1)",fontSize:'1.0417rem',textAlign:'center',fontFamily:'DingTalkJinBuTi'}}>{allData?.bms?.power || '0'}</div>
                             <div className={styles.label}>{t('BMS功率/kW')}</div>
                             <div className={styles.bottomDes} ></div>
                         </div>
@@ -408,7 +419,7 @@ const [option, setOption] = useState({})
                         {todayData.map(it => {
                             return <>
                                 <div className={styles.oneCard}>
-                                    <div className={styles.value} style={{ color: it.color, fontSize: '2.0833rem' }}>
+                                    <div className={styles.value} style={{ color: it.color, fontSize: '1.1458rem' }}>
                                         {allData?.energy?.[it?.key]|| '0'}
                                     </div>
                                     <div className={styles.label} >

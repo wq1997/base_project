@@ -208,6 +208,7 @@ const RealtimeAlarm = () => {
             plantId: '',
             address: currentPlant?.position||"",
         });
+        setRecord({})
         setTitle('新增设备');
         setIsOpen(!isOpen);
     }
@@ -222,7 +223,7 @@ const RealtimeAlarm = () => {
         setIsOpenDel(!isOpenDel);
     };
     const changeData = async (value) => {
-        const { data } = await updateDtus({ ...value, id: record.id });
+        const { data } = await updateDtus({ ...value, id: record?.id });
         if (data.data) {
             changePlant(currentPlantId)
         } else {
@@ -289,7 +290,6 @@ const RealtimeAlarm = () => {
             setPanTo([currentPlant?.longitude||108.9, currentPlant?.latitude||34.2]);
         }
     }, [currentPlantId]);
-    console.log("CCCCCC", currentPlant)
     return (
         <div
             className={styles.content}
@@ -361,10 +361,10 @@ const RealtimeAlarm = () => {
                                         <div className={styles.topItem} style={{ color:'#00FFFB',  }}>
                                             <div className={styles.topVaue} style={{  fontWeight: 400, }} >
                                                 {dataEle[it.name]}
-                                                <span style={{ fontSize: '16px', fontWeight: 400, marginLeft: '10px', height: '10%', lineHeight: '150%' }}>{it.unit}</span>
+                                                <span style={{ fontSize: '0.8333rem', fontWeight: 400, marginLeft: '0.5208rem', height: '10%', lineHeight: '150%' }}>{it.unit}</span>
                                             </div>
                                             <div className={styles.topItemTitle}>
-                                                <span style={{ color: token.smallTitleColor, fontWeight: 500, marginLeft: '3px' }}>{it.label}</span>
+                                                <span style={{ color: token.smallTitleColor, fontWeight: 500, marginLeft: '3px',fontSize:'0.7292rem'}}>{it.label}</span>
                                             </div>
                                         </div>
                                     )

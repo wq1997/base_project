@@ -52,7 +52,6 @@ const App = (props) => {
             data: props.initSelectData?.plantType,
             option:optionType,
             disabled:props.title=='编辑设备'? true:false,
-
         },
         {
             label: '位置',

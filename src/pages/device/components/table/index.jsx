@@ -13,6 +13,7 @@ const Table = ({
 }) => {
     const intl = useIntl();
     const [listData, setListData] = useState(dataSource);
+    const { token } = theme.useToken();
 
     const { user } = useSelector(function (state) {
         return state.user
@@ -83,7 +84,7 @@ const Table = ({
                 return (
                     <div
                         type="link"
-                        style={{ color: '#54CFFF', cursor: 'pointer' }}
+                        style={{ color: token.colorPrimary, cursor: 'pointer' }}
                         onClick={() => {
                             history.push(`/device?activeKey=OverView&id=${record.id}&title=${record.name || ""}&type=${record.deviceTypeId || ""}`)
                         }}

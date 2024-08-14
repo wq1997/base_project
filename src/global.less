@@ -14,7 +14,7 @@ body{
 }
 
 .ant-menu-light.ant-menu-inline .ant-menu-sub.ant-menu-inline, :where(.css-dev-only-do-not-override-1sn0ohr).ant-menu-light>.ant-menu.ant-menu-inline .ant-menu-sub.ant-menu-inline{
-    background-color: unset;
+    background-color: unset !important;
 }
 
 .ant-btn-default:not(:disabled):not(.ant-btn-disabled):hover{
@@ -39,6 +39,7 @@ body{
          border-radius: 8px 8px 0px 0px !important;
          padding: 7px 35px !important;
          color: #FFFFFF !important;
+         font-size: 1.0417rem !important;
   }
   .ant-tabs-tab-active{
     background-color: #111838 !important;
@@ -51,7 +52,6 @@ body{
 	text-security:disc !important;
 	 -webkit-text-security:disc !important;
 }
-
 .ant-divider::before{
   border-color: #fff !important;
 }
@@ -69,4 +69,7 @@ body{
 }
 .amap-copyright {
   opacity: 0; //去掉高德的版本号
+}
+::-webkit-scrollbar {
+  display: none; /* Chrome Safari */
 }

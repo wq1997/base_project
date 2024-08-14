@@ -426,6 +426,14 @@ const Electricity = () => {
                                         }
                                     },
                                     {
+                                        title: `${intl.formatMessage({ id: '设备编码' })}`,
+                                        dataIndex: 'sn',
+                                        key: 'sn',
+                                        render(_, record) {
+                                            return `${record?.sn}`
+                                        }
+                                    },
+                                    {
                                         title: intl.formatMessage({ id: '设备名称' }),
                                         dataIndex: 'dtuName',
                                         key: 'dtuName',
@@ -448,48 +456,19 @@ const Electricity = () => {
                                         }
                                     },
                                     {
-                                        title: `${intl.formatMessage({ id: '尖时段充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
+                                        title: `${intl.formatMessage({ id: '总充电电量' })}(kWh)`,
                                         dataIndex: 'kWh',
                                         key: 'kWh',
                                         render(_, record) {
-                                            return `${record?.tipChargeEnergy}/${record?.tipDischargeEnergy}`
+                                            return `${record?.dayChargeEnergy}`
                                         }
                                     },
                                     {
-                                        title: `${intl.formatMessage({ id: '峰时段充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
-                                        dataIndex: 'kWh',
-                                        key: 'kWh',
+                                        title: `${intl.formatMessage({ id: '总放电电量' })}(kWh)`,
+                                        dataIndex: 'number',
+                                        key: 'number',
                                         render(_, record) {
-                                            return `${record?.peakChargeEnergy}/${record?.peakDischargeEnergy}`
-                                        }
-                                    },
-                                    {
-                                        title: `${intl.formatMessage({ id: '平时段充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
-                                        dataIndex: 'kWh',
-                                        key: 'kWh',
-                                        render(_, record) {
-                                            return `${record?.flatChargeEnergy}/${record?.flatDischargeEnergy}`
-                                        }
-                                    },
-                                    {
-                                        title: `${intl.formatMessage({ id: '谷时段充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
-                                        dataIndex: 'kWh',
-                                        key: 'kWh',
-                                        render(_, record) {
-                                            return `${record?.valleyChargeEnergy}/${record?.valleyDischargeEnergy}`
-                                        }
-                                    },
-                                    // {
-                                    //     title: intl.formatMessage({id: 'sn号'}),
-                                    //     dataIndex: 'sn',
-                                    //     key: 'sn',
-                                    // },
-                                    {
-                                        title: `${intl.formatMessage({ id: '总充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
-                                        dataIndex: 'kWh',
-                                        key: 'kWh',
-                                        render(_, record) {
-                                            return `${record?.dayChargeEnergy}/${record?.dayDischargeEnergy}`
+                                            return `${record?.dayDischargeEnergy}`
                                         }
                                     },
                                     {
@@ -497,11 +476,7 @@ const Electricity = () => {
                                         dataIndex: 'cDEfficiency',
                                         key: 'cDEfficiency',
                                     },
-                                    {
-                                        title: `${intl.formatMessage({ id: '收益' })}(${intl.formatMessage({ id: '元' })})`,
-                                        dataIndex: 'number',
-                                        key: 'number',
-                                    },
+                                    
                                 ]}
                                 scroll={{
                                     y: 'calc(50vh - 250px)'

@@ -79,7 +79,7 @@ const BaseLayout = () => {
         <div className={styles.baseLayout}>
             <Layout className={styles.layout}>
                 <Header className={styles.header}
-                    style={{ background: token.bgcColorB_l }}
+                    style={{ background: token.titleCardBgc }}
                 >
                     <div
                         style={{
@@ -164,7 +164,7 @@ const BaseLayout = () => {
                 </Header>
                 <Layout hasSider>
                    {pathname.split('/')[1]==='index'&& <Sider className={siderContentStyle}
-                        style={{ background: token.bgcColorB_l }}
+                        style={{ background: token.titleCardBgc }}
                         width={240}>
                         <div className={styles.siderContent}>
                             <MyMenu />
