@@ -376,7 +376,7 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
                                             inputType: 'InputNumber',
                                         },
                                         {
-                                            title: `${intl.formatMessage({ id: '功率' })}(kW)`,
+                                            title: `${intl.formatMessage({ id: '功率111' })}(kW)`,
                                             dataIndex: 'pcsPower',
                                             editable: true,
                                             inputType: 'InputNumber',
@@ -386,6 +386,7 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
                                             dataIndex: 'elePrice',
                                             editable: true,
                                             inputType: 'InputNumber',
+                                            max: 65.53
                                         },
                                         {
                                             title: `${intl.formatMessage({ id: '开始时间' })}~${intl.formatMessage({ id: '结束时间' })}`,

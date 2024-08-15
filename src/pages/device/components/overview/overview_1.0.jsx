@@ -35,6 +35,7 @@ const OverView = ({deviceVersion, sn}) => {
     const { token } = theme.useToken();
     const [dataSource, setDataSource] = useState({});
     const [currentElectricType, setCurrentElectricType] = useState('JLDB');
+    const [currentSystemEfficiency, setCurrentSystemEfficiency] = useState('ALL');
 
     const [electricityStatisticsDataSource, setElectricityStatisticsDataSource] = useState([
         {
@@ -218,10 +219,15 @@ const OverView = ({deviceVersion, sn}) => {
             newElectricityStatisticsDataSource[3].data = dataSource?.gmeter?.totalDEnergy||0;
         }
 
-        // 系统效率(前一日)
-        newSystemEfficiencyDataSource[0].data = dataSource?.pcsEfficiency||0;
-        newSystemEfficiencyDataSource[1].data = dataSource?.meterEfficiency||0;
-
+        if(currentSystemEfficiency==="ALL"){
+            // 系统效率(累计)
+            newSystemEfficiencyDataSource[0].data = dataSource?.pcsEfficiency||0;
+            newSystemEfficiencyDataSource[1].data = dataSource?.meterEfficiency||0;
+        }else if(currentSystemEfficiency==="PRE"){
+            newSystemEfficiencyDataSource[0].data = dataSource?.pcsEfficiencyDay||0;
+            newSystemEfficiencyDataSource[1].data = dataSource?.meterEfficiencyDay||0;
+        }
+       
         //收益统计
         newBenefitStatisticsDataSource[0].data = dataSource?.gmeter?.dayEarning||0;
         newBenefitStatisticsDataSource[1].data = dataSource?.gmeter?.monEarning||0;
@@ -260,7 +266,7 @@ const OverView = ({deviceVersion, sn}) => {
         setPcsInfoDataSource(newPcsInfoDataSource); //PCS信息 
         setPcsInfoDataSource2(newPcsInfoDataSource2);
         setCommunicationStatusDataSource(newCommunicationStatusDataSource); //通讯状态
-    }, [dataSource, currentElectricType])
+    }, [dataSource, currentElectricType, currentSystemEfficiency])
 
     useEffect(()=>{
         getDataSource();
@@ -316,6 +322,15 @@ const OverView = ({deviceVersion, sn}) => {
                         <div className={styles.centerLeftTwo}>
                             <div className={styles.title}>
                                 <Title title={intl.formatMessage({id: '系统效率'})} />
+                                <div>
+                                    <Radio.Group 
+                                        value={currentSystemEfficiency}
+                                        onChange={e=>setCurrentSystemEfficiency(e.target.value)}
+                                    >
+                                        <Radio value={"ALL"}>{intl.formatMessage({id: '累计'})}</Radio>
+                                        <Radio value={"PRE"}>{intl.formatMessage({id: '前一日'})}</Radio>
+                                    </Radio.Group>
+                                </div>
                             </div>
                             <div className={styles.centerLeftTwoArea}>
                                 {

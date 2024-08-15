@@ -59,10 +59,12 @@ const EditRowTable = ({
       ...restProps
     } = props;
     const getFormByType = () => {
+      console.log("props", restProps)
       const props = {
         style: {
           width: '100%'
-        }
+        },
+        max: restProps?.max
       }
       switch (inputType) {
         case "InputNumber":
@@ -272,13 +274,14 @@ const EditRowTable = ({
     setDataSource(newData);
     onChange(newData);
   };
-  console.log("AAAA", dataSource)
+
   const components = {
     body: {
       cell: EditableCell,
     },
   };
   const myColumns = defaultColumns.map((col) => {
+    console.log("col", col)
     if (!col.editable) {
       return col;
     }
@@ -292,6 +295,7 @@ const EditRowTable = ({
           editable: col.editable,
           dataIndex: col.dataIndex,
           title: col.title,
+          max: col?.max,
           editing: isEditing(record),
           handleSave,
         }

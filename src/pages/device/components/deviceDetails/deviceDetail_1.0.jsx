@@ -173,7 +173,7 @@ function Com({deviceVersion}) {
             { name: "尖时段月充电电量", value: "-", key: "monTipCEnergy" },
             { name: "峰时段月充电电量", value: "-", key: "monPeakCEnergy" },
             { name: "平时段月充电电量", value: "-", key: "monFlatCEnergy" },
-            { name: "谷时段月充电电量", value: "-", key: "monPeakCEnergy" },
+            { name: "谷时段月充电电量", value: "-", key: "monValleyCEnergy" },
             { name: "尖时段月放电电量", value: "-", key: "monTipDEnergy" },
             { name: "峰时段月放电电量", value: "-", key: "monPeakDEnergy" },
             { name: "平时段月放电电量", value: "-", key: "monFlatDEnergy" },

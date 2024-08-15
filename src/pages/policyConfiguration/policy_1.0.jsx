@@ -391,6 +391,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                             dataIndex: 'elePrice',
                                             editable: true,
                                             inputType: 'InputNumber',
+                                            max: 65.53
                                         },
                                         {
                                             title: `${intl.formatMessage({ id: '开始时间' })}~${intl.formatMessage({ id: '结束时间' })}`,

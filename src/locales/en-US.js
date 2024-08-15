@@ -2042,4 +2042,7 @@ export default {
 '说明': 'Illustrate',
 'PACK温度/℃': 'PACK temperature/℃',
 '红色代表单体电压/温度最高, 绿色代表单体电压/温度最低': 'Red represents the highest unit voltage/temperature, while green represents the lowest unit voltage/temperature',
+'累计': 'Accumulate',
+'前一日': 'Previous day',
+'电表电量': 'Electricity meter capacity',
 } 
