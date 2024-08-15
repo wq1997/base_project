@@ -237,7 +237,6 @@ const Electricity = () => {
                 const { plantId: currentPlantId } = await form.getFieldsValue(["plantId"])
                 if (!currentPlantId) {
                     form.setFieldsValue({ plantId, deviceId: data?.[0]?.value });
-        console.log(plantList,122,plantId);
 
                     setTimeout(async () => {
                         const params = await getParams();
@@ -295,7 +294,7 @@ const Electricity = () => {
 
     return (
         <div className={styles.content} style={{ backgroundColor: token.titleCardBgc }}>
-            <Space size={10} direction="vertical" style={{ width: '100%', height: '100%', padding: 30,}}>
+            <Space size={10} direction="vertical" style={{ width: '100%', height: '100%', padding: '30px 30px 50px 30px',}}>
                 <Flex justify="center" align="center" gap={10}>
                     <Form
                         form={form}

@@ -31,54 +31,54 @@ const MonitoringCurves = () => {
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState(`${intl.formatMessage({ id: '监测曲线' })}`);
 
-    const [dataProList,serDataProList] = useState([
-        {
-            value: 100,
-            label: intl.formatMessage({ id: '设备功率' }),
-            unit: 'kW'
-        },
-        {
-            value: 183,
-            label: intl.formatMessage({ id: '电池SOC' }),
-            unit: '%'
-        },
-        {
-            value: 181,
-            label: intl.formatMessage({ id: '电池电压' }),
-            unit: 'V'
-        },
-        {
-            value: 182,
-            label: intl.formatMessage({ id: '电池电流' }),
-            unit: 'A'
-        },
-        {
-            value: 414,
-            label: intl.formatMessage({ id: '堆单体压差' }),
-            unit: 'V'
-        },
-        {
-            value: 415,
-            label: intl.formatMessage({ id: '堆单体温差' }),
-            unit: '℃'
-        },
+    const [dataProList, setDataProList] = useState([
+        // {
+        //     value: 100,
+        //     label: intl.formatMessage({ id: '设备功率' }),
+        //     unit: 'kW'
+        // },
+        // {
+        //     value: 183,
+        //     label: intl.formatMessage({ id: '电池SOC' }),
+        //     unit: '%'
+        // },
+        // {
+        //     value: 181,
+        //     label: intl.formatMessage({ id: '电池电压' }),
+        //     unit: 'V'
+        // },
+        // {
+        //     value: 182,
+        //     label: intl.formatMessage({ id: '电池电流' }),
+        //     unit: 'A'
+        // },
+        // {
+        //     value: 414,
+        //     label: intl.formatMessage({ id: '堆单体压差' }),
+        //     unit: 'V'
+        // },
+        // {
+        //     value: 415,
+        //     label: intl.formatMessage({ id: '堆单体温差' }),
+        //     unit: '℃'
+        // },
     ]);
 
-    const getParams = async (showMessage=true) => {
+    const getParams = async (showMessage = true) => {
         let format = "YYYY-MM-DD";
         const values = await form.validateFields();
         let { date, currentPlantDevice, dataType } = values;
         date = date?.map(item => dayjs(item).format(format));
-        let flag=false;
+        let flag = false;
         if (date?.length > 3) {
-            showMessage&&message.error(intl.formatMessage({ id: '最多选择3个对比项' }));
-            flag=true;
+            showMessage && message.error(intl.formatMessage({ id: '最多选择3个对比项' }));
+            flag = true;
         }
         if (!currentPlantDevice || currentPlantDevice?.length < 2) {
-            showMessage&&message.error(intl.formatMessage({ id: '请选择电站下具体设备' }));
-            flag=true;
+            showMessage && message.error(intl.formatMessage({ id: '请选择电站下具体设备' }));
+            flag = true;
         };
-        if(flag) return Promise.reject("参数错误");
+        if (flag) return Promise.reject("参数错误");
         let params = {
             // plantId: currentPlantDevice?.[0],
             dtuId: currentPlantDevice?.[1],
@@ -305,6 +305,34 @@ const MonitoringCurves = () => {
                 })
             })
         }
+        if (dataType == 1870 || dataType == 1930 || dataType == 1921 || dataType == 1920 || dataType == 1871 || dataType == 1931) {
+            const fieldList = [currentData?.label];
+            date?.forEach(item => {
+                fieldList.forEach(field => {
+                    legendData.push(`${item} ${field}`);
+                })
+            })
+            legendData.forEach((legend, index) => {
+                const currentDate = legend?.split(' ')?.[0];
+                const currentData = dataSource?.find(item => item.date === currentDate);
+                let filed = '';
+                if (dataType == 1931||dataType == 1930) {
+                    filed = 'Cur';
+                }else if(dataType == 1921||dataType == 1920){
+                    filed = 'Vol';
+                }else if(dataType == 1871||dataType == 1870){
+                    filed = 'SOC';
+                }
+                const data = currentData?.energyData?.[filed];
+                series.push({
+                    name: legend,
+                    type: 'line',
+                    showSymbol: false,
+                    data: data?.map(item => item[1])
+                })
+            })
+        }
+
 
         const option = {
             tooltip: {
@@ -360,18 +388,19 @@ const MonitoringCurves = () => {
                     return {
                         value: item.id,
                         label: item.name || intl.formatMessage({ id: '设备无名称' }),
-                        type:item.deviceTypeId
+                        type: item.deviceTypeId
                     }
                 }) : [];
                 const currentIndex = plantList?.findIndex(item => item.value === plantId);
                 plantList[currentIndex].children = data;
                 setPlantDeviceList([...plantList]);
-
+                const res = await getCurveTypeServe({ deviceType: data?.[0].type });
+                setDataProList(res?.data?.data);
                 const currentPlantDevice = await form.getFieldValue("currentPlantDevice")
                 if (currentPlantDevice?.length === 0) {
                     form.setFieldsValue({
                         currentPlantDevice: [plantId, data[0].value],
-                        dataType: 100
+                        dataType: res?.data?.data?.[0]?.value
                     })
                     setTimeout(async () => {
                         const params = await getParams(false);
@@ -391,7 +420,7 @@ const MonitoringCurves = () => {
                     value: item.plantId,
                     label: item.name,
                     disabled: data?.deviceCount?.[index] === 0,
-                    children:  data?.deviceCount?.[index] &&[
+                    children: data?.deviceCount?.[index] && [
                         {
                             value: '',
                             label: ''
@@ -426,7 +455,7 @@ const MonitoringCurves = () => {
     }, [])
 
     return (
-        <Space size={30} direction="vertical" style={{ width: '100%', height: '100%', padding: 30,backgroundColor: token.titleCardBgc }}>
+        <Space size={30} direction="vertical" style={{ width: '100%', height: '100%', padding: 30, backgroundColor: token.titleCardBgc }}>
             <Flex justify="center" align="center" gap={10}>
                 <Form
                     form={form}
@@ -445,11 +474,12 @@ const MonitoringCurves = () => {
                                     if (value?.length === 1) {
                                         getDtusOfPlant(plantDeviceList, value[0]);
                                     }
-                                    let currentPlant=plantDeviceList.find(it=>it.value==value[0]);
-                                    let currentDevice=currentPlant.children.find(it=>it.value==value[1]);
-                                        if (currentDevice.type) {
-                                         const res = await getCurveTypeServe({deviceType:currentDevice.type});
-                                                serDataProList(res?.data?.data)                                        }
+                                    let currentPlant = plantDeviceList.find(it => it.value == value[0]);
+                                    let currentDevice = currentPlant.children.find(it => it.value == value[1]);
+                                    if (currentDevice.type) {
+                                        const res = await getCurveTypeServe({ deviceType: currentDevice.type });
+                                        setDataProList(res?.data?.data)
+                                    }
                                 }}
                                 style={{ width: '250px', height: 40 }}
                             />
@@ -511,7 +541,7 @@ const MonitoringCurves = () => {
                     <div style={{ width: '100%', height: 'calc(100vh - 250px)' }}>
                         {
                             dataSource?.length > 0 &&
-                                <ReactECharts option={option} notMerge style={{ width: '100%', height: '100%' }} />
+                            <ReactECharts option={option} notMerge style={{ width: '100%', height: '100%' }} />
                         }
                     </div>
                 </Space>

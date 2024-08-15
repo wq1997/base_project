@@ -34,11 +34,6 @@ const RealtimeAlarm = () => {
       dataIndex: 'username',
       key: 'username',
     },
-    // {
-    //   title: t('描述'),
-    //   dataIndex: 'detail',
-    //   key: 'detail',
-    // },
     {
       title: t('动作'),
       dataIndex: 'describe',
@@ -60,7 +55,7 @@ const RealtimeAlarm = () => {
 });
   useEffect(() => {
     getData(current);
-  }, [current, startTime, endTime, username, Ip, pageSize]);
+  }, [current,  pageSize]);
   const getData = async (page) => {
     const { data } = await apiListLogWithPage({
       pageNum: page,
@@ -80,8 +75,8 @@ const RealtimeAlarm = () => {
     setStartTime(dateString[0]);
     setEndTime(dateString[1]);
   }
-  const onSearch = async (value, _e, info) => {
-    setUserName(value);
+  const onSearch = async (e) => {
+    setUserName(e.target.value);
   }
   const changeIp = (val) => {
     setIp(val.target.value);
@@ -113,7 +108,9 @@ const RealtimeAlarm = () => {
           <Input placeholder={t('IP')} onChange={changeIp} enterButton />
         </div>
         {user.roleId!=1&&<div className={styles.dataItem}>
-          <Search placeholder={t('用户名')} onSearch={onSearch} enterButton />
+          {/* <Search placeholder={t('用户名')} onSearch={onSearch} enterButton /> */}
+           <Input style={{width: 180,marginRight:'1.0417rem'}} onChange={onSearch} placeholder={t("用户名")} />
+                    <Button type='primary' onClick={()=>getData(current)}>{t('查询')}</Button>
         </div>}
         <Button type="primary" onClick={downLoadFoodModel} style={{ backgroundColor: token.defaultBg, marginLeft: '30px' }} >
           {t('导出')} Excel

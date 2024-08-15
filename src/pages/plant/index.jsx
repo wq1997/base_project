@@ -33,7 +33,7 @@ function Com(props) {
     }, [locale])
     useEffect(() => {
         getData();
-    }, [textSearch,selectId])
+    }, [])
     const { locale } = useSelector(state => state.global);
     const intl = useIntl();
 
@@ -106,19 +106,19 @@ function Com(props) {
             dataIndex: 'latitude',
             key: 'latitude',
         },
-        {
-            title: t('告警类型'),
-            dataIndex: 'alarms',
-            key: 'alarms',
-            render(value){
-                const valueList = value?value?.split(","):[];
-                const labelList = valueList?.map((item, index) => {
-                    const level = alarmLevel?.filter(level => level.value===item);
-                    return t(level?.[0]?.label?.props?.id)+(index===valueList?.length-1?"":', ');
-                })
-                return labelList;
-            }
-        },
+        // {
+        //     title: t('告警类型'),
+        //     dataIndex: 'alarms',
+        //     key: 'alarms',
+        //     render(value){
+        //         const valueList = value?value?.split(","):[];
+        //         const labelList = valueList?.map((item, index) => {
+        //             const level = alarmLevel?.filter(level => level.value===item);
+        //             return t(level?.[0]?.label?.props?.id)+(index===valueList?.length-1?"":', ');
+        //         })
+        //         return labelList;
+        //     }
+        // },
         {
             title: t('电站位置'),
             dataIndex: 'position',
@@ -209,8 +209,8 @@ function Com(props) {
         };
         setIsOpenDel(!isOpenDel)
     }
-    const onSearch = (value) => {
-        setTextSearch(value);
+    const onSearch = (e) => {
+        setTextSearch(e.target.value);
     }
     const onSelect = (value) => {
         setSelectId(value);
@@ -229,8 +229,9 @@ function Com(props) {
                           allowClear
                     />
                 </div>
-                <Search style={{width: 180,}} placeholder={t("电站名筛选")} onSearch={onSearch} enterButton />
-
+                {/* <Search style={{width: 180,}} placeholder={t("电站名筛选")} onSearch={onSearch}  /> */}
+                    <Input style={{width: 180,marginRight:'1.0417rem'}} onChange={onSearch} placeholder={t("电站名筛选")} />
+                    <Button type='primary' onClick={getData}>{t('查询')}</Button>
                 <div className={styles.dataItem}>
                     <Button type='primary' onClick={changIsOpen} >{t('新增')}</Button>
                 </div>
