@@ -1,4 +1,4 @@
-.overView{
+.overView {
     width: 100%;
     height: 100%;
     min-height: 100%;
@@ -6,105 +6,127 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    .deepColor{
+
+    .deepColor {
         background: #074267;
     }
-    .areaPadding{
+
+    .areaPadding {
         padding: 16px;
         box-sizing: border-box;
     }
-    .title{
+
+    .title {
         display: flex;
         margin-bottom: 8px;
         align-items: center;
     }
-    .top{
+
+    .top {
         width: 100%;
         height: 8%;
         position: relative;
         .deepColor;
-        .topTitle{
+
+        .topTitle {
             position: absolute;
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
         }
-        .snTitle{
+
+        .snTitle {
             position: absolute;
             right: 42px;
             bottom: 18px;
             color: #A4BAC8;
         }
-        @media screen and (min-width: 2000px){
-            .topTitle{
+
+        @media screen and (min-width: 2000px) {
+            .topTitle {
                 font-size: 40px;
             }
-            .snTitle{
+
+            .snTitle {
                 font-size: 18px;
             }
         }
-        @media screen and (min-width: 1000px) and (max-width: 2000px){
-            .topTitle{
+
+        @media screen and (min-width: 1000px) and (max-width: 2000px) {
+            .topTitle {
                 font-size: 30px;
             }
-            .snTitle{
+
+            .snTitle {
                 font-size: 15px;
             }
         }
-        @media screen and (max-width: 1000px){
-            .topTitle{
+
+        @media screen and (max-width: 1000px) {
+            .topTitle {
                 font-size: 20px;
             }
-            .snTitle{
+
+            .snTitle {
                 font-size: 12px;
             }
         }
     }
-    .center{
+
+    .center {
         width: 100%;
         height: calc(71% - 16px);
         display: flex;
         justify-content: space-between;
         gap: 8px;
-        .centerLeft{
+
+        .centerLeft {
             width: 40%;
             height: 100%;
             display: flex;
             flex-direction: column;
             gap: 8px;
-            .centerLeftOne{
+
+            .centerLeftOne {
                 width: 100%;
                 height: calc(40% - 8px);
+                border-radius: 10px;
                 .deepColor;
                 .areaPadding;
-                .centerLeftOneArea{
+
+                .centerLeftOneArea {
                     width: 100%;
                     height: calc(100% - 40px);
                     display: flex;
                     justify-content: space-between;
-                    .centerLeftOneAreaLeft{
-                        width: 75%;
+
+                    .centerLeftOneAreaLeft {
+                        width: 74%;
                         height: 100%;
                         display: grid;
                         grid-template-columns: repeat(2, 1fr);
                         grid-template-rows: repeat(2, 1fr);
                         gap: 8px;
-                        .item{
+
+                        .item {
                             width: 100%;
                             height: 100%;
                             padding: 5px 0 0 10px;
                             box-sizing: border-box;
                             display: flex;
-                            .left{
+
+                            .left {
                                 display: flex;
                                 align-items: center;
                                 width: 20%;
                             }
-                            .right{
+
+                            .right {
                                 flex: 1;
                                 height: 100%;
                                 position: relative;
-                                .rightData{
+
+                                .rightData {
                                     width: calc(100% - 20px);
                                     height: calc(100% - 20px);
                                     position: absolute;
@@ -114,40 +136,49 @@
                                     display: flex;
                                     flex-direction: column;
                                     justify-content: center;
-                                    .rightData1{
+
+                                    .rightData1 {
                                         color: #00CCFF;
                                         margin-bottom: 5px;
                                         font-family: DingTalkJinBuTi;
                                     }
-                                    .rightData2{
+
+                                    .rightData2 {
                                         color: white;
                                     }
-                                    @media screen and (min-width: 2000px){
-                                        .rightData1{
+
+                                    @media screen and (min-width: 2000px) {
+                                        .rightData1 {
                                             font-size: 24px;
                                         }
-                                        .rightData2{
+
+                                        .rightData2 {
                                             font-size: 18px;
                                         }
                                     }
-                                    @media screen and (min-width: 1000px) and (max-width: 2000px){
-                                        .rightData1{
+
+                                    @media screen and (min-width: 1000px) and (max-width: 2000px) {
+                                        .rightData1 {
                                             font-size: 22px;
                                         }
-                                        .rightData2{
+
+                                        .rightData2 {
                                             font-size: 14px;
                                         }
                                     }
-                                    @media screen and (max-width: 1000px){
-                                        .rightData1{
+
+                                    @media screen and (max-width: 1000px) {
+                                        .rightData1 {
                                             font-size: 20px;
                                         }
-                                        .rightData2{
+
+                                        .rightData2 {
                                             font-size: 10px;
                                         }
                                     }
                                 }
-                                img{
+
+                                img {
                                     position: absolute;
                                     bottom: 0;
                                     right: 0;
@@ -157,7 +188,8 @@
                             }
                         }
                     }
-                    .centerLeftOneAreaRight{
+
+                    .centerLeftOneAreaRight {
                         width: calc(25% - 5px);
                         height: 100%;
                         display: grid;
@@ -165,61 +197,73 @@
                         grid-template-rows: repeat(2, 1fr);
                         gap: 5px;
                         position: relative;
-                        .item{
+
+                        .item {
                             width: 100%;
                             height: 100%;
                             position: relative;
+
                             // top: 55%;
                             // transform: translateY(-50%);
-                            .backgroundImg{
+                            .backgroundImg {
                                 position: absolute;
                                 width: 100%;
                                 height: 100%;
                             }
-                            .img{
+
+                            .img {
                                 height: 40px;
                                 position: absolute;
                                 left: 50%;
                                 transform: translateX(-50%);
                                 height: 40%;
                             }
-                            .data{
+
+                            .data {
                                 position: absolute;
                                 left: 50%;
                                 top: 50%;
                                 transform: translate(-50%, -50%);
                                 text-align: center;
-                                .data1{
+
+                                .data1 {
                                     font-family: DingTalkJinBuTi;
                                     margin-bottom: 7px;
                                 }
-                                .data2{
+
+                                .data2 {
                                     color: white;
-                                    white-space: nowrap; 
+                                    white-space: nowrap;
                                     overflow: hidden;
                                     text-overflow: ellipsis;
                                 }
-                                @media screen and (min-width: 2000px){
-                                    .data1{
+
+                                @media screen and (min-width: 2000px) {
+                                    .data1 {
                                         font-size: 35px;
                                     }
-                                    .data2{
+
+                                    .data2 {
                                         font-size: 18px;
                                     }
                                 }
-                                @media screen and (min-width: 1000px) and (max-width: 2000px){
-                                    .data1{
+
+                                @media screen and (min-width: 1000px) and (max-width: 2000px) {
+                                    .data1 {
                                         font-size: 25px;
                                     }
-                                    .data2{
+
+                                    .data2 {
                                         font-size: 14px;
                                     }
                                 }
-                                @media screen and (max-width: 1000px){
-                                    .data1{
+
+                                @media screen and (max-width: 1000px) {
+                                    .data1 {
                                         font-size: 15px;
                                     }
-                                    .data2{
+
+                                    .data2 {
                                         font-size: 8dvh;
                                     }
                                 }
@@ -228,12 +272,15 @@
                     }
                 }
             }
-            .centerLeftTwo{
+
+            .centerLeftTwo {
                 width: 100%;
                 height: 25%;
+                border-radius: 10px;
                 .deepColor;
                 .areaPadding;
-                .centerLeftTwoArea{
+
+                .centerLeftTwoArea {
                     width: 100%;
                     height: calc(100% - 30px);
                     display: grid;
@@ -242,83 +289,98 @@
                     gap: 6px;
                     position: relative;
 
-                    .itemLeft{
+                    .itemLeft {
                         padding: 10px;
                         box-sizing: border-box;
                         height: 100%;
                         width: 100%;
                         position: relative;
-                        .backgroundImg{
+
+                        .backgroundImg {
                             position: absolute;
                             top: -5px;
                             width: calc(100% - 20px);
                             height: 100%;
                         }
-                        .img{
+
+                        .img {
                             height: 40px;
                             position: absolute;
                             left: 50%;
                             transform: translateX(-50%);
                             height: 40%;
+                            border-radius: 10px;
                         }
-                        .data{
+
+                        .data {
                             position: absolute;
                             left: 50%;
                             top: 50%;
                             transform: translate(-50%, -50%);
                             text-align: center;
-                            .data1{
+
+                            .data1 {
                                 font-family: DingTalkJinBuTi;
                                 margin-bottom: 2px;
                             }
-                            .data2{
+
+                            .data2 {
                                 color: white;
-                                white-space: nowrap; 
+                                white-space: nowrap;
                                 overflow: hidden;
                                 text-overflow: ellipsis;
                             }
-                            @media screen and (min-width: 2000px){
-                                .data1{
+
+                            @media screen and (min-width: 2000px) {
+                                .data1 {
                                     font-size: 35px;
                                 }
-                                .data2{
+
+                                .data2 {
                                     font-size: 20px;
                                 }
                             }
-                            @media screen and (min-width: 1000px) and (max-width: 2000px){
-                                .data1{
+
+                            @media screen and (min-width: 1000px) and (max-width: 2000px) {
+                                .data1 {
                                     font-size: 25px;
                                 }
-                                .data2{
+
+                                .data2 {
                                     font-size: 14px;
                                 }
                             }
-                            @media screen and (max-width: 1000px){
-                                .data1{
+
+                            @media screen and (max-width: 1000px) {
+                                .data1 {
                                     font-size: 15px;
                                 }
-                                .data2{
+
+                                .data2 {
                                     font-size: 10px;
                                 }
                             }
                         }
                     }
 
-                    .itemRight{
+                    .itemRight {
                         width: 100%;
                         height: 100%;
                         box-sizing: border-box;
                         display: flex;
-                        .left{
+
+                        .left {
                             display: flex;
                             align-items: center;
                             width: 22%;
                         }
-                        .right{
+
+                        .right {
                             flex: 1;
                             height: 100%;
                             position: relative;
-                            .rightData{
+
+                            .rightData {
                                 width: calc(100% - 20px);
                                 height: calc(100% - 20px);
                                 position: absolute;
@@ -328,40 +390,49 @@
                                 display: flex;
                                 flex-direction: column;
                                 justify-content: center;
-                                .rightData1{
+
+                                .rightData1 {
                                     color: #00CCFF;
                                     margin-bottom: 5px;
                                     font-family: DingTalkJinBuTi;
                                 }
-                                .rightData2{
+
+                                .rightData2 {
                                     color: white;
                                 }
-                                @media screen and (min-width: 2000px){
-                                    .rightData1{
+
+                                @media screen and (min-width: 2000px) {
+                                    .rightData1 {
                                         font-size: 30px;
                                     }
-                                    .rightData2{
+
+                                    .rightData2 {
                                         font-size: 20px;
                                     }
                                 }
-                                @media screen and (min-width: 1000px) and (max-width: 2000px){
-                                    .rightData1{
+
+                                @media screen and (min-width: 1000px) and (max-width: 2000px) {
+                                    .rightData1 {
                                         font-size: 20px;
                                     }
-                                    .rightData2{
+
+                                    .rightData2 {
                                         font-size: 14px;
                                     }
                                 }
-                                @media screen and (max-width: 1000px){
-                                    .rightData1{
+
+                                @media screen and (max-width: 1000px) {
+                                    .rightData1 {
                                         font-size: 10px;
                                     }
-                                    .rightData2{
+
+                                    .rightData2 {
                                         font-size: 10px;
                                     }
                                 }
                             }
-                            img{
+
+                            img {
                                 position: absolute;
                                 bottom: 0;
                                 right: 0;
@@ -372,12 +443,15 @@
                     }
                 }
             }
-            .centerLeftThree{
+
+            .centerLeftThree {
                 width: 100%;
                 height: calc(35% - 8px);
+                border-radius: 10px;
                 .deepColor;
                 .areaPadding;
-                .centerLeftThreeArea{
+
+                .centerLeftThreeArea {
                     width: 100%;
                     height: calc(100% - 30px);
                     display: grid;
@@ -385,62 +459,76 @@
                     grid-template-rows: repeat(1, 1fr);
                     gap: 8px;
                     position: relative;
-                    .item{
+
+                    .item {
                         height: 100%;
                         width: 100%;
                         position: relative;
-                        .backgroundImg{
+                        border-radius: 10px;
+
+                        .backgroundImg {
                             position: absolute;
                             width: calc(95%);
                             height: calc(100% - 30px);
                             left: 50%;
                             top: 50%;
                             transform: translate(-50%, -50%);
+                            border-radius: 10px;
                         }
-                        .img{
+
+                        .img {
                             height: 30px;
                             position: absolute;
                             left: 50%;
                             transform: translateX(-50%);
                         }
-                        .data{
+
+                        .data {
                             position: absolute;
                             left: 50%;
                             top: 50%;
                             transform: translate(-50%, -50%);
                             text-align: center;
-                            .data1{
+
+                            .data1 {
                                 font-family: DingTalkJinBuTi;
                                 margin-bottom: 10px;
                             }
-                            .data2{
+
+                            .data2 {
                                 color: white;
                                 margin-top: 3px;
-                                white-space: nowrap; 
+                                white-space: nowrap;
                                 overflow: hidden;
                                 text-overflow: ellipsis;
                             }
-                            @media screen and (min-width: 2000px){
-                                .data1{
+
+                            @media screen and (min-width: 2000px) {
+                                .data1 {
                                     font-size: 35px;
                                 }
-                                .data2{
+
+                                .data2 {
                                     font-size: 20px;
                                 }
                             }
-                            @media screen and (min-width: 1000px) and (max-width: 2000px){
-                                .data1{
+
+                            @media screen and (min-width: 1000px) and (max-width: 2000px) {
+                                .data1 {
                                     font-size: 25px;
                                 }
-                                .data2{
+
+                                .data2 {
                                     font-size: 14px;
                                 }
                             }
-                            @media screen and (max-width: 1000px){
-                                .data1{
+
+                            @media screen and (max-width: 1000px) {
+                                .data1 {
                                     font-size: 15px;
                                 }
-                                .data2{
+
+                                .data2 {
                                     font-size: 10px;
                                 }
                             }
@@ -449,65 +537,80 @@
                 }
             }
         }
-        .centerRight{
+
+        .centerRight {
             width: calc(70% - 8px);
             height: 100%;
-            background: linear-gradient( 180deg, #00192E 0%, #00152B 57%, #0D2C4F 100%);
+            background: linear-gradient(180deg, #00192E 0%, #00152B 57%, #0D2C4F 100%);
+            border-radius: 10px;
         }
     }
-    .bottom{
+
+    .bottom {
         width: 100%;
         height: 21%;
         display: flex;
         gap: 8px;
-        .commonTitle{
+
+        .commonTitle {
             margin-bottom: 10px;
         }
-        .commonArea{
+
+        .commonArea {
             height: calc(100% - 40px);
             padding: 0 10px;
             box-sizing: border-box;
         }
-        .bottomOne{
+
+        .bottomOne {
             width: 50%;
             height: 100%;
+            border-radius: 10px;
             .deepColor;
             .areaPadding;
-            .title{
-                .commonTitle; 
+
+            .title {
+                .commonTitle;
             }
-            .area{
+
+            .area {
                 .commonArea;
                 display: grid;
                 grid-template-columns: repeat(2, 1fr);
                 grid-template-rows: repeat(1, 1fr);
                 gap: 8px;
-                .subTitle{
+
+                .subTitle {
                     display: flex;
                     align-items: center;
                     height: 30px;
-                    img{
+
+                    img {
                         width: 30px;
                         height: 30px;
                         margin-right: 10px;
                     }
                 }
-                .subArea{
+
+                .subArea {
                     height: calc(100% - 30px);
                     display: flex;
                     padding: 0 0 0 20px;
                     box-sizing: border-box;
                     position: relative;
-                    .subAreaLeft{
+
+                    .subAreaLeft {
                         width: 60px;
                         display: flex;
                         gap: 10px;
                         align-items: center;
-                        img{
+
+                        img {
                             width: 100%;
                         }
                     }
-                    .subAreaRight{
+
+                    .subAreaRight {
                         flex: 1;
                         height: 100%;
                         display: grid;
@@ -515,33 +618,39 @@
                         grid-template-rows: repeat(2, 1fr);
                         gap: 8px;
                         margin-left: 30px;
-                        .subAreaRightItem{
+
+                        .subAreaRightItem {
                             display: grid;
                             align-items: center;
                             grid-template-columns: 1fr 3fr;
                             grid-template-rows: repeat(1, 1fr);
                             gap: 8px;
-                            .subAreaRightItemTitle{
+
+                            .subAreaRightItemTitle {
                                 color: #2193C3;
                             }
-                            @media screen and (min-width: 2000px){
-                                .subAreaRightItemTitle{
+
+                            @media screen and (min-width: 2000px) {
+                                .subAreaRightItemTitle {
                                     font-size: 20px;
                                 }
                             }
-                            @media screen and (min-width: 1000px) and (max-width: 2000px){
-                                .subAreaRightItemTitle{
+
+                            @media screen and (min-width: 1000px) and (max-width: 2000px) {
+                                .subAreaRightItemTitle {
                                     font-size: 16px;
                                 }
                             }
-                            @media screen and (max-width: 1000px){
-                                .subAreaRightItemTitle{
+
+                            @media screen and (max-width: 1000px) {
+                                .subAreaRightItemTitle {
                                     font-size: 10px;
                                 }
                             }
                         }
                     }
-                    .subAreaBg{
+
+                    .subAreaBg {
                         width: 100%;
                         position: absolute;
                         bottom: 0;
@@ -550,31 +659,51 @@
                 }
             }
         }
-        .bottomTwo{
+
+        .bottomTwo {
             width: calc(25% - 8px);
             height: 100%;
+            border-radius: 10px;
+
+            @media screen and (min-width: 2000px) {
+                font-size: 18px;
+            }
+
+            @media screen and (min-width: 1000px) and (max-width: 2000px) {
+                font-size: 14px;
+            }
+
+            @media screen and (max-width: 1000px) {
+                font-size: 10px;
+            }
+
             .deepColor;
             .areaPadding;
-            .title{
-                .commonTitle; 
+
+            .title {
+                .commonTitle;
             }
-            .area{
+
+            .area {
                 height: calc(100% - 30px);
                 display: grid;
                 align-items: center;
                 grid-template-columns: repeat(1, 1fr);
                 grid-template-rows: repeat(4, 1fr);
-                .areaItem{
+
+                .areaItem {
                     display: grid;
                     align-items: center;
                     grid-template-columns: repeat(4, 1fr);
                     grid-template-rows: repeat(1, 1fr);
                     height: 100%;
                 }
-                .areaItemHeader{
+
+                .areaItemHeader {
                     background: linear-gradient(rgba(21, 171, 219, 0.4) 0%, rgba(9, 114, 180, 0) 100%);
                     border: 1px solid #00C3FF;
-                    .areaItemContent{
+
+                    .areaItemContent {
                         color: #2193C3;
                         height: 100%;
                         width: 100%;
@@ -583,10 +712,12 @@
                         align-items: center;
                     }
                 }
-                .areaItemContent{
+
+                .areaItemContent {
                     text-align: center;
                     height: 100%;
-                    .areaItemContent{
+
+                    .areaItemContent {
                         color: white;
                         background: #053451;
                         height: 100%;
@@ -598,40 +729,60 @@
                 }
             }
         }
-        .bottomThree{
+
+        .bottomThree {
             width: calc(25% - 8px);
             height: 100%;
+            border-radius: 10px;
             .deepColor;
             .areaPadding;
-            .title{
-                .commonTitle; 
+
+            .title {
+                .commonTitle;
             }
-            .area{
+
+            .area {
                 .commonArea;
                 display: grid;
                 grid-template-columns: repeat(2, 1fr);
                 grid-template-rows: repeat(2, 1fr);
-                gap: 10%;
-                .item{
+                gap: 0% 25%;
+
+                .item {
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
+
+                    .itemLabel {
+                        @media screen and (min-width: 2000px) {
+                            font-size: 18px;
+                        }
+
+                        @media screen and (min-width: 1000px) and (max-width: 2000px) {
+                            font-size: 14px;
+                        }
+
+                        @media screen and (max-width: 1000px) {
+                            font-size: 10px;
+                        }
+                    }
                 }
             }
         }
     }
 
-    :global{
-        .ant-radio-checked .ant-radio-inner{
+    :global {
+        .ant-radio-checked .ant-radio-inner {
             border-color: #00FF11;
             background-color: transparent;
         }
-        .ant-radio-checked .ant-radio-inner::after{
+
+        .ant-radio-checked .ant-radio-inner::after {
             background-color: #00FF11;
         }
-        .ant-radio-wrapper{
+
+        .ant-radio-wrapper {
             margin-left: 50px;
         }
     }
 }
-

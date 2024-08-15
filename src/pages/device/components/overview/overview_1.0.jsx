@@ -41,22 +41,22 @@ const OverView = ({deviceVersion, sn}) => {
         {
             title: '日充电量',
             data: 0,
-            icon: leftTop1Img
+            icon: leftTop3Img
         },
         {
             title: '日放电量',
             data: 0,
-            icon: leftTop2Img
+            icon: leftTop4Img
         },
         {
             title: '累计充电量',
             data: 0,
-            icon: leftTop3Img
+            icon: leftTop1Img
         },
         {
             title: '累计放电量',
             data: 0,
-            icon: leftTop4Img
+            icon: leftTop2Img
         }
     ])
 
@@ -402,7 +402,7 @@ const OverView = ({deviceVersion, sn}) => {
                                                             return (
                                                                 <div className={styles.subAreaRightItem}>
                                                                     <div className={styles.subAreaRightItemTitle}>{intl.formatMessage({id: item.title})}</div>
-                                                                    <div className={styles.subAreaRightItemValue}>{item.value}{item?.unit}</div>
+                                                                    <div className={styles.subAreaRightItemValue}>{item.value} {item?.unit}</div>
                                                                 </div>
                                                             )
                                                         })
@@ -444,7 +444,7 @@ const OverView = ({deviceVersion, sn}) => {
                                 communicationStatusDataSource?.map(item => {
                                     return (
                                         <div className={styles.item}>
-                                            {intl.formatMessage({id: item.label})}
+                                            <span className={styles.itemLabel}>{intl.formatMessage({id: item.label})}</span>
                                             <MyRadio checked={item.checked} />
                                         </div>
                                     )

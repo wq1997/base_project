@@ -41,7 +41,10 @@ const App = () => {
             locale={localeEnum[locale]}
             theme={{
                 algorithm: theme === 'dark' ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
-                token: ThemeEnum[theme],
+                token: {
+                    ...ThemeEnum[theme],
+                    fontSize: 15
+                },
                 components: {
                     Modal: {
                         contentBg: '#0D4D77',
@@ -50,9 +53,6 @@ const App = () => {
                     Cascader: {
                         optionSelectedBg: '#0D4D77',
                     },
-                    // Drawer: {
-                    //     colorBgElevated: '#0D4D77'
-                    // }
                 }
             }}
         >
