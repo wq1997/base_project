@@ -42,7 +42,7 @@ const Business = ({ typeList, currentType, onChangedType }) => {
         <>
             {true && (
                 <div className={styles.business}>
-                    <Map plants={dataSource?.plants} />
+                    <Map plants={dataSource?.plants} center={[104.083736, 30.653187]} zoom={5} />
                     {/* 头部Header */}
                     <div className={styles.header}>
                         <Header
@@ -125,8 +125,9 @@ const Business = ({ typeList, currentType, onChangedType }) => {
                         <div className={styles.rightItem}>
                             <AlarmAnysis
                                 data={
-                                    dataSource && Object?.keys(dataSource?.prior2Count||{})?.map(item => {
-                                        return [item, dataSource?.prior2Count?.[item||0]]
+                                    dataSource &&
+                                    Object?.keys(dataSource?.prior2Count || {})?.map(item => {
+                                        return [item, dataSource?.prior2Count?.[item || 0]];
                                     })
                                 }
                             />

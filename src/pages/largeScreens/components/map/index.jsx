@@ -12,13 +12,13 @@ import positionPic2 from "../../../../assets/images/定位2.png";
 
 const baseUrl = process.env.API_URL_1;
 
-const Index = ({ plants, panTo }) => {
+const Index = ({ center, zoom, plants, panTo }) => {
     const markers = [];
     const [map, setMap] = useState();
     const [cluster, setCluster] = useState();
     const [infoWindow, setInfoWindow] = useState();
-    const [defaultZoom, setDefaultZoom] = useState(8);
-    const defaultCenter = [120.678256, 31.314382];
+    const [defaultZoom, setDefaultZoom] = useState(zoom || 6);
+    const defaultCenter = center || [120.678256, 31.314382];
     window.info = [
         { name: "电池仓数量", key: "batteryNum", value: "" },
         { name: "单台电池仓容量", key: "batteryCapacity", value: "" },

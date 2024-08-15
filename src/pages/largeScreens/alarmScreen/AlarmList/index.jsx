@@ -137,7 +137,7 @@ const Index = ({ initData }) => {
             }))
         );
     }, [initData]);
-    
+
     useEffect(() => {
         getList();
     }, []);
@@ -163,7 +163,7 @@ const Index = ({ initData }) => {
                             <SearchInput
                                 label="设备名称"
                                 value={deviceName}
-                                placeholder="请选择设备名称"
+                                placeholder="请输入设备名称"
                                 onChange={value => {
                                     deviceNameRef.current = value;
                                     setDeviceName(value);
@@ -173,7 +173,7 @@ const Index = ({ initData }) => {
                                 label="电站名称"
                                 value={plantName}
                                 type="select"
-                                placeholder="请选择电站名称"
+                                placeholder="请选择电站"
                                 options={plantNameOptions}
                                 onChange={value => {
                                     plantNameRef.current = value;
@@ -248,7 +248,7 @@ const Index = ({ initData }) => {
                                         textAlign: "right",
                                         padding: "8px 0 ",
                                         boxSizing: "border-box",
-                                        marginTop: 10
+                                        marginTop: 10,
                                     }}
                                 >
                                     <Pagination

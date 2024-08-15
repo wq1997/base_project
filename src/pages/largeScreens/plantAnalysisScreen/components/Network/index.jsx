@@ -66,7 +66,7 @@ const Network = ({ typeList, currentType, onChangedType }) => {
 
     return (
         <div className={styles.network}>
-            <Map plants={mapPlants} panTo={mapPanTo} />
+            <Map plants={mapPlants} panTo={mapPanTo} center={[89.110251, 30.851870]} zoom={5} />
             {/* 头部Header */}
             <div className={styles.header}>
                 <Header
