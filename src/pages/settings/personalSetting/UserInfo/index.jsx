@@ -92,8 +92,8 @@ const Index = () => {
                         message: "请输入电子邮箱",
                     },
                     {
-                        pattern: EMAIL_REG,
-                        message: "邮箱格式错误",
+                        pattern: EMAIL_REG.reg,
+                        message: EMAIL_REG.desc,
                     },
                 ]}
             >

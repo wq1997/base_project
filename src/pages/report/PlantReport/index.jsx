@@ -12,6 +12,11 @@ const Log = () => {
     const [loading, setLoading] = useState(false);
     const plantNameRef = useRef();
     const [plantName, setPlantName] = useState();
+    const [plantNameOptions, setPlantNameOptions] = useState();
+    const plantTypeRef = useRef();
+    const [plantType, setPlantType] = useState();
+    const [plantTypeOptions, setPlantTypeOptions] = useState([]);
+    const gridTimeRef = useRef();
     const timeDimensionRef = useRef();
     const [timeDimension, setTimeDimension] = useState("DAY");
     const timeRef = useRef();
@@ -23,6 +28,10 @@ const Log = () => {
         {
             title: "电站名称",
             dataIndex: "name",
+        },
+        {
+            title: "电站类型",
+            dataIndex: "",
         },
         {
             title: "电站地址",
@@ -51,7 +60,7 @@ const Log = () => {
         const { current, pageSize } = paginationRef.current;
         const name = plantNameRef.current;
         const timePeriod = timeDimensionRef.current || "DAY";
-        const time = timeRef.current||moment().format("YYYY-MM-DD");
+        const time = timeRef.current || moment().format("YYYY-MM-DD");
         if (!time) return message.info("请先选择日期");
         setLoading(true);
         console.log("timePeriod", timePeriod);
@@ -108,12 +117,23 @@ const Log = () => {
             >
                 <SearchInput
                     label="电站名称"
-                    placeholder="请输入电站名称"
+                    placeholder="请选择电站"
                     value={plantName}
+                    type="select"
+                    options={plantNameOptions}
                     onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
                         plantNameRef.current = value;
                         setPlantName(value);
+                    }}
+                />
+                <SearchInput
+                    label="电站类型"
+                    value={plantType}
+                    type="select"
+                    options={plantTypeOptions}
+                    onChange={value => {
+                        plantTypeRef.current = value;
+                        setPlantType(value);
                     }}
                 />
                 <SearchInput

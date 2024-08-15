@@ -1,4 +1,17 @@
-.search {
-    flex-wrap: wrap;
-    margin-bottom: 8px;
+.statusExplain {
+    position: relative;
+    &:hover {
+        .explainTable {
+            display: block;
+        }
+    }
+    .explainTable {
+        padding: 6px;
+        position: absolute;
+        z-index: 99;
+        border-radius: 6px;
+        width: 400px;
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+        display: none;
+    }
 }

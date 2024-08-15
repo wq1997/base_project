@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Checkbox, Form, Input, message } from "antd";
 import { changePassword as changePasswordServer } from "@/services/user";
-import { PASSWORD_RGE } from "@/utils/constants";
+import { PASSWORD_REG } from "@/utils/constants";
 
 const onFinish = async values => {
     const res = await changePasswordServer(values);
@@ -53,8 +53,8 @@ const Index = () => (
                     message: "请输入新密码",
                 },
                 {
-                    pattern: PASSWORD_RGE,
-                    message: "密码长度为8-16位，至少2种字符",
+                    pattern: PASSWORD_REG.reg,
+                    message: PASSWORD_REG.desc,
                 },
             ]}
         >

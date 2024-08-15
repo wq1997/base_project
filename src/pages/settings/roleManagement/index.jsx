@@ -1,67 +1,110 @@
 import React, { useState, useEffect, useRef } from "react";
 import { SearchInput } from "@/components";
-import { Button, Space, Table, Tooltip, DatePicker, message } from "antd";
-import { DEFAULT_PAGINATION } from "@/utils/constants";
-import dayjs from "dayjs";
-import styles from "./index.less";
-import { getOperateLog as getOperateLogServer } from "@/services/log";
+import { Button, Space, Table, theme, Popconfirm, message } from "antd";
+import { DEFAULT_PAGINATION, COMMANDIDS } from "@/utils/constants";
+import AddRole from "./AddRole";
+import IncludeUsers from "./IncludeUsers";
+import {
+    getDeviceList as getDeviceListServer,
+    getDeviceType as getDeviceTypeServer,
+    getDeviceModel as getDeviceModelServer,
+    deleteDevice as deleteDeviceServer,
+    getDeviceInfo as getDeviceInfoServer,
+} from "@/services/device";
+import "./index.less";
 
 const Log = () => {
+    const { token } = theme.useToken();
     const [dataSource, setDataSource] = useState([]);
     const [loading, setLoading] = useState(false);
-    const accountRef = useRef();
-    const [account, setAccount] = useState();
-    const executeTimeRef = useRef();
-    const [executeTime, setExecuteTime] = useState();
+    const [addRoleOpen, setAddRoleOpen] = useState(false);
+    const [editId, setEditId] = useState();
+    const roleRef = useRef();
+    const [role, setRole] = useState();
+    const [roleOptions, setRoleOptions] = useState();
+    const usernameRef = useRef();
+    const [username, setUsername] = useState();
     const paginationRef = useRef(DEFAULT_PAGINATION);
+    const [includeUsersId, setIncludeUsersId] = useState();
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
 
     const columns = [
         {
-            title: "用户名",
-            dataIndex: "userName",
+            title: "角色名称",
+            dataIndex: "",
         },
         {
-            title: "IP",
-            dataIndex: "ip",
+            title: "角色描述",
+            dataIndex: "",
         },
         {
-            title: "操作对象",
-            dataIndex: "operateObject",
+            title: "包含用户",
+            dataIndex: "",
+            render: (_, { id }) => {
+                return <a onClick={() => setIncludeUsersId(id)}>查看</a>;
+            },
         },
         {
-            title: "操作内容",
-            dataIndex: "operateContent",
-            key: "operateContent",
-        },
-        {
-            title: "操作时间",
-            dataIndex: "operateTime",
-            width: '350px'
+            title: "操作",
+            dataIndex: "operate",
+            width: 150,
+            render: (_, { id }) => {
+                return (
+                    <Space size={10}>
+                        <Popconfirm
+                            title="操作确认"
+                            description="确定删除此角色？"
+                            onConfirm={() => deleteDevice(id)}
+                            okText="确定"
+                            cancelText="取消"
+                        >
+                            <a style={{ color: "#ff4d4f" }}>删除</a>
+                        </Popconfirm>
+                        <a onClick={() => setDetailId(id)}>编辑</a>
+                    </Space>
+                );
+            },
         },
     ];
 
-    const getList = async () => {
-        const { current, pageSize } = paginationRef.current;
-        const userName = accountRef.current;
-        const [startTime, endTime] = executeTimeRef.current || [];
-        setLoading(true);
-        const res = await getOperateLogServer({
-            pageNo: current,
-            pageSize,
-            userName,
-            startTime,
-            endTime,
-        });
+    const deleteDevice = async id => {
+        const res = await deleteDeviceServer(id);
         if (res?.data?.code == 200) {
-            const { total, records } = res?.data?.data;
-            setPagination({
-                ...paginationRef.current,
-                total: parseInt(total),
-            });
-            setDataSource(records);
+            const { current } = paginationRef?.current;
+            if (current != 1 && dataSource.length == 1) {
+                (paginationRef.current.current = current - 1),
+                    setPagination({
+                        current: current - 1,
+                    });
+            }
+            getList();
+            message.info("删除成功");
         } else {
             message.info(res?.data?.description);
+        }
+    };
+
+    const getList = async () => {
+        const { current, pageSize } = paginationRef.current;
+        const role = roleRef.current;
+        const username = usernameRef?.current;
+        setLoading(true);
+        try {
+            const res = await getDeviceListServer({
+                pageNo: current,
+                pageSize,
+                role,
+                username,
+            });
+            if (res?.data?.code == 200) {
+                const { total, records } = res?.data?.data;
+                setPagination({
+                    ...paginationRef.current,
+                    total: parseInt(total),
+                });
+                setDataSource(records);
+            }
+        } finally {
         }
         setLoading(false);
     };
@@ -73,11 +116,23 @@ const Log = () => {
 
     const handleReset = () => {
         paginationRef.current = DEFAULT_PAGINATION;
-        accountRef.current = undefined;
-        setAccount();
-        executeTimeRef.current = undefined;
-        setExecuteTime([]);
+        deviceTypeRef.current = undefined;
+        setDeviceType();
+        plantNameRef.current = undefined;
+        setPlantName();
+        deviceNameRef.current = undefined;
+        setDeviceName();
+        snRef.current = undefined;
+        setSn();
+        deviceModelRef.current = undefined;
+        setDeviceModel();
         getList();
+    };
+
+    const onAddRoleClose = () => {
+        setEditId();
+        getList();
+        setAddRoleOpen(false);
     };
 
     useEffect(() => {
@@ -86,6 +141,8 @@ const Log = () => {
 
     return (
         <>
+            <AddRole open={addRoleOpen} onClose={() => onAddRoleClose()} />
+            <IncludeUsers roleId={includeUsersId} onClose={() => setIncludeUsersId(null)} />
             <Space
                 style={{
                     flexWrap: "wrap",
@@ -93,30 +150,26 @@ const Log = () => {
                 }}
             >
                 <SearchInput
-                    label="操作账号"
-                    placeholder="请输入用户名"
-                    value={account}
+                    label="角色名称"
+                    placeholder="请选择角色"
+                    value={role}
+                    type="select"
+                    options={roleOptions}
                     onChange={value => {
-                        accountRef.current = value;
-                        setAccount(value);
+                        roleRef.current = value;
+                        setRole(value);
                     }}
                 />
-                <div>
-                    <span>开始/结束时间：</span>
-                    <DatePicker.RangePicker
-                        onChange={(date, dateStr) => {
-                            paginationRef.current = DEFAULT_PAGINATION;
-                            executeTimeRef.current = dateStr;
-                            setExecuteTime(dateStr);
-                        }}
-                        value={
-                            executeTime && executeTime.length > 0
-                                ? [dayjs(executeTime[0]), dayjs(executeTime[1])]
-                                : []
-                        }
-                    />
-                </div>
-                <Button type="primary" onClick={handleSearch}>
+                <SearchInput
+                    label="用户名"
+                    placeholder="请输入用户名"
+                    value={username}
+                    onChange={value => {
+                        usernameRef.current = value;
+                        setUsername(value);
+                    }}
+                />
+                <Button type="primary" onClick={() => handleSearch()}>
                     搜索
                 </Button>
                 <Button onClick={handleReset}>重置</Button>
@@ -135,6 +188,23 @@ const Log = () => {
                 }}
                 columns={columns}
                 pagination={pagination}
+                title={() => (
+                    <Space
+                        style={{
+                            display: "flex",
+                            justifyContent: "flex-end",
+                            alignItems: "center",
+                        }}
+                    >
+                        <Button
+                            type="primary"
+                            onClick={() => setAddRoleOpen(true)}
+                            style={{ float: "right", marginBottom: "8px" }}
+                        >
+                            新增
+                        </Button>
+                    </Space>
+                )}
             />
         </>
     );

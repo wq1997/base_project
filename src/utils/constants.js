@@ -13,10 +13,20 @@ export const FORM_ONLY_NUMBER = { pattern: /^[1-9]\d*$/, message: "只能输入�
 export const TELPHONE_REG = new RegExp(
     /^1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[0-35-9])\d{8}$/
 );
-export const EMAIL_REG = new RegExp(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(.[a-zA-Z0-9_-]+)+$/);
+export const EMAIL_REG = {
+    reg: /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(.[a-zA-Z0-9_-]+)+$/,
+    desc: "邮箱格式有误",
+};
 export const ALL_SPACE_REG = new RegExp(/\S/);
-export const PASSWORD_RGE =
-    /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9a-zA-Z-`=\[\];',.~!@#$%^&*()_+|{}:"?]{8,16}$/;
+export const PASSWORD_REG = {
+    reg: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9a-zA-Z-`=\[\];',.~!@#$%^&*()_+|{}:"?]{8,16}$/,
+    desc: "密码长度为8-16位，至少2种字符",
+};
+
+export const USERNAME_REG = {
+    reg: /^[a-zA-Z0-9_]{8,16}$/,
+    desc: "8-16个字符，只能填写英文、数字、下划线",
+};
 /*  
     8001->开机
     8002->关机

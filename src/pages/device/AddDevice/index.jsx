@@ -144,20 +144,85 @@ const Device = ({ open, editId, onClose }) => {
                     </Col>
                     <Col span={12}>
                         <Form.Item
-                            label="设备编码"
-                            name="code"
+                            label="设备类型"
+                            name="type"
                             rules={[
                                 {
                                     required: true,
-                                    message: "请输入设备编码",
-                                },
-                                {
-                                    pattern: ALL_SPACE_REG,
-                                    message: "请输入设备编码",
+                                    message: "请选择设备类型",
                                 },
                             ]}
                         >
-                            <Input placeholder="请输入设备编码" />
+                            <Select
+                                placeholder="请选择设备类型"
+                                options={deviceTypeOptions}
+                                fieldNames={{ label: "displayName", value: "name" }}
+                            />
+                        </Form.Item>
+                    </Col>
+                </Row>
+
+                <Row>
+                    <Col span={12}>
+                        <Form.Item
+                            label="关联电站"
+                            name="plantId"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "请选择关联电站",
+                                },
+                            ]}
+                        >
+                            <Select
+                                placeholder="请选择关联电站"
+                                options={plantNamesOptions}
+                                fieldNames={{ label: "name", value: "id" }}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item
+                            label="sn号码"
+                            name="snNumber"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "请输入sn号",
+                                },
+                                {
+                                    pattern: ALL_SPACE_REG,
+                                    message: "请输入sn号",
+                                },
+                            ]}
+                        >
+                            <Input placeholder="请输入sn号" />
+                        </Form.Item>
+                    </Col>
+                </Row>
+
+                <Row>
+                    <Col span={12}>
+                        <Form.Item label="质保有效期" name="warrantyPeriod">
+                            <DatePicker format="YYYY-MM-DD" />
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item
+                            label="设备型号"
+                            name="model"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "请输入设备型号",
+                                },
+                                {
+                                    pattern: ALL_SPACE_REG,
+                                    message: "请输入设备型号",
+                                },
+                            ]}
+                        >
+                            <Input placeholder="请输入设备型号" />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -183,86 +248,44 @@ const Device = ({ open, editId, onClose }) => {
                     </Col>
                     <Col span={12}>
                         <Form.Item
-                            label="设备类型"
-                            name="type"
+                            label="功率因数调节"
+                            name="powerFactorAdjustment"
                             rules={[
                                 {
                                     required: true,
-                                    message: "请选择设备类型",
+                                    message: "请输入功率因数调节",
+                                },
+                                {
+                                    validator: (rule, value, callback) => {
+                                        if (
+                                            (value > -1.0 && value <= -0.8) ||
+                                            (value >= 0.8 && value <= 1.0)
+                                        ) {
+                                            callback();
+                                        } else {
+                                            callback("请输入合适范围");
+                                        }
+                                    },
                                 },
                             ]}
                         >
-                            <Select
-                                placeholder="请选择设备类型"
-                                options={deviceTypeOptions}
-                                fieldNames={{ label: "displayName", value: "name" }}
+                            <InputNumber
+                                placeholder="请输入功率因数调节"
+                                style={{ width: "100%" }}
+                                precision={3}
                             />
                         </Form.Item>
-                    </Col>
-                </Row>
-
-                <Row>
-                    <Col span={12}>
-                        <Form.Item
-                            label="sn号码"
-                            name="snNumber"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "请输入sn号",
-                                },
-                                {
-                                    pattern: ALL_SPACE_REG,
-                                    message: "请输入sn号",
-                                },
-                            ]}
+                        <div
+                            style={{
+                                marginTop: "5px",
+                                color: "#999",
+                                position: "relative",
+                                left: "188px",
+                                top: "-15px",
+                            }}
                         >
-                            <Input placeholder="请输入sn号" />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item
-                            label="设备型号"
-                            name="model"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "请输入设备型号",
-                                },
-                                {
-                                    pattern: ALL_SPACE_REG,
-                                    message: "请输入设备型号",
-                                },
-                            ]}
-                        >
-                            <Input placeholder="请输入设备型号" />
-                        </Form.Item>
-                    </Col>
-                </Row>
-
-                <Row>
-                    <Col span={12}>
-                        <Form.Item label="质保有效期" name="warrantyPeriod">
-                            <DatePicker format="YYYY-MM-DD" />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item
-                            label="关联电站"
-                            name="plantId"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "请选择关联电站",
-                                },
-                            ]}
-                        >
-                            <Select
-                                placeholder="请选择关联电站"
-                                options={plantNamesOptions}
-                                fieldNames={{ label: "name", value: "id" }}
-                            />
-                        </Form.Item>
+                            (-1.000 ~ -0.800] U [0.800 ~ 1.000]
+                        </div>
                     </Col>
                 </Row>
 
@@ -386,50 +409,6 @@ const Device = ({ open, editId, onClose }) => {
                                 style={{ width: "100%" }}
                             />
                         </Form.Item>
-                    </Col>
-                </Row>
-
-                <Row span={24}>
-                    <Col span={12}>
-                        <Form.Item
-                            label="功率因数调节"
-                            name="powerFactorAdjustment"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "请输入功率因数调节",
-                                },
-                                {
-                                    validator: (rule, value, callback) => {
-                                        if (
-                                            (value > -1.0 && value <= -0.8) ||
-                                            (value >= 0.8 && value <= 1.0)
-                                        ) {
-                                            callback();
-                                        } else {
-                                            callback("请输入合适范围");
-                                        }
-                                    },
-                                },
-                            ]}
-                        >
-                            <InputNumber
-                                placeholder="请输入功率因数调节"
-                                style={{ width: "100%" }}
-                                precision={3}
-                            />
-                        </Form.Item>
-                        <div
-                            style={{
-                                marginTop: "5px",
-                                color: "#999",
-                                position: "relative",
-                                left: "188px",
-                                top: "-15px",
-                            }}
-                        >
-                            (-1.000 ~ -0.800] U [0.800 ~ 1.000]
-                        </div>
                     </Col>
                 </Row>
 

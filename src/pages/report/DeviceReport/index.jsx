@@ -11,13 +11,14 @@ import moment from "moment";
 const Log = () => {
     const [dataSource, setDataSource] = useState([]);
     const [loading, setLoading] = useState(false);
+    const deviceNameRef = useRef();
+    const [deviceName, setDeviceName] = useState();
+    const [deviceNameOptions, setDeviceNameOptions] = useState();
     const deviceTypeRef = useRef();
     const [deviceType, setDeviceType] = useState();
     const [deviceTypeOptions, setDeviceTypeOptions] = useState([]);
-    const deviceCodeRef = useRef();
-    const [deviceCode, setDeviceCode] = useState();
-    const deviceNameRef = useRef();
-    const [deviceName, setDeviceName] = useState();
+    const snRef = useRef();
+    const [sn, setSn] = useState();
     const timeDimensionRef = useRef();
     const [timeDimension, setTimeDimension] = useState("DAY");
     const timeRef = useRef();
@@ -27,16 +28,16 @@ const Log = () => {
 
     const columns = [
         {
-            title: "电站名称",
-            dataIndex: "plantName",
-        },
-        {
             title: "设备名称",
             dataIndex: "name",
         },
         {
-            title: "设备编码",
-            dataIndex: "code",
+            title: "关联电站",
+            dataIndex: "plantName",
+        },
+        {
+            title: "SN号",
+            dataIndex: "",
         },
         {
             title: "设备类型",
@@ -76,15 +77,15 @@ const Log = () => {
         const { current, pageSize } = paginationRef.current;
         const name = deviceNameRef.current;
         const type = deviceTypeRef?.current;
-        const code = deviceCodeRef?.current;
+        const sn = setSn?.current;
         const timePeriod = timeDimensionRef.current || "DAY";
-        const time = timeRef.current||moment().format("YYYY-MM-DD");
+        const time = timeRef.current || moment().format("YYYY-MM-DD");
         if (!time) return message.info("请先选择日期");
         setLoading(true);
         const res = await getDeviceReportListServer({
             pageNo: current,
             pageSize,
-            code,
+            sn,
             name,
             type,
             time,
@@ -139,12 +140,14 @@ const Log = () => {
                 }}
             >
                 <SearchInput
-                    label="设备编码"
-                    placeholder="请输入设备编码"
-                    value={deviceCode}
+                    label="设备名称"
+                    placeholder="请选择设备"
+                    type="select"
+                    options={deviceNameOptions}
+                    value={deviceName}
                     onChange={value => {
-                        deviceCodeRef.current = value;
-                        setDeviceCode(value);
+                        deviceNameRef.current = value;
+                        setDeviceName(value);
                     }}
                 />
                 <SearchInput
@@ -159,13 +162,12 @@ const Log = () => {
                     }}
                 />
                 <SearchInput
-                    label="设备名称"
-                    placeholder="请输入设备名称"
-                    value={deviceName}
+                    label="SN号"
+                    placeholder="请输入SN号"
+                    value={sn}
                     onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
-                        deviceNameRef.current = value;
-                        setDeviceName(value);
+                        snRef.current = value;
+                        setSn(value);
                     }}
                 />
                 <SearchInput

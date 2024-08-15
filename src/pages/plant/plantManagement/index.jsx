@@ -17,12 +17,17 @@ const Log = () => {
     const [addPlantOpen, setAddPlantOpen] = useState(false);
     const [editId, setEditId] = useState();
     const companyRef = useRef();
+    const [companyOptions, setCompanyOptions] = useState([]);
     const [company, setCompany] = useState();
+    const userRef = useRef();
+    const [userOptions, setUserOptions] = useState([]);
+    const [user, setUser] = useState();
+    const plantNameRef = useRef();
+    const [plantNameOptions, setPlantNameOptions] = useState();
+    const [plantName, setPlantName] = useState();
     const plantTypeRef = useRef();
     const [plantType, setPlantType] = useState();
     const [plantTypeOptions, setPlantTypeOptions] = useState([]);
-    const plantNameRef = useRef();
-    const [plantName, setPlantName] = useState();
     const gridTimeRef = useRef();
     const [gridTime, setGridTime] = useState([]);
     const paginationRef = useRef(DEFAULT_PAGINATION);
@@ -33,6 +38,10 @@ const Log = () => {
         {
             title: "电站名称",
             dataIndex: "name",
+        },
+        {
+            title: "关联用户",
+            dataIndex: "",
         },
         {
             title: "所属公司",
@@ -49,14 +58,6 @@ const Log = () => {
         {
             title: "电站地址",
             dataIndex: "address",
-        },
-        {
-            title: "联系人",
-            dataIndex: "contact",
-        },
-        {
-            title: "联系方式",
-            dataIndex: "contactWay",
         },
         {
             title: "并网时间",
@@ -193,7 +194,9 @@ const Log = () => {
             >
                 <SearchInput
                     label="所属公司"
-                    placeholder="请输入所属公司"
+                    placeholder="请选择所属公司"
+                    type="select"
+                    options={companyOptions}
                     value={company}
                     onChange={value => {
                         companyRef.current = value;
@@ -201,9 +204,22 @@ const Log = () => {
                     }}
                 />
                 <SearchInput
+                    label="关联用户"
+                    placeholder="请选择关联用户"
+                    type="select"
+                    options={userOptions}
+                    value={user}
+                    onChange={value => {
+                        userRef.current = value;
+                        setUser(value);
+                    }}
+                />
+                <SearchInput
                     label="电站名称"
-                    placeholder="请输入电站名称"
+                    placeholder="请选择电站"
                     value={plantName}
+                    type="select"
+                    options={plantNameOptions}
                     onChange={value => {
                         plantNameRef.current = value;
                         setPlantName(value);

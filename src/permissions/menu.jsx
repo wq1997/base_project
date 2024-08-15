@@ -66,6 +66,14 @@ const MenuList = [
                 label: "个人设置",
             },
             {
+                key: "/system-settings/user-management",
+                label: "用户管理",
+            },
+            {
+                key: "/system-settings/role-management",
+                label: "角色管理",
+            },
+            {
                 key: "/system-settings/operation-log",
                 label: "操作日志",
             },
@@ -88,7 +96,7 @@ const MyMenu = () => {
                         title={menu.label}
                         icon={
                             <div style={{ width: "23px" }}>
-                                <img src={menu.icon} style={{ width: "100%" }}/>
+                                <img src={menu.icon} style={{ width: "100%" }} />
                             </div>
                         }
                     >
@@ -100,10 +108,11 @@ const MyMenu = () => {
                     <Menu.Item
                         key={menu.key}
                         icon={
-                            menu.icon&&
-                            <div style={{ width: "23px" }}>
-                                <img src={menu.icon} style={{ width: "100%" }}/>
-                            </div>
+                            menu.icon && (
+                                <div style={{ width: "23px" }}>
+                                    <img src={menu.icon} style={{ width: "100%" }} />
+                                </div>
+                            )
                         }
                     >
                         <Link

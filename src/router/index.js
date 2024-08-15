@@ -28,6 +28,14 @@ export default Routes = [
                         component: "@/pages/settings/personalSetting",
                     },
                     {
+                        path: "/system-settings/user-management",
+                        component: "@/pages/settings/userManagement",
+                    },
+                    {
+                        path: "/system-settings/role-management",
+                        component: "@/pages/settings/roleManagement",
+                    },
+                    {
                         path: "/system-settings/operation-log",
                         component: "@/pages/settings/operationLog",
                     },

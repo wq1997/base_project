@@ -15,12 +15,14 @@ const SearchInput = ({
     labelInValue = false,
     allowClear = true,
     onChange = () => {},
+    size = "middle",
 }) => {
     return (
         <div style={{ margin: 8, whiteSpace: "nowrap" }}>
             {label && <span>{label}：</span>}
             {type == "input" ? (
                 <Input
+                    size={size}
                     value={value}
                     style={{ width: inputWidth }}
                     placeholder={placeholder || `请输入${label}`}
@@ -28,6 +30,7 @@ const SearchInput = ({
                 />
             ) : (
                 <Select
+                    size={size}
                     labelInValue={labelInValue}
                     mode={mode}
                     value={value}

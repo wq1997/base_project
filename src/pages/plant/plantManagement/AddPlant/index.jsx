@@ -34,6 +34,7 @@ const Plant = ({ open, editId, onClose }) => {
     const [form] = Form.useForm();
     const [editData, setEditData] = useState();
     const [plantTypeOptions, setPlantTypeOptions] = useState([]);
+    const [userOptions, setUserOptions] = useState([]);
 
     const getPlantType = async () => {
         const res = await getPlantTypeServer();
@@ -151,6 +152,19 @@ const Plant = ({ open, editId, onClose }) => {
                         </Form.Item>
                     </Col>
                     <Col span={12}>
+                        <Form.Item label="关联用户" name="user">
+                            <Select
+                                allowClear={true}
+                                placeholder="请选择关联用户"
+                                fieldNames={{ label: "displayName", value: "name" }}
+                                options={userOptions}
+                            />
+                        </Form.Item>
+                    </Col>
+                </Row>
+
+                <Row>
+                    <Col span={12}>
                         <Form.Item
                             label="电站名称"
                             name="name"
@@ -173,9 +187,6 @@ const Plant = ({ open, editId, onClose }) => {
                             />
                         </Form.Item>
                     </Col>
-                </Row>
-
-                <Row>
                     <Col span={12}>
                         <Form.Item label="电站类型" name="plantType">
                             <Select
@@ -186,6 +197,9 @@ const Plant = ({ open, editId, onClose }) => {
                             />
                         </Form.Item>
                     </Col>
+                </Row>
+
+                <Row>
                     <Col span={12}>
                         <Form.Item
                             label="并网时间"
@@ -200,9 +214,27 @@ const Plant = ({ open, editId, onClose }) => {
                             <DatePicker format="YYYY-MM-DD" />
                         </Form.Item>
                     </Col>
+                    <Col span={12}>
+                        <Form.Item
+                            label="电站组串总容量(kWp)"
+                            name="totalCapacity"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "请输入电站组串总容量",
+                                },
+                            ]}
+                        >
+                            <InputNumber
+                                placeholder="请输入电站组串总容量"
+                                style={{ width: "100%" }}
+                                min={0}
+                            />
+                        </Form.Item>
+                    </Col>
                 </Row>
 
-                <Row>
+                <Row span={24}>
                     <Col span={12}>
                         <Form.Item label="联系人" name="contact">
                             <Input placeholder="请输入联系人" />
@@ -232,24 +264,6 @@ const Plant = ({ open, editId, onClose }) => {
                             ]}
                         >
                             <Input placeholder="请输入电站地址" />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item
-                            label="电站组串总容量(kWp)"
-                            name="totalCapacity"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "请输入电站组串总容量",
-                                },
-                            ]}
-                        >
-                            <InputNumber
-                                placeholder="请输入电站组串总容量"
-                                style={{ width: "100%" }}
-                                min={0}
-                            />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -293,28 +307,6 @@ const Plant = ({ open, editId, onClose }) => {
                                 precision={6}
                                 style={{ width: "100%" }}
                             />
-                        </Form.Item>
-                    </Col>
-                </Row>
-
-                <Row span={24}>
-                    <Col span={12}>
-                        <Form.Item
-                            label={
-                                <Row>
-                                    <span style={{marginRight: 5}}>累计发电量统计模式</span>
-                                    <Tooltip
-                                        style={{ position: "relative" }}
-                                        title="逆变器统计时，电站累计发电量从设备并网发电时刻开始统计"
-                                    >
-                                        <QuestionCircleOutlined/>
-                                    </Tooltip>
-                                </Row>
-                            }
-                            name="statisticalModel"
-                            initialValue={"逆变器统计"}
-                        >
-                            <Input disabled={true} style={{ width: "100%" }} />
                         </Form.Item>
                     </Col>
                 </Row>

@@ -7,7 +7,6 @@ import Detail from "./Detail";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import {
     getDeviceList as getDeviceListServer,
-    getCommunicationStatus as getCommunicationStatusServer,
     getDeviceType as getDeviceTypeServer,
     getDeviceModel as getDeviceModelServer,
     deleteDevice as deleteDeviceServer,
@@ -33,16 +32,13 @@ const Log = () => {
     const [num, setNum] = useState(0);
     const plantNameRef = useRef();
     const [plantName, setPlantName] = useState();
-    const communicationStatusRef = useRef();
-    const [communicationStatus, setCommunicationStatus] = useState();
-    const [communicationStatusOptions, setCommunicationStatusOptions] = useState([]);
+    const [plantNameOptions, setPlantNameOptions] = useState();
+    const deviceNameRef = useRef();
+    const [deviceName, setDeviceName] = useState();
+    const [deviceNameOptions, setDeviceNameOptions] = useState();
     const deviceTypeRef = useRef();
     const [deviceType, setDeviceType] = useState();
     const [deviceTypeOptions, setDeviceTypeOptions] = useState([]);
-    const deviceCodeRef = useRef();
-    const [deviceCode, setDeviceCode] = useState();
-    const deviceNameRef = useRef();
-    const [deviceName, setDeviceName] = useState();
     const snRef = useRef();
     const [sn, setSn] = useState();
     const deviceModelRef = useRef();
@@ -62,10 +58,6 @@ const Log = () => {
         {
             title: "设备名称",
             dataIndex: "name",
-        },
-        {
-            title: "设备编码",
-            dataIndex: "code",
         },
         {
             title: "采集器编号",
@@ -94,7 +86,7 @@ const Log = () => {
             dataIndex: "model",
         },
         {
-            title: "电站名称",
+            title: "关联电站",
             dataIndex: "plantName",
         },
         {
@@ -141,13 +133,6 @@ const Log = () => {
         }
     };
 
-    const getCommunicationStatus = async () => {
-        const res = await getCommunicationStatusServer();
-        if (res?.data?.code == 200) {
-            setCommunicationStatusOptions(res?.data?.data);
-        }
-    };
-
     const getDeviceType = async () => {
         const res = await getDeviceTypeServer();
         if (res?.data?.code == 200) {
@@ -170,9 +155,7 @@ const Log = () => {
     const getList = async () => {
         const { current, pageSize } = paginationRef.current;
         const plantName = plantNameRef.current;
-        const communicationStatus = communicationStatusRef?.current;
         const name = deviceNameRef?.current;
-        const code = deviceCodeRef?.current;
         const type = deviceTypeRef?.current;
         const sn = snRef?.current;
         const model = deviceModelRef?.current;
@@ -182,9 +165,7 @@ const Log = () => {
                 pageNo: current,
                 pageSize,
                 plantName,
-                communicationStatus,
                 name,
-                code,
                 type,
                 sn,
                 model,
@@ -213,12 +194,8 @@ const Log = () => {
         setDeviceType();
         plantNameRef.current = undefined;
         setPlantName();
-        communicationStatusRef.current = undefined;
-        setCommunicationStatus();
         deviceNameRef.current = undefined;
         setDeviceName();
-        deviceCodeRef.current = undefined;
-        setDeviceCode();
         snRef.current = undefined;
         setSn();
         deviceModelRef.current = undefined;
@@ -233,7 +210,6 @@ const Log = () => {
     };
 
     useEffect(() => {
-        getCommunicationStatus();
         getDeviceType();
         getDeviceModel();
         getList();
@@ -282,40 +258,25 @@ const Log = () => {
                 }}
             >
                 <SearchInput
-                    label="电站名称"
-                    placeholder="请输入电站名称"
+                    label="关联电站"
+                    placeholder="请选择关联电站"
                     value={plantName}
+                    type="select"
+                    options={plantNameOptions}
                     onChange={value => {
                         plantNameRef.current = value;
                         setPlantName(value);
                     }}
                 />
-                {/* <SearchInput
-                    label="通信状态"
-                    value={communicationStatus}
-                    type="select"
-                    options={communicationStatusOptions}
-                    onChange={value => {
-                        communicationStatusRef.current = value;
-                        setCommunicationStatus(value);
-                    }}
-                /> */}
                 <SearchInput
                     label="设备名称"
-                    placeholder="请输入设备名称"
+                    placeholder="请选择设备"
+                    type="select"
+                    options={deviceNameOptions}
                     value={deviceName}
                     onChange={value => {
                         deviceNameRef.current = value;
                         setDeviceName(value);
-                    }}
-                />
-                <SearchInput
-                    label="设备编码"
-                    placeholder="请输入设备编码"
-                    value={deviceCode}
-                    onChange={value => {
-                        deviceCodeRef.current = value;
-                        setDeviceCode(value);
                     }}
                 />
                 <SearchInput
@@ -330,15 +291,6 @@ const Log = () => {
                     }}
                 />
                 <SearchInput
-                    label="SN号"
-                    placeholder="请输入SN号"
-                    value={sn}
-                    onChange={value => {
-                        snRef.current = value;
-                        setSn(value);
-                    }}
-                />
-                <SearchInput
                     label="设备型号"
                     placeholder="请选择设备型号"
                     type="select"
@@ -349,7 +301,15 @@ const Log = () => {
                         setDeviceModel(value);
                     }}
                 />
-
+                <SearchInput
+                    label="SN号"
+                    placeholder="请输入SN号"
+                    value={sn}
+                    onChange={value => {
+                        snRef.current = value;
+                        setSn(value);
+                    }}
+                />
                 <Button type="primary" onClick={() => handleSearch()}>
                     搜索
                 </Button>
@@ -382,7 +342,7 @@ const Log = () => {
                                 <QuestionCircleOutlined style={{ marginRight: "5px" }} />
                                 设备状态说明
                             </div>
-                            <div className="explainTable" style={{background: token.color5}}>
+                            <div className="explainTable" style={{ background: token.color5 }}>
                                 <Table
                                     bordered
                                     size="small"
