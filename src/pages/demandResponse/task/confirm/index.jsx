@@ -26,7 +26,7 @@ import { recordPage, getUrlParams } from "@/utils/utils";
 
 const colorList = ["#9E87FF", "#73DDFF", "#fe9a8b", "rgb(56, 91, 243)", "#9E87FF"];
 const Confirm = () => {
-    recordPage('op:task_confirm');
+    recordPage("op:task_confirm");
     const { search, pathname } = useLocation();
     const { token } = antdTheme.useToken();
     const { theme } = useSelector(state => state.global);
@@ -38,7 +38,7 @@ const Confirm = () => {
     const [companyMaxPower, setCompanyMaxPower] = useState([]);
     const [responsePower, setResponsePower] = useState([]);
     const [actualAveragePower, setActualAveragePower] = useState([]);
-    
+
     const [taskAskData, setTaskAskData] = useState([
         {
             label: "响应类型",
@@ -65,7 +65,9 @@ const Confirm = () => {
 
     const getOptions = () => {
         const isSearch = pathname?.endsWith("search");
-        const legendData = isSearch? ["响应时段负荷", "负荷基线", "任务要求", "实际响应"] : ["预计基线负荷", "签约响应量", "任务量"];
+        const legendData = isSearch
+            ? ["响应时段负荷", "负荷基线", "任务要求", "实际响应"]
+            : ["预计基线负荷", "签约响应量", "任务量"];
         setOptions({
             legend: {
                 data: legendData,
@@ -122,7 +124,7 @@ const Confirm = () => {
                     name: legendData[0],
                     type: "line",
                     smooth: true,
-                    data: isSearch? actualPower: baseLinePower,
+                    data: isSearch ? actualPower : baseLinePower,
                     symbol: "none",
                     lineStyle: {
                         width: 2,
@@ -139,7 +141,7 @@ const Confirm = () => {
                     type: "line",
                     smooth: false,
                     symbol: "none",
-                    data: isSearch? baseLinePower: companyMaxPower,
+                    data: isSearch ? baseLinePower : companyMaxPower,
                     lineStyle: {
                         width: 2,
                     },
@@ -173,7 +175,7 @@ const Confirm = () => {
                     symbol: "none",
                     data: actualAveragePower,
                     lineStyle: {
-                        width: 3
+                        width: 3,
                     },
                     itemStyle: {
                         normal: {
@@ -197,7 +199,9 @@ const Confirm = () => {
         setBaseLinePower(curTask?.projectedPowerData?.map(item => item?._2?.baseLinePower));
         setCompanyMaxPower(curTask?.projectedPowerData?.map(item => item?._2?.companyMaxPower));
         setResponsePower(curTask?.projectedPowerData?.map(item => item?._2?.responsePower));
-        setActualAveragePower(curTask?.projectedPowerData?.map(item => item?._2?.actualAveragePower));
+        setActualAveragePower(
+            curTask?.projectedPowerData?.map(item => item?._2?.actualAveragePower)
+        );
     };
 
     const getTaskDashboard = async () => {
@@ -213,22 +217,22 @@ const Confirm = () => {
                 pageNum: 1,
                 pageSize: 1,
                 queryCmd: {
-                    status: 'EXECUTED_SUCCESS',
+                    status: "EXECUTED_SUCCESS",
                 },
             });
-            if(searchRes?.data?.data?.recordList?.length>0){
+            if (searchRes?.data?.data?.recordList?.length > 0) {
                 defaultTaskId = searchRes?.data?.data?.recordList?.[0]?.id;
             }
             let url = "";
-            if(params?.taskId||defaultTaskId){
-                url= `id=${params?.taskId||defaultTaskId}`
+            if (params?.taskId || defaultTaskId) {
+                url = `id=${params?.taskId || defaultTaskId}`;
             }
-            if(params?.code){
-                url = `code=${params?.code}`
+            if (params?.code) {
+                url = `code=${params?.code}`;
             }
-            res = await getTaskDashboardByIdServer(url);
+            res = await getTaskDashboardByIdServer(url ? url : "status=EXECUTED_SUCCESS");
         }
-        const list = _isWaitTask ? res?.data?.data : [res?.data?.data];
+        const list = _isWaitTask ? res?.data?.data : [res?.data?.data].filter(item => item != null);
         if (res?.data?.status == "SUCCESS") {
             setTaskList(list);
             const index = params?.taskId
@@ -406,11 +410,10 @@ const Confirm = () => {
             },
         });
     };
-    
+
     return (
-        <div style={{width: '100%', height: '100%'}}>
-            {
-                taskList?.length>0?
+        <div style={{ width: "100%", height: "100%" }}>
+            {taskList?.length > 0 ? (
                 <div className="confirm-task">
                     <div className={classNames("wait-confirm", cardStyle)}>
                         <div className="title">
@@ -424,7 +427,9 @@ const Confirm = () => {
                                                 <CaretLeftOutlined
                                                     style={{
                                                         cursor:
-                                                            curTaskIndex == 0 ? "not-allowed" : "pointer",
+                                                            curTaskIndex == 0
+                                                                ? "not-allowed"
+                                                                : "pointer",
                                                     }}
                                                     onClick={() => changeCurTask(-1)}
                                                 />
@@ -505,23 +510,29 @@ const Confirm = () => {
                     <div className="curve">
                         <Title>用电曲线</Title>
                         <div className="content" style={{ paddingTop: "30px" }}>
-                            <ReactECharts option={options} style={{ width: "100%", height: "500px" }} />
+                            <ReactECharts
+                                option={options}
+                                style={{ width: "100%", height: "500px" }}
+                            />
                         </div>
                     </div>
                 </div>
-                :
+            ) : (
                 <div
                     style={{
-                        width: '100%',
+                        width: "100%",
                         height: "500px",
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
                     }}
                 >
-                    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={isWaitTask?'暂无待确认任务':'暂无待查询任务'} />
+                    <Empty
+                        image={Empty.PRESENTED_IMAGE_SIMPLE}
+                        description={isWaitTask ? "暂无待确认任务" : "暂无待查询任务"}
+                    />
                 </div>
-            }
+            )}
         </div>
     );
 };

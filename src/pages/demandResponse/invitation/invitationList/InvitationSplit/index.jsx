@@ -158,7 +158,7 @@ const Company = ({ invitationSplitId, onClose }) => {
             },
         },
     ];
- 
+
     useEffect(() => {
         invitationSplitId && getSplitInviteInitData();
     }, [invitationSplitId]);
@@ -272,7 +272,7 @@ const Company = ({ invitationSplitId, onClose }) => {
             splitItems: taskList,
         });
         if (res?.data?.status == "SUCCESS") {
-            message.success(`拆解成功`);
+            message.success(res?.data?.msg || `拆解成功`);
             onClose(true);
         }
     };
