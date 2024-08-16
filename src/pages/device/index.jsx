@@ -187,7 +187,7 @@ const RealtimeAlarm = () => {
             type: '',
             sn: '',
             plantId: '',
-            address: currentPlant?.position||"",
+            address: currentPlant?.position || "",
         });
         setTitle('新增设备');
         setIsOpen(!isOpen);
@@ -214,7 +214,7 @@ const RealtimeAlarm = () => {
     const getAllPlant = async () => {
         const res = await getFetchPlantListServe();
         const data = res?.data;
-        if(data?.data){
+        if (data?.data) {
             const result = data?.data;
             let arr = [];
             result?.plantList?.map((it, index) => {
@@ -227,8 +227,8 @@ const RealtimeAlarm = () => {
                 })
             })
             let initPlantId = arr[0].value;
-            let localStoragePlantId = parseInt(localStorage.getItem("currentPlant")||0);
-            if(arr?.map(item=>item.key)?.includes(localStoragePlantId)){
+            let localStoragePlantId = parseInt(localStorage.getItem("currentPlant") || 0);
+            if (arr?.map(item => item.key)?.includes(localStoragePlantId)) {
                 initPlantId = localStoragePlantId;
             }
             setDataOption([...arr]);
@@ -237,7 +237,7 @@ const RealtimeAlarm = () => {
     }
 
     const changePlant = async (val) => {
-        if(!val) return;
+        if (!val) return;
         let { data } = await getDtusOfPlant({
             plantId: val
         });
@@ -270,33 +270,34 @@ const RealtimeAlarm = () => {
         }
     }
 
-    const currentPlant = dataOption?.find(plant => (plant?.value===(currentPlantId||dataOption[0]?.value)))
+    const currentPlant = dataOption?.find(plant => (plant?.value === (currentPlantId || dataOption[0]?.value)))
     useEffect(() => {
-        if (currentPlant){
+        if (currentPlant) {
             getAllRevenue();
-            setPanTo([currentPlant?.longitude||108.9, currentPlant?.latitude||34.2]);
+            setPanTo([currentPlant?.longitude || 108.9, currentPlant?.latitude || 34.2]);
         }
     }, [currentPlantId]);
 
     return (
         <div
             className={styles.content}
+            style={{ background: token.color12 }}
         >
             <div className={styles.left}>
                 <div className={classNames(styles.leftItem, styles.leftItem1)}>
                     {
-                        currentPlant&&
+                        currentPlant &&
                         <Map
                             plants={[
                                 {
                                     ...currentPlant,
-                                    longitude: currentPlant?.longitude||0, 
-                                    latitude: currentPlant?.latitude||0,
+                                    longitude: currentPlant?.longitude || 0,
+                                    latitude: currentPlant?.latitude || 0,
                                     plantName: currentPlant?.name,
                                     installDate: dayjs(currentPlant?.installDate).format('YYYY-MM-DD')
                                 }
                             ]}
-                            showInfo={true} 
+                            showInfo={true}
                             panTo={mapPanTo}
                         />
                     }
@@ -318,7 +319,7 @@ const RealtimeAlarm = () => {
                         {
                             incomeData?.map(item => {
                                 return (
-                                    <div className={styles.mapRightItem}>
+                                    <div className={styles.mapRightItem} style={{ backgroundColor: token.color7 }}>
                                         <div>
                                             <div className={styles.mapRightItemTop}>
                                                 <Tooltip title={item?.value}>
@@ -337,10 +338,10 @@ const RealtimeAlarm = () => {
                         {
                             eleData?.map(item => {
                                 return (
-                                    <div className={styles.mapBottomItem}>
+                                    <div className={styles.mapBottomItem} style={{ backgroundColor: token.color7 }}>
                                         <div className={styles.mapBottomItemData}>
                                             <span style={{ color: '#20C2FF' }}>{dataEle?.[item?.name?.[0]]}</span>
-                                            <span style={{color: '#0B6AA8'}}>/</span>
+                                            <span style={{ color: '#0B6AA8' }}>/</span>
                                             <span style={{ color: '#4AEDFF' }}>{dataEle?.[item?.name?.[1]]}</span>
                                         </div>
                                         <div className={styles.mapBottomItemLabel}>{item?.label}</div>
@@ -350,11 +351,25 @@ const RealtimeAlarm = () => {
                         }
                     </div>
                 </div>
-                <div className={classNames(styles.rightItem, styles.leftItem2)}>
-                    <Title title={t('设备列表')} />
+                <div className={classNames(styles.rightItem, styles.leftItem2)} style={{ background: token.color8, border: `1px solid ${token.color9}` }}>
+                    <Title title={t('设备列表')} style={{ background: token.color8, border: `1px solid ${token.color9}` }} />
                     <div className={styles.add}>
-                        <div className={styles.addBtn} onClick={()=>setBatchPolicyOpen(true)}>{t('电站策略配置')}</div>
-                        {(user?.roleId===2||user?.roleId===3)&&<div onClick={changIsOpen} className={styles.addBtn}>{t('新增设备')}</div>}
+                        <div
+                            className={styles.addBtn}
+                            style={{background: token.color14}}
+                            onClick={() => setBatchPolicyOpen(true)}
+                        >
+                            {t('电站策略配置')}
+                        </div>
+                        {(user?.roleId === 2 || user?.roleId === 3) &&
+                            <div
+                                onClick={changIsOpen}
+                                style={{background: token.color14}}
+                                className={styles.addBtn}
+                            >
+                                {t('新增设备')}
+                            </div>
+                        }
                     </div>
                     <div className={styles.cardContent}>
                         <Table
@@ -366,7 +381,7 @@ const RealtimeAlarm = () => {
                 </div>
             </div>
             <div className={styles.right}>
-                <div className={classNames(styles.rightItem, styles.rightItem1)}>
+                <div className={classNames(styles.rightItem, styles.rightItem1)} style={{ background: token.color8, border: `1px solid ${token.color9}` }}>
                     <Title title={t('设备运行情况')} />
                     <div className={styles.cardContent}>
                         <DeviceRunDesc
@@ -374,40 +389,40 @@ const RealtimeAlarm = () => {
                         />
                     </div>
                 </div>
-                <div className={classNames(styles.rightItem, styles.rightItem2)}>
+                <div className={classNames(styles.rightItem, styles.rightItem2)} style={{ background: token.color8, border: `1px solid ${token.color9}` }}>
                     <Title title={`${t('收益统计')}(${t('元')})`} />
                     <div className={styles.cardContent}>
-                        <IncomeRanking currentPlantId={currentPlantId||dataOption[0]?.value}/>
+                        <IncomeRanking currentPlantId={currentPlantId || dataOption[0]?.value} />
                     </div>
                 </div>
-                <div className={classNames(styles.rightItem, styles.rightItem3)}>
+                <div className={classNames(styles.rightItem, styles.rightItem3)} style={{ background: token.color8, border: `1px solid ${token.color9}` }}>
                     <Title title={`${t('电量统计')}(${t('kWh')})`} />
                     <div className={styles.cardContent}>
                         <ElectricityRanking
-                            currentPlantId={currentPlantId||dataOption[0]?.value}
+                            currentPlantId={currentPlantId || dataOption[0]?.value}
                         />
                     </div>
                 </div>
-                <div className={classNames(styles.rightItem, styles.rightItem4)}>
+                <div className={classNames(styles.rightItem, styles.rightItem4)} style={{ background: token.color8, border: `1px solid ${token.color9}` }}>
                     <Title title={t('社会效益')} />
                     <div className={styles.cardContent}>
                         <SocialBenefits
                             data={[
                                 {
                                     icon: bottomLeft1,
-                                    data: socialBenefit?.coal||0,
+                                    data: socialBenefit?.coal || 0,
                                     unit: t('吨'),
                                     label: t('节约标准煤'),
                                 },
                                 {
                                     icon: bottomLeft2,
-                                    data: socialBenefit?.co2||0,
+                                    data: socialBenefit?.co2 || 0,
                                     unit: t('吨'),
                                     label: t('CO2减排量'),
                                 },
                                 {
                                     icon: bottomLeft3,
-                                    data: socialBenefit?.tree||0,
+                                    data: socialBenefit?.tree || 0,
                                     unit: t('棵'),
                                     label: t('等效植树量'),
                                 },
@@ -434,9 +449,9 @@ const RealtimeAlarm = () => {
                 title={t('电站策略配置')}
                 open={batchPolicyOpen}
                 destroyOnClose={true}
-                onClose={()=>setBatchPolicyOpen(false)}
+                onClose={() => setBatchPolicyOpen(false)}
             >
-                <BatchPolicyConfiguration deviceList={data}/>
+                <BatchPolicyConfiguration deviceList={data} />
             </Drawer>
         </div>
     )

@@ -48,17 +48,6 @@ body{
 	 -webkit-text-security:disc !important;
 }
 
-input:-webkit-autofill {
-  -webkit-animation: autofill-fix 1s infinite!important;
-  -webkit-text-fill-color: white;
-  caret-color: white;
-  -webkit-transition: background-color 50000s ease-in-out 0s!important;
-  -webkit-box-shadow: 0 0 0 1000px transparent inset!important;
-  transition: background-color 50000s ease-in-out 0s!important;
-  background-color: transparent!important;
-  background-image: none !important;
-}
-
 .ant-divider::before{
   border-color: #fff !important;
 }
@@ -91,14 +80,6 @@ input:-webkit-autofill {
   align-items: center;
 }
 
-.ant-table-wrapper .ant-table-tbody >tr >td{
-  border-bottom: 1px solid #197ad854;
-}
-
-.ant-table-wrapper .ant-table-thead >tr>th{
-  border-bottom: 1px solid #197ad854;
-}
-
 .ant-table-wrapper .ant-table-thead >tr>th:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan])::before{
   height: 0 !important;
 }
@@ -118,4 +99,40 @@ input:-webkit-autofill {
 
 ::-webkit-scrollbar {
   display: none !important;
+}
+
+.ant-table-placeholder{
+  display: none;
+}
+
+.ant-select-selector{
+  background: none !important;
+}
+
+.ant-input-number{
+  background-color: transparent !important;
+}
+
+.ant-input-outlined{
+  background: none !important;
+}
+
+.ant-picker{
+  background: none;
+}
+
+.ant-input{
+  background: none;
+}
+
+.ant-radio-wrapper .ant-radio-inner{
+  background: none;
+}
+
+.ant-btn-default{
+  background-color: unset;
+}
+
+.ant-table{
+  background: transparent !important;
 }

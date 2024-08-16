@@ -1,14 +1,17 @@
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect, useRef } from "react";
 import * as echarts from "echarts";
-import { useIntl } from "umi";
+import { useIntl, useSelector } from "umi";
 import {
     getRevenue as getRevenueServe,
 } from "@/services";
 import moment from "moment";
+import { theme as antdTheme } from "antd";
 
 const ElectricityRanking = ({ currentPlantId }) => {
     const intl = useIntl();
+    const { token } = antdTheme.useToken(); 
+    const { theme } = useSelector(state => state.global);
     const [options, setOptions] = useState({});
     const getOptions = async() => {
         if(!currentPlantId) return;
@@ -38,7 +41,7 @@ const ElectricityRanking = ({ currentPlantId }) => {
             },
             legend: {
                 textStyle: {
-                    color: 'white'
+                    color: token.color10
                 },
                 right: 0
             },
@@ -59,7 +62,7 @@ const ElectricityRanking = ({ currentPlantId }) => {
                 axisLabel: {
                     interval:0,
                     textStyle: {
-                        color: '#fff',
+                        color: token.color10,
                         fontSize:10,
                     },
                     margin: 20, //刻度标签与轴线之间的距离。
@@ -69,7 +72,7 @@ const ElectricityRanking = ({ currentPlantId }) => {
                 splitLine: {
                     show: true,
                     lineStyle:{
-                      color: '#00516F',
+                      color: token.color11,
                       type: 'dashed'
                     }
                 },
@@ -81,7 +84,7 @@ const ElectricityRanking = ({ currentPlantId }) => {
                 },
                 axisLabel: {
                     textStyle: {
-                        color: '#fff',
+                        color: token.color10,
                         fontSize:10,
                     },
                 }
@@ -129,7 +132,7 @@ const ElectricityRanking = ({ currentPlantId }) => {
 
     useEffect(() => {
         getOptions();
-    }, [currentPlantId]);
+    }, [currentPlantId, theme]);
 
     return (
         <ReactECharts 

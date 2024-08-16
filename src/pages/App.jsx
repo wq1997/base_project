@@ -45,15 +45,7 @@ const App = () => {
                     ...ThemeEnum[theme],
                     fontSize: 15
                 },
-                components: {
-                    Modal: {
-                        contentBg: '#0D4D77',
-                        headerBg: '#0D4D77'
-                    },
-                    Cascader: {
-                        optionSelectedBg: '#0D4D77',
-                    },
-                }
+                components: ThemeEnum[theme].components,
             }}
         >
             <GlobalWrapperCss>

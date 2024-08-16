@@ -12,6 +12,7 @@ const theme = {
         smallTitleColor:'#D8D8D8',
         defaultBg:'#ED750E',//默认类型按钮背景色
         bgcColorB_l:'linear-gradient(135deg, #00395A 0%, #0F2F56 100%)',//深到浅渐变（侧导航和头部背景色）
+        bgcColorB_r: 'linear-gradient(135deg, #00395A 0%, #0F2F56 100%)',
         bgcColorl_B:'linear-gradient(135deg, #00395A 0%, #0F2F56 100%)',//浅到深渐变（内容模块背景色）
         sub_innerBgc:'',//侧导航二级导航背景色
         cardBgc:'#212849',
@@ -25,10 +26,41 @@ const theme = {
         lightTreeLineBgc:'#333F62',
         contentBgc:'#111838',
         darkbgc:'#0C122E',
-        chartLineColor:['#03B4B4','#ED750E','#A97DFF','#4D4DF4','#EE3059','#2DD51E','#F4D81B','#4D4DF4']
+        chartLineColor:['#03B4B4','#ED750E','#A97DFF','#4D4DF4','#EE3059','#2DD51E','#F4D81B','#4D4DF4'],
+        color1: 'white',
+        color2: '#197ad854',
+        color3: 'white',
+        color4: 'rgba(11,56,88,0.85)',
+        color5: 'white',
+        color6: 'white',
+        color7: '#0b3858cc',
+        color8: '#0F293B',
+        color9: '#39587D',
+        color10: 'white',
+        color11: '#00516F',
+        color12: 'black',
+        color13: '#125686',
+        color14: 'radial-gradient(153% 66% at 50% 50%, #072F4C 0%, #04719C 100%)',
+        color15: '#0F446A',
+        color16: '#175785',
+        color17: '#BBDFFF',
+        color18: '#0A1328',
+        color19: '#2C638F',
+        components: {
+            Modal: {
+                contentBg: '#0D4D77',
+                headerBg: '#0D4D77'
+            },
+            Cascader: {
+                optionSelectedBg: '#0D4D77',
+            },
+            Table: {
+                headerBg: '#0A4A74'
+            },
+        }
     },
     default: {
-        colorPrimary:'#03B4B4',
+        colorPrimary:'#197AD8',
         colorPrimaryR:'rgba(3,180,180,1)',
         colorBgContainer:'#FFFFFF',
         colorBorder:'#d9d9d9',
@@ -37,8 +69,9 @@ const theme = {
         titleColor:'#333333',
         smallTitleColor:'#333333',
         defaultBg:'#ED750E',
-        bgcColorB_l:'linear-gradient(135deg, #DADFEC 0%, #F9F9FA 100%)',
-        bgcColorl_B:'linear-gradient(135deg, #F9F9FA 0%, #DADEEC 100%)',
+        bgcColorB_l:'linear-gradient( 90deg, #E8F9FF 0%, #FFFFFF 100%)',
+        bgcColorB_r: 'linear-gradient( 180deg, #E8F9FF 0%, #FFFFFF 100%)',
+        bgcColorl_B:'linear-gradient( 136deg, #F6FCFF 0%, #FFFFFF 100%)',
         sub_innerBgc:'rgba(246, 246, 248, 0.38)',
         cardBgc:'rgba(255,255,255,1)',
         cardShadow:'0px 2px 4px 0px rgba(224, 224, 224, 0.5)',
@@ -50,8 +83,38 @@ const theme = {
         lightTreeLineBgc:'#E6E9F2',
         contentBgc:'#111838',
         darkbgc:'#0C122E',
-        chartLineColor:['#03B4B4','#ED750E','#A97DFF','#4D4DF4','#EE3059','#2DD51E','#F4D81B','#4D4DF4']
-
+        chartLineColor:['#03B4B4','#ED750E','#A97DFF','#4D4DF4','#EE3059','#2DD51E','#F4D81B','#4D4DF4'],
+        color1: '#197AD8',
+        color2: '#DDDDDD',
+        color3: '#333333',
+        color4: 'rgba(255,255,255,0.85)',
+        color5: '#333333',
+        color6: '#666666',
+        color7: 'rgba(255,255,255,0.8)',
+        color8: '#E8F9FF',
+        color9: '#CEE4FF',
+        color10: '#999999',
+        color11: 'rgba(25,122,216,0.35)',
+        color12: 'white',
+        color13: '#CFF2FF',
+        color14: 'radial-gradient(245% 72% at 50% 50%, #E8F9FF 0%, #B7E8FB 100%)',
+        color15: 'white',
+        color16: '#E4F4FF',
+        color17: '#7093B1',
+        color18: 'white',
+        color19: 'linear-gradient( 90deg, #C4D4DC 0%, #95BACC 100%)',
+        components: {
+            Modal: {
+                contentBg: '#FFFFFF',
+                headerBg: '#FFFFFF'
+            },
+            Cascader: {
+                optionSelectedBg: '#FFFFFF',
+            },
+            Table: {
+                headerBg: '#E5F7FF',
+            },
+        }
     }
 }
 export default theme;

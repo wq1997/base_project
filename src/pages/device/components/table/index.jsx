@@ -11,6 +11,7 @@ const Table = ({
     changeIsOpenDel,
     edit,
 }) => {
+    const { token } = theme.useToken();
     const intl = useIntl();
     const [listData, setListData] = useState(dataSource);
 
@@ -100,25 +101,43 @@ const Table = ({
     }, [dataSource]);
     return (
         <div className={styles.table}>
-            <div className={styles.row} style={{ background: '#125686' }}>
+            <div className={styles.row} style={{ background: token.color13 }}>
                 {columns?.filter(item => item)?.map(column => (
                     <div className={styles.rowItem} style={{ width: column?.width, ...column?.style }}>{column?.title}</div>
                 ))}
             </div>
             <div className={styles.valueWrapper}>
                 {listData?.map((value, index) => (
-                    <div className={styles.row}>
+                    <div className={styles.row} style={{ background: token.color15 }}>
                         {columns?.filter(item => item)?.map(column => {
                             if (column.render) {
                                 return (
-                                    <div className={styles.value} style={{ width: column?.width, borderLeft: '2px solid #175785', borderTop: '2px solid #175785', ...column?.style }}>
+                                    <div
+                                        className={styles.value}
+                                        style={{
+                                            width: column?.width,
+                                            borderLeft: `2px solid ${token.color16}`,
+                                            borderTop: `2px solid ${token.color16}`,
+                                            color: token.color17,
+                                            ...column?.style
+                                        }}
+                                    >
                                         {column.render('', value)}
                                     </div>
                                 );
                             } else {
                                 return (
                                     <Tooltip title={value[column.dataIndex]}>
-                                        <div className={styles.value} style={{ width: column?.width, borderLeft: '2px solid #175785', borderTop: '2px solid #175785', ...column?.style }}>
+                                        <div
+                                            className={styles.value}
+                                            style={{
+                                                width: column?.width,
+                                                borderLeft: `2px solid ${token.color16}`,
+                                                borderTop: `2px solid ${token.color16}`,
+                                                color: token.color17,
+                                                ...column?.style
+                                            }}
+                                        >
                                             {value[column.dataIndex]}
                                         </div>
                                     </Tooltip>

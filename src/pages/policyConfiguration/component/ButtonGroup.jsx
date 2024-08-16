@@ -1,7 +1,8 @@
-import { Button, Space } from "antd";
+import { Button, Space, theme } from "antd";
 import { useState, useEffect } from "react";
 
 const ButtonGroup = (props) => {
+    const { token } = theme.useToken();
     const {options, disabled, onChange, onControlledChange, style} = props;
     const [value, setValue] = useState(props.value);
 
@@ -32,6 +33,7 @@ const ButtonGroup = (props) => {
                                 fontSize: 14,
                                 background:value===option.value?"linear-gradient(90deg, #0787DB 0%, #034FB4 100%)":"rgba(0,0,0,0.15)",
                                 border: 'none',
+                                color: 'white',
                                 ...style
                             }}
                         >

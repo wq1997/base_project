@@ -5,8 +5,12 @@ import moment from "moment";
 import {
     getRevenue as getRevenueServe,
 } from "@/services";
+import { theme as antdTheme } from "antd";
+import { useSelector } from "umi";
 
 const IncomeRanking = ({currentPlantId}) => {
+    const { token } = antdTheme.useToken(); 
+    const { theme } = useSelector(state => state.global);
     const [options, setOptions] = useState({});
 
     const getOptions = async () => {
@@ -49,7 +53,7 @@ const IncomeRanking = ({currentPlantId}) => {
                 axisLabel: {
                     interval:0,
                     textStyle: {
-                        color: '#fff',
+                        color: token.color10,
                         fontSize:10,
                     },
                     margin: 20, //刻度标签与轴线之间的距离。
@@ -59,7 +63,7 @@ const IncomeRanking = ({currentPlantId}) => {
                 splitLine: {
                     show: true,
                     lineStyle:{
-                      color: '#00516F',
+                      color: token.color11,
                       type: 'dashed'
                     }
                 },
@@ -71,7 +75,7 @@ const IncomeRanking = ({currentPlantId}) => {
                 },
                 axisLabel: {
                     textStyle: {
-                        color: '#fff',
+                        color: token.color10,
                         fontSize:10,
                     },
                 }
@@ -133,7 +137,7 @@ const IncomeRanking = ({currentPlantId}) => {
                               "position": 'top',
                               "offset": [0,-5],
                               "formatter": "{c}",
-                              "color": 'white'
+                              "color": token.color10
                           }
                       },
                     },
@@ -143,7 +147,7 @@ const IncomeRanking = ({currentPlantId}) => {
 
     useEffect(() => {
         getOptions();
-    }, [currentPlantId]);
+    }, [currentPlantId, theme]);
 
     return (
         <ReactECharts 

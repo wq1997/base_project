@@ -1,31 +1,37 @@
-import { Outlet, useDispatch, useSelector,FormattedMessage,useLocation } from 'umi'
+import { Outlet, useDispatch, useSelector, FormattedMessage, useLocation } from 'umi'
 import React, { useEffect } from 'react';
-import { theme, Layout, Dropdown,Button } from 'antd';
+import { theme as antdTheme, Layout, Dropdown, Tooltip } from 'antd';
 import MyMenu from "@/permissions/menu";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import styles from "./baseLayout.less";
-import { setLocalStorage, removeLocalStorage,download,downLoadUrl } from "@/utils/utils";
-import useLocale from "@/hooks/useLocale"
-import shouye from "../assets/svg/shouye.svg";
-import down from "../assets/svg/down.svg";
-import mySvg from "../assets/svg/mine.svg";
+import { setLocalStorage, removeLocalStorage, download, downLoadUrl } from "@/utils/utils";
+import useLocale from "@/hooks/useLocale";
 import {
     FilePdfOutlined,
-    LogoutOutlined
-  } from '@ant-design/icons';
-  import { history, useIntl } from "umi";
+    LogoutOutlined,
+    SkinOutlined,
+    QuestionCircleOutlined,
+    HomeOutlined,
+    UserOutlined,
+} from '@ant-design/icons';
+import { history, useIntl } from "umi";
+import useIcon from "@/hooks/useIcon";
+import logo from "../../public/logo.png";
+import logoWhite from "../../public/logo_white.png";
 
 const { Header, Sider, Content } = Layout;
 
 const BaseLayout = () => {
     const dispatch = useDispatch();
-    const { token } = theme.useToken();
+    const { token } = antdTheme.useToken();
     const global = useSelector(state => state.global);
     const location = useLocation();
     const { pathname } = location;
-    useEffect(()=>{
-        dispatch({type: 'user/getUserInfo'})
-    },[])
+
+    useEffect(() => {
+        dispatch({ type: 'user/getUserInfo' })
+    }, [])
+
     const changeLanguage = (locale) => {
         setLocalStorage('locale', locale)
         dispatch({
@@ -52,89 +58,88 @@ const BaseLayout = () => {
             '&::-webkit-scrollbar': {
                 display: 'none'
             },
-            '.ant-menu-item':{
-                fontFamily:'PingFangRegular !important',
+            '.ant-menu-item': {
+                fontFamily: 'PingFangRegular !important',
             },
-            '.ant-menu-submenu-title':{
-                fontFamily:'PingFangRegular !important',
-                
+            '.ant-menu-submenu-title': {
+                fontFamily: 'PingFangRegular !important',
+
             },
             '.ant-menu-sub': {
                 backgroundColor: `${token.sub_innerBgc} !important`,
                 margin: '0 20px',
                 borderRadius: '4px !important',
                 fontSize: '16px !important',
-                fontFamily:'PingFangRegular !important',
+                fontFamily: 'PingFangRegular !important',
             },
             '.ant-menu-item-icon': {
                 fontSize: '18px !important',
-                fontFamily:'PingFangRegular !important',
+                fontFamily: 'PingFangRegular !important',
             }
 
         }
     });
 
-    const startIndex = pathname.split('/')[1]==='index';
+    const startIndex = pathname.split('/')[1] === 'index';
 
     return (
         <div className={styles.baseLayout}>
             <Layout className={styles.layout}>
-                <Header className={styles.header}
+                <Header
+                    className={styles.header}
                     style={{ background: token.bgcColorB_l }}
                 >
-                    <div
-                        style={{
-                            color: token.titleColor
-                        }}
-                        level={3} 
-                        className={styles.title}
-                    >
-                        <FormattedMessage id="app.title" />
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                        <img
+                            src={global?.theme === "default" ? logo : logoWhite}
+                            style={{ height: "25px", marginRight: "10px" }}
+                        />
+                        <div
+                            style={{
+                                color: token.titleColor
+                            }}
+                            level={3}
+                            className={styles.title}
+                        >
+                            <FormattedMessage id="app.title" />
+                        </div>
                     </div>
-                    <div style={{display:'flex',alignItems: 'center', }}>
-                    <Dropdown
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0 40px' }}>
+                        <Tooltip title={useLocale('主题切换')} placement="bottom">
+                            <SkinOutlined
+                                style={{
+                                    cursor: "pointer",
+                                    fontSize: 35,
+                                    color: token.color1
+                                }}
+                                onClick={() => changeTheme(global.theme === "default" ? "dark" : "default")}
+                            />
+                        </Tooltip>
+                        <Dropdown
                             placement="bottom"
                             menu={{
                                 items: [
                                     {
                                         label: useLocale('导出使用说明'),
                                         key: 'ExportPdf',
-                                        icon: <FilePdfOutlined />,
+                                        icon: <FilePdfOutlined style={{ color: token.color1 }} />,
                                     },
                                 ],
-                                onClick({key}){
-                                    if(key==="ExportPdf"){
-                                     let fileName= global.locale==="zh-CN"?'储能软件系统使用说明.pdf':'Energy storage software system instruction manual.pdf'
-                                     download(downLoadUrl,fileName);
+                                onClick({ key }) {
+                                    if (key === "ExportPdf") {
+                                        let fileName = global.locale === "zh-CN" ? '储能软件系统使用说明.pdf' : 'Energy storage software system instruction manual.pdf'
+                                        download(downLoadUrl, fileName);
                                     }
-                                   
+
                                 }
                             }}
                         >
-                          <img 
-                                src={down} 
-                                style={{cursor: 'pointer',}} 
-                            />
+                            <QuestionCircleOutlined style={{ cursor: 'pointer', fontSize: 35, color: token.color1 }} />
                         </Dropdown>
-                            <img 
-                                src={shouye} 
-                                style={{cursor: 'pointer',margin: '0px 40px'}} 
-                                onClick={()=>history.push('/index/device')}
-                            />
-                        {/* {
-                            global.locale==="zh-CN"?
-                            <img 
-                                src={languageEnglishSvg}
-                                style={{cursor: 'pointer', margin: '0px 40px'}} 
-                                onClick={()=>changeLanguage('en-US')}
-                            />
-                            :
-                            <img 
-                                src={languageChineseSvg}
-                                style={{cursor: 'pointer', margin: '0px 40px'}} 
-                                onClick={()=>changeLanguage('zh-CN')}
-                            />
-                        } */}
+                        <HomeOutlined
+                            style={{ cursor: 'pointer', fontSize: 35, color: token.color1 }}
+                            onClick={() => history.push('/index/device')}
+                        />
                         <Dropdown
                             placement="bottom"
                             menu={{
@@ -142,39 +147,36 @@ const BaseLayout = () => {
                                     {
                                         label: useLocale('退出登录'),
                                         key: 'logout',
-                                        icon: <LogoutOutlined />,
+                                        icon: <LogoutOutlined style={{ color: token.color1 }} />,
                                     },
                                 ],
-                                onClick({key}){
-                                    if(key==="logout"){
+                                onClick({ key }) {
+                                    if (key === "logout") {
                                         removeLocalStorage("Token");
                                         history.push('/login');
                                     }
-                                    if(key==="changeAccount"){
-                                        
+                                    if (key === "changeAccount") {
+
                                     }
                                 }
                             }}
                         >
-                            <img 
-                                src={mySvg} 
-                                style={{cursor: 'pointer'}} 
-                            />
+                            <UserOutlined style={{ cursor: 'pointer', fontSize: 35, color: token.color1 }} />
                         </Dropdown>
                     </div>
                 </Header>
                 <Layout hasSider>
-                   {startIndex&& <Sider className={siderContentStyle}
-                        style={{ background: token.bgcColorB_l }}
+                    {startIndex && <Sider className={siderContentStyle}
+                        style={{ background: token.bgcColorB_r }}
                         width={240}>
                         <div className={styles.siderContent}>
                             <MyMenu />
                         </div>
                     </Sider>}
                     <Content className={styles.content}
-                        style={{ 
-                            background: startIndex&&token.bgcColorl_B,
-                            margin: startIndex&&'8px'
+                        style={{
+                            background: startIndex && token.bgcColorl_B,
+                            margin: startIndex && '8px'
                         }}>
                         <div className={styles.inContent}>
                             <Outlet />

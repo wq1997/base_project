@@ -1,5 +1,7 @@
+import { theme } from "antd";
 
 const SocialBenefits = ({data}) => {
+    const { token } = theme.useToken(); 
     return (
         <div
             style={{
@@ -23,10 +25,10 @@ const SocialBenefits = ({data}) => {
                                 />
                             </div>
                             <div style={{display: 'flex', alignItems: 'baseline', justifyContent: 'center', margin: '5px 0'}}>
-                                <span style={{color: '#FFFFFF', fontSize: 25, fontFamily: 'DingTalkJinBuTi'}}>{item?.data}</span>
-                                <span style={{color: '#999', marginLeft: 2}}>{item?.unit}</span>
+                                <span style={{color: token.color5, fontSize: 25, fontFamily: 'DingTalkJinBuTi'}}>{item?.data}</span>
+                                <span style={{color: token.color10, marginLeft: 2}}>{item?.unit}</span>
                             </div>
-                            <div style={{display: 'flex', justifyContent: 'center', color: '#FFFFFF', fontSize: 12}}>
+                            <div style={{display: 'flex', justifyContent: 'center', color: token.color6, fontSize: 12}}>
                                 {item?.label}
                             </div>
                         </div>

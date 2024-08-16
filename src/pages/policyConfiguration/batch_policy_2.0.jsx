@@ -38,7 +38,7 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
     const [checkModalOpen, setCheckModalOpen] = useState(false);
     const [checkModalType, setCheckModalType] = useState('');
     const [durationList, setDurationList] = useState([]);
-    const [durationListDataSource, setDurationListDataSource]=useState({});
+    const [durationListDataSource, setDurationListDataSource] = useState({});
     const [isLive, setIsLive] = useState(true);
     const canIssue = mode === 0;
 
@@ -75,6 +75,7 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
             padding: '5px 20px',
             borderRadius: 5,
             backgroundColor: token.defaultBg,
+            color: 'white'
         }
     })
 
@@ -83,7 +84,8 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
             cursor: 'pointer',
             padding: '5px 20px',
             borderRadius: 5,
-            backgroundColor: '#2C638F',
+            background: token.color19,
+            color: 'white'
         }
     })
 
@@ -176,7 +178,7 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
                     mode: 'Custom'
                 }}
             >
-                <Space style={{ width: '100%', height: 'auto', minHeight: '100%', background: "#0A1328" }} direction="vertical" size={12}>
+                <Space style={{ width: '100%', height: 'auto', minHeight: '100%', background: token.color18 }} direction="vertical" size={12}>
                     <div className={areaStyle}>
                         {/* <div
                             style={{
@@ -227,40 +229,42 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
                                 </Row>
                                 <Space style={{ width: '100%', padding: '0 20px' }} direction="vertical" size={30}>
                                     <Row>
-                                        <Form.Item label={intl.formatMessage({ id: 'PCS/BMS设置' })} name="runModePCS" style={{ margin: 0 }}>
-                                            <ButtonGroup
-                                                value={runModePCS}
-                                                mode={'controlled'}
-                                                disabled={!canIssue || !isLive}
-                                                options={[
-                                                    { label: intl.formatMessage({ id: 'PCS关机' }), value: 0 },
-                                                    { label: intl.formatMessage({ id: 'PCS开机' }), value: 1 },
-                                                    { label: intl.formatMessage({ id: 'PCS复位' }), value: 2 }
-                                                ]}
-                                                onControlledChange={async value => {
-                                                    setNextRunModePCS(value);
-                                                    setCheckModalOpen(true);
-                                                    setCheckModalType('runModePCS');
-                                                }}
-                                            />
-                                        </Form.Item>
-                                        <Form.Item name="runModeBMS" style={{ margin: 0 }}>
-                                            <ButtonGroup
-                                                value={runModeBMS}
-                                                mode={'controlled'}
-                                                disabled={!canIssue || !isLive}
-                                                options={[
-                                                    { label: intl.formatMessage({ id: 'BMS关机' }), value: 0 },
-                                                    { label: intl.formatMessage({ id: 'BMS开机' }), value: 1 },
-                                                    { label: intl.formatMessage({ id: 'BMS复位' }), value: 2 }
-                                                ]}
-                                                onControlledChange={async value => {
-                                                    setNextRunModeBMS(value);
-                                                    setCheckModalOpen(true);
-                                                    setCheckModalType('runModeBMS');
-                                                }}
-                                            />
-                                        </Form.Item>
+                                        <Space size={20}>
+                                            <Form.Item label={intl.formatMessage({ id: 'PCS/BMS设置' })} name="runModePCS" style={{ margin: 0 }}>
+                                                <ButtonGroup
+                                                    value={runModePCS}
+                                                    mode={'controlled'}
+                                                    disabled={!canIssue || !isLive}
+                                                    options={[
+                                                        { label: intl.formatMessage({ id: 'PCS关机' }), value: 0 },
+                                                        { label: intl.formatMessage({ id: 'PCS开机' }), value: 1 },
+                                                        { label: intl.formatMessage({ id: 'PCS复位' }), value: 2 }
+                                                    ]}
+                                                    onControlledChange={async value => {
+                                                        setNextRunModePCS(value);
+                                                        setCheckModalOpen(true);
+                                                        setCheckModalType('runModePCS');
+                                                    }}
+                                                />
+                                            </Form.Item>
+                                            <Form.Item name="runModeBMS" style={{ margin: 0 }}>
+                                                <ButtonGroup
+                                                    value={runModeBMS}
+                                                    mode={'controlled'}
+                                                    disabled={!canIssue || !isLive}
+                                                    options={[
+                                                        { label: intl.formatMessage({ id: 'BMS关机' }), value: 0 },
+                                                        { label: intl.formatMessage({ id: 'BMS开机' }), value: 1 },
+                                                        { label: intl.formatMessage({ id: 'BMS复位' }), value: 2 }
+                                                    ]}
+                                                    onControlledChange={async value => {
+                                                        setNextRunModeBMS(value);
+                                                        setCheckModalOpen(true);
+                                                        setCheckModalType('runModeBMS');
+                                                    }}
+                                                />
+                                            </Form.Item>
+                                        </Space>
                                     </Row>
                                     <Row>
                                         <Col span={12}>
@@ -640,7 +644,7 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
                     }
                     let res = null;
                     let values = null;
-                    let newDurationListDataSource=durationListDataSource;
+                    let newDurationListDataSource = durationListDataSource;
                     const checkValues = await checkForm.validateFields(['password']);
                     const verifyPasswordRes = await verifyPasswordServe(checkValues);
                     if (verifyPasswordRes?.data?.code === "ok") {
@@ -720,7 +724,7 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
                             if (tabValue === 1) {
                                 params.policyDurationList2 = durationList;
                             }
-                            newDurationListDataSource[tabValue]=durationList;
+                            newDurationListDataSource[tabValue] = durationList;
                             res = await sendStrategySettingServe(params)
                         }
                         // 策略选择

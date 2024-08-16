@@ -19,10 +19,19 @@ const PolicyConfiguration = ({deviceList}) => {
     })
 
     return (
-        <Space style={{ width: '100%', height: 'auto', minHeight: '100%', background: "#0A1328" }} direction="vertical" size={12}>
+        <Space 
+            style={{ 
+                width: '100%', 
+                height: 'auto', 
+                minHeight: '100%', 
+                background: token.color18
+            }} 
+            direction="vertical" 
+            size={12}
+        >
             <div className={areaStyle}>
                 <Row>
-                    <div style={{marginRight: 12}}>{intl.formatMessage({id: '选择设备'})}</div>
+                    <div style={{marginRight: 12, color: token.color5}}>{intl.formatMessage({id: '选择设备'})}</div>
                     <Space size={12}>
                         <Select 
                             style={{width: 200}} 

@@ -1,13 +1,65 @@
-import { useIntl } from "umi";
+import { useIntl, useSelector } from "umi";
 import { useEffect, useState } from "react";
 import styles from "./index.less";
+import classNames from "classnames";
+import { useEmotionCss } from '@ant-design/use-emotion-css';
+import { theme as antdTheme } from "antd";
 
 const Index = ({ plants, showInfo, panTo }) => {
     const intl = useIntl();
-    const [map, setMap] = useState();
+    const { token } = antdTheme.useToken();
     const [infoWindow, setInfoWindow] = useState();
     const defaultZoom = 5;
-    const defaultCenter = [108.9, 34.2];
+    const { theme } = useSelector(state => state.global);
+
+    const detailCard = useEmotionCss(() => {
+        return {
+            width: '350px',
+            borderRadius: '16px',
+            padding: '20px 30px',
+            boxSizing: 'border-box',
+            background: token.color4,
+            ".header": {
+                color: '#54cfff',
+                fontSize: '16px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                paddingLeft: '10px',
+                boxSizing: 'border-box',
+                marginBottom: '10px',
+                '&::before': {
+                    content: '""',
+                    width: '4px',
+                    height: '14px',
+                    background: '#54cfff',
+                    borderRadius: '2px',
+                    position: 'absolute',
+                    left: '30px'
+                },
+                ".close": {
+                    cursor: 'pointer'
+                }
+            },
+            ".item": {
+                padding: "5px 0",
+                display: "flex",
+                ".name": {
+                    width: "160px",
+                    color: token.color5,
+                },
+                ".value": {
+                    flex: 1,
+                    textAlign: "left",
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                    textOverflow: "ellipsis",
+                    color: token.color6,
+                    width: "130px"
+                }
+            }
+        }
+    })
 
     window.info = [
         { name: "电站名称", key: "name", value: "" },
@@ -19,35 +71,20 @@ const Index = ({ plants, showInfo, panTo }) => {
     ];
 
     useEffect(() => {
-        const _map =
-            map ||
-            new AMap.Map("map", {
-                mapStyle: "amap://styles/blue",
-                zoom: defaultZoom,
-                center: defaultCenter,
-            });
-        if (!map) {
-            setMap(_map);
-        }
-        _map.on("complete", async () => {});
-    }, []);
-
-    useEffect(() => {
-        if (map) {
-            addMarkers(map, plants);
-        }
-    }, [plants]);
-
-    useEffect(() => {
-        if (map) {
-            if (panTo) {
-                map.setZoom(defaultZoom);
-                map.panTo(panTo);
+        const _map = new AMap.Map("map", {
+            zoom: defaultZoom,
+            center: panTo
+        })
+        _map.on("complete", async () => {
+            if (theme === "default") {
+                _map.setMapStyle("amap://styles/white");
             } else {
-                map.setZoom(defaultZoom);
+                _map.setMapStyle("amap://styles/blue");
             }
-        }
-    }, [panTo]);
+            addMarkers(_map, plants);
+            // setMap(_map);
+        });
+    }, [plants, theme, panTo]);
 
     const addMarkers = (map, plants) => {
         const _infoWindow =
@@ -84,18 +121,18 @@ const Index = ({ plants, showInfo, panTo }) => {
             window.getInfo = (arr, plant) => {
                 return arr
                     ?.map(
-                        item => `<div class=${styles.item}>
-                           <div class=${styles.name}>${intl.formatMessage({id: item.name})}</div>
-                           <div class=${styles.value} title=${plant[item.key]}>${plant[item.key] || ""}</div>
+                        item => `<div class="item">
+                           <div class="name">${intl.formatMessage({ id: item.name })}</div>
+                           <div class="value" title=${plant[item.key]}>${plant[item.key] || ""}</div>
                         </div>`
                     )
                     ?.join("");
             };
             marker.content = `
-                   <div class=${styles.detail}>
-                        <div class=${styles.header}>
-                            ${intl.formatMessage({id: '电站信息'})}
-                            <span class=${styles.close} onclick="window.close()">X</span>
+                   <div class=${detailCard}>
+                        <div class="header">
+                            ${intl.formatMessage({ id: '电站信息' })}
+                            <span class="close" onclick="window.close()">X</span>
                         </div>
                         <div class=${styles.infoContent}>
                             <div>${window.getInfo(window.info, item)}</div>

@@ -74,6 +74,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
             padding: '5px 20px',
             borderRadius: 5,
             backgroundColor: token.defaultBg,
+            color: 'white'
         }
     })
 
@@ -82,7 +83,8 @@ const PolicyConfiguration = ({ deviceVersion }) => {
             cursor: 'pointer',
             padding: '5px 20px',
             borderRadius: 5,
-            backgroundColor: '#2C638F',
+            background: token.color19,
+            color: 'white'
         }
     })
 
@@ -99,9 +101,9 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                 return {
                     ...item,
                     action: {
-                        3: intl.formatMessage({id: '充电'}),
-                        1: intl.formatMessage({id: '放电'}),
-                        2: intl.formatMessage({id: '待机'})
+                        3: intl.formatMessage({ id: '充电' }),
+                        1: intl.formatMessage({ id: '放电' }),
+                        2: intl.formatMessage({ id: '待机' })
                     }[item.action],
                     timeType: {
                         0: intl.formatMessage({ id: '尖' }),
@@ -116,9 +118,9 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                 return {
                     ...item,
                     action: {
-                        3: intl.formatMessage({id: '充电'}),
-                        1: intl.formatMessage({id: '放电'}),
-                        2: intl.formatMessage({id: '待机'})
+                        3: intl.formatMessage({ id: '充电' }),
+                        1: intl.formatMessage({ id: '放电' }),
+                        2: intl.formatMessage({ id: '待机' })
                     }[item.action],
                     timeType: {
                         0: intl.formatMessage({ id: '尖' }),
@@ -178,7 +180,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                     mode: 'Custom'
                 }}
             >
-                <Space style={{ width: '100%', height: 'auto', minHeight: '100%', background: "#0A1328" }} direction="vertical" size={12}>
+                <Space style={{ width: '100%', height: 'auto', minHeight: '100%', background: token.color18 }} direction="vertical" size={12}>
                     <div className={areaStyle}>
                         <div
                             style={{
@@ -194,7 +196,8 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                     height: '45px',
                                     width: '90px',
                                     position: 'relative',
-                                    bottom: '15px'
+                                    bottom: '15px',
+                                    color: 'white'
                                 }}
                                 onClick={async () => {
                                     await updateDataServe({ dtuId: id, type: deviceVersion });
@@ -229,40 +232,42 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                 </Row>
                                 <Space style={{ width: '100%', padding: '0 20px' }} direction="vertical" size={30}>
                                     <Row>
-                                        <Form.Item label={intl.formatMessage({ id: 'PCS/BMS设置' })} name="runModePCS" style={{ margin: 0 }}>
-                                            <ButtonGroup
-                                                value={runModePCS}
-                                                mode={'controlled'}
-                                                disabled={!canIssue || !isLive}
-                                                options={[
-                                                    { label: intl.formatMessage({ id: 'PCS关机' }), value: 0 },
-                                                    { label: intl.formatMessage({ id: 'PCS开机' }), value: 1 },
-                                                    { label: intl.formatMessage({ id: 'PCS复位' }), value: 2 }
-                                                ]}
-                                                onControlledChange={async value => {
-                                                    setNextRunModePCS(value);
-                                                    setCheckModalOpen(true);
-                                                    setCheckModalType('runModePCS');
-                                                }}
-                                            />
-                                        </Form.Item>
-                                        <Form.Item name="runModeBMS" style={{ margin: 0 }}>
-                                            <ButtonGroup
-                                                value={runModeBMS}
-                                                mode={'controlled'}
-                                                disabled={!canIssue || !isLive}
-                                                options={[
-                                                    { label: intl.formatMessage({ id: 'BMS关机' }), value: 0 },
-                                                    { label: intl.formatMessage({ id: 'BMS开机' }), value: 1 },
-                                                    { label: intl.formatMessage({ id: 'BMS复位' }), value: 2 }
-                                                ]}
-                                                onControlledChange={async value => {
-                                                    setNextRunModeBMS(value);
-                                                    setCheckModalOpen(true);
-                                                    setCheckModalType('runModeBMS');
-                                                }}
-                                            />
-                                        </Form.Item>
+                                        <Space size={20}>
+                                            <Form.Item label={intl.formatMessage({ id: 'PCS/BMS设置' })} name="runModePCS" style={{ margin: 0 }}>
+                                                <ButtonGroup
+                                                    value={runModePCS}
+                                                    mode={'controlled'}
+                                                    disabled={!canIssue || !isLive}
+                                                    options={[
+                                                        { label: intl.formatMessage({ id: 'PCS关机' }), value: 0 },
+                                                        { label: intl.formatMessage({ id: 'PCS开机' }), value: 1 },
+                                                        { label: intl.formatMessage({ id: 'PCS复位' }), value: 2 }
+                                                    ]}
+                                                    onControlledChange={async value => {
+                                                        setNextRunModePCS(value);
+                                                        setCheckModalOpen(true);
+                                                        setCheckModalType('runModePCS');
+                                                    }}
+                                                />
+                                            </Form.Item>
+                                            <Form.Item name="runModeBMS" style={{ margin: 0 }}>
+                                                <ButtonGroup
+                                                    value={runModeBMS}
+                                                    mode={'controlled'}
+                                                    disabled={!canIssue || !isLive}
+                                                    options={[
+                                                        { label: intl.formatMessage({ id: 'BMS关机' }), value: 0 },
+                                                        { label: intl.formatMessage({ id: 'BMS开机' }), value: 1 },
+                                                        { label: intl.formatMessage({ id: 'BMS复位' }), value: 2 }
+                                                    ]}
+                                                    onControlledChange={async value => {
+                                                        setNextRunModeBMS(value);
+                                                        setCheckModalOpen(true);
+                                                        setCheckModalType('runModeBMS');
+                                                    }}
+                                                />
+                                            </Form.Item>
+                                        </Space>
                                     </Row>
                                     <Row>
                                         <Col span={12}>
@@ -465,9 +470,9 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                             editable: true,
                                             inputType: 'Select',
                                             options: [
-                                                { value: intl.formatMessage({id: '充电'}), label: intl.formatMessage({ id: '充电' }) },
-                                                { value: intl.formatMessage({id: '放电'}), label: intl.formatMessage({ id: '放电' }) },
-                                                { value: intl.formatMessage({id: '待机'}), label: intl.formatMessage({ id: '待机' }) },
+                                                { value: intl.formatMessage({ id: '充电' }), label: intl.formatMessage({ id: '充电' }) },
+                                                { value: intl.formatMessage({ id: '放电' }), label: intl.formatMessage({ id: '放电' }) },
+                                                { value: intl.formatMessage({ id: '待机' }), label: intl.formatMessage({ id: '待机' }) },
                                             ]
                                         },
                                         {
@@ -532,7 +537,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                             <Col span={24 / monthList.length}>
                                                 <div style={{ marginBottom: 10 }}>{month.label}</div>
                                                 <Form.Item name={month.value} layout="vertical" style={{ margin: 0 }}>
-                                                    <Radio.Group disabled={!canIssue||!isLive}>
+                                                    <Radio.Group disabled={!canIssue || !isLive}>
                                                         <Space direction="vertical">
                                                             {strategyList?.map(strategy => <Radio value={strategy.value}>{strategy.label}</Radio>)}
                                                         </Space>
@@ -685,9 +690,9 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                 return {
                                     ...value,
                                     action: {
-                                        [intl.formatMessage({id: '充电'})]: 3,
-                                        [intl.formatMessage({id: '放电'})]: 1,
-                                        [intl.formatMessage({id: '待机'})]: 2,
+                                        [intl.formatMessage({ id: '充电' })]: 3,
+                                        [intl.formatMessage({ id: '放电' })]: 1,
+                                        [intl.formatMessage({ id: '待机' })]: 2,
                                     }[value.action],
                                     timeType: {
                                         [intl.formatMessage({ id: '尖' })]: 0,
@@ -737,10 +742,10 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                             setMode(nextMode);
                             form.setFieldsValue({ mode: nextMode })
                         }
-                        if (checkModalType === "runModePCS"||checkModalType === "runModeBMS") {
-                            setTimeout(()=>{
+                        if (checkModalType === "runModePCS" || checkModalType === "runModeBMS") {
+                            setTimeout(() => {
                                 getInitData();
-                            }, 1000*60*2);
+                            }, 1000 * 60 * 2);
                         }
                     }
                 }}

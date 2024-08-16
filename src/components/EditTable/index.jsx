@@ -325,7 +325,7 @@ const EditRowTable = ({
             }}
           />
           <Button
-            style={{ background: 'linear-gradient(90deg, #0787DB 0%, #034FB4 100%)', border: 'none' }}
+            style={{ background: 'linear-gradient(90deg, #0787DB 0%, #034FB4 100%)', border: 'none', color: 'white' }}
             onClick={add}
             disabled={!showAdd}
           >
