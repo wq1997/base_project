@@ -380,7 +380,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                                 disabled = true;
                                             }
                                             return (
-                                                <Col span={7}>
+                                                <Col span={8}>
                                                     <Form.Item label={`${intl.formatMessage({ id: '防逆流触发值' })}(kW)`} name="antiRefluxTriggerValue" style={{ margin: 0 }}>
                                                         <InputNumber disabled={!disabled || !isLive} placeholder={intl.formatMessage({ id: '请输入防逆流触发值' })} style={{ width: 300 }} />
                                                     </Form.Item>
@@ -399,7 +399,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                                 disabled = true;
                                             }
                                             return (
-                                                <Col span={7}>
+                                                <Col span={8}>
                                                     <Form.Item label={intl.formatMessage({ id: '变压器容量' })} style={{ margin: 0 }}>
                                                         <Space direction="horizontal">
                                                             <Form.Item style={{ margin: 0 }} name="tranCap">
@@ -414,7 +414,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                             )
                                         }}
                                     </Form.Item>
-                                    <Col span={7}>
+                                    <Col span={8}>
                                         <Form.Item label={`${intl.formatMessage({ id: '功率波动范围' })}(kW)`} name="pcsPowerWaveRange" style={{ margin: 0 }}>
                                             <InputNumber disabled={!canIssue || !isLive} placeholder={intl.formatMessage({ id: '请输入功率波动范围' })} style={{ width: 300 }} />
                                         </Form.Item>
