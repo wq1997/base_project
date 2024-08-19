@@ -9,6 +9,7 @@ import leftTop2Img from "@/assets/imges/leftTop2.svg";
 import leftTop3Img from "@/assets/imges/leftTop3.svg";
 import leftTop4Img from "@/assets/imges/leftTop4.svg";
 import leftTopBgImg from "@/assets/imges/leftTopBg.svg";
+import leftTopWhiteBgImg from "@/assets/imges/leftWhiteTopBg.svg";
 import xtxl1Img from "@/assets/imges/xtxl1.svg";
 import xtxlWhiteBgImg from "@/assets/imges/leftTopBg2_white.svg";
 import xtxlBgImg from "@/assets/imges/xtxlBg.svg";
@@ -17,10 +18,11 @@ import leftBottom2Img from "@/assets/imges/leftBottom2.svg";
 import leftBottom3Img from "@/assets/imges/leftBottom3.svg";
 import leftBottom4Img from "@/assets/imges/leftBottom4.svg";
 import leftBottomBg1Img from "@/assets/imges/leftBottomBg1.svg";
-import leftBottomBg2Img from "@/assets/imges/leftBottomBg2.svg";
+import leftBottomWhiteBg1Img from "@/assets/imges/leftBottomWhiteBg1.svg";
 import bottomLeft1Img from "@/assets/imges/bottomLeft1.svg";
 import bottomLeft2Img from "@/assets/imges/bottomLeft2.svg";
 import bottomLeftBgImg from "@/assets/imges/bottomLeftBg.svg";
+import bottomLeft1WhiteImg from "@/assets/imges/bottomLeft1WhiteImg.svg"
 import MyRadio from "./MyRadio";
 import { useEffect } from "react";
 import { getQueryString, cloneObject } from "@/utils/utils";
@@ -291,7 +293,7 @@ const OverView = ({ deviceVersion, sn }) => {
         <div
             className={styles.overView}
             style={{
-                background: token.bgcColorB_l
+                background: token.color29
             }}
         >
             <div className={classNames(styles.top, backgroundStyle)}>
@@ -326,7 +328,7 @@ const OverView = ({ deviceVersion, sn }) => {
                                                     <div className={styles.rightData1}>{item.data}</div>
                                                     <div className={styles.rightData2} style={{ color: token.color25 }}>{intl.formatMessage({ id: item.title })}</div>
                                                 </div>
-                                                <img src={leftTopBgImg} />
+                                                <img src={theme==="dark"?leftTopBgImg:leftTopWhiteBgImg} />
                                             </div>
                                         </div>
                                     )
@@ -373,7 +375,7 @@ const OverView = ({ deviceVersion, sn }) => {
                                 benefitStatisticsDataSource?.map((item, index) => {
                                     return (
                                         <div className={styles.item}>
-                                            <img src={item.backgroundImg} className={styles.backgroundImg} />
+                                            <img src={theme==="dark"?leftBottomBg1Img: leftBottomWhiteBg1Img} className={styles.backgroundImg} />
                                             {/* <img src={item.img}  className={styles.img} style={{bottom: '-7px'}}/> */}
                                             <div className={styles.data}>
                                                 <div className={styles.data1} style={{ color: item.color }}>{item.data}</div>
@@ -423,7 +425,7 @@ const OverView = ({ deviceVersion, sn }) => {
                                                     })
                                                 }
                                             </div>
-                                            <img src={bottomLeftBgImg} className={styles.subAreaBg} />
+                                            <img src={theme==="dark"?bottomLeftBgImg:bottomLeft1WhiteImg} className={styles.subAreaBg} />
                                         </div>
                                     </div>
                                 )

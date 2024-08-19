@@ -13,6 +13,7 @@ import {
 
 function Com(props) {
     const { token } = theme.useToken();
+    const { locale } = useSelector(state => state.global);
     const [options, setOptions] = useState([])
     const [selectId, setSelectId] = useState('0,0')
     const [data, setData] = useState([])
@@ -87,17 +88,26 @@ function Com(props) {
             <div className={styles.packContent}>
                 {data?.map((one, index) => {
                     return (<div className={styles.onePack}>
-                        <div className={styles.title1} style={{color: token.color26}}>
+                        <div className={styles.title1} style={{ color: token.color26 }}>
                             <Icon type='icon-xiangyou' style={{ cursor: 'pointer', marginRight: '6px' }}></Icon>
-                            <span style={{marginRight: 5}}>PACK{one.packNo + 1}</span>
-                            {index === 0 && <Tooltip title={`${t('红色表示：所有PACK中单体当前最高电压/温度；绿色表示：所有PACK中单体当前最低电压/温度')}`}><QuestionCircleOutlined /></Tooltip>}
+                            <span style={{ marginRight: 5 }}>PACK{one.packNo + 1}</span>
+                            {index === 0 &&
+                                <Tooltip 
+                                    title={`${t('红色表示：所有PACK中单体当前最高电压/温度；绿色表示：所有PACK中单体当前最低电压/温度')}`}
+                                    overlayInnerStyle={{
+                                        width: locale==="zh-CN"?350:620
+                                    }}
+                                >
+                                        <QuestionCircleOutlined />
+                                </Tooltip>
+                            }
                         </div>
                         <div className={styles.vol}>
                             <div className={styles.title2}>{t("单体电压/V")}</div>
                             <div className={styles.oneContent}>
                                 {one.vols?.map((it, index) => {
                                     return (
-                                        <div className={styles.oneData} style={{ color: it === maxVol ? '#FF3333' : (it === minVol ? '#15FF35' : '') }}>
+                                        <div className={styles.oneData} style={{ color: it === maxVol ? '#FF3333' : (it === minVol ? 'rgb(20 216 47)' : token.color28) }}>
                                             {t("电芯")}{index}:<span style={{ marginLeft: '10px' }}>{it}</span>
                                         </div>
                                     )
@@ -109,7 +119,7 @@ function Com(props) {
                             <div className={styles.oneContent}>
                                 {one.tmps?.map((it, index) => {
                                     return (
-                                        <div className={styles.oneData} style={{ color: it === maxTemp ? '#FF3333' : (it === minTemp ? '#15FF35' : '') }}>
+                                        <div className={styles.oneData} style={{ color: it === maxTemp ? '#FF3333' : (it === minTemp ? 'rgb(20 216 47)' : token.color28) }}>
                                             {t('采样点')}{index}:<span style={{ marginLeft: '10px' }}>{it}</span>
                                         </div>
                                     )
@@ -122,7 +132,7 @@ function Com(props) {
                             <div className={styles.tempContent}>
                                 {Object.keys(temObj).map((it, index) => {
                                     return (
-                                        <div className={styles.oneData}>
+                                        <div className={styles.oneData} style={{ color: token.color28 }}>
                                             {t(temObj[it])}:<span style={{ marginLeft: '10px' }}>{one?.extraPackData[it]}</span>
                                         </div>
                                     )

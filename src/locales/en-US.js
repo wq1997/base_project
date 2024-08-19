@@ -2041,9 +2041,11 @@ export default {
 '采样点': 'Point',
 '说明': 'Illustrate',
 'PACK温度/℃': 'PACK temperature/℃',
-'红色表示：所有PACK中单体当前最高电压/温度；绿色表示：所有PACK中单体当前最低电压/温度': 'Red indicates the current highest voltage/temperature of all individual units in the PACK; Green indicates the current lowest voltage/temperature of all individual units in the PACK',
+'红色表示：所有PACK中单体当前最高电压/温度；绿色表示：所有PACK中单体当前最低电压/温度': 'Red indicates the current highest voltage/temperature of all individual units in the PACK; Green indicates the current lowest voltage/temperature of all individual units in the PACK.',
 '累计': 'Accumulate',
 '前一日': 'Previous day',
 '电表电量': 'Electricity meter capacity',
-'电站': 'Plant'
+'电站': 'Plant',
+'语言切换': 'Language switching',
+'主题切换': 'Theme switching',
 } 

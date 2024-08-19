@@ -9,8 +9,8 @@ import OverView from "./overview";
 import Policy from "../../policyConfiguration/index";
 import { theme, Tabs } from "antd";
 import { useEffect } from 'react';
-import { getBurDtuDevInfo2,  } from '@/services/policy';
-import { 
+import { getBurDtuDevInfo2, } from '@/services/policy';
+import {
     getDeviceTypeByDtuId as getDeviceTypeByDtuIdServe
 } from "@/services";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
@@ -35,17 +35,12 @@ const Cabinet = () => {
     const { user } = useSelector(function (state) {
         return state.user
     });
+    const global = useSelector(state => state.global);
     const { pathname } = location;
     const [activeKey, setActiveKey] = useState(getQueryString("activeKey") || defaultActiveKey);
     const [deviceVersion, setDeviceVersion] = useState();
     const [sn, setSn] = useState();
-    const [PageTypeList, setPageTypeList] = useState([
-        { label: t('总览'), key: 'OverView' },
-        { label: t('设备详情'), key: 'DeviceDetails' },
-        // { label: t('监测曲线'), key: 'MonitoringCurves' },
-        { label: t('PACK详情'), key: 'PackDetails' },
-        { label: t('策略配置'), key: 'Policy' },
-    ]);
+    const [PageTypeList, setPageTypeList] = useState();
     const [data, setData] = useState();
     const getInitData = async () => {
         let res = await getBurDtuDevInfo2({ dtuId: id });
@@ -54,7 +49,7 @@ const Cabinet = () => {
 
     const getDeviceType = async () => {
         const res = await getDeviceTypeByDtuIdServe({ dtuId: id });
-        if(res?.data?.data){
+        if (res?.data?.data) {
             setDeviceVersion(res?.data?.data?.deviceTypeId);
             setSn(res?.data?.data?.sn);
         }
@@ -69,6 +64,16 @@ const Cabinet = () => {
         getInitData();
         getDeviceType();
     }, [])
+
+    useEffect(() => {
+        setPageTypeList([
+            { label: t('总览'), key: 'OverView' },
+            { label: t('设备详情'), key: 'DeviceDetails' },
+            // { label: t('监测曲线'), key: 'MonitoringCurves' },
+            { label: t('PACK详情'), key: 'PackDetails' },
+            { label: t('策略配置'), key: 'Policy' },
+        ])
+    }, [global.locale])
 
     const deviceDetailStyle = useEmotionCss(() => {
         return {
@@ -89,7 +94,7 @@ const Cabinet = () => {
                 {activeKey === "DeviceDetails" && <DeviceDetails deviceVersion={deviceVersion} />}
                 {activeKey === "MonitoringCurves" && <MonitoringCurves deviceVersion={deviceVersion} />}
                 {activeKey === "PackDetails" && <PackDetails deviceVersion={deviceVersion} />}
-                {activeKey === "Policy" && <Policy id={id} deviceVersion={deviceVersion}/>}
+                {activeKey === "Policy" && <Policy id={id} deviceVersion={deviceVersion} />}
             </div>
         </div>
     )

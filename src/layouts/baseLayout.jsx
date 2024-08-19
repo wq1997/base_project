@@ -13,11 +13,15 @@ import {
     QuestionCircleOutlined,
     HomeOutlined,
     UserOutlined,
+    DribbbleOutlined,
 } from '@ant-design/icons';
 import { history, useIntl } from "umi";
-import useIcon from "@/hooks/useIcon";
 import logo from "../../public/logo.png";
 import logoWhite from "../../public/logo_white.png";
+import cnDefault from "@/assets/imges/cnDefault.svg";
+import cnDark from "@/assets/imges/cnDark.svg";
+import enDefault from "@/assets/imges/enDefault.svg";
+import enDark from "@/assets/imges/enDark.svg";
 
 const { Header, Sider, Content } = Layout;
 
@@ -94,7 +98,7 @@ const BaseLayout = () => {
                             src={global?.theme === "default" ? logo : logoWhite}
                             style={{ height: "25px", marginRight: "10px" }}
                         />
-                        <div 
+                        <div
                             style={{
                                 background: token.titleColor,
                                 width: '2px',
@@ -113,16 +117,6 @@ const BaseLayout = () => {
                         </div>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0 40px' }}>
-                        <Tooltip title={useLocale('主题切换')} placement="bottom">
-                            <SkinOutlined
-                                style={{
-                                    cursor: "pointer",
-                                    fontSize: 35,
-                                    color: token.color1
-                                }}
-                                onClick={() => changeTheme(global.theme === "default" ? "dark" : "default")}
-                            />
-                        </Tooltip>
                         <Dropdown
                             placement="bottom"
                             menu={{
@@ -144,6 +138,31 @@ const BaseLayout = () => {
                         >
                             <QuestionCircleOutlined style={{ cursor: 'pointer', fontSize: 35, color: token.color1 }} />
                         </Dropdown>
+                        <Tooltip  title={useLocale('语言切换')} placement="bottom">
+                        <img 
+                            style={{
+                                width: 40,
+                                cursor: 'pointer'
+                            }}
+                            src={
+                                global.theme==='default'?
+                                    (global.locale==="zh-CN"?enDefault:enDark)
+                                    :
+                                    (global.locale==="zh-CN"?cnDark:cnDefault)
+                            }
+                            onClick={() => changeLanguage(global.locale === "zh-CN" ? "zh-EN" : 'zh-CN')}
+                        />
+                        </Tooltip>
+                        <Tooltip title={useLocale('主题切换')} placement="bottom">
+                            <SkinOutlined
+                                style={{
+                                    cursor: "pointer",
+                                    fontSize: 35,
+                                    color: token.color1
+                                }}
+                                onClick={() => changeTheme(global.theme === "default" ? "dark" : "default")}
+                            />
+                        </Tooltip>
                         <HomeOutlined
                             style={{ cursor: 'pointer', fontSize: 35, color: token.color1 }}
                             onClick={() => history.push('/index/device')}
