@@ -1,6 +1,17 @@
 .login {
     position: relative;
 
+    input:-webkit-autofill {
+        -webkit-animation: autofill-fix 1s infinite !important;
+        -webkit-text-fill-color: white !important;
+        caret-color: white !important;
+        -webkit-transition: background-color 50000s ease-in-out 0s !important;
+        -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+        transition: background-color 50000s ease-in-out 0s !important;
+        background-color: transparent !important;
+        background-image: none !important;
+    }
+
     .Title {
         position: absolute;
         left: 83px;
@@ -9,24 +20,28 @@
         line-height: 72px;
         text-shadow: 4px 8px 4px #000000;
     }
-.bottom{
-    position: absolute;
-    bottom: 30px;
-    display: block;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
+
+    .bottom {
+        position: absolute;
+        bottom: 30px;
+        display: block;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
     .formCard {
         background: rgba(0, 0, 0, 0.3);
         box-shadow: 8px 8px 8px 0px rgba(0, 0, 0, 0.16);
         border-radius: 16px;
         backdrop-filter: blur(6px);
-        }
-p{
-    font-family: PingFangRegular;
+    }
 
-}
+    p {
+        font-family: PingFangRegular;
+
+    }
+
     :global {
         .ant-input-password {
             &::placeholder {
@@ -37,23 +52,38 @@ p{
         .ant-tabs-nav {
             margin-bottom: 0px;
         }
+
+        .ant-input-affix-wrapper {
+            color: white !important;
+        }
+
+        .ant-input {
+            &::placeholder {
+                color: white !important;
+            }
+        }
+
+        .ant-input-password-icon{
+            color: #73787F !important;
+        }
     }
 }
+
 @media screen and (min-width: 2000px) {
-    .Title{
+    .Title {
         font-size: 60px;
     }
-   
+
 }
 
 @media screen and (min-width: 1000px) and (max-width: 2000px) {
-    .Title{
+    .Title {
         font-size: 42px;
     }
 }
 
 @media screen and (max-width: 1000px) {
-    .Title{
+    .Title {
         font-size: 36px;
     }
 

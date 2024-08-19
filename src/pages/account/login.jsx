@@ -122,7 +122,7 @@ const Login = () => {
             >
               <Input
                 prefix={<UserOutlined style={{ fontSize: 15, color: '#73787F' }} />}
-                placeholder={t("请输入") + ' ' + t('账号')}
+                placeholder={t("请输入")+t('账号')}
                 style={{ height: 40 }}
               />
             </Form.Item>
@@ -139,7 +139,7 @@ const Login = () => {
             >
               <Input.Password
                 prefix={<LockOutlined style={{ fontSize: 15, color: '#73787F' }} />}
-                placeholder={t("请输入") + ' ' + t('密码')}
+                placeholder={t("请输入")+t('密码')}
                 style={{ height: 40 }}
               />
             </Form.Item>
@@ -167,17 +167,17 @@ const Login = () => {
               name="remember"
               valuePropName="checked"
             >
-              <Checkbox>{t('记住密码')}</Checkbox>
+              <Checkbox><span style={{color: 'white'}}>{t('记住密码')}</span></Checkbox>
             </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit" style={{ width: '100%', height: 40 }}>
+              <Button type="primary" htmlType="submit" style={{ width: '100%', height: 40, color: 'white' }}>
                 {t('登录')}
               </Button>
             </Form.Item>
-            <Form.Item label='Language' labelCol={10}>
+            <Form.Item label={<span style={{color: 'white'}}>Language</span>} labelCol={10}>
               <Radio.Group name="radiogroup" defaultValue={language} onChange={changeLanguage}>
-                <Radio value={3}>English</Radio>
-                <Radio value={1}>中文</Radio>
+                <Radio value={3} style={{color: 'white'}}>English</Radio>
+                <Radio value={1} style={{color: 'white'}}>中文</Radio>
               </Radio.Group>
             </Form.Item>
           </Form>

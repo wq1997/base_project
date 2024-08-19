@@ -94,6 +94,14 @@ const BaseLayout = () => {
                             src={global?.theme === "default" ? logo : logoWhite}
                             style={{ height: "25px", marginRight: "10px" }}
                         />
+                        <div 
+                            style={{
+                                background: token.titleColor,
+                                width: '2px',
+                                height: '28px',
+                                margin: '0 15px'
+                            }}
+                        />
                         <div
                             style={{
                                 color: token.titleColor

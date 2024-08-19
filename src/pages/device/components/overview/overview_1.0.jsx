@@ -1,5 +1,5 @@
-import { useIntl } from "umi";
-import { theme, Radio, Spin } from "antd";
+import { useIntl, useSelector } from "umi";
+import { theme as antdTheme, Radio, Spin } from "antd";
 import { Title, ScrollTable } from "@/components";
 import SchematicDiagram from "./SchematicDiagram";
 import styles from "./overview_1.0.less";
@@ -27,12 +27,14 @@ import {
     getDtuOverViews as getDtuOverViewsServe,
 } from "@/services";
 import classNames from "classnames";
+import { useEmotionCss } from '@ant-design/use-emotion-css';
 
-const OverView = ({deviceVersion, sn}) => {
+const OverView = ({ deviceVersion, sn }) => {
     const id = getQueryString('id');
     const title = getQueryString('title')
     const intl = useIntl();
-    const { token } = theme.useToken();
+    const { token } = antdTheme.useToken();
+    const { theme, locale } = useSelector(state => state.global);
     const [dataSource, setDataSource] = useState({});
     const [currentElectricType, setCurrentElectricType] = useState('JLDB');
     const [currentSystemEfficiency, setCurrentSystemEfficiency] = useState('ALL');
@@ -150,16 +152,16 @@ const OverView = ({deviceVersion, sn}) => {
 
     const [pcsInfoDataSource, setPcsInfoDataSource] = useState([
         {
-          title: `${intl.formatMessage({id: '电流'})}(A)`,
-          A: 0,
-          B: 0,
-          C: 0,
+            title: `${intl.formatMessage({ id: '电流' })}(A)`,
+            A: 0,
+            B: 0,
+            C: 0,
         }]
     );
 
     const [pcsInfoDataSource2, setPcsInfoDataSource2] = useState([
         {
-            title: `${intl.formatMessage({id: '电压'})}(V)`,
+            title: `${intl.formatMessage({ id: '电压' })}(V)`,
             AB: 0,
             BC: 0,
             AC: 0,
@@ -190,14 +192,14 @@ const OverView = ({deviceVersion, sn}) => {
     ])
 
     const getDataSource = async () => {
-        const res = await getDtuOverViewsServe({dtuId: id, type: deviceVersion});
-        if(res?.data?.data){
+        const res = await getDtuOverViewsServe({ dtuId: id, type: deviceVersion });
+        if (res?.data?.data) {
             setDataSource(res?.data?.data);
         }
     }
 
 
-    useEffect(()=>{
+    useEffect(() => {
         const newElectricityStatisticsDataSource = cloneObject(electricityStatisticsDataSource); // 电量统计
         const newSystemEfficiencyDataSource = cloneObject(systemEfficiencyDataSource); // 系统效率(前一日)
         const newBenefitStatisticsDataSource = cloneObject(benefitStatisticsDataSource); //收益统计
@@ -207,57 +209,57 @@ const OverView = ({deviceVersion, sn}) => {
         const newCommunicationStatusDataSource = cloneObject(communicationStatusDataSource); //通讯状态
 
         // 电量统计
-        if(currentElectricType==="PCS"){
-            newElectricityStatisticsDataSource[0].data = dataSource?.pcs?.dayCEnergy||0;
-            newElectricityStatisticsDataSource[1].data = dataSource?.pcs?.dayDEnergy||0;
-            newElectricityStatisticsDataSource[2].data = dataSource?.pcs?.totalCEnergy||0;
-            newElectricityStatisticsDataSource[3].data = dataSource?.pcs?.totalDEnergy||0;
-        }else if(currentElectricType==="JLDB"){
-            newElectricityStatisticsDataSource[0].data = dataSource?.gmeter?.dayChargeEnergy||0;
-            newElectricityStatisticsDataSource[1].data = dataSource?.gmeter?.dayDischargeEnergy||0;
-            newElectricityStatisticsDataSource[2].data = dataSource?.gmeter?.totalCEnergy||0;
-            newElectricityStatisticsDataSource[3].data = dataSource?.gmeter?.totalDEnergy||0;
+        if (currentElectricType === "PCS") {
+            newElectricityStatisticsDataSource[0].data = dataSource?.pcs?.dayCEnergy || 0;
+            newElectricityStatisticsDataSource[1].data = dataSource?.pcs?.dayDEnergy || 0;
+            newElectricityStatisticsDataSource[2].data = dataSource?.pcs?.totalCEnergy || 0;
+            newElectricityStatisticsDataSource[3].data = dataSource?.pcs?.totalDEnergy || 0;
+        } else if (currentElectricType === "JLDB") {
+            newElectricityStatisticsDataSource[0].data = dataSource?.gmeter?.dayChargeEnergy || 0;
+            newElectricityStatisticsDataSource[1].data = dataSource?.gmeter?.dayDischargeEnergy || 0;
+            newElectricityStatisticsDataSource[2].data = dataSource?.gmeter?.totalCEnergy || 0;
+            newElectricityStatisticsDataSource[3].data = dataSource?.gmeter?.totalDEnergy || 0;
         }
 
-        if(currentSystemEfficiency==="ALL"){
+        if (currentSystemEfficiency === "ALL") {
             // 系统效率(累计)
-            newSystemEfficiencyDataSource[0].data = dataSource?.pcsEfficiency||0;
-            newSystemEfficiencyDataSource[1].data = dataSource?.meterEfficiency||0;
-        }else if(currentSystemEfficiency==="PRE"){
-            newSystemEfficiencyDataSource[0].data = dataSource?.pcsEfficiencyDay||0;
-            newSystemEfficiencyDataSource[1].data = dataSource?.meterEfficiencyDay||0;
+            newSystemEfficiencyDataSource[0].data = dataSource?.pcsEfficiency || 0;
+            newSystemEfficiencyDataSource[1].data = dataSource?.meterEfficiency || 0;
+        } else if (currentSystemEfficiency === "PRE") {
+            newSystemEfficiencyDataSource[0].data = dataSource?.pcsEfficiencyDay || 0;
+            newSystemEfficiencyDataSource[1].data = dataSource?.meterEfficiencyDay || 0;
         }
-       
+
         //收益统计
-        newBenefitStatisticsDataSource[0].data = dataSource?.gmeter?.dayEarning||0;
-        newBenefitStatisticsDataSource[1].data = dataSource?.gmeter?.monEarning||0;
-        newBenefitStatisticsDataSource[2].data = dataSource?.gmeter?.sumEarning||0;
+        newBenefitStatisticsDataSource[0].data = dataSource?.gmeter?.dayEarning || 0;
+        newBenefitStatisticsDataSource[1].data = dataSource?.gmeter?.monEarning || 0;
+        newBenefitStatisticsDataSource[2].data = dataSource?.gmeter?.sumEarning || 0;
 
         //BMS信息
-        newBmsInfoDataSource[0].data[0].value = dataSource?.bms?.cellTempMax||0;
-        newBmsInfoDataSource[0].data[1].value = dataSource?.bms?.cellTempMaxNo||0;
-        newBmsInfoDataSource[0].data[2].value = dataSource?.bms?.cellVolMax||0;
-        newBmsInfoDataSource[0].data[3].value = dataSource?.bms?.cellVolMaxNo||0;
+        newBmsInfoDataSource[0].data[0].value = dataSource?.bms?.cellTempMax || 0;
+        newBmsInfoDataSource[0].data[1].value = dataSource?.bms?.cellTempMaxNo || 0;
+        newBmsInfoDataSource[0].data[2].value = dataSource?.bms?.cellVolMax || 0;
+        newBmsInfoDataSource[0].data[3].value = dataSource?.bms?.cellVolMaxNo || 0;
 
-        newBmsInfoDataSource[1].data[0].value = dataSource?.bms?.cellTempMin||0;
-        newBmsInfoDataSource[1].data[1].value = dataSource?.bms?.cellTempMinNo||0;
-        newBmsInfoDataSource[1].data[2].value = dataSource?.bms?.cellVolMin||0;
-        newBmsInfoDataSource[1].data[3].value = dataSource?.bms?.cellVolMinNo||0;
+        newBmsInfoDataSource[1].data[0].value = dataSource?.bms?.cellTempMin || 0;
+        newBmsInfoDataSource[1].data[1].value = dataSource?.bms?.cellTempMinNo || 0;
+        newBmsInfoDataSource[1].data[2].value = dataSource?.bms?.cellVolMin || 0;
+        newBmsInfoDataSource[1].data[3].value = dataSource?.bms?.cellVolMinNo || 0;
 
         // PCS信息
-        newPcsInfoDataSource[0].A = dataSource?.pcs?.phaseACur||0;
-        newPcsInfoDataSource[0].B = dataSource?.pcs?.phaseBCur||0;
-        newPcsInfoDataSource[0].C = dataSource?.pcs?.phaseCCur||0;
+        newPcsInfoDataSource[0].A = dataSource?.pcs?.phaseACur || 0;
+        newPcsInfoDataSource[0].B = dataSource?.pcs?.phaseBCur || 0;
+        newPcsInfoDataSource[0].C = dataSource?.pcs?.phaseCCur || 0;
 
-        newPcsInfoDataSource2[0].AB = dataSource?.pcs?.lineAbVol||0;
-        newPcsInfoDataSource2[0].BC = dataSource?.pcs?.lineBcVol||0;
-        newPcsInfoDataSource2[0].AC = dataSource?.pcs?.lineAcVol||0;
+        newPcsInfoDataSource2[0].AB = dataSource?.pcs?.lineAbVol || 0;
+        newPcsInfoDataSource2[0].BC = dataSource?.pcs?.lineBcVol || 0;
+        newPcsInfoDataSource2[0].AC = dataSource?.pcs?.lineAcVol || 0;
 
         //通讯状态
-        newCommunicationStatusDataSource[0].checked = dataSource?.Status?.bms||0;
-        newCommunicationStatusDataSource[1].checked = dataSource?.Status?.pcs||0;
-        newCommunicationStatusDataSource[2].checked = dataSource?.Status?.gmeter||0;
-        newCommunicationStatusDataSource[3].checked = dataSource?.Status?.tmeter||0;
+        newCommunicationStatusDataSource[0].checked = dataSource?.Status?.bms || 0;
+        newCommunicationStatusDataSource[1].checked = dataSource?.Status?.pcs || 0;
+        newCommunicationStatusDataSource[2].checked = dataSource?.Status?.gmeter || 0;
+        newCommunicationStatusDataSource[3].checked = dataSource?.Status?.tmeter || 0;
 
         setElectricityStatisticsDataSource(newElectricityStatisticsDataSource); // 电量统计
         setSystemEfficiencyDataSource(newSystemEfficiencyDataSource); // 系统效率(前一日)
@@ -268,184 +270,114 @@ const OverView = ({deviceVersion, sn}) => {
         setCommunicationStatusDataSource(newCommunicationStatusDataSource); //通讯状态
     }, [dataSource, currentElectricType, currentSystemEfficiency])
 
-    useEffect(()=>{
+    useEffect(() => {
         getDataSource();
     }, [])
 
+    const backgroundStyle = useEmotionCss(() => {
+        return {
+            background: token.color22
+        }
+    })
+
+    const centerRightStyle = useEmotionCss(() => {
+        return {
+            background: token.color23
+        }
+    })
+
     return (
-        <div 
+        <div
             className={styles.overView}
-            style={{ 
+            style={{
                 background: token.bgcColorB_l
             }}
         >
-                <div className={styles.top}>
-                    <div className={styles.topTitle}>{title?decodeURI(title):''}</div>
-                    <div className={styles.snTitle}>{intl.formatMessage({id:'SN号'})}：{sn}</div>
-                </div>
-                <div className={styles.center}>
-                    <div className={styles.centerLeft}>
-                        <div className={styles.centerLeftOne}>
-                            <div className={styles.title}>
-                                <Title title={`${intl.formatMessage({id: '电量统计'})}/kWh`} />
-                                <div>
-                                    <Radio.Group 
-                                        value={currentElectricType}
-                                        onChange={e=>setCurrentElectricType(e.target.value)}
-                                    >
-                                        <Radio value={"JLDB"}>{intl.formatMessage({id: '计量电表'})}</Radio>
-                                        <Radio value={"PCS"}>PCS</Radio>
-                                    </Radio.Group>
-                                </div>
-                            </div>
-                            <div className={styles.centerLeftOneArea}>
-                                {
-                                    electricityStatisticsDataSource?.map(item => {
-                                        return (
-                                            <div className={styles.item}>
-                                                <div className={styles.left}>
-                                                    <img src={item.icon} style={{width: '100%'}} />
-                                                </div>
-                                                <div className={styles.right}>
-                                                    <div className={styles.rightData}>
-                                                        <div className={styles.rightData1}>{item.data}</div>
-                                                        <div className={styles.rightData2}>{intl.formatMessage({id: item.title})}</div>
-                                                    </div>
-                                                    <img src={leftTopBgImg} />
-                                                </div>
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </div>
-                        </div>
-                        <div className={styles.centerLeftTwo}>
-                            <div className={styles.title}>
-                                <Title title={intl.formatMessage({id: '系统效率'})} />
-                                <div>
-                                    <Radio.Group 
-                                        value={currentSystemEfficiency}
-                                        onChange={e=>setCurrentSystemEfficiency(e.target.value)}
-                                    >
-                                        <Radio value={"ALL"}>{intl.formatMessage({id: '累计'})}</Radio>
-                                        <Radio value={"PRE"}>{intl.formatMessage({id: '前一日'})}</Radio>
-                                    </Radio.Group>
-                                </div>
-                            </div>
-                            <div className={styles.centerLeftTwoArea}>
-                                {
-                                    systemEfficiencyDataSource?.map(item => {
-                                        return (
-                                            <div className={styles.item}>
-                                                <img src={xtxl1Img} className={styles.img1} />
-                                                <div className={styles.label}>{intl.formatMessage({id: item.title})}</div>
-                                                <div className={styles.data}>
-                                                    <div style={{color: item.color}} className={styles.dataCount}>{item.data} %</div>
-                                                    <img src={xtxlBgImg} className={styles.img2} />
-                                                </div>
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </div>
-                        </div>
-                        <div className={styles.centerLeftThree}>
-                            <div className={styles.title}>
-                                <Title title={`${intl.formatMessage({id: '收益统计'})}/${intl.formatMessage({id: '元'})}`} />
-                            </div>
-                            <div className={styles.centerLeftThreeArea}>
-                                {
-                                    benefitStatisticsDataSource?.map((item, index) => {
-                                        return (
-                                            <div className={styles.item}>
-                                                <img src={item.backgroundImg} className={styles.backgroundImg}/>
-                                                {/* <img src={item.img}  className={styles.img} style={{bottom: '-7px'}}/> */}
-                                                <div className={styles.data}>
-                                                    <div className={styles.data1} style={{color: item.color}}>{item.data}</div>
-                                                    <div className={styles.data2}>{intl.formatMessage({id: item.title})}</div>
-                                                </div>
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </div>
-                        </div>
-                    </div>
-                    <div className={styles.centerRight}>
-                        <SchematicDiagram 
-                            dataSource={dataSource?.flowDiagram||{totalActivePower:0, power:0, loadPower: 0}}
-                            allData={dataSource}
-                        />
-                    </div>
-                </div>
-                <div className={styles.bottom}>
-                    <div className={styles.bottomOne}>
+            <div className={classNames(styles.top, backgroundStyle)}>
+                <div className={styles.topTitle}>{title ? decodeURI(title) : ''}</div>
+                <div className={styles.snTitle} style={{color: token.color27}}>{intl.formatMessage({ id: 'SN号' })}：{sn}</div>
+            </div>
+            <div className={styles.center}>
+                <div className={styles.centerLeft}>
+                    <div className={classNames(styles.centerLeftOne, backgroundStyle)}>
                         <div className={styles.title}>
-                            <Title title={intl.formatMessage({id: 'BMS信息'})} />
+                            <Title title={`${intl.formatMessage({ id: '电量统计' })}/kWh`} />
+                            <div>
+                                <Radio.Group
+                                    value={currentElectricType}
+                                    onChange={e => setCurrentElectricType(e.target.value)}
+                                >
+                                    <Radio value={"JLDB"}>{intl.formatMessage({ id: '计量电表' })}</Radio>
+                                    <Radio value={"PCS"}>PCS</Radio>
+                                </Radio.Group>
+                            </div>
                         </div>
-                        <div className={styles.area}>
+                        <div className={styles.centerLeftOneArea}>
                             {
-                                bmsInfoDataSource?.map(bmsItem => {
-                                    return (
-                                        <div>
-                                            <div className={styles.subTitle}>
-                                                <img src={bmsItem.icon}/>
-                                                <div style={{fontSize: 18}}>{intl.formatMessage({id: bmsItem.title})}</div>
-                                            </div>
-                                            <div className={styles.subArea}>
-                                                <div className={styles.subAreaLeft}>
-                                                    <img src={bmsItem.icon}/>
-                                                </div>
-                                                <div className={styles.subAreaRight}>
-                                                    {
-                                                        bmsItem?.data?.map(item => {
-                                                            return (
-                                                                <div className={styles.subAreaRightItem}>
-                                                                    <div className={styles.subAreaRightItemTitle}>{intl.formatMessage({id: item.title})}</div>
-                                                                    <div className={styles.subAreaRightItemValue}>{item.value} {item?.unit}</div>
-                                                                </div>
-                                                            )
-                                                        })
-                                                    }
-                                                </div>
-                                                <img src={bottomLeftBgImg} className={styles.subAreaBg} />
-                                            </div>
-                                        </div>
-                                    )
-                                })
-                            }
-                        </div>
-                    </div>
-                    <div className={styles.bottomTwo}>
-                        <div className={styles.title}>
-                            <Title title={intl.formatMessage({id: 'PCS信息'})} />
-                        </div>
-                        <div className={styles.area}>
-                            <div className={classNames(styles.areaItem, styles.areaItemHeader)}>
-                                {['','A','B','C'].map(item=><div className={styles.areaItemContent}>{item}</div>)}
-                            </div>
-                            <div className={classNames(styles.areaItem, styles.areaItemContent)}>
-                                {Object.values(pcsInfoDataSource[0]||{}).map(item=><div className={styles.areaItemContent}>{item}</div>)}
-                            </div>
-                            <div className={classNames(styles.areaItem, styles.areaItemHeader)}>
-                                {['','AB','BC','AC'].map(item=><div className={styles.areaItemContent}>{item}</div>)}
-                            </div>
-                            <div className={classNames(styles.areaItem, styles.areaItemContent)}>
-                                {Object.values(pcsInfoDataSource2[0]||{}).map(item=><div className={styles.areaItemContent}>{item}</div>)}
-                            </div>
-                        </div>
-                    </div>
-                    <div className={styles.bottomThree}>
-                        <div className={styles.title}>
-                            <Title title={intl.formatMessage({id: '通讯状态'})} />
-                        </div>
-                        <div className={styles.area}>
-                            {
-                                communicationStatusDataSource?.map(item => {
+                                electricityStatisticsDataSource?.map(item => {
                                     return (
                                         <div className={styles.item}>
-                                            <span className={styles.itemLabel}>{intl.formatMessage({id: item.label})}</span>
-                                            <MyRadio checked={item.checked} />
+                                            <div className={styles.left}>
+                                                <img src={item.icon} style={{ width: '100%' }} />
+                                            </div>
+                                            <div className={styles.right}>
+                                                <div className={styles.rightData}>
+                                                    <div className={styles.rightData1}>{item.data}</div>
+                                                    <div className={styles.rightData2} style={{ color: token.color25 }}>{intl.formatMessage({ id: item.title })}</div>
+                                                </div>
+                                                <img src={leftTopBgImg} />
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                            }
+                        </div>
+                    </div>
+                    <div className={classNames(styles.centerLeftTwo, backgroundStyle)}>
+                        <div className={styles.title}>
+                            <Title title={intl.formatMessage({ id: '系统效率' })} />
+                            <div>
+                                <Radio.Group
+                                    value={currentSystemEfficiency}
+                                    onChange={e => setCurrentSystemEfficiency(e.target.value)}
+                                >
+                                    <Radio value={"ALL"}>{intl.formatMessage({ id: '累计' })}</Radio>
+                                    <Radio value={"PRE"}>{intl.formatMessage({ id: '前一日' })}</Radio>
+                                </Radio.Group>
+                            </div>
+                        </div>
+                        <div className={styles.centerLeftTwoArea}>
+                            {
+                                systemEfficiencyDataSource?.map(item => {
+                                    return (
+                                        <div className={styles.item}>
+                                            <img src={xtxl1Img} className={styles.img1} />
+                                            <div className={styles.label}>{intl.formatMessage({ id: item.title })}</div>
+                                            <div className={styles.data}>
+                                                <div style={{ color: item.color }} className={styles.dataCount}>{item.data} %</div>
+                                                <img src={xtxlBgImg} className={styles.img2} />
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                            }
+                        </div>
+                    </div>
+                    <div className={classNames(styles.centerLeftThree, backgroundStyle)}>
+                        <div className={styles.title}>
+                            <Title title={`${intl.formatMessage({ id: '收益统计' })}/${intl.formatMessage({ id: '元' })}`} />
+                        </div>
+                        <div className={styles.centerLeftThreeArea}>
+                            {
+                                benefitStatisticsDataSource?.map((item, index) => {
+                                    return (
+                                        <div className={styles.item}>
+                                            <img src={item.backgroundImg} className={styles.backgroundImg} />
+                                            {/* <img src={item.img}  className={styles.img} style={{bottom: '-7px'}}/> */}
+                                            <div className={styles.data}>
+                                                <div className={styles.data1} style={{ color: item.color }}>{item.data}</div>
+                                                <div className={styles.data2} style={{ color: token.color25 }}>{intl.formatMessage({ id: item.title })}</div>
+                                            </div>
                                         </div>
                                     )
                                 })
@@ -453,6 +385,88 @@ const OverView = ({deviceVersion, sn}) => {
                         </div>
                     </div>
                 </div>
+                <div className={classNames(styles.centerRight, centerRightStyle)}>
+                    <SchematicDiagram
+                        dataSource={dataSource?.flowDiagram || { totalActivePower: 0, power: 0, loadPower: 0 }}
+                        allData={dataSource}
+                    />
+                </div>
+            </div>
+            <div className={styles.bottom}>
+                <div className={classNames(styles.bottomOne, backgroundStyle)}>
+                    <div className={styles.title}>
+                        <Title title={intl.formatMessage({ id: 'BMS信息' })} />
+                    </div>
+                    <div className={styles.area}>
+                        {
+                            bmsInfoDataSource?.map(bmsItem => {
+                                return (
+                                    <div>
+                                        <div className={styles.subTitle}>
+                                            <img src={bmsItem.icon} />
+                                            <div style={{ fontSize: 18 }}>{intl.formatMessage({ id: bmsItem.title })}</div>
+                                        </div>
+                                        <div className={styles.subArea}>
+                                            <div className={styles.subAreaLeft}>
+                                                <img src={bmsItem.icon} />
+                                            </div>
+                                            <div className={styles.subAreaRight}>
+                                                {
+                                                    bmsItem?.data?.map(item => {
+                                                        return (
+                                                            <div className={styles.subAreaRightItem}>
+                                                                <div className={styles.subAreaRightItemTitle}>{intl.formatMessage({ id: item.title })}</div>
+                                                                <div className={styles.subAreaRightItemValue}>{item.value} {item?.unit}</div>
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
+                                            </div>
+                                            <img src={bottomLeftBgImg} className={styles.subAreaBg} />
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+                </div>
+                <div className={classNames(styles.bottomTwo, backgroundStyle)}>
+                    <div className={styles.title}>
+                        <Title title={intl.formatMessage({ id: 'PCS信息' })} />
+                    </div>
+                    <div className={styles.area}>
+                        <div className={classNames(styles.areaItem, styles.areaItemHeader)}>
+                            {['', 'A', 'B', 'C'].map(item => <div className={styles.areaItemContent}>{item}</div>)}
+                        </div>
+                        <div className={classNames(styles.areaItem, styles.areaItemContent)}>
+                            {Object.values(pcsInfoDataSource[0] || {}).map((item, index) => <div className={styles.areaItemContent} style={{ color: index === 0 ? '#2193C3' : (theme === "dark" ? '#FFFF' : '#999') }}>{item}</div>)}
+                        </div>
+                        <div className={classNames(styles.areaItem, styles.areaItemHeader)}>
+                            {['', 'AB', 'BC', 'AC'].map(item => <div className={styles.areaItemContent}>{item}</div>)}
+                        </div>
+                        <div className={classNames(styles.areaItem, styles.areaItemContent)}>
+                            {Object.values(pcsInfoDataSource2[0] || {}).map((item, index) => <div className={styles.areaItemContent} style={{ color: index === 0 ? '#2193C3' : (theme === "dark" ? '#FFFF' : '#999') }}>{item}</div>)}
+                        </div>
+                    </div>
+                </div>
+                <div className={classNames(styles.bottomThree, backgroundStyle)}>
+                    <div className={styles.title}>
+                        <Title title={intl.formatMessage({ id: '通讯状态' })} />
+                    </div>
+                    <div className={styles.area}>
+                        {
+                            communicationStatusDataSource?.map(item => {
+                                return (
+                                    <div className={styles.item}>
+                                        <span className={styles.itemLabel}>{intl.formatMessage({ id: item.label })}</span>
+                                        <MyRadio checked={item.checked} />
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }

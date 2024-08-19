@@ -87,7 +87,7 @@ function Com(props) {
             <div className={styles.packContent}>
                 {data?.map((one, index) => {
                     return (<div className={styles.onePack}>
-                        <div className={styles.title1}>
+                        <div className={styles.title1} style={{color: token.color26}}>
                             <Icon type='icon-xiangyou' style={{ cursor: 'pointer', marginRight: '6px' }}></Icon>
                             <span style={{marginRight: 5}}>PACK{one.packNo + 1}</span>
                             {index === 0 && <Tooltip title={`${t('说明')}: ${t('红色代表单体电压/温度最高, 绿色代表单体电压/温度最低')}`}><QuestionCircleOutlined /></Tooltip>}

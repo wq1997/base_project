@@ -13,10 +13,13 @@ import { getBurDtuDevInfo2,  } from '@/services/policy';
 import { 
     getDeviceTypeByDtuId as getDeviceTypeByDtuIdServe
 } from "@/services";
+import { useEmotionCss } from '@ant-design/use-emotion-css';
+import classNames from "classnames";
 
 const defaultActiveKey = "OverView";
 
 const Cabinet = () => {
+    const { token } = theme.useToken();
     const t = (id) => {
         const msg = intl.formatMessage(
             {
@@ -67,9 +70,20 @@ const Cabinet = () => {
         getDeviceType();
     }, [])
 
+    const deviceDetailStyle = useEmotionCss(() => {
+        return {
+            '.ant-tabs-nav': {
+                background: token.color21
+            },
+            '.ant-tabs-tab': {
+                color: `${token.color10} !important`
+            }
+        }
+    })
+
     return (
-        <div className={styles.deviceDetail} style={{ height: '100%', background: '#0A1328' }}>
-            <Tabs className={styles.tab} activeKey={activeKey} items={PageTypeList} onChange={onChangeTab} />
+        <div className={classNames(styles.deviceDetail, deviceDetailStyle)} style={{ height: '100%' }}>
+            <Tabs activeKey={activeKey} items={PageTypeList} onChange={onChangeTab} />
             <div className={styles.content}>
                 {activeKey === "OverView" && <OverView sn={sn} deviceVersion={deviceVersion} />}
                 {activeKey === "DeviceDetails" && <DeviceDetails deviceVersion={deviceVersion} />}

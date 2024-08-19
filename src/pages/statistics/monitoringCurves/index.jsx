@@ -1,5 +1,5 @@
 import { useIntl, useSelector } from "umi";
-import { Form, Cascader, DatePicker, Button, Flex, Radio, theme, Space, message, Empty, Spin, Tooltip, Select } from "antd";
+import { Form, Cascader, DatePicker, Button, Flex, Radio, theme as antdTheme, Space, message, Empty, Spin, Tooltip, Select } from "antd";
 import { Title } from "@/components";
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect } from "react";
@@ -19,8 +19,9 @@ import { downloadFile } from "@/utils/utils";
 
 const MonitoringCurves = () => {
     const intl = useIntl();
-    const { token } = theme.useToken();
+    const { token } = antdTheme.useToken();
     const global = useSelector(state => state.global);
+    const { theme } = global;
     const [form] = Form.useForm();
     const [dataSource, setDataSource] = useState([]);
     const [option, setOption] = useState({});
@@ -101,8 +102,8 @@ const MonitoringCurves = () => {
             {
                 axisLabel: {
                     formatter: '{value}',
-                    color: '#e2e9ff',
-                    fontSize: 14
+                    color: token.color10,
+                    fontSize: 12
                 },
                 axisLine: {
                     show: false
@@ -110,7 +111,7 @@ const MonitoringCurves = () => {
                 splitLine: {
                     show: true,
                     lineStyle: {
-                        color: '#233e64'
+                        color: token.color20,
                     }
                 },
             }
@@ -313,8 +314,8 @@ const MonitoringCurves = () => {
             legend: {
                 data: legendData,
                 textStyle: {
-                    color: 'white'
-                }
+                    color: token.color10
+                },
             },
             grid: {
                 top: '40',
@@ -331,10 +332,8 @@ const MonitoringCurves = () => {
                     }
                 },
                 axisLabel: {
-                    color: 'white',
-                    textStyle: {
-                        fontSize: 14
-                    },
+                    color: token.color10,
+                    fontSize: 12
                 },
             }],
             yAxis,
@@ -417,7 +416,7 @@ const MonitoringCurves = () => {
 
     useEffect(() => {
         initOption();
-    }, [dataSource]);
+    }, [dataSource, theme]);
 
     useEffect(() => {
         initPlantDevice();

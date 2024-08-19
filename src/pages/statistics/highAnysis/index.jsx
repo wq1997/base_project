@@ -1,5 +1,5 @@
-import { useIntl } from "umi";
-import { Form, Cascader, DatePicker, Button, Flex, Radio, theme, Space, message, Empty, Spin, Tooltip, Select } from "antd";
+import { useIntl, useSelector } from "umi";
+import { Form, Cascader, DatePicker, Button, Flex, Radio, theme as antdTheme, Space, message, Empty, Spin, Tooltip, Select } from "antd";
 import { Title } from "@/components";
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect } from "react";
@@ -19,7 +19,7 @@ import { downloadFile } from "@/utils/utils";
 
 const HighAnysis = () => {
     const intl = useIntl();
-    const { token } = theme.useToken();
+    const { token } = antdTheme.useToken();
     const [form] = Form.useForm();
     const [dataSource, setDataSource] = useState([]);
     const [option, setOption] = useState({});
@@ -27,6 +27,8 @@ const HighAnysis = () => {
     const [packCellList, setPackCellList] = useState([]);
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState(`${intl.formatMessage({ id: '高级分析' })}`);
+    const global = useSelector(state => state.global);
+    const { theme } = global;
 
     const dataProList = [
         {
@@ -41,25 +43,25 @@ const HighAnysis = () => {
         },
     ]
 
-    const getParams = async (showMessage=true) => {
+    const getParams = async (showMessage = true) => {
         let format = "YYYY-MM-DD";
         const values = await form.validateFields();
         let { date, currentPlantDevice, dataType, packCell } = values;
         date = date?.map(item => dayjs(item).format(format));
         let flag = false;
         if (date?.length > 3) {
-            showMessage&&message.error(intl.formatMessage({ id: '最多选择3个对比项' }));
-            flag=true;
+            showMessage && message.error(intl.formatMessage({ id: '最多选择3个对比项' }));
+            flag = true;
         }
         if (packCell?.length < 2) {
-            showMessage&&message.error(intl.formatMessage({ id: '请选择电芯' }));
-            flag=true;
+            showMessage && message.error(intl.formatMessage({ id: '请选择电芯' }));
+            flag = true;
         }
-        if (!currentPlantDevice||currentPlantDevice?.length < 2) {
-            showMessage&&message.error(intl.formatMessage({ id: '请选择电站下具体设备' }));
-            flag=true;
+        if (!currentPlantDevice || currentPlantDevice?.length < 2) {
+            showMessage && message.error(intl.formatMessage({ id: '请选择电站下具体设备' }));
+            flag = true;
         };
-        if(flag) return Promise.reject("参数错误");
+        if (flag) return Promise.reject("参数错误");
         let params = {
             // plantId: currentPlantDevice?.[0],
             dtuId: currentPlantDevice?.[1],
@@ -162,17 +164,17 @@ const HighAnysis = () => {
                 },
                 axisLabel: {
                     margin: 10,
-                    color: 'white',
                     textStyle: {
-                        fontSize: 14
+                        color: token.color10,
+                        fontSize: 12
                     },
                 },
             }],
             yAxis: [{
                 axisLabel: {
                     formatter: '{value}',
-                    color: '#e2e9ff',
-                    fontSize: 14
+                    color: token.color10,
+                    fontSize: 12
                 },
                 axisLine: {
                     show: false
@@ -180,7 +182,7 @@ const HighAnysis = () => {
                 splitLine: {
                     show: true,
                     lineStyle: {
-                        color: '#233e64'
+                        color: token.color20,
                     }
                 },
                 min,
@@ -226,7 +228,7 @@ const HighAnysis = () => {
                         dataType: 'vol',
                         packCell: [packCellList?.[0]?.value, packCellList?.[0]?.children?.[0]?.value]
                     })
-                    setTimeout(async()=>{
+                    setTimeout(async () => {
                         const params = await getParams(false);
                         getDataSource(params);
                     }, 200)
@@ -272,7 +274,7 @@ const HighAnysis = () => {
 
     useEffect(() => {
         initOption();
-    }, [dataSource]);
+    }, [dataSource, theme]);
 
     useEffect(() => {
         initPlantDevice();
@@ -389,7 +391,7 @@ const HighAnysis = () => {
                     <div style={{ width: '100%', height: 'calc(100vh - 250px)' }}>
                         {
                             dataSource?.length > 0 &&
-                                <ReactECharts option={option} notMerge style={{ width: '100%', height: '100%' }} />
+                            <ReactECharts option={option} notMerge style={{ width: '100%', height: '100%' }} />
                         }
                     </div>
                 </Space>

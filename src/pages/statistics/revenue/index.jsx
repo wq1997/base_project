@@ -1,5 +1,5 @@
-import { useIntl } from "umi";
-import { Form, Select, DatePicker, Button, Flex, Radio, theme, Space, message, Empty, Spin, Tooltip, Table } from "antd";
+import { useIntl, useSelector } from "umi";
+import { Form, Select, DatePicker, Button, Flex, Radio, theme as antdTheme, Space, message, Empty, Spin, Tooltip, Table } from "antd";
 import { Title } from "@/components";
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect } from "react";
@@ -23,7 +23,7 @@ const defaultEndDate = dayjs(moment().subtract(1, 'day').format("YYYY-MM-DD"));
 
 const Revenue = () => {
     const intl = useIntl();
-    const { token } = theme.useToken();
+    const { token } = antdTheme.useToken();
     const [form] = Form.useForm();
     const [dataSource, setDataSource] = useState([]);
     const [option, setOption] = useState({});
@@ -31,6 +31,8 @@ const Revenue = () => {
     const [tableData, setTableData] = useState([]);
     const [plantList, setPlantList] = useState([]);
     const [deviceList, setDeviceList] = useState([]);
+    const global = useSelector(state => state.global);
+    const { theme } = global;
 
     const getParams = async () => {
         let format = "YYYY-MM-DD";
@@ -75,7 +77,7 @@ const Revenue = () => {
             },
             legend: {
                 textStyle: {
-                    color: 'white'
+                    color: token.color10
                 }
             },
             grid: {
@@ -96,15 +98,16 @@ const Revenue = () => {
                     margin: 10,
                     color: 'white',
                     textStyle: {
-                        fontSize: 14
+                        color: token.color10,
+                        fontSize: 12
                     },
                 },
             }],
             yAxis: [{
                 axisLabel: {
                     formatter: '{value}',
-                    color: '#e2e9ff',
-                    fontSize: 14
+                    color: token.color10,
+                    fontSize: 12
                 },
                 axisLine: {
                     show: false
@@ -112,7 +115,7 @@ const Revenue = () => {
                 splitLine: {
                     show: true,
                     lineStyle: {
-                        color: '#233e64'
+                        color: token.color20,
                     }
                 },
             }],

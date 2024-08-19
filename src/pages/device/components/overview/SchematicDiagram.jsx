@@ -6,6 +6,7 @@ import dlImg from "@/assets/imges/dl.svg";
 import fzxtlImg from "@/assets/imges/fzxtl.svg";
 import nyxtlImg from "@/assets/imges/nyxtl.svg";
 import nyxtlZeroImg from "@/assets/imges/outdoorCabinet.svg";
+import { theme } from "antd";
 
 const loadSystemLineWidthPercent = 0.35; // 线的百分比，自定义
 const schematicDiagramIconPrecent = 0.7; 
@@ -21,6 +22,7 @@ const citySystemChargingAngle = 90;
 
 const SchematicDiagram = ({dataSource, allData}) => {
     const intl = useIntl();
+    const { token } = theme.useToken();
     const schematicDiagramRef = useRef();
     dataSource.totalActivePower=dataSource?.totalActivePower||0;
     dataSource.power = dataSource?.power||0;
@@ -90,7 +92,6 @@ const SchematicDiagram = ({dataSource, allData}) => {
                 style={{
                     width: '200px',
                     height: '64px',
-                    background: '#08213E',
                     border: '2px solid',
                     borderImage: 'linear-gradient(135deg, rgba(87, 223, 254, 1), rgba(40, 104, 255, 1)) 2 2',
                     position: 'absolute',
@@ -114,7 +115,7 @@ const SchematicDiagram = ({dataSource, allData}) => {
                         top: -citySystemLineWidth,
                         transform: `rotate(${citySystemChargingAngle}deg)`,
                         transformOrigin: '0px 3px',
-                        background: '#244A75'
+                        background: token.color24
                     }}
                 >
                     {
@@ -136,7 +137,7 @@ const SchematicDiagram = ({dataSource, allData}) => {
                             height: '5px',
                             transform: `rotate(${energySystemChargingAngle}deg)`,
                             transformOrigin: '0px 0px',
-                            background: '#244A75',
+                            background: token.color24,
                             zIndex: 100
                         }}
                     >
@@ -170,7 +171,7 @@ const SchematicDiagram = ({dataSource, allData}) => {
                         height: '5px',
                         transform: `rotate(${energySystemChargingAngle}deg)`,
                         transformOrigin: '0px 0px',
-                        background: totalActivePowerData===0?'#244A75': 'transparent',
+                        background: totalActivePowerData===0?token.color24: 'transparent',
                         zIndex: 200
                     }}
                 >
@@ -218,7 +219,7 @@ const SchematicDiagram = ({dataSource, allData}) => {
                         height: '5px',
                         transform: `rotate(${loadSystemAngle}deg)`,
                         transformOrigin: '0px 0px',
-                        background: '#244A75'
+                        background: token.color24
                     }}>
                         {loadPowerData>0&&<Flow img={dlImg} />}
                         <img 

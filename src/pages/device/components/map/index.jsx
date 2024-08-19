@@ -84,7 +84,7 @@ const Index = ({ plants, showInfo, panTo }) => {
             addMarkers(_map, plants);
             // setMap(_map);
         });
-    }, [plants, theme, panTo]);
+    }, [JSON.stringify(plants||{}), theme, panTo]);
 
     const addMarkers = (map, plants) => {
         const _infoWindow =

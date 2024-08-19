@@ -1,5 +1,5 @@
-import { useIntl } from "umi";
-import { Form, Cascader, DatePicker, Button, Flex, Radio, theme, Space, message, Empty, Spin, Tooltip, Table, Select } from "antd";
+import { useIntl, useSelector } from "umi";
+import { Form, Cascader, DatePicker, Button, Flex, Radio, theme as antdTheme, Space, message, Empty, Spin, Tooltip, Table, Select } from "antd";
 import { Title } from "@/components";
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect } from "react";
@@ -23,7 +23,7 @@ const defaultEndDate = dayjs(moment().subtract(1, 'day').format("YYYY-MM-DD"));
 
 const Electricity = () => {
     const intl = useIntl();
-    const { token } = theme.useToken();
+    const { token } = antdTheme.useToken();
     const [form] = Form.useForm();
     const [dataSource, setDataSource] = useState([]);
     const [tableData, setTableData] = useState([]);
@@ -31,6 +31,8 @@ const Electricity = () => {
     const [loading, setLoading] = useState(false);
     const [plantList, setPlantList] = useState([]);
     const [deviceList, setDeviceList] = useState([]);
+    const global = useSelector(state => state.global);
+    const { theme } = global;
 
     const getParams = async (showMessage = true) => {
         let format = "YYYY-MM-DD";
@@ -85,8 +87,8 @@ const Electricity = () => {
             },
             legend: {
                 textStyle: {
-                    color: 'white'
-                }
+                    color: token.color10
+                },
             },
             grid: {
                 top: '40',
@@ -106,7 +108,8 @@ const Electricity = () => {
                     margin: 10,
                     color: 'white',
                     textStyle: {
-                        fontSize: 14
+                        color: token.color10,
+                        fontSize: 12
                     },
                 },
             }],
@@ -117,9 +120,8 @@ const Electricity = () => {
                         color: 'white'
                     },
                     axisLabel: {
-                        formatter: '{value}',
-                        color: '#e2e9ff',
-                        fontSize: 14
+                        color: token.color10,
+                        fontSize: 12
                     },
                     axisLine: {
                         show: false
@@ -127,7 +129,7 @@ const Electricity = () => {
                     splitLine: {
                         show: true,
                         lineStyle: {
-                            color: '#233e64'
+                            color: token.color20,
                         }
                     },
                     min: 0,
@@ -140,9 +142,8 @@ const Electricity = () => {
                         color: 'white'
                     },
                     axisLabel: {
-                        formatter: '{value}',
-                        color: '#e2e9ff',
-                        fontSize: 14
+                        color: token.color10,
+                        fontSize: 12
                     },
                     axisLine: {
                         show: false
@@ -150,7 +151,7 @@ const Electricity = () => {
                     splitLine: {
                         show: true,
                         lineStyle: {
-                            color: '#233e64'
+                            color: token.color20,
                         }
                     },
                     min: 0,
@@ -280,7 +281,7 @@ const Electricity = () => {
 
     useEffect(() => {
         initOption();
-    }, [dataSource]);
+    }, [dataSource, theme]);
 
     useEffect(() => {
         initPlantDevice();

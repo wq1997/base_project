@@ -46,6 +46,14 @@ const theme = {
         color17: '#BBDFFF',
         color18: '#0A1328',
         color19: '#2C638F',
+        color20: '#ffffff33',
+        color21: 'linear-gradient(135deg, rgb(0, 57, 90) 0%, rgb(15, 47, 86) 100%)',
+        color22: '#074267',
+        color23: 'linear-gradient(180deg, #00192E 0%, #00152B 57%, #0D2C4F 100%)',
+        color24: '#244A75',
+        color25: 'white',
+        color26: 'white',
+        color27: '#A4BAC8',
         components: {
             Modal: {
                 contentBg: '#0D4D77',
@@ -103,13 +111,21 @@ const theme = {
         color17: '#7093B1',
         color18: 'white',
         color19: 'linear-gradient( 90deg, #C4D4DC 0%, #95BACC 100%)',
+        color20: '#99999933',
+        color21: '#EEFAFF',
+        color22: 'linear-gradient(136deg, #E4F5FC 0%, #E3F4FF 100%)',
+        color23: 'linear-gradient(136deg, #D7F1FB 0%, #D7EAF6 100%)',
+        color24: '#CBE1ED',
+        color25: '#2193C3',
+        color26: '#197AD8',
+        color27: '#666666',
         components: {
             Modal: {
                 contentBg: '#FFFFFF',
                 headerBg: '#FFFFFF'
             },
             Cascader: {
-                optionSelectedBg: '#FFFFFF',
+                optionSelectedBg: '#e8f9ff',
             },
             Table: {
                 headerBg: '#E5F7FF',

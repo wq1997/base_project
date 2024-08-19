@@ -1,9 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./index.less";
+import { useEmotionCss } from '@ant-design/use-emotion-css';
+import { theme } from 'antd';
+import classNames from "classnames";
 
 const Flow = ({
     img
 }) => {
+    const { token } = theme.useToken();
     const [timer, setTimer] = useState(null);
 
     const flowRef = useRef(null); // 管道
@@ -56,10 +60,16 @@ const Flow = ({
         setTimeout(()=>{init()}, 500)
     }, []);
 
+    const outerStyle = useEmotionCss(()=>{
+        return {
+            background: token.color24
+        }
+    })
+
     return (
         <div 
             ref={flowRef} 
-            className={styles.outer} 
+            className={classNames(styles.outer, outerStyle)} 
             style={{height: flowHeight, overflow: 'hidden'}}
         >
             <div 
