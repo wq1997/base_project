@@ -3,10 +3,17 @@ import { alarmTableColums, alarmLevel } from '@/utils/constants'
 import { useEffect, useState } from 'react'
 import { useIntl, useSelector } from "umi";
 import styles from "./index.less";
-import { Pagination, Select, Input, theme, Button, DatePicker } from "antd"
+import { Pagination, Select, Cascader, theme, Button, DatePicker } from "antd"
 import { downLoadExcelMode } from "@/utils/utils"
-import { getHistoryAlarmsByOptionsWithPage, } from "@/services/alarm"
+import {
+  getFetchPlantList3 as getFetchPlantListServe,
+  get215HistoryAlarm as get215HistoryAlarmServe,
+} from "@/services";
+import {
+  getDtusOfPlant as getDtusOfPlantServe
+} from "@/services/plant";
 import dayjs from 'dayjs';
+
 const RealtimeAlarm = () => {
   const { RangePicker } = DatePicker;
   const [data, setData] = useState([]);
@@ -17,7 +24,10 @@ const RealtimeAlarm = () => {
   const [time, setTime] = useState([null, null]);
   const { token } = theme.useToken();
   const [sn, setSn] = useState();
-  const { locale } = useSelector(state => state.global);
+  const [plantList, setPlantList] = useState([]);
+  const [deviceList, setDeviceList] = useState([]);
+  const [plantId, setPlantId] = useState(null);
+  const [deviceId, setDeviceId] = useState(null);
 
   const intl = useIntl();
   const t = (id) => {
@@ -29,13 +39,63 @@ const RealtimeAlarm = () => {
     return msg
   }
 
+  const getPlanList = async () => {
+    const res = await getFetchPlantListServe();
+    if (res?.data?.data) {
+      const data = res?.data?.data;
+      const plantList = data?.plantList?.map((item, index) => {
+        return {
+          value: item.plantId,
+          label: item.name
+        }
+      })
+      setPlantList(plantList);
+    }
+  }
+
+  const getDtusOfPlant = async (plantList, plantId) => {
+    const res = await getDtusOfPlantServe({ plantId });
+    if (res?.data?.data) {
+      let data = res?.data?.data;
+      if (data) {
+        try {
+          data = JSON.parse(data);
+        } catch {
+          data = [];
+        }
+        data = data?.length > 0 ? data?.map(item => {
+          return {
+            value: item.id,
+            label: item.name || intl.formatMessage({ id: '设备无名称' })
+          }
+        }) : [];
+        setDeviceList(data);
+      }
+    }
+  }
+
+  const initPlantDevice = async () => {
+    const res = await getFetchPlantListServe();
+    if (res?.data?.data) {
+      const data = res?.data?.data;
+      const plantList = data?.plantVoList?.map((item, index) => {
+        return {
+          value: item.plantId,
+          label: item.name,
+          alarms: item?.alarms
+        }
+      })
+      setPlantList(plantList);
+    }
+  }
+
   useEffect(() => {
     getTableListData(current);
-  }, [current, level, type, time, pageSize]);
+  }, [current, type, time, pageSize]);
+
   useEffect(() => {
-
+    initPlantDevice()
   }, [])
-
 
   const downLoadFoodModel = () => {  // 菜品模板下载
     let fileName = t('历史告警');
@@ -52,14 +112,15 @@ const RealtimeAlarm = () => {
   };
 
   const getTableListData = async (page) => {
-    const { data } = await getHistoryAlarmsByOptionsWithPage({
-      sn,
+    const { data } = await get215HistoryAlarmServe({
       currentPage: page || 1,
       pageSize,
       prior: level,
       begin: time?.length ? time[0]?.format('YYYY-MM-DD HH:mm:ss') : null,
-      end: time?.length ? time[1]?.format('YYYY-MM-DD HH:mm:ss') : null
-    });
+      end: time?.length ? time[1]?.format('YYYY-MM-DD HH:mm:ss') : null,
+      plantId,
+      dtuId: deviceId,
+    }) || {};
     setData(data.data);
   }
   const changPage = (page, pageSize) => {
@@ -68,6 +129,10 @@ const RealtimeAlarm = () => {
   }
   const changeLevel = (value) => {
     setLevel(value);
+  }
+
+  const changePlant = (value) => {
+    setPlantId(value);
   }
 
   const changeTime = (value) => {
@@ -83,18 +148,45 @@ const RealtimeAlarm = () => {
 
   return (
     <div className={styles.wrap}>
-      <div className={styles.content} style={{ backgroundColor: token.titleCardBgc }}>
+      <div className={styles.content} style={{backgroundColor: token.titleCardBgc }}>
         <div className={styles.title}>
-          <div className={styles.sn}>
-            <Input placeholder={t('请输入') + t('设备编码')} style={{ width: 240 }} onChange={changeSn} />
-          </div>
+          <Select
+            options={plantList}
+            onChange={async value => {
+              if (value) {
+                getDtusOfPlant(plantId, value)
+              }
+              setPlantId(value);
+              setDeviceId(undefined);
+              setLevel(undefined);
+            }}
+            style={{ width: '250px', marginRight: 30 }}
+            placeholder={`${t('请选择电站')}`}
+            value={plantId}
+          />
+          <Select
+            options={deviceList}
+            onChange={async value => {
+              setDeviceId(value);
+            }}
+            style={{ width: '250px', marginRight: 30 }}
+            placeholder={`${t('请选择设备')}`}
+            value={deviceId}
+            allowClear
+          />
           <div className={styles.level}>
             <Select
               style={{ width: 180 }}
               onChange={changeLevel}
-              options={alarmLevel}
+              options={plantId ? alarmLevel?.filter(level => {
+                let value = level?.value;
+                const plant = plantList?.find(plant => plant?.value === plantId);
+                const alarmList = plant?.alarms?.split(',');
+                return alarmList?.includes(value);
+              }) : alarmLevel}
               allowClear
               placeholder={t('告警等级')}
+              value={level}
             />
           </div>
           <div className={styles.date}>
@@ -118,14 +210,14 @@ const RealtimeAlarm = () => {
           columns={alarmTableColums}
           data={data?.list}
           pagination={false}
+          scroll={{ y: "calc(100vh - 350px)" }}
         />
-        <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} total={data?.total} pageSizeOptions={[10, 20, 30]} onChange={changPage} />
-
+        {
+          data?.list?.length > 0 &&
+          <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} total={data?.total} pageSizeOptions={[10, 20, 30]} onChange={changPage} />
+        }
       </div>
-
-
     </div>
-
   )
 }
 

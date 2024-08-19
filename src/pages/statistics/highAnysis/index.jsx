@@ -68,8 +68,9 @@ const HighAnysis = () => {
             dtuId: currentPlantDevice?.[1],
             dataType,
             dateList: date,
-            packCell: packCell?.[2]
+            packCell:packCell?.length ==2?  packCell?.[1]:packCell?.[2]
         }
+        
         return params;
     }
 
@@ -227,7 +228,9 @@ const HighAnysis = () => {
                     form.setFieldsValue({
                         currentPlantDevice: [plantId, data?.[0]?.value],
                         dataType: 'vol',
-                        packCell: [packCellList?.[0]?.value, packCellList?.[0]?.children?.[0]?.value,packCellList?.[0]?.children?.[0]?.children?.[0]?.value]
+                        packCell:packCellList?.[0]?.children?.[0]?.children?.[0]?.value ? 
+                        [packCellList?.[0]?.value, packCellList?.[0]?.children?.[0]?.value,packCellList?.[0]?.children?.[0]?.children?.[0]?.value]:
+                        [packCellList?.[0]?.value, packCellList?.[0]?.children?.[0]?.value]
                     })
                     setTimeout(async()=>{
                         const params = await getParams(false);
@@ -283,7 +286,7 @@ const HighAnysis = () => {
     useEffect(() => {
         initPlantDevice();
     }, [])
-
+  
     return (
         <Space size={30} direction="vertical" style={{ width: '100%', height: '100%', padding: 30,backgroundColor: token.titleCardBgc }}>
             <Flex justify="center" align="center" gap={10}>
@@ -362,10 +365,12 @@ const HighAnysis = () => {
                 </Form>
                 <Button
                     onClick={async () => {
-                        const params = await getParams();
-                        if (params) {
-                            getDataSource(params);
-                        }
+                        setTimeout(async () => {
+                            const params = await getParams();
+                            if (params) {
+                                getDataSource(params);
+                            }
+                        }, 200)
                     }}
                     type="primary"
                     style={{ padding: '0 20px', height: 40 }}

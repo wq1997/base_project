@@ -78,6 +78,8 @@ const MonitoringCurves = () => {
             showMessage && message.error(intl.formatMessage({ id: '请选择电站下具体设备' }));
             flag = true;
         };
+        console.log(date, 'date');
+
         if (flag) return Promise.reject("参数错误");
         let params = {
             // plantId: currentPlantDevice?.[0],
@@ -139,7 +141,26 @@ const MonitoringCurves = () => {
                 })
             })
         }
-
+        if (dataType === 101) {
+            const fieldList = [intl.formatMessage({ id: 'BMS1功率' }), intl.formatMessage({ id: 'BMS2功率' }), intl.formatMessage({ id: '电表功率' }), intl.formatMessage({ id: 'PCS功率' })];
+            date?.forEach(item => {
+                fieldList.forEach(field => {
+                    legendData.push(`${item} ${field}`);
+                })
+            })
+            legendData.forEach((legend, index) => {
+                const currentDate = legend?.split(' ')?.[0];
+                const currentData = dataSource?.find(item => item.date === currentDate);
+                const filed = index % 4 === 0 ? "BMS1" : (index % 4 === 1 ? "BMS2" : index % 4 === 2 ? "Meter" : 'PCS');
+                const data = currentData?.energyData?.[filed];
+                series.push({
+                    name: legend,
+                    type: 'line',
+                    showSymbol: false,
+                    data: data?.map(item => item[1])
+                })
+            })
+        }
         if (dataType === 183) {
             const fieldList = [intl.formatMessage({ id: '电池SOC' })];
             date?.forEach(item => {
@@ -203,7 +224,7 @@ const MonitoringCurves = () => {
             })
         }
 
-        if (dataType === 414) {
+        if (dataType === 414 || dataType === 4140 || dataType === 4141) {
             const fieldList = [intl.formatMessage({ id: '最高电压' }), intl.formatMessage({ id: '最低电压' }), intl.formatMessage({ id: '压差' })];
             yAxis[0].name = `${intl.formatMessage({ id: '最高电压' })}/${intl.formatMessage({ id: '最低电压' })}`;
             yAxis[0].nameTextStyle = {
@@ -254,7 +275,7 @@ const MonitoringCurves = () => {
             })
         }
 
-        if (dataType === 415) {
+        if (dataType === 415 || dataType === 4150 || dataType === 4151) {
             const fieldList = [intl.formatMessage({ id: '最高温度' }), intl.formatMessage({ id: '最低温度' }), intl.formatMessage({ id: '温差' })];
             yAxis[0].name = `${intl.formatMessage({ id: '最高温度' })}/${intl.formatMessage({ id: '最低温度' })}`;
             yAxis[0].nameTextStyle = {
@@ -316,11 +337,11 @@ const MonitoringCurves = () => {
                 const currentDate = legend?.split(' ')?.[0];
                 const currentData = dataSource?.find(item => item.date === currentDate);
                 let filed = '';
-                if (dataType == 1931||dataType == 1930) {
+                if (dataType == 1931 || dataType == 1930) {
                     filed = 'Cur';
-                }else if(dataType == 1921||dataType == 1920){
+                } else if (dataType == 1921 || dataType == 1920) {
                     filed = 'Vol';
-                }else if(dataType == 1871||dataType == 1870){
+                } else if (dataType == 1871 || dataType == 1870) {
                     filed = 'SOC';
                 }
                 const data = currentData?.energyData?.[filed];
@@ -396,7 +417,7 @@ const MonitoringCurves = () => {
                 setPlantDeviceList([...plantList]);
                 const res = await getCurveTypeServe({ deviceType: data?.[0].type });
                 setDataProList(res?.data?.data);
-                const currentPlantDevice = await form.getFieldValue("currentPlantDevice")
+                const currentPlantDevice = await form.getFieldValue("currentPlantDevice");
                 if (currentPlantDevice?.length === 0) {
                     form.setFieldsValue({
                         currentPlantDevice: [plantId, data[0].value],
@@ -473,6 +494,10 @@ const MonitoringCurves = () => {
                                 onChange={async value => {
                                     if (value?.length === 1) {
                                         getDtusOfPlant(plantDeviceList, value[0]);
+                                    } else if (value?.length === 2) {
+                                        form.setFieldsValue({
+                                            dataType: undefined
+                                        })
                                     }
                                     let currentPlant = plantDeviceList.find(it => it.value == value[0]);
                                     let currentDevice = currentPlant.children.find(it => it.value == value[1]);
@@ -508,10 +533,12 @@ const MonitoringCurves = () => {
                 </Form>
                 <Button
                     onClick={async () => {
-                        const params = await getParams();
-                        if (params) {
-                            getDataSource(params);
-                        }
+                        setTimeout(async () => {
+                            const params = await getParams();
+                            if (params) {
+                                getDataSource(params);
+                            }
+                        }, 200)
                     }}
                     type="primary"
                     style={{ padding: '0 20px', height: 40 }}
