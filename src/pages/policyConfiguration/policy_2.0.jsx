@@ -317,7 +317,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                             </Row>
                             <Space style={{ width: '100%' }} direction="vertical" size={30}>
                                 <Row>
-                                    <Col span={2}>
+                                    <Col span={3}>
                                         <Form.Item label={intl.formatMessage({ id: '并离网' })} name="switchOnOffGrid" style={{ margin: 0 }}>
                                             <Switch disabled={!isLive} checkedChildren={intl.formatMessage({ id: '离网' })} unCheckedChildren={intl.formatMessage({ id: '并网' })} />
                                         </Form.Item>
@@ -334,12 +334,12 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                             }
                                             return (
                                                 <>
-                                                    <Col span={2}>
+                                                    <Col span={3}>
                                                         <Form.Item label={intl.formatMessage({ id: '防逆流' })} name="antiReflux" style={{ margin: 0 }}>
                                                             <Switch disabled={disabled || !isLive} />
                                                         </Form.Item>
                                                     </Col>
-                                                    <Col span={2}>
+                                                    <Col span={3}>
                                                         <Form.Item label={intl.formatMessage({ id: '防过载' })} name="overload" style={{ margin: 0 }}>
                                                             <Switch disabled={disabled || !isLive} />
                                                         </Form.Item>
@@ -355,7 +355,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                                                 disabled = true;
                                                             }
                                                             return (
-                                                                <Col span={2}>
+                                                                <Col span={3}>
                                                                     <Form.Item label={intl.formatMessage({ id: '扩容' })} name="expansion" style={{ margin: 0 }}>
                                                                         <Switch disabled={disabled || !isLive} />
                                                                     </Form.Item>

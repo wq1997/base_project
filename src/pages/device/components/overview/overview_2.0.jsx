@@ -10,6 +10,7 @@ import leftTop3Img from "@/assets/imges/leftTop3.svg";
 import leftTop4Img from "@/assets/imges/leftTop4.svg";
 import leftTopBgImg from "@/assets/imges/leftTopBg.svg";
 import leftTopBg2Img from "@/assets/imges/leftTopBg2.svg";
+import leftTopBg2WhiteImg from "@/assets/imges/leftTopBg2_white.svg";
 import xtxl1Img from "@/assets/imges/xtxl1.svg";
 import xtxlBgImg from "@/assets/imges/xtxlBg.svg";
 import leftBottom1Img from "@/assets/imges/leftBottom1.svg";
@@ -342,7 +343,7 @@ const OverView = ({ deviceVersion, sn }) => {
                                     electricityStatisticsDataSourceRight?.map(item => {
                                         return (
                                             <div className={styles.item}>
-                                                <img src={leftTopBg2Img} className={styles.backgroundImg} />
+                                                <img src={theme==="dark"?leftTopBg2Img: leftTopBg2WhiteImg} className={styles.backgroundImg} />
                                                 <div className={styles.data}>
                                                     <div className={styles.data1} style={{ color: item.color }}>{item.data}%</div>
                                                     <div className={styles.data2} style={{ color: token.color25 }}>{intl.formatMessage({ id: item.title })}</div>

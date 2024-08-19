@@ -10,6 +10,7 @@ import leftTop3Img from "@/assets/imges/leftTop3.svg";
 import leftTop4Img from "@/assets/imges/leftTop4.svg";
 import leftTopBgImg from "@/assets/imges/leftTopBg.svg";
 import xtxl1Img from "@/assets/imges/xtxl1.svg";
+import xtxlWhiteBgImg from "@/assets/imges/leftTopBg2_white.svg";
 import xtxlBgImg from "@/assets/imges/xtxlBg.svg";
 import leftBottom1Img from "@/assets/imges/leftBottom1.svg";
 import leftBottom2Img from "@/assets/imges/leftBottom2.svg";
@@ -355,7 +356,7 @@ const OverView = ({ deviceVersion, sn }) => {
                                             <div className={styles.label}>{intl.formatMessage({ id: item.title })}</div>
                                             <div className={styles.data}>
                                                 <div style={{ color: item.color }} className={styles.dataCount}>{item.data} %</div>
-                                                <img src={xtxlBgImg} className={styles.img2} />
+                                                <img src={theme==="dark"?xtxlBgImg:xtxlWhiteBgImg} className={styles.img2} />
                                             </div>
                                         </div>
                                     )

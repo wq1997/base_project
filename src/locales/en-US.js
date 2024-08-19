@@ -2041,7 +2041,7 @@ export default {
 '采样点': 'Point',
 '说明': 'Illustrate',
 'PACK温度/℃': 'PACK temperature/℃',
-'红色代表单体电压/温度最高, 绿色代表单体电压/温度最低': 'Red represents the highest unit voltage/temperature, while green represents the lowest unit voltage/temperature',
+'红色表示：所有PACK中单体当前最高电压/温度；绿色表示：所有PACK中单体当前最低电压/温度': 'Red indicates the current highest voltage/temperature of all individual units in the PACK; Green indicates the current lowest voltage/temperature of all individual units in the PACK',
 '累计': 'Accumulate',
 '前一日': 'Previous day',
 '电表电量': 'Electricity meter capacity',

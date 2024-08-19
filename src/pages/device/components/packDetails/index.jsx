@@ -90,7 +90,7 @@ function Com(props) {
                         <div className={styles.title1} style={{color: token.color26}}>
                             <Icon type='icon-xiangyou' style={{ cursor: 'pointer', marginRight: '6px' }}></Icon>
                             <span style={{marginRight: 5}}>PACK{one.packNo + 1}</span>
-                            {index === 0 && <Tooltip title={`${t('说明')}: ${t('红色代表单体电压/温度最高, 绿色代表单体电压/温度最低')}`}><QuestionCircleOutlined /></Tooltip>}
+                            {index === 0 && <Tooltip title={`${t('红色表示：所有PACK中单体当前最高电压/温度；绿色表示：所有PACK中单体当前最低电压/温度')}`}><QuestionCircleOutlined /></Tooltip>}
                         </div>
                         <div className={styles.vol}>
                             <div className={styles.title2}>{t("单体电压/V")}</div>
