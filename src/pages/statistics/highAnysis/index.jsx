@@ -145,7 +145,7 @@ const HighAnysis = () => {
             legend: {
                 data: legendData,
                 textStyle: {
-                    color: 'white'
+                    color: token.color10
                 }
             },
             grid: {
