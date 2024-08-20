@@ -81,6 +81,8 @@ function Com({deviceVersion}) {
             { name: "放电电压限值", value: "-", key: "dischargeVolLimit" },
             { name: "放电电流限值", value: "-", key: "allowMaxDischargeCur" },
             { name: "放电功率限值", value: "-", key: "allowMaxDischargePower" },
+            { name: "BCMU最高软件版本", value: "-", key: "bcmuMaxSoftwareVersion" },
+            { name: "BCMU最高硬件版本", value: "-", key: "bcmuMaxHardwareVersion" },
             { name: "正极最小绝缘电阻", value: "-", key: "positiveMinInResistance" },
             { name: "负极最小绝缘电阻", value: "-", key: "cathodeMinInResistance" },
         ],

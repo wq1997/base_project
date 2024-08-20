@@ -2048,4 +2048,6 @@ export default {
 '电站': 'Plant',
 '语言切换': 'Language switching',
 '主题切换': 'Theme switching',
+'BCMU最高软件版本': 'BCMU highest software version',
+'BCMU最高硬件版本': 'BCMU highest hardware version',
 } 

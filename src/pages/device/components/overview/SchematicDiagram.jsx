@@ -1,12 +1,14 @@
-import { useIntl } from "umi";
+import { useIntl, useSelector } from "umi";
 import { useState, useEffect, useRef } from "react";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { Flow } from "@/components";
 import dlImg from "@/assets/imges/dl.svg";
 import fzxtlImg from "@/assets/imges/fzxtl.svg";
 import nyxtlImg from "@/assets/imges/nyxtl.svg";
+import fzxtlWhiteImg from "@/assets/imges/fzxtl_white.svg";
+import nyxtlWhiteImg from "@/assets/imges/nyxtl_white.svg";
 import nyxtlZeroImg from "@/assets/imges/outdoorCabinet.svg";
-import { theme } from "antd";
+import { theme as antdTheme } from "antd";
 
 const loadSystemLineWidthPercent = 0.35; // 线的百分比，自定义
 const schematicDiagramIconPrecent = 0.7; 
@@ -22,9 +24,9 @@ const citySystemChargingAngle = 90;
 
 const SchematicDiagram = ({dataSource, allData}) => {
     const intl = useIntl();
-    const { token } = theme.useToken();
+    const { token } = antdTheme.useToken();
     const schematicDiagramRef = useRef();
-    dataSource.totalActivePower=dataSource?.totalActivePower||0;
+    dataSource.totalActivePower= dataSource?.totalActivePower||0;
     dataSource.power = dataSource?.power||0;
     dataSource.loadPower = dataSource?.loadPower||0;
     const totalActivePowerData = parseFloat(dataSource?.totalActivePower);
@@ -36,6 +38,7 @@ const SchematicDiagram = ({dataSource, allData}) => {
     const [energySystemLineWidth, setEnergySystemLineWidth] = useState(0);
     const [energySystemIconWidth, setEnrgySystemIconWidth] = useState(0); // 负载系统图标宽度
     const [citySystemLineWidth, setCitySystemLineWidth] = useState(0);
+    const { theme } = useSelector(state => state.global);
 
     const centerStyle = useEmotionCss(()=>{
         return {
@@ -176,7 +179,7 @@ const SchematicDiagram = ({dataSource, allData}) => {
                     }}
                 >
                     <img 
-                        src={totalActivePowerData===0?nyxtlZeroImg:nyxtlImg} 
+                        src={totalActivePowerData===0?nyxtlZeroImg:(theme==="dark"?nyxtlImg:nyxtlWhiteImg)} 
                         style={{
                             position: 'absolute', 
                             right:  -energySystemIconWidth/2, 
@@ -223,7 +226,7 @@ const SchematicDiagram = ({dataSource, allData}) => {
                     }}>
                         {loadPowerData>0&&<Flow img={dlImg} />}
                         <img 
-                            src={fzxtlImg} 
+                            src={theme==="dark"?fzxtlImg:fzxtlWhiteImg} 
                             style={{
                                 position: 'absolute', 
                                 right:  -loadSystemIconWidth/2, 
