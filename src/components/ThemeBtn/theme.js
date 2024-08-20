@@ -56,6 +56,7 @@ const theme = {
         color27: '#A4BAC8',
         color28: 'white',
         color29: 'linear-gradient(135deg, rgb(0, 57, 90) 0%, rgb(15, 47, 86) 100%)',
+        color30: 'linear-gradient(rgba(21, 171, 219, 0.4) 0%, rgba(9, 114, 180, 0) 100%)',
         components: {
             Modal: {
                 contentBg: '#0D4D77',
@@ -112,7 +113,7 @@ const theme = {
         color16: '#E4F4FF',
         color17: '#7093B1',
         color18: 'white',
-        color19: 'linear-gradient( 90deg, #C4D4DC 0%, #95BACC 100%)',
+        color19: 'linear-gradient(90deg, #C4D4DC 0%, #95BACC 100%)',
         color20: '#99999933',
         color21: '#EEFAFF',
         color22: '#f3fcff',
@@ -123,6 +124,7 @@ const theme = {
         color27: '#666666',
         color28: 'rgba(0, 0, 0, 0.6)',
         color29: 'white',
+        color30: 'linear-gradient(#59d7ff66 0%, #e3f4fd00 100%)',
         components: {
             Modal: {
                 contentBg: '#FFFFFF',

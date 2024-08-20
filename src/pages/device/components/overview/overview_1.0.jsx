@@ -250,10 +250,12 @@ const OverView = ({ deviceVersion, sn }) => {
         newBmsInfoDataSource[1].data[3].value = dataSource?.bms?.cellVolMinNo || 0;
 
         // PCS信息
+        newPcsInfoDataSource[0].title = `${intl.formatMessage({ id: '电流' })}(A)`;
         newPcsInfoDataSource[0].A = dataSource?.pcs?.phaseACur || 0;
         newPcsInfoDataSource[0].B = dataSource?.pcs?.phaseBCur || 0;
         newPcsInfoDataSource[0].C = dataSource?.pcs?.phaseCCur || 0;
 
+        newPcsInfoDataSource2[0].title = `${intl.formatMessage({ id: '电压' })}(V)`;
         newPcsInfoDataSource2[0].AB = dataSource?.pcs?.lineAbVol || 0;
         newPcsInfoDataSource2[0].BC = dataSource?.pcs?.lineBcVol || 0;
         newPcsInfoDataSource2[0].AC = dataSource?.pcs?.lineAcVol || 0;
@@ -271,7 +273,7 @@ const OverView = ({ deviceVersion, sn }) => {
         setPcsInfoDataSource(newPcsInfoDataSource); //PCS信息 
         setPcsInfoDataSource2(newPcsInfoDataSource2);
         setCommunicationStatusDataSource(newCommunicationStatusDataSource); //通讯状态
-    }, [dataSource, currentElectricType, currentSystemEfficiency])
+    }, [dataSource, currentElectricType, currentSystemEfficiency, locale])
 
     useEffect(() => {
         getDataSource();
@@ -288,7 +290,7 @@ const OverView = ({ deviceVersion, sn }) => {
             background: token.color23
         }
     })
-
+    console.log("AAAAAA", token.color30)
     return (
         <div
             className={styles.overView}
@@ -298,7 +300,7 @@ const OverView = ({ deviceVersion, sn }) => {
         >
             <div className={classNames(styles.top, backgroundStyle)}>
                 <div className={styles.topTitle}>{title ? decodeURI(title) : ''}</div>
-                <div className={styles.snTitle} style={{color: token.color27}}>{intl.formatMessage({ id: 'SN号' })}：{sn}</div>
+                <div className={styles.snTitle} style={{ color: token.color27 }}>{intl.formatMessage({ id: 'SN号' })}：{sn}</div>
             </div>
             <div className={styles.center}>
                 <div className={styles.centerLeft}>
@@ -328,7 +330,7 @@ const OverView = ({ deviceVersion, sn }) => {
                                                     <div className={styles.rightData1}>{item.data}</div>
                                                     <div className={styles.rightData2} style={{ color: token.color25 }}>{intl.formatMessage({ id: item.title })}</div>
                                                 </div>
-                                                <img src={theme==="dark"?leftTopBgImg:leftTopWhiteBgImg} />
+                                                <img src={theme === "dark" ? leftTopBgImg : leftTopWhiteBgImg} />
                                             </div>
                                         </div>
                                     )
@@ -358,7 +360,7 @@ const OverView = ({ deviceVersion, sn }) => {
                                             <div className={styles.label}>{intl.formatMessage({ id: item.title })}</div>
                                             <div className={styles.data}>
                                                 <div style={{ color: item.color }} className={styles.dataCount}>{item.data} %</div>
-                                                <img src={theme==="dark"?xtxlBgImg:xtxlWhiteBgImg} className={styles.img2} />
+                                                <img src={theme === "dark" ? xtxlBgImg : xtxlWhiteBgImg} className={styles.img2} />
                                             </div>
                                         </div>
                                     )
@@ -375,7 +377,7 @@ const OverView = ({ deviceVersion, sn }) => {
                                 benefitStatisticsDataSource?.map((item, index) => {
                                     return (
                                         <div className={styles.item}>
-                                            <img src={theme==="dark"?leftBottomBg1Img: leftBottomWhiteBg1Img} className={styles.backgroundImg} />
+                                            <img src={theme === "dark" ? leftBottomBg1Img : leftBottomWhiteBg1Img} className={styles.backgroundImg} />
                                             {/* <img src={item.img}  className={styles.img} style={{bottom: '-7px'}}/> */}
                                             <div className={styles.data}>
                                                 <div className={styles.data1} style={{ color: item.color }}>{item.data}</div>
@@ -425,7 +427,7 @@ const OverView = ({ deviceVersion, sn }) => {
                                                     })
                                                 }
                                             </div>
-                                            <img src={theme==="dark"?bottomLeftBgImg:bottomLeft1WhiteImg} className={styles.subAreaBg} />
+                                            <img src={theme === "dark" ? bottomLeftBgImg : bottomLeft1WhiteImg} className={styles.subAreaBg} />
                                         </div>
                                     </div>
                                 )
@@ -438,13 +440,13 @@ const OverView = ({ deviceVersion, sn }) => {
                         <Title title={intl.formatMessage({ id: 'PCS信息' })} />
                     </div>
                     <div className={styles.area}>
-                        <div className={classNames(styles.areaItem, styles.areaItemHeader)}>
+                        <div className={classNames(styles.areaItem, styles.areaItemHeader)} style={{ background: token.color30}}>
                             {['', 'A', 'B', 'C'].map(item => <div className={styles.areaItemContent}>{item}</div>)}
                         </div>
                         <div className={classNames(styles.areaItem, styles.areaItemContent)}>
                             {Object.values(pcsInfoDataSource[0] || {}).map((item, index) => <div className={styles.areaItemContent} style={{ color: index === 0 ? '#2193C3' : (theme === "dark" ? '#FFFF' : '#999') }}>{item}</div>)}
                         </div>
-                        <div className={classNames(styles.areaItem, styles.areaItemHeader)}>
+                        <div className={classNames(styles.areaItem, styles.areaItemHeader)} style={{ background: token.color30 }}>
                             {['', 'AB', 'BC', 'AC'].map(item => <div className={styles.areaItemContent}>{item}</div>)}
                         </div>
                         <div className={classNames(styles.areaItem, styles.areaItemContent)}>
