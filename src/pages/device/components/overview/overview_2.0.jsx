@@ -266,10 +266,12 @@ const OverView = ({ deviceVersion, sn }) => {
         newBmsInfoDataSource[1].data[3].value = dataSource?.bms?.cellVolMinNo || 0;
 
         // PCS信息
+        newPcsInfoDataSource[0].title = `${intl.formatMessage({ id: '电流' })}(A)`;
         newPcsInfoDataSource[0].A = dataSource?.pcs?.phaseACur || 0;
         newPcsInfoDataSource[0].B = dataSource?.pcs?.phaseBCur || 0;
         newPcsInfoDataSource[0].C = dataSource?.pcs?.phaseCCur || 0;
 
+        newPcsInfoDataSource2[0].title = `${intl.formatMessage({ id: '电压' })}(V)`;
         newPcsInfoDataSource2[0].AB = dataSource?.pcs?.lineAVol || 0;
         newPcsInfoDataSource2[0].BC = dataSource?.pcs?.lineBVol || 0;
         newPcsInfoDataSource2[0].AC = dataSource?.pcs?.lineCVol || 0;
@@ -471,13 +473,13 @@ const OverView = ({ deviceVersion, sn }) => {
                         <Title title={intl.formatMessage({ id: 'PCS信息' })} />
                     </div>
                     <div className={styles.area}>
-                        <div className={classNames(styles.areaItem, styles.areaItemHeader)}>
+                        <div className={classNames(styles.areaItem, styles.areaItemHeader)} style={{ background: token.color30}}>
                             {['', 'A', 'B', 'C'].map(item => <div className={styles.areaItemContent}>{item}</div>)}
                         </div>
                         <div className={classNames(styles.areaItem, styles.areaItemContent)}>
                             {Object.values(pcsInfoDataSource[0] || {}).map((item, index) => <div className={styles.areaItemContent} style={{ color: index === 0 ? '#2193C3' : (theme === "dark" ? '#FFFF' : '#999') }}>{item}</div>)}
                         </div>
-                        <div className={classNames(styles.areaItem, styles.areaItemHeader)}>
+                        <div className={classNames(styles.areaItem, styles.areaItemHeader)} style={{ background: token.color30}}>
                             {['', 'A', 'B', 'C'].map(item => <div className={styles.areaItemContent}>{item}</div>)}
                         </div>
                         <div className={classNames(styles.areaItem, styles.areaItemContent)}>

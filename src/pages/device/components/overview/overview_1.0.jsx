@@ -290,7 +290,7 @@ const OverView = ({ deviceVersion, sn }) => {
             background: token.color23
         }
     })
-    console.log("AAAAAA", token.color30)
+    
     return (
         <div
             className={styles.overView}
