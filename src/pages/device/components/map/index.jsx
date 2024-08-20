@@ -10,7 +10,7 @@ const Index = ({ plants, showInfo, panTo }) => {
     const { token } = antdTheme.useToken();
     const [infoWindow, setInfoWindow] = useState();
     const defaultZoom = 5;
-    const { theme } = useSelector(state => state.global);
+    const { theme, locale } = useSelector(state => state.global);
 
     const detailCard = useEmotionCss(() => {
         return {
@@ -73,7 +73,8 @@ const Index = ({ plants, showInfo, panTo }) => {
     useEffect(() => {
         const _map = new AMap.Map("map", {
             zoom: defaultZoom,
-            center: panTo
+            center: panTo,
+            lang: locale==="zh-CN"?"zh_cn":"en"
         })
         _map.on("complete", async () => {
             if (theme === "default") {
@@ -84,7 +85,7 @@ const Index = ({ plants, showInfo, panTo }) => {
             addMarkers(_map, plants);
             // setMap(_map);
         });
-    }, [JSON.stringify(plants||{}), theme, panTo]);
+    }, [JSON.stringify(plants||{}), theme, locale, panTo]);
 
     const addMarkers = (map, plants) => {
         const _infoWindow =

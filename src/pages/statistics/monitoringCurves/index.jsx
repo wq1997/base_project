@@ -21,7 +21,7 @@ const MonitoringCurves = () => {
     const intl = useIntl();
     const { token } = antdTheme.useToken();
     const global = useSelector(state => state.global);
-    const { theme } = global;
+    const { theme, locale } = global;
     const [form] = Form.useForm();
     const [dataSource, setDataSource] = useState([]);
     const [option, setOption] = useState({});
@@ -416,7 +416,7 @@ const MonitoringCurves = () => {
 
     useEffect(() => {
         initOption();
-    }, [dataSource, theme]);
+    }, [dataSource, theme, locale]);
 
     useEffect(() => {
         initPlantDevice();

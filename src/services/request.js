@@ -7,18 +7,21 @@ export const getBaseUrl = () => {
     return API_URL;
 };
 const getToken = () => localStorage.getItem("Token");
+const getLanguage = () => localStorage.getItem("locale");
 
 const instance = axios.create({
     baseURL: getBaseUrl(),
     timeout: 30*1000,
     headers: {
-        Authorization: getToken()
+        Authorization: getToken(),
+        Language: getLanguage()
     }
 })
 
 instance.interceptors.request.use(config => {
     config.headers.Authorization = 'Bearer ' + getToken();
     config.headers.Token =  getToken();
+    config.headers.Language =  getLanguage();
     return config;
 }, error => {
     return Promise.reject(error);

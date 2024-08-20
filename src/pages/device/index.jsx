@@ -81,22 +81,17 @@ const RealtimeAlarm = () => {
 
     const [incomeData, setIncomeData] = useState([
         {
-            label: t('日收益'),
+            label: '日收益',
             value: 0,
             color: '#20C2FF'
         },
         {
-            label: t('月收益'),
+            label: '月收益',
             value: 0,
             color: '#20C2FF'
         },
-        // {
-        //     label: t('年收益'),
-        //     value: 0,
-        //     color: '#20C2FF'
-        // },
         {
-            label: t('累计收益'),
+            label: '累计收益',
             value: 0,
             color: '#20C2FF'
         }
@@ -264,7 +259,6 @@ const RealtimeAlarm = () => {
             const newIncomeData = JSON.parse(JSON.stringify(incomeData));
             newIncomeData[0].value = data?.dayEarning || 0;
             newIncomeData[1].value = data?.monthEarning || 0;
-            // newIncomeData[2].value = data?.yearEarning || 0;
             newIncomeData[2].value = data?.allEarning || 0;
             setIncomeData(newIncomeData);
         }
@@ -327,7 +321,7 @@ const RealtimeAlarm = () => {
                                                 </Tooltip>
                                                 <div className={styles.mapRightItemTopUnit}>{t('元')}</div>
                                             </div>
-                                            <div className={styles.mapRightItemBottom}>{item.label}</div>
+                                            <div className={styles.mapRightItemBottom}>{t(item.label)}</div>
                                         </div>
                                     </div>
                                 )

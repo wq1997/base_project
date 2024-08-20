@@ -28,7 +28,7 @@ const HighAnysis = () => {
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState(`${intl.formatMessage({ id: '高级分析' })}`);
     const global = useSelector(state => state.global);
-    const { theme } = global;
+    const { theme, locale } = global;
 
     const dataProList = [
         {
@@ -274,7 +274,7 @@ const HighAnysis = () => {
 
     useEffect(() => {
         initOption();
-    }, [dataSource, theme]);
+    }, [dataSource, theme, locale]);
 
     useEffect(() => {
         initPlantDevice();

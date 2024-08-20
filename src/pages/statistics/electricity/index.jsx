@@ -32,7 +32,7 @@ const Electricity = () => {
     const [plantList, setPlantList] = useState([]);
     const [deviceList, setDeviceList] = useState([]);
     const global = useSelector(state => state.global);
-    const { theme } = global;
+    const { theme, locale } = global;
 
     const getParams = async (showMessage = true) => {
         let format = "YYYY-MM-DD";
@@ -281,7 +281,7 @@ const Electricity = () => {
 
     useEffect(() => {
         initOption();
-    }, [dataSource, theme]);
+    }, [dataSource, theme, locale]);
 
     useEffect(() => {
         initPlantDevice();

@@ -32,7 +32,7 @@ const Revenue = () => {
     const [plantList, setPlantList] = useState([]);
     const [deviceList, setDeviceList] = useState([]);
     const global = useSelector(state => state.global);
-    const { theme } = global;
+    const { theme, locale } = global;
 
     const getParams = async () => {
         let format = "YYYY-MM-DD";
@@ -217,7 +217,7 @@ const Revenue = () => {
 
     useEffect(() => {
         initOption();
-    }, [dataSource]);
+    }, [dataSource, theme, locale]);
 
     useEffect(() => {
         initPlantDevice();

@@ -380,7 +380,7 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
                                             inputType: 'InputNumber',
                                         },
                                         {
-                                            title: `${intl.formatMessage({ id: '功率111' })}(kW)`,
+                                            title: `${intl.formatMessage({ id: '功率' })}(kW)`,
                                             dataIndex: 'pcsPower',
                                             editable: true,
                                             inputType: 'InputNumber',

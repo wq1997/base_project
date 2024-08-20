@@ -37,6 +37,7 @@ const BaseLayout = () => {
     }, [])
 
     const changeLanguage = (locale) => {
+        window.location.reload();
         setLocalStorage('locale', locale)
         dispatch({
             type: 'global/changeLanguage',
@@ -138,20 +139,20 @@ const BaseLayout = () => {
                         >
                             <QuestionCircleOutlined style={{ cursor: 'pointer', fontSize: 35, color: token.color1 }} />
                         </Dropdown>
-                        <Tooltip  title={useLocale('语言切换')} placement="bottom">
-                        <img 
-                            style={{
-                                width: 40,
-                                cursor: 'pointer'
-                            }}
-                            src={
-                                global.theme==='default'?
-                                    (global.locale==="zh-CN"?enDefault:enDark)
-                                    :
-                                    (global.locale==="zh-CN"?cnDark:cnDefault)
-                            }
-                            onClick={() => changeLanguage(global.locale === "zh-CN" ? "zh-EN" : 'zh-CN')}
-                        />
+                        <Tooltip title={useLocale('语言切换')} placement="bottom">
+                            <img
+                                style={{
+                                    width: 40,
+                                    cursor: 'pointer'
+                                }}
+                                src={
+                                    global.theme === 'default' ?
+                                        (global.locale === "zh-CN" ? enDefault : enDark)
+                                        :
+                                        (global.locale === "zh-CN" ? cnDark : cnDefault)
+                                }
+                                onClick={() => changeLanguage(global.locale === "zh-CN" ? "zh-EN" : 'zh-CN')}
+                            />
                         </Tooltip>
                         <Tooltip title={useLocale('主题切换')} placement="bottom">
                             <SkinOutlined

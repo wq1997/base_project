@@ -11,7 +11,7 @@ import { theme as antdTheme } from "antd";
 const ElectricityRanking = ({ currentPlantId }) => {
     const intl = useIntl();
     const { token } = antdTheme.useToken(); 
-    const { theme } = useSelector(state => state.global);
+    const { theme, locale } = useSelector(state => state.global);
     const [options, setOptions] = useState({});
     const getOptions = async() => {
         if(!currentPlantId) return;
@@ -132,7 +132,7 @@ const ElectricityRanking = ({ currentPlantId }) => {
 
     useEffect(() => {
         getOptions();
-    }, [currentPlantId, theme]);
+    }, [currentPlantId, theme, locale]);
 
     return (
         <ReactECharts 

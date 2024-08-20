@@ -68,6 +68,11 @@ const theme = {
             Table: {
                 headerBg: '#0A4A74'
             },
+            Tooltip: {
+                colorBgSpotlight: 'black',
+                colorText: '#FFF',
+                colorTextLightSolid: '#FFF'
+            }
         }
     },
     default: {
@@ -136,6 +141,11 @@ const theme = {
             Table: {
                 headerBg: '#E5F7FF',
             },
+            Tooltip: {
+                colorBgSpotlight: '#FFFFFF',
+                colorText: '#666',
+                colorTextLightSolid: '#666'
+            }
         }
     }
 }
