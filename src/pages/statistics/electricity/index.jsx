@@ -214,7 +214,6 @@ const Electricity = () => {
 
     const getDtusOfPlant = async (plantList, plantId) => {
         form.setFieldsValue({ deviceId: undefined });
-        console.log(plantList,122,plantId);
         const res = await getDtusOfPlantServe({ plantId });
         if (res?.data?.data) {
             let data = res?.data?.data;

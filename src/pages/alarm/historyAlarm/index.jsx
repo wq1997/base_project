@@ -7,11 +7,13 @@ import { Pagination, Select, Cascader, theme, Button, DatePicker } from "antd"
 import { downLoadExcelMode } from "@/utils/utils"
 import {
   getFetchPlantList3 as getFetchPlantListServe,
-  get215HistoryAlarm as get215HistoryAlarmServe,
 } from "@/services";
 import {
   getDtusOfPlant as getDtusOfPlantServe
 } from "@/services/plant";
+import {
+  getHistoryAlarmsByOptionsWithPage 
+} from "@/services/alarm";
 import dayjs from 'dayjs';
 
 const RealtimeAlarm = () => {
@@ -112,7 +114,7 @@ const RealtimeAlarm = () => {
   };
 
   const getTableListData = async (page) => {
-    const { data } = await get215HistoryAlarmServe({
+    const { data } = await getHistoryAlarmsByOptionsWithPage({
       currentPage: page || 1,
       pageSize,
       prior: level,

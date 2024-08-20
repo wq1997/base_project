@@ -6,7 +6,7 @@ import { useSelector, useIntl } from "umi";
 import AddPlantModal, { formList } from './component/AddPlantModal'
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import dayjs from 'dayjs';
-import { timeZoneList } from '@/utils/constants'
+import { timeZoneList, alarmLevel } from '@/utils/constants'
 import { fetchAllUsersList } from '@/services/user'
 
 function Com(props) {
@@ -106,19 +106,19 @@ function Com(props) {
             dataIndex: 'latitude',
             key: 'latitude',
         },
-        // {
-        //     title: t('告警类型'),
-        //     dataIndex: 'alarms',
-        //     key: 'alarms',
-        //     render(value){
-        //         const valueList = value?value?.split(","):[];
-        //         const labelList = valueList?.map((item, index) => {
-        //             const level = alarmLevel?.filter(level => level.value===item);
-        //             return t(level?.[0]?.label?.props?.id)+(index===valueList?.length-1?"":', ');
-        //         })
-        //         return labelList;
-        //     }
-        // },
+        {
+            title: t('告警类型'),
+            dataIndex: 'alarms',
+            key: 'alarms',
+            render(value){
+                const valueList = value?value?.split(","):[];
+                const labelList = valueList?.map((item, index) => {
+                    const level = alarmLevel?.filter(level => level.value===item);
+                    return t(level?.[0]?.label?.props?.id)+(index===valueList?.length-1?"":', ');
+                })
+                return labelList;
+            }
+        },
         {
             title: t('电站位置'),
             dataIndex: 'position',

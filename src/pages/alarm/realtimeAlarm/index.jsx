@@ -11,7 +11,9 @@ import {
 import {
   getDtusOfPlant as getDtusOfPlantServe
 } from "@/services/plant";
-
+import {
+  getNowAlarmsWithPage 
+} from "@/services/alarm"
 const alarmTableColums = [
   {
     title: <FormattedMessage id='Sn' />,
@@ -110,7 +112,7 @@ const RealtimeAlarm = () => {
   }, []);
 
   const getData = async (page) => {
-    const { data } = await get215NowAlarmServe({
+    const { data } = await getNowAlarmsWithPage({
       currentPage: page || 1,
       pageSize: 10,
       prior: level,
