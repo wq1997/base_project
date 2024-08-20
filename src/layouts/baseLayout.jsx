@@ -36,15 +36,15 @@ const BaseLayout = () => {
         dispatch({ type: 'user/getUserInfo' })
     }, [])
 
-    const changeLanguage = (locale) => {
-        window.location.reload();
+    const changeLanguage = async (locale) => {
         setLocalStorage('locale', locale)
-        dispatch({
+        await dispatch({
             type: 'global/changeLanguage',
             payload: {
                 locale
             }
         })
+        window.location.reload();
     }
     const changeTheme = (theme) => {
         setLocalStorage("theme", theme);

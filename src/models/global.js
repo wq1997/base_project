@@ -1,5 +1,7 @@
 import { setLocale } from "umi";
 import { setLocalStorage, getLocalStorage } from "@/utils/utils";
+import { changeBaseLanguage } from "@/services"
+
 export default {
     namespace: 'global',
 
@@ -22,6 +24,7 @@ export default {
         const { locale } = payload;
         setLocale(locale, false);
         setLocalStorage('locale',locale);
+        yield changeBaseLanguage({language: locale==="zh-EN"?3:1});
         yield put({
             type: 'updateState',
             payload:{

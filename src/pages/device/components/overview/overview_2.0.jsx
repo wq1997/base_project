@@ -339,7 +339,7 @@ const OverView = ({ deviceVersion, sn }) => {
                                                         <div className={styles.rightData1}>{item.data}</div>
                                                         <div className={styles.rightData2} style={{ color: token.color25 }}>{intl.formatMessage({ id: item.title })}</div>
                                                     </div>
-                                                    <img src={theme==="dark"?leftTopBgImg:leftTopWhiteBgImg} />
+                                                    {/* <img src={theme==="dark"?leftTopBgImg:leftTopWhiteBgImg} /> */}
                                                 </div>
                                             </div>
                                         )
@@ -351,7 +351,8 @@ const OverView = ({ deviceVersion, sn }) => {
                                     electricityStatisticsDataSourceRight?.map(item => {
                                         return (
                                             <div className={styles.item}>
-                                                <img src={theme==="dark"?leftTopBg2Img: leftTopBg2WhiteImg} className={styles.backgroundImg} />
+                                                {/* <img src={theme==="dark"?leftTopBg2Img: leftTopBg2WhiteImg} className={styles.backgroundImg} /> */}
+                                                <img src={theme==="dark"?leftBottomBg1Img: leftBottomWhiteBg1Img} className={styles.backgroundImg} />
                                                 <div className={styles.data}>
                                                     <div className={styles.data1} style={{ color: item.color }}>{item.data}%</div>
                                                     <div className={styles.data2} style={{ color: token.color25 }}>{intl.formatMessage({ id: item.title })}</div>
@@ -391,7 +392,7 @@ const OverView = ({ deviceVersion, sn }) => {
                                                                 <div className={styles.rightData1}>{item.data}</div>
                                                                 <div className={styles.rightData2} style={{ color: token.color25 }}>{intl.formatMessage({ id: item.title })}</div>
                                                             </div>
-                                                            <img src={theme==="dark"?leftTopBgImg:leftTopWhiteBgImg} />
+                                                            {/* <img src={theme==="dark"?leftTopBgImg:leftTopWhiteBgImg} /> */}
                                                         </div>
                                                     </>
                                             }
@@ -460,7 +461,7 @@ const OverView = ({ deviceVersion, sn }) => {
                                                     })
                                                 }
                                             </div>
-                                            <img src={theme==="dark"?bottomLeftBgImg:bottomLeft1WhiteImg} className={styles.subAreaBg} />
+                                            {/* <img src={theme==="dark"?bottomLeftBgImg:bottomLeft1WhiteImg} className={styles.subAreaBg} /> */}
                                         </div>
                                     </div>
                                 )

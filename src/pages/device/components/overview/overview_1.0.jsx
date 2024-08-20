@@ -330,7 +330,7 @@ const OverView = ({ deviceVersion, sn }) => {
                                                     <div className={styles.rightData1}>{item.data}</div>
                                                     <div className={styles.rightData2} style={{ color: token.color25 }}>{intl.formatMessage({ id: item.title })}</div>
                                                 </div>
-                                                <img src={theme === "dark" ? leftTopBgImg : leftTopWhiteBgImg} />
+                                                {/* <img src={theme === "dark" ? leftTopBgImg : leftTopWhiteBgImg} /> */}
                                             </div>
                                         </div>
                                     )
@@ -427,7 +427,7 @@ const OverView = ({ deviceVersion, sn }) => {
                                                     })
                                                 }
                                             </div>
-                                            <img src={theme === "dark" ? bottomLeftBgImg : bottomLeft1WhiteImg} className={styles.subAreaBg} />
+                                            {/* <img src={theme === "dark" ? bottomLeftBgImg : bottomLeft1WhiteImg} className={styles.subAreaBg} /> */}
                                         </div>
                                     </div>
                                 )
