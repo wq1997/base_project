@@ -36,6 +36,7 @@ const Login = () => {
     ), 0);
   }
   const onFinish = async (values) => {
+    getPublicKey();
     const res = await loginSever({
       ...values,
       password: getEncrypt(publicKey, values.password),

@@ -55,12 +55,14 @@ const getTreeData = (data, treeData) => {
                     key: `0-${index}-${i}`,
                     type: getType(it, item),
                     dtuId:it.dtuId,
+                    gridPointId:it.id
                 })
             })
             oringal[0]?.children.push({
                 title: it.gridPointName,
                 id: it.id,
                 dtuId:it.dtuId,
+                gridPointId:it.id,
                 key: `0-${index}`,
                 type: it.type||it?.deviceType,
                 children: [
@@ -87,13 +89,14 @@ const dataList = [];
 const generateList = (data) => {
     for (let i = 0; i < data.length; i++) {
         const node = data[i];
-        const { key, title, id,dtuId, type } = node;
+        const { key, title, id,dtuId, type,gridPointId } = node;
         dataList?.push({
             key,
             title,
             id,
             type,
-            dtuId
+            dtuId,
+            gridPointId
         });
         if (node.children) {
             generateList(node.children);
@@ -138,10 +141,15 @@ function Com(props) {
       return msg
     }
     const onSelect = (selectedKeys, e) => {
-        let dtuId=dataList.find(it=>it.key===selectedKeys?.[0])?.dtuId
+        
+        let dtuId=dataList.find(it=>it.key===e.node.key)?.dtuId;
+        let gridPointId=dataList.find(it=>it.key==e.node.key)?.gridPointId;
+
+        console.log(selectedKeys,e,gridPointId);
+
         setPageType(e.node.type);
         setPageKey(e.node.key);
-        history.push(`${pathname}?PageKey=${e.node.key}&id=${e.node.id}&dtuId=${dtuId}&PageType=${e.node.type}&title=${e.node.title.props.children[2]}`);
+        history.push(`${pathname}?PageKey=${e.node.key}&id=${e.node.id}&dtuId=${dtuId}&PageType=${e.node.type}&title=${e.node.title.props.children[2]}&gridPointId=${gridPointId}`);
     }
     const onExpand = (newExpandedKeys) => {
         setExpandedKeys(newExpandedKeys);

@@ -177,9 +177,9 @@ function Overview(props) {
         setRunning(data.data);
     }
     const getIncome = async () => {
-        let { data } = pageType === 'ALL' ? await getIncomeByPlantId({ plantId: localStorage.getItem('plantId') }) :
+        let res = pageType === 'ALL' ? await getIncomeByPlantId({ plantId: localStorage.getItem('plantId') }) :
             await getIncomeByDtuId({ dtuId });
-        setIncome(data.data);
+        setIncome(res?.data?.data);
     }
     const getAlarms = async () => {
         let { data } = pageType === 'ALL' ? await getNowAlarmsByEnergy({ plantId: localStorage.getItem('plantId') }) :
@@ -195,11 +195,11 @@ function Overview(props) {
         let arrD = [];
         let arrE = [];
         data?.data?.map(it => {
-            arrA.push(dayjs(it.date).format('MM-DD'));
-            arrB.push(it.dayChargeEnergy);
-            arrC.push(it.dayDischargeEnergy);
-            arrD.push(it.dayEarning);
-            arrE.push(it.efficiency)
+            arrA.push(dayjs(it?.date).format('MM-DD'));
+            arrB.push(it?.dayChargeEnergy);
+            arrC.push(it?.dayDischargeEnergy);
+            arrD.push(it?.dayEarning);
+            arrE.push(it?.efficiency)
         })
         setDataX([...arrA]);
         setDataCharge(
@@ -247,8 +247,8 @@ function Overview(props) {
                                         <Tooltip title={t(it.label)} >
                                             <div className={styles.itemTitle} style={{ color: token.titleColor }}>{t(it.label)}</div>
                                         </Tooltip>
-                                        <Tooltip title={energySummary[it.name] + it.unit} >
-                                            <div className={styles.itemValue} style={{ color: it.color }}>{energySummary[it.name]} <span className={styles.itemUnit} style={{ color: token.titleColor }}>{it.unit}</span></div>
+                                        <Tooltip title={energySummary?.[it?.name] + it.unit} >
+                                            <div className={styles.itemValue} style={{ color: it.color }}>{energySummary?.[it.name]} <span className={styles.itemUnit} style={{ color: token.titleColor }}>{it.unit}</span></div>
                                         </Tooltip>
 
                                     </div>)
@@ -303,7 +303,7 @@ function Overview(props) {
 
 
                                                 <div className={styles.valueProfit} style={{ color: it.color }}>
-                                                    {income[it.name]} <span style={{ color: token.titleColor }}>{it.unit}</span>
+                                                    {income?.[it.name]||'--'} <span style={{ color: token.titleColor }}>{it.unit}</span>
                                                 </div>
                                             </div>
                                         </>
