@@ -74,14 +74,10 @@ const Index = ({ plants, showInfo, panTo }) => {
         const _map = new AMap.Map("map", {
             zoom: defaultZoom,
             center: panTo,
-            lang: locale==="zh-CN"?"zh_cn":"en"
+            lang: locale==="zh-CN"?"zh_cn":"en",
+            mapStyle: theme === "default"?"amap://styles/normal":"amap://styles/blue"
         })
         _map.on("complete", async () => {
-            if (theme === "default") {
-                _map.setMapStyle("amap://styles/white");
-            } else {
-                _map.setMapStyle("amap://styles/blue");
-            }
             addMarkers(_map, plants);
             // setMap(_map);
         });

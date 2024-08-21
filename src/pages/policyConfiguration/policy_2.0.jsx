@@ -21,6 +21,7 @@ import {
     sendStrategySetting as sendStrategySettingServe,
     isLive as isLiveServe
 } from "@/services";
+import { useSelector } from "umi";
 
 const PolicyConfiguration = ({ deviceVersion }) => {
     const intl = useIntl();
@@ -39,6 +40,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
     const [checkModalType, setCheckModalType] = useState('');
     const [durationList, setDurationList] = useState([]);
     const [isLive, setIsLive] = useState(false);
+    const { locale } = useSelector(state => state.global);
     const canIssue = mode === 0;
 
     const strategyList = [
@@ -165,7 +167,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
 
     useEffect(() => {
         getInitData();
-    }, [tabValue])
+    }, [tabValue, locale])
 
     useEffect(() => {
         getAliveStatus();

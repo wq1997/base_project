@@ -44,7 +44,6 @@ const BaseLayout = () => {
                 locale
             }
         })
-        window.location.reload();
     }
     const changeTheme = (theme) => {
         setLocalStorage("theme", theme);

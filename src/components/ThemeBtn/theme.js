@@ -57,6 +57,8 @@ const theme = {
         color28: 'white',
         color29: 'linear-gradient(135deg, rgb(0, 57, 90) 0%, rgb(15, 47, 86) 100%)',
         color30: 'linear-gradient(rgba(21, 171, 219, 0.4) 0%, rgba(9, 114, 180, 0) 100%)',
+        color31: '#0A436B',
+        color32: 'white',
         components: {
             Modal: {
                 contentBg: '#0D4D77',
@@ -130,6 +132,8 @@ const theme = {
         color28: 'rgba(0, 0, 0, 0.6)',
         color29: 'white',
         color30: 'linear-gradient(#59d7ff66 0%, #e3f4fd00 100%)',
+        color31: '#D8D8D8',
+        color32: 'black',
         components: {
             Modal: {
                 contentBg: '#FFFFFF',

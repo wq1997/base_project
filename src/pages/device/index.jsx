@@ -27,6 +27,7 @@ import bottomLeft3 from "../../../public/images/bottomLeft3.svg";
 import Map from './components/map';
 import BatchPolicyConfiguration from "../policyConfiguration/batch_index";
 import dayjs from 'dayjs';
+import { useEmotionCss } from '@ant-design/use-emotion-css';
 const { Option } = Select;
 
 const RealtimeAlarm = () => {
@@ -57,6 +58,7 @@ const RealtimeAlarm = () => {
     const { user } = useSelector(function (state) {
         return state.user
     });
+    const { locale } = useSelector(state => state.global);
 
     const eleData = [
         {
@@ -99,7 +101,7 @@ const RealtimeAlarm = () => {
 
     useEffect(() => {
         getAllPlant();
-    }, [])
+    }, [locale])
 
     const changeIsOpenDel = (record) => {
         setIsOpenDel(!isOpenDel)
@@ -272,9 +274,17 @@ const RealtimeAlarm = () => {
         }
     }, [currentPlantId]);
 
+    const contentStyle = useEmotionCss(()=>{
+        return {
+            '.ant-select-selector': {
+                color: `${locale==="zh-EN"?"black":token.color32} !important`
+            }
+        }
+    })
+
     return (
         <div
-            className={styles.content}
+            className={classNames(styles.content, contentStyle)}
             style={{ background: token.color12 }}
         >
             <div className={styles.left}>

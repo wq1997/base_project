@@ -294,7 +294,7 @@ const OverView = ({ deviceVersion, sn }) => {
 
     useEffect(() => {
         getDataSource();
-    }, [])
+    }, [locale])
 
     const backgroundStyle = useEmotionCss(() => {
         return {

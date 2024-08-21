@@ -21,6 +21,7 @@ import {
 } from "@/services";
 import { getQueryString, translateNmberToTime } from "@/utils/utils";
 import { FORM_REQUIRED_RULE } from "@/utils/constants";
+import { useSelector } from "umi";
 
 const PolicyConfiguration = ({ deviceVersion }) => {
     const id = getQueryString("id");
@@ -39,6 +40,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
     const [checkModalType, setCheckModalType] = useState('');
     const [durationList, setDurationList] = useState([]);
     const [isLive, setIsLive] = useState(false);
+    const { locale } = useSelector(state => state.global);
     const canIssue = mode === 1;
 
     const strategyList = [
@@ -162,7 +164,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
 
     useEffect(() => {
         getInitData();
-    }, [tabValue])
+    }, [tabValue, locale])
 
     useEffect(() => {
         getAliveStatus();

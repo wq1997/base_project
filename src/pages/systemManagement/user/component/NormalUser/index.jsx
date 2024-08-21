@@ -3,18 +3,21 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { useSelector, useIntl, history } from "umi";
 import { Button, Modal, Form, Space, Table, theme, message } from 'antd';
 import { CardModel } from "@/components";
-import { getAllUserByAdmin, changePassword,oc372ChangePassword} from '@/services/user'
+import { getAllUserByAdmin, changePassword, oc372ChangePassword } from '@/services/user'
 import { removeLocalStorage } from "@/utils/utils";
 import { userTable } from "@/utils/constants";
 import ChangPw from '../ChangePassWorld'
+
 function Com(props) {
     const { user } = useSelector(function (state) {
         return state.user
     });
+    const { locale } = useSelector(state => state.global);
+
     const intl = useIntl();
     const [isOpen, setIsOpen] = useState(false);
     const [formData, setFormData] = useState();
-    const [dataAll,setDataAll]=useState([]);
+    const [dataAll, setDataAll] = useState([]);
     const t = (id) => {
         const msg = intl.formatMessage(
             {
@@ -25,25 +28,25 @@ function Com(props) {
     }
     const { token } = theme.useToken();
     const [form1] = Form.useForm();
-    useEffect(()=>{
+    useEffect(() => {
         getData();
-    },[])
-    const getData =async()=>{
-        let {data}=await getAllUserByAdmin();
+    }, [locale])
+    const getData = async () => {
+        let { data } = await getAllUserByAdmin();
         setDataAll(data?.data);
     }
-    userTable[7]={
-            title: t("操作"),
-            key: 'option',
-            render: function (record) {
-                return (
-                    <Space>
-                        <Button type="link" style={{ color: token.colorPrimary }} onClick={() => { setIsOpen(!isOpen); setFormData(record)}}>{t('修改密码')}</Button>
-                    </Space>
-                )
-            }
-        };
-    
+    userTable[7] = {
+        title: t("操作"),
+        key: 'option',
+        render: function (record) {
+            return (
+                <Space>
+                    <Button type="link" style={{ color: token.colorPrimary }} onClick={() => { setIsOpen(!isOpen); setFormData(record) }}>{t('修改密码')}</Button>
+                </Space>
+            )
+        }
+    };
+
 
     const cancle = () => {
         setIsOpen(!isOpen);
@@ -124,9 +127,9 @@ function Com(props) {
     const delUserData = async (value) => {
         try {
             const { data } = await oc372ChangePassword(value);
-            if (data?.data=='1') {
+            if (data?.data == '1') {
                 message.success({ content: t('密码修改成功'), duration: 2 });
-            }else{
+            } else {
                 message.error({ content: data?.msg, duration: 2 });
             }
         } catch (errorInfo) {
@@ -141,9 +144,9 @@ function Com(props) {
 
         return formData
     }
-  
+
     return (
-        <div className='content' style={{height: "100%" }}>
+        <div className='content' style={{ height: "100%" }}>
             <CardModel
                 title={
                     t("个人信息")
@@ -156,7 +159,7 @@ function Com(props) {
                     />
                 }
             />
-            {user?.roleId==2&& <CardModel
+            {user?.roleId == 2 && <CardModel
                 title={
                     t("下属用户")
                 }
@@ -164,7 +167,7 @@ function Com(props) {
                     <Table
                         columns={userTable}
                         dataSource={
-                           dataAll?.underling
+                            dataAll?.underling
                         }
                     />
                 } />}

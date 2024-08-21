@@ -28,6 +28,7 @@ const RealtimeAlarm = () => {
   const [deviceList, setDeviceList] = useState([]);
   const [plantId, setPlantId] = useState(null);
   const [deviceId, setDeviceId] = useState(null);
+  const { locale } = useSelector(state => state.global);
 
   const intl = useIntl();
   const t = (id) => {
@@ -91,7 +92,7 @@ const RealtimeAlarm = () => {
 
   useEffect(() => {
     getTableListData(current);
-  }, [current, type, time, pageSize]);
+  }, [current, type, time, pageSize, locale]);
 
   useEffect(() => {
     initPlantDevice()

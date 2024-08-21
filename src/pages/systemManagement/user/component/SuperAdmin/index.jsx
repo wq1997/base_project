@@ -18,7 +18,7 @@ const RealtimeAlarm = () => {
   const [formData, setFormData] = useState();
   const [delId, setDelId] = useState();
   const [userUp, setUserUp] = useState([]);
-  const [rootUp, setRootUp] = useState([]);
+  const { locale } = useSelector(state => state.global);
 
   const intl = useIntl();
   const t = (id) => {
@@ -85,10 +85,10 @@ const RealtimeAlarm = () => {
   ];
   useEffect(() => {
     searchData();
-  }, [level, textLike, formData, delId]);
+  }, [level, textLike, formData, delId, locale]);
   useEffect(() => {
     getInitData();
-  }, [])
+  }, [locale])
   const getInitData = async () => {
     let { data } = await getBurUserWithRole2();
     let arr = [];
@@ -139,7 +139,6 @@ const RealtimeAlarm = () => {
 
   const roleIdSearch = (value) => {
     setLevel(value);
-
   };
   const edit = (record) => {
     setFormData(record);

@@ -29,6 +29,9 @@ const GlobalWrapperCss = (props) => {
                 transition: 'background-color 50000s ease-in-out 0s !important',
                 'background-color': 'transparent !important',
                 'background-image': 'none !important'
+            },
+            ".ant-table": {
+                scrollbarColor: `${token.color31} rgba(253, 253, 253, 0.19)`
             }
         }
     })

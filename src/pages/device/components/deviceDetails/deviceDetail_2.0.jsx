@@ -8,10 +8,12 @@ import {
     getDtuDetailInfo as getDtuDetailInfoServe,
 } from "@/services";
 import DetalisCard from "../DetailsCard";
+import { useSelector } from "umi";
 
 function Com({deviceVersion}) {
     const { token } = theme.useToken();
     const id = getQueryString("id");
+    const { locale } = useSelector(state => state.global);
 
     const [pcsData, setPcsData] = useState({
         title: "PCS信息",
@@ -224,7 +226,7 @@ function Com({deviceVersion}) {
 
     useEffect(()=>{
         getDtuDetailInfo();
-    }, [])
+    }, [locale])
     
     return (
         <div 
