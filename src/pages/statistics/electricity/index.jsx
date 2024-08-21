@@ -79,6 +79,7 @@ const Electricity = () => {
         const rInterval = rMax / 5;
 
         const option = {
+            color: ['#00FF05'],
             tooltip: {
                 trigger: 'axis',
                 axisPointer: {
