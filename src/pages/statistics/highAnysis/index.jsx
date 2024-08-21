@@ -26,7 +26,7 @@ const HighAnysis = () => {
     const [plantDeviceList, setPlantDeviceList] = useState([]);
     const [packCellList, setPackCellList] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [title, setTitle] = useState(`${intl.formatMessage({ id: '高级分析' })}`);
+    const [title, setTitle] = useState(`${intl.formatMessage({ id: '电芯详情' })}`);
     const global = useSelector(state => state.global);
     const { theme, locale } = global;
 
