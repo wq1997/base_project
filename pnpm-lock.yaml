@@ -44,6 +44,9 @@ dependencies:
   jsencrypt:
     specifier: ^3.3.2
     version: registry.npmjs.org/jsencrypt@3.3.2
+  lodash:
+    specifier: ^4.17.21
+    version: registry.npmjs.org/lodash@4.17.21
   moment:
     specifier: ^2.29.4
     version: registry.npmjs.org/moment@2.29.4

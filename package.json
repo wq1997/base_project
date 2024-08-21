@@ -24,6 +24,7 @@
     "echarts-gl": "^2.0.9",
     "highcharts": "^11.4.3",
     "jsencrypt": "^3.3.2",
+    "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "umi": "^4.0.72"
   },
