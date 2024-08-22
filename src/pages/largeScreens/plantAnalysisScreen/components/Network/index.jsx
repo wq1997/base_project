@@ -11,11 +11,17 @@ import WorkOrder from "@/pages/largeScreens/alarmScreen/WorkOrder";
 import Card from "@/pages/largeScreens/components/Card";
 import PlantOverview from "../../../components/PlantOverview";
 
+const zoomCenter = {
+    Domestic: {
+        zoom: 5,
+        center: [89.110251, 30.85187],
+    },
+};
+
 const Network = ({ onChangedType }) => {
     const [initData, setInitData] = useState();
     const [plants, setPlants] = useState();
     const [mapPlants, setMapPlants] = useState();
-    const [mapZoom, setMapZoom] = useState(18);
     const [mapPanTo, setPanTo] = useState();
     const [type, setType] = useState();
     const [name, setName] = useState();
@@ -32,7 +38,6 @@ const Network = ({ onChangedType }) => {
             }
             return true;
         });
-
         setMapPlants(filterPlants);
     };
 
@@ -66,7 +71,7 @@ const Network = ({ onChangedType }) => {
 
     return (
         <div className={styles.network}>
-            <Map plants={mapPlants} panTo={mapPanTo} center={[89.110251, 30.85187]} zoom={5} />
+            <Map plants={mapPlants} panTo={mapPanTo} zoomCenter={zoomCenter["Domestic"]} />
             {/* 左边 */}
             <div className={styles.left}>
                 <PlantOverview

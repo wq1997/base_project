@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import * as echarts from "echarts";
 import { MyTab, MyButtonGroup } from "@/components";
 
-const ElectricityRanking = ({ value }) => {
+const ElectricityRanking = ({ target, value }) => {
     const {
         dischargeCapacityTop5,
         dischargeCapacityBottom5,
@@ -13,7 +13,7 @@ const ElectricityRanking = ({ value }) => {
     const ref = useRef();
     const [options, setOptions] = useState({});
     const [currentOrder, setCurrentOrder] = useState("1");
-    const [currentType, setCurrentType] = useState("1");
+    const [currentType, setCurrentType] = useState(target[0]);
 
     const getOptions = (currentOrder, currentType) => {
         const typeData = {
@@ -96,72 +96,72 @@ const ElectricityRanking = ({ value }) => {
             series:
                 currentType == "1"
                     ? [
-                        {
-                            name: "充电量",
-                            type: "bar",
-                            barWidth: "30%",
-                            itemStyle: {
-                                normal: {
-                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                                        {
-                                            offset: 0,
-                                            color: "#23eefb",
-                                        },
-                                        {
-                                            offset: 1,
-                                            color: "#00fff1",
-                                        },
-                                    ]),
-                                    barBorderRadius: 6,
-                                },
-                            },
-                            data: data?.map(item => parseFloat(item._2 / 1000000).toFixed(3)),
-                        },
-                        {
-                            name: "放电量",
-                            type: "bar",
-                            barWidth: "30%",
-                            itemStyle: {
-                                normal: {
-                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                                        {
-                                            offset: 0,
-                                            color: "#00e0ff",
-                                        },
-                                        {
-                                            offset: 1,
-                                            color: "#007ac6",
-                                        },
-                                    ]),
-                                    barBorderRadius: 6,
-                                },
-                            },
-                            data: data?.map(item => parseFloat(item._3 / 1000000).toFixed(3)),
-                        },
-                    ]
+                          {
+                              name: "充电量",
+                              type: "bar",
+                              barWidth: "30%",
+                              itemStyle: {
+                                  normal: {
+                                      color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                          {
+                                              offset: 0,
+                                              color: "#23eefb",
+                                          },
+                                          {
+                                              offset: 1,
+                                              color: "#00fff1",
+                                          },
+                                      ]),
+                                      barBorderRadius: 6,
+                                  },
+                              },
+                              data: data?.map(item => parseFloat(item._2 / 1000000).toFixed(3)),
+                          },
+                          {
+                              name: "放电量",
+                              type: "bar",
+                              barWidth: "30%",
+                              itemStyle: {
+                                  normal: {
+                                      color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                          {
+                                              offset: 0,
+                                              color: "#00e0ff",
+                                          },
+                                          {
+                                              offset: 1,
+                                              color: "#007ac6",
+                                          },
+                                      ]),
+                                      barBorderRadius: 6,
+                                  },
+                              },
+                              data: data?.map(item => parseFloat(item._3 / 1000000).toFixed(3)),
+                          },
+                      ]
                     : [
-                        {
-                            name: "效率",
-                            type: "bar",
-                            barWidth: "30%",
-                            itemStyle: {
-                                normal: {
-                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                                        {
-                                            offset: 0,
-                                            color: "#00e0ff",
-                                        },
-                                        {
-                                            offset: 1,
-                                            color: "#007ac6",
-                                        },
-                                    ]),
-                                    barBorderRadius: 6,
-                                },
-                            },
-                            data: data?.map(item => item._2 * 100),
-                        },
-                    ],
+                          {
+                              name: "效率",
+                              type: "bar",
+                              barWidth: "30%",
+                              itemStyle: {
+                                  normal: {
+                                      color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                          {
+                                              offset: 0,
+                                              color: "#00e0ff",
+                                          },
+                                          {
+                                              offset: 1,
+                                              color: "#007ac6",
+                                          },
+                                      ]),
+                                      barBorderRadius: 6,
+                                  },
+                              },
+                              data: data?.map(item => item._2 * 100),
+                          },
+                      ],
         });
     };
 
@@ -222,7 +222,7 @@ const ElectricityRanking = ({ value }) => {
                     options={[
                         { value: "1", label: "电量" },
                         { value: "2", label: "效率" },
-                    ]}
+                    ]?.filter(item => target.includes(item.value))}
                     onChange={value => setCurrentType(value)}
                 />
             </div>

@@ -12,13 +12,11 @@ import positionPic2 from "../../../../assets/images/定位2.png";
 
 const baseUrl = process.env.API_URL_1;
 
-const Index = ({ center, zoom, plants, panTo }) => {
+const Index = ({ zoomCenter, plants, panTo }) => {
     const markers = [];
     const [map, setMap] = useState();
     const [cluster, setCluster] = useState();
     const [infoWindow, setInfoWindow] = useState();
-    const [defaultZoom, setDefaultZoom] = useState(zoom || 6);
-    const defaultCenter = center || [120.678256, 31.314382];
     window.info = [
         { name: "电池仓数量", key: "batteryNum", value: "" },
         { name: "单台电池仓容量", key: "batteryCapacity", value: "" },
@@ -70,8 +68,8 @@ const Index = ({ center, zoom, plants, panTo }) => {
             map ||
             new AMap.Map("map", {
                 mapStyle: "amap://styles/blue",
-                zoom: defaultZoom,
-                center: defaultCenter,
+                zoom: zoomCenter.zoom,
+                center: zoomCenter.center,
             });
         if (!map) {
             setMap(_map);
@@ -87,11 +85,18 @@ const Index = ({ center, zoom, plants, panTo }) => {
 
     useEffect(() => {
         if (map) {
+            map.setZoom(zoomCenter.zoom);
+            map.setCenter(zoomCenter.center);
+        }
+    }, [zoomCenter]);
+
+    useEffect(() => {
+        if (map) {
             if (panTo) {
-                map.setZoom(18);
+                map.setZoom(12);
                 map.panTo(panTo);
             } else {
-                map.setZoom(5);
+                map.setZoom(zoomCenter.zoom);
             }
         }
     }, [panTo]);
@@ -153,7 +158,7 @@ const Index = ({ center, zoom, plants, panTo }) => {
                     lnglat: [item.longitude, item.latitude],
                 })),
                 {
-                    gridSize: 50, //数据聚合计算时网格的像素大小
+                    gridSize: 60, //数据聚合计算时网格的像素大小
                     renderClusterMarker: context => {
                         // 聚合中点个数
                         var count = plants?.length;

@@ -39,9 +39,50 @@
         right: 10px;
         .search {
             position: absolute;
-          width: 100%;
-            // display: flex;
-             top: -40px;
+            width: 100%;
+            display: flex;
+            top: -40px;
+            z-index: 999;
+            color: #fff;
+            :global {
+                .ant-input-clear-icon,
+                .ant-select-clear,
+                .ant-select-arrow,
+                .ant-btn-icon {
+                    color: #fff;
+                }
+                :where(.css-dev-only-do-not-override-1r287do).ant-select-outlined:not(
+                        .ant-select-disabled
+                    ):not(.ant-select-customize-input):not(.ant-pagination-size-changer):hover
+                    .ant-select-selector {
+                    border-color: #235775;
+                }
+                .ant-input-outlined,
+                .ant-select-selector,
+                .ant-btn-default {
+                    border-color: #235775;
+                }
+                .ant-input,
+                .ant-select {
+                    border: none;
+                    color: #fff;
+
+                    .ant-select-selection-item,
+                    .ant-select-selection-placeholder {
+                        font-size: 12px;
+                        color: #fff;
+                    }
+                    &:focus,
+                    &:hover {
+                        background-color: transparent !important;
+                        border-color: #235775;
+                    }
+                    &::placeholder {
+                        font-size: 12px;
+                        color: #fff;
+                    }
+                }
+            }
         }
         .rightItem {
             width: 100%;

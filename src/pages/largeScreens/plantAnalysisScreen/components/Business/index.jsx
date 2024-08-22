@@ -14,7 +14,7 @@ import center3 from "@/assets/images/center3.svg";
 import center4 from "@/assets/images/center4.svg";
 import CenterMap from "./CenterMap";
 import { getDcDashboardData as getDcDashboardDataServe } from "@/services";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Form, Select, Input, Badge, Space, Search } from "antd";
 import { useRequest } from "ahooks";
 import Card from "../../../components/Card";
@@ -22,15 +22,50 @@ import PlantOverview from "../../../components/PlantOverview";
 import AlarmAnysis from "../../../components/AlarmAnysis";
 import DeviceStatus from "../../../components/DeviceStatus";
 
+const zoomCenter = {
+    Domestic: {
+        zoom: 5,
+        center: [104.083736, 30.653187],
+    },
+    Foreign: {
+        zoom: 3,
+        center: [-27.199145, 14.743877],
+    },
+};
+
 const Business = ({}) => {
+    const areaRef = useRef();
     const [area, setArea] = useState();
+    const plantNameRef = useRef();
     const [plantName, setPlantName] = useState();
     const [dataSource, setDataSource] = useState();
     const [mapPlants, setMapPlants] = useState();
+    const [center, setCenter] = useState();
+    const [zoom, setZoom] = useState(5);
     const [mapPanTo, setPanTo] = useState();
     const { data, run } = useRequest(getDcDashboardDataServe, {
         manual: true,
     });
+
+    const handleSearch = (value, e, source) => {
+        if (!dataSource?.plants) return;
+        const searchParams = {
+            haiWai: areaRef.current == "Foreign",
+            name: source?.source == "clear" ? undefined : plantNameRef.current,
+        };
+        const filterPlants = dataSource?.plants?.filter(plant => {
+            for (let [key, value] of Object.entries(searchParams)) {
+                const plantValue = plant[key]?.toString();
+                if (value != undefined) {
+                    if (!plantValue || !plantValue?.includes(value?.toString())) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        });
+        setMapPlants(filterPlants);
+    };
 
     useEffect(() => {
         if (data?.data?.data) {
@@ -41,28 +76,20 @@ const Business = ({}) => {
     }, [data]);
 
     useEffect(() => {
-        run();
+        run("");
     }, []);
 
     useEffect(() => {
-        console.log("area", area);
-        if (!dataSource?.plants) return;
-        const searchParams = { type, name, address };
-        const filterPlants = dataSource?.plants?.filter(plant => {
-            for (let key in searchParams) {
-                if (searchParams[key] && !plant[key]?.includes(searchParams[key])) {
-                    return false;
-                }
-            }
-            return true;
-        });
-        setMapPlants(filterPlants);
+        run(area ? area == "Foreign" : "");
+        handleSearch();
     }, [area]);
 
     useEffect(() => {
         if (mapPlants?.length) {
             const { longitude, latitude } = mapPlants[0];
             setPanTo(mapPlants?.length == 1 ? [longitude, latitude] : null);
+        } else {
+            setPanTo(null);
         }
     }, [mapPlants]);
 
@@ -70,7 +97,11 @@ const Business = ({}) => {
         <>
             {true && (
                 <div className={styles.business}>
-                    <Map plants={mapPlants} center={[104.083736, 30.653187]} zoom={5} />
+                    <Map
+                        panTo={mapPanTo}
+                        plants={mapPlants}
+                        zoomCenter={zoomCenter[area || "Domestic"]}
+                    />
                     <div className={styles.left}>
                         <div className={styles.leftItem}>
                             <PlantOverview
@@ -94,6 +125,7 @@ const Business = ({}) => {
                                 title="电量排行"
                                 content={
                                     <ElectricityRanking
+                                        target={area == "Foreign" ? ["1"] : ["1", "2"]}
                                         value={{
                                             dischargeCapacityTop5:
                                                 dataSource?.dischargeCapacityTop5,
@@ -143,24 +175,29 @@ const Business = ({}) => {
                     <div className={styles.right}>
                         <div className={styles.search}>
                             <Select
+                                allowClear={true}
                                 style={{ width: 100, marginRight: 10 }}
                                 value={area}
                                 type="select"
                                 options={[
-                                    { label: "国内", value: "国内" },
-                                    { label: "国外", value: "国外" },
+                                    { label: "国内", value: "Domestic" },
+                                    { label: "国外", value: "Foreign" },
                                 ]}
                                 placeholder="区域"
                                 onChange={value => {
+                                    areaRef.current = value;
                                     setArea(value);
                                 }}
                             />
                             <Input.Search
                                 style={{ flex: 1 }}
+                                allowClear={true}
                                 value={plantName}
                                 placeholder="请输入电站名称"
-                                onSearch={() => {}}
+                                onSearch={handleSearch}
                                 onChange={e => {
+                                    const value = e.target.value;
+                                    plantNameRef.current = value;
                                     setPlantName(e.target.value);
                                 }}
                             />
@@ -176,21 +213,42 @@ const Business = ({}) => {
                             />
                         </div>
                         <div className={styles.rightItem}>
-                            <Card
-                                title="收益排行"
-                                content={
-                                    <>
-                                        {dataSource && (
-                                            <IncomeRanking
-                                                data={{
-                                                    profitTop5: dataSource?.profitTop5,
-                                                    profitBottom5: dataSource?.profitBottom5,
-                                                }}
-                                            />
-                                        )}
-                                    </>
-                                }
-                            />
+                            {area == "Foreign" ? (
+                                <Card
+                                    title="效率排行"
+                                    content={
+                                        <ElectricityRanking
+                                            target={["2"]}
+                                            value={{
+                                                dischargeCapacityTop5:
+                                                    dataSource?.dischargeCapacityTop5,
+                                                dischargeCapacityBottom5:
+                                                    dataSource?.dischargeCapacityBottom5,
+                                                dischargeEfficiencyTop5:
+                                                    dataSource?.dischargeEfficiencyTop5,
+                                                dischargeEfficiencyBottom5:
+                                                    dataSource?.dischargeEfficiencyBottom5,
+                                            }}
+                                        />
+                                    }
+                                />
+                            ) : (
+                                <Card
+                                    title="收益排行"
+                                    content={
+                                        <>
+                                            {dataSource && (
+                                                <IncomeRanking
+                                                    data={{
+                                                        profitTop5: dataSource?.profitTop5,
+                                                        profitBottom5: dataSource?.profitBottom5,
+                                                    }}
+                                                />
+                                            )}
+                                        </>
+                                    }
+                                />
+                            )}
                         </div>
                         <div className={styles.rightItem}>
                             <DeviceStatus data={dataSource?.deviceStatusCount} />
