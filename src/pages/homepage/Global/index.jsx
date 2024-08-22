@@ -149,8 +149,9 @@ const Global = () => {
             cloneData.responseIncome.dataSource[2].value =
                 resultData?.inviteTaskProfitSummary?.followingYearProjectedProfit || 0;
 
-            cloneData.responseExecute.dataSource[0].value =
-                resultData?.inviteTaskSummary?.inviteCount || 0;
+            // cloneData.responseExecute.dataSource[0].value =
+            //     resultData?.inviteTaskSummary?.inviteCount || 0;
+            cloneData.responseExecute.dataSource[0].value = 1;
             cloneData.responseExecute.dataSource[1].value =
                 resultData?.inviteTaskSummary?.executeSuccessTaskCount || 0;
             cloneData.responseExecute.dataSource[2].value =
