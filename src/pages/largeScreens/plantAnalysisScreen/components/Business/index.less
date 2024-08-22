@@ -17,13 +17,6 @@
         height: calc(100% - 30px);
     }
 
-    .header {
-        position: absolute;
-        top: 0;
-        width: calc(100% - 20px);
-        height: 70px;
-        z-index: 10;
-    }
     .left,
     .right {
         width: 22%;
@@ -36,7 +29,7 @@
     }
     .left {
         left: 10px;
-        .leftItem{
+        .leftItem {
             width: 100%;
             height: calc(33.3333333% - 8px);
         }
@@ -44,7 +37,13 @@
 
     .right {
         right: 10px;
-        .rightItem{
+        .search {
+            position: absolute;
+          width: 100%;
+            // display: flex;
+             top: -40px;
+        }
+        .rightItem {
             width: 100%;
             height: calc(33.3333333% - 8px);
         }
@@ -93,15 +92,12 @@
 }
 
 @media (min-width: 1800px) {
-    .header {
-        height: 95px !important;
-    }
     .centerTop {
         top: 106px !important;
     }
     .left,
     .right {
         top: 106px !important;
-        height: calc(100% - 116px) !important;
+        height: calc(100% - 106px) !important;
     }
 }

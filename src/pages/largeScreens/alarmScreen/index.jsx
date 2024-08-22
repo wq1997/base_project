@@ -30,8 +30,9 @@ const Index = () => {
                     <div className={styles.alarmWrapper}>
                         <AlarmAnysis
                             data={
-                                initData && Object?.keys(initData?.prior2Count||{})?.map(item => {
-                                    return [item, initData?.prior2Count?.[item||0]]
+                                initData &&
+                                Object?.keys(initData?.prior2Count || {})?.map(item => {
+                                    return [item, initData?.prior2Count?.[item || 0]];
                                 })
                             }
                         />

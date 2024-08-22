@@ -12,6 +12,7 @@ const SearchInput = ({
     mode,
     labelInValue = false,
     allowClear = true,
+    style = {},
     onChange = () => {},
 }) => {
     const { token } = theme.useToken();
@@ -21,7 +22,7 @@ const SearchInput = ({
             {type == "input" && (
                 <Input
                     value={value}
-                    style={{ width: inputWidth }}
+                    style={{ width: inputWidth, ...style }}
                     placeholder={placeholder || `请输入${label}`}
                     onChange={e => onChange(e.target.value)}
                     className={styles.input}
@@ -40,7 +41,7 @@ const SearchInput = ({
                         value: "code",
                     }}
                     allowClear={allowClear}
-                    style={{ width: inputWidth, flex: 1 }}
+                    style={{ width: inputWidth, flex: 1, ...style }}
                     options={options}
                     onChange={value => onChange(value)}
                 />
@@ -49,7 +50,7 @@ const SearchInput = ({
                 <DatePicker
                     className={styles.input}
                     placeholder={placeholder || `请选择${label}`}
-                    style={{ width: inputWidth, flex: 1 }}
+                    style={{ width: inputWidth, flex: 1, ...style }}
                     onChange={(date, dateStr) => {
                         onChange(dateStr);
                     }}
@@ -60,7 +61,7 @@ const SearchInput = ({
                 <DatePicker.RangePicker
                     className={styles.input}
                     placeholder={placeholder}
-                    style={{ width: inputWidth, flex: 1 }}
+                    style={{ width: inputWidth, flex: 1, ...style }}
                     onChange={(date, dateStr) => {
                         onChange(dateStr?.includes("") ? [] : dateStr);
                     }}

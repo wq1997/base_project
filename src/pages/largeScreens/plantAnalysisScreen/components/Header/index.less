@@ -32,10 +32,32 @@
             }
         }
     }
+    .headerRight {
+        position: absolute;
+        box-sizing: border-box;
+        bottom: -10px;
+        right: 0px;
+        width: calc(22% + 4px);
+        height: 32px;
+        display: flex;
+        :global {
+            .ant-input {
+                background: rgba(21, 75, 114, 0.6);
+                border: none;
+                border-radius: 4px;
+                color: white;
+                &::placeholder {
+                    color: #999 !important;
+                }
+            }
+             
+        }
+    }
 }
 
 @media (min-width: 1800px) {
-    .headerLeft {
+    .headerLeft,
+    .headerRight {
         bottom: -2px !important;
     }
 }

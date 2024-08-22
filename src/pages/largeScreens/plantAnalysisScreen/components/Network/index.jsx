@@ -11,7 +11,7 @@ import WorkOrder from "@/pages/largeScreens/alarmScreen/WorkOrder";
 import Card from "@/pages/largeScreens/components/Card";
 import PlantOverview from "../../../components/PlantOverview";
 
-const Network = ({ typeList, currentType, onChangedType }) => {
+const Network = ({ onChangedType }) => {
     const [initData, setInitData] = useState();
     const [plants, setPlants] = useState();
     const [mapPlants, setMapPlants] = useState();
@@ -66,15 +66,7 @@ const Network = ({ typeList, currentType, onChangedType }) => {
 
     return (
         <div className={styles.network}>
-            <Map plants={mapPlants} panTo={mapPanTo} center={[89.110251, 30.851870]} zoom={5} />
-            {/* 头部Header */}
-            <div className={styles.header}>
-                <Header
-                    typeList={typeList}
-                    currentType={currentType}
-                    onChangedType={onChangedType}
-                />
-            </div>
+            <Map plants={mapPlants} panTo={mapPanTo} center={[89.110251, 30.85187]} zoom={5} />
             {/* 左边 */}
             <div className={styles.left}>
                 <PlantOverview

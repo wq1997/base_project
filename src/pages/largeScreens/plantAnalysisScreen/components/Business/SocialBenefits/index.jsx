@@ -56,7 +56,7 @@ const SocialBenefits = ({ data }) => {
                                         marginLeft: 2,
                                         position: "relative",
                                         top: -2,
-                                        whiteSpace: "nowrap", 
+                                        whiteSpace: "nowrap",
                                     }}
                                 >
                                     {item?.unit}
@@ -82,7 +82,7 @@ const SocialBenefits = ({ data }) => {
                         </div>
                         <div
                             className={styles.label}
-                            style={{ display: "flex", justifyContent: "center", color: "#FFFFFF"}}
+                            style={{ display: "flex", justifyContent: "center", color: "#FFFFFF" }}
                         >
                             {item?.label}
                         </div>

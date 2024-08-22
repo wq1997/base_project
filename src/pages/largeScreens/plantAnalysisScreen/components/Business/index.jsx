@@ -15,14 +15,19 @@ import center4 from "@/assets/images/center4.svg";
 import CenterMap from "./CenterMap";
 import { getDcDashboardData as getDcDashboardDataServe } from "@/services";
 import { useState, useEffect } from "react";
+import { Form, Select, Input, Badge, Space, Search } from "antd";
 import { useRequest } from "ahooks";
 import Card from "../../../components/Card";
 import PlantOverview from "../../../components/PlantOverview";
 import AlarmAnysis from "../../../components/AlarmAnysis";
 import DeviceStatus from "../../../components/DeviceStatus";
 
-const Business = ({ typeList, currentType, onChangedType }) => {
+const Business = ({}) => {
+    const [area, setArea] = useState();
+    const [plantName, setPlantName] = useState();
     const [dataSource, setDataSource] = useState();
+    const [mapPlants, setMapPlants] = useState();
+    const [mapPanTo, setPanTo] = useState();
     const { data, run } = useRequest(getDcDashboardDataServe, {
         manual: true,
     });
@@ -31,6 +36,7 @@ const Business = ({ typeList, currentType, onChangedType }) => {
         if (data?.data?.data) {
             const dataSource = data?.data?.data;
             setDataSource(dataSource);
+            setMapPlants(dataSource?.plants);
         }
     }, [data]);
 
@@ -38,19 +44,33 @@ const Business = ({ typeList, currentType, onChangedType }) => {
         run();
     }, []);
 
+    useEffect(() => {
+        console.log("area", area);
+        if (!dataSource?.plants) return;
+        const searchParams = { type, name, address };
+        const filterPlants = dataSource?.plants?.filter(plant => {
+            for (let key in searchParams) {
+                if (searchParams[key] && !plant[key]?.includes(searchParams[key])) {
+                    return false;
+                }
+            }
+            return true;
+        });
+        setMapPlants(filterPlants);
+    }, [area]);
+
+    useEffect(() => {
+        if (mapPlants?.length) {
+            const { longitude, latitude } = mapPlants[0];
+            setPanTo(mapPlants?.length == 1 ? [longitude, latitude] : null);
+        }
+    }, [mapPlants]);
+
     return (
         <>
             {true && (
                 <div className={styles.business}>
-                    <Map plants={dataSource?.plants} center={[104.083736, 30.653187]} zoom={5} />
-                    {/* 头部Header */}
-                    <div className={styles.header}>
-                        <Header
-                            typeList={typeList}
-                            currentType={currentType}
-                            onChangedType={onChangedType}
-                        />
-                    </div>
+                    <Map plants={mapPlants} center={[104.083736, 30.653187]} zoom={5} />
                     <div className={styles.left}>
                         <div className={styles.leftItem}>
                             <PlantOverview
@@ -64,7 +84,6 @@ const Business = ({ typeList, currentType, onChangedType }) => {
                                                 ?.province2PlantCapacity?.[city]?._1,
                                         };
                                     }),
-                                    //  totalCapacity: dataSource?.plantSummery?.totalCapacity,
                                     totalCapacity: dataSource?.plantSummery?.totalCapacity,
                                     totalPlant: dataSource?.plantSummery?.count,
                                 }}
@@ -122,6 +141,30 @@ const Business = ({ typeList, currentType, onChangedType }) => {
                         </div>
                     </div>
                     <div className={styles.right}>
+                        <div className={styles.search}>
+                            <Select
+                                style={{ width: 100, marginRight: 10 }}
+                                value={area}
+                                type="select"
+                                options={[
+                                    { label: "国内", value: "国内" },
+                                    { label: "国外", value: "国外" },
+                                ]}
+                                placeholder="区域"
+                                onChange={value => {
+                                    setArea(value);
+                                }}
+                            />
+                            <Input.Search
+                                style={{ flex: 1 }}
+                                value={plantName}
+                                placeholder="请输入电站名称"
+                                onSearch={() => {}}
+                                onChange={e => {
+                                    setPlantName(e.target.value);
+                                }}
+                            />
+                        </div>
                         <div className={styles.rightItem}>
                             <AlarmAnysis
                                 data={
@@ -153,7 +196,6 @@ const Business = ({ typeList, currentType, onChangedType }) => {
                             <DeviceStatus data={dataSource?.deviceStatusCount} />
                         </div>
                     </div>
-
                     {/* 中间顶部 */}
                     <div className={styles.centerTop}>
                         <CenterMap
