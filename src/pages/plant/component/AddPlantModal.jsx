@@ -140,10 +140,12 @@ const App = (props) => {
             form={form}
             name="wrap"
             ref={formRef}
-            labelCol={{ flex: '130px' }}
             labelAlign="right"
             labelWrap
             colon={false}
+            labelCol={{
+              span: 6
+            }}
           >
             <Row gutter={[20, 0]}>
               {formList.map(it => {
