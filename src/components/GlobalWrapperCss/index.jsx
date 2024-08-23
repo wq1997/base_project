@@ -32,7 +32,10 @@ const GlobalWrapperCss = (props) => {
             },
             ".ant-table": {
                 scrollbarColor: `${token.color31} rgba(253, 253, 253, 0.19)`
-            }
+            },
+            ".ant-radio-wrapper-disabled": {
+                color: `${token.color10} !important`
+              }
         }
     })
     return (

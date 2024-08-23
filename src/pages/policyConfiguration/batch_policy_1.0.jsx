@@ -135,6 +135,7 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
             // mode: data?.mode,
             // enable: data?.enable,
             // cap: data?.cap,
+            // capValue: data?.capValue,
             durationList: durationList || [],
             // pcsPower: data?.power,
             // tempStart: data?.tempStart,
@@ -262,7 +263,7 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
                                             <Row gutter={24}>
                                                 <Col>
                                                     <Form.Item label={`${intl.formatMessage({ id: 'PCS功率' })}(kW)`} name="pcsPower" rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
-                                                        <Input disabled={!canIssue || !isLive} placeholder={intl.formatMessage({ id: '请输入PCS功率' })} style={{ width: 300 }} />
+                                                        <Input disabled={!canIssue || !isLive} placeholder={intl.formatMessage({ id: '请输入PCS功率' })} style={{ width: 200 }} />
                                                     </Form.Item>
                                                 </Col>
                                                 <Col>
@@ -294,7 +295,7 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
                                     className={(canIssue && isLive) ? distributeStyle : disabledDistributeStyle}
                                     onClick={async () => {
                                         if (canIssue && isLive) {
-                                            await form.validateFields(['enable', 'cap']);
+                                            await form.validateFields(['enable', 'cap', 'capValue']);
                                             setCheckModalOpen(true);
                                             setCheckModalType('sendParamSetting');
                                         }
@@ -304,13 +305,22 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
                                 </div>
                             </Row>
                             <Row>
-                                <Col span={5}>
+                                <Col span={3}>
                                     <Form.Item label={intl.formatMessage({ id: '扩容' })} name="enable" valuePropName="checked" style={{ margin: 0 }}>
                                         <Switch disabled={!canIssue || !isLive} defaultValue={false} />
                                     </Form.Item>
                                 </Col>
-                                <Col span={10}>
+                                <Col span={7}>
                                     <Form.Item label={intl.formatMessage({ id: '变压器容量' })} style={{ margin: 0 }}>
+                                        <Space direction="horizontal">
+                                            <Form.Item style={{ margin: 0 }} name="capValue" rules={[{ ...FORM_REQUIRED_RULE }]}>
+                                                <InputNumber disabled={!canIssue || !isLive} style={{ width: 200 }} placeholder="kW" />
+                                            </Form.Item>
+                                        </Space>
+                                    </Form.Item>
+                                </Col>
+                                <Col span={8}>
+                                    <Form.Item label={intl.formatMessage({ id: '变压器容量保护比例' })} style={{ margin: 0 }}>
                                         <Space direction="horizontal">
                                             <Form.Item style={{ margin: 0 }} name="cap" rules={[{ ...FORM_REQUIRED_RULE }]}>
                                                 <InputNumber disabled={!canIssue || !isLive} style={{ width: 200 }} placeholder="%" />
@@ -579,7 +589,7 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
                         }
                         // 参数设置
                         if (checkModalType === "sendParamSetting") {
-                            values = await form.validateFields(['enable', 'cap']);
+                            values = await form.validateFields(['enable', 'cap', 'capValue']);
                             res = await sendParamSettingServe({ ...values, enable: values?.enable ? 1 : 0, dtuIds: deviceList, type: deviceVersion });
                         }
                         // 策略配置

@@ -122,7 +122,7 @@ const RealtimeAlarm = () => {
       plantId,
       dtuId: deviceId,
     }) || {};
-    setData(data.data);
+    setData(data?.data);
   }
   const changPage = (page, pageSize) => {
     setCurrent(page);

@@ -138,6 +138,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                 mode: data?.mode,
                 enable: data?.enable,
                 cap: data?.cap,
+                capValue: data?.capValue,
                 durationList,
                 pcsPower: data?.power,
                 tempStart: data?.tempStart,
@@ -302,7 +303,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                     className={(canIssue && isLive) ? distributeStyle : disabledDistributeStyle}
                                     onClick={async () => {
                                         if (canIssue && isLive) {
-                                            await form.validateFields(['enable', 'cap']);
+                                            await form.validateFields(['enable', 'cap', 'capValue']);
                                             setCheckModalOpen(true);
                                             setCheckModalType('sendParamSetting');
                                         }
@@ -312,16 +313,25 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                 </div>
                             </Row>
                             <Row>
-                                <Col span={2}>
+                                <Col span={3}>
                                     <Form.Item label={intl.formatMessage({ id: '扩容' })} name="enable" valuePropName="checked" style={{ margin: 0 }}>
                                         <Switch disabled={!canIssue || !isLive} defaultValue={false} />
                                     </Form.Item>
                                 </Col>
-                                <Col span={10}>
+                                <Col span={6}>
                                     <Form.Item label={intl.formatMessage({ id: '变压器容量' })} style={{ margin: 0 }}>
                                         <Space direction="horizontal">
+                                            <Form.Item style={{ margin: 0 }} name="capValue" rules={[{ ...FORM_REQUIRED_RULE }]}>
+                                                <InputNumber disabled={!canIssue || !isLive} style={{ width: 300 }} placeholder="kW" />
+                                            </Form.Item>
+                                        </Space>
+                                    </Form.Item>
+                                </Col>
+                                <Col span={8}>
+                                    <Form.Item label={intl.formatMessage({ id: '变压器容量保护比例' })} style={{ margin: 0 }}>
+                                        <Space direction="horizontal">
                                             <Form.Item style={{ margin: 0 }} name="cap" rules={[{ ...FORM_REQUIRED_RULE }]}>
-                                                <InputNumber disabled={!canIssue || !isLive} style={{ width: 200 }} placeholder="%" />
+                                                <InputNumber disabled={!canIssue || !isLive} style={{ width: 300 }} placeholder="%" />
                                             </Form.Item>
                                         </Space>
                                     </Form.Item>
@@ -577,7 +587,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                         }
                         // 参数设置
                         if (checkModalType === "sendParamSetting") {
-                            values = await form.validateFields(['enable', 'cap']);
+                            values = await form.validateFields(['enable', 'cap', 'capValue']);
                             res = await sendParamSettingServe({ ...values, enable: values?.enable ? 1 : 0, dtuId: id, type: deviceVersion });
                         }
                         // 策略配置

@@ -8,7 +8,7 @@ const CompressionWebpackPlugin = require('compression-webpack-plugin');
 const { UMI_ENV = '', LOCATION = "" } = process.env;
 
 function OutputPathName() {
-  if (UMI_ENV&&LOCATION) {
+  if (UMI_ENV && LOCATION) {
     return `${UMI_ENV}-${LOCATION}-dist`
   }
   if (UMI_ENV) {
@@ -21,21 +21,31 @@ export default defineConfig({
   routes,
   npmClient: 'pnpm',
   plugins: ['@umijs/plugins/dist/dva', '@umijs/plugins/dist/locale'],
-  dva:{},
+  dva: {},
   locale: {
     default: "en-US"
   },
   outputPath: OutputPathName(),
   define: {
-    "process.env.API_URL": apiUrl[`${UMI_ENV}-${LOCATION}`]||apiUrl[`${UMI_ENV}`]||apiUrl['test'],
+    "process.env.API_URL": apiUrl[`${UMI_ENV}-${LOCATION}`] || apiUrl[`${UMI_ENV}`] || apiUrl['test'],
   },
   devtool: 'source-map',
   alias: {
-    '@/permissions': path.resolve(__dirname,'src/permissions'),
-    '@/hooks': path.resolve(__dirname,'src/hooks'),
-    '@/utils': path.resolve(__dirname,'src/utils'),
+    '@/permissions': path.resolve(__dirname, 'src/permissions'),
+    '@/hooks': path.resolve(__dirname, 'src/hooks'),
+    '@/utils': path.resolve(__dirname, 'src/utils'),
   },
-  headScripts: ["https://webapi.amap.com/maps?v=1.4.15&key=2dca0cb2ced6ced6030c26376186faee"],
+  headScripts: [
+    "https://webapi.amap.com/loader.js",
+    "https://webapi.amap.com/maps?v=1.4.15&key=2dca0cb2ced6ced6030c26376186faee",
+  ],
+  proxy: {
+    "/map1": {
+      target: 'https://restapi.amap.com',
+      changeOrigin: true,
+      pathRewrite: { '^/map1': '' },
+    }
+  },
   chainWebpack: (config) => {
     config
       .plugin('replace')
@@ -103,12 +113,12 @@ export default defineConfig({
         },
       },
     });
-    if (process.env.NODE_ENV === 'production') { 
+    if (process.env.NODE_ENV === 'production') {
       config.plugin('compression-webpack-plugin').use(
         new CompressionWebpackPlugin({
-          algorithm: 'gzip', 
+          algorithm: 'gzip',
           test: new RegExp('\\.(' + prodGzipList.join('|') + ')$'),
-          threshold: 10240, 
+          threshold: 10240,
           minRatio: 0.6,
           deleteOriginalAssets: false
         })

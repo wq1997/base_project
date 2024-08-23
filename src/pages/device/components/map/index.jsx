@@ -72,6 +72,7 @@ const Index = ({ plants, showInfo, panTo }) => {
 
     useEffect(() => {
         const _map = new AMap.Map("map", {
+            viewMode: '2D',
             zoom: defaultZoom,
             center: panTo,
             lang: locale==="zh-CN"?"zh_cn":"en",

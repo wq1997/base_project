@@ -219,7 +219,7 @@ const MonitoringCurves = () => {
                 axisLabel: {
                     formatter: '{value}',
                     color: '#e2e9ff',
-                    fontSize: 14
+                    fontSize: 12
                 },
                 axisLine: {
                     show: false
@@ -270,7 +270,7 @@ const MonitoringCurves = () => {
                 axisLabel: {
                     formatter: '{value}',
                     color: '#e2e9ff',
-                    fontSize: 14
+                    fontSize: 12
                 },
                 axisLine: {
                     show: false

@@ -8,6 +8,7 @@ export default Routes = [
      component: App,
      routes: [
       { path: "/login", component: Login },
+      { path: "/map", component: "@/pages/map" },
       {
         path: '/index',
         component: Layout,

@@ -48,7 +48,7 @@ function Com({ data, table }) {
                 {data.data.map(it => {
                     return (
                         <>
-                            <div style={{ marginBottom: '16px', marginTop: '16px', marginLeft: '60px', color: token.color28 }}>
+                            <div style={{ marginBottom: '16px', marginTop: '16px', marginLeft: '60px', color: token.color28, fontSize: 17 }}>
                                 {t(it.name)}{" "}: {" "}{t(it.value)}
                             </div>
                         </>

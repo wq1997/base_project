@@ -271,7 +271,7 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
                                             <Row gutter={24}>
                                                 <Col>
                                                     <Form.Item label={`${intl.formatMessage({ id: 'PCS功率' })}(kW)`} name="pcsPower" rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
-                                                        <Input disabled={!canIssue || !isLive} placeholder={intl.formatMessage({ id: '请输入PCS功率' })} style={{ width: 300 }} />
+                                                        <Input disabled={!canIssue || !isLive} placeholder={intl.formatMessage({ id: '请输入PCS功率' })} style={{ width: 200 }} />
                                                     </Form.Item>
                                                 </Col>
                                                 <Col>
@@ -377,9 +377,9 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
                                                 disabled = true;
                                             }
                                             return (
-                                                <Col span={12}>
+                                                <Col span={8}>
                                                     <Form.Item label={`${intl.formatMessage({ id: '防逆流触发值' })}(kW)`} name="antiRefluxTriggerValue" style={{ margin: 0 }}>
-                                                        <InputNumber disabled={!disabled || !isLive} placeholder={intl.formatMessage({ id: '请输入防逆流触发值' })} style={{ width: 300 }} />
+                                                        <InputNumber disabled={!disabled || !isLive} placeholder={intl.formatMessage({ id: '请输入防逆流触发值' })} style={{ width: 200 }} />
                                                     </Form.Item>
                                                 </Col>
                                             )
@@ -396,12 +396,32 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
                                                 disabled = true;
                                             }
                                             return (
-                                                <Col span={12}>
+                                                <Col span={8}>
                                                     <Form.Item label={intl.formatMessage({ id: '变压器容量' })} style={{ margin: 0 }}>
                                                         <Space direction="horizontal">
                                                             <Form.Item style={{ margin: 0 }} name="tranCap">
                                                                 <InputNumber disabled={disabled || !isLive} style={{ width: 200 }} placeholder="kW" />
                                                             </Form.Item>
+                                                        </Space>
+                                                    </Form.Item>
+                                                </Col>
+                                            )
+                                        }}
+                                    </Form.Item>
+                                    <Form.Item
+                                        noStyle
+                                        dependencies={['expansion']}
+                                    >
+                                        {({ getFieldsValue }) => {
+                                            let disabled = false
+                                            const { expansion } = getFieldsValue('expansion');
+                                            if (mode === 1 && !expansion) {
+                                                disabled = true;
+                                            }
+                                            return (
+                                                <Col span={8}>
+                                                    <Form.Item label={intl.formatMessage({ id: '变压器容量保护比例' })} style={{ margin: 0 }}>
+                                                        <Space direction="horizontal">
                                                             <Form.Item style={{ margin: 0 }} name="tranCapPercent">
                                                                 <InputNumber disabled={disabled || !isLive} style={{ width: 200 }} placeholder="%" min={0} max={100} />
                                                             </Form.Item>
@@ -413,7 +433,7 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
                                     </Form.Item>
                                     <Col span={12}>
                                         <Form.Item label={`${intl.formatMessage({ id: '功率波动范围' })}(kW)`} name="pcsPowerWaveRange" style={{ margin: 0 }}>
-                                            <InputNumber disabled={!canIssue || !isLive} placeholder={intl.formatMessage({ id: '请输入功率波动范围' })} style={{ width: 300 }} />
+                                            <InputNumber disabled={!canIssue || !isLive} placeholder={intl.formatMessage({ id: '请输入功率波动范围' })} style={{ width: 200 }} />
                                         </Form.Item>
                                     </Col>
                                 </Row>

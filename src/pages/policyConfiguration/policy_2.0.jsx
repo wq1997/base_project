@@ -370,7 +370,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                         }}
                                     </Form.Item>
                                 </Row>
-                                <Row>
+                                <Row gutter={[0, 30]}>
                                     <Form.Item
                                         noStyle
                                         dependencies={['antiReflux']}
@@ -405,10 +405,30 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                                     <Form.Item label={intl.formatMessage({ id: '变压器容量' })} style={{ margin: 0 }}>
                                                         <Space direction="horizontal">
                                                             <Form.Item style={{ margin: 0 }} name="tranCap">
-                                                                <InputNumber disabled={disabled || !isLive} style={{ width: 200 }} placeholder="kW" />
+                                                                <InputNumber disabled={disabled || !isLive} style={{ width: 300 }} placeholder="kW" />
                                                             </Form.Item>
+                                                        </Space>
+                                                    </Form.Item>
+                                                </Col>
+                                            )
+                                        }}
+                                    </Form.Item>
+                                    <Form.Item
+                                        noStyle
+                                        dependencies={['expansion']}
+                                    >
+                                        {({ getFieldsValue }) => {
+                                            let disabled = false
+                                            const { expansion } = getFieldsValue('expansion');
+                                            if (mode === 1 && !expansion) {
+                                                disabled = true;
+                                            }
+                                            return (
+                                                <Col span={8}>
+                                                    <Form.Item label={intl.formatMessage({ id: '变压器容量保护比例' })} style={{ margin: 0 }}>
+                                                        <Space direction="horizontal">
                                                             <Form.Item style={{ margin: 0 }} name="tranCapPercent">
-                                                                <InputNumber disabled={disabled || !isLive} style={{ width: 200 }} placeholder="%" min={0} max={100} />
+                                                                <InputNumber disabled={disabled || !isLive} style={{ width: 300 }} placeholder="%" min={0} max={100} />
                                                             </Form.Item>
                                                         </Space>
                                                     </Form.Item>
