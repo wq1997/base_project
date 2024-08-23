@@ -108,7 +108,7 @@ const theme = {
         color4: 'rgba(255,255,255,0.85)',
         color5: '#333333',
         color6: '#666666',
-        color7: 'rgb(247, 253, 255, .9)',
+        color7: 'rgb(247, 253, 255, .8)',
         color8: '#f7fdff',
         color9: '#CEE4FF',
         color10: '#999999',
