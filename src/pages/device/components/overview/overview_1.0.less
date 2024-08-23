@@ -198,7 +198,7 @@
                     display: grid;
                     grid-template-columns: repeat(2, 1fr);
                     grid-template-rows: repeat(1, 1fr);
-                    gap: 8px;
+                    gap: 15px;
                     position: relative;
 
                     .item {
@@ -216,19 +216,38 @@
 
                         .label {
                             position: absolute;
-                            bottom: 50px;
+                            top: 20px;
+                            left: 20px;
                             z-index: 30;
                             width: 60px;
                             word-wrap: break-word;
                             font-size: 14px;
                         }
 
+                        @media screen and (min-width: 2000px) {
+                            .label {
+                                font-size: 18px;
+                            }
+                        }
+
+                        @media screen and (min-width: 1000px) and (max-width: 2000px) {
+                            .label {
+                                font-size: 14px;
+                            }
+                        }
+
+                        @media screen and (max-width: 1000px) {
+                            .label {
+                                font-size: 10px;
+                            }
+                        }
+
                         .data {
                             position: absolute;
-                            width: calc(100% - 40px);
+                            width: 100%;
                             height: 100%;
                             bottom: 0;
-                            left: 20px;
+                            left: 0;
                             z-index: 10;
                             word-wrap: break-word;
 
