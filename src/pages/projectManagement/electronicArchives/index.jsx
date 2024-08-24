@@ -251,34 +251,42 @@ const Account = () => {
         {
             title: "项目名称",
             dataIndex: "name",
+            width: 200
         },
         {
             title: "项目编号",
             dataIndex: "code",
+            width: 200
         },
         {
             title: "立项时间",
             dataIndex: "time",
+            width: 200
         },
         {
             title: "充放功率(kW)",
             dataIndex: "gl",
+            width: 200
         },
         {
             title: "项目容量(kWh)",
             dataIndex: "xmrl",
+            width: 200
         },
         {
             title: "项目阶段",
             dataIndex: "stage",
+            width: 200
         },
         {
             title: "项目进度",
             dataIndex: "schedule",
+            width: 200
         },
         {
             title: "是否支持标准巡检",
             dataIndex: "standard",
+            width: 200,
             render: (_, { standard }) => {
                 return (
                     <span style={{ color: standard == "是" ? "#1BE72B" : "#F50101" }}>
@@ -290,22 +298,28 @@ const Account = () => {
         {
             title: "项目类型",
             dataIndex: "projectType",
+            width: 200
         },
         {
             title: "产品类型",
             dataIndex: "productType",
+            width: 200
         },
         {
             title: "实施负责人",
             dataIndex: "implementationManager",
+            width: 200
         },
         {
             title: "运维负责人",
             dataIndex: "operationsManager",
+            width: 200
         },
         {
             title: "操作",
             dataIndex: "operate",
+            fixed: 'right',
+            width: 100,
             render: (_, row) => {
                 const edit = key => {
                     setCurrentStep(key);
@@ -663,6 +677,9 @@ const Account = () => {
                 onChange={pagination => {
                     paginationRef.current = pagination;
                     getInviteList();
+                }}
+                scroll={{
+                    x: 1200,
                 }}
                 title={() => (
                     <Space className="table-title">
