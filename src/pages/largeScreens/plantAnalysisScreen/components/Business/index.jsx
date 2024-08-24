@@ -71,7 +71,17 @@ const Business = ({}) => {
         if (data?.data?.data) {
             const dataSource = data?.data?.data;
             setDataSource(dataSource);
-            setMapPlants(dataSource?.plants);
+            setMapPlants(
+                dataSource?.plants?.filter(item => {
+                    if (areaRef.current == undefined) return item;
+                    if (areaRef.current == "Foreign") {
+                        return item.haiWai == true;
+                    }
+                    if (areaRef.current == "Domestic") {
+                        return item.haiWai == false;
+                    }
+                })
+            );
         }
     }, [data]);
 
