@@ -412,18 +412,6 @@ const AlarmConfiguration = () => {
                                     const alarm = isAlramRef.current;
                                     const autoGenerateWorkOrder = isWorkOrdersRef.current;
                                     const lastUpdaterNameLike = lastModifiedPersonRef.current;
-                                    console.log("AA", getBaseUrl()+"/bas-alarm-type/download-import-template"+jsonToUrlParams({
-                                        basProjectId,
-                                        sePlantId,
-                                        seAlarmTypeDescLike,
-                                        seDevNameLike,
-                                        mmsEventDescLike,
-                                        mmsEventLevel,
-                                        alarm,
-                                        autoGenerateWorkOrder,
-                                        lastUpdaterNameLike,
-                                        Authorization: "Bearer " + localStorage.getItem("Token")
-                                    }))
                                     window.open(getBaseUrl()+"/bas-alarm-type/download-import-template"+jsonToUrlParams({
                                         basProjectId,
                                         sePlantId,
@@ -434,7 +422,6 @@ const AlarmConfiguration = () => {
                                         alarm,
                                         autoGenerateWorkOrder,
                                         lastUpdaterNameLike,
-                                        Authorization: "Bearer " + localStorage.getItem("Token")
                                     }))
                                 } else {
                                     message.error("至少搜索一个项目");
