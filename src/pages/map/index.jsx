@@ -17,7 +17,7 @@ const Map = ({
     const { theme, locale } = useSelector(state => state.global);
     const { run: onSearch } = useDebounceFn(
         async (value) => {
-            const res = await axiosInstance.get(`/map1/v3/place/text?keywords=${value}&key=bf11162859718840e482a1f46044a3de`);
+            const res = await axiosInstance.get(`https://restapi.amap.com/v3/place/text?keywords=${value}&key=bf11162859718840e482a1f46044a3de`);
             if (res?.data?.info === "OK") {
                 setOptions(res?.data?.pois?.map(item => {
                     return {
@@ -89,7 +89,7 @@ const Map = ({
                 showSearch
                 optionFilterProp="label"
                 onChange={async (value) => {
-                    const res = await axiosInstance.get(`/map1/v3/geocode/geo?address=${value}&key=bf11162859718840e482a1f46044a3de`);
+                    const res = await axiosInstance.get(`https://restapi.amap.com/v3/geocode/geo?address=${value}&key=bf11162859718840e482a1f46044a3de`);
                     if (res?.data?.info === "OK") {
                         const data = res?.data?.geocodes?.[0];
                         setCurrentInfo(data);

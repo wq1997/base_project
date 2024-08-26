@@ -39,13 +39,13 @@ export default defineConfig({
     "https://webapi.amap.com/loader.js",
     "https://webapi.amap.com/maps?v=1.4.15&key=2dca0cb2ced6ced6030c26376186faee",
   ],
-  proxy: {
-    "/map1": {
-      target: 'https://restapi.amap.com',
-      changeOrigin: true,
-      pathRewrite: { '^/map1': '' },
-    }
-  },
+  // proxy: {
+  //   "/map1": {
+  //     target: 'https://restapi.amap.com',
+  //     changeOrigin: true,
+  //     pathRewrite: { '^/map1': '' },
+  //   }
+  // },
   chainWebpack: (config) => {
     config
       .plugin('replace')
