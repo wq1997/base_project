@@ -31,16 +31,16 @@ const App = () => {
         <ConfigProvider
             locale={localeEnum[locale]}
             theme={{
-                algorithm: theme === 'dark' ? antdTheme.darkAlgorithm : antdTheme.darkAlgorithm,
+                algorithm: theme === 'dark' ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
                 token: ThemeEnum[theme],
                 components: {
                     Input: {
                         autoComplete: 'off'
                     },
-                    Modal: {
-                        contentBg: '#1C244C',
-                        headerBg: '#1C244C'
-                    },
+                    // Modal: {
+                    //     contentBg: '#1C244C',
+                    //     headerBg: '#1C244C'
+                    // },
                 }
             }}
         >

@@ -89,7 +89,7 @@ const Electricity = () => {
             },
             legend: {
                 textStyle: {
-                    color: 'white'
+                    color: token.color2
                 }
             },
             grid: {
@@ -108,7 +108,7 @@ const Electricity = () => {
                 },
                 axisLabel: {
                     margin: 10,
-                    color: 'white',
+                    color: token.color2,
                     textStyle: {
                         fontSize: 14
                     },
@@ -118,11 +118,11 @@ const Electricity = () => {
                 {
                     name: `${intl.formatMessage({ id: '电量' })}(kWh)`,
                     nameTextStyle: {
-                        color: 'white'
+                        color:  token.color2
                     },
                     axisLabel: {
                         formatter: '{value}',
-                        color: '#e2e9ff',
+                        color:  token.color2,
                         fontSize: 14
                     },
                     axisLine: {
@@ -131,7 +131,7 @@ const Electricity = () => {
                     splitLine: {
                         show: true,
                         lineStyle: {
-                            color: '#233e64'
+                            color: token.color2
                         }
                     },
                     min: 0,
@@ -141,11 +141,11 @@ const Electricity = () => {
                 {
                     name: `${intl.formatMessage({ id: '充放电效率' })}(%)`,
                     nameTextStyle: {
-                        color: 'white'
+                        color: token.color2
                     },
                     axisLabel: {
                         formatter: '{value}',
-                        color: '#e2e9ff',
+                        color:token.color2,
                         fontSize: 14
                     },
                     axisLine: {
@@ -154,7 +154,7 @@ const Electricity = () => {
                     splitLine: {
                         show: true,
                         lineStyle: {
-                            color: '#233e64'
+                            color:token.color2
                         }
                     },
                     min: 0,
@@ -285,7 +285,7 @@ const Electricity = () => {
 
     useEffect(() => {
         initOption();
-    }, [dataSource]);
+    }, [dataSource,token]);
 
     useEffect(() => {
         initPlantDevice();

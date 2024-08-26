@@ -3,10 +3,12 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import useIcon from "@/hooks/useIcon";
 import { history, useLocation, useIntl } from "umi";
-import { Table, } from 'antd';
+import { Table,theme } from 'antd';
 
 function Com({ data,table }) {
-    const [height, setHeight] = useState('0fr')
+    const [height, setHeight] = useState('0fr');
+    const { token } = theme.useToken();
+
     const Icon = useIcon();
     const intl = useIntl();
     const t = (id) => {
@@ -18,7 +20,7 @@ function Com({ data,table }) {
         return msg
     }
     return (
-        <div className='card_main' style={{background:'#1D2445',padding:'16px 20px',marginBottom:'8px',borderRadius:'8px'}}>
+        <div className='card_main' style={{background:token.detailsCardbgc,padding:'16px 20px',marginBottom:'8px',borderRadius:'8px'}}>
             <div className='card_title' style={{ fontSize: '20px', marginBottom: '20px' }}>
                 <Icon type='icon-xiangyou' style={{ cursor: 'pointer',marginRight:'6px' }}></Icon>
                 {t(data.title)}

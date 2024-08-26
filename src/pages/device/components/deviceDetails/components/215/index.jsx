@@ -183,10 +183,10 @@ function Com(props) {
             { name: "输入电流", value: "-", key: "inputCur" },
             { name: "A相输出有功功率", value: "-", key: "phaseAActivePower" },
             { name: "B相输出有功功率", value: "-", key: "phaseBActivePower" },
+            { name: "C相输出有功功率", value: "-", key: "phaseCActivePower" },
             { name: "A相输出无功功率", value: "-", key: "phaseAReactivePower" },
             { name: "B相输出无功功率", value: "-", key: "phaseBReactivePower" },
             { name: "C相输出无功功率", value: "-", key: "phaseCReactivePower" },
-            { name: "C相输出有功功率", value: "-", key: "phaseCActivePower" },
         ],
     });
     const [bmsData, setBmsData] = useState({

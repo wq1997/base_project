@@ -64,7 +64,7 @@ export default {
     '操作时间':'Operating time',
     '开始':'Beginning',
     '时间':'Time',
-    '结束':'end',
+    '结束':'End',
     '切换账号':'Switch accounts',
     '退出登录':'Log out',
     'BMS2信息':'BMS2 Info',
@@ -1882,5 +1882,7 @@ export default {
 'PACK温度/℃':'PACK temperature/℃',
 '温差':'Temperature difference',
 '请选择电站':'Please select power station',
-'请选择设备':'Please select device'
+'请选择设备':'Please select device',
+'BMS1功率':'BMS1 Power',
+'BMS2功率':'BMS2 Power'
 } 

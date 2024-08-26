@@ -71,15 +71,15 @@ function Com({ devId, dtuId, historyAllData, mode }) {
         setAllPolicy({ ...allPolicy, [name]: val, });
     }
     return (
-        <div className={styles.content} style={{ backgroundColor: token.contentBgc }}>
+        <div className={styles.content} style={{ backgroundColor: token.darkbgc }}>
             <Space size={30} direction="vertical" >
                 {devId.pcsDevId && <div className={styles.generalBranchRoad}>
                     <Flex gap={18}>
                         <div className={styles.label}>{t('总支路')}:</div>
                         <Flex gap={30}>
-                            <div className={styles.selectionBox} style={{ backgroundColor: allPolicy.allBranch == '1' ? token.colorPrimary : '#20284D' }} onClick={() => showModal(devId.pcsDevId, 'pcsStartStop', 'allBranch', '1', t('PCS开机'))} >{t('PCS开机')}</div>
-                            <div className={styles.selectionBox} style={{ backgroundColor: allPolicy.allBranch == '2' ? token.colorPrimary : '#20284D' }} onClick={() => showModal(devId.pcsDevId, 'pcsStartStop', 'allBranch', '2', t('PCS关机'))} >{t('PCS关机')}</div>
-                            <div className={styles.selectionBox} style={{ backgroundColor: allPolicy.allBranch == '3' ? token.colorPrimary : '#20284D' }} onClick={() => showModal(devId.pcsDevId, 'pcsStartStop', 'allBranch', '3', t('PCS复位'))} >{t('PCS复位')}</div>
+                            <div className={styles.selectionBox} style={{ backgroundColor: allPolicy.allBranch == '1' ? token.colorPrimary : token.buttonBgc }} onClick={() => showModal(devId.pcsDevId, 'pcsStartStop', 'allBranch', '1', t('PCS开机'))} >{t('PCS开机')}</div>
+                            <div className={styles.selectionBox} style={{ backgroundColor: allPolicy.allBranch == '2' ? token.colorPrimary : token.buttonBgc }} onClick={() => showModal(devId.pcsDevId, 'pcsStartStop', 'allBranch', '2', t('PCS关机'))} >{t('PCS关机')}</div>
+                            <div className={styles.selectionBox} style={{ backgroundColor: allPolicy.allBranch == '3' ? token.colorPrimary : token.buttonBgc }} onClick={() => showModal(devId.pcsDevId, 'pcsStartStop', 'allBranch', '3', t('PCS复位'))} >{t('PCS复位')}</div>
                         </Flex>
                     </Flex>
                 </div>}
@@ -87,8 +87,8 @@ function Com({ devId, dtuId, historyAllData, mode }) {
                     <Flex gap={18}>
                         <div className={styles.label}>{t('支路')}1:</div>
                         <Flex gap={30}>
-                            <div className={styles.selectionBox} style={{ backgroundColor: allPolicy.branchOne == '1' ? token.colorPrimary : '#20284D' }} onClick={() => showModal(devId.pcs1DevId, 'pcsStartStop', 'branchOne', '1', t('PCS开机'))} >{t('PCS开机')}</div>
-                            <div className={styles.selectionBox} style={{ backgroundColor: allPolicy.branchOne == '2' ? token.colorPrimary : '#20284D' }} onClick={() => showModal(devId.pcs1DevId, 'pcsStartStop', 'branchOne', '2', t('PCS关机'))} >{t('PCS关机')}</div>
+                            <div className={styles.selectionBox} style={{ backgroundColor: allPolicy.branchOne == '1' ? token.colorPrimary : token.buttonBgc }} onClick={() => showModal(devId.pcs1DevId, 'pcsStartStop', 'branchOne', '1', t('PCS开机'))} >{t('PCS开机')}</div>
+                            <div className={styles.selectionBox} style={{ backgroundColor: allPolicy.branchOne == '2' ? token.colorPrimary : token.buttonBgc }} onClick={() => showModal(devId.pcs1DevId, 'pcsStartStop', 'branchOne', '2', t('PCS关机'))} >{t('PCS关机')}</div>
 
                         </Flex>
                     </Flex>
@@ -97,8 +97,8 @@ function Com({ devId, dtuId, historyAllData, mode }) {
                     <Flex gap={18}>
                         <div className={styles.label}>{t('支路')}2:</div>
                         <Flex gap={30}>
-                            <div className={styles.selectionBox} style={{ backgroundColor: allPolicy.branchTwo == '1' ? token.colorPrimary : '#20284D' }} onClick={() => showModal(devId.pcs2DevId, 'pcsStartStop', 'branchTwo', '1', t('PCS开机'))} >{t('PCS开机')}</div>
-                            <div className={styles.selectionBox} style={{ backgroundColor: allPolicy.branchTwo == '2' ? token.colorPrimary : '#20284D' }} onClick={() => showModal(devId.pcs2DevId, 'pcsStartStop', 'branchTwo', '2', t('PCS关机'))} >{t('PCS关机')}</div>
+                            <div className={styles.selectionBox} style={{ backgroundColor: allPolicy.branchTwo == '1' ? token.colorPrimary : token.buttonBgc }} onClick={() => showModal(devId.pcs2DevId, 'pcsStartStop', 'branchTwo', '1', t('PCS开机'))} >{t('PCS开机')}</div>
+                            <div className={styles.selectionBox} style={{ backgroundColor: allPolicy.branchTwo == '2' ? token.colorPrimary : token.buttonBgc }} onClick={() => showModal(devId.pcs2DevId, 'pcsStartStop', 'branchTwo', '2', t('PCS关机'))} >{t('PCS关机')}</div>
                         </Flex>
                     </Flex>
                 </div>}
@@ -106,9 +106,9 @@ function Com({ devId, dtuId, historyAllData, mode }) {
                     <Flex gap={18}>
                         <div className={styles.label}>{t('BMS')}:</div>
                         <Flex gap={30}>
-                            <div className={styles.selectionBox} style={{ backgroundColor: allPolicy.bms == '1' ? token.colorPrimary : '#20284D' }} onClick={() => showModal(devId.bms1DevId, 'bmsStartStop', 'bms', '1', t('BMS开机'))} >{t('BMS开机')}</div>
-                            <div className={styles.selectionBox} style={{ backgroundColor: allPolicy.bms == '2' ? token.colorPrimary : '#20284D' }} onClick={() => showModal(devId.bms1DevId, 'bmsStartStop', 'bms', '2', t('BMS关机'))} >{t('BMS关机')}</div>
-                            <div className={styles.selectionBox} style={{ backgroundColor: allPolicy.bms == '3' ? token.colorPrimary : '#20284D' }} onClick={() => showModal(devId.bms1DevId, 'bmsStartStop', 'bms', '3', t('BMS复位'))} >{t('BMS复位')}</div>
+                            <div className={styles.selectionBox} style={{ backgroundColor: allPolicy.bms == '1' ? token.colorPrimary : token.buttonBgc }} onClick={() => showModal(devId.bms1DevId, 'bmsStartStop', 'bms', '1', t('BMS开机'))} >{t('BMS开机')}</div>
+                            <div className={styles.selectionBox} style={{ backgroundColor: allPolicy.bms == '2' ? token.colorPrimary : token.buttonBgc }} onClick={() => showModal(devId.bms1DevId, 'bmsStartStop', 'bms', '2', t('BMS关机'))} >{t('BMS关机')}</div>
+                            <div className={styles.selectionBox} style={{ backgroundColor: allPolicy.bms == '3' ? token.colorPrimary : token.buttonBgc }} onClick={() => showModal(devId.bms1DevId, 'bmsStartStop', 'bms', '3', t('BMS复位'))} >{t('BMS复位')}</div>
                         </Flex>
                     </Flex>
                 </div>}

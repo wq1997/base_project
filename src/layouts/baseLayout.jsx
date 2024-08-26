@@ -1,19 +1,25 @@
-import { Outlet, useDispatch, useSelector,FormattedMessage,useLocation } from 'umi'
+import { Outlet, useDispatch, useSelector, FormattedMessage, useLocation } from 'umi'
 import React, { useEffect } from 'react';
-import { theme, Layout, Dropdown,Button } from 'antd';
+import { theme, Layout, Dropdown, Button, Tooltip } from 'antd';
 import MyMenu from "@/permissions/menu";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import styles from "./baseLayout.less";
-import { setLocalStorage, removeLocalStorage,download,downLoadUrl } from "@/utils/utils";
+import { setLocalStorage, removeLocalStorage, download, downLoadUrl } from "@/utils/utils";
 import useLocale from "@/hooks/useLocale"
-import shouye from "../assets/svg/shouye.svg";
-import down from "../assets/svg/down.svg";
-import mySvg from "../assets/svg/mine.svg";
+import cnDefault from "@/assets/imges/cnDefault.svg";
+import cnDark from "@/assets/imges/cnDark.svg";
+import enDefault from "@/assets/imges/enDefault.svg";
+import enDark from "@/assets/imges/enDark.svg";
 import {
     FilePdfOutlined,
-    LogoutOutlined
-  } from '@ant-design/icons';
-  import { history, useIntl } from "umi";
+    LogoutOutlined,
+    SkinOutlined,
+    QuestionCircleOutlined,
+    HomeOutlined,
+    UserOutlined,
+    DribbbleOutlined,
+} from '@ant-design/icons';
+import { history, useIntl } from "umi";
 
 const { Header, Sider, Content } = Layout;
 
@@ -23,10 +29,7 @@ const BaseLayout = () => {
     const global = useSelector(state => state.global);
     const location = useLocation();
     const { pathname } = location;
-    useEffect(()=>{
-
-        console.log();
-    },[])
+   
     const changeLanguage = (locale) => {
         setLocalStorage('locale', locale)
         dispatch({
@@ -53,23 +56,23 @@ const BaseLayout = () => {
             '&::-webkit-scrollbar': {
                 display: 'none'
             },
-            '.ant-menu-item':{
-                fontFamily:'PingFangRegular !important',
+            '.ant-menu-item': {
+                fontFamily: 'PingFangRegular !important',
             },
-            '.ant-menu-submenu-title':{
-                fontFamily:'PingFangRegular !important',
-                
+            '.ant-menu-submenu-title': {
+                fontFamily: 'PingFangRegular !important',
+
             },
             '.ant-menu-sub': {
-                backgroundColor: `${token.sub_innerBgc} !important`,
+                backgroundColor: `${token.titleCardBgc} !important`,
                 margin: '0 20px',
                 borderRadius: '4px !important',
                 fontSize: '16px !important',
-                fontFamily:'PingFangRegular !important',
+                fontFamily: 'PingFangRegular !important',
             },
             '.ant-menu-item-icon': {
                 fontSize: '18px !important',
-                fontFamily:'PingFangRegular !important',
+                fontFamily: 'PingFangRegular !important',
             }
 
         }
@@ -85,13 +88,13 @@ const BaseLayout = () => {
                         style={{
                             color: token.titleColor
                         }}
-                        level={3} 
+                        level={3}
                         className={styles.title}
                     >
                         <FormattedMessage id="app.title" />
                     </div>
-                    <div style={{display:'flex',alignItems: 'center', }}>
-                    <Dropdown
+                    <div style={{ display: 'flex', alignItems: 'center', }}>
+                        <Dropdown
                             placement="bottom"
                             menu={{
                                 items: [
@@ -101,39 +104,50 @@ const BaseLayout = () => {
                                         icon: <FilePdfOutlined />,
                                     },
                                 ],
-                                onClick({key}){
-                                    if(key==="ExportPdf"){
-                                     let fileName= global.locale==="zh-CN"?'储能软件系统使用说明.pdf':'Energy storage software system instruction manual.pdf'
-                                     download(downLoadUrl,fileName);
+                                onClick({ key }) {
+                                    if (key === "ExportPdf") {
+                                        let fileName = global.locale === "zh-CN" ? '储能软件系统使用说明.pdf' : 'Energy storage software system instruction manual.pdf'
+                                        download(downLoadUrl, fileName);
                                     }
-                                   
+
                                 }
                             }}
                         >
-                          <img 
-                                src={down} 
-                                style={{cursor: 'pointer',}} 
-                            />
+                            <QuestionCircleOutlined style={{ cursor: 'pointer', fontSize: 35, color: token.iconColor }} />
                         </Dropdown>
-                            <img 
-                                src={shouye} 
-                                style={{cursor: 'pointer',margin: '0px 40px'}} 
-                                onClick={()=>history.push('/index/device')}
+                        <HomeOutlined
+                            style={{ cursor: 'pointer', fontSize: 35, color: token.iconColor,
+                                margin: '0px 40px'
+
+                             }}
+                            onClick={() => history.push('/index/device')}
+                        />
+                        <Tooltip title={useLocale('语言切换')} placement="bottom">
+                            <img
+                                style={{
+                                    width: 40,
+                                    cursor: 'pointer'
+                                }}
+                                src={
+                                    global.theme === 'default' ?
+                                        (global.locale === "zh-CN" ? enDefault : enDark)
+                                        :
+                                        (global.locale === "zh-CN" ? cnDark : cnDefault)
+                                }
+                                onClick={() => changeLanguage(global.locale === "zh-CN" ? "zh-EN" : 'zh-CN')}
                             />
-                        {/* {
-                            global.locale==="zh-CN"?
-                            <img 
-                                src={languageEnglishSvg}
-                                style={{cursor: 'pointer', margin: '0px 40px'}} 
-                                onClick={()=>changeLanguage('en-US')}
+                        </Tooltip>
+                        <Tooltip title={useLocale('主题切换')} placement="bottom" >
+                            <SkinOutlined
+                                style={{
+                                    cursor: "pointer",
+                                    fontSize: 35,
+                                    color: token.iconColor,
+                                    margin: '0px 40px'
+                                }}
+                                onClick={() => changeTheme(global.theme === "default" ? "dark" : "default")}
                             />
-                            :
-                            <img 
-                                src={languageChineseSvg}
-                                style={{cursor: 'pointer', margin: '0px 40px'}} 
-                                onClick={()=>changeLanguage('zh-CN')}
-                            />
-                        } */}
+                        </Tooltip>
                         <Dropdown
                             placement="bottom"
                             menu={{
@@ -144,26 +158,23 @@ const BaseLayout = () => {
                                         icon: <LogoutOutlined />,
                                     },
                                 ],
-                                onClick({key}){
-                                    if(key==="logout"){
+                                onClick({ key }) {
+                                    if (key === "logout") {
                                         removeLocalStorage("Token");
                                         history.push('/login');
                                     }
-                                    if(key==="changeAccount"){
-                                        
+                                    if (key === "changeAccount") {
+
                                     }
                                 }
                             }}
                         >
-                            <img 
-                                src={mySvg} 
-                                style={{cursor: 'pointer'}} 
-                            />
+                           <UserOutlined style={{ cursor: 'pointer', fontSize: 35, color: token.iconColor }} />
                         </Dropdown>
                     </div>
                 </Header>
                 <Layout hasSider>
-                   {pathname.split('/')[1]==='index'&& <Sider className={siderContentStyle}
+                    {pathname.split('/')[1] === 'index' && <Sider className={siderContentStyle}
                         style={{ background: token.titleCardBgc }}
                         width={240}>
                         <div className={styles.siderContent}>
@@ -171,7 +182,7 @@ const BaseLayout = () => {
                         </div>
                     </Sider>}
                     <Content className={styles.content}
-                        style={{  }}>
+                        style={{backgroundColor:token.layoutContentBgc}}>
                         <div className={styles.inContent}>
                             <Outlet />
                         </div>

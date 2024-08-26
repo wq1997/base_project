@@ -89,14 +89,14 @@ function Com({ id }) {
     }
 
     return (
-        <div className={styles.content} style={{ backgroundColor: token.contentBgc }}>
+        <div className={styles.content} style={{ backgroundColor: token.darkbgc,padding:'2.6042rem 1.8229rem 0 1.8229rem' }}>
             <Space style={{ width: '100%' }} size={30} direction="vertical" >
                 <div className={styles.mode}>
                     <Flex gap={18}>
                         <div className={styles.label}>{t('模式')}:</div>
                         <Flex gap={30}>
-                            <div className={styles.selectionBox} style={{ backgroundColor: mode == 1 ? token.colorPrimary : '#20284D' }} onClick={() => changeType(1)} >{t('自动')}</div>
-                            <div className={styles.selectionBox} style={{ backgroundColor: mode == 0 ? token.colorPrimary : '#20284D' }} onClick={() => changeType(0)} >{t('手动')}</div>
+                            <div className={styles.selectionBox} style={{ backgroundColor: mode == 1 ? token.colorPrimary : token.buttonBgc }} onClick={() => changeType(1)} >{t('自动')}</div>
+                            <div className={styles.selectionBox} style={{ backgroundColor: mode == 0 ? token.colorPrimary : token.buttonBgc }} onClick={() => changeType(0)} >{t('手动')}</div>
                         </Flex>
                     </Flex>
                 </div>

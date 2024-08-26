@@ -29,7 +29,7 @@ const HighAnysis = () => {
     const [plantDeviceList, setPlantDeviceList] = useState([]);
     const [packCellList, setPackCellList] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [title, setTitle] = useState(`${intl.formatMessage({ id: '高级分析' })}`);
+    const [title, setTitle] = useState(`${intl.formatMessage({ id: '电芯详情' })}`);
 
     const dataProList = [
         {
@@ -147,7 +147,7 @@ const HighAnysis = () => {
             legend: {
                 data: legendData,
                 textStyle: {
-                    color: 'white'
+                    color: token.color2
                 }
             },
             grid: {
@@ -166,7 +166,7 @@ const HighAnysis = () => {
                 },
                 axisLabel: {
                     margin: 10,
-                    color: 'white',
+                    color:token.color2,
                     textStyle: {
                         fontSize: 14
                     },
@@ -175,7 +175,7 @@ const HighAnysis = () => {
             yAxis: [{
                 axisLabel: {
                     formatter: '{value}',
-                    color: '#e2e9ff',
+                    color: token.color2,
                     fontSize: 14
                 },
                 axisLine: {
@@ -184,7 +184,7 @@ const HighAnysis = () => {
                 splitLine: {
                     show: true,
                     lineStyle: {
-                        color: '#233e64'
+                        color: token.color2
                     }
                 },
                 min,
@@ -281,7 +281,7 @@ const HighAnysis = () => {
 
     useEffect(() => {
         initOption();
-    }, [dataSource]);
+    }, [dataSource,token]);
 
     useEffect(() => {
         initPlantDevice();

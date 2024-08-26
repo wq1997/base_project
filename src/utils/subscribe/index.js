@@ -14,8 +14,8 @@ const DisSocket = function () {
     client && client.disconnect("", token);
     client = null;
 };
-// let socketURL='http://192.168.1.42:9999'
-let socketURL='https://abroad-power.sermatec-cloud.com'
+let socketURL='http://192.168.1.42:9999'
+// let socketURL='https://abroad-power.sermatec-cloud.com'
 
 const connectSocket = function (type, connectedCallback, resultCallback) {
     DisSocket();

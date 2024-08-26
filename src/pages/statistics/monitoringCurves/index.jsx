@@ -32,36 +32,7 @@ const MonitoringCurves = () => {
     const [title, setTitle] = useState(`${intl.formatMessage({ id: '监测曲线' })}`);
 
     const [dataProList, setDataProList] = useState([
-        // {
-        //     value: 100,
-        //     label: intl.formatMessage({ id: '设备功率' }),
-        //     unit: 'kW'
-        // },
-        // {
-        //     value: 183,
-        //     label: intl.formatMessage({ id: '电池SOC' }),
-        //     unit: '%'
-        // },
-        // {
-        //     value: 181,
-        //     label: intl.formatMessage({ id: '电池电压' }),
-        //     unit: 'V'
-        // },
-        // {
-        //     value: 182,
-        //     label: intl.formatMessage({ id: '电池电流' }),
-        //     unit: 'A'
-        // },
-        // {
-        //     value: 414,
-        //     label: intl.formatMessage({ id: '堆单体压差' }),
-        //     unit: 'V'
-        // },
-        // {
-        //     value: 415,
-        //     label: intl.formatMessage({ id: '堆单体温差' }),
-        //     unit: '℃'
-        // },
+   
     ]);
 
     const getParams = async (showMessage = true) => {
@@ -106,7 +77,7 @@ const MonitoringCurves = () => {
             {
                 axisLabel: {
                     formatter: '{value}',
-                    color: '#e2e9ff',
+                    color:token.color2,
                     fontSize: 14
                 },
                 axisLine: {
@@ -115,7 +86,7 @@ const MonitoringCurves = () => {
                 splitLine: {
                     show: true,
                     lineStyle: {
-                        color: '#233e64'
+                        color:token.color2
                     }
                 },
             }
@@ -236,12 +207,12 @@ const MonitoringCurves = () => {
             yAxis[1] = {
                 name: intl.formatMessage({ id: '压差' }),
                 nameTextStyle: {
-                    color: 'white'
+                    color: token.color2
                 },
                 nameGap: 20,
                 axisLabel: {
                     formatter: '{value}',
-                    color: '#e2e9ff',
+                    color: token.color2,
                     fontSize: 14
                 },
                 axisLine: {
@@ -250,7 +221,7 @@ const MonitoringCurves = () => {
                 splitLine: {
                     show: true,
                     lineStyle: {
-                        color: '#233e64'
+                        color: token.color2
                     }
                 },
                 splitNumber: 5
@@ -288,11 +259,11 @@ const MonitoringCurves = () => {
                 name: intl.formatMessage({ id: '温差' }),
                 nameGap: 20,
                 nameTextStyle: {
-                    color: 'white'
+                    color: token.color2
                 },
                 axisLabel: {
                     formatter: '{value}',
-                    color: '#e2e9ff',
+                    color:  token.color2,
                     fontSize: 14
                 },
                 axisLine: {
@@ -301,7 +272,7 @@ const MonitoringCurves = () => {
                 splitLine: {
                     show: true,
                     lineStyle: {
-                        color: '#233e64'
+                        color: token.color2
                     }
                 },
                 splitNumber: 5
@@ -365,7 +336,7 @@ const MonitoringCurves = () => {
             legend: {
                 data: legendData,
                 textStyle: {
-                    color: 'white'
+                    color:  token.color2
                 }
             },
             grid: {
@@ -383,7 +354,7 @@ const MonitoringCurves = () => {
                     }
                 },
                 axisLabel: {
-                    color: 'white',
+                    color:  token.color2,
                     textStyle: {
                         fontSize: 14
                     },
@@ -469,7 +440,7 @@ const MonitoringCurves = () => {
 
     useEffect(() => {
         initOption();
-    }, [dataSource]);
+    }, [dataSource,token]);
 
     useEffect(() => {
         initPlantDevice();

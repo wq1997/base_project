@@ -6,6 +6,7 @@ import {
     getRevenue as getRevenueServe,
 } from "@/services";
 import moment from "moment";
+import { theme,  } from "antd";
 
 const ElectricityRanking = ({ currentPlantId }) => {
     const intl = useIntl();
@@ -38,7 +39,7 @@ const ElectricityRanking = ({ currentPlantId }) => {
             },
             legend: {
                 textStyle: {
-                    color: 'white'
+                    color: token.tableColor
                 },
                 right: 0
             },
@@ -59,7 +60,7 @@ const ElectricityRanking = ({ currentPlantId }) => {
                 axisLabel: {
                     interval:0,
                     textStyle: {
-                        color: '#fff',
+                        color: token.tableColor,
                         fontSize:10,
                     },
                     margin: 20, //刻度标签与轴线之间的距离。
@@ -69,7 +70,7 @@ const ElectricityRanking = ({ currentPlantId }) => {
                 splitLine: {
                     show: true,
                     lineStyle:{
-                      color: '#00516F',
+                      color: token.tableColor,
                       type: 'dashed'
                     }
                 },
@@ -81,7 +82,7 @@ const ElectricityRanking = ({ currentPlantId }) => {
                 },
                 axisLabel: {
                     textStyle: {
-                        color: '#fff',
+                        color: token.tableColor,
                         fontSize:10,
                     },
                 }
@@ -126,10 +127,11 @@ const ElectricityRanking = ({ currentPlantId }) => {
             ]
         });
     }
+    const { token } = theme.useToken();
 
     useEffect(() => {
         getOptions();
-    }, [currentPlantId]);
+    }, [currentPlantId,token]);
 
     return (
         <ReactECharts 

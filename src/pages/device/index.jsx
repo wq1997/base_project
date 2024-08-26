@@ -35,7 +35,6 @@ const RealtimeAlarm = () => {
     const [initSelectData, setInitSelectData] = useState();
     const [record, setRecord] = useState([]);
     const [currentPlantId, setCurrentPlantId] = useState();
-    const [socialBenefit, setSocialBenefit] = useState();
     const { token } = theme.useToken();
     const intl = useIntl();
     const [mapPanTo, setPanTo] = useState();
@@ -50,11 +49,19 @@ const RealtimeAlarm = () => {
     const { user } = useSelector(function (state) {
         return state.user
     });
+    const global = useSelector(state => state.global);
 
     const eleData = [
         {
             label: t('日充电量'),
             name: 'dailyCharge',
+            value: '',
+            unit: 'kWh',
+            color: '#FF9D4F'
+        },
+        {
+            label: t('日放电量'),
+            name: 'dailyDisCharge',
             value: '',
             unit: 'kWh',
             color: '#FF9D4F'
@@ -67,25 +74,18 @@ const RealtimeAlarm = () => {
             color: '#03B4B4'
         },
         {
-            label: t('累计充电量'),
-            name: 'totalCharge',
-            value: '',
-            unit: 'kWh',
-            color: '#DE83C4'
-        },
-        {
-            label: t('日放电量'),
-            name: 'dailyDisCharge',
-            value: '',
-            unit: 'kWh',
-            color: '#FF9D4F'
-        },
-        {
             label: t('月放电量'),
             name: 'monthDisCharge',
             value: '',
             unit: 'kWh',
             color: '#03B4B4'
+        },
+        {
+            label: t('累计充电量'),
+            name: 'totalCharge',
+            value: '',
+            unit: 'kWh',
+            color: '#DE83C4'
         },
         {
             label: t('累计放电量'),
@@ -293,6 +293,7 @@ const RealtimeAlarm = () => {
     return (
         <div
             className={styles.content}
+            style={{backgroundColor:token.layoutContentBgc}}
         >
             <div className={styles.left}>
                 <div className={classNames(styles.leftItem, styles.leftItem1)}>
@@ -332,7 +333,9 @@ const RealtimeAlarm = () => {
                 <div className={classNames(styles.rightItem, styles.leftItem2)} style={{backgroundColor: token.titleCardBgc}}>
                     <Title title={t('设备列表')} />
                     <div className={styles.add}>
-                        {(user?.roleId===2||user?.roleId===3)&&<div onClick={changIsOpen} className={styles.addBtn}>{t('新增设备')}</div>}
+                        {(user?.roleId===2||user?.roleId===3)&&<div onClick={changIsOpen} className={styles.addBtn}
+                        style={{background:global.theme == 'default' ?' radial-gradient( 349% 93% at 51% 45%, #BFD4E3 0%, #7393AD 100%, #7393AD 100%)':'radial-gradient(153% 66% at 50% 50%, #111838 0%, #118786 100%)'}}
+                        >{t('新增设备')}</div>}
                     </div>
                     <div className={styles.cardContent} style={{backgroundColor:token.titleCardBgc,  height: 'calc(100% - 2.3438rem)'}}>
                         <Table

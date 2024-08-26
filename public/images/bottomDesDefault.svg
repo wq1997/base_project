@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="132px" height="16px" viewBox="0 0 132 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>矩形备份 2</title>
+    <defs>
+        <linearGradient x1="50%" y1="-2.86098196e-13%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#EAF0F4" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#CADCE8" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="2台浅色" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="215欧标1.0-总览最新" transform="translate(-734.000000, -409.000000)" fill="url(#linearGradient-1)">
+            <polygon id="矩形备份-2" points="743.962264 408.868911 866 408.868911 856.037736 425 734 425"></polygon>
+        </g>
+    </g>
+</svg>

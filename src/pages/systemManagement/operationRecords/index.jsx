@@ -99,7 +99,7 @@ const RealtimeAlarm = () => {
           <RangePicker
             style={{ width: 280 }}
             onChange={changeTime}
-            allowClear
+            allowClear  
             placeholder={[t('开始') + t('时间'), t('结束') + t('时间')]}
             showTime
           />
@@ -107,11 +107,11 @@ const RealtimeAlarm = () => {
         <div className={styles.dataItem}>
           <Input placeholder={t('IP')} onChange={changeIp} enterButton />
         </div>
-        {user.roleId!=1&&<div className={styles.dataItem}>
+        <div className={styles.dataItem}>
           {/* <Search placeholder={t('用户名')} onSearch={onSearch} enterButton /> */}
            <Input style={{width: 180,marginRight:'1.0417rem'}} onChange={onSearch} placeholder={t("用户名")} />
                     <Button type='primary' onClick={()=>getData(current)}>{t('查询')}</Button>
-        </div>}
+        </div>
         <Button type="primary" onClick={downLoadFoodModel} style={{ backgroundColor: token.defaultBg, marginLeft: '30px' }} >
           {t('导出')} Excel
         </Button>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="125px" height="25px" viewBox="0 0 125 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组 6</title>
+    <defs>
+        <linearGradient x1="100%" y1="50%" x2="-1.37910516e-14%" y2="50%" id="linearGradient-1">
+            <stop stop-color="#EAF0F4" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#D9E6F2" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="2台浅色" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="215欧标1.0-总览最新" transform="translate(-99.000000, -716.000000)">
+            <g id="编组-6" transform="translate(99.000000, 716.000000)">
+                <polygon id="矩形备份-16" fill="url(#linearGradient-1)" points="17.1096966 0 124.109697 -3.48679419e-14 115 25 8 25"></polygon>
+                <polygon id="矩形" fill="#C4D4DE" points="9.10969658 0 17.1096966 0 8 25 -2.13162821e-13 25"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -18,7 +18,7 @@ function Com(props) {
     const id = getQueryString('id') || 0;
     const intl = useIntl();
     const Icon = useIcon();
-
+    const {token}=theme.useToken();
     const t = (id) => {
         const msg = intl.formatMessage(
             {
@@ -73,7 +73,7 @@ function Com(props) {
     minTemp = Math.min(...tempList);
 
     return (
-        <div className={styles.pack}>
+        <div className={styles.pack} style={{backgroundColor:token.titleCardBgc,overflow:'scroll'}}>
           { getQueryString('type')=="14"&&<Select
                 className={styles.margRL}
                 style={{ width: 180 }}
