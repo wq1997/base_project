@@ -200,12 +200,12 @@ const SchematicDiagram = ({dataSource, allData}) => {
                         <div className={titleStyle} style={{width: '200px', wordWrap: 'break-word'}}>
                             {intl.formatMessage({id:'储能系统'})}
                         </div>
-                        <div style={{margin: '10px 0'}}>
-                            {intl.formatMessage({id:'运行状态'})}：
+                        <div style={{margin: '10px 0', display: 'flex', alignItems: 'start'}}>
+                            <span>{intl.formatMessage({id:'运行状态'})}：</span>
                             {/* {totalActivePowerData>0&&intl.formatMessage({id:'放电'})}
                             {totalActivePowerData<0&&intl.formatMessage({id:'充电'})}
                             {totalActivePowerData===0&&intl.formatMessage({id:'待机'})} */}
-                            {allData?.pcs?.pcsState||intl.formatMessage({id:'待机'})}
+                            <span style={{width: 50, display: 'inline-block'}}>{allData?.pcs?.pcsState||intl.formatMessage({id:'待机'})}</span>
                         </div>
                         <div>{intl.formatMessage({id:'功率'})}：{dataSource?.totalActivePower} kW</div>
                     </div>

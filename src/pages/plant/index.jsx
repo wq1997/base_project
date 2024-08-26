@@ -147,9 +147,9 @@ function Com(props) {
         return state.user
     });
     const getAllUser = async () => {
-        const { data } = await fetchAllUsersList();
+        const res = await fetchAllUsersList();
         let arr=[];
-        data.data?.map(it=>{
+        res?.data?.data?.map(it=>{
             arr.push({
                 label:it.name,
                 value:it.f0102_Id
