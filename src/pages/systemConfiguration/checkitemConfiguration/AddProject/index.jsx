@@ -1,59 +1,56 @@
 import React, { useState, useEffect } from "react";
 import {
-    message,
     Button,
     Form,
     Input,
     Modal,
-    Steps,
-    DatePicker,
-    Space,
-    Select,
-    Row,
-    Col,
     Radio,
-    Collapse,
+    Select,
+    Space,
+    message
 } from "antd";
-import dayjs from "dayjs";
 import { Title } from "@/components";
-import { ExclamationCircleOutlined, CaretRightOutlined } from "@ant-design/icons";
+import {  
+    basInspectionItemSaveOrUpdateInitData as basInspectionItemSaveOrUpdateInitDataServe,
+    basInspectionItemSaveOrUpdate as basInspectionItemSaveOrUpdateServe,
+} from "@/services";
 import "./index.less";
 
-const { Panel } = Collapse;
-
-const AddProject = ({ open, onClose }) => {
+const AddProject = ({ open, editData, onClose }) => {
     const [form] = Form.useForm();
-    const [currentStep, setCurrentStep] = useState(3);
-    const [checkGroup, setCheckGroup] = useState([]);
-    const [responseTypeList, setResponseTypeList] = useState();
-    const [responseTimeTypeList, setResponseTimeTypeList] = useState();
-
-    const getSearchInitData = async () => {
-        const res = await getSearchInitDataServer();
-        if (res?.data?.status == "SUCCESS") {
-            const { responseTypes, responseTimeTypes } = res?.data?.data;
-            setResponseTypeList(responseTypes);
-            setResponseTimeTypeList(responseTimeTypes);
-        }
-    };
-
+    const [typeList, setTypeList] = useState([]);
     const onFinish = async values => {
-        return;
-        const { appointedTimeFrom, appointedTimeTo } = values;
-        const res = await saveEnterRecordServer({
-            ...values,
-            appointedTimeFrom: dayjs(appointedTimeFrom).format("YYYY-MM-DD HH:mm"),
-            appointedTimeTo: dayjs(appointedTimeTo).format("YYYY-MM-DD HH:mm"),
-        });
-        if (res?.data?.status == "SUCCESS") {
-            message.success("录入成功");
-            onClose(true);
-        } else {
-            message.info(res?.data?.msg);
+        const res = await basInspectionItemSaveOrUpdateServe({id: editData?.id, ...values});
+        if(res?.data?.status==="SUCCESS"){
+            message.success("提交成功");
+            onClose();
+        }else{
+            message.error("提交失败");
         }
     };
 
-    useEffect(() => { }, [open]);
+    const getBasInspectionItemSaveOrUpdateInitData = async () => {
+        const res = await basInspectionItemSaveOrUpdateInitDataServe();
+        if(res?.data?.status==="SUCCESS"){
+            setTypeList(res?.data?.data?.types?.map(item => {
+                return {
+                    value: item?.code,
+                    label: item?.name
+                }
+            }))
+        }
+    }
+
+    useEffect(() => { 
+        form.resetFields();
+        if(open){
+            getBasInspectionItemSaveOrUpdateInitData()
+        }
+    }, [open]);
+
+    useEffect(()=>{
+        form.setFieldsValue(editData);
+    }, [JSON.stringify(editData||{})]);
 
     return (
         <Modal
@@ -65,10 +62,6 @@ const AddProject = ({ open, onClose }) => {
             onCancel={() => onClose(false)}
         >
             <Form
-                style={{
-                    width: currentStep == 1 || currentStep == 3 ? "100%" : "50%",
-                    margin: "0 auto",
-                }}
                 name="basic"
                 labelCol={{
                     span: 7,
@@ -82,6 +75,7 @@ const AddProject = ({ open, onClose }) => {
             >
                 <Form.Item
                     label="巡检项名称"
+                    name={"name"}
                     rules={[
                         {
                             required: true,
@@ -93,11 +87,25 @@ const AddProject = ({ open, onClose }) => {
                 </Form.Item>
 
                 <Form.Item
-                    label="巡检项内容"
+                    label="巡检项类型"
+                    name={"type"}
                     rules={[
                         {
                             required: true,
-                            message: "请输入巡检项内容",
+                            message: "请选择巡检项类型",
+                        },
+                    ]}
+                >
+                    <Select options={typeList} style={{ width: "100%" }} placeholder="请选择巡检项类型" />
+                </Form.Item>
+
+                <Form.Item
+                    label="巡检项内容"
+                    name="description"
+                    rules={[
+                        {
+                            required: true,
+                            message: "请输入巡检项描述",
                         },
                     ]}
                 >
@@ -106,7 +114,7 @@ const AddProject = ({ open, onClose }) => {
 
                 <Form.Item
                     label="是否需要上传拍照信息"
-                    name="companyCode"
+                    name="needPhotoUpload"
                     rules={[
                         {
                             required: true,
@@ -115,14 +123,14 @@ const AddProject = ({ open, onClose }) => {
                     ]}
                 >
                     <Radio.Group>
-                        <Radio value={1}>是</Radio>
-                        <Radio value={2}>否</Radio>
+                        <Radio value={true}>是</Radio>
+                        <Radio value={false}>否</Radio>
                     </Radio.Group>
                 </Form.Item>
 
                 <Form.Item
                     label="是否需要上传备注"
-                    name="needDesc"
+                    name="needRemark"
                     rules={[
                         {
                             required: true,
@@ -131,8 +139,8 @@ const AddProject = ({ open, onClose }) => {
                     ]}
                 >
                     <Radio.Group>
-                        <Radio value={1}>是</Radio>
-                        <Radio value={2}>否</Radio>
+                        <Radio value={true}>是</Radio>
+                        <Radio value={false}>否</Radio>
                     </Radio.Group>
                 </Form.Item>
 
