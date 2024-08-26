@@ -9,7 +9,7 @@ import {
     downloadAlarmTypeTemplate as downloadAlarmTypeTemplateServe,
 } from "@/services";
 import { FORM_REQUIRED_RULE } from "@/utils/constants";
-import { downloadFile } from "@/utils/utils";
+import { jsonToUrlParams } from "@/utils/utils";
 import { getBaseUrl } from "@/services/request";
 import { InboxOutlined } from '@ant-design/icons';
 import styles from "./index.less";
@@ -412,7 +412,7 @@ const AlarmConfiguration = () => {
                                     const alarm = isAlramRef.current;
                                     const autoGenerateWorkOrder = isWorkOrdersRef.current;
                                     const lastUpdaterNameLike = lastModifiedPersonRef.current;
-                                    const res = await downloadAlarmTypeTemplateServe({
+                                    console.log("AA", getBaseUrl()+"/bas-alarm-type/download-import-template"+jsonToUrlParams({
                                         basProjectId,
                                         sePlantId,
                                         seAlarmTypeDescLike,
@@ -421,14 +421,21 @@ const AlarmConfiguration = () => {
                                         mmsEventLevel,
                                         alarm,
                                         autoGenerateWorkOrder,
-                                        lastUpdaterNameLike
-                                    })
-                                    if (res) {
-                                        downloadFile({
-                                            fileName: '项目告警配置.xlsx',
-                                            content: res,
-                                        })
-                                    }
+                                        lastUpdaterNameLike,
+                                        Authorization: "Bearer " + localStorage.getItem("Token")
+                                    }))
+                                    window.open(getBaseUrl()+"/bas-alarm-type/download-import-template"+jsonToUrlParams({
+                                        basProjectId,
+                                        sePlantId,
+                                        seAlarmTypeDescLike,
+                                        seDevNameLike,
+                                        mmsEventDescLike,
+                                        mmsEventLevel,
+                                        alarm,
+                                        autoGenerateWorkOrder,
+                                        lastUpdaterNameLike,
+                                        Authorization: "Bearer " + localStorage.getItem("Token")
+                                    }))
                                 } else {
                                     message.error("至少搜索一个项目");
                                 }
