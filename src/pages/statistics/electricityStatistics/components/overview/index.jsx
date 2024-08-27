@@ -219,10 +219,10 @@ function Com(props) {
         setCurrntGrid(e);
     };
     const getGrid = async () => {
-        let { data: grid } = await getGridPointList({
+        let res = await getGridPointList({
             plantId: localStorage.getItem('plantId')
         })
-        setGrids([{id:"ALL",gridPointName:getTranslation('电站总计')},...grid?.data]);
+        setGrids([{id:"ALL",gridPointName:getTranslation('电站总计')},...res?.data?.grid?.data]);
         setCurrntGrid('ALL');
         getData();
     }
