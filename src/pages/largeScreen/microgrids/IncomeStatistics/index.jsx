@@ -13,7 +13,7 @@ const IncomeStatistics = ({plantId}) => {
         let data2 = [];
         if(res?.data?.data){
             const data = res?.data?.data;
-            xAxisData = data?.map(item => `${item?.date?.year}/${item?.date?.monthValue}/${item?.date?.dayOfMonth}`);
+            xAxisData = data?.map(item => dayjs(item.date).format('YYYY-MM-DD'));
             data1 = data?.map(item => item?.energyProfit);
             data2 = data?.map(item => item?.pvProfit);
         }
@@ -24,7 +24,7 @@ const IncomeStatistics = ({plantId}) => {
                     axisPointer: {
                         type: 'cross',
                         crossStyle: {
-                            color: '#999'
+                            color: '#FFF'
                         }
                 }
             },
@@ -42,6 +42,9 @@ const IncomeStatistics = ({plantId}) => {
             xAxis: [
                 {
                     type: 'category',
+                    axisLabel: {
+                        color: 'white'
+                    },
                     data: xAxisData,
                     axisPointer: {
                         type: 'shadow'
@@ -51,6 +54,9 @@ const IncomeStatistics = ({plantId}) => {
             yAxis: [
                 {
                     type: 'value',
+                    axisLabel: {
+                        color: 'white'
+                    },
                     axisLine: {
                         show: false
                     },

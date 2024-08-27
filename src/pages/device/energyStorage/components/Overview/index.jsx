@@ -168,7 +168,7 @@ function Overview(props) {
     }, [pageType, id]);
     const getEnergy = async () => {
         let { data } = pageType === 'ALL' ? await getEnergySummary({ plantId: localStorage.getItem('plantId') }) :
-            await getEnergySummaryByDtu({ dtuId});
+            await getEnergySummaryByDtu({ dtuId:id});
         setEnergySummaryg(data.data);
     }
     const getRun = async () => {
@@ -178,17 +178,17 @@ function Overview(props) {
     }
     const getIncome = async () => {
         let res = pageType === 'ALL' ? await getIncomeByPlantId({ plantId: localStorage.getItem('plantId') }) :
-            await getIncomeByDtuId({ dtuId });
+            await getIncomeByDtuId({dtuId: id });
         setIncome(res?.data?.data);
     }
     const getAlarms = async () => {
         let { data } = pageType === 'ALL' ? await getNowAlarmsByEnergy({ plantId: localStorage.getItem('plantId') }) :
-            await getNowAlarmsByDtu({ dtuId });
+            await getNowAlarmsByDtu({ dtuId:id });
         setAlarms(data.data);
     }
     const getAllElecty = async () => {
         let { data } = pageType === 'ALL' ? await getChargeDischargeEnergySevenDaysByPlantId({ plantId: localStorage.getItem('plantId') }) :
-            await getChargeDischargeEnergySevenDaysDtuId({ dtuId });
+            await getChargeDischargeEnergySevenDaysDtuId({ dtuId:id });
         let arrA = [];
         let arrB = [];
         let arrC = [];
