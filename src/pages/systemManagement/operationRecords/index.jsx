@@ -82,8 +82,8 @@ const RealtimeAlarm = () => {
     setUserName(value);
   }
   return (
-    <div className={styles.content}>
-      <div className={styles.title} style={{ backgroundColor: token.cardBgc }}>
+    <div className={styles.content} style={{height:'calc(100% - 10px)', backgroundColor: token.titleCardBgc }}>
+      <div className={styles.title} style={{ backgroundColor: token.titleCardBgc }}>
         <div className={styles.level}>
           <RangePicker
             style={{ width: 280 }}
@@ -97,7 +97,7 @@ const RealtimeAlarm = () => {
           <Search placeholder={t('用户名')} onSearch={onSearch} enterButton />
         </div>}
       </div>
-      <div className={styles.tablePart} style={{ backgroundColor: token.cardBgc }}>
+      <div className={styles.tablePart} style={{ backgroundColor: token.titleCardBgc }}>
         <Table
           columns={clums}
           data={data?.records}

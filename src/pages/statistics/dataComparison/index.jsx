@@ -91,7 +91,6 @@ function Com(props) {
         setPackList(arr);
         setDataOfEchart(data?.data);
         handelData(data?.data, setOptionEchart);
-        console.log(way,arr,'way');
         way == 1 ? setPackReq([[arr?.[0]?.value, `${arr?.[0]?.children?.[0]?.id},${arr?.[0]?.children?.[0]?.gridPoint}`, arr?.[0]?.children?.[0]?.children?.[0]?.value]]) : setPackReq([arr?.[0]?.value, `${arr?.[0]?.children?.[0]?.id},${arr?.[0]?.children?.[0]?.gridPoint}`, arr?.[0]?.children?.[0]?.children?.[0]?.value]);
       }
       return;

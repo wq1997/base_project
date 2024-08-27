@@ -46,8 +46,8 @@ export default [
         path: '/index/depotSettings',
         routes: [
             { name: '策略配置', path: '/index/depotSettings/policyConfiguration', component: "@/pages/depotSettings/policyConfiguration" },
-            { name: '电站配置', path: '/index/depotSettings/powerStationConfig', component: "@/pages/depotSettings/powerStationConfig" },
             { name: '运维管理', path: '/index/depotSettings/operationManage', component: "@/pages/depotSettings/operationManage" },
+            { name: '电站配置', path: '/index/depotSettings/powerStationConfig', component: "@/pages/depotSettings/powerStationConfig" },
         ]
     },
     {

@@ -75,7 +75,7 @@ const OperationManage = () => {
     const getInit = async () => {
         let { data } = await getGridPointList({ plantId: localStorage.getItem('plantId') });
         let arr = [];
-        data?.data.map(it => {
+        data?.data?.map(it => {
             arr.push({
                 label: it.gridPointName,
                 value: it.id,

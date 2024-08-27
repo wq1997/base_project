@@ -202,11 +202,11 @@ const changeGrid = (e) => {
         </div>
         <Table
           columns={alarmTableColums}
-          data={data.records}
+          data={data?.records}
           pagination={false}
           scroll={{ y: scroolY }}
         />
-        <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} total={data.total} pageSize={data.size} onChange={changPage} />
+        <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} total={data?.total} pageSize={data?.size} onChange={changPage} />
 
       </div>
 

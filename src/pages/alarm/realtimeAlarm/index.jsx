@@ -115,11 +115,11 @@ const RealtimeAlarm = () => {
           <div className={styles.alarmWrap} style={{height:'calc(100% - 87px)'}}>
             <Table
               columns={clum}
-              data={data.records}
+              data={data?.records}
               pagination={false}
               scroll={{ y: scroolY }}
             />
-            <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} total={data.total} pageSize={data.size} onChange={changPage} />
+            <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} total={data?.total} pageSize={data?.size} onChange={changPage} />
           </div>
 
         }

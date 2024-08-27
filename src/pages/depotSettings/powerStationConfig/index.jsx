@@ -35,7 +35,7 @@ function Com(props) {
     const getInitData = async () => {
         let { data } = await getInsertPlantInitData();
         let str = locale === 'zh-CN' ? 'desc' : 'enDesc'
-        data.data.languageList.map(it => {
+        data?.data?.languageList?.map(it => {
             it.label = `${it[str]}--${it.value}`
         });
         setInitSelectData({ ...data.data, timeZone: timeZoneList });
@@ -217,7 +217,7 @@ function Com(props) {
     }
 
     return (
-        <div className={styles.contents}>
+        <div className={styles.contents}style={{height:'calc(100% - 10px)', backgroundColor: token.titleCardBgc }}>
             <CardModel
                 title={
                     t("电站配置")
