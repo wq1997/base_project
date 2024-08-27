@@ -16,6 +16,7 @@ const RealtimeAlarm = () => {
   const [username, setUserName] = useState();
   const [pageSize, setPageSize] = useState(10);
   const [Ip, setIp] = useState('');
+  const {locale} = useSelector(state => state.global);
 
   const { token } = theme.useToken();
   const { RangePicker } = DatePicker;
@@ -55,7 +56,7 @@ const RealtimeAlarm = () => {
 });
   useEffect(() => {
     getData(current);
-  }, [current,  pageSize]);
+  }, [current,  pageSize,locale]);
   const getData = async (page) => {
     const { data } = await apiListLogWithPage({
       pageNum: page,

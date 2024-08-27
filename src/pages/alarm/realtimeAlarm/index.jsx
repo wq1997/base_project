@@ -1,6 +1,6 @@
 import Table from '@/components/Table.jsx'
 import { useEffect, useState } from 'react'
-import { FormattedMessage, useIntl } from "umi";
+import { FormattedMessage, useIntl,useSelector } from "umi";
 import styles from "./index.less";
 import { Pagination, theme, Select, Cascader, Button, DatePicker } from "antd"
 import { alarmLevel } from "@/utils/constants"
@@ -59,6 +59,7 @@ const RealtimeAlarm = () => {
   const [deviceList, setDeviceList] = useState([]);
   const [plantId, setPlantId] = useState(null);
   const [deviceId, setDeviceId] = useState(null);
+  const { locale } = useSelector(state => state.global);
 
   const intl = useIntl();
   const t = (id) => {
@@ -109,7 +110,7 @@ const RealtimeAlarm = () => {
   useEffect(() => {
     initPlantDevice();
     getData();
-  }, []);
+  }, [locale]);
 
   const getData = async (page) => {
     const { data } = await getNowAlarmsWithPage({

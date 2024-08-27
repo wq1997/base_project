@@ -171,3 +171,7 @@ export const batchSendStrategySetting = (payload) => {
 export const btachSendPCSPower = (payload) => {
     return axiosInstance.post(`/minsys/strategy/sendMultiPCSPower`, payload);
 }
+
+export const changeBaseLanguage = (payload) => {
+    return axiosInstance.post(`/user/changeLanguage?language=${payload?.language}`, payload);
+}

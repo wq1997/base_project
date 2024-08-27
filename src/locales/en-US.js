@@ -1878,7 +1878,7 @@ export default {
 '电站信息':'Plant Info',
 '说明':'Explanation',
 '红色代表单体电压/温度最高, 绿色代表单体电压/温度最低':'Red represents the highest cell voltage/temperature, and green represents the lowest cell voltage/temperature.',
-'采样点':'Sampling point',
+'采样点':'Point',
 'PACK温度/℃':'PACK temperature/℃',
 '温差':'Temperature difference',
 '请选择电站':'Please select power station',

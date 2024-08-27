@@ -76,7 +76,7 @@ const Index = ({ plants, showInfo, panTo }) => {
             zoom: defaultZoom,
             center: panTo,
             lang: locale==="zh-CN"?"zh_cn":"en",
-            mapStyle: theme === "default"?"amap://styles/grey":"amap://styles/darkblue"
+            mapStyle: theme === "default"?"amap://styles/normal":"amap://styles/darkblue"
         })
         _map.on("complete", async () => {
             addMarkers(_map, plants);

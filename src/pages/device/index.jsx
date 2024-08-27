@@ -35,6 +35,7 @@ const RealtimeAlarm = () => {
     const [initSelectData, setInitSelectData] = useState();
     const [record, setRecord] = useState([]);
     const [currentPlantId, setCurrentPlantId] = useState();
+    
     const { token } = theme.useToken();
     const intl = useIntl();
     const [mapPanTo, setPanTo] = useState();
@@ -49,7 +50,7 @@ const RealtimeAlarm = () => {
     const { user } = useSelector(function (state) {
         return state.user
     });
-    const global = useSelector(state => state.global);
+    const {locale} = useSelector(state => state.global);
 
     const eleData = [
         {
@@ -123,7 +124,7 @@ const RealtimeAlarm = () => {
 
     useEffect(() => {
         getAllPlant();
-    }, [])
+    }, [locale])
 
     const changeIsOpenDel = (record) => {
         setIsOpenDel(!isOpenDel)
@@ -289,7 +290,7 @@ const RealtimeAlarm = () => {
             getAllRevenue();
             setPanTo([currentPlant?.longitude||108.9, currentPlant?.latitude||34.2]);
         }
-    }, [currentPlantId]);
+    }, [currentPlantId,locale]);
     return (
         <div
             className={styles.content}
@@ -361,7 +362,7 @@ const RealtimeAlarm = () => {
                     <div className={styles.realEle}>
                     {eleData.map(it => {
                                     return (
-                                        <div className={styles.topItem} style={{ color:'#00FFFB',  }}>
+                                        <div className={styles.topItem} style={{ color:token.color7,  }}>
                                             <div className={styles.topVaue} style={{  fontWeight: 400, }} >
                                                 {dataEle[it.name]}
                                                 <span style={{ fontSize: '0.8333rem', fontWeight: 400, marginLeft: '0.5208rem', height: '10%', lineHeight: '150%' }}>{it.unit}</span>

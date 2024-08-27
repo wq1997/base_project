@@ -1,7 +1,7 @@
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect, useRef } from "react";
 import * as echarts from "echarts";
-import { useIntl } from "umi";
+import { useIntl,useSelector } from "umi";
 import {
     getRevenue as getRevenueServe,
 } from "@/services";
@@ -11,6 +11,8 @@ import { theme,  } from "antd";
 const ElectricityRanking = ({ currentPlantId }) => {
     const intl = useIntl();
     const [options, setOptions] = useState({});
+    const {locale} = useSelector(state => state.global);
+
     const getOptions = async() => {
         if(!currentPlantId) return;
         let data_1 = [], data_2 = [];
@@ -131,7 +133,7 @@ const ElectricityRanking = ({ currentPlantId }) => {
 
     useEffect(() => {
         getOptions();
-    }, [currentPlantId,token]);
+    }, [currentPlantId,token,locale]);
 
     return (
         <ReactECharts 

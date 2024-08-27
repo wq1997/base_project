@@ -30,9 +30,8 @@ const MonitoringCurves = () => {
     const [plantDeviceList, setPlantDeviceList] = useState([]);
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState(`${intl.formatMessage({ id: '监测曲线' })}`);
-
+    const {locale} = useSelector(state => state.global);
     const [dataProList, setDataProList] = useState([
-   
     ]);
 
     const getParams = async (showMessage = true) => {
@@ -49,8 +48,6 @@ const MonitoringCurves = () => {
             showMessage && message.error(intl.formatMessage({ id: '请选择电站下具体设备' }));
             flag = true;
         };
-        console.log(date, 'date');
-
         if (flag) return Promise.reject("参数错误");
         let params = {
             // plantId: currentPlantDevice?.[0],
@@ -440,7 +437,7 @@ const MonitoringCurves = () => {
 
     useEffect(() => {
         initOption();
-    }, [dataSource,token]);
+    }, [dataSource,token,locale]);
 
     useEffect(() => {
         initPlantDevice();

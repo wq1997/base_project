@@ -1,4 +1,4 @@
-import { useIntl } from "umi";
+import { useIntl,useSelector } from "umi";
 import { Form, Cascader, DatePicker, Button, Flex, Radio, theme, Space, message, Empty, Spin, Tooltip, Table, Select } from "antd";
 import { Title } from "@/components";
 import ReactECharts from "echarts-for-react";
@@ -35,6 +35,7 @@ const Electricity = () => {
     const [loading, setLoading] = useState(false);
     const [plantList, setPlantList] = useState([]);
     const [deviceList, setDeviceList] = useState([]);
+    const {locale} = useSelector(state => state.global);
 
     const getParams = async (showMessage = true) => {
         let format = "YYYY-MM-DD";
@@ -75,7 +76,6 @@ const Electricity = () => {
         let lMax = lMax1 > lMax2 ? lMax1 : lMax2;
         lMax = Math.ceil(lMax / 5) * 5 || 100;
         const lInterval = lMax / 5;
-
         let rMax = Number(Math.max(...dataSource?.map(item => item.cDEfficiency) || []));
         rMax = Math.ceil(rMax / 5) * 5 || 100;
         const rInterval = rMax / 5;
@@ -285,7 +285,7 @@ const Electricity = () => {
 
     useEffect(() => {
         initOption();
-    }, [dataSource,token]);
+    }, [dataSource,token,locale]);
 
     useEffect(() => {
         initPlantDevice();

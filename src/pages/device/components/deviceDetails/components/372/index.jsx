@@ -20,6 +20,7 @@ function Com(props) {
         return msg
     }
     const [dataTable1, setDataTable1] = useState([]);
+    const {locale} = useSelector(state => state.global);
 
     const tableClum1 = [
         {
@@ -310,7 +311,7 @@ function Com(props) {
 
     useEffect(() => {
         getData();
-    }, [])
+    }, [locale])
     const getData = async () => {
         let { data } = await getBurDeviceDetailInfo2({ id });
         data.data.pcsBranch[1].statusAll2 = data.data.pcsBranch[1]?.statusAll;

@@ -23,6 +23,7 @@ function Com(props) {
     const [allUser, setAllUser] = useState([]);
     const dateFormat = 'YYYY-MM-DD HH:hh:ss';
     const [textSearch, setTextSearch] = useState('');
+
     useEffect(() => {
         getData();
     }, [formData,])
@@ -33,7 +34,7 @@ function Com(props) {
     }, [locale])
     useEffect(() => {
         getData();
-    }, [])
+    }, [locale])
     const { locale } = useSelector(state => state.global);
     const intl = useIntl();
 

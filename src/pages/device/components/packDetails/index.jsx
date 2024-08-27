@@ -19,6 +19,8 @@ function Com(props) {
     const intl = useIntl();
     const Icon = useIcon();
     const {token}=theme.useToken();
+    const {locale} = useSelector(state => state.global);
+
     const t = (id) => {
         const msg = intl.formatMessage(
             {
@@ -34,7 +36,7 @@ function Com(props) {
 
     useEffect(() => {
         getPackData();
-    }, [selectId])
+    }, [selectId,locale])
     const initData = async () => {
         let { data } = await getBurPackDetailInitData2({
             dtuId: id,
@@ -86,17 +88,17 @@ function Com(props) {
             <div className={styles.packContent}>
                 {data.map((one, index) => {
                     return (<div className={styles.onePack}>
-                        <div className={styles.title1}>
+                        <div className={styles.title1}  style={{color:token.iconColor}}>
                             <Icon type='icon-xiangyou' style={{ cursor: 'pointer',marginRight:'6px' }}></Icon>
-                            <span style={{marginRight: 5}}>PACK{one.packNo + 1}</span>
+                            <span style={{marginRight: 5,}}>PACK{one.packNo + 1}</span>
                             {index === 0 && <Tooltip title={`${t('说明')}: ${t('红色代表单体电压/温度最高, 绿色代表单体电压/温度最低')}`}><QuestionCircleOutlined /></Tooltip>}
                             </div>
                         <div className={styles.vol}>
-                            <div className={styles.title2}>{t("单体电压/V")}</div>
+                            <div className={styles.title2} style={{color:token.color2}}>{t("单体电压/V")}</div>
                             <div className={styles.oneContent}>
                                 {one.vols?.map((it, index) => {
                                     return (
-                                        <div className={styles.oneData} style={{ color: it === maxVol ? '#FF3333' : (it === minVol ? '#15FF35' : '') }}>
+                                        <div className={styles.oneData} style={{ color: it === maxVol ? '#FF3333' : (it === minVol ? '#15FF35' : token.color1) }}>
                                         {t("电芯")}{index}:<span style={{ marginLeft: '10px' }}>{it}</span>
                                     </div>
                                     )
@@ -104,11 +106,11 @@ function Com(props) {
                             </div>
                         </div>
                         <div className={styles.tem}>
-                            <div className={styles.title2}>{t("单体温度/℃")}</div>
+                            <div className={styles.title2} style={{color:token.color2}}>{t("单体温度/℃")}</div>
                             <div className={styles.oneContent}>
                                 {one.tmps?.map((it, index) => {
                                     return (
-                                        <div className={styles.oneData} style={{ color: it === maxTemp ? '#FF3333' : (it === minTemp ? '#15FF35' : '') }}>
+                                        <div className={styles.oneData} style={{ color: it === maxTemp ? '#FF3333' : (it === minTemp ? '#15FF35' : token.color1) }}>
                                             {t('采样点')}{index}:<span style={{ marginLeft: '10px' }}>{it}</span>
                                         </div>
                                     )
@@ -117,12 +119,12 @@ function Com(props) {
                           
                         </div>
                         <div className={styles.packTem}>
-                        <div className={styles.title2}>{t("PACK温度/℃")}</div>
+                        <div className={styles.title2} style={{color:token.color2}}>{t("PACK温度/℃")}</div>
 
                         <div className={styles.tempContent}>
                                 {Object.keys(one?.extraPackData).map((it, index) => {
                                     return (
-                                        <div className={styles.oneData}>
+                                        <div className={styles.oneData} style={{color:token.color1}}>
                                         {t(temObj[it])}:<span style={{ marginLeft: '10px' }}>{one?.extraPackData[it]}</span>
                                     </div>
                                     )

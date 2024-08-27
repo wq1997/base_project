@@ -36,7 +36,7 @@ function Com(props) {
     }, [global.theme]);
     useEffect(() => {
         getData();
-    }, [global.theme])
+    }, [global.theme,global.locale])
     const intl = useIntl();
     const t = (id) => {
         const msg = intl.formatMessage(
@@ -196,8 +196,8 @@ const [option, setOption] = useState({})
 
     return (
         <div className={styles.content} style={{backgroundColor: token.titleCardBgc_2  }}>
-            <div className={styles.title} style={{ backgroundColor: token.darkbgc }}>{decodeURI(getQueryString("title"))}
-            <div className={styles.sn}><span>SN:</span><span>{props?.sn}</span></div>
+            <div className={styles.title} style={{ backgroundColor: token.darkbgc,color:token.color2 }}>{decodeURI(getQueryString("title"))}
+            <div className={styles.sn} style={{color:token.color3}}><span>SN:</span><span>{props?.sn}</span></div>
 
             </div>
             <div className={styles.PcsData} style={{ backgroundColor: token.darkbgc,color: token.color1 }}>

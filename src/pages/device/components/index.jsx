@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { getQueryString } from "@/utils/utils";
-import { history, useLocation, useIntl } from "umi";
+import { history, useLocation, useIntl,useSelector } from "umi";
 import styles from "./index.less";
 import DeviceDetails from './deviceDetails';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
@@ -24,6 +24,8 @@ const Cabinet = () => {
         history.push(`${pathname}?activeKey=${key}&id=${id}&title=${getQueryString("title")}&sn=${getQueryString("sn")}&type=${getQueryString("type")}`);
     };
     const intl = useIntl();
+    const {locale} = useSelector(state => state.global);
+
     const t = (id) => {
         const msg = intl.formatMessage(
             {
@@ -34,7 +36,7 @@ const Cabinet = () => {
     }
     useEffect(() => {
         getInitData();
-    }, [])
+    }, [locale])
     const getInitData =  () => {
         getQueryString("type")==14 ? setPageTypeList([
             { label: t('总览'), key: 'OverView' },
@@ -53,9 +55,6 @@ const Cabinet = () => {
     ]);
     const deviceDetailStyle = useEmotionCss(() => {
         return {
-            // '.ant-tabs-nav': {
-            //     background: token.tabBgc
-            // },
             '.ant-tabs-tab': {
                 color: `#999999 !important`
             },

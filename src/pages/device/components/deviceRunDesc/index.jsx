@@ -19,7 +19,7 @@ const DeviceRunDesc = ({dataSource}) => {
 
             {/* 离线 */}
             <div className={styles.ball3}>
-                <div className={styles.data3} style={{color: '#E3E3E3'}}>{dataSource?.offlineCount||0}</div>
+                <div className={styles.data3} style={{color: token.color6}}>{dataSource?.offlineCount||0}</div>
                 <div className={styles.font} style={{color:token.tableColor}}>{intl.formatMessage({id: '离线'})}</div>
                 <img src={ballImg} />
             </div>

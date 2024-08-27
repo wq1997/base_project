@@ -1,4 +1,4 @@
-import { useIntl } from "umi";
+import { useIntl,useSelector } from "umi";
 import { Form, Cascader, DatePicker, Button, Flex, Radio, theme, Space, message, Empty, Spin, Tooltip, Select } from "antd";
 import { Title } from "@/components";
 import ReactECharts from "echarts-for-react";
@@ -30,6 +30,7 @@ const HighAnysis = () => {
     const [packCellList, setPackCellList] = useState([]);
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState(`${intl.formatMessage({ id: '电芯详情' })}`);
+    const {locale} = useSelector(state => state.global);
 
     const dataProList = [
         {
@@ -281,7 +282,7 @@ const HighAnysis = () => {
 
     useEffect(() => {
         initOption();
-    }, [dataSource,token]);
+    }, [dataSource,token,locale]);
 
     useEffect(() => {
         initPlantDevice();

@@ -32,7 +32,10 @@ const theme = {
         color2:'#FFFFFF',
         color3:'#FFFFFF',  
         color4:'#00CBFF',
-        color5:'#03B4B4'
+        color5:'#03B4B4',
+        color6:'#E3E3E3',
+        color7:'#00FFFB',
+
     },
     default: {
         colorPrimary:'#03B4B4',
@@ -64,8 +67,9 @@ const theme = {
         color2:'#333333',
         color3:'#999999',  
         color4:'#6887A1',
-        color5:'#0DED1C'
-
+        color5:'#0DED1C',
+        color6:'#999999',
+        color7:'#03B4B4',
       }
 }
 export default theme;
