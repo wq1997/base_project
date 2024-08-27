@@ -348,13 +348,11 @@ function Com(props) {
         dealData(data?.data?.bmc[1], bms2Data, setBms2Data);
         dealData(data?.data?.bmc[0], bmsData, setBmsData);
         dealData(data?.data?.bms[0], bmsData, setBmsData)
-        // dealData(data?.data?.bms[1], bmsData, setBmsData);
         dealData(data?.data?.bmc[1], bmsData, setBmsData);
         dealData(data?.data?.meter, meterData, setMeterData);
         dealData(data?.data?.energy, energyData, setEnergyData);
         dealData(data?.data?.bmc[0], ic1Data, setlc1Data);
         dealData(data?.data?.bmc[1], ic2Data, setlc2Data);
-        console.log(pcsData,data.data,'pcsDatapcsData');
         let arr=[];
         let obj1={};
         let obj2={};
@@ -373,7 +371,6 @@ function Com(props) {
         baseData.data.map(it => {
             data[it.key] ? it.value = data[it.key] : null;
             if (baseData.title==='PCS信息') {
-                console.log(data,11111);
             console.log(it.key,it.value, data[it.key],'aaa');
                 
             }

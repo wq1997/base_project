@@ -64,7 +64,6 @@ const App = (props) => {
             props.userUp?.find(it => it.roleId == 3)
           )
         };
-        console.log(arr,22222);
         setUpData(arr); 
       }
     },

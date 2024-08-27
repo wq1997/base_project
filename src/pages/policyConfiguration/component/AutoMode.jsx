@@ -298,7 +298,6 @@ const EditableCell = ({
         ...values,
       });
     } catch (errInfo) {
-      console.log('Save failed:', errInfo);
     }
   };
   let childNode = children;
@@ -527,7 +526,6 @@ const App = ({ devId, dtuId, historyAllData }) => {
   }
   const initData = () => {
     let arr = [];
-    console.log(historyAllData?.pcsPowerWaveRange,12212);
     setRangePower(historyAllData?.pcsPowerWaveRange);
     modelData?.map((it, index) => {
       if (index !== 23 && historyAllData.monPowers?.length) {
