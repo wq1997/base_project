@@ -40,3 +40,47 @@ export const downloadAlarmTypeTemplate = payload => {
         params: payload
     })
 }
+
+export const getBasProjectInitData = payload => {
+    return axiosInstance.get(`/bas-project/get-search-page-init-data`);
+}
+
+export const getBaseProjectList = payload => {
+    return axiosInstance.post(`/bas-project/find-page`, payload)
+}
+
+export const getSupplierInitData = payload => {
+    return axiosInstance.get(`/bas-supplier/get-search-page-init-data`);
+}
+
+export const basProjectPart1SaveOrUpdate = payload => {
+    return axiosInstance.post(`/bas-project/part1-save-or-update`, payload)
+}
+
+export const basProjectPart2SaveOrUpdate = payload => {
+    return axiosInstance.post(`/bas-project/part2-update`, payload)
+}
+
+export const basProjectPart3SaveOrUpdate = payload => {
+    return axiosInstance.post(`/bas-project/part3-update`, payload)
+}
+
+export const basProjectPart4SaveOrUpdate = payload => {
+    return axiosInstance.post(`/bas-project/part4-update`, payload)
+}
+
+export const basProjectDelete = payload => {
+    return axiosInstance.post(`/bas-project/delete`, payload)
+}
+
+export const basSupplierList = payload => {
+    return axiosInstance.post(`/bas-supplier/find-list`, payload||{})
+}
+
+export const basSupplierModifyAll = payload => {
+    return axiosInstance.post(`/bas-supplier/modify-all`, payload||{})
+}
+
+export const getBasProjectEditInitData = payload => {
+    return axiosInstance.get(`/bas-project/get-edit-page-init-data`)
+}

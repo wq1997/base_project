@@ -53,6 +53,7 @@ const EditRowTable = ({
       inputType = "Input",
       editing,
       options,
+      mode,
       ...restProps
     } = props;
     const getFormByType = () => {
@@ -68,7 +69,7 @@ const EditRowTable = ({
           return <CustomDatePicker {...props} />
         case "Select":
           return (
-            <Select options={options} {...props} />
+            <Select options={options} mode={mode} {...props} />
           )
         case "DatePicker":
           return <DatePicker options={options} />
@@ -131,6 +132,8 @@ const EditRowTable = ({
           if (column.editable) {
             if (column.inputType === "DatePicker") {
               object[column.dataIndex] = moment(object[column.dataIndex]).format("YYYY-MM-DD");
+            } else if (column.inputType === "Select" && column.mode === "multiple") {
+              object[column.dataIndex] = object[column.dataIndex]?.join(',')
             } else {
               object[column.dataIndex] = object[column.dataIndex]
             }
@@ -162,6 +165,8 @@ const EditRowTable = ({
       if (column.editable) {
         if (column.inputType === "DatePicker") {
           object[column.dataIndex] = dayjs(record[column.dataIndex]);
+        } else if (column.inputType === "Select" && column.mode === "multiple") {
+          object[column.dataIndex] = Array.isArray(record[column.dataIndex])?record[column.dataIndex]:record[column.dataIndex]?.split(',')
         } else {
           object[column.dataIndex] = record[column.dataIndex]
         }
@@ -269,7 +274,7 @@ const EditRowTable = ({
     setDataSource(newData);
     onChange(newData);
   };
-  console.log("AAAA", dataSource)
+
   const components = {
     body: {
       cell: EditableCell,
@@ -289,6 +294,7 @@ const EditRowTable = ({
           editable: col.editable,
           dataIndex: col.dataIndex,
           title: col.title,
+          mode: col?.mode,
           editing: isEditing(record),
           handleSave,
         }
