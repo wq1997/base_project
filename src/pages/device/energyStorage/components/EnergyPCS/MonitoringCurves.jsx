@@ -8,7 +8,7 @@ import * as echarts from "echarts";
 import { CardModel } from "@/components";
 import { pcsDataType } from '@/utils/constants';
 import { getQueryString, downLoadExcelMode } from "@/utils/utils";
-import { obtainPCSParameterData } from '@/services/deviceTotal';
+import { obtainPCSParameterData,getDataParams } from '@/services/deviceTotal';
 import dayjs from 'dayjs';
 import { useSelector, useIntl } from "umi";
 const { Option } = Select;
@@ -19,6 +19,7 @@ function Com(props) {
     const [type, setType] = useState(pcsDataType[0].value);
     const [title, setTitle] = useState('实时功率');
     const [excelData, setExcelData] = useState([]);
+    const [paramsData,setParamsData]=useState([]);
     const intl = useIntl();
     const id = getQueryString("id");
     const t = (id) => {
@@ -34,8 +35,18 @@ function Com(props) {
     }
     const changeType = (value, label) => {
         setType(value);
-        setTitle(label?.children.props?.id);
+        setTitle(label?.children);
     }
+
+    const initData=async()=>{
+        let res=await getDataParams({
+            plantId:localStorage.getItem('plantId'),
+            devId:id
+        });
+        setParamsData(res?.data?.data);
+        setType(res?.data?.data?.[0]?.dataType);
+        
+    };
     const queryData = async () => {
         let { data } = await obtainPCSParameterData({
             id: id,
@@ -174,6 +185,7 @@ function Com(props) {
 
     useEffect(() => {
         queryData();
+        initData();
     }, [token]);
     return (
         <div className={styles.monitoringCurves}>
@@ -187,8 +199,8 @@ function Com(props) {
                     defaultValue={pcsDataType[0]?.value}
                     onChange={changeType}
                 >
-                    {pcsDataType && pcsDataType.map(item => {
-                        return (<Option key={item.value} value={item.value}>{item.label}</Option>);
+                    {paramsData && paramsData.map(item => {
+                        return (<Option key={item.dataType} value={item.dataType}>{item.dataTypeDesc}</Option>);
                     })
                     }
                 </Select>
@@ -201,7 +213,7 @@ function Com(props) {
             </div>
             <div className={styles.echartPart}>
                 <CardModel
-                    title={t(title)}
+                    title={title}
                     content={
                         <div className={styles.echartPartCardwrap}>
                             <ReactECharts option={optionEchart} style={{ height: '100%' }} />

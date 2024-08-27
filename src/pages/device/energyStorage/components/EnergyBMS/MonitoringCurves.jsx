@@ -9,7 +9,7 @@ import { CardModel } from "@/components";
 import dayjs from 'dayjs';
 import { useSelector, useIntl } from "umi";
 import { BmsDataType, BmcDataType } from '@/utils/constants'
-import { obtainBMSClustersList, obtainBMSParameterData } from '@/services/deviceTotal'
+import { obtainBMSClustersList, obtainBMSParameterData,getDataParams } from '@/services/deviceTotal'
 import { getQueryString,downLoadExcelMode } from "@/utils/utils";
 
 const { Option } = Select;
@@ -24,6 +24,7 @@ function Com({ id }) {
     const [unit, setUnit] = useState('V')
     const [date, setDate] = useState(dayjs(new Date()));
     const [excelData,setExcelData]=useState([]);
+    const [paramsData,setParamsData]=useState([]);
 
     const intl = useIntl();
     const t = (id) => {
@@ -37,9 +38,18 @@ function Com({ id }) {
     function onChange(date, dateString) {
         setDate(date);
     }
-
+    const initData=async()=>{
+        let res=await getDataParams({
+            plantId:localStorage.getItem('plantId'),
+            devId:id
+        });
+        setParamsData(res?.data?.data);
+        setType(res?.data?.data?.[0]?.dataType);
+        
+    };
     useEffect(() => {
         // getOptions();
+        initData();
     }, [token]);
     useEffect(() => {
         getClustersData().then(() => {
@@ -208,8 +218,10 @@ function Com({ id }) {
     }
     const changeDataType = (val, label) => {
         setType(val);
-        setTitle(label?.label.props?.id);
-        setUnit(label?.unit)
+        setTitle(label?.children);
+        setUnit(paramsData.find(it=>it.dataType==val)?.unit);
+        console.log(label,val);
+        
     } 
     return (
         <div className={styles.monitoringCurves}>
@@ -232,10 +244,12 @@ function Com({ id }) {
                     className={styles.margRL}
                     style={{ width: 240 }}
                     onChange={changeDataType}
-                    options={dataOption}
                     defaultValue={type}
                 >
-
+ {paramsData && paramsData.map(item => {
+                        return (<Option key={item.dataType} value={item.dataType}>{item.dataTypeDesc}</Option>);
+                    })
+                    }
                 </Select>
                 <DatePicker onChange={onChange} defaultValue={date} />
                 <Button type="primary" className={styles.firstButton} onClick={() => getEchartsData(goalId)}>

@@ -171,3 +171,8 @@ export const getChargeStationStatus = (payload) => {
 export const getChargeStationList = (payload) => {
     return axiosInstance.get(`/microgrid/chargeStation/getChargeStationList?plantId=${payload.plantId}`);
 }
+
+// 获取参数列表
+export const getDataParams = (payload) => {
+    return axiosInstance.get(`/microgrid/dc/getDataParams?plantId=${payload.plantId}&devId=${payload.devId}`);
+}

@@ -196,7 +196,12 @@ function Com(props) {
             plantId:localStorage.getItem('plantId'),
         });
         cardData.map(it=>{
-            it.value=data.data[it.key];
+            if (it.key=='monthEarning'||it.key=='dayEarning') {
+                it.value=data?.data?.[it?.key];
+            }else{
+                it.value=data?.data?.[it?.key]?.split(' ')?.[0];
+                it.unit=data.data[it.key].split(' ')?.[1]
+            }
         });
         setcardData([...cardData])
     }
