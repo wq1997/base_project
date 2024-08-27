@@ -71,7 +71,7 @@ const App = (props) => {
       label: '所属上级',
       key: 'parentId',
       type: 2,
-      required: false,
+      required: true,
       // data: props.formData?.roleId==1?props.userUp:[]
       data: [...upData],
     },
@@ -79,14 +79,14 @@ const App = (props) => {
       label: '手机',
       key: 'phone',
       type: 1,
-      required: true,
+      required: false,
       disabled: false
     },
     {
       label: '邮箱',
       key: 'mail',
       type: 1,
-      required: true,
+      required: false,
       disabled: false
 
     },
