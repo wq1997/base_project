@@ -155,19 +155,7 @@ function Com() {
     getInitData();
   }, [token, way, dataChoiceOpen, date,]);
   useEffect(() => {
-    if (way == 0) {
-      setPicker('date');
-      setCurrentFormat('YYYY-MM-DD')
-    } else if (way == 1) {
-      setPicker('date');
-      setCurrentFormat('YYYY-MM-DD')
-    } else if (way == 2) {
-      setCurrentFormat('YYYY-MM')
-      setPicker('month')
-    } else if (way == 3) {
-      setCurrentFormat('YYYY')
-      setPicker('year')
-    };
+   
   }, [way])
 
   const getInitData = async () => {
@@ -249,10 +237,26 @@ function Com() {
   const changeWay = (val, label) => {
     setWay(val);
     setWayLabel(label?.label);
+    if (val == 0) {
+      setPicker('date');
+      setCurrentFormat('YYYY-MM-DD')
+    } else if (val == 1) {
+      setPicker('date');
+      setCurrentFormat('YYYY-MM-DD')
+    } else if (val == 2) {
+      setCurrentFormat('YYYY-MM')
+      setPicker('month')
+    } else if (val == 3) {
+      setCurrentFormat('YYYY')
+      setPicker('year')
+    }else{
+      setCurrentFormat('YYYY')
+      setPicker('year')
+    }
   }
   const changeDate = (val, str) => {
     setDateStr(str);
-    setDate(dayjs(val).format());
+    setDate(dayjs(val));
   }
   return (
     <>
