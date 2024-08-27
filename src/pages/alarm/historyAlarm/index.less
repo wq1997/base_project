@@ -22,18 +22,27 @@
             display: grid;
             grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
             grid-gap: 10px;
+            grid-template-areas:
+            "topItem topItem topItem pieItem pieItem";
             margin-bottom: 8px;
             align-items: center;
             justify-items: center;
-
+.top{
+    grid-area: topItem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr ;
+    grid-gap: 10px;
+    width: 100%;
+    height: 100%;
+}
             .topItem {
-                height: 80%;
+                height: 100%;
                 width: 100%;
                 border-radius: 4px;
                 // background: #FFFFFF;
                 padding: 16px;
 
-                .topItemTitle {
+                .topItemTitle { 
                     height: 24px;
                     line-height: 24px;
                 }
@@ -48,6 +57,7 @@
                 }
             }
             .pieItem{
+                grid-area: pieItem;
                 width: 100%;
                 height: 80%;
                 .pieItem_bottom{

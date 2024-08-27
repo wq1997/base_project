@@ -180,6 +180,7 @@ const RealtimeAlarm = () => {
           title='历史告警'
           content={
             <div className={styles.topContent}>
+              <div className={styles.top}>
               {topData.map(it => {
                 return (
                   <div className={styles.topItem} style={{ color: it.color, backgroundColor: token.cardBgc, boxShadow: token.cardShadow }}>
@@ -194,21 +195,24 @@ const RealtimeAlarm = () => {
                   </div>
                 )
               })}
+              </div>
+    
               <div className={styles.pieItem}>
                 <PieEcharts allData={{
                   total: sum(dataTotal?.priorStatistics), subtext: t('总数'), data: dataTotal?.priorStatistics
                 }}></PieEcharts>
                 <div className={styles.pieItem_bottom} style={{ color: token.smallTitleColor }}>{t('告警等级分布')}</div>
               </div>
-              <div className={styles.pieItem}>
+              {/* <div className={styles.pieItem}>
                 <PieEcharts
                   top={'50%'}
                   allData={{
                     total: sum(dataTotal?.typeStatistics), subtext: t('总数'), data: dataTotal?.typeStatistics
-                  }}></PieEcharts>
+                  }}>
+                  </PieEcharts>
                 <div className={styles.pieItem_bottom} style={{ color: token.smallTitleColor }}>{t("告警类别分布")}</div>
 
-              </div>
+              </div> */}
             </div>
           }
         />

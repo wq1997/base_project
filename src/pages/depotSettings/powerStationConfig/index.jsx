@@ -213,7 +213,7 @@ function Com(props) {
     }
 
     return (
-        <div className={styles.contents}>
+        <div className={styles.contents} style={{height:'100%',backgroundColor: token.titleCardBgc}}>
             <CardModel
                 title={
                     t("电站配置")

@@ -378,9 +378,9 @@ function Com(props) {
                                 <div className={styles.leftEchart}>
                                     <ReactECharts option={options} style={{ height: '100%' }} />
                                 </div>
-                                <div className={styles.profitPie} style={{ backgroundColor: token.titleCardBgc }}>
+                                {/* <div className={styles.profitPie} style={{ backgroundColor: token.titleCardBgc }}>
                                     <ReactECharts option={optionsPie} style={{ height: '100%' }} />
-                                </div>
+                                </div> */}
 
                             </div>
                         }

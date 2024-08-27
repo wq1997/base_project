@@ -5,7 +5,6 @@ import { theme } from "antd";
 
 
 function Com(props) {
-    const [xxx, setXxx] = useState('')
     var  colorList=['#528AEB', '#F3CE55', '#03B4B4','#9686FF'];
     useEffect(() => {
     }, [])
@@ -30,7 +29,7 @@ function Com(props) {
             },
             legend: {
                 show: true,
-                icon:"circle",
+                // icon:"circle",
                 top: props.top||"30%",
                 left: '0%',
                 width:40,
