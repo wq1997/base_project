@@ -79,7 +79,6 @@ function Com() {
     dataMidst.runData.data = delBaseData(data.runData.data, obj);
     form.setFieldsValue({ ...obj });
     setCurrentModel({ ...obj });
-    console.log(data.baseData.data, obj, 22222);
     let currentDate = dayjs(date).format(currentFormat);
     let { data: allData } = await getDtuReport({
       plantId: localStorage.getItem('plantId'),
@@ -192,10 +191,18 @@ function Com() {
                 </div>
                 {Object.keys(currentModel).length && <Descriptions
                   items={dataMidst.baseData?.data.map(item => {
-                    return {
-                      ...item,
-                      children: allData?.plant?.[item?.value]
+                    if(item.value==='networkDate'||item.value==='installDate'){
+                      return {
+                        ...item,
+                        children:dayjs(allData?.plant?.[item?.value]).format('YYYY-MM-DD')
+                      }
+                    }else{
+                      return {
+                        ...item,
+                        children: allData?.plant?.[item?.value]
+                      }
                     }
+                   
                   })}
                 />}
               </div>
