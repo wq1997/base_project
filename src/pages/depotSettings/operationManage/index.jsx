@@ -52,7 +52,7 @@ const OperationManage = () => {
         }
         return (
             <div
-                style={{ width: 132, height: 48, borderRadius: 4, background: color?.background||'#D1D9EF', color: color?.color||'#6978A1', fontSize: 18, lineHeight: '48px', textAlign: 'center', cursor: 'pointer' }}
+                style={{ width: 100, height: 40, borderRadius: 4, background: color?.background||'#D1D9EF', color: color?.color||'#6978A1', fontSize: 16, lineHeight: '40px', textAlign: 'center', cursor: 'pointer' }}
                 onClick={onBtnClick}
             >
                 {t(text)}

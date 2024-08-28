@@ -234,18 +234,18 @@ function OverView(props) {
             unit: '(kW)'
 
         },
-        {
-            key: 'soc',
-            label: 'SOC',
-            unit: '(%)'
+        // {
+        //     key: 'soc',
+        //     label: 'SOC',
+        //     unit: '(%)'
 
-        },
-        {
-            key: 'soh',
-            label: 'SOH',
-            unit: '(%)'
+        // },
+        // {
+        //     key: 'soh',
+        //     label: 'SOH',
+        //     unit: '(%)'
 
-        },
+        // },
     ]
     return (
         <>

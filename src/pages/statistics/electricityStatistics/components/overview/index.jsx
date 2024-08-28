@@ -100,7 +100,7 @@ function Com(props) {
                         }
                     },
                     barWidth: '8%',
-                    data: dataY.pvOutEnergy
+                    data: dataY.energyInEnergy
                 },
                 {
                     name: getTranslation('放电电量'),
@@ -112,7 +112,7 @@ function Com(props) {
                         }
                     },
                     barWidth: '8%',
-                    data: dataY.energyInEnergy
+                    data: dataY.energyOutEnergy
                 },
               
             ]
@@ -139,15 +139,15 @@ function Com(props) {
             let { data } = await getEnergyFeeByTime(httpData);
             data?.data?.map((it) => {
                 pvOutEnergy.push(it.pvOutEnergy);
-                energyInEnergy.push(it.energyInEnergy);
-                energyOutEnergy.push(it.energyOutEnergy);
+                energyInEnergy.push(it.charge);
+                energyOutEnergy.push(it.discharge);
                 pvInEnergy.push(it.pvInEnergy);
                 chargeInEnergy.push(it.chargeInEnergy);
                 it.date = dayjs(it?.date).format('YYYY-MM-DD')
                 arrX.push(it?.date);
     
             })
-            setData(data.data);
+            setData(data?.data);
             setDateX(arrX);
             setDataY({ pvOutEnergy, energyInEnergy, energyOutEnergy, pvInEnergy, chargeInEnergy });
         }else{
@@ -198,20 +198,20 @@ function Com(props) {
         },
         {
             title: `${getTranslation('充电电量')}(kWh)`,
-            dataIndex: 'pvOutEnergy',
-            key: 'pvOutEnergy',
+            dataIndex: 'charge',
+            key: 'charge',
             width: 100,
         },
         {
             title: `${getTranslation('放电电量')}(kWh)`,
-            dataIndex: 'energyInEnergy',
-            key: 'energyInEnergy',
+            dataIndex: 'discharge',
+            key: 'discharge',
             width: 100,
         },
         {
             title: getTranslation('充放电效率'),
-            dataIndex: 'energyOutEnergy',
-            key: 'energyOutEnergy',
+            dataIndex: 'efficiency',
+            key: 'efficiency',
             width: 100,
         },
     ];
@@ -222,7 +222,7 @@ function Com(props) {
         let res = await getGridPointList({
             plantId: localStorage.getItem('plantId')
         })
-        setGrids([{id:"ALL",gridPointName:getTranslation('电站总计')},...res?.data?.grid?.data]);
+        setGrids([{id:"ALL",gridPointName:getTranslation('电站总计')},...res?.data?.data]);
         setCurrntGrid('ALL');
         getData();
     }
