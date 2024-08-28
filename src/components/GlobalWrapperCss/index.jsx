@@ -3,7 +3,6 @@ import { theme } from "antd";
 
 const GlobalWrapperCss = (props) => {
     const { token } = theme.useToken();
-    console.log("XASASA", token.fontColor)
     const globalStyle = useEmotionCss(() => {
         return {
             '.ant-menu-light .ant-menu-submenu-selected >.ant-menu-submenu-title': {

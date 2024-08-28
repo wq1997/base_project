@@ -12,12 +12,6 @@ import {
     Dropdown,
 } from "antd";
 import {
-    EllipsisOutlined,
-    FileSearchOutlined,
-    FileProtectOutlined,
-    UnorderedListOutlined,
-    UserOutlined,
-    DeleteOutlined,
     ExclamationCircleOutlined,
     PlusCircleFilled,
 } from "@ant-design/icons";
@@ -27,120 +21,99 @@ import AddProject from "./AddProject";
 import Detail from "./Detail";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import "./index.less";
-import dayjs from "dayjs";
+import {
+    getBasInspectionItem as getBasInspectionItemServe,
+    basInspectionItemDelete as basInspectionItemDeleteServe
+} from "@/services";
 
 let invalidReason = undefined;
 
 const Account = () => {
-    const location = useLocation();
-    const initCode = location?.search.split("=")[1];
-    const [canSure, setCanSure] = useState(true);
-    const [canDelete, setCanDelete] = useState(true);
-    const [canInvalid, setCanInvalid] = useState(true);
-    const releaseTimeRef = useRef();
-    const executeTimeRef = useRef();
-    const codeRef = useRef(initCode);
-    const confirmStatusRef = useRef();
-    const splitStatusRef = useRef();
-    const responsePowerRef = useRef();
-    const responseTypeRef = useRef();
-    const responseTimeTypeRef = useRef();
-    const [code, setCode] = useState(initCode);
-    const [releaseTime, setReleaseTime] = useState();
-    const [executeTime, setExecuteTime] = useState();
-    const [confirmStatus, setConfirmStatus] = useState();
-    const [confirmStatusList, setConfirmStatusList] = useState();
-    const [splitStatus, setSplitStatus] = useState();
-    const [splitStatusList, setSplitStatusList] = useState();
-    const [responsePower, setResponsePower] = useState();
-    const [responseType, setResponseType] = useState();
-    const [responseTypeList, setResponseTypeList] = useState();
-    const [responseTimeType, setResponseTimeType] = useState();
-    const [responseTimeTypeList, setResponseTimeTypeList] = useState();
+    const [name, setName] = useState();
+    const nameRef = useRef();
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
+    const [editData, setEditData] = useState({});
     const [userList, setUserList] = useState([
-        {
-            id: 1,
-            name: "储能电池及电池管理系统（BMS）",
-            desc: [
-                "储能电池及电池管理系统（BMS）",
-                "电池模组，电池架结构，铭牌，螺钉.连接线等；（目测）",
-                "汇流柜铭牌，内部通信供电接线，开关等（目测）",
-                "BMS高压箱外观，显控屏外观显示等（目测）",
-                "BMS历史告警数据，运行数据等（拍照）",
-                "汇流柜汇流排连接处；（拍照）",
-            ],
-            needPic: "是",
-            needDesc: "否",
-        },
-        {
-            id: 2,
-            name: "储能变流器（PCS）",
-            desc: [
-                "直流侧电缆连接处；（拍照）",
-                "运行或热备用时状态检查；（拍照）",
-                "散热风机；（拍照）",
-                "显示屏，显示灯，历史告警数据；（拍照）",
-                "整体外观（拍照）",
-            ],
-            needPic: "是",
-            needDesc: "否",
-        },
-        {
-            id: 3,
-            name: "电池室或电池仓",
-            desc: [
-                "防爆灯（目测）",
-                "配电箱（目测）",
-                "电池仓整体外观，贴纸，标识，外罩；（拍照）",
-                "集装箱所有门；（目测）",
-            ],
-            needPic: "是",
-            needDesc: "否",
-        },
-        {
-            id: 4,
-            name: "液冷系统",
-            desc: [
-                "三级液冷管道（目测）",
-                "液冷机界面（拍照）",
-                "备液箱（拍照）",
-                "液冷机仓内外外观（目测）",
-            ],
-            needPic: "是",
-            needDesc: "是",
-        },
-        {
-            id: 5,
-            name: "EMS系统",
-            desc: ["通信连接（拍照）", "信息显示（拍照）", "历史告警记录（拍照）"],
-            needPic: "是",
-            needDesc: "否",
-        },
-        {
-            id: 6,
-            name: "消防系统",
-            desc: [
-                "消防罐外观，压力，备用电；（拍照）",
-                "消防主机（拍照）",
-                "集装箱外侧消防组件（目测）",
-            ],
-            needPic: "是",
-            needDesc: "是",
-        },
-        {
-            id: 7,
-            name: "空调系统",
-            desc: ["外观（目测）", "运行状态（拍照）", "历史告警信息（拍照）"],
-            needPic: "是",
-            needDesc: "否",
-        },
+        // {
+        //     id: 1,
+        //     name: "储能电池及电池管理系统（BMS）",
+        //     desc: [
+        //         "储能电池及电池管理系统（BMS）",
+        //         "电池模组，电池架结构，铭牌，螺钉.连接线等；（目测）",
+        //         "汇流柜铭牌，内部通信供电接线，开关等（目测）",
+        //         "BMS高压箱外观，显控屏外观显示等（目测）",
+        //         "BMS历史告警数据，运行数据等（拍照）",
+        //         "汇流柜汇流排连接处；（拍照）",
+        //     ],
+        //     needPic: "是",
+        //     needDesc: "否",
+        // },
+        // {
+        //     id: 2,
+        //     name: "储能变流器（PCS）",
+        //     desc: [
+        //         "直流侧电缆连接处；（拍照）",
+        //         "运行或热备用时状态检查；（拍照）",
+        //         "散热风机；（拍照）",
+        //         "显示屏，显示灯，历史告警数据；（拍照）",
+        //         "整体外观（拍照）",
+        //     ],
+        //     needPic: "是",
+        //     needDesc: "否",
+        // },
+        // {
+        //     id: 3,
+        //     name: "电池室或电池仓",
+        //     desc: [
+        //         "防爆灯（目测）",
+        //         "配电箱（目测）",
+        //         "电池仓整体外观，贴纸，标识，外罩；（拍照）",
+        //         "集装箱所有门；（目测）",
+        //     ],
+        //     needPic: "是",
+        //     needDesc: "否",
+        // },
+        // {
+        //     id: 4,
+        //     name: "液冷系统",
+        //     desc: [
+        //         "三级液冷管道（目测）",
+        //         "液冷机界面（拍照）",
+        //         "备液箱（拍照）",
+        //         "液冷机仓内外外观（目测）",
+        //     ],
+        //     needPic: "是",
+        //     needDesc: "是",
+        // },
+        // {
+        //     id: 5,
+        //     name: "EMS系统",
+        //     desc: ["通信连接（拍照）", "信息显示（拍照）", "历史告警记录（拍照）"],
+        //     needPic: "是",
+        //     needDesc: "否",
+        // },
+        // {
+        //     id: 6,
+        //     name: "消防系统",
+        //     desc: [
+        //         "消防罐外观，压力，备用电；（拍照）",
+        //         "消防主机（拍照）",
+        //         "集装箱外侧消防组件（目测）",
+        //     ],
+        //     needPic: "是",
+        //     needDesc: "是",
+        // },
+        // {
+        //     id: 7,
+        //     name: "空调系统",
+        //     desc: ["外观（目测）", "运行状态（拍照）", "历史告警信息（拍照）"],
+        //     needPic: "是",
+        //     needDesc: "否",
+        // },
     ]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [addProjectOpen, setAddProjectOpen] = useState(false);
-    const [detailOpen, setDetailOpen] = useState(false);
-    const [invitationSplitId, setInvitationSplitId] = useState();
     const [detailRow, setDetailRow] = useState(false);
 
     const columns = [
@@ -151,22 +124,18 @@ const Account = () => {
 
         {
             title: "巡检项内容",
-            dataIndex: "desc",
-            render: (_, { desc }) => {
-                return desc?.map((item, index) => (
-                    <div>
-                        {index + 1}. {item}
-                    </div>
-                ));
+            dataIndex: "description",
+            render: (_, { description }) => {
+                return description;
             },
         },
         {
             title: "是否需要上传拍照信息",
-            dataIndex: "needPic",
-            render: (_, { needPic }) => {
+            dataIndex: "needPhotoUpload",
+            render: (_, { needPhotoUpload }) => {
                 return (
-                    <span style={{ color: needPic == "是" ? "#1BE72B" : "#F50101" }}>
-                        {needPic}
+                    <span style={{ color: needPhotoUpload ? "#1BE72B" : "#F50101" }}>
+                        {needPhotoUpload ? "是" : "否"}
                     </span>
                 );
             },
@@ -174,10 +143,10 @@ const Account = () => {
         {
             title: "是否需要上传备注",
             dataIndex: "needDesc",
-            render: (_, { needDesc }) => {
+            render: (_, { needRemark }) => {
                 return (
-                    <span style={{ color: needDesc == "是" ? "#1BE72B" : "#F50101" }}>
-                        {needDesc}
+                    <span style={{ color: needRemark ? "#1BE72B" : "#F50101" }}>
+                        {needRemark ? "是" : "否"}
                     </span>
                 );
             },
@@ -188,60 +157,52 @@ const Account = () => {
             render: (_, row) => {
                 return (
                     <Space>
-                        <Button type="link" danger>
+                        <Button
+                            type="link"
+                            danger
+                            onClick={() => {
+                                setEditData(row);
+                                setAddProjectOpen(true);
+                            }}
+                        >
                             编辑
                         </Button>
-                        <Button type="link">删除</Button>
+                        <Button
+                            type="link"
+                            onClick={async () => {
+                                Modal.confirm({
+                                    title: "系统提示",
+                                    content: "删除此条记录不可恢复，请确认后再删除！",
+                                    onOk: async () => {
+                                        const res = await basInspectionItemDeleteServe({ ids: [row?.id] });
+                                        if (res?.data?.status == "SUCCESS") {
+                                            getInviteList();
+                                            message.success("删除成功");
+                                        }
+                                    },
+                                });
+                            }}
+                        >
+                            删除
+                        </Button>
                     </Space>
                 );
             },
         },
     ];
 
-    const onSelectChange = (newSelectedRowKeys, newSelectedRows) => {
-        const hasNoSure = Boolean(newSelectedRows?.some(item => item.supportConfirm == false));
-        setCanSure(!hasNoSure);
-        const hasNoDelete = Boolean(newSelectedRows?.some(item => item.supportDelete == false));
-        setCanDelete(!hasNoDelete);
-        const hasNoInvalid = Boolean(newSelectedRows?.some(item => item.supportInvalid == false));
-        setCanInvalid(!hasNoInvalid);
+    const onSelectChange = (newSelectedRowKeys) => {
         setSelectedRowKeys(newSelectedRowKeys);
-    };
-
-    const getSearchInitData = async () => {
-        const res = await getSearchInitDataServer();
-        if (res?.data?.status == "SUCCESS") {
-            const { confirmStatuses, splitStatuses, responseTypes, responseTimeTypes } =
-                res?.data?.data;
-            setConfirmStatusList(confirmStatuses);
-            setSplitStatusList(splitStatuses);
-            setResponseTypeList(responseTypes);
-            setResponseTimeTypeList(responseTimeTypes);
-        }
     };
 
     const getInviteList = async () => {
         const { current, pageSize } = paginationRef.current;
-        const [createdTimeFrom, createdTimeTo] = releaseTimeRef.current || [];
-        const [appointedTimeRangeStart, appointedTimeRangeEnd] = executeTimeRef.current || [];
-        const code = codeRef.current;
-        const confirmStatus = confirmStatusRef.current;
-        const splitStatus = splitStatusRef.current;
-        const responsePower = +responsePowerRef.current;
-        const responseType = responseTypeRef.current;
-        const res = await getInviteListServer({
+        const name = nameRef.current;
+        const res = await getBasInspectionItemServe({
             pageNum: current,
             pageSize,
             queryCmd: {
-                createdTimeFrom,
-                createdTimeTo,
-                appointedTimeRangeStart,
-                appointedTimeRangeEnd,
-                code,
-                confirmStatus,
-                splitStatus,
-                responsePower,
-                responseType,
+                nameLike: name
             },
         });
         if (res?.data?.status == "SUCCESS") {
@@ -254,142 +215,50 @@ const Account = () => {
         }
     };
 
-    const handleReset = () => {
-        history.push("/vpp/demandResponse/invitation/invitationList");
-        paginationRef.current = DEFAULT_PAGINATION;
-        releaseTimeRef.current = undefined;
-        setReleaseTime([]);
-        executeTimeRef.current = undefined;
-        setExecuteTime([]);
-        codeRef.current = undefined;
-        setCode();
-        confirmStatusRef.current = undefined;
-        setConfirmStatus();
-        splitStatusRef.current = undefined;
-        setSplitStatus();
-        responsePowerRef.current = undefined;
-        setResponsePower();
-        responseTypeRef.current = undefined;
-        setResponseType();
-        responseTimeTypeRef.current = undefined;
-        setResponseTimeType();
-        getInviteList();
-    };
-
-    const handleInvalid = () => {
-        if (selectedRowKeys?.length == 0) {
-            return message.info("请先勾选需要作废的数据");
-        }
-        Modal.confirm({
-            title: "批量作废",
-            icon: <ExclamationCircleOutlined />,
-            width: 500,
-            content: (
-                <div>
-                    <div style={{ marginBottom: "10px" }}>
-                        作废邀约，关联任务将被同步作废，不再统计进入流水，请输入作废原因
-                    </div>
-                    <Input.TextArea
-                        rows={4}
-                        placeholder="请输入作废原因，最多50字"
-                        maxLength={50}
-                        onChange={e => (invalidReason = e.target.value)}
-                    />
-                </div>
-            ),
-            okText: "确认",
-            cancelText: "取消",
-            onOk: async () => {
-                if (!invalidReason) {
-                    message.info("请输入作废原因");
-                    return Promise.reject();
-                }
-                const res = await invalidInviteServer({
-                    ids: selectedRowKeys,
-                    reason: invalidReason,
-                });
-                if (res?.data?.status == "SUCCESS") {
-                    message.success("作废成功");
-                    setPagination({
-                        current: 1,
-                    });
-                    setSelectedRowKeys([]);
-                    getInviteList();
-                    invalidReason = undefined;
-                }
-            },
-            onCancel: () => {
-                invalidReason = undefined;
-            },
-        });
-    };
-
-    const handleOperate = typeId => {
-        const operates = {
-            0: {
-                type: "确认",
-                tip: "邀约确认后不可取消",
-                fn: sureInviteServer,
-            },
-            1: {
-                type: "删除",
-                tip: "删除后不可恢复",
-                fn: deleteInviteServer,
-            },
-        };
-        const { type, tip, fn } = operates[typeId];
-        if (selectedRowKeys?.length == 0) {
-            return message.info(`请先勾选需要${type}的数据`);
-        }
-        Modal.confirm({
-            title: `确定${type}？`,
-            content: tip,
-            onOk: async () => {
-                const res = await fn(selectedRowKeys);
-                if (res?.data?.status == "SUCCESS") {
-                    message.success(`${type}成功`);
-                    setPagination({
-                        current: 1,
-                    });
-                    setSelectedRowKeys([]);
-                    getInviteList();
-                }
-            },
-        });
-    };
-
     useEffect(() => {
-        // getInviteList();
-        // getSearchInitData();
+        getInviteList();
     }, []);
-    2;
 
     return (
         <div className="electronic-archives">
             <AddProject
+                editData={editData}
                 open={addProjectOpen}
                 onClose={resFlag => {
                     setAddProjectOpen(false);
+                    getInviteList();
                 }}
             />
             <Detail
                 detailRow={detailRow}
                 onClose={resFlag => {
+                    setEditData({});
                     setDetailRow(null);
                 }}
             />
             <Space className="search">
                 <SearchInput
                     label="巡检项名称"
-                    value={code}
+                    value={name}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
-                        codeRef.current = value;
-                        setCode(value);
+                        nameRef.current = value;
+                        setName(value);
                     }}
                 />
-                <Button type="primary">搜索</Button>
-                <Button type="primary" danger>重置</Button>
+                <Button type="primary" onClick={getInviteList}>搜索</Button>
+                <Button
+                    type="primary"
+                    danger
+                    onClick={() => {
+                        nameRef.current = "";
+                        paginationRef.current = pagination;
+                        getInviteList();
+                        setName("");
+                    }}
+                >
+                    重置
+                </Button>
             </Space>
             <Table
                 rowKey="id"
@@ -416,7 +285,28 @@ const Account = () => {
                         >
                             新增
                         </Button>
-                        <Button type="primary" danger>
+                        <Button
+                            type="primary"
+                            danger
+                            onClick={async () => {
+                                if (selectedRowKeys?.length > 0) {
+                                    Modal.confirm({
+                                        title: "系统提示",
+                                        content: "删除此条记录不可恢复，请确认后再删除！",
+                                        onOk: async () => {
+                                            const res = await basInspectionItemDeleteServe({ ids: selectedRowKeys });
+                                            if (res?.data?.status == "SUCCESS") {
+                                                getInviteList();
+                                                setSelectedRowKeys([]);
+                                                message.success("删除成功");
+                                            }
+                                        },
+                                    });
+                                } else {
+                                    message.error("请选择需要删除的巡检项配置");
+                                }
+                            }}
+                        >
                             批量删除
                             {selectedRowKeys?.length ? (
                                 <span>({selectedRowKeys?.length})</span>

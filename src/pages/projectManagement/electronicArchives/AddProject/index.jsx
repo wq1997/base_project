@@ -14,11 +14,21 @@ import {
     Tooltip,
     Collapse,
     Radio,
+    InputNumber,
 } from "antd";
 import dayjs from "dayjs";
 import { Title } from "@/components";
-import { ExclamationCircleOutlined, CaretRightOutlined } from "@ant-design/icons";
-import "./index.less";
+import { ExclamationCircleOutlined, CaretRightOutlined, FileMarkdownFilled } from "@ant-design/icons";
+import {
+    basProjectPart1SaveOrUpdate as basProjectPart1SaveOrUpdateServe,
+    getBasProjectEditInitData as getBasProjectEditInitDataServe,
+    basProjectPart2SaveOrUpdate as basProjectPart2SaveOrUpdateServe,
+    basProjectPart3SaveOrUpdate as basProjectPart3SaveOrUpdateServe,
+    basProjectPart4SaveOrUpdate as basProjectPart4SaveOrUpdateServe,
+} from "@/services";
+import { getBaseUrl } from "@/services/request";
+import { jsonToUrlParams } from "@/utils/utils";
+import styles from "./index.less";
 
 const { Panel } = Collapse;
 
@@ -26,44 +36,194 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
     console.log(detailRow);
     const [form] = Form.useForm();
     const [currentStep, setCurrentStep] = useState(0);
-    const [checkGroup, setCheckGroup] = useState([]);
-    const [responseTypeList, setResponseTypeList] = useState();
-    const [responseTimeTypeList, setResponseTimeTypeList] = useState();
+    const [addId, setAddId] = useState();
+    const [initOption, setInitOption] = useState({});
 
-    const getSearchInitData = async () => {
-        const res = await getSearchInitDataServer();
+    const getInitOption = async () => {
+        const res = await getBasProjectEditInitDataServe();
         if (res?.data?.status == "SUCCESS") {
-            const { responseTypes, responseTimeTypes } = res?.data?.data;
-            setResponseTypeList(responseTypes);
-            setResponseTimeTypeList(responseTimeTypes);
+            setInitOption(res?.data?.data);
         }
-    };
-
-    const onFinish = async values => {
-        return;
-        const { appointedTimeFrom, appointedTimeTo } = values;
-        const res = await saveEnterRecordServer({
-            ...values,
-            appointedTimeFrom: dayjs(appointedTimeFrom).format("YYYY-MM-DD HH:mm"),
-            appointedTimeTo: dayjs(appointedTimeTo).format("YYYY-MM-DD HH:mm"),
-        });
-        if (res?.data?.status == "SUCCESS") {
-            message.success("录入成功");
-            onClose(true);
-        } else {
-            message.info(res?.data?.msg);
-        }
-    };
+    }
 
     useEffect(() => {
         setCurrentStep(editCurrentStep);
         if (detailRow) {
             form.setFieldsValue({
                 ...detailRow,
-                time: dayjs(detailRow?.time),
+                approvalTime: detailRow?.approvalTime ? dayjs(detailRow?.approvalTime) : undefined,
+                warrantyPeriodDate:
+                    detailRow?.warrantyPeriodStartDate && detailRow?.warrantyPeriodEndDate ? [dayjs(detailRow?.warrantyPeriodStartDate), dayjs(detailRow?.warrantyPeriodEndDate)] : undefined,
+                sePlants: detailRow?.sePlants?.map?.(item => {
+                    return JSON.stringify({
+                        name: item?.name,
+                        plantId: item?.plantId
+                    })
+                }),
+                BMSManufacturer: detailRow?.suppliers?.find(item => item.supplyType === "BMS")?.["supplierId"],
+                BMSManufacturerPhone: detailRow?.suppliers?.find(item => item.supplyType === "BMS")?.["contractNumber"],
+                PCSManufacturer: detailRow?.suppliers?.find(item => item.supplyType === "PCS")?.["supplierId"],
+                PCSManufacturerPhone: detailRow?.suppliers?.find(item => item.supplyType === "PCS")?.["contractNumber"],
+                transformerManufacturer: detailRow?.suppliers?.find(item => item.supplyType === "变压器")?.["supplierId"],
+                transformerManufacturerPhone: detailRow?.suppliers?.find(item => item.supplyType === "变压器")?.["contractNumber"],
+                liquidCoolingManufacturer: detailRow?.suppliers?.find(item => item.supplyType === "液冷系统")?.["supplierId"],
+                liquidCoolingManufacturerPhone: detailRow?.suppliers?.find(item => item.supplyType === "液冷系统")?.["contractNumber"],
+                airManufacturer: detailRow?.suppliers?.find(item => item.supplyType === "空调")?.["supplierId"],
+                airManufacturerPhone: detailRow?.suppliers?.find(item => item.supplyType === "空调")?.["contractNumber"],
+                PACKManufacturer: detailRow?.suppliers?.find(item => item.supplyType === "PACK组装")?.["supplierId"],
+                PACKManufacturerPhone: detailRow?.suppliers?.find(item => item.supplyType === "PACK组装")?.["contractNumber"],
+                cellManufacturer: detailRow?.suppliers?.find(item => item.supplyType === "电芯")?.["supplierId"],
+                cellManufacturerPhone: detailRow?.suppliers?.find(item => item.supplyType === "电芯")?.["contractNumber"],
+                batteryManufacturer: detailRow?.suppliers?.find(item => item.supplyType === "电池仓箱体")?.["supplierId"],
+                batteryManufacturerPhone: detailRow?.suppliers?.find(item => item.supplyType === "电池仓箱体")?.["contractNumber"],
+                fireManufacturer: detailRow?.suppliers?.find(item => item.supplyType === "消防")?.["supplierId"],
+                fireManufacturerPhone: detailRow?.suppliers?.find(item => item.supplyType === "消防")?.["contractNumber"],
+                emsManufacturer: detailRow?.suppliers?.find(item => item.supplyType === "EMS")?.["supplierId"],
+                emsManufacturerPhone: detailRow?.suppliers?.find(item => item.supplyType === "EMS")?.["contractNumber"],
+                implementationPlanTime: detailRow?.implementPlanStartDate && detailRow?.implementPlanEndDate ? [dayjs(detailRow?.implementPlanStartDate), dayjs(detailRow?.implementPlanEndDate)] : undefined,
+                firstInspectionDate: detailRow?.firstInspectionDate ? dayjs(detailRow?.firstInspectionDate) : undefined,
+                inspectionGroups: detailRow?.inspectionGroups?.map(item => {
+                    return {
+                        nameLabel: item?.name,
+                        inspectionTeamGroup: item?.inspectionItemIds?.map(item => {
+                            return {
+                                inspectionItemIds: item
+                            }
+                        })
+                    }
+                })
             });
         }
     }, [editCurrentStep, detailRow]);
+
+    const save = async (type) => {
+        let values = {};
+        let res = undefined;
+        let flag = false;
+        if (currentStep === 0) {
+            values = await form.validateFields(['approvalTime', 'name', 'maxPowerKw', 'capacityKwh', 'phase', 'subPhase', 'supportStandardInspection', 'type', 'productType', 'region']);
+            res = await basProjectPart1SaveOrUpdateServe({
+                ...values,
+                approvalTime: dayjs(values?.approvalTime).format("YYYY-MM-DD"),
+                id: detailRow?.id || addId
+            });
+            if (res?.data?.status === "SUCCESS") {
+                setAddId(res?.data?.data);
+                flag = true
+            }
+        }
+        if (currentStep === 1) {
+            values = await form.validateFields([
+                'ownerName', 'address', 'plantName', 'plantContacts', 'plantContractNumber', 'epcName', 'ourScopeOfSupply', 'warrantyPeriodDate', 'esuGroupDesc',
+                'province', 'city', 'district', 'longitude', 'latitude', 'batterySlotCount', 'singleBatterySlotCapacity', 'pcsCount', 'singlePcsMaxPower', 'batteryClusterComposeMethod', 'batteryStackComposeMethod',
+                'cellMaterial', 'singleCellRatedCapacity', 'ratedChargingDischargingRate', 'chargeDischargeCe', 'firefightingMedium', 'sePlants',
+                'BMSManufacturer', 'BMSManufacturerPhone', 'PCSManufacturer', 'PCSManufacturerPhone', 'transformerManufacturer', 'transformerManufacturerPhone',
+                'liquidCoolingManufacturer', 'liquidCoolingManufacturerPhone', 'airManufacturer', 'airManufacturerPhone', 'PACKManufacturer', 'PACKManufacturerPhone',
+                'cellManufacturer', 'cellManufacturerPhone', 'batteryManufacturer', 'batteryManufacturerPhone', 'fireManufacturer', 'fireManufacturerPhone',
+                'emsManufacturer', 'emsManufacturerPhone'
+            ]);
+            const {
+                ownerName, address, plantName, plantContacts, plantContractNumber, epcName, ourScopeOfSupply, warrantyPeriodDate, esuGroupDesc,
+                province, city, district, longitude, latitude, batterySlotCount, singleBatterySlotCapacity, pcsCount, singlePcsMaxPower, batteryClusterComposeMethod, batteryStackComposeMethod,
+                cellMaterial, singleCellRatedCapacity, ratedChargingDischargingRate, chargeDischargeCe, firefightingMedium, sePlants,
+                BMSManufacturer, BMSManufacturerPhone, PCSManufacturer, PCSManufacturerPhone, transformerManufacturer, transformerManufacturerPhone,
+                liquidCoolingManufacturer, liquidCoolingManufacturerPhone, airManufacturer, airManufacturerPhone, PACKManufacturer, PACKManufacturerPhone,
+                cellManufacturer, cellManufacturerPhone, batteryManufacturer, batteryManufacturerPhone, fireManufacturer, fireManufacturerPhone,
+                emsManufacturer, emsManufacturerPhone
+            } = values;
+            res = await basProjectPart2SaveOrUpdateServe({
+                id: detailRow?.id || addId,
+                ownerName,
+                address,
+                plantName,
+                plantContacts,
+                plantContractNumber,
+                epcName,
+                ourScopeOfSupply,
+                warrantyPeriodStartDate: warrantyPeriodDate?.[0] ? dayjs(warrantyPeriodDate?.[0]).format("YYYY-MM-DD") : undefined,
+                warrantyPeriodEndDate: warrantyPeriodDate?.[1] ? dayjs(warrantyPeriodDate?.[1]).format("YYYY-MM-DD") : undefined,
+                esuGroupDesc,
+                province,
+                city,
+                district,
+                longitude,
+                latitude,
+                batterySlotCount,
+                singleBatterySlotCapacity,
+                pcsCount,
+                singlePcsMaxPower,
+                batteryClusterComposeMethod,
+                batteryStackComposeMethod,
+                cellMaterial,
+                singleCellRatedCapacity,
+                ratedChargingDischargingRate,
+                chargeDischargeCe,
+                firefightingMedium,
+                sePlants: sePlants?.map(item => {
+                    const data = JSON.parse(item);
+                    return {
+                        name: data?.name,
+                        plantId: data?.plantId
+                    }
+                }),
+                suppliers: [
+                    { supplyType: "BMS", supplierId: BMSManufacturer, contractNumber: BMSManufacturerPhone },
+                    { supplyType: "PCS", supplierId: PCSManufacturer, contractNumber: PCSManufacturerPhone },
+                    { supplyType: "变压器", supplierId: transformerManufacturer, contractNumber: transformerManufacturerPhone },
+                    { supplyType: "液冷系统", supplierId: liquidCoolingManufacturer, contractNumber: liquidCoolingManufacturerPhone },
+                    { supplyType: "空调", supplierId: airManufacturer, contractNumber: airManufacturerPhone },
+                    { supplyType: "PACK组装", supplierId: PACKManufacturer, contractNumber: PACKManufacturerPhone },
+                    { supplyType: "电芯", supplierId: cellManufacturer, contractNumber: cellManufacturerPhone },
+                    { supplyType: "电池仓箱体", supplierId: batteryManufacturer, contractNumber: batteryManufacturerPhone },
+                    { supplyType: "消防", supplierId: fireManufacturer, contractNumber: fireManufacturerPhone },
+                    { supplyType: "EMS", supplierId: emsManufacturer, contractNumber: emsManufacturerPhone },
+                ]
+            });
+            if (res?.data?.status === "SUCCESS") {
+                flag = true;
+            }
+        }
+        if (currentStep === 2) {
+            values = await form.validateFields(['implementationPlanTime', 'implementManagerAccount']);
+            const { implementationPlanTime, implementManagerAccount } = values;
+            res = await basProjectPart3SaveOrUpdateServe({
+                id: detailRow?.id || addId,
+                implementPlanStartDate: dayjs(implementationPlanTime?.[0]).format("YYYY-MM-DD"),
+                implementPlanEndDate: dayjs(implementationPlanTime?.[1]).format("YYYY-MM-DD"),
+                implementManagerAccount
+            })
+            if (res?.data?.status === "SUCCESS") {
+                flag = true;
+            }
+        }
+        if (currentStep === 3) {
+            values = await form.validateFields(['operationsManagerAccount', 'firstInspectionDate', 'inspectionCycle', 'inspectionGroups']);
+            const { operationsManagerAccount, firstInspectionDate, inspectionCycle, inspectionGroups } = values;
+            res = await basProjectPart4SaveOrUpdateServe({
+                id: detailRow?.id || addId,
+                operationsManagerAccount,
+                firstInspectionDate: dayjs(firstInspectionDate).format("YYYY-MM-DD"),
+                inspectionCycle,
+                inspectionGroups: inspectionGroups?.map(item => {
+                    return {
+                        name: item?.nameLabel,
+                        inspectionItemIds: item?.inspectionTeamGroup?.map(subItem => subItem?.inspectionItemIds)
+                    }
+                })
+            })
+            if (res?.data?.status === "SUCCESS") {
+                flag = true;
+            }
+        }
+        if (flag) {
+            if (type !== "nexStep") message.success("保存成功");
+            if (type === "nexStep") setCurrentStep(currentStep + 1);
+        }
+    }
+
+    useEffect(() => {
+        if (open) getInitOption();
+    }, [open])
 
     return (
         <Modal
@@ -109,15 +269,13 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                     span: 16,
                 }}
                 form={form}
-                onFinish={onFinish}
                 autoComplete="off"
-                disabled={Boolean(detailRow)}
             >
                 {currentStep == 0 && (
                     <>
                         <Form.Item
                             label="立项时间"
-                            name="time"
+                            name="approvalTime"
                             rules={[
                                 {
                                     required: true,
@@ -140,8 +298,32 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                             <Input style={{ width: "100%" }} placeholder="请输入项目名称" />
                         </Form.Item>
                         <Form.Item
+                            label="充放功率(kW)"
+                            name="maxPowerKw"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "请输入充放功率",
+                                },
+                            ]}
+                        >
+                            <InputNumber style={{ width: "100%" }} placeholder="请输入充放功率" />
+                        </Form.Item>
+                        <Form.Item
+                            label="项目容量(kWh)"
+                            name="capacityKwh"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "请输入项目容量",
+                                },
+                            ]}
+                        >
+                            <InputNumber style={{ width: "100%" }} placeholder="请输入项目容量" />
+                        </Form.Item>
+                        <Form.Item
                             label="项目阶段"
-                            name="stage"
+                            name="phase"
                             rules={[
                                 {
                                     required: true,
@@ -155,54 +337,38 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                     label: "name",
                                     value: "code",
                                 }}
-                                options={[
-                                    { name: "待实施阶段", code: "待实施阶段" },
-                                    { name: "实施阶段", code: "实施阶段" },
-                                    { name: "售后阶段", code: "售后阶段" },
-                                ]}
+                                options={initOption?.phases || []}
                             />
                         </Form.Item>
-                        <Form.Item
-                            label="项目进度"
-                            name="schedule"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "请选择项目进度",
-                                },
-                            ]}
-                        >
-                            <Select
-                                placeholder="请选择项目进度"
-                                fieldNames={{
-                                    label: "name",
-                                    value: "code",
-                                }}
-                                options={[
-                                    { name: "计划期", code: "计划期" },
-                                    { name: "试运行", code: "试运行" },
-                                    { name: "质保期", code: "质保期" },
-                                ]}
-                            />
-                        </Form.Item>
-                        <Form.Item
-                            label="是否支持标准巡检"
-                            name="standard"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "请选择是否支持标准巡检",
-                                },
-                            ]}
-                        >
-                            <Radio.Group>
-                                <Radio value={"是"}>是</Radio>
-                                <Radio value={"否"}>否</Radio>
-                            </Radio.Group>
+                        <Form.Item noStyle dependencies={['phase']}>
+                            {({ getFieldsValue }) => {
+                                const { phase } = getFieldsValue(['phase']);
+                                return (
+                                    <Form.Item
+                                        label="项目进度"
+                                        name="subPhase"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: "请选择项目进度",
+                                            },
+                                        ]}
+                                    >
+                                        <Select
+                                            placeholder="请选择项目进度"
+                                            fieldNames={{
+                                                label: "name",
+                                                value: "code",
+                                            }}
+                                            options={initOption?.phase2SubPhases?.[phase]}
+                                        />
+                                    </Form.Item>
+                                )
+                            }}
                         </Form.Item>
                         <Form.Item
                             label="项目类型"
-                            name="projectType"
+                            name="type"
                             rules={[
                                 {
                                     required: true,
@@ -216,10 +382,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                     label: "name",
                                     value: "code",
                                 }}
-                                options={[
-                                    { name: "工商业", code: "工商业" },
-                                    { name: "源网侧", code: "源网侧" },
-                                ]}
+                                options={initOption?.types || []}
                             />
                         </Form.Item>
                         <Form.Item
@@ -238,15 +401,12 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                     label: "name",
                                     value: "code",
                                 }}
-                                options={[
-                                    { name: "集装箱", code: "集装箱" },
-                                    { name: "户外柜", code: "户外柜" },
-                                ]}
+                                options={initOption?.productTypes || []}
                             />
                         </Form.Item>
                         <Form.Item
                             label="所属区域"
-                            name="area"
+                            name="region"
                             rules={[
                                 {
                                     required: true,
@@ -260,12 +420,23 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                     label: "name",
                                     value: "code",
                                 }}
-                                options={[
-                                    { name: "上海", code: "上海" },
-                                    { name: "宁夏", code: "上海" },
-                                    { name: "浙江", code: "上海" },
-                                ]}
+                                options={initOption?.regions || []}
                             />
+                        </Form.Item>
+                        <Form.Item
+                            label="是否支持标准巡检"
+                            name="supportStandardInspection"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "请选择是否支持标准巡检",
+                                },
+                            ]}
+                        >
+                            <Radio.Group>
+                                <Radio value={true}>是</Radio>
+                                <Radio value={false}>否</Radio>
+                            </Radio.Group>
                         </Form.Item>
                     </>
                 )}
@@ -286,7 +457,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="业主名称"
-                                                name="owner"
+                                                name="ownerName"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -300,7 +471,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="项目地址"
-                                                name="adress"
+                                                name="address"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -331,7 +502,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="电站联系人"
-                                                name="plantUser"
+                                                name="plantContacts"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -348,7 +519,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="电站联系方式"
-                                                name="plantPhone"
+                                                name="plantContractNumber"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -362,7 +533,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="总包单位名称"
-                                                name="unit"
+                                                name="epcName"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -379,7 +550,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="我方供货范围"
-                                                name="range"
+                                                name="ourScopeOfSupply"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -393,7 +564,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="质保期起止时间"
-                                                name="start"
+                                                name="warrantyPeriodDate"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -401,7 +572,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                     },
                                                 ]}
                                             >
-                                                <Input placeholder="请输入质保期起止时间" />
+                                                <DatePicker.RangePicker placeholder={['开始时间', '截止时间']} />
                                             </Form.Item>
                                         </Col>
                                     </Row>
@@ -410,7 +581,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="电站内储能单元分组情况"
-                                                name="group"
+                                                name="esuGroupDesc"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -423,16 +594,72 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                         </Col>
                                         <Col span={12}>
                                             <Form.Item
-                                                label="电站所属省市区/镇"
-                                                name="detailAdress"
+                                                label="电站所属省"
+                                                name="province"
                                                 rules={[
                                                     {
                                                         required: true,
-                                                        message: "请输入电站所属省市区/镇",
+                                                        message: "请输入电站所属省",
                                                     },
                                                 ]}
                                             >
-                                                <Input placeholder="请输入电站所属省市区/镇" />
+                                                <Input placeholder="请输入电站所属省" />
+                                            </Form.Item>
+                                        </Col>
+                                        <Col span={12}>
+                                            <Form.Item
+                                                label="电站所属市"
+                                                name="city"
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message: "请输入电站所属市",
+                                                    },
+                                                ]}
+                                            >
+                                                <Input placeholder="请输入电站所属市" />
+                                            </Form.Item>
+                                        </Col>
+                                        <Col span={12}>
+                                            <Form.Item
+                                                label="电站所属区/镇"
+                                                name="district"
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message: "请输入电站所属区/镇",
+                                                    },
+                                                ]}
+                                            >
+                                                <Input placeholder="请输入电站所属区/镇" />
+                                            </Form.Item>
+                                        </Col>
+                                        <Col span={12}>
+                                            <Form.Item
+                                                label="经度"
+                                                name="longitude"
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message: "请输入电站经度",
+                                                    },
+                                                ]}
+                                            >
+                                                <Input placeholder="请输入电站经度" />
+                                            </Form.Item>
+                                        </Col>
+                                        <Col span={12}>
+                                            <Form.Item
+                                                label="纬度"
+                                                name="latitude"
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message: "请输入电站纬度",
+                                                    },
+                                                ]}
+                                            >
+                                                <Input placeholder="请输入电站纬度" />
                                             </Form.Item>
                                         </Col>
                                     </Row>
@@ -453,7 +680,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="电池仓数量"
-                                                name="batteryCount"
+                                                name="batterySlotCount"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -461,13 +688,13 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                     },
                                                 ]}
                                             >
-                                                <Input placeholder="请输入电池仓数量" />
+                                                <InputNumber style={{ width: "100%" }} placeholder="请输入电池仓数量" />
                                             </Form.Item>
                                         </Col>
                                         <Col span={12}>
                                             <Form.Item
                                                 label="单台电池仓容量(AH)"
-                                                name="singleBattery"
+                                                name="singleBatterySlotCapacity"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -475,7 +702,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                     },
                                                 ]}
                                             >
-                                                <Input placeholder="请输入单台电池仓容量(AH)" />
+                                                <InputNumber style={{ width: "100%" }} placeholder="请输入单台电池仓容量(AH)" />
                                             </Form.Item>
                                         </Col>
                                     </Row>
@@ -484,7 +711,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="PCS一体机数量"
-                                                name="PCSCount"
+                                                name="pcsCount"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -492,7 +719,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                     },
                                                 ]}
                                             >
-                                                <Input placeholder="请输入PCS一体机数量" />
+                                                <InputNumber style={{ width: "100%" }} placeholder="请输入PCS一体机数量" />
                                             </Form.Item>
                                         </Col>
                                         <Col span={12}>
@@ -515,7 +742,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="电池堆成组方式"
-                                                name="heapMethod"
+                                                name="batteryStackComposeMethod"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -529,7 +756,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="单台PCS最大功率(kW)"
-                                                name="singlePCS"
+                                                name="singlePcsMaxPower"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -537,7 +764,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                     },
                                                 ]}
                                             >
-                                                <Input placeholder="请输入单台PCS最大功率(kW)" />
+                                                <InputNumber style={{ width: "100%" }} placeholder="请输入单台PCS最大功率(kW)" />
                                             </Form.Item>
                                         </Col>
                                     </Row>
@@ -546,7 +773,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="电池簇成组方式"
-                                                name="clusterMethod"
+                                                name="batteryClusterComposeMethod"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -560,7 +787,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="单电芯额定容量(AH)"
-                                                name="singleCell"
+                                                name="singleCellRatedCapacity"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -568,7 +795,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                     },
                                                 ]}
                                             >
-                                                <Input placeholder="请输入单电芯额定容量(AH)" />
+                                                <InputNumber style={{ width: "100%" }} placeholder="请输入单电芯额定容量(AH)" />
                                             </Form.Item>
                                         </Col>
                                     </Row>
@@ -591,7 +818,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="充放电转换效率"
-                                                name="effect"
+                                                name="chargeDischargeCe"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -599,7 +826,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                     },
                                                 ]}
                                             >
-                                                <Input placeholder="请输入充放电转换效率" />
+                                                <InputNumber style={{ width: "100%" }} placeholder="请输入充放电转换效率" />
                                             </Form.Item>
                                         </Col>
                                     </Row>
@@ -608,7 +835,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="额定充放电倍率(C)"
-                                                name="multiplier"
+                                                name="ratedChargingDischargingRate"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -622,7 +849,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                         <Col span={12}>
                                             <Form.Item
                                                 label="关联场站信息"
-                                                name="plantInfo"
+                                                name="sePlants"
                                                 rules={[
                                                     {
                                                         required: true,
@@ -630,7 +857,19 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                     },
                                                 ]}
                                             >
-                                                <Input placeholder="请输入关联场站信息" />
+                                                <Select
+                                                    mode="multiple"
+                                                    placeholder="请输入关联场站信息"
+                                                    options={initOption?.sePlans?.map(item => {
+                                                        return {
+                                                            label: item?.name,
+                                                            value: JSON.stringify({
+                                                                "name": item?.name,
+                                                                "plantId": item?.plantId
+                                                            })
+                                                        }
+                                                    })}
+                                                />
                                             </Form.Item>
                                         </Col>
                                     </Row>
@@ -659,7 +898,15 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                     },
                                                 ]}
                                             >
-                                                <Input placeholder="请输入BMS厂商" />
+                                                <Select
+                                                    placeholder="请输入BMS厂商"
+                                                    options={initOption?.supplierType2Suppliers?.["BMS"]?.map(item => {
+                                                        return {
+                                                            value: item?.id,
+                                                            label: item?.name
+                                                        }
+                                                    })}
+                                                />
                                             </Form.Item>
                                         </Col>
                                         <Col span={12}>
@@ -690,7 +937,15 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                     },
                                                 ]}
                                             >
-                                                <Input placeholder="请输入PCS厂商" />
+                                                <Select
+                                                    placeholder="请输入PCS厂商"
+                                                    options={initOption?.supplierType2Suppliers?.["PCS"]?.map(item => {
+                                                        return {
+                                                            value: item?.id,
+                                                            label: item?.name
+                                                        }
+                                                    })}
+                                                />
                                             </Form.Item>
                                         </Col>
                                         <Col span={12}>
@@ -721,7 +976,15 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                     },
                                                 ]}
                                             >
-                                                <Input placeholder="请输入变压器厂商" />
+                                                <Select
+                                                    placeholder="请输入变压器厂商"
+                                                    options={initOption?.supplierType2Suppliers?.["变压器"]?.map(item => {
+                                                        return {
+                                                            value: item?.id,
+                                                            label: item?.name
+                                                        }
+                                                    })}
+                                                />
                                             </Form.Item>
                                         </Col>
                                         <Col span={12}>
@@ -752,7 +1015,15 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                     },
                                                 ]}
                                             >
-                                                <Input placeholder="请输入液冷系统厂商" />
+                                                <Select
+                                                    placeholder="请输入液冷系统厂商"
+                                                    options={initOption?.supplierType2Suppliers?.["液冷系统"]?.map(item => {
+                                                        return {
+                                                            value: item?.id,
+                                                            label: item?.name
+                                                        }
+                                                    })}
+                                                />
                                             </Form.Item>
                                         </Col>
                                         <Col span={12}>
@@ -783,7 +1054,15 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                     },
                                                 ]}
                                             >
-                                                <Input placeholder="请输入空调厂商" />
+                                                <Select
+                                                    placeholder="请输入空调厂商"
+                                                    options={initOption?.supplierType2Suppliers?.["空调"]?.map(item => {
+                                                        return {
+                                                            value: item?.id,
+                                                            label: item?.name
+                                                        }
+                                                    })}
+                                                />
                                             </Form.Item>
                                         </Col>
                                         <Col span={12}>
@@ -814,7 +1093,15 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                     },
                                                 ]}
                                             >
-                                                <Input placeholder="请输入PACK组装厂厂商" />
+                                                <Select
+                                                    placeholder="请输入PACK组装厂厂商"
+                                                    options={initOption?.supplierType2Suppliers?.["PACK组装"]?.map(item => {
+                                                        return {
+                                                            value: item?.id,
+                                                            label: item?.name
+                                                        }
+                                                    })}
+                                                />
                                             </Form.Item>
                                         </Col>
                                         <Col span={12}>
@@ -845,7 +1132,15 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                     },
                                                 ]}
                                             >
-                                                <Input placeholder="请输入电芯厂商" />
+                                                <Select
+                                                    placeholder="请输入电芯厂商"
+                                                    options={initOption?.supplierType2Suppliers?.["电芯"]?.map(item => {
+                                                        return {
+                                                            value: item?.id,
+                                                            label: item?.name
+                                                        }
+                                                    })}
+                                                />
                                             </Form.Item>
                                         </Col>
                                         <Col span={12}>
@@ -876,7 +1171,15 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                     },
                                                 ]}
                                             >
-                                                <Input placeholder="请输入电池仓箱体厂商" />
+                                                <Select
+                                                    placeholder="请输入电池仓箱体厂商"
+                                                    options={initOption?.supplierType2Suppliers?.["电池仓箱体"]?.map(item => {
+                                                        return {
+                                                            value: item?.id,
+                                                            label: item?.name
+                                                        }
+                                                    })}
+                                                />
                                             </Form.Item>
                                         </Col>
                                         <Col span={12}>
@@ -907,7 +1210,15 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                     },
                                                 ]}
                                             >
-                                                <Input placeholder="请输入消防厂商" />
+                                                <Select
+                                                    placeholder="请输入消防厂商"
+                                                    options={initOption?.supplierType2Suppliers?.["消防"]?.map(item => {
+                                                        return {
+                                                            value: item?.id,
+                                                            label: item?.name
+                                                        }
+                                                    })}
+                                                />
                                             </Form.Item>
                                         </Col>
                                         <Col span={12}>
@@ -938,7 +1249,15 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                     },
                                                 ]}
                                             >
-                                                <Input placeholder="请输入EMS厂商" />
+                                                <Select
+                                                    placeholder="请输入EMS厂商"
+                                                    options={initOption?.supplierType2Suppliers?.["EMS"]?.map(item => {
+                                                        return {
+                                                            value: item?.id,
+                                                            label: item?.name
+                                                        }
+                                                    })}
+                                                />
                                             </Form.Item>
                                         </Col>
                                         <Col span={12}>
@@ -974,13 +1293,13 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                 },
                             ]}
                         >
-                            <Input placeholder="请输入实施计划时间" />
+                            <DatePicker.RangePicker placeholder={['计划开始时间', '计划结束时间']} />
                         </Form.Item>
                         <Form.Item label="实施负责人">
                             <Space>
                                 <Form.Item
                                     noStyle
-                                    name="implementationManager"
+                                    name="implementManagerAccount"
                                     rules={[
                                         {
                                             required: true,
@@ -995,13 +1314,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                             value: "code",
                                         }}
                                         style={{ width: "200px" }}
-                                        options={[
-                                            { name: "张**", code: "张**" },
-                                            { name: "李**", code: "李**" },
-                                            { name: "郑**", code: "郑**" },
-                                            { name: "孙**", code: "孙**" },
-                                            { name: "王**", code: "王**" },
-                                        ]}
+                                        options={initOption?.users}
                                     />
                                 </Form.Item>
                                 <Tooltip
@@ -1012,6 +1325,128 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                 </Tooltip>
                             </Space>
                         </Form.Item>
+                        {
+                            (detailRow?.shippingMaterial || detailRow?.testingMaterial || detailRow?.trialRunMaterial) &&
+                            <Form.Item label="实施过程档案">
+                                <Space direction="vertical">
+                                    {
+                                        detailRow?.shippingMaterial &&
+                                        <div className={styles.cardItem}>
+                                            <div className={styles.cardItemRow1}>
+                                                <div className={styles.cardItemRow1Time}>调试阶段({detailRow?.shippingMaterial?.operationTime})</div>
+                                                <div>实际操作人({detailRow?.shippingMaterial?.operatorName})</div>
+                                            </div>
+                                            <div className={styles.cardItemRow2}>
+                                                <div className={styles.cardItemRow2Label}>签收货单</div>
+                                                {
+                                                    detailRow?.shippingMaterial?.customerAcceptanceForm?.id &&
+                                                    <div className={styles.cardItemRow2Content}>
+                                                        <FileMarkdownFilled
+                                                            style={{
+                                                                color: '#0EBCB6',
+                                                                fontSize: 30,
+                                                                cursor: 'pointer'
+                                                            }}
+                                                            onClick={() => {
+                                                                window.open(
+                                                                    `${getBaseUrl()}/attachment/download/${detailRow?.shippingMaterial?.customerAcceptanceForm?.id}` + jsonToUrlParams({
+                                                                        id: detailRow?.shippingMaterial?.customerAcceptanceForm?.id,
+                                                                        access_token: localStorage.getItem("Token")
+                                                                    }),
+                                                                    "_blank"
+                                                                );
+                                                            }}
+                                                        />
+                                                        <div>{detailRow?.shippingMaterial?.customerAcceptanceForm?.fileName}</div>
+                                                    </div>
+                                                }
+                                            </div>
+                                            <div className={styles.cardItemRow3}>
+                                                <div className={styles.cardItemRow3Label}>备注：</div>
+                                                <div>{detailRow?.shippingMaterial?.remark}</div>
+                                            </div>
+                                        </div>
+                                    }
+                                    {
+                                        detailRow?.testingMaterial &&
+                                        <div className={styles.cardItem}>
+                                            <div className={styles.cardItemRow1}>
+                                                <div className={styles.cardItemRow1Time}>调试阶段({detailRow?.testingMaterial?.operationTime})</div>
+                                                <div>实际操作人({detailRow?.testingMaterial?.operatorName})</div>
+                                            </div>
+                                            <div className={styles.cardItemRow2}>
+                                                <div className={styles.cardItemRow2Label}>验收报告</div>
+                                                {
+                                                    detailRow?.testingMaterial?.customerAcceptanceForm?.id &&
+                                                    <div className={styles.cardItemRow2Content}>
+                                                        <FileMarkdownFilled
+                                                            style={{
+                                                                color: '#0EBCB6',
+                                                                fontSize: 30,
+                                                                cursor: 'pointer'
+                                                            }}
+                                                            onClick={() => {
+                                                                window.open(
+                                                                    `${getBaseUrl()}/attachment/download/${detailRow?.testingMaterial?.customerAcceptanceForm?.id}` + jsonToUrlParams({
+                                                                        id: detailRow?.testingMaterial?.customerAcceptanceForm?.id,
+                                                                        access_token: localStorage.getItem("Token")
+                                                                    }),
+                                                                    "_blank"
+                                                                );
+                                                            }}
+                                                        />
+                                                        <div>{detailRow?.testingMaterial?.customerAcceptanceForm?.fileName}</div>
+                                                    </div>
+                                                }
+                                            </div>
+                                            <div className={styles.cardItemRow3}>
+                                                <div className={styles.cardItemRow3Label}>备注：</div>
+                                                <div>{detailRow?.testingMaterial?.remark}</div>
+                                            </div>
+                                        </div>
+                                    }
+                                    {
+                                        detailRow?.trialRunMaterial &&
+                                        <div className={styles.cardItem}>
+                                            <div className={styles.cardItemRow1}>
+                                                <div className={styles.cardItemRow1Time}>试运行阶段({detailRow?.trialRunMaterial?.operationTime})</div>
+                                                <div>实际操作人({detailRow?.trialRunMaterial?.operatorName})</div>
+                                            </div>
+                                            <div className={styles.cardItemRow2}>
+                                                <div className={styles.cardItemRow2Label}>客户验收单</div>
+                                                {
+                                                    detailRow?.trialRunMaterial?.customerAcceptanceForm?.id &&
+                                                    <div className={styles.cardItemRow2Content}>
+                                                        <FileMarkdownFilled
+                                                            style={{
+                                                                color: '#0EBCB6',
+                                                                fontSize: 30,
+                                                                cursor: 'pointer'
+                                                            }}
+                                                            onClick={() => {
+                                                                window.open(
+                                                                    `${getBaseUrl()}/attachment/download/${detailRow?.trialRunMaterial?.customerAcceptanceForm?.id}` + jsonToUrlParams({
+                                                                        id: detailRow?.trialRunMaterial?.customerAcceptanceForm?.id,
+                                                                        access_token: localStorage.getItem("Token")
+                                                                    }),
+                                                                    "_blank"
+                                                                );
+                                                            }}
+                                                        />
+                                                        <div>{detailRow?.trialRunMaterial?.customerAcceptanceForm?.fileName}</div>
+                                                    </div>
+                                                }
+                                            </div>
+                                            <div className={styles.cardItemRow3}>
+                                                <div className={styles.cardItemRow3Label}>备注：</div>
+                                                <div>{detailRow?.trialRunMaterial?.remark}</div>
+                                            </div>
+                                        </div>
+                                    }
+
+                                </Space>
+                            </Form.Item>
+                        }
                     </>
                 )}
 
@@ -1023,7 +1458,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                     <Space>
                                         <Form.Item
                                             noStyle
-                                            name="operationsManager"
+                                            name="operationsManagerAccount"
                                             rules={[
                                                 {
                                                     required: true,
@@ -1037,13 +1472,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                     label: "name",
                                                     value: "code",
                                                 }}
-                                                options={[
-                                                    { name: "张**", code: "张**" },
-                                                    { name: "李**", code: "李**" },
-                                                    { name: "郑**", code: "郑**" },
-                                                    { name: "孙**", code: "孙**" },
-                                                    { name: "王**", code: "王**" },
-                                                ]}
+                                                options={initOption?.users}
                                                 style={{ width: "200px" }}
                                             />
                                         </Form.Item>
@@ -1056,7 +1485,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                             <Col span={8}>
                                 <Form.Item
                                     label="首次巡检时间"
-                                    name="firstInspectionTime"
+                                    name="firstInspectionDate"
                                     rules={[
                                         {
                                             required: true,
@@ -1064,7 +1493,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                         },
                                     ]}
                                 >
-                                    <Input placeholder="请输入首次巡检时间" />
+                                    <DatePicker placeholder="请输入首次巡检时间" />
                                 </Form.Item>
                             </Col>
                             <Col span={8}>
@@ -1085,8 +1514,18 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                             value: "code",
                                         }}
                                         options={[
-                                            { name: "一天一次", code: 1 },
-                                            { name: "一周一次", code: 2 },
+                                            { name: "一月一次", code: 1 },
+                                            { name: "两月一次", code: 2 },
+                                            { name: "三月一次", code: 3 },
+                                            { name: "四月一次", code: 4 },
+                                            { name: "五月一次", code: 5 },
+                                            { name: "六月一次", code: 6 },
+                                            { name: "七月一次", code: 7 },
+                                            { name: "八月一次", code: 8 },
+                                            { name: "九月一次", code: 9 },
+                                            { name: "十月一次", code: 10 },
+                                            { name: "十一月一次", code: 11 },
+                                            { name: "十二月一次", code: 12 },
                                         ]}
                                     />
                                 </Form.Item>
@@ -1110,12 +1549,24 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                     }}
                                 >
                                     <div>
-                                        <Form.List name="inspectionTeam">
+                                        <Form.List name="inspectionGroups">
                                             {(fields, { add, remove }) => {
+                                                const inspectionItemType2Items = initOption?.inspectionItemType2Items;
+                                                let inspectionItemType2ItemsOptions = [];
+                                                const keysList = Object.keys(inspectionItemType2Items || {});
+                                                keysList?.forEach(key => {
+                                                    const list = inspectionItemType2Items[key]?.map(item => {
+                                                        return {
+                                                            label: item?.name,
+                                                            value: item?.id
+                                                        }
+                                                    });
+                                                    inspectionItemType2ItemsOptions = inspectionItemType2ItemsOptions.concat(list);
+                                                })
                                                 return (
                                                     <>
                                                         {fields.map(
-                                                            ({ key, name, ...restField }) => {
+                                                            ({ key, name: oueterName, ...restField }) => {
                                                                 return (
                                                                     <div>
                                                                         <Space
@@ -1123,13 +1574,13 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                                                 marginBottom: 10,
                                                                             }}
                                                                         >
-                                                                            <span>
-                                                                                巡检组{name + 1}
-                                                                            </span>
+                                                                            <Form.Item name={[oueterName, 'nameLabel']} style={{ marginBottom: 0 }}>
+                                                                                <Input defaultValue={`巡检组${oueterName + 1}`} />
+                                                                            </Form.Item>
                                                                             <Button
                                                                                 onClick={() =>
                                                                                     remove([
-                                                                                        name,
+                                                                                        oueterName,
                                                                                         "inspectionTeamGroup",
                                                                                     ])
                                                                                 }
@@ -1149,7 +1600,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                                         >
                                                                             <Form.List
                                                                                 name={[
-                                                                                    name,
+                                                                                    oueterName,
                                                                                     "inspectionTeamGroup",
                                                                                 ]}
                                                                             >
@@ -1162,7 +1613,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                                                             {fields.map(
                                                                                                 ({
                                                                                                     key,
-                                                                                                    name,
+                                                                                                    name: innerName,
                                                                                                     ...restField
                                                                                                 }) => {
                                                                                                     return (
@@ -1175,33 +1626,28 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                                                                         >
                                                                                                             <Form.Item
                                                                                                                 name={[
-                                                                                                                    name,
-                                                                                                                    "inspectionTeamGroupItem",
+                                                                                                                    innerName,
+                                                                                                                    "inspectionItemIds",
                                                                                                                 ]}
-                                                                                                                label={`巡检事项${
-                                                                                                                    name +
-                                                                                                                    1
-                                                                                                                }`}
+                                                                                                                label={`巡检事项${innerName + 1}`}
                                                                                                                 style={{
                                                                                                                     marginBottom: 0,
                                                                                                                 }}
                                                                                                             >
-                                                                                                                <Input
-                                                                                                                    placeholder={`请输入巡检项${
-                                                                                                                        name +
-                                                                                                                        1
-                                                                                                                    }`}
+                                                                                                                <Select
+                                                                                                                    placeholder={`请输入巡检项${innerName + 1}`}
                                                                                                                     style={{
                                                                                                                         width: 500,
                                                                                                                     }}
+                                                                                                                    options={inspectionItemType2ItemsOptions}
                                                                                                                 />
                                                                                                             </Form.Item>
                                                                                                             <Button
                                                                                                                 onClick={() =>
                                                                                                                     remove(
                                                                                                                         [
-                                                                                                                            name,
-                                                                                                                            "inspectionTeamGroupItem",
+                                                                                                                            innerName,
+                                                                                                                            "inspectionItemIds",
                                                                                                                         ]
                                                                                                                     )
                                                                                                                 }
@@ -1256,14 +1702,25 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                     }}
                 >
                     <Space>
-                        <Button htmlType="submit">保存</Button>
+                        <Button
+                            htmlType="submit"
+                            onClick={save}
+                        >
+                            保存
+                        </Button>
                         {currentStep != 0 && (
-                            <Button type="primary" onClick={() => setCurrentStep(currentStep - 1)}>
+                            <Button
+                                type="primary"
+                                onClick={() => {
+                                    setCurrentStep(currentStep - 1)
+                                }}>
                                 上一步
                             </Button>
                         )}
                         {currentStep != 3 && (
-                            <Button type="primary" onClick={() => setCurrentStep(currentStep + 1)}>
+                            <Button
+                                type="primary"
+                                onClick={() => save("nexStep")}>
                                 下一步
                             </Button>
                         )}

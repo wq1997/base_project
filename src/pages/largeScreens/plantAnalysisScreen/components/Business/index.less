@@ -1,5 +1,15 @@
 :global {
-    .ant-input-search-button:hover {
+    .ant-select-dropdown {
+        background-color: #000;
+        .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+            background-color: rgb(11, 56, 88);
+        }
+        .ant-select-item {
+            color: #fff !important;
+        }
+    }
+
+    .ant-btn-default:not(:disabled):not(.ant-btn-disabled):hover {
         background: none;
     }
 }
@@ -49,6 +59,17 @@
             top: -40px;
             z-index: 999;
             color: #fff;
+            .input {
+                border: 1px solid rgba(255, 255, 255, 0.15);
+                &:focus,
+                &:hover {
+                    background-color: transparent !important;
+                    border-color: #54cfff;
+                }
+                &::placeholder {
+                    font-size: 14px;
+                }
+            }
             :global {
                 .ant-input-clear-icon,
                 .ant-select-clear,

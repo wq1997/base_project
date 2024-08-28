@@ -26,6 +26,7 @@ const SearchInput = ({
                     placeholder={placeholder || `请输入${label}`}
                     onChange={e => onChange(e.target.value)}
                     className={styles.input}
+                    allowClear={allowClear}
                 />
             )}
             {type == "select" && (
@@ -55,6 +56,7 @@ const SearchInput = ({
                         onChange(dateStr);
                     }}
                     value={value ? dayjs(value) : null}
+                    allowClear={allowClear}
                 />
             )}
             {type == "rangePicker" && (
@@ -66,6 +68,7 @@ const SearchInput = ({
                         onChange(dateStr?.includes("") ? [] : dateStr);
                     }}
                     value={value && value.length > 0 ? [dayjs(value[0]), dayjs(value[1])] : []}
+                    allowClear={allowClear}
                 />
             )}
         </div>

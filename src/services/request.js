@@ -3,7 +3,6 @@ import { getDvaApp } from "umi";
 
 export const getBaseUrl = () => {
     const { API_URL = "" } = process.env;
-    console.log("API_URL", API_URL);
     return API_URL;
 };
 const getToken = () => localStorage.getItem("Token");

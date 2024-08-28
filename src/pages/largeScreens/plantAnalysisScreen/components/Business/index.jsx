@@ -1,6 +1,5 @@
 import styles from "./index.less";
 import Map from "@/pages/largeScreens/components/map";
-import Header from "../Header";
 import { ScrollTable } from "@/components";
 import IncomeRanking from "./incomeRanking";
 import ElectricityRanking from "./electricityRanking";
@@ -21,6 +20,7 @@ import Card from "../../../components/Card";
 import PlantOverview from "../../../components/PlantOverview";
 import AlarmAnysis from "../../../components/AlarmAnysis";
 import DeviceStatus from "../../../components/DeviceStatus";
+import { SearchInput } from "@/components";
 
 const zoomCenter = {
     Domestic: {
@@ -184,14 +184,15 @@ const Business = ({}) => {
                     </div>
                     <div className={styles.right}>
                         <div className={styles.search}>
-                            <Select
+                            <SearchInput
                                 allowClear={true}
+                                className={styles.input}
                                 style={{ width: 100, marginRight: 10 }}
                                 value={area}
                                 type="select"
                                 options={[
-                                    { label: "国内", value: "Domestic" },
-                                    { label: "国外", value: "Foreign" },
+                                    { name: "国内", code: "Domestic" },
+                                    { name: "国外", code: "Foreign" },
                                 ]}
                                 placeholder="区域"
                                 onChange={value => {
