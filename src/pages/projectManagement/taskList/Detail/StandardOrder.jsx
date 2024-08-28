@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Badge, Descriptions, Input } from "antd";
+import { jsonToUrlParams } from "@/utils/utils";
+import { DOWNLOAD_URL } from "@/utils/constants";
 
 const Index = ({ info }) => {
     const getResult = (groupName, itemId) => {
@@ -14,7 +16,7 @@ const Index = ({ info }) => {
     };
 
     return (
-        <div style={{ color: "#fff", paddingLeft: "20px" }}>
+        <div>
             <div style={{ margin: "10px 0" }}>巡检组管理：</div>
             {info?.inspectionRequire?.map((group, groupIndex) => {
                 return (
@@ -39,8 +41,19 @@ const Index = ({ info }) => {
                                         <span style={{ marginRight: 10 }}>
                                             {getResult(group.name, item.id)?.remark}
                                         </span>
-                                        {getResult(group.name, item.id)?.photos?.map(img => {
-                                            return <a href="###">img</a>;
+                                        {getResult(group.name, item.id)?.photos?.map(item => {
+                                            return (
+                                                <a
+                                                    href={`${DOWNLOAD_URL}/${item?.id}${jsonToUrlParams(
+                                                        {
+                                                            access_token:
+                                                                localStorage.getItem("Token"),
+                                                        }
+                                                    )}`}
+                                                >
+                                                    item?.fileName
+                                                </a>
+                                            );
                                         })}
                                     </div>
                                 </div>

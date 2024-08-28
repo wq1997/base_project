@@ -18,6 +18,7 @@ import {
     exceptionWorkOrderProcessInitData as exceptionWorkOrderProcessInitDataServer,
 } from "@/services/workOrder";
 import { ALL_SPACE_REG, UPLOAD_URL, DOWNLOAD_URL } from "@/utils/constants";
+import { jsonToUrlParams } from "@/utils/utils";
 
 const Index = ({ isDetail, isProcess, info, onClose }) => {
     const [form] = Form.useForm();
@@ -153,7 +154,13 @@ const Index = ({ isDetail, isProcess, info, onClose }) => {
                 </Descriptions.Item>
                 <Descriptions.Item label="附件">
                     {info?.exceptionProcessingAttachments?.map(item => (
-                        <a href="###">{item?.fileName}</a>
+                        <a
+                            href={`${DOWNLOAD_URL}/${item?.id}${jsonToUrlParams({
+                                access_token: localStorage.getItem("Token"),
+                            })}`}
+                        >
+                            {item?.fileName}
+                        </a>
                     ))}
                 </Descriptions.Item>
             </Descriptions>
@@ -451,7 +458,7 @@ const Index = ({ isDetail, isProcess, info, onClose }) => {
     };
 
     return (
-        <div style={{ color: "#fff" }}>
+        <div>
             {isDetail && <Detail />}
             {isProcess && <Process />}
         </div>

@@ -63,37 +63,39 @@ const Detail = ({ detailId, processId, onClose }) => {
                 <Descriptions.Item label="发起人">{info?.initiatorName}</Descriptions.Item>
             </Descriptions>
             <Descriptions title="业务信息"></Descriptions>
-            {/* 标准工单 */}
-            {["CYCLE_INSPECTION", "MANUAL_INSPECTION"].includes(info?.type) && (
-                <StandardOrder info={info} />
-            )}
-            {/* 非标准工单 手工工单 其他工单 */}
-            {["MANUAL_FB_INSPECTION", "MANUAL_OTHER"].includes(info?.type) && (
-                <ManualOrder
-                    isDetail={isDetail}
-                    isProcess={isProcess}
-                    info={info}
-                    onClose={onClose}
-                />
-            )}
-            {/* 异常工单 */}
-            {["SYS_EXCEPTION", "MANUAL_EXCEPTION"].includes(info?.type) && (
-                <ExceptionOrder
-                    isDetail={isDetail}
-                    isProcess={isProcess}
-                    info={info}
-                    onClose={onClose}
-                />
-            )}
-            {/* 实施工单 */}
-            {["IMPLEMENT"].includes(info?.type) && (
-                <ImplementOrder
-                    isDetail={isDetail}
-                    isProcess={isProcess}
-                    info={info}
-                    onClose={onClose}
-                />
-            )}
+            <div style={{ color: "#fff", paddingLeft: isDetail ? 0 : "20px" }}>
+                {/* 标准工单 */}
+                {["CYCLE_INSPECTION", "MANUAL_INSPECTION"].includes(info?.type) && (
+                    <StandardOrder info={info} />
+                )}
+                {/* 非标准工单 手工工单 其他工单 */}
+                {["MANUAL_FB_INSPECTION", "MANUAL_OTHER"].includes(info?.type) && (
+                    <ManualOrder
+                        isDetail={isDetail}
+                        isProcess={isProcess}
+                        info={info}
+                        onClose={onClose}
+                    />
+                )}
+                {/* 异常工单 */}
+                {["SYS_EXCEPTION", "MANUAL_EXCEPTION"].includes(info?.type) && (
+                    <ExceptionOrder
+                        isDetail={isDetail}
+                        isProcess={isProcess}
+                        info={info}
+                        onClose={onClose}
+                    />
+                )}
+                {/* 实施工单 */}
+                {["IMPLEMENT"].includes(info?.type) && (
+                    <ImplementOrder
+                        isDetail={isDetail}
+                        isProcess={isProcess}
+                        info={info}
+                        onClose={onClose}
+                    />
+                )}
+            </div>
         </Drawer>
     );
 };

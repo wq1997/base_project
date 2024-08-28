@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Badge, Descriptions, Input, Form, Button, Space, message } from "antd";
 import { MyUpload, UserSelect } from "@/components";
 import { ALL_SPACE_REG, UPLOAD_URL, DOWNLOAD_URL } from "@/utils/constants";
+import { jsonToUrlParams } from "@/utils/utils";
 import {
     processOtherWorkOrder as processOtherWorkOrderServer,
     transferWorkOrder as transferWorkOrderServer,
@@ -57,14 +58,20 @@ const Index = ({ isDetail, isProcess, info, onClose }) => {
 
     const Detail = () => {
         return (
-            <Descriptions title="基础信息" column={1}>
+            <Descriptions title="" column={1}>
                 <Descriptions.Item label="工单描述">{info?.description}</Descriptions.Item>
                 <Descriptions.Item label="处理结果">
                     {info?.otherProcessingResult}
                 </Descriptions.Item>
                 <Descriptions.Item label="附件">
                     {info?.otherProcessingAttachments?.map(item => (
-                        <a href={`${DOWNLOAD_URL}/${item.id}`}>{item?.fileName}</a>
+                        <a
+                            href={`${DOWNLOAD_URL}/${item.id}${jsonToUrlParams({
+                                access_token: localStorage.getItem("Token"),
+                            })}`}
+                        >
+                            {item?.fileName}
+                        </a>
                     ))}
                 </Descriptions.Item>
             </Descriptions>
@@ -147,10 +154,10 @@ const Index = ({ isDetail, isProcess, info, onClose }) => {
     };
 
     return (
-        <div style={{ color: "#fff", paddingLeft: "20px" }}>
+        <>
             {isDetail && <Detail />}
             {isProcess && <Process />}
-        </div>
+        </>
     );
 };
 

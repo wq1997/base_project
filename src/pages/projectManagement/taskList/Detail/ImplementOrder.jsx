@@ -9,6 +9,7 @@ import {
     processRunningWorkOrder as processRunningWorkOrderServer,
 } from "@/services/workOrder";
 import { ALL_SPACE_REG, UPLOAD_URL, DOWNLOAD_URL } from "@/utils/constants";
+import { jsonToUrlParams } from "@/utils/utils";
 
 const Index = ({ isDetail, isProcess, info, onClose }) => {
     const [deliveryForm] = Form.useForm();
@@ -83,7 +84,15 @@ const Index = ({ isDetail, isProcess, info, onClose }) => {
                     发货阶段
                 </Descriptions.Item>
                 <Descriptions.Item label="到货签收单附件">
-                    <a href="###">{info?.project?.shippingMaterial?.goodsReceivedNote?.fileName}</a>
+                    <a
+                        href={`${DOWNLOAD_URL}/${info?.project?.shippingMaterial?.goodsReceivedNote?.id}${jsonToUrlParams(
+                            {
+                                access_token: localStorage.getItem("Token"),
+                            }
+                        )}`}
+                    >
+                        {info?.project?.shippingMaterial?.goodsReceivedNote?.fileName}
+                    </a>
                 </Descriptions.Item>
                 <Descriptions.Item label="备注">
                     {info?.project?.shippingMaterial?.remark}
@@ -97,7 +106,15 @@ const Index = ({ isDetail, isProcess, info, onClose }) => {
                     调试阶段
                 </Descriptions.Item>
                 <Descriptions.Item label="调试报告附件">
-                    <a href="###">{info?.project?.testingMaterial?.acceptanceReport?.fileName}</a>
+                    <a
+                        href={`${DOWNLOAD_URL}/${info?.project?.testingMaterial?.acceptanceReport?.id}${jsonToUrlParams(
+                            {
+                                access_token: localStorage.getItem("Token"),
+                            }
+                        )}`}
+                    >
+                        {info?.project?.testingMaterial?.acceptanceReport?.fileName}
+                    </a>
                 </Descriptions.Item>
                 <Descriptions.Item label="备注">
                     {info?.project?.testingMaterial?.remark}
@@ -112,7 +129,11 @@ const Index = ({ isDetail, isProcess, info, onClose }) => {
                 </Descriptions.Item>
                 <Descriptions.Item label="项目验收单附件">
                     <a
-                        href={`${fileURL}/download/${info?.project?.trialRunMaterial?.customerAcceptanceForm?.id}`}
+                        href={`${DOWNLOAD_URL}/${info?.project?.trialRunMaterial?.customerAcceptanceForm?.id}${jsonToUrlParams(
+                            {
+                                access_token: localStorage.getItem("Token"),
+                            }
+                        )}`}
                     >
                         {info?.project?.trialRunMaterial?.customerAcceptanceForm?.fileName}
                     </a>
@@ -375,10 +396,10 @@ const Index = ({ isDetail, isProcess, info, onClose }) => {
     };
 
     return (
-        <div style={{ color: "#fff", paddingLeft: info?.supportProcessing ? "20px" : 0 }}>
+        <>
             {isDetail && <Detail />}
             {isProcess && <Process />}
-        </div>
+        </>
     );
 };
 
