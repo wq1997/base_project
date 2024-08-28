@@ -90,6 +90,7 @@ const Detailed = () => {
         const type = orderTypeRef.current;
         const exceptionSupplierId = manufacturerRef.current;
         const actualProcessorNameLike = handlerPersonRef.current;
+        const collectingMaterials = collectingMaterialsRef.current;
         const res = await workOrderFindExceptionStatisticsPageServe({
             pageNum: current,
             pageSize,
@@ -102,6 +103,7 @@ const Detailed = () => {
                 projectId,
                 type,
                 exceptionSupplierId,
+                collectingMaterials,
                 actualProcessorNameLike,
             },
         });
