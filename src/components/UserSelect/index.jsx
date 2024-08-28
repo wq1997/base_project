@@ -33,7 +33,7 @@ import {
 } from "@/services/user";
 import "./index.less";
 
-const Account = ({ type = "multiple", open, onChange, onClose }) => {
+const Account = ({ type = "radio", open, onChange, onClose }) => {
     const accountRef = useRef();
     const [account, setAccount] = useState();
     const nameRef = useRef();
@@ -203,6 +203,7 @@ const Account = ({ type = "multiple", open, onChange, onClose }) => {
                     columns={columns}
                     pagination={pagination}
                     rowSelection={{
+                        type,
                         selectedRowKeys,
                         onChange: onSelectChange,
                         getCheckboxProps: record => ({

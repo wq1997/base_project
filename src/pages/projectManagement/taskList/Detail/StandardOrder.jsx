@@ -49,13 +49,9 @@ const Index = ({ info }) => {
                     </div>
                 );
             })}
-            <div style={{ margin: "10px 0" }}>巡检备注：</div>
-            <Input.TextArea
-                disabled={true}
-                rows={4}
-                value={info?.inspectionProcessingResult?.remark}
-                style={{ width: "50%" }}
-            />
+            <div style={{ margin: "10px 0" }}>
+                巡检备注：{info?.inspectionProcessingResult?.remark}
+            </div>
         </div>
     );
 };

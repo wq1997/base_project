@@ -17,11 +17,9 @@ import {
     transferWorkOrder as transferWorkOrderServer,
     exceptionWorkOrderProcessInitData as exceptionWorkOrderProcessInitDataServer,
 } from "@/services/workOrder";
-import { ALL_SPACE_REG } from "@/utils/constants";
+import { ALL_SPACE_REG, UPLOAD_URL, DOWNLOAD_URL } from "@/utils/constants";
 
-const Index = ({ info, onClose }) => {
-    const baseUrl = process.env.API_URL;
-    const uploadUrl = baseUrl + "/attachment/upload";
+const Index = ({ isDetail, isProcess, info, onClose }) => {
     const [form] = Form.useForm();
     const [userSelectOpen, setUserSelectOpen] = useState(false);
     const [users, setUsers] = useState([]);
@@ -106,7 +104,7 @@ const Index = ({ info, onClose }) => {
         }
     };
 
-    const Result = () => {
+    const Detail = () => {
         return (
             <Descriptions title="" column={2}>
                 <Descriptions.Item label="异常部件">
@@ -123,7 +121,9 @@ const Index = ({ info, onClose }) => {
                 <Descriptions.Item label="实际处理时间(天)">
                     {info?.exceptionProcessingDaysForActual}
                 </Descriptions.Item>
-                <span style={{ color: "rgba(255, 255, 255, 0.45)" }}>消缺成本</span>
+                <Descriptions.Item label="" span={2}>
+                    <div style={{ color: "#fff" }}>消缺成本</div>
+                </Descriptions.Item>
                 <Descriptions.Item label="差旅成本">
                     {info?.exceptionProcessingCost?.travelCost}
                 </Descriptions.Item>
@@ -136,17 +136,19 @@ const Index = ({ info, onClose }) => {
                 <Descriptions.Item label="业主罚款">
                     {info?.exceptionProcessingCost?.ownerFineCost}
                 </Descriptions.Item>
-                <Descriptions.Item label="人员成本">
+                <Descriptions.Item label="人员成本" span={2}>
                     {info?.exceptionProcessingCost?.laborCost}
                 </Descriptions.Item>
-                <span style={{ color: "rgba(255, 255, 255, 0.45)" }}>消缺收益</span>
+                <Descriptions.Item label="" span={2}>
+                    <div style={{ color: "#fff" }}>消缺收益</div>
+                </Descriptions.Item>
                 <Descriptions.Item label="供应商罚款">
                     {info?.exceptionProcessingBenefit?.supplierFineBenefit}
                 </Descriptions.Item>
                 <Descriptions.Item label="质保外维修收益(业务付款)">
                     {info?.exceptionProcessingBenefit?.warrantyExpiredPayBenefit}
                 </Descriptions.Item>
-                <Descriptions.Item label="消缺总结">
+                <Descriptions.Item label="消缺总结" span={2}>
                     {info?.exceptionProcessingResult}
                 </Descriptions.Item>
                 <Descriptions.Item label="附件">
@@ -158,7 +160,7 @@ const Index = ({ info, onClose }) => {
         );
     };
 
-    const DealWith = () => {
+    const Process = () => {
         return (
             <>
                 <UserSelect
@@ -415,7 +417,7 @@ const Index = ({ info, onClose }) => {
                     <Row span={24}>
                         <Col span={12}>
                             <Form.Item label="附件" name="files">
-                                <MyUpload url={uploadUrl} />
+                                <MyUpload url={UPLOAD_URL} />
                             </Form.Item>
                         </Col>
                     </Row>
@@ -449,7 +451,10 @@ const Index = ({ info, onClose }) => {
     };
 
     return (
-        <div style={{ color: "#fff" }}>{info?.supportProcessing ? <DealWith /> : <Result />}</div>
+        <div style={{ color: "#fff" }}>
+            {isDetail && <Detail />}
+            {isProcess && <Process />}
+        </div>
     );
 };
 

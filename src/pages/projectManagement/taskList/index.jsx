@@ -142,7 +142,8 @@ const Account = () => {
     ]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [addProjectOpen, setAddProjectOpen] = useState(false);
-    const [detailId, setDetailId] = useState("1813879221307654146");
+    const [detailId, setDetailId] = useState();
+    const [processId, setProcessId] = useState();
 
     const publishedTimeRef = useRef();
     const [publishedTime, setPublishedTime] = useState();
@@ -243,13 +244,14 @@ const Account = () => {
         {
             title: "操作",
             dataIndex: "operate",
+            fixed: "right",
             render: (_, { id, supportProcessing }) => {
                 return (
-                    <Space>
+                    <>
                         <Button
                             type="link"
                             disabled={Boolean(!supportProcessing)}
-                            onClick={() => setDetailId(id)}
+                            onClick={() => setProcessId(id)}
                         >
                             去处理
                         </Button>
@@ -260,7 +262,7 @@ const Account = () => {
                         >
                             详情
                         </Button>
-                    </Space>
+                    </>
                 );
             },
         },
@@ -438,8 +440,10 @@ const Account = () => {
             />
             <Detail
                 detailId={detailId}
+                processId={processId}
                 onClose={() => {
                     setDetailId(null);
+                    setProcessId(null);
                     getList();
                 }}
             />
@@ -571,6 +575,9 @@ const Account = () => {
                     getCheckboxProps: record => ({
                         disabled: record.account === "admin",
                     }),
+                }}
+                scroll={{
+                    x: 1500,
                 }}
                 onChange={pagination => {
                     paginationRef.current = pagination;

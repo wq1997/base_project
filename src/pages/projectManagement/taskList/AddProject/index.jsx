@@ -79,6 +79,9 @@ const AddProject = ({ open, onClose }) => {
 
     useEffect(() => {
         getInitData();
+        if (!open) {
+            form.resetFields();
+        }
     }, [open]);
 
     return (
