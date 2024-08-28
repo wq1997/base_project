@@ -10,6 +10,7 @@ import {
     Input,
     Radio,
     theme,
+    Tabs,
 } from "antd";
 import {
     EllipsisOutlined,
@@ -26,6 +27,11 @@ import { SearchInput } from "@/components";
 import AddProject from "./AddProject";
 import Detail from "./Detail";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
+import {
+    workOrderList as workOrderListServer,
+    workOrderListInitData as workOrderListInitDataServer,
+    deleteWorkOrder as deleteWorkOrderServer,
+} from "@/services/workOrder";
 import "./index.less";
 import dayjs from "dayjs";
 import img1 from "./imgs/1.png";
@@ -48,29 +54,8 @@ const Account = () => {
     const { token } = theme.useToken();
     const location = useLocation();
     const initCode = location?.search.split("=")[1];
-    const [canSure, setCanSure] = useState(true);
     const [canDelete, setCanDelete] = useState(true);
-    const [canInvalid, setCanInvalid] = useState(true);
-    const releaseTimeRef = useRef();
-    const executeTimeRef = useRef();
-    const codeRef = useRef(initCode);
-    const confirmStatusRef = useRef();
-    const splitStatusRef = useRef();
-    const responsePowerRef = useRef();
-    const responseTypeRef = useRef();
-    const responseTimeTypeRef = useRef();
-    const [code, setCode] = useState(initCode);
-    const [releaseTime, setReleaseTime] = useState();
-    const [executeTime, setExecuteTime] = useState();
-    const [confirmStatus, setConfirmStatus] = useState();
-    const [confirmStatusList, setConfirmStatusList] = useState();
-    const [splitStatus, setSplitStatus] = useState();
-    const [splitStatusList, setSplitStatusList] = useState();
-    const [responsePower, setResponsePower] = useState();
-    const [responseType, setResponseType] = useState();
-    const [responseTypeList, setResponseTypeList] = useState();
-    const [responseTimeType, setResponseTimeType] = useState();
-    const [responseTimeTypeList, setResponseTimeTypeList] = useState();
+
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [userList, setUserList] = useState([
@@ -157,69 +142,123 @@ const Account = () => {
     ]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [addProjectOpen, setAddProjectOpen] = useState(false);
-    const [detailOpen, setDetailOpen] = useState(false);
-    const [invitationSplitId, setInvitationSplitId] = useState();
-    const [detailRow, setDetailRow] = useState(false);
+    const [detailId, setDetailId] = useState("1813879221307654146");
+
+    const publishedTimeRef = useRef();
+    const [publishedTime, setPublishedTime] = useState();
+
+    const dealStatusRef = useRef();
+    const [dealStatus, setDealStatus] = useState();
+    const [dealStatusOptions, setDealStatusOptions] = useState();
+
+    const workOrderNameRef = useRef();
+    const [workOrderName, setWorkOrderName] = useState();
+
+    const workOrderTypeRef = useRef();
+    const [workOrderType, setWorkOrderType] = useState();
+    const [workOrderTypeOptions, setWorkOrderTypeOptions] = useState();
+
+    const planStartDateRef = useRef();
+    const [planStartDate, setPlanStartDate] = useState();
+
+    const planEndDateRef = useRef();
+    const [planEndDate, setPlanEndDate] = useState();
+
+    const associatedProjectRef = useRef();
+    const [associatedProject, setAssociatedProject] = useState();
+    const [projectOptions, setProjectOptions] = useState();
+
+    const [userOptions, setUserOptions] = useState();
+
+    const ownerRef = useRef();
+    const [owner, setOwner] = useState();
+
+    const initiatorRef = useRef();
+    const [initiator, setInitiator] = useState();
+
+    const currentProcessorRef = useRef();
+    const [currentProcessor, setCurrentProcessor] = useState();
 
     const columns = [
         {
             title: "工单发布时间",
-            dataIndex: "time",
+            dataIndex: "publishedTime",
         },
         {
             title: "处理状态",
-            dataIndex: "status",
-            render: (_, { status }) => {
+            dataIndex: "statusZh",
+            render: (_, { status, statusZh }) => {
                 return (
-                    <span style={{ color: status == "已完成" ? "#1BE72B" : "#F50101" }}>
-                        {status}
+                    <span style={{ color: status == "COMPLETED" ? "#1BE72B" : "" }}>
+                        {statusZh}
                     </span>
                 );
             },
         },
         {
             title: "工单名称",
-            dataIndex: "name",
+            dataIndex: "title",
         },
         {
             title: "工单类型",
-            dataIndex: "type",
+            dataIndex: "typeZh",
         },
         {
             title: "计划开始时间",
-            dataIndex: "start",
+            dataIndex: "planStartDate",
         },
         {
             title: "计划结束时间",
-            dataIndex: "end",
+            dataIndex: "planEndDate",
         },
         {
             title: "关联项目名称",
-            dataIndex: "projectName",
+            dataIndex: "project",
+            render: (_, { project }) => {
+                return project?.name;
+            },
         },
         {
             title: "工单接收人",
-            dataIndex: "accept",
+            dataIndex: "ownerName",
         },
         {
             title: "工单发起人",
-            dataIndex: "launch",
+            dataIndex: "initiatorName",
         },
         {
             title: "当前处理人",
-            dataIndex: "handle",
+            dataIndex: "currentProcessorName",
+            render: (_, { status, currentProcessorName }) => {
+                return status == "COMPLETED" ? "" : currentProcessorName;
+            },
+        },
+        {
+            title: "实际处理人",
+            dataIndex: "currentProcessorName",
+            render: (_, { status, currentProcessorName }) => {
+                return status == "COMPLETED" ? currentProcessorName : "";
+            },
         },
         {
             title: "操作",
             dataIndex: "operate",
-            render: (_, row) => {
+            render: (_, { id, supportProcessing }) => {
                 return (
                     <Space>
-                        <Button type="link">
+                        <Button
+                            type="link"
+                            disabled={Boolean(!supportProcessing)}
+                            onClick={() => setDetailId(id)}
+                        >
                             去处理
                         </Button>
-                        <Button type="link" style={{color: token.colorPrimary}} onClick={() => setDetailRow(row)}>
-                            查看详情
+                        <Button
+                            type="link"
+                            style={{ color: token.colorPrimary }}
+                            onClick={() => setDetailId(id)}
+                        >
+                            详情
                         </Button>
                     </Space>
                 );
@@ -228,49 +267,54 @@ const Account = () => {
     ];
 
     const onSelectChange = (newSelectedRowKeys, newSelectedRows) => {
-        const hasNoSure = Boolean(newSelectedRows?.some(item => item.supportConfirm == false));
-        setCanSure(!hasNoSure);
-        const hasNoDelete = Boolean(newSelectedRows?.some(item => item.supportDelete == false));
+        const hasNoDelete = Boolean(newSelectedRows?.some(item => item.supportRemove == false));
         setCanDelete(!hasNoDelete);
-        const hasNoInvalid = Boolean(newSelectedRows?.some(item => item.supportInvalid == false));
-        setCanInvalid(!hasNoInvalid);
         setSelectedRowKeys(newSelectedRowKeys);
     };
 
-    const getSearchInitData = async () => {
-        const res = await getSearchInitDataServer();
+    const getInitData = async () => {
+        const res = await workOrderListInitDataServer();
         if (res?.data?.status == "SUCCESS") {
-            const { confirmStatuses, splitStatuses, responseTypes, responseTimeTypes } =
-                res?.data?.data;
-            setConfirmStatusList(confirmStatuses);
-            setSplitStatusList(splitStatuses);
-            setResponseTypeList(responseTypes);
-            setResponseTimeTypeList(responseTimeTypes);
+            const { statuses, types, projects, users } = res?.data?.data;
+            setDealStatusOptions(statuses);
+            setWorkOrderTypeOptions(types);
+            setProjectOptions(
+                projects?.map(item => ({
+                    ...item,
+                    code: item.id,
+                }))
+            );
+            setUserOptions(users);
         }
     };
 
-    const getInviteList = async () => {
+    const getList = async () => {
         const { current, pageSize } = paginationRef.current;
-        const [createdTimeFrom, createdTimeTo] = releaseTimeRef.current || [];
-        const [appointedTimeRangeStart, appointedTimeRangeEnd] = executeTimeRef.current || [];
-        const code = codeRef.current;
-        const confirmStatus = confirmStatusRef.current;
-        const splitStatus = splitStatusRef.current;
-        const responsePower = +responsePowerRef.current;
-        const responseType = responseTypeRef.current;
-        const res = await getInviteListServer({
+        const [publishedTimeFrom, publishedTimeTo] = publishedTimeRef.current || [];
+        const statusIn = dealStatusRef.current ? [dealStatusRef.current] : null;
+        const title = workOrderNameRef.current;
+        const type = workOrderTypeRef.current;
+        const planDateFrom = planStartDateRef.current;
+        const planDateTo = planEndDateRef.current;
+        const projectId = associatedProjectRef.current;
+        const ownerAccount = ownerRef.current;
+        const initiatorAccount = initiatorRef.current;
+        const currentProcessorAccount = currentProcessorRef.current;
+        const res = await workOrderListServer({
             pageNum: current,
             pageSize,
             queryCmd: {
-                createdTimeFrom,
-                createdTimeTo,
-                appointedTimeRangeStart,
-                appointedTimeRangeEnd,
-                code,
-                confirmStatus,
-                splitStatus,
-                responsePower,
-                responseType,
+                publishedTimeFrom,
+                publishedTimeTo,
+                statusIn,
+                title,
+                type,
+                planDateFrom,
+                planDateTo,
+                projectId,
+                ownerAccount,
+                initiatorAccount,
+                currentProcessorAccount,
             },
         });
         if (res?.data?.status == "SUCCESS") {
@@ -284,25 +328,28 @@ const Account = () => {
     };
 
     const handleReset = () => {
-        history.push("/vpp/demandResponse/invitation/invitationList");
         paginationRef.current = DEFAULT_PAGINATION;
-        releaseTimeRef.current = undefined;
-        setReleaseTime([]);
-        executeTimeRef.current = undefined;
-        setExecuteTime([]);
-        codeRef.current = undefined;
-        setCode();
-        confirmStatusRef.current = undefined;
-        setConfirmStatus();
-        splitStatusRef.current = undefined;
-        setSplitStatus();
-        responsePowerRef.current = undefined;
-        setResponsePower();
-        responseTypeRef.current = undefined;
-        setResponseType();
-        responseTimeTypeRef.current = undefined;
-        setResponseTimeType();
-        getInviteList();
+        publishedTimeRef.current = [];
+        setPublishedTime([]);
+        dealStatusRef.current = undefined;
+        setDealStatus();
+        workOrderNameRef.current = undefined;
+        setWorkOrderName();
+        workOrderTypeRef.current = undefined;
+        setWorkOrderType();
+        planStartDateRef.current = undefined;
+        setPlanStartDate();
+        planEndDateRef.current = undefined;
+        setPlanEndDate();
+        associatedProjectRef.current = undefined;
+        setAssociatedProject();
+        ownerRef.current = undefined;
+        setOwner();
+        initiatorRef.current = undefined;
+        setInitiator();
+        currentProcessorRef.current = undefined;
+        setCurrentProcessor();
+        getList();
     };
 
     const handleInvalid = () => {
@@ -343,7 +390,7 @@ const Account = () => {
                         current: 1,
                     });
                     setSelectedRowKeys([]);
-                    getInviteList();
+                    getList();
                     invalidReason = undefined;
                 }
             },
@@ -353,43 +400,30 @@ const Account = () => {
         });
     };
 
-    const handleOperate = typeId => {
-        const operates = {
-            0: {
-                type: "确认",
-                tip: "邀约确认后不可取消",
-                fn: sureInviteServer,
-            },
-            1: {
-                type: "删除",
-                tip: "删除后不可恢复",
-                fn: deleteInviteServer,
-            },
-        };
-        const { type, tip, fn } = operates[typeId];
+    const handleDelete = () => {
         if (selectedRowKeys?.length == 0) {
-            return message.info(`请先勾选需要${type}的数据`);
+            return message.info(`请先勾选需要删除的数据`);
         }
         Modal.confirm({
-            title: `确定${type}？`,
-            content: tip,
+            title: `确定删除？`,
+            content: "删除后不可恢复",
             onOk: async () => {
-                const res = await fn(selectedRowKeys);
+                const res = await deleteWorkOrderServer(selectedRowKeys);
                 if (res?.data?.status == "SUCCESS") {
-                    message.success(`${type}成功`);
+                    message.success(`删除成功`);
                     setPagination({
                         current: 1,
                     });
                     setSelectedRowKeys([]);
-                    getInviteList();
+                    getList();
                 }
             },
         });
     };
 
     useEffect(() => {
-        // getInviteList();
-        // getSearchInitData();
+        getList();
+        getInitData();
     }, []);
     2;
 
@@ -397,105 +431,134 @@ const Account = () => {
         <div className="electronic-archives">
             <AddProject
                 open={addProjectOpen}
-                onClose={resFlag => {
+                onClose={() => {
                     setAddProjectOpen(false);
+                    getList();
                 }}
             />
             <Detail
-                detailRow={detailRow}
-                onClose={resFlag => {
-                    setDetailRow(null);
+                detailId={detailId}
+                onClose={() => {
+                    setDetailId(null);
+                    getList();
                 }}
             />
             <Space className="search">
                 <div>
                     <span style={{ color: "#FFF" }}>工单发布时间：</span>
-                    <DatePicker />
+                    <DatePicker.RangePicker
+                        value={
+                            publishedTime &&
+                            publishedTime.length > 0 &&
+                            publishedTime[0] &&
+                            publishedTime[1]
+                                ? [dayjs(publishedTime[0]), dayjs(publishedTime[1])]
+                                : []
+                        }
+                        onChange={(date, dateStr) => {
+                            publishedTimeRef.current = dateStr;
+                            setPublishedTime(dateStr);
+                        }}
+                    />
                 </div>
                 <SearchInput
                     label="处理状态"
+                    value={dealStatus}
                     type="select"
-                    options={[
-                        { name: "全部", code: 1 },
-                        { name: "已完成", code: 2 },
-                        { name: "进行中", code: 3 },
-                    ]}
+                    options={dealStatusOptions}
                     onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
-                        confirmStatusRef.current = value;
-                        setConfirmStatus(value);
+                        dealStatusRef.current = value;
+                        setDealStatus(value);
                     }}
                 />
                 <SearchInput
                     label="工单名称"
+                    value={workOrderName}
                     onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
-                        codeRef.current = value;
-                        setCode(value);
+                        workOrderNameRef.current = value;
+                        setWorkOrderName(value);
                     }}
                 />
                 <SearchInput
                     label="工单类型"
+                    value={workOrderType}
                     type="select"
-                    options={[
-                        { name: "系统工单", code: 1 },
-                        { name: "实施工单", code: 2 },
-                        { name: "手工工单", code: 3 },
-                    ]}
+                    options={workOrderTypeOptions}
                     onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
-                        splitStatusRef.current = value;
-                        setSplitStatus(value);
+                        workOrderTypeRef.current = value;
+                        setWorkOrderType(value);
                     }}
                 />
                 <div>
                     <span style={{ color: "#FFF" }}>计划开始时间：</span>
-                    <DatePicker />
+                    <DatePicker
+                        onChange={(date, dateStr) => {
+                            planStartDateRef.current = dateStr;
+                            setPlanStartDate(dateStr);
+                        }}
+                        value={planStartDate ? dayjs(planStartDate) : null}
+                    />
                 </div>
                 <div>
                     <span style={{ color: "#FFF" }}>计划结束时间：</span>
-                    <DatePicker />
+                    <DatePicker
+                        onChange={(date, dateStr) => {
+                            planEndDateRef.current = dateStr;
+                            setPlanEndDate(dateStr);
+                        }}
+                        value={planEndDate ? dayjs(planEndDate) : null}
+                    />
                 </div>
                 <SearchInput
-                    label="关联项目名称"
+                    label="关联项目"
+                    value={associatedProject}
+                    type="select"
+                    options={projectOptions}
                     onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
-                        codeRef.current = value;
-                        setCode(value);
+                        associatedProjectRef.current = value;
+                        setAssociatedProject(value);
                     }}
                 />
                 <SearchInput
                     label="工单接收人"
+                    value={owner}
                     type="select"
-                    options={[{ name: "**", code: 1 }]}
+                    options={userOptions}
                     onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
-                        responseTimeTypeRef.current = value;
-                        setResponseTimeType(value);
+                        ownerRef.current = value;
+                        setOwner(value);
                     }}
                 />
                 <SearchInput
                     label="工单发起人"
+                    value={initiator}
                     type="select"
-                    options={[{ name: "**", code: 1 }]}
+                    options={userOptions}
                     onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
-                        responseTimeTypeRef.current = value;
-                        setResponseTimeType(value);
+                        initiatorRef.current = value;
+                        setInitiator(value);
                     }}
                 />
                 <SearchInput
                     label="当前处理人"
+                    value={currentProcessor}
                     type="select"
-                    options={[{ name: "**", code: 1 }]}
+                    options={userOptions}
                     onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
-                        responseTimeTypeRef.current = value;
-                        setResponseTimeType(value);
+                        currentProcessorRef.current = value;
+                        setCurrentProcessor(value);
                     }}
                 />
-                <Button type="primary">搜索</Button>
-                <Button type="primary" danger>重置</Button>
+                <Button
+                    type="primary"
+                    onClick={() => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        getList();
+                    }}
+                >
+                    搜索
+                </Button>
+                <Button onClick={handleReset}>重置</Button>
             </Space>
             <Table
                 rowKey="id"
@@ -511,17 +574,22 @@ const Account = () => {
                 }}
                 onChange={pagination => {
                     paginationRef.current = pagination;
-                    getInviteList();
+                    getList();
                 }}
                 title={() => (
                     <Space className="table-title">
-                        <Button
-                            type="primary"
-                            onClick={() => setAddProjectOpen(true)}
-                        >
+                        <Button type="primary" onClick={() => setAddProjectOpen(true)}>
                             手工新增工单
                         </Button>
-                        <Button type="primary" danger>删除工单</Button>
+
+                        <Button type="primary" danger disabled={!canDelete} onClick={handleDelete}>
+                            删除工单
+                            {selectedRowKeys?.length ? (
+                                <span>({selectedRowKeys?.length})</span>
+                            ) : (
+                                ""
+                            )}
+                        </Button>
                     </Space>
                 )}
             ></Table>

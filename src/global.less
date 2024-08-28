@@ -114,30 +114,40 @@ body {
     opacity: 0; //去掉高德的版本号
 }
 
-.ant-picker{
+.ant-picker {
     background: none;
 }
 
-.ant-input{
+.ant-input {
     background: none;
 }
 
-.ant-radio-wrapper .ant-radio-inner{
+.ant-radio-wrapper .ant-radio-inner {
     background: none;
 }
 
-.ant-btn-default{
+.ant-btn-default {
     background-color: unset;
 }
 
-.ant-table-wrapper .ant-table-thead >tr>th{
+.ant-table-wrapper .ant-table-thead > tr > th {
     background-color: #064253;
 }
 
-.ant-table-placeholder{
+.ant-table-placeholder {
     display: none;
 }
 
-.ant-input-number{
+.ant-input-number {
     background-color: transparent !important;
+}
+.ant-form-item .ant-form-item-label > label {
+    text-wrap: wrap;
+    height: unset;
+    margin-right: 10px;
+    &::after {
+        position: absolute;
+        right: -14px;
+        top: -1px;
+    }
 }

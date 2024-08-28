@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
     message,
     Button,
@@ -17,56 +17,82 @@ import {
 import dayjs from "dayjs";
 import { Title } from "@/components";
 import { ExclamationCircleOutlined, CaretRightOutlined } from "@ant-design/icons";
+import {
+    updateWorkOrderInitData as updateWorkOrderInitDataServer,
+    updateWorkOrder as updateWorkOrderServer,
+} from "@/services/workOrder";
 import "./index.less";
 
 const { Panel } = Collapse;
 
 const AddProject = ({ open, onClose }) => {
     const [form] = Form.useForm();
-    const [currentStep, setCurrentStep] = useState(3);
-    const [checkGroup, setCheckGroup] = useState([]);
     const [responseTypeList, setResponseTypeList] = useState();
     const [responseTimeTypeList, setResponseTimeTypeList] = useState();
 
-    const getSearchInitData = async () => {
-        const res = await getSearchInitDataServer();
+    const [projectOptions, setProjectOptions] = useState();
+
+    const [userOptions, setUserOptions] = useState();
+
+    const workOrderTypeRef = useRef();
+    const [workOrderType, setWorkOrderType] = useState();
+    const [workOrderTypeOptions, setWorkOrderTypeOptions] = useState();
+
+    const associatedProjectRef = useRef();
+    const [associatedProject, setAssociatedProject] = useState();
+
+    const planStartDateRef = useRef();
+    const [planStartDate, setPlanStartDate] = useState();
+
+    const planEndDateRef = useRef();
+    const [planEndDate, setPlanEndDate] = useState();
+
+    const getInitData = async () => {
+        const res = await updateWorkOrderInitDataServer();
         if (res?.data?.status == "SUCCESS") {
-            const { responseTypes, responseTimeTypes } = res?.data?.data;
-            setResponseTypeList(responseTypes);
-            setResponseTimeTypeList(responseTimeTypes);
+            const { createTypes, projects, users } = res?.data?.data;
+            setWorkOrderTypeOptions(createTypes);
+            setProjectOptions(
+                projects?.map(item => ({
+                    ...item,
+                    code: item.id,
+                }))
+            );
+            setUserOptions(users);
         }
     };
 
     const onFinish = async values => {
-        return;
-        const { appointedTimeFrom, appointedTimeTo } = values;
-        const res = await saveEnterRecordServer({
+        const { planStartDate, planEndDate } = values;
+        const res = await updateWorkOrderServer({
             ...values,
-            appointedTimeFrom: dayjs(appointedTimeFrom).format("YYYY-MM-DD HH:mm"),
-            appointedTimeTo: dayjs(appointedTimeTo).format("YYYY-MM-DD HH:mm"),
+            planStartDate: dayjs(planStartDate).format("YYYY-MM-DD HH:mm"),
+            planEndDate: dayjs(planEndDate).format("YYYY-MM-DD HH:mm"),
         });
         if (res?.data?.status == "SUCCESS") {
-            message.success("录入成功");
-            onClose(true);
+            message.success("新增成功");
+            onClose();
         } else {
             message.info(res?.data?.msg);
         }
     };
 
-    useEffect(() => {}, [open]);
+    useEffect(() => {
+        getInitData();
+    }, [open]);
 
     return (
         <Modal
             title={<Title>手工新增工单</Title>}
-            width={800}
+            width={700}
             confirmLoading={true}
             open={open}
             footer={null}
-            onCancel={() => onClose(false)}
+            onCancel={() => onClose()}
         >
             <Form
                 style={{
-                    width: currentStep == 1 || currentStep == 3 ? "100%" : "50%",
+                    width: "100%",
                     margin: "0 auto",
                 }}
                 name="basic"
@@ -82,7 +108,7 @@ const AddProject = ({ open, onClose }) => {
             >
                 <Form.Item
                     label="工单类型"
-                    name="companyCode"
+                    name="createType"
                     rules={[
                         {
                             required: true,
@@ -96,13 +122,13 @@ const AddProject = ({ open, onClose }) => {
                             label: "name",
                             value: "code",
                         }}
-                        options={[]}
+                        options={workOrderTypeOptions}
                     />
                 </Form.Item>
 
                 <Form.Item
                     label="工单名称"
-                    name="responsePower"
+                    name="title"
                     rules={[
                         {
                             required: true,
@@ -115,7 +141,7 @@ const AddProject = ({ open, onClose }) => {
 
                 <Form.Item
                     label="工单描述"
-                    name="responsePower"
+                    name="description"
                     rules={[
                         {
                             required: true,
@@ -128,7 +154,7 @@ const AddProject = ({ open, onClose }) => {
 
                 <Form.Item
                     label="关联项目"
-                    name="companyCode"
+                    name="projectId"
                     rules={[
                         {
                             required: true,
@@ -140,15 +166,15 @@ const AddProject = ({ open, onClose }) => {
                         placeholder="请选择关联项目"
                         fieldNames={{
                             label: "name",
-                            value: "code",
+                            value: "id",
                         }}
-                        options={[]}
+                        options={projectOptions}
                     />
                 </Form.Item>
 
                 <Form.Item
                     label="负责人"
-                    name="companyCode"
+                    name="ownerAccount"
                     rules={[
                         {
                             required: true,
@@ -162,13 +188,13 @@ const AddProject = ({ open, onClose }) => {
                             label: "name",
                             value: "code",
                         }}
-                        options={[]}
+                        options={userOptions}
                     />
                 </Form.Item>
 
                 <Form.Item
                     label="计划开始时间"
-                    name="appointedTimeTo"
+                    name="planStartDate"
                     rules={[
                         {
                             required: true,
@@ -181,13 +207,12 @@ const AddProject = ({ open, onClose }) => {
                             format: "HH:mm",
                         }}
                         format="YYYY-MM-DD HH:mm"
-                        minuteStep={15}
                     />
                 </Form.Item>
 
                 <Form.Item
                     label="计划结束时间"
-                    name="companyCode"
+                    name="planEndDate"
                     rules={[
                         {
                             required: true,
@@ -200,13 +225,12 @@ const AddProject = ({ open, onClose }) => {
                             format: "HH:mm",
                         }}
                         format="YYYY-MM-DD HH:mm"
-                        minuteStep={15}
                     />
                 </Form.Item>
 
                 <Form.Item
                     wrapperCol={{
-                        offset: 11,
+                        offset: 15,
                         span: 5,
                     }}
                 >
