@@ -89,7 +89,7 @@ const Detailed = () => {
         const projectId = projectNameRef.current;
         const type = orderTypeRef.current;
         const exceptionSupplierId = manufacturerRef.current;
-        const currentProcessorNameLike = handlerPersonRef.current;
+        const actualProcessorNameLike = handlerPersonRef.current;
         const res = await workOrderFindExceptionStatisticsPageServe({
             pageNum: current,
             pageSize,
@@ -102,7 +102,7 @@ const Detailed = () => {
                 projectId,
                 type,
                 exceptionSupplierId,
-                currentProcessorNameLike,
+                actualProcessorNameLike,
             },
         });
         if (res?.data?.status == "SUCCESS") {
