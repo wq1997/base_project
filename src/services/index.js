@@ -84,3 +84,19 @@ export const basSupplierModifyAll = payload => {
 export const getBasProjectEditInitData = payload => {
     return axiosInstance.get(`/bas-project/get-edit-page-init-data`)
 }
+
+export const getWorkOrderTimeExceptionTypeStatistics = payload => {
+    return axiosInstance.get(`/work-order/time-exception-type-statistics`, {
+        params: payload
+    })
+}
+
+export const workOrderFindExceptionStatisticsPage = payload => {
+    return axiosInstance.post(`/work-order/find-exception-statistics-page`, payload);
+}
+
+export const workOrderGetExceptionStatisticsPageInitData = payload => {
+    return axiosInstance.get(`/work-order/get-exception-statistics-page-init-data`, {
+        params: payload
+    })
+}
