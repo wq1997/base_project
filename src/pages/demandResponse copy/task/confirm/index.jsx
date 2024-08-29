@@ -270,7 +270,7 @@ const Confirm = () => {
         return (
             <div className={classNames("response-suggest", cardStyle)}>
                 <div className="title">
-                    <Title>响应结果预估</Title>
+                    <Title>响应建议</Title>
                 </div>
                 <div className="content">
                     <div
@@ -293,9 +293,9 @@ const Confirm = () => {
                         >
                             {curTask ? `${curTask?.projectedExecuteSuccessRate} %` : ""}
                         </div>
-                        {/* {curTask?.projectedExecuteSuccessRate >= 60 && (
+                        {curTask?.projectedExecuteSuccessRate >= 60 && (
                             <div className="suggest">建议参与响应</div>
-                        )} */}
+                        )}
                     </div>
                     <div
                         className="illustrate contentItem"
@@ -420,7 +420,7 @@ const Confirm = () => {
                             <Title>
                                 {isWaitTask ? (
                                     <div>
-                                        已执行任务
+                                        待处理任务
                                         {taskList?.length > 1 && (
                                             <>
                                                 ({taskList?.length})
@@ -494,14 +494,14 @@ const Confirm = () => {
                                     >
                                         查看详情
                                     </Button>
-                                    {/* <Space>
+                                    <Space>
                                         <Button type="primary" danger onClick={handleRefuse}>
                                             拒绝
                                         </Button>
                                         <Button type="primary" onClick={handleConfirm}>
                                             确认响应
                                         </Button>
-                                    </Space> */}
+                                    </Space>
                                 </div>
                             )}
                         </div>

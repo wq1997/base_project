@@ -13,13 +13,13 @@ const Task = () => {
             key: "/vpp/demandResponse/task/list",
             label: "任务列表",
         },
-        // {
-        //     key: "/vpp/demandResponse/task/search",
-        //     label: "任务查询",
-        // },
+        {
+            key: "/vpp/demandResponse/task/search",
+            label: "任务查询",
+        },
         hasPerm(user, "op:task_confirm") && {
             key: "/vpp/demandResponse/task/confirm",
-            label: "任务详情",
+            label: "任务确认",
         },
     ];
 

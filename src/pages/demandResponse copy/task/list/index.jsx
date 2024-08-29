@@ -161,7 +161,7 @@ const Account = () => {
             title: "操作",
             dataIndex: "operate",
             fixed: "right",
-            width: 150,
+            width: 200,
             render: (_, { id, status, supportConfirm }) => {
                 if (supportConfirm) {
                     return (
@@ -171,22 +171,22 @@ const Account = () => {
                                     history.push(`/vpp/demandResponse/task/confirm?taskId=${id}`);
                                 }}
                             >
-                                任务查询
+                                前往确认
                             </a>
                         )
                     );
                 }
-                // if (status == "EXECUTED_FAIL" || status == "EXECUTED_SUCCESS") {
-                //     return (
-                //         <a
-                //             onClick={() => {
-                //                 history.push(`/vpp/demandResponse/task/search?taskId=${id}`);
-                //             }}
-                //         >
-                //             查询执行情况
-                //         </a>
-                //     );
-                // }
+                if (status == "EXECUTED_FAIL" || status == "EXECUTED_SUCCESS") {
+                    return (
+                        <a
+                            onClick={() => {
+                                history.push(`/vpp/demandResponse/task/search?taskId=${id}`);
+                            }}
+                        >
+                            查询执行情况
+                        </a>
+                    );
+                }
             },
         },
     ];

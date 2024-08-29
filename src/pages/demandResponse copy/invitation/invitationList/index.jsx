@@ -21,7 +21,7 @@ import dayjs from "dayjs";
 let invalidReason = undefined;
 
 const Account = () => {
-    recordPage("op:invite_list");
+    recordPage('op:invite_list');
     const location = useLocation();
     const initCode = location?.search.split("=")[1];
     const { user } = useSelector(state => state.user);
@@ -76,7 +76,7 @@ const Account = () => {
             },
         },
         {
-            title: "邀约状态",
+            title: "邀约确认状态",
             dataIndex: "confirmStatusZh",
             width: 200,
         },
@@ -371,9 +371,9 @@ const Account = () => {
                         }}
                         value={
                             releaseTime &&
-                            releaseTime.length > 0 &&
-                            releaseTime[0] &&
-                            releaseTime[1]
+                                releaseTime.length > 0 &&
+                                releaseTime[0] &&
+                                releaseTime[1]
                                 ? [dayjs(releaseTime[0]), dayjs(releaseTime[1])]
                                 : []
                         }
@@ -389,7 +389,7 @@ const Account = () => {
                     }}
                 />
                 <SearchInput
-                    label="邀约状态"
+                    label="邀约确认状态"
                     value={confirmStatus}
                     type="select"
                     options={confirmStatusList}
@@ -420,9 +420,9 @@ const Account = () => {
                         }}
                         value={
                             executeTime &&
-                            executeTime.length > 0 &&
-                            executeTime[0] &&
-                            executeTime[1]
+                                executeTime.length > 0 &&
+                                executeTime[0] &&
+                                executeTime[1]
                                 ? [dayjs(executeTime[0]), dayjs(executeTime[1])]
                                 : []
                         }
