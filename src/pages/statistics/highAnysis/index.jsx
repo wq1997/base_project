@@ -216,9 +216,11 @@ const HighAnysis = () => {
                 const currentIndex = plantList?.findIndex(item => item.value === plantId);
                 plantList[currentIndex].children = data;
                 setPlantDeviceList([...plantList]);
+                console.log('执行了2');
 
                 const currentPlantDevice = await form.getFieldValue("currentPlantDevice")
                 if (currentPlantDevice?.length === 0) {
+                    console.log('执行了1');
                     let packCellList = [];
                     const packCellListRes = await getAnalyticsInitDataServe({ dtuId: data?.[0]?.value });
                     if (packCellListRes?.data?.data?.packCellList) {
@@ -229,6 +231,23 @@ const HighAnysis = () => {
                     form.setFieldsValue({
                         currentPlantDevice: [plantId, data?.[0]?.value],
                         dataType: 'vol',
+                        packCell:packCellList?.[0]?.children?.[0]?.children?.[0]?.value ? 
+                        [packCellList?.[0]?.value, packCellList?.[0]?.children?.[0]?.value,packCellList?.[0]?.children?.[0]?.children?.[0]?.value]:
+                        [packCellList?.[0]?.value, packCellList?.[0]?.children?.[0]?.value]
+                    })
+                    setTimeout(async()=>{
+                        const params = await getParams(false);
+                        getDataSource(params);
+                    }, 200)
+                }else{
+                    let packCellList = [];
+                    const packCellListRes = await getAnalyticsInitDataServe({ dtuId: data?.[0]?.value });
+                    if (packCellListRes?.data?.data?.packCellList) {
+                        const data = packCellListRes?.data?.data?.packCellList;
+                        packCellList = data;
+                    }
+                    setPackCellList(packCellList);
+                    form.setFieldsValue({
                         packCell:packCellList?.[0]?.children?.[0]?.children?.[0]?.value ? 
                         [packCellList?.[0]?.value, packCellList?.[0]?.children?.[0]?.value,packCellList?.[0]?.children?.[0]?.children?.[0]?.value]:
                         [packCellList?.[0]?.value, packCellList?.[0]?.children?.[0]?.value]
@@ -259,7 +278,11 @@ const HighAnysis = () => {
                     ]
                 }
             })
+            console.log('执行了4');
+
             if (plantList?.length > 0) {
+                console.log('执行了3');
+
                 const findIndex = plantList.findIndex(item => !item.disabled);
                 getDtusOfPlant(plantList, plantList?.[findIndex]?.value)
             }
@@ -286,7 +309,7 @@ const HighAnysis = () => {
 
     useEffect(() => {
         initPlantDevice();
-    }, [])
+    }, [locale])
   
     return (
         <Space size={30} direction="vertical" style={{ width: '100%', height: '100%', padding: 30,backgroundColor: token.titleCardBgc }}>
@@ -307,7 +330,9 @@ const HighAnysis = () => {
                                 packCellList = data;
                                 setPackCellList(packCellList);
                                 form.setFieldsValue({
-                                    packCell: [packCellList?.[0]?.value, packCellList?.[0]?.children?.[0]?.value, packCellList?.[0]?.children?.[0]?.children?.[0]?.value]
+                                    packCell: packCellList?.[0]?.children?.[0]?.children?.[0]?.value?
+                                    [packCellList?.[0]?.value, packCellList?.[0]?.children?.[0]?.value, packCellList?.[0]?.children?.[0]?.children?.[0]?.value]
+                                    :[packCellList?.[0]?.value, packCellList?.[0]?.children?.[0]?.value]
                                 })
                                 const params = await getParams();
                                 if (params) {

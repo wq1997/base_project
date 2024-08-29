@@ -30,7 +30,7 @@ const MonitoringCurves = () => {
     const [plantDeviceList, setPlantDeviceList] = useState([]);
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState(`${intl.formatMessage({ id: '监测曲线' })}`);
-    const {locale} = useSelector(state => state.global);
+    const { locale } = useSelector(state => state.global);
     const [dataProList, setDataProList] = useState([
     ]);
 
@@ -62,10 +62,6 @@ const MonitoringCurves = () => {
         let format = "YYYY-MM-DD";
         const values = await form.validateFields();
         let { dataType, date } = values;
-        const currentData = dataProList.find(data => data.value == dataType);
-        const name = `${currentData?.label}(${currentData?.unit})`;
-        if (currentData) setTitle(name);
-
         let legendData = [], series = [], xData = [];
         date = date.map(item => dayjs(item).format(format));
         xData = dataSource?.[0]?.timeList;
@@ -74,7 +70,7 @@ const MonitoringCurves = () => {
             {
                 axisLabel: {
                     formatter: '{value}',
-                    color:token.color2,
+                    color: token.color2,
                     fontSize: 14
                 },
                 axisLine: {
@@ -83,7 +79,7 @@ const MonitoringCurves = () => {
                 splitLine: {
                     show: true,
                     lineStyle: {
-                        color:token.color2
+                        color: token.color2
                     }
                 },
             }
@@ -260,7 +256,7 @@ const MonitoringCurves = () => {
                 },
                 axisLabel: {
                     formatter: '{value}',
-                    color:  token.color2,
+                    color: token.color2,
                     fontSize: 14
                 },
                 axisLine: {
@@ -333,7 +329,7 @@ const MonitoringCurves = () => {
             legend: {
                 data: legendData,
                 textStyle: {
-                    color:  token.color2
+                    color: token.color2
                 }
             },
             grid: {
@@ -351,7 +347,7 @@ const MonitoringCurves = () => {
                     }
                 },
                 axisLabel: {
-                    color:  token.color2,
+                    color: token.color2,
                     textStyle: {
                         fontSize: 14
                     },
@@ -385,6 +381,11 @@ const MonitoringCurves = () => {
                 setPlantDeviceList([...plantList]);
                 const res = await getCurveTypeServe({ deviceType: data?.[0].type });
                 setDataProList(res?.data?.data);
+                const values = await form.validateFields();
+                let { dataType,  } = values;
+                    const currentData = res?.data?.data?.find(data => data.value == dataType);
+                    const name = `${currentData?.label}(${currentData?.unit})`;
+                    if (currentData) setTitle(name);
                 const currentPlantDevice = await form.getFieldValue("currentPlantDevice");
                 if (currentPlantDevice?.length === 0) {
                     form.setFieldsValue({
@@ -398,6 +399,7 @@ const MonitoringCurves = () => {
                 }
             }
         }
+
     }
 
     const initPlantDevice = async () => {
@@ -437,11 +439,11 @@ const MonitoringCurves = () => {
 
     useEffect(() => {
         initOption();
-    }, [dataSource,token,locale]);
+    }, [dataSource, token, locale]);
 
     useEffect(() => {
         initPlantDevice();
-    }, [])
+    }, [locale])
 
     return (
         <Space size={30} direction="vertical" style={{ width: '100%', height: '100%', padding: 30, backgroundColor: token.titleCardBgc }}>
@@ -471,7 +473,12 @@ const MonitoringCurves = () => {
                                     let currentDevice = currentPlant.children.find(it => it.value == value[1]);
                                     if (currentDevice.type) {
                                         const res = await getCurveTypeServe({ deviceType: currentDevice.type });
-                                        setDataProList(res?.data?.data)
+                                        setDataProList(res?.data?.data);
+                                        const values = await form.validateFields();
+                                        let { dataType,  } = values;
+                                            const currentData = res?.data?.data?.find(data => data.value == dataType);
+                                            const name = `${currentData?.label}(${currentData?.unit})`;
+                                            if (currentData) setTitle(name);
                                     }
                                 }}
                                 style={{ width: '250px', height: 40 }}

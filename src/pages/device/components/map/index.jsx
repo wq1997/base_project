@@ -18,9 +18,9 @@ const Index = ({ plants, showInfo, panTo }) => {
             borderRadius: '16px',
             padding: '20px 30px',
             boxSizing: 'border-box',
-            background: token.color4,
+            background: token.titleCardBgc_2,
             ".header": {
-                color: '#54cfff',
+                color: token.iconColor,
                 fontSize: '16px',
                 display: 'flex',
                 justifyContent: 'space-between',
@@ -46,7 +46,7 @@ const Index = ({ plants, showInfo, panTo }) => {
                 display: "flex",
                 ".name": {
                     width: "160px",
-                    color: token.color5,
+                    color: token.colorPrimary,
                 },
                 ".value": {
                     flex: 1,
