@@ -1,4 +1,5 @@
-import { Space, Button, Table, theme, DatePicker, Row } from "antd";
+import { history } from "umi";
+import { Space, Button, Table, theme, DatePicker, Row, Modal, Tooltip, Image } from "antd";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import { SearchInput } from "@/components";
 import React, { useState, useEffect, useRef } from "react";
@@ -9,6 +10,8 @@ import {
 } from "@/services";
 import styles from "./index.less";
 import dayjs from "dayjs";
+import { jsonToUrlParams } from "@/utils/utils";
+import { getBaseUrl } from "@/services/request";
 
 const Detailed = () => {
     const { token } = theme.useToken();
@@ -30,8 +33,12 @@ const Detailed = () => {
     const handlerPersonRef = useRef();
     const [collectingMaterials, setCollectingMaterials] = useState();
     const collectingMaterialsRef = useRef();
+    const [exceptionRefBasInspectionItemId, setExceptionRefBasInspectionItemId] = useState();
+    const exceptionRefBasInspectionItemIdRef = useRef();
     const [dataSource, setDataSource] = useState([]);
     const [initOption, setInitOption] = useState({});
+    const [currentRow, setCurrentRow] = useState({});
+    const [fileOpen, setFileOpen] = useState(false);
 
     const getOptions = () => {
         const options = {
@@ -88,32 +95,35 @@ const Detailed = () => {
         const titleLike = nameRef.current;
         const projectId = projectNameRef.current;
         const type = orderTypeRef.current;
+        const exceptionRefBasInspectionItemId = exceptionRefBasInspectionItemIdRef.current;
         const exceptionSupplierId = manufacturerRef.current;
-        const actualProcessorNameLike = handlerPersonRef.current;
+        const currentProcessorAccount = handlerPersonRef.current;
         const collectingMaterials = collectingMaterialsRef.current;
         const res = await workOrderFindExceptionStatisticsPageServe({
             pageNum: current,
             pageSize,
             queryCmd: {
-                publishedTimeFrom: planDate&&planDate?.length>=2&&dayjs(planDate?.[0]).format("YYYY-MM-DD"),
-                publishedTimeTo: planDate&&planDate?.length>=2&&dayjs(planDate?.[1]).format("YYYY-MM-DD"),
-                completedTimeFrom: overDate&&overDate?.length>=2&&dayjs(overDate?.[0]).format("YYYY-MM-DD"),
-                completedTimeTo: overDate&&overDate?.length>=2&&dayjs(overDate?.[1]).format("YYYY-MM-DD"),
+                publishedTimeFrom: planDate && planDate?.length >= 2 && dayjs(planDate?.[0]).format("YYYY-MM-DD"),
+                publishedTimeTo: planDate && planDate?.length >= 2 && dayjs(planDate?.[1]).format("YYYY-MM-DD"),
+                completedTimeFrom: overDate && overDate?.length >= 2 && dayjs(overDate?.[0]).format("YYYY-MM-DD"),
+                completedTimeTo: overDate && overDate?.length >= 2 && dayjs(overDate?.[1]).format("YYYY-MM-DD"),
                 titleLike,
                 projectId,
                 type,
+                exceptionRefBasInspectionItemId,
                 exceptionSupplierId,
                 collectingMaterials,
-                actualProcessorNameLike,
+                currentProcessorAccount,
             },
         });
         if (res?.data?.status == "SUCCESS") {
-            const { totalRecord, recordList } = res?.data?.data;
+            const { workOrderPage } = res?.data?.data;
+            const { totalRecord, recordList } = workOrderPage || {};
             setPagination({
                 ...paginationRef.current,
                 total: parseInt(totalRecord),
             });
-            setUserList(recordList);
+            setDataSource(recordList);
         }
     }
 
@@ -139,12 +149,27 @@ const Detailed = () => {
         setName(undefined);
         setOverDate(undefined);
         setPlanDate(undefined);
+        getDataSource();
     }
 
     useEffect(() => {
         getInitData();
         getDataSource();
     }, [])
+
+    let exceptionRefBasInspectionItemIdOptions = [];
+    const inspectionItemType2Items = initOption?.inspectionItemType2Items || {};
+    Object.keys(inspectionItemType2Items).forEach(item => {
+        inspectionItemType2Items?.[item]?.forEach(item => {
+            exceptionRefBasInspectionItemIdOptions = exceptionRefBasInspectionItemIdOptions.concat(item);
+        })
+    })
+    exceptionRefBasInspectionItemIdOptions = exceptionRefBasInspectionItemIdOptions?.map(item => {
+        return {
+            name: item?.name,
+            code: item?.id
+        }
+    })
 
     return (
         <div className={styles.detailed}>
@@ -153,7 +178,7 @@ const Detailed = () => {
                 <div>
                     <span style={{ color: "#FFF" }}>异常生成时间：</span>
                     <DatePicker.RangePicker
-                        value={planDate&&planDate?.length>=2&&[dayjs(planDate?.[0]),dayjs(planDate?.[1])]}
+                        value={planDate && planDate?.length >= 2 && [dayjs(planDate?.[0]), dayjs(planDate?.[1])]}
                         onChange={value => {
                             paginationRef.current = DEFAULT_PAGINATION;
                             planDateRef.current = value;
@@ -164,7 +189,7 @@ const Detailed = () => {
                 <div>
                     <span style={{ color: "#FFF" }}>异常完结时间：</span>
                     <DatePicker.RangePicker
-                        value={overDate&&overDate?.length>=2&&[dayjs(overDate?.[0]), dayjs(overDate?.[1])]}
+                        value={overDate && overDate?.length >= 2 && [dayjs(overDate?.[0]), dayjs(overDate?.[1])]}
                         onChange={value => {
                             paginationRef.current = DEFAULT_PAGINATION;
                             overDateRef.current = value;
@@ -209,6 +234,17 @@ const Detailed = () => {
                     options={initOption?.types}
                 />
                 <SearchInput
+                    label="异常部件"
+                    value={exceptionRefBasInspectionItemId}
+                    type="select"
+                    onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        exceptionRefBasInspectionItemIdRef.current = value;
+                        setExceptionRefBasInspectionItemId(value);
+                    }}
+                    options={exceptionRefBasInspectionItemIdOptions}
+                />
+                <SearchInput
                     label="责任厂商"
                     value={manufacturer}
                     type="select"
@@ -234,20 +270,22 @@ const Detailed = () => {
                         setCollectingMaterials(value);
                     }}
                     options={[
-                        {name: '是', code: true},
-                        {name: '否', code: false}
+                        { name: '是', code: true },
+                        { name: '否', code: false }
                     ]}
                 />
                 <SearchInput
                     label="异常处理人"
                     value={handlerPerson}
+                    type="select"
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         handlerPersonRef.current = value;
                         setHandlerPerson(value);
                     }}
+                    options={initOption?.users}
                 />
-                <Button type="primary">搜索</Button>
+                <Button type="primary" onClick={getDataSource}>搜索</Button>
                 <Button
                     type="primary"
                     danger
@@ -257,85 +295,220 @@ const Detailed = () => {
                 </Button>
             </Space>
             <div className={styles.center}>
-                <Row justify="space-between" style={{ marginBottom: 28 }}>
+                <Row justify="space-between" style={{ marginBottom: 10 }}>
                     <div style={{ fontSize: 20, color: token.fontColor }}>异常统计</div>
-                    <div style={{ fontSize: 20, color: token.fontColor }}>异常总数：21</div>
                 </Row>
-                <Row justify="space-between">
-                    <ReactECharts
-                        option={getOptions()}
-                        style={{ flex: 1, height: "300px" }}
-                    />
-                    <ReactECharts
-                        option={getOptions()}
-                        style={{ flex: 1, height: "300px" }}
-                    />
-                    <ReactECharts
-                        option={getOptions()}
-                        style={{ flex: 1, height: "300px" }}
-                    />
-                </Row>
-                <Row justify="space-around">
-                    <div style={{ fontSize: 20, color: token.fontColor, marginBottom: 15 }}>所属类型统计</div>
-                    <div style={{ fontSize: 20, color: token.fontColor, marginBottom: 15 }}>异常类型统计</div>
-                    <div style={{ fontSize: 20, color: token.fontColor, marginBottom: 15 }}>厂商类型统计</div>
-                </Row>
+                <div className={styles.centerContent}>
+                    <div className={styles.centerContent1}>
+                        <div className={styles.centerContent1Top}>
+                            <span style={{ color: 'white' }}>异常总数</span>
+                            <span style={{ color: '#0BAFAB', marginLeft: 30, fontSize: 36 }}>100</span>
+                        </div>
+                        <div className={styles.centerContent1Bottom}>
+                            <div className={styles.centerContent1BottomItem}>
+                                <div style={{ color: 'white' }}>
+                                    计划处理时间总计
+                                </div>
+                                <div style={{ color: '#60C453', fontSize: 36 }}>
+                                    100
+                                </div>
+                            </div>
+                            <div className={styles.centerContent1BottomItem}>
+                                <div style={{ color: 'white' }}>
+                                    实际处理时间总计
+                                </div>
+                                <div style={{ color: '#4592E3', fontSize: 36 }}>
+                                    100
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className={styles.centerContent2}>
+                        <ReactECharts
+                            option={getOptions()}
+                            style={{ width: '100%', height: "calc(100% - 50px)" }}
+                        />
+                        <div style={{ color: 'white', textAlign: 'center', marginTop: 10 }}>差旅成本总计</div>
+                    </div>
+                    <div className={styles.centerContent3}>
+                        <ReactECharts
+                            option={getOptions()}
+                            style={{ width: '100%', height: "calc(100% - 50px)" }}
+                        />
+                        <div style={{ color: 'white', textAlign: 'center', marginTop: 10 }}>消缺收益</div>
+                    </div>
+                </div>
             </div>
             <Table
                 rowKey="id"
                 dataSource={dataSource}
                 columns={[
                     {
-                        title: "异常生成时间",
-                        dataIndex: "name",
-                    },
-                    {
-                        title: "异常完结时间",
-                        dataIndex: "name1",
-                    },
-                    {
                         title: "异常名称",
-                        dataIndex: "name2",
+                        dataIndex: "description",
+                        width: 200,
+                    },
+                    {
+                        title: "异常开始时间",
+                        dataIndex: "publishedTime",
+                        width: 200,
+                    },
+                    {
+                        title: "异常结束时间",
+                        dataIndex: "completedTime",
+                        width: 200,
                     },
                     {
                         title: "关联项目名称",
-                        dataIndex: "name3",
+                        dataIndex: "projectId",
+                        width: 200,
+                        render(value) {
+                            return initOption?.projects?.find(item => item?.id === value)?.name
+                        }
                     },
                     {
-                        title: "关联工单类型",
-                        dataIndex: "name4",
+                        title: "异常部件",
+                        dataIndex: "exceptionInspectionItemName",
+                        width: 200,
                     },
                     {
-                        title: "异常所属类型",
-                        dataIndex: "name5",
+                        title: "异常供应商",
+                        dataIndex: "exceptionSupplierName",
+                        width: 200,
                     },
                     {
-                        title: "异常类型",
-                        dataIndex: "name6",
+                        title: "处理方案",
+                        dataIndex: "exceptionSolution",
+                        width: 200,
                     },
                     {
-                        title: "责任厂商",
-                        dataIndex: "name7",
+                        title: "计划处理时间(天)",
+                        dataIndex: "exceptionProcessingDaysForPlan",
+                        width: 200,
                     },
                     {
-                        title: "异常处理人",
-                        dataIndex: "name8",
+                        title: "实际处理时间(天)",
+                        dataIndex: "exceptionProcessingDaysForActual",
+                        width: 200,
                     },
                     {
-                        title: "异常处理结果",
-                        dataIndex: "name9",
+                        title: <span style={{ color: '#F88716' }}>消缺总成本(元)</span>,
+                        dataIndex: "exceptionProcessingCost",
+                        width: 200,
+                        render(_, { exceptionProcessingCost }) {
+                            return (
+                                <span style={{ color: '#F88716' }}>{(exceptionProcessingCost?.travelCost || 0) + (exceptionProcessingCost?.consumablesCost || 0) + (exceptionProcessingCost?.sparePartCost || 0) + (exceptionProcessingCost?.ownerFineCost || 0) + (exceptionProcessingCost?.laborCost || 0)}</span>
+                            )
+                        }
                     },
                     {
-                        title: "处理附件",
-                        dataIndex: "name11",
+                        title: "差旅成本(元)",
+                        dataIndex: "travelCost",
+                        width: 200,
+                        render(_, { exceptionProcessingCost }) {
+                            return exceptionProcessingCost?.travelCost;
+                        }
+                    },
+                    {
+                        title: "耗材成本(元)",
+                        dataIndex: "consumablesCost",
+                        width: 200,
+                        render(_, { exceptionProcessingCost }) {
+                            return exceptionProcessingCost?.consumablesCost;
+                        }
+                    },
+                    {
+                        title: "备件成本(元)",
+                        dataIndex: "sparePartCost",
+                        width: 200,
+                        render(_, { exceptionProcessingCost }) {
+                            return exceptionProcessingCost?.sparePartCost;
+                        }
+                    },
+                    {
+                        title: "业主罚款(元)",
+                        dataIndex: "ownerFineCost",
+                        width: 200,
+                        render(_, { exceptionProcessingCost }) {
+                            return exceptionProcessingCost?.ownerFineCost;
+                        }
+                    },
+                    {
+                        title: "人员成本(元)",
+                        dataIndex: "laborCost",
+                        width: 200,
+                        render(_, { exceptionProcessingCost }) {
+                            return exceptionProcessingCost?.laborCost;
+                        }
+                    },
+                    {
+                        title: <span style={{ color: '#F88716' }}>消缺收益(元)</span>,
+                        dataIndex: "exceptionProcessingBenefit",
+                        width: 200,
+                        render(_, { exceptionProcessingBenefit }) {
+                            return (
+                                <span style={{ color: '#F88716' }}>{(exceptionProcessingBenefit?.supplierFineBenefit || 0) + (exceptionProcessingBenefit?.warrantyExpiredPayBenefit || 0)}</span>
+                            )
+                        }
+                    },
+                    {
+                        title: "供应商罚款收益(元)",
+                        dataIndex: "supplierFineBenefit",
+                        width: 200,
+                        render(_, { exceptionProcessingBenefit }) {
+                            return exceptionProcessingBenefit?.supplierFineBenefit;
+                        }
+                    },
+                    {
+                        title: "质保外维修收益(元)",
+                        dataIndex: "warrantyExpiredPayBenefit",
+                        width: 200,
+                        render(_, { exceptionProcessingBenefit }) {
+                            return exceptionProcessingBenefit?.warrantyExpiredPayBenefit;
+                        }
+                    },
+                    {
+                        title: '异常处理人',
+                        dataIndex: 'currentProcessorName',
+                        width: 200
+                    },
+                    {
+                        title: '消缺总结',
+                        dataIndex: 'exceptionProcessingResult',
+                        width: 400,
+                        render: (exceptionProcessingResult) => (
+                            <Tooltip placement="topLeft" title={exceptionProcessingResult} overlayStyle={{ maxWidth: 550 }}>
+                                {exceptionProcessingResult}
+                            </Tooltip>
+                        ),
                     },
                     {
                         title: "操作",
                         dataIndex: "Action",
+                        fixed: 'right',
+                        width: 200,
                         render: (_, row) => {
                             return (
                                 <Space>
-                                    <Button type="link" style={{ color: token.colorPrimary }}>
+                                    <Button
+                                        type="link"
+                                        style={{ color: token.colorPrimary }}
+                                        onClick={() => {
+                                            setCurrentRow(row)
+                                            setFileOpen(true);
+                                        }}
+                                    >
+                                        附件
+                                    </Button>
+                                    <Button 
+                                        type="link" 
+                                        style={{ 
+                                            color: token.colorPrimary 
+                                        }}
+                                        onClick={()=>{
+                                            history.push(`/project-management/task-list?code=${row?.code}`)
+                                        }}
+                                    >
                                         详情
                                     </Button>
                                 </Space>
@@ -347,7 +520,33 @@ const Detailed = () => {
                 onChange={pagination => {
                     paginationRef.current = pagination;
                 }}
+                scroll={{
+                    x: 1500
+                }}
             />
+            <Modal
+                width={900}
+                title="附件"
+                open={fileOpen}
+                onCancel={() => setFileOpen(false)}
+                onOk={() => setFileOpen(false)}
+            >
+                <div className={styles.images}>
+                    {
+                        currentRow?.exceptionProcessingAttachments?.map(item => {
+                            return (
+                                <Image 
+                                    width={200}
+                                    src={`${getBaseUrl()}/attachment/download/${item?.id}` + jsonToUrlParams({
+                                        id: item?.id,
+                                        access_token: localStorage.getItem("Token")
+                                    })}
+                                />
+                            )
+                        })
+                    }
+                </div>
+            </Modal>
         </div>
     )
 }
