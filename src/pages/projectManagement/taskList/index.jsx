@@ -93,14 +93,17 @@ const Account = () => {
         {
             title: "工单编号",
             dataIndex: "code",
+            width: 200
         },
         {
             title: "工单名称",
             dataIndex: "title",
+            width: 200
         },
         {
             title: "处理状态",
             dataIndex: "statusZh",
+            width: 200,
             render: (_, { status, statusZh }) => {
                 return (
                     <span style={{ color: status == "COMPLETED" ? "#1BE72B" : "" }}>
@@ -112,22 +115,27 @@ const Account = () => {
         {
             title: "工单类型",
             dataIndex: "typeZh",
+            width: 200
         },
         {
             title: "发布时间",
             dataIndex: "publishedTime",
+            width: 200
         },
         {
             title: "计划开始时间",
             dataIndex: "planStartDate",
+            width: 200
         },
         {
             title: "计划结束时间",
             dataIndex: "planEndDate",
+            width: 200
         },
         {
             title: "关联项目",
             dataIndex: "project",
+            width: 200,
             render: (_, { project }) => {
                 return project?.name;
             },
@@ -135,14 +143,17 @@ const Account = () => {
         {
             title: "工单接收人",
             dataIndex: "ownerName",
+            width: 200
         },
         {
             title: "工单发起人",
             dataIndex: "initiatorName",
+            width: 200
         },
         {
             title: "当前处理人",
             dataIndex: "currentProcessorName",
+            width: 200,
             render: (_, { status, currentProcessorName }) => {
                 return status == "COMPLETED" ? "" : currentProcessorName;
             },
@@ -150,6 +161,7 @@ const Account = () => {
         {
             title: "实际处理人",
             dataIndex: "currentProcessorName",
+            width: 200,
             render: (_, { status, currentProcessorName }) => {
                 return status == "COMPLETED" ? currentProcessorName : "";
             },
@@ -158,6 +170,7 @@ const Account = () => {
             title: "操作",
             dataIndex: "operate",
             fixed: "right",
+            width: 200,
             render: (_, { id, supportProcessing }) => {
                 return (
                     <>
