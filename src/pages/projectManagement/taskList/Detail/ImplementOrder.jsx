@@ -36,7 +36,7 @@ const Index = ({ isDetail, isProcess, info, onClose }) => {
         const res = await types[type].fn({
             id: info?.id,
             ...values,
-            [types[type].fileKey]: values?.files?.[0]?.fileName.id,
+            [types[type].fileKey]: values?.files?.[0]?.id,
         });
         if (res?.data?.status == "SUCCESS") {
             message.success("操作成功");
@@ -60,11 +60,22 @@ const Index = ({ isDetail, isProcess, info, onClose }) => {
     };
 
     useEffect(() => {
-        const { description, otherProcessingResult } = info;
-        // form.setFieldsValue({
-        //     description,
-        //     processingResult: otherProcessingResult,
-        // });
+        const { project } = info;
+        if (project?.shippingMaterial) {
+            deliveryForm.setFieldsValue({
+                remark: project?.shippingMaterial?.remark,
+            });
+        }
+        if (project?.testingMaterial) {
+            debuggingForm.setFieldsValue({
+                remark: project?.testingMaterial?.remark,
+            });
+        }
+        if (project?.trialRunMaterial) {
+            runningForm.setFieldsValue({
+                remark: project?.trialRunMaterial?.remark,
+            });
+        }
     }, []);
 
     const handleTransferWorkOrder = () => {
@@ -79,7 +90,7 @@ const Index = ({ isDetail, isProcess, info, onClose }) => {
         return (
             <Descriptions title="" column={1}>
                 <Descriptions.Item label="工单描述">{info?.description}</Descriptions.Item>
-                <Descriptions.Item label="" style={{ position: "relative", left: "-17px" }}>
+                <Descriptions.Item label="">
                     <Badge status="success" style={{ marginRight: "10px" }} />
                     发货阶段
                 </Descriptions.Item>
@@ -101,7 +112,7 @@ const Index = ({ isDetail, isProcess, info, onClose }) => {
                     {info?.project?.shippingMaterial?.operatorName}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="" style={{ position: "relative", left: "-17px" }}>
+                <Descriptions.Item label="">
                     <Badge status="success" style={{ marginRight: "10px" }} />
                     调试阶段
                 </Descriptions.Item>
@@ -123,7 +134,7 @@ const Index = ({ isDetail, isProcess, info, onClose }) => {
                     {info?.project?.testingMaterial?.operatorName}
                 </Descriptions.Item>
 
-                <Descriptions.Item label="" style={{ position: "relative", left: "-17px" }}>
+                <Descriptions.Item label="">
                     <Badge status="success" style={{ marginRight: "10px" }} />
                     试运行阶段
                 </Descriptions.Item>
@@ -172,7 +183,7 @@ const Index = ({ isDetail, isProcess, info, onClose }) => {
                     onFinish={values => onFinish(values, "delivery")}
                     autoComplete="off"
                 >
-                    <Form.Item label="工单描述" name="description">
+                    <Form.Item label="工单描述" name="description" style={{ marginBottom: 0 }}>
                         <span>{info?.description}</span>
                     </Form.Item>
 
@@ -191,17 +202,28 @@ const Index = ({ isDetail, isProcess, info, onClose }) => {
                             },
                         ]}
                     >
-                        <MyUpload maxCount={1} url={UPLOAD_URL} />
+                        <MyUpload
+                            maxCount={1}
+                            url={UPLOAD_URL}
+                            files={[
+                                {
+                                    name: info?.project?.shippingMaterial?.goodsReceivedNote
+                                        ?.fileName,
+                                    id: info?.project?.shippingMaterial?.goodsReceivedNote?.id,
+                                    url: `${DOWNLOAD_URL}/${info?.project?.shippingMaterial?.goodsReceivedNote?.id}${jsonToUrlParams(
+                                        {
+                                            access_token: localStorage.getItem("Token"),
+                                        }
+                                    )}`,
+                                },
+                            ]}
+                        />
                     </Form.Item>
 
                     <Form.Item
                         label="备注"
                         name="remark"
                         rules={[
-                            {
-                                required: true,
-                                message: "请输入备注",
-                            },
                             {
                                 pattern: ALL_SPACE_REG,
                                 message: "请输入备注",
@@ -257,10 +279,6 @@ const Index = ({ isDetail, isProcess, info, onClose }) => {
                     onFinish={values => onFinish(values, "debugging")}
                     autoComplete="off"
                 >
-                    <Form.Item label="工单描述" name="description">
-                        <span>{info?.description}</span>
-                    </Form.Item>
-
                     <Form.Item
                         label="上传调试报告附件"
                         name="files"
@@ -271,17 +289,28 @@ const Index = ({ isDetail, isProcess, info, onClose }) => {
                             },
                         ]}
                     >
-                        <MyUpload maxCount={1} url={UPLOAD_URL} />
+                        <MyUpload
+                            maxCount={1}
+                            url={UPLOAD_URL}
+                            files={[
+                                {
+                                    name: info?.project?.testingMaterial?.acceptanceReport
+                                        ?.fileName,
+                                    id: info?.project?.testingMaterial?.acceptanceReport?.id,
+                                    url: `${DOWNLOAD_URL}/${info?.project?.testingMaterial?.acceptanceReport?.id}${jsonToUrlParams(
+                                        {
+                                            access_token: localStorage.getItem("Token"),
+                                        }
+                                    )}`,
+                                },
+                            ]}
+                        />
                     </Form.Item>
 
                     <Form.Item
                         label="备注"
                         name="remark"
                         rules={[
-                            {
-                                required: true,
-                                message: "请输入备注",
-                            },
                             {
                                 pattern: ALL_SPACE_REG,
                                 message: "请输入备注",
@@ -347,17 +376,28 @@ const Index = ({ isDetail, isProcess, info, onClose }) => {
                             },
                         ]}
                     >
-                        <MyUpload maxCount={1} url={UPLOAD_URL} />
+                        <MyUpload
+                            maxCount={1}
+                            url={UPLOAD_URL}
+                            files={[
+                                {
+                                    name: info?.project?.trialRunMaterial?.customerAcceptanceForm
+                                        ?.fileName,
+                                    id: info?.project?.trialRunMaterial?.customerAcceptanceForm?.id,
+                                    url: `${DOWNLOAD_URL}/${info?.project?.trialRunMaterial?.customerAcceptanceForm?.id}${jsonToUrlParams(
+                                        {
+                                            access_token: localStorage.getItem("Token"),
+                                        }
+                                    )}`,
+                                },
+                            ]}
+                        />
                     </Form.Item>
 
                     <Form.Item
                         label="备注"
                         name="remark"
                         rules={[
-                            {
-                                required: true,
-                                message: "请输入备注",
-                            },
                             {
                                 pattern: ALL_SPACE_REG,
                                 message: "请输入备注",

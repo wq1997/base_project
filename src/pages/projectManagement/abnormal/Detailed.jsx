@@ -3,31 +3,35 @@ import { DEFAULT_PAGINATION } from "@/utils/constants";
 import { SearchInput } from "@/components";
 import React, { useState, useEffect, useRef } from "react";
 import ReactECharts from "echarts-for-react";
+import {
+    workOrderFindExceptionStatisticsPage as workOrderFindExceptionStatisticsPageServe,
+    workOrderGetExceptionStatisticsPageInitData as workOrderGetExceptionStatisticsPageInitDataServe,
+} from "@/services";
 import styles from "./index.less";
+import dayjs from "dayjs";
 
 const Detailed = () => {
     const { token } = theme.useToken();
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
+    const [planDate, setPlanDate] = useState();
+    const planDateRef = useRef();
+    const [overDate, setOverDate] = useState();
+    const overDateRef = useRef();
     const [name, setName] = useState();
     const nameRef = useRef();
     const [projectName, setProjectName] = useState();
     const projectNameRef = useRef();
     const [orderType, setOrderType] = useState();
     const orderTypeRef = useRef();
-    const [exceptionType, setExceptionType] = useState();
-    const exceptionTypeRef = useRef();
-    const [ownExceptionType, setOwnExceptionType] = useState();
-    const ownExceptionTypeRef = useState();
     const [manufacturer, setManufacturer] = useState();
     const manufacturerRef = useRef();
     const [handlerPerson, setHandlerPerson] = useState();
     const handlerPersonRef = useRef();
-    const [handlerResult, setHandlerResult] = useState();
-    const handlerResultRef = useRef();
-    const [files, setFiles] = useState();
-    const filesRef = useState();
-    const [dataSource, setDataSource] = useState([{}]);
+    const [collectingMaterials, setCollectingMaterials] = useState();
+    const collectingMaterialsRef = useRef();
+    const [dataSource, setDataSource] = useState([]);
+    const [initOption, setInitOption] = useState({});
 
     const getOptions = () => {
         const options = {
@@ -78,17 +82,95 @@ const Detailed = () => {
         return options;
     };
 
+    const getDataSource = async () => {
+        const { current, pageSize } = paginationRef.current;
+        const planDate = planDateRef.current;
+        const titleLike = nameRef.current;
+        const projectId = projectNameRef.current;
+        const type = orderTypeRef.current;
+        const exceptionSupplierId = manufacturerRef.current;
+        const actualProcessorNameLike = handlerPersonRef.current;
+        const collectingMaterials = collectingMaterialsRef.current;
+        const res = await workOrderFindExceptionStatisticsPageServe({
+            pageNum: current,
+            pageSize,
+            queryCmd: {
+                publishedTimeFrom: planDate&&planDate?.length>=2&&dayjs(planDate?.[0]).format("YYYY-MM-DD"),
+                publishedTimeTo: planDate&&planDate?.length>=2&&dayjs(planDate?.[1]).format("YYYY-MM-DD"),
+                completedTimeFrom: overDate&&overDate?.length>=2&&dayjs(overDate?.[0]).format("YYYY-MM-DD"),
+                completedTimeTo: overDate&&overDate?.length>=2&&dayjs(overDate?.[1]).format("YYYY-MM-DD"),
+                titleLike,
+                projectId,
+                type,
+                exceptionSupplierId,
+                collectingMaterials,
+                actualProcessorNameLike,
+            },
+        });
+        if (res?.data?.status == "SUCCESS") {
+            const { totalRecord, recordList } = res?.data?.data;
+            setPagination({
+                ...paginationRef.current,
+                total: parseInt(totalRecord),
+            });
+            setUserList(recordList);
+        }
+    }
+
+    const getInitData = async () => {
+        const res = await workOrderGetExceptionStatisticsPageInitDataServe();
+        if (res?.data?.status == "SUCCESS") {
+            setInitOption(res?.data?.data);
+        }
+    }
+
+    const onReset = () => {
+        planDateRef.current = undefined;
+        overDateRef.current = undefined;
+        nameRef.current = undefined;
+        projectNameRef.current = undefined;
+        orderTypeRef.current = undefined;
+        manufacturerRef.current = undefined;
+        handlerPersonRef.current = undefined;
+        setHandlerPerson(undefined);
+        setManufacturer(undefined);
+        setOrderType(undefined);
+        setProjectName(undefined);
+        setName(undefined);
+        setOverDate(undefined);
+        setPlanDate(undefined);
+    }
+
+    useEffect(() => {
+        getInitData();
+        getDataSource();
+    }, [])
+
     return (
         <div className={styles.detailed}>
             <div style={{ fontSize: 20, color: token.fontColor, marginBottom: 28 }}>查询条件</div>
             <Space className={styles.search} size={20}>
                 <div>
                     <span style={{ color: "#FFF" }}>异常生成时间：</span>
-                    <DatePicker />
+                    <DatePicker.RangePicker
+                        value={planDate&&planDate?.length>=2&&[dayjs(planDate?.[0]),dayjs(planDate?.[1])]}
+                        onChange={value => {
+                            paginationRef.current = DEFAULT_PAGINATION;
+                            planDateRef.current = value;
+                            setPlanDate(value);
+                        }}
+                    />
                 </div>
                 <div>
                     <span style={{ color: "#FFF" }}>异常完结时间：</span>
-                    <DatePicker />
+                    <DatePicker.RangePicker
+                        value={overDate&&overDate?.length>=2&&[dayjs(overDate?.[0]), dayjs(overDate?.[1])]}
+                        onChange={value => {
+                            paginationRef.current = DEFAULT_PAGINATION;
+                            overDateRef.current = value;
+                            setOverDate(value);
+                        }}
+                    />
                 </div>
                 <SearchInput
                     label="异常名称"
@@ -101,12 +183,19 @@ const Detailed = () => {
                 />
                 <SearchInput
                     label="关联项目名称"
+                    type="select"
                     value={projectName}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         projectNameRef.current = value;
                         setProjectName(value);
                     }}
+                    options={initOption?.projects?.map(item => {
+                        return {
+                            name: item?.name,
+                            code: item?.id
+                        }
+                    })}
                 />
                 <SearchInput
                     label="关联工单类型"
@@ -117,35 +206,37 @@ const Detailed = () => {
                         orderTypeRef.current = value;
                         setOrderType(value);
                     }}
-                />
-                <SearchInput
-                    label="异常所属类型"
-                    value={exceptionType}
-                    type="select"
-                    onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
-                        exceptionTypeRef.current = value;
-                        setExceptionType(value);
-                    }}
-                />
-                <SearchInput
-                    label="异常类型"
-                    value={ownExceptionType}
-                    type="select"
-                    onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
-                        ownExceptionTypeRef.current = value;
-                        setOwnExceptionType(value);
-                    }}
+                    options={initOption?.types}
                 />
                 <SearchInput
                     label="责任厂商"
                     value={manufacturer}
+                    type="select"
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         manufacturerRef.current = value;
                         setManufacturer(value);
                     }}
+                    options={initOption?.suppliers?.map(item => {
+                        return {
+                            name: item?.name,
+                            code: item?.id
+                        }
+                    })}
+                />
+                <SearchInput
+                    label="是否领用/采购备件或耗材"
+                    value={collectingMaterials}
+                    type="select"
+                    onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        collectingMaterialsRef.current = value;
+                        setCollectingMaterials(value);
+                    }}
+                    options={[
+                        {name: '是', code: true},
+                        {name: '否', code: false}
+                    ]}
                 />
                 <SearchInput
                     label="异常处理人"
@@ -156,28 +247,14 @@ const Detailed = () => {
                         setHandlerPerson(value);
                     }}
                 />
-                <SearchInput
-                    label="异常处理结果"
-                    value={handlerResult}
-                    type="select"
-                    onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
-                        handlerResultRef.current = value;
-                        setHandlerResult(value);
-                    }}
-                />
-                <SearchInput
-                    label="异常上传附件"
-                    value={files}
-                    type="select"
-                    onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
-                        filesRef.current = value;
-                        setFiles(value);
-                    }}
-                />
                 <Button type="primary">搜索</Button>
-                <Button type="primary" danger>重置</Button>
+                <Button
+                    type="primary"
+                    danger
+                    onClick={onReset}
+                >
+                    重置
+                </Button>
             </Space>
             <div className={styles.center}>
                 <Row justify="space-between" style={{ marginBottom: 28 }}>
@@ -258,9 +335,6 @@ const Detailed = () => {
                         render: (_, row) => {
                             return (
                                 <Space>
-                                    <Button type="link">
-                                        去处理
-                                    </Button>
                                     <Button type="link" style={{ color: token.colorPrimary }}>
                                         详情
                                     </Button>

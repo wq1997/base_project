@@ -55,25 +55,25 @@ const MenuList = [
                 key: "/project-management/task-list",
                 label: "工单列表",
             },
-            {
-                key: '/project-management/spare-parts-management',
-                label: '备件管理'
-            },
+            // {
+            //     key: '/project-management/spare-parts-management',
+            //     label: '备件管理'
+            // },
             {
                 key: '/project-management/abnormal',
                 label: '异常复盘'
             },
-            {
-                key: '/project-management/resourcesInventory',
-                label: '人力资源复盘'
-            }
+            // {
+            //     key: '/project-management/resourcesInventory',
+            //     label: '人力资源复盘'
+            // }
         ],
     },
-    {
-        key: '/knowledgeBase',
-        label: '知识库',
-        icon: <DatabaseFilled />,
-    },
+    // {
+    //     key: '/knowledgeBase',
+    //     label: '知识库',
+    //     icon: <DatabaseFilled />,
+    // },
     {
         key: "/system-configuration",
         label: "系统配置",

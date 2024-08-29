@@ -1,17 +1,63 @@
-import { Space, Select, theme } from "antd";
+import { Space, Select, theme, DatePicker } from "antd";
 import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts";
 import { useState, useEffect } from "react";
+import dayjs from "dayjs";
+import {
+    getWorkOrderTimeExceptionTypeStatistics as getWorkOrderTimeExceptionTypeStatisticsServe,
+} from "@/services";
 
 const Statistics = () => {
     const [options, setOptions] = useState({});
     const { token } = theme.useToken();
+    const [type, setType] = useState("YEAR");
+    const [date, setDate] = useState(dayjs().format("YYYY"))
 
-    const getOptions = () => {
-        const xAxisData = ['一月', '二月', '三月']
+    const getOptions = async () => {
+        let params = {}, xAxisData = [], legendData = [], seriesData = [];
+        if (type === "YEAR") {
+            params = {
+                year: date
+            }
+        }
+        if (type === "MONTH") {
+            params = {
+                year: dayjs(date).format("YYYY"),
+                month: dayjs(date).format("MM")
+            }
+        }
+        const res = await getWorkOrderTimeExceptionTypeStatisticsServe(params);
+        if (res?.data?.status === "SUCCESS") {
+            const items = res?.data?.data?.items;
+            xAxisData = items?.map(item => item?.monthOrDay);
+            items?.forEach(item => {
+                if (item?.exceptionTypeTypeCount?.length > 0) {
+                    item?.exceptionTypeTypeCount?.forEach(subItem => {
+                        legendData.push(subItem?._1);
+                    })
+                }
+            })
+            legendData = Array.from(new Set(legendData));
+
+            legendData?.forEach(name => {
+                seriesData.push({
+                    name,
+                    type: 'bar',
+                    stack: '总量',
+                    barWidth: 40,
+                    data: items?.map(item => {
+                        const count = item?.exceptionTypeTypeCount?.find(subItem => subItem?._1 === name);
+                        return count?._2 || 0;
+                    }),
+                })
+            })
+        }
+
         setOptions({
+            tooltip: {},
+            color: ['#47CCFF', '#EF6E39', '#00D5CF'],
             legend: {
-                data: ['异常1', '异常2'],
+                data: legendData,
                 textStyle: {
                     fontSize: 14,
                     color: '#FFF',
@@ -54,35 +100,14 @@ const Statistics = () => {
                     }
                 },
             },
-            series: [
-                {
-                    name: '异常1',
-                    type: 'bar',
-                    stack: '总量',
-                    barWidth: 50,
-                    data: [10,20,30],
-                    itemStyle: {
-                        normal: {
-                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                                {
-                                    offset: 0,
-                                    color: "#0DB2FF",
-                                },
-                                {
-                                    offset: 1,
-                                    color: "#00D5CF",
-                                },
-                            ]),
-                        },
-                    },
-                }
-            ]
+            series: seriesData
         })
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         getOptions();
-    }, [])
+    }, [type, date]);
+
     return (
         <Space
             direction="vertical"
@@ -91,17 +116,41 @@ const Statistics = () => {
             }}
         >
             <Space>
-                <span style={{color: token.fontColor}}>时间维度：</span>
+                <span style={{ color: token.fontColor }}>时间维度：</span>
                 <Select
+                    value={type}
                     options={[
                         { value: 'YEAR', label: '年' },
                         { value: "MONTH", label: '月' }
                     ]}
-                    style={{width: 200}}
+                    style={{ width: 200 }}
                     placeholder="请选择时间维度"
+                    onChange={(value) => {
+                        if (value === "YEAR") {
+                            setDate(dayjs(date).format("YYYY"))
+                        } else if (value === "MONTH") {
+                            setDate(`${dayjs(date).format("YYYY")}-${dayjs().format("MM")}`);
+                        }
+                        setType(value);
+                    }}
+                />
+                <DatePicker
+                    value={dayjs(date)}
+                    picker={type.toLocaleLowerCase()}
+                    onChange={(value) => {
+                        if (type === "YEAR") {
+                            setDate(dayjs(value).format("YYYY"))
+                        } else if (type === "MONTH") {
+                            setDate(dayjs(value).format("YYYY-MM"));
+                        }
+                    }}
                 />
             </Space>
-            <ReactECharts option={options} style={{ width: "100%", height: 'calc(100vh - 250px)' }}/>
+            <ReactECharts 
+                option={options} 
+                style={{ width: "100%", height: 'calc(100vh - 250px)' }} 
+                notMerge={true}
+            />
         </Space>
     )
 }

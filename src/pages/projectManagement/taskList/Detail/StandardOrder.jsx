@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Badge, Descriptions, Input } from "antd";
+import { Badge, Descriptions, Input, Space } from "antd";
 import { jsonToUrlParams } from "@/utils/utils";
 import { DOWNLOAD_URL } from "@/utils/constants";
 
@@ -29,7 +29,7 @@ const Index = ({ info }) => {
                         </div>
                         {group?.items?.map((item, itemIndex) => {
                             return (
-                                <div style={{ margin: "10px 20px", fontSize: 13 }}>
+                                <div style={{ margin: "10px 15px", fontSize: 13 }}>
                                     <div>
                                         <Badge status="success" style={{ marginRight: "10px" }} />
                                         <span>
@@ -41,20 +41,22 @@ const Index = ({ info }) => {
                                         <span style={{ marginRight: 10 }}>
                                             {getResult(group.name, item.id)?.remark}
                                         </span>
-                                        {getResult(group.name, item.id)?.photos?.map(item => {
-                                            return (
-                                                <a
-                                                    href={`${DOWNLOAD_URL}/${item?.id}${jsonToUrlParams(
-                                                        {
-                                                            access_token:
-                                                                localStorage.getItem("Token"),
-                                                        }
-                                                    )}`}
-                                                >
-                                                    item?.fileName
-                                                </a>
-                                            );
-                                        })}
+                                        <Space>
+                                            {getResult(group.name, item.id)?.photos?.map(item => {
+                                                return (
+                                                    <a
+                                                        href={`${DOWNLOAD_URL}/${item?.id}${jsonToUrlParams(
+                                                            {
+                                                                access_token:
+                                                                    localStorage.getItem("Token"),
+                                                            }
+                                                        )}`}
+                                                    >
+                                                        item?.fileName
+                                                    </a>
+                                                );
+                                            })}
+                                        </Space>
                                     </div>
                                 </div>
                             );

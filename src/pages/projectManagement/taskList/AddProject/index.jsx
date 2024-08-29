@@ -15,6 +15,7 @@ import {
     Collapse,
 } from "antd";
 import dayjs from "dayjs";
+import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import { Title } from "@/components";
 import { ExclamationCircleOutlined, CaretRightOutlined } from "@ant-design/icons";
 import {
@@ -23,7 +24,7 @@ import {
 } from "@/services/workOrder";
 import "./index.less";
 
-const { Panel } = Collapse;
+dayjs.extend(isSameOrAfter);
 
 const AddProject = ({ open, onClose }) => {
     const [form] = Form.useForm();
@@ -64,6 +65,9 @@ const AddProject = ({ open, onClose }) => {
 
     const onFinish = async values => {
         const { planStartDate, planEndDate } = values;
+        if (dayjs(planStartDate).isSameOrAfter(dayjs(planEndDate))) {
+            return message.info("结束时间必须大于开始时间");
+        }
         const res = await updateWorkOrderServer({
             ...values,
             planStartDate: dayjs(planStartDate).format("YYYY-MM-DD HH:mm"),
@@ -210,6 +214,10 @@ const AddProject = ({ open, onClose }) => {
                             format: "HH:mm",
                         }}
                         format="YYYY-MM-DD HH:mm"
+                        onChange={(date, dateStr) => {
+                            planStartDateRef.current = dateStr;
+                            setPlanStartDate(dateStr);
+                        }}
                     />
                 </Form.Item>
 

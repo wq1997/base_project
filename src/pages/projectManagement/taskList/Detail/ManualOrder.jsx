@@ -17,7 +17,7 @@ const Index = ({ isDetail, isProcess, info, onClose }) => {
         const res = await processOtherWorkOrderServer({
             id: info?.id,
             ...values,
-            attachmentIds: values?.files?.map(item => item.fileName.id),
+            attachmentIds: values?.files?.map(item => item.id),
         });
         if (res?.data?.status == "SUCCESS") {
             message.success("操作成功");
@@ -64,15 +64,17 @@ const Index = ({ isDetail, isProcess, info, onClose }) => {
                     {info?.otherProcessingResult}
                 </Descriptions.Item>
                 <Descriptions.Item label="附件">
-                    {info?.otherProcessingAttachments?.map(item => (
-                        <a
-                            href={`${DOWNLOAD_URL}/${item.id}${jsonToUrlParams({
-                                access_token: localStorage.getItem("Token"),
-                            })}`}
-                        >
-                            {item?.fileName}
-                        </a>
-                    ))}
+                    <Space>
+                        {info?.otherProcessingAttachments?.map(item => (
+                            <a
+                                href={`${DOWNLOAD_URL}/${item.id}${jsonToUrlParams({
+                                    access_token: localStorage.getItem("Token"),
+                                })}`}
+                            >
+                                {item?.fileName}
+                            </a>
+                        ))}
+                    </Space>
                 </Descriptions.Item>
             </Descriptions>
         );
@@ -126,7 +128,7 @@ const Index = ({ isDetail, isProcess, info, onClose }) => {
 
                     <Form.Item
                         wrapperCol={{
-                            offset: 13,
+                            offset: 9,
                             span: 4,
                         }}
                     >
