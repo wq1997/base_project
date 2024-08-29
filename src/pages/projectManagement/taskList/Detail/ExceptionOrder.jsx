@@ -30,8 +30,13 @@ const Index = ({ isDetail, isProcess, info, onClose }) => {
     const getInitData = async () => {
         const res = await exceptionWorkOrderProcessInitDataServer(info?.id);
         if (res?.data?.status == "SUCCESS") {
-            const { inspectionItemType2Items, exceptionSolutions } = res?.data?.data;
-            setInspectionItems(inspectionItemType2Items?.BMS);
+            const { exceptionPartsList, exceptionSolutions } = res?.data?.data;
+            setInspectionItems(
+                exceptionPartsList?.map(item => ({
+                    label: item,
+                    value: item,
+                }))
+            );
             setTreatment(
                 exceptionSolutions?.map(item => ({
                     label: item,
@@ -108,9 +113,7 @@ const Index = ({ isDetail, isProcess, info, onClose }) => {
     const Detail = () => {
         return (
             <Descriptions title="" column={2}>
-                <Descriptions.Item label="异常部件">
-                    {info?.exceptionInspectionItemName}
-                </Descriptions.Item>
+                <Descriptions.Item label="异常部件">{info?.exceptionParts}</Descriptions.Item>
                 <Descriptions.Item label="异常描述">{info?.exceptionRemark}</Descriptions.Item>
                 <Descriptions.Item label="处理方案">{info?.exceptionSolution}</Descriptions.Item>
                 <Descriptions.Item label="是否领用/采购备件或耗材">
@@ -194,7 +197,7 @@ const Index = ({ isDetail, isProcess, info, onClose }) => {
                         <Col span={12}>
                             <Form.Item
                                 label="异常部件"
-                                name="exceptionRefBasInspectionItemId"
+                                name="exceptionParts"
                                 rules={[
                                     {
                                         required: true,
@@ -202,13 +205,7 @@ const Index = ({ isDetail, isProcess, info, onClose }) => {
                                     },
                                 ]}
                             >
-                                <Select
-                                    fieldNames={{
-                                        label: "name",
-                                        value: "id",
-                                    }}
-                                    options={inspectionItems}
-                                />
+                                <Select options={inspectionItems} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
