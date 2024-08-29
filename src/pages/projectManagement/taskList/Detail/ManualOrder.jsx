@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Badge, Descriptions, Input, Form, Button, Space, message } from "antd";
 import { MyUpload, UserSelect } from "@/components";
-import { ALL_SPACE_REG } from "@/utils/constants";
+import { ALL_SPACE_REG, UPLOAD_URL, DOWNLOAD_URL } from "@/utils/constants";
+import { jsonToUrlParams } from "@/utils/utils";
 import {
     processOtherWorkOrder as processOtherWorkOrderServer,
     transferWorkOrder as transferWorkOrderServer,
 } from "@/services/workOrder";
 
-const Index = ({ info, onClose }) => {
-    const baseUrl = process.env.API_URL;
-    const uploadUrl = baseUrl + "/attachment/upload";
+const Index = ({ isDetail, isProcess, info, onClose }) => {
     const [form] = Form.useForm();
     const [userSelectOpen, setUserSelectOpen] = useState(false);
     const [users, setUsers] = useState([]);
@@ -18,7 +17,7 @@ const Index = ({ info, onClose }) => {
         const res = await processOtherWorkOrderServer({
             id: info?.id,
             ...values,
-            attachmentIds: values?.files?.map(item => item.fileName.id),
+            attachmentIds: values?.files?.map(item => item.id),
         });
         if (res?.data?.status == "SUCCESS") {
             message.success("操作成功");
@@ -57,23 +56,31 @@ const Index = ({ info, onClose }) => {
         }
     };
 
-    const Result = () => {
+    const Detail = () => {
         return (
-            <Descriptions title="基础信息" column={1}>
+            <Descriptions title="" column={1}>
                 <Descriptions.Item label="工单描述">{info?.description}</Descriptions.Item>
                 <Descriptions.Item label="处理结果">
                     {info?.otherProcessingResult}
                 </Descriptions.Item>
                 <Descriptions.Item label="附件">
-                    <a href="###">
-                        {info?.otherProcessingAttachments?.map(item => item?.fileName)}
-                    </a>
+                    <Space>
+                        {info?.otherProcessingAttachments?.map(item => (
+                            <a
+                                href={`${DOWNLOAD_URL}/${item.id}${jsonToUrlParams({
+                                    access_token: localStorage.getItem("Token"),
+                                })}`}
+                            >
+                                {item?.fileName}
+                            </a>
+                        ))}
+                    </Space>
                 </Descriptions.Item>
             </Descriptions>
         );
     };
 
-    const DealWith = () => {
+    const Process = () => {
         return (
             <>
                 <UserSelect
@@ -116,12 +123,12 @@ const Index = ({ info, onClose }) => {
                     </Form.Item>
 
                     <Form.Item label="上传附件" name="files">
-                        <MyUpload url={uploadUrl} />
+                        <MyUpload url={UPLOAD_URL} />
                     </Form.Item>
 
                     <Form.Item
                         wrapperCol={{
-                            offset: 13,
+                            offset: 9,
                             span: 4,
                         }}
                     >
@@ -149,9 +156,10 @@ const Index = ({ info, onClose }) => {
     };
 
     return (
-        <div style={{ color: "#fff", paddingLeft: "20px" }}>
-            {info?.supportProcessing ? <DealWith /> : <Result />}
-        </div>
+        <>
+            {isDetail && <Detail />}
+            {isProcess && <Process />}
+        </>
     );
 };
 

@@ -1,8 +1,11 @@
+const baseURL = process.env.API_URL;
+export const UPLOAD_URL = baseURL + "/attachment/upload";
+export const DOWNLOAD_URL = baseURL + "/attachment/download";
 export const PROJECT_NAME = "采日运维管理系统";
 export const PUBLIC_FILE_PATH = "https://energy.sermatec-cloud.com/static/";
 export const DEFAULT_PAGINATION = {
     current: 1,
-    pageSize: 20,
+    pageSize: 10,
     total: 0,
     showQuickJumper: false,
     showSizeChanger: false,

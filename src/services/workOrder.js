@@ -55,3 +55,19 @@ export const exceptionWorkOrderProcessInitData = id => {
     const url = `${API_URL}/work-order/get-exception-work-order-processing-page-init-data?id=${id}`;
     return axiosInstance.get(url);
 };
+
+// 实施工单处理 
+export const processDeliveryWorkOrder = payload => {
+    const url = `${API_URL}/work-order/upload-shipping-material`;
+    return axiosInstance.post(url, payload);
+};
+
+export const processDebuggingWorkOrder = payload => {
+    const url = `${API_URL}/work-order/upload-testing-material`;
+    return axiosInstance.post(url, payload);
+};
+
+export const processRunningWorkOrder = payload => {
+    const url = `${API_URL}/work-order/upload-trial-run-material`;
+    return axiosInstance.post(url, payload);
+};

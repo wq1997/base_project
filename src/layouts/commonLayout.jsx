@@ -155,7 +155,7 @@ const CommonLayout = props => {
                     </Space>
                 </Header>
                 <Layout hasSider>
-                    <Sider className={siderStyle} width={240}>
+                    <Sider className={siderStyle} width={200}>
                         <div className={"siderContent"}>
                             <MyMenu />
                         </div>

@@ -17,11 +17,10 @@ import {
     transferWorkOrder as transferWorkOrderServer,
     exceptionWorkOrderProcessInitData as exceptionWorkOrderProcessInitDataServer,
 } from "@/services/workOrder";
-import { ALL_SPACE_REG } from "@/utils/constants";
+import { ALL_SPACE_REG, UPLOAD_URL, DOWNLOAD_URL } from "@/utils/constants";
+import { jsonToUrlParams } from "@/utils/utils";
 
-const Index = ({ info, onClose }) => {
-    const baseUrl = process.env.API_URL;
-    const uploadUrl = baseUrl + "/attachment/upload";
+const Index = ({ isDetail, isProcess, info, onClose }) => {
     const [form] = Form.useForm();
     const [userSelectOpen, setUserSelectOpen] = useState(false);
     const [users, setUsers] = useState([]);
@@ -66,7 +65,7 @@ const Index = ({ info, onClose }) => {
                 supplierFineBenefit,
                 warrantyExpiredPayBenefit,
             },
-            exceptionProcessingAttachmentIds: values?.files?.map(item => item.fileName.id),
+            exceptionProcessingAttachmentIds: values?.files?.map(item => item.id),
         });
         if (res?.data?.status == "SUCCESS") {
             message.success("操作成功");
@@ -106,7 +105,7 @@ const Index = ({ info, onClose }) => {
         }
     };
 
-    const Result = () => {
+    const Detail = () => {
         return (
             <Descriptions title="" column={2}>
                 <Descriptions.Item label="异常部件">
@@ -123,42 +122,54 @@ const Index = ({ info, onClose }) => {
                 <Descriptions.Item label="实际处理时间(天)">
                     {info?.exceptionProcessingDaysForActual}
                 </Descriptions.Item>
-                <span style={{ color: "rgba(255, 255, 255, 0.45)" }}>消缺成本</span>
-                <Descriptions.Item label="差旅成本">
+                <Descriptions.Item label="" span={2}>
+                    <div style={{ color: "#fff" }}>消缺成本</div>
+                </Descriptions.Item>
+                <Descriptions.Item label="差旅成本(元)">
                     {info?.exceptionProcessingCost?.travelCost}
                 </Descriptions.Item>
-                <Descriptions.Item label="耗材成本">
+                <Descriptions.Item label="耗材成本(元)">
                     {info?.exceptionProcessingCost?.consumablesCost}
                 </Descriptions.Item>
-                <Descriptions.Item label="备件成本">
+                <Descriptions.Item label="备件成本(元)">
                     {info?.exceptionProcessingCost?.sparePartCost}
                 </Descriptions.Item>
-                <Descriptions.Item label="业主罚款">
+                <Descriptions.Item label="业主罚款(元)">
                     {info?.exceptionProcessingCost?.ownerFineCost}
                 </Descriptions.Item>
-                <Descriptions.Item label="人员成本">
+                <Descriptions.Item label="人员成本(元)" span={2}>
                     {info?.exceptionProcessingCost?.laborCost}
                 </Descriptions.Item>
-                <span style={{ color: "rgba(255, 255, 255, 0.45)" }}>消缺收益</span>
-                <Descriptions.Item label="供应商罚款">
+                <Descriptions.Item label="" span={2}>
+                    <div style={{ color: "#fff" }}>消缺收益</div>
+                </Descriptions.Item>
+                <Descriptions.Item label="供应商罚款(元)">
                     {info?.exceptionProcessingBenefit?.supplierFineBenefit}
                 </Descriptions.Item>
-                <Descriptions.Item label="质保外维修收益(业务付款)">
+                <Descriptions.Item label="质保外维修收益(业务付款)(元)">
                     {info?.exceptionProcessingBenefit?.warrantyExpiredPayBenefit}
                 </Descriptions.Item>
-                <Descriptions.Item label="消缺总结">
+                <Descriptions.Item label="消缺总结" span={2}>
                     {info?.exceptionProcessingResult}
                 </Descriptions.Item>
                 <Descriptions.Item label="附件">
-                    {info?.exceptionProcessingAttachments?.map(item => (
-                        <a href="###">{item?.fileName}</a>
-                    ))}
+                    <Space>
+                        {info?.exceptionProcessingAttachments?.map(item => (
+                            <a
+                                href={`${DOWNLOAD_URL}/${item?.id}${jsonToUrlParams({
+                                    access_token: localStorage.getItem("Token"),
+                                })}`}
+                            >
+                                {item?.fileName}
+                            </a>
+                        ))}
+                    </Space>
                 </Descriptions.Item>
             </Descriptions>
         );
     };
 
-    const DealWith = () => {
+    const Process = () => {
         return (
             <>
                 <UserSelect
@@ -288,7 +299,7 @@ const Index = ({ info, onClose }) => {
                     <Row span={24}>
                         <Col span={12}>
                             <Form.Item
-                                label="差旅成本"
+                                label="差旅成本(元)"
                                 name="travelCost"
                                 rules={[
                                     {
@@ -302,7 +313,7 @@ const Index = ({ info, onClose }) => {
                         </Col>
                         <Col span={12}>
                             <Form.Item
-                                label="耗材成本"
+                                label="耗材成本(元)"
                                 name="consumablesCost"
                                 rules={[
                                     {
@@ -318,7 +329,7 @@ const Index = ({ info, onClose }) => {
                     <Row span={24}>
                         <Col span={12}>
                             <Form.Item
-                                label="备件成本"
+                                label="备件成本(元)"
                                 name="sparePartCost"
                                 rules={[
                                     {
@@ -332,7 +343,7 @@ const Index = ({ info, onClose }) => {
                         </Col>
                         <Col span={12}>
                             <Form.Item
-                                label="业主罚款"
+                                label="业主罚款(元)"
                                 name="ownerFineCost"
                                 rules={[
                                     {
@@ -348,7 +359,7 @@ const Index = ({ info, onClose }) => {
                     <Row span={24}>
                         <Col span={12}>
                             <Form.Item
-                                label="人员成本"
+                                label="人员成本(元)"
                                 name="laborCost"
                                 rules={[
                                     {
@@ -365,7 +376,7 @@ const Index = ({ info, onClose }) => {
                     <Row span={24}>
                         <Col span={12}>
                             <Form.Item
-                                label="供应商罚款"
+                                label="供应商罚款(元)"
                                 name="supplierFineBenefit"
                                 rules={[
                                     {
@@ -379,7 +390,7 @@ const Index = ({ info, onClose }) => {
                         </Col>
                         <Col span={12}>
                             <Form.Item
-                                label="质保外维修收益(业务付款)"
+                                label="质保外维修收益(业务付款)(元)"
                                 name="warrantyExpiredPayBenefit"
                                 rules={[
                                     {
@@ -415,13 +426,13 @@ const Index = ({ info, onClose }) => {
                     <Row span={24}>
                         <Col span={12}>
                             <Form.Item label="附件" name="files">
-                                <MyUpload url={uploadUrl} />
+                                <MyUpload url={UPLOAD_URL} />
                             </Form.Item>
                         </Col>
                     </Row>
                     <Form.Item
                         wrapperCol={{
-                            offset: 13,
+                            offset: 12,
                             span: 4,
                         }}
                     >
@@ -449,7 +460,10 @@ const Index = ({ info, onClose }) => {
     };
 
     return (
-        <div style={{ color: "#fff" }}>{info?.supportProcessing ? <DealWith /> : <Result />}</div>
+        <div>
+            {isDetail && <Detail />}
+            {isProcess && <Process />}
+        </div>
     );
 };
 

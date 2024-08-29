@@ -34,19 +34,6 @@ import {
 } from "@/services/workOrder";
 import "./index.less";
 import dayjs from "dayjs";
-import img1 from "./imgs/1.png";
-import img2 from "./imgs/2.png";
-import img3 from "./imgs/3.png";
-import img4 from "./imgs/4.png";
-import img5 from "./imgs/5.png";
-import img6 from "./imgs/6.png";
-import img7 from "./imgs/7.png";
-import img8 from "./imgs/8.png";
-import img9 from "./imgs/9.png";
-import img10 from "./imgs/10.png";
-import img11 from "./imgs/11.png";
-import img12 from "./imgs/12.png";
-import img13 from "./imgs/13.png";
 
 let invalidReason = undefined;
 
@@ -58,91 +45,11 @@ const Account = () => {
 
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
-    const [userList, setUserList] = useState([
-        {
-            id: 1,
-            time: "2024-02-01",
-            status: "已完成",
-            name: "基础实施工单",
-            type: "实施工单",
-            start: "2024-02-05",
-            end: "2024-02-08",
-            projectName: "浙江**能源科技有限公司100KW/215KWh储能项目",
-            accept: "张**",
-            launch: "李**",
-            handle: "王**",
-            groupName: "浙江**能源科技有限公司户外柜巡检",
-            checkInfo: [
-                { item: "户外柜巡检显示屏", img: img8 },
-                { item: "户外柜检查电池模块", img: img10 },
-                { item: "户外柜检查电池模组间动力线束", img: img11 },
-                { item: "户外柜检查电池模组间通信线束", img: img12 },
-                { item: "户外柜检查电池模组液冷管道接口", img: img13 },
-            ],
-        },
-        {
-            id: 2,
-            time: "2024-02-11",
-            status: "已完成",
-            name: "基础巡检工单",
-            type: "巡检工单",
-            start: "2024-02-13",
-            end: "2024-02-17",
-            projectName: "宁储**100MW/200MWh共享储能电站",
-            accept: "张**",
-            launch: "许**",
-            handle: "张**",
-            groupName: "宁储源网侧集装箱项目巡检",
-            checkInfo: [
-                { item: "源网侧集装箱项目检查BMS运行数据", img: img1 },
-                { item: "源网侧集装箱项目检查消防气体罐管道", img: img2 },
-                { item: "源网侧集装箱项目检查消防主机模块", img: img3 },
-                { item: "源网侧集装箱项目检查液冷机", img: img4 },
-            ],
-        },
-        {
-            id: 3,
-            time: "2024-02-25",
-            status: "已完成",
-            name: "日常巡检工单",
-            type: "巡检工单",
-            start: "2024-03-11",
-            end: "2024-03-18",
-            projectName: "宁储**100MW/200MWh共享储能电站",
-            accept: "刘**",
-            launch: "田**",
-            handle: "王**",
-            groupName: "宁储源网侧集装箱项目巡检",
-            checkInfo: [
-                { item: "源网侧集装箱项目检查BMS运行数据", img: img1 },
-                { item: "源网侧集装箱项目检查消防气体罐管道", img: img2 },
-                { item: "源网侧集装箱项目检查消防主机模块", img: img3 },
-                { item: "源网侧集装箱项目检查液冷机", img: img4 },
-            ],
-        },
-        {
-            id: 4,
-            time: "2024-03-01",
-            status: "已完成",
-            name: "日常巡检工单",
-            type: "巡检工单",
-            start: "2024-03-18",
-            end: "2024-03-22",
-            projectName: "上海**有限公司7.5MW/22.5MWh用户储能项目",
-            accept: "孙**",
-            launch: "李**",
-            handle: "李**",
-            groupName: "上海**有限公司工商业集装箱项目巡检",
-            checkInfo: [
-                { item: "工商业集装箱项目储能电表巡检", img: img5 },
-                { item: "工商业集装箱项目消防主机模块巡检", img: img6 },
-                { item: "工商业集装箱项目液冷机巡检", img: img7 },
-            ],
-        },
-    ]);
+    const [userList, setUserList] = useState();
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [addProjectOpen, setAddProjectOpen] = useState(false);
-    const [detailId, setDetailId] = useState("1813879221307654146");
+    const [detailId, setDetailId] = useState();
+    const [processId, setProcessId] = useState();
 
     const publishedTimeRef = useRef();
     const [publishedTime, setPublishedTime] = useState();
@@ -155,7 +62,7 @@ const Account = () => {
     const [workOrderName, setWorkOrderName] = useState();
 
     const workOrderTypeRef = useRef();
-    const [workOrderType, setWorkOrderType] = useState();
+    const [workOrderType, setWorkOrderType] = useState([]);
     const [workOrderTypeOptions, setWorkOrderTypeOptions] = useState();
 
     const planStartDateRef = useRef();
@@ -243,13 +150,14 @@ const Account = () => {
         {
             title: "操作",
             dataIndex: "operate",
+            fixed: "right",
             render: (_, { id, supportProcessing }) => {
                 return (
-                    <Space>
+                    <>
                         <Button
                             type="link"
                             disabled={Boolean(!supportProcessing)}
-                            onClick={() => setDetailId(id)}
+                            onClick={() => setProcessId(id)}
                         >
                             去处理
                         </Button>
@@ -260,7 +168,7 @@ const Account = () => {
                         >
                             详情
                         </Button>
-                    </Space>
+                    </>
                 );
             },
         },
@@ -293,7 +201,7 @@ const Account = () => {
         const [publishedTimeFrom, publishedTimeTo] = publishedTimeRef.current || [];
         const statusIn = dealStatusRef.current ? [dealStatusRef.current] : null;
         const title = workOrderNameRef.current;
-        const type = workOrderTypeRef.current;
+        const type = workOrderTypeRef.current || [];
         const planDateFrom = planStartDateRef.current;
         const planDateTo = planEndDateRef.current;
         const projectId = associatedProjectRef.current;
@@ -308,7 +216,7 @@ const Account = () => {
                 publishedTimeTo,
                 statusIn,
                 title,
-                type,
+                typeIn: type,
                 planDateFrom,
                 planDateTo,
                 projectId,
@@ -336,7 +244,7 @@ const Account = () => {
         workOrderNameRef.current = undefined;
         setWorkOrderName();
         workOrderTypeRef.current = undefined;
-        setWorkOrderType();
+        setWorkOrderType([]);
         planStartDateRef.current = undefined;
         setPlanStartDate();
         planEndDateRef.current = undefined;
@@ -438,8 +346,10 @@ const Account = () => {
             />
             <Detail
                 detailId={detailId}
+                processId={processId}
                 onClose={() => {
                     setDetailId(null);
+                    setProcessId(null);
                     getList();
                 }}
             />
@@ -480,6 +390,7 @@ const Account = () => {
                     }}
                 />
                 <SearchInput
+                    mode="multiple"
                     label="工单类型"
                     value={workOrderType}
                     type="select"
@@ -488,6 +399,7 @@ const Account = () => {
                         workOrderTypeRef.current = value;
                         setWorkOrderType(value);
                     }}
+                    style={{ width: 200 }}
                 />
                 <div>
                     <span style={{ color: "#FFF" }}>计划开始时间：</span>
@@ -571,6 +483,9 @@ const Account = () => {
                     getCheckboxProps: record => ({
                         disabled: record.account === "admin",
                     }),
+                }}
+                scroll={{
+                    x: 1500,
                 }}
                 onChange={pagination => {
                     paginationRef.current = pagination;

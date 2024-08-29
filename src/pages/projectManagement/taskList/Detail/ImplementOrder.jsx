@@ -4,20 +4,39 @@ import { MyUpload, UserSelect } from "@/components";
 import {
     processOtherWorkOrder as processOtherWorkOrderServer,
     transferWorkOrder as transferWorkOrderServer,
+    processDeliveryWorkOrder as processDeliveryWorkOrderServer,
+    processDebuggingWorkOrder as processDebuggingWorkOrderServer,
+    processRunningWorkOrder as processRunningWorkOrderServer,
 } from "@/services/workOrder";
+import { ALL_SPACE_REG, UPLOAD_URL, DOWNLOAD_URL } from "@/utils/constants";
+import { jsonToUrlParams } from "@/utils/utils";
 
-const Index = ({ info, onClose }) => {
-    const baseUrl = process.env.API_URL;
-    const uploadUrl = baseUrl + "/attachment/upload";
-    const [form] = Form.useForm();
+const Index = ({ isDetail, isProcess, info, onClose }) => {
+    const [deliveryForm] = Form.useForm();
+    const [debuggingForm] = Form.useForm();
+    const [runningForm] = Form.useForm();
     const [userSelectOpen, setUserSelectOpen] = useState(false);
     const [users, setUsers] = useState([]);
 
-    const onFinish = async values => {
-        const res = await processOtherWorkOrderServer({
+    const onFinish = async (values, type) => {
+        const types = {
+            delivery: {
+                fileKey: "goodsReceivedNoteId",
+                fn: processDeliveryWorkOrderServer,
+            },
+            debugging: {
+                fileKey: "acceptanceReportId",
+                fn: processDebuggingWorkOrderServer,
+            },
+            running: {
+                fileKey: "customerAcceptanceFormId",
+                fn: processRunningWorkOrderServer,
+            },
+        };
+        const res = await types[type].fn({
             id: info?.id,
             ...values,
-            attachmentIds: values?.files?.map(item => item.fileName.id),
+            [types[type].fileKey]: values?.files?.[0]?.id,
         });
         if (res?.data?.status == "SUCCESS") {
             message.success("操作成功");
@@ -41,11 +60,22 @@ const Index = ({ info, onClose }) => {
     };
 
     useEffect(() => {
-        const { description, otherProcessingResult } = info;
-        form.setFieldsValue({
-            description,
-            processingResult: otherProcessingResult,
-        });
+        const { project } = info;
+        if (project?.shippingMaterial) {
+            deliveryForm.setFieldsValue({
+                remark: project?.shippingMaterial?.remark,
+            });
+        }
+        if (project?.testingMaterial) {
+            debuggingForm.setFieldsValue({
+                remark: project?.testingMaterial?.remark,
+            });
+        }
+        if (project?.trialRunMaterial) {
+            runningForm.setFieldsValue({
+                remark: project?.trialRunMaterial?.remark,
+            });
+        }
     }, []);
 
     const handleTransferWorkOrder = () => {
@@ -56,23 +86,80 @@ const Index = ({ info, onClose }) => {
         }
     };
 
-    const Result = () => {
+    const Detail = () => {
         return (
-            <Descriptions title="基础信息" column={1}>
+            <Descriptions title="" column={1}>
                 <Descriptions.Item label="工单描述">{info?.description}</Descriptions.Item>
-                <Descriptions.Item label="处理结果">
-                    {info?.otherProcessingResult}
+                <Descriptions.Item label="">
+                    <Badge status="success" style={{ marginRight: "10px" }} />
+                    发货阶段
                 </Descriptions.Item>
-                <Descriptions.Item label="附件">
-                    <a href="###">
-                        {info?.otherProcessingAttachments?.map(item => item?.fileName)}
+                <Descriptions.Item label="到货签收单附件">
+                    <a
+                        href={`${DOWNLOAD_URL}/${info?.project?.shippingMaterial?.goodsReceivedNote?.id}${jsonToUrlParams(
+                            {
+                                access_token: localStorage.getItem("Token"),
+                            }
+                        )}`}
+                    >
+                        {info?.project?.shippingMaterial?.goodsReceivedNote?.fileName}
                     </a>
+                </Descriptions.Item>
+                <Descriptions.Item label="备注">
+                    {info?.project?.shippingMaterial?.remark}
+                </Descriptions.Item>
+                <Descriptions.Item label="实际处理人">
+                    {info?.project?.shippingMaterial?.operatorName}
+                </Descriptions.Item>
+
+                <Descriptions.Item label="">
+                    <Badge status="success" style={{ marginRight: "10px" }} />
+                    调试阶段
+                </Descriptions.Item>
+                <Descriptions.Item label="调试报告附件">
+                    <a
+                        href={`${DOWNLOAD_URL}/${info?.project?.testingMaterial?.acceptanceReport?.id}${jsonToUrlParams(
+                            {
+                                access_token: localStorage.getItem("Token"),
+                            }
+                        )}`}
+                    >
+                        {info?.project?.testingMaterial?.acceptanceReport?.fileName}
+                    </a>
+                </Descriptions.Item>
+                <Descriptions.Item label="备注">
+                    {info?.project?.testingMaterial?.remark}
+                </Descriptions.Item>
+                <Descriptions.Item label="实际处理人">
+                    {info?.project?.testingMaterial?.operatorName}
+                </Descriptions.Item>
+
+                <Descriptions.Item label="">
+                    <Badge status="success" style={{ marginRight: "10px" }} />
+                    试运行阶段
+                </Descriptions.Item>
+                <Descriptions.Item label="项目验收单附件">
+                    <a
+                        href={`${DOWNLOAD_URL}/${info?.project?.trialRunMaterial?.customerAcceptanceForm?.id}${jsonToUrlParams(
+                            {
+                                access_token: localStorage.getItem("Token"),
+                            }
+                        )}`}
+                    >
+                        {info?.project?.trialRunMaterial?.customerAcceptanceForm?.fileName}
+                    </a>
+                </Descriptions.Item>
+                <Descriptions.Item label="备注">
+                    {info?.project?.trialRunMaterial?.remark}
+                </Descriptions.Item>
+                <Descriptions.Item label="实际处理人">
+                    {info?.project?.trialRunMaterial?.operatorName}
                 </Descriptions.Item>
             </Descriptions>
         );
     };
 
-    const DealWith = () => {
+    const Process = () => {
         return (
             <>
                 <UserSelect
@@ -89,11 +176,14 @@ const Index = ({ info, onClose }) => {
                     wrapperCol={{
                         span: 14,
                     }}
-                    form={form}
-                    onFinish={onFinish}
+                    disabled={
+                        !Boolean(info?.implementWorkOrderStatus == "PRE_UPLOAD_SHIPPING_MATERIAL")
+                    }
+                    form={deliveryForm}
+                    onFinish={values => onFinish(values, "delivery")}
                     autoComplete="off"
                 >
-                    <Form.Item label="工单描述" name="description">
+                    <Form.Item label="工单描述" name="description" style={{ marginBottom: 0 }}>
                         <span>{info?.description}</span>
                     </Form.Item>
 
@@ -112,10 +202,34 @@ const Index = ({ info, onClose }) => {
                             },
                         ]}
                     >
-                        <MyUpload url={uploadUrl} />
+                        <MyUpload
+                            maxCount={1}
+                            url={UPLOAD_URL}
+                            files={[
+                                {
+                                    name: info?.project?.shippingMaterial?.goodsReceivedNote
+                                        ?.fileName,
+                                    id: info?.project?.shippingMaterial?.goodsReceivedNote?.id,
+                                    url: `${DOWNLOAD_URL}/${info?.project?.shippingMaterial?.goodsReceivedNote?.id}${jsonToUrlParams(
+                                        {
+                                            access_token: localStorage.getItem("Token"),
+                                        }
+                                    )}`,
+                                },
+                            ]}
+                        />
                     </Form.Item>
 
-                    <Form.Item label="备注" name="processingResult">
+                    <Form.Item
+                        label="备注"
+                        name="remark"
+                        rules={[
+                            {
+                                pattern: ALL_SPACE_REG,
+                                message: "请输入备注",
+                            },
+                        ]}
+                    >
                         <Input.TextArea rows={4} style={{ width: "100%" }} />
                     </Form.Item>
 
@@ -142,12 +256,29 @@ const Index = ({ info, onClose }) => {
                             )}
                         </Space>
                     </Form.Item>
+                </Form>
 
-                    <div style={{ margin: "10px 0", position: "relative", left: "-15px" }}>
-                        <Badge status="success" style={{ marginRight: "8px" }} />
-                        <span>调试阶段</span>
-                    </div>
+                <div style={{ margin: "10px 0", position: "relative", left: "-15px" }}>
+                    <Badge status="success" style={{ marginRight: "8px" }} />
+                    <span>调试阶段</span>
+                </div>
 
+                <Form
+                    style={{ width: "60%" }}
+                    name="basic"
+                    labelCol={{
+                        span: 6,
+                    }}
+                    wrapperCol={{
+                        span: 14,
+                    }}
+                    disabled={
+                        !Boolean(info?.implementWorkOrderStatus == "PRE_UPLOAD_TESTING_MATERIAL")
+                    }
+                    form={debuggingForm}
+                    onFinish={values => onFinish(values, "debugging")}
+                    autoComplete="off"
+                >
                     <Form.Item
                         label="上传调试报告附件"
                         name="files"
@@ -158,10 +289,34 @@ const Index = ({ info, onClose }) => {
                             },
                         ]}
                     >
-                        <MyUpload url={uploadUrl} />
+                        <MyUpload
+                            maxCount={1}
+                            url={UPLOAD_URL}
+                            files={[
+                                {
+                                    name: info?.project?.testingMaterial?.acceptanceReport
+                                        ?.fileName,
+                                    id: info?.project?.testingMaterial?.acceptanceReport?.id,
+                                    url: `${DOWNLOAD_URL}/${info?.project?.testingMaterial?.acceptanceReport?.id}${jsonToUrlParams(
+                                        {
+                                            access_token: localStorage.getItem("Token"),
+                                        }
+                                    )}`,
+                                },
+                            ]}
+                        />
                     </Form.Item>
 
-                    <Form.Item label="备注" name="processingResult">
+                    <Form.Item
+                        label="备注"
+                        name="remark"
+                        rules={[
+                            {
+                                pattern: ALL_SPACE_REG,
+                                message: "请输入备注",
+                            },
+                        ]}
+                    >
                         <Input.TextArea rows={4} style={{ width: "100%" }} />
                     </Form.Item>
 
@@ -188,12 +343,29 @@ const Index = ({ info, onClose }) => {
                             )}
                         </Space>
                     </Form.Item>
+                </Form>
 
-                    <div style={{ margin: "10px 0", position: "relative", left: "-15px" }}>
-                        <Badge status="success" style={{ marginRight: "8px" }} />
-                        <span>试运行阶段</span>
-                    </div>
+                <div style={{ margin: "10px 0", position: "relative", left: "-15px" }}>
+                    <Badge status="success" style={{ marginRight: "8px" }} />
+                    <span>试运行阶段</span>
+                </div>
 
+                <Form
+                    style={{ width: "60%" }}
+                    name="basic"
+                    labelCol={{
+                        span: 6,
+                    }}
+                    wrapperCol={{
+                        span: 14,
+                    }}
+                    disabled={
+                        !Boolean(info?.implementWorkOrderStatus == "PRE_UPLOAD_TRIAL_RUN_MATERIAL")
+                    }
+                    form={runningForm}
+                    onFinish={values => onFinish(values, "running")}
+                    autoComplete="off"
+                >
                     <Form.Item
                         label="上传项目验收单附件"
                         name="files"
@@ -204,10 +376,34 @@ const Index = ({ info, onClose }) => {
                             },
                         ]}
                     >
-                        <MyUpload url={uploadUrl} />
+                        <MyUpload
+                            maxCount={1}
+                            url={UPLOAD_URL}
+                            files={[
+                                {
+                                    name: info?.project?.trialRunMaterial?.customerAcceptanceForm
+                                        ?.fileName,
+                                    id: info?.project?.trialRunMaterial?.customerAcceptanceForm?.id,
+                                    url: `${DOWNLOAD_URL}/${info?.project?.trialRunMaterial?.customerAcceptanceForm?.id}${jsonToUrlParams(
+                                        {
+                                            access_token: localStorage.getItem("Token"),
+                                        }
+                                    )}`,
+                                },
+                            ]}
+                        />
                     </Form.Item>
 
-                    <Form.Item label="备注" name="processingResult">
+                    <Form.Item
+                        label="备注"
+                        name="remark"
+                        rules={[
+                            {
+                                pattern: ALL_SPACE_REG,
+                                message: "请输入备注",
+                            },
+                        ]}
+                    >
                         <Input.TextArea rows={4} style={{ width: "100%" }} />
                     </Form.Item>
 
@@ -240,10 +436,10 @@ const Index = ({ info, onClose }) => {
     };
 
     return (
-        <div style={{ color: "#fff", paddingLeft: "20px" }}>
-            {/* {info?.supportProcessing ? <DealWith /> : <Result />} */}
-            <DealWith />
-        </div>
+        <>
+            {isDetail && <Detail />}
+            {isProcess && <Process />}
+        </>
     );
 };
 
