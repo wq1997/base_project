@@ -442,7 +442,7 @@ const Account = () => {
                 >
                     搜索
                 </Button>
-                <Button onClick={handleReset}>重置</Button>
+                <Button type="primary" danger onClick={handleReset}>重置</Button>
             </Space>
             <Table
                 rowKey="id"

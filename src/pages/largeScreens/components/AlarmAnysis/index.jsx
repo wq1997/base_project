@@ -1,7 +1,6 @@
 import { Charts2_5D } from "@/components";
 import Card from "../../components/Card";
 const AlarmAnysis = ({ data }) => {
-    console.log(data)
     return (
         <Card
             title={"告警分析"}

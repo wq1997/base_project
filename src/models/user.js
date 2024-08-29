@@ -11,7 +11,6 @@ export default {
     effects: {
       *queryUser({ payload }, { call, put }) {
         const userInfo = yield call(login, { username: 'wangqing', password: '123456' });
-        console.log("queryUser", userInfo)
         if(userInfo){
           yield put({
             type: 'updateState',

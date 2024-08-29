@@ -1,27 +1,36 @@
 import { Space, Select, theme, DatePicker } from "antd";
 import ReactECharts from "echarts-for-react";
-import * as echarts from "echarts";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import {
+    workOrderGetTimeExceptionPartsOrSupplierStatisticsPageInitData as workOrderGetTimeExceptionPartsOrSupplierStatisticsPageInitDataServe,
     getWorkOrderTimeExceptionTypeStatistics as getWorkOrderTimeExceptionTypeStatisticsServe,
 } from "@/services";
+import { SearchInput } from "@/components";
 
 const Statistics = () => {
     const [options, setOptions] = useState({});
     const { token } = theme.useToken();
     const [type, setType] = useState("YEAR");
-    const [date, setDate] = useState(dayjs().format("YYYY"))
+    const [date, setDate] = useState(dayjs().format("YYYY"));
+    const [initOption, setInitOption] = useState({})
+    const [productType, setProductType] = useState();
+    const [groupType, setGroupType] = useState();
 
     const getOptions = async () => {
+        if (JSON.stringify(initOption) === "{}") return;
         let params = {}, xAxisData = [], legendData = [], seriesData = [];
         if (type === "YEAR") {
             params = {
+                productType: productType || initOption?.productTypes?.[0]?.code,
+                groupType: groupType || initOption?.groupTypes?.[0]?.code,
                 year: date
             }
         }
         if (type === "MONTH") {
             params = {
+                productType: productType || initOption?.productTypes?.[0]?.code,
+                groupType: groupType || initOption?.groupTypes?.[0]?.code,
                 year: dayjs(date).format("YYYY"),
                 month: dayjs(date).format("MM")
             }
@@ -31,9 +40,9 @@ const Statistics = () => {
             const items = res?.data?.data?.items;
             xAxisData = items?.map(item => item?.monthOrDay);
             items?.forEach(item => {
-                if (item?.exceptionTypeTypeCount?.length > 0) {
-                    item?.exceptionTypeTypeCount?.forEach(subItem => {
-                        legendData.push(subItem?._1);
+                if (item?.exceptionPartsOrSupplierCount?.length > 0) {
+                    item?.exceptionPartsOrSupplierCount?.forEach(subItem => {
+                        legendData.push(subItem?._1||"");
                     })
                 }
             })
@@ -46,13 +55,13 @@ const Statistics = () => {
                     stack: '总量',
                     barWidth: 40,
                     data: items?.map(item => {
-                        const count = item?.exceptionTypeTypeCount?.find(subItem => subItem?._1 === name);
+                        const count = item?.exceptionPartsOrSupplierCount?.find(subItem => subItem?._1 === name);
                         return count?._2 || 0;
                     }),
                 })
             })
         }
-
+        
         setOptions({
             tooltip: {},
             color: ['#47CCFF', '#EF6E39', '#00D5CF'],
@@ -104,9 +113,20 @@ const Statistics = () => {
         })
     }
 
+    const getInitData = async () => {
+        const res = await workOrderGetTimeExceptionPartsOrSupplierStatisticsPageInitDataServe();
+        if (res?.data?.status === "SUCCESS") {
+            setInitOption(res?.data?.data)
+        }
+    }
+
     useEffect(() => {
         getOptions();
-    }, [type, date]);
+    }, [initOption, productType, groupType, type, date]);
+
+    useEffect(() => {
+        getInitData();
+    }, [])
 
     return (
         <Space
@@ -116,6 +136,24 @@ const Statistics = () => {
             }}
         >
             <Space>
+                <SearchInput
+                    label="产品类型"
+                    value={productType || initOption?.productTypes?.[0]?.code}
+                    type="select"
+                    onChange={value => {
+                        setProductType(value);
+                    }}
+                    options={initOption?.productTypes}
+                />
+                <SearchInput
+                    label="场景类型"
+                    value={groupType || initOption?.groupTypes?.[0]?.code}
+                    type="select"
+                    onChange={value => {
+                        setGroupType(value);
+                    }}
+                    options={initOption?.groupTypes}
+                />
                 <span style={{ color: token.fontColor }}>时间维度：</span>
                 <Select
                     value={type}
@@ -146,9 +184,9 @@ const Statistics = () => {
                     }}
                 />
             </Space>
-            <ReactECharts 
-                option={options} 
-                style={{ width: "100%", height: 'calc(100vh - 250px)' }} 
+            <ReactECharts
+                option={options}
+                style={{ width: "100%", height: 'calc(100vh - 250px)' }}
                 notMerge={true}
             />
         </Space>

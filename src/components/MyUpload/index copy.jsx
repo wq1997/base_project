@@ -56,7 +56,6 @@ const MyUpload = ({
                 }}
                 onPreview={handlePreview}
                 onChange={info => {
-                    console.log(info)
                     let newFiles = info?.fileList;
                     const isDone = info?.file?.status == "done";
                     const is200 = info?.file?.response?.status == "SUCCESS";

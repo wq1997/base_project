@@ -86,9 +86,7 @@ export const getBasProjectEditInitData = payload => {
 }
 
 export const getWorkOrderTimeExceptionTypeStatistics = payload => {
-    return axiosInstance.get(`/work-order/time-exception-type-statistics`, {
-        params: payload
-    })
+    return axiosInstance.post(`/work-order/time-exception-partsOrSupplier-statistics`, payload)
 }
 
 export const workOrderFindExceptionStatisticsPage = payload => {
@@ -99,4 +97,34 @@ export const workOrderGetExceptionStatisticsPageInitData = payload => {
     return axiosInstance.get(`/work-order/get-exception-statistics-page-init-data`, {
         params: payload
     })
+}
+
+export const workbenchGetManagerWorkbenchData = payload => {
+    return axiosInstance.get(`/workbench/get-manager-workbench-data`)
+}
+
+export const workbenchListTimeCompleteWorkOrderCount = payload => {
+    return axiosInstance.get(`/workbench/list-time-complete-work-order-count`, {
+        params: payload
+    });
+}
+
+export const workbenchListOperatorCompleteWorkOrderCount = payload => {
+    return axiosInstance.post(`/workbench/list-operator-complete-work-order-count`, payload||{})
+}
+
+export const workbenchGetExecutorWorkbenchData = () => {
+    return axiosInstance.get(`/workbench/get-executor-workbench-data`);
+}
+
+export const workbenchGetProjectSummery = (payload) => {
+    return axiosInstance.post(`/workbench/get-project-summery`, payload)
+}
+
+export const workOrderGetTimeExceptionPartsOrSupplierStatisticsPageInitData = () => {
+    return axiosInstance.get(`/work-order/get-time-exception-parts-or-supplier-statistics-page-init-data`)
+}
+
+export const basProjectPart4Submit = (payload) => {
+    return axiosInstance.post(`/bas-project/part4-submit`, payload)
 }

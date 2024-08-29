@@ -19,6 +19,8 @@ const Detailed = () => {
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [planDate, setPlanDate] = useState();
     const planDateRef = useRef();
+    const [code, setCode] = useState();
+    const codeRef = useRef();
     const [overDate, setOverDate] = useState();
     const overDateRef = useRef();
     const [name, setName] = useState();
@@ -39,10 +41,11 @@ const Detailed = () => {
     const [initOption, setInitOption] = useState({});
     const [currentRow, setCurrentRow] = useState({});
     const [fileOpen, setFileOpen] = useState(false);
+    const [data, setData] = useState();
 
-    const getOptions = () => {
+    const getOptions = (type) => {
         const options = {
-            color: ["#00FFF8", "#8FC0FF"],
+            color: ["#FFCF00", "#54E135", "#00E9EF", "#BE88F8", "#0BD1CB"],
             tooltip: {
                 trigger: "item",
             },
@@ -54,10 +57,12 @@ const Detailed = () => {
                     type: "pie",
                     radius: ["50%", "70%"],
                     selectedMode: "single",
-                    data: [
-                        { value: 1285, name: "维保项目" },
-                        { value: 85, name: "实施项目" },
-                    ],
+                    data: Object.keys(data?.[type] || {})?.map(item => {
+                        return {
+                            name: item,
+                            value: data?.[type]?.[item]
+                        }
+                    }),
                     label: {
                         normal: {
                             textStyle: {
@@ -91,11 +96,12 @@ const Detailed = () => {
 
     const getDataSource = async () => {
         const { current, pageSize } = paginationRef.current;
+        const code = codeRef.current;
         const planDate = planDateRef.current;
         const titleLike = nameRef.current;
         const projectId = projectNameRef.current;
         const type = orderTypeRef.current;
-        const exceptionRefBasInspectionItemId = exceptionRefBasInspectionItemIdRef.current;
+        const exceptionParts = exceptionRefBasInspectionItemIdRef.current;
         const exceptionSupplierId = manufacturerRef.current;
         const currentProcessorAccount = handlerPersonRef.current;
         const collectingMaterials = collectingMaterialsRef.current;
@@ -103,6 +109,7 @@ const Detailed = () => {
             pageNum: current,
             pageSize,
             queryCmd: {
+                code,
                 publishedTimeFrom: planDate && planDate?.length >= 2 && dayjs(planDate?.[0]).format("YYYY-MM-DD"),
                 publishedTimeTo: planDate && planDate?.length >= 2 && dayjs(planDate?.[1]).format("YYYY-MM-DD"),
                 completedTimeFrom: overDate && overDate?.length >= 2 && dayjs(overDate?.[0]).format("YYYY-MM-DD"),
@@ -110,7 +117,7 @@ const Detailed = () => {
                 titleLike,
                 projectId,
                 type,
-                exceptionRefBasInspectionItemId,
+                exceptionParts,
                 exceptionSupplierId,
                 collectingMaterials,
                 currentProcessorAccount,
@@ -123,6 +130,7 @@ const Detailed = () => {
                 ...paginationRef.current,
                 total: parseInt(totalRecord),
             });
+            setData(res?.data?.data);
             setDataSource(recordList);
         }
     }
@@ -142,6 +150,8 @@ const Detailed = () => {
         orderTypeRef.current = undefined;
         manufacturerRef.current = undefined;
         handlerPersonRef.current = undefined;
+        codeRef.current = undefined;
+        setCode(undefined);
         setHandlerPerson(undefined);
         setManufacturer(undefined);
         setOrderType(undefined);
@@ -157,24 +167,19 @@ const Detailed = () => {
         getDataSource();
     }, [])
 
-    let exceptionRefBasInspectionItemIdOptions = [];
-    const inspectionItemType2Items = initOption?.inspectionItemType2Items || {};
-    Object.keys(inspectionItemType2Items).forEach(item => {
-        inspectionItemType2Items?.[item]?.forEach(item => {
-            exceptionRefBasInspectionItemIdOptions = exceptionRefBasInspectionItemIdOptions.concat(item);
-        })
-    })
-    exceptionRefBasInspectionItemIdOptions = exceptionRefBasInspectionItemIdOptions?.map(item => {
-        return {
-            name: item?.name,
-            code: item?.id
-        }
-    })
-
     return (
         <div className={styles.detailed}>
             <div style={{ fontSize: 20, color: token.fontColor, marginBottom: 28 }}>查询条件</div>
             <Space className={styles.search} size={20}>
+                <SearchInput
+                    label="工单编号"
+                    value={code}
+                    onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        codeRef.current = value;
+                        setCode(value);
+                    }}
+                />
                 <div>
                     <span style={{ color: "#FFF" }}>异常生成时间：</span>
                     <DatePicker.RangePicker
@@ -242,7 +247,12 @@ const Detailed = () => {
                         exceptionRefBasInspectionItemIdRef.current = value;
                         setExceptionRefBasInspectionItemId(value);
                     }}
-                    options={exceptionRefBasInspectionItemIdOptions}
+                    options={initOption?.exceptionPartsList?.map(item => {
+                        return {
+                            name: item,
+                            code: item
+                        }
+                    })}
                 />
                 <SearchInput
                     label="责任厂商"
@@ -302,7 +312,7 @@ const Detailed = () => {
                     <div className={styles.centerContent1}>
                         <div className={styles.centerContent1Top}>
                             <span style={{ color: 'white' }}>异常总数</span>
-                            <span style={{ color: '#0BAFAB', marginLeft: 30, fontSize: 36 }}>100</span>
+                            <span style={{ color: '#0BAFAB', marginLeft: 30, fontSize: 36 }}>{data?.totalWorkOrderCount}</span>
                         </div>
                         <div className={styles.centerContent1Bottom}>
                             <div className={styles.centerContent1BottomItem}>
@@ -310,7 +320,7 @@ const Detailed = () => {
                                     计划处理时间总计
                                 </div>
                                 <div style={{ color: '#60C453', fontSize: 36 }}>
-                                    100
+                                    {data?.totalProcessingDaysForPlan}
                                 </div>
                             </div>
                             <div className={styles.centerContent1BottomItem}>
@@ -318,24 +328,24 @@ const Detailed = () => {
                                     实际处理时间总计
                                 </div>
                                 <div style={{ color: '#4592E3', fontSize: 36 }}>
-                                    100
+                                    {data?.totalProcessingDaysForActual}
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className={styles.centerContent2}>
                         <ReactECharts
-                            option={getOptions()}
+                            option={getOptions("costType2Amount")}
                             style={{ width: '100%', height: "calc(100% - 50px)" }}
                         />
-                        <div style={{ color: 'white', textAlign: 'center', marginTop: 10 }}>差旅成本总计</div>
+                        <div style={{ color: 'white', textAlign: 'center', marginTop: 10 }}>消缺总成本(元)</div>
                     </div>
                     <div className={styles.centerContent3}>
                         <ReactECharts
-                            option={getOptions()}
+                            option={getOptions("benefitType2Amount")}
                             style={{ width: '100%', height: "calc(100% - 50px)" }}
                         />
-                        <div style={{ color: 'white', textAlign: 'center', marginTop: 10 }}>消缺收益</div>
+                        <div style={{ color: 'white', textAlign: 'center', marginTop: 10 }}>消缺收益(元)</div>
                     </div>
                 </div>
             </div>
@@ -344,8 +354,13 @@ const Detailed = () => {
                 dataSource={dataSource}
                 columns={[
                     {
+                        title: '工单编号',
+                        dataIndex: 'code',
+                        width: 200,
+                    },
+                    {
                         title: "异常名称",
-                        dataIndex: "description",
+                        dataIndex: "title",
                         width: 200,
                     },
                     {
@@ -368,7 +383,7 @@ const Detailed = () => {
                     },
                     {
                         title: "异常部件",
-                        dataIndex: "exceptionInspectionItemName",
+                        dataIndex: "exceptionParts",
                         width: 200,
                     },
                     {
@@ -500,12 +515,12 @@ const Detailed = () => {
                                     >
                                         附件
                                     </Button>
-                                    <Button 
-                                        type="link" 
-                                        style={{ 
-                                            color: token.colorPrimary 
+                                    <Button
+                                        type="link"
+                                        style={{
+                                            color: token.colorPrimary
                                         }}
-                                        onClick={()=>{
+                                        onClick={() => {
                                             history.push(`/project-management/task-list?code=${row?.code}`)
                                         }}
                                     >
@@ -535,7 +550,7 @@ const Detailed = () => {
                     {
                         currentRow?.exceptionProcessingAttachments?.map(item => {
                             return (
-                                <Image 
+                                <Image
                                     width={200}
                                     src={`${getBaseUrl()}/attachment/download/${item?.id}` + jsonToUrlParams({
                                         id: item?.id,

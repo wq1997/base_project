@@ -1,45 +1,17 @@
-import { Table, theme } from "antd";
-import { SearchInput } from "@/components";
-import ReactECharts from "echarts-for-react";
+import { Table, theme, Row } from "antd";
 import "./index.less";
+import { useState, useEffect } from "react";
+import {
+    workbenchGetProjectSummery as workbenchGetProjectSummeryServe
+} from "@/services";
+import { SearchInput } from "@/components";
 
-const PersonnelTasks = () => {
+const PersonnelTasks = ({
+    data
+}) => {
     const { token } = theme.useToken();
-    const myWorkorders = [
-        { name: "接受工单总数", value: "15", color: "#1098EF" },
-        { name: "执行工单总数", value: "52", color: "#ED9C0D" },
-        { name: "待执行异常工单", value: "67", color: "#10EF12" },
-    ];
-
-    const dataSource = [
-        {
-            key: "1",
-            name: "宁储**100MW/200MWh共享储能电站",
-            age: "售后阶段",
-            address: "质保期",
-            type: "源网侧",
-            withCount: 11,
-            inCount: 1,
-        },
-        {
-            key: "2",
-            name: "上海**有限公司7.5MW/22.5MWh用户储能项目",
-            age: "售后阶段",
-            address: "质保期",
-            type: "工商业",
-            withCount: 8,
-            inCount: 0,
-        },
-        {
-            key: "3",
-            name: "浙江**能源科技有限公司100KW/215KWh储能项目",
-            age: "售后阶段",
-            address: "质保期",
-            type: "工商业",
-            withCount: 20,
-            inCount: 1,
-        },
-    ];
+    const [region, setRegion] = useState();
+    const [dataSource, setDataSource] = useState();
 
     const columns = [
         {
@@ -49,38 +21,62 @@ const PersonnelTasks = () => {
         },
         {
             title: "项目阶段",
-            dataIndex: "age",
-            key: "age",
+            dataIndex: "phaseZh",
+            key: "phaseZh",
         },
         {
             title: "项目进度",
-            dataIndex: "address",
-            key: "address",
+            dataIndex: "subPhaseZh",
+            key: "subPhaseZh",
         },
         {
             title: "项目类型",
-            dataIndex: "type",
-            key: "type",
+            dataIndex: "typeZh",
+            key: "typeZh",
         },
         {
             title: "关联工单数",
-            dataIndex: "withCount",
-            key: "withCount",
+            dataIndex: "refWorkOrderCount",
+            key: "refWorkOrderCount",
         },
         {
             title: "在途工单数",
-            dataIndex: "inCount",
-            key: "inCount",
+            dataIndex: "waitCompleteWorkOrderCount",
+            key: "waitCompleteWorkOrderCount",
         },
     ];
 
-    return (
-        <div className="personnel-tasks" style={{background: token.color12}}>
-            <div className="title">
-                <span>负责项目统计</span>
-            </div>
+    const getDataSource = async () => {
+        const res = await workbenchGetProjectSummeryServe({regions: region});
+        if (res?.data?.status === "SUCCESS") {
+            setDataSource(res?.data?.data);
+        }
+    }
+
+    useEffect(() => {
+        getDataSource();
+    }, [region])
+
+    return (    
+        <div className="personnel-tasks" style={{ background: token.color12 }}>
+            <Row justify="space-between" style={{padding: 10}}>
+                <span style={{fontSize: 17}}>负责项目统计</span>
+                <SearchInput
+                    label="区域"
+                    type="select"
+                    value={region}
+                    options={data?.regions}
+                    onChange={setRegion}
+                    mode="multiple"
+                    style={{ width: 300 }}
+                />
+            </Row>
             <div className="content">
-                <Table dataSource={dataSource} columns={columns} style={{ width: "100%" }} />
+                <Table
+                    dataSource={dataSource?.projects || []}
+                    columns={columns}
+                    style={{ width: "100%" }}
+                />
             </div>
         </div>
     );

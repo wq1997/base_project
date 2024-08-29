@@ -5,17 +5,16 @@ import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts";
 import "./index.less";
 
-const Board = () => {
+const Board = ({
+    data
+}) => {
     const chartRef = useRef(null);
-
     const [options, setOpitons] = useState({});
-
-    useEffect(() => {
-        getOptions();
-    }, []);
+    const [dataType, setDataType] = useState("phase2Count");
 
     const { token } = theme.useToken();
     const getOptions = () => {
+        const dataSource = data?.projectSummery?.[dataType] || [];
         const options = {
             color: ["#00FFF8", "#8FC0FF"],
             tooltip: {
@@ -34,10 +33,12 @@ const Board = () => {
                     type: "pie",
                     radius: ["50%", "70%"],
                     selectedMode: "single",
-                    data: [
-                        { value: 53, name: "维保项目" },
-                        { value: 2, name: "实施项目" },
-                    ],
+                    data: dataSource?.map(item => {
+                        return {
+                            name: item?._1,
+                            value: item?._2
+                        }
+                    }),
                     emphasis: {
                         itemStyle: {
                             shadowBlur: 10,
@@ -89,24 +90,29 @@ const Board = () => {
         setOpitons(options);
     };
 
+    useEffect(() => {
+        getOptions();
+    }, [data, dataType]);
+
     return (
-        <div className="board" style={{background: token.color12}}>
+        <div className="board" style={{ background: token.color12 }}>
             <div className="title">
                 <span>在途项目看板</span>
                 <SearchInput
                     label="数据维度"
                     type="select"
-                    value={"2"}
+                    value={dataType}
                     options={[
                         {
                             name: "项目阶段图",
-                            code: "1",
+                            code: "phase2Count",
                         },
                         {
                             name: "项目类型图",
-                            code: "2",
+                            code: "type2Count",
                         },
                     ]}
+                    onChange={setDataType}
                 />
             </div>
             <ReactECharts

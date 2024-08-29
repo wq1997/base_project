@@ -1,20 +1,19 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Select, Space, theme } from "antd";
+import { theme } from "antd";
 import { SearchInput } from "@/components";
 import ReactECharts from "echarts-for-react";
-import * as echarts from "echarts";
 import "./index.less";
 
-const Board = () => {
+const Board = ({
+    data
+}) => {
+    const { token } = theme.useToken();
     const chartRef = useRef(null);
     const [options, setOpitons] = useState({});
+    const [dataType, setDataType] = useState("phase2Count");
 
-    useEffect(() => {
-        getOptions();
-    }, []);
-
-    const { token } = theme.useToken();
     const getOptions = () => {
+        const dataSource = data?.projectSummery?.[dataType]||[];
         const options = {
             color: ["#00FFF8", "#8FC0FF"],
             tooltip: {
@@ -33,17 +32,12 @@ const Board = () => {
                     type: "pie",
                     radius: ["50%", "70%"],
                     selectedMode: "single",
-                    data: [
-                        { value: 1285, name: "维保项目" },
-                        { value: 85, name: "实施项目" },
-                    ],
-                    // emphasis: {
-                    //     itemStyle: {
-                    //         shadowBlur: 10,
-                    //         shadowOffsetX: 0,
-                    //         shadowColor: "rgba(0, 0, 0, 0.5)",
-                    //     },
-                    // },
+                    data: dataSource?.map(item => {
+                        return {
+                            name: item?._1,
+                            value: item?._2
+                        }
+                    }),
                     label: {
                         normal: {
                             textStyle: {
@@ -68,25 +62,16 @@ const Board = () => {
                                 },
                             },
                         },
-                    },
-                    // labelLayout: function (params) {
-                    //     const isLeft =
-                    //         params.labelRect.x <
-                    //         chartRef.current.getEchartsInstance().getWidth() / 2;
-                    //     const points = params.labelLinePoints;
-                    //     // Update the end point.
-                    //     points[2][0] = isLeft
-                    //         ? params.labelRect.x
-                    //         : params.labelRect.x + params.labelRect.width;
-                    //     return {
-                    //         labelLinePoints: points,
-                    //     };
-                    // },
+                    }
                 },
             ],
         };
         setOpitons(options);
     };
+
+    useEffect(() => {
+        getOptions();
+    }, [data, dataType]);
 
     return (
         <div className="board" style={{background: token.color12}}>
@@ -95,17 +80,18 @@ const Board = () => {
                 <SearchInput
                     label="数据维度"
                     type="select"
-                    value={"2"}
+                    value={dataType}
                     options={[
                         {
                             name: "项目阶段图",
-                            code: "1",
+                            code: "phase2Count",
                         },
                         {
                             name: "项目类型图",
-                            code: "2",
+                            code: "type2Count",
                         },
                     ]}
+                    onChange={setDataType}
                 />
             </div>
             <ReactECharts

@@ -1,114 +1,137 @@
-import { theme, Space } from "antd";
+import { theme, Space, DatePicker } from "antd";
 import { SearchInput } from "@/components";
 import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts";
 import "./index.less";
+import { useState } from "react";
+import { useEffect } from "react";
+import {
+    workbenchListOperatorCompleteWorkOrderCount as workbenchListOperatorCompleteWorkOrderCountServe
+} from "@/services";
+import dayjs from "dayjs";
 
-const PersonnelTasks = () => {
+const PersonnelTasks = ({
+    data
+}) => {
     const { token } = theme.useToken();
-    const options = {
-        color: ['#D79114', '#01B0EE',],
-        tooltip: {
-            trigger: "axis",
-            axisPointer: {
-                type: "shadow",
-            },
-        },
-        legend: {
-            textStyle: {
-                color: token.color1,
-            },
-        },
-        grid: {
-            left: "3%",
-            right: "4%",
-            bottom: "3%",
-            containLabel: true,
-        },
-        xAxis: [
-            {
-                type: "category",
-                data: [
-                    "张**",
-                    "王**",
-                    "艾**",
-                    "李**",
-                    "林**",
-                    "麦**",
-                    "任**",
-                    "王**",
-                    "王**",
-                    "田**",
-                    "刘**",
-                    "吴**",
-                    "王**",
-                    "杨**",
-                    "刘**",
-                    "董**",
-                    "王**",
-                    "宋**",
-                    "何**",
-                    "孙**",
-                ],
-            },
-        ],
-        yAxis: [
-            {
-                type: "value",
-                splitLine: {
-                    lineStyle: {
-                        color: [token.color9],
-                    },
+    const [options, setOptions] = useState({});
+    const [dataSource, setDataSource] = useState([]);
+    const [region, setRegion] = useState();
+    const [dateType, setDateType] = useState('YEAR');
+    const [date, setDate] = useState(dayjs().format("YYYY"));
+
+    const getOptions = () => {
+        setOptions({
+            color: ['#D79114', '#01B0EE'],
+            tooltip: {
+                trigger: "axis",
+                axisPointer: {
+                    type: "shadow",
                 },
             },
-        ],
-        series: [
-            {
-                name: "实施工单",
-                type: "bar",
-                barWidth: 40,
-                stack: "Ad",
-                data: [8, 5, 7, 5, 5, 6, 2, 6, 5, 7, 2, 6, 8, 3, 5, 5, 1, 2, 3, 2],
-                itemStyle: {
-                    normal: {
-                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                            {
-                                offset: 0,
-                                color: "#0DB2FF",
-                            },
-                            {
-                                offset: 1,
-                                color: "#00D5CF",
-                            },
-                        ]),
-                    },
+            legend: {
+                textStyle: {
+                    color: token.color1,
                 },
             },
-            {
-                name: "运维工单",
-                type: "bar",
-                barWidth: 40,
-                stack: "Ad",
-                data: [
-                    67, 65, 60, 60, 59, 56, 58, 54, 50, 46, 48, 43, 40, 42, 40, 40, 38, 36, 33, 32,
-                ],
-                itemStyle: {
-                    normal: {
-                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                            {
-                                offset: 0,
-                                color: "#47CCFF",
-                            },
-                            {
-                                offset: 1,
-                                color: "#00FFF8",
-                            },
-                        ]),
+            grid: {
+                top: 50,
+                left: "3%",
+                right: "4%",
+                bottom: "3%",
+                containLabel: true,
+            },
+            xAxis: [
+                {
+                    type: "category",
+                    data: dataSource?.map(item => item?.operatorName),
+                },
+            ],
+            yAxis: [
+                {
+                    type: "value",
+                    splitLine: {
+                        lineStyle: {
+                            color: [token.color9],
+                        },
                     },
                 },
-            },
-        ],
-    };
+            ],
+            series: [
+                {
+                    name: "实施工单",
+                    type: "bar",
+                    barWidth: 40,
+                    stack: "Ad",
+                    data: dataSource?.map(item => item?.implementWorkOrderCount),
+                    itemStyle: {
+                        normal: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                {
+                                    offset: 0,
+                                    color: "#0DB2FF",
+                                },
+                                {
+                                    offset: 1,
+                                    color: "#00D5CF",
+                                },
+                            ]),
+                        },
+                    },
+                },
+                {
+                    name: "运维工单",
+                    type: "bar",
+                    barWidth: 40,
+                    stack: "Ad",
+                    data: dataSource?.map(item => item?.operationWorkOrderCount),
+                    itemStyle: {
+                        normal: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                {
+                                    offset: 0,
+                                    color: "#47CCFF",
+                                },
+                                {
+                                    offset: 1,
+                                    color: "#00FFF8",
+                                },
+                            ]),
+                        },
+                    },
+                },
+            ],
+        })
+    }
+
+    const getDataSource = async () => {
+        let params = {};
+        if(dateType==="YEAR"){
+            params={
+                regions: region,
+                year: dayjs(date).format("YYYY")
+            }
+        }
+        if(dateType==="MONTH"){
+            params={
+                regions: region,
+                year: dayjs(date).format("YYYY"),
+                month: dayjs(date).format("MM")
+            }
+        }
+        const res = await workbenchListOperatorCompleteWorkOrderCountServe(params);
+        if(res?.data?.status==="SUCCESS"){
+            setDataSource(res?.data?.data);
+        }
+    }
+
+    useEffect(()=>{
+        getOptions();
+    }, [JSON.stringify(dataSource)])
+
+    useEffect(() => {
+        getDataSource();
+    }, [region, dateType, date])
 
     return (
         <div className="personnel-tasks" style={{background: token.color12}}>
@@ -116,35 +139,46 @@ const PersonnelTasks = () => {
                 <span>人员任务统计</span>
                 <Space>
                     <SearchInput
-                        label="数据维度"
+                        label="区域"
                         type="select"
-                        value={"1"}
-                        options={[
-                            {
-                                name: "全部",
-                                code: "1",
-                            },
-                        ]}
-                    />{" "}
+                        value={region}
+                        options={data?.regions}
+                        onChange={setRegion}
+                        mode="multiple"
+                        style={{width: 300}}
+                    />
                     <SearchInput
                         label="时间维度"
                         type="select"
-                        value={"1"}
+                        value={dateType}
+                        onChange={(value)=>{
+                            if (value === "YEAR") {
+                                setDate(dayjs(date).format("YYYY"))
+                            } else if (value === "MONTH") {
+                                setDate(`${dayjs(date).format("YYYY")}-${dayjs().format("MM")}`);
+                            }
+                            setDateType(value);
+                        }}
                         options={[
                             {
                                 name: "年",
-                                code: "1",
+                                code: "YEAR",
                             },
                             {
                                 name: "月",
-                                code: "2",
+                                code: "MONTH",
                             },
                         ]}
+                    />
+                    <DatePicker 
+                        value={dayjs(date)}
+                        picker={dateType.toLocaleLowerCase()}
+                        onChange={setDate}
                     />
                 </Space>
             </div>
             <div className="content">
-                <ReactECharts option={options} style={{ width: "100%", height: "100%" }} />
+                <ReactECharts notMerge={true} option={options} style={{ width: "100%", height: "100%" }} />
             </div>
         </div>
     );

@@ -6,7 +6,7 @@ const SearchInput = ({
     label = undefined,
     value = undefined,
     placeholder = undefined,
-    inputWidth,
+    inputWidth = 200,
     type = "input",
     options = [],
     mode,

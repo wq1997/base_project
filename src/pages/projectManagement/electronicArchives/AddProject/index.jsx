@@ -25,6 +25,7 @@ import {
     basProjectPart2SaveOrUpdate as basProjectPart2SaveOrUpdateServe,
     basProjectPart3SaveOrUpdate as basProjectPart3SaveOrUpdateServe,
     basProjectPart4SaveOrUpdate as basProjectPart4SaveOrUpdateServe,
+    basProjectPart4Submit as basProjectPart4SubmitServe,
 } from "@/services";
 import { getBaseUrl } from "@/services/request";
 import { jsonToUrlParams } from "@/utils/utils";
@@ -80,6 +81,8 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                 fireManufacturerPhone: detailRow?.suppliers?.find(item => item.supplyType === "消防")?.["contractNumber"],
                 emsManufacturer: detailRow?.suppliers?.find(item => item.supplyType === "EMS")?.["supplierId"],
                 emsManufacturerPhone: detailRow?.suppliers?.find(item => item.supplyType === "EMS")?.["contractNumber"],
+                combinerCabinetManufacturer: detailRow?.suppliers?.find(item => item.supplyType === "汇流柜")?.["supplierId"],
+                combinerCabinetManufacturerPhone: detailRow?.suppliers?.find(item => item.supplyType === "汇流柜")?.["contractNumber"],
                 implementationPlanTime: detailRow?.implementPlanStartDate && detailRow?.implementPlanEndDate ? [dayjs(detailRow?.implementPlanStartDate), dayjs(detailRow?.implementPlanEndDate)] : undefined,
                 firstInspectionDate: detailRow?.firstInspectionDate ? dayjs(detailRow?.firstInspectionDate) : undefined,
                 inspectionGroups: detailRow?.inspectionGroups?.map(item => {
@@ -120,7 +123,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                 'BMSManufacturer', 'BMSManufacturerPhone', 'PCSManufacturer', 'PCSManufacturerPhone', 'transformerManufacturer', 'transformerManufacturerPhone',
                 'liquidCoolingManufacturer', 'liquidCoolingManufacturerPhone', 'airManufacturer', 'airManufacturerPhone', 'PACKManufacturer', 'PACKManufacturerPhone',
                 'cellManufacturer', 'cellManufacturerPhone', 'batteryManufacturer', 'batteryManufacturerPhone', 'fireManufacturer', 'fireManufacturerPhone',
-                'emsManufacturer', 'emsManufacturerPhone'
+                'emsManufacturer', 'emsManufacturerPhone', 'combinerCabinetManufacturer', 'combinerCabinetManufacturerPhone'
             ]);
             const {
                 ownerName, address, plantName, plantContacts, plantContractNumber, epcName, ourScopeOfSupply, warrantyPeriodDate, esuGroupDesc,
@@ -129,7 +132,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                 BMSManufacturer, BMSManufacturerPhone, PCSManufacturer, PCSManufacturerPhone, transformerManufacturer, transformerManufacturerPhone,
                 liquidCoolingManufacturer, liquidCoolingManufacturerPhone, airManufacturer, airManufacturerPhone, PACKManufacturer, PACKManufacturerPhone,
                 cellManufacturer, cellManufacturerPhone, batteryManufacturer, batteryManufacturerPhone, fireManufacturer, fireManufacturerPhone,
-                emsManufacturer, emsManufacturerPhone
+                emsManufacturer, emsManufacturerPhone, combinerCabinetManufacturer, combinerCabinetManufacturerPhone
             } = values;
             res = await basProjectPart2SaveOrUpdateServe({
                 id: detailRow?.id || addId,
@@ -177,6 +180,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                     { supplyType: "电池仓箱体", supplierId: batteryManufacturer, contractNumber: batteryManufacturerPhone },
                     { supplyType: "消防", supplierId: fireManufacturer, contractNumber: fireManufacturerPhone },
                     { supplyType: "EMS", supplierId: emsManufacturer, contractNumber: emsManufacturerPhone },
+                    { supplyType: "汇流柜", supplierId: combinerCabinetManufacturer, contractNumber: combinerCabinetManufacturerPhone },
                 ]
             });
             if (res?.data?.status === "SUCCESS") {
@@ -199,7 +203,19 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
         if (currentStep === 3) {
             values = await form.validateFields(['operationsManagerAccount', 'firstInspectionDate', 'inspectionCycle', 'inspectionGroups']);
             const { operationsManagerAccount, firstInspectionDate, inspectionCycle, inspectionGroups } = values;
-            res = await basProjectPart4SaveOrUpdateServe({
+            await basProjectPart4SaveOrUpdateServe({
+                id: detailRow?.id || addId,
+                operationsManagerAccount,
+                firstInspectionDate: dayjs(firstInspectionDate).format("YYYY-MM-DD"),
+                inspectionCycle,
+                inspectionGroups: inspectionGroups?.map(item => {
+                    return {
+                        name: item?.nameLabel,
+                        inspectionItemIds: item?.inspectionTeamGroup?.map(subItem => subItem?.inspectionItemIds)
+                    }
+                })
+            })
+            res = await basProjectPart4SubmitServe({
                 id: detailRow?.id || addId,
                 operationsManagerAccount,
                 firstInspectionDate: dayjs(firstInspectionDate).format("YYYY-MM-DD"),
@@ -216,8 +232,9 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
             }
         }
         if (flag) {
-            if (type !== "nexStep") message.success("保存成功");
+            if (type === "save") message.success("保存成功");
             if (type === "nexStep") setCurrentStep(currentStep + 1);
+            if (type === "submit") onClose();
         }
     }
 
@@ -733,7 +750,15 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                     },
                                                 ]}
                                             >
-                                                <Input placeholder="请输入电芯材料" />
+                                                <Select
+                                                    options={initOption?.cellMaterials?.map(item => {
+                                                        return {
+                                                            label: item?.name,
+                                                            value: item?.code
+                                                        }
+                                                    })}
+                                                    placeholder="请输入电芯材料"
+                                                />
                                             </Form.Item>
                                         </Col>
                                     </Row>
@@ -1275,6 +1300,44 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                             </Form.Item>
                                         </Col>
                                     </Row>
+                                    <Row span={24}>
+                                        <Col span={12}>
+                                            <Form.Item
+                                                label="汇流柜厂商"
+                                                name="combinerCabinetManufacturer"
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message: "请输入汇流柜厂商",
+                                                    },
+                                                ]}
+                                            >
+                                                <Select
+                                                    placeholder="请输入汇流柜厂商"
+                                                    options={initOption?.supplierType2Suppliers?.["汇流柜"]?.map(item => {
+                                                        return {
+                                                            value: item?.id,
+                                                            label: item?.name
+                                                        }
+                                                    })}
+                                                />
+                                            </Form.Item>
+                                        </Col>
+                                        <Col span={12}>
+                                            <Form.Item
+                                                label="联系方式"
+                                                name="combinerCabinetManufacturerPhone"
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message: "请输入联系方式",
+                                                    },
+                                                ]}
+                                            >
+                                                <Input placeholder="请输入联系方式" />
+                                            </Form.Item>
+                                        </Col>
+                                    </Row>
                                 </>
                             </Panel>
                         </Collapse>
@@ -1333,13 +1396,13 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                         detailRow?.shippingMaterial &&
                                         <div className={styles.cardItem}>
                                             <div className={styles.cardItemRow1}>
-                                                <div className={styles.cardItemRow1Time}>调试阶段({detailRow?.shippingMaterial?.operationTime})</div>
+                                                <div className={styles.cardItemRow1Time}>发货阶段({detailRow?.shippingMaterial?.operationTime})</div>
                                                 <div>实际操作人({detailRow?.shippingMaterial?.operatorName})</div>
                                             </div>
                                             <div className={styles.cardItemRow2}>
                                                 <div className={styles.cardItemRow2Label}>签收货单</div>
                                                 {
-                                                    detailRow?.shippingMaterial?.customerAcceptanceForm?.id &&
+                                                    detailRow?.shippingMaterial?.goodsReceivedNote?.id &&
                                                     <div className={styles.cardItemRow2Content}>
                                                         <FileMarkdownFilled
                                                             style={{
@@ -1349,15 +1412,15 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                             }}
                                                             onClick={() => {
                                                                 window.open(
-                                                                    `${getBaseUrl()}/attachment/download/${detailRow?.shippingMaterial?.customerAcceptanceForm?.id}` + jsonToUrlParams({
-                                                                        id: detailRow?.shippingMaterial?.customerAcceptanceForm?.id,
+                                                                    `${getBaseUrl()}/attachment/download/${detailRow?.shippingMaterial?.goodsReceivedNote?.id}` + jsonToUrlParams({
+                                                                        id: detailRow?.shippingMaterial?.goodsReceivedNote?.id,
                                                                         access_token: localStorage.getItem("Token")
                                                                     }),
                                                                     "_blank"
                                                                 );
                                                             }}
                                                         />
-                                                        <div>{detailRow?.shippingMaterial?.customerAcceptanceForm?.fileName}</div>
+                                                        <div>{detailRow?.shippingMaterial?.goodsReceivedNote?.fileName}</div>
                                                     </div>
                                                 }
                                             </div>
@@ -1377,7 +1440,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                             <div className={styles.cardItemRow2}>
                                                 <div className={styles.cardItemRow2Label}>验收报告</div>
                                                 {
-                                                    detailRow?.testingMaterial?.customerAcceptanceForm?.id &&
+                                                    detailRow?.testingMaterial?.acceptanceReport?.id &&
                                                     <div className={styles.cardItemRow2Content}>
                                                         <FileMarkdownFilled
                                                             style={{
@@ -1387,15 +1450,15 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                             }}
                                                             onClick={() => {
                                                                 window.open(
-                                                                    `${getBaseUrl()}/attachment/download/${detailRow?.testingMaterial?.customerAcceptanceForm?.id}` + jsonToUrlParams({
-                                                                        id: detailRow?.testingMaterial?.customerAcceptanceForm?.id,
+                                                                    `${getBaseUrl()}/attachment/download/${detailRow?.testingMaterial?.acceptanceReport?.id}` + jsonToUrlParams({
+                                                                        id: detailRow?.testingMaterial?.acceptanceReport?.id,
                                                                         access_token: localStorage.getItem("Token")
                                                                     }),
                                                                     "_blank"
                                                                 );
                                                             }}
                                                         />
-                                                        <div>{detailRow?.testingMaterial?.customerAcceptanceForm?.fileName}</div>
+                                                        <div>{detailRow?.testingMaterial?.acceptanceReport?.fileName}</div>
                                                     </div>
                                                 }
                                             </div>
@@ -1531,10 +1594,35 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                 </Form.Item>
                             </Col>
                         </Row>
-                        <Row>
+                        <Row style={{ marginLeft: 58, marginTop: 10 }}>
                             <Col span={20}>
                                 <Form.Item
-                                    label="巡检组管理"
+                                    label={
+                                        <div style={{ marginBottom: 20 }}>
+                                            <span>巡检组管理</span>
+                                            {
+                                                detailRow?.status === "ACTIVE" &&
+                                                <Button
+                                                    type="primary"
+                                                    style={{ marginLeft: 50 }}
+                                                    onClick={() => {
+                                                        const id = detailRow?.id || addId;
+                                                        if (id) {
+                                                            window.open(
+                                                                `${getBaseUrl()}/bas-project/download-inspection-code` + jsonToUrlParams({
+                                                                    id,
+                                                                    access_token: localStorage.getItem("Token")
+                                                                }),
+                                                                "_blank"
+                                                            );
+                                                        }
+                                                    }}
+                                                >
+                                                    批量下载巡检码
+                                                </Button>
+                                            }
+                                        </div>
+                                    }
                                     rules={[
                                         {
                                             required: true,
@@ -1574,8 +1662,16 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                                                 marginBottom: 10,
                                                                             }}
                                                                         >
-                                                                            <Form.Item name={[oueterName, 'nameLabel']} style={{ marginBottom: 0 }}>
-                                                                                <Input defaultValue={`巡检组${oueterName + 1}`} />
+                                                                            <Form.Item
+                                                                                name={[oueterName, 'nameLabel']}
+                                                                                style={{ marginBottom: 0 }}
+                                                                                rules={[
+                                                                                    {
+                                                                                        required: true,
+                                                                                        message: "请输入巡检组名",
+                                                                                    },
+                                                                                ]}>
+                                                                                <Input placeholder={`请输入巡检组名`} />
                                                                             </Form.Item>
                                                                             <Button
                                                                                 onClick={() =>
@@ -1704,7 +1800,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                     <Space>
                         <Button
                             htmlType="submit"
-                            onClick={save}
+                            onClick={() => { save('save') }}
                         >
                             保存
                         </Button>
@@ -1724,13 +1820,17 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                 下一步
                             </Button>
                         )}
+                        {
+                            currentStep === 3 && (
+                                <Button
+                                    type="primary"
+                                    onClick={() => save("submit")}
+                                >
+                                    提交
+                                </Button>
+                            )
+                        }
                     </Space>
-                    {/* <Space>
-                        <Button onClick={() => onClose(true)}>取消</Button>
-                        <Button type="primary" htmlType="submit">
-                            确定
-                        </Button>
-                    </Space> */}
                 </Form.Item>
             </Form>
         </Modal>
