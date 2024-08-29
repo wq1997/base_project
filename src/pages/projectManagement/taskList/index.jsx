@@ -22,7 +22,7 @@ import {
     ExclamationCircleOutlined,
     PlusCircleFilled,
 } from "@ant-design/icons";
-import { history, useLocation } from "umi";
+import { history, useLocation, useSelector } from "umi";
 import { SearchInput } from "@/components";
 import AddProject from "./AddProject";
 import Detail from "./Detail";
@@ -50,6 +50,9 @@ const Account = () => {
     const [addProjectOpen, setAddProjectOpen] = useState(false);
     const [detailId, setDetailId] = useState();
     const [processId, setProcessId] = useState();
+
+    const workOrderCodeRef = useRef();
+    const [workOrderCode, setWorkOrderCode] = useState();
 
     const publishedTimeRef = useRef();
     const [publishedTime, setPublishedTime] = useState();
@@ -88,8 +91,12 @@ const Account = () => {
 
     const columns = [
         {
-            title: "工单发布时间",
-            dataIndex: "publishedTime",
+            title: "工单编号",
+            dataIndex: "code",
+        },
+        {
+            title: "工单名称",
+            dataIndex: "title",
         },
         {
             title: "处理状态",
@@ -103,12 +110,12 @@ const Account = () => {
             },
         },
         {
-            title: "工单名称",
-            dataIndex: "title",
-        },
-        {
             title: "工单类型",
             dataIndex: "typeZh",
+        },
+        {
+            title: "发布时间",
+            dataIndex: "publishedTime",
         },
         {
             title: "计划开始时间",
@@ -119,7 +126,7 @@ const Account = () => {
             dataIndex: "planEndDate",
         },
         {
-            title: "关联项目名称",
+            title: "关联项目",
             dataIndex: "project",
             render: (_, { project }) => {
                 return project?.name;
@@ -200,6 +207,7 @@ const Account = () => {
         const { current, pageSize } = paginationRef.current;
         const [publishedTimeFrom, publishedTimeTo] = publishedTimeRef.current || [];
         const statusIn = dealStatusRef.current ? [dealStatusRef.current] : null;
+        const code = workOrderCodeRef.current;
         const title = workOrderNameRef.current;
         const type = workOrderTypeRef.current || [];
         const planDateFrom = planStartDateRef.current;
@@ -212,6 +220,7 @@ const Account = () => {
             pageNum: current,
             pageSize,
             queryCmd: {
+                code,
                 publishedTimeFrom,
                 publishedTimeTo,
                 statusIn,
@@ -237,6 +246,8 @@ const Account = () => {
 
     const handleReset = () => {
         paginationRef.current = DEFAULT_PAGINATION;
+        workOrderCodeRef.current = undefined;
+        setWorkOrderCode();
         publishedTimeRef.current = [];
         setPublishedTime([]);
         dealStatusRef.current = undefined;
@@ -258,54 +269,6 @@ const Account = () => {
         currentProcessorRef.current = undefined;
         setCurrentProcessor();
         getList();
-    };
-
-    const handleInvalid = () => {
-        if (selectedRowKeys?.length == 0) {
-            return message.info("请先勾选需要作废的数据");
-        }
-        Modal.confirm({
-            title: "批量作废",
-            icon: <ExclamationCircleOutlined />,
-            width: 500,
-            content: (
-                <div>
-                    <div style={{ marginBottom: "10px" }}>
-                        作废邀约，关联任务将被同步作废，不再统计进入流水，请输入作废原因
-                    </div>
-                    <Input.TextArea
-                        rows={4}
-                        placeholder="请输入作废原因，最多50字"
-                        maxLength={50}
-                        onChange={e => (invalidReason = e.target.value)}
-                    />
-                </div>
-            ),
-            okText: "确认",
-            cancelText: "取消",
-            onOk: async () => {
-                if (!invalidReason) {
-                    message.info("请输入作废原因");
-                    return Promise.reject();
-                }
-                const res = await invalidInviteServer({
-                    ids: selectedRowKeys,
-                    reason: invalidReason,
-                });
-                if (res?.data?.status == "SUCCESS") {
-                    message.success("作废成功");
-                    setPagination({
-                        current: 1,
-                    });
-                    setSelectedRowKeys([]);
-                    getList();
-                    invalidReason = undefined;
-                }
-            },
-            onCancel: () => {
-                invalidReason = undefined;
-            },
-        });
     };
 
     const handleDelete = () => {
@@ -354,6 +317,14 @@ const Account = () => {
                 }}
             />
             <Space className="search">
+                <SearchInput
+                    label="工单编号"
+                    value={workOrderCode}
+                    onChange={value => {
+                        workOrderCodeRef.current = value;
+                        setWorkOrderCode(value);
+                    }}
+                />
                 <div>
                     <span style={{ color: "#FFF" }}>工单发布时间：</span>
                     <DatePicker.RangePicker

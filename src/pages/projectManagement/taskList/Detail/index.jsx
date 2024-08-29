@@ -44,23 +44,25 @@ const Detail = ({ detailId, processId, onClose }) => {
             className={styles.detail}
         >
             <Descriptions title="基础信息">
+                <Descriptions.Item label="工单编号">{info?.code}</Descriptions.Item>
                 <Descriptions.Item label="工单名称">{info?.title}</Descriptions.Item>
-                <Descriptions.Item label="关联项目名称">{info?.project?.name}</Descriptions.Item>
-                <Descriptions.Item label="工单状态">
+                <Descriptions.Item label="处理状态">
                     <span style={{ color: info?.statusZh == "已完成" ? "#1BE72B" : "" }}>
                         {info?.statusZh}
                     </span>
                 </Descriptions.Item>
                 <Descriptions.Item label="工单类型">{info?.typeZh}</Descriptions.Item>
+                <Descriptions.Item label="发布时间">{info?.publishedTime}</Descriptions.Item>
+                <Descriptions.Item label="关联项目">{info?.project?.name}</Descriptions.Item>
                 <Descriptions.Item label="计划开始时间">{info?.planStartDate}</Descriptions.Item>
                 <Descriptions.Item label="计划结束时间">{info?.planEndDate}</Descriptions.Item>
+                <Descriptions.Item label="发起人">{info?.initiatorName}</Descriptions.Item>
                 <Descriptions.Item label="当前处理人">
                     {info?.statusZh == "已完成" ? "" : info?.currentProcessorName}
                 </Descriptions.Item>
                 <Descriptions.Item label="实际处理人">
                     {info?.statusZh == "已完成" ? info?.currentProcessorName : ""}
                 </Descriptions.Item>
-                <Descriptions.Item label="发起人">{info?.initiatorName}</Descriptions.Item>
             </Descriptions>
             <Descriptions title="业务信息"></Descriptions>
             <div style={{ color: "#fff" }}>
