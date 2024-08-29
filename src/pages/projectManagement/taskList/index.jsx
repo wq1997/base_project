@@ -51,8 +51,8 @@ const Account = () => {
     const [detailId, setDetailId] = useState();
     const [processId, setProcessId] = useState();
 
-    const workOrderCodeRef = useRef();
-    const [workOrderCode, setWorkOrderCode] = useState();
+    const workOrderCodeRef = useRef(initCode);
+    const [workOrderCode, setWorkOrderCode] = useState(initCode);
 
     const publishedTimeRef = useRef();
     const [publishedTime, setPublishedTime] = useState();
@@ -245,6 +245,7 @@ const Account = () => {
     };
 
     const handleReset = () => {
+        history.push("/project-management/task-list");
         paginationRef.current = DEFAULT_PAGINATION;
         workOrderCodeRef.current = undefined;
         setWorkOrderCode();
