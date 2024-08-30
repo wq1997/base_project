@@ -65,7 +65,7 @@ const Detail = ({ detailId, processId, onClose }) => {
                 </Descriptions.Item>
             </Descriptions>
             <Descriptions title="业务信息"></Descriptions>
-            <div style={{ color: "#fff", paddingLeft: 20 }}>
+            <div style={{ color: "#fff"}}>
                 {/* 标准工单 */}
                 {["CYCLE_INSPECTION", "MANUAL_INSPECTION"].includes(info?.type) && (
                     <StandardOrder info={info} />
