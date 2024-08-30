@@ -63,6 +63,10 @@ const MenuList = [
                 key: '/project-management/abnormal',
                 label: '异常复盘'
             },
+            {
+                key: '/project-management/alarmStatistics',
+                label: '告警管理'
+            },
             // {
             //     key: '/project-management/resourcesInventory',
             //     label: '人力资源复盘'

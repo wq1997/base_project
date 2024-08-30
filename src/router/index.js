@@ -37,6 +37,10 @@ export default Routes = [
                         component: '@/pages/projectManagement/abnormal'
                     },
                     {
+                        path: '/project-management/alarmStatistics',
+                        component: '@/pages/projectManagement/alarmStatistics',
+                    },
+                    {
                         path: '/project-management/resourcesInventory',
                         component: '@/pages/projectManagement/resourcesInventory'
                     },
