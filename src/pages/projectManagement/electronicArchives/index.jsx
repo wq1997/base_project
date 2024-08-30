@@ -329,6 +329,11 @@ const Account = () => {
             width: 200
         },
         {
+            title: "状态",
+            dataIndex: "statusZh",
+            width: 200
+        },
+        {
             title: "操作",
             dataIndex: "operate",
             fixed: 'right',

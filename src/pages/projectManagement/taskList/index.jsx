@@ -178,6 +178,7 @@ const Account = () => {
                             type="link"
                             disabled={Boolean(!supportProcessing)}
                             onClick={() => setProcessId(id)}
+                            style={{color: Boolean(!supportProcessing)?'grey': 'red'}}
                         >
                             去处理
                         </Button>

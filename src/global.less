@@ -10,9 +10,7 @@ body {
 }
 
 .ant-menu-light.ant-menu-inline .ant-menu-sub.ant-menu-inline,
-:where(.css-dev-only-do-not-override-1sn0ohr).ant-menu-light
-    > .ant-menu.ant-menu-inline
-    .ant-menu-sub.ant-menu-inline {
+:where(.css-dev-only-do-not-override-1sn0ohr).ant-menu-light>.ant-menu.ant-menu-inline .ant-menu-sub.ant-menu-inline {
     background-color: unset;
 }
 
@@ -52,8 +50,10 @@ body {
 .ant-picker {
     background: transparent !important;
 }
+
 .ant-input-outlined {
     background: none;
+
     &:focus-within,
     &:hover {
         background: none;
@@ -76,7 +76,7 @@ body {
     background: none !important;
 }
 
-.ant-table-wrapper .ant-table-tbody > tr.ant-table-placeholder {
+.ant-table-wrapper .ant-table-tbody>tr.ant-table-placeholder {
     background: none !important;
 }
 
@@ -113,6 +113,7 @@ body {
 .amap-logo {
     display: none !important; //去掉高德地图logo
 }
+
 .amap-copyright {
     opacity: 0; //去掉高德的版本号
 }
@@ -134,7 +135,7 @@ body {
     background-color: unset;
 }
 
-.ant-table-wrapper .ant-table-thead > tr > th {
+.ant-table-wrapper .ant-table-thead>tr>th {
     background-color: #064253;
 }
 
@@ -146,16 +147,28 @@ body {
     background-color: transparent !important;
 }
 
-.ant-form-item .ant-form-item-label >label{
+.ant-form-item .ant-form-item-label>label {
     height: unset;
     white-space: pre-wrap;
 }
 
-.ant-form-item-row{
+.ant-form-item-row {
     align-items: center;
 }
 
 .ant-input-affix-wrapper {
     background-color: transparent;
     border-color: #235775;
+}
+
+.ant-descriptions .ant-descriptions-view {
+    padding-left: 20px;
+}
+
+.ant-descriptions .ant-descriptions-title {
+    font-size: 20px;
+}
+
+.ant-descriptions .ant-descriptions-item-label {
+    color: white;
 }

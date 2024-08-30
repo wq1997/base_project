@@ -1395,7 +1395,8 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                         </Form.Item>
                         {
                             (detailRow?.shippingMaterial || detailRow?.testingMaterial || detailRow?.trialRunMaterial) &&
-                            <Form.Item label="实施过程档案">
+                            <div className={styles.steps3}>
+                                <Form.Item label="实施过程档案">
                                 <Space direction="vertical">
                                     {
                                         detailRow?.shippingMaterial &&
@@ -1514,6 +1515,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
 
                                 </Space>
                             </Form.Item>
+                            </div>
                         }
                     </>
                 )}

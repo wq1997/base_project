@@ -292,7 +292,7 @@ const Index = ({ isDetail, isProcess, info, onClose }) => {
                             </Form.Item>
                         </Col>
                     </Row>
-                    <span style={{ color: "rgba(255, 255, 255, 0.45)" }}>消缺成本</span>
+                    <span style={{ color: "rgba(255, 255, 255)" }}>消缺成本</span>
                     <Row span={24}>
                         <Col span={12}>
                             <Form.Item
@@ -369,7 +369,7 @@ const Index = ({ isDetail, isProcess, info, onClose }) => {
                             </Form.Item>
                         </Col>
                     </Row>
-                    <span style={{ color: "rgba(255, 255, 255, 0.45)" }}>消缺收益</span>
+                    <span style={{ color: "rgba(255, 255, 255)" }}>消缺收益</span>
                     <Row span={24}>
                         <Col span={12}>
                             <Form.Item
