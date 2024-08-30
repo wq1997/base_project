@@ -121,7 +121,7 @@ const Add = ({
                                         filterOption={(input, option) =>
                                             (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
                                         placeholder="时"
-                                        options={fillInt(24, true).map((item => {
+                                        options={fillInt(23, true).map((item => {
                                             return {
                                                 label: item,
                                                 value: item
@@ -160,7 +160,7 @@ const Add = ({
                                         { label: '放电', value: 2 },
                                         { label: '待机(零功率)', value: 3 },
                                         { label: '关机', value: 4 },
-                                        { label: '自发自用', value: 5 },
+                                         { label: '自发自用', value: 5 },
 
                                     ]}
                                     placeholder="请选择"
