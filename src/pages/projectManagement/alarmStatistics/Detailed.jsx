@@ -37,7 +37,6 @@ const Detailed = () => {
         const { current, pageSize } = paginationRef.current;
         const planDate = planDateRef.current;
         const titleLike = nameRef.current;
-        const projectId = projectNameRef.current;
         const res = await workOrderFindExceptionStatisticsPageServe({
             pageNum: current,
             pageSize,
@@ -45,7 +44,6 @@ const Detailed = () => {
                 publishedTimeFrom: planDate && planDate?.length >= 2 && dayjs(planDate?.[0]).format("YYYY-MM-DD"),
                 publishedTimeTo: planDate && planDate?.length >= 2 && dayjs(planDate?.[1]).format("YYYY-MM-DD"),
                 titleLike,
-                projectId,
             },
         });
         if (res?.data?.status == "SUCCESS") {
