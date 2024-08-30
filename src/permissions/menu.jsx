@@ -104,24 +104,17 @@ const MyMenu = () => {
     const Icon = useIcon();
     const [selectedKeys, setSelectedKeys] = useState("");
     const { theme } = useSelector(state => state.global);
+    const { user } = useSelector(state => state.user);
 
     const getMenu = menuList => {
         return menuList.map(menu => {
+            if (!(user?.selfPermCodes?.includes(menu.permissions) || !menu.permissions)) return null;
             if (menu.children) {
                 return (
                     <SubMenu
                         key={menu.key}
                         title={menu.label}
-                        icon={
-                            menu.icon
-                            // <Icon
-                            //     type={theme === 'dark' ? (menu.darkIcon||menu.icon) : menu.icon}
-                            //     style={{
-                            //         color: "black",
-                            //         fontSize: 20,
-                            //     }}
-                            // />
-                        }
+                        icon={menu.icon}
                     >
                         {getMenu(menu.children)}
                     </SubMenu>
@@ -130,15 +123,7 @@ const MyMenu = () => {
                 return (
                     <Menu.Item
                         key={menu.key}
-                        icon={
-                            menu.icon
-                            // <Icon
-                            //     type={theme === 'dark' ? (menu.darkIcon || menu.icon) : menu.icon}
-                            //     style={{
-                            //         fontSize: 20,
-                            //     }}
-                            // />
-                        }
+                        icon={menu.icon}
                     >
                         <Link to={menu.key} target={menu?.target}>
                             {menu.label}
