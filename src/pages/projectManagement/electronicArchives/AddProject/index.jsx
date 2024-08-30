@@ -34,7 +34,6 @@ import styles from "./index.less";
 const { Panel } = Collapse;
 
 const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
-    console.log(detailRow);
     const [form] = Form.useForm();
     const [currentStep, setCurrentStep] = useState(0);
     const [addId, setAddId] = useState();
@@ -43,7 +42,11 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
     const getInitOption = async () => {
         const res = await getBasProjectEditInitDataServe();
         if (res?.data?.status == "SUCCESS") {
-            setInitOption(res?.data?.data);
+            let data = res?.data?.data;
+            if(detailRow?.sePlants){
+                data.sePlans = data.sePlans?.concat(...detailRow?.sePlants);
+            }
+            setInitOption(data);
         }
     }
 
@@ -894,6 +897,8 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                             })
                                                         }
                                                     })}
+                                                    maxTagCount={1}
+                                                    maxLength={1}
                                                 />
                                             </Form.Item>
                                         </Col>
