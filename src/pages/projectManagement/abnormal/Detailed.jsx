@@ -317,7 +317,7 @@ const Detailed = () => {
                         <div className={styles.centerContent1Bottom}>
                             <div className={styles.centerContent1BottomItem}>
                                 <div style={{ color: 'white' }}>
-                                    计划处理时间总计
+                                    计划处理时间总计(天)
                                 </div>
                                 <div style={{ color: '#60C453', fontSize: 36 }}>
                                     {data?.totalProcessingDaysForPlan}
@@ -325,7 +325,7 @@ const Detailed = () => {
                             </div>
                             <div className={styles.centerContent1BottomItem}>
                                 <div style={{ color: 'white' }}>
-                                    实际处理时间总计
+                                    实际处理时间总计(天)
                                 </div>
                                 <div style={{ color: '#4592E3', fontSize: 36 }}>
                                     {data?.totalProcessingDaysForActual}
