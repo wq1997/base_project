@@ -22,6 +22,7 @@ const Company = ({ invitationSplitId, onClose }) => {
             title: "场站名称",
             dataIndex: "companyName",
             key: "companyName",
+            fixd: "left",
             render(value) {
                 return (
                     <Tooltip title={value}>
@@ -130,7 +131,7 @@ const Company = ({ invitationSplitId, onClose }) => {
                     return {
                         title: item.timeRange,
                         dataIndex: item.timeRange,
-                        width: 200,
+                        width: 150,
                         render(_, record, index) {
                             const currentTask = _taskList[index].baseLineFullInfo[itemIndex];
                             return (
@@ -258,6 +259,16 @@ const Company = ({ invitationSplitId, onClose }) => {
         }
     };
 
+    const planTotal = () => {
+        return eval(
+            taskList
+                ?.map(item => item?.baseLineFullInfo?.map(uu => uu.KWh))
+                .flat(Infinity)
+                ?.filter(item => item != null)
+                .join("+")
+        )?.toFixed(2);
+    };
+
     return (
         <>
             <AddTask
@@ -270,7 +281,7 @@ const Company = ({ invitationSplitId, onClose }) => {
             <BaseLine baseLineArgs={baseLineArgs} onClose={() => setBaseLineArgs(null)} />
             <Modal
                 title={<Title> {isReSplit ? "重新拆分" : "邀约拆分"}</Title>}
-                width={1000}
+                width={1100}
                 open={Boolean(invitationSplitId)}
                 onOk={handleOk}
                 onCancel={() => {
@@ -299,11 +310,21 @@ const Company = ({ invitationSplitId, onClose }) => {
                             </span>
                         </div>
                     </div>
+                    <div className="info">
+                        <div className="item">
+                            <span>约定开始时间：</span>
+                            <span>{inviteInfo?.startTime}</span>
+                        </div>
+                        <div className="item">
+                            <span>约定结束时间：</span>
+                            <span>{inviteInfo?.endTime}</span>
+                        </div>
+                    </div>
                     <div>
                         <div>全网需求总量 (负值表示削峰，正值表示填谷)</div>
                         <ReactECharts
                             option={options}
-                            style={{ width: "950px", height: "280px" }}
+                            style={{ width: "1100px", height: "280px" }}
                         />
                     </div>
                     <div className="title">任务拆解 (请输入各时段运行功率)</div>
@@ -317,14 +338,7 @@ const Company = ({ invitationSplitId, onClose }) => {
                         </Button>
                         <div>
                             计划申报量：
-                            {eval(
-                                taskList
-                                    ?.map(item => item?.baseLineFullInfo?.map(uu => uu.KWh))
-                                    .flat(Infinity)
-                                    ?.filter(item => item != null)
-                                    .join("+")
-                            )?.toFixed(2)}
-                            kWh
+                            {planTotal() != null ? planTotal() + "kWh" : ""}
                         </div>
                     </Space>
                     <Table
@@ -375,7 +389,7 @@ const Company = ({ invitationSplitId, onClose }) => {
                         ]}
                         pagination={false}
                         scroll={{
-                            x: 800,
+                            x: 1500,
                         }}
                     ></Table>
                     {contextHolder}
