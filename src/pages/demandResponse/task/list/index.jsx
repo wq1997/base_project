@@ -13,7 +13,7 @@ import dayjs from "dayjs";
 import "./index.less";
 
 const Account = () => {
-    recordPage('op:task_list');
+    recordPage("op:task_list");
     const location = useLocation();
     const { user } = useSelector(state => state.user);
     const endTimeRef = useRef();
@@ -45,6 +45,7 @@ const Account = () => {
             title: "状态",
             dataIndex: "statusZh",
             key: "statusZh",
+            render: (_, { actualCompletionRatio }) => "已执行",
             width: 150,
         },
         {
@@ -148,11 +149,7 @@ const Account = () => {
                     return value?.resultDetail
                         ?.filter(item => !item?._1)
                         ?.map((item, index) => {
-                            return (
-                                <div>
-                                    未满足“{item?._2}”
-                                </div>
-                            );
+                            return <div>未满足“{item?._2}”</div>;
                         });
                 }
             },
@@ -163,19 +160,28 @@ const Account = () => {
             fixed: "right",
             width: 150,
             render: (_, { id, status, supportConfirm }) => {
-                if (supportConfirm) {
-                    return (
-                        hasPerm(user, "op:task_confirm") && (
-                            <a
-                                onClick={() => {
-                                    history.push(`/vpp/demandResponse/task/confirm?taskId=${id}`);
-                                }}
-                            >
-                                任务查询
-                            </a>
-                        )
-                    );
-                }
+                return (
+                    <a
+                        onClick={() => {
+                            history.push(`/vpp/demandResponse/task/search?taskId=${id}`);
+                        }}
+                    >
+                        任务详情
+                    </a>
+                );
+                // if (supportConfirm) {
+                //     return (
+                //         hasPerm(user, "op:task_confirm") && (
+                //             <a
+                //                 onClick={() => {
+                //                     history.push(`/vpp/demandResponse/task/confirm?taskId=${id}`);
+                //                 }}
+                //             >
+                //                 任务查询
+                //             </a>
+                //         )
+                //     );
+                // }
                 // if (status == "EXECUTED_FAIL" || status == "EXECUTED_SUCCESS") {
                 //     return (
                 //         <a
@@ -288,7 +294,12 @@ const Account = () => {
                     label="任务状态"
                     value={status}
                     type="select"
-                    options={statusList}
+                    options={[
+                        { code: "WAIT_CONFIRM", name: "未执行" },
+                        { code: "CONFIRMED", name: "已执行" },
+                        { code: "WAIT_CONFIRM", name: "执行成功" },
+                        { code: "WAIT_CONFIRM", name: "执行失败" },
+                    ]}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         statusRef.current = value;

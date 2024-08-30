@@ -78,13 +78,14 @@ const Account = () => {
         {
             title: "邀约状态",
             dataIndex: "confirmStatusZh",
+            render: (_, { actualCompletionRatio }) => "已执行",
             width: 200,
         },
-        {
-            title: "邀约拆分状态",
-            dataIndex: "splitStatusZh",
-            width: 200,
-        },
+        // {
+        //     title: "邀约拆分状态",
+        //     dataIndex: "splitStatusZh",
+        //     width: 200,
+        // },
         {
             title: "邀约发布时间",
             dataIndex: "createdTime",
@@ -143,24 +144,24 @@ const Account = () => {
                 );
             },
         },
-        {
-            title: "操作",
-            dataIndex: "operate",
-            fixed: "right",
-            width: 200,
-            render: (_, { id, supportSplit, supportReSplit }) => {
-                return (
-                    <Space>
-                        {hasPerm(user, "op:invite_split") && (
-                            <a onClick={() => setInvitationSplitId(id)}>
-                                {supportSplit ? "邀约拆分" : supportReSplit ? "重新拆分" : ""}
-                            </a>
-                        )}
-                        <a onClick={() => setDetailId(id)}>详情</a>
-                    </Space>
-                );
-            },
-        },
+        // {
+        //     title: "操作",
+        //     dataIndex: "operate",
+        //     fixed: "right",
+        //     width: 200,
+        //     render: (_, { id, supportSplit, supportReSplit }) => {
+        //         return (
+        //             <Space>
+        //                 {hasPerm(user, "op:invite_split") && (
+        //                     <a onClick={() => setInvitationSplitId(id)}>
+        //                         {supportSplit ? "邀约拆分" : supportReSplit ? "重新拆分" : ""}
+        //                     </a>
+        //                 )}
+        //                 <a onClick={() => setDetailId(id)}>详情</a>
+        //             </Space>
+        //         );
+        //     },
+        // },
     ];
 
     const onSelectChange = (newSelectedRowKeys, newSelectedRows) => {
@@ -392,14 +393,20 @@ const Account = () => {
                     label="邀约状态"
                     value={confirmStatus}
                     type="select"
-                    options={confirmStatusList}
+                    options={[
+                        { code: "INVALID", name: "未拆分" },
+                        { code: "INVALID", name: "已拆分" },
+                        { code: "CONFIRMED", name: "已执行" },
+                        { code: "INVALID", name: "执行成功" },
+                        { code: "INVALID", name: "执行失败" },
+                    ]}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         confirmStatusRef.current = value;
                         setConfirmStatus(value);
                     }}
                 />
-                <SearchInput
+                {/* <SearchInput
                     label="邀约拆分状态"
                     type="select"
                     value={splitStatus}
@@ -409,7 +416,7 @@ const Account = () => {
                         splitStatusRef.current = value;
                         setSplitStatus(value);
                     }}
-                />
+                /> */}
                 <div>
                     <span>约定执行时间：</span>
                     <DatePicker.RangePicker
@@ -533,7 +540,7 @@ const Account = () => {
                                 </Button>
                             </Tooltip>
                         )}
-                        {hasPerm(user, "op:invite_invalid") && (
+                        {/* {hasPerm(user, "op:invite_invalid") && (
                             <Tooltip
                                 placement="bottom"
                                 title="只有邀约确认状态为【已确认】的数据可以作废"
@@ -552,7 +559,7 @@ const Account = () => {
                                     )}
                                 </Button>
                             </Tooltip>
-                        )}
+                        )} */}
                     </Space>
                 )}
             ></Table>

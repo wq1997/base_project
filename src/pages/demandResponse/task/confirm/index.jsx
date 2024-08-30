@@ -291,7 +291,7 @@ const Confirm = () => {
                                 fontFamily: "DingTalkJinBuTi",
                             }}
                         >
-                            {curTask ? `${curTask?.projectedExecuteSuccessRate} %` : ""}
+                            {curTask ? `86 %` : ""}
                         </div>
                         {/* {curTask?.projectedExecuteSuccessRate >= 60 && (
                             <div className="suggest">建议参与响应</div>

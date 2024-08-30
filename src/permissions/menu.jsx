@@ -37,7 +37,7 @@ const MyMenu = () => {
                 },
                 {
                     key: hasPerm(user, "op:profit_dashboard")
-                        ? "/vpp/demandResponse/task/search"
+                        ? "/vpp/demandResponse/task/list"
                         : hasPerm(user, "op:profit_invite")
                             ? "/vpp/demandResponse/income/invitation"
                             : "/vpp/demandResponse/income/task",
@@ -171,7 +171,7 @@ const MyMenu = () => {
 
     const getSelectKeys = () => {
         if (pathname.startsWith("/vpp/demandResponse/task")) {
-            setSelectedKeys("/vpp/demandResponse/task/search");
+            setSelectedKeys("/vpp/demandResponse/task/list");
         } else if (pathname.startsWith("/vpp/demandResponse/income")) {
             setSelectedKeys("/vpp/demandResponse/income/overview");
         } else if (pathname.startsWith("/vpp/demandResponse/invitation")) {

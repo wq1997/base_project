@@ -13,14 +13,14 @@ const Task = () => {
             key: "/vpp/demandResponse/task/list",
             label: "任务列表",
         },
-        // {
-        //     key: "/vpp/demandResponse/task/search",
-        //     label: "任务查询",
-        // },
-        hasPerm(user, "op:task_confirm") && {
-            key: "/vpp/demandResponse/task/confirm",
+        {
+            key: "/vpp/demandResponse/task/search",
             label: "任务详情",
         },
+        // hasPerm(user, "op:task_confirm") && {
+        //     key: "/vpp/demandResponse/task/confirm",
+        //     label: "任务确认",
+        // },
     ];
 
     const onChange = value => {
@@ -29,7 +29,12 @@ const Task = () => {
 
     return (
         <CardPage>
-            <Tabs activeKey={pathname} defaultActiveKey={pathname} items={items} onChange={onChange} />
+            <Tabs
+                activeKey={pathname}
+                defaultActiveKey={pathname}
+                items={items}
+                onChange={onChange}
+            />
             <Outlet />
         </CardPage>
     );

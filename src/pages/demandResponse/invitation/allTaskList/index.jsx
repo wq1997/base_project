@@ -14,7 +14,7 @@ import "./index.less";
 import dayjs from "dayjs";
 
 const Account = () => {
-    recordPage('op:invite_task');
+    recordPage("op:invite_task");
     const location = useLocation();
     const initInviteCode = location?.search.split("=")[1];
     const { user } = useSelector(state => state.user);
@@ -78,9 +78,10 @@ const Account = () => {
             },
         },
         {
-            title: "任务确认状态",
+            title: "任务状态",
             dataIndex: "statusZh",
             key: "statusZh",
+            render: (_, { actualCompletionRatio }) => "已执行",
             width: 150,
         },
         {
@@ -300,10 +301,7 @@ const Account = () => {
                             setEndTime(dateStr);
                         }}
                         value={
-                            endTime &&
-                                endTime.length > 0 &&
-                                endTime[0] &&
-                                endTime[1]
+                            endTime && endTime.length > 0 && endTime[0] && endTime[1]
                                 ? [dayjs(endTime[0]), dayjs(endTime[1])]
                                 : []
                         }
@@ -339,10 +337,15 @@ const Account = () => {
                     }}
                 />
                 <SearchInput
-                    label="任务确认状态"
+                    label="任务状态"
                     value={confirmStatus}
                     type="select"
-                    options={confirmStatusList}
+                    options={[
+                        { code: "WAIT_CONFIRM", name: "未执行" },
+                        { code: "CONFIRMED", name: "已执行" },
+                        { code: "WAIT_CONFIRM", name: "执行成功" },
+                        { code: "WAIT_CONFIRM", name: "执行失败" },
+                    ]}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         confirmStatusRef.current = value;
@@ -360,9 +363,9 @@ const Account = () => {
                         }}
                         value={
                             executeTime &&
-                                executeTime.length > 0 &&
-                                executeTime[0] &&
-                                executeTime[1]
+                            executeTime.length > 0 &&
+                            executeTime[0] &&
+                            executeTime[1]
                                 ? [dayjs(executeTime[0]), dayjs(executeTime[1])]
                                 : []
                         }
@@ -378,10 +381,7 @@ const Account = () => {
                             setCreateTime(dateStr);
                         }}
                         value={
-                            createTime &&
-                                createTime.length > 0 &&
-                                createTime[0] &&
-                                createTime[1]
+                            createTime && createTime.length > 0 && createTime[0] && createTime[1]
                                 ? [dayjs(createTime[0]), dayjs(createTime[1])]
                                 : []
                         }
