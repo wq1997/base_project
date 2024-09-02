@@ -190,7 +190,6 @@ const Detailed = () => {
                         {
                             title: "项目名称",
                             dataIndex: "projectName",
-
                             render(_, { project }) {
                                 return project?.name;
                             },
@@ -235,7 +234,7 @@ const Detailed = () => {
                             title: "操作",
                             dataIndex: "Action",
                             fixed: "right",
-                            width: 200,
+                            width: 150,
                             render: (_, row) => {
                                 return (
                                     <Space>
