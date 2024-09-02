@@ -4,8 +4,8 @@ import { DEFAULT_PAGINATION } from "@/utils/constants";
 import { SearchInput } from "@/components";
 import React, { useState, useEffect, useRef } from "react";
 import {
-    workOrderFindExceptionStatisticsPage as workOrderFindExceptionStatisticsPageServe,
-    workOrderGetExceptionStatisticsPageInitData as workOrderGetExceptionStatisticsPageInitDataServe,
+    alarmStatisticsTablePageInitData as alarmStatisticsTablePageInitDataServer,
+    alarmStatisticsTable as alarmStatisticsTableServer,
 } from "@/services";
 import styles from "./index.less";
 import dayjs from "dayjs";
@@ -16,8 +16,6 @@ const Detailed = () => {
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [planDate, setPlanDate] = useState();
     const planDateRef = useRef();
-    const [branchName, setBranchName] = useState();
-    const branchNameRef = useRef();
     const [name, setName] = useState();
     const nameRef = useRef();
     const [deviceName, setDeviceName] = useState();
@@ -36,50 +34,61 @@ const Detailed = () => {
     const getDataSource = async () => {
         const { current, pageSize } = paginationRef.current;
         const planDate = planDateRef.current;
-        const titleLike = nameRef.current;
-        const res = await workOrderFindExceptionStatisticsPageServe({
+        const plantId = nameRef.current;
+        const deviceName = deviceNameRef.current;
+        const descLike = alarmNameRef.current;
+        const mmsEventLevel = alarmLevelRef.current;
+        const res = await alarmStatisticsTableServer({
             pageNum: current,
             pageSize,
             queryCmd: {
-                publishedTimeFrom: planDate && planDate?.length >= 2 && dayjs(planDate?.[0]).format("YYYY-MM-DD"),
-                publishedTimeTo: planDate && planDate?.length >= 2 && dayjs(planDate?.[1]).format("YYYY-MM-DD"),
-                titleLike,
+                beginStartDate:
+                    planDate && planDate?.length >= 2 && dayjs(planDate?.[0]).format("YYYY-MM-DD"),
+                beginEndDate:
+                    planDate && planDate?.length >= 2 && dayjs(planDate?.[1]).format("YYYY-MM-DD"),
+                plantId,
+                deviceName,
+                descLike,
+                mmsEventLevel,
             },
         });
         if (res?.data?.status == "SUCCESS") {
-            const { workOrderPage } = res?.data?.data;
-            const { totalRecord, recordList } = workOrderPage || {};
+            const { totalRecord, recordList } = res?.data?.data;
             setPagination({
                 ...paginationRef.current,
                 total: parseInt(totalRecord),
             });
             setDataSource(recordList);
         }
-    }
+    };
 
     const getInitData = async () => {
-        const res = await workOrderGetExceptionStatisticsPageInitDataServe();
+        const res = await alarmStatisticsTablePageInitDataServer();
         if (res?.data?.status == "SUCCESS") {
             setInitOption(res?.data?.data);
         }
-    }
+    };
 
     const onReset = () => {
         planDateRef.current = undefined;
         nameRef.current = undefined;
         deviceNameRef.current = undefined;
         alarmTypeRef.current = undefined;
+        alarmNameRef.current = undefined;
+        alarmLevelRef.current = undefined;
         setAlarmType(undefined);
         setDeviceName(undefined);
         setName(undefined);
         setPlanDate(undefined);
+        setAlarmName(undefined);
+        setAlarmLevel(undefined);
         getDataSource();
-    }
+    };
 
     useEffect(() => {
         getInitData();
         getDataSource();
-    }, [])
+    }, []);
 
     return (
         <div className={styles.detailed}>
@@ -88,7 +97,10 @@ const Detailed = () => {
                 <div>
                     <span style={{ color: "#FFF" }}>时间：</span>
                     <DatePicker.RangePicker
-                        value={planDate && planDate?.length >= 2 && [dayjs(planDate?.[0]), dayjs(planDate?.[1])]}
+                        value={
+                            planDate &&
+                            planDate?.length >= 2 && [dayjs(planDate?.[0]), dayjs(planDate?.[1])]
+                        }
                         onChange={value => {
                             paginationRef.current = DEFAULT_PAGINATION;
                             planDateRef.current = value;
@@ -100,20 +112,14 @@ const Detailed = () => {
                     label="电站名称"
                     type="select"
                     value={name}
+                    options={initOption?.plans?.map(item => ({
+                        name: item.name,
+                        code: item.plantId,
+                    }))}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         nameRef.current = value;
                         setName(value);
-                    }}
-                />
-                <SearchInput
-                    label="并网点名称"
-                    type="select"
-                    value={branchName}
-                    onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
-                        branchNameRef.current = value;
-                        setBranchName(value);
                     }}
                 />
                 <SearchInput
@@ -134,7 +140,7 @@ const Detailed = () => {
                         setAlarmName(value);
                     }}
                 />
-                <SearchInput
+                {/* <SearchInput
                     label="运维告警类型"
                     value={alarmType}
                     onChange={value => {
@@ -142,22 +148,25 @@ const Detailed = () => {
                         alarmTypeRef.current = value;
                         setAlarmType(value);
                     }}
-                />
+                /> */}
                 <SearchInput
                     label="运维告警等级"
+                    type="select"
                     value={alarmLevel}
+                    options={initOption?.mmsEventLevels?.map(item => ({
+                        name: item,
+                        code: item,
+                    }))}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         alarmLevelRef.current = value;
                         setAlarmLevel(value);
                     }}
                 />
-                <Button type="primary" onClick={getDataSource}>搜索</Button>
-                <Button
-                    type="primary"
-                    danger
-                    onClick={onReset}
-                >
+                <Button type="primary" onClick={getDataSource}>
+                    搜索
+                </Button>
+                <Button type="primary" danger onClick={onReset}>
                     重置
                 </Button>
             </Space>
@@ -167,62 +176,65 @@ const Detailed = () => {
                     dataSource={dataSource}
                     columns={[
                         {
-                            title: '告警名称',
-                            dataIndex: 'code',
-                            width: 200,
+                            title: "告警名称",
+                            dataIndex: "desc",
                         },
                         {
                             title: "告警开始时间",
-                            dataIndex: "publishedTime",
-                            width: 200,
+                            dataIndex: "begin",
                         },
                         {
                             title: "告警结束时间",
-                            dataIndex: "completedTime",
-                            width: 200,
+                            dataIndex: "end",
                         },
                         {
                             title: "项目名称",
-                            dataIndex: "projectId",
-                            width: 200,
-                            render(value) {
-                                return initOption?.projects?.find(item => item?.id === value)?.name
-                            }
+                            dataIndex: "projectName",
+
+                            render(_, { project }) {
+                                return project?.name;
+                            },
                         },
                         {
                             title: "电站名称",
-                            dataIndex: "exceptionParts",
-                            width: 200,
+                            dataIndex: "plantName",
+                            render(_, { plant }) {
+                                return plant?.name;
+                            },
                         },
                         {
                             title: "设备名称",
-                            dataIndex: "exceptionSupplierName",
-                            width: 200,
+                            dataIndex: "deviceName",
                         },
-                        {
-                            title: "运维告警类型",
-                            dataIndex: "exceptionSolution",
-                            width: 200,
-                        },
+                        // {
+                        //     title: "运维告警类型",
+                        //     dataIndex: "",
+                        // },
                         {
                             title: "运维告警等级",
-                            dataIndex: "exceptionProcessingDaysForPlan",
-                            width: 200,
+                            dataIndex: "mmsEventLevel",
+                            render(_, { alarmType }) {
+                                return alarmType?.mmsEventLevel;
+                            },
                         },
                         {
                             title: "运维告警描述",
-                            dataIndex: "exceptionProcessingDaysForActual",
-                            width: 200,
+                            dataIndex: "mmsEventDesc",
+                            render(_, { alarmType }) {
+                                return alarmType?.mmsEventDesc;
+                            },
                         },
                         {
                             title: "是否同步生成工单",
-                            dataIndex: "exceptionProcessingCost",
-                            width: 200,
+                            dataIndex: "autoGenerateWorkOrder",
+                            render(_, { alarmType }) {
+                                return alarmType?.autoGenerateWorkOrder ? "是" : "否";
+                            },
                         },
                         {
                             title: "操作",
                             dataIndex: "Action",
-                            fixed: 'right',
+                            fixed: "right",
                             width: 200,
                             render: (_, row) => {
                                 return (
@@ -245,9 +257,10 @@ const Detailed = () => {
                     pagination={pagination}
                     onChange={pagination => {
                         paginationRef.current = pagination;
+                        getDataSource();
                     }}
                     scroll={{
-                        x: 1500
+                        x: 2000,
                     }}
                 />
             </div>
@@ -260,18 +273,32 @@ const Detailed = () => {
             >
                 <div className={styles.images}>
                     <Descriptions column={1}>
-                        <Descriptions.Item label="项目名称">Zhou Maomao</Descriptions.Item>
-                        <Descriptions.Item label="所在地址">1810000000</Descriptions.Item>
-                        <Descriptions.Item label="产品类型">Hangzhou, Zhejiang</Descriptions.Item>
-                        <Descriptions.Item label="项目阶段">empty</Descriptions.Item>
-                        <Descriptions.Item label="项目进度"></Descriptions.Item>
-                        <Descriptions.Item label="当前阶段负责人">Hangzhou, Zhejiang</Descriptions.Item>
-                        <Descriptions.Item label="负责人电话">empty</Descriptions.Item>
+                        <Descriptions.Item label="项目名称">
+                            {currentRow?.project?.name}
+                        </Descriptions.Item>
+                        <Descriptions.Item label="所在地址">
+                            {currentRow?.project?.address}
+                        </Descriptions.Item>
+                        <Descriptions.Item label="产品类型">
+                            {currentRow?.project?.productTypeZh}
+                        </Descriptions.Item>
+                        <Descriptions.Item label="项目阶段">
+                            {currentRow?.project?.phaseZh}
+                        </Descriptions.Item>
+                        <Descriptions.Item label="项目进度">
+                            {currentRow?.project?.subPhaseZh}
+                        </Descriptions.Item>
+                        <Descriptions.Item label="当前阶段负责人">
+                            {currentRow?.project?.currentStepOwner?.name}
+                        </Descriptions.Item>
+                        <Descriptions.Item label="负责人电话">
+                            {currentRow?.project?.currentStepOwner?.phoneNo}
+                        </Descriptions.Item>
                     </Descriptions>
                 </div>
             </Modal>
         </div>
-    )
-}
+    );
+};
 
 export default Detailed;
