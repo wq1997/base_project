@@ -126,7 +126,7 @@ const Company = ({ detailId, onClose }) => {
                     return {
                         title: item.timeRange,
                         dataIndex: item.timeRange,
-                        width: 200,
+                        width: 150,
                         render(_, record, index) {
                             const currentTask = _taskList[index].details[itemIndex];
                             return currentTask?.targetPower + " kW";
@@ -224,7 +224,7 @@ const Company = ({ detailId, onClose }) => {
                         ]}
                         pagination={false}
                         scroll={{
-                            x: 800,
+                            x: 1500,
                         }}
                     ></Table>
                     {contextHolder}
