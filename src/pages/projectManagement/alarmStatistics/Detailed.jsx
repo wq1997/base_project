@@ -37,6 +37,7 @@ const Detailed = () => {
         const plantId = nameRef.current;
         const deviceName = deviceNameRef.current;
         const descLike = alarmNameRef.current;
+        const mmsEventClassify = alarmTypeRef.current;
         const mmsEventLevel = alarmLevelRef.current;
         const res = await alarmStatisticsTableServer({
             pageNum: current,
@@ -49,6 +50,7 @@ const Detailed = () => {
                 plantId,
                 deviceName,
                 descLike,
+                mmsEventClassify,
                 mmsEventLevel,
             },
         });
@@ -140,15 +142,17 @@ const Detailed = () => {
                         setAlarmName(value);
                     }}
                 />
-                {/* <SearchInput
+                <SearchInput
                     label="运维告警类型"
+                    type="select"
+                    options={initOption?.mmsEventClassifies}
                     value={alarmType}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         alarmTypeRef.current = value;
                         setAlarmType(value);
                     }}
-                /> */}
+                />
                 <SearchInput
                     label="运维告警等级"
                     type="select"
@@ -205,10 +209,13 @@ const Detailed = () => {
                             title: "设备名称",
                             dataIndex: "deviceName",
                         },
-                        // {
-                        //     title: "运维告警类型",
-                        //     dataIndex: "",
-                        // },
+                        {
+                            title: "运维告警类型",
+                            dataIndex: "mmsEventClassifyZh",
+                            render(_, { alarmType }) {
+                                return alarmType?.mmsEventClassifyZh;
+                            },
+                        },
                         {
                             title: "运维告警等级",
                             dataIndex: "mmsEventLevel",

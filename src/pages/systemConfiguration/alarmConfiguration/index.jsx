@@ -1,4 +1,16 @@
-import { Space, Button, Table, Modal, theme, Form, Input, Select, Radio, message, Upload } from "antd";
+import {
+    Space,
+    Button,
+    Table,
+    Modal,
+    theme,
+    Form,
+    Input,
+    Select,
+    Radio,
+    message,
+    Upload,
+} from "antd";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import React, { useState, useEffect, useRef } from "react";
 import { SearchInput } from "@/components";
@@ -11,7 +23,7 @@ import {
 import { FORM_REQUIRED_RULE } from "@/utils/constants";
 import { jsonToUrlParams } from "@/utils/utils";
 import { getBaseUrl } from "@/services/request";
-import { InboxOutlined } from '@ant-design/icons';
+import { InboxOutlined } from "@ant-design/icons";
 import styles from "./index.less";
 
 const { Dragger } = Upload;
@@ -36,6 +48,8 @@ const AlarmConfiguration = () => {
     const alarmTypesRef = useRef();
     const [alarmLevel, setAlarmLevel] = useState();
     const alarmLevelRef = useRef();
+    const mmsAlarmTypeRef = useRef();
+    const [mmsAlarmType, setMmsAlarmType] = useState();
     const [isAlram, setIsAlram] = useState();
     const isAlramRef = useRef();
     const [isWorkOrders, setIsWorkOrders] = useState();
@@ -54,8 +68,8 @@ const AlarmConfiguration = () => {
             dataIndex: "project",
             width: 200,
             render(_, record) {
-                return record?.project?.name
-            }
+                return record?.project?.name;
+            },
         },
         {
             title: "电站名称",
@@ -63,7 +77,7 @@ const AlarmConfiguration = () => {
             width: 200,
             render(_, record) {
                 return record?.refSeAlarmType?.plant?.name;
-            }
+            },
         },
         // {
         //     title: "并网点名称",
@@ -76,27 +90,32 @@ const AlarmConfiguration = () => {
             width: 200,
             render(_, record) {
                 return record?.refSeAlarmType?.dev?.devName;
-            }
+            },
         },
         {
             title: "告警名称",
             dataIndex: "seAlarmTypeDesc",
-            width: 200
+            width: 200,
         },
         {
             title: "云平台告警等级",
             dataIndex: "seAlarmTypeLevel",
-            width: 200
+            width: 200,
         },
         {
             title: "运维告警描述",
             dataIndex: "mmsEventDesc",
-            width: 200
+            width: 200,
+        },
+        {
+            title: "运维告警类型",
+            dataIndex: "mmsEventClassifyZh",
+            width: 200,
         },
         {
             title: "运维告警等级",
             dataIndex: "mmsEventLevel",
-            width: 200
+            width: 200,
         },
         {
             title: "是否告警",
@@ -126,17 +145,16 @@ const AlarmConfiguration = () => {
             title: "最后修改人",
             dataIndex: "lastUpdaterName",
             width: 200,
-
         },
         {
             title: "最后修改时间",
             dataIndex: "lastUpdatedTime",
-            width: 200
+            width: 200,
         },
         {
             title: "操作",
             dataIndex: "Action",
-            fixed: 'right',
+            fixed: "right",
             width: 100,
             render(_, record) {
                 return (
@@ -149,24 +167,24 @@ const AlarmConfiguration = () => {
                                 projectName: record?.project?.name,
                                 plantName: record?.refSeAlarmType?.plant?.name,
                                 devName: record?.refSeAlarmType?.dev?.devName,
-                            })
+                            });
                             setEditData(record);
                             setOpen(true);
                         }}
                     >
                         编辑
                     </Button>
-                )
-            }
-        }
-    ]
+                );
+            },
+        },
+    ];
 
     const getBasAlarmTypeIntData = async () => {
         const res = await getBasAlarmTypeIntDataServe();
         if (res?.data?.status == "SUCCESS") {
             setInitData(res?.data?.data);
         }
-    }
+    };
 
     const getBasAlarmList = async () => {
         const { current, pageSize } = paginationRef.current;
@@ -176,6 +194,7 @@ const AlarmConfiguration = () => {
         const seDevNameLike = deviceNameRef.current;
         const mmsEventDescLike = alarmTypesRef.current;
         const mmsEventLevel = alarmLevelRef.current;
+        const mmsEventClassify = mmsAlarmTypeRef.current;
         const alarm = isAlramRef.current;
         const autoGenerateWorkOrder = isWorkOrdersRef.current;
         const lastUpdaterNameLike = lastModifiedPersonRef.current;
@@ -189,9 +208,10 @@ const AlarmConfiguration = () => {
                 seDevNameLike,
                 mmsEventDescLike,
                 mmsEventLevel,
+                mmsEventClassify,
                 alarm,
                 autoGenerateWorkOrder,
-                lastUpdaterNameLike
+                lastUpdaterNameLike,
             },
         });
         if (res?.data?.status === "SUCCESS") {
@@ -202,7 +222,7 @@ const AlarmConfiguration = () => {
                 total: parseInt(totalRecord),
             });
         }
-    }
+    };
 
     useEffect(() => {
         getBasAlarmTypeIntData();
@@ -210,13 +230,13 @@ const AlarmConfiguration = () => {
     }, []);
 
     const props = {
-        name: 'file',
-        action: getBaseUrl() + '/bas-alarm-type/import-data',
-        accept: '.xlsx,.xls',
+        name: "file",
+        action: getBaseUrl() + "/bas-alarm-type/import-data",
+        accept: ".xlsx,.xls",
         headers: {
-            Authorization: "Bearer " + localStorage.getItem("Token")
-        }
-    }
+            Authorization: "Bearer " + localStorage.getItem("Token"),
+        },
+    };
 
     return (
         <div className={styles.alarmConfiguration}>
@@ -228,8 +248,8 @@ const AlarmConfiguration = () => {
                     options={initData?.projects?.map(item => {
                         return {
                             code: item?.id,
-                            name: item?.name
-                        }
+                            name: item?.name,
+                        };
                     })}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
@@ -244,8 +264,8 @@ const AlarmConfiguration = () => {
                     options={initData?.plants?.map(item => {
                         return {
                             code: item?.plantId,
-                            name: item?.name
-                        }
+                            name: item?.name,
+                        };
                     })}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
@@ -291,14 +311,25 @@ const AlarmConfiguration = () => {
                     }}
                 />
                 <SearchInput
+                    label="运维告警类型"
+                    type="select"
+                    value={mmsAlarmType}
+                    options={initData?.mmsEventClassifies}
+                    onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        mmsAlarmTypeRef.current = value;
+                        setMmsAlarmType(value);
+                    }}
+                />
+                <SearchInput
                     label="运维告警等级"
                     type="select"
                     value={alarmLevel}
                     options={initData?.mmsEventLevels?.map(item => {
                         return {
                             code: item,
-                            name: item
-                        }
+                            name: item,
+                        };
                     })}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
@@ -311,8 +342,8 @@ const AlarmConfiguration = () => {
                     type="select"
                     value={isAlram}
                     options={[
-                        { name: '是', code: true },
-                        { name: '否', code: false }
+                        { name: "是", code: true },
+                        { name: "否", code: false },
                     ]}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
@@ -325,8 +356,8 @@ const AlarmConfiguration = () => {
                     type="select"
                     value={isWorkOrders}
                     options={[
-                        { name: '是', code: true },
-                        { name: '否', code: false }
+                        { name: "是", code: true },
+                        { name: "否", code: false },
                     ]}
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
@@ -343,10 +374,7 @@ const AlarmConfiguration = () => {
                         setLastModifiedPerson(value);
                     }}
                 />
-                <Button
-                    type="primary"
-                    onClick={getBasAlarmList}
-                >
+                <Button type="primary" onClick={getBasAlarmList}>
                     搜索
                 </Button>
                 <Button
@@ -358,7 +386,7 @@ const AlarmConfiguration = () => {
                         plantNameRef.current = undefined;
                         alramNameRef.current = undefined;
                         alarmLevelRef.current = undefined;
-                        alarmLevelRef.current = undefined;
+                        mmsAlarmTypeRef.current = undefined;
                         isAlramRef.current = undefined;
                         isWorkOrdersRef.current = undefined;
                         lastModifiedPersonRef.current = undefined;
@@ -367,6 +395,7 @@ const AlarmConfiguration = () => {
                         setIsAlram(undefined);
                         setAlarmLevel(undefined);
                         setAlarmLevel(undefined);
+                        setMmsAlarmType(undefined);
                         setAlramName(undefined);
                         setPlantName(undefined);
                         setProjectName(undefined);
@@ -387,7 +416,7 @@ const AlarmConfiguration = () => {
                 }}
                 scroll={{
                     x: 1200,
-                    y: "calc(100vh - 380px)"
+                    y: "calc(100vh - 380px)",
                 }}
                 title={() => (
                     <Space className="table-title">
@@ -410,21 +439,27 @@ const AlarmConfiguration = () => {
                                     const seDevNameLike = deviceNameRef.current;
                                     const mmsEventDescLike = alarmTypesRef.current;
                                     const mmsEventLevel = alarmLevelRef.current;
+                                    const mmsEventClassify = mmsAlarmTypeRef.current;
                                     const alarm = isAlramRef.current;
                                     const autoGenerateWorkOrder = isWorkOrdersRef.current;
                                     const lastUpdaterNameLike = lastModifiedPersonRef.current;
-                                    window.open(getBaseUrl()+"/bas-alarm-type/download-import-template"+jsonToUrlParams({
-                                        basProjectId,
-                                        sePlantId,
-                                        seAlarmTypeDescLike,
-                                        seDevNameLike,
-                                        mmsEventDescLike,
-                                        mmsEventLevel,
-                                        alarm,
-                                        autoGenerateWorkOrder,
-                                        lastUpdaterNameLike,
-                                        access_token: localStorage.getItem("Token")
-                                    }))
+                                    window.open(
+                                        getBaseUrl() +
+                                            "/bas-alarm-type/download-import-template" +
+                                            jsonToUrlParams({
+                                                basProjectId,
+                                                sePlantId,
+                                                seAlarmTypeDescLike,
+                                                seDevNameLike,
+                                                mmsEventDescLike,
+                                                mmsEventLevel,
+                                                mmsEventClassify,
+                                                alarm,
+                                                autoGenerateWorkOrder,
+                                                lastUpdaterNameLike,
+                                                access_token: localStorage.getItem("Token"),
+                                            })
+                                    );
                                 } else {
                                     message.error("至少搜索一个项目");
                                 }
@@ -449,14 +484,17 @@ const AlarmConfiguration = () => {
                         refSeAlarmTypeId: editData?.refSeAlarmTypeId,
                         mmsEventLevel: values?.mmsEventLevel,
                         mmsEventDesc: values?.mmsEventDesc,
+                        mmsEventClassify: values?.mmsEventClassify,
                         alarm: values?.alarm,
-                        autoGenerateWorkOrder: values?.autoGenerateWorkOrder
+                        autoGenerateWorkOrder: values?.autoGenerateWorkOrder,
                     });
                     if (res?.data?.status === "SUCCESS") {
                         message.success("编辑成功");
                         getBasAlarmList();
                         setOpen(false);
                         form.resetFields();
+                    } else {
+                        message.info(res?.data?.msg);
                     }
                 }}
             >
@@ -476,17 +514,39 @@ const AlarmConfiguration = () => {
                     <Form.Item name="seAlarmTypeLevel" label="云平台告警等级">
                         <Input disabled />
                     </Form.Item>
-                    <Form.Item name="mmsEventLevel" label="运维告警等级" rules={[{ ...FORM_REQUIRED_RULE }]}>
+                    <Form.Item
+                        name="mmsEventClassify"
+                        label="运维告警类型"
+                        rules={[{ ...FORM_REQUIRED_RULE }]}
+                    >
+                        <Select
+                            options={initData?.mmsEventClassifies?.map(item => {
+                                return {
+                                    value: item.code,
+                                    label: item.name,
+                                };
+                            })}
+                        />
+                    </Form.Item>
+                    <Form.Item
+                        name="mmsEventLevel"
+                        label="运维告警等级"
+                        rules={[{ ...FORM_REQUIRED_RULE }]}
+                    >
                         <Select
                             options={initData?.mmsEventLevels?.map(item => {
                                 return {
                                     value: item,
-                                    label: item
-                                }
+                                    label: item,
+                                };
                             })}
                         />
                     </Form.Item>
-                    <Form.Item name="mmsEventDesc" label="运维告警描述" rules={[{ ...FORM_REQUIRED_RULE }]}>
+                    <Form.Item
+                        name="mmsEventDesc"
+                        label="运维告警描述"
+                        rules={[{ ...FORM_REQUIRED_RULE }]}
+                    >
                         <Input />
                     </Form.Item>
                     <Form.Item name="alarm" label="是否告警" rules={[{ ...FORM_REQUIRED_RULE }]}>
@@ -495,7 +555,11 @@ const AlarmConfiguration = () => {
                             <Radio value={false}>否</Radio>
                         </Radio.Group>
                     </Form.Item>
-                    <Form.Item name="autoGenerateWorkOrder" label="是否自动生成工单" rules={[{ ...FORM_REQUIRED_RULE }]}>
+                    <Form.Item
+                        name="autoGenerateWorkOrder"
+                        label="是否自动生成工单"
+                        rules={[{ ...FORM_REQUIRED_RULE }]}
+                    >
                         <Radio.Group>
                             <Radio value={true}>是</Radio>
                             <Radio value={false}>否</Radio>
@@ -524,7 +588,7 @@ const AlarmConfiguration = () => {
                 </Dragger>
             </Modal>
         </div>
-    )
-}
+    );
+};
 
 export default AlarmConfiguration;
