@@ -1,3 +1,4 @@
+import { message } from "antd";
 import axios from "axios";
 import { getDvaApp } from "umi";
 
@@ -28,6 +29,10 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
     response => {
         if (response.status === 200) {
+            if(response?.data?.status==="FAILED"){
+                message.error(response?.data?.msg);
+                return Promise.reject(response);
+            }
             return Promise.resolve(response);
         } else {
             return Promise.reject(response);

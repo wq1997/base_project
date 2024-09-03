@@ -38,12 +38,13 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
     const [currentStep, setCurrentStep] = useState(0);
     const [addId, setAddId] = useState();
     const [initOption, setInitOption] = useState({});
+    const [phase, setPhase] = useState();
 
     const getInitOption = async () => {
         const res = await getBasProjectEditInitDataServe();
         if (res?.data?.status == "SUCCESS") {
             let data = res?.data?.data;
-            if(detailRow?.sePlants){
+            if (detailRow?.sePlants) {
                 data.sePlans = data.sePlans?.concat(...detailRow?.sePlants);
             }
             setInitOption(data);
@@ -53,6 +54,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
     useEffect(() => {
         setCurrentStep(editCurrentStep);
         if (detailRow) {
+            setPhase(detailRow?.phase);
             form.setFieldsValue({
                 ...detailRow,
                 approvalTime: detailRow?.approvalTime ? dayjs(detailRow?.approvalTime) : undefined,
@@ -236,7 +238,13 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
         }
         if (flag) {
             if (type === "save") message.success("保存成功");
-            if (type === "nexStep") setCurrentStep(currentStep + 1);
+            if (type === "nexStep") {
+                if (currentStep === 1 && phase === "POST_IMPLEMENTATION") {
+                    setCurrentStep(3)
+                } else {
+                    setCurrentStep(currentStep + 1);
+                }
+            }
             if (type === "submit") onClose();
         }
     }
@@ -260,19 +268,22 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
             <Steps
                 style={{ margin: "20px 0" }}
                 current={currentStep}
-                onChange={step => setCurrentStep(step)}
                 items={[
                     {
                         title: "项目基础资料维护",
+                        disabled: true
                     },
                     {
                         title: "项目详细资料维护",
+                        disabled: true
                     },
                     {
                         title: "维护实施管理信息",
+                        disabled: true
                     },
                     {
                         title: "运维管理信息",
+                        disabled: true
                     },
                 ]}
             />
@@ -358,6 +369,9 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                     value: "code",
                                 }}
                                 options={initOption?.phases || []}
+                                onChange={value => {
+                                    setPhase(value);
+                                }}
                             />
                         </Form.Item>
                         <Form.Item noStyle dependencies={['phase']}>
@@ -878,12 +892,6 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                             <Form.Item
                                                 label="关联场站信息"
                                                 name="sePlants"
-                                                rules={[
-                                                    {
-                                                        required: true,
-                                                        message: "请输入关联场站信息",
-                                                    },
-                                                ]}
                                             >
                                                 <Select
                                                     mode="multiple"
@@ -1397,124 +1405,124 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                             (detailRow?.shippingMaterial || detailRow?.testingMaterial || detailRow?.trialRunMaterial) &&
                             <div className={styles.steps3}>
                                 <Form.Item label="实施过程档案">
-                                <Space direction="vertical">
-                                    {
-                                        detailRow?.shippingMaterial &&
-                                        <div className={styles.cardItem}>
-                                            <div className={styles.cardItemRow1}>
-                                                <div className={styles.cardItemRow1Time}>发货阶段({detailRow?.shippingMaterial?.operationTime})</div>
-                                                <div>实际操作人({detailRow?.shippingMaterial?.operatorName})</div>
+                                    <Space direction="vertical">
+                                        {
+                                            detailRow?.shippingMaterial &&
+                                            <div className={styles.cardItem}>
+                                                <div className={styles.cardItemRow1}>
+                                                    <div className={styles.cardItemRow1Time}>发货阶段({detailRow?.shippingMaterial?.operationTime})</div>
+                                                    <div>实际操作人({detailRow?.shippingMaterial?.operatorName})</div>
+                                                </div>
+                                                <div className={styles.cardItemRow2}>
+                                                    <div className={styles.cardItemRow2Label}>签收货单</div>
+                                                    {
+                                                        detailRow?.shippingMaterial?.goodsReceivedNote?.id &&
+                                                        <div className={styles.cardItemRow2Content}>
+                                                            <FileMarkdownFilled
+                                                                style={{
+                                                                    color: '#0EBCB6',
+                                                                    fontSize: 30,
+                                                                    cursor: 'pointer'
+                                                                }}
+                                                                onClick={() => {
+                                                                    window.open(
+                                                                        `${getBaseUrl()}/attachment/download/${detailRow?.shippingMaterial?.goodsReceivedNote?.id}` + jsonToUrlParams({
+                                                                            id: detailRow?.shippingMaterial?.goodsReceivedNote?.id,
+                                                                            access_token: localStorage.getItem("Token")
+                                                                        }),
+                                                                        "_blank"
+                                                                    );
+                                                                }}
+                                                            />
+                                                            <div>{detailRow?.shippingMaterial?.goodsReceivedNote?.fileName}</div>
+                                                        </div>
+                                                    }
+                                                </div>
+                                                <div className={styles.cardItemRow3}>
+                                                    <div className={styles.cardItemRow3Label}>备注：</div>
+                                                    <div>{detailRow?.shippingMaterial?.remark}</div>
+                                                </div>
                                             </div>
-                                            <div className={styles.cardItemRow2}>
-                                                <div className={styles.cardItemRow2Label}>签收货单</div>
-                                                {
-                                                    detailRow?.shippingMaterial?.goodsReceivedNote?.id &&
-                                                    <div className={styles.cardItemRow2Content}>
-                                                        <FileMarkdownFilled
-                                                            style={{
-                                                                color: '#0EBCB6',
-                                                                fontSize: 30,
-                                                                cursor: 'pointer'
-                                                            }}
-                                                            onClick={() => {
-                                                                window.open(
-                                                                    `${getBaseUrl()}/attachment/download/${detailRow?.shippingMaterial?.goodsReceivedNote?.id}` + jsonToUrlParams({
-                                                                        id: detailRow?.shippingMaterial?.goodsReceivedNote?.id,
-                                                                        access_token: localStorage.getItem("Token")
-                                                                    }),
-                                                                    "_blank"
-                                                                );
-                                                            }}
-                                                        />
-                                                        <div>{detailRow?.shippingMaterial?.goodsReceivedNote?.fileName}</div>
-                                                    </div>
-                                                }
+                                        }
+                                        {
+                                            detailRow?.testingMaterial &&
+                                            <div className={styles.cardItem}>
+                                                <div className={styles.cardItemRow1}>
+                                                    <div className={styles.cardItemRow1Time}>调试阶段({detailRow?.testingMaterial?.operationTime})</div>
+                                                    <div>实际操作人({detailRow?.testingMaterial?.operatorName})</div>
+                                                </div>
+                                                <div className={styles.cardItemRow2}>
+                                                    <div className={styles.cardItemRow2Label}>验收报告</div>
+                                                    {
+                                                        detailRow?.testingMaterial?.acceptanceReport?.id &&
+                                                        <div className={styles.cardItemRow2Content}>
+                                                            <FileMarkdownFilled
+                                                                style={{
+                                                                    color: '#0EBCB6',
+                                                                    fontSize: 30,
+                                                                    cursor: 'pointer'
+                                                                }}
+                                                                onClick={() => {
+                                                                    window.open(
+                                                                        `${getBaseUrl()}/attachment/download/${detailRow?.testingMaterial?.acceptanceReport?.id}` + jsonToUrlParams({
+                                                                            id: detailRow?.testingMaterial?.acceptanceReport?.id,
+                                                                            access_token: localStorage.getItem("Token")
+                                                                        }),
+                                                                        "_blank"
+                                                                    );
+                                                                }}
+                                                            />
+                                                            <div>{detailRow?.testingMaterial?.acceptanceReport?.fileName}</div>
+                                                        </div>
+                                                    }
+                                                </div>
+                                                <div className={styles.cardItemRow3}>
+                                                    <div className={styles.cardItemRow3Label}>备注：</div>
+                                                    <div>{detailRow?.testingMaterial?.remark}</div>
+                                                </div>
                                             </div>
-                                            <div className={styles.cardItemRow3}>
-                                                <div className={styles.cardItemRow3Label}>备注：</div>
-                                                <div>{detailRow?.shippingMaterial?.remark}</div>
+                                        }
+                                        {
+                                            detailRow?.trialRunMaterial &&
+                                            <div className={styles.cardItem}>
+                                                <div className={styles.cardItemRow1}>
+                                                    <div className={styles.cardItemRow1Time}>试运行阶段({detailRow?.trialRunMaterial?.operationTime})</div>
+                                                    <div>实际操作人({detailRow?.trialRunMaterial?.operatorName})</div>
+                                                </div>
+                                                <div className={styles.cardItemRow2}>
+                                                    <div className={styles.cardItemRow2Label}>客户验收单</div>
+                                                    {
+                                                        detailRow?.trialRunMaterial?.customerAcceptanceForm?.id &&
+                                                        <div className={styles.cardItemRow2Content}>
+                                                            <FileMarkdownFilled
+                                                                style={{
+                                                                    color: '#0EBCB6',
+                                                                    fontSize: 30,
+                                                                    cursor: 'pointer'
+                                                                }}
+                                                                onClick={() => {
+                                                                    window.open(
+                                                                        `${getBaseUrl()}/attachment/download/${detailRow?.trialRunMaterial?.customerAcceptanceForm?.id}` + jsonToUrlParams({
+                                                                            id: detailRow?.trialRunMaterial?.customerAcceptanceForm?.id,
+                                                                            access_token: localStorage.getItem("Token")
+                                                                        }),
+                                                                        "_blank"
+                                                                    );
+                                                                }}
+                                                            />
+                                                            <div>{detailRow?.trialRunMaterial?.customerAcceptanceForm?.fileName}</div>
+                                                        </div>
+                                                    }
+                                                </div>
+                                                <div className={styles.cardItemRow3}>
+                                                    <div className={styles.cardItemRow3Label}>备注：</div>
+                                                    <div>{detailRow?.trialRunMaterial?.remark}</div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    }
-                                    {
-                                        detailRow?.testingMaterial &&
-                                        <div className={styles.cardItem}>
-                                            <div className={styles.cardItemRow1}>
-                                                <div className={styles.cardItemRow1Time}>调试阶段({detailRow?.testingMaterial?.operationTime})</div>
-                                                <div>实际操作人({detailRow?.testingMaterial?.operatorName})</div>
-                                            </div>
-                                            <div className={styles.cardItemRow2}>
-                                                <div className={styles.cardItemRow2Label}>验收报告</div>
-                                                {
-                                                    detailRow?.testingMaterial?.acceptanceReport?.id &&
-                                                    <div className={styles.cardItemRow2Content}>
-                                                        <FileMarkdownFilled
-                                                            style={{
-                                                                color: '#0EBCB6',
-                                                                fontSize: 30,
-                                                                cursor: 'pointer'
-                                                            }}
-                                                            onClick={() => {
-                                                                window.open(
-                                                                    `${getBaseUrl()}/attachment/download/${detailRow?.testingMaterial?.acceptanceReport?.id}` + jsonToUrlParams({
-                                                                        id: detailRow?.testingMaterial?.acceptanceReport?.id,
-                                                                        access_token: localStorage.getItem("Token")
-                                                                    }),
-                                                                    "_blank"
-                                                                );
-                                                            }}
-                                                        />
-                                                        <div>{detailRow?.testingMaterial?.acceptanceReport?.fileName}</div>
-                                                    </div>
-                                                }
-                                            </div>
-                                            <div className={styles.cardItemRow3}>
-                                                <div className={styles.cardItemRow3Label}>备注：</div>
-                                                <div>{detailRow?.testingMaterial?.remark}</div>
-                                            </div>
-                                        </div>
-                                    }
-                                    {
-                                        detailRow?.trialRunMaterial &&
-                                        <div className={styles.cardItem}>
-                                            <div className={styles.cardItemRow1}>
-                                                <div className={styles.cardItemRow1Time}>试运行阶段({detailRow?.trialRunMaterial?.operationTime})</div>
-                                                <div>实际操作人({detailRow?.trialRunMaterial?.operatorName})</div>
-                                            </div>
-                                            <div className={styles.cardItemRow2}>
-                                                <div className={styles.cardItemRow2Label}>客户验收单</div>
-                                                {
-                                                    detailRow?.trialRunMaterial?.customerAcceptanceForm?.id &&
-                                                    <div className={styles.cardItemRow2Content}>
-                                                        <FileMarkdownFilled
-                                                            style={{
-                                                                color: '#0EBCB6',
-                                                                fontSize: 30,
-                                                                cursor: 'pointer'
-                                                            }}
-                                                            onClick={() => {
-                                                                window.open(
-                                                                    `${getBaseUrl()}/attachment/download/${detailRow?.trialRunMaterial?.customerAcceptanceForm?.id}` + jsonToUrlParams({
-                                                                        id: detailRow?.trialRunMaterial?.customerAcceptanceForm?.id,
-                                                                        access_token: localStorage.getItem("Token")
-                                                                    }),
-                                                                    "_blank"
-                                                                );
-                                                            }}
-                                                        />
-                                                        <div>{detailRow?.trialRunMaterial?.customerAcceptanceForm?.fileName}</div>
-                                                    </div>
-                                                }
-                                            </div>
-                                            <div className={styles.cardItemRow3}>
-                                                <div className={styles.cardItemRow3Label}>备注：</div>
-                                                <div>{detailRow?.trialRunMaterial?.remark}</div>
-                                            </div>
-                                        </div>
-                                    }
+                                        }
 
-                                </Space>
-                            </Form.Item>
+                                    </Space>
+                                </Form.Item>
                             </div>
                         }
                     </>
@@ -1525,9 +1533,8 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                         <Row span={24}>
                             <Col span={8}>
                                 <Form.Item label="运维负责人">
-                                    <Space>
+                                    <Row>
                                         <Form.Item
-                                            noStyle
                                             name="operationsManagerAccount"
                                             rules={[
                                                 {
@@ -1535,6 +1542,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                     message: "请选择运维负责人",
                                                 },
                                             ]}
+                                            style={{marginBottom: 0}}
                                         >
                                             <Select
                                                 placeholder="请选择运维负责人"
@@ -1549,7 +1557,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                         <Tooltip title="创建项目后，实施阶段该项目产生的所有工单将由实施负责人处理。">
                                             <ExclamationCircleOutlined />
                                         </Tooltip>
-                                    </Space>
+                                    </Row>
                                 </Form.Item>
                             </Col>
                             <Col span={8}>
@@ -1603,195 +1611,203 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                         </Row>
                         <Row style={{ marginLeft: 58, marginTop: 10 }}>
                             <Col span={20}>
-                                <Form.Item
-                                    label={
-                                        <div style={{ marginBottom: 20 }}>
-                                            <span>巡检组管理</span>
-                                            {
-                                                detailRow?.status === "ACTIVE" &&
-                                                <Button
-                                                    type="primary"
-                                                    style={{ marginLeft: 50 }}
-                                                    onClick={() => {
-                                                        const id = detailRow?.id || addId;
-                                                        if (id) {
-                                                            window.open(
-                                                                `${getBaseUrl()}/bas-project/download-inspection-code` + jsonToUrlParams({
-                                                                    id,
-                                                                    access_token: localStorage.getItem("Token")
-                                                                }),
-                                                                "_blank"
-                                                            );
+                                <Form.Item noStyle dependencies={['supportStandardInspection']}>
+                                    {({ getFieldsValue }) => {
+                                        const { supportStandardInspection } = getFieldsValue(['supportStandardInspection']);
+                                        return (
+                                            <Form.Item
+                                                hidden={!supportStandardInspection}
+                                                label={
+                                                    <div style={{ marginBottom: 20 }}>
+                                                        <span>巡检组管理</span>
+                                                        {
+                                                            detailRow?.status === "ACTIVE" &&
+                                                            <Button
+                                                                type="primary"
+                                                                style={{ marginLeft: 50 }}
+                                                                onClick={() => {
+                                                                    const id = detailRow?.id || addId;
+                                                                    if (id) {
+                                                                        window.open(
+                                                                            `${getBaseUrl()}/bas-project/download-inspection-code` + jsonToUrlParams({
+                                                                                id,
+                                                                                access_token: localStorage.getItem("Token")
+                                                                            }),
+                                                                            "_blank"
+                                                                        );
+                                                                    }
+                                                                }}
+                                                            >
+                                                                批量下载巡检码
+                                                            </Button>
                                                         }
-                                                    }}
-                                                >
-                                                    批量下载巡检码
-                                                </Button>
-                                            }
-                                        </div>
-                                    }
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: "请添加巡检组管理",
-                                        },
-                                    ]}
-                                    labelCol={{
-                                        span: 24,
-                                    }}
-                                    wrapperCol={{
-                                        offset: 1,
-                                    }}
-                                >
-                                    <div>
-                                        <Form.List name="inspectionGroups">
-                                            {(fields, { add, remove }) => {
-                                                const inspectionItemType2Items = initOption?.inspectionItemType2Items;
-                                                let inspectionItemType2ItemsOptions = [];
-                                                const keysList = Object.keys(inspectionItemType2Items || {});
-                                                keysList?.forEach(key => {
-                                                    const list = inspectionItemType2Items[key]?.map(item => {
-                                                        return {
-                                                            label: item?.name,
-                                                            value: item?.id
-                                                        }
-                                                    });
-                                                    inspectionItemType2ItemsOptions = inspectionItemType2ItemsOptions.concat(list);
-                                                })
-                                                return (
-                                                    <>
-                                                        {fields.map(
-                                                            ({ key, name: oueterName, ...restField }) => {
-                                                                return (
-                                                                    <div>
-                                                                        <Space
-                                                                            style={{
-                                                                                marginBottom: 10,
-                                                                            }}
-                                                                        >
-                                                                            <Form.Item
-                                                                                name={[oueterName, 'nameLabel']}
-                                                                                style={{ marginBottom: 0 }}
-                                                                                rules={[
-                                                                                    {
-                                                                                        required: true,
-                                                                                        message: "请输入巡检组名",
-                                                                                    },
-                                                                                ]}>
-                                                                                <Input placeholder={`请输入巡检组名`} />
-                                                                            </Form.Item>
-                                                                            <Button
-                                                                                onClick={() =>
-                                                                                    remove([
-                                                                                        oueterName,
-                                                                                        "inspectionTeamGroup",
-                                                                                    ])
-                                                                                }
-                                                                            >
-                                                                                -
-                                                                            </Button>
-                                                                        </Space>
-                                                                        <div
-                                                                            style={{
-                                                                                width: "640px",
-                                                                                borderRadius: 8,
-                                                                                border: `1px solid rgba(255,255,255,0.3)`,
-                                                                                padding:
-                                                                                    "28px 30px",
-                                                                                marginBottom: 24,
-                                                                            }}
-                                                                        >
-                                                                            <Form.List
-                                                                                name={[
-                                                                                    oueterName,
-                                                                                    "inspectionTeamGroup",
-                                                                                ]}
-                                                                            >
-                                                                                {(
-                                                                                    fields,
-                                                                                    { add, remove }
-                                                                                ) => {
-                                                                                    return (
-                                                                                        <>
-                                                                                            {fields.map(
-                                                                                                ({
-                                                                                                    key,
-                                                                                                    name: innerName,
-                                                                                                    ...restField
-                                                                                                }) => {
-                                                                                                    return (
-                                                                                                        <Space
-                                                                                                            style={{
-                                                                                                                width: "100%",
-                                                                                                                marginBottom: 10,
-                                                                                                            }}
-                                                                                                            align="center"
-                                                                                                        >
-                                                                                                            <Form.Item
-                                                                                                                name={[
-                                                                                                                    innerName,
-                                                                                                                    "inspectionItemIds",
-                                                                                                                ]}
-                                                                                                                label={`巡检事项${innerName + 1}`}
-                                                                                                                style={{
-                                                                                                                    marginBottom: 0,
-                                                                                                                }}
-                                                                                                            >
-                                                                                                                <Select
-                                                                                                                    placeholder={`请输入巡检项${innerName + 1}`}
-                                                                                                                    style={{
-                                                                                                                        width: 500,
-                                                                                                                    }}
-                                                                                                                    options={inspectionItemType2ItemsOptions}
-                                                                                                                />
-                                                                                                            </Form.Item>
+                                                    </div>
+                                                }
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message: "请添加巡检组管理",
+                                                    },
+                                                ]}
+                                                labelCol={{
+                                                    span: 24,
+                                                }}
+                                                wrapperCol={{
+                                                    offset: 1,
+                                                }}
+                                            >
+                                                <div>
+                                                    <Form.List name="inspectionGroups">
+                                                        {(fields, { add, remove }) => {
+                                                            const inspectionItemType2Items = initOption?.inspectionItemType2Items;
+                                                            let inspectionItemType2ItemsOptions = [];
+                                                            const keysList = Object.keys(inspectionItemType2Items || {});
+                                                            keysList?.forEach(key => {
+                                                                const list = inspectionItemType2Items[key]?.map(item => {
+                                                                    return {
+                                                                        label: item?.name,
+                                                                        value: item?.id
+                                                                    }
+                                                                });
+                                                                inspectionItemType2ItemsOptions = inspectionItemType2ItemsOptions.concat(list);
+                                                            })
+                                                            return (
+                                                                <>
+                                                                    {fields.map(
+                                                                        ({ key, name: oueterName, ...restField }) => {
+                                                                            return (
+                                                                                <div>
+                                                                                    <Space
+                                                                                        style={{
+                                                                                            marginBottom: 10,
+                                                                                        }}
+                                                                                    >
+                                                                                        <Form.Item
+                                                                                            name={[oueterName, 'nameLabel']}
+                                                                                            style={{ marginBottom: 0 }}
+                                                                                            rules={[
+                                                                                                {
+                                                                                                    required: true,
+                                                                                                    message: "请输入巡检组名",
+                                                                                                },
+                                                                                            ]}>
+                                                                                            <Input placeholder={`请输入巡检组名`} />
+                                                                                        </Form.Item>
+                                                                                        <Button
+                                                                                            onClick={() =>
+                                                                                                remove([
+                                                                                                    oueterName,
+                                                                                                    "inspectionTeamGroup",
+                                                                                                ])
+                                                                                            }
+                                                                                        >
+                                                                                            -
+                                                                                        </Button>
+                                                                                    </Space>
+                                                                                    <div
+                                                                                        style={{
+                                                                                            width: "640px",
+                                                                                            borderRadius: 8,
+                                                                                            border: `1px solid rgba(255,255,255,0.3)`,
+                                                                                            padding:
+                                                                                                "28px 30px",
+                                                                                            marginBottom: 24,
+                                                                                        }}
+                                                                                    >
+                                                                                        <Form.List
+                                                                                            name={[
+                                                                                                oueterName,
+                                                                                                "inspectionTeamGroup",
+                                                                                            ]}
+                                                                                        >
+                                                                                            {(
+                                                                                                fields,
+                                                                                                { add, remove }
+                                                                                            ) => {
+                                                                                                return (
+                                                                                                    <>
+                                                                                                        {fields.map(
+                                                                                                            ({
+                                                                                                                key,
+                                                                                                                name: innerName,
+                                                                                                                ...restField
+                                                                                                            }) => {
+                                                                                                                return (
+                                                                                                                    <Space
+                                                                                                                        style={{
+                                                                                                                            width: "100%",
+                                                                                                                            marginBottom: 10,
+                                                                                                                        }}
+                                                                                                                        align="center"
+                                                                                                                    >
+                                                                                                                        <Form.Item
+                                                                                                                            name={[
+                                                                                                                                innerName,
+                                                                                                                                "inspectionItemIds",
+                                                                                                                            ]}
+                                                                                                                            label={`巡检事项${innerName + 1}`}
+                                                                                                                            style={{
+                                                                                                                                marginBottom: 0,
+                                                                                                                            }}
+                                                                                                                        >
+                                                                                                                            <Select
+                                                                                                                                placeholder={`请输入巡检项${innerName + 1}`}
+                                                                                                                                style={{
+                                                                                                                                    width: 500,
+                                                                                                                                }}
+                                                                                                                                options={inspectionItemType2ItemsOptions}
+                                                                                                                            />
+                                                                                                                        </Form.Item>
+                                                                                                                        <Button
+                                                                                                                            onClick={() =>
+                                                                                                                                remove(
+                                                                                                                                    [
+                                                                                                                                        innerName,
+                                                                                                                                        "inspectionItemIds",
+                                                                                                                                    ]
+                                                                                                                                )
+                                                                                                                            }
+                                                                                                                        >
+                                                                                                                            -
+                                                                                                                        </Button>
+                                                                                                                    </Space>
+                                                                                                                );
+                                                                                                            }
+                                                                                                        )}
+                                                                                                        <Space>
                                                                                                             <Button
-                                                                                                                onClick={() =>
-                                                                                                                    remove(
-                                                                                                                        [
-                                                                                                                            innerName,
-                                                                                                                            "inspectionItemIds",
-                                                                                                                        ]
-                                                                                                                    )
+                                                                                                                onClick={
+                                                                                                                    add
                                                                                                                 }
                                                                                                             >
-                                                                                                                -
+                                                                                                                +
+                                                                                                                添加巡检事项
                                                                                                             </Button>
                                                                                                         </Space>
-                                                                                                    );
-                                                                                                }
-                                                                                            )}
-                                                                                            <Space>
-                                                                                                <Button
-                                                                                                    onClick={
-                                                                                                        add
-                                                                                                    }
-                                                                                                >
-                                                                                                    +
-                                                                                                    添加巡检事项
-                                                                                                </Button>
-                                                                                            </Space>
-                                                                                        </>
-                                                                                    );
-                                                                                }}
-                                                                            </Form.List>
-                                                                        </div>
-                                                                    </div>
-                                                                );
-                                                            }
-                                                        )}
-                                                        <Button
-                                                            onClick={add}
-                                                            style={{ width: 200, height: 40 }}
-                                                            type="primary"
-                                                        >
-                                                            + 添加巡视组
-                                                        </Button>
-                                                    </>
-                                                );
-                                            }}
-                                        </Form.List>
-                                    </div>
+                                                                                                    </>
+                                                                                                );
+                                                                                            }}
+                                                                                        </Form.List>
+                                                                                    </div>
+                                                                                </div>
+                                                                            );
+                                                                        }
+                                                                    )}
+                                                                    <Button
+                                                                        onClick={add}
+                                                                        style={{ width: 200, height: 40 }}
+                                                                        type="primary"
+                                                                    >
+                                                                        + 添加巡视组
+                                                                    </Button>
+                                                                </>
+                                                            );
+                                                        }}
+                                                    </Form.List>
+                                                </div>
+                                            </Form.Item>
+                                        )
+                                    }}
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -1815,7 +1831,11 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                             <Button
                                 type="primary"
                                 onClick={() => {
-                                    setCurrentStep(currentStep - 1)
+                                    if (currentStep === 3 && phase === "POST_IMPLEMENTATION") {
+                                        setCurrentStep(1)
+                                    } else {
+                                        setCurrentStep(currentStep - 1)
+                                    }
                                 }}>
                                 上一步
                             </Button>
@@ -1823,7 +1843,9 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                         {currentStep != 3 && (
                             <Button
                                 type="primary"
-                                onClick={() => save("nexStep")}>
+                                onClick={() => {
+                                    save("nexStep")
+                                }}>
                                 下一步
                             </Button>
                         )}
