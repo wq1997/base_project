@@ -141,12 +141,6 @@ const AddProject = ({ open, editId, onClose }) => {
                 <Form.Item
                     label="管辖区域"
                     name="regions"
-                    rules={[
-                        {
-                            required: true,
-                            message: "请选择管辖区域",
-                        },
-                    ]}
                 >
                     <Select
                         mode="multiple"

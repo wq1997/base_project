@@ -52,3 +52,8 @@ export const deleteRole = ids => {
     const url = `${API_URL}/role/delete`;
     return axiosInstance.post(url, ids);
 };
+
+export const deleteUser = ids => {
+    const url = `${API_URL}/user/delete`;
+    return axiosInstance.post(url, ids);
+};

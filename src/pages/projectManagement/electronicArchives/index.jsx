@@ -277,12 +277,12 @@ const Account = () => {
             width: 200
         },
         {
-            title: "充放功率(kW)",
+            title: "充放功率(MW)",
             dataIndex: "maxPowerKw",
             width: 200
         },
         {
-            title: "项目容量(kWh)",
+            title: "项目容量(MWh)",
             dataIndex: "capacityKwh",
             width: 200
         },

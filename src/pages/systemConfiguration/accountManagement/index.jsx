@@ -12,13 +12,6 @@ import {
     Popconfirm,
 } from "antd";
 import {
-    EllipsisOutlined,
-    FileSearchOutlined,
-    FileProtectOutlined,
-    UnorderedListOutlined,
-    UserOutlined,
-    DeleteOutlined,
-    ExclamationCircleOutlined,
     PlusCircleFilled,
 } from "@ant-design/icons";
 import { history, useLocation } from "umi";
@@ -31,6 +24,7 @@ import {
     getAccountSearchIndexData as getAccountSearchIndexDataServer,
     getAccountList as getAccountListServer,
     unBindWx as unBindWxServer,
+    deleteUser as deleteRoleServer
 } from "@/services/user";
 
 const Account = () => {

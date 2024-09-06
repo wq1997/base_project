@@ -1,5 +1,7 @@
-import { login } from "@/services/user"
 import { history } from "umi";
+import {
+  homeGetMainPageData as homeGetMainPageDataServe
+} from "@/services";
 
 export default {
     namespace: 'user',
@@ -10,12 +12,12 @@ export default {
    
     effects: {
       *queryUser({ payload }, { call, put }) {
-        const userInfo = yield call(login, { username: 'wangqing', password: '123456' });
-        if(userInfo){
+        const res = yield call(homeGetMainPageDataServe);
+        if(res?.data?.status==="SUCCESS"){
           yield put({
             type: 'updateState',
             payload: {
-                user: userInfo
+                user: res?.data?.data
             }
           })
         }

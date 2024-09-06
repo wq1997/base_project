@@ -329,7 +329,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                             <Input style={{ width: "100%" }} placeholder="请输入项目名称" />
                         </Form.Item>
                         <Form.Item
-                            label="充放功率(kW)"
+                            label="充放功率(MW)"
                             name="maxPowerKw"
                             rules={[
                                 {
@@ -341,7 +341,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                             <InputNumber style={{ width: "100%" }} placeholder="请输入充放功率" />
                         </Form.Item>
                         <Form.Item
-                            label="项目容量(kWh)"
+                            label="项目容量(MWh)"
                             name="capacityKwh"
                             rules={[
                                 {
