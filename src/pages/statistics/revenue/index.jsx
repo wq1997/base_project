@@ -88,7 +88,7 @@ const Revenue = () => {
             },
             xAxis: [{
                 type: 'category',
-                data: dataSource?.map(item => moment(item.time).format(timeType === "day" ? "YYYY/MM/DD" : "YYYY/MM")),
+                data: dataSource?.map(item => item.displayTime),
                 axisLine: {
                     lineStyle: {
                         color: 'rgba(255,255,255,0.12)'
@@ -198,8 +198,8 @@ const Revenue = () => {
     const getTableData = async () => {
         const params = await getParams();
         const res = await showDataByTableServe(params);
-        if (res?.data?.data?.data) {
-            const data = res?.data?.data?.data;
+        if (res?.data?.data) {
+            const data = res?.data?.data;
             setTableData(data);
         }
     }
@@ -207,8 +207,8 @@ const Revenue = () => {
     const getDataSource = async (params) => {
         setLoading(true);
         const res = await getRevenueServe(params);
-        if (res?.data?.data?.data) {
-            setDataSource(res?.data?.data?.data)
+        if (res?.data?.data) {
+            setDataSource(res?.data?.data)
         } else {
             setDataSource([]);
         }
