@@ -74,7 +74,7 @@ const Electricity = () => {
         lMax = Math.ceil(lMax / 5) * 5 || 100;
         const lInterval = lMax / 5;
 
-        let rMax = Number(Math.max(...dataSource?.map(item => item.cDEfficiency) || []));
+        let rMax = Number(Math.max(...dataSource?.map(item => item.efficiency) || []));
         rMax = Math.ceil(rMax / 5) * 5 || 100;
         const rInterval = rMax / 5;
 
@@ -197,7 +197,7 @@ const Electricity = () => {
                 },
                 {
                     type: 'line',
-                    data: dataSource?.map(item => item.cDEfficiency),
+                    data: dataSource?.map(item => item.efficiency),
                     yAxisIndex: 1,
                     name: `${intl.formatMessage({ id: '充放电效率' })}(%)`,
                     lineStyle: {
@@ -493,8 +493,8 @@ const Electricity = () => {
                                     },
                                     {
                                         title: `${intl.formatMessage({ id: '充放电效率' })}(%)`,
-                                        dataIndex: 'cDEfficiency',
-                                        key: 'cDEfficiency',
+                                        dataIndex: 'efficiency',
+                                        key: 'efficiency',
                                     },
                                     {
                                         title: `${intl.formatMessage({ id: '收益' })}(${intl.formatMessage({ id: '元' })})`,
