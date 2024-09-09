@@ -28,8 +28,9 @@ const IncomeRanking = ({currentPlantId}) => {
             plantId: currentPlantId,
             dateType: 'day'
         })
-        if (res?.data?.data?.data) {
-            data = res?.data?.data?.data?.map(item => item.number);
+
+        if (res?.data?.data) {
+            data = res?.data?.data?.map(item => item.number);
         }
 
         setOptions({
