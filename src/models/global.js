@@ -5,7 +5,7 @@ export default {
     namespace: "global",
 
     state: {
-        theme: localStorage.getItem("theme") || "default",
+        theme: localStorage.getItem("theme") || "dark",
         locale: getLocalStorage("locale") || "zh_CN",
     },
 
