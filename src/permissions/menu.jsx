@@ -55,11 +55,11 @@ const MenuList = [
                 label: "工单列表",
                 permissions: 'menu:work_order_manage'
             },
-            // {
-            //     key: '/project-management/spare-parts-management',
-            //     label: '备件管理',
-            //     permissions: 'menu:spare_manage'
-            // },
+            {
+                key: '/project-management/spare-parts-management',
+                label: '备件管理',
+                permissions: 'menu:spare_manage'
+            },
             {
                 key: '/project-management/abnormal',
                 label: '异常复盘',
@@ -69,19 +69,19 @@ const MenuList = [
                 key: '/project-management/alarmStatistics',
                 label: '告警管理'
             },
-            // {
-            //     key: '/project-management/resourcesInventory',
-            //     label: '人力资源复盘',
-            //     permissions: 'menu:human_resources_manage'
-            // }
+            {
+                key: '/project-management/resourcesInventory',
+                label: '人力资源复盘',
+                permissions: 'menu:human_resources_manage'
+            }
         ],
     },
-    // {
-    //     key: '/knowledgeBase',
-    //     label: '知识库',
-    //     icon: <DatabaseFilled />,
-    //     permissions: 'menu:knowledge_base_manage'
-    // },
+    {
+        key: '/knowledgeBase',
+        label: '知识库',
+        icon: <DatabaseFilled />,
+        permissions: 'menu:knowledge_base_manage'
+    },
     {
         key: "/system-configuration",
         label: "系统配置",

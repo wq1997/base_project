@@ -109,7 +109,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
         let res = undefined;
         let flag = false;
         if (currentStep === 0) {
-            values = await form.validateFields(['approvalTime', 'name', 'maxPowerKw', 'capacityKwh', 'phase', 'subPhase', 'supportStandardInspection', 'type', 'productType', 'region']);
+            values = await form.validateFields(['approvalTime', 'name', 'maxPowerMw', 'capacityMwh', 'phase', 'subPhase', 'supportStandardInspection', 'type', 'productType', 'region']);
             res = await basProjectPart1SaveOrUpdateServe({
                 ...values,
                 approvalTime: dayjs(values?.approvalTime).format("YYYY-MM-DD"),
@@ -330,7 +330,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                         </Form.Item>
                         <Form.Item
                             label="充放功率(MW)"
-                            name="maxPowerKw"
+                            name="maxPowerMw"
                             rules={[
                                 {
                                     required: true,
@@ -342,7 +342,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                         </Form.Item>
                         <Form.Item
                             label="项目容量(MWh)"
-                            name="capacityKwh"
+                            name="capacityMwh"
                             rules={[
                                 {
                                     required: true,

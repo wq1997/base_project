@@ -278,12 +278,12 @@ const Account = () => {
         },
         {
             title: "充放功率(MW)",
-            dataIndex: "maxPowerKw",
+            dataIndex: "maxPowerMw",
             width: 200
         },
         {
             title: "项目容量(MWh)",
-            dataIndex: "capacityKwh",
+            dataIndex: "capacityMwh",
             width: 200
         },
         {
