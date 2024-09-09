@@ -649,6 +649,7 @@ const Account = () => {
                                 })
                                 if (res?.data?.status === "SUCCESS") {
                                     message.success("删除成功！");
+                                    setSelectedRowKeys([]);
                                     getInviteList();
                                 }
                             }}
@@ -686,6 +687,7 @@ const Account = () => {
             ></Table>
             <Modal
                 title="供应商维护"
+                destroyOnClose={true}
                 open={supplierOpen}
                 width={1000}
                 onCancel={() => {
@@ -713,7 +715,7 @@ const Account = () => {
             >
                 <div style={{ minHeight: 300 }}>
                     <Form form={supplierForm}>
-                        <Form.Item name="supplierDataSource" validateTrigger={false}>
+                        <Form.Item name="supplierDataSource" validateTrigger={false} hidden={!supplierOpen}>
                             <EditTable.EditRowTable
                                 showAdd={true}
                                 showClear={true}

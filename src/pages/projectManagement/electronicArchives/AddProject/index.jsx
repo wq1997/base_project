@@ -892,6 +892,16 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                             <Form.Item
                                                 label="关联场站信息"
                                                 name="sePlants"
+                                                rules={[
+                                                    {
+                                                        validator: (rule, value) => {
+                                                            if(value?.length!==0&&value?.length>1){
+                                                                return Promise.reject("只能关联一个场站");
+                                                            }
+                                                            return Promise.resolve();
+                                                        }
+                                                    }
+                                                ]}
                                             >
                                                 <Select
                                                     mode="multiple"
@@ -905,8 +915,6 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                             })
                                                         }
                                                     })}
-                                                    maxTagCount={1}
-                                                    maxLength={1}
                                                 />
                                             </Form.Item>
                                         </Col>
