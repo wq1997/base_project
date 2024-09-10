@@ -145,22 +145,23 @@ const Index = ({ activePlant }) => {
                     //     },
                     // },
                 },
-                type == "DAY" && {
-                    data: Object.values(predictData || {}),
-                    type: "line",
-                    name: "功率预测",
-                    smooth: true,
-                    showSymbol: false,
-                    itemStyle: {
-                        normal: {
-                            color: "#EE6666",
+                type == "DAY" &&
+                    activePlant == 1 && {
+                        data: Object.values(predictData || {}),
+                        type: "line",
+                        name: "功率预测",
+                        smooth: true,
+                        showSymbol: false,
+                        itemStyle: {
+                            normal: {
+                                color: "#EE6666",
+                            },
+                        },
+                        lineStyle: {
+                            // type: "dashed",
+                            width: 2,
                         },
                     },
-                    lineStyle: {
-                        // type: "dashed",
-                        width: 2,
-                    },
-                },
             ],
         });
     };
