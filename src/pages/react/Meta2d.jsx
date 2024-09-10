@@ -17,13 +17,14 @@ export default class Meta2d extends React.Component {
     meta2d = new window.Meta2d("meta2d");
     // console.log(this.state.width,121212);
     window.registerCommonDiagram();
-    getLocalStorage('theme')==='default'?
-    this._fetch("/json/data.json", function (text) {
-      var data = JSON.parse(text);
-      data.locked = 1;
-      meta2d.open(data);
-      meta2d.fitView(false);
-    }):
+    // getLocalStorage('theme')==='default'?
+    // this._fetch("/json/data.json", function (text) {
+    //   var data = JSON.parse(text);
+    //   data.locked = 1;
+    //   meta2d.open(data);
+    //   meta2d.fitView(false);
+    // })
+    // :
     this._fetch("/json/data1.json", function (text) {
       var data = JSON.parse(text);
       data.locked = 1;

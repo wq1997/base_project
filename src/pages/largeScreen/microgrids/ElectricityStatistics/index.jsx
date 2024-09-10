@@ -78,6 +78,7 @@ const ElectricityStatistics = ({plantId}) => {
                 data: data.area
             },
             yAxis: {
+                name: '(kWh)',
                 type: 'value',
                 axisLabel: {
                     color: 'white'

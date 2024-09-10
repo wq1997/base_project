@@ -24,7 +24,7 @@ const PowerCurve = ({plantId}) => {
             color: colors,
             legend: {
                 top: 0,
-                right: 0,
+                right: '20px',
                 textStyle: {
                     fontSize: 14,
                     color: 'white',
@@ -43,7 +43,7 @@ const PowerCurve = ({plantId}) => {
             },
             grid: {
                 left: 0,
-                right: 0,
+                right: 20,
                 bottom: 0,
                 containLabel: true
             },
@@ -65,10 +65,12 @@ const PowerCurve = ({plantId}) => {
                 boundaryGap: false,
             },
             yAxis: {
+                name: '(kW)',
                 type: 'value',
                 axisLabel: {
                     color: 'white'
                 },
+               
                 axisLine: {
                     lineStyle: {
                         color: '#96A4F4'

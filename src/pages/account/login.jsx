@@ -10,7 +10,7 @@ import styles from "./index.less";
 import { history, useDispatch, FormattedMessage,useIntl} from "umi";
 import { useEffect, useState } from "react";
 import { getBaseUrl } from '@/services/request'
-import img from '../../../src/assets/imges/login.png'
+import img from '../../../src/assets/imges/login1.png'
 import img_title from '../../../src/assets/imges/login_title.png'
 
 const { Title } = Typography;
@@ -89,9 +89,9 @@ const Login = () => {
       className={styles.login}
     >
       <img src={img} style={{ width: '100%', height: '100%', objectFit: 'cover', verticalAlign: 'middle' }} />
-      <img src={img_title} style={{ height: '30px', position: 'absolute', top: '80px', left: '80px' }} alt="" />
-      <Title level={1} style={{ position: 'absolute', top: '80px', left: '80px', color: '#273667', fontFamily: 'DingTalkJinBuTi', fontSize: '64px' }}><FormattedMessage id="app.title" /></Title>
-
+      {/* <img src={img_title} style={{ height: '30px', position: 'absolute', top: '80px', left: '80px' }} alt="" /> */}
+      <Title level={1} style={{ position: 'absolute', top: '80px', left: '80px', color: '#FFFFFF', fontFamily: 'DingTalkJinBuTi', fontSize: '64px' }}><FormattedMessage id="app.title" /></Title>
+      {/* //#273667 */}
       <div
         style={{
           width: 600,

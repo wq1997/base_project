@@ -9,7 +9,7 @@
 // let newObj=getObj(arr);
 export default {
     app:{
-        title: '采日工商业微网孪生平台',
+        title: '工商业微网孪生平台',
         Query:'查询',
         Export:'导出',
         Language:'语言',

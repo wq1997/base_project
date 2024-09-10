@@ -53,6 +53,7 @@ const IncomeStatistics = ({plantId}) => {
             ],
             yAxis: [
                 {
+                    name: '(元)',
                     type: 'value',
                     axisLabel: {
                         color: 'white'

@@ -282,6 +282,7 @@ function OverView(props) {
             xAxis: [
                 {
                     type: 'category',
+                    data: dateX,
                     axisTick: {
                         alignWithLabel: true
                     }

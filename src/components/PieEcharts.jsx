@@ -36,17 +36,17 @@ function Com(props) {
                 padding: [0, 10],
                 itemGap: 10,
                 textStyle: {
-                    color:token.smallTitleColor,
+                    color:token.titleColor,
                     rich: {
                         title: {
                             fontSize: 16,
                             lineHeight: 15,
-                            color: token.smallTitleColor
+                            color: token.titleColor
                         },
                         value: {
                             fontSize: 18,
                             lineHeight: 20,
-                            color: token.smallTitleColor
+                            color: token.titleColor
                         }
                     }
                 },
@@ -70,11 +70,11 @@ function Com(props) {
                                 length: 5,
                                 // length2: 12,
                                 lineStyle: {
-                                    color: token.smallTitleColor
+                                    color: token.titleColor
                                 },
                                 align: 'left'
                             },
-                            color: token.smallTitleColor,
+                            color: token.titleColor,
                             // emphasis: {
                             //     show: true
                             // }
@@ -85,12 +85,12 @@ function Com(props) {
                                 rich: {
                                     nameStyle: {
                                         fontSize: 12,
-                                        color: token.smallTitleColor,
+                                        color: token.titleColor,
                                         align: 'right'
                                     },
                                     rate: {
                                         fontSize: 12,
-                                        color: token.smallTitleColor,
+                                        color: token.titleColor,
                                         align: 'right'
                                     }
                                 }
