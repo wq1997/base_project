@@ -97,9 +97,7 @@ const BaseLayout = () => {
                                                 onClick={() => {
                                                     dispatch({ type: "user/logout" });
                                                 }}
-                                                style={{
-                                                    
-                                                }}
+                                                style={{}}
                                             >
                                                 <Icon
                                                     type="icon-dengchu"
@@ -113,7 +111,7 @@ const BaseLayout = () => {
                                     },
                                 ],
                             }}
-                            placement="bottom"
+                            placement="bottomRight"
                         >
                             <Row align="middle">
                                 <Avatar
