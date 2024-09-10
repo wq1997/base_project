@@ -1884,5 +1884,6 @@ export default {
 '请选择电站':'Please select power station',
 '请选择设备':'Please select device',
 'BMS1功率':'BMS1 Power',
-'BMS2功率':'BMS2 Power'
+'BMS2功率':'BMS2 Power',
+'语言切换':'Language switching'
 } 

@@ -28,9 +28,9 @@ const ElectricityRanking = ({ currentPlantId }) => {
             plantId: currentPlantId,
             dateType: 'day'
         })
-        if (res?.data?.data?.data) {
-            data_1 = res?.data?.data?.data?.map(item => item.dayChargeEnergy);
-            data_2 = res?.data?.data?.data?.map(item => item.dayDischargeEnergy);
+        if (res?.data?.data) {
+            data_1 = res?.data?.data?.map(item => item.dayChargeEnergy);
+            data_2 = res?.data?.data?.map(item => item.dayDischargeEnergy);
         }
         setOptions({
             tooltip: {

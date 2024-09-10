@@ -290,13 +290,14 @@ const MonitoringCurves = () => {
                 })
             })
         }
-        if (dataType == 1870 || dataType == 1930 || dataType == 1921 || dataType == 1920 || dataType == 1871 || dataType == 1931) {
-            const fieldList = [currentData?.label];
-            date?.forEach(item => {
-                fieldList.forEach(field => {
-                    legendData.push(`${item} ${field}`);
-                })
+        
+        if (dataType === 1870 || dataType === 1930 || dataType === 1921 || dataType === 1920 || dataType === 1871 || dataType === 1931) {
+        const fieldList = [dataProList.find(it=>it.value===dataType).label];
+        date?.forEach(item => {
+            fieldList.forEach(field => {
+                legendData.push(`${item} ${field}`);
             })
+        })
             legendData.forEach((legend, index) => {
                 const currentDate = legend?.split(' ')?.[0];
                 const currentData = dataSource?.find(item => item.date === currentDate);
@@ -309,6 +310,8 @@ const MonitoringCurves = () => {
                     filed = 'SOC';
                 }
                 const data = currentData?.energyData?.[filed];
+        console.log(filed,dataType,currentData,1111111111);
+
                 series.push({
                     name: legend,
                     type: 'line',
@@ -317,7 +320,8 @@ const MonitoringCurves = () => {
                 })
             })
         }
-
+        console.log(series,1111111111);
+        
 
         const option = {
             tooltip: {

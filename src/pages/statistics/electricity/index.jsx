@@ -199,7 +199,7 @@ const Electricity = () => {
                 },
                 {
                     type: 'line',
-                    data: dataSource?.map(item => item.cDEfficiency),
+                    data: dataSource?.map(item => item.efficiency),
                     yAxisIndex: 1,
                     name: `${intl.formatMessage({ id: '充放电效率' })}(%)`,
                     lineStyle: {
@@ -236,7 +236,6 @@ const Electricity = () => {
                 const { plantId: currentPlantId } = await form.getFieldsValue(["plantId"])
                 if (!currentPlantId) {
                     form.setFieldsValue({ plantId, deviceId: data?.[0]?.value });
-
                     setTimeout(async () => {
                         const params = await getParams();
                         getDataSource(params);
@@ -266,8 +265,8 @@ const Electricity = () => {
     const getTableData = async () => {
         const params = await getParams();
         const res = await showDataByTableServe(params);
-        if (res?.data?.data?.data) {
-            const data = res?.data?.data?.data;
+        if (res?.data?.data) {
+            const data = res?.data?.data;
             setTableData(data);
         }
     }
@@ -275,8 +274,8 @@ const Electricity = () => {
     const getDataSource = async (params) => {
         setLoading(true);
         const res = await getRevenueServe(params);
-        if (res?.data?.data?.data) {
-            setDataSource(res?.data?.data?.data)
+        if (res?.data?.data) {
+            setDataSource(res?.data?.data)
         } else {
             setDataSource([]);
         }
@@ -474,8 +473,8 @@ const Electricity = () => {
                                     },
                                     {
                                         title: `${intl.formatMessage({ id: '充放电效率' })}(%)`,
-                                        dataIndex: 'cDEfficiency',
-                                        key: 'cDEfficiency',
+                                        dataIndex: 'efficiency',
+                                        key: 'efficiency',
                                     },
                                     
                                 ]}
