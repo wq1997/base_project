@@ -21,6 +21,7 @@ const Index = () => {
     const [activePlant, setActivePlant] = useState();
     const [activePlantName, setActivePlantName] = useState();
     const [plants, setPlants] = useState([]);
+    const [mapPlants, setMapPlants] = useState([]);
     const [statisticsData, setStatisticsData] = useState();
 
     const getPlantNames = async () => {
@@ -55,16 +56,18 @@ const Index = () => {
 
     useEffect(() => {
         getPlanStatistics(activePlant);
-        const activePlantName = plants?.find(item => item.id == activePlant)?.name;
-        setActivePlantName(activePlantName);
+        const plant = plants?.find(item => item.id == activePlant);
+        setMapPlants(plant ? [plant] : []);
+        setActivePlantName(plant?.name);
     }, [activePlant]);
 
     return (
-        <div className={styles.container} style={{background: token.overviewBgColor}}>
+        <div className={styles.container} style={{ background: token.overviewBgColor }}>
             <div className={styles.left}>
                 <div className={styles.map}>
                     <Map
                         plants={plants}
+                        mapPlants={mapPlants}
                         activePlant={activePlant}
                         setActivePlant={setActivePlant}
                     />

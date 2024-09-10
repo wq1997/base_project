@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import { Select, theme as antdTheme } from "antd";
-import { useSelector, history } from "umi";
+import { useSelector } from "umi";
 import defalut from "@/assets/imges/default.jpg";
 import styles from "./index.less";
-import { useEmotionCss } from "@ant-design/use-emotion-css";
+import { useEmotionCss } from '@ant-design/use-emotion-css';
 import classNames from "classnames";
 
 const baseUrl = process.env.API_URL_1;
 
-const Index = ({ plants, mapPlants, activePlant, setActivePlant }) => {
+const Index = ({ plants, activePlant, setActivePlant }) => {
     const { token } = antdTheme.useToken();
     const { theme } = useSelector(state => state.global);
-    const [mapObj, setMapObj] = useState(null);
+    const [map, setMap] = useState();
     const defaultZoom = 5;
     const [center, setCenter] = useState([108.9, 34.2]);
 
@@ -20,40 +20,41 @@ const Index = ({ plants, mapPlants, activePlant, setActivePlant }) => {
         map.setCenter(center);
     };
 
-    const fontColor = useEmotionCss(() => {
+    const fontColor = useEmotionCss(()=>{
         return {
-            color: token.color9,
-        };
-    });
+            color: token.color9
+        }
+    })
 
-    const dataColor = useEmotionCss(() => {
+    const dataColor = useEmotionCss(()=>{
         return {
-            color: token.color10,
-        };
-    });
+            color: token.color10
+        }
+    })
 
     useEffect(() => {
-        const _map = new AMap.Map("map", {
+        const map = new AMap.Map("map", {
             zoom: defaultZoom,
             center,
+            // layers: [
+            //     new AMap.TileLayer.Satellite(),
+            //     new AMap.TileLayer.RoadNet(),
+            // ],
         });
-        if (!mapObj) {
-            setMapObj(_map);
-        }
-        _map.on("complete", async () => {
-            if (theme === "default") {
-                _map.setMapStyle("amap://styles/white");
-            } else {
-                _map.setMapStyle("amap://styles/blue");
+        map.on("complete", async () => {
+            if(theme==="default"){
+                map.setMapStyle("amap://styles/white");
+            }else{
+                map.setMapStyle("amap://styles/blue");
             }
             const infoWindow = new AMap.InfoWindow({ offset: new AMap.Pixel(0, -30) });
-            addMarkers(_map, infoWindow, mapPlants);
-            positioning(_map, mapPlants?.[0]?.id);
+            setMap(map);
+            addMarkers(map, infoWindow, plants);
         });
-    }, [mapPlants, theme]);
+    }, [plants, theme]);
 
-    const addMarkers = (map, infoWindow, mapPlants) => {
-        mapPlants.forEach((item, index) => {
+    const addMarkers = (map, infoWindow, plants) => {
+        plants.forEach((item, index) => {
             const marker = new AMap.Marker({
                 position: new AMap.LngLat(...item.position),
                 icon: require("../../../../assets/imges/point.png"),
@@ -63,7 +64,7 @@ const Index = ({ plants, mapPlants, activePlant, setActivePlant }) => {
                 //     imageSize: new AMap.Size(64, 64), // 根据所设置的大小拉伸或压缩图片
                 // }),
                 // offset: new AMap.Pixel(-32, -32),
-                map,
+                map: map,
                 //content: `<div class=${styles["custom-content-marker"]}><div class=${styles.item}></div></div>`,
             });
             marker.content = `
@@ -116,20 +117,16 @@ const Index = ({ plants, mapPlants, activePlant, setActivePlant }) => {
         });
     };
 
-    const positioning = (map, plantId) => {
-        const moveTo = mapPlants?.find(item => item.value == plantId)?.position;
-        if (!map || !mapPlants) return;
-        map.panTo(moveTo);
-        map.setZoom(15);
-        map.setCenter(moveTo);
-    };
-
     const onSelectPlant = value => {
         setActivePlant(value);
         if (!value) {
             return reset();
         }
-        positioning(mapObj, value);
+        const moveTo = plants?.find(item => item.value == value)?.position;
+        if (!map || !plants) return;
+        map.panTo(moveTo);
+        map.setZoom(20);
+        map.setCenter(moveTo);
     };
 
     return (
@@ -158,6 +155,7 @@ const Index = ({ plants, mapPlants, activePlant, setActivePlant }) => {
                 <Select
                     placeholder="请选择电站"
                     style={{ width: "250px", marginRight: "5px" }}
+                    allowClear={true}
                     value={activePlant}
                     onChange={onSelectPlant}
                     options={plants}
