@@ -113,10 +113,10 @@ const BaseLayout = () => {
                                 }
                             }}
                         >
-                            <QuestionCircleOutlined style={{ cursor: 'pointer', fontSize: 35, color: token.iconColor }} />
+                            <QuestionCircleOutlined style={{ cursor: 'pointer', fontSize: '1.8229rem', color: token.iconColor }} />
                         </Dropdown>
                         <HomeOutlined
-                            style={{ cursor: 'pointer', fontSize: 35, color: token.iconColor,
+                            style={{ cursor: 'pointer', fontSize: '1.8229rem', color: token.iconColor,
                                 margin: '0px 40px'
 
                              }}
@@ -125,7 +125,7 @@ const BaseLayout = () => {
                         <Tooltip title={useLocale('语言切换')} placement="bottom">
                             <img
                                 style={{
-                                    width: 40,
+                                    width: '2.0833rem',
                                     cursor: 'pointer'
                                 }}
                                 src={
@@ -141,9 +141,9 @@ const BaseLayout = () => {
                             <SkinOutlined
                                 style={{
                                     cursor: "pointer",
-                                    fontSize: 35,
+                                    fontSize: '1.8229rem',
                                     color: token.iconColor,
-                                    margin: '0px 40px'
+                                    margin: '0px 2.0833rem'
                                 }}
                                 onClick={() => changeTheme(global.theme === "default" ? "dark" : "default")}
                             />
@@ -169,7 +169,7 @@ const BaseLayout = () => {
                                 }
                             }}
                         >
-                           <UserOutlined style={{ cursor: 'pointer', fontSize: 35, color: token.iconColor }} />
+                           <UserOutlined style={{ cursor: 'pointer', fontSize:' 1.8229rem', color: token.iconColor }} />
                         </Dropdown>
                     </div>
                 </Header>
@@ -182,7 +182,7 @@ const BaseLayout = () => {
                         </div>
                     </Sider>}
                     <Content className={styles.content}
-                        style={{backgroundColor:token.layoutContentBgc}}>
+                        style={{backgroundColor:token.layoutContentBgc,}}>
                         <div className={styles.inContent}>
                             <Outlet />
                         </div>
