@@ -1,16 +1,24 @@
 @import "./foot.less";
 
-body {
+body,
+html {
     margin: 0;
     padding: 0;
 }
+
+// #root {
+//     min-width: 1200px;
+//     min-height: 600px;
+// }
 
 .ant-menu {
     background-color: unset;
 }
 
 .ant-menu-light.ant-menu-inline .ant-menu-sub.ant-menu-inline,
-:where(.css-dev-only-do-not-override-1sn0ohr).ant-menu-light>.ant-menu.ant-menu-inline .ant-menu-sub.ant-menu-inline {
+:where(.css-dev-only-do-not-override-1sn0ohr).ant-menu-light
+    > .ant-menu.ant-menu-inline
+    .ant-menu-sub.ant-menu-inline {
     background-color: unset;
 }
 
@@ -67,7 +75,7 @@ body {
     background: none !important;
 }
 
-.ant-table-wrapper .ant-table-tbody>tr.ant-table-placeholder {
+.ant-table-wrapper .ant-table-tbody > tr.ant-table-placeholder {
     background: none !important;
 }
 
@@ -104,10 +112,10 @@ body {
 }
 
 a {
-    color: #49A2F8;
+    color: #49a2f8;
 
     &:hover {
-        color: #49A2F8;
+        color: #49a2f8;
     }
 }
 

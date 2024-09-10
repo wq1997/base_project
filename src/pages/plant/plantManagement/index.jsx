@@ -256,6 +256,9 @@ const Log = () => {
                         </Button>
                     </div>
                 )}
+                scroll={{
+                    x: 1500,
+                }}
             />
         </>
     );

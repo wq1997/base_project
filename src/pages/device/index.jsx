@@ -382,7 +382,7 @@ const Log = () => {
                                 <QuestionCircleOutlined style={{ marginRight: "5px" }} />
                                 设备状态说明
                             </div>
-                            <div className="explainTable" style={{background: token.color5}}>
+                            <div className="explainTable" style={{ background: token.color5 }}>
                                 <Table
                                     bordered
                                     size="small"
@@ -446,6 +446,9 @@ const Log = () => {
                         </Button>
                     </Space>
                 )}
+                scroll={{
+                    x: 1500,
+                }}
             />
         </>
     );

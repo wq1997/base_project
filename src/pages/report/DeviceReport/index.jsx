@@ -78,7 +78,7 @@ const Log = () => {
         const type = deviceTypeRef?.current;
         const code = deviceCodeRef?.current;
         const timePeriod = timeDimensionRef.current || "DAY";
-        const time = timeRef.current||moment().format("YYYY-MM-DD");
+        const time = timeRef.current || moment().format("YYYY-MM-DD");
         if (!time) return message.info("请先选择日期");
         setLoading(true);
         const res = await getDeviceReportListServer({
@@ -217,6 +217,9 @@ const Log = () => {
                 onChange={pagination => {
                     paginationRef.current = pagination;
                     getList();
+                }}
+                scroll={{
+                    x: 1500,
                 }}
                 title={() => (
                     <div

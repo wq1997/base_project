@@ -166,6 +166,9 @@ const Log = () => {
                     paginationRef.current = pagination;
                     getList();
                 }}
+                scroll={{
+                    x: 1500,
+                }}
                 title={() => (
                     <div
                         style={{
