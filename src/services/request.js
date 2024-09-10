@@ -36,7 +36,7 @@ instance.interceptors.response.use(response => {
                 if(data.msg==="Please login！"){
                     logout();
                 }
-                return
+                return Promise.resolve(response);
             }
             if((data.code==="ok"||data.msg==="ok")&&data.msg&&data.msg!=="ok"){
                 message.success(data.msg);

@@ -204,8 +204,6 @@ const RealtimeAlarm = () => {
         const res = await updateDtus({ ...value, id: record.id });
         if (res?.data?.data) {
             changePlant(currentPlantId)
-        } else {
-            message.error(data.msg)
         }
     }
     const getAllPlant = async () => {
