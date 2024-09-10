@@ -2052,4 +2052,5 @@ export default {
     'BCMU最高软件版本': 'BCMU highest software version',
     'BCMU最高硬件版本': 'BCMU highest hardware version',
     '变压器容量保护比例': 'Transformer capacity protection ratio',
+    '结束1': 'Endding'
 } 
