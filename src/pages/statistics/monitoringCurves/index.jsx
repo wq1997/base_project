@@ -203,7 +203,7 @@ const MonitoringCurves = () => {
 
         if (dataType === 414) {
             const fieldList = [intl.formatMessage({ id: '最高电压' }), intl.formatMessage({ id: '最低电压' }), intl.formatMessage({ id: '压差' })];
-            yAxis[0].name = `${intl.formatMessage({ id: '最高电压' })}/${intl.formatMessage({ id: '最低电压' })}`;
+            yAxis[0].name = `${intl.formatMessage({ id: '电压' })}`;
             yAxis[0].nameTextStyle = {
                 color: 'white'
             };
@@ -254,7 +254,7 @@ const MonitoringCurves = () => {
 
         if (dataType === 415) {
             const fieldList = [intl.formatMessage({ id: '最高温度' }), intl.formatMessage({ id: '最低温度' }), intl.formatMessage({ id: '温差' })];
-            yAxis[0].name = `${intl.formatMessage({ id: '最高温度' })}/${intl.formatMessage({ id: '最低温度' })}`;
+            yAxis[0].name = `${intl.formatMessage({ id: '温度' })}`;
             yAxis[0].nameTextStyle = {
                 color: 'white'
             };

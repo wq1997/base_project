@@ -1,6 +1,7 @@
 export default {
     app: {
         title: 'Sermatec Energy Storage Management System',
+        title1: 'SMT-ESS-CUBE215 Energy storage management system',
         Query: "Query",
         Export: 'Export',
         Language: 'Language',
@@ -1734,7 +1735,6 @@ export default {
     '请选择时间': 'Please select time',
     '请选择数据项': 'Please select data item',
     '单体电压/mV': 'Single cell voltage/mV',
-    '单体温度/℃': 'Single cell temperature/mV',
     '正极极柱温度': 'Positive pole temperature',
     '负极极柱温度': 'Negative pole temperature',
     '左侧熔断器温度': 'Left fuse temperature',

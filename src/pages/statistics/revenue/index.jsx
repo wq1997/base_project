@@ -217,6 +217,9 @@ const Revenue = () => {
 
     useEffect(() => {
         initOption();
+        setTimeout(()=>{
+            getTableData();
+        }, 200)
     }, [dataSource, theme, locale]);
 
     useEffect(() => {

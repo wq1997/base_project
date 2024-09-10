@@ -282,6 +282,9 @@ const Electricity = () => {
 
     useEffect(() => {
         initOption();
+        setTimeout(()=>{
+            getTableData();
+        }, 200)
     }, [dataSource, theme, locale]);
 
     useEffect(() => {

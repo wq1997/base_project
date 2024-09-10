@@ -85,7 +85,10 @@ const Login = () => {
       }}
       className={styles.login}
     >
-      <Title className={styles.Title} level={1} ><FormattedMessage id="app.title" /></Title>
+      <Title className={styles.Title} level={1} >
+        {/* <FormattedMessage id="app.title" /> */}
+        <FormattedMessage id="app.title1" />
+      </Title>
       <div
         style={{
           width: 450,

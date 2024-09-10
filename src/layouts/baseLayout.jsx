@@ -94,7 +94,7 @@ const BaseLayout = () => {
                     style={{ background: token.bgcColorB_l }}
                 >
                     <div style={{ display: "flex", alignItems: "center" }}>
-                        <img
+                        {/* <img
                             src={global?.theme === "default" ? logo : logoWhite}
                             style={{ height: "25px", marginRight: "10px" }}
                         />
@@ -105,7 +105,7 @@ const BaseLayout = () => {
                                 height: '28px',
                                 margin: '0 15px'
                             }}
-                        />
+                        /> */}
                         <div
                             style={{
                                 color: token.titleColor
@@ -113,7 +113,8 @@ const BaseLayout = () => {
                             level={3}
                             className={styles.title}
                         >
-                            <FormattedMessage id="app.title" />
+                            {/* <FormattedMessage id="app.title" /> */}
+                            <FormattedMessage id="app.title1" />
                         </div>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0 40px' }}>
@@ -168,7 +169,7 @@ const BaseLayout = () => {
                             onClick={() => history.push('/index/device')}
                         />
                         <Dropdown
-                            placement="bottom"
+                            placement="bottomRight"
                             menu={{
                                 items: [
                                     {

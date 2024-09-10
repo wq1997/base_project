@@ -89,7 +89,12 @@ const SchematicDiagram = ({dataSource, allData}) => {
     return (
         <div
             ref={schematicDiagramRef}
-            style={{width: '100%', height: '100%', position: 'relative'}}
+            style={{
+                width: '100%', 
+                height: '100%', 
+                position: 'relative',
+                minWidth: 1200
+            }}
         >
             <div
                 style={{
@@ -205,7 +210,7 @@ const SchematicDiagram = ({dataSource, allData}) => {
                             {/* {totalActivePowerData>0&&intl.formatMessage({id:'放电'})}
                             {totalActivePowerData<0&&intl.formatMessage({id:'充电'})}
                             {totalActivePowerData===0&&intl.formatMessage({id:'待机'})} */}
-                            <span style={{width: 50, display: 'inline-block'}}>{allData?.pcs?.pcsState||intl.formatMessage({id:'待机'})}</span>
+                            <span style={{width: 60, display: 'inline-block'}}>{allData?.pcs?.pcsState||intl.formatMessage({id:'待机'})}</span>
                         </div>
                         <div>{intl.formatMessage({id:'功率'})}：{dataSource?.totalActivePower} kW</div>
                     </div>
