@@ -277,13 +277,13 @@ const Account = () => {
             width: 200
         },
         {
-            title: "充放功率(kW)",
-            dataIndex: "maxPowerKw",
+            title: "充放功率(MW)",
+            dataIndex: "maxPowerMw",
             width: 200
         },
         {
-            title: "项目容量(kWh)",
-            dataIndex: "capacityKwh",
+            title: "项目容量(MWh)",
+            dataIndex: "capacityMwh",
             width: 200
         },
         {
@@ -649,6 +649,7 @@ const Account = () => {
                                 })
                                 if (res?.data?.status === "SUCCESS") {
                                     message.success("删除成功！");
+                                    setSelectedRowKeys([]);
                                     getInviteList();
                                 }
                             }}
@@ -686,6 +687,7 @@ const Account = () => {
             ></Table>
             <Modal
                 title="供应商维护"
+                destroyOnClose={true}
                 open={supplierOpen}
                 width={1000}
                 onCancel={() => {
@@ -713,7 +715,7 @@ const Account = () => {
             >
                 <div style={{ minHeight: 300 }}>
                     <Form form={supplierForm}>
-                        <Form.Item name="supplierDataSource" validateTrigger={false}>
+                        <Form.Item name="supplierDataSource" validateTrigger={false} hidden={!supplierOpen}>
                             <EditTable.EditRowTable
                                 showAdd={true}
                                 showClear={true}

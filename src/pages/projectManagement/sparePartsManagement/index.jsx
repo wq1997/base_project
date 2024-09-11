@@ -24,20 +24,9 @@ const SparePartsManagement = () => {
     const [useOpen, setUseOpen] = useState(false);
     const [recordOpen, setRecordOpen] = useState(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-    const [canSure, setCanSure] = useState(true);
-    const [canDelete, setCanDelete] = useState(true);
-    const [canInvalid, setCanInvalid] = useState(true);
-    const [dataSource, setDataSource] = useState([{
-        name: '备件1'
-    }]);
+    const [dataSource, setDataSource] = useState([]);
 
     const onSelectChange = (newSelectedRowKeys, newSelectedRows) => {
-        const hasNoSure = Boolean(newSelectedRows?.some(item => item.supportConfirm == false));
-        setCanSure(!hasNoSure);
-        const hasNoDelete = Boolean(newSelectedRows?.some(item => item.supportDelete == false));
-        setCanDelete(!hasNoDelete);
-        const hasNoInvalid = Boolean(newSelectedRows?.some(item => item.supportInvalid == false));
-        setCanInvalid(!hasNoInvalid);
         setSelectedRowKeys(newSelectedRowKeys);
     };
 

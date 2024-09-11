@@ -24,14 +24,17 @@ const MenuList = [
         label: "运维工作台",
         icon: <AppstoreFilled />,
         darkIcon: "icon-wuliaoxuqiu-copy",
+        permissions: 'menu:workbench',
         children: [
             {
                 key: "/workbench/management-roles",
                 label: "管理角色",
+                permissions: 'menu:workbench4manager'
             },
             {
                 key: "/workbench/execution-roles",
                 label: "执行角色",
+                permissions: 'menu:workbench4executor'
             },
         ],
     },
@@ -40,61 +43,66 @@ const MenuList = [
         label: "项目管理",
         icon: <FolderOpenFilled />,
         darkIcon: "icon-wuliaoxuqiu-copy",
+        permissions: 'menu:project_manage',
         children: [
             {
                 key: "/project-management/electronic-archives",
                 label: "电子档案",
-                // children: [
-                //     {
-                //         key: "/project-management/electronic-archives/mocha-itom",
-                //         label: "运维管理",
-                //     },
-                // ],
+                permissions: 'menu:archives_manage'
             },
             {
                 key: "/project-management/task-list",
                 label: "工单列表",
+                permissions: 'menu:work_order_manage'
             },
-            // {
-            //     key: '/project-management/spare-parts-management',
-            //     label: '备件管理'
-            // },
+            {
+                key: '/project-management/spare-parts-management',
+                label: '备件管理',
+                permissions: 'menu:spare_manage'
+            },
             {
                 key: '/project-management/abnormal',
-                label: '异常复盘'
+                label: '异常复盘',
+                permissions: 'menu:exception_manage'
             },
             {
                 key: '/project-management/alarmStatistics',
                 label: '告警管理'
             },
-            // {
-            //     key: '/project-management/resourcesInventory',
-            //     label: '人力资源复盘'
-            // }
+            {
+                key: '/project-management/resourcesInventory',
+                label: '人力资源复盘',
+                permissions: 'menu:human_resources_manage'
+            }
         ],
     },
-    // {
-    //     key: '/knowledgeBase',
-    //     label: '知识库',
-    //     icon: <DatabaseFilled />,
-    // },
+    {
+        key: '/knowledgeBase',
+        label: '知识库',
+        icon: <DatabaseFilled />,
+        permissions: 'menu:knowledge_base_manage'
+    },
     {
         key: "/system-configuration",
         label: "系统配置",
         icon: <SettingFilled />,
         darkIcon: "icon-wuliaoxuqiu-copy",
+        permissions: 'menu:sys_manage',
         children: [
             {
                 key: "/system-configuration/account-management",
                 label: "账号管理",
+                permissions: 'menu:user_manage'
             },
             {
                 key: "/system-configuration/role-management",
                 label: "角色管理",
+                permissions: 'menu:role'
             },
             {
                 key: "/system-configuration/checkitem-configuration",
                 label: "巡检项配置",
+                permissions: 'menu:inspection_item_manage'
             },
             {
                 key: '/system-configuration/alarm-configuration',

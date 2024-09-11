@@ -349,6 +349,9 @@ const EditRowTable = ({
             dataSource={dataSource}
             columns={myColumns}
             pagination={false}
+            scroll={{
+              y: 500
+            }}
             {...rest}
           />
         </Form>

@@ -148,3 +148,7 @@ export const alarmStatisticsTablePageInitData = payload => {
 export const alarmStatisticsTable = payload => {
     return axiosInstance.post(`/se-alarm/find-page`, payload);
 };
+
+export const homeGetMainPageData = payload => {
+    return axiosInstance.get(`/home/get-main-page-data`)
+}

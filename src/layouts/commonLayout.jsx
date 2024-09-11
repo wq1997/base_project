@@ -11,12 +11,15 @@ const { Header, Sider, Content } = Layout;
 const CommonLayout = props => {
     const { token } = antdTheme.useToken();
     const { theme } = useSelector(state => state.global);
+    const { user } = useSelector(state => state.user);
     const Icon = useIcon();
     const dispatch = useDispatch();
     const { title, MyMenu } = props;
-
     useEffect(() => {
         document.title = title;
+        dispatch({
+            type: 'user/queryUser'
+        })
     }, []);
 
     const changeTheme = theme => {
@@ -139,7 +142,7 @@ const CommonLayout = props => {
                                     }}
                                     size="large"
                                 >
-                                    A
+                                    {user?.selfUser?.account?.substring(0, 1)?.toUpperCase()}
                                 </Avatar>
                                 <span
                                     style={{
@@ -148,7 +151,7 @@ const CommonLayout = props => {
                                         marginLeft: 10,
                                     }}
                                 >
-                                    Admin
+                                    {user?.selfUser?.account}
                                 </span>
                             </Row>
                         </Dropdown>

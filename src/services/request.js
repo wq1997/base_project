@@ -1,3 +1,4 @@
+import { message } from "antd";
 import axios from "axios";
 import { getDvaApp } from "umi";
 
@@ -28,6 +29,10 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
     response => {
         if (response.status === 200) {
+            if(response?.data?.status==="FAILED"){
+                message.error(response?.data?.msg);
+                return Promise.reject(response);
+            }
             return Promise.resolve(response);
         } else {
             return Promise.reject(response);
@@ -36,7 +41,7 @@ instance.interceptors.response.use(
     error => {
         const { config, code, request, response, isAxiosError, toJSON } = error;
         if (response) {
-            errorHandle(response.status, response.data.message);
+            errorHandle(response.status, response.data.msg);
             return Promise.reject(response);
         } else {
             if (error.message.includes("timeout")) {
@@ -53,7 +58,7 @@ instance.interceptors.response.use(
     }
 );
 
-const errorHandle = (status, message) => {
+const errorHandle = (status, msg) => {
     switch (status) {
         case 400:
             console.log("请求错误");
@@ -67,7 +72,6 @@ const errorHandle = (status, message) => {
         case 404:
             console.log("请求的资源不存在或请求地址出错");
             break;
-        // 500: 服务器错误
         case 500:
             console.log("服务器错误");
             break;
