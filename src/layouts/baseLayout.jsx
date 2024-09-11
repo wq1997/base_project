@@ -142,7 +142,7 @@ const BaseLayout = () => {
                         <Tooltip title={useLocale('语言切换')} placement="bottom">
                             <img
                                 style={{
-                                    width: 33,
+                                    width: 30,
                                     cursor: 'pointer'
                                 }}
                                 src={
