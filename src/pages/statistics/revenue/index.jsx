@@ -84,7 +84,7 @@ const Revenue = () => {
                 top: '40',
                 right: '3%',
                 left: '5%',
-                bottom: '80'
+                bottom: '40'
             },
             xAxis: [{
                 type: 'category',
@@ -335,7 +335,7 @@ const Revenue = () => {
                 <Title title={`${intl.formatMessage({ id: '收益统计' })}(${intl.formatMessage({ id: '元' })})`} />
                 <Spin spinning={loading}>
                     <Space direction="vertical" style={{ width: '100%' }}>
-                        <div style={{ width: '100%', height: "calc(50vh - 150px)" }}>
+                        <div style={{ width: '100%', height: "calc(50vh - 100px)" }}>
                             {
                                 dataSource?.length > 0 &&
                                 <ReactECharts option={option} notMerge style={{ width: '100%', height: '100%' }} />
@@ -346,7 +346,7 @@ const Revenue = () => {
                 <Title title={`${intl.formatMessage({ id: '收益明细' })}`} />
                 <Spin spinning={loading}>
                     <Space direction="vertical" style={{ width: '100%' }}>
-                        <div style={{ width: '100%', height: "calc(50vh - 200px)" }}>
+                        <div style={{ width: '100%', height: "calc(50vh - 250px)" }}>
                             <Table
                                 pagination={false}
                                 dataSource={tableData}
