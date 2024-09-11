@@ -5,7 +5,7 @@ import styles from './index.less'
 import { CardModel } from "@/components";
 import useIcon from "@/hooks/useIcon";
 import { useSelector, useIntl } from "umi";
-import { theme, Radio, Descriptions, Tooltip,Switch  } from "antd";
+import { theme, Radio, Descriptions, Tooltip, Switch } from "antd";
 import ReactECharts from "echarts-for-react";
 import { getGridPointPower, getPlantEnergyFee } from '@/services/home'
 import { getEnergyFeeByTime } from '@/services/report'
@@ -116,7 +116,7 @@ function OverView(props) {
             label: t('电站位置'),
             span: 2
         },
-    ] 
+    ]
     const getOptions = async () => {
         let { data: energyData } = await getEnergyFeeByTime({
             plantId: localStorage.getItem('plantId'),
@@ -193,7 +193,7 @@ function OverView(props) {
                         }
                     },
                     barWidth: '8%',
-                    data:energyInEnergy
+                    data: energyInEnergy
                 },
                 {
                     name: t('储能日放'),
@@ -254,8 +254,8 @@ function OverView(props) {
         let loadData = dealData(loadPower);
         let gridData = dealData(gridPower);
         let energyData = dealData(energyPower);
-        let dataX=[];
-        energyPower.map(it=>{
+        let dataX = [];
+        energyPower.map(it => {
             dataX.push(dayjs(it.time).format('HH:mm'))
         })
         setOptionsPower({
@@ -399,112 +399,125 @@ function OverView(props) {
             icon: 'icon-qian'
         },
     ])
-    const [flag,setFlag]=useState(true);
-    let signature=md5('appid=3179798697663791113&apikey=3179798697663791114&secretkey=7eec46100fbe5f6cac7ee3cc526b080d&method=POST&code=101')
+    const [flag, setFlag] = useState(true);
+    let signature = md5('appid=3179798697663791113&apikey=3179798697663791114&secretkey=7eec46100fbe5f6cac7ee3cc526b080d&method=POST&code=101')
     return (
-        <div className={styles.container} style={{ color: token.titleColor }}>
-            <div className={styles.imgPart} style={{ backgroundColor: token.titleCardBgc }}>
-                {flag&&<Img />}
-                {!flag&&<iframe className={styles.iframe} src={`https://admin.sovitjs.com/publish_2d/3252824411396374537?appid=3179798697663791113&apikey=3179798697663791114&method=POST&code=101&signature=${signature}`}></iframe>}
-                <Switch className={styles.change} value={flag} onClick={()=>{setFlag(!flag)}} checkedChildren="2.5D图" unCheckedChildren="一次图" defaultChecked />
-                <div className={styles.detailsButton}
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
-                >{t('电站信息')}</div>
-                {isHovered && <div className={styles.detailsPart}>
-                    <Descriptions column={2} items={
-                        detailsPartData.map(it => {
-                            return {
-                                ...it,
-                                children: currentPlant[it.key]
-                            }
-                        })
-                    } />
-
-                </div>}
-            </div>
-            <div className={styles.card}>
-                <div className={styles.dataLeft} style={{ backgroundColor: token.titleCardBgc }}>
-                    {electricityStatistics.map(it => {
-                        return <>
-                            <div className={styles.wrap} >
-                                <div className={styles.value} >
-                                    <span style={{ color: it.color }}>{it.value}</span>
-                                    <span className={styles.unit}>{it.unit}</span>
-                                </div>
-                                <Tooltip title={t(it.label)} >
-                                    <div className={styles.label}>
-                                        {t(it.label)}
-                                    </div>
-                                </Tooltip>
-
-                            </div>
-                        </>
-                    })}
-                </div>
-                <div className={styles.dataRight} style={{ backgroundColor: token.titleCardBgc }}>
-                    {
-                        profit.map(it => {
-                            return <>
-                                <div className={styles.wrap} >
-                                    <div className={styles.title}>
-                                        <Icon
-                                            type={it.icon}
-                                            style={{
-                                                fontSize: 20,
-                                                color: it.color
-                                            }}
-                                        />
-                                        {t(it.label)}
-                                    </div>
-                                    <div className={styles.value} >
-                                        <span style={{ color: it.color }}>{it.value}</span>
-                                        <span className={styles.unit}>{it.unit}</span>
-
-                                    </div>
-                                </div>
-
-                            </>
-                        })
-
-                    }
-
-                </div>
-                <div className={styles.echarLeft}>
-                    <CardModel
-                        title={t('电量统计') + '(kWh)'}
-                        content={
-                            <div className={styles.echartPartCardwrap}>
-                                <ReactECharts option={options} style={{ height: '100%' }} />
-                            </div>
-                        }
-                    />
-                </div>
-                <div className={styles.echarRight}>
-                    <CardModel
-                        title={t('功率') + '(kW)'}
-                        filterPart={
-                            <Radio.Group onChange={onChange} value={currntGrid}>
-                                {
-                                    grids.length && grids?.map(it => {
-                                        return (
-                                            <>
-                                                <Radio value={it?.id}>{it?.gridPointName}</Radio>
-                                            </>
-                                        )
+        <>
+            {
+                flag ?
+                    <div className={styles.container} style={{ color: token.titleColor }}>
+                        <div className={styles.imgPart} style={{ backgroundColor: token.titleCardBgc }}>
+                            {flag && <Img />}
+                            <Switch className={styles.change} value={flag} onClick={() => { setFlag(!flag) }} checkedChildren="2.5D图" unCheckedChildren="一次图" defaultChecked />
+                            <div className={styles.detailsButton}
+                                onMouseEnter={() => setIsHovered(true)}
+                                onMouseLeave={() => setIsHovered(false)}
+                            >{t('电站信息')}</div>
+                            {isHovered && <div className={styles.detailsPart}>
+                                <Descriptions column={2} items={
+                                    detailsPartData.map(it => {
+                                        return {
+                                            ...it,
+                                            children: currentPlant[it.key]
+                                        }
                                     })
-                                }
-                            </Radio.Group>
-                        }
-                        content={
-                            <div className={styles.echartPartCardwrap}>
-                                <ReactECharts option={optionsPower} style={{ height: '100%' }} />
+                                } />
+
+                            </div>}
+                        </div>
+                        <div className={styles.card}>
+                            <div className={styles.dataLeft} style={{ backgroundColor: token.titleCardBgc }}>
+                                {electricityStatistics.map(it => {
+                                    return <>
+                                        <div className={styles.wrap} >
+                                            <div className={styles.value} >
+                                                <span style={{ color: it.color }}>{it.value}</span>
+                                                <span className={styles.unit}>{it.unit}</span>
+                                            </div>
+                                            <Tooltip title={t(it.label)} >
+                                                <div className={styles.label}>
+                                                    {t(it.label)}
+                                                </div>
+                                            </Tooltip>
+
+                                        </div>
+                                    </>
+                                })}
                             </div>
-                        }
-                    />
-                </div>
-            </div>
-        </div>
+                            <div className={styles.dataRight} style={{ backgroundColor: token.titleCardBgc }}>
+                                {
+                                    profit.map(it => {
+                                        return <>
+                                            <div className={styles.wrap} >
+                                                <div className={styles.title}>
+                                                    <Icon
+                                                        type={it.icon}
+                                                        style={{
+                                                            fontSize: 20,
+                                                            color: it.color
+                                                        }}
+                                                    />
+                                                    {t(it.label)}
+                                                </div>
+                                                <div className={styles.value} >
+                                                    <span style={{ color: it.color }}>{it.value}</span>
+                                                    <span className={styles.unit}>{it.unit}</span>
+
+                                                </div>
+                                            </div>
+
+                                        </>
+                                    })
+
+                                }
+
+                            </div>
+                            <div className={styles.echarLeft}>
+                                <CardModel
+                                    title={t('电量统计') + '(kWh)'}
+                                    content={
+                                        <div className={styles.echartPartCardwrap}>
+                                            <ReactECharts option={options} style={{ height: '100%' }} />
+                                        </div>
+                                    }
+                                />
+                            </div>
+                            <div className={styles.echarRight}>
+                                <CardModel
+                                    title={t('功率') + '(kW)'}
+                                    filterPart={
+                                        <Radio.Group onChange={onChange} value={currntGrid}>
+                                            {
+                                                grids.length && grids?.map(it => {
+                                                    return (
+                                                        <>
+                                                            <Radio value={it?.id}>{it?.gridPointName}</Radio>
+                                                        </>
+                                                    )
+                                                })
+                                            }
+                                        </Radio.Group>
+                                    }
+                                    content={
+                                        <div className={styles.echartPartCardwrap}>
+                                            <ReactECharts option={optionsPower} style={{ height: '100%' }} />
+                                        </div>
+                                    }
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    :
+                    <div className={styles.iframe}>
+                        <Switch className={styles.change} value={flag} onClick={() => { setFlag(!flag) }} checkedChildren="一次图" unCheckedChildren="2.5D图" defaultChecked />
+                        <iframe
+                            width="100%"
+                            height="100%"
+                            src={`https://admin.sovitjs.com/publish_2d/3252824411396374537?appid=3179798697663791113&apikey=3179798697663791114&method=POST&code=101&signature=${signature}`}
+                        />
+                    </div>
+            }
+        </>
     )
 }
 
