@@ -1,14 +1,10 @@
 import { Table, theme, Row } from "antd";
-import "./index.less";
+import styles from "./index.less";
 import { useState, useEffect } from "react";
-import {
-    workbenchGetProjectSummery as workbenchGetProjectSummeryServe
-} from "@/services";
+import { workbenchGetProjectSummery as workbenchGetProjectSummeryServe } from "@/services";
 import { SearchInput } from "@/components";
 
-const PersonnelTasks = ({
-    data
-}) => {
+const PersonnelTasks = ({ data }) => {
     const { token } = theme.useToken();
     const [region, setRegion] = useState();
     const [dataSource, setDataSource] = useState();
@@ -47,20 +43,20 @@ const PersonnelTasks = ({
     ];
 
     const getDataSource = async () => {
-        const res = await workbenchGetProjectSummeryServe({regions: region});
+        const res = await workbenchGetProjectSummeryServe({ regions: region });
         if (res?.data?.status === "SUCCESS") {
             setDataSource(res?.data?.data);
         }
-    }
+    };
 
     useEffect(() => {
         getDataSource();
-    }, [region])
+    }, [region]);
 
-    return (    
-        <div className="personnel-tasks" style={{ background: token.color12 }}>
-            <Row justify="space-between" style={{padding: 10}}>
-                <span style={{fontSize: 17}}>负责项目统计</span>
+    return (
+        <div className={styles.personnelTasks} style={{ background: token.color12 }}>
+            <Row justify="space-between" style={{ padding: 10 }}>
+                <span style={{ fontSize: 17 }}>负责项目统计</span>
                 <SearchInput
                     label="区域"
                     type="select"
@@ -71,7 +67,7 @@ const PersonnelTasks = ({
                     style={{ width: 300 }}
                 />
             </Row>
-            <div className="content">
+            <div className={styles.content}>
                 <Table
                     dataSource={dataSource?.projects || []}
                     columns={columns}

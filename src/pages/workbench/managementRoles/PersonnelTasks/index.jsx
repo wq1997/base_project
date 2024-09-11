@@ -2,27 +2,24 @@ import { theme, Space, DatePicker } from "antd";
 import { SearchInput } from "@/components";
 import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts";
-import "./index.less";
+import styles from "./index.less";
 import { useState } from "react";
 import { useEffect } from "react";
-import {
-    workbenchListOperatorCompleteWorkOrderCount as workbenchListOperatorCompleteWorkOrderCountServe
-} from "@/services";
+import { workbenchListOperatorCompleteWorkOrderCount as workbenchListOperatorCompleteWorkOrderCountServe } from "@/services";
 import dayjs from "dayjs";
+import classNames from "classnames";
 
-const PersonnelTasks = ({
-    data
-}) => {
+const PersonnelTasks = ({ data }) => {
     const { token } = theme.useToken();
     const [options, setOptions] = useState({});
     const [dataSource, setDataSource] = useState([]);
     const [region, setRegion] = useState();
-    const [dateType, setDateType] = useState('YEAR');
+    const [dateType, setDateType] = useState("YEAR");
     const [date, setDate] = useState(dayjs().format("YYYY"));
 
     const getOptions = () => {
         setOptions({
-            color: ['#D79114', '#01B0EE'],
+            color: ["#D79114", "#01B0EE"],
             tooltip: {
                 trigger: "axis",
                 axisPointer: {
@@ -101,41 +98,41 @@ const PersonnelTasks = ({
                     },
                 },
             ],
-        })
-    }
+        });
+    };
 
     const getDataSource = async () => {
         let params = {};
-        if(dateType==="YEAR"){
-            params={
-                regions: region,
-                year: dayjs(date).format("YYYY")
-            }
-        }
-        if(dateType==="MONTH"){
-            params={
+        if (dateType === "YEAR") {
+            params = {
                 regions: region,
                 year: dayjs(date).format("YYYY"),
-                month: dayjs(date).format("MM")
-            }
+            };
+        }
+        if (dateType === "MONTH") {
+            params = {
+                regions: region,
+                year: dayjs(date).format("YYYY"),
+                month: dayjs(date).format("MM"),
+            };
         }
         const res = await workbenchListOperatorCompleteWorkOrderCountServe(params);
-        if(res?.data?.status==="SUCCESS"){
+        if (res?.data?.status === "SUCCESS") {
             setDataSource(res?.data?.data);
         }
-    }
+    };
 
-    useEffect(()=>{
+    useEffect(() => {
         getOptions();
-    }, [JSON.stringify(dataSource)])
+    }, [JSON.stringify(dataSource)]);
 
     useEffect(() => {
         getDataSource();
-    }, [region, dateType, date])
+    }, [region, dateType, date]);
 
     return (
-        <div className="personnel-tasks" style={{background: token.color12}}>
-            <div className="title">
+        <div className={styles.personnelTasks} style={{ background: token.color12 }}>
+            <div className={classNames("global_custom_layout_left_right", styles.title)}>
                 <span>人员任务统计</span>
                 <Space>
                     <SearchInput
@@ -145,15 +142,16 @@ const PersonnelTasks = ({
                         options={data?.regions}
                         onChange={setRegion}
                         mode="multiple"
-                        style={{width: 300}}
+                        style={{ width: 250 }}
                     />
                     <SearchInput
+                        style={{ width: 100 }}
                         label="时间维度"
                         type="select"
                         value={dateType}
-                        onChange={(value)=>{
+                        onChange={value => {
                             if (value === "YEAR") {
-                                setDate(dayjs(date).format("YYYY"))
+                                setDate(dayjs(date).format("YYYY"));
                             } else if (value === "MONTH") {
                                 setDate(`${dayjs(date).format("YYYY")}-${dayjs().format("MM")}`);
                             }
@@ -170,16 +168,14 @@ const PersonnelTasks = ({
                             },
                         ]}
                     />
-                    <DatePicker 
+                    <DatePicker
                         value={dayjs(date)}
                         picker={dateType.toLocaleLowerCase()}
                         onChange={setDate}
                     />
                 </Space>
             </div>
-            <div className="content">
-                <ReactECharts notMerge={true} option={options} style={{ width: "100%", height: "100%" }} />
-            </div>
+            <ReactECharts notMerge={true} option={options} style={{ width: "100%", flex: 1 }} />
         </div>
     );
 };

@@ -2,14 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Select, Radio, theme } from "antd";
 import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts";
-import "./index.less";
-import {
-    workbenchListTimeCompleteWorkOrderCount as workbenchListTimeCompleteWorkOrderCountServe,
-} from "@/services";
+import styles from "./index.less";
+import classNames from "classnames";
+import { workbenchListTimeCompleteWorkOrderCount as workbenchListTimeCompleteWorkOrderCountServe } from "@/services";
 
-const Total = ({
-    data
-}) => {
+const Total = ({ data }) => {
     const { token } = theme.useToken();
     const [type, setType] = useState("LAST_WEEK");
     const [dataSource, setDataSource] = useState([]);
@@ -23,7 +20,7 @@ const Total = ({
 
     const getOptions = () => {
         setOpitons({
-            color: ['#682AE8', '#E29611'],
+            color: ["#682AE8", "#E29611"],
             tooltip: {
                 trigger: "axis",
                 axisPointer: {
@@ -36,9 +33,10 @@ const Total = ({
                 },
             },
             grid: {
-                left: "3%",
-                right: "4%",
-                bottom: "3%",
+                top: "30px",
+                left: "20px",
+                right: "20px",
+                bottom: "20px",
                 containLabel: true,
             },
             xAxis: [
@@ -99,50 +97,51 @@ const Total = ({
                     },
                 },
             ],
-        })
-    }
+        });
+    };
 
     const getDataSource = async () => {
-        const res = await workbenchListTimeCompleteWorkOrderCountServe({searchType: type});
+        const res = await workbenchListTimeCompleteWorkOrderCountServe({ searchType: type });
         if (res?.data?.status === "SUCCESS") {
             setDataSource(res?.data?.data);
         }
-    }
+    };
 
     useEffect(() => {
         getOptions();
     }, [JSON.stringify(dataSource || {})]);
 
     useEffect(() => {
-        getDataSource()
-    }, [type])
+        getDataSource();
+    }, [type]);
 
     return (
-        <div className="total" style={{ background: token.color12 }}>
-            <div className="my">
-                <div className="title">我的待办</div>
-                <div className="content">
-                    {myWorkorders.map(item => (
-                        <div className="order" style={{ background: token.color13 }}>
-                            <span>{item.name}</span>
-                            <span className="value" style={{ color: item.color }}>
-                                {item.value}
-                            </span>
-                        </div>
-                    ))}
+        <div className={styles.total} style={{ background: token.color12 }}>
+            <div className={styles.numbers}>
+                <div className={styles.my}>
+                    <div className={styles.title}>我的待办</div>
+                    <div className={styles.content}>
+                        {myWorkorders.map(item => (
+                            <div className={styles.order} style={{ background: token.color13 }}>
+                                <span>{item.name}</span>
+                                <span className={styles.value} style={{ color: item.color }}>
+                                    {item.value}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
-            <div className="task-board">
-                <div className="title">
-                    <span>任务过程看板</span>
+
+            <div className={styles.taskBoard}>
+                <div className={styles.title}>
+                    <span style={{ marginRight: 10 }}>任务过程看板</span>
                     <Radio.Group defaultValue={type} onChange={e => setType(e.target.value)}>
                         <Radio.Button value="LAST_WEEK">周</Radio.Button>
                         <Radio.Button value="LAST_MONTH">月</Radio.Button>
                     </Radio.Group>
                 </div>
-                <div className="content">
-                    <ReactECharts option={options} style={{ width: "100%", height: "100%" }} />
-                </div>
+                <ReactECharts option={options} style={{ width: "100%", flex: 1 }} />
             </div>
         </div>
     );

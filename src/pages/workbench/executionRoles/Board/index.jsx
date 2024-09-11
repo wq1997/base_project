@@ -3,11 +3,10 @@ import { Select, Space, theme } from "antd";
 import { SearchInput } from "@/components";
 import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts";
-import "./index.less";
+import styles from "./index.less";
+import classNames from "classnames";
 
-const Board = ({
-    data
-}) => {
+const Board = ({ data }) => {
     const chartRef = useRef(null);
     const [options, setOpitons] = useState({});
     const [dataType, setDataType] = useState("phase2Count");
@@ -36,8 +35,8 @@ const Board = ({
                     data: dataSource?.map(item => {
                         return {
                             name: item?._1,
-                            value: item?._2
-                        }
+                            value: item?._2,
+                        };
                     }),
                     emphasis: {
                         itemStyle: {
@@ -95,8 +94,8 @@ const Board = ({
     }, [data, dataType]);
 
     return (
-        <div className="board" style={{ background: token.color12 }}>
-            <div className="title">
+        <div className={styles.board} style={{ background: token.color12 }}>
+            <div className={classNames("global_custom_layout_left_right", styles.title)}>
                 <span>在途项目看板</span>
                 <SearchInput
                     label="数据维度"
@@ -115,11 +114,7 @@ const Board = ({
                     onChange={setDataType}
                 />
             </div>
-            <ReactECharts
-                ref={chartRef}
-                option={options}
-                style={{ width: "100%", height: "500px" }}
-            />
+            <ReactECharts ref={chartRef} option={options} style={{ width: "100%", flex: 1 }} />
         </div>
     );
 };

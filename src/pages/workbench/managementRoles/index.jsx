@@ -2,10 +2,8 @@ import { Select, Space, theme as antdTheme } from "antd";
 import Board from "./Board";
 import Total from "./Total";
 import PersonnelTasks from "./PersonnelTasks";
-import {
-    workbenchGetManagerWorkbenchData as workbenchGetManagerWorkbenchDataServe,
-} from "@/services";
-import "./index.less";
+import { workbenchGetManagerWorkbenchData as workbenchGetManagerWorkbenchDataServe } from "@/services";
+import styles from "./index.less";
 import { useEffect, useState } from "react";
 
 const ManagementRoles = () => {
@@ -17,16 +15,18 @@ const ManagementRoles = () => {
         if (res?.data?.status === "SUCCESS") {
             setData(res?.data?.data);
         }
-    }
+    };
 
     useEffect(() => {
         workbenchGetManagerWorkbenchData();
-    }, [])
+    }, []);
 
     return (
-        <div className="management-roles" style={{ background: token.color14 }}>
-            <Board data={data} />
-            <Total data={data} />
+        <div className={styles.managementRoles} style={{ background: token.color14 }}>
+            <div className={styles.boardTotal}>
+                <Board data={data} />
+                <Total data={data} />
+            </div>
             <PersonnelTasks data={data} />
         </div>
     );

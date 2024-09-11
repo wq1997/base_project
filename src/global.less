@@ -4,13 +4,21 @@ body {
     margin: 0;
     padding: 0;
 }
+#root {
+    min-width: 1200px;
+    min-height: 600px;
+    width: 100vw;
+    height: 100vh;
+}
 
 .ant-menu {
     background-color: unset;
 }
 
 .ant-menu-light.ant-menu-inline .ant-menu-sub.ant-menu-inline,
-:where(.css-dev-only-do-not-override-1sn0ohr).ant-menu-light>.ant-menu.ant-menu-inline .ant-menu-sub.ant-menu-inline {
+:where(.css-dev-only-do-not-override-1sn0ohr).ant-menu-light
+    > .ant-menu.ant-menu-inline
+    .ant-menu-sub.ant-menu-inline {
     background-color: unset;
 }
 
@@ -76,7 +84,7 @@ body {
     background: none !important;
 }
 
-.ant-table-wrapper .ant-table-tbody>tr.ant-table-placeholder {
+.ant-table-wrapper .ant-table-tbody > tr.ant-table-placeholder {
     background: none !important;
 }
 
@@ -135,7 +143,7 @@ body {
     background-color: unset;
 }
 
-.ant-table-wrapper .ant-table-thead>tr>th {
+.ant-table-wrapper .ant-table-thead > tr > th {
     background-color: #064253;
 }
 
@@ -147,7 +155,7 @@ body {
     background-color: transparent !important;
 }
 
-.ant-form-item .ant-form-item-label>label {
+.ant-form-item .ant-form-item-label > label {
     height: unset;
     white-space: pre-wrap;
 }
@@ -171,4 +179,10 @@ body {
 
 .ant-descriptions .ant-descriptions-item-label {
     color: white;
+}
+
+.global_custom_layout_left_right {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

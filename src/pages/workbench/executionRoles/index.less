@@ -1,15 +1,14 @@
-.management-roles {
+.managementRoles {
     height: 100%;
-    display: grid;
-    grid-template-rows: 2fr 3fr;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 10px;
-    grid-template-areas:
-        "g1 g2"
-        "g3 g3";
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     color: #fff;
     > div {
         border-radius: 16px;
+        padding: 10px;
+        box-sizing: border-box;
         .title {
             display: flex;
             justify-content: space-between;
@@ -24,14 +23,19 @@
             padding: 10px;
         }
     }
-    .board {
-        grid-area: g1;
+    .boardTotal {
+        width: 100%;
+        height: 50%;
+        display: flex;
+        gap: 10px;
+        .board {
+        }
+        .total {
+            background-color: transparent;
+        }
     }
-    .total {
-        grid-area: g2;
-        background-color: transparent;
-    }
+
     .personnel-tasks {
-        grid-area: g3;
+  
     }
 }

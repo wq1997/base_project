@@ -5,7 +5,7 @@ import PersonnelTasks from "./PersonnelTasks";
 import {
     workbenchGetExecutorWorkbenchData as workbenchGetExecutorWorkbenchDataServe,
 } from "@/services";
-import "./index.less";
+import styles from "./index.less";
 import { useEffect, useState } from "react";
 
 const ManagementRoles = () => {
@@ -24,10 +24,12 @@ const ManagementRoles = () => {
     }, [])
 
     return (
-        <div className="management-roles" style={{background: token.color14}}>
-            <Board data={data}/>
-            <Total data={data}/>
-            <PersonnelTasks data={data}/>
+        <div className={styles.managementRoles} style={{ background: token.color14 }}>
+            <div className={styles.boardTotal}>
+                <Board data={data} />
+                <Total data={data} />
+            </div>
+            <PersonnelTasks data={data} />
         </div>
     );
 };
