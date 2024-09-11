@@ -1,0 +1,31 @@
+### 邀约接收
+POST localhost:8085/sz-api/v2/getInvitation
+Content-Type: application/json
+Authorization: {"appId":"szVppServer1","token":"Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwibmFtZSI6Iua3seWcs-iZmuaLn-eUteWOgiIsInN1YiI6InN6VnBwU2VydmVyMSIsImV4cCI6MTcyMTYyOTEzNywiaWF0IjoxNzIxNjI3MzM3fQ.oldqZnvnhqnfOEBJyq16xjDgih8CpfEuvMZHJqt-wVO1pjK_13JY6mpfHUnW_rvBzmBD9XkjHCDZxR-RC5W1QK3O6ETOmXPGOEa6hBEQyVYcB6nWDv76GpapvPUcHeLzNxm-JVFQhHQPy7i7YTLEy5LliFb_30uYJiP_HzLN9-DO7lQ3IeDzWWM8wcY51OAPcYSsVhDNfc4gUV2GdY6oMDq5KXFg8qbfv0nUJOIm49HcRs0y8WcJdUDiv2ctq2EEl_6tPAkufeJ2nqTSmhEJX8xwY43HlA0uECUGVyJ9lQbekYsNGgWK0BALKKi-mro6IPI-JJqtfxPeJWLk4aW_Ww","sign":null}
+
+{
+  "systemTime": "2024-07-22 13:49:22",
+  "creditCode": "91310114MA1GU9J886",
+  "eventType": "invitation",
+  "invitationId": "20220225削峰计划",
+  "invitationTime": "2024-05-30 18:06:22",
+  "exchangeType": "RQXF",
+  "page": 1,
+  "totalPage": 1,
+  "replyTime": "2024-05-30 19:30:00",
+  "startTime": "2024-05-30 15:00:00",
+  "endTime": "2024-05-30 15:30:00",
+  "mrLine": {
+    "15:15": -500,
+    "15:30": -500
+  },
+  "inviteRange": "111111111222,test_station_22",
+  "baseLine": [
+    {
+      "resourceId": "1815262483124793345",
+      "15:15": 1000.14,
+      "15:30": 1000.75
+    },
+    
+  ]
+}

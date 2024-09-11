@@ -1,0 +1,149 @@
+.business{
+  width: 100%;
+  height: 100%;
+
+  .content{
+    width: 100%;
+    height: 100%;
+    background: linear-gradient( 180deg, rgba(2,65,92,0.75) 0%, rgba(0,81,111,0.75) 100%);
+    border-radius: 16px;
+    padding: 10px 10px;
+    box-sizing: border-box;
+  }
+
+  .areaContent{
+    width: 100%;
+    margin-top: 5px;
+    height: calc(100% - 30px);
+  }
+
+  .header{
+    position: absolute;
+    top: 0;
+    left: 10px;
+    width: calc(100% - 20px);
+    height: 70px;
+    z-index: 10;
+  }
+
+  .left{
+    min
+    width: 20%;
+    height: calc(100% - 120px - 8px - 8px);
+    position: absolute;
+    top: 128px; // 120是header的高度 8px是距离上面的高度
+    left: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .left1{
+      width: 100%;
+      height: calc(33.3333333% - 16px / 3);
+
+      .contentChart{
+        height: calc(100% - 60px);
+      }
+
+      .areaContentData{
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        top: -20px;
+        .areaContentDataItem{
+          display: flex;
+          align-items: center;
+          margin: 0 20px;
+          .areaContentDataItemData{
+            .areaContentDataItemData1{
+              font-size: 20px;
+              font-family: DingTalkJinBuTi;
+              color: #54CFFF;
+              margin: 0  0  0 10px;
+            }
+            .areaContentDataItemData2{
+              font-size: 15px;
+              color: white;
+            }
+          }
+        }
+      }
+    }
+
+    .left2{
+      width: 100%;
+      height: calc(33.3333333% - 16px / 3);
+    }
+
+    .left3{
+      width: 100%;
+      height: calc(33.3333333% - 16px / 3);
+    }
+  }
+
+  .right{
+    width: 20%;
+    height: calc(100% - 120px - 8px - 8px);
+    position: absolute;
+    top: 128px; // 120是header的高度 8px是距离上面的高度
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .right1{
+      width: 100%;
+      height: calc(33.3333333% - 16px / 3);
+    }
+
+    .right2{
+      width: 100%;
+      height: calc(33.3333333% - 16px / 3);
+    }
+
+    .right3{
+      width: 100%;
+      height: calc(33.3333333% - 16px / 3);
+    }
+  }
+
+  .centerTop{
+    width: calc(44% - 36px);
+    height: 100px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 128px;
+  }
+
+  .centerBottom{
+    .content;
+    width: calc(44% - 36px);
+    height: calc(33% - 48px);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 8px;
+    .outBtn{
+      display: flex;
+      justify-content: end;
+      .btn{
+        width: 100px;
+        height: 30px;
+        line-height: 30px;
+        background: radial-gradient(153% 66% at 50% 50%, #072F4C 0%, #04719C 100%);
+        border-radius: 2px;
+        border: 1px solid #54CFFF;
+        text-align: center;
+        color: white;
+        cursor: pointer;
+      }
+    }
+    .table{
+      height: calc(100% - 70px);
+      margin-top: 10px;
+    }
+  }
+}

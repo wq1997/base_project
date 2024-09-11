@@ -1,0 +1,63 @@
+.container {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 0.6fr 1.4fr 1fr 1fr 1.4fr 0.6fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-auto-columns: 1fr;
+    gap: 8px 8px;
+    grid-auto-flow: row;
+    grid-template-areas:
+        "plantKPI plantKPI plantKPI map map map map powerGeneration powerGeneration powerGeneration"
+        "plantKPI plantKPI plantKPI map map map map powerGeneration powerGeneration powerGeneration"
+        "plantKPI plantKPI plantKPI map map map map powerGeneration powerGeneration powerGeneration"
+        "plantKPI plantKPI plantKPI map map map map ranking ranking ranking"
+        "plantStatus plantStatus plantStatus map map map map ranking ranking ranking"
+        "plantStatus plantStatus plantStatus map map map map socialContribution socialContribution socialContribution"
+        "plantStatus plantStatus plantStatus map map map map socialContribution socialContribution socialContribution"
+        "plantAlarm plantAlarm plantAlarm plantInfo plantInfo plantInfo plantInfo plantInfo plantInfo plantInfo"
+        "plantAlarm plantAlarm plantAlarm plantInfo plantInfo plantInfo plantInfo plantInfo plantInfo plantInfo"
+        "plantAlarm plantAlarm plantAlarm plantInfo plantInfo plantInfo plantInfo plantInfo plantInfo plantInfo";
+    > div {
+        background: #f5f9fe;
+        border-radius: 8px;
+    }
+}
+
+.plantStatus {
+    grid-area: plantStatus;
+}
+
+.plantKPI {
+    grid-area: plantKPI;
+ 
+}
+
+.plantAlarm {
+    grid-area: plantAlarm;
+    background-color: aqua;
+}
+
+.map {
+    grid-area: map;
+    background-color: aqua;
+}
+
+.plantInfo {
+    grid-area: plantInfo;
+    background-color: aqua;
+}
+
+.powerGeneration {
+    grid-area: powerGeneration;
+    background-color: aqua;
+}
+
+.ranking {
+    grid-area: ranking;
+    background-color: aqua;
+}
+
+.socialContribution {
+    grid-area: socialContribution;
+    background-color: aqua;
+}

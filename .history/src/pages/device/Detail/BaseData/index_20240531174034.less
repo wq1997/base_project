@@ -1,0 +1,23 @@
+.table {
+    width: 100%;
+    .item {
+        display: flex;
+        .cell {
+            padding: 5px 8px;
+            
+            flex: 1;
+            &:nth-child(even) {
+                border-left: 2px solid #e1ecfa;
+            }
+            &:nth-child(odd) {
+                border-left: 2px solid #e1ecfa;
+            }
+            &:nth-child(-n + 4) {
+                border-bottom: 2px solid #e1ecfa;
+            }
+            &:nth-child(4n-3) {
+                border-left: none;
+            }
+        }
+    }
+}

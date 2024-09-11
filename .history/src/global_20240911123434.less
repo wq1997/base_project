@@ -1,0 +1,144 @@
+@import './font.less'; // 全局字体样式
+
+body{
+    margin: 0;
+    padding: 0;
+    color: #FFFFFF;
+    font-family: PingFangRegular;
+}
+
+
+
+.ant-menu{
+    background-color: unset;
+    border-inline-end:none !important;
+}
+
+.ant-menu-light.ant-menu-inline .ant-menu-sub.ant-menu-inline, :where(.css-dev-only-do-not-override-1sn0ohr).ant-menu-light>.ant-menu.ant-menu-inline .ant-menu-sub.ant-menu-inline{
+    background-color: unset;
+}
+
+.ant-btn-default:not(:disabled):not(.ant-btn-disabled):hover{
+    color: unset;
+}
+
+.ant-tabs-nav{
+  margin-bottom: 0px !important;
+}
+
+.ant-tabs-nav::before{
+  border-bottom: 0px solid #303030 !important;
+
+  }
+  
+  .ant-tabs-tab{
+         border: 0px solid #303030  !important;
+         border-radius: 8px 8px 0px 0px !important;
+         padding: 7px 35px !important;
+         color: #FFFFFF !important;
+  }
+  .ant-tabs-tab-active{
+    background-color: #111838 !important;
+  }
+  .ant-tabs-nav-wrap{
+    flex-direction: row-reverse !important;
+    padding-right: 30px !important;
+ }
+ 
+ .pwd{
+	 text-security:disc !important;
+	 -webkit-text-security:disc !important;
+}
+
+.ant-divider::before{
+  border-color: #fff !important;
+}
+.ant-divider::after{
+  border-color: #fff !important;
+}
+
+/* 整个滚动条 */
+::-webkit-scrollbar {
+  /* 对应纵向滚动条的宽度 */
+  width: 10px;
+  /* 对应横向滚动条的宽度 */
+  height: 10px;
+}
+
+/* 滚动条上的滚动滑块 */
+::-webkit-scrollbar-thumb {
+  background-color: #c1bfbf;
+  border-radius: 32px;
+}
+
+/* 滚动条轨道 */
+::-webkit-scrollbar-track {
+  background-color: white;
+  border-radius: 32px;
+}
+
+.ant-row{
+  display: flex;
+  align-items: center;
+}
+
+.ant-table-wrapper .ant-table-thead >tr>th:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan])::before{
+  height: 0 !important;
+}
+
+.amap-marker-label {
+  border: 0;
+  background-color: transparent;
+  line-height: normal;
+}
+
+.amap-logo {
+  display: none !important; //去掉高德地图logo
+}
+.amap-copyright {
+  opacity: 0; //去掉高德的版本号
+}
+
+::-webkit-scrollbar {
+  display: none !important;
+}
+
+.ant-table-placeholder{
+  display: none;
+}
+
+.ant-select-selector{
+  background: none !important;
+}
+
+.ant-input-number{
+  background-color: transparent !important;
+}
+
+.ant-input-outlined{
+  background: none !important;
+}
+
+.ant-picker{
+  background: none;
+}
+
+.ant-input{
+  background: none;
+}
+
+.ant-radio-wrapper .ant-radio-inner{
+  background: none;
+}
+
+.ant-btn-default{
+  background-color: unset;
+}
+
+.ant-table{
+  background: transparent !important;
+}
+
+.ant-radio-wrapper .ant-radio-disabled .ant-radio-inner::after{
+  background-color: #0787DB;
+}

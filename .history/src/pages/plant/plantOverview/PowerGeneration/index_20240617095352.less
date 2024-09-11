@@ -1,0 +1,42 @@
+.legend {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+    .name {
+        font-size: 16px;
+        color: #999999;
+    }
+    .value {
+        font-size: 24px;
+        color: #333333;
+        font-family: DingTalkJinBuTi;
+    }
+}
+
+.powerGeneration {
+    // :global{
+    //     .ant-btn-primary{
+    //         background: #49A2F8;
+    //     }
+    // }
+    .btn {
+        font-size: 13px;
+        padding: 1px 5px;
+        background: #ffffff;
+        border-radius: 4px;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: rgba(0, 0, 0, 0.15);
+        cursor: pointer;
+        &.active {
+            color: #49a2f8;
+            border-color: #49a2f8;
+        }
+        &.search {
+            background-color: #49a2f8;
+            color: #fff;
+        }
+    }
+}

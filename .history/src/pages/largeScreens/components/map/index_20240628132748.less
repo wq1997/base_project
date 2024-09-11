@@ -1,0 +1,88 @@
+.content {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;
+    background: linear-gradient(to right, #154b72 0%, transparent 120%);
+    border-radius: 5px;
+    min-width: 90px;
+    max-width: 200px;
+    box-shadow: 3px 3px 8px rgba(0, 234, 255, 0.25);
+    .row {
+        width: 0;
+        height: 0;
+        border-top: 6px solid transparent;
+        border-left: 7px solid #49a2f8;
+        border-bottom: 6px solid transparent;
+        margin-right: 5px;
+    }
+    .plantName {
+        font-size: 15px;
+        color: #fff;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-family: DingTalkJinBuTi;
+    }
+}
+
+.detail {
+    width: 912px;
+    background: #004764;
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    .header {
+        height: 30px;
+        color: #54cfff;
+        font-size: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-left: 10px;
+        box-sizing: border-box;
+        &::before {
+            content: "";
+            width: 4px;
+            height: 14px;
+            background: #54cfff;
+            border-radius: 2px;
+            position: absolute;
+            left: 22px;
+        }
+        .close {
+            cursor: pointer;
+        }
+    }
+    .infoContent {
+        display: flex;
+        width: 100%;
+        font-size: 14px;
+        color: #fff;
+        > :first-child {
+            border-right: 3px solid #195e8f;
+            flex: 3;
+            padding-right: 20px;
+            box-sizing: border-box;
+        }
+        > :nth-child(2) {
+            flex: 4;
+            padding-left: 40px;
+            box-sizing: border-box;
+        }
+        .item {
+            padding: 5px 0;
+            display: flex;
+            .name{
+                width: 160px;
+            }
+            .value{
+                flex: 1;
+                width: 0;
+                text-align: left;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+        }
+    }
+}

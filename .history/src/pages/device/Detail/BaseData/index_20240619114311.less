@@ -1,0 +1,44 @@
+.table {
+    width: 100%;
+    border-top: 1px solid #d9d9d9;
+    border-right: 1px solid #d9d9d9;
+    .item {
+        display: flex;
+        .name,
+        .cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+
+            &:nth-child(even) {
+                border-left: 1px solid #d9d9d9;
+                border-bottom: 1px solid #d9d9d9;
+            }
+            &:nth-child(odd) {
+                border-left: 1px solid #d9d9d9;
+                border-bottom: 1px solid #d9d9d9;
+            }
+            .value {
+  
+                height: calc(100% - 10px);
+                flex: 1;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-right: 1px solid #d9d9d9;
+                &:last-child {
+                    border-right: none;
+                }
+            }
+        }
+        .name {
+            width: 100px;
+            padding: 5px 8px;
+        }
+        .cell {
+            flex: 1;
+        }
+    }
+}
+

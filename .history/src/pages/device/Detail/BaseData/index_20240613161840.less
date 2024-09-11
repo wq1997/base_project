@@ -1,0 +1,28 @@
+.table {
+    width: 100%;
+    border-top: 1px solid rgba(0, 0, 0, 0.45);
+    border-right: 1px solid rgba(0, 0, 0, 0.45);
+    .item {
+        display: flex;
+        .name
+        .name {
+            width: 100px ;
+        }
+        .cell {
+            padding: 5px 8px;
+            font-size: 14px;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            &:nth-child(even) {
+                border-left: 1px solid rgba(0, 0, 0, 0.45);
+                border-bottom: 1px solid rgba(0, 0, 0, 0.45);
+            }
+            &:nth-child(odd) {
+                border-left: 1px solid rgba(0, 0, 0, 0.45);
+                border-bottom: 1px solid rgba(0, 0, 0, 0.45);
+            }
+        }
+    }
+}

@@ -1,0 +1,67 @@
+.tips {
+    font-weight: 400;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.15);
+}
+.item {
+    flex: 1;
+    wi
+    padding: 0 10px;
+    background: #f5f9fe;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .picName {
+        display: flex;
+        align-items: center;
+        .pic {
+            width: 23px;
+            height: 23px;
+            margin-right: 8px;
+        }
+    }
+    .data {
+        display: flex;
+        align-items: flex-end;
+        font-weight: normal;
+        font-family: DingTalkJinBuTi;
+        color: #25598d;
+        display: flex;
+        margin-bottom: 5px;
+        .value {
+            width: 90%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            font-size: 24px;
+            background-color: red;
+        }
+        .unit {
+            font-weight: 400;
+            font-family: normal;
+            font-size: 12px;
+            margin-left: 5px;
+            position: relative;
+            top: -2px;
+        }
+    }
+    .name {
+        font-weight: 400;
+        font-size: 14px;
+        color: #666666;
+    }
+}
+
+@media (max-width: 1500px) {
+    .pic {
+        width: 20px !important;
+        height: 20px !important;
+    }
+    .value {
+        font-size: 18px !important;
+    }
+    .name {
+        font-size: 12px !important;
+    }
+}

@@ -1,0 +1,31 @@
+.header{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background: transparent url(/images/header_bg.svg) no-repeat;
+    background-size: 100% 100%;
+    .headerLeft{
+        position: absolute;
+        box-sizing: border-box;
+        bottom: 0;
+        left: 0;
+        width: 28%;
+        height: 35px;
+        display: flex;
+        .headerLeftLeftItem{
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            background-color: #0B3858;
+            cursor: pointer;
+            &:nth-last-child(1){
+                border-radius: 6px;
+            }
+            &:nth-child(1){
+                border-radius: 6px;
+            }
+        }
+    }
+}

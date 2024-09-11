@@ -1,0 +1,173 @@
+:global {
+    .ant-select-dropdown {
+        background-color: #000;
+        .ant-select-item-option-selected:not(.ant-select-item-option-disabled){
+            background-color: #01fff5;
+        }
+        .ant-select-item {
+            color: #fff !important;
+        }
+    }
+ 
+    .ant-btn-default:not(:disabled):not(.ant-btn-disabled):hover {
+        background: none;
+    }
+}
+.business {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    .content {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(180deg, rgba(2, 65, 92, 0.75) 0%, rgba(0, 81, 111, 0.75) 100%);
+        border-radius: 16px;
+        padding: 10px 10px;
+        box-sizing: border-box;
+    }
+
+    .areaContent {
+        width: 100%;
+        margin-top: 5px;
+        height: calc(100% - 30px);
+    }
+
+    .left,
+    .right {
+        width: 22%;
+        height: calc(100% - 96px);
+        position: absolute;
+        top: 86px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .left {
+        left: 10px;
+        .leftItem {
+            width: 100%;
+            height: calc(33.3333333% - 8px);
+        }
+    }
+
+    .right {
+        right: 10px;
+        .search {
+            position: absolute;
+            width: 100%;
+            display: flex;
+            top: -40px;
+            z-index: 999;
+            color: #fff;
+            .input {
+                border: 1px solid rgba(255, 255, 255, 0.15);
+                &:focus,
+                &:hover {
+                    background-color: transparent !important;
+                    border-color: #54cfff;
+                }
+                &::placeholder {
+                    font-size: 14px;
+                }
+            }
+            :global {
+                .ant-input-clear-icon,
+                .ant-select-clear,
+                .ant-select-arrow,
+                .ant-btn-icon {
+                    color: #fff;
+                }
+                .ant-select-dropdown {
+                    background-color: none;
+                }
+                :where(.css-dev-only-do-not-override-1r287do).ant-select-outlined:not(
+                        .ant-select-disabled
+                    ):not(.ant-select-customize-input):not(.ant-pagination-size-changer):hover
+                    .ant-select-selector {
+                    border-color: #235775;
+                }
+                .ant-input-outlined,
+                .ant-select-selector,
+                .ant-btn-default {
+                    border-color: #235775;
+                }
+                .ant-input,
+                .ant-select {
+                    border: none;
+                    color: #fff;
+
+                    .ant-select-selection-item,
+                    .ant-select-selection-placeholder {
+                        font-size: 12px;
+                        color: #fff;
+                    }
+                    &:focus,
+                    &:hover {
+                        background-color: transparent !important;
+                        border-color: #235775;
+                    }
+                    &::placeholder {
+                        font-size: 12px;
+                        color: #fff;
+                    }
+                }
+            }
+        }
+        .rightItem {
+            width: 100%;
+            height: calc(33.3333333% - 8px);
+        }
+    }
+
+    .centerTop {
+        width: 50%;
+        height: 100px;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 86px;
+    }
+
+    .centerBottom {
+        width: calc(56% - 36px);
+        height: calc((100% - 20px - 70px - 16px - 8px - 30px) / 3);
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 17px;
+        .btn {
+            width: 80px;
+            height: 25px;
+            line-height: 25px;
+            background: radial-gradient(153% 66% at 50% 50%, #032c3d 0%, #2bbc90 100%);
+            border: 1px solid #01fff5;
+            border-radius: 2px;
+            text-align: center;
+            color: white;
+            font-size: 13px !important;
+            cursor: pointer;
+            font-family: normal !important;
+        }
+        .table {
+            height: 100%;
+            margin-top: 10px;
+        }
+    }
+}
+
+@media (max-width: 1800px) {
+    .centerTop {
+        height: 80px !important;
+    }
+}
+
+@media (min-width: 1800px) {
+    .centerTop {
+        top: 106px !important;
+    }
+    .left,
+    .right {
+        top: 106px !important;
+        height: calc(100% - 106px) !important;
+    }
+}
