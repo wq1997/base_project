@@ -1,5 +1,4 @@
 import SchematicDiagram from "./SchematicDiagram";
-import plant from "../../../../../public/icons/plant.svg";
 import { useEffect, useState } from "react";
 import { theme } from "antd";
 import styles from "./index.less";
