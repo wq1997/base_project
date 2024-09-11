@@ -1,4 +1,5 @@
 /node_modules
+.history
 /.env.local
 /.umirc.local.ts
 /config/config.local.ts
