@@ -137,12 +137,12 @@ const BaseLayout = () => {
                                 }
                             }}
                         >
-                            <QuestionCircleOutlined style={{ cursor: 'pointer', fontSize: 23, color: token.color1 }} />
+                            <QuestionCircleOutlined style={{ cursor: 'pointer', fontSize: 30, color: token.color1 }} />
                         </Dropdown>
                         <Tooltip title={useLocale('语言切换')} placement="bottom">
                             <img
                                 style={{
-                                    width: 25,
+                                    width: 33,
                                     cursor: 'pointer'
                                 }}
                                 src={
@@ -158,14 +158,14 @@ const BaseLayout = () => {
                             <SkinOutlined
                                 style={{
                                     cursor: "pointer",
-                                    fontSize: 23,
+                                    fontSize: 30,
                                     color: token.color1
                                 }}
                                 onClick={() => changeTheme(global.theme === "default" ? "dark" : "default")}
                             />
                         </Tooltip>
                         <HomeOutlined
-                            style={{ cursor: 'pointer', fontSize: 23, color: token.color1 }}
+                            style={{ cursor: 'pointer', fontSize: 30, color: token.color1 }}
                             onClick={() => history.push('/index/device')}
                         />
                         <Dropdown
@@ -189,7 +189,7 @@ const BaseLayout = () => {
                                 }
                             }}
                         >
-                            <UserOutlined style={{ cursor: 'pointer', fontSize: 23, color: token.color1 }} />
+                            <UserOutlined style={{ cursor: 'pointer', fontSize: 30, color: token.color1 }} />
                         </Dropdown>
                     </div>
                 </Header>

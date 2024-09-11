@@ -197,19 +197,16 @@ const SchematicDiagram = ({dataSource, allData}) => {
                     <div
                         style={{
                             position: 'absolute', 
-                            right: - energySystemIconWidth/2 - 120, 
-                            top: Math.tan((180 - energySystemChargingAngle - 35) * Math.PI / 180) * (- energySystemIconWidth/2 - 120),
+                            right: - energySystemIconWidth/2 - 130, 
+                            top: Math.tan((180 - energySystemChargingAngle - 35) * Math.PI / 180) * (- energySystemIconWidth/2 - 130),
                             transform: `rotate(-${energySystemChargingAngle}deg)`,
                         }} 
                     >
                         <div className={titleStyle} style={{width: '200px', wordWrap: 'break-word'}}>
                             {intl.formatMessage({id:'储能系统'})}
                         </div>
-                        <div style={{margin: '10px 0', display: 'flex', alignItems: 'start'}}>
+                        <div style={{margin: '10px 0', display: 'flex', alignItems: 'start', width: 150}}>
                             <span>{intl.formatMessage({id:'运行状态'})}：</span>
-                            {/* {totalActivePowerData>0&&intl.formatMessage({id:'放电'})}
-                            {totalActivePowerData<0&&intl.formatMessage({id:'充电'})}
-                            {totalActivePowerData===0&&intl.formatMessage({id:'待机'})} */}
                             <span style={{width: 60, display: 'inline-block'}}>{allData?.pcs?.pcsState||intl.formatMessage({id:'待机'})}</span>
                         </div>
                         <div>{intl.formatMessage({id:'功率'})}：{dataSource?.totalActivePower} kW</div>

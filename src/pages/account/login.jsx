@@ -104,13 +104,13 @@ const Login = () => {
                     autoComplete="off"
                     style={{
                         width: 320,
-                        marginTop: 20,
+                        marginTop: 30,
                     }}
                 >
                     <Form.Item
                         name="userName"
                         rules={[{ ...FORM_REQUIRED_RULE }]}
-                        style={{ marginBottom: 20 }}
+                        style={{ marginBottom: 30 }}
                     >
                         <Input
                             prefix={<UserOutlined style={{ fontSize: 15, color: "#73787F" }} />}
@@ -129,7 +129,7 @@ const Login = () => {
                                 ),
                             },
                         ]}
-                        style={{ marginBottom: 20 }}
+                        style={{ marginBottom: 30 }}
                     >
                         <Input.Password
                             prefix={<LockOutlined style={{ fontSize: 15, color: "#73787F" }} />}
@@ -167,7 +167,7 @@ const Login = () => {
                         </Form.Item>
                     )}
 
-                    <Form.Item name="remember" valuePropName="checked" style={{ marginBottom: 8 }}>
+                    <Form.Item name="remember" valuePropName="checked" style={{ marginBottom: 20 }}>
                         <Checkbox>
                             <span style={{ color: "white" }}>{t("记住密码")}</span>
                         </Checkbox>

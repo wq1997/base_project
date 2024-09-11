@@ -1,4 +1,4 @@
-.content{
+.content {
     width: calc(100%);
     height: calc(100%);
     position: absolute;
@@ -7,28 +7,29 @@
     display: flex;
     gap: 8px;
 
-    .left{
+    .left {
         width: calc(70% - 4px);
         height: 100%;
         display: flex;
         flex-direction: column;
         gap: 8px;
 
-        .plantSelect{
+        .plantSelect {
             position: absolute;
             top: 10px;
             left: 10px;
-            :global{
-                .ant-select-selector{
+
+            :global {
+                .ant-select-selector {
                     border: 1px solid #54CFFF;
                 }
             }
         }
 
-        .leftItem1{
+        .leftItem1 {
             height: calc(80% - 4px);
 
-            .mapRight{
+            .mapRight {
                 height: calc(75% - 25px);
                 position: absolute;
                 right: 10px;
@@ -37,34 +38,36 @@
                 flex-direction: column;
                 gap: 10px;
 
-                .mapRightItem{
+                .mapRightItem {
                     width: 250px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     height: calc(33.333333333333%);
                     border-radius: 10px;
-                    .mapRightItemTop{
+
+                    .mapRightItemTop {
                         display: flex;
                         align-items: baseline;
-                        .mapRightItemTopValue{
+
+                        .mapRightItemTopValue {
                             max-width: 150px;
                             font-family: DingTalkJinBuTi;
                             font-size: 25px;
                             margin-bottom: 8px;
-                            white-space: nowrap; 
+                            white-space: nowrap;
                             overflow: hidden;
                             text-overflow: ellipsis;
                         }
                     }
 
-                    .mapRightItemBottom{
+                    .mapRightItemBottom {
                         text-align: center;
                     }
                 }
             }
 
-            .mapBottom{
+            .mapBottom {
                 width: calc(100% - 20px);
                 height: calc(25% - 5px);
                 position: absolute;
@@ -72,7 +75,8 @@
                 left: 10px;
                 display: flex;
                 justify-content: space-between;
-                .mapBottomItem{
+
+                .mapBottomItem {
                     width: calc(33% - 5px);
                     height: 100%;
                     display: flex;
@@ -81,25 +85,35 @@
                     justify-content: center;
                     border-radius: 10px;
 
-                    .mapBottomItemData{
+                    .mapBottomItemData {
                         font-family: DingTalkJinBuTi;
                         font-size: 25px;
                         margin-bottom: 8px;
+                    }
+
+                    .mapBottomItemLabel {
+                        width: 100%;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        text-align: center;
                     }
                 }
             }
         }
 
-        .leftItem2{
+        .leftItem2 {
             height: calc(35% - 4px);
             position: relative;
-            .add{
+
+            .add {
                 display: flex;
                 position: absolute;
                 gap: 10px;
                 right: 10px;
                 top: 5px;
-                .addBtn{
+
+                .addBtn {
                     border-radius: 2px;
                     padding: 5px 20px;
                     box-sizing: border-box;
@@ -109,40 +123,40 @@
         }
     }
 
-    .leftItem{
+    .leftItem {
         width: 100%;
         position: relative;
     }
 
-    .rightItem{
+    .rightItem {
         width: 100%;
     }
 
-    .right{
+    .right {
         width: calc(30% - 4px);
         height: 100%;
         display: flex;
         flex-direction: column;
         gap: 8px;
 
-        .rightItem1{
+        .rightItem1 {
             height: calc(20% - 6px);
         }
-        
-        .rightItem2{
+
+        .rightItem2 {
             height: calc(30% - 6px);
         }
 
-        .rightItem3{
+        .rightItem3 {
             height: calc(30% - 6px);
         }
 
-        .rightItem4{
+        .rightItem4 {
             height: calc(20% - 6px);
         }
     }
 
-    .cardContent{
+    .cardContent {
         padding: 10px;
         box-sizing: border-box;
         width: 100%;

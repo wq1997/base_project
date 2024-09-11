@@ -346,7 +346,7 @@ const RealtimeAlarm = () => {
                                             <span style={{ color: '#0B6AA8' }}>/</span>
                                             <span style={{ color: '#4AEDFF' }}>{dataEle?.[item?.name?.[1]]}</span>
                                         </div>
-                                        <div className={styles.mapBottomItemLabel}>{item?.label}</div>
+                                        <div className={styles.mapBottomItemLabel} title={item?.label}>{item?.label}</div>
                                     </div>
                                 )
                             })

@@ -24,8 +24,8 @@ const SocialBenefits = ({data}) => {
                                     src={item?.icon} 
                                 />
                             </div>
-                            <div style={{display: 'flex', alignItems: 'baseline', justifyContent: 'center', margin: '5px 0'}}>
-                                <span style={{color: token.color5, fontSize: 25, fontFamily: 'DingTalkJinBuTi'}}>{item?.data}</span>
+                            <div style={{display: 'flex', alignItems: 'baseline', justifyContent: 'center', margin: '2px 0'}}>
+                                <span style={{color: token.color5, fontSize: 20, fontFamily: 'DingTalkJinBuTi'}}>{item?.data}</span>
                                 <span style={{color: token.color10, marginLeft: 2}}>{item?.unit}</span>
                             </div>
                             <div style={{display: 'flex', justifyContent: 'center', color: token.color6, fontSize: 12}}>
