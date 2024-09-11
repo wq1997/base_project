@@ -141,8 +141,8 @@ const RealtimeAlarm = () => {
   }
   const downloadExcel = () => {
     let fileName = t('历史告警');
-    let sheetFilter = ['type','priorName','desc','deviceName','name','plantName','begin','end'];
-    let sheetHeader = [t('设备类型'),t('告警等级'),t('告警描述'),t('设备名称'),t('并网点'),t('电站名称'),t('开始时间'),t('结束时间'),];
+    let sheetFilter = ['type', 'priorName', 'desc', 'deviceName', 'name', 'plantName', 'begin', 'end'];
+    let sheetHeader = [t('设备类型'), t('告警等级'), t('告警描述'), t('设备名称'), t('并网点'), t('电站名称'), t('开始时间'), t('结束时间'),];
     let sheetData = [...data.records];
     let sheetName = '';
     downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader, sheetName);
@@ -181,22 +181,22 @@ const RealtimeAlarm = () => {
           content={
             <div className={styles.topContent}>
               <div className={styles.top}>
-              {topData.map(it => {
-                return (
-                  <div className={styles.topItem} style={{ color: it.color, backgroundColor: token.cardBgc, boxShadow: token.cardShadow }}>
-                    <div className={styles.topItemTitle}>
-                      {it.icon}
-                      <span style={{ color: token.smallTitleColor, fontWeight: 500, fontSize: '16px', marginLeft: '3px' }}>{t(it.name)}</span>
+                {topData.map(it => {
+                  return (
+                    <div className={styles.topItem} style={{ color: it.color, backgroundColor: token.cardBgc, boxShadow: token.cardShadow }}>
+                      <div className={styles.topItemTitle}>
+                        {it.icon}
+                        <span style={{ color: token.smallTitleColor, fontWeight: 500, fontSize: '16px', marginLeft: '3px' }}>{t(it.name)}</span>
+                      </div>
+                      <div className={styles.topVaue} >
+                        {dataTotal[it.key] || 0}
+                        <span style={{ fontSize: '16px', fontWeight: 400, marginLeft: '10px', height: '10%', lineHeight: '150%' }}>{it.unit}</span>
+                      </div>
                     </div>
-                    <div className={styles.topVaue} >
-                      {dataTotal[it.key] || 0}
-                      <span style={{ fontSize: '16px', fontWeight: 400, marginLeft: '10px', height: '10%', lineHeight: '150%' }}>{it.unit}</span>
-                    </div>
-                  </div>
-                )
-              })}
+                  )
+                })}
               </div>
-    
+
               <div className={styles.pieItem}>
                 <PieEcharts allData={{
                   total: sum(dataTotal?.priorStatistics), subtext: t('总数'), data: dataTotal?.priorStatistics

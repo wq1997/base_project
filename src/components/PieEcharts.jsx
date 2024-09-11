@@ -18,7 +18,7 @@ function Com(props) {
                 x: 'center',
                 y: 'center',
                 textStyle: {
-                    fontSize:'30px',
+                    fontSize:'18px',
                     fontWeight:500,
                     color: token.titleColor
                 },
@@ -30,30 +30,29 @@ function Com(props) {
             legend: {
                 show: true,
                 // icon:"circle",
-                top: props.top||"30%",
-                left: '0%',
+                top: props.top||"40%",
+                left: '70%',
                 width:40,
                 padding: [0, 10],
                 itemGap: 10,
                 textStyle: {
                     color:token.titleColor,
-                    rich: {
-                        title: {
-                            fontSize: 16,
-                            lineHeight: 15,
-                            color: token.titleColor
-                        },
-                        value: {
-                            fontSize: 18,
-                            lineHeight: 20,
-                            color: token.titleColor
-                        }
-                    }
+                    // rich: {
+                    //     title: {
+                    //         fontSize: 14,
+                    //         lineHeight: 15,
+                    //         color: token.titleColor
+                    //     },
+                    //     value: {
+                    //         fontSize: 14,
+                    //         lineHeight: 20,
+                    //         color: token.titleColor
+                    //     }
+                    // }
                 },
             },
             series: [
                 {
-                    
                         radius: ['40%', '70%'],
                         center: ['50%', '50%'],
                         type: 'pie',
@@ -66,31 +65,30 @@ function Com(props) {
                         },
                         labelLine: {
                             normal: {
-                                show: false,
+                                show: true,
                                 length: 5,
-                                // length2: 12,
+                                length2: 12,
                                 lineStyle: {
                                     color: token.titleColor
                                 },
                                 align: 'left'
                             },
                             color: token.titleColor,
-                            // emphasis: {
-                            //     show: true
-                            // }
+                            emphasis: {
+                                show: false
+                            }
                         },
                         label:{
+                            color:token.titleColor,
                             normal:{
-                                padding: [10, -20],
+                                padding: [10, 0],
                                 rich: {
                                     nameStyle: {
                                         fontSize: 12,
-                                        color: token.titleColor,
                                         align: 'right'
                                     },
                                     rate: {
                                         fontSize: 12,
-                                        color: token.titleColor,
                                         align: 'right'
                                     }
                                 }

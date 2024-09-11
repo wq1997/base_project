@@ -305,4 +305,5 @@ export default {
     '选择':'Choose',
     '角色':'Role',
     '运维管理':'Operations Management',
+    '工商业微网孪生平台': 'Sermatec industrial and commercial microgrid twin platform',
 }

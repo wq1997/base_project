@@ -90,7 +90,7 @@ const Login = () => {
     >
       <img src={img} style={{ width: '100%', height: '100%', objectFit: 'cover', verticalAlign: 'middle' }} />
       {/* <img src={img_title} style={{ height: '30px', position: 'absolute', top: '80px', left: '80px' }} alt="" /> */}
-      <Title level={1} style={{ position: 'absolute', top: '80px', left: '80px', color: '#FFFFFF', fontFamily: 'DingTalkJinBuTi', fontSize: '64px' }}><FormattedMessage id="app.title" /></Title>
+      <Title level={1} style={{ position: 'absolute', top: '80px', left: '80px', color: '#FFFFFF', fontFamily: 'DingTalkJinBuTi', fontSize: '64px' }}><FormattedMessage id="工商业微网孪生平台" /></Title>
       {/* //#273667 */}
       <div
         style={{

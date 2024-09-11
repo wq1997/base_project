@@ -5,12 +5,12 @@ import styles from './index.less'
 import { CardModel } from "@/components";
 import useIcon from "@/hooks/useIcon";
 import { useSelector, useIntl } from "umi";
-import { theme, Radio, Descriptions, Tooltip } from "antd";
+import { theme, Radio, Descriptions, Tooltip,Switch  } from "antd";
 import ReactECharts from "echarts-for-react";
 import { getGridPointPower, getPlantEnergyFee } from '@/services/home'
 import { getEnergyFeeByTime } from '@/services/report'
 import { getGridPointList } from '@/services/policy'
-
+import md5 from 'js-md5';
 import dayjs from 'dayjs';
 import Img from '../react/Meta2d'
 function OverView(props) {
@@ -254,7 +254,10 @@ function OverView(props) {
         let loadData = dealData(loadPower);
         let gridData = dealData(gridPower);
         let energyData = dealData(energyPower);
-
+        let dataX=[];
+        energyPower.map(it=>{
+            dataX.push(dayjs(it.time).format('HH:mm'))
+        })
         setOptionsPower({
             tooltip: {
                 trigger: 'axis',
@@ -282,7 +285,7 @@ function OverView(props) {
             xAxis: [
                 {
                     type: 'category',
-                    data: dateX,
+                    data: dataX,
                     axisTick: {
                         alignWithLabel: true
                     }
@@ -396,10 +399,14 @@ function OverView(props) {
             icon: 'icon-qian'
         },
     ])
+    const [flag,setFlag]=useState(true);
+    let signature=md5('appid=3179798697663791113&apikey=3179798697663791114&secretkey=7eec46100fbe5f6cac7ee3cc526b080d&method=POST&code=101')
     return (
         <div className={styles.container} style={{ color: token.titleColor }}>
             <div className={styles.imgPart} style={{ backgroundColor: token.titleCardBgc }}>
-                <Img />
+                {flag&&<Img />}
+                {!flag&&<iframe className={styles.iframe} src={`https://admin.sovitjs.com/publish_2d/3252824411396374537?appid=3179798697663791113&apikey=3179798697663791114&method=POST&code=101&signature=${signature}`}></iframe>}
+                <Switch className={styles.change} value={flag} onClick={()=>{setFlag(!flag)}} checkedChildren="2.5D图" unCheckedChildren="一次图" defaultChecked />
                 <div className={styles.detailsButton}
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}

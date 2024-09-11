@@ -10,7 +10,7 @@ import styles from "./index.less";
 
 const Microgrids = ({plantId, onChange}) => {
     return (
-        <Layout title="采日能源微网管理系统" plantId={plantId} onChange={onChange}>
+        <Layout title="微网管理系统" plantId={plantId} onChange={onChange}>
             <div className={styles.microgrids}>
                 <div className={styles.top}>
                     <div className={styles.topLeft}>

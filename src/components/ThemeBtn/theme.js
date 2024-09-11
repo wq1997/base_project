@@ -28,8 +28,7 @@ const theme = {
         colorLight:'#fff',
         colorNormal:'#fff',
         colorLittle:'#fff',
-        mybuttonBgc:'#212849',
-        mybuttonColor:'#6978A1'
+
     },
     default: {
         colorPrimary:'#03B4B4',
@@ -38,7 +37,7 @@ const theme = {
         colorBorder:'#d9d9d9',
         colorTextPlaceholder:'rgba(0, 0, 0, 0.25)',
         colorIcon:'rgba(0, 0, 0, 0.45)',
-        titleColor:'#333333',
+        titleColor:'#000000',
         smallTitleColor:'#333333',
         defaultBg:'#ED750E',
         bgcColorB_l:'linear-gradient(135deg, #DADFEC 0%, #F9F9FA 100%)',
@@ -58,8 +57,6 @@ const theme = {
         colorLight:'#999999',
         colorNormal:'#000000',
         colorLittle:'#333333',
-        mybuttonBgc:'#D1D9EF',
-        mybuttonColor:'#6978A1'
 
     }
 }
