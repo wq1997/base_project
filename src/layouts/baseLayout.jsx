@@ -5,7 +5,7 @@ const BaseLayout = () => {
    return (
         <CommonLayout 
             MyMenu={MyMenu}
-            title="采日运维管理系统"
+            title="运维管理系统"
         />
    )
 };

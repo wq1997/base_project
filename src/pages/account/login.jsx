@@ -7,6 +7,7 @@ import styles from "./index.less";
 import { history, useDispatch } from "umi";
 import { useEffect, useState } from "react";
 const { Title } = Typography;
+import login_demo_bg from '@/assets/images/login_demo_bg.png'
 
 const Login = () => {
     const { token } = theme.useToken();
@@ -54,7 +55,7 @@ const Login = () => {
             className={styles.login}
         >
             <img
-                src={`${PUBLIC_FILE_PATH}background.jpg`}
+                src={login_demo_bg}
                 style={{
                     width: "100%",
                     height: "100%",
@@ -68,7 +69,7 @@ const Login = () => {
                     top: "50%",
                     right: "10%",
                     transform: "translate(0%,-50%)",
-                    background: "#ffffff40",
+                    background: "#fff",
                     padding: "50px 30px",
                     borderRadius: 8,
                 }}

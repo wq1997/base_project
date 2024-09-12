@@ -43,6 +43,7 @@ const Header = ({ onChangedType }) => {
                     );
                 })}
             </div>
+            <span className={styles.title}>电站运维管理大屏</span>
         </div>
     );
 };
