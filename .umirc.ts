@@ -28,6 +28,7 @@ export default defineConfig({
   define: {
     "process.env.API_URL": apiUrl[UMI_ENV||'test'],
   },
+  devtool: 'source-map',
   alias: {
     '@/permissions': path.resolve(__dirname,'src/permissions'),
     '@/hooks': path.resolve(__dirname,'src/hooks'),
