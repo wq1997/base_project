@@ -6,7 +6,6 @@ import { theme } from "antd";
 
 function Com(props) {
     const [xxx, setXxx] = useState('')
-
     useEffect(() => {
         // console.log('函数组件来咯')
     }, [])
@@ -43,7 +42,7 @@ function Com(props) {
               {
                 type: 'value',
                 axisLabel: {
-                    formatter: (value)=>value*100
+                    formatter: (value)=>value
                   },
                   
               }
@@ -81,7 +80,7 @@ function Com(props) {
                             }
                         }
                     },
-                    data:props.yData
+                    data:props.yData?.map(value => value*100)
                 },
             ]
           });

@@ -36,7 +36,7 @@ function Com(props) {
     data.data.map((item, index) => {
       let arry = [];
       item.list.map(it => {
-        arry.push([dayjs(it.date).format('MM-DD'),it.efficiency]);
+        arry.push([dayjs(it.date).format('MM-DD'),it.efficiency*100]);
       });
       titles.push(t(item.title));
       series.push({
@@ -89,7 +89,7 @@ function Com(props) {
           type: 'value',
           axisLabel: {
             formatter: (value) => {
-              return `${value * 100}`
+              return value
             }
           },
 
