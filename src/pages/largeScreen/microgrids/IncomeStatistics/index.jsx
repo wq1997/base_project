@@ -30,14 +30,15 @@ const IncomeStatistics = ({plantId}) => {
             },
             grid: {
                 top: 40,
-                bottom: 20
+                bottom: 20,
+                left:50
             },
             legend: {
                 data: ['储能收益', '光伏收益'],
                 textStyle: {
                     color: 'white'
                 },
-                right: 0
+                right: 0,
             },
             xAxis: [
                 {

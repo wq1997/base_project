@@ -43,7 +43,7 @@ function Com(props) {
               {
                 type: 'value',
                 axisLabel: {
-                    formatter: '{value}'
+                    formatter: (value)=>value*100
                   },
                   
               }

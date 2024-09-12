@@ -327,14 +327,14 @@ function Overview(props) {
                 <div className={styles.chargebit}>
                     <CardModel
                         title={
-                            t("充放电效率")
+                            t("充放电效率")+"(%)"
                         }
                         content={
                             <div className={styles.chargebitWrap}>
                                 {pageType === 'ALL' ?
                                     <AllEfficiency />
                                     :
-                                    <LineEcharts name={t('充放电效率')} style={{ height: '100%' }}
+                                    <LineEcharts name={t('充放电效率')+"(%)"} style={{ height: '100%' }}
                                         xData={dataX}
                                         yData={dataEfficiency}
                                         barMaxWidth={'20%'}
