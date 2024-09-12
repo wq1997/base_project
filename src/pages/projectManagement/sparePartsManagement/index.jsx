@@ -3,6 +3,9 @@ import { SearchInput } from "@/components";
 import { Space, Button, Table, theme, Modal, Form, Radio, Select, Input, InputNumber, Drawer } from "antd";
 import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE } from "@/utils/constants";
 import styles from "./index.less";
+import {
+    sparePartsInitData as sparePartsInitDataServe,
+} from "@/services";
 
 const SparePartsManagement = () => {
     const [spareStorageForm] = Form.useForm();
@@ -25,6 +28,7 @@ const SparePartsManagement = () => {
     const [recordOpen, setRecordOpen] = useState(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [dataSource, setDataSource] = useState([]);
+    const [initOptions, setInitOptions] = useState({});
 
     const onSelectChange = (newSelectedRowKeys, newSelectedRows) => {
         setSelectedRowKeys(newSelectedRowKeys);
@@ -77,6 +81,17 @@ const SparePartsManagement = () => {
         },
     ]
 
+    const getSparePartsInitData = async () => {
+        const res = await sparePartsInitDataServe();
+        if(res?.data?.status==="SUCCESS"){
+            setInitOptions(res?.data?.data);
+        }
+    }
+
+    useEffect(()=>{
+        getSparePartsInitData();
+    }, [])
+
     return (
         <div className={styles.sparePartsManagement}>
             <Space className={styles.search}>
@@ -98,6 +113,12 @@ const SparePartsManagement = () => {
                         typeRef.current = value;
                         setType(value);
                     }}
+                    options={initOptions?.types?.map(item => {
+                        return {
+                            name: item,
+                            code: item
+                        }
+                    })}
                 />
                 <SearchInput
                     label="所属仓库"
@@ -108,6 +129,12 @@ const SparePartsManagement = () => {
                         warehouseRef.current = value;
                         setWarehouse(value);
                     }}
+                    options={initOptions?.warehouses?.map(item => {
+                        return {
+                            name: item,
+                            code: item
+                        }
+                    })}
                 />
                 <SearchInput
                     label="备件属性"
@@ -118,6 +145,12 @@ const SparePartsManagement = () => {
                         attributeRef.current = value;
                         setAttribute(value);
                     }}
+                    options={initOptions?.attributes?.map(item => {
+                        return {
+                            name: item,
+                            code: item
+                        }
+                    })}
                 />
                 <SearchInput
                     label="所属供应商"
@@ -128,6 +161,12 @@ const SparePartsManagement = () => {
                         supplierRef.current = value;
                         setSupplier(value);
                     }}
+                    options={initOptions?.suppliers?.map(item => {
+                        return {
+                            name: item?.name,
+                            code: item?.id
+                        }
+                    })}
                 />
                 <Button type="primary">搜索</Button>
                 <Button type="primary" danger>重置</Button>

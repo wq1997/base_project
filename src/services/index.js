@@ -152,3 +152,7 @@ export const alarmStatisticsTable = payload => {
 export const homeGetMainPageData = payload => {
     return axiosInstance.get(`/home/get-main-page-data`)
 }
+
+export const sparePartsInitData = () => {
+    return axiosInstance.get(`/spare-parts/get-search-page-init-data`);
+}
