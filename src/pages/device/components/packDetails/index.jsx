@@ -78,7 +78,7 @@ function Com(props) {
         <div className={styles.pack} style={{backgroundColor:token.titleCardBgc,overflow:'scroll'}}>
           { getQueryString('type')=="14"&&<Select
                 className={styles.margRL}
-                style={{ width: 180 }}
+                style={{ width: '9.375rem',fontSize:'0.9375rem'}}
                 options={options}
                 defaultValue={'0,0'}
                 onChange={(val) => changePack(val)
@@ -89,7 +89,7 @@ function Com(props) {
                 {data.map((one, index) => {
                     return (<div className={styles.onePack}>
                         <div className={styles.title1}  style={{color:token.iconColor}}>
-                            <Icon type='icon-xiangyou' style={{ cursor: 'pointer',marginRight:'6px' }}></Icon>
+                            <Icon type='icon-xiangyou' style={{ cursor: 'pointer',marginRight:'0.3125rem' }}></Icon>
                             <span style={{marginRight: 5,}}>PACK{one.packNo + 1}</span>
                             {index === 0 && <Tooltip title={`${t('说明')}: ${t('红色代表单体电压/温度最高, 绿色代表单体电压/温度最低')}`}><QuestionCircleOutlined /></Tooltip>}
                             </div>
@@ -99,7 +99,7 @@ function Com(props) {
                                 {one.vols?.map((it, index) => {
                                     return (
                                         <div className={styles.oneData} style={{ color: it === maxVol ? '#FF3333' : (it === minVol ? '#15FF35' : token.color1) }}>
-                                        {t("电芯")}{index}:<span style={{ marginLeft: '10px' }}>{it}</span>
+                                        {t("电芯")}{index}:<span style={{ marginLeft: '0.5208rem' }}>{it}</span>
                                     </div>
                                     )
                                 })}
@@ -111,7 +111,7 @@ function Com(props) {
                                 {one.tmps?.map((it, index) => {
                                     return (
                                         <div className={styles.oneData} style={{ color: it === maxTemp ? '#FF3333' : (it === minTemp ? '#15FF35' : token.color1) }}>
-                                            {t('采样点')}{index}:<span style={{ marginLeft: '10px' }}>{it}</span>
+                                            {t('采样点')}{index}:<span style={{ marginLeft: '0.5208rem' }}>{it}</span>
                                         </div>
                                     )
                                 })}
@@ -125,7 +125,7 @@ function Com(props) {
                                 {Object.keys(one?.extraPackData).map((it, index) => {
                                     return (
                                         <div className={styles.oneData} style={{color:token.color1}}>
-                                        {t(temObj[it])}:<span style={{ marginLeft: '10px' }}>{one?.extraPackData[it]}</span>
+                                        {t(temObj[it])}:<span style={{ marginLeft: '0.5208rem' }}>{one?.extraPackData[it]}</span>
                                     </div>
                                     )
                                 })}

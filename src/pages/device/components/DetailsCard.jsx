@@ -20,16 +20,16 @@ function Com({ data,table }) {
         return msg
     }
     return (
-        <div className='card_main' style={{background:token.detailsCardbgc,padding:'16px 20px',marginBottom:'8px',borderRadius:'8px'}}>
-            <div className='card_title' style={{ fontSize: '20px', marginBottom: '20px',color:token.iconColor }}>
-                <Icon type='icon-xiangyou' style={{ cursor: 'pointer',marginRight:'6px' }}></Icon>
+        <div className='card_main' style={{background:token.detailsCardbgc,padding:'0.8333rem 1.0417rem',marginBottom:'0.4167rem',borderRadius:'0.4167rem'}}>
+            <div className='card_title' style={{ fontSize: '1.0417rem', marginBottom: '1.0417rem',color:token.iconColor }}>
+                <Icon type='icon-xiangyou' style={{ cursor: 'pointer',marginRight:'0.3125rem' }}></Icon>
                 {t(data.title)}
             </div>
             <div className='card_contain' style={{
                 display: 'grid',
                 gridTemplateColumns: '1fr 1fr 1fr 1fr ',
-                marginBottom: '16px',
-                padding: '0 20px',
+                marginBottom: '0.8333rem',
+                padding: '0 1.0417rem',
                 gridTemplateRows: height,
                 transition: 'all .3s',
                 overflow: 'hidden',
@@ -38,7 +38,7 @@ function Com({ data,table }) {
                 {data.data.map(it => {
                     return (
                         <>
-                            <div style={{ marginBottom: '16px', marginTop: '16px',color:token.color1}}>
+                            <div style={{ marginBottom: '0.833rem', marginTop: '0.8333rem',color:token.color1}}>
                                 {t(it.name)}{" "}:{" "}{t(it.value)}
                             </div>
                         </>
@@ -46,11 +46,11 @@ function Com({ data,table }) {
                 })}
             </div>
             {table&&<div style={{
-                padding: '0 20px',
+                padding: '0 1.0417rem',
 
             }}>
                 <Table pagination={false} columns={table.tableClum1} dataSource={table.dataTable1}/>
-            <Table pagination={false} columns={table.tableClum2} dataSource={table.dataTable1} style={{marginBottom:'32px'}}/> </div>  }
+            <Table pagination={false} columns={table.tableClum2} dataSource={table.dataTable1} style={{marginBottom:'1.6667rem'}}/> </div>  }
         </div>
     )
 }

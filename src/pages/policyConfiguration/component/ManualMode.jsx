@@ -118,7 +118,7 @@ function Com({ devId, dtuId, historyAllData, mode }) {
                         <div className={styles.label}>{t('PCS支路1功率设置')}:</div>
                         <Flex gap={30}>
                             <InputNumber style={{
-                                width: '105px',
+                                width: '5.6488rem',
                             }}
                                 defaultValue={allPolicy.pcsPowerOne}
                                 onChange={(value) => changeInput(value, 'pcsPowerOne')}
@@ -132,7 +132,7 @@ function Com({ devId, dtuId, historyAllData, mode }) {
                         <div className={styles.label}>{t('PCS支路2功率设置')}:</div>
                         <Flex gap={30}>
                             <InputNumber style={{
-                                width: '105px',
+                                width: '5.6488rem',
                             }}
                                 onChange={(value) => changeInput(value, 'pcsPowerTow')}
                                 defaultValue={allPolicy.pcsPowerTow}
@@ -175,12 +175,12 @@ function Com({ devId, dtuId, historyAllData, mode }) {
                 }}>
                 <Form
                     form={form1}
-                    style={{ marginTop: '32px' }}
+                    style={{ marginTop: '1.6667rem' }}
                 >
                     <Form.Item name={"password"} label={t("请输入密码")} rules={[FORM_REQUIRED_RULE]}>
                         <Input className="pwd" placeholder={t("请输入密码")} />
                     </Form.Item>
-                    {cmdTypeId[type] == 7001 || cmdTypeId[type] == 7011 ? <span style={{ marginLeft: '10px' }}>{t(`确定将`) + t(title) + t('设置为') + value + '?'}</span> : <span style={{ marginLeft: '10px' }}>{t(`确定下发`) + title + t('命令吗')}</span>}
+                    {cmdTypeId[type] == 7001 || cmdTypeId[type] == 7011 ? <span style={{ marginLeft: '0.5028rem' }}>{t(`确定将`) + t(title) + t('设置为') + value + '?'}</span> : <span style={{ marginLeft: '0.5082rem' }}>{t(`确定下发`) + title + t('命令吗')}</span>}
                 </Form>
             </Modal>
 

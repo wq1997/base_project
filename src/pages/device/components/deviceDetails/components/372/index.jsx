@@ -197,7 +197,7 @@ function Com(props) {
         ],
     });
     const [bms1Data, setBms1Data] = useState({
-        title: "BMS簇1信息",
+        title: "BMS簇0信息",
         data: [
             { name: "BMS系统状态", value: "-", key: "bmcRunStatus" },
             { name: "电池充放电状态", value: "-", key: "batCdState" },
@@ -223,7 +223,7 @@ function Com(props) {
         ],
     })
     const [bms2Data, setBms2Data] = useState({
-        title: "BMS簇2信息",
+        title: "BMS簇1信息",
         data: JSON.parse(JSON.stringify(bms1Data.data)),
     })
     const [bmsData, setBmsData] = useState({

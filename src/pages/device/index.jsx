@@ -317,7 +317,7 @@ const RealtimeAlarm = () => {
                     }
                     <div className={styles.plantSelect}>
                         <Select
-                            style={{ width: 300 }}
+                            style={{ width: '15.625rem' }}
                             onChange={(val) => {
                                 changePlant(val)
                             }}
@@ -368,7 +368,7 @@ const RealtimeAlarm = () => {
                                                 <span style={{ fontSize: '0.8333rem', fontWeight: 400, marginLeft: '0.5208rem', height: '10%', lineHeight: '150%' }}>{it.unit}</span>
                                             </div>
                                             <div className={styles.topItemTitle}>
-                                                <span style={{ color: token.smallTitleColor, fontWeight: 500, marginLeft: '3px',fontSize:'0.7292rem'}}>{it.label}</span>
+                                                <span style={{ color: token.smallTitleColor, fontWeight: 500, marginLeft: '.1563rem',fontSize:'0.7292rem'}}>{it.label}</span>
                                             </div>
                                         </div>
                                     )
@@ -391,7 +391,7 @@ const RealtimeAlarm = () => {
                 plantSelect={dataOption}
             ></Add>
             <Modal
-                title={[<><ExclamationCircleFilled style={{ color: '#FAAD14', marginRight: '10px' }} />{t('系统提示')}</>]}
+                title={[<><ExclamationCircleFilled style={{ color: '#FAAD14', marginRight: '0.5208rem' }} />{t('系统提示')}</>]}
                 open={isOpenDel}
                 onOk={() => delDevice()}
                 onCancel={changeIsOpenDel}

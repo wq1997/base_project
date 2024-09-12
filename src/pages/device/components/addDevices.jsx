@@ -102,19 +102,19 @@ const App = (props) => {
                     form: 'wrap',
                 }}
                 style={{ margin: 'auto' }}
-                width={500}
+                width={'26.0417rem'}
             >
                 <Form
                     form={form}
                     name="wrap"
                     ref={formRef}
-                    labelCol={{ flex: '130px' }}
+                    labelCol={{ flex: '6.7708rem' }}
                     labelAlign="right"
                     labelWrap
                     wrapperCol={{ flex: 1 }}
                     colon={false}
                     style={{
-                        maxWidth: 400,
+                        maxWidth: '20.8333rem',
                     }}
                 >
                     <Row gutter={[20, 0]}>

@@ -65,13 +65,13 @@ const BaseLayout = () => {
             },
             '.ant-menu-sub': {
                 backgroundColor: `${token.titleCardBgc} !important`,
-                margin: '0 20px',
-                borderRadius: '4px !important',
-                fontSize: '16px !important',
+                margin: '0 1.0417rem',
+                borderRadius: '0.283rem !important',
+                fontSize: '0.833rem !important',
                 fontFamily: 'PingFangRegular !important',
             },
             '.ant-menu-item-icon': {
-                fontSize: '18px !important',
+                fontSize: '0.9375rem !important',
                 fontFamily: 'PingFangRegular !important',
             }
 
@@ -117,7 +117,7 @@ const BaseLayout = () => {
                         </Dropdown>
                         <HomeOutlined
                             style={{ cursor: 'pointer', fontSize: '1.8229rem', color: token.iconColor,
-                                margin: '0px 40px'
+                                margin: '0px 2.0833rem'
 
                              }}
                             onClick={() => history.push('/index/device')}
@@ -176,7 +176,7 @@ const BaseLayout = () => {
                 <Layout hasSider>
                     {pathname.split('/')[1] === 'index' && <Sider className={siderContentStyle}
                         style={{ background: token.titleCardBgc }}
-                        width={240}>
+                        width={'12.5rem'}>
                         <div className={styles.siderContent}>
                             <MyMenu />
                         </div>

@@ -9,16 +9,16 @@
     gap: 8px;
 
     .left{
-        width: calc(70% - 4px);
+        width: calc(70% - .2083rem);
         height: 100%;
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: .4167rem;
 
         .plantSelect{
             position: absolute;
-            top: 10px;
-            left: 10px;
+            top: .520833rem /* 10/19.2 */;
+            left: .520833rem;
             :global{
                 .ant-select-selector{
                     border: 1px solid #00FFFB;
@@ -27,33 +27,33 @@
         }
 
         .leftItem1{
-            height: calc(80% - 4px);
+            height: calc(80% - .2083rem);
 
             .mapRight{
-                height: calc(75% - 5px);
+                height: calc(75% - .2604rem);
                 position: absolute;
                 right: 0;
                 top: 0;
                 display: flex;
                 flex-direction: column;
-                gap: 10px;
+                gap: .5208rem;
 
                 .mapRightItem{
-                    width: 250px;
+                    width: 13.0208rem;
                     background-color: #111838;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     height: calc(33.333333333333%);
-                    border-radius: 8px;
+                    border-radius: .4167rem;
                     .mapRightItemTop{
                         display: flex;
                         align-items: baseline;
                         .mapRightItemTopValue{
-                            max-width: 150px;
+                            max-width: 7.8125rem;
                             font-family: DingTalkJinBuTi;
-                            font-size: 30px;
-                            margin-bottom: 10px;
+                            font-size: 1.5625rem;
+                            margin-bottom: .5208rem;
                             white-space: nowrap; 
                             overflow: hidden;
                             text-overflow: ellipsis;
@@ -68,26 +68,26 @@
 
             .mapBottom{
                 width: 100%;
-                height: calc(25% - 5px);
+                height: calc(25% - .2604rem);
                 position: absolute;
                 bottom: 0;
                 left: 0;
                 display: flex;
                 justify-content: space-between;
                 .mapBottomItem{
-                    width: calc(33% - 5px);
+                    width: calc(33% - .2604rem);
                     height: 100%;
                     background-color: #0B3858;
                     display: flex;
                     flex-direction: column;
                     align-items: center;
                     justify-content: center;
-                    border-radius: 8px;
+                    border-radius: .4167rem;
 
                     .mapBottomItemData{
                         font-family: DingTalkJinBuTi;
-                        font-size: 30px;
-                        margin-bottom: 10px;
+                        font-size: 1.5625rem;
+                        margin-bottom: .5208rem;
                     }
                 }
             }
@@ -100,14 +100,15 @@
             .add{
                 display: flex;
                 position: absolute;
-                gap: 10px;
-                right: 10px;
-                top: 5px;
+                gap: .5208rem;
+                right: .5208rem;
+                top: .2604rem;
                 .addBtn{
                     // background: radial-gradient(153% 66% at 50% 50%, #111838 0%, #118786 100%);
-                    border-radius: 2px;
+                    font-size: .8333rem;
+                    border-radius: .1042rem;
                     // border: 1px solid #00FFFC;
-                    padding: 5px 20px;
+                    padding: .2604rem 1.0417rem;
                     box-sizing: border-box;
                     cursor: pointer;
                 }

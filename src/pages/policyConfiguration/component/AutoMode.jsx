@@ -553,7 +553,7 @@ const App = ({ devId, dtuId, historyAllData }) => {
           <div className={styles.label}>{t('功率波动范围')}:</div>
           <Flex gap={30}>
             <InputNumber style={{
-              width: '105px',
+              width: '5.4699rem',
             }}
               defaultValue={historyAllData.pcsPowerWaveRange}
               onChange={(value) => setRangePower(value)}
@@ -562,7 +562,7 @@ const App = ({ devId, dtuId, historyAllData }) => {
           </Flex>
         </Flex>
       </div>}
-      <Button type="primary" onClick={() => {setIsModalOpen(true);setCmdTypeId(7013)}} style={{ backgroundColor: token.defaultBg, marginBottom: "30px", display: 'block', marginLeft: 'auto' }}>{t("下发")}</Button>
+      <Button type="primary" onClick={() => {setIsModalOpen(true);setCmdTypeId(7013)}} style={{ backgroundColor: token.defaultBg, marginBottom: "1.5625rem", display: 'block', marginLeft: 'auto' }}>{t("下发")}</Button>
       <Table
         components={components}
         rowClassName={() => 'editable-row'}
@@ -656,12 +656,12 @@ const App = ({ devId, dtuId, historyAllData }) => {
       >
         <Form
           form={form1}
-          style={{ marginTop: '32px' }}
+          style={{ marginTop: '1.667rem' }}
         >
           <Form.Item name={"password"} label={t("请输入密码")} rules={[FORM_REQUIRED_RULE]}>
             <Input className="pwd" placeholder={t("请输入密码")} />
           </Form.Item>
-          <span style={{ marginLeft: '10px' }}>{t('确定下发自动模式指令吗？')}</span>
+          <span style={{ marginLeft: '0.5028rem' }}>{t('确定下发自动模式指令吗？')}</span>
         </Form>
       </Modal>
 

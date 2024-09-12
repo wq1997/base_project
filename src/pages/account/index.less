@@ -10,25 +10,31 @@
         text-shadow: .2083rem .4167rem .2083rem #000000;
         font-size: 2.1875rem;
     }
-.bottom{
-    position: absolute;
-    bottom: 1.5625rem;
-    display: block;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    
-}
+
+    .bottom {
+        position: absolute;
+        bottom: 1.5625rem;
+        display: block;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+
+    }
+
     .formCard {
         background: rgba(0, 0, 0, 0.3);
         box-shadow: .4167rem .4167rem .4167remx 0px rgba(0, 0, 0, 0.16);
-        border-radius: .833333rem /* 16/19.2 */;
+        border-radius: .833333rem
+            /* 16/19.2 */
+        ;
         backdrop-filter: blur(.3125rem);
-        }
-p{
-    font-family: PingFangRegular;
+    }
 
-}
+    p {
+        font-family: PingFangRegular;
+
+    }
+
     :global {
         .ant-input-password {
             &::placeholder {
@@ -36,10 +42,20 @@ p{
             }
         }
 
+        .ant-form-item-label >label {
+            font-size: .7292rem !important;
+        }
+        .ant-radio-wrapper{
+            font-size: .7292rem !important;
+        }
         .ant-tabs-nav {
             margin-bottom: 0px;
         }
+        .ant-input-affix-wrapper {
+            font-size: .7292rem !important;
+        }
+        .anticon {
+            font-size: .7292rem !important;
+        }
     }
 }
-
-

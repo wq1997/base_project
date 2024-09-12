@@ -96,7 +96,7 @@ const Login = () => {
       <Title className={styles.Title} level={1} ><FormattedMessage id="app.title" /></Title>
       <div
         style={{
-          width: 450,
+          width: '23.437rem',
           position: 'absolute',
           top: '50%',
           transform: 'translateY(-50%)',
@@ -169,15 +169,15 @@ const Login = () => {
               name="remember"
               valuePropName="checked"
             >
-              <Checkbox>{t('记住密码')}</Checkbox>
+              <Checkbox style={{fontSize:'.7292rem'}}>{t('记住密码')}</Checkbox>
             </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit" style={{ width: '100%', height: '2.0833rem' }}>
+              <Button type="primary" htmlType="submit" style={{ width: '100%', height: '2.0833rem',fontSize:'.7292rem' }}>
                 {t('登录')}
               </Button>
             </Form.Item>
-            <Form.Item label='Language' labelCol={10}>
-              <Radio.Group name="radiogroup" defaultValue={language} onChange={changeLanguage}>
+            <Form.Item label='Language' labelCol={10} >
+              <Radio.Group name="radiogroup" defaultValue={language} onChange={changeLanguage} >
                 <Radio value={3}>English</Radio>
                 <Radio value={1}>中文</Radio>
               </Radio.Group>

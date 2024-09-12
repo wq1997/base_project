@@ -14,39 +14,42 @@ const Index = ({ plants, showInfo, panTo }) => {
 
     const detailCard = useEmotionCss(() => {
         return {
-            width: '350px',
-            borderRadius: '16px',
-            padding: '20px 30px',
+            width: '18.2292rem',
+            borderRadius: '0.833rem',
+            padding: '1.0147rem 1.5625rem',
             boxSizing: 'border-box',
             background: token.titleCardBgc_2,
             ".header": {
                 color: token.iconColor,
-                fontSize: '16px',
+                fontSize: '0.8333rem',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                paddingLeft: '10px',
+                paddingLeft: '0.5208rem',
                 boxSizing: 'border-box',
-                marginBottom: '10px',
+                marginBottom: '.5208rem',
                 '&::before': {
                     content: '""',
-                    width: '4px',
-                    height: '14px',
+                    width: '0.2083rem',
+                    height: '0.7292rem',
                     background: '#54cfff',
-                    borderRadius: '2px',
+                    borderRadius: '0.1042rem',
                     position: 'absolute',
-                    left: '30px'
+                    left: '1.5625rem'
                 },
                 ".close": {
                     cursor: 'pointer'
                 }
             },
             ".item": {
-                padding: "5px 0",
+                padding: "0.2604rem 0",
                 display: "flex",
+                fontSize: '0.8333rem',
+
                 ".name": {
-                    width: "160px",
+                    width: "8.3333rem",
                     color: token.colorPrimary,
+
                 },
                 ".value": {
                     flex: 1,
@@ -55,7 +58,7 @@ const Index = ({ plants, showInfo, panTo }) => {
                     whiteSpace: "nowrap",
                     textOverflow: "ellipsis",
                     color: token.color6,
-                    width: "130px"
+                    width: "6.7708rem"
                 }
             }
         }
