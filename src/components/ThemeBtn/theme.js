@@ -28,7 +28,7 @@ const theme = {
         colorLight:'#fff',
         colorNormal:'#fff',
         colorLittle:'#fff',
-
+        mybuttonBgc:''
     },
     default: {
         colorPrimary:'#03B4B4',

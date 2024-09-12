@@ -46,7 +46,7 @@ const OperationManage = () => {
         }
         return (
             <div
-                style={{ width: 132, height: 48, borderRadius: 4, background: token.mybuttonBgc, color: token.mybuttonColor, fontSize: 18, lineHeight: '48px', textAlign: 'center', cursor: 'pointer' }}
+                style={{ width: 132, height: 48, borderRadius: 4, background: token.defaultBg, color:'#ffffff', fontSize: 18, lineHeight: '48px', textAlign: 'center', cursor: 'pointer' }}
                 onClick={onBtnClick}
             >
                 {t(text)}
