@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { SearchInput } from "@/components";
+import { useSelector } from "umi";
 import { Button, Space, Table, message, DatePicker } from "antd";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import { jsonToUrlParams } from "@/utils/utils";
@@ -15,9 +16,10 @@ const Log = () => {
     const timeDimensionRef = useRef();
     const [timeDimension, setTimeDimension] = useState("DAY");
     const timeRef = useRef();
-    const [time, setTime] = useState(dayjs());
+    const [time, setTime] = useState(moment(dayjs()).format("YYYY-MM-DD"));
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
+    const { userInfo } = useSelector(state => state.user);
 
     const columns = [
         {
@@ -50,16 +52,15 @@ const Log = () => {
     const getList = async () => {
         const { current, pageSize } = paginationRef.current;
         const name = plantNameRef.current;
-        const timePeriod = timeDimensionRef.current || "DAY";
-        const time = timeRef.current||moment().format("YYYY-MM-DD");
-        if (!time) return message.info("请先选择日期");
+        const timePeriod = timeDimensionRef.current || timeDimension;
+        const _time = timeRef.current || time;
+        if (!_time) return message.info("请先选择日期");
         setLoading(true);
-        console.log("timePeriod", timePeriod);
         const res = await getPlantReportListServer({
             pageNo: current,
             pageSize,
             name,
-            time,
+            time: _time,
             timePeriod,
         });
         if (res?.data?.code == 200) {
@@ -113,6 +114,7 @@ const Log = () => {
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         plantNameRef.current = value;
+
                         setPlantName(value);
                     }}
                 />
@@ -179,14 +181,15 @@ const Log = () => {
                             type="primary"
                             onClick={() => {
                                 const name = plantNameRef.current;
-                                const timePeriod = timeDimensionRef.current || "DAY";
-                                const time = timeRef.current;
-                                if (!time) return message.info("请先选择日期");
+                                const timePeriod = timeDimensionRef.current || timeDimension;
+                                const _time = timeRef.current || time;
+                                if (!_time) return message.info("请先选择日期");
                                 let url = `${process.env.API_URL_1}/api/v1/report/export-plant-report${jsonToUrlParams(
                                     {
                                         name,
                                         timePeriod,
-                                        time,
+                                        time: _time,
+                                        userId: userInfo?.user?.id,
                                     }
                                 )}`;
                                 window.open(url);
