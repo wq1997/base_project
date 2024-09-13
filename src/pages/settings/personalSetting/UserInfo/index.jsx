@@ -22,7 +22,7 @@ const Index = () => {
     };
 
     useEffect(() => {
-        form.setFieldsValue(userInfo);
+        form.setFieldsValue(userInfo?.user);
     }, []);
 
     return (

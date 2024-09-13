@@ -121,7 +121,7 @@ const BaseLayout = () => {
                                     CR
                                 </Avatar>
                                 <span style={{ fontSize: 20, marginLeft: 10 }}>
-                                    {userInfo?.nickName}
+                                    {userInfo?.user?.nickName}
                                 </span>
                             </Row>
                         </Dropdown>
