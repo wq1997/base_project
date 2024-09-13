@@ -98,12 +98,25 @@ const Account = () => {
         {
             title: "工单名称",
             dataIndex: "title",
+            width: 300
+        },
+        {
+            title: "工单类型",
+            dataIndex: "typeZh",
             width: 200
+        },
+        {
+            title: "关联项目",
+            dataIndex: "project",
+            width: 300,
+            render: (_, { project }) => {
+                return project?.name;
+            },
         },
         {
             title: "处理状态",
             dataIndex: "statusZh",
-            width: 200,
+            width: 100,
             render: (_, { status, statusZh }) => {
                 return (
                     <span style={{ color: status == "COMPLETED" ? "#1BE72B" : "" }}>
@@ -111,11 +124,6 @@ const Account = () => {
                     </span>
                 );
             },
-        },
-        {
-            title: "工单类型",
-            dataIndex: "typeZh",
-            width: 200
         },
         {
             title: "发布时间",
@@ -131,14 +139,6 @@ const Account = () => {
             title: "计划结束时间",
             dataIndex: "planEndDate",
             width: 200
-        },
-        {
-            title: "关联项目",
-            dataIndex: "project",
-            width: 200,
-            render: (_, { project }) => {
-                return project?.name;
-            },
         },
         {
             title: "工单接收人",

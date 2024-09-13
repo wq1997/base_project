@@ -271,21 +271,22 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                 items={[
                     {
                         title: "项目基础资料维护",
-                        disabled: true
+                        disabled: !detailRow
                     },
                     {
                         title: "项目详细资料维护",
-                        disabled: true
+                        disabled: !detailRow
                     },
                     {
                         title: "维护实施管理信息",
-                        disabled: true
+                        disabled: !detailRow
                     },
                     {
                         title: "运维管理信息",
-                        disabled: true
+                        disabled: !detailRow
                     },
                 ]}
+                onChange={value=>setCurrentStep(value)}
             />
             <Form
                 style={{

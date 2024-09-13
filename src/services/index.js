@@ -156,3 +156,47 @@ export const homeGetMainPageData = payload => {
 export const sparePartsInitData = () => {
     return axiosInstance.get(`/spare-parts/get-search-page-init-data`);
 }
+
+export const sparePartsFindPage = (payload) => {
+    return axiosInstance.post(`/spare-parts/find-page`, payload);
+}
+
+export const newAddSpareParts = (payload) => {
+    return axiosInstance.post(`/spare-parts/new-add`, payload)
+}
+
+export const sparePartsOutput = (payload) => {
+    return axiosInstance.post(`/spare-parts/output`, payload);
+}
+
+export const operatorInitData = () => {
+    return axiosInstance.get(`/spare-parts/get-operate-page-init-data`);
+}
+
+export const sparePartsInput = (payload) => {
+    return axiosInstance.post(`/spare-parts/input`, payload);
+}
+
+export const sparePartsFindInOutPage = (payload) => {
+    return axiosInstance.post(`/spare-parts/find-in-out-page`, payload);
+}
+
+export const sparePartsDelete = (payload) => {
+    return axiosInstance.post(`/spare-parts/delete`, payload);
+}
+
+export const getHumanResourceInventoryPageInitData = () => {
+    return axiosInstance.get(`/work-order/get-human-resource-inventory-page-init-data`)
+}
+
+export const findHumanResourceInventory = payload => {
+    return axiosInstance.post(`/work-order/find-human-resource-inventory-data-page`, payload)
+}
+
+export const humanProjectInvntoryData = (payload) => {
+    return axiosInstance.get(`/work-order/get-human-project-inventory-data`, {params: payload})
+}
+
+export const humanWorkOrderInvntoryData = (payload) => {
+    return axiosInstance.get(`/work-order/get-human-work-order-inventory-data`, {params: payload})
+}

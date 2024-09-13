@@ -115,12 +115,11 @@ const MenuList = [
 const MyMenu = () => {
     const Icon = useIcon();
     const [selectedKeys, setSelectedKeys] = useState("");
-    const { theme } = useSelector(state => state.global);
     const { user } = useSelector(state => state.user);
 
     const getMenu = menuList => {
-        return menuList.map(menu => {
-            if (!(user?.selfPermCodes?.includes(menu.permissions) || !menu.permissions)) return null;
+        return menuList?.map(menu => {
+            if (!(user?.selfPermCodes?.includes(menu?.permissions) || !menu?.permissions)) return null;
             if (menu.children) {
                 return (
                     <SubMenu
@@ -170,6 +169,12 @@ const MyMenu = () => {
         getSelectKeys();
         getOpenKeys();
     }, [pathname]);
+
+    useEffect(()=>{
+        if(user){
+            getMenu();
+        }
+    }, [user])
     return (
         <Menu
             mode="inline"

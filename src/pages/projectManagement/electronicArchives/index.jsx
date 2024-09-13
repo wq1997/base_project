@@ -7,7 +7,7 @@ import {
     Modal,
     DatePicker,
     Form,
-    Input,
+    theme,
     Radio,
     Dropdown,
 } from "antd";
@@ -36,6 +36,7 @@ import {
 import dayjs from "dayjs";
 
 const Account = () => {
+    const { token } = theme.useToken();
     const [supplierForm] = Form.useForm();
     const location = useLocation();
     const initCode = location?.search.split("=")[1];
@@ -277,6 +278,11 @@ const Account = () => {
             width: 200
         },
         {
+            title: "关联工单数",
+            dataIndex: "refWorkOrderCount",
+            width: 150
+        },
+        {
             title: "充放功率(MW)",
             dataIndex: "maxPowerMw",
             width: 200
@@ -345,62 +351,15 @@ const Account = () => {
                     setDetailRow(row);
                 };
                 return (
-                    <Dropdown
-                        menu={{
-                            items: [
-                                {
-                                    key: "1",
-                                    label: <div onClick={() => edit(0, row)}>基础信息维护</div>,
-                                    icon: <FileSearchOutlined />,
-                                },
-                                {
-                                    key: "2",
-                                    label: <div onClick={() => edit(1, row)}>详细信息维护</div>,
-                                    icon: <FileProtectOutlined />,
-                                },
-                                {
-                                    key: "3",
-                                    label: <div onClick={() => edit(2, row)}>实施管理</div>,
-                                    icon: <UnorderedListOutlined />,
-                                },
-                                {
-                                    key: "4",
-                                    label: <div onClick={() => edit(3, row)}>巡检管理</div>,
-                                    icon: <UserOutlined />,
-                                },
-                                {
-                                    key: "5",
-                                    label: (
-                                        <div
-                                            onClick={() => {
-                                                Modal.confirm({
-                                                    title: "系统提示",
-                                                    content:
-                                                        "删除此条记录不可恢复，请确认后再删除！",
-                                                    onOk: async () => {
-                                                        const res = await basProjectDeleteServe({
-                                                            ids: [row?.id]
-                                                        })
-                                                        if (res?.data?.status === "SUCCESS") {
-                                                            message.success("删除成功！");
-                                                            getInviteList();
-                                                        }
-                                                    },
-                                                });
-                                            }}
-                                        >
-                                            删除项目
-                                        </div>
-                                    ),
-                                    icon: <DeleteOutlined />,
-                                },
-                            ],
-                        }}
-                    >
-                        <a onClick={e => e.preventDefault()}>
-                            <EllipsisOutlined style={{ color: "#FFF" }} />
-                        </a>
-                    </Dropdown>
+                    <Space>
+                        <Button
+                            type="link"
+                            style={{ color: token.colorPrimary }}
+                            onClick={() => edit(0, row)}
+                        >
+                            编辑
+                        </Button>
+                    </Space>
                 );
             },
         },
@@ -625,7 +584,7 @@ const Account = () => {
                     selectedRowKeys,
                     onChange: onSelectChange,
                     getCheckboxProps: record => ({
-                        disabled: record.account === "admin",
+                        disabled: !record.supportRemove,
                     }),
                 }}
                 onChange={pagination => {

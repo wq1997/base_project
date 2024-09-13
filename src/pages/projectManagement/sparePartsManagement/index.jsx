@@ -1,10 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import { SearchInput } from "@/components";
-import { Space, Button, Table, theme, Modal, Form, Radio, Select, Input, InputNumber, Drawer } from "antd";
+import { Space, Button, Table, theme, Modal, Form, Radio, Select, Input, InputNumber, Drawer, Tooltip } from "antd";
 import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE } from "@/utils/constants";
 import styles from "./index.less";
 import {
     sparePartsInitData as sparePartsInitDataServe,
+    sparePartsFindPage as sparePartsFindPageServe,
+    newAddSpareParts as newAddSparePartsServe,
+    operatorInitData as operatorInitDataServe,
+    sparePartsInput as sparePartsInputServe,
+    sparePartsOutput as sparePartsOutputServe,
+    sparePartsFindInOutPage as sparePartsFindInOutPageServe,
+    sparePartsDelete as sparePartsDeleteServe
 } from "@/services";
 
 const SparePartsManagement = () => {
@@ -13,6 +20,9 @@ const SparePartsManagement = () => {
     const { token } = theme.useToken();
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
+    const outputPaginationRef = useRef(DEFAULT_PAGINATION);
+    const [outputPagination, setOutputPagination] = useState(DEFAULT_PAGINATION);
+    const [outputDatasource, setOutputDatasource] = useState([]);
     const [name, setName] = useState();
     const nameRef = useRef();
     const [type, setType] = useState();
@@ -29,6 +39,8 @@ const SparePartsManagement = () => {
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [dataSource, setDataSource] = useState([]);
     const [initOptions, setInitOptions] = useState({});
+    const [currentRecord, setCurrentRecord] = useState({});
+    const [operateInitData, setOperateInitData] = useState({});
 
     const onSelectChange = (newSelectedRowKeys, newSelectedRows) => {
         setSelectedRowKeys(newSelectedRowKeys);
@@ -36,43 +48,133 @@ const SparePartsManagement = () => {
 
     const columns = [
         {
-            title: "备件名称",
-            dataIndex: "name",
+            title: '备件名称',
+            dataIndex: 'name',
+            key: 'name',
+            ellipsis: true,
+            width: 200,
+            render(value){
+                return (
+                    <Tooltip title={value}>
+                        <div 
+                            style={{
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                                width: 200,
+                            }}
+                        >
+                            {value}
+                        </div>
+                    </Tooltip>
+                )
+            }
         },
         {
             title: "备件编号",
-            dataIndex: "1",
+            dataIndex: "code",
+            width: 200,
         },
         {
             title: "备件数量",
-            dataIndex: "2",
+            dataIndex: "stock",
+            width: 100,
         },
         {
             title: "备件类型",
-            dataIndex: "3",
+            dataIndex: "type",
+            width: 200,
         },
         {
             title: "所属仓库",
-            dataIndex: "4",
+            dataIndex: "warehouse",
+            width: 200,
         },
         {
             title: "备件属性",
-            dataIndex: "5",
+            dataIndex: "attribute",
+            width: 200,
         },
         {
             title: "所属供应商",
             dataIndex: "6",
+            render(_, record) {
+                return record?.supplier?.name;
+            },
+            width: 200,
+        },
+        {
+            title: '备件备注',
+            dataIndex: 'remark',
+            key: 'remark',
+            ellipsis: true,
+            width: 400,
+            render(value){
+                return (
+                    <Tooltip title={value}>
+                        <div 
+                            style={{
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                                width: 400,
+                            }}
+                        >
+                            {value}
+                        </div>
+                    </Tooltip>
+                )
+            }
+        },
+        {
+            title: '入库备注',
+            dataIndex: 'operateRemark',
+            key: 'operateRemark',
+            ellipsis: true,
+            width: 400,
+            render(value){
+                return (
+                    <Tooltip title={value}>
+                        <div 
+                            style={{
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                                width: 400,
+                            }}
+                        >
+                            {value}
+                        </div>
+                    </Tooltip>
+                )
+            }
         },
         {
             title: "操作",
             dataIndex: "Action",
+            fixed: "right",
+            width: 300,
             render: (_, row) => {
                 return (
                     <Space>
-                        <Button type="link" onClick={() => setUseOpen(true)}>
+                        <Button 
+                            type="link" 
+                            onClick={() => {
+                                useForm.setFieldsValue(row);
+                                setCurrentRecord(row);
+                                setUseOpen(true);
+                                getOperateInitData();
+                            }}>
                             备件领用
                         </Button>
-                        <Button type="link" style={{ color: token.colorPrimary }} onClick={()=>setRecordOpen(true)}>
+                        <Button 
+                            type="link" 
+                            style={{ color: token.colorPrimary }} 
+                            onClick={() => {
+                                getOutputDataSource(row?.code);
+                                setRecordOpen(true)
+                            }}
+                        >
                             查看出入库记录
                         </Button>
                     </Space>
@@ -83,13 +185,85 @@ const SparePartsManagement = () => {
 
     const getSparePartsInitData = async () => {
         const res = await sparePartsInitDataServe();
-        if(res?.data?.status==="SUCCESS"){
+        if (res?.data?.status === "SUCCESS") {
             setInitOptions(res?.data?.data);
         }
     }
 
-    useEffect(()=>{
+    const getOperateInitData = async () => {
+        const res = await operatorInitDataServe();
+        if(res?.data?.status==="SUCCESS"){
+            setOperateInitData(res?.data?.data);
+        }
+    }
+
+    const getDataSource = async () => {
+        const { current, pageSize } = paginationRef.current;
+        const nameLike = nameRef.current;
+        const type = typeRef.current;
+        const warehouse = warehouseRef.current;
+        const attribute = attributeRef.current;
+        const supplierId = supplierRef.current;
+        const res = await sparePartsFindPageServe({
+            pageNum: current,
+            pageSize,
+            queryCmd: {
+                nameLike,
+                type,
+                warehouse,
+                attribute,
+                supplierId
+            }
+        }
+        );
+        if (res?.data?.status === "SUCCESS") {
+            const { totalRecord, recordList } = res?.data?.data;
+            setPagination({
+                ...paginationRef.current,
+                total: parseInt(totalRecord),
+            });
+            setDataSource(recordList);
+        }
+    }
+
+    const getOutputDataSource = async (code) => {
+        const { current, pageSize } = outputPaginationRef.current;
+        const res = await sparePartsFindInOutPageServe({
+            pageNum: current,
+            pageSize,
+            queryCmd: {
+                code
+            }
+        }
+        );
+        if (res?.data?.status === "SUCCESS") {
+            const { totalRecord, recordList } = res?.data?.data;
+            setOutputPagination({
+                ...outputPaginationRef.current,
+                total: parseInt(totalRecord),
+            });
+            setOutputDatasource(recordList);
+        }
+    }
+
+    const onReset = () => {
+        nameRef.current = undefined;
+        typeRef.current = undefined;
+        warehouseRef.current = undefined;
+        attributeRef.current = undefined;
+        supplierRef.current = undefined;
+        setSupplier(undefined);
+        setAttribute(undefined);
+        setWarehouse(undefined);
+        setType(undefined);
+        setName(undefined);
+        getDataSource();
+    }
+
+    useEffect(() => {
         getSparePartsInitData();
+        getOperateInitData();
+        getDataSource();
     }, [])
 
     return (
@@ -168,8 +342,8 @@ const SparePartsManagement = () => {
                         }
                     })}
                 />
-                <Button type="primary">搜索</Button>
-                <Button type="primary" danger>重置</Button>
+                <Button type="primary" onClick={getDataSource}>搜索</Button>
+                <Button type="primary" danger onClick={onReset}>重置</Button>
             </Space>
             <Table
                 rowKey="id"
@@ -183,6 +357,9 @@ const SparePartsManagement = () => {
                         disabled: record.account === "admin",
                     }),
                 }}
+                scroll={{
+                    x: 1500,
+                }}
                 onChange={pagination => {
                     paginationRef.current = pagination;
                     getInviteList();
@@ -191,11 +368,27 @@ const SparePartsManagement = () => {
                     <Space className="table-title">
                         <Button
                             type="primary"
-                            onClick={() => setSpareStorageOpen(true)}
+                            onClick={() => {
+                                getOperateInitData();
+                                setSpareStorageOpen(true);
+                            }}
                         >
                             备件入库
                         </Button>
-                        <Button type="primary" danger>删除备件</Button>
+                        <Button 
+                            type="primary" 
+                            danger
+                            onClick={async ()=>{
+                                const res = await sparePartsDeleteServe({
+                                    ids: selectedRowKeys
+                                })
+                                if(res?.data?.status==="SUCCESS"){
+                                    getDataSource();
+                                }
+                            }}
+                        >
+                            删除备件
+                        </Button>
                     </Space>
                 )}
             />
@@ -206,6 +399,28 @@ const SparePartsManagement = () => {
                 onCancel={async () => {
                     setSpareStorageOpen(false);
                     await spareStorageForm.resetFields();
+                }}
+                onOk={async () => {
+                    const values = await spareStorageForm.getFieldsValue();
+                    if (values.storageMethod === "ADD") {
+                        const res = await newAddSparePartsServe(values);
+                        if (res?.data?.status === "SUCCESS") {
+                            setSpareStorageOpen(false);
+                            await spareStorageForm.resetFields();
+                            getDataSource();
+                        }
+                    }else{
+                        const res = await sparePartsInputServe({
+                            id: values?.name,
+                            count: values?.stock,
+                            remark: values?.operateRemark
+                        });
+                        if (res?.data?.status === "SUCCESS") {
+                            setSpareStorageOpen(false);
+                            await spareStorageForm.resetFields();
+                            getDataSource();
+                        }
+                    }
                 }}
             >
                 <Form
@@ -240,9 +455,17 @@ const SparePartsManagement = () => {
                                             { required: storageMethod === "ADD", message: "请输入必填字段" }
                                         ]}
                                         label="备件属性"
-                                        name={"attributes"}
+                                        name={"attribute"}
                                     >
-                                        <Select placeholder="请选择备件属性" />
+                                        <Select
+                                            placeholder="请选择备件属性"
+                                            options={initOptions?.attributes?.map(item => {
+                                                return {
+                                                    label: item,
+                                                    value: item
+                                                }
+                                            })}
+                                        />
                                     </Form.Item>
                                     <Form.Item
                                         hidden={storageMethod !== "ADD"}
@@ -252,7 +475,15 @@ const SparePartsManagement = () => {
                                         label="备件类型"
                                         name={"type"}
                                     >
-                                        <Select placeholder="请选择备件类型" />
+                                        <Select
+                                            placeholder="请选择备件类型"
+                                            options={initOptions?.types?.map(item => {
+                                                return {
+                                                    label: item,
+                                                    value: item
+                                                }
+                                            })}
+                                        />
                                     </Form.Item>
                                     <Form.Item
                                         hidden={storageMethod !== "ADD"}
@@ -260,9 +491,17 @@ const SparePartsManagement = () => {
                                             { required: storageMethod === "ADD", message: "请输入必填字段" }
                                         ]}
                                         label="所属供应商"
-                                        name={"suppliers"}
+                                        name={"supplierId"}
                                     >
-                                        <Select placeholder="请选择所属供应商" />
+                                        <Select
+                                            placeholder="请选择所属供应商"
+                                            options={initOptions?.suppliers?.map(item => {
+                                                return {
+                                                    label: item?.name,
+                                                    value: item?.id
+                                                }
+                                            })}
+                                        />
                                     </Form.Item>
                                     <Form.Item
                                         hidden={storageMethod !== "ADD"}
@@ -272,7 +511,15 @@ const SparePartsManagement = () => {
                                         label="所属仓库"
                                         name={"warehouse"}
                                     >
-                                        <Select placeholder="请选择所属仓库" />
+                                        <Select
+                                            placeholder="请选择所属仓库"
+                                            options={initOptions?.warehouses?.map(item => {
+                                                return {
+                                                    label: item,
+                                                    value: item
+                                                }
+                                            })}
+                                        />
                                     </Form.Item>
                                     <Form.Item
                                         rules={[
@@ -281,20 +528,35 @@ const SparePartsManagement = () => {
                                         label="备件名称"
                                         name={"name"}
                                     >
-                                        <Input placeholder="请输入备件名称" />
+                                        <Select 
+                                            placeholder="请输入备件名称" 
+                                            options={operateInitData?.spareParts?.map(item => {
+                                                return {
+                                                    label: item?.name,
+                                                    value: item?.id
+                                                }
+                                            })}
+                                        />
                                     </Form.Item>
                                     <Form.Item
                                         rules={[
                                             { required: true, message: "请输入必填字段" }
                                         ]}
                                         label="备件数量"
-                                        name={"count"}
+                                        name={"stock"}
                                     >
                                         <InputNumber placeholder="请输入备件数量" min={0} style={{ width: '100%' }} />
                                     </Form.Item>
                                     <Form.Item
-                                        label="入库备注"
+                                        label="备件备注"
                                         name={"remark"}
+                                        hidden={storageMethod !== "ADD"}
+                                    >
+                                        <Input.TextArea placeholder="请输入备件备注" />
+                                    </Form.Item>
+                                    <Form.Item
+                                        label="入库备注"
+                                        name={"operateRemark"}
                                     >
                                         <Input.TextArea placeholder="请输入入库备注" />
                                     </Form.Item>
@@ -310,6 +572,22 @@ const SparePartsManagement = () => {
                 open={useOpen}
                 onCancel={() => {
                     setUseOpen(false);
+                    useForm.resetFields();
+                }}
+                onOk={async () => {
+                    const values = await useForm.getFieldsValue();
+                    const project = operateInitData?.projects?.find(item => item?.id===values?.outputProjectId);
+                    const res = await sparePartsOutputServe({
+                        id: currentRecord?.id,
+                        count: values?.count,
+                        outputProjectId: values?.outputProjectId,
+                        outputProjectName: project?.name
+                    })
+                    if(res?.data?.status==="SUCCESS"){
+                        setUseOpen(false);
+                        getDataSource();
+                        useForm.resetFields();
+                    }
                 }}
             >
                 <Form
@@ -319,59 +597,81 @@ const SparePartsManagement = () => {
                     }}
                 >
                     <Form.Item label="备件名称" name={"name"} rules={[{ ...FORM_REQUIRED_RULE }]}>
-                        <Select placeholder="请选择备件" />
+                        <Input placeholder="请选择备件" disabled/>
                     </Form.Item>
-                    <Form.Item label="入库备件数量" name="hasCount">
+                    <Form.Item label="入库备件数量" name="stock">
                         <Input disabled />
                     </Form.Item>
                     <Form.Item label="备件领用数量" name={"count"} rules={[{ ...FORM_REQUIRED_RULE }]}>
-                        <InputNumber placeholder="请输入备件领用数量" min={0} style={{ width: '100%' }} />
+                        <InputNumber placeholder="请输入备件领用数量" min={0} max={currentRecord?.stock} style={{ width: '100%' }} />
                     </Form.Item>
-                    <Form.Item label="领用项目" name={"project"} rules={[{ ...FORM_REQUIRED_RULE }]}>
-                        <Select placeholder="请选择领用项目" />
+                    <Form.Item label="领用项目" name={"outputProjectId"} rules={[{ ...FORM_REQUIRED_RULE }]}>
+                        <Select 
+                            placeholder="请选择领用项目"
+                            options={operateInitData?.projects?.map(item => {
+                                return {
+                                    label: item?.name,
+                                    value: item?.id,
+                                }
+                            })} 
+                        />
                     </Form.Item>
                     <Form.Item
-                        label="入库备注"
+                        label="领用备注"
                         name={"remark"}
                     >
-                        <Input.TextArea placeholder="请输入入库备注" />
+                        <Input.TextArea placeholder="请输入领用备注" />
                     </Form.Item>
                 </Form>
             </Modal>
 
-            <Drawer 
-                title="出入库记录" 
+            <Drawer
+                title="出入库记录"
                 width={1000}
                 open={recordOpen}
-                onClose={()=>setRecordOpen(false)}
+                onClose={() => {
+                    setRecordOpen(false);
+                    setOutputDatasource([]);
+                    setOutputPagination(DEFAULT_PAGINATION);
+                    outputPaginationRef.current=DEFAULT_PAGINATION;
+                }}
             >
-                <Table 
+                <Table
                     columns={[
                         {
                             title: "备件名称",
-                            dataIndex: "1",
+                            dataIndex: "name",
+                            render(_,row){
+                                return row?.spareParts?.name
+                            }
                         },
                         {
                             title: "操作类型",
-                            dataIndex: "3",
+                            dataIndex: "operation",
                         },
                         {
                             title: "操作数量",
-                            dataIndex: "4",
+                            dataIndex: "changeCount",
                         },
                         {
                             title: "操作后余量",
-                            dataIndex: "5",
+                            dataIndex: "stockAfterOperate",
                         },
                         {
                             title: "操作人",
-                            dataIndex: "6",
+                            dataIndex: "operatorName",
                         },
                         {
                             title: "操作备注",
-                            dataIndex: "7",
+                            dataIndex: "remark",
                         },
                     ]}
+                    dataSource={outputDatasource}
+                    pagination={outputPagination}
+                    onChange={pagination => {
+                        outputPaginationRef.current = pagination;
+                        getOutputDataSource();
+                    }}
                 />
             </Drawer>
         </div>
