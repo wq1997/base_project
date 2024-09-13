@@ -11,6 +11,7 @@ import {
     deleteDevice as deleteDeviceServer,
     getDeviceInfo as getDeviceInfoServer,
 } from "@/services/device";
+import { getRoles as getRolesServer, getRoleNames as getRoleNamesServer } from "@/services/role";
 import "./index.less";
 
 const Log = () => {
@@ -24,6 +25,7 @@ const Log = () => {
     const [roleOptions, setRoleOptions] = useState();
     const usernameRef = useRef();
     const [username, setUsername] = useState();
+    const [searchParams, setSearchParams] = useState();
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [includeUsersId, setIncludeUsersId] = useState();
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
@@ -84,13 +86,20 @@ const Log = () => {
         }
     };
 
+    const getRoleNames = async () => {
+        const res = await getRoleNamesServer();
+        if (res?.data?.code == 200) {
+            setSearchParams(res?.data?.data);
+        }
+    };
+
     const getList = async () => {
         const { current, pageSize } = paginationRef.current;
         const role = roleRef.current;
         const username = usernameRef?.current;
         setLoading(true);
         try {
-            const res = await getDeviceListServer({
+            const res = await getRolesServer({
                 pageNo: current,
                 pageSize,
                 role,
@@ -137,6 +146,7 @@ const Log = () => {
 
     useEffect(() => {
         getList();
+        getRoleNames();
     }, []);
 
     return (
@@ -154,7 +164,9 @@ const Log = () => {
                     placeholder="请选择角色"
                     value={role}
                     type="select"
-                    options={roleOptions}
+                    options={searchParams?.map(item=>({
+                        
+                    }))}
                     onChange={value => {
                         roleRef.current = value;
                         setRole(value);

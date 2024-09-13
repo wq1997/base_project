@@ -7,7 +7,7 @@ import {
     TELPHONE_REG,
     EMAIL_REG,
 } from "@/utils/constants";
-import { getPlantNames as getPlantNamesServer } from "@/services/plant";
+import { getRoles as getRolesServer, getRoleNames as getRoleNamesServer } from "@/services/role";
 import { SearchInput } from "@/components";
 import {
     getDeviceType as getDeviceTypeServer,
@@ -129,6 +129,7 @@ const Device = ({ open, editId, onClose }) => {
                 getPlantInfo();
             }
         }
+        
     }, [open]);
 
     const onCancel = isSaveOK => {
@@ -158,12 +159,12 @@ const Device = ({ open, editId, onClose }) => {
                 autoComplete="off"
             >
                 <Form.Item
-                    label="用户名"
+                    label="角色名称"
                     name="name"
                     rules={[
                         {
                             required: true,
-                            message: "请输入用户名",
+                            message: "请输入角色名称",
                         },
                         {
                             pattern: USERNAME_REG.reg,
@@ -173,107 +174,31 @@ const Device = ({ open, editId, onClose }) => {
                 >
                     <Input placeholder="请输入用户名" />
                 </Form.Item>
+
                 <Form.Item
-                    label="角色"
+                    label="角色描述"
                     name="role"
                     rules={[
                         {
-                            required: true,
-                            message: "请选择角色",
+                            pattern: USERNAME_REG.reg,
+                            message: USERNAME_REG.desc,
                         },
                     ]}
                 >
-                    <Select
-                        placeholder="请选择角色"
-                        options={roleOptions}
-                        fieldNames={{ label: "displayName", value: "name" }}
-                    />
+                    <Input placeholder="请输入用户名" />
                 </Form.Item>
 
                 <Form.Item
-                    label="所属上级"
-                    name="superior"
+                    label="角色授权"
+                    name="name"
                     rules={[
                         {
                             required: true,
-                            message: "请选择所属上级",
+                            message: "请选择授权角色",
                         },
                     ]}
                 >
-                    <Select
-                        placeholder="请选择所属上级"
-                        options={superiorOptions}
-                        fieldNames={{ label: "name", value: "id" }}
-                    />
-                </Form.Item>
-
-                <Form.Item
-                    label="密码"
-                    name="password"
-                    rules={[
-                        {
-                            required: true,
-                            message: "请输入密码",
-                        },
-                        {
-                            pattern: PASSWORD_REG.reg,
-                            message: PASSWORD_REG.desc,
-                        },
-                    ]}
-                >
-                    <Input placeholder="请输入密码" />
-                </Form.Item>
-
-                <Form.Item
-                    label="手机号"
-                    name="phoneNumber"
-                    rules={[
-                        {
-                            pattern: ALL_SPACE_REG,
-                            message: "请输入手机号",
-                        },
-                        {
-                            pattern: TELPHONE_REG,
-                            message: "手机号格式错误",
-                        },
-                    ]}
-                >
-                    <Input placeholder="请输入手机号" />
-                </Form.Item>
-
-                <Form.Item
-                    label="电子邮箱"
-                    name="email"
-                    rules={[
-                        {
-                            pattern: EMAIL_REG.reg,
-                            message: EMAIL_REG.desc,
-                        },
-                    ]}
-                >
-                    <Input placeholder="请输入电子邮箱" />
-                </Form.Item>
-
-                <Form.Item
-                    label="备注"
-                    name="remark"
-                    rules={[
-                        {
-                            pattern: ALL_SPACE_REG,
-                            message: "请输入备注",
-                        },
-                    ]}
-                >
-                    <Input.TextArea placeholder="请输入备注" maxLength={50} showCount />
-                </Form.Item>
-
-                <Form.Item label="告警推送配置" name="alarm">
-                    <Table
-                        size="small"
-                        dataSource={dataSource}
-                        columns={columns}
-                        pagination={false}
-                    />
+                    <Input placeholder="请输入用户名" />
                 </Form.Item>
 
                 <Form.Item
