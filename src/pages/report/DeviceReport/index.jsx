@@ -100,8 +100,6 @@ const Log = () => {
                 total: parseInt(total),
             });
             setDataSource(records);
-        } else {
-            message.info(res?.data?.description);
         }
         setLoading(false);
     };

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getDvaApp } from "umi";
+import { message } from "antd";
 
 export const getBaseUrl = () => {
     const { API_URL = "" } = process.env;
@@ -33,8 +34,10 @@ instance.interceptors.response.use(
     error => {
         const { config, code, request, response, isAxiosError, toJSON } = error;
         if (response) {
+            message.info(response?.data?.description);
             errorHandle(response?.status, response?.data?.message);
         } else {
+            message.info("请求超时");
             if (error?.message?.includes("timeout")) {
                 console.log("请求超时");
             }
