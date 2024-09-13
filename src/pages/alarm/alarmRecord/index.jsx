@@ -269,6 +269,9 @@ const Log = () => {
                     },
                 ]}
                 pagination={pagination}
+                scroll={{
+                    x: 1500,
+                }}
             />
         </>
     );

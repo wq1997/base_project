@@ -37,7 +37,7 @@ const Index = ({ activePlant }) => {
         }
     };
 
-    const getOptions = ({ data, predictData }) => {
+    const getOptions = ({ data = {}, predictData }) => {
         setOptions({
             legend: {
                 data: [`光伏发电${type == "DAY" ? "功率" : "量"}`, "功率预测"],
@@ -58,7 +58,7 @@ const Index = ({ activePlant }) => {
             xAxis: {
                 type: "category",
                 data: Object.keys(data)?.sort((a, b) => {
-                    return dayjs(`2024-06-05 ${a}`).unix() - dayjs(`2024-06-05 ${b}`).unix();
+                    return dayjs(`2024-06-05 ${a}`)?.unix() - dayjs(`2024-06-05 ${b}`)?.unix();
                 }),
                 axisTick: {
                     show: false,
@@ -145,22 +145,23 @@ const Index = ({ activePlant }) => {
                     //     },
                     // },
                 },
-                // type == "DAY" && {
-                //     data: Object.values(predictData || {}),
-                //     type: "line",
-                //     name: "功率预测",
-                //     smooth: true,
-                //     showSymbol: false,
-                //     itemStyle: {
-                //         normal: {
-                //             color: "#EE6666",
-                //         },
-                //     },
-                //     lineStyle: {
-                //         // type: "dashed",
-                //         width: 2,
-                //     },
-                // },
+                type == "DAY" &&
+                    activePlant == 1 && {
+                        data: Object.values(predictData || {}),
+                        type: "line",
+                        name: "功率预测",
+                        smooth: true,
+                        showSymbol: false,
+                        itemStyle: {
+                            normal: {
+                                color: "#EE6666",
+                            },
+                        },
+                        lineStyle: {
+                            // type: "dashed",
+                            width: 2,
+                        },
+                    },
             ],
         });
     };
@@ -180,7 +181,7 @@ const Index = ({ activePlant }) => {
         <Card
             title="能量监测"
             others={
-                <div className={styles.powerGeneration} style={{ textAlign: "center"}}>
+                <div className={styles.powerGeneration} style={{ textAlign: "center" }}>
                     <Space>
                         {btns?.map(item => (
                             <div
@@ -189,8 +190,11 @@ const Index = ({ activePlant }) => {
                                     item?.type == type ? styles.active : ""
                                 )}
                                 style={{
-                                    border: item?.type == type ? "1px solid #49A2F8": `1px solid ${token.color2}`,
-                                    color: item?.type == type ? "#49A2F8": token.color2
+                                    border:
+                                        item?.type == type
+                                            ? "1px solid #49A2F8"
+                                            : `1px solid ${token.color2}`,
+                                    color: item?.type == type ? "#49A2F8" : token.color2,
                                 }}
                                 onClick={() => changeType(item?.type)}
                             >
@@ -235,7 +239,7 @@ const Index = ({ activePlant }) => {
                             fontSize: "12px",
                             position: "absolute",
                             right: "20px",
-                            top: 10
+                            top: 10,
                         }}
                     >
                         {type == "TOTAL"

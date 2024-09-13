@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 import { getDeviceReportList as getDeviceReportListServer } from "@/services/report";
 import { getDeviceType as getDeviceTypeServer } from "@/services/device";
 import moment from "moment";
+import { useSelector } from "umi";
 
 const Log = () => {
     const [dataSource, setDataSource] = useState([]);
@@ -22,9 +23,10 @@ const Log = () => {
     const timeDimensionRef = useRef();
     const [timeDimension, setTimeDimension] = useState("DAY");
     const timeRef = useRef();
-    const [time, setTime] = useState(dayjs());
+    const [time, setTime] = useState(moment(dayjs()).format("YYYY-MM-DD"));
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
+    const { userInfo } = useSelector(state => state.user);
 
     const columns = [
         {
@@ -78,9 +80,12 @@ const Log = () => {
         const name = deviceNameRef.current;
         const type = deviceTypeRef?.current;
         const sn = setSn?.current;
-        const timePeriod = timeDimensionRef.current || "DAY";
-        const time = timeRef.current || moment().format("YYYY-MM-DD");
         if (!time) return message.info("请先选择日期");
+        const code = deviceCodeRef?.current;
+        const timePeriod = timeDimensionRef.current || timeDimension;
+        const _time = timeRef.current || time;
+        if (!_time) return message.info("请先选择日期");
+
         setLoading(true);
         const res = await getDeviceReportListServer({
             pageNo: current,
@@ -88,7 +93,7 @@ const Log = () => {
             sn,
             name,
             type,
-            time,
+            time: _time,
             timePeriod,
         });
         if (res?.data?.code == 200) {
@@ -98,8 +103,6 @@ const Log = () => {
                 total: parseInt(total),
             });
             setDataSource(records);
-        } else {
-            message.info(res?.data?.description);
         }
         setLoading(false);
     };
@@ -130,6 +133,7 @@ const Log = () => {
 
     useEffect(() => {
         getDeviceType();
+        getList();
     }, []);
 
     return (
@@ -220,6 +224,9 @@ const Log = () => {
                     paginationRef.current = pagination;
                     getList();
                 }}
+                scroll={{
+                    x: 1500,
+                }}
                 title={() => (
                     <div
                         style={{
@@ -231,15 +238,16 @@ const Log = () => {
                             onClick={() => {
                                 const name = deviceNameRef.current;
                                 const type = deviceTypeRef?.current;
-                                const timePeriod = timeDimensionRef.current || "DAY";
-                                const time = timeRef.current;
+                                const timePeriod = timeDimensionRef.current || timeDimension;
+                                const _time = timeRef.current || time;
                                 if (!time) return message.info("请先选择日期");
                                 let url = `${process.env.API_URL_1}/api/v1/report/export-device-report${jsonToUrlParams(
                                     {
                                         name,
                                         type,
-                                        time,
                                         timePeriod,
+                                        time: _time,
+                                        userId: userInfo?.user?.id,
                                     }
                                 )}`;
                                 window.open(url);

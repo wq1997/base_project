@@ -8,14 +8,14 @@ import { useEffect, useState } from "react";
 import logo from "../../public/logo.png";
 import logoWhite from "../../public/logo_white.png";
 import { theme as antdTheme } from "antd";
-import { useEmotionCss } from '@ant-design/use-emotion-css';
+import { useEmotionCss } from "@ant-design/use-emotion-css";
 import classNames from "classnames";
 import {
     UserSwitchOutlined,
     LogoutOutlined,
     MenuFoldOutlined,
     MenuUnfoldOutlined,
-} from '@ant-design/icons';
+} from "@ant-design/icons";
 import { setLocalStorage } from "@/utils/utils";
 
 const { Header, Sider, Content } = Layout;
@@ -28,15 +28,15 @@ const BaseLayout = () => {
     const { theme } = useSelector(state => state.global);
     const [collapsed, setCollapsed] = useState(false);
 
-    const changeTheme=(theme)=>{
+    const changeTheme = theme => {
         setLocalStorage("theme", theme);
         dispatch({
-            type: 'global/changeTheme',
-            payload:{
-                theme
-            }
-        })
-    }
+            type: "global/changeTheme",
+            payload: {
+                theme,
+            },
+        });
+    };
 
     useEffect(() => {
         document.title = PROJECT_NAME;
@@ -48,14 +48,14 @@ const BaseLayout = () => {
     const headerStyle = useEmotionCss(() => {
         return {
             background: token.headerBackground,
-        }
-    })
+        };
+    });
 
     const siderStyle = useEmotionCss(() => {
         return {
             background: token.sideBackgroud,
-            height: 'calc(100vh - 64px)'
-        }
+            height: "calc(100vh - 64px)",
+        };
     });
 
     return (
@@ -71,16 +71,18 @@ const BaseLayout = () => {
                     </div>
                     <Space size={20}>
                         <Tooltip title="主题切换" placement="bottom">
-                            <Icon 
+                            <Icon
                                 type="icon-zhuti"
                                 style={{
-                                    position: 'relative',
+                                    position: "relative",
                                     top: 10,
                                     fontSize: 35,
-                                    cursor: 'pointer',
-                                    color: token.color6
+                                    cursor: "pointer",
+                                    color: token.color6,
                                 }}
-                                onClick={()=>changeTheme(theme==="default"?"dark": "default")}
+                                onClick={() =>
+                                    changeTheme(theme === "default" ? "dark" : "default")
+                                }
                             />
                         </Tooltip>
                         <Dropdown
@@ -93,9 +95,9 @@ const BaseLayout = () => {
                                                 size={10}
                                                 align="baseline"
                                                 onClick={() => {
-                                                    console.log("onClick");
                                                     dispatch({ type: "user/logout" });
                                                 }}
+                                                style={{}}
                                             >
                                                 <Icon
                                                     type="icon-dengchu"
@@ -109,7 +111,7 @@ const BaseLayout = () => {
                                     },
                                 ],
                             }}
-                            placement="bottom"
+                            placement="bottomRight"
                         >
                             <Row align="middle">
                                 <Avatar
@@ -119,14 +121,14 @@ const BaseLayout = () => {
                                     CR
                                 </Avatar>
                                 <span style={{ fontSize: 20, marginLeft: 10 }}>
-                                    {userInfo?.nickName}
+                                    {userInfo?.user?.nickName}
                                 </span>
                             </Row>
                         </Dropdown>
                     </Space>
                 </Header>
                 <Layout hasSider>
-                    <div style={{ position: 'relative' }}>
+                    <div style={{ position: "relative" }}>
                         <Sider
                             className={classNames(styles.sider, siderStyle)}
                             trigger={null}
@@ -140,19 +142,27 @@ const BaseLayout = () => {
                         <Button
                             type="text"
                             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                            onClick={() => { setCollapsed(!collapsed) }}
+                            onClick={() => {
+                                setCollapsed(!collapsed);
+                            }}
                             style={{
-                                fontSize: '16px',
+                                fontSize: "16px",
                                 width: 64,
                                 height: 64,
-                                position: 'absolute',
-                                bottom: '20px',
-                                right: '10px'
+                                position: "absolute",
+                                bottom: "20px",
+                                right: "10px",
                             }}
                         />
                     </div>
-                    <Content className={styles.content} style={{ background: token.contentBgColor }}>
-                        <div className={styles.inContent} style={{ background: token.contentInnerBgColor }}>
+                    <Content
+                        className={styles.content}
+                        style={{ background: token.contentBgColor }}
+                    >
+                        <div
+                            className={styles.inContent}
+                            style={{ background: token.contentInnerBgColor }}
+                        >
                             <Outlet />
                         </div>
                     </Content>

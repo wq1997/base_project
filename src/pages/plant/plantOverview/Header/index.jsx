@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Select, Space } from "antd";
-import { getPlantNames as getPlantNamesServer } from "@/services/plant";
 
 const Index = ({ plants, activePlant, setActivePlant }) => {
     const onSelectPlant = value => {
