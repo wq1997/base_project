@@ -292,7 +292,11 @@ const MonitoringCurves = () => {
             legendData.forEach((legend, index) => {
                 const currentDate = legend?.split(' ')?.[0];
                 const currentData = dataSource?.find(item => item.date === currentDate);
-                const filed = index % 3 === 0 ? "TempMax" : (index % 3 === 1 ? "TempMin" : "TempDiff");
+                const filed = {
+                    0: "TempMax",
+                    1: "TempMin",
+                    2: 'TempDiff',
+                }[index]
                 const data = currentData?.energyData?.[filed];
                 series.push({
                     yAxisIndex: index % 3 === 0 ? 0 : (index % 3 === 1 ? 0 : 1),

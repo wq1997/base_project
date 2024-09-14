@@ -585,7 +585,7 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
                                 </div>
                             </Row>
                             <Row gutter={[20, 20]}>
-                                <Col span={12}>
+                                {/* <Col span={12}>
                                     <Form.Item name="tempStart" label={intl.formatMessage({ id: '除湿机温度启动值(℃)' })} rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
                                         <Input style={{ width: "100%" }} disabled={!isLive} placeholder={intl.formatMessage({ id: '请输入除湿机温度启动值' })} />
                                     </Form.Item>
@@ -594,7 +594,7 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
                                     <Form.Item name="tempStop" label={intl.formatMessage({ id: '除湿机温度停止值(℃)' })} rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
                                         <Input style={{ width: "100%" }} disabled={!isLive} placeholder={intl.formatMessage({ id: '请输入除湿机温度停止值' })} />
                                     </Form.Item>
-                                </Col>
+                                </Col> */}
                                 <Col span={12}>
                                     <Form.Item name="humStart" label={intl.formatMessage({ id: '除湿机湿度启动值(%rh)' })} rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
                                         <Input style={{ width: "100%" }} disabled={!isLive} placeholder={intl.formatMessage({ id: '请输入除湿机湿度启动值' })} />

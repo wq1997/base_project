@@ -120,7 +120,13 @@ const HighAnysis = () => {
             legendData.forEach((legend, index) => {
                 const currentDate = legend?.split(' ')?.[0];
                 const currentData = dataSource?.find(item => item.date === currentDate);
-                const filed = index % 4 === 0 ? "temp" : (index % 4 === 1 ? "tempLeft" : (index % 4 === 2 ? "tempRight" : index % 4 === 3 ? "tempNeg" : "tempPos"));
+                const filed = {
+                    0: "temp",
+                    1: "tempLeft",
+                    2: 'tempRight',
+                    3: 'tempNeg',
+                    4: 'tempPos'
+                }[index]
                 const data = currentData?.energyData?.[filed];
                 series.push({
                     name: legend,
