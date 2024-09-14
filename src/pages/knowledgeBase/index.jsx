@@ -4,6 +4,10 @@ import { SearchInput } from "@/components";
 import React, { useState, useEffect, useRef } from "react";
 import { FORM_REQUIRED_RULE } from "@/utils/constants";
 import styles from "./index.less";
+import {
+    knowledgeInitData as knowledgeInitDataServe,
+} from "@/services";
+import dayjs from "dayjs";
 
 const KnowledgeBase = () => {
     const [form] = Form.useForm();
@@ -29,6 +33,9 @@ const KnowledgeBase = () => {
     const [open, setOpen] = useState();
     const [openType, setOpenType] = useState();
     const [detailOpen, setDetailOpen] = useState(false);
+    const [options, setOptions] = useState();
+    const [date, setDate] = useState();
+    const dateRef = useRef();
 
     const columns = [
         {
@@ -107,12 +114,49 @@ const KnowledgeBase = () => {
 
     }
 
+    const getInitData = async () => {
+        const res = await knowledgeInitDataServe();
+        if (res?.data?.status === "SUCCESS") {
+            setOptions(res?.data?.data);
+        }
+    }
+
+    const onReset = () => {
+        dateRef.current = undefined;
+        nameRef.current = undefined;
+        knowledageTypeRef.current = undefined;
+        connectProjectRef.current = undefined;
+        authorRef.current = undefined;
+        connectDeviceTypeRef.current = undefined;
+        abnormalLinkRef.current = undefined;
+        knowledageStatusRef.current = undefined;
+        setKnowledageStatus(undefined);
+        setAbnormalLink(undefined);
+        setConnectDeviceType(undefined);
+        setAuthor(undefined);
+        setConnectProject(undefined);
+        setKnowledageType(undefined);
+        setName(undefined);
+        setDate(undefined);
+        getList();
+    }
+
+    useEffect(() => {
+        getInitData();
+    }, [])
+
     return (
         <div className={styles.knowledgeBase}>
             <Space className={styles.search} size={20}>
                 <div>
-                    <span style={{ color: "#FFF" }}>业务时间：</span>
-                    <DatePicker />
+                    <span style={{ color: "#FFF" }}>发布时间：</span>
+                    <DatePicker.RangePicker
+                        value={date ? [dayjs(date?.[0]), dayjs(date?.[1])] : undefined}
+                        onChange={(value, date) => {
+                            dateRef.current = date;
+                            setDate(date);
+                        }}
+                    />
                 </div>
                 <SearchInput
                     label="知识名称"
@@ -132,6 +176,12 @@ const KnowledgeBase = () => {
                         knowledageTypeRef.current = value;
                         setKnowledageType(value);
                     }}
+                    options={options?.types?.map(item => {
+                        return {
+                            name: item,
+                            code: item
+                        }
+                    })}
                 />
                 <SearchInput
                     label="关联项目"
@@ -142,6 +192,12 @@ const KnowledgeBase = () => {
                         connectProjectRef.current = value;
                         setConnectProject(value);
                     }}
+                    options={options?.projects?.map(item => {
+                        return {
+                            name: item?.name,
+                            code: item?.id
+                        }
+                    })}
                 />
                 <SearchInput
                     label="撰写人"
@@ -162,6 +218,12 @@ const KnowledgeBase = () => {
                         connectDeviceTypeRef.current = value;
                         setConnectDeviceType(value);
                     }}
+                    options={options?.deviceTypes?.map(item => {
+                        return {
+                            name: item,
+                            code: item
+                        }
+                    })}
                 />
                 <SearchInput
                     label="异常环节"
@@ -172,6 +234,12 @@ const KnowledgeBase = () => {
                         abnormalLinkRef.current = value;
                         setAbnormalLink(value);
                     }}
+                    options={options?.inspectionItems?.map(item => {
+                        return {
+                            name: item?.name,
+                            code: item?.id
+                        }
+                    })}
                 />
                 <SearchInput
                     label="知识状态"
@@ -182,9 +250,10 @@ const KnowledgeBase = () => {
                         knowledageStatusRef.current = value;
                         setKnowledageStatus(value);
                     }}
+                    options={options?.statuses}
                 />
-                <Button type="primary">搜索</Button>
-                <Button type="primary" danger>重置</Button>
+                <Button type="primary" onClick={getList}>搜索</Button>
+                <Button type="primary" danger onClick={onReset}>重置</Button>
             </Space>
             <Table
                 rowKey="id"

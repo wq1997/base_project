@@ -200,3 +200,7 @@ export const humanProjectInvntoryData = (payload) => {
 export const humanWorkOrderInvntoryData = (payload) => {
     return axiosInstance.get(`/work-order/get-human-work-order-inventory-data`, {params: payload})
 }
+
+export const knowledgeInitData = () => {
+    return axiosInstance.get(`/knowledge-base/get-search-page-init-data`);
+}
