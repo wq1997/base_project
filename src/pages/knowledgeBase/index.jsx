@@ -6,6 +6,7 @@ import { FORM_REQUIRED_RULE } from "@/utils/constants";
 import styles from "./index.less";
 import {
     knowledgeInitData as knowledgeInitDataServe,
+    knowledgeFindPage as knowledgeFindPageServe,
 } from "@/services";
 import dayjs from "dayjs";
 
@@ -111,7 +112,27 @@ const KnowledgeBase = () => {
     };
 
     const getList = async () => {
-
+        const { current, pageSize } = paginationRef.current;
+        const date = dateRef.current;
+        const titleLike = nameRef.current;
+        const typeIn = knowledageTypeRef.current;
+        const projectId = connectProjectRef.current;
+        const creatorNameLike = authorRef.current;
+        const deviceType = connectDeviceTypeRef.current;
+        const res = await knowledgeFindPageServe({
+            pageNum: current,
+            pageSize,
+            queryCmd: {
+                publishedTimeStart:
+                    date && date?.length >= 2 && dayjs(date?.[0]).format("YYYY-MM-DD"),
+                publishedTimeEnd:
+                    date && date?.length >= 2 && dayjs(date?.[1]).format("YYYY-MM-DD"),
+                titleLike,
+                typeIn,
+                projectId,
+                creatorNameLike,
+            },
+        })
     }
 
     const getInitData = async () => {
@@ -171,6 +192,7 @@ const KnowledgeBase = () => {
                     label="知识类型"
                     value={knowledageType}
                     type="select"
+                    mode="multiple"
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         knowledageTypeRef.current = value;

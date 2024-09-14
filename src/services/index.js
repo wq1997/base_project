@@ -204,3 +204,7 @@ export const humanWorkOrderInvntoryData = (payload) => {
 export const knowledgeInitData = () => {
     return axiosInstance.get(`/knowledge-base/get-search-page-init-data`);
 }
+
+export const knowledgeFindPage = (payload) => {
+    return axiosInstance.post(`/knowledge-base/find-page`, payload);
+}

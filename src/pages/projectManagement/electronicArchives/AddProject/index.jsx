@@ -250,7 +250,10 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
     }
 
     useEffect(() => {
-        if (open) getInitOption();
+        if (open) {
+            getInitOption();
+            setAddId();
+        };
     }, [open])
 
     return (

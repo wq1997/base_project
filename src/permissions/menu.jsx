@@ -76,12 +76,12 @@ const MenuList = [
             }
         ],
     },
-    {
-        key: '/knowledgeBase',
-        label: '知识库',
-        icon: <DatabaseFilled />,
-        permissions: 'menu:knowledge_base_manage'
-    },
+    // {
+    //     key: '/knowledgeBase',
+    //     label: '知识库',
+    //     icon: <DatabaseFilled />,
+    //     permissions: 'menu:knowledge_base_manage'
+    // },
     {
         key: "/system-configuration",
         label: "系统配置",
