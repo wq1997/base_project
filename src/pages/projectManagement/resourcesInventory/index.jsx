@@ -64,6 +64,8 @@ const ResourcesInventory = () => {
         const res = await humanWorkOrderInvntoryDataServe(params);
         if (res?.data?.status === "SUCCESS") {
             setModalDataSource(res?.data?.data);
+        }else{
+            setModalDataSource([]);
         }
     }
 
@@ -134,8 +136,8 @@ const ResourcesInventory = () => {
                         render(_, row) {
                             return <span
                                 style={{ cursor: 'pointer' }}
-                                onClick={() => {
-                                    getProjectDetail({ userAccount: row?.user?.account, searchType: "TOTAL_PHASE" })
+                                onClick={async () => {
+                                    await getProjectDetail({ userAccount: row?.user?.account, searchType: "TOTAL_PHASE" })
                                     setModalType("Project");
                                     setOpen(true)
                                 }}
@@ -150,8 +152,8 @@ const ResourcesInventory = () => {
                         render(_, row) {
                             return <span
                                 style={{ cursor: 'pointer' }}
-                                onClick={() => {
-                                    getProjectDetail({ userAccount: row?.user?.account, searchType: "IMPLEMENTATION_PHASE" })
+                                onClick={async () => {
+                                    await getProjectDetail({ userAccount: row?.user?.account, searchType: "IMPLEMENTATION_PHASE" })
                                     setModalType("Project");
                                     setOpen(true)
                                 }}>{row?.projectSummery?.implementationPhaseProjectCount}</span>
@@ -163,8 +165,8 @@ const ResourcesInventory = () => {
                         render(_, row) {
                             return <span
                                 style={{ cursor: 'pointer' }}
-                                onClick={() => {
-                                    getProjectDetail({ userAccount: row?.user?.account, searchType: "WARRANTY_PHASE" })
+                                onClick={async () => {
+                                    await getProjectDetail({ userAccount: row?.user?.account, searchType: "WARRANTY_PHASE" })
                                     setModalType("Project");
                                     setOpen(true)
                                 }}>{row?.projectSummery?.warrantyPhaseProjectCount}</span>;
@@ -176,8 +178,8 @@ const ResourcesInventory = () => {
                         render(_, row) {
                             return <span
                                 style={{ cursor: 'pointer' }}
-                                onClick={() => {
-                                    getProjectDetail({ userAccount: row?.user?.account, searchType: "WARRANTY_EXPIRED_PHASE" })
+                                onClick={async () => {
+                                    await getProjectDetail({ userAccount: row?.user?.account, searchType: "WARRANTY_EXPIRED_PHASE" })
                                     setModalType("Project");
                                     setOpen(true)
                                 }}>{row?.projectSummery?.warrantyExpiredPhaseProjectCount}</span>;
@@ -189,8 +191,8 @@ const ResourcesInventory = () => {
                         render(_, row) {
                             return <span 
                                 style={{ cursor: 'pointer' }}
-                                onClick={() => {
-                                    getWorkOrderDetail({ userAccount: row?.user?.account, searchType: "TOTAL" })
+                                onClick={async () => {
+                                    await getWorkOrderDetail({ userAccount: row?.user?.account, searchType: "TOTAL" })
                                     setModalType("WorkOrder");
                                     setOpen(true)
                                 }}
@@ -203,8 +205,8 @@ const ResourcesInventory = () => {
                         render(_, row) {
                             return <span 
                             style={{ cursor: 'WorkOrder' }}
-                            onClick={() => {
-                                getWorkOrderDetail({ userAccount: row?.user?.account, searchType: "PROCESSED_IMPLEMENT" })
+                            onClick={async() => {
+                                await getWorkOrderDetail({ userAccount: row?.user?.account, searchType: "PROCESSED_IMPLEMENT" })
                                 setModalType("Project");
                                 setOpen(true)
                             }}
@@ -217,8 +219,8 @@ const ResourcesInventory = () => {
                         render(_, row) {
                             return <span 
                             style={{ cursor: 'WorkOrder' }}
-                            onClick={() => {
-                                getWorkOrderDetail({ userAccount: row?.user?.account, searchType: "PROCESSED_INSPECTION" })
+                            onClick={async () => {
+                                await getWorkOrderDetail({ userAccount: row?.user?.account, searchType: "PROCESSED_INSPECTION" })
                                 setModalType("Project");
                                 setOpen(true)
                             }}
@@ -231,8 +233,8 @@ const ResourcesInventory = () => {
                         render(_, row) {
                             return <span 
                                 style={{ cursor: 'pointer' }}
-                                onClick={() => {
-                                    getWorkOrderDetail({ userAccount: row?.user?.account, searchType: "PROCESSED_EXCEPTION" })
+                                onClick={async() => {
+                                    await getWorkOrderDetail({ userAccount: row?.user?.account, searchType: "PROCESSED_EXCEPTION" })
                                     setModalType("WorkOrder");
                                     setOpen(true)
                                 }}
@@ -245,8 +247,8 @@ const ResourcesInventory = () => {
                         render(_, row) {
                             return <span 
                                 style={{ cursor: 'pointer' }}
-                                onClick={() => {
-                                    getWorkOrderDetail({ userAccount: row?.user?.account, searchType: "TODO" })
+                                onClick={async () => {
+                                    await getWorkOrderDetail({ userAccount: row?.user?.account, searchType: "TODO" })
                                     setModalType("WorkOrder");
                                     setOpen(true)
                                 }}
