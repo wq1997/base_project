@@ -45,6 +45,10 @@ export default Routes = [
                         component: '@/pages/projectManagement/resourcesInventory'
                     },
                     {
+                        path: '/knowledgeBase/editOrCheck',
+                        component: '@/pages/knowledgeBase/editOrCheck'
+                    },
+                    {
                         path: '/knowledgeBase',
                         component: '@/pages/knowledgeBase'
                     },

@@ -163,8 +163,13 @@ const MyMenu = () => {
     };
 
     const getSelectKeys = () => {
-        setSelectedKeys(pathname);
+        if (pathname.startsWith("/knowledgeBase")) {
+            setSelectedKeys("/knowledgeBase");
+        } else {
+            setSelectedKeys(pathname);
+        }
     };
+
     useEffect(() => {
         getSelectKeys();
         getOpenKeys();

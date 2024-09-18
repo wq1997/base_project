@@ -208,3 +208,23 @@ export const knowledgeInitData = () => {
 export const knowledgeFindPage = (payload) => {
     return axiosInstance.post(`/knowledge-base/find-page`, payload);
 }
+
+export const knowledgeEditInitData = (payload) => {
+    return axiosInstance.get(`/knowledge-base/get-edit-page-init-data`, {params: payload})
+}
+
+export const knowledgeSaveOrUpdate = (payload) => {
+    return axiosInstance.post(`/knowledge-base/save-or-update`, payload);
+}
+
+export const knowledgeAudit = (payload) => {
+    return axiosInstance.post(`/knowledge-base/audit`, payload);
+}
+
+export const knowledgeDelete = (payload) => {
+    return axiosInstance.post(`/knowledge-base/delete`, payload)
+}
+
+export const knowledgeSubmit = (payload) => {
+    return axiosInstance.post(`/knowledge-base/submit`, payload);
+}

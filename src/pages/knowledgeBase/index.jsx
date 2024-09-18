@@ -1,17 +1,17 @@
-import { Space, Button, Table, theme, DatePicker, Form, Modal, Input, Select, Descriptions } from "antd";
+import { history } from "umi";
+import { Space, Button, Table, theme, DatePicker, Modal, Descriptions, message } from "antd";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import { SearchInput } from "@/components";
 import React, { useState, useEffect, useRef } from "react";
-import { FORM_REQUIRED_RULE } from "@/utils/constants";
 import styles from "./index.less";
 import {
     knowledgeInitData as knowledgeInitDataServe,
     knowledgeFindPage as knowledgeFindPageServe,
+    knowledgeDelete as knowledgeDeleteServe,
 } from "@/services";
 import dayjs from "dayjs";
 
 const KnowledgeBase = () => {
-    const [form] = Form.useForm();
     const { token } = theme.useToken();
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
@@ -31,76 +31,100 @@ const KnowledgeBase = () => {
     const knowledageStatusRef = useRef();
     const [dataSource, setDataSource] = useState([{}]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-    const [open, setOpen] = useState();
-    const [openType, setOpenType] = useState();
     const [detailOpen, setDetailOpen] = useState(false);
     const [options, setOptions] = useState();
     const [date, setDate] = useState();
+    const [currentRecord, setCurrentRecord] = useState();
     const dateRef = useRef();
 
     const columns = [
         {
-            title: "审核进度",
-            dataIndex: "productType",
-        },
-        {
-            title: "审核进度",
-            dataIndex: "1",
+            title: "知识状态",
+            dataIndex: "statusZh",
+            width: 100
         },
         {
             title: "知识名称",
-            dataIndex: "2",
+            dataIndex: "title",
+            width: 200,
         },
         {
             title: "知识类型",
-            dataIndex: "3",
+            dataIndex: "type",
+            width: 100,
         },
         {
             title: "发布时间",
-            dataIndex: "4",
+            dataIndex: "createdTime",
+            width: 200,
         },
         {
             title: "关联项目",
-            dataIndex: "5",
+            dataIndex: "project",
+            width: 300,
+            render(_, row) {
+                return row?.project?.name;
+            }
         },
         {
             title: "撰写人",
-            dataIndex: "6",
+            dataIndex: "creatorName",
+            width: 200,
         },
         {
             title: "设备类型",
-            dataIndex: "7",
+            dataIndex: "deviceTypes",
+            width: 100,
+            render(_, row) {
+                return row?.deviceTypes?.join(',');
+            }
         },
         {
             title: "异常环节",
-            dataIndex: "8",
+            dataIndex: "exceptionRefs",
+            width: 200,
+            render(_, row) {
+                return row?.exceptionRefs?.map(item => item?.name)?.join(',');
+            }
         },
         {
             title: "审批人",
-            dataIndex: "9",
+            dataIndex: "auditorName",
+            width: 200,
         },
         {
             title: "最后修改时间",
-            dataIndex: "10",
+            dataIndex: "lastUpdatedTime",
+            width: 200,
         },
         {
             title: "操作",
             dataIndex: "Action",
-            render() {
+            fixed: 'right',
+            width: 250,
+            render(_, row) {
                 return (
                     <Space>
                         <Button
                             type="link"
                             style={{ color: token.colorPrimary }}
                             onClick={() => {
-                                setOpenType("Edit");
-                                setOpen(true);
+                                history.push(`/knowledgeBase/editOrCheck?openType=Edit&id=${row?.id}`)
                             }}
                         >
                             编辑
                         </Button>
-                        <Button type="link" style={{ color: '#FF4D4F' }}>审核</Button>
-                        <Button type="link" style={{ color: '#13C0FF' }} onClick={() => setDetailOpen(true)}>详情</Button>
+                        <Button type="link" style={{ color: '#FF4D4F' }} onClick={() => history.push(`/knowledgeBase/editOrCheck?openType=Check&id=${row?.id}`)}>审核</Button>
+                        <Button
+                            type="link"
+                            style={{ color: '#13C0FF' }}
+                            onClick={() => {
+                                setDetailOpen(true);
+                                setCurrentRecord(row);
+                            }}
+                        >
+                            详情
+                        </Button>
                     </Space>
                 )
             }
@@ -119,6 +143,8 @@ const KnowledgeBase = () => {
         const projectId = connectProjectRef.current;
         const creatorNameLike = authorRef.current;
         const deviceType = connectDeviceTypeRef.current;
+        const exceptionRefId = abnormalLinkRef.current;
+        const status = knowledageStatusRef.current;
         const res = await knowledgeFindPageServe({
             pageNum: current,
             pageSize,
@@ -131,8 +157,19 @@ const KnowledgeBase = () => {
                 typeIn,
                 projectId,
                 creatorNameLike,
+                deviceType,
+                exceptionRefId,
+                status
             },
-        })
+        });
+        if (res?.data?.status === "SUCCESS") {
+            const { totalRecord, recordList } = res?.data?.data || {};
+            setPagination({
+                ...paginationRef.current,
+                total: parseInt(totalRecord),
+            });
+            setDataSource(recordList);
+        }
     }
 
     const getInitData = async () => {
@@ -164,6 +201,7 @@ const KnowledgeBase = () => {
 
     useEffect(() => {
         getInitData();
+        getList();
     }, [])
 
     return (
@@ -293,13 +331,15 @@ const KnowledgeBase = () => {
                     paginationRef.current = pagination;
                     getList();
                 }}
+                scroll={{
+                    x: 1500
+                }}
                 title={() => (
                     <Space className="table-title">
                         <Button
                             type="primary"
                             onClick={() => {
-                                setOpenType("Add");
-                                setOpen(true);
+                                history.push(`/knowledgeBase/editOrCheck?openType=Add`)
                             }}
                         >
                             新增知识
@@ -308,12 +348,22 @@ const KnowledgeBase = () => {
                             type="primary"
                             danger
                             onClick={() => {
+                                if(selectedRowKeys?.length===0){
+                                    message.error("请先勾选需要删除的行!")
+                                    return;
+                                };
                                 Modal.confirm({
                                     title: "系统提示",
                                     content:
                                         "删除此条记录不可恢复，请确认后再删除！",
-                                    onOk() {
-                                        message.success("删除成功！");
+                                    onOk: async()=>{
+                                        const res = await knowledgeDeleteServe({
+                                            ids: selectedRowKeys
+                                        })
+                                        if(res?.data?.status==="SUCCESS"){
+                                            getList();
+                                            setSelectedRowKeys([]);
+                                        }
                                     },
                                 });
                             }}
@@ -328,87 +378,6 @@ const KnowledgeBase = () => {
                     </Space>
                 )}
             />
-            <Modal
-                open={open}
-                title={openType === "Add" ? "新增知识" : "编辑知识"}
-                onCancel={() => {
-                    setOpen(false);
-                    form.resetFields();
-                }}
-                width={700}
-            >
-                <Form
-                    form={form}
-                    labelCol={{
-                        span: 4
-                    }}
-                    style={{
-                        minHeight: 300,
-                        marginTop: 20
-                    }}
-                >
-                    <Form.Item
-                        label="知识类型"
-                        name={"knowledageType"}
-                        rules={[{ ...FORM_REQUIRED_RULE }]}
-                    >
-                        <Select
-                            placeholder="请选择知识类型"
-                            options={[
-                                { label: '问题总结', value: 1 },
-                                { label: '规章制度', value: 2 },
-                                { label: '行业标准', value: 3 },
-                                { label: '项目资料', value: 4 }
-                            ]}
-                        />
-                    </Form.Item>
-                    <Form.Item noStyle dependencies={['knowledageType']}>
-                        {({ getFieldsValue }) => {
-                            const { knowledageType } = form.getFieldsValue(['knowledageType']);
-                            return (
-                                <>
-                                    <Form.Item name="title" label="标题" rules={[{ ...FORM_REQUIRED_RULE }]} hidden={!knowledageType}>
-                                        <Input placeholder="请输入标题" />
-                                    </Form.Item>
-                                    <Form.Item
-                                        name="connectProject"
-                                        label="关联项目"
-                                        rules={[
-                                            { required: knowledageType === 1 || knowledageType === 4, message: "请输入必填字段" }
-                                        ]}
-                                        hidden={!(knowledageType === 1 || knowledageType === 4)}
-                                    >
-                                        <Select placeholder="请选择关联项目" />
-                                    </Form.Item>
-                                    <Form.Item
-                                        name="connectDeviceType"
-                                        label="关联设备类型"
-                                        rules={[
-                                            { required: knowledageType === 1, message: "请输入必填字段" }
-                                        ]}
-                                        hidden={!(knowledageType === 1)}
-                                    >
-                                        <Select mode="multiple" maxTagCount={5} placeholder="请选择关联设备类型" />
-                                    </Form.Item>
-                                    <Form.Item
-                                        name="abnormalLink"
-                                        label="异常环节"
-                                        rules={[
-                                            { required: knowledageType === 1, message: "请输入必填字段" }
-                                        ]}
-                                        hidden={!(knowledageType === 1)}
-                                    >
-                                        <Select mode="multiple" maxTagCount={5} placeholder="请选择异常环节" />
-                                    </Form.Item>
-                                    <Form.Item name="content" label="知识内容" rules={[{ ...FORM_REQUIRED_RULE }]} hidden={!knowledageType}>
-                                        <Input.TextArea placeholder="请输入知识内容" />
-                                    </Form.Item>
-                                </>
-                            )
-                        }}
-                    </Form.Item>
-                </Form>
-            </Modal>
 
             <Modal
                 title="详情"
@@ -416,14 +385,36 @@ const KnowledgeBase = () => {
                 onCancel={() => {
                     setDetailOpen(false);
                 }}
+                width={800}
             >
                 <div style={{ marginTop: 20 }}>
                     <Descriptions column={1}>
-                        <Descriptions.Item label="知识标题">Zhou Maomao</Descriptions.Item>
-                        <Descriptions.Item label="关联项目">1810000000</Descriptions.Item>
-                        <Descriptions.Item label="关联设备类型">Hangzhou, Zhejiang</Descriptions.Item>
-                        <Descriptions.Item label="异常环节">empty</Descriptions.Item>
-                        <Descriptions.Item label="知识内容">XXXXX</Descriptions.Item>
+                        {
+                            currentRecord?.type &&
+                            <Descriptions.Item label="知识类型">{currentRecord?.type}</Descriptions.Item>
+                        }
+                        {
+                            currentRecord?.title &&
+                            <Descriptions.Item label="知识标题">{currentRecord?.title}</Descriptions.Item>
+                        }
+                        {
+                            currentRecord?.project?.name &&
+                            <Descriptions.Item label="关联项目">{currentRecord?.project?.name}</Descriptions.Item>
+                        }
+                        {
+                            currentRecord?.deviceTypes?.length > 0 &&
+                            <Descriptions.Item label="关联设备类型">{currentRecord?.deviceTypes?.join(',')}</Descriptions.Item>
+                        }
+                        {
+                            currentRecord?.exceptionRefs?.length > 0 &&
+                            <Descriptions.Item label="异常环节">{currentRecord?.exceptionRefs?.map(item => item?.name)?.join(',')}</Descriptions.Item>
+                        }
+                        {
+                            currentRecord?.content &&
+                            <Descriptions.Item label="知识内容">
+                                <div dangerouslySetInnerHTML={{__html: currentRecord?.content}} />
+                            </Descriptions.Item>
+                        }
                     </Descriptions>
                 </div>
             </Modal>
