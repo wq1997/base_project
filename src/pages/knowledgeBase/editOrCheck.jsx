@@ -11,6 +11,9 @@ import {
 } from "@/services";
 import { useEffect, useState } from "react";
 import { history } from "umi";
+import {
+    Editor
+} from "@/components";
 
 const EditOrCheck = () => {
     const openType = getQueryString("openType");
@@ -163,7 +166,7 @@ const EditOrCheck = () => {
                                     />
                                 </Form.Item>
                                 <Form.Item name="content" label="知识内容" rules={[{ ...FORM_REQUIRED_RULE }]} hidden={!type}>
-                                    <Input.TextArea placeholder="请输入知识内容" />
+                                    <Editor placeholder="请输入知识内容" />
                                 </Form.Item>
                             </>
                         )

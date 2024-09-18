@@ -412,7 +412,9 @@ const KnowledgeBase = () => {
                         {
                             currentRecord?.content &&
                             <Descriptions.Item label="知识内容">
-                                <div dangerouslySetInnerHTML={{__html: currentRecord?.content}} />
+                                <div style={{border: '1px solid #ccc', width: '100%', padding: '0 10px', borderRadius: 5}}>
+                                    <div dangerouslySetInnerHTML={{__html: currentRecord?.content}} />
+                                </div>
                             </Descriptions.Item>
                         }
                     </Descriptions>

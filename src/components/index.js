@@ -13,6 +13,7 @@ import MyButtonGroup from "./MyButtonGroup";
 import EditTable from "./EditTable";
 import MyUpload from "./MyUpload";
 import UserSelect from "./UserSelect";
+import Editor from "./Editor";
 
 export {
     ThemeBtn,
@@ -30,4 +31,5 @@ export {
     EditTable,
     MyUpload,
     UserSelect,
+    Editor,
 };
