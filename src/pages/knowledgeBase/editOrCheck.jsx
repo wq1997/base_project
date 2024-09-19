@@ -139,8 +139,8 @@ const EditOrCheck = () => {
                                         placeholder="请选择关联设备类型"
                                         options={data?.deviceTypes?.map(item => {
                                             return {
-                                                label: item,
-                                                value: item
+                                                label: item?.name,
+                                                value: item?.code
                                             }
                                         })}
                                     />
@@ -157,10 +157,10 @@ const EditOrCheck = () => {
                                         mode="multiple"
                                         maxTagCount={5}
                                         placeholder="请选择异常环节"
-                                        options={data?.inspectionItems?.map(item => {
+                                        options={data?.exceptionRefs?.map(item => {
                                             return {
                                                 label: item?.name,
-                                                value: item?.id
+                                                value: item?.code
                                             }
                                         })}
                                     />

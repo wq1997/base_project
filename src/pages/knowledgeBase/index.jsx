@@ -29,7 +29,7 @@ const KnowledgeBase = () => {
     const abnormalLinkRef = useRef();
     const [knowledageStatus, setKnowledageStatus] = useState();
     const knowledageStatusRef = useRef();
-    const [dataSource, setDataSource] = useState([{}]);
+    const [dataSource, setDataSource] = useState([]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [detailOpen, setDetailOpen] = useState(false);
     const [options, setOptions] = useState();
@@ -262,7 +262,6 @@ const KnowledgeBase = () => {
                 <SearchInput
                     label="撰写人"
                     value={author}
-                    type="select"
                     onChange={value => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         authorRef.current = value;
@@ -278,12 +277,7 @@ const KnowledgeBase = () => {
                         connectDeviceTypeRef.current = value;
                         setConnectDeviceType(value);
                     }}
-                    options={options?.deviceTypes?.map(item => {
-                        return {
-                            name: item,
-                            code: item
-                        }
-                    })}
+                    options={options?.deviceTypes}
                 />
                 <SearchInput
                     label="异常环节"
@@ -294,12 +288,7 @@ const KnowledgeBase = () => {
                         abnormalLinkRef.current = value;
                         setAbnormalLink(value);
                     }}
-                    options={options?.inspectionItems?.map(item => {
-                        return {
-                            name: item?.name,
-                            code: item?.id
-                        }
-                    })}
+                    options={options?.exceptionRefs}
                 />
                 <SearchInput
                     label="知识状态"
@@ -348,7 +337,7 @@ const KnowledgeBase = () => {
                             type="primary"
                             danger
                             onClick={() => {
-                                if(selectedRowKeys?.length===0){
+                                if (selectedRowKeys?.length === 0) {
                                     message.error("请先勾选需要删除的行!")
                                     return;
                                 };
@@ -356,11 +345,11 @@ const KnowledgeBase = () => {
                                     title: "系统提示",
                                     content:
                                         "删除此条记录不可恢复，请确认后再删除！",
-                                    onOk: async()=>{
+                                    onOk: async () => {
                                         const res = await knowledgeDeleteServe({
                                             ids: selectedRowKeys
                                         })
-                                        if(res?.data?.status==="SUCCESS"){
+                                        if (res?.data?.status === "SUCCESS") {
                                             getList();
                                             setSelectedRowKeys([]);
                                         }
@@ -412,8 +401,8 @@ const KnowledgeBase = () => {
                         {
                             currentRecord?.content &&
                             <Descriptions.Item label="知识内容">
-                                <div style={{border: '1px solid #ccc', width: '100%', padding: '0 10px', borderRadius: 5}}>
-                                    <div dangerouslySetInnerHTML={{__html: currentRecord?.content}} />
+                                <div style={{ border: '1px solid #ccc', width: '100%', padding: '0 10px', borderRadius: 5 }}>
+                                    <div dangerouslySetInnerHTML={{ __html: currentRecord?.content }} />
                                 </div>
                             </Descriptions.Item>
                         }
