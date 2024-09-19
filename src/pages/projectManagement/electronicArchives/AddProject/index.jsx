@@ -683,7 +683,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                     },
                                                 ]}
                                             >
-                                                <Input placeholder="请输入电站经度" />
+                                                <InputNumber style={{ width: "100%" }} placeholder="请输入电站经度" />
                                             </Form.Item>
                                         </Col>
                                         <Col span={12}>
@@ -697,7 +697,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                     },
                                                 ]}
                                             >
-                                                <Input placeholder="请输入电站纬度" />
+                                                <InputNumber style={{ width: "100%" }} placeholder="请输入电站纬度" />
                                             </Form.Item>
                                         </Col>
                                     </Row>
@@ -726,7 +726,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                     },
                                                 ]}
                                             >
-                                                <InputNumber style={{ width: "100%" }} placeholder="请输入电池仓数量" />
+                                                <InputNumber precision={0} style={{ width: "100%" }} placeholder="请输入电池仓数量" />
                                             </Form.Item>
                                         </Col>
                                         <Col span={12}>
@@ -757,7 +757,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                     },
                                                 ]}
                                             >
-                                                <InputNumber style={{ width: "100%" }} placeholder="请输入PCS一体机数量" />
+                                                <InputNumber precision={0} style={{ width: "100%" }} placeholder="请输入PCS一体机数量" />
                                             </Form.Item>
                                         </Col>
                                         <Col span={12}>
@@ -832,16 +832,16 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                         </Col>
                                         <Col span={12}>
                                             <Form.Item
-                                                label="单电芯额定容量(AH)"
+                                                label="单电芯额定容量(kWh)"
                                                 name="singleCellRatedCapacity"
                                                 rules={[
                                                     {
                                                         required: true,
-                                                        message: "请输入单电芯额定容量(AH)",
+                                                        message: "请输入单电芯额定容量(kWh)",
                                                     },
                                                 ]}
                                             >
-                                                <InputNumber style={{ width: "100%" }} placeholder="请输入单电芯额定容量(AH)" />
+                                                <InputNumber style={{ width: "100%" }} placeholder="请输入单电芯额定容量(kWh)" />
                                             </Form.Item>
                                         </Col>
                                     </Row>

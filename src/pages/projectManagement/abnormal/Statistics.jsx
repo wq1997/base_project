@@ -22,14 +22,14 @@ const Statistics = () => {
         let params = {}, xAxisData = [], legendData = [], seriesData = [];
         if (type === "YEAR") {
             params = {
-                productType: productType || initOption?.productTypes?.[0]?.code,
+                productType: productType,
                 groupType: groupType || initOption?.groupTypes?.[0]?.code,
                 year: date
             }
         }
         if (type === "MONTH") {
             params = {
-                productType: productType || initOption?.productTypes?.[0]?.code,
+                productType: productType,
                 groupType: groupType || initOption?.groupTypes?.[0]?.code,
                 year: dayjs(date).format("YYYY"),
                 month: dayjs(date).format("MM")
@@ -138,7 +138,7 @@ const Statistics = () => {
             <Space>
                 <SearchInput
                     label="产品类型"
-                    value={productType || initOption?.productTypes?.[0]?.code}
+                    value={productType}
                     type="select"
                     onChange={value => {
                         setProductType(value);

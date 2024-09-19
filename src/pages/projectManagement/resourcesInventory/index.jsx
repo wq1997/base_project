@@ -70,10 +70,10 @@ const ResourcesInventory = () => {
     }
 
     const onRest = () => {
-        nameRef.current = value;
-        areaRef.current = value;
-        setArea(value);
-        setName(value);
+        nameRef.current = undefined;
+        areaRef.current = undefined;
+        setArea(undefined);
+        setName(undefined);
         getDatasource();
     }
 

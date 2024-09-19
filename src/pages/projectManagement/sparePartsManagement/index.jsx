@@ -53,10 +53,10 @@ const SparePartsManagement = () => {
             key: 'name',
             ellipsis: true,
             width: 200,
-            render(value){
+            render(value) {
                 return (
                     <Tooltip title={value}>
-                        <div 
+                        <div
                             style={{
                                 overflow: 'hidden',
                                 whiteSpace: 'nowrap',
@@ -109,10 +109,10 @@ const SparePartsManagement = () => {
             key: 'remark',
             ellipsis: true,
             width: 400,
-            render(value){
+            render(value) {
                 return (
                     <Tooltip title={value}>
-                        <div 
+                        <div
                             style={{
                                 overflow: 'hidden',
                                 whiteSpace: 'nowrap',
@@ -132,10 +132,10 @@ const SparePartsManagement = () => {
             key: 'operateRemark',
             ellipsis: true,
             width: 400,
-            render(value){
+            render(value) {
                 return (
                     <Tooltip title={value}>
-                        <div 
+                        <div
                             style={{
                                 overflow: 'hidden',
                                 whiteSpace: 'nowrap',
@@ -157,8 +157,8 @@ const SparePartsManagement = () => {
             render: (_, row) => {
                 return (
                     <Space>
-                        <Button 
-                            type="link" 
+                        <Button
+                            type="link"
                             onClick={() => {
                                 useForm.setFieldsValue(row);
                                 setCurrentRecord(row);
@@ -167,9 +167,9 @@ const SparePartsManagement = () => {
                             }}>
                             备件领用
                         </Button>
-                        <Button 
-                            type="link" 
-                            style={{ color: token.colorPrimary }} 
+                        <Button
+                            type="link"
+                            style={{ color: token.colorPrimary }}
                             onClick={() => {
                                 getOutputDataSource(row?.code);
                                 setRecordOpen(true)
@@ -192,7 +192,7 @@ const SparePartsManagement = () => {
 
     const getOperateInitData = async () => {
         const res = await operatorInitDataServe();
-        if(res?.data?.status==="SUCCESS"){
+        if (res?.data?.status === "SUCCESS") {
             setOperateInitData(res?.data?.data);
         }
     }
@@ -375,14 +375,14 @@ const SparePartsManagement = () => {
                         >
                             备件入库
                         </Button>
-                        <Button 
-                            type="primary" 
+                        <Button
+                            type="primary"
                             danger
-                            onClick={async ()=>{
+                            onClick={async () => {
                                 const res = await sparePartsDeleteServe({
                                     ids: selectedRowKeys
                                 })
-                                if(res?.data?.status==="SUCCESS"){
+                                if (res?.data?.status === "SUCCESS") {
                                     getDataSource();
                                 }
                             }}
@@ -409,7 +409,7 @@ const SparePartsManagement = () => {
                             await spareStorageForm.resetFields();
                             getDataSource();
                         }
-                    }else{
+                    } else {
                         const res = await sparePartsInputServe({
                             id: values?.name,
                             count: values?.stock,
@@ -528,15 +528,19 @@ const SparePartsManagement = () => {
                                         label="备件名称"
                                         name={"name"}
                                     >
-                                        <Select 
-                                            placeholder="请输入备件名称" 
-                                            options={operateInitData?.spareParts?.map(item => {
-                                                return {
-                                                    label: item?.name,
-                                                    value: item?.id
-                                                }
-                                            })}
-                                        />
+                                        {
+                                            storageMethod === "ADD" ?
+                                                <Input placeholder="请输入备件名称" /> :
+                                                <Select
+                                                    placeholder="请选择备件"
+                                                    options={operateInitData?.spareParts?.map(item => {
+                                                        return {
+                                                            label: item?.name,
+                                                            value: item?.id
+                                                        }
+                                                    })}
+                                                />
+                                        }
                                     </Form.Item>
                                     <Form.Item
                                         rules={[
@@ -576,14 +580,14 @@ const SparePartsManagement = () => {
                 }}
                 onOk={async () => {
                     const values = await useForm.getFieldsValue();
-                    const project = operateInitData?.projects?.find(item => item?.id===values?.outputProjectId);
+                    const project = operateInitData?.projects?.find(item => item?.id === values?.outputProjectId);
                     const res = await sparePartsOutputServe({
                         id: currentRecord?.id,
                         count: values?.count,
                         outputProjectId: values?.outputProjectId,
                         outputProjectName: project?.name
                     })
-                    if(res?.data?.status==="SUCCESS"){
+                    if (res?.data?.status === "SUCCESS") {
                         setUseOpen(false);
                         getDataSource();
                         useForm.resetFields();
@@ -597,7 +601,7 @@ const SparePartsManagement = () => {
                     }}
                 >
                     <Form.Item label="备件名称" name={"name"} rules={[{ ...FORM_REQUIRED_RULE }]}>
-                        <Input placeholder="请选择备件" disabled/>
+                        <Input placeholder="请选择备件" disabled />
                     </Form.Item>
                     <Form.Item label="入库备件数量" name="stock">
                         <Input disabled />
@@ -606,14 +610,14 @@ const SparePartsManagement = () => {
                         <InputNumber placeholder="请输入备件领用数量" min={0} max={currentRecord?.stock} style={{ width: '100%' }} />
                     </Form.Item>
                     <Form.Item label="领用项目" name={"outputProjectId"} rules={[{ ...FORM_REQUIRED_RULE }]}>
-                        <Select 
+                        <Select
                             placeholder="请选择领用项目"
                             options={operateInitData?.projects?.map(item => {
                                 return {
                                     label: item?.name,
                                     value: item?.id,
                                 }
-                            })} 
+                            })}
                         />
                     </Form.Item>
                     <Form.Item
@@ -633,7 +637,7 @@ const SparePartsManagement = () => {
                     setRecordOpen(false);
                     setOutputDatasource([]);
                     setOutputPagination(DEFAULT_PAGINATION);
-                    outputPaginationRef.current=DEFAULT_PAGINATION;
+                    outputPaginationRef.current = DEFAULT_PAGINATION;
                 }}
             >
                 <Table
@@ -641,7 +645,7 @@ const SparePartsManagement = () => {
                         {
                             title: "备件名称",
                             dataIndex: "name",
-                            render(_,row){
+                            render(_, row) {
                                 return row?.spareParts?.name
                             }
                         },

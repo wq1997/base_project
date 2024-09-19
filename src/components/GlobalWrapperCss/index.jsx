@@ -7,6 +7,17 @@ const GlobalWrapperCss = props => {
         return {
             width: "100%",
             height: "100%",
+            '--w-e-textarea-bg-color': token.color12,
+            '--w-e-textarea-color': 'white',
+            '--w-e-toolbar-bg-color': token.color12,
+            '--w-e-toolbar-disabled-color': 'white',
+            '--w-e-toolbar-active-color': 'white',
+            '--w-e-toolbar-color': 'white',
+            '--w-e-toolbar-active-bg-color': 'black',
+            '--w-e-modal-button-bg-color': token.color12,
+            '.ant-input-affix-wrapper .anticon.ant-input-password-icon': {
+                color: '#999'
+            },
             ".ant-menu-light .ant-menu-submenu-selected >.ant-menu-submenu-title": {
                 color: token.colorPrimary,
             },

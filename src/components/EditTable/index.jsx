@@ -254,7 +254,7 @@ const EditRowTable = ({
       let newDataSource = cloneObject(dataSource);
       let keyList = newDataSource.map(data => data.key);
       let key = Math.max(...keyList) + 1;
-      newDataSource.push({
+      newDataSource.unshift({
         key
       });
       await form.resetFields();

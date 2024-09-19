@@ -326,12 +326,12 @@ const Account = () => {
         },
         {
             title: "实施负责人",
-            dataIndex: "implementManagerAccount",
+            dataIndex: "implementManagerName",
             width: 200
         },
         {
             title: "运维负责人",
-            dataIndex: "operationsManagerAccount",
+            dataIndex: "operationsManagerName",
             width: 200
         },
         {
@@ -673,7 +673,7 @@ const Account = () => {
                 }}
             >
                 <div style={{ minHeight: 300 }}>
-                    <Form form={supplierForm}>
+                    <Form form={supplierForm} scrollToFirstError>
                         <Form.Item name="supplierDataSource" validateTrigger={false} hidden={!supplierOpen}>
                             <EditTable.EditRowTable
                                 showAdd={true}

@@ -24,13 +24,13 @@ const Statistics = () => {
             seriesData = [];
         if (type === "YEAR") {
             params = {
-                projectId: projectId || initOption?.projects?.[0]?.id,
+                projectId: projectId,
                 year: date,
             };
         }
         if (type === "MONTH") {
             params = {
-                projectId: projectId || initOption?.projects?.[0]?.id,
+                projectId: projectId,
                 year: dayjs(date).format("YYYY"),
                 month: dayjs(date).format("MM"),
             };
@@ -138,7 +138,7 @@ const Statistics = () => {
             <Space>
                 <SearchInput
                     label="项目"
-                    value={projectId || initOption?.projects?.[0]?.id}
+                    value={projectId}
                     type="select"
                     onChange={value => {
                         setProjectId(value);
