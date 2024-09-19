@@ -398,15 +398,14 @@ const KnowledgeBase = () => {
                             currentRecord?.exceptionRefs?.length > 0 &&
                             <Descriptions.Item label="异常环节">{currentRecord?.exceptionRefs?.map(item => item?.name)?.join(',')}</Descriptions.Item>
                         }
-                        {
-                            currentRecord?.content &&
-                            <Descriptions.Item label="知识内容">
-                                <div style={{ border: '1px solid #ccc', width: '100%', padding: '0 10px', borderRadius: 5 }}>
-                                    <div dangerouslySetInnerHTML={{ __html: currentRecord?.content }} />
-                                </div>
-                            </Descriptions.Item>
-                        }
                     </Descriptions>
+                    {
+                        currentRecord?.content &&
+                        <div className={styles.knowledageShow}>
+                            <div className={styles.knowledageShowTitle}>知识内容</div>
+                            <div dangerouslySetInnerHTML={{ __html: currentRecord?.content }} className={styles.knowledageShowContent}/>
+                        </div>
+                    }
                 </div>
             </Modal>
         </div>

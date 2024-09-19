@@ -228,3 +228,7 @@ export const knowledgeDelete = (payload) => {
 export const knowledgeSubmit = (payload) => {
     return axiosInstance.post(`/knowledge-base/submit`, payload);
 }
+
+export const uploadEditorImage = payload => {
+    return axiosInstance.post(`/attachment/upload-xxx`, payload);
+};
