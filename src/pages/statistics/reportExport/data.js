@@ -229,20 +229,20 @@ export const inCome = {
                 },
                 {
                     title: '峰电',
-                    dataIndex: 'peakInFee',
-                    key: 'peakInFee',
+                    dataIndex: 'peakOutFee',
+                    key: 'peakOutFee',
                     width: 150,
                 },
                 {
                     title: '平电',
-                    dataIndex: 'flatInFee',
-                    key: 'flatInFee',
+                    dataIndex: 'flatOutFee',
+                    key: 'flatOutFee',
                     width: 150,
                 },
                 {
                     title: '谷电',
-                    dataIndex: 'valleyInFee',
-                    key: 'valleyInFee',
+                    dataIndex: 'valleyOutFee',
+                    key: 'valleyOutFee',
                     width: 150,
                 },
                 {
@@ -266,7 +266,7 @@ export const inCome = {
     ],
     chargePileIncome: [
         {
-            title: '充电收益（元）',
+            title: '充电成本（元）',
             children: [
                 {
                     title: '序号',
@@ -288,8 +288,8 @@ export const inCome = {
                 },
                 {
                     title: '尖电',
-                    dataIndex: 'tipOutFee',
-                    key: 'tipOutFee',
+                    dataIndex: 'tipInFee',
+                    key: 'tipInFee',
                     width: 150,
 
 
@@ -314,8 +314,8 @@ export const inCome = {
                 },
                 {
                     title: '总计',
-                    dataIndex: 'dayOutFee',
-                    key: 'dayOutFee',
+                    dataIndex: 'dayInFee',
+                    key: 'dayInFee',
                     width: 150,
                 },
             ],
@@ -350,20 +350,20 @@ export const inCome = {
                 },
                 {
                     title: '峰电',
-                    dataIndex: 'peakInFee',
-                    key: 'peakInFee',
+                    dataIndex: 'peakOutFee',
+                    key: 'peakOutFee',
                     width: 150,
                 },
                 {
                     title: '平电',
-                    dataIndex: 'flatInFee',
-                    key: 'flatInFee',
+                    dataIndex: 'flatOutFee',
+                    key: 'flatOutFee',
                     width: 150,
                 },
                 {
                     title: '谷电',
-                    dataIndex: 'valleyInFee',
-                    key: 'valleyInFee',
+                    dataIndex: 'valleyOutFee',
+                    key: 'valleyOutFee',
                     width: 150,
                 },
                 {

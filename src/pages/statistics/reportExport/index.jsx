@@ -224,7 +224,10 @@ function Com() {
                 {Object.keys(energy).map((it,i) => {
                   return (
                     <>
+                 { currentModel[it] &&<span style={{fontSize:'1.0417rem',display:"block",margin:'.5208rem 0'}}>{i==0?'储能':(i==1?'充电桩':'光伏')}</span>}
+
                       {
+                        
                         currentModel[it] && <Table
                           columns={energy[it]}
                           dataSource={allData?.reportData?.[i]}
@@ -243,6 +246,7 @@ function Com() {
                 {Object.keys(inCome).map((it,i)=> {
                   return (
                     <>
+                      { currentModel[it] &&<span style={{fontSize:'1.0417rem',display:"block",margin:'.5208rem 0'}}>{i==0?'储能':(i==1?'充电桩':'光伏')}</span>}
                       {
                         currentModel[it] && <Table
                           columns={inCome[it]}
