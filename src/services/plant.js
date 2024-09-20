@@ -1,43 +1,32 @@
-// import axiosInstance from "./request";
-// import { jsonToUrlParams } from "@/utils/utils";
-// const { API_URL_1 } = process.env;
+import axiosInstance from "./request";
+const path = '/microgrid'
+// 获取电站列表
+export const apigetPlantList = () => {
+  return axiosInstance.get(`${path}/getPlantList`);
+}
 
-// export const getPlantNames = () => {
-//     const url = `${API_URL_1}/api/v1/plant/names`;
-//     return axiosInstance.get(url);
-// };
+// 新增电站
+export const apiInsertPlant = (payload) => {
+    return axiosInstance.post(`${path}/insertPlant`, payload);
+  }
 
-// export const getPlantList = payload => {
-//     const url = `${API_URL_1}/api/v1/plant${jsonToUrlParams(payload)}`;
-//     return axiosInstance.get(url, payload);
-// };
 
-// export const getPlantType = () => {
-//     const url = `${API_URL_1}/api/v1/plant/types`;
-//     return axiosInstance.get(url);
-// };
 
-// export const savePlant = payload => {
-//     const url = `${API_URL_1}/api/v1/plant`;
-//     return axiosInstance.post(url, payload);
-// };
+// 编辑电站
+export const apiUpdatePlant = (payload) => {
+    return axiosInstance.post(`${path}/updatePlant`, payload);
+  }
 
-// export const updatePlant = payload => {
-//     const url = `${API_URL_1}/api/v1/plant/${payload?.id}`;
-//     return axiosInstance.put(url, payload);
-// };
 
-// export const getDraftPlant = () => {
-//     const url = `${API_URL_1}/api/v1/plant/draft`;
-//     return axiosInstance.get(url);
-// };
-
-// export const getPlantInfoById = id => {
-//     const url = `${API_URL_1}/api/v1/plant/${id}`;
-//     return axiosInstance.get(url);
-// };
-
-// export const deletePlantById = id => {
-//     const url = `${API_URL_1}/api/v1/plant/${id}`;
-//     return axiosInstance.delete(url);
-// };
+// 根据id查询电站
+export const apigetPlantById = (payload) => {
+    return axiosInstance.get(`${path}/getPlantById?plantId=${payload.plantId}`);
+  }
+// 根据id删除电站
+export const apideletePlantById = (payload) => {
+    return axiosInstance.get(`${path}/deletePlantById?plantId=${payload.plantId}`);
+  }
+// 获取选项初始值
+export const getInsertPlantInitData = () => {
+  return axiosInstance.get(`${path}/getInsertPlantInitData`);
+}

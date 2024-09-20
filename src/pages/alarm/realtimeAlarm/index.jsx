@@ -34,12 +34,12 @@ const RealtimeAlarm = () => {
     return state.device
   });
   const getData = async (page) => {
-    const { data } = await getNowAlarmsWithPage({
+    const { data={} } = await getNowAlarmsWithPage({
       currentPage: page || 1,
       pageSize: 20,
       plantId:currentPlantId||localStorage.getItem('plantId')
     });
-    setData(data.data);
+    setData(data?.data);
   }
   const changPage = (page) => {
     setCurrent(page);
@@ -56,11 +56,11 @@ const RealtimeAlarm = () => {
           <div className={styles.alarmWrap}>
             <Table
               columns={clum}
-              data={data.records}
+              data={data?.records}
               pagination={false}
               scroll={{ x: 'max-content' }}
             />
-            <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} total={data.total} pageSize={data.size} onChange={changPage} />
+            <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} total={data?.total} pageSize={data?.size} onChange={changPage} />
           </div>
 
         }

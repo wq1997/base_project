@@ -112,11 +112,11 @@ const RealtimeAlarm = () => {
     return state.device
   });
   const getTotalData = async () => {
-    const { data } = await getHistoryAlarmsStatistics({ plantId: currentPlantId || localStorage.getItem('plantId') });
-    setDatadataTotal(data.data)
+    const { data={} } = await getHistoryAlarmsStatistics({ plantId: currentPlantId || localStorage.getItem('plantId') });
+    setDatadataTotal(data?.data)
   };
   const getTableListData = async (page) => {
-    const { data } = await getHistoryAlarmsByOptionsWithPage({
+    const { data={} } = await getHistoryAlarmsByOptionsWithPage({
       plantId: currentPlantId || localStorage.getItem('plantId'),
       currentPage: page || 1,
       pageSize: 10,
@@ -125,7 +125,7 @@ const RealtimeAlarm = () => {
       begin: time?.length ? time[0]?.format('YYYY-MM-DD HH:mm:ss') : null,
       end: time?.length ? time[1]?.format('YYYY-MM-DD HH:mm:ss') : null
     });
-    setData(data.data);
+    setData(data?.data);
   }
   const changPage = (page) => {
     setCurrent(page);
@@ -258,11 +258,11 @@ const RealtimeAlarm = () => {
         </div>
         <Table
           columns={alarmTableColums}
-          data={data.records}
+          data={data?.records}
           pagination={false}
           scroll={{ y: scroolY }}
         />
-        <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} total={data.total} onChange={changPage} />
+        <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} total={data?.total} onChange={changPage} />
 
       </div>
 

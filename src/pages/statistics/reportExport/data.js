@@ -477,7 +477,7 @@ export const energy = {
                     key: 'efficiency',
                     width: 150,
                     render:(val,rec)=>{
-                      return `${(rec.dayInEnergy/rec.dayOutEnergy*100).toFixed(2)}%`  
+                      return `${(rec.dayOutEnergy/rec.dayInEnergy*100).toFixed(2)}%`  
                     }
                    }
             ],

@@ -59,8 +59,6 @@ function Com() {
     getInitData();
   }, [token, way, dataChoiceOpen,date]);
   useEffect(() => {
-    
-    console.log(dayjs(date).format('YYYY-MM-DD'), 111111);
   }, [way])
 
   const getInitData = async () => {

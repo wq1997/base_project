@@ -9,8 +9,8 @@ import { CardModel } from "@/components";
 import dayjs from 'dayjs';
 import { useSelector, useIntl } from "umi";
 import { BmsDataType, BmcDataType } from '@/utils/constants'
-import { obtainBMSClustersList, obtainBMSParameterData,getDataParams } from '@/services/deviceTotal'
-import { getQueryString,downLoadExcelMode } from "@/utils/utils";
+import { obtainBMSClustersList, obtainBMSParameterData, getDataParams } from '@/services/deviceTotal'
+import { getQueryString, downLoadExcelMode } from "@/utils/utils";
 
 const { Option } = Select;
 function Com({ id }) {
@@ -23,8 +23,8 @@ function Com({ id }) {
     const [title, setTitle] = useState('电压');
     const [unit, setUnit] = useState('V')
     const [date, setDate] = useState(dayjs(new Date()));
-    const [excelData,setExcelData]=useState([]);
-    const [paramsData,setParamsData]=useState([]);
+    const [excelData, setExcelData] = useState([]);
+    const [paramsData, setParamsData] = useState([]);
 
     const intl = useIntl();
     const t = (id) => {
@@ -38,14 +38,14 @@ function Com({ id }) {
     function onChange(date, dateString) {
         setDate(date);
     }
-    const initData=async()=>{
-        let res=await getDataParams({
-            plantId:localStorage.getItem('plantId'),
-            devId:id
+    const initData = async () => {
+        let res = await getDataParams({
+            plantId: localStorage.getItem('plantId'),
+            devId: id
         });
         setParamsData(res?.data?.data);
         setType(res?.data?.data?.[0]?.dataType);
-        
+
     };
     useEffect(() => {
         // getOptions();
@@ -67,23 +67,23 @@ function Com({ id }) {
             dateOne: dayjs(new Date()).format('YYYY-MM-DD'),
             dateTwo: date.format('YYYY-MM-DD'),
         });
-        let excelData=[];
+        let excelData = [];
         let dataX = []
         let nowY = [];
         let toY = [];
-        data.data?.nowDay?.map((it,index) => {
+        data.data?.nowDay?.map((it, index) => {
             dataX.push(dayjs(it.time).format('HH:mm'));
             nowY.push(it.value);
             excelData.push({
-                time:dayjs(it.time).format('HH:mm'),
-                nowDay:it.value,
-                toDay:data.data?.toDay[index].value
+                time: dayjs(it.time).format('HH:mm'),
+                nowDay: it.value,
+                toDay: data.data?.toDay[index].value
             })
         })
-        dataX.length===0? data.data?.toDay?.map(it => {
+        dataX.length === 0 ? data.data?.toDay?.map(it => {
             toY.push(it.value);
             dataX.push(dayjs(it.time).format('HH:mm'))
-        }):data.data?.toDay?.map(it => {
+        }) : data.data?.toDay?.map(it => {
             toY.push(it.value);
         });
         setExcelData([...excelData]);
@@ -98,7 +98,7 @@ function Com({ id }) {
             legend: {
                 data: [`今日${title}`, `${date.format('YYYY-MM-DD')}${title}`],
                 textStyle: {
-                    color:token.smallTitleColor,
+                    color: token.smallTitleColor,
                 }
             },
             grid: {
@@ -188,11 +188,11 @@ function Com({ id }) {
             ]
         });
     };
-    const downLoadFoodModel = () => {  
-        let fileName =title;
+    const downLoadFoodModel = () => {
+        let fileName = title;
         let sheetData = excelData;
-        let sheetFilter = ['time', 'nowDay','toDay'];
-        let sheetHeader = ["时刻", dayjs(new Date()).format('YYYY-MM-DD'),dayjs(date)?.format('YYYY-MM-DD')];
+        let sheetFilter = ['time', 'nowDay', 'toDay'];
+        let sheetHeader = ["时刻", dayjs(new Date()).format('YYYY-MM-DD'), dayjs(date)?.format('YYYY-MM-DD')];
         downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader,)
     };
     const getClusters = (data) => {
@@ -205,24 +205,29 @@ function Com({ id }) {
         setGoalId(data[0].id);
     }
 
-    const changeCluster = (val) => {
+    const changeCluster = async (val) => {
         let goal = activitesRef.current.find(it => it.id == val);
         setGoalId(goal.id);
+        let res = await getDataParams({
+            plantId: localStorage.getItem('plantId'),
+            devId: val
+        });
+        console.log(res, val, '00000');
+        setParamsData(res?.data?.data);
+        setType(res?.data?.data?.[0]?.dataType);
         if (goal.type == '101') {
             setDataOption(BmsDataType);
-            setType(BmsDataType[0].value)
+            // setType(BmsDataType[0].value)
         } else {
             setDataOption(BmcDataType);
-            setType(BmcDataType[0].value)
+            // setType(BmcDataType[0].value)
         }
     }
     const changeDataType = (val, label) => {
         setType(val);
         setTitle(label?.children);
-        setUnit(paramsData.find(it=>it.dataType==val)?.unit);
-        console.log(label,val);
-        
-    } 
+        setUnit(paramsData.find(it => it.dataType == val)?.unit);
+    }
     return (
         <div className={styles.monitoringCurves}>
             <div className={styles.searchHead}>
@@ -244,9 +249,9 @@ function Com({ id }) {
                     className={styles.margRL}
                     style={{ width: 240 }}
                     onChange={changeDataType}
-                    defaultValue={type}
+                    value={type}
                 >
- {paramsData && paramsData.map(item => {
+                    {paramsData.length && paramsData.map(item => {
                         return (<Option key={item.dataType} value={item.dataType}>{item.dataTypeDesc}</Option>);
                     })
                     }
@@ -255,7 +260,7 @@ function Com({ id }) {
                 <Button type="primary" className={styles.firstButton} onClick={() => getEchartsData(goalId)}>
                     {t('查询')}
                 </Button>
-                <Button type="primary" style={{ backgroundColor: token.defaultBg }}  onClick={downLoadFoodModel} >
+                <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downLoadFoodModel} >
                     {t('导出')}excel
                 </Button>
             </div>

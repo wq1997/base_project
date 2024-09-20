@@ -14,7 +14,7 @@ import {
     SettingOutlined,
 
 } from '@ant-design/icons';
-import { getChargeStationEarning, } from '@/services/deviceTotal';
+import { getChargeStationEarning, getChargeStationStatus} from '@/services/deviceTotal';
 import { useIntl } from "umi";
 
 function Com(props) {
@@ -31,10 +31,13 @@ function Com(props) {
       return msg
     }
     let currentPlant = JSON.parse(localStorage.getItem('current'));
-    const getOptions = () => {
+    const getOptions = async() => {
+    let {data={}}=await getChargeStationStatus({plantId:localStorage.getItem('plantId')});
+    console.log(data,1111);
+    
         setOptions({
             title: {
-                text: '8',
+                text: data?.data?.total,
                 subtext: t('充电桩总数'),
                 x: 'center',
                 y: 'center',
@@ -127,9 +130,9 @@ function Com(props) {
                             }
                         },
                     data: [
-                      { value: 3, name: t('空闲充电桩') },
-                      { value: 4, name: t('占用充电桩') },
-                      { value: 1, name: t('故障充电桩') },
+                      { value: data?.data?.freeTotal, name: t('空闲充电桩') },
+                      { value: data?.data?.chargeTotal, name: t('占用充电桩') },
+                      { value: data?.data?.faultTotal, name: t('故障充电桩') },
                     ]
                   }
             ]

@@ -130,14 +130,14 @@ function OverView(props) {
         let chargeInEnergy = [];
         let arrX = [];
         energyData?.data?.map((it) => {
-            pvOutEnergy.push(it.pvOutEnergy);
-            energyInEnergy.push(it.energyInEnergy);
-            energyOutEnergy.push(it.energyOutEnergy);
-            pvInEnergy.push(it.pvInEnergy);
-            chargeInEnergy.push(it.chargeInEnergy);
+            pvOutEnergy.push(it?.pvOutEnergy);
+            energyInEnergy.push(it?.energyInEnergy);
+            energyOutEnergy.push(it?.energyOutEnergy);
+            pvInEnergy.push(it?.pvInEnergy);
+            chargeInEnergy.push(it?.chargeInEnergy);
             arrX.push(dayjs(it?.date).format('YYYY-MM-DD'))
         })
-        setData(data.data);
+        setData(data?.data);
         setDateX(arrX);
         setDataY({ pvOutEnergy, energyInEnergy, energyOutEnergy, pvInEnergy, chargeInEnergy })
         setOptions({
@@ -167,7 +167,7 @@ function OverView(props) {
             xAxis: [
                 {
                     type: 'category',
-                    data: dateX,
+                    data: arrX,
                     axisTick: {
                         alignWithLabel: true
                     }
@@ -249,7 +249,7 @@ function OverView(props) {
         let { data: powerData } = await getGridPointPower({
             gridPointId: currntGrid
         });
-        let { pvPower, loadPower, gridPower, energyPower } = powerData?.data;
+        let { pvPower=[], loadPower=[], gridPower=[], energyPower=[] } = powerData?.data;
         let pvData = dealData(pvPower);
         let loadData = dealData(loadPower);
         let gridData = dealData(gridPower);
