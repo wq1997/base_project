@@ -80,6 +80,10 @@ const Account = () => {
 
     const [userOptions, setUserOptions] = useState();
 
+    const areaRef = useRef();
+    const [area, setArea] = useState();
+    const [areaOptions, setAreaOptions] = useState();
+
     const ownerRef = useRef();
     const [owner, setOwner] = useState();
 
@@ -93,25 +97,12 @@ const Account = () => {
         {
             title: "工单编号",
             dataIndex: "code",
-            width: 200
+            width: 200,
         },
         {
             title: "工单名称",
             dataIndex: "title",
-            width: 300
-        },
-        {
-            title: "工单类型",
-            dataIndex: "typeZh",
-            width: 200
-        },
-        {
-            title: "关联项目",
-            dataIndex: "project",
             width: 300,
-            render: (_, { project }) => {
-                return project?.name;
-            },
         },
         {
             title: "处理状态",
@@ -128,32 +119,50 @@ const Account = () => {
         {
             title: "发布时间",
             dataIndex: "publishedTime",
-            width: 200
+            width: 200,
+        },
+        {
+            title: "关联项目",
+            dataIndex: "project",
+            width: 300,
+            render: (_, { project }) => {
+                return project?.name;
+            },
+        },
+        {
+            title: "工单类型",
+            dataIndex: "typeZh",
+            width: 180,
         },
         {
             title: "计划开始时间",
             dataIndex: "planStartDate",
-            width: 200
+            width: 200,
         },
         {
             title: "计划结束时间",
             dataIndex: "planEndDate",
-            width: 200
+            width: 200,
         },
         {
-            title: "工单接收人",
-            dataIndex: "ownerName",
-            width: 200
+            title: "所属区域",
+            dataIndex: "area",
+            width: 150,
         },
         {
-            title: "工单发起人",
+            title: "发起人",
             dataIndex: "initiatorName",
-            width: 200
+            width: 150,
+        },
+        {
+            title: "接收人",
+            dataIndex: "ownerName",
+            width: 150,
         },
         {
             title: "当前处理人",
             dataIndex: "currentProcessorName",
-            width: 200,
+            width: 150,
             render: (_, { status, currentProcessorName }) => {
                 return status == "COMPLETED" ? "" : currentProcessorName;
             },
@@ -161,7 +170,7 @@ const Account = () => {
         {
             title: "实际处理人",
             dataIndex: "currentProcessorName",
-            width: 200,
+            width: 150,
             render: (_, { status, currentProcessorName }) => {
                 return status == "COMPLETED" ? currentProcessorName : "";
             },
@@ -170,25 +179,13 @@ const Account = () => {
             title: "操作",
             dataIndex: "operate",
             fixed: "right",
-            width: 200,
+            width: 100,
             render: (_, { id, supportProcessing }) => {
                 return (
                     <>
-                        <Button
-                            type="link"
-                            disabled={Boolean(!supportProcessing)}
-                            onClick={() => setProcessId(id)}
-                            style={{color: Boolean(!supportProcessing)?'grey': 'red'}}
-                        >
-                            去处理
-                        </Button>
-                        <Button
-                            type="link"
-                            style={{ color: token.colorPrimary }}
-                            onClick={() => setDetailId(id)}
-                        >
+                        <a style={{ color: token.colorPrimary }} onClick={() => setDetailId(id)}>
                             详情
-                        </Button>
+                        </a>
                     </>
                 );
             },
@@ -214,6 +211,7 @@ const Account = () => {
                 }))
             );
             setUserOptions(users);
+            setAreaOptions();
         }
     };
 
@@ -228,6 +226,7 @@ const Account = () => {
         const planDateTo = planEndDateRef.current;
         const projectId = associatedProjectRef.current;
         const ownerAccount = ownerRef.current;
+        const area = areaRef.current;
         const initiatorAccount = initiatorRef.current;
         const currentProcessorAccount = currentProcessorRef.current;
         const res = await workOrderListServer({
@@ -244,6 +243,7 @@ const Account = () => {
                 planDateTo,
                 projectId,
                 ownerAccount,
+                area,
                 initiatorAccount,
                 currentProcessorAccount,
             },
@@ -279,6 +279,8 @@ const Account = () => {
         setAssociatedProject();
         ownerRef.current = undefined;
         setOwner();
+        areaRef.current = undefined;
+        setArea();
         initiatorRef.current = undefined;
         setInitiator();
         currentProcessorRef.current = undefined;
@@ -387,6 +389,16 @@ const Account = () => {
                     }}
                     style={{ width: 200 }}
                 />
+                <SearchInput
+                    label="关联项目"
+                    value={associatedProject}
+                    type="select"
+                    options={projectOptions}
+                    onChange={value => {
+                        associatedProjectRef.current = value;
+                        setAssociatedProject(value);
+                    }}
+                />
                 <div>
                     <span style={{ color: "#FFF" }}>计划开始时间：</span>
                     <DatePicker
@@ -408,13 +420,13 @@ const Account = () => {
                     />
                 </div>
                 <SearchInput
-                    label="关联项目"
-                    value={associatedProject}
+                    label="工单所属区域"
+                    value={area}
                     type="select"
-                    options={projectOptions}
+                    options={areaOptions}
                     onChange={value => {
-                        associatedProjectRef.current = value;
-                        setAssociatedProject(value);
+                        areaRef.current = value;
+                        setArea(value);
                     }}
                 />
                 <SearchInput
@@ -456,7 +468,9 @@ const Account = () => {
                 >
                     搜索
                 </Button>
-                <Button type="primary" danger onClick={handleReset}>重置</Button>
+                <Button type="primary" danger onClick={handleReset}>
+                    重置
+                </Button>
             </Space>
             <Table
                 rowKey="id"

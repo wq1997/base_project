@@ -10,6 +10,7 @@ import {
     theme,
     Radio,
     Dropdown,
+    Popconfirm,
 } from "antd";
 import {
     ExclamationCircleOutlined,
@@ -32,7 +33,7 @@ import {
     basSupplierList as basSupplierListServe,
     basSupplierModifyAll as basSupplierModifyAllServe,
     basProjectDelete as basProjectDeleteServe,
-} from "@/services"
+} from "@/services";
 import dayjs from "dayjs";
 
 const Account = () => {
@@ -41,6 +42,9 @@ const Account = () => {
     const location = useLocation();
     const initCode = location?.search.split("=")[1];
     const codeRef = useRef(initCode);
+    const areaRef = useRef();
+    const [area, setArea] = useState();
+    const [areaOptions, setAreaOptions] = useState();
     const confirmStatusRef = useRef();
     const splitStatusRef = useRef();
     const responseTypeRef = useRef();
@@ -265,42 +269,44 @@ const Account = () => {
         {
             title: "项目名称",
             dataIndex: "name",
-            width: 200
+            width: 300,
         },
         {
             title: "项目编号",
             dataIndex: "code",
-            width: 200
+            width: 200,
         },
         {
             title: "立项时间",
             dataIndex: "approvalTime",
-            width: 200
+            width: 200,
         },
         {
             title: "关联工单数",
             dataIndex: "refWorkOrderCount",
-            width: 150
+            width: 150,
         },
         {
-            title: "充放功率(MW)",
-            dataIndex: "maxPowerMw",
-            width: 200
-        },
-        {
-            title: "项目容量(MWh)",
-            dataIndex: "capacityMwh",
-            width: 200
+            title: "装机规模(MW/MWh)",
+            dataIndex: "installationScale",
+            width: 200,
+            render: (_, { maxPowerMw, capacityMwh }) => {
+                return (
+                    <span>
+                        {maxPowerMw}MW / {capacityMwh}MWh
+                    </span>
+                );
+            },
         },
         {
             title: "项目阶段",
             dataIndex: "phaseZh",
-            width: 200
+            width: 150,
         },
         {
             title: "项目进度",
             dataIndex: "subPhaseZh",
-            width: 200
+            width: 150,
         },
         {
             title: "是否支持标准巡检",
@@ -317,33 +323,33 @@ const Account = () => {
         {
             title: "项目类型",
             dataIndex: "typeZh",
-            width: 200
+            width: 150,
         },
         {
             title: "产品类型",
             dataIndex: "productTypeZh",
-            width: 200
+            width: 150,
         },
         {
             title: "实施负责人",
             dataIndex: "implementManagerName",
-            width: 200
+            width: 150,
         },
         {
             title: "运维负责人",
             dataIndex: "operationsManagerName",
-            width: 200
+            width: 150,
         },
         {
             title: "状态",
             dataIndex: "statusZh",
-            width: 200
+            width: 150,
         },
         {
             title: "操作",
             dataIndex: "operate",
-            fixed: 'right',
-            width: 100,
+            fixed: "right",
+            width: 150,
             render: (_, row) => {
                 const edit = (key, row) => {
                     setCurrentStep(key);
@@ -352,13 +358,31 @@ const Account = () => {
                 };
                 return (
                     <Space>
-                        <Button
-                            type="link"
-                            style={{ color: token.colorPrimary }}
-                            onClick={() => edit(0, row)}
-                        >
+                        <a style={{ color: "rgb(22, 118, 239)" }} onClick={() => edit(0, row)}>
                             编辑
-                        </Button>
+                        </a>
+                        <a style={{ color: token.colorPrimary }} onClick={() => edit(0, row)}>
+                            详情
+                        </a>
+                        {row?.supportRemove && (
+                            <Popconfirm
+                                title="确定删除？"
+                                onConfirm={async () => {
+                                    const res = await basProjectDeleteServe({
+                                        ids: [row?.id],
+                                    });
+                                    if (res?.data?.status === "SUCCESS") {
+                                        message.success("删除成功！");
+                                        setSelectedRowKeys([]);
+                                        getInviteList();
+                                    }
+                                }}
+                                okText="确定"
+                                cancelText="取消"
+                            >
+                                <a style={{ color: "#dc4446" }}>删除</a>
+                            </Popconfirm>
+                        )}
                     </Space>
                 );
             },
@@ -372,7 +396,7 @@ const Account = () => {
     const getSearchInitData = async () => {
         const res = await getBasProjectInitDataServe();
         if (res?.data?.status == "SUCCESS") {
-            const { phases, types, productTypes, users } = res?.data?.data || {}
+            const { phases, types, productTypes, users } = res?.data?.data || {};
             setInitSearchOption(res?.data?.data || {});
             setPhaseList(phases);
             setProjectTypeList(types);
@@ -387,12 +411,13 @@ const Account = () => {
         if (res?.data?.status == "SUCCESS") {
             setSupplyScopesList(res?.data?.data?.supplyScopes);
         }
-    }
+    };
 
     const getInviteList = async () => {
         const { current, pageSize } = paginationRef.current;
         const nameOrCodeLike = codeRef.current;
         const approvalTime = projectInitiationTimeRef.current;
+        const area = areaRef.current;
         const phase = confirmStatusRef.current;
         const subPhase = splitStatusRef.current;
         const type = responseTypeRef.current;
@@ -407,13 +432,14 @@ const Account = () => {
                 nameOrCodeLike,
                 approvalTimeStart: approvalTime,
                 approvalTimeEnd: approvalTime,
+                area,
                 phase,
                 subPhase,
                 type,
                 productTypeZh,
                 implementManagerAccount,
                 operationsManagerAccount,
-                supportStandardInspection
+                supportStandardInspection,
             },
         });
         if (res?.data?.status == "SUCCESS") {
@@ -428,6 +454,7 @@ const Account = () => {
 
     const handleReset = () => {
         codeRef.current = undefined;
+        areaRef.current = undefined;
         projectInitiationTimeRef.current = undefined;
         confirmStatusRef.current = undefined;
         splitStatusRef.current = undefined;
@@ -435,16 +462,17 @@ const Account = () => {
         responseTimeTypeRef.current = undefined;
         putEffectPersonRef.current = undefined;
         operationPersonRef.current = undefined;
-        supportStandardInspectionRef.current = undefined
-        setSupportStandardInspection(undefined)
+        supportStandardInspectionRef.current = undefined;
+        setSupportStandardInspection(undefined);
         setOperationPerson(undefined);
         setPutEffectPerson(undefined);
         setResponseTimeType(undefined);
         setResponseType(undefined);
         setSplitStatus(undefined);
         setConfirmStatus(undefined);
-        setProjectInitiationTime(undefined)
+        setProjectInitiationTime(undefined);
         setCode(undefined);
+        setArea();
         getInviteList();
     };
 
@@ -480,14 +508,24 @@ const Account = () => {
                     <span style={{ color: "#FFF" }}>立项时间：</span>
                     <DatePicker
                         value={projectInitiationTime ? dayjs(projectInitiationTime) : undefined}
-                        onChange={(data) => {
+                        onChange={data => {
                             paginationRef.current = DEFAULT_PAGINATION;
                             projectInitiationTimeRef.current = dayjs(data).format("YYYY-MM-DD");
-                            setProjectInitiationTime(dayjs(data).format("YYYY-MM-DD"))
+                            setProjectInitiationTime(dayjs(data).format("YYYY-MM-DD"));
                         }}
                         allowClear
                     />
                 </div>
+                <SearchInput
+                    label="工单所属区域"
+                    value={area}
+                    type="select"
+                    options={areaOptions}
+                    onChange={value => {
+                        areaRef.current = value;
+                        setArea(value);
+                    }}
+                />
                 <SearchInput
                     label="项目阶段"
                     value={confirmStatus}
@@ -499,7 +537,7 @@ const Account = () => {
                         confirmStatusRef.current = value;
                         setConfirmStatus(value);
                         setSplitStatus(undefined);
-                        setProjectScheduleList(initSearchOption?.phase2SubPhases?.[value] || [])
+                        setProjectScheduleList(initSearchOption?.phase2SubPhases?.[value] || []);
                     }}
                 />
                 <SearchInput
@@ -562,78 +600,58 @@ const Account = () => {
                     <span style={{ color: "#FFF" }}>是否支持标准巡检：</span>
                     <Radio.Group
                         value={supportStandardInspection}
-                        onChange={(e) => {
+                        onChange={e => {
                             paginationRef.current = DEFAULT_PAGINATION;
-                            supportStandardInspectionRef.current = e.target.value
-                            setSupportStandardInspection(e.target.value)
+                            supportStandardInspectionRef.current = e.target.value;
+                            setSupportStandardInspection(e.target.value);
                         }}
                     >
                         <Radio value={true}>是</Radio>
                         <Radio value={false}>否</Radio>
                     </Radio.Group>
                 </div>
-                <Button type="primary" onClick={getInviteList}>搜索</Button>
-                <Button type="primary" danger onClick={handleReset}>重置</Button>
+                <Button type="primary" onClick={getInviteList}>
+                    搜索
+                </Button>
+                <Button type="primary" danger onClick={handleReset}>
+                    重置
+                </Button>
             </Space>
             <Table
                 rowKey="id"
                 dataSource={userList}
                 columns={columns}
                 pagination={pagination}
-                rowSelection={{
-                    selectedRowKeys,
-                    onChange: onSelectChange,
-                    getCheckboxProps: record => ({
-                        disabled: !record.supportRemove,
-                    }),
-                }}
                 onChange={pagination => {
                     paginationRef.current = pagination;
                     getInviteList();
                 }}
                 scroll={{
-                    x: 1200,
+                    x: 1500,
                 }}
                 title={() => (
                     <Space className="table-title">
-                        <Button onClick={() => setAddProjectOpen(true)} style={{ background: '#1676EF' }}>
-                            新增项目
-                        </Button>
                         <Button
-                            type="primary"
-                            danger
-                            onClick={async () => {
-                                const res = await basProjectDeleteServe({
-                                    ids: selectedRowKeys
-                                })
-                                if (res?.data?.status === "SUCCESS") {
-                                    message.success("删除成功！");
-                                    setSelectedRowKeys([]);
-                                    getInviteList();
-                                }
-                            }}
+                            onClick={() => setAddProjectOpen(true)}
+                            style={{ background: "#1676EF" }}
                         >
-                            删除项目
-                            {selectedRowKeys?.length ? (
-                                <span>({selectedRowKeys?.length})</span>
-                            ) : (
-                                ""
-                            )}
+                            新增项目
                         </Button>
                         <Button
                             type="primary"
                             onClick={async () => {
                                 const res = await basSupplierListServe();
                                 if (res?.data?.status == "SUCCESS") {
-                                    const data = res?.data?.data?.map(item => {
-                                        return {
-                                            ...item,
-                                            supplyScope: item?.supplyScope?.join(',')
-                                        }
-                                    }) || [];
+                                    const data =
+                                        res?.data?.data?.map(item => {
+                                            return {
+                                                ...item,
+                                                supplyScope: item?.supplyScope?.join(","),
+                                            };
+                                        }) || [];
                                     supplierForm.setFieldsValue({
-                                        supplierDataSource: data
-                                    })
+                                        supplierDataSource: data,
+                                    });
                                     setSupplierDataSource(data);
                                     setSupplierOpen(true);
                                 }
@@ -659,22 +677,28 @@ const Account = () => {
                             return {
                                 id: item?.id || undefined,
                                 name: item?.name,
-                                supplyScope: Array.isArray(item?.supplyScope) ? item?.supplyScope : item?.supplyScope?.split(',')
-                            }
-                        })
-                    })
+                                supplyScope: Array.isArray(item?.supplyScope)
+                                    ? item?.supplyScope
+                                    : item?.supplyScope?.split(","),
+                            };
+                        }),
+                    });
                     if (res?.data?.status == "SUCCESS") {
                         setSupplierOpen(false);
                         supplierForm.setFieldsValue({
-                            supplierDataSource: []
-                        })
+                            supplierDataSource: [],
+                        });
                         setSupplierDataSource([]);
                     }
                 }}
             >
                 <div style={{ minHeight: 300 }}>
                     <Form form={supplierForm} scrollToFirstError>
-                        <Form.Item name="supplierDataSource" validateTrigger={false} hidden={!supplierOpen}>
+                        <Form.Item
+                            name="supplierDataSource"
+                            validateTrigger={false}
+                            hidden={!supplierOpen}
+                        >
                             <EditTable.EditRowTable
                                 showAdd={true}
                                 showClear={true}
@@ -684,23 +708,23 @@ const Account = () => {
                                 columns={[
                                     {
                                         title: "供应商名称",
-                                        dataIndex: 'name',
+                                        dataIndex: "name",
                                         editable: true,
-                                        inputType: 'Input',
+                                        inputType: "Input",
                                     },
                                     {
                                         title: "供货范围",
-                                        dataIndex: 'supplyScope',
+                                        dataIndex: "supplyScope",
                                         editable: true,
-                                        mode: 'multiple',
-                                        inputType: 'Select',
+                                        mode: "multiple",
+                                        inputType: "Select",
                                         width: 400,
                                         options: supplyScopesList?.map(item => {
                                             return {
                                                 label: item,
-                                                value: item
-                                            }
-                                        })
+                                                value: item,
+                                            };
+                                        }),
                                     },
                                 ]}
                             />

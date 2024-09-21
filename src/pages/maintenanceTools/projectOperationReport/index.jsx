@@ -12,11 +12,11 @@ const Abnormal = () => {
     const tabItems = [
         {
             key: 'statistics',
-            label: '异常统计'
+            label: '项目运行日报'
         },
         {
             key: 'detailed',
-            label: '异常明细'
+            label: '项目运行总览'
         }
     ]
     return (
@@ -26,7 +26,7 @@ const Abnormal = () => {
                 items={tabItems}
                 onChange={value => {
                     setActiveKey(value);
-                    history.push(`/project-management/abnormal?activeKey=${value}`)
+                    history.push(`/project-management/alarmStatistics?activeKey=${value}`)
                 }}
             />
             {activeKey==="statistics"&&<Statistics />}
