@@ -59,7 +59,7 @@ function Com({ typeNum, clum }) {
             ],
             series: [
                 {
-                    name: '发电量',
+                    name: '收益',
                     type: 'bar',
                     barMaxWidth: '10%',
                     itemStyle: {
