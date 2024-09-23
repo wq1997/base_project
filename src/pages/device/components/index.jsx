@@ -7,6 +7,7 @@ import { useEmotionCss } from '@ant-design/use-emotion-css';
 import PackDetails from "./packDetails";
 import OverView from "./overview";
 import Policy from "../../policyConfiguration/index";
+import CzekhPolicy2 from './CzekhPolicy2.0/index'
 import { theme, Tabs } from "antd";
 import { useEffect } from 'react';
 import classNames from "classnames";
@@ -43,6 +44,7 @@ const Cabinet = () => {
             { label: t('设备详情'), key: 'DeviceDetails' },
             { label: t('pack详情'), key: 'PackDetails' },
             { label: t('策略配置'), key: 'Policy' },
+            { label: t('策略配置'), key: 'CzekhPolicy2' },
 
         ]) : setPageTypeList([
             { label: t('总览'), key: 'OverView' },
@@ -73,6 +75,8 @@ const Cabinet = () => {
                 {activeKey === "DeviceDetails" && <DeviceDetails />}
                 {activeKey === "PackDetails" && <PackDetails />}
                 {activeKey === "Policy" && <Policy id={id} />}
+                {activeKey === "CzekhPolicy2" && <CzekhPolicy2 id={id} />}
+
             </div>
         </div>
     )
