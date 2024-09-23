@@ -165,8 +165,7 @@ const BaseLayout = () => {
                                 ],
                                 onClick({ key }) {
                                     if (key === "logout") {
-                                        removeLocalStorage("Token");
-                                        history.push('/login');
+                                        dispatch({type: "user/logout"})
                                     }
                                     if (key === "changeAccount") {
 

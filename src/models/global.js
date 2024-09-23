@@ -24,7 +24,17 @@ export default {
       const { locale } = payload;
       setLocale(locale, false);
       setLocalStorage('locale', locale);
-      if (window.location.pathname !== "/login") {
+      let loginPath;
+      if(
+          window.location.hostname === "domestic-power.sermatec-cloud.com" ||
+          window.location.hostname === "localhost" ||
+          window.location.hostname === "192.168.1.42"
+      ){
+          loginPath = "/login";
+      }else{
+          loginPath = "/login-gdgy";
+      }
+      if (window.location.pathname !== loginPath) {
         yield changeBaseLanguage({ language: locale === "zh-EN" ? 3 : 1 });
       }
       yield put({

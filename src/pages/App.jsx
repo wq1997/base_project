@@ -6,6 +6,7 @@ import zh_CN from 'antd/locale/zh_CN';
 import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 import localeData from "dayjs/plugin/localeData";
+import { getLoginPath } from "@/utils/utils";
 import 'dayjs/locale/zh-cn';
 import { useEffect } from "react";
 dayjs.extend(weekday);
@@ -20,12 +21,13 @@ const App = () => {
     const { theme, locale } = useSelector(state => state.global);
     const location = useLocation();
     if (location?.pathname === "/") {
-        history.push('/login');
+        const loginPath = getLoginPath();
+        history.push(loginPath);
     }
     dayjs.locale(locale);
     setLocale(locale, false);
-    
-    useEffect(()=>{
+
+    useEffect(() => {
         message.config({
             top: 100,
             duration: 2,

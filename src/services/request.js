@@ -66,30 +66,28 @@ instance.interceptors.response.use(response => {
 });
 
 const errorHandle = (status,msg) => {
-    console.log(msg);
-    // switch (status) {
-    //     case 400:
-    //         console.log("请求错误");
-    //         break;
-    //     case 401:
-    //         logout();
-    //         break;
-    //     case 403:
-    //         console.log("权限不足，拒绝访问")
-    //         break;
-    //     case 404:
-    //         console.log("请求的资源不存在或请求地址出错")
-    //         break;
-    //     // 500: 服务器错误
-    //     case 500:
-    //         console.log("服务器错误")
-    //         break;
-    //     case 1000001:
-    //         console.log("token 异常，请联系管理员")
-    //         break;
-    //     default:
-    //         console.log(message);
-    // }
+    switch (status) {
+        case 400:
+            console.log("请求错误");
+            break;
+        case 401:
+            logout();
+            break;
+        case 403:
+            console.log("权限不足，拒绝访问")
+            break;
+        case 404:
+            console.log("请求的资源不存在或请求地址出错")
+            break;
+        case 500:
+            console.log("服务器错误")
+            break;
+        case 1000001:
+            console.log("token 异常，请联系管理员")
+            break;
+        default:
+            console.log(message);
+    }
 }
 
 const logout = () => {

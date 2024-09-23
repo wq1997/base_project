@@ -1,20 +1,21 @@
 import { logout as logoutServe, login } from "@/services/user"
 import { getUserInfo as getUserInfoServe } from "@/services"
 import { history } from "umi";
-import { removeLocalStorage } from "@/utils/utils";
+import { removeLocalStorage, getLoginPath } from "@/utils/utils";
 
 export default {
   namespace: 'user',
 
   state: {
     user: null,
-    publicKey:'',
+    publicKey: '',
   },
 
   effects: {
     *logout({ payload }, { call, put }) {
+      let loginPath = getLoginPath();
       removeLocalStorage("Token");
-      history.push("/login");
+      history.push(loginPath);
     },
     *saveData({ payload }, { put, select }) {
       yield put({ type: "updateState", payload });
@@ -23,17 +24,17 @@ export default {
       // localStorage.setItem("publicKey", publicKey);
       sessionStorage.setItem("counterData", JSON.stringify(data));
     },
-    *getUserInfo({ payload }, { put, select }){
+    *getUserInfo({ payload }, { put, select }) {
       const res = yield getUserInfoServe();
-      if(res?.data?.data){
-        yield put({ type: "updateState", payload: {user: res?.data?.data} });
+      if (res?.data?.data) {
+        yield put({ type: "updateState", payload: { user: res?.data?.data } });
       }
     }
   },
 
   reducers: {
     updateState(state, { payload }) {
-      return {  
+      return {
         ...state,
         ...payload,
       };

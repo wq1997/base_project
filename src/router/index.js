@@ -1,6 +1,7 @@
 const App = "@/pages/App";
 const Layout = "@/layouts/baseLayout";
 const Login = "@/pages/account/login";
+const loginGdgy = "@/pages/account/login-gdgy";
 import menuRoutes from '../router/menuRoute'
 export default Routes = [
    {
@@ -8,6 +9,7 @@ export default Routes = [
      component: App,
      routes: [
       { path: "/login", component: Login },
+      { path: "/login-gdgy", component: loginGdgy },
       {
         path: '/index',
         component: Layout,

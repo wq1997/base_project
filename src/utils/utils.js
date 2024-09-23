@@ -6,10 +6,10 @@ export const setLocalStorage = (key, value) => localStorage.setItem(key, value);
 export const getLocalStorage = key => localStorage.getItem(key);
 export const MAP_KEY = 'b6b9b071ea496e3aa5c1e2e068275f42';
 export const removeLocalStorage = key => localStorage.removeItem(key);
-export const downLoadUrl=`https://domestic-power.sermatec-cloud.com/download/`;
+export const downLoadUrl = `https://domestic-power.sermatec-cloud.com/download/`;
 import JSEncrypt from 'jsencrypt'
 
-export const getEncrypt=(key,data) =>{
+export const getEncrypt = (key, data) => {
   let encrypt = new JSEncrypt()
   // 设置公钥
   encrypt.setPublicKey(key)
@@ -17,44 +17,44 @@ export const getEncrypt=(key,data) =>{
 };
 
 export const splitString = (value, length) => {
-    if(value.length<length) return value;
-    return `${value.slice(0, length)}...`
+  if (value.length < length) return value;
+  return `${value.slice(0, length)}...`
 }
 
 export const downloadFile = (data) => {
-      const link = document.createElement('a');
-      link.style.display = 'none'
-      const blob = new Blob([data.content]);
-      link.href = URL.createObjectURL(blob)
-      function isIE() {
-        if (!!window.ActiveXObject || 'ActiveXObject' in window) {
-          return true
-        } else {
-          return false
-        }
-      }
-      if (data.fileName) {
-        link.download = data.fileName //下载的文件名
-      } else {
-        const fileName = "file.xlsx";
-        link.download = fileName
-      }
-      if (isIE()) {
-        window.navigator.msSaveOrOpenBlob(blob, link.download)
-      } else {
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-      }
+  const link = document.createElement('a');
+  link.style.display = 'none'
+  const blob = new Blob([data.content]);
+  link.href = URL.createObjectURL(blob)
+  function isIE() {
+    if (!!window.ActiveXObject || 'ActiveXObject' in window) {
+      return true
+    } else {
+      return false
+    }
+  }
+  if (data.fileName) {
+    link.download = data.fileName //下载的文件名
+  } else {
+    const fileName = "file.xlsx";
+    link.download = fileName
+  }
+  if (isIE()) {
+    window.navigator.msSaveOrOpenBlob(blob, link.download)
+  } else {
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
 }
 
 // mobile
 export const getLabel = (columns, value) => {
-    if(columns&&value&&columns[0]?.length>0&&value.length>0){
-        const label = columns[0]?.find(item => item.value===value[0])?.label;
-        return label;
-    }
-    return "";
+  if (columns && value && columns[0]?.length > 0 && value.length > 0) {
+    const label = columns[0]?.find(item => item.value === value[0])?.label;
+    return label;
+  }
+  return "";
 }
 
 export function getQueryString(name) {
@@ -69,14 +69,14 @@ export function getQueryString(name) {
 
 export function addColorAlpha(colorCode, alpha) {
   if (colorCode.charAt(0) === "#") {
-      colorCode = colorCode.slice(1);
-      let r = parseInt(colorCode.substring(0, 2), 16),
-          g = parseInt(colorCode.substring(2, 4), 16),
-          b = parseInt(colorCode.substring(4), 16);
-      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    colorCode = colorCode.slice(1);
+    let r = parseInt(colorCode.substring(0, 2), 16),
+      g = parseInt(colorCode.substring(2, 4), 16),
+      b = parseInt(colorCode.substring(4), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
   } else if (colorCode.slice(0, 4) === "rgb(") {
-      let rgb = colorCode.slice(4, -1).split(",");
-      return `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${alpha})`;
+    let rgb = colorCode.slice(4, -1).split(",");
+    return `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${alpha})`;
   }
 }
 
@@ -90,26 +90,26 @@ export function addColorAlpha(colorCode, alpha) {
  *    columnWidths: 列宽
  *    
  * ***/
-export const  downLoadExcelMode = (fileName,sheetData,sheetFilter,sheetHeader,sheetName="sheet") =>{
-  var option={};
+export const downLoadExcelMode = (fileName, sheetData, sheetFilter, sheetHeader, sheetName = "sheet") => {
+  var option = {};
   option.fileName = fileName
-  option.datas=[{
-       sheetData:sheetData,
-       sheetName:sheetName,
-       sheetFilter:sheetFilter,
-       sheetHeader:sheetHeader,
-       columnWidths: ['8','4'],
-      },
+  option.datas = [{
+    sheetData: sheetData,
+    sheetName: sheetName,
+    sheetFilter: sheetFilter,
+    sheetHeader: sheetHeader,
+    columnWidths: ['8', '4'],
+  },
   ];
   const ExportJsonExcel = require("js-export-excel");
-  var toExcel=new ExportJsonExcel(option);
+  var toExcel = new ExportJsonExcel(option);
   toExcel.saveExcel();
 }
 
 
 export function download(url, filename) {
   const link = document.createElement("a");
-  link.target='_blank';
+  link.target = '_blank';
   link.href = `${url}${filename}`;
   link.download = filename;
   link.click();
@@ -118,6 +118,20 @@ export function download(url, filename) {
 export const cloneObject = (object) => JSON.parse(JSON.stringify(object));
 
 export const translateNmberToTime = (value) => {
-  if(Number(value)<=9) return `0${value}`;
+  if (Number(value) <= 9) return `0${value}`;
   return `${value}`;
+}
+
+export const getLoginPath = () => {
+  let loginPath;
+  if (
+    window.location.hostname === "domestic-power.sermatec-cloud.com" ||
+    window.location.hostname === "localhost" ||
+    window.location.hostname === "192.168.1.42"
+  ) {
+    loginPath = "/login";
+  } else {
+    loginPath = "/login-gdgy";
+  }
+  return loginPath;
 }
