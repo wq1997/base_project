@@ -1,9 +1,9 @@
 import { useIntl, useSelector } from "umi";
 import { useEffect, useState } from "react";
 import styles from "./index.less";
-import classNames from "classnames";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { theme as antdTheme } from "antd";
+import { PUBLIC_FILE_PATH } from "@/utils/constants";
 
 const Index = ({ plants, showInfo, panTo }) => {
     const intl = useIntl();
@@ -99,7 +99,7 @@ const Index = ({ plants, showInfo, panTo }) => {
             const marker = new AMap.Marker({
                 position: new AMap.LngLat(item?.longitude, item?.latitude),
                 icon: new AMap.Icon({
-                    image: require("../../../../../public/images/mapPoint.png"),
+                    image: `${PUBLIC_FILE_PATH}/mapPoint.png`,
                     imageSize: new AMap.Size(15, 20),
                 }),
                 map: map,

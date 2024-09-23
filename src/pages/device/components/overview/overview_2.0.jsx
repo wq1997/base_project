@@ -1,30 +1,9 @@
 import { useIntl, useSelector } from "umi";
 import { theme as antdTheme, Spin } from "antd";
-import { Title, ScrollTable } from "@/components";
+import { Title } from "@/components";
 import SchematicDiagram from "./SchematicDiagram";
 import styles from "./overview_2.0.less";
 import { useState, useEffect } from "react";
-import leftTop1Img from "@/assets/imges/leftTop1.svg";
-import leftTop2Img from "@/assets/imges/leftTop2.svg";
-import leftTop3Img from "@/assets/imges/leftTop3.svg";
-import leftTop4Img from "@/assets/imges/leftTop4.svg";
-import leftTopBgImg from "@/assets/imges/leftTopBg.svg";
-import leftTopWhiteBgImg from "@/assets/imges/leftWhiteTopBg.svg";
-import leftTopBg2Img from "@/assets/imges/leftTopBg2.svg";
-import leftTopBg2WhiteImg from "@/assets/imges/leftTopBg2_white.svg";
-import xtxl1Img from "@/assets/imges/xtxl1.svg";
-import xtxlBgImg from "@/assets/imges/xtxlBg.svg";
-import leftBottom1Img from "@/assets/imges/leftBottom1.svg";
-import leftBottom2Img from "@/assets/imges/leftBottom2.svg";
-import leftBottom3Img from "@/assets/imges/leftBottom3.svg";
-import leftBottom4Img from "@/assets/imges/leftBottom4.svg";
-import leftBottomBg1Img from "@/assets/imges/leftBottomBg1.svg";
-import leftBottomWhiteBg1Img from "@/assets/imges/leftBottomWhiteBg1.svg";
-import leftBottomBg2Img from "@/assets/imges/leftBottomBg2.svg";
-import bottomLeft1Img from "@/assets/imges/bottomLeft1.svg";
-import bottomLeft2Img from "@/assets/imges/bottomLeft2.svg";
-import bottomLeft1WhiteImg from "@/assets/imges/bottomLeft1WhiteImg.svg"
-import bottomLeftBgImg from "@/assets/imges/bottomLeftBg.svg";
 import MyRadio from "./MyRadio";
 import { getQueryString, cloneObject } from "@/utils/utils";
 import {
@@ -32,6 +11,7 @@ import {
 } from "@/services";
 import classNames from "classnames";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
+import { PUBLIC_FILE_PATH } from "@/utils/constants";
 
 const OverView = ({ deviceVersion, sn }) => {
     const id = getQueryString('id');
@@ -44,22 +24,22 @@ const OverView = ({ deviceVersion, sn }) => {
         {
             title: '日充电量',
             data: 0,
-            icon: leftTop3Img
+            icon: PUBLIC_FILE_PATH + "/day-charging.svg"
         },
         {
             title: '日放电量',
             data: 0,
-            icon: leftTop4Img
+            icon: PUBLIC_FILE_PATH + "/day-disCharging.svg"
         },
         {
             title: '累计充电量',
             data: 0,
-            icon: leftTop1Img
+            icon: PUBLIC_FILE_PATH + "/total-charging.svg"
         },
         {
             title: '累计放电量',
             data: 0,
-            icon: leftTop2Img
+            icon: PUBLIC_FILE_PATH + "/total-disCharging.svg"
         }
     ])
 
@@ -87,14 +67,14 @@ const OverView = ({ deviceVersion, sn }) => {
             title: "累计充电量",
             data: 0,
             color: '#00CCFF',
-            icon: leftTop3Img,
+            icon: PUBLIC_FILE_PATH + "/total-charging.svg",
             type: 'right'
         },
         {
             title: "累计放电量",
             data: 0,
             color: '#00CCFF',
-            icon: leftTop4Img,
+            icon: PUBLIC_FILE_PATH + "/total-disCharging.svg",
             type: 'right'
         }
     ]);
@@ -104,29 +84,23 @@ const OverView = ({ deviceVersion, sn }) => {
             title: "日收益",
             data: 0,
             color: '#FFE600',
-            backgroundImg: theme==="dark"?leftBottomBg1Img: leftBottomWhiteBg1Img,
-            img: leftBottom1Img
         },
         {
             title: "月收益",
             data: 0,
             color: '#00C3FF',
-            backgroundImg: theme==="dark"?leftBottomBg1Img: leftBottomWhiteBg1Img,
-            img: leftBottom3Img
         },
         {
             title: "累计收益",
             data: 0,
             color: '#B95CFC',
-            backgroundImg: theme==="dark"?leftBottomBg1Img: leftBottomWhiteBg1Img,
-            img: leftBottom4Img
         }
     ]);
 
     const [bmsInfoDataSource, setBmsInfoDataSource] = useState([
         {
             title: "单体最高",
-            icon: bottomLeft1Img,
+            icon: `${PUBLIC_FILE_PATH}/bms-info-high.svg`,
             data: [
                 {
                     title: "温度",
@@ -150,7 +124,7 @@ const OverView = ({ deviceVersion, sn }) => {
         },
         {
             title: "单体最低",
-            icon: bottomLeft2Img,
+            icon: `${PUBLIC_FILE_PATH}/bms-info-lower.svg`,
             data: [
                 {
                     title: "温度",
@@ -250,9 +224,6 @@ const OverView = ({ deviceVersion, sn }) => {
         newBenefitStatisticsDataSource[0].data = dataSource?.gmeter?.dayEarning || 0;
         newBenefitStatisticsDataSource[1].data = dataSource?.gmeter?.monEarning || 0;
         newBenefitStatisticsDataSource[2].data = dataSource?.gmeter?.sumEarning || 0;
-        newBenefitStatisticsDataSource[0].backgroundImg = theme==="dark"?leftBottomBg1Img: leftBottomWhiteBg1Img
-        newBenefitStatisticsDataSource[1].backgroundImg = theme==="dark"?leftBottomBg1Img: leftBottomWhiteBg1Img
-        newBenefitStatisticsDataSource[2].backgroundImg = theme==="dark"?leftBottomBg1Img: leftBottomWhiteBg1Img
 
         //BMS信息
         newBmsInfoDataSource[0].data[0].value = dataSource?.bms?.cellTempMax || 0;
@@ -339,7 +310,6 @@ const OverView = ({ deviceVersion, sn }) => {
                                                         <div className={styles.rightData1}>{item.data}</div>
                                                         <div className={styles.rightData2} style={{ color: token.color25 }}>{intl.formatMessage({ id: item.title })}</div>
                                                     </div>
-                                                    {/* <img src={theme==="dark"?leftTopBgImg:leftTopWhiteBgImg} /> */}
                                                 </div>
                                             </div>
                                         )
@@ -351,8 +321,7 @@ const OverView = ({ deviceVersion, sn }) => {
                                     electricityStatisticsDataSourceRight?.map(item => {
                                         return (
                                             <div className={styles.item}>
-                                                {/* <img src={theme==="dark"?leftTopBg2Img: leftTopBg2WhiteImg} className={styles.backgroundImg} /> */}
-                                                <img src={theme==="dark"?leftBottomBg1Img: leftBottomWhiteBg1Img} className={styles.backgroundImg} />
+                                                <img src={theme === "dark" ? `${PUBLIC_FILE_PATH}/device_overview_dark_bg.svg` : `${PUBLIC_FILE_PATH}/device_overview_white_bg.svg`} className={styles.backgroundImg} />
                                                 <div className={styles.data}>
                                                     <div className={styles.data1} style={{ color: item.color }}>{item.data}%</div>
                                                     <div className={styles.data2} style={{ color: token.color25 }}>{intl.formatMessage({ id: item.title })}</div>
@@ -376,7 +345,6 @@ const OverView = ({ deviceVersion, sn }) => {
                                             {
                                                 item.type === "left" ?
                                                     <>
-                                                        {/* <img src={leftTopBg2Img} className={styles.backgroundImg}/> */}
                                                         <div className={styles.data}>
                                                             <div className={styles.data1} style={{ color: item.color }}>{item.data}%</div>
                                                             <div className={styles.data2} style={{ color: token.color25 }}>{intl.formatMessage({ id: item.title })}</div>
@@ -392,7 +360,6 @@ const OverView = ({ deviceVersion, sn }) => {
                                                                 <div className={styles.rightData1}>{item.data}</div>
                                                                 <div className={styles.rightData2} style={{ color: token.color25 }}>{intl.formatMessage({ id: item.title })}</div>
                                                             </div>
-                                                            {/* <img src={theme==="dark"?leftTopBgImg:leftTopWhiteBgImg} /> */}
                                                         </div>
                                                     </>
                                             }
@@ -411,8 +378,7 @@ const OverView = ({ deviceVersion, sn }) => {
                                 benefitStatisticsDataSource?.map((item, index) => {
                                     return (
                                         <div className={styles.item}>
-                                            <img src={item.backgroundImg} className={styles.backgroundImg} />
-                                            {/* <img src={item.img}  className={styles.img} style={{bottom: '5px'}}/> */}
+                                            <img src={theme === "dark" ? `${PUBLIC_FILE_PATH}/device_overview_dark_bg.svg` : `${PUBLIC_FILE_PATH}/device_overview_white_bg.svg`} className={styles.backgroundImg} />
                                             <div className={styles.data}>
                                                 <div className={styles.data1} style={{ color: item.color }}>{item.data}</div>
                                                 <div className={styles.data2} style={{ color: token.color25 }}>{intl.formatMessage({ id: item.title })}</div>
@@ -461,7 +427,6 @@ const OverView = ({ deviceVersion, sn }) => {
                                                     })
                                                 }
                                             </div>
-                                            {/* <img src={theme==="dark"?bottomLeftBgImg:bottomLeft1WhiteImg} className={styles.subAreaBg} /> */}
                                         </div>
                                     </div>
                                 )
@@ -474,13 +439,13 @@ const OverView = ({ deviceVersion, sn }) => {
                         <Title title={intl.formatMessage({ id: 'PCS信息' })} />
                     </div>
                     <div className={styles.area}>
-                        <div className={classNames(styles.areaItem, styles.areaItemHeader)} style={{ background: token.color30}}>
+                        <div className={classNames(styles.areaItem, styles.areaItemHeader)} style={{ background: token.color30 }}>
                             {['', 'A', 'B', 'C'].map(item => <div className={styles.areaItemContent}>{item}</div>)}
                         </div>
                         <div className={classNames(styles.areaItem, styles.areaItemContent)}>
                             {Object.values(pcsInfoDataSource[0] || {}).map((item, index) => <div className={styles.areaItemContent} style={{ color: index === 0 ? '#2193C3' : (theme === "dark" ? '#FFFF' : '#999') }}>{item}</div>)}
                         </div>
-                        <div className={classNames(styles.areaItem, styles.areaItemHeader)} style={{ background: token.color30}}>
+                        <div className={classNames(styles.areaItem, styles.areaItemHeader)} style={{ background: token.color30 }}>
                             {['', 'A', 'B', 'C'].map(item => <div className={styles.areaItemContent}>{item}</div>)}
                         </div>
                         <div className={classNames(styles.areaItem, styles.areaItemContent)}>

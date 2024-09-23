@@ -13,15 +13,9 @@ import {
     QuestionCircleOutlined,
     HomeOutlined,
     UserOutlined,
-    DribbbleOutlined,
 } from '@ant-design/icons';
-import { history, useIntl } from "umi";
-import logo from "../../public/logo.png";
-import logoWhite from "../../public/logo_white.png";
-import cnDefault from "@/assets/imges/cnDefault.svg";
-import cnDark from "@/assets/imges/cnDark.svg";
-import enDefault from "@/assets/imges/enDefault.svg";
-import enDark from "@/assets/imges/enDark.svg";
+import { history } from "umi";
+import { PUBLIC_FILE_PATH } from "@/utils/constants";
 
 const { Header, Sider, Content } = Layout;
 
@@ -62,23 +56,14 @@ const BaseLayout = () => {
             '&::-webkit-scrollbar': {
                 display: 'none'
             },
-            '.ant-menu-item': {
-                fontFamily: 'PingFangRegular !important',
-            },
-            '.ant-menu-submenu-title': {
-                fontFamily: 'PingFangRegular !important',
-
-            },
             '.ant-menu-sub': {
                 backgroundColor: `${token.sub_innerBgc} !important`,
                 margin: '0 20px',
                 borderRadius: '4px !important',
                 fontSize: '16px !important',
-                fontFamily: 'PingFangRegular !important',
             },
             '.ant-menu-item-icon': {
                 fontSize: '18px !important',
-                fontFamily: 'PingFangRegular !important',
             }
 
         }
@@ -147,9 +132,9 @@ const BaseLayout = () => {
                                 }}
                                 src={
                                     global.theme === 'default' ?
-                                        (global.locale === "zh-CN" ? enDefault : enDark)
+                                        (global.locale === "zh-CN" ? `${PUBLIC_FILE_PATH}/enDefault.svg` : `${PUBLIC_FILE_PATH}/enDark.svg`)
                                         :
-                                        (global.locale === "zh-CN" ? cnDark : cnDefault)
+                                        (global.locale === "zh-CN" ? `${PUBLIC_FILE_PATH}/cnDark.svg` : `${PUBLIC_FILE_PATH}/cnDefault.svg`)
                                 }
                                 onClick={() => changeLanguage(global.locale === "zh-CN" ? "zh-EN" : 'zh-CN')}
                             />

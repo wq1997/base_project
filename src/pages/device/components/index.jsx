@@ -32,20 +32,12 @@ const Cabinet = () => {
     const id = getQueryString("id");
     const intl = useIntl();
     const location = useLocation();
-    const { user } = useSelector(function (state) {
-        return state.user
-    });
     const global = useSelector(state => state.global);
     const { pathname } = location;
     const [activeKey, setActiveKey] = useState(getQueryString("activeKey") || defaultActiveKey);
     const [deviceVersion, setDeviceVersion] = useState();
     const [sn, setSn] = useState();
     const [PageTypeList, setPageTypeList] = useState();
-    const [data, setData] = useState();
-    const getInitData = async () => {
-        let res = await getBurDtuDevInfo2({ dtuId: id });
-        setData(res?.data?.data?.data?.[0])
-    }
 
     const getDeviceType = async () => {
         const res = await getDeviceTypeByDtuIdServe({ dtuId: id });
@@ -61,7 +53,6 @@ const Cabinet = () => {
     };
 
     useEffect(() => {
-        getInitData();
         getDeviceType();
     }, [])
 

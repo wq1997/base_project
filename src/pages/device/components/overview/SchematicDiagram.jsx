@@ -2,13 +2,8 @@ import { useIntl, useSelector } from "umi";
 import { useState, useEffect, useRef } from "react";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { Flow } from "@/components";
-import dlImg from "@/assets/imges/dl.svg";
-import fzxtlImg from "@/assets/imges/fzxtl.svg";
-import nyxtlImg from "@/assets/imges/nyxtl.svg";
-import fzxtlWhiteImg from "@/assets/imges/fzxtl_white.svg";
-import nyxtlWhiteImg from "@/assets/imges/nyxtl_white.svg";
-import nyxtlZeroImg from "@/assets/imges/outdoorCabinet.svg";
 import { theme as antdTheme } from "antd";
+import { PUBLIC_FILE_PATH } from "@/utils/constants";
 
 const loadSystemLineWidthPercent = 0.35; // 线的百分比，自定义
 const schematicDiagramIconPrecent = 0.7; 
@@ -109,9 +104,6 @@ const SchematicDiagram = ({dataSource, allData}) => {
                 }}
             >
                 <div className={titleStyle} style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', whiteSpace: 'nowrap'}}>{intl.formatMessage({id: '市电系统'})}</div>
-                {/* <div style={{position: 'absolute', left: 230, top: 20, textWrap: 'nowrap'}}>
-                    {intl.formatMessage({id:'功率'})}：{dataSource?.totalActivePower}
-                </div> */}
             </div>
             {/* 市电系统 */}
             <div className={centerStyle}>
@@ -128,7 +120,7 @@ const SchematicDiagram = ({dataSource, allData}) => {
                 >
                     {
                         powerData>0&&
-                        <Flow img={dlImg} />
+                        <Flow img={`${PUBLIC_FILE_PATH}/flow.svg`} />
                     }
                 </div>
             </div>
@@ -149,7 +141,7 @@ const SchematicDiagram = ({dataSource, allData}) => {
                             zIndex: 100
                         }}
                     >
-                        <Flow img={dlImg} />
+                        <Flow img={`${PUBLIC_FILE_PATH}/flow.svg`} />
                     </div>
                 }
 
@@ -168,7 +160,7 @@ const SchematicDiagram = ({dataSource, allData}) => {
                             zIndex: 100
                         }}
                     >
-                        <Flow img={dlImg} />
+                        <Flow img={`${PUBLIC_FILE_PATH}/flow.svg`} />
                     </div>
                 }
 
@@ -184,7 +176,7 @@ const SchematicDiagram = ({dataSource, allData}) => {
                     }}
                 >
                     <img 
-                        src={totalActivePowerData===0?nyxtlZeroImg:(theme==="dark"?nyxtlImg:nyxtlWhiteImg)} 
+                        src={totalActivePowerData===0?`${PUBLIC_FILE_PATH}/energy_disabled.svg`:(theme==="dark"?`${PUBLIC_FILE_PATH}/energy.svg`:`${PUBLIC_FILE_PATH}/energy_white.svg`)} 
                         style={{
                             position: 'absolute', 
                             right:  -energySystemIconWidth/2, 
@@ -207,9 +199,6 @@ const SchematicDiagram = ({dataSource, allData}) => {
                         </div>
                         <div style={{margin: '10px 0', display: 'flex', alignItems: 'start'}}>
                             <span>{intl.formatMessage({id:'运行状态'})}：</span>
-                            {/* {totalActivePowerData>0&&intl.formatMessage({id:'放电'})}
-                            {totalActivePowerData<0&&intl.formatMessage({id:'充电'})}
-                            {totalActivePowerData===0&&intl.formatMessage({id:'待机'})} */}
                             <span style={{width: 60, display: 'inline-block'}}>{allData?.pcs?.pcsState||intl.formatMessage({id:'待机'})}</span>
                         </div>
                         <div>{intl.formatMessage({id:'功率'})}：{dataSource?.totalActivePower} kW</div>
@@ -229,9 +218,9 @@ const SchematicDiagram = ({dataSource, allData}) => {
                         transformOrigin: '0px 0px',
                         background: token.color24
                     }}>
-                        {loadPowerData>0&&<Flow img={dlImg} />}
+                        {loadPowerData>0&&<Flow img={`${PUBLIC_FILE_PATH}/flow.svg`} />}
                         <img 
-                            src={theme==="dark"?fzxtlImg:fzxtlWhiteImg} 
+                            src={theme==="dark"?`${PUBLIC_FILE_PATH}/load.svg`:`${PUBLIC_FILE_PATH}/load_white.svg`} 
                             style={{
                                 position: 'absolute', 
                                 right:  -loadSystemIconWidth/2, 

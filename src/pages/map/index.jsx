@@ -4,6 +4,7 @@ import axiosInstance from "@/services/mapRequest";
 import { useState, useEffect, useRef } from "react";
 import { useSelector } from "umi";
 import { getBaseUrl } from "@/services/request";
+import { PUBLIC_FILE_PATH } from "@/utils/constants";
 import styles from "./index.less";
 
 const Map = ({
@@ -66,7 +67,7 @@ const Map = ({
             const marker = new AMap.Marker({
                 position: new AMap.LngLat(locationList?.[0], locationList?.[1]),
                 icon: new AMap.Icon({
-                    image: require("../../../public/images/mapPoint.png"),
+                    image: `${PUBLIC_FILE_PATH}/mapPoint.png`,
                     imageSize: new AMap.Size(15, 20),
                 }),
                 map: map,

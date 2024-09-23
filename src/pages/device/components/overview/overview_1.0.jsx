@@ -1,28 +1,9 @@
 import { useIntl, useSelector } from "umi";
 import { theme as antdTheme, Radio, Spin } from "antd";
-import { Title, ScrollTable } from "@/components";
+import { Title } from "@/components";
 import SchematicDiagram from "./SchematicDiagram";
 import styles from "./overview_1.0.less";
 import { useState } from "react";
-import leftTop1Img from "@/assets/imges/leftTop1.svg";
-import leftTop2Img from "@/assets/imges/leftTop2.svg";
-import leftTop3Img from "@/assets/imges/leftTop3.svg";
-import leftTop4Img from "@/assets/imges/leftTop4.svg";
-import leftTopBgImg from "@/assets/imges/leftTopBg.svg";
-import leftTopWhiteBgImg from "@/assets/imges/leftWhiteTopBg.svg";
-import xtxl1Img from "@/assets/imges/xtxl1.svg";
-import xtxlWhiteBgImg from "@/assets/imges/leftTopBg2_white.svg";
-import xtxlBgImg from "@/assets/imges/xtxlBg.svg";
-import leftBottom1Img from "@/assets/imges/leftBottom1.svg";
-import leftBottom2Img from "@/assets/imges/leftBottom2.svg";
-import leftBottom3Img from "@/assets/imges/leftBottom3.svg";
-import leftBottom4Img from "@/assets/imges/leftBottom4.svg";
-import leftBottomBg1Img from "@/assets/imges/leftBottomBg1.svg";
-import leftBottomWhiteBg1Img from "@/assets/imges/leftBottomWhiteBg1.svg";
-import bottomLeft1Img from "@/assets/imges/bottomLeft1.svg";
-import bottomLeft2Img from "@/assets/imges/bottomLeft2.svg";
-import bottomLeftBgImg from "@/assets/imges/bottomLeftBg.svg";
-import bottomLeft1WhiteImg from "@/assets/imges/bottomLeft1WhiteImg.svg"
 import MyRadio from "./MyRadio";
 import { useEffect } from "react";
 import { getQueryString, cloneObject } from "@/utils/utils";
@@ -31,6 +12,7 @@ import {
 } from "@/services";
 import classNames from "classnames";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
+import { PUBLIC_FILE_PATH } from "@/utils/constants";
 
 const OverView = ({ deviceVersion, sn }) => {
     const id = getQueryString('id');
@@ -46,22 +28,22 @@ const OverView = ({ deviceVersion, sn }) => {
         {
             title: '日充电量',
             data: 0,
-            icon: leftTop3Img
+            icon: PUBLIC_FILE_PATH + "/day-charging.svg"
         },
         {
             title: '日放电量',
             data: 0,
-            icon: leftTop4Img
+            icon: PUBLIC_FILE_PATH + "/day-disCharging.svg"
         },
         {
             title: '累计充电量',
             data: 0,
-            icon: leftTop1Img
+            icon: PUBLIC_FILE_PATH + "/total-charging.svg"
         },
         {
             title: '累计放电量',
             data: 0,
-            icon: leftTop2Img
+            icon: PUBLIC_FILE_PATH + "/total-disCharging.svg"
         }
     ])
 
@@ -83,29 +65,23 @@ const OverView = ({ deviceVersion, sn }) => {
             title: "日收益",
             data: 0,
             color: '#FFE600',
-            backgroundImg: leftBottomBg1Img,
-            img: leftBottom1Img
         },
         {
             title: "月收益",
             data: 0,
             color: '#00C3FF',
-            backgroundImg: leftBottomBg1Img,
-            img: leftBottom3Img
         },
         {
             title: "累计收益",
             data: 0,
             color: '#B95CFC',
-            backgroundImg: leftBottomBg1Img,
-            img: leftBottom4Img
         }
     ]);
 
     const [bmsInfoDataSource, setBmsInfoDataSource] = useState([
         {
             title: "单体最高",
-            icon: bottomLeft1Img,
+            icon: `${PUBLIC_FILE_PATH}/bms-info-high.svg`,
             data: [
                 {
                     title: "温度",
@@ -129,7 +105,7 @@ const OverView = ({ deviceVersion, sn }) => {
         },
         {
             title: "单体最低",
-            icon: bottomLeft2Img,
+            icon: `${PUBLIC_FILE_PATH}/bms-info-lower.svg`,
             data: [
                 {
                     title: "温度",
@@ -330,7 +306,7 @@ const OverView = ({ deviceVersion, sn }) => {
                                                     <div className={styles.rightData1}>{item.data}</div>
                                                     <div className={styles.rightData2} style={{ color: token.color25 }}>{intl.formatMessage({ id: item.title })}</div>
                                                 </div>
-                                                <img src={theme === "dark" ? leftTopBgImg : leftTopWhiteBgImg} />
+                                                <img src={theme === "dark" ? `${PUBLIC_FILE_PATH}/leftTopBg.svg` : `${PUBLIC_FILE_PATH}/leftWhiteTopBg.svg`} />
                                             </div>
                                         </div>
                                     )
@@ -356,11 +332,10 @@ const OverView = ({ deviceVersion, sn }) => {
                                 systemEfficiencyDataSource?.map(item => {
                                     return (
                                         <div className={styles.item}>
-                                            {/* <img src={xtxl1Img} className={styles.img1} /> */}
                                             <div className={styles.label}>{intl.formatMessage({ id: item.title })}</div>
                                             <div className={styles.data}>
                                                 <div style={{ color: item.color }} className={styles.dataCount}>{item.data} %</div>
-                                                <img src={theme === "dark" ? xtxlBgImg : xtxlWhiteBgImg} className={styles.img2} />
+                                                <img src={theme === "dark" ? `${PUBLIC_FILE_PATH}/system_efficiency_dark.svg` : `${PUBLIC_FILE_PATH}/system_efficiency_white.svg`} className={styles.img2} />
                                             </div>
                                         </div>
                                     )
@@ -377,8 +352,7 @@ const OverView = ({ deviceVersion, sn }) => {
                                 benefitStatisticsDataSource?.map((item, index) => {
                                     return (
                                         <div className={styles.item}>
-                                            <img src={theme === "dark" ? leftBottomBg1Img : leftBottomWhiteBg1Img} className={styles.backgroundImg} />
-                                            {/* <img src={item.img}  className={styles.img} style={{bottom: '-7px'}}/> */}
+                                            <img src={theme === "dark" ?  `${PUBLIC_FILE_PATH}/income_statics_dark_bg.svg` : `${PUBLIC_FILE_PATH}/income_statics_white_bg.svg`} className={styles.backgroundImg} />
                                             <div className={styles.data}>
                                                 <div className={styles.data1} style={{ color: item.color }}>{item.data}</div>
                                                 <div className={styles.data2} style={{ color: token.color25 }}>{intl.formatMessage({ id: item.title })}</div>

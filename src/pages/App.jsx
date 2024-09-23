@@ -6,10 +6,8 @@ import zh_CN from 'antd/locale/zh_CN';
 import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 import localeData from "dayjs/plugin/localeData";
-// import 'qweather-icons/font/qweather-icons.css';
 import 'dayjs/locale/zh-cn';
 import { useEffect } from "react";
-import "@/utils/flexible";
 dayjs.extend(weekday);
 dayjs.extend(localeData);
 

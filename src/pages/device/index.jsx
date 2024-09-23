@@ -21,13 +21,11 @@ import IncomeRanking from './components/incomeRanking';
 import ElectricityRanking from './components/electricityRanking';
 import SocialBenefits from './components/socialBenefits';
 import Table from "./components/table";
-import bottomLeft1 from "../../../public/images/bottomLeft1.svg";
-import bottomLeft2 from "../../../public/images/bottomLeft2.svg";
-import bottomLeft3 from "../../../public/images/bottomLeft3.svg";
 import Map from './components/map';
 import BatchPolicyConfiguration from "../policyConfiguration/batch_index";
 import dayjs from 'dayjs';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
+import { PUBLIC_FILE_PATH } from "@/utils/constants";
 const { Option } = Select;
 
 const RealtimeAlarm = () => {
@@ -411,19 +409,19 @@ const RealtimeAlarm = () => {
                         <SocialBenefits
                             data={[
                                 {
-                                    icon: bottomLeft1,
+                                    icon: `${PUBLIC_FILE_PATH}/bottomLeft1.svg`,
                                     data: socialBenefit?.coal || 0,
                                     unit: t('吨'),
                                     label: t('节约标准煤'),
                                 },
                                 {
-                                    icon: bottomLeft2,
+                                    icon: `${PUBLIC_FILE_PATH}/bottomLeft2.svg`,
                                     data: socialBenefit?.co2 || 0,
                                     unit: t('吨'),
                                     label: t('CO2减排量'),
                                 },
                                 {
-                                    icon: bottomLeft3,
+                                    icon: `${PUBLIC_FILE_PATH}/bottomLeft3.svg`,
                                     data: socialBenefit?.tree || 0,
                                     unit: t('棵'),
                                     label: t('等效植树量'),

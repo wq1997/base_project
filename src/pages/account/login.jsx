@@ -10,7 +10,7 @@ import styles from "./index.less";
 import { history, useDispatch, FormattedMessage, useIntl, useSelector } from "umi";
 import { useEffect, useState } from "react";
 import { getBaseUrl } from '@/services/request';
-import img from '../../../src/assets/imges/bgimg.png'
+import { PUBLIC_FILE_PATH } from "@/utils/constants";
 const { Title } = Typography;
 
 const Login = () => {
@@ -79,14 +79,13 @@ const Login = () => {
       style={{
         width: '100%',
         height: '100vh',
-        background: `url(${img}) no-repeat`,
+        background: `url(${PUBLIC_FILE_PATH}/bgimg.png) no-repeat`,
         backgroundSize: '100% 101%',
         backgroundAttachment: 'fixed',
       }}
       className={styles.login}
     >
       <Title className={styles.Title} level={1} >
-        {/* <FormattedMessage id="app.title" /> */}
         <FormattedMessage id="app.title1" />
       </Title>
       <div
