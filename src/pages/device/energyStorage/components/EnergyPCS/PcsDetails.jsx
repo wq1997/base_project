@@ -2,7 +2,7 @@
 // 快捷键Ctrl+Win+i 添加注释
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { CardModel } from "@/components";
-import { theme, } from "antd";
+import { theme, Select} from "antd";
 import dayjs from 'dayjs';
 import styles from './index.less'
 import { getPcsNowDataById, } from '@/services/deviceTotal'
@@ -33,7 +33,7 @@ function Com({ id }) {
         },
         {
             key: 'totalChargeEnergy',
-            label:'累计交流充电电量',
+            label: '累计交流充电电量',
             value: '',
         }, {
             key: 'todayDischargeEnergy',
@@ -45,7 +45,7 @@ function Com({ id }) {
             value: '',
         }, {
             key: 'activePower',
-            label:'交流母线总有功功率',
+            label: '交流母线总有功功率',
             value: '',
         }, {
             key: 'setPower',
@@ -61,7 +61,7 @@ function Com({ id }) {
             value: '',
         }, {
             key: 'phaseCActivePower',
-            label:'交流母线C相有功功率',
+            label: '交流母线C相有功功率',
             value: '',
         }, {
             key: 'powerFactor',
@@ -123,11 +123,11 @@ function Com({ id }) {
             value: '',
         }, {
             key: 'phaseBCur',
-            label:'交流母线B相电流',
+            label: '交流母线B相电流',
             value: '',
         }, {
             key: 'phaseCCur',
-            label:'交流母线C相电流',
+            label: '交流母线C相电流',
             value: '',
         }, {
             key: 'freq',
@@ -188,6 +188,26 @@ function Com({ id }) {
     ]
     return (
         <div className={styles.detailsWrap}>
+            <div className={styles.title}>
+                <Select
+                    mode="multiple"
+                    style={{
+                        width:'10.4167rem',
+                    }}
+                    placeholder="Please select"
+                    defaultValue={['pcs0', 'pcs1']}
+                    // onChange={handleChange}
+                    options={
+                        [0,1,2,3].map(it=>{
+                            return {
+                                label:`pcs${it}`,
+                                value:it
+                            }
+                        })
+                    }
+                />
+
+            </div>
             <div className={styles.detailsTopData} style={{ backgroundColor: token.lightTreeBgc }}>
                 <CardModel
                     title={t('PCS1')}

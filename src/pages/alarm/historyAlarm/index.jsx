@@ -120,7 +120,7 @@ const changeGrid = (e) => {
       prior: level,
       begin: time?.length ? time[0]?.format('YYYY-MM-DD HH:mm:ss') : null,
       end: time?.length ? time[1]?.format('YYYY-MM-DD HH:mm:ss') : null,
-      gridPoint:currntGrid
+      // gridPoint:currntGrid
     });
     setData(data.data);
   }
@@ -156,7 +156,7 @@ const changeGrid = (e) => {
     <div className={styles.wrap}>
       <div className={styles.content} style={{ backgroundColor: token.titleCardBgc }}>
         <div className={styles.title}>
-          <div className={styles.grid} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal,marginRight:'35px' }}>
+          {/* <div className={styles.grid} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal,marginRight:'35px' }}>
             <Select
               style={{
                 width: 200,
@@ -172,7 +172,7 @@ const changeGrid = (e) => {
               })
               }
             </Select>
-          </div>
+          </div> */}
           <div className={styles.level} style={{marginRight:'35px'}}>
             <Select
               style={{ width: 150 }}

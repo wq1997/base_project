@@ -6,6 +6,7 @@ import Tab from '../../../components/Tab';
 import RealtimeData from './RealtimeData';
 import MonitoringCurves from "./MonitoringCurves";
 import AdvancedAnalytics from "./AdvancedAnalytics";
+import BmcDetails from './BmcDetails'
 import CellDetails from "./CellDetails";
 import { theme, } from "antd";
 import { useSelector, useIntl } from "umi";
@@ -35,6 +36,7 @@ const Cabinet = () => {
     }
     const PageTypeList = [
         {label:t('BMS数据'),key:'RealtimeData'},
+        {label:t('BMC数据'),key:'BmcDetails'},
         {label:t('监测曲线'),key:'MonitoringCurves'},
         {label:t('电芯详情'),key:'CellDetails'},
         {label:t('高级分析'),key:'AdvancedAnalytics'},
@@ -44,6 +46,7 @@ const Cabinet = () => {
             <Tab activeKey={activeKey} TabItem={PageTypeList} onChange={onChangeTab}/>
             <div className={styles.content} style={{backgroundColor: token.titleCardBgc,padding:'40px 30px',borderRadius: '0px 16px 0px 0px'}}>
                 {activeKey==="RealtimeData"&&<RealtimeData id={id}/>}
+                {activeKey==="BmcDetails"&&<BmcDetails id={id}/>}
                 {activeKey==="MonitoringCurves"&&<MonitoringCurves id={id}/>}
                 {activeKey==="AdvancedAnalytics"&&<AdvancedAnalytics />}
                 {activeKey==="CellDetails"&&<CellDetails id={id}/>}

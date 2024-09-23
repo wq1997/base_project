@@ -142,7 +142,7 @@ const OperationManage = () => {
             <Space size={8} direction="vertical" style={{ width: '100%' }}>
                 <div style={{ backgroundColor: token.titleCardBgc, height: 100, padding: '24px 37px', boxSizing: 'border-box' }}>
                     <Space size={44}>
-                        <Row align="middle" style={{ height: '100%' }}>
+                        {/* <Row align="middle" style={{ height: '100%' }}>
                             <span>{t('并网点')}：</span>
                             <Select
                                 style={{ width: 240, }}
@@ -155,7 +155,7 @@ const OperationManage = () => {
                             })
                                 }
                             </Select>
-                        </Row>
+                        </Row> */}
                         <Space size={33}>
                             <Button type="primary" size="large" onClick={() => setControlModeOpen(true)}>{t('控制模式')}</Button>
                             <Button type="primary" size="large" onClick={() => setPowerSettingOpen(true)}>{t('总功率设置')}</Button>

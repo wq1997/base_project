@@ -135,7 +135,7 @@ const App = (props) => {
             maxWidth: 400,
           }}
         >
-          <Form.Item label={t('并网点')} name={'gridPointId'} rules={[{ required: true }]}>
+          {/* <Form.Item label={t('并网点')} name={'gridPointId'} rules={[{ required: true }]}>
             <Select
               key={grids?.length}
               // defaultValue={grids[0]?.id}
@@ -148,7 +148,7 @@ const App = (props) => {
               })
             }
             /> 
-          </Form.Item>
+          </Form.Item> */}
           {formList.map(it => {
             if (it.type === 1) {
               return (

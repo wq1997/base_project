@@ -252,7 +252,7 @@ function OverView(props) {
             <div className={styles.container} style={{ color: token.titleColor }}>
                 <div className={styles.title} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal }}>
                     {checked ? <div>
-                        {t('并网点')}:
+                        {/* {t('并网点')}:
                         <Select
                             style={{
                                 width: 200,
@@ -266,7 +266,7 @@ function OverView(props) {
                                 return (<Option key={item.id} value={item.id}>{item.gridPointName}</Option>);
                             })
                             }
-                        </Select>
+                        </Select> */}
                     </div> : <div style={{ height: '32px' }}></div>}
                     <Switch className={styles.right} checkedChildren={t("总览列表")} unCheckedChildren={t("接线图")} onChange={changeCheck} defaultChecked={checked} />
                 </div>

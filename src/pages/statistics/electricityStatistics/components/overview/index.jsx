@@ -237,7 +237,7 @@ function Com(props) {
     return (
         <div className={styles.content}>
             <div className={styles.heard} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal }}>
-                <div>
+                {/* <div>
                     {getTranslation('并网点')}:
                     <Select
                         style={{
@@ -255,7 +255,7 @@ function Com(props) {
                         })
                         }
                     </Select>
-                </div>
+                </div> */}
                 <div className={styles.date}>
                     {mode == 'date' ? <RangePicker onChange={changeRangeDate} defaultValue={[ dayjs(new Date()).subtract(5, 'day'),dayjs(new Date()),]} format={format} style={{ marginRight: "20px" }} /> : <DatePicker picker={mode} onChange={(val) => setTime(val)} defaultValue={time} format={format} style={{ marginRight: "20px" }} />}
                     <Radio.Group value={mode} onChange={handleModelChange}>
