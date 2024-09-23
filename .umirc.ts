@@ -39,6 +39,16 @@ export default defineConfig({
     "https://webapi.amap.com/loader.js",
     "https://webapi.amap.com/maps?v=1.4.15&key=2dca0cb2ced6ced6030c26376186faee",
   ],
+  codeSplitting: {
+    jsStrategy: 'granularChunks',
+  },
+  cssMinifier: 'esbuild',
+  cssMinifierOptions: {
+    minifyWhitespace: true,
+    minifySyntax: true,
+  },
+  hash: true,
+  mfsu: {},
   // proxy: {
   //   "/map1": {
   //     target: 'https://restapi.amap.com',

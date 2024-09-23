@@ -59,7 +59,6 @@ const EditRowTable = ({
       ...restProps
     } = props;
     const getFormByType = () => {
-      console.log("props", restProps)
       const props = {
         style: {
           width: '100%'
@@ -281,7 +280,6 @@ const EditRowTable = ({
     },
   };
   const myColumns = defaultColumns.map((col) => {
-    console.log("col", col)
     if (!col.editable) {
       return col;
     }

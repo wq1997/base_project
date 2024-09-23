@@ -23,6 +23,7 @@ import { getQueryString, translateNmberToTime } from "@/utils/utils";
 import { FORM_REQUIRED_RULE } from "@/utils/constants";
 import { useSelector } from "umi";
 
+const ignoreId = ["2812"];
 const PolicyConfiguration = ({ deviceVersion }) => {
     const id = getQueryString("id");
     const intl = useIntl();
@@ -295,50 +296,53 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                             </Space>
                         </Space>
                     </div>
-                    <div className={areaStyle}>
-                        <Space style={{ width: '100%' }} direction="vertical" size={30}>
-                            <Row justify="space-between">
-                                <Title title={intl.formatMessage({ id: '参数设置' })} />
-                                <div
-                                    className={(canIssue && isLive) ? distributeStyle : disabledDistributeStyle}
-                                    onClick={async () => {
-                                        if (canIssue && isLive) {
-                                            await form.validateFields(['enable', 'cap', 'capValue']);
-                                            setCheckModalOpen(true);
-                                            setCheckModalType('sendParamSetting');
-                                        }
-                                    }}
-                                >
-                                    {intl.formatMessage({ id: '下发' })}
-                                </div>
-                            </Row>
-                            <Row>
-                                <Col span={3}>
-                                    <Form.Item label={intl.formatMessage({ id: '扩容' })} name="enable" valuePropName="checked" style={{ margin: 0 }}>
-                                        <Switch disabled={!canIssue || !isLive} defaultValue={false} />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={6}>
-                                    <Form.Item label={intl.formatMessage({ id: '变压器容量' })} style={{ margin: 0 }}>
-                                        <Space direction="horizontal">
-                                            <Form.Item style={{ margin: 0 }} name="capValue" rules={[{ ...FORM_REQUIRED_RULE }]}>
-                                                <InputNumber disabled={!canIssue || !isLive} style={{ width: 300 }} placeholder="kW" />
-                                            </Form.Item>
-                                        </Space>
-                                    </Form.Item>
-                                </Col>
-                                <Col span={8}>
-                                    <Form.Item label={intl.formatMessage({ id: '变压器容量保护比例' })} style={{ margin: 0 }}>
-                                        <Space direction="horizontal">
-                                            <Form.Item style={{ margin: 0 }} name="cap" rules={[{ ...FORM_REQUIRED_RULE }]}>
-                                                <InputNumber disabled={!canIssue || !isLive} style={{ width: 300 }} placeholder="%" />
-                                            </Form.Item>
-                                        </Space>
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-                        </Space>
-                    </div>
+                    {
+                        !ignoreId.includes(id) &&
+                        <div className={areaStyle}>
+                            <Space style={{ width: '100%' }} direction="vertical" size={30}>
+                                <Row justify="space-between">
+                                    <Title title={intl.formatMessage({ id: '参数设置' })} />
+                                    <div
+                                        className={(canIssue && isLive) ? distributeStyle : disabledDistributeStyle}
+                                        onClick={async () => {
+                                            if (canIssue && isLive) {
+                                                await form.validateFields(['enable', 'cap', 'capValue']);
+                                                setCheckModalOpen(true);
+                                                setCheckModalType('sendParamSetting');
+                                            }
+                                        }}
+                                    >
+                                        {intl.formatMessage({ id: '下发' })}
+                                    </div>
+                                </Row>
+                                <Row>
+                                    <Col span={3}>
+                                        <Form.Item label={intl.formatMessage({ id: '扩容' })} name="enable" valuePropName="checked" style={{ margin: 0 }}>
+                                            <Switch disabled={!canIssue || !isLive} defaultValue={false} />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col span={6}>
+                                        <Form.Item label={intl.formatMessage({ id: '变压器容量' })} style={{ margin: 0 }}>
+                                            <Space direction="horizontal">
+                                                <Form.Item style={{ margin: 0 }} name="capValue" rules={[{ ...FORM_REQUIRED_RULE }]}>
+                                                    <InputNumber disabled={!canIssue || !isLive} style={{ width: 300 }} placeholder="kW" />
+                                                </Form.Item>
+                                            </Space>
+                                        </Form.Item>
+                                    </Col>
+                                    <Col span={8}>
+                                        <Form.Item label={intl.formatMessage({ id: '变压器容量保护比例' })} style={{ margin: 0 }}>
+                                            <Space direction="horizontal">
+                                                <Form.Item style={{ margin: 0 }} name="cap" rules={[{ ...FORM_REQUIRED_RULE }]}>
+                                                    <InputNumber disabled={!canIssue || !isLive} style={{ width: 300 }} placeholder="%" />
+                                                </Form.Item>
+                                            </Space>
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+                            </Space>
+                        </div>
+                    }
                     <div className={areaStyle}>
                         <Space style={{ width: '100%' }} direction="vertical" size={30}>
                             <Row justify="space-between">
