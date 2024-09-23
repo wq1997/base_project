@@ -42,7 +42,6 @@ const Account = () => {
     const { token } = theme.useToken();
     const location = useLocation();
     const params = getUrlParams(location?.search);
-    console.log(decodeURIComponent(params?.typeIn).split(","));
     const [canDelete, setCanDelete] = useState(true);
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
@@ -58,8 +57,8 @@ const Account = () => {
     const publishedTimeRef = useRef();
     const [publishedTime, setPublishedTime] = useState();
 
-    const dealStatusRef = useRef();
-    const [dealStatus, setDealStatus] = useState();
+    const dealStatusRef = useRef(params?.statusIn);
+    const [dealStatus, setDealStatus] = useState(params?.statusIn);
     const [dealStatusOptions, setDealStatusOptions] = useState();
 
     const workOrderNameRef = useRef();
@@ -155,12 +154,12 @@ const Account = () => {
             width: 150,
         },
         {
-            title: "发起人",
+            title: "工单发起人",
             dataIndex: "initiatorName",
             width: 150,
         },
         {
-            title: "接收人",
+            title: "工单接收人",
             dataIndex: "ownerName",
             width: 150,
         },
@@ -206,7 +205,7 @@ const Account = () => {
     const getInitData = async () => {
         const res = await workOrderListInitDataServer();
         if (res?.data?.status == "SUCCESS") {
-            const { statuses, types, projects, users } = res?.data?.data;
+            const { regions, statuses, types, projects, users } = res?.data?.data;
             setDealStatusOptions(statuses);
             setWorkOrderTypeOptions(types);
             setProjectOptions(
@@ -216,7 +215,7 @@ const Account = () => {
                 }))
             );
             setUserOptions(users);
-            setAreaOptions();
+            setAreaOptions(regions);
         }
     };
 
@@ -231,7 +230,7 @@ const Account = () => {
         const planDateTo = planEndDateRef.current;
         const projectId = associatedProjectRef.current;
         const ownerAccount = ownerRef.current;
-        const area = areaRef.current;
+        const region = areaRef.current;
         const initiatorAccount = initiatorRef.current;
         const currentProcessorAccount = currentProcessorRef.current;
         const res = await workOrderListServer({
@@ -248,7 +247,7 @@ const Account = () => {
                 planDateTo,
                 projectId,
                 ownerAccount,
-                area,
+                region,
                 initiatorAccount,
                 currentProcessorAccount,
             },
@@ -339,16 +338,8 @@ const Account = () => {
                 }}
             />
             <Space className="search">
-                <SearchInput
-                    label="工单编号"
-                    value={workOrderCode}
-                    onChange={value => {
-                        workOrderCodeRef.current = value;
-                        setWorkOrderCode(value);
-                    }}
-                />
                 <div>
-                    <span style={{ color: "#FFF" }}>工单发布时间：</span>
+                    <span style={{ color: "#FFF" }}>发布时间：</span>
                     <DatePicker.RangePicker
                         value={
                             publishedTime &&
@@ -375,11 +366,29 @@ const Account = () => {
                     }}
                 />
                 <SearchInput
+                    label="工单编号"
+                    value={workOrderCode}
+                    onChange={value => {
+                        workOrderCodeRef.current = value;
+                        setWorkOrderCode(value);
+                    }}
+                />
+                <SearchInput
                     label="工单名称"
                     value={workOrderName}
                     onChange={value => {
                         workOrderNameRef.current = value;
                         setWorkOrderName(value);
+                    }}
+                />
+                <SearchInput
+                    label="关联项目"
+                    value={associatedProject}
+                    type="select"
+                    options={projectOptions}
+                    onChange={value => {
+                        associatedProjectRef.current = value;
+                        setAssociatedProject(value);
                     }}
                 />
                 <SearchInput
@@ -394,16 +403,7 @@ const Account = () => {
                     }}
                     style={{ width: 200 }}
                 />
-                <SearchInput
-                    label="关联项目"
-                    value={associatedProject}
-                    type="select"
-                    options={projectOptions}
-                    onChange={value => {
-                        associatedProjectRef.current = value;
-                        setAssociatedProject(value);
-                    }}
-                />
+
                 <div>
                     <span style={{ color: "#FFF" }}>计划开始时间：</span>
                     <DatePicker
@@ -435,16 +435,6 @@ const Account = () => {
                     }}
                 />
                 <SearchInput
-                    label="工单接收人"
-                    value={owner}
-                    type="select"
-                    options={userOptions}
-                    onChange={value => {
-                        ownerRef.current = value;
-                        setOwner(value);
-                    }}
-                />
-                <SearchInput
                     label="工单发起人"
                     value={initiator}
                     type="select"
@@ -452,6 +442,16 @@ const Account = () => {
                     onChange={value => {
                         initiatorRef.current = value;
                         setInitiator(value);
+                    }}
+                />
+                <SearchInput
+                    label="工单接收人"
+                    value={owner}
+                    type="select"
+                    options={userOptions}
+                    onChange={value => {
+                        ownerRef.current = value;
+                        setOwner(value);
                     }}
                 />
                 <SearchInput

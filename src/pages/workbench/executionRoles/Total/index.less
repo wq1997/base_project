@@ -18,10 +18,15 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            .content {
-               flex: 1;
-                display: flex;
+            .title {
                 padding: 10px;
+                box-sizing: border-box;
+                width: 100%;
+            }
+            .content {
+                flex: 1;
+                display: flex;
+                padding: 0 10px;
                 box-sizing: border-box;
                 gap: 5px;
                 .order {
@@ -62,11 +67,11 @@
                 overflow: hidden; /* 确保超出容器的内容会被隐藏 */
                 white-space: nowrap; /* 确保文本不会换行 */
                 text-overflow: ellipsis; /* 超出部分显示省略符号 */
+                margin-bottom: 5px;
             }
             .content {
                 flex: 1;
             }
-           
         }
     }
     .taskBoard {

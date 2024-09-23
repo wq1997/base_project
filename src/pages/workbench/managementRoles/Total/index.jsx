@@ -49,6 +49,10 @@ const Total = ({ data }) => {
             name: "已执行总数",
             value: data?.initiatedWorkOrderSummery?.initiatedByMeAndCompletedCount || 0,
             color: token.color19,
+            click: () =>
+                history.push(
+                    `/task-management/task-list?initiatorAccount=${encodeURIComponent(user?.selfUser?.account)}&statusIn=${encodeURIComponent(["COMPLETED"])}`
+                ),
         },
     ];
 
@@ -57,11 +61,19 @@ const Total = ({ data }) => {
             name: "待执行工单总数",
             value: data?.todoWorkOrderSummery?.todoCount || 0,
             color: token.color20,
+            click: () =>
+                history.push(
+                    `/task-management/my-task?statusIn=${encodeURIComponent(["WAIT_COMPLETED"])}`
+                ),
         },
         {
             name: "待执行异常工单",
             value: data?.todoWorkOrderSummery?.todoExceptionCount || 0,
             color: token.color21,
+            click: () =>
+                history.push(
+                    `/task-management/my-task?typeIn=${encodeURIComponent(["SYS_EXCEPTION", "MANUAL_EXCEPTION"])}&statusIn=${encodeURIComponent(["WAIT_COMPLETED"])}`
+                ),
         },
     ];
 
@@ -189,14 +201,18 @@ const Total = ({ data }) => {
                     className={classNames(styles.my, styles.workorders)}
                     style={{ background: token.color12 }}
                 >
-                    <div className={styles.title}>我发起的</div>
+                    <div className={styles.title}>我的发起</div>
                     <div className={styles.content}>
                         {myWorkorders.map(item => (
                             <div className={styles.order} style={{ background: token.color13 }}>
                                 <span className={styles.name}> {item.name}</span>
-                                <span className={styles.value} style={{ color: item.color }}>
+                                <a
+                                    className={styles.value}
+                                    style={{ color: item.color }}
+                                    onClick={item.click}
+                                >
                                     {item.value}
-                                </span>
+                                </a>
                             </div>
                         ))}
                     </div>
@@ -205,14 +221,18 @@ const Total = ({ data }) => {
                     className={classNames(styles.todoList, styles.workorders)}
                     style={{ background: token.color12 }}
                 >
-                    <div className={styles.title}>我待办的</div>
+                    <div className={styles.title}>我的待办</div>
                     <div className={styles.content}>
                         {todoList.map(item => (
                             <div className={styles.order} style={{ background: token.color13 }}>
                                 <span className={styles.name}>{item.name}</span>
-                                <span className={styles.value} style={{ color: item.color }}>
+                                <a
+                                    className={styles.value}
+                                    style={{ color: item.color }}
+                                    onClick={item.click}
+                                >
                                     {item.value}
-                                </span>
+                                </a>
                             </div>
                         ))}
                     </div>
