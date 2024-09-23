@@ -43,12 +43,17 @@ const EditOrCheck = () => {
             }
         }
         if (openType === "Check") {
-            const values = await checkForm.validateFields();
-            const res = await knowledgeAuditServe({
-                ...values,
+            const saveValues = await form.validateFields();
+            const checkValues = await checkForm.validateFields();
+            const saveRes = await knowledgeSaveOrUpdateServe({
+                ...saveValues,
                 id
             })
-            if (res?.data?.status === "SUCCESS") {
+            const checkRes = await knowledgeAuditServe({
+                ...checkValues,
+                id
+            })
+            if (checkRes?.data?.status === "SUCCESS" && saveRes?.data?.status === "SUCCESS") {
                 setCheckOpen(false);
                 history.push("/knowledgeBase");
             }
@@ -58,10 +63,18 @@ const EditOrCheck = () => {
     const getInitData = async () => {
         const res = await knowledgeEditInitDataServe({ id });
         if (res?.data?.status === "SUCCESS") {
+            const data = res?.data?.data;
+            const refusedList = data?.editData?.auditHistory?.filter(item => item?.operation === "REFUSE");
             form.setFieldsValue({
-                ...res?.data?.data?.editData || {}
+                ...data?.editData || {},
             });
-            setData(res?.data?.data);
+            setData({
+                ...data,
+                editData: {
+                    ...data?.editData,
+                    refusedReson: refusedList?.[refusedList?.length - 1]?.remark
+                }
+            });
         }
     }
 
@@ -97,6 +110,7 @@ const EditOrCheck = () => {
                             { label: '行业标准', value: '行业标准' },
                             { label: '项目资料', value: '项目资料' }
                         ]}
+                        disabled={data?.editData?.supportAudit}
                     />
                 </Form.Item>
                 <Form.Item noStyle dependencies={['type']}>
@@ -105,7 +119,7 @@ const EditOrCheck = () => {
                         return (
                             <>
                                 <Form.Item name="title" label="标题" rules={[{ ...FORM_REQUIRED_RULE }]} hidden={!type}>
-                                    <Input placeholder="请输入标题" />
+                                    <Input placeholder="请输入标题" disabled={data?.editData?.supportAudit} />
                                 </Form.Item>
                                 <Form.Item
                                     name="projectId"
@@ -123,6 +137,7 @@ const EditOrCheck = () => {
                                                 value: item?.id
                                             }
                                         })}
+                                        disabled={data?.editData?.supportAudit}
                                     />
                                 </Form.Item>
                                 <Form.Item
@@ -143,6 +158,7 @@ const EditOrCheck = () => {
                                                 value: item?.code
                                             }
                                         })}
+                                        disabled={data?.editData?.supportAudit}
                                     />
                                 </Form.Item>
                                 <Form.Item
@@ -152,6 +168,7 @@ const EditOrCheck = () => {
                                         { required: type === '问题总结', message: "请输入必填字段" }
                                     ]}
                                     hidden={!(type === '问题总结')}
+                                    disabled={data?.editData?.supportAudit}
                                 >
                                     <Select
                                         mode="multiple"
@@ -163,11 +180,18 @@ const EditOrCheck = () => {
                                                 value: item?.code
                                             }
                                         })}
+                                        disabled={data?.editData?.supportAudit}
                                     />
                                 </Form.Item>
                                 <Form.Item name="content" label="知识内容" rules={[{ ...FORM_REQUIRED_RULE }]} hidden={!type}>
                                     <Editor placeholder="请输入知识内容" />
                                 </Form.Item>
+                                {
+                                    data?.editData?.status === "REFUSED" &&
+                                    <Form.Item name="refusedReson" label="拒绝原因" rules={[{ ...FORM_REQUIRED_RULE }]} hidden={!type}>
+                                        {data?.editData?.refusedReson}
+                                    </Form.Item>
+                                }
                             </>
                         )
                     }}
@@ -175,15 +199,20 @@ const EditOrCheck = () => {
                 <Form.Item wrapperCol={{ offset: 6 }}>
                     <Space>
                         {
-                            openType === "Check" &&
+                            data?.editData?.supportAudit &&
                             <Button type="primary" onClick={() => {
                                 setCheckOpen(true)
                             }}>
                                 审核
                             </Button>
                         }
-                        <Button type="primary" onClick={() => {onFinish("Submit")}}>提交</Button>
-                        <Button type="primary" onClick={() => {onFinish("Save")}}>保存</Button>
+                        {
+                            (data?.editData?.supportSaveOrSubmit || openType === "Add") &&
+                            <>
+                                <Button type="primary" onClick={() => { onFinish("Submit") }}>提交</Button>
+                                <Button type="primary" onClick={() => { onFinish("Save") }}>保存</Button>
+                            </>
+                        }
                         <Button onClick={() => history.back()}>返回</Button>
                     </Space>
                 </Form.Item>

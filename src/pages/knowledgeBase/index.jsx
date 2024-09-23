@@ -105,16 +105,22 @@ const KnowledgeBase = () => {
             render(_, row) {
                 return (
                     <Space>
-                        <Button
-                            type="link"
-                            style={{ color: token.colorPrimary }}
-                            onClick={() => {
-                                history.push(`/knowledgeBase/editOrCheck?openType=Edit&id=${row?.id}`)
-                            }}
-                        >
-                            编辑
-                        </Button>
-                        <Button type="link" style={{ color: '#FF4D4F' }} onClick={() => history.push(`/knowledgeBase/editOrCheck?openType=Check&id=${row?.id}`)}>审核</Button>
+                        {
+                            row?.supportSaveOrSubmit &&
+                            <Button
+                                type="link"
+                                style={{ color: token.colorPrimary }}
+                                onClick={() => {
+                                    history.push(`/knowledgeBase/editOrCheck?openType=Edit&id=${row?.id}`)
+                                }}
+                            >
+                                编辑
+                            </Button>
+                        }
+                        {
+                            row?.supportAudit &&
+                            <Button type="link" style={{ color: '#FF4D4F' }} onClick={() => history.push(`/knowledgeBase/editOrCheck?openType=Check&id=${row?.id}`)}>审核</Button>
+                        }
                         <Button
                             type="link"
                             style={{ color: '#13C0FF' }}
@@ -277,7 +283,12 @@ const KnowledgeBase = () => {
                         connectDeviceTypeRef.current = value;
                         setConnectDeviceType(value);
                     }}
-                    options={options?.deviceTypes}
+                    options={options?.deviceTypes?.map(item => {
+                        return {
+                            name: item,
+                            code: item
+                        }
+                    })}
                 />
                 <SearchInput
                     label="异常环节"
@@ -313,7 +324,7 @@ const KnowledgeBase = () => {
                     selectedRowKeys,
                     onChange: onSelectChange,
                     getCheckboxProps: record => ({
-                        disabled: record.account === "admin",
+                        disabled: !record?.supportDelete,
                     }),
                 }}
                 onChange={pagination => {
@@ -403,7 +414,7 @@ const KnowledgeBase = () => {
                         currentRecord?.content &&
                         <div className={styles.knowledageShow}>
                             <div className={styles.knowledageShowTitle}>知识内容</div>
-                            <div dangerouslySetInnerHTML={{ __html: currentRecord?.content }} className={styles.knowledageShowContent}/>
+                            <div dangerouslySetInnerHTML={{ __html: currentRecord?.content }} className={styles.knowledageShowContent} />
                         </div>
                     }
                 </div>

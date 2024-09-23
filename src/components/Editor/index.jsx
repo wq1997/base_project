@@ -47,7 +47,7 @@ const EditorTemp = ({
             "undo",
             "fullScreen",
             "enter",
-            "uploadImage"
+            "uploadImage",
         ]
     }
 
@@ -73,7 +73,7 @@ const EditorTemp = ({
                         insertFn(url, alt, href);
                     }
                 }
-            },
+            }
         }
     }
 
@@ -106,6 +106,7 @@ const EditorTemp = ({
                     onChange={editor => {
                         onChange && onChange(editor.getHtml())
                     }}
+                    onUp
                     mode="default"
                     style={{ height: '300px', overflowY: 'hidden' }}
                 />
