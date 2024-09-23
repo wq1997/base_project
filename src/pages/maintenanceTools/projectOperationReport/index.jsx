@@ -3,36 +3,36 @@ import styles from "./index.less";
 import { useState } from "react";
 import { history } from "umi";
 import { getQueryString } from "@/utils/utils";
-import Statistics from "./Statistics";
-import Detailed from "./Detailed";
+import Report from "./Report";
+import Overview from "./Overview";
 
 const Abnormal = () => {
     const defaultActiveKey = getQueryString("activeKey");
-    const [activeKey, setActiveKey] = useState(defaultActiveKey||"statistics");
+    const [activeKey, setActiveKey] = useState(defaultActiveKey || "Report");
     const tabItems = [
         {
-            key: 'statistics',
-            label: '项目运行日报'
+            key: "Report",
+            label: "项目运行日报",
         },
         {
-            key: 'detailed',
-            label: '项目运行总览'
-        }
-    ]
+            key: "Overview",
+            label: "项目运行总览",
+        },
+    ];
     return (
         <div className={styles.abnormal}>
-            <Tabs 
+            <Tabs
                 activeKey={activeKey}
                 items={tabItems}
                 onChange={value => {
                     setActiveKey(value);
-                    history.push(`/project-management/alarmStatistics?activeKey=${value}`)
+                    history.push(`/maintenance-tools/project-operation-report?activeKey=${value}`);
                 }}
             />
-            {activeKey==="statistics"&&<Statistics />}
-            {activeKey==="detailed"&&<Detailed />}
+            {activeKey === "Report" && <Report />}
+            {activeKey === "Overview" && <Overview />}
         </div>
-    )
-}
+    );
+};
 
 export default Abnormal;

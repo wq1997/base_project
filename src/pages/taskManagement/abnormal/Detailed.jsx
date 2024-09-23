@@ -521,7 +521,7 @@ const Detailed = () => {
                                             color: token.colorPrimary
                                         }}
                                         onClick={() => {
-                                            history.push(`/project-management/task-list?code=${row?.code}`)
+                                            history.push(`/task-management/task-list?code=${row?.code}`)
                                         }}
                                     >
                                         详情

@@ -263,7 +263,7 @@ const Account = () => {
     };
 
     const handleReset = () => {
-        history.push("/project-management/task-list");
+        history.push("/task-management/task-list");
         paginationRef.current = DEFAULT_PAGINATION;
         workOrderCodeRef.current = undefined;
         setWorkOrderCode();

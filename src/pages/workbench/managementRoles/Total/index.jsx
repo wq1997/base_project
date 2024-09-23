@@ -4,6 +4,7 @@ import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts";
 import styles from "./index.less";
 import classNames from "classnames";
+import { history, useDispatch, useSelector } from "umi";
 import { workbenchListTimeCompleteWorkOrderCount as workbenchListTimeCompleteWorkOrderCountServe } from "@/services";
 
 const Total = ({ data }) => {
@@ -11,17 +12,26 @@ const Total = ({ data }) => {
     const [type, setType] = useState("LAST_WEEK");
     const [dataSource, setDataSource] = useState([]);
     const [options, setOpitons] = useState({});
+    const { user } = useSelector(state => state.user);
 
     const allWorkorders = [
         {
             name: "在途异常工单",
             value: data?.inTransitWorkOrderSummery?.inTransitExceptionCount || 0,
             color: token.color16,
+            click: () =>
+                history.push(
+                    `/task-management/task-list?typeIn=${encodeURIComponent(["SYS_EXCEPTION", "MANUAL_EXCEPTION"])}`
+                ),
         },
         {
             name: "在途其他工单",
             value: data?.inTransitWorkOrderSummery?.inTransitOtherCount || 0,
             color: token.color17,
+            click: () =>
+                history.push(
+                    `/task-management/task-list?typeIn=${encodeURIComponent(["CYCLE_INSPECTION", "MANUAL_INSPECTION", "MANUAL_FB_INSPECTION", "MANUAL_OTHER", "IMPLEMENT"])}`
+                ),
         },
     ];
 
@@ -30,6 +40,10 @@ const Total = ({ data }) => {
             name: "发起工单数",
             value: data?.initiatedWorkOrderSummery?.initiatedCount || 0,
             color: token.color18,
+            click: () =>
+                history.push(
+                    `/task-management/task-list?initiatorAccount=${encodeURIComponent(user?.selfUser?.account)}`
+                ),
         },
         {
             name: "已执行总数",
@@ -160,9 +174,13 @@ const Total = ({ data }) => {
                         {allWorkorders.map(item => (
                             <div className={styles.order} style={{ background: token.color13 }}>
                                 <span className={styles.name}>{item.name}</span>
-                                <span className={styles.value} style={{ color: item.color }}>
+                                <a
+                                    className={styles.value}
+                                    style={{ color: item.color }}
+                                    onClick={item.click}
+                                >
                                     {item.value}
-                                </span>
+                                </a>
                             </div>
                         ))}
                     </div>

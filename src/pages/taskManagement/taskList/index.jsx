@@ -27,6 +27,7 @@ import { SearchInput } from "@/components";
 import AddProject from "./AddProject";
 import Detail from "./Detail";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
+import { getUrlParams } from "@/utils/utils";
 import {
     workOrderList as workOrderListServer,
     workOrderListInitData as workOrderListInitDataServer,
@@ -40,9 +41,9 @@ let invalidReason = undefined;
 const Account = () => {
     const { token } = theme.useToken();
     const location = useLocation();
-    const initCode = location?.search.split("=")[1];
+    const params = getUrlParams(location?.search);
+    console.log(decodeURIComponent(params?.typeIn).split(","));
     const [canDelete, setCanDelete] = useState(true);
-
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [userList, setUserList] = useState();
@@ -51,8 +52,8 @@ const Account = () => {
     const [detailId, setDetailId] = useState();
     const [processId, setProcessId] = useState();
 
-    const workOrderCodeRef = useRef(initCode);
-    const [workOrderCode, setWorkOrderCode] = useState(initCode);
+    const workOrderCodeRef = useRef(params?.code);
+    const [workOrderCode, setWorkOrderCode] = useState(params?.code);
 
     const publishedTimeRef = useRef();
     const [publishedTime, setPublishedTime] = useState();
@@ -64,8 +65,12 @@ const Account = () => {
     const workOrderNameRef = useRef();
     const [workOrderName, setWorkOrderName] = useState();
 
-    const workOrderTypeRef = useRef();
-    const [workOrderType, setWorkOrderType] = useState([]);
+    const workOrderTypeRef = useRef(
+        params?.typeIn ? decodeURIComponent(params?.typeIn).split(",") : []
+    );
+    const [workOrderType, setWorkOrderType] = useState(
+        params?.typeIn ? decodeURIComponent(params?.typeIn).split(",") : []
+    );
     const [workOrderTypeOptions, setWorkOrderTypeOptions] = useState();
 
     const planStartDateRef = useRef();
@@ -87,8 +92,8 @@ const Account = () => {
     const ownerRef = useRef();
     const [owner, setOwner] = useState();
 
-    const initiatorRef = useRef();
-    const [initiator, setInitiator] = useState();
+    const initiatorRef = useRef(params?.initiatorAccount);
+    const [initiator, setInitiator] = useState(params?.initiatorAccount);
 
     const currentProcessorRef = useRef();
     const [currentProcessor, setCurrentProcessor] = useState();
@@ -259,7 +264,7 @@ const Account = () => {
     };
 
     const handleReset = () => {
-        history.push("/project-management/task-list");
+        history.push("/task-management/task-list");
         paginationRef.current = DEFAULT_PAGINATION;
         workOrderCodeRef.current = undefined;
         setWorkOrderCode();
