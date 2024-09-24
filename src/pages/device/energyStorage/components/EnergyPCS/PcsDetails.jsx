@@ -2,15 +2,18 @@
 // 快捷键Ctrl+Win+i 添加注释
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { CardModel } from "@/components";
-import { theme, Select} from "antd";
+import { theme, Select } from "antd";
 import dayjs from 'dayjs';
 import styles from './index.less'
-import { getPcsNowDataById, } from '@/services/deviceTotal'
+import { getPcsNowDataById, getPcsDevList } from '@/services/deviceTotal'
 import { useSelector, useIntl } from "umi";
 
 function Com({ id }) {
-    const [data, setData] = useState('');
+    const [data, setData] = useState([]);
     const { token } = theme.useToken();
+    const [option, setOption] = useState([]);
+    const [pcsIds, setPcsIds] = useState([]);
+
     const intl = useIntl();
     const t = (id) => {
         const msg = intl.formatMessage(
@@ -20,11 +23,12 @@ function Com({ id }) {
         );
         return msg
     }
-
-
     useEffect(() => {
-        getData();
-    }, [id]);
+        getData(pcsIds);
+    }, [pcsIds]);
+    useEffect(() => {
+        dataInit();
+    }, []);
     const [pcsRealData, setPcsRealData] = useState([
         {
             key: 'totalDischargeEnergy',
@@ -163,9 +167,18 @@ function Com({ id }) {
             label: '机柜温度',
             value: '',
         },
-    ])
-    const getData = async () => {
-        let { data } = await getPcsNowDataById({ id })
+    ]);
+    const dataInit = async () => {
+        let { data = {} } = await getPcsDevList({
+            plantId: localStorage.getItem('plantId')
+        });
+        setOption(data?.data);
+        setPcsIds([data?.data?.[0]?.id]);
+        getData([data?.data?.[0]?.id])
+    }
+
+    const getData = async (id) => {
+        let { data = {} } = await getPcsNowDataById({ id })
         setData(data?.data);
     }
     let branch = [
@@ -186,22 +199,27 @@ function Com({ id }) {
             label: t('直流输入电压'),
         },
     ]
+    const handleChange = (val, res) => {
+        setPcsIds(val);
+    };
+    console.log(data, 'data');
+
     return (
         <div className={styles.detailsWrap}>
             <div className={styles.title}>
                 <Select
                     mode="multiple"
                     style={{
-                        width:'10.4167rem',
+                        width: '10.4167rem',
                     }}
                     placeholder="Please select"
-                    defaultValue={['pcs0', 'pcs1']}
-                    // onChange={handleChange}
+                    value={pcsIds}
+                    onChange={handleChange}
                     options={
-                        [0,1,2,3].map(it=>{
+                        option?.map(it => {
                             return {
-                                label:`pcs${it}`,
-                                value:it
+                                label: it.name,
+                                value: it.id
                             }
                         })
                     }
@@ -209,37 +227,40 @@ function Com({ id }) {
 
             </div>
             <div className={styles.detailsTopData} style={{ backgroundColor: token.lightTreeBgc }}>
-                <CardModel
-                    title={t('PCS1')}
-                    content=
-                    {<><div className={styles.contentwrap} style={{ backgroundColor: token.lightTreeBgc }}>
-                        {pcsRealData?.map((it, index) => {
-                            return (
-                                <div className={styles.item} style={{color:token.titleColor}}>
-                                    <span className={styles.itemKeys}>{t(it.label)}:</span>
-                                    <span className={styles.itemValues}>{data?.pcs?.[it?.key]}</span>
-                                </div>
-                            )
-                        })}
-                    </div>
-                        <div className={styles.detailsBottomEcharts} style={{ backgroundColor: token.lightTreeBgc }}>
-                            {data?.pscBatch && data?.pscBatch?.map((it, index) => {
+                {data?.map(item => {
+                    return <CardModel
+                        title={item?.name}
+                        content=
+                        {<><div className={styles.contentwrap} style={{ backgroundColor: token.lightTreeBgc }}>
+                            {pcsRealData?.map((it, index) => {
                                 return (
-                                    <div className={styles.item} style={{color:token.titleColor}}>
-                                        {branch?.map((item, i) => {
-                                            return (
-                                                <div>
-                                                    {item.label && <span className={styles.label}>{item?.label}:</span>}
-                                                    <span className={styles.itemValues}>{it?.[item?.key]}</span>
-                                                </div>
-                                            )
-                                        })}
+                                    <div className={styles.item} style={{ color: token.titleColor }}>
+                                        <span className={styles.itemKeys}>{t(it.label)}:</span>
+                                        <span className={styles.itemValues}>{item?.[it?.key]}</span>
                                     </div>
                                 )
                             })}
                         </div>
-                    </>}
-                />
+                            <div className={styles.detailsBottomEcharts} style={{ backgroundColor: token.lightTreeBgc }}>
+                                {item?.pscBatch && item?.pscBatch?.map((it, index) => {
+                                    return (
+                                        <div className={styles.item} style={{ color: token.titleColor }}>
+                                            {branch?.map((ii, i) => {
+                                                return (
+                                                    <div>
+                                                        {ii.label && <span className={styles.label}>{ii?.label}:</span>}
+                                                        <span className={styles.itemValues}>{it?.[ii?.key]}</span>
+                                                    </div>
+                                                )
+                                            })}
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </>}
+                    />
+                })}
+
             </div>
         </div>
     )

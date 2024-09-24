@@ -224,7 +224,6 @@ const OperationManage = () => {
                 title={<Title title={powerOffOpen ? t('PCS总关机') : t("PCS总开机")} />}
                 onOk={async () => {
                     const values = await form2.validateFields();
-                    // console.log('总关机|总开机', values);
                     let { data } = await sendOMCommands({
                         cmdTypeId: 7018,
                         gridPointId: gridId,

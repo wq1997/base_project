@@ -67,25 +67,28 @@ export const getMetersNowData = (payload) => {
 
 // 获取bms实时数据信息
 export const getBmsNowData = (payload) => {
-    return axiosInstance.get(`${path}/getBMSLiveData?devId=${payload.id}`);
+    return axiosInstance.get(`${path}/getBMSLiveData?id=${payload.id}`);
 }
 // 获取bmC实时数据信息
 export const getBmcNowData = (payload) => {
-    return axiosInstance.get(`${path}/getBMCLiveData?devId=${payload.id}`);
+    return axiosInstance.get(`${path}/getBMCLiveData?id=${payload.id}`);
 }
-// 获取PCS实时数据
-export const getPcsNowDataById = (payload) => {
-    return axiosInstance.get(`${path}/getPCSLiveData?devId=${payload.id}`);
-}
+// // 获取PCS实时数据
+// export const getPcsNowDataById = (payload) => {
+//     return axiosInstance.get(`${path}/getPCSLiveData?id=${payload.id}`);
+// }
 // 获取监测曲线参数列表
 export const getDataParams = (payload) => {
-    return axiosInstance.get(`${path}/getDataParams?devId=${payload.devId}`);
+    return axiosInstance.get(`${path}/getDataParams?id=${payload.id}`);
 }
 // 获取检测曲线
 export const getMonCurHistoryData = (payload) => {
     return axiosInstance.post(`/getHistoryData`, payload);
 }
-
+// 获取PCS实时数据
+export const getPcsNowDataById = (payload) => {
+    return axiosInstance.get(`${path}/getPCSLiveDataList?devIds=${payload.id}`);
+}
 
 
 
@@ -175,11 +178,14 @@ export const obtainMeterParameterData = (payload) => {
 
 // 获取bms设备列表
 export const getBmsDevList = (payload) => {
-    return axiosInstance.post(`/mg48/getBmsDevList?plantId=${payload.plantId}`, payload);
+    return axiosInstance.get(`/getBmsDevList?plantId=${payload.plantId}`);
 }
 // 获取pcs设备列表
 export const getPcsDevList = (payload) => {
-    return axiosInstance.post(`/mg48/getPcsDevList?plantId=${payload.plantId}`, payload);
+    return axiosInstance.get(`/getPcsDevList?plantId=${payload.plantId}`);
 }
 
-
+// 获取多个设备实时数据
+export const getDevLiveDataList = (payload) => {
+    return axiosInstance.get(`/getDevLiveDataList?devIds=${payload.id}`);
+}

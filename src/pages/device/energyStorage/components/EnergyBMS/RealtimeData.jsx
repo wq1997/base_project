@@ -3,12 +3,14 @@ import { CardModel } from "@/components";
 import { theme, Select } from "antd";
 import styles from './index.less'
 import { useSelector, useIntl } from "umi";
-import { getBmsNowData, getBmcNowData,obtainBMSClustersList } from '@/services/deviceTotal'
+import { getBmsNowData, getDevLiveDataList,getBmsDevList } from '@/services/deviceTotal'
 const { Option } = Select;
 function Com({ id }) {
     const [data, setData] = useState('');
     const [dataBmc, setDataBmc] = useState([]);
     const [currentClu, setCurrentClu] = useState(0);
+    const [option, setOption] = useState([]);
+    const [bmsIds, setBmsIds] = useState([]);
     const activitesRef = useRef([]);
     const { token } = theme.useToken();
     const intl = useIntl();
@@ -21,9 +23,11 @@ function Com({ id }) {
         return msg
     }
     useEffect(() => {
-        getData();
-        getOption();
-    }, [id])
+        getData(pcsIds);
+    }, [pcsIds]);
+    useEffect(() => {
+        dataInit();
+    }, []);
     const [BmsRealData, setBmsRealData] = useState([
         {
             key: 'bmsRunStatus',
@@ -194,34 +198,21 @@ function Com({ id }) {
         },
     ])
 
-    useEffect(() => {
-        getBmcData();
-    }, [id, currentClu])
     const getData = async () => {
-        let { data } = await getBmsNowData({ id })
+        let { data } = await getDevLiveDataList({ id })
         setData(data?.data);
     }
-    const getOption = async() => {
-        let { data } = await obtainBMSClustersList({ id })
-        let arr=[];
-        data?.data?.map((it,i)=>{
-           arr.push({
-                ...it,
-                label: it.name,
-                value:it.id
-            })
-        })
-        activitesRef.current = arr;
-
+    const dataInit = async () => {
+        let { data = {} } = await getBmsDevList({
+            plantId: localStorage.getItem('plantId')
+        });
+        setOption(data?.data);
+        setBmsIds([data?.data?.[0]?.id]);
+        getData([data?.data?.[0]?.id])
     }
-    const changeCluster = (value) => {
-        setCurrentClu(value)
-    }
-    const getBmcData = async () => {
-        let { data } = await getBmcNowData({ id,  });
-        setDataBmc(data?.data)
-    }
-
+    const handleChange = (val, res) => {
+        setBmsIds(val);
+    };
     return (
         <div className={styles.detailsWrap} >
               <div className={styles.title}>
@@ -231,13 +222,13 @@ function Com({ id }) {
                         width:'10.4167rem',
                     }}
                     placeholder="Please select"
-                    defaultValue={['pcs0', 'pcs1']}
-                    // onChange={handleChange}
+                    value={pcsIds}
+                    onChange={handleChange}
                     options={
-                        [0,1,2,3].map(it=>{
+                        option?.map(it => {
                             return {
-                                label:`pcs${it}`,
-                                value:it
+                                label: it.name,
+                                value: it.id
                             }
                         })
                     }
