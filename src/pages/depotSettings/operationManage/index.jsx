@@ -332,7 +332,7 @@ const OperationManage = () => {
                         <Input className="pwd" placeholder={t("请输入密码")} />
                     </Form.Item>
                     {(cmdKey == 7019||cmdKey == 7017||cmdKey == 7001) && <Form.Item label={t("请输入功率")} name={"power"} rules={[FORM_REQUIRED_RULE]}>
-                        <InputNumber style={{
+                        <Input style={{
                             width: '100%',
                         }} placeholder={t("请输入功率")} />
                     </Form.Item>}
