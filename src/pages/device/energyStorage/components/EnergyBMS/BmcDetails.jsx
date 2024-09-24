@@ -309,7 +309,7 @@ function Com({ id }) {
                         <div className={styles.content} style={{ backgroundColor: token.lightTreeBgc }}>
                             {BmcRealData?.map((it, index) => {
                                 return (
-                                    <div className={styles.item}>
+                                    <div className={styles.item} style={{color:token.titleColor}}>
                                         <span className={styles.itemKeys}>{t(it.label)}:</span>
                                         <span className={styles.itemValues}>{dataBmc?.[it.key]}</span>
                                     </div>

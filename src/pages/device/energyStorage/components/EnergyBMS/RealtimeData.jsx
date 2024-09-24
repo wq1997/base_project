@@ -251,7 +251,7 @@ function Com({ id }) {
                         <div className={styles.content} style={{ backgroundColor: token.lightTreeBgc }}>
                             {BmsRealData?.map((it, index) => {
                                 return (
-                                    <div className={styles.item}>
+                                    <div className={styles.item} style={{color:token.titleColor}}>
                                         <span className={styles.itemKeys}>{t(it.label)}:</span>
                                         <span className={styles.itemValues}>{data?.[it.key]}</span>
                                     </div>

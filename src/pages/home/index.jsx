@@ -7,13 +7,11 @@ import useIcon from "@/hooks/useIcon";
 import { useSelector, useIntl } from "umi";
 import { theme, Switch, Select, Descriptions } from "antd";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { getGridPointList, getOverviewLiveData } from '@/services/plant'
+import { getOverviewLiveData } from '@/services/plant'
 import LinePicture from './components/LinePicture'
 function OverView(props) {
     const { token } = theme.useToken();
     const Icon = useIcon();
-    const [grids, setGrids] = useState([]);
-    const [currntGrid, setCurrntGrid] = useState();
     const [allData, setAllData] = useState({});
     const [checked, setChecked] = useState(true);
     const [power, setPower] = useState([
@@ -53,11 +51,10 @@ function OverView(props) {
         return msg
     }
     useEffect(() => {
-        getGrid();
     }, [token,])
     useEffect(() => {
         getOverviewData();
-    }, [token, currntGrid])
+    }, [token, ])
     const changeCheck = (checked) => {
         setChecked(checked)
     }
@@ -69,17 +66,9 @@ function OverView(props) {
         }
     });
 
-    const getGrid = async () => {
-        let { data: grid } = await getGridPointList({
-            plantId: localStorage.getItem('plantId')
-        })
-        setGrids(grid?.data);
-        setCurrntGrid(grid?.data?.[0]?.id);
-    }
-
     const getOverviewData = async () => {
         let { data } = await getOverviewLiveData({
-            gridPointId: currntGrid
+            plantId: localStorage.getItem('plantId')
         });
         setAllData(data?.data);
         power.map((it) => {
@@ -87,9 +76,6 @@ function OverView(props) {
         });
 
     }
-    const changeGrid = (e) => {
-        setCurrntGrid(e.target.value);
-    };
 
     const gridData = [
         {
@@ -251,7 +237,7 @@ function OverView(props) {
         <>
             <div className={styles.container} style={{ color: token.titleColor }}>
                 <div className={styles.title} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal }}>
-                    {checked ? <div>
+                    {checked ? <div style={{ height: '32px' }}>
                         {/* {t('并网点')}:
                         <Select
                             style={{

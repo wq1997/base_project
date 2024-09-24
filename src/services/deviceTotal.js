@@ -173,3 +173,13 @@ export const obtainMeterParameterData = (payload) => {
 
 
 
+// 获取bms设备列表
+export const getBmsDevList = (payload) => {
+    return axiosInstance.post(`/mg48/getBmsDevList?plantId=${payload.plantId}`, payload);
+}
+// 获取pcs设备列表
+export const getPcsDevList = (payload) => {
+    return axiosInstance.post(`/mg48/getPcsDevList?plantId=${payload.plantId}`, payload);
+}
+
+

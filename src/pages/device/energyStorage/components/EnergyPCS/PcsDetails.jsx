@@ -215,7 +215,7 @@ function Com({ id }) {
                     {<><div className={styles.contentwrap} style={{ backgroundColor: token.lightTreeBgc }}>
                         {pcsRealData?.map((it, index) => {
                             return (
-                                <div className={styles.item}>
+                                <div className={styles.item} style={{color:token.titleColor}}>
                                     <span className={styles.itemKeys}>{t(it.label)}:</span>
                                     <span className={styles.itemValues}>{data?.pcs?.[it?.key]}</span>
                                 </div>
@@ -225,7 +225,7 @@ function Com({ id }) {
                         <div className={styles.detailsBottomEcharts} style={{ backgroundColor: token.lightTreeBgc }}>
                             {data?.pscBatch && data?.pscBatch?.map((it, index) => {
                                 return (
-                                    <div className={styles.item}>
+                                    <div className={styles.item} style={{color:token.titleColor}}>
                                         {branch?.map((item, i) => {
                                             return (
                                                 <div>

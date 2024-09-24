@@ -35,9 +35,9 @@ export const getInsertPlantInitData = () => {
   return axiosInstance.get(`${path}/getInsertPlantInitData`);
 }
 
-// 根据并网点获取首页实时数据
+// 获取首页实时数据
 export const getOverviewLiveData = (payload) => {
-  return axiosInstance.get(`${path}/getOverviewLiveData?gridPointId=${payload.gridPointId}`);
+  return axiosInstance.get(`${path}/mg48/getOverviewLiveDataByPlantId?plantId=${payload.plantId}`);
 }
 
 // 获取接线图

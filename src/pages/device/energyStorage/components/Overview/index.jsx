@@ -166,28 +166,23 @@ function Overview(props) {
         getAlarms();
     }, [pageType, id]);
     const getEnergy = async () => {
-        let { data } = pageType === 'ALL' ? await getEnergySummary({ plantId: localStorage.getItem('plantId') }) :
-            await getEnergySummaryByDtu({ dtuId: id });
+        let { data } =  await getEnergySummary({ plantId: localStorage.getItem('plantId') }) 
         setEnergySummaryg(data.data);
     }
     const getRun = async () => {
-        let { data } = pageType === 'ALL' ? await getRunMetrics({ plantId: localStorage.getItem('plantId') }) :
-            await getRunMetricsj({ gridPointId: getQueryString('gridPointId') });
+        let { data } =  await getRunMetrics({ plantId: localStorage.getItem('plantId') })
         setRunning(data.data);
     }
     const getIncome = async () => {
-        let { data } = pageType === 'ALL' ? await getIncomeByPlantId({ plantId: localStorage.getItem('plantId') }) :
-            await getIncomeByDtuId({ dtuId: id });
+        let { data } =await getIncomeByPlantId({ plantId: localStorage.getItem('plantId') }) 
         setIncome(data.data);
     }
     const getAlarms = async () => {
-        let { data } = pageType === 'ALL' ? await getNowAlarmsByEnergy({ plantId: localStorage.getItem('plantId') }) :
-            await getNowAlarmsByDtu({ dtuId: id });
+        let { data } = await getNowAlarmsByEnergy({ plantId: localStorage.getItem('plantId') }) 
         setAlarms(data.data);
     }
     const getAllElecty = async () => {
-        let { data } = pageType === 'ALL' ? await getChargeDischargeEnergySevenDaysByPlantId({ plantId: localStorage.getItem('plantId') }) :
-            await getChargeDischargeEnergySevenDaysDtuId({ dtuId: id });
+        let { data } = await getChargeDischargeEnergySevenDaysByPlantId({ plantId: localStorage.getItem('plantId') }) 
         let arrA = [];
         let arrB = [];
         let arrC = [];
@@ -273,7 +268,7 @@ function Overview(props) {
                                     <span className={styles.label} style={{ color: token.titleColor }}>{t('当前总功率')}</span>:<span className={styles.value}>{running?.totalPower?.split(' ')[0]
                                         || 0}</span><span className={styles.unit} style={{ color: token.titleColor }}>{running?.totalPower?.split(' ')[1] || 'kW'}</span>
                                 </div>
-                                <div className={styles.realStaus} style={{ backgroundColor: token.lightTreeBgc }}>
+                                <div className={styles.realStaus} style={{ backgroundColor: token.lightTreeBgc,color:token.titleColor }}>
                                     <div>{t('设备状态')}</div>
                                     <div>{t('正常')}<span className={styles.value} style={{ color: '#2BC50E' }}>{running?.onlineDevices}</span>{t('个')}</div>
                                     <div>{t('故障')}<span className={styles.value} style={{ color: '#D41818' }}>{running?.faultDevices}</span>{t('个')}</div>
@@ -292,7 +287,7 @@ function Overview(props) {
                                 {profitData.map(it => {
                                     return (
                                         <>
-                                            <div className={styles.itemProfit} style={{ backgroundColor: token.lightTreeBgc }}>
+                                            <div className={styles.itemProfit} style={{ backgroundColor: token.lightTreeBgc,color:token.titleColor }}>
                                                 <Tooltip title={it.label} >
                                                     <div className={styles.titleProfit}>
                                                         <Icon type={it.icon} style={{ color: it.color }}></Icon>
