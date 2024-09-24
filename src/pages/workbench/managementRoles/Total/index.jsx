@@ -185,7 +185,9 @@ const Total = ({ data }) => {
                     <div className={styles.content}>
                         {allWorkorders.map(item => (
                             <div className={styles.order} style={{ background: token.color13 }}>
-                                <span className={styles.name}>{item.name}</span>
+                                <span title={item.name} className={styles.name}>
+                                    {item.name}
+                                </span>
                                 <a
                                     className={styles.value}
                                     style={{ color: item.color }}
@@ -205,7 +207,9 @@ const Total = ({ data }) => {
                     <div className={styles.content}>
                         {myWorkorders.map(item => (
                             <div className={styles.order} style={{ background: token.color13 }}>
-                                <span className={styles.name}> {item.name}</span>
+                                <span title={item.name} className={styles.name}>
+                                    {item.name}
+                                </span>
                                 <a
                                     className={styles.value}
                                     style={{ color: item.color }}
@@ -225,7 +229,9 @@ const Total = ({ data }) => {
                     <div className={styles.content}>
                         {todoList.map(item => (
                             <div className={styles.order} style={{ background: token.color13 }}>
-                                <span className={styles.name}>{item.name}</span>
+                                <span title={item.name} className={styles.name}>
+                                    {item.name}
+                                </span>
                                 <a
                                     className={styles.value}
                                     style={{ color: item.color }}

@@ -51,7 +51,7 @@ const MenuList = [
         label: "工单管理",
         icon: <FileTextFilled />,
         darkIcon: "icon-wuliaoxuqiu-copy",
-        permissions: "menu:workbench",
+        permissions: "menu:work_order_manage_g",
         children: [
             {
                 key: "/task-management/task-list",
@@ -61,7 +61,7 @@ const MenuList = [
             {
                 key: "/task-management/my-task",
                 label: "我的工单",
-                permissions: "menu:work_order_manage",
+                permissions: "menu:my_work_order",
             },
             {
                 key: "/task-management/abnormal",
@@ -114,20 +114,20 @@ const MenuList = [
         icon: <DatabaseFilled />,
         permissions: "menu:knowledge_base_manage",
     },
-    {
-        key: "/maintenance-tools",
-        label: "运维工具",
-        icon: <ToolFilled />,
-        darkIcon: "icon-wuliaoxuqiu-copy",
-        permissions: "menu:sys_manage",
-        children: [
-            {
-                key: "/maintenance-tools/project-operation-report",
-                label: "项目运行报告",
-                permissions: "menu:user_manage",
-            },
-        ],
-    },
+    // {
+    //     key: "/maintenance-tools",
+    //     label: "运维工具",
+    //     icon: <ToolFilled />,
+    //     darkIcon: "icon-wuliaoxuqiu-copy",
+    //     permissions: "menu:sys_manage",
+    //     children: [
+    //         {
+    //             key: "/maintenance-tools/project-operation-report",
+    //             label: "项目运行报告",
+    //             permissions: "menu:user_manage",
+    //         },
+    //     ],
+    // },
     {
         key: "/system-configuration",
         label: "系统配置",
