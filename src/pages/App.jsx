@@ -7,9 +7,12 @@ import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 import localeData from "dayjs/plugin/localeData";
 import "dayjs/locale/zh-cn";
+import { Boot } from "@wangeditor/editor";
+import attachmentModule from "@wangeditor/plugin-upload-attachment";
 dayjs.extend(weekday);
 dayjs.extend(localeData);
 dayjs.locale("zh-cn");
+Boot.registerModule(attachmentModule);
 
 const localeEnum = {
     zh_CN,
