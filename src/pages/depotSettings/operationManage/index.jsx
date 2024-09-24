@@ -52,7 +52,7 @@ const OperationManage = () => {
         }
         return (
             <div
-                style={{ width: 100, height: 40, borderRadius: 4, background: color?.background||'#D1D9EF', color: color?.color||'#6978A1', fontSize: 16, lineHeight: '40px', textAlign: 'center', cursor: 'pointer' }}
+                style={{ width: 132, height: 48, borderRadius: 4, background: color?.background||'#D1D9EF', color: color?.color||'#6978A1', fontSize: 18, lineHeight: '48px', textAlign: 'center', cursor: 'pointer' }}
                 onClick={onBtnClick}
             >
                 {t(text)}
@@ -142,7 +142,7 @@ const OperationManage = () => {
             <Space size={8} direction="vertical" style={{ width: '100%' }}>
                 <div style={{ backgroundColor: token.titleCardBgc, height: 100, padding: '24px 37px', boxSizing: 'border-box' }}>
                     <Space size={44}>
-                        <Row align="middle" style={{ height: '100%' }}>
+                        {/* <Row align="middle" style={{ height: '100%' }}>
                             <span>{t('并网点')}：</span>
                             <Select
                                 style={{ width: 240, }}
@@ -155,7 +155,7 @@ const OperationManage = () => {
                             })
                                 }
                             </Select>
-                        </Row>
+                        </Row> */}
                         <Space size={33}>
                             <Button type="primary" size="large" onClick={() => setControlModeOpen(true)}>{t('控制模式')}</Button>
                             <Button type="primary" size="large" onClick={() => setPowerSettingOpen(true)}>{t('总功率设置')}</Button>
@@ -224,7 +224,6 @@ const OperationManage = () => {
                 title={<Title title={powerOffOpen ? t('PCS总关机') : t("PCS总开机")} />}
                 onOk={async () => {
                     const values = await form2.validateFields();
-                    // console.log('总关机|总开机', values);
                     let { data } = await sendOMCommands({
                         cmdTypeId: 7018,
                         gridPointId: gridId,

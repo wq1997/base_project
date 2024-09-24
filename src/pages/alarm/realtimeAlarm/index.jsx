@@ -68,7 +68,7 @@ const RealtimeAlarm = () => {
       currentPage: page || 1,
       pageSize: 20,
       plantId:currentPlantId||localStorage.getItem('plantId'),
-      gridPoint:currntGrid
+      // gridPoint:currntGrid
 
     });
     setData(data.data);
@@ -89,7 +89,7 @@ const RealtimeAlarm = () => {
 }
   return (
     <div style={{width:'100%',height:'calc(100% - 67px)',padding:'0 0 10px 0'}}>
-      <div className={styles.grid} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal, }}>
+      {/* <div className={styles.grid} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal, }}>
             <Select
               style={{
                 width: 200,
@@ -106,7 +106,7 @@ const RealtimeAlarm = () => {
               })
               }
             </Select>
-          </div>
+          </div> */}
       <CardModel
         title={
           t('实时告警')

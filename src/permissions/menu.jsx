@@ -10,22 +10,26 @@ const { SubMenu } = Menu;
 
 const MenuList = [
     {
-        label: <FormattedMessage id='总览' />,
+        label: <FormattedMessage id='首页' />,
         key: '/index/home',
         icon: <AppstoreOutlined />
     },
     {
-        label: <FormattedMessage id='设备' />,
+        label: <FormattedMessage id='运行监测' />,
         key: '/index/device',
         icon: <ToolOutlined />,
         children: [
-            { label: <FormattedMessage id='储能' />, key: '/index/device/energyStorage', type: "PV" },
+            // { label: <FormattedMessage id='储能' />, key: '/index/device/energyStorage', type: "PV" },
+            { label: <FormattedMessage id='总览' />, key: '/index/device/energyStorage/components/Overview', type: "PV" },
+            { label: <FormattedMessage id='PCS' />, key: '/index/device/energyStorage/components/EnergyPCS', type: "PV" },
+            { label: <FormattedMessage id='BMS' />, key: '/index/device/energyStorage/components/EnergyBMS', type: "PV" },
+            { label: <FormattedMessage id='辅助设备' />, key: '/index/device/energyStorage/components/ElectricityMeter', type: "PV" },
             // { label: <FormattedMessage id='device.Photovoltaic' />, key: '/index/device/photovoltaic', type: "PV" },
             // { label: <FormattedMessage id='device.ChargingPiles' />, key: '/index/device/chargingStation', type: "C" },
         ]
     },
     {
-        label: <FormattedMessage id='统计' />,
+        label: <FormattedMessage id='统计报表' />,
         key: '/index/statistics',
         icon: <LineChartOutlined />,
         children: [
@@ -36,7 +40,7 @@ const MenuList = [
         ]
     },
     {
-        label: <FormattedMessage id='告警' />,
+        label: <FormattedMessage id='告警查询' />,
         key: '/index/alarm',
         icon: <AlertOutlined />,
         children: [
@@ -50,9 +54,9 @@ const MenuList = [
         key: '/index/depotSettings',
         icon: <ControlOutlined />,
         children: [
+            { label: <FormattedMessage id='控制命令' />, key: '/index/depotSettings/operationManage', component: "@/pages/depotSettings/operationManage",auth:[2,3] },
             { label: <FormattedMessage id='策略配置' />, key: '/index/depotSettings/policyConfiguration', component: "@/pages/depotSettings/policyConfiguration",auth:[2,3]},
-            { label: <FormattedMessage id='电站配置' />, key: '/index/depotSettings/powerStationConfig', component: "@/pages/depotSettings/powerStationConfig"},
-            { label: <FormattedMessage id='运维管理' />, key: '/index/depotSettings/operationManage', component: "@/pages/depotSettings/operationManage",auth:[2,3] },
+            { label: <FormattedMessage id='电站管理' />, key: '/index/depotSettings/powerStationConfig', component: "@/pages/depotSettings/powerStationConfig"},
         ]
     },
     {

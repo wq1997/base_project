@@ -414,7 +414,7 @@ function Com({ id }) {
             <div className={styles.heapRealTimeData}>
                 {dataModel.map(one => {
                     return (<div className={styles.oneModel}>
-                        <div className={styles.title}>
+                        <div className={styles.title} style={{color:token.titleColor}}>
                             {t(one.label)}:
                             <Select
                                 style={{ width: '240px', marginLeft: '10px' }}

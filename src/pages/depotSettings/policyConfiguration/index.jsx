@@ -117,8 +117,8 @@ function Com(props) {
         className={styles.contents}
       >
         <Space className={styles.hearder} direction="vertical" style={{ width: '100%', backgroundColor: token.titleCardBgc, padding: '20px 25px 0 0px', borderRadius: '8px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginRight: '40px' }}>
-            <Form.Item
+          <div style={{ display: 'flex', justifyContent: 'end', marginRight: '40px' }}>
+            {/* <Form.Item
               name="gridPointId"
               label={t("并网点")}
               style={{ width: '25%' }}
@@ -137,7 +137,7 @@ function Com(props) {
                 })
                 }
               </Select>
-            </Form.Item>
+            </Form.Item> */}
             <Form.Item
               wrapperCol={{
                 offset: 12,

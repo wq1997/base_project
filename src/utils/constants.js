@@ -34,11 +34,11 @@ export const alarmTableColums = [
         dataIndex: 'deviceName',
         key: 'deviceName',
     },
-    {
-        title: <FormattedMessage id='并网点'/>,
-        dataIndex: 'name',
-        key: 'name',
-    },
+    // {
+    //     title: <FormattedMessage id='并网点'/>,
+    //     dataIndex: 'name',
+    //     key: 'name',
+    // },
     {
         title: <FormattedMessage id='电站名称'/>,
         dataIndex: 'plantName',
