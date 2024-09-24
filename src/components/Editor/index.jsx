@@ -48,7 +48,11 @@ const EditorTemp = ({
             "fullScreen",
             "enter",
             "uploadImage",
-        ]
+        ],
+        insertKeys: {
+            index: 31,
+            keys: ['uploadAttachment'],
+        },
     }
 
     const editorConfig = {
@@ -73,8 +77,27 @@ const EditorTemp = ({
                         insertFn(url, alt, href);
                     }
                 }
+            },
+            uploadAttachment: {
+                title: "上传附件",
+                fileName: "file",
+                customUpload: async (file, insertFn) => {
+                    const data = new FormData();
+                    data.append("file", file);
+                    const res = await uploadEditorImageServe(data);
+                    if (res?.data?.errno === 0) {
+                        const url = getBaseUrl() + res?.data?.data?.url;
+                        const alt = res?.data?.data?.alt;
+                        insertFn(alt, url);
+                    }
+                }
             }
-        }
+        },
+        hoverbarKeys: {
+            attachment: {
+                menuKeys: ['downloadAttachment'], // “下载附件”菜单
+            },
+        },
     }
 
     useEffect(() => {
@@ -106,7 +129,6 @@ const EditorTemp = ({
                     onChange={editor => {
                         onChange && onChange(editor.getHtml())
                     }}
-                    onUp
                     mode="default"
                     style={{ height: '300px', overflowY: 'hidden' }}
                 />

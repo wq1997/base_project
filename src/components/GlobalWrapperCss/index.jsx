@@ -48,6 +48,9 @@ const GlobalWrapperCss = props => {
             },
             ".ant-select-multiple .ant-select-selection-overflow .ant-select-selection-item": {
                 color: "white !important",
+            },
+            "span[contenteditable]": {
+                backgroundColor: `${token.colorPrimary}!important`
             }
         };
     });
