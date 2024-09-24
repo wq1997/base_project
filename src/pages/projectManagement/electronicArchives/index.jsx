@@ -326,6 +326,11 @@ const Account = () => {
             width: 150,
         },
         {
+            title: "所属区域",
+            dataIndex: "regionZh",
+            width: 150,
+        },
+        {
             title: "产品类型",
             dataIndex: "productTypeZh",
             width: 150,
@@ -396,13 +401,14 @@ const Account = () => {
     const getSearchInitData = async () => {
         const res = await getBasProjectInitDataServe();
         if (res?.data?.status == "SUCCESS") {
-            const { phases, types, productTypes, users } = res?.data?.data || {};
+            const { regions, phases, types, productTypes, users } = res?.data?.data || {};
             setInitSearchOption(res?.data?.data || {});
             setPhaseList(phases);
             setProjectTypeList(types);
             setProductTypeList(productTypes);
             setPutEffectPersonList(users);
             setOperationPersonList(users);
+            setAreaOptions(regions);
         }
     };
 
@@ -417,7 +423,7 @@ const Account = () => {
         const { current, pageSize } = paginationRef.current;
         const nameOrCodeLike = codeRef.current;
         const approvalTime = projectInitiationTimeRef.current;
-        const area = areaRef.current;
+        const region = areaRef.current;
         const phase = confirmStatusRef.current;
         const subPhase = splitStatusRef.current;
         const type = responseTypeRef.current;
@@ -432,7 +438,7 @@ const Account = () => {
                 nameOrCodeLike,
                 approvalTimeStart: approvalTime,
                 approvalTimeEnd: approvalTime,
-                area,
+                region,
                 phase,
                 subPhase,
                 type,

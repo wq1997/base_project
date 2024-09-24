@@ -155,6 +155,11 @@ const Account = () => {
             width: 180,
         },
         {
+            title: "所属区域",
+            dataIndex: "regionZh",
+            width: 150,
+        },
+        {
             title: "计划开始时间",
             dataIndex: "planStartDate",
             width: 200,
@@ -163,11 +168,6 @@ const Account = () => {
             title: "计划结束时间",
             dataIndex: "planEndDate",
             width: 200,
-        },
-        {
-            title: "所属区域",
-            dataIndex: "area",
-            width: 150,
         },
         {
             title: "工单发起人",

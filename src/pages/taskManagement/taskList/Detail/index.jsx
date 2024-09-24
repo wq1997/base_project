@@ -52,11 +52,11 @@ const Detail = ({ detailId, processId, onClose }) => {
                     </span>
                 </Descriptions.Item>
                 <Descriptions.Item label="工单类型">{info?.typeZh}</Descriptions.Item>
+                <Descriptions.Item label="所属区域">{info?.regionZh}</Descriptions.Item>
                 <Descriptions.Item label="发布时间">{info?.publishedTime}</Descriptions.Item>
                 <Descriptions.Item label="关联项目">{info?.project?.name}</Descriptions.Item>
                 <Descriptions.Item label="计划开始时间">{info?.planStartDate}</Descriptions.Item>
                 <Descriptions.Item label="计划结束时间">{info?.planEndDate}</Descriptions.Item>
-                <Descriptions.Item label="所属区域">{info?.area}</Descriptions.Item>
                 <Descriptions.Item label="发起人">{info?.initiatorName}</Descriptions.Item>
                 <Descriptions.Item label="接受人">{info?.ownerName}</Descriptions.Item>
                 <Descriptions.Item label="当前处理人">
