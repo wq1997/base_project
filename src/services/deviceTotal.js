@@ -62,7 +62,7 @@ export const getGridPointTree = (payload) => {
 
 // 获取电表实时数据
 export const getMetersNowData = (payload) => {
-    return axiosInstance.get(`${path}/getMETERLiveData?gridPointId=${payload.id}`);
+    return axiosInstance.get(`${path}/getMETERLiveData?plantId=${payload.id}`);
 }
 
 // 获取bms实时数据信息

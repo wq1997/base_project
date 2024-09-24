@@ -405,7 +405,7 @@ function Com({ id }) {
     ]
 
     const getData = async () => {
-        let { data } = await getMetersNowData({ id });
+        let { data } = await getMetersNowData({ id:localStorage.getItem('plantId') });
         setData({ ...data?.data })
         // setData({...data?.data?.tMeter,...data?.data?.gMeter});
     }
