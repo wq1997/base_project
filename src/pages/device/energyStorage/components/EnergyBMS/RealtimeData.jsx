@@ -23,8 +23,8 @@ function Com({ id }) {
         return msg
     }
     useEffect(() => {
-        getData(pcsIds);
-    }, [pcsIds]);
+        getData(bmsIds);
+    }, [bmsIds]);
     useEffect(() => {
         dataInit();
     }, []);
@@ -198,7 +198,7 @@ function Com({ id }) {
         },
     ])
 
-    const getData = async () => {
+    const getData = async (id) => {
         let { data } = await getDevLiveDataList({ id })
         setData(data?.data);
     }
@@ -222,7 +222,7 @@ function Com({ id }) {
                         width:'10.4167rem',
                     }}
                     placeholder="Please select"
-                    value={pcsIds}
+                    value={bmsIds}
                     onChange={handleChange}
                     options={
                         option?.map(it => {

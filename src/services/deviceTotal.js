@@ -87,7 +87,7 @@ export const getMonCurHistoryData = (payload) => {
 }
 // 获取PCS实时数据
 export const getPcsNowDataById = (payload) => {
-    return axiosInstance.get(`${path}/getPCSLiveDataList?devIds=${payload.id}`);
+    return axiosInstance.post(`${path}/getPCSLiveDataList`,payload);
 }
 
 
@@ -187,5 +187,5 @@ export const getPcsDevList = (payload) => {
 
 // 获取多个设备实时数据
 export const getDevLiveDataList = (payload) => {
-    return axiosInstance.get(`/getDevLiveDataList?devIds=${payload.id}`);
+    return axiosInstance.post(`/getDevLiveDataList`,payload);
 }
