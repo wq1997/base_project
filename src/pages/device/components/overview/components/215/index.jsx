@@ -332,7 +332,6 @@ const [option, setOption] = useState({})
                             <div className={styles.value} style={{color:"rgba(44,255,204,1)",fontSize:'1.0417rem',textAlign:'center'}}>{allData?.pcs?.onlineState?(allData?.pcs?.onlineState==1?t('在线'):t('离线')): '-'}</div>
                             <div className={styles.label}>{t('PCS状态')}</div>
                             <div className={styles.bottomDes} style={{ background: `url(${path}) center center no-repeat`, }}></div>
-
                         </div>
                         <div className={styles.topOne}>
                             <div className={styles.value} style={{color: token.color4,fontSize:'1.0417rem',}}>{allData?.tmeter?.totalActivePower || '0'}</div>

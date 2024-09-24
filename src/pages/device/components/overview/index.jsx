@@ -19,7 +19,8 @@ function Com(props) {
     return (
         <div className='content' style={{ width: '100%', height: '100%', 
             padding: '1.0417rem  1.0417rem  .8333rem 1.0417rem',
-            backgroundColor:token.titleCardBgc_2
+            backgroundColor:token.titleCardBgc_2,
+            minHeight:'36.4583rem'
         }}>
             {getQueryString('type') == 14 && <Out372 id={props.id} sn={sn}/>}
             {getQueryString('type') == 16 && <Out215 id={props.id} sn={sn} />}

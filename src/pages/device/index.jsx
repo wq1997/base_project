@@ -18,6 +18,7 @@ import Title from './components/Title';
 import DeviceRunDesc from './components/deviceRunDesc';
 import IncomeRanking from './components/incomeRanking';
 import ElectricityRanking from './components/electricityRanking';
+import { useEmotionCss } from '@ant-design/use-emotion-css';
 import Table from "./components/table";
 import Map from './components/map';
 import dayjs from 'dayjs';
@@ -47,7 +48,7 @@ const RealtimeAlarm = () => {
         );
         return msg
     }
-    const { user } = useSelector(function (state) {
+    const { user, } = useSelector(function (state) {
         return state.user
     });
     const {locale} = useSelector(state => state.global);
@@ -110,11 +111,6 @@ const RealtimeAlarm = () => {
             value: 0,
             color: '#20C2FF'
         },
-        // {
-        //     label: t('年收益'),
-        //     value: 0,
-        //     color: '#20C2FF'
-        // },
         {
             label: t('累计收益'),
             value: 0,
@@ -270,7 +266,13 @@ const RealtimeAlarm = () => {
     if (tableColum.length === 7 && user?.roleId == 1) {
         tableColum[5] = {};
     }
+    const detailCard = useEmotionCss(() => {
+        return {
+            ".ant-select-selection-item":{
+                color:locale==="zh-CN"?`${token.titleColor}`:"#000000"
+            }
 
+        }})
     const getAllRevenue = async () => {
         const res = await getAllRevenueServe({ plantId: currentPlantId });
         if (res?.data?.data) {
@@ -315,7 +317,7 @@ const RealtimeAlarm = () => {
                             panTo={mapPanTo}
                         />
                     }
-                    <div className={styles.plantSelect}>
+                    <div className={classNames(styles.plantSelect, detailCard)} >
                         <Select
                             style={{ width: '15.625rem' }}
                             onChange={(val) => {
