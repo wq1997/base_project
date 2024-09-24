@@ -4,6 +4,7 @@ import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts";
 import styles from "./index.less";
 import classNames from "classnames";
+import { history } from "umi";
 import { workbenchListTimeCompleteWorkOrderCount as workbenchListTimeCompleteWorkOrderCountServe } from "@/services";
 
 const Total = ({ data }) => {
@@ -13,9 +14,30 @@ const Total = ({ data }) => {
     const [options, setOpitons] = useState({});
 
     const myWorkorders = [
-        { name: "工单总数", value: data?.todoWorkOrderSummery?.receiveCount, color: token.color22 },
-        { name: "已执行工单", value: data?.todoWorkOrderSummery?.doCount, color: token.color23 },
-        { name: "待执行工单", value: data?.todoWorkOrderSummery?.todoCount, color: token.color24 },
+        {
+            name: "工单总数",
+            value: data?.todoWorkOrderSummery?.receiveCount,
+            color: token.color22,
+            click: () => history.push(`/task-management/my-task`),
+        },
+        {
+            name: "已执行工单",
+            value: data?.todoWorkOrderSummery?.doCount,
+            color: token.color23,
+            click: () =>
+                history.push(
+                    `/task-management/my-task?activeKey=do&statusIn=${encodeURIComponent(["COMPLETED"])}`
+                ),
+        },
+        {
+            name: "待执行工单",
+            value: data?.todoWorkOrderSummery?.todoCount,
+            color: token.color24,
+            click: () =>
+                history.push(
+                    `/task-management/my-task?statusIn=${encodeURIComponent(["WAIT_COMPLETED"])}`
+                ),
+        },
     ];
 
     const getOptions = () => {
@@ -123,10 +145,14 @@ const Total = ({ data }) => {
                     <div className={styles.content}>
                         {myWorkorders.map(item => (
                             <div className={styles.order} style={{ background: token.color13 }}>
-                                <span>{item.name}</span>
-                                <span className={styles.value} style={{ color: item.color }}>
+                                <span style={{ marginBottom: 5 }}>{item.name}</span>
+                                <a
+                                    className={styles.value}
+                                    style={{ color: item.color }}
+                                    onClick={item.click}
+                                >
                                     {item.value}
-                                </span>
+                                </a>
                             </div>
                         ))}
                     </div>

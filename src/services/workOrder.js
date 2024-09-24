@@ -6,6 +6,16 @@ export const workOrderList = payload => {
     return axiosInstance.post(url, payload);
 };
 
+export const getMyTodoWorkOrderList = payload => {
+    const url = `${API_URL}/work-order/find-todo-page`;
+    return axiosInstance.post(url, payload);
+};
+
+export const getMyDoWorkOrderList = payload => {
+    const url = `${API_URL}/work-order/find-do-page`;
+    return axiosInstance.post(url, payload);
+};
+
 export const workOrderListInitData = () => {
     const url = `${API_URL}/work-order/get-search-page-init-data`;
     return axiosInstance.get(url);
@@ -56,7 +66,7 @@ export const exceptionWorkOrderProcessInitData = id => {
     return axiosInstance.get(url);
 };
 
-// 实施工单处理 
+// 实施工单处理
 export const processDeliveryWorkOrder = payload => {
     const url = `${API_URL}/work-order/upload-shipping-material`;
     return axiosInstance.post(url, payload);

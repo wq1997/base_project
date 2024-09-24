@@ -5,7 +5,7 @@ export default {
 
     state: {
         theme: "dark",
-        locale: getLocalStorage("locale") || "zh-CN",
+        locale: getLocalStorage("locale") || "zh_CN",
     },
 
     effects: {
