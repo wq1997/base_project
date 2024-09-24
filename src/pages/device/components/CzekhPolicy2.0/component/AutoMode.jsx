@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Button, Form, InputNumber, Row , Modal, Space, theme, message, Input, Flex } from 'antd';
+import { Button, Form, InputNumber, Row, Modal, Space, theme, message, Input, Flex } from 'antd';
 import { useSelector, useIntl, history } from "umi";
 import styles from './index.less'
 import { Title, EditTable, ButtonGroup } from "@/components";
@@ -17,6 +17,8 @@ const App = ({ devId, dtuId, historyAllData }) => {
   const [cmdTypeId, setCmdTypeId] = useState(0);
   const [durationList, setDurationList] = useState([]);
   const [tabValue, setTabValue] = useState(0);
+  const [form] = Form.useForm();
+  const [isLive, setIsLive] = useState(false);
 
   const intl = useIntl();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,7 +31,7 @@ const App = ({ devId, dtuId, historyAllData }) => {
     );
     return msg
   }
- 
+
   // useEffect(() => {
   //   initData();
   // }, [historyAllData])
@@ -40,73 +42,80 @@ const App = ({ devId, dtuId, historyAllData }) => {
     <div className={styles.manual}>
       <div className={''}>
         <Space style={{ width: '100%' }} direction="vertical" size={30}>
-          <Row justify="space-between">
-            <Title title={intl.formatMessage({ id: '策略配置' })} />
+          <Row justify="end">
             <div
-              className={''}
+              className={styles.selectionBox}
+              style={{ backgroundColor: token.defaultBg, padding: '.3125rem 1.1979rem', cursor: 'pointer' }}
               onClick={async () => {
-                return
-                if (canIssue && isLive) {
-                  const { durationList } = await form.getFieldsValue("durationList");
-                  if (durationList && durationList?.length > 0) {
-                    setCheckModalOpen(true);
-                    setCheckModalType('sendStrategySetting');
-                  } else {
-                    message.error(intl.formatMessage({ id: '请至少添加一条策略' }))
-                  }
+                const { durationList } = await form.getFieldsValue("durationList");
+                if (durationList && durationList?.length > 0) {
+                  console.log(durationList, 1111111);
+                  setDurationList(durationList);
+                  setIsModalOpen(true);
+                  setCmdTypeId(7005);
+                } else {
+                  message.error(intl.formatMessage({ id: '请至少添加一条策略' }))
                 }
               }}
             >
               {intl.formatMessage({ id: '下发' })}
             </div>
           </Row>
-          <Form.Item name="durationList" validateTrigger={false} rules={[{ ...FORM_REQUIRED_RULE }]}>
-            <EditTable.EditRowTable
-              showAdd={true}
-              showClear={true}
-              showEdit={true}
-              showDelete={true}
-              data={durationList}
-              columns={[
-                {
-                  title: `${intl.formatMessage({ id: '开始时间' })}~${intl.formatMessage({ id: '结束时间' })}`,
-                  dataIndex: 'timeStramp',
-                  editable: true,
-                  inputType: 'CustomDatePicker',
-                },
-               
-                {
-                  title: intl.formatMessage({ id: '充放电类型' }),
-                  dataIndex: 'action',
-                  editable: true,
-                  inputType: 'Select',
-                  options: [
-                    { value: intl.formatMessage({ id: '充电' }), label: intl.formatMessage({ id: '充电' }) },
-                    { value: intl.formatMessage({ id: '放电' }), label: intl.formatMessage({ id: '放电' }) },
-                    { value: intl.formatMessage({ id: '待机' }), label: intl.formatMessage({ id: '待机' }) },
-                  ]
-                },
-                {
-                  title: `${intl.formatMessage({ id: '功率' })}(kW)`,
-                  dataIndex: 'pcsPower',
-                  editable: true,
-                  inputType: 'InputNumber',
-                },
-                {
-                  title: intl.formatMessage({ id: 'SOC(%)' }),
-                  dataIndex: 'targetSoc',
-                  editable: true,
-                  inputType: 'InputNumber',
-                },
-              ]}
-              correlationList={['timeType', 'elePrice']}
-              maxLength={24}
-              tabValue={tabValue}
-              onChangeTabs={value => {
-                setTabValue(value);
-              }}
-            />
-          </Form.Item>
+          <Form
+            form={form}
+            colon={false}
+            initialValues={{
+              mode: 'Custom'
+            }}
+          >
+            <Form.Item name="durationList" validateTrigger={false} rules={[{ ...FORM_REQUIRED_RULE }]}>
+              <EditTable.EditRowTable
+                showAdd={true}
+                showClear={true}
+                showEdit={true}
+                showDelete={true}
+                data={durationList}
+                columns={[
+                  {
+                    title: `${intl.formatMessage({ id: '开始时间' })}~${intl.formatMessage({ id: '结束时间' })}`,
+                    dataIndex: 'timeStramp',
+                    editable: true,
+                    inputType: 'CustomDatePicker',
+                  },
+
+                  {
+                    title: intl.formatMessage({ id: '充放电类型' }),
+                    dataIndex: 'action',
+                    editable: true,
+                    inputType: 'Select',
+                    options: [
+                      { value: 3, label: intl.formatMessage({ id: '充电' }) },
+                      { value: 1, label: intl.formatMessage({ id: '放电' }) },
+                      { value: 2, label: intl.formatMessage({ id: '待机' }) },
+                    ]
+                  },
+                  {
+                    title: `${intl.formatMessage({ id: '功率' })}(kW)`,
+                    dataIndex: 'pcsPower',
+                    editable: true,
+                    inputType: 'InputNumber',
+                  },
+                  {
+                    title: intl.formatMessage({ id: 'SOC(%)' }),
+                    dataIndex: 'targetSoc',
+                    editable: true,
+                    inputType: 'InputNumber',
+                  },
+                ]}
+                correlationList={['timeType', 'elePrice']}
+                maxLength={24}
+                tabValue={tabValue}
+                onChangeTabs={value => {
+                  setTabValue(value);
+                }}
+              />
+            </Form.Item>
+          </Form>
         </Space>
       </div>
       <Modal
@@ -114,7 +123,38 @@ const App = ({ devId, dtuId, historyAllData }) => {
         title={<Title title={t("自动模式下发")} />}
         onOk={async () => {
           const publicKeyRes = await getPublicKeySever();
-         
+          if (publicKeyRes?.data) {
+            const publicKey = publicKeyRes?.data;
+            if (cmdTypeId == 7005) {
+            let durationList1=  durationList.map(it=>{
+                  return{
+                    action:it.action,
+                    targetSoc:it.targetSoc,
+                    pcsPower:it.pcsPower,
+                    startHour:it?.timeStramp?.split('~')?.[0]?.split(':')?.[0],
+                    endHour:it?.timeStramp?.split('~')?.[1]?.split(':')?.[0],
+                    startMin:it?.timeStramp?.split('~')?.[0]?.split(':')?.[1],
+                    endMin:it?.timeStramp?.split('~')?.[1]?.split(':')?.[1],
+                  }
+              })
+              const values = await form1.validateFields();
+              let { data } = await sendBurCmd2({
+                mode: 1,
+                dtuId,
+                cmdTypeId,
+                devId: devId.pcsDevId,
+                password: getEncrypt(publicKey, values.password),
+                durationList1
+              });
+              if (data.code == 'ok') {
+                message.success(t('命令下发成功'));
+                setIsModalOpen(false)
+              } else {
+                message.warning(data?.msg);
+              }
+
+            }
+          }
         }
         }
         onCancel={() => {

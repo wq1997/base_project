@@ -44,12 +44,13 @@ const Cabinet = () => {
             { label: t('设备详情'), key: 'DeviceDetails' },
             { label: t('pack详情'), key: 'PackDetails' },
             { label: t('策略配置'), key: 'Policy' },
-            { label: t('策略配置'), key: 'CzekhPolicy2' },
 
         ]) : setPageTypeList([
             { label: t('总览'), key: 'OverView' },
             { label: t('设备详情'), key: 'DeviceDetails' },
             { label: t('pack详情'), key: 'PackDetails' },
+            { label: t('策略配置'), key: 'CzekhPolicy2' },
+
         ]);
     }
     const [PageTypeList, setPageTypeList] = useState([

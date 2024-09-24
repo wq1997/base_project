@@ -68,7 +68,7 @@ function Com({ id }) {
     }
     const getInitData = async () => {
         let { data } = await getBurDtuDevInfo2({ dtuId: id });
-        setInitAllData(data.data);
+        setInitAllData(data?.data);
         setDevId({
             pcsDevId: data?.data[0].devInfo?.pcs,
             pcs1DevId: data.data[0].devInfo?.pcsBranch[0],
@@ -91,25 +91,6 @@ function Com({ id }) {
     return (
         <div className={styles.content} style={{ backgroundColor: token.darkbgc, padding: '2.6042rem 1.8229rem 0 1.8229rem', color: token.color2 }}>
             <Space style={{ width: '100%' }} size={30} direction="vertical" >
-                <div className={styles.Pcs}> 
-                    <Flex gap={18}>
-                        <div className={styles.label}>{'PCS'}:</div>
-                        <Flex gap={30}>
-                            <div className={styles.selectionBox} style={{ backgroundColor: token.buttonBgc }} onClick={() => changeType(1)} >{t('PCS开机')}</div>
-                            <div className={styles.selectionBox} style={{ backgroundColor: token.buttonBgc }} onClick={() => changeType(0)} >{t('PCS关机')}</div>
-                            <div className={styles.selectionBox} style={{ backgroundColor: token.buttonBgc }} onClick={() => changeType(0)} >{t('PCS复位')}</div>
-                        </Flex>
-                    </Flex></div>
-                <div className={styles.Bms}>
-                    <Flex gap={18}>
-                        <div className={styles.label}>{'BMS'}:</div>
-                        <Flex gap={30}>
-                            <div className={styles.selectionBox} style={{ backgroundColor: token.buttonBgc }} onClick={() => changeType(1)} >{t('BMS开机')}</div>
-                            <div className={styles.selectionBox} style={{ backgroundColor: token.buttonBgc }} onClick={() => changeType(0)} >{t('BMS关机')}</div>
-                            <div className={styles.selectionBox} style={{ backgroundColor: token.buttonBgc }} onClick={() => changeType(0)} >{t('BMS复位')}</div>
-                        </Flex>
-                    </Flex>
-                </div>
                 <div className={styles.mode}>
                     <Flex gap={18}>
                         <div className={styles.label}>{t('模式')}:</div>
