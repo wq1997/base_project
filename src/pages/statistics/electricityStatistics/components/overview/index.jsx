@@ -7,7 +7,6 @@ import { CardModel } from "@/components";
 import ReactECharts from "echarts-for-react";
 import { useSelector, FormattedMessage, useIntl } from "umi";
 import { getEnergyFeeByTime } from '@/services/report'
-import { getGridPointList, } from '@/services/plant'
 import { downLoadExcelMode } from "@/utils/utils";
 const { RangePicker } = DatePicker;
 function Com(props) {
@@ -215,24 +214,13 @@ function Com(props) {
             width: 100,
         },
     ];
-    const changeGrid = (e) => {
-        setCurrntGrid(e);
-    };
-    const getGrid = async () => {
-        let { data: grid } = await getGridPointList({
-            plantId: localStorage.getItem('plantId')
-        })
-        setGrids([{id:"ALL",gridPointName:getTranslation('电站总计')},...grid?.data]);
-        setCurrntGrid('ALL');
-        getData();
-    }
+  
+
     const changeRangeDate = (val, str) => {
         setStartTime(str?.[0]);
         setEndTime(str?.[1]);
     }
-    useEffect(() => {
-        getGrid();
-    }, [token,])
+
 
     return (
         <div className={styles.content}>

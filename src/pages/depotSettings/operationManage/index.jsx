@@ -1,6 +1,5 @@
 import { theme, Select, Row, Space, Button, Modal, Form, Input, message, Tabs,InputNumber } from "antd";
 import { Title } from "@/components";
-import { getGridPointList, getOMCommands, sendOMCommands } from '@/services/policy'
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { FORM_REQUIRED_RULE, } from "@/utils/constants";
 import { useSelector, useIntl } from "umi";
@@ -60,33 +59,11 @@ const OperationManage = () => {
         )
     }
     useEffect(() => {
-        getInit();
     }, []);
     useEffect(() => {
         getInitData();
     }, [gridId]);
-    const changeGrid = (val) => {
-        setCurrentGrid(
-            seletOption.find(it => it.value == val)
-        )
-        setGridId(val);
-        setDtuId( seletOption.find(it => it.value == val).dtuId)
-    }
-    const getInit = async () => {
-        let { data } = await getGridPointList({ plantId: localStorage.getItem('plantId') });
-        let arr = [];
-        data?.data?.map(it => {
-            arr.push({
-                label: it.gridPointName,
-                value: it.id,
-                ...it
-            })
-        })
-        setSelectOption([...arr]);
-        setGridId(arr[0]?.value);
-        setCurrentGrid(arr[0]);
-        setDtuId(data?.data?.[0]?.dtuId);
-    }
+
 
     const getInitData = async () => {
         let { data: res } = await getOMCommands({ gridPointId: gridId });
@@ -104,8 +81,8 @@ const OperationManage = () => {
                         <MyButton text="关机" keyObj='pcsStartStop' valueObj={2} cmdKey='7002' devId={item.devId} color={{background:token.barColor[0],color:'#fff'}}/>
                         <MyButton text="复位" keyObj='pcsStartStop' valueObj={3} cmdKey='7002'devId={item.devId} color={{background:token.barColor[0],color:'#fff'}}/>
                         <MyButton text="BMS开机" keyObj='pcsStartStop' valueObj={4}  cmdKey='7016' devId={item.devId} color={{background:token.barColor[5],color:'#fff'}}/>
-                        <MyButton text="分闸" keyObj='mcsSwitchOnOff' valueObj={0}  cmdKey='7015'  devId={item.mcsDevId}  color={{background:token.barColor[6],color:'#fff'}}/>
-                        <MyButton text="合闸" keyObj='mcsSwitchOnOff' valueObj={1}  cmdKey='7015' devId={item.mcsDevId}  color={{background:token.barColor[6],color:'#fff'}}/>
+                        <MyButton text="分闸" keyObj='mcsSwitchOnOff' valueObj={1}  cmdKey='7015'  devId={item.mcsDevId}  color={{background:token.barColor[6],color:'#fff'}}/>
+                        <MyButton text="合闸" keyObj='mcsSwitchOnOff' valueObj={0}  cmdKey='7015' devId={item.mcsDevId}  color={{background:token.barColor[6],color:'#fff'}}/>
                         <MyButton text="功率设置"  keyObj='pcsPower' cmdKey='7019' devId={item.devId}/>
                         <span>{item.pcsStatus}</span>
                         <span>{item.power}</span>
@@ -142,20 +119,6 @@ const OperationManage = () => {
             <Space size={8} direction="vertical" style={{ width: '100%' }}>
                 <div style={{ backgroundColor: token.titleCardBgc, height: 100, padding: '24px 37px', boxSizing: 'border-box' }}>
                     <Space size={44}>
-                        {/* <Row align="middle" style={{ height: '100%' }}>
-                            <span>{t('并网点')}：</span>
-                            <Select
-                                style={{ width: 240, }}
-                                placeholder={t('请选择并网点')}
-                                key={seletOption[0]?.value}
-                                defaultValue={seletOption[0]?.value}
-                                onChange={changeGrid}
-                            >{seletOption && seletOption.map(item => {
-                                return (<Option key={item.value} value={item.value}>{item.label}</Option>);
-                            })
-                                }
-                            </Select>
-                        </Row> */}
                         <Space size={33}>
                             <Button type="primary" size="large" onClick={() => setControlModeOpen(true)}>{t('控制模式')}</Button>
                             <Button type="primary" size="large" onClick={() => setPowerSettingOpen(true)}>{t('总功率设置')}</Button>

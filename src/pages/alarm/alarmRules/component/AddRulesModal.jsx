@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef, } from 'react';
 import { Button, Modal, Form, theme, Select, Switch, InputNumber } from 'antd';
 import { useSelector, useIntl } from "umi";
-import { getGridPointList, } from '@/services/plant'
 
 export const formList = [
   {
@@ -81,19 +80,12 @@ const App = (props) => {
   useEffect(() => {
     form.setFieldsValue(props.formData)
   }, [props.formData]);
-  useEffect(() => {
-    getGrid();
-  }, [token,])
+  
   const formRef = useRef();
   const [form] = Form.useForm();
 
   const [grids, setGrids] = useState([]);
-  const getGrid = async () => {
-    let { data: grid } = await getGridPointList({
-      plantId: localStorage.getItem('plantId')
-    })
-    setGrids(grid?.data);
-  }
+ 
   const onFinish = async () => {
     try {
       const values = await form.validateFields();

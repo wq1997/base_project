@@ -5,7 +5,6 @@ import styles from './index.less'
 import { theme, Input, Space, Select, Form, message, Button, Table, Popconfirm } from "antd";
 import dayjs from 'dayjs';
 import { useSelector, useIntl } from "umi";
-import { getGridPointList, } from '@/services/plant'
 import { getStrategyInfo, saveStrategy } from '@/services/policy'
 const { Option } = Select;
 function Com(props) {
@@ -19,9 +18,6 @@ function Com(props) {
   const [editPlanOpen, setEditPlanOpen] = useState(false); // 策略详情
   const [currentIndex, setCurrentIndex] = useState(); // 策略Id
   const [detailsData, setDetailsData] = useState(); // 策略详情
-  useEffect(() => {
-    getInit();
-  }, []);
 
   useEffect(() => {
     getDetails();
@@ -39,7 +35,7 @@ function Com(props) {
 
 
   const getDetails = async () => {
-    let { data } = await getStrategyInfo({ gridPointId: gridId });
+    let { data } = await getStrategyInfo({ dtuId: localStorage.getItem('dtuId') });
     setDetailsData(data?.data);
     form.setFieldsValue(data?.data);
     if (data?.data?.planList) {
@@ -61,29 +57,7 @@ function Com(props) {
     setTitle('编辑策略');
     setEditPlanOpen(true);
   }
-  const getInit = async () => {
-    let { data } = await getGridPointList({ plantId: localStorage.getItem('plantId') });
-    let arr = [];
-    data?.data?.map(it => {
-      arr.push({
-        label: it.gridPointName,
-        value: it.id,
-        ...it
-      })
-    })
-    setSelectOption([...arr]);
-    setGridId(arr[0]?.value);
-    setCurrentGrid(arr[0]);
-    form.setFieldValue('gridPointId', arr[0]?.value)
 
-  }
-  const changeGrid = (val) => {
-    setCurrentGrid(
-      seletOption.find(it => it.value == val)
-    )
-    setGridId(val);
-    form.setFieldValue('gridPointId', val)
-  }
   const saveAll = async () => {
     try {
       form.setFieldValue('planList', strategyTableData);
@@ -92,8 +66,8 @@ function Com(props) {
         item.startDate = dayjs(item.startDate).format('MM-DD');
         item.endDate = dayjs(item.endDate).format('MM-DD');
       })
-      console.log(values,'请求');
-      let { data } = await saveStrategy(values);
+      console.log(values, '请求');
+      let { data } = await saveStrategy({...values,dtuId:localStorage.getItem('dtuId')});
       if (data?.data) {
         message.success(t('保存成功'));
       } else {

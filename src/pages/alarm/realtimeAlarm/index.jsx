@@ -6,7 +6,6 @@ import { CardModel } from "@/components";
 import styles from "./index.less";
 import { Pagination, theme,Select} from "antd"
 import { getNowAlarmsWithPage } from "@/services/alarm"
-import { getGridPointList,  } from '@/services/plant'
 
 let clum=[...alarmTableColums];
 clum[7]={};
@@ -49,7 +48,6 @@ const RealtimeAlarm = () => {
   }
   useEffect(() => {
     getData();
-    getGrid();
   }, []);
   useEffect(() => {
     getData();
@@ -77,16 +75,7 @@ const RealtimeAlarm = () => {
     setCurrent(page);
     getData(page);
   }
-  const changeGrid = (e) => {
-    setCurrntGrid(e);
-  };
-  const getGrid = async () => {
-    let { data: grid } = await getGridPointList({
-        plantId: localStorage.getItem('plantId')
-    })
-    setGrids(grid?.data);
-    // setCurrntGrid(grid?.data?.[0]?.id);
-}
+
   return (
     <div style={{width:'100%',height:'calc(100% - 67px)',padding:'0 0 10px 0'}}>
       {/* <div className={styles.grid} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal, }}>

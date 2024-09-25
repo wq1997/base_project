@@ -6,7 +6,7 @@ import { useSelector, useIntl } from "umi";
 import { getBmsNowData, getDevLiveDataList,getBmsDevList } from '@/services/deviceTotal'
 const { Option } = Select;
 function Com({ id }) {
-    const [data, setData] = useState('');
+    const [data, setData] = useState([]);
     const [dataBmc, setDataBmc] = useState([]);
     const [currentClu, setCurrentClu] = useState(0);
     const [option, setOption] = useState([]);
@@ -199,7 +199,7 @@ function Com({ id }) {
     ])
 
     const getData = async (id) => {
-        let { data } = await getDevLiveDataList({ id })
+        let { data } = await getDevLiveDataList({ devIds:id })
         setData(data?.data);
     }
     const dataInit = async () => {
@@ -213,6 +213,8 @@ function Com({ id }) {
     const handleChange = (val, res) => {
         setBmsIds(val);
     };
+    console.log(data,11111);
+    
     return (
         <div className={styles.detailsWrap} >
               <div className={styles.title}>
@@ -236,21 +238,25 @@ function Com({ id }) {
 
             </div>
             <div className={styles.heapRealTimeData}>
-                <CardModel
-                    title={t('运行数据')}
-                    content={
-                        <div className={styles.content} style={{ backgroundColor: token.lightTreeBgc }}>
-                            {BmsRealData?.map((it, index) => {
-                                return (
-                                    <div className={styles.item} style={{color:token.titleColor}}>
-                                        <span className={styles.itemKeys}>{t(it.label)}:</span>
-                                        <span className={styles.itemValues}>{data?.[it.key]}</span>
-                                    </div>
-                                )
-                            })}
-                        </div>
-                    }
-                />
+          {  data?.map(one=>{
+            return  <CardModel
+            title={one.name}
+            content={
+                <div className={styles.content} style={{ backgroundColor: token.lightTreeBgc }}>
+                    {BmsRealData?.map((it, index) => {
+                        return (
+                            <div className={styles.item} style={{color:token.titleColor}}>
+                                <span className={styles.itemKeys}>{t(it.label)}:</span>
+                                <span className={styles.itemValues}>{one?.[it.key]}</span>
+                            </div>
+                        )
+                    })}
+                </div>
+            }
+        />
+
+          }) } 
+              
             </div>
         </div>
     )

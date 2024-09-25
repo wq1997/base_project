@@ -4,11 +4,10 @@ const path = ''
 export const apigetPlantList = () => {
   return axiosInstance.get(`${path}/getPlantList`);
 }
-// 获取并网点列表
-export const getGridPointList = (payload) => {
-  return axiosInstance.get(`${path}/getGridPointList?plantId=${payload.plantId}`);
+// 获取dtu信息
+export const getDtu = (payload) => {
+  return axiosInstance.get(`${path}/getDtu?plantId=${payload.plantId}`);
 }
-
 // 新增电站
 export const apiInsertPlant = (payload) => {
     return axiosInstance.post(`${path}/insertPlant`, payload);

@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import { getBaseUrl } from '@/services/request'
 import img from '../../../src/assets/imges/login.png'
 import img_title from '../../../src/assets/imges/login_title.png'
-import { apigetPlantList,  } from '@/services/plant'
+import { apigetPlantList,getDtu  } from '@/services/plant'
 
 const { Title } = Typography;
 
@@ -73,6 +73,9 @@ const Login = () => {
   const getData = async () => {
     const { data } = await apigetPlantList();
     localStorage.setItem('plantId',data?.data?.[0]?.plantId);
+    const {data:dtu}=await getDtu({plantId:data?.data?.[0]?.plantId});
+    localStorage.setItem('dtuId',dtu?.data?.id);
+    
     history.push("/index/home");
 
 }

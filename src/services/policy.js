@@ -1,9 +1,9 @@
 import axiosInstance from "./request";
 const path = ''
 // 策略列表
-export const getStrategyList = (payload) => {
-    return axiosInstance.get(`${path}/strategy/getStrategyList?gridPointId=${payload.gridPointId}`);
-}
+// export const getStrategyList = (payload) => {
+//     return axiosInstance.get(`${path}/strategy/getStrategyList?gridPointId=${payload.gridPointId}`);
+// }
 // 基础配置
 export const sendBasicParams = (payload) => {
     return axiosInstance.post(`${path}/strategy/sendBasicParams`, payload);
@@ -22,7 +22,7 @@ export const deleteStrategy = (payload) => {
 }
 // 策略列表
 export const getStrategyInfo = (payload) => {
-    return axiosInstance.get(`${path}/strategy/getStrategyList?gridPointId=${payload.gridPointId}`);
+    return axiosInstance.get(`${path}/strategy/getStrategyList?dtuId=${payload.dtuId}`);
 }
 // 获取日程列表
 export const getStrategyPlanList = (payload) => {

@@ -178,7 +178,7 @@ function Com({ id }) {
     }
 
     const getData = async (id) => {
-        let { data = {} } = await getPcsNowDataById({ id })
+        let { data = {} } = await getPcsNowDataById({ devIds:id })
         setData(data?.data);
     }
     let branch = [
@@ -202,7 +202,6 @@ function Com({ id }) {
     const handleChange = (val, res) => {
         setPcsIds(val);
     };
-    console.log(data, 'data');
 
     return (
         <div className={styles.detailsWrap}>

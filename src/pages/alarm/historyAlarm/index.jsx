@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react'
 import { useSelector, useIntl } from "umi";
 import styles from "./index.less";
 import { Pagination, Select, Input, theme, Button, DatePicker } from "antd"
-import { getGridPointList,  } from '@/services/plant'
 import { getHistoryAlarmsByOptionsWithPage, getHistoryAlarmsStatistics } from "@/services/alarm"
 import dayjs from 'dayjs';
 const RealtimeAlarm = () => {
@@ -37,19 +36,8 @@ const RealtimeAlarm = () => {
     }
   }, [])
 
-  useEffect(() => {
-    getGrid();
-}, [token,])
-  const getGrid = async () => {
-    let { data: grid } = await getGridPointList({
-        plantId: localStorage.getItem('plantId')
-    })
-    setGrids(grid?.data);
-    // setCurrntGrid(grid?.data?.[0]?.id);
-}
-const changeGrid = (e) => {
-  setCurrntGrid(e);
-};
+
+
   const handleWindowResize = () => {
     setScreenH(document.documentElement.clientHeight || document.body.clientHeight)
   }
