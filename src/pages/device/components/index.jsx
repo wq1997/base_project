@@ -11,6 +11,7 @@ import CzekhPolicy2 from './CzekhPolicy2.0/index'
 import { theme, Tabs } from "antd";
 import { useEffect } from 'react';
 import classNames from "classnames";
+import { getBurDtuDevInfo2,  } from '@/services/policy'
 
 const defaultActiveKey = "OverView";
 
@@ -38,20 +39,26 @@ const Cabinet = () => {
     useEffect(() => {
         getInitData();
     }, [locale])
-    const getInitData =  () => {
-        getQueryString("type")==14 ? setPageTypeList([
-            { label: t('总览'), key: 'OverView' },
-            { label: t('设备详情'), key: 'DeviceDetails' },
-            { label: t('pack详情'), key: 'PackDetails' },
-            { label: t('策略配置'), key: 'Policy' },
-
-        ]) : setPageTypeList([
+    const getInitData =  async() => {
+        let { data } = await getBurDtuDevInfo2({ dtuId:  getQueryString("id") });
+        getQueryString("type")==16 ? 
+        setPageTypeList([
             { label: t('总览'), key: 'OverView' },
             { label: t('设备详情'), key: 'DeviceDetails' },
             { label: t('pack详情'), key: 'PackDetails' },
             { label: t('策略配置'), key: 'CzekhPolicy2' },
-
-        ]);
+        ]):(
+            data.data[0].devInfo?.pcsBranch?.length==2?setPageTypeList([
+            { label: t('总览'), key: 'OverView' },
+            { label: t('设备详情'), key: 'DeviceDetails' },
+            { label: t('pack详情'), key: 'PackDetails' },
+            { label: t('策略配置'), key: 'Policy' },
+        ]): setPageTypeList([
+            { label: t('总览'), key: 'OverView' },
+            { label: t('设备详情'), key: 'DeviceDetails' },
+            { label: t('pack详情'), key: 'PackDetails' },
+            { label: t('策略配置'), key: 'CzekhPolicy2' },
+        ]))
     }
     const [PageTypeList, setPageTypeList] = useState([
    

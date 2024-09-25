@@ -12,14 +12,12 @@ import {
 
 const App = ({ devId, dtuId, historyAllData }) => {
   const { token } = theme.useToken();
-  const [dataSource, setDataSource] = useState();
-  const [rangePower, setRangePower] = useState(0);
+  // const [dataSource, setDataSource] = useState();
+  // const [rangePower, setRangePower] = useState(0);
   const [cmdTypeId, setCmdTypeId] = useState(0);
   const [durationList, setDurationList] = useState([]);
   const [tabValue, setTabValue] = useState(0);
   const [form] = Form.useForm();
-  const [isLive, setIsLive] = useState(false);
-
   const intl = useIntl();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form1] = Form.useForm();
@@ -32,11 +30,15 @@ const App = ({ devId, dtuId, historyAllData }) => {
     return msg
   }
 
-  // useEffect(() => {
-  //   initData();
-  // }, [historyAllData])
+  useEffect(() => {
+    initData();
+  }, [historyAllData])
 
-
+  const initData = () => {
+    form.setFieldsValue({
+      durationList:historyAllData?.durationList1
+    })
+  }
 
   return (
     <div className={styles.manual}>
@@ -49,7 +51,6 @@ const App = ({ devId, dtuId, historyAllData }) => {
               onClick={async () => {
                 const { durationList } = await form.getFieldsValue("durationList");
                 if (durationList && durationList?.length > 0) {
-                  console.log(durationList, 1111111);
                   setDurationList(durationList);
                   setIsModalOpen(true);
                   setCmdTypeId(7005);
