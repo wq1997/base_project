@@ -34,6 +34,16 @@ export default defineConfig({
     '@/hooks': path.resolve(__dirname,'src/hooks'),
     '@/utils': path.resolve(__dirname,'src/utils'),
   },
+  codeSplitting: {
+    jsStrategy: 'granularChunks',
+  },
+  cssMinifier: 'esbuild',
+  cssMinifierOptions: {
+    minifyWhitespace: true,
+    minifySyntax: true,
+  },
+  hash: true,
+  mfsu: {},
   chainWebpack: (config) => {
     config
       .plugin('replace')
