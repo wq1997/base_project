@@ -1934,6 +1934,7 @@ export default {
     '液冷环境温度': 'Ambient temperature of liquid cooling',
     '放电': 'Discharge',
     "上海采日能源科技有限公司 - 沪ICP备": 'Shanghai Sermatec Energy Technology Co.,Ltd',
+    "沪ICP备17053140号": "Shanghai ICP Registration No. 17053140",
     '时段': 'Time interval',
     '类型': 'Type',
     '是必填的!': 'is required!',
