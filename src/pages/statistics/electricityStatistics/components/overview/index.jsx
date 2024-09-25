@@ -221,7 +221,7 @@ function Com(props) {
         let { data: grid } = await getGridPointList({
             plantId: localStorage.getItem('plantId')
         })
-        setGrids([{id:"ALL",gridPointName:getTranslation('电站总计')},...grid?.data]);
+        setGrids([{id:"ALL",gridPointName:getTranslation('电站总计')},...res?.data?.grid?.data]);
         setCurrntGrid('ALL');
         getData();
     }
