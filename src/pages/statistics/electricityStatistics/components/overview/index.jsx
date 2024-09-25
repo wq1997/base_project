@@ -214,8 +214,17 @@ function Com(props) {
             width: 100,
         },
     ];
-  
-
+    const changeGrid = (e) => {
+        setCurrntGrid(e);
+    };
+    const getGrid = async () => {
+        let { data: grid } = await getGridPointList({
+            plantId: localStorage.getItem('plantId')
+        })
+        setGrids([{id:"ALL",gridPointName:getTranslation('电站总计')},...grid?.data]);
+        setCurrntGrid('ALL');
+        getData();
+    }
     const changeRangeDate = (val, str) => {
         setStartTime(str?.[0]);
         setEndTime(str?.[1]);
