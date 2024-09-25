@@ -3,7 +3,7 @@ import { CardModel } from "@/components";
 import { theme, Select } from "antd";
 import styles from './index.less'
 import { useSelector, useIntl } from "umi";
-import { getBmsNowData, getBmcNowData,obtainBMSClustersList } from '@/services/deviceTotal'
+import { getBmsNowData, getBmcNowData,obtainBMSClustersList,getOfChildDevices } from '@/services/deviceTotal'
 const { Option } = Select;
 function Com({ id }) {
     const [data, setData] = useState('');

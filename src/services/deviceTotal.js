@@ -189,3 +189,8 @@ export const getPcsDevList = (payload) => {
 export const getDevLiveDataList = (payload) => {
     return axiosInstance.post(`/getDevLiveDataList`,payload);
 }
+
+// 获取设备下子设备列表
+export const getOfChildDevices = (payload) => {
+    return axiosInstance.get(`/getOfChildDevices?associateId=${payload.id}?type=4`);
+}
