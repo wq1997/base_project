@@ -36,7 +36,7 @@ const App = ({ devId, dtuId, historyAllData }) => {
 
   const initData = () => {
     form.setFieldsValue({
-      durationList:historyAllData?.durationList1
+      durationList:historyAllData?.policyDurationList1
     })
   }
 
@@ -127,7 +127,7 @@ const App = ({ devId, dtuId, historyAllData }) => {
           if (publicKeyRes?.data) {
             const publicKey = publicKeyRes?.data;
             if (cmdTypeId == 7005) {
-            let durationList1=  durationList.map(it=>{
+            let policyDurationList1=  durationList.map(it=>{
                   return{
                     action:it.action,
                     targetSoc:it.targetSoc,
@@ -138,7 +138,7 @@ const App = ({ devId, dtuId, historyAllData }) => {
                     endMin:it?.timeStramp?.split('~')?.[1]?.split(':')?.[1],
                   }
               })
-              if (durationList1.length>24) {
+              if (policyDurationList1.length>24) {
                 message.error(intl.formatMessage({ id: '最多添加24条数据' }))
                 return
               }
@@ -149,7 +149,7 @@ const App = ({ devId, dtuId, historyAllData }) => {
                 cmdTypeId,
                 devId: devId.pcsDevId,
                 password: getEncrypt(publicKey, values.password),
-                durationList1
+                policyDurationList1
               });
               if (data.code == 'ok') {
                 message.success(t('命令下发成功'));
