@@ -138,6 +138,10 @@ const App = ({ devId, dtuId, historyAllData }) => {
                     endMin:it?.timeStramp?.split('~')?.[1]?.split(':')?.[1],
                   }
               })
+              if (durationList1.length>24) {
+                message.error(intl.formatMessage({ id: '最多添加24条数据' }))
+                return
+              }
               const values = await form1.validateFields();
               let { data } = await sendBurCmd2({
                 mode: 1,
