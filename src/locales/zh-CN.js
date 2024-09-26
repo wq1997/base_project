@@ -2,6 +2,7 @@ export default {
     app: {
         title: '采日能源储能管理系统',
         title1: '储能管理系统',
+        title_gdgy: '储能管理系统',
         Query: '查询',
         Export: '导出',
         Language: '语言',

@@ -15,13 +15,12 @@ const { Title } = Typography;
 
 const Login = () => {
   const { token } = theme.useToken();
+  const { locale } = useSelector(state => state.global);
   const dispatch = useDispatch();
   const [codeImgUrl, setCodeImgUrl] = useState(`${getBaseUrl()}/user/getKaptchaImage`);
   const [showImg, setShowImg] = useState(false);
-  const [language, setLanguage] = useState(localStorage.getItem('locale') == 'zh-CN' ? 1 : 3);
-
-  const global = useSelector(state => state.global);
-
+  const [language, setLanguage] = useState(locale == 'zh-CN' ? 1 : 3);
+  
   const intl = useIntl();
   const t = (id) => {
     const msg = intl.formatMessage(
@@ -85,7 +84,7 @@ const Login = () => {
       className={styles.login}
     >
       <Title className={styles.Title} level={1} >
-        <FormattedMessage id="app.title1" />
+        <FormattedMessage id="app.title_gdgy" />
       </Title>
       <div className={styles.form}>
         <div
