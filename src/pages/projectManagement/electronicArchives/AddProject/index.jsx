@@ -34,6 +34,7 @@ import {
 import { getBaseUrl } from "@/services/request";
 import { jsonToUrlParams } from "@/utils/utils";
 import styles from "./index.less";
+import { cycleList } from "../index";
 
 const { Panel } = Collapse;
 
@@ -1948,20 +1949,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                             label: "name",
                                             value: "code",
                                         }}
-                                        options={[
-                                            { name: "一月一次", code: 1 },
-                                            { name: "两月一次", code: 2 },
-                                            { name: "三月一次", code: 3 },
-                                            { name: "四月一次", code: 4 },
-                                            { name: "五月一次", code: 5 },
-                                            { name: "六月一次", code: 6 },
-                                            { name: "七月一次", code: 7 },
-                                            { name: "八月一次", code: 8 },
-                                            { name: "九月一次", code: 9 },
-                                            { name: "十月一次", code: 10 },
-                                            { name: "十一月一次", code: 11 },
-                                            { name: "十二月一次", code: 12 },
-                                        ]}
+                                        options={cycleList}
                                     />
                                 </Form.Item>
                             </Col>
