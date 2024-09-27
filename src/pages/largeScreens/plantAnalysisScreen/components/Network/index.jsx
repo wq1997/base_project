@@ -1,9 +1,6 @@
-import { Charts3D, Charts2_5D, ScrollTable } from "@/components";
-import Title from "../Title";
+import { ScrollTable } from "@/components";
 import styles from "./index.less";
 import Map from "@/pages/largeScreens/components/map";
-import Header from "../Header";
-import classNames from "classnames";
 import { Form, Select, Input, Badge } from "antd";
 import { useState, useEffect } from "react";
 import { getNetScreenData as getNetScreenDataServer } from "@/services/largeScreen";

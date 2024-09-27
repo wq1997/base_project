@@ -188,7 +188,7 @@ const EditOrCheck = () => {
                                 </Form.Item>
                                 {
                                     data?.editData?.status === "REFUSED" &&
-                                    <Form.Item name="refusedReson" label="拒绝原因" rules={[{ ...FORM_REQUIRED_RULE }]} hidden={!type}>
+                                    <Form.Item name="refusedReson" label="拒绝原因" hidden={!type}>
                                         {data?.editData?.refusedReson}
                                     </Form.Item>
                                 }
