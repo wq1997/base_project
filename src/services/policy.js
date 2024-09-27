@@ -66,7 +66,7 @@ export const savePricePlan = (payload) => {
 }
 // 获取运维命令
 export const getOMCommands = (payload) => {
-    return axiosInstance.get(`${path}/strategy/getOMCommands?gridPointId=${payload.gridPointId}`);
+    return axiosInstance.get(`${path}/strategy/getOMCommands?plantId=${payload.plantId}`);
 }
 // 下发运维命令
 export const sendOMCommands = (payload) => {

@@ -431,11 +431,11 @@ function Com({ id }) {
                                 }}
                             />
                         </div>
-                        <div className={styles.content} >
+                        <div className={styles.content} style={{backgroundColor: token.lightTreeBgc}}>
                             {one.data?.map((it, index) => {
                                 return (
                                     // <> {it.label}</>
-                                    <div className={styles.item} style={{ backgroundColor: token.lightTreeBgc, color: token.colorLittle }}>
+                                    <div className={styles.item} style={{  color: token.titleColor }}>
                                         <span className={styles.itemKeys}>{t(it?.label)}:</span>
                                         <span className={styles.itemValues}>{data?.[one?.key]?.[one.index]?.[it.key]}</span>
                                     </div>

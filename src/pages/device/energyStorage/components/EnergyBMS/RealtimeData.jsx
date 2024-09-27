@@ -217,7 +217,7 @@ function Com({ id }) {
                 <Select
                     mode="multiple"
                     style={{
-                        width:'10.4167rem',
+                        width:'12.5rem',
                     }}
                     placeholder="Please select"
                     value={bmsIds}

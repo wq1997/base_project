@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { theme, Select, } from "antd";
+import { theme, Select,Cascader } from "antd";
 import styles from './index.less'
 import { useSelector, useIntl } from "umi";
 import Cell1 from '@/assets/svg/cell1.svg'
@@ -7,15 +7,39 @@ import Cell2 from '@/assets/svg/cell2.svg'
 import CellDark1 from '@/assets/svg/cellDark1.svg'
 import CellDark2 from '@/assets/svg/cellDark2.svg'
 import cellTem from '@/assets/svg/cellTem.svg'
-import { fetchCellNowData, obtainBMSClustersList } from '@/services/deviceTotal'
+import { fetchCellNowData, getBmsDevList,getOfChildDevices } from '@/services/deviceTotal'
 import { getQueryString } from "@/utils/utils";
 
 const { Option } = Select;
 function Com({ id }) {
     const { token } = theme.useToken();
-    const activitesRef = useRef([]);
     const [data, setData] = useState();
     const [cluster, setCluster] = useState();
+    const [options, setOptions] = useState([]);
+    const [value, setValue] = useState([]);
+    const onChange = (value, selectedOptions) => {
+        console.log(value, selectedOptions);
+        setValue(value);
+
+    };
+    const loadData = async (selectedOptions) => {
+        const targetOption = selectedOptions[selectedOptions.length - 1];
+        const { data = {} } = await getOfChildDevices({ associateId: targetOption.id });
+        // load options lazily
+        setTimeout(() => {
+            let arr = [];
+            data?.data?.map(it => {
+                arr?.push({
+                    label: it.name,
+                    value: it.id,
+                })
+            })
+            targetOption.children = [
+                ...arr
+            ];
+            setOptions([...options]);
+        }, 200);
+    };
     const intl = useIntl();
     const t = (id) => {
         const msg = intl.formatMessage(
@@ -33,34 +57,43 @@ function Com({ id }) {
     }, [token]);
     useEffect(() => {
         getClustersData();
-    }, [id, cluster])
+    }, [id, value])
     const getClustersData = async () => {
-        let { data } = await fetchCellNowData({ id: cluster });
+        let { data } = await fetchCellNowData({ id: value[1]});
         setData(data?.data)
     }
 
     const getOption = async () => {
-        let { data } = await obtainBMSClustersList({ id })
+        let { data = {} } = await getBmsDevList({
+            plantId: localStorage.getItem('plantId')
+        })
         let arr = [];
         data?.data?.map((it, i) => {
-           arr.push({
+            arr.push({
                 ...it,
                 label: it.name,
-                value: it.id
+                value: it.associateId,
+                isLeaf: false,
+                disableCheckbox: true
             })
-        })
-        activitesRef.current = arr;
-        setCluster(arr?.[0]?.value)
+        });
+        const { data: res = {} } = await getOfChildDevices({ associateId: arr[0].id });
+        let newArr = []
+        res?.data?.map(it => {
+            newArr?.push({
+                label: it.name,
+                value: it.id,
+            })
+        });
+        arr[0].children = [...newArr];
+        setValue([arr[0].value, res?.data?.[0]?.id]);
+        setOptions([...arr]);
     }
-    const changeCluster = (val) => {
-        setCluster(val)
-    }
-
     return (
         <div className={styles.cellDetails}>
             <div className={styles.searchHead}>
                 <span >{t('数据项')}:</span>
-                <Select
+                {/* <Select
                     className={styles.margRL}
                     style={{ width: 240 }}
                     onChange={changeCluster}
@@ -71,8 +104,18 @@ function Com({ id }) {
                         return (<Option key={item.value} value={item.value}>{t(item.label)}</Option>);
                     })
                     }
-                </Select>
-
+                </Select> */}
+                <Cascader
+                    value={value}
+                    options={options}
+                    loadData={loadData}
+                    onChange={onChange}
+                    changeOnSelect={false}
+                    showCheckedStrategy={Cascader.SHOW_CHILD}
+                    maxTagCount={1}
+                    style={{ width: '12.5rem' }}
+                    allowClear={false}
+                />
             </div>
             <div className={styles.cellContent}>
                 {data?.map(one => {
@@ -82,7 +125,7 @@ function Com({ id }) {
                             <div className={styles.packContent} style={{ backgroundColor: token.cellBgc }}>
                                 <div className={styles.packCell}>
                                     {one?.packData.map((it, index) => {
-                                        return <div className={styles.cellSingel} style={{ backgroundImage:( global.theme === "default" ? `url(${(index + 1) % 2 === 0 ? Cell2 : Cell1})`:`url(${(index + 1) % 2 === 0 ? CellDark2 : CellDark1})`), backgroundSize: '100% 100%' }}>
+                                        return <div className={styles.cellSingel} style={{ backgroundImage: (global.theme === "default" ? `url(${(index + 1) % 2 === 0 ? Cell2 : Cell1})` : `url(${(index + 1) % 2 === 0 ? CellDark2 : CellDark1})`), backgroundSize: '100% 100%' }}>
                                             {Object.keys(it).length == 2 ? <img src={cellTem} alt="" /> : null}
                                             {it.tmp && <div className={styles.cellTmp} style={{ color: "#03B4B4" }}>{it.tmp}℃</div>}
                                             <div className={styles.cellVol} style={{ color: "#999999" }}>{it.vol}v</div>

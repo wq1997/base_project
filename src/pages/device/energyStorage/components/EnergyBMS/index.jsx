@@ -6,6 +6,10 @@ import Tab from '../../../components/Tab';
 import RealtimeData from './RealtimeData';
 import MonitoringCurves from "./MonitoringCurves";
 import AdvancedAnalytics from "./AdvancedAnalytics";
+import VolDiff from "./VolDiff";
+import TemDiff from "./TemDiff";
+import CellHistory from "./CellHistory";
+
 import BmcDetails from './BmcDetails'
 import CellDetails from "./CellDetails";
 import { theme, } from "antd";
@@ -23,7 +27,7 @@ const Cabinet = () => {
     const id = getQueryString("id");
     const onChangeTab = key => {
         setActiveKey(key);
-        history.push(`${pathname}?PageKey=${getQueryString("PageKey")}&pageType=${pageType}&activeKey=${key}&id=${id}`);
+        history.push(`${pathname}`);
     };
     const intl = useIntl();
     const t = (id) => {
@@ -38,8 +42,11 @@ const Cabinet = () => {
         {label:t('BMS数据'),key:'RealtimeData'},
         {label:t('BMC数据'),key:'BmcDetails'},
         {label:t('监测曲线'),key:'MonitoringCurves'},
-        {label:t('电芯详情'),key:'CellDetails'},
-        {label:t('高级分析'),key:'AdvancedAnalytics'},
+        {label:t('电芯实时数据'),key:'CellDetails'},
+        {label:t('电芯历史数据'),key:'CellHistory'},
+        {label:t('压差曲线'),key:'VolDiff'},
+        {label:t('温差曲线'),key:'TemDiff'},
+
     ];
     return (
         <div style={{height: '100%'}}>
@@ -48,8 +55,11 @@ const Cabinet = () => {
                 {activeKey==="RealtimeData"&&<RealtimeData id={id}/>}
                 {activeKey==="BmcDetails"&&<BmcDetails id={id}/>}
                 {activeKey==="MonitoringCurves"&&<MonitoringCurves id={id}/>}
-                {activeKey==="AdvancedAnalytics"&&<AdvancedAnalytics />}
+                {activeKey==="CellHistory"&&<CellHistory />}
                 {activeKey==="CellDetails"&&<CellDetails id={id}/>}
+                {activeKey==="VolDiff"&&<VolDiff id={id}/>}
+                {activeKey==="TemDiff"&&<TemDiff id={id}/>}
+
             </div>
         </div>
     )

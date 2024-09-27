@@ -1,7 +1,6 @@
 .content {
-    height: calc(100% - 20px);
+    margin-bottom: 10px;
     overflow: scroll;
-
     &::-webkit-scrollbar {
         display: none;
     }
@@ -45,19 +44,19 @@
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         gap: 16px 36px;
-        padding-bottom: 10px;
+        padding: 20px 25px;
+        border-radius: 8px;
         .item {
-            padding: 13px 16px;
-            box-shadow: 0px 1px 2px 0px rgba(217, 217, 217, 0.8);
+            // padding: 13px 16px;
+            // box-shadow: 0px 1px 2px 0px rgba(217, 217, 217, 0.8);
             border-radius: 8px;
             display: flex;
             // justify-content: space-around;
             .itemKeys{  
-                width: 70%;
                 text-align: left;
+                margin-right: 5px;
             }
             .itemValues{
-                width: 30%;
                 text-align: left;
             }
         }

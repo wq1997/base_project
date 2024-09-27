@@ -9,27 +9,15 @@ import { getBmsAnalyticsInitData, analyticsBmsDiffData, analyticsBmsData, getBms
 import dayjs from 'dayjs';
 import { getQueryString, downLoadExcelMode } from "@/utils/utils";
 import { useSelector, useIntl } from "umi";
-const { SHOW_CHILD } = Cascader;
 function Com(props) {
     const { token } = theme.useToken();
-    const [option, setOption] = useState([]);
     const [way, setWay] = useState(1);
-    const id = getQueryString('id') || 0;
     const [date, setDate] = useState(dayjs(new Date()));
     const [dateStr, setDateStr] = useState(dayjs(new Date()).format('YYYY-MM-DD'));
-    const [dateBottom, setDateBottom] = useState(dayjs(new Date()));
     const [packReq, setPackReq] = useState([]);
     const [packList, setPackList] = useState([]);
-    const [cellList, setCellList] = useState([]);
-    const [cellReq, setCellReq] = useState([]);
     const [optionEchartTem, setOptionEchartTem] = useState({})
-    const [optionEchartVol, setOptionEchartVol] = useState({})
-    const [optionEchartVolBot, setOptionEchartVolBot] = useState({})
-    const [optionEchartTemBot, setOptionEchartTemBot] = useState({});
-    const [vAndTExcelTitle, setVAndTExcelTitle] = useState('');
-    const [vAndTExcelData, setVAndTExcelData] = useState([]);
     const [diffData, setDiffData] = useState({});
-    const [packValueBottom, setPackValueBottom] = useState();
     const [optionBms, setOptionBms] = useState([]);
     const [bmsIds, setBmsIds] = useState([]);
 
@@ -76,20 +64,11 @@ function Com(props) {
     useEffect(() => {
         getChartData();
     }, [packReq]);
-    useEffect(() => {
-        getBottomChartData();
-
-    }, [packValueBottom, cellReq]);
     const getInitData = async () => {
         let { data } = await getBmsAnalyticsInitData({ id: bmsIds[0] });
         setPackList(data?.data?.clusterPackList);
-        setCellList(data?.data?.cellList);
         setPackReq([data?.data?.clusterPackList?.[0]?.value]);
-        setPackValueBottom(data?.data?.clusterPackList?.[0]?.value);
-        setCellReq(data?.data?.cellList?.[0]?.value)
         getChartData();
-        getBottomChartData();
-        setVAndTExcelTitle(`${data?.data?.clusterPackList?.[0]?.label}/${data?.data?.cellList?.[0]?.label}`)
     }
     const getChartData = async () => {
         let dataTypeList = [];
@@ -114,96 +93,11 @@ function Com(props) {
             dateList,
             type: way == 1 ? 2 : 1
         });
-        handelData(data?.data?.volDiff, setOptionEchartVol, 1);
         handelData(data?.data?.tempDiff, setOptionEchartTem, 2);
         setDiffData(data?.data);
     }
-    const getBottomChartData = async () => {
-        let { data } = await analyticsBmsData({
-            packValue: packValueBottom,
-            cellValue: cellReq,
-            date: dateBottom.format('YYYY-MM-DD')
-        });
-        let excelArr = [];
-        data.data?.temp?.map((it, index) => {
-            excelArr?.push({
-                time: dayjs(it.time).format('HH:mm'),
-                tempInfo: it.value,
-                volInfo: data.data?.vol[index]?.value,
-                leftTemp: data.data?.leftTemp[index]?.value,
-                rightTemp: data.data?.rightTemp[index]?.value,
-                negativeTemp: data.data?.negativeTemp[index]?.value,
-                positiveTemp: data.data?.positiveTemp[index]?.value,
-            })
-        });
-        setVAndTExcelData([...excelArr]);
-        let ser = [];
-        ser.push(dealTemp(data.data?.temp, t("采样点温度"), 0));
-        ser.push(dealTemp(data.data?.leftTemp, t("左侧熔断器温度"), 1));
-        ser.push(dealTemp(data.data?.rightTemp, t("右侧熔断器温度"), 2));
-        ser.push(dealTemp(data.data?.negativeTemp, t("负极极柱温度"), 3));
-        ser.push(dealTemp(data.data?.positiveTemp, t("正极极柱温度"), 4));
-        setOptionEchartTemBot({
-            ...baseOption,
-            series: [...ser]
-        })
-        dealDataBot(data.data?.vol, setOptionEchartVolBot, t("电压"));
-
-    }
-    const dealDataBot = (data, setHandel, title) => {
-        let arr = [];
-        data?.map((it, index) => {
-            arr.push([dayjs(it.time).format('HH:mm:ss'), it.value]);
-        });
-        setHandel({
-            ...baseOption, series: [...(option?.series || []), {
-                name: title,
-                type: 'line',
-                symbolSize: 8,
-                itemStyle: {
-                    normal: {
-                        color: token.chartLineColor[option?.series?.length || 0],
-                        lineStyle: {
-                            color: token.chartLineColor[option?.series?.length || 0],
-                            width: 2
-                        },
-                    }
-                },
-                data: arr
-            },]
-        });
-
-    };
-    const dealTemp = (data, title, i) => {
-        let arr = [];
-        data?.map((it, index) => {
-            arr.push([dayjs(it.time).format('HH:mm:ss'), it.value]);
-        });
-        return ({
-            name: title,
-            type: 'line',
-            symbolSize: 8,
-            itemStyle: {
-                normal: {
-                    color: token.chartLineColor[i],
-                    lineStyle: {
-                        color: token.chartLineColor[i],
-                        width: 2
-                    },
-                }
-            },
-            data: arr
-        })
-    }
-
-    const downLoadVAndT = () => {
-        let fileName = vAndTExcelTitle;
-        let sheetData = vAndTExcelData;
-        let sheetName = dateBottom.format('YYYY-MM-DD');
-        let sheetFilter = ['time', 'volInfo', 'tempInfo', 'leftTemp', 'rightTemp', 'negativeTemp', 'positiveTemp'];
-        let sheetHeader = [t("时间"), `${t('电压')}V`, `${t('采样点温度')}℃`, `${t('左侧熔断器温度')}℃`, `${t('右侧熔断器温度')}℃`, `${t('负极极柱温度')}℃`, `${t('正极极柱温度')}℃`];
-        downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader, sheetName)
-    };
+ 
+   
     const downLoadVAndTDiff = () => {
         var option = {
             datas: []
@@ -277,7 +171,6 @@ function Com(props) {
     const changeWay = (val) => {
         setWay(val);
         setDate(dayjs(new Date()));
-        setOptionEchartVol(baseOption);
         val === 1 ? setPackReq([packList?.[0]?.value]) : setPackReq(packList?.[0]?.value);
         val === 1 ? setDateStr(dayjs(new Date()).format('YYYY-MM-DD')) : setDateStr([dayjs(new Date()).format('YYYY-MM-DD')]);
         getChartData();
@@ -392,12 +285,13 @@ function Com(props) {
     return (
         <>
             <div className={styles.advancedAnalytics}>
-                <div style={{marginBottom:'.5208rem',paddingLeft:'1.0417rem'}}>   
-                    <span className={styles.margRL}>{t('设备')}:</span>
+                <div className={styles.searchHead}>
+                <span >{t('设备')}:</span>
                     <Select
                         style={{
                             width: '10.4167rem',
                         }}
+                        className={styles.margRL}
                         placeholder="Please select"
                         value={bmsIds}
                         onChange={handleChange}
@@ -409,10 +303,7 @@ function Com(props) {
                                 }
                             })
                         }
-                    /></div>
-
-
-                <div className={styles.searchHead}>
+                    />
                     <span >{t('对比方式')}:</span>
                     <Select
                         className={styles.margRL}
@@ -455,15 +346,7 @@ function Com(props) {
                         {t('导出')}{" "}Excel
                     </Button>
                 </div>
-                <div className={styles.echartPart}>
-                    <CardModel
-                        title={t('压差') + '(V)'}
-                        content={
-                            <div className={styles.echartPartCardwrap}>
-                                <ReactECharts layUpdate={false} notMerge={true} option={optionEchartVol} style={{ height: '100%' }} />
-                            </div>
-                        }
-                    />
+                <div className={styles.echartPartOne}>
                     <CardModel
                         title={t('温差') + '(℃)'}
                         content={
@@ -475,65 +358,7 @@ function Com(props) {
 
                 </div>
             </div>
-            <div className={styles.advancedAnalytics}>
-                <div className={styles.searchHead}>
-                    <span >{t('电池PACK')}:</span>
-                    <Select
-                        className={styles.margRL}
-                        style={{ width: 240 }}
-                        onChange={(val, arr) => { setPackValueBottom(val); setVAndTExcelTitle(`${arr.label}/${cellList.find(it => it.value == cellReq)?.label}`); console.log(`${arr.label}/${cellList.find(it => it.value == cellReq)?.label}`); }}
-                        options={packList}
-                        defaultValue={[packList?.[0]?.value]}
-                        key={packList?.[0]?.value}
-                    >
-                    </Select>
-                    <span >{t('电芯')}:</span>
-                    <Select
-                        className={styles.margRL}
-                        style={{ width: 240 }}
-                        onChange={(val, arr) => { setCellReq(val); setVAndTExcelTitle(`${packList.find(it => it.value == packValueBottom)?.label}/${arr.label}`); console.log(val, arr); }}
-                        options={cellList}
-                        defaultValue={
-                            cellList?.[0]?.value
-                        }
-                        key={cellList?.[0]?.value}
-
-                    >
-                    </Select>
-                    <span >{t('对比日期')}:</span>
-                    <DatePicker
-                        className={styles.margRL}
-                        style={{ width: 240 }}
-                        onChange={(val, str) => { setDateBottom(val); }}
-                        defaultValue={dateBottom}
-                    />
-                    <Button type="primary" className={styles.firstButton} onClick={getBottomChartData}>
-                        {t('查询')}
-                    </Button>
-                    <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downLoadVAndT}>
-                        {t('导出')}{" "}Excel
-                    </Button>
-                </div>
-                <div className={styles.echartPart}>
-                    <CardModel
-                        title={t('电压') + '(V)'}
-                        content={
-                            <div className={styles.echartPartCardwrap}>
-                                <ReactECharts layUpdate={false} notMerge={true} option={optionEchartVolBot} style={{ height: '100%' }} />
-                            </div>
-                        }
-                    />
-                    <CardModel
-                        title={t('温度') + '(℃)'}
-                        content={
-                            <div className={styles.echartPartCardwrap}>
-                                <ReactECharts layUpdate={false} notMerge={true} option={optionEchartTemBot} style={{ height: '100%' }} />
-                            </div>
-                        }
-                    />
-
-                </div>
-            </div>
+       
         </>
 
     )

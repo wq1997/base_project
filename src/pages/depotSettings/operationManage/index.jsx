@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { FORM_REQUIRED_RULE, } from "@/utils/constants";
 import { useSelector, useIntl } from "umi";
 import { getEncrypt, } from "@/utils/utils";
+import { getOMCommands,  } from '@/services/policy'
 
 const { Option } = Select;
 
@@ -66,7 +67,7 @@ const OperationManage = () => {
 
 
     const getInitData = async () => {
-        let { data: res } = await getOMCommands({ gridPointId: gridId });
+        let { data: res } = await getOMCommands({ plantId: localStorage.getItem('plantId') });
         setInitData(res?.data)
     }
     const onChange = (key) => {
