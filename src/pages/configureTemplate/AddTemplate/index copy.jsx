@@ -35,8 +35,11 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
     const [spinning, setSpinning] = useState(false);
     const [devicePositionList, setDevicePositionList] = useState([]);
     const [projectNameList, setProjectNameList] = useState([]);
+    const [dimension, setDimension] = useState();
+    const [dataTypeOptions, setDataTypeOptions] = useState([]);
+    const [deviceTypeOptions, setDeviceTypeOptions] = useState([]);
     const [dataTypeAndDeviceTypeMapping, setDataTypeAndDeviceTypeMapping] = useState();
-    const [templates, setTemplates] = useState([]);
+    const [dimensionOptions, setDimensionOptions] = useState([]);
 
     const minustestFiles = index => {
         const _testFiles = [...testFiles];
@@ -48,16 +51,19 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
         const res = await getUploadFilesInitDataServer(detailId);
         if (res?.data?.code == 0) {
             const {
+                dataTypeEnumList,
                 dataTypeAndDeviceTypeMapping,
+                dimensionEnumList,
                 projectNameList,
                 devicePositionList,
-                testTemplateList,
                 scene,
             } = res?.data?.data;
+            setDataTypeOptions(dataTypeEnumList);
             setDataTypeAndDeviceTypeMapping(dataTypeAndDeviceTypeMapping);
+            setDimensionOptions(dimensionEnumList);
             setProjectNameList(projectNameList);
             setDevicePositionList(devicePositionList);
-            setTemplates(testTemplateList);
+            setDeviceTypeOptions(dataTypeAndDeviceTypeMapping[scene?.dataType]);
             form.setFieldsValue({
                 ...scene,
                 testDate: scene?.testDate ? dayjs(scene?.testDate, "YYYY-MM-DD") : undefined,
@@ -164,24 +170,44 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
                     </Form.Item>
 
                     <Form.Item
-                        label="测试模版"
-                        name="testTemplate"
+                        label="数据类型"
+                        name="dataType"
                         rules={[
                             {
                                 required: true,
-                                message: "请选择测试模版",
+                                message: "请选择数据类型",
                             },
                         ]}
                     >
                         <Select
-                            placeholder="请选择测试模版"
+                            placeholder="请选择数据类型"
                             fieldNames={{
                                 label: "desc",
                             }}
-                            options={templates?.map(item => ({
-                                label: item,
-                                value: item,
-                            }))}
+                            options={dataTypeOptions}
+                            onChange={value => {
+                                form.setFieldValue("deviceType", undefined);
+                                setDeviceTypeOptions(dataTypeAndDeviceTypeMapping[value]);
+                            }}
+                        />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="设备类型"
+                        name="deviceType"
+                        rules={[
+                            {
+                                required: true,
+                                message: "请选择设备类型",
+                            },
+                        ]}
+                    >
+                        <Select
+                            placeholder="请选择设备类型"
+                            fieldNames={{
+                                label: "desc",
+                            }}
+                            options={deviceTypeOptions}
                         />
                     </Form.Item>
 
@@ -221,6 +247,30 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
                         ]}
                     >
                         <Input placeholder="最多输入30个字符" maxLength={30} />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="取值维度"
+                        name="dimension"
+                        rules={[
+                            {
+                                required: true,
+                                message: "请选择取值维度",
+                            },
+                        ]}
+                    >
+                        <Select
+                            placeholder="请选择取值维度"
+                            fieldNames={{
+                                label: "desc",
+                            }}
+                            options={dimensionOptions}
+                            onChange={value => {
+                                setDimension(value);
+                                form.setFieldValue("testUnits", undefined);
+                                setTestFiles([]);
+                            }}
+                        />
                     </Form.Item>
 
                     <Form.Item
@@ -331,16 +381,18 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
                                         </Space>
                                     ))}
                                     <Form.Item noStyle>
-                                        <Button
-                                            type="dashed"
-                                            onClick={() => {
-                                                add();
-                                            }}
-                                            block
-                                            icon={<PlusOutlined />}
-                                        >
-                                            点击添加
-                                        </Button>
+                                        {dimension == "HEAP" && fields?.length == 1 ? null : (
+                                            <Button
+                                                type="dashed"
+                                                onClick={() => {
+                                                    add();
+                                                }}
+                                                block
+                                                icon={<PlusOutlined />}
+                                            >
+                                                点击添加
+                                            </Button>
+                                        )}
                                     </Form.Item>
                                 </>
                             )}

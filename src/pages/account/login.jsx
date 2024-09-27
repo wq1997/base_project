@@ -18,8 +18,6 @@ const Login = () => {
         if (res?.data?.code == 0) {
             setLocalStorage("Token", res?.data?.data);
             history.push("/upload-files");
-        } else {
-            message.error(res?.data?.message);
         }
     };
 

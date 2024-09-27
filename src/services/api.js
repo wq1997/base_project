@@ -53,3 +53,28 @@ export const sceneGetTotalRecord = payload => {
     const url = `${API_URL_1}/scene/get-total-record`;
     return axiosInstance.post(url, payload);
 };
+
+export const getTemplateList = payload => {
+    const url = `${API_URL_1}/template/find-page`;
+    return axiosInstance.post(url, payload);
+};
+
+export const getTemplateInitData = id => {
+    const url = `${API_URL_1}/template/get-scene-init-data`;
+    return axiosInstance.get(id ? url + `/${id}` : url);
+};
+
+export const updateTemplete = payload => {
+    const url = `${API_URL_1}/template/${payload?.id ? "update" : "add"}`;
+    return payload?.id ? axiosInstance.put(url, payload) : axiosInstance.post(url, payload);
+};
+
+export const deleteTemplates = ids => {
+    const url = `${API_URL_1}/template/${ids}`;
+    return axiosInstance.delete(url);
+};
+
+export const getTemplateInfo = id => {
+    const url = `${API_URL_1}/template/get-info/${id}`;
+    return axiosInstance.get(url);
+};

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getDvaApp } from "umi";
-import { getLocalStorage } from "@/utils/utils";
+import { message } from "antd";
 
 export const getBaseUrl = () => {
     const { API_URL1 = "" } = process.env;
@@ -10,14 +10,12 @@ const getToken = () => localStorage.getItem("Token");
 
 const instance = axios.create({
     baseURL: getBaseUrl(),
-    headers: {
-        Authorization: getToken(),
-    },
+    timeout: 10000,
 });
 
 instance.interceptors.request.use(
     config => {
-        config.headers.Authorization = getLocalStorage("Token");
+        config.headers.token = getToken();
         return config;
     },
     error => {
@@ -36,18 +34,15 @@ instance.interceptors.response.use(
     error => {
         const { config, code, request, response, isAxiosError, toJSON } = error;
         if (response) {
-            errorHandle(response.status, response.data.message);
-            return Promise.reject(response);
+            message.info(response?.data?.description);
+            errorHandle(response?.status, response?.data?.message);
         } else {
-            if (error.message.includes("timeout")) {
+            message.info("请求超时");
+            if (error?.message?.includes("timeout")) {
                 console.log("请求超时");
-                return Promise.reject(error);
             }
-
             if (!window.navigator.onLine) {
                 console.log("断网了...");
-            } else {
-                return Promise.reject(error);
             }
         }
     }

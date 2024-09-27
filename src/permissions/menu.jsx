@@ -18,6 +18,10 @@ const MenuList = [
         key: "/summary-record",
         label: "汇总记录",
     },
+    {
+        key: "/configure-template",
+        label: "模版自定义配置",
+    },
 ];
 
 const MyMenu = () => {

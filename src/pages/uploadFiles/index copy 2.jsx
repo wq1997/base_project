@@ -21,17 +21,25 @@ const parseStatusColor = {
 const Account = () => {
     const projectNameRef = useRef();
     const testDateRef = useRef();
+    const dataTypeRef = useRef();
     const devicePositionRef = useRef();
     const deviceBoxNoRef = useRef();
     const dimensionRef = useRef();
+    const deviceTypeRef = useRef();
     const uploadTimeRef = useRef();
 
     const [projectName, setProjectName] = useState();
     const [testDate, setTestDate] = useState();
     const [detailId, setDetailId] = useState(undefined);
+    const [dataType, setDataType] = useState();
+    const [dataTypeOptions, setDataTypeOptions] = useState();
     const [devicePosition, setDevicePosition] = useState();
     const [deviceBoxNo, setDeviceBoxNo] = useState();
     const [uploadTime, setUploadTime] = useState();
+    const [dimension, setDimension] = useState();
+    const [dimensionOptions, setDimensionOptions] = useState();
+    const [deviceType, setDeviceType] = useState();
+    const [deviceTypeOptions, setDeviceTypeOptions] = useState();
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [list, setList] = useState([]);
@@ -47,12 +55,24 @@ const Account = () => {
             dataIndex: "testDate",
         },
         {
+            title: "数据类型",
+            dataIndex: "dataTypeZh",
+        },
+        {
+            title: "设备类型",
+            dataIndex: "deviceTypeZh",
+        },
+        {
             title: "设备位置",
             dataIndex: "devicePosition",
         },
         {
             title: "设备箱号",
             dataIndex: "deviceBoxNo",
+        },
+        {
+            title: "取值维度",
+            dataIndex: "dimensionZh",
         },
         {
             title: "上传时间",
@@ -110,8 +130,10 @@ const Account = () => {
     const getInitData = async () => {
         const res = await getUploadFilesInitDataServer();
         if (res?.data?.code == 0) {
-           
-        
+            const { dataTypeEnumList, deviceTypeEnumList, dimensionEnumList } = res?.data?.data;
+            setDataTypeOptions(dataTypeEnumList);
+            setDeviceTypeOptions(deviceTypeEnumList);
+            setDimensionOptions(dimensionEnumList);
         }
     };
 
@@ -120,10 +142,10 @@ const Account = () => {
         const [uploadTimeFrom, uploadTimeTo] = uploadTimeRef.current || [];
         const projectName = projectNameRef.current;
         const testDate = testDateRef.current;
-
+        const dataType = dataTypeRef.current;
         const devicePosition = devicePositionRef.current;
         const deviceBoxNo = deviceBoxNoRef.current;
-
+        const deviceType = deviceTypeRef.current;
         const dimension = dimensionRef.current;
         const res = await getUploadFilesListServer({
             pageNum: current,
@@ -133,10 +155,10 @@ const Account = () => {
                 uploadTimeTo,
                 projectName,
                 testDate,
-
+                dataType,
                 devicePosition,
                 deviceBoxNo,
-
+                deviceType,
                 dimension,
             },
         });
@@ -156,13 +178,18 @@ const Account = () => {
         setProjectName();
         testDateRef.current = undefined;
         setTestDate();
+        dataTypeRef.current = undefined;
+        setDataType();
         devicePositionRef.current = undefined;
         setDevicePosition();
         deviceBoxNoRef.current = undefined;
         setDeviceBoxNo();
         uploadTimeRef.current = undefined;
         setUploadTime();
- 
+        dimensionRef.current = undefined;
+        setDimension();
+        deviceTypeRef.current = undefined;
+        setDeviceType();
         getList();
     };
 
@@ -209,6 +236,21 @@ const Account = () => {
                         }}
                     />
                 </div>
+
+                <SearchInput
+                    label="数据类型"
+                    value={dataType}
+                    type="select"
+                    options={dataTypeOptions}
+                    fieldNames={{
+                        label: "desc",
+                    }}
+                    onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        dataTypeRef.current = value;
+                        setDataType(value);
+                    }}
+                />
                 <SearchInput
                     label="设备箱号"
                     value={deviceBoxNo}
@@ -242,6 +284,34 @@ const Account = () => {
                         }
                     />
                 </div>
+                <SearchInput
+                    label="设备类型"
+                    type="select"
+                    options={deviceTypeOptions}
+                    value={deviceType}
+                    fieldNames={{
+                        label: "desc",
+                    }}
+                    onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        deviceTypeRef.current = value;
+                        setDeviceType(value);
+                    }}
+                />
+                <SearchInput
+                    label="取值维度"
+                    type="select"
+                    options={dimensionOptions}
+                    value={dimension}
+                    fieldNames={{
+                        label: "desc",
+                    }}
+                    onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        dimensionRef.current = value;
+                        setDimension(value);
+                    }}
+                />
                 <Button type="primary" onClick={handleSearch}>
                     搜索
                 </Button>
