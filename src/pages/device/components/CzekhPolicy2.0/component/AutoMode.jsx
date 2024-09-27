@@ -35,9 +35,17 @@ const App = ({ devId, dtuId, historyAllData }) => {
   }, [historyAllData])
 
   const initData = () => {
-    form.setFieldsValue({
-      durationList:historyAllData?.policyDurationList1
-    })
+    // form.setFieldsValue({
+    //   durationList:historyAllData?.policyDurationList1
+    // })
+    historyAllData?.policyDurationList1.map(it=>{
+     let startHour= it.startHour<10?`0${it.startHour}`:`${it.startHour}`
+     let startMin= it.startMin<10?`0${it.startMin}`:`${it.startMin}`
+     let endHour= it.endHour<10?`0${it.endHour}`:`${it.endHour}`
+     let endMin= it.endMin<10?`0${it.endMin}`:`${it.endMin}`
+      it.timeStramp=`${startHour}:${startMin}~${endHour}:${endMin}`
+    });
+    setDurationList(historyAllData?.policyDurationList1)
   }
 
   return (
