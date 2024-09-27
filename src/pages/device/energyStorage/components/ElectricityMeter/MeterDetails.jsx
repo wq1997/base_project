@@ -31,7 +31,7 @@ function Com({ id }) {
     }, [id])
     const dataModel = [
         {
-            label: '负载电表',
+            label: '储能计量电表',
             key: 'meter',
             fun:(val)=>setMeterIndex(val),
             index:meterIndex,
@@ -123,7 +123,7 @@ function Com({ id }) {
             ]
         },
         {
-            label: '储能计量电表',
+            label: '负载电表',
             key: 'tranMeter',
             index:tranMeterIndex,
             fun:(val)=>setTranMeterIndex(val),
