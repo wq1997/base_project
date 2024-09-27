@@ -120,7 +120,7 @@ const SchematicDiagram = ({dataSource, allData}) => {
                 >
                     {
                         powerData>0&&
-                        <Flow img={`${PUBLIC_FILE_PATH}/flow.svg`} />
+                        <Flow />
                     }
                 </div>
             </div>
@@ -141,7 +141,7 @@ const SchematicDiagram = ({dataSource, allData}) => {
                             zIndex: 100
                         }}
                     >
-                        <Flow img={`${PUBLIC_FILE_PATH}/flow.svg`} />
+                        <Flow />
                     </div>
                 }
 
@@ -160,7 +160,7 @@ const SchematicDiagram = ({dataSource, allData}) => {
                             zIndex: 100
                         }}
                     >
-                        <Flow img={`${PUBLIC_FILE_PATH}/flow.svg`} />
+                        <Flow />
                     </div>
                 }
 
@@ -176,7 +176,7 @@ const SchematicDiagram = ({dataSource, allData}) => {
                     }}
                 >
                     <img 
-                        src={totalActivePowerData===0?`${PUBLIC_FILE_PATH}/energy_disabled.svg`:(theme==="dark"?`${PUBLIC_FILE_PATH}/energy.svg`:`${PUBLIC_FILE_PATH}/energy_white.svg`)} 
+                        src={totalActivePowerData===0?`${PUBLIC_FILE_PATH}/energy_disabled.png`:(theme==="dark"?`${PUBLIC_FILE_PATH}/energy.png`:`${PUBLIC_FILE_PATH}/energy_white.png`)} 
                         style={{
                             position: 'absolute', 
                             right:  -energySystemIconWidth/2, 
@@ -218,9 +218,9 @@ const SchematicDiagram = ({dataSource, allData}) => {
                         transformOrigin: '0px 0px',
                         background: token.color24
                     }}>
-                        {loadPowerData>0&&<Flow img={`${PUBLIC_FILE_PATH}/flow.svg`} />}
+                        {loadPowerData>0&&<Flow />}
                         <img 
-                            src={theme==="dark"?`${PUBLIC_FILE_PATH}/load.svg`:`${PUBLIC_FILE_PATH}/load_white.svg`} 
+                            src={theme==="dark"?`${PUBLIC_FILE_PATH}/load.png`:`${PUBLIC_FILE_PATH}/load_white.png`} 
                             style={{
                                 position: 'absolute', 
                                 right:  -loadSystemIconWidth/2, 

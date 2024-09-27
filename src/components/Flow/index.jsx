@@ -3,10 +3,9 @@ import styles from "./index.less";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { theme } from 'antd';
 import classNames from "classnames";
+import img from "./img.png";
 
-const Flow = ({
-    img
-}) => {
+const Flow = () => {
     const { token } = theme.useToken();
     const [timer, setTimer] = useState(null);
 
