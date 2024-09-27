@@ -365,7 +365,6 @@ const Account = () => {
         getSupplierInitData();
     }, []);
 
-    console.log("AAAAA", detailRow)
     return (
         <div className="electronic-archives">
             <AddProject
@@ -394,8 +393,8 @@ const Account = () => {
                         value={projectInitiationTime ? dayjs(projectInitiationTime) : undefined}
                         onChange={data => {
                             paginationRef.current = DEFAULT_PAGINATION;
-                            projectInitiationTimeRef.current = dayjs(data).format("YYYY-MM-DD");
-                            setProjectInitiationTime(dayjs(data).format("YYYY-MM-DD"));
+                            projectInitiationTimeRef.current = data?dayjs(data).format("YYYY-MM-DD"):undefined;
+                            setProjectInitiationTime(data?dayjs(data).format("YYYY-MM-DD"):undefined);
                         }}
                         allowClear
                     />

@@ -444,9 +444,10 @@ const SparePartsManagement = () => {
                             <Radio value={"MAINT"}>维护已有备件</Radio>
                         </Radio.Group>
                     </Form.Item>
-                    <Form.Item noStyle dependencies={['storageMethod']}>
+                    <Form.Item noStyle dependencies={['storageMethod', 'attribute']}>
                         {({ getFieldsValue }) => {
                             const { storageMethod } = getFieldsValue(['storageMethod'])
+                            const { attribute } = getFieldsValue(['attribute'])
                             return (
                                 <>
                                     <Form.Item
@@ -465,6 +466,18 @@ const SparePartsManagement = () => {
                                                     value: item
                                                 }
                                             })}
+                                            onChange={value => {
+                                                if (value === "采日自研备件") {
+                                                    const cairiSupplier = initOptions?.suppliers?.find(item => item?.name?.indexOf(`上海采日能源科技`) > -1);
+                                                    spareStorageForm.setFieldsValue({
+                                                        supplierId: cairiSupplier?.id
+                                                    })
+                                                }else{
+                                                    spareStorageForm.setFieldsValue({
+                                                        supplierId: undefined
+                                                    })
+                                                }
+                                            }}
                                         />
                                     </Form.Item>
                                     <Form.Item
@@ -501,6 +514,7 @@ const SparePartsManagement = () => {
                                                     value: item?.id
                                                 }
                                             })}
+                                            disabled={attribute==="采日自研备件"}
                                         />
                                     </Form.Item>
                                     <Form.Item

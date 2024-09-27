@@ -216,7 +216,13 @@ const KnowledgeBase = () => {
                 <div>
                     <span style={{ color: "#FFF" }}>发布时间：</span>
                     <DatePicker.RangePicker
-                        value={date ? [dayjs(date?.[0]), dayjs(date?.[1])] : undefined}
+                        value={
+                            date &&
+                            date.length > 0 &&
+                            date[0] &&
+                            date[1]
+                                ? [dayjs(date[0]), dayjs(date[1])]
+                                : []}
                         onChange={(value, date) => {
                             dateRef.current = date;
                             setDate(date);
