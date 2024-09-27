@@ -9,10 +9,9 @@ import { CardModel } from "@/components";
 import dayjs from 'dayjs';
 import { useSelector, useIntl } from "umi";
 import { BmsDataType, BmcDataType } from '@/utils/constants'
-import { obtainBMSClustersList, getMonCurHistoryData, getDataParams } from '@/services/deviceTotal'
+import { getBmsDevList, getMonCurHistoryData, getDataParams } from '@/services/deviceTotal'
 import { getQueryString, downLoadExcelMode } from "@/utils/utils";
 
-const { Option } = Select;
 function Com({ id }) {
     const { token } = theme.useToken();
     const [type, setType] = useState();
@@ -24,7 +23,8 @@ function Com({ id }) {
     const [excelData, setExcelData] = useState([]);
     const [optionsSelect, setOptionSelect] = useState([]);
     const [dateStr, setDateStr] = useState([dayjs(new Date()).format('YYYY-MM-DD')]);
-
+    const [bmsIds, setBmsIds] = useState([]);
+    const [option, setOption] = useState([]);
     const intl = useIntl();
     const t = (id) => {
         const msg = intl.formatMessage(
@@ -76,7 +76,7 @@ function Com({ id }) {
 
             ]
         });
-    }, [id, token]);
+    }, [bmsIds, token]);
     useEffect(() => {
         getEchartsData();
     }, [title])
@@ -92,7 +92,7 @@ function Com({ id }) {
         }
         currentTitle ? setTitle(currentTitle) : null;
         let { data } = await getMonCurHistoryData({
-            devId: id || getQueryString("id"),
+            devId: bmsIds[0],
             dataId: type,
             dateList: dateStr
         });
@@ -200,16 +200,28 @@ function Com({ id }) {
         setCurrentTitle(label?.label);
     }
     const getInitData = async () => {
-        let { data } = await getDataParams({ devId: id || props?.id });
+        let { data } = await getDataParams({ devId: bmsIds  });
         if (data?.data) {
             setOptionSelect([...data?.data]);
             setTitle(data?.data?.[0]?.dataTypeDesc);
             setType(data?.data?.[0]?.dataType);
             getEchartsData();
-
         }
 
     }
+    useEffect(() => {
+        init();
+    }, []);
+    const init=async()=>{
+        let { data:res = {} } = await getBmsDevList({
+            plantId: localStorage.getItem('plantId')
+        });
+        setOption(res?.data);
+        setBmsIds([res?.data?.[0]?.id]);
+    }
+    const handleChange = (val, res) => {
+        setBmsIds([val]);
+    };
     return (
         <div className={styles.monitoringCurves}>
             <div className={styles.searchHead}>
@@ -220,6 +232,23 @@ function Com({ id }) {
                     multiple
                     onChange={(val, str) => onChange(val, str)}
                     defaultValue={date} />
+                      <span className={styles.margRL}>{t('设备')}:</span>
+                <Select
+                    style={{
+                        width: '10.4167rem',
+                    }}
+                    placeholder="Please select"
+                    value={bmsIds}
+                    onChange={handleChange}
+                    options={
+                        option?.map(it => {
+                            return {
+                                label: it.name,
+                                value: it.id
+                            }
+                        })
+                    }
+                />
                 <span className={styles.margRL}>{t('数据项')}:</span>
                 {type && <Select
                     className={styles.margR}
@@ -231,7 +260,7 @@ function Com({ id }) {
                             label: it.dataTypeDesc
                         }
                     })}
-                    defaultValue={type}
+                    value={type}
                 >
                 </Select>}
 

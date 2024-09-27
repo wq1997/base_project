@@ -79,7 +79,7 @@ export const getBmcNowData = (payload) => {
 // }
 // 获取监测曲线参数列表
 export const getDataParams = (payload) => {
-    return axiosInstance.get(`${path}/getDataParams?id=${payload.id}`);
+    return axiosInstance.get(`${path}/getDataParams?devId=${payload.devId}`);
 }
 // 获取检测曲线
 export const getMonCurHistoryData = (payload) => {

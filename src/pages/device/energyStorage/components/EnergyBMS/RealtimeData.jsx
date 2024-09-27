@@ -7,11 +7,8 @@ import { getBmsNowData, getDevLiveDataList,getBmsDevList } from '@/services/devi
 const { Option } = Select;
 function Com({ id }) {
     const [data, setData] = useState([]);
-    const [dataBmc, setDataBmc] = useState([]);
-    const [currentClu, setCurrentClu] = useState(0);
     const [option, setOption] = useState([]);
     const [bmsIds, setBmsIds] = useState([]);
-    const activitesRef = useRef([]);
     const { token } = theme.useToken();
     const intl = useIntl();
     const t = (id) => {
@@ -201,7 +198,7 @@ function Com({ id }) {
     const getData = async (id) => {
         let { data } = await getDevLiveDataList({ devIds:id })
         setData(data?.data);
-    }
+    }   
     const dataInit = async () => {
         let { data = {} } = await getBmsDevList({
             plantId: localStorage.getItem('plantId')
@@ -213,7 +210,6 @@ function Com({ id }) {
     const handleChange = (val, res) => {
         setBmsIds(val);
     };
-    console.log(data,11111);
     
     return (
         <div className={styles.detailsWrap} >

@@ -8,7 +8,7 @@ import * as echarts from "echarts";
 import { CardModel } from "@/components";
 import { pcsDataType } from '@/utils/constants';
 import { getQueryString, downLoadExcelMode } from "@/utils/utils";
-import { getMonCurHistoryData, getDataParams } from '@/services/deviceTotal';
+import { getMonCurHistoryData, getDataParams,getPcsDevList} from '@/services/deviceTotal';
 import dayjs from 'dayjs';
 import { useSelector, useIntl } from "umi";
 const { Option } = Select;
@@ -22,7 +22,9 @@ function Com(props) {
     const [currentTitle, setCurrentTitle] = useState('');
     const [excelData, setExcelData] = useState([]);
     const [optionsSelect, setOptionSelect] = useState([]);
-    const id = getQueryString("id");
+    const [pcsIds, setPcsIds] = useState([]);
+    const [option, setOption] = useState([]);
+
     const intl = useIntl();
     const t = (id) => {
         const msg = intl.formatMessage(
@@ -40,6 +42,11 @@ function Com(props) {
         setType(value);
         setCurrentTitle(label?.children);
     }
+   
+    const handleChange = (val, res) => {
+        setPcsIds(val);
+    };
+
     useEffect(() => {
         getInitData();
         setOptionEchart({
@@ -77,18 +84,28 @@ function Com(props) {
 
             ]
         });
-    }, [token, props, id]);
+    }, [token,pcsIds ]);
     useEffect(() => {
         queryData();
-    }, [title])
+    }, [title]);
+    useEffect(()=>{
+        init();
+    },[])
+    const init=async()=>{
+        let { data:res = {} } = await getPcsDevList({
+            plantId: localStorage.getItem('plantId')
+        });
+        setOption(res?.data);
+        setPcsIds([res?.data?.[0]?.id]);
+    }
     const getInitData = async () => {
-        let { data } = await getDataParams({ devId: id || props?.id });
+        let { data } = await getDataParams({ devId: pcsIds  });
         if (data?.data) {
             setOptionSelect([...data?.data]);
             setTitle(data?.data?.[0]?.dataTypeDesc);
             queryData();
+            setType(data?.data?.[0]?.dataType)
         }
-
     }
     const queryData = async () => {
         if (!dateObj) {
@@ -101,7 +118,7 @@ function Com(props) {
         }
         currentTitle ? setTitle(currentTitle) : null;
         let { data } = await getMonCurHistoryData({
-            devId: props.id || id,
+            devId: pcsIds[0] ,
             dataId: type,
             dateList: date
         });
@@ -215,12 +232,30 @@ function Com(props) {
                     maxTagCount={1}
                     style={{ width: 240 }}
                 />
+                <span className={styles.margRL}>{t('设备')}:</span>
+                <Select
+                    style={{
+                        width: '10.4167rem',
+                    }}
+                    placeholder="Please select"
+                    value={pcsIds}
+                    onChange={handleChange}
+                    options={
+                        option?.map(it => {
+                            return {
+                                label: it.name,
+                                value: it.id
+                            }
+                        })
+                    }
+                />
                 <span className={styles.margRL}>{t('数据项')}:</span>
                 {optionsSelect.length && <Select
                     className={styles.margR}
                     style={{ width: 240 }}
-                    defaultValue={optionsSelect?.[0]?.dataType}
+                    value={type}
                     onChange={changeType}
+
                 >
                     {optionsSelect?.map(item => {
                         return (<Option key={item.dataType} value={item.dataType}>{item.dataTypeDesc}</Option>);

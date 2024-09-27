@@ -50,7 +50,7 @@ function Com({ id }) {
             })
         })
         activitesRef.current = arr;
-        setCluster(arr[0].value)
+        setCluster(arr?.[0]?.value)
     }
     const changeCluster = (val) => {
         setCluster(val)
