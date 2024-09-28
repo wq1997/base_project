@@ -169,6 +169,7 @@ const Index = ({ initData }) => {
                                     deviceNameRef.current = value;
                                     setDeviceName(value);
                                 }}
+                                style={{ flex: 1 }}
                             />
                             <SearchInput
                                 label="电站名称"
@@ -201,6 +202,7 @@ const Index = ({ initData }) => {
                                     alarmDescRef.current = value;
                                     setAlarmDesc(value);
                                 }}
+                                style={{ flex: 1 }}
                             />
                             <Space>
                                 <div className={styles.btn} onClick={handleSearch}>
@@ -225,20 +227,20 @@ const Index = ({ initData }) => {
                                                 {columns?.map(column => (
                                                     <div
                                                         className={styles.value}
-                                                        // style={{
-                                                        //     color:
-                                                        //         column.dataIndex == "prior"
-                                                        //             ? getAlarmColor(
-                                                        //                   value[column.dataIndex]
-                                                        //               )
-                                                        //             : "#fff",
-                                                        // }}
+                                                    // style={{
+                                                    //     color:
+                                                    //         column.dataIndex == "prior"
+                                                    //             ? getAlarmColor(
+                                                    //                   value[column.dataIndex]
+                                                    //               )
+                                                    //             : "#fff",
+                                                    // }}
                                                     >
                                                         <Tooltip title={value[column.dataIndex]}>
                                                             {column.dataIndex == "prior"
                                                                 ? toChineseNumber(
-                                                                      value[column.dataIndex]
-                                                                  ) + "级"
+                                                                    value[column.dataIndex]
+                                                                ) + "级"
                                                                 : value[column.dataIndex]}
                                                         </Tooltip>
                                                     </div>
