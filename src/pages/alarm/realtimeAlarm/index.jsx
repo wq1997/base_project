@@ -11,43 +11,10 @@ import {
 import {
   getDtusOfPlant as getDtusOfPlantServe
 } from "@/services/plant";
+import { getAlarmColor } from "@/utils/utils";
 import { useSelector } from "umi";
 
-const alarmTableColums = [
-  {
-    title: <FormattedMessage id='SN号' />,
-    dataIndex: 'sn',
-    key: 'Sn',
-  },
-  {
-    title: <FormattedMessage id='告警等级' />,
-    dataIndex: 'priorDesc',
-    key: '告警等级',
-  },
-  {
-    title: <FormattedMessage id='告警描述' />,
-    dataIndex: 'desc',
-    key: '告警描述',
-  },
-  {
-    title: <FormattedMessage id='设备名称' />,
-    dataIndex: 'deviceName',
-    key: '设备名称',
-  },
 
-  {
-    title: <FormattedMessage id='电站名称' />,
-    dataIndex: 'plantName',
-    key: '电站名称',
-  },
-
-  {
-    title: <FormattedMessage id='开始时间' />,
-    dataIndex: 'beginS',
-    key: '开始时间',
-    width: '200px'
-  },
-];
 const RealtimeAlarm = () => {
   const [data, setData] = useState([]);
   const [current, setCurrent] = useState(1);
@@ -69,6 +36,54 @@ const RealtimeAlarm = () => {
     );
     return msg
   }
+
+  const alarmTableColums = [
+    {
+      title: <FormattedMessage id='SN号' />,
+      dataIndex: 'sn',
+      key: 'Sn',
+    },
+    {
+      title: <FormattedMessage id='告警等级' />,
+      dataIndex: 'prior',
+      key: '告警等级',
+      render(value) {
+        const currentAlarm = alarmLevel?.find(alarm => alarm.value == value);
+        if (currentAlarm) {
+          const key = currentAlarm?.key;
+          const value = currentAlarm?.value;
+          return (
+            <span style={{ color: getAlarmColor(value) }}>
+              {t(key)}
+            </span>
+          );
+        }
+      }
+    },
+    {
+      title: <FormattedMessage id='告警描述' />,
+      dataIndex: 'desc',
+      key: '告警描述',
+    },
+    {
+      title: <FormattedMessage id='设备名称' />,
+      dataIndex: 'deviceName',
+      key: '设备名称',
+    },
+
+    {
+      title: <FormattedMessage id='电站名称' />,
+      dataIndex: 'plantName',
+      key: '电站名称',
+    },
+
+    {
+      title: <FormattedMessage id='开始时间' />,
+      dataIndex: 'beginS',
+      key: '开始时间',
+      width: '200px'
+    },
+  ];
 
   const getDtusOfPlant = async (plantList, plantId) => {
     const res = await getDtusOfPlantServe({ plantId });

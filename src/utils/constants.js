@@ -13,49 +13,7 @@ export const WETHER_API = 'https://devapi.qweather.com/v7/weather/3d?';
 export const AIR_API = 'https://devapi.qweather.com/v7/air/now?';
 export const WETHER_KEY = '4e50b674eed8402c8a70c8155690a0e1';
 export const PASSWORD_RGE = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9a-zA-Z-`=\[\];',.~!@#$%^&*()_+|{}:"?]{8,16}$/;
-export const alarmTableColums = [
-    {
-        title: <FormattedMessage id='SN号' />,
-        dataIndex: 'sn',
-        key: 'Sn',
-    },
-    {
-        title: <FormattedMessage id='告警等级' />,
-        dataIndex: 'priorDesc',
-        key: '告警等级',
-    },
-    {
-        title: <FormattedMessage id='告警描述' />,
-        dataIndex: 'desc',
-        key: '告警描述',
-    },
-    {
-        title: <FormattedMessage id='设备名称' />,
-        dataIndex: 'deviceName',
-        key: '设备名称',
-    },
-
-    {
-        title: <FormattedMessage id='电站名称' />,
-        dataIndex: 'plantName',
-        key: '电站名称',
-    },
-
-    {
-        title: <FormattedMessage id='开始时间' />,
-        dataIndex: 'beginS',
-        key: '开始时间',
-    },
-    {
-        title: <FormattedMessage id='结束时间' />,
-        dataIndex: 'endS',
-        key: '结束时间',
-    },
-];
 export const RealtimeData = [];
-
-
-
 
 export const timeZoneList = (function () {
     let list = [];
@@ -91,24 +49,24 @@ export const pcsDataType = [
 
 export const alarmLevel = [
     {
-        label: <FormattedMessage id='严重' />,
+        label: <FormattedMessage id='一级' />,
         value: '1',
-        key: '严重',
+        key: '一级',
     },
     {
-        label: <FormattedMessage id='高级' />,
+        label: <FormattedMessage id='二级' />,
         value: '2',
-        key: '高级',
+        key: '二级',
     },
     {
-        label: <FormattedMessage id='中级' />,
+        label: <FormattedMessage id='三级' />,
         value: '3',
-        key: '中级',
+        key: '三级',
     },
     {
-        label: <FormattedMessage id='低级' />,
+        label: <FormattedMessage id='四级' />,
         value: '4',
-        key: '低级',
+        key: '四级',
     }
 ];
 export const optionType = [

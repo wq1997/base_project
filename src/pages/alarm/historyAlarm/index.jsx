@@ -1,10 +1,10 @@
 import Table from '@/components/Table.jsx'
-import { alarmTableColums, alarmLevel } from '@/utils/constants'
+import { alarmLevel } from '@/utils/constants'
 import { useEffect, useState } from 'react'
-import { useIntl, useSelector } from "umi";
+import { useIntl, useSelector, FormattedMessage } from "umi";
 import styles from "./index.less";
 import { Pagination, Select, Cascader, theme, Button, DatePicker } from "antd"
-import { downLoadExcelMode } from "@/utils/utils"
+import { downLoadExcelMode, getAlarmColor } from "@/utils/utils"
 import {
   getFetchPlantList3 as getFetchPlantListServe,
   get215HistoryAlarm as get215HistoryAlarmServe,
@@ -39,6 +39,58 @@ const RealtimeAlarm = () => {
     );
     return msg
   }
+
+  const alarmTableColums = [
+    {
+      title: <FormattedMessage id='SN号' />,
+      dataIndex: 'sn',
+      key: 'Sn',
+    },
+    {
+      title: <FormattedMessage id='告警等级' />,
+      dataIndex: 'prior',
+      key: '告警等级',
+      render(value) {
+        const currentAlarm = alarmLevel?.find(alarm => alarm.value == value);
+        if (currentAlarm) {
+          const key = currentAlarm?.key;
+          const value = currentAlarm?.value;
+          return (
+            <span style={{ color: getAlarmColor(value) }}>
+              {t(key)}
+            </span>
+          );
+        }
+      }
+    },
+    {
+      title: <FormattedMessage id='告警描述' />,
+      dataIndex: 'desc',
+      key: '告警描述',
+    },
+    {
+      title: <FormattedMessage id='设备名称' />,
+      dataIndex: 'deviceName',
+      key: '设备名称',
+    },
+
+    {
+      title: <FormattedMessage id='电站名称' />,
+      dataIndex: 'plantName',
+      key: '电站名称',
+    },
+
+    {
+      title: <FormattedMessage id='开始时间' />,
+      dataIndex: 'beginS',
+      key: '开始时间',
+    },
+    {
+      title: <FormattedMessage id='结束时间' />,
+      dataIndex: 'endS',
+      key: '结束时间',
+    },
+  ];
 
   const getPlanList = async () => {
     const res = await getFetchPlantListServe();

@@ -7,7 +7,8 @@ import AddPlantModal, { formList } from './component/AddPlantModal'
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import { timeZoneList, alarmLevel } from '@/utils/constants'
-import { fetchAllUsersList } from '@/services/user'
+import { fetchAllUsersList } from '@/services/user';
+import { getAlarmColor } from "@/utils/utils";
 
 function Com(props) {
     const { Search } = Input;
@@ -36,7 +37,7 @@ function Com(props) {
     const intl = useIntl();
 
     const getInitData = async () => {
-        let { data } = await getInsertPlantInitData()||{};
+        let { data } = await getInsertPlantInitData() || {};
         let str = locale === 'zh-CN' ? 'desc' : 'enDesc'
         data.data?.currencyList?.map(it => {
             it.label = `${it[str]}--${it.value}`
@@ -70,7 +71,7 @@ function Com(props) {
             dataIndex: 'dtuSize',
             key: 'dtuSize',
             width: 150
-        },    {
+        }, {
             title: t('设备在线'),
             dataIndex: 'onlines',
             key: 'onlines',
@@ -81,7 +82,7 @@ function Com(props) {
             dataIndex: 'installDate',
             key: 'installDate',
             width: 150,
-            render:(val)=>{
+            render: (val) => {
                 return dayjs(val).format('YYYY-MM-DD')
             }
         },
@@ -114,11 +115,17 @@ function Com(props) {
             dataIndex: 'alarms',
             key: 'alarms',
             width: 200,
-            render(value){
-                const valueList = value?value?.split(","):[];
+            render(value) {
+                const valueList = value ? value?.split(",") : [];
                 const labelList = valueList?.map((item, index) => {
-                    const level = alarmLevel?.filter(level => level.value===item);
-                    return t(level?.[0]?.label?.props?.id)+(index===valueList?.length-1?"":', ');
+                    const level = alarmLevel?.filter(level => level.value === item);
+                    const key = level?.[0]?.key;
+                    const value = level?.[0]?.value;
+                    return (
+                        <span style={{ color: getAlarmColor(value) }}>
+                            {t(key) + (index === valueList?.length - 1 ? "" : ', ')}
+                        </span>
+                    );
                 })
                 return labelList;
             }
@@ -148,11 +155,11 @@ function Com(props) {
     });
     const getAllUser = async () => {
         const res = await fetchAllUsersList();
-        let arr=[];
-        res?.data?.data?.map(it=>{
+        let arr = [];
+        res?.data?.data?.map(it => {
             arr.push({
-                label:it.name,
-                value:it.f0102_Id
+                label: it.name,
+                value: it.f0102_Id
             })
         })
         setAllUser(arr)
@@ -172,10 +179,10 @@ function Com(props) {
             typeName: '',
             longitude: '',
             latitude: '',
-            installDate:  dayjs(new Date()),
+            installDate: dayjs(new Date()),
             // networkDate: new Date(),
             timeZone: '',
-            priceUnit:''
+            priceUnit: ''
         });
         setSelectPlantId(undefined);
         setTitle('新增电站');
@@ -199,7 +206,7 @@ function Com(props) {
         setSelectPlantId(record.plantId)
     }
     const changeData = async (value) => {
-        const { data } = await apiUpdatePlant({ ...value, plantId: selectPlantId,deviceTypeId:21 }) 
+        const { data } = await apiUpdatePlant({ ...value, plantId: selectPlantId, deviceTypeId: 21 })
         if (data.data) {
             getData();
         } else {
@@ -219,6 +226,7 @@ function Com(props) {
     const onChangeSelectId = (value) => {
         setSelectId(value);
     }
+    
     return (
         <div className={styles.contents}>
             <div className={styles.title}>
@@ -228,18 +236,18 @@ function Com(props) {
                             width: 180,
                         }}
                         value={selectId}
-                        placeholder={t('选择用户') }
+                        placeholder={t('选择用户')}
                         options={allUser}
                         onChange={onChangeSelectId}
                         allowClear
                     />
                 </div>
-                <Input style={{width: 180}} value={textSearch} onChange={onChangeText} placeholder={t("电站名筛选")} allowClear />
+                <Input style={{ width: 180 }} value={textSearch} onChange={onChangeText} placeholder={t("电站名筛选")} allowClear />
 
                 <div className={styles.dataItem}>
                     <Button type='primary' onClick={getData}>{t('查询')}</Button>
                 </div>
- 
+
                 <div className={styles.search}>
                     <Button type='primary' onClick={changIsOpen} >{t('新增')}</Button>
                 </div>
@@ -260,7 +268,7 @@ function Com(props) {
                 onOk={del}
                 onCancel={changeIsOpenDel}
             >
-               {t('数据删除后将无法恢复，是否确认删除该条数据？')} 
+                {t('数据删除后将无法恢复，是否确认删除该条数据？')}
             </Modal>
         </div>
     )

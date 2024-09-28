@@ -135,3 +135,12 @@ export const getLoginPath = () => {
   }
   return loginPath;
 }
+
+export const getAlarmColor = (level) => {
+  return {
+    1: '#FF0000',
+    2: '#FF7D00',
+    3: '#FFCD00',
+    4: '#00FF19'
+  }[level]
+}

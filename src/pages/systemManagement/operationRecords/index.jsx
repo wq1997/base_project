@@ -1,5 +1,4 @@
 import Table from '@/components/Table.jsx'
-import { alarmTableColums } from '@/utils/constants'
 import { useEffect, useState } from 'react'
 import { useSelector, useIntl } from "umi";
 import styles from "./index.less";

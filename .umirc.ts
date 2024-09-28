@@ -23,7 +23,7 @@ export default defineConfig({
   plugins: ['@umijs/plugins/dist/dva', '@umijs/plugins/dist/locale'],
   dva: {},
   locale: {
-    default: "en-US"
+    default: "zh-CN"
   },
   outputPath: OutputPathName(),
   define: {
