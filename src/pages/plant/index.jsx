@@ -75,7 +75,7 @@ function Com(props) {
             title: t('设备在线'),
             dataIndex: 'onlines',
             key: 'onlines',
-            width: 100
+            width: 150
         },
         {
             title: t('建站日期'),

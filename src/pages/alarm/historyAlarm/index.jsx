@@ -61,12 +61,14 @@ const RealtimeAlarm = () => {
             </span>
           );
         }
-      }
+      },
+      width: 150
     },
     {
       title: <FormattedMessage id='告警描述' />,
       dataIndex: 'desc',
       key: '告警描述',
+      width: 250
     },
     {
       title: <FormattedMessage id='设备名称' />,

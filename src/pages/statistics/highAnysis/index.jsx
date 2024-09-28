@@ -339,7 +339,7 @@ const HighAnysis = () => {
                                 style={{ width: '250px', height: 40 }}
                             />
                         </Form.Item>
-                        <Form.Item name={"packCell"} label={intl.formatMessage({ id: 'pack' })}>
+                        <Form.Item name={"packCell"} label={intl.formatMessage({ id: 'Pack' })}>
                             <Cascader
                                 changeOnSelect
                                 options={packCellList}
