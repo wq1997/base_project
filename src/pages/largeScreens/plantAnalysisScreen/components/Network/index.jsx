@@ -101,11 +101,11 @@ const Network = ({ onChangedType }) => {
                                     key: "province",
                                 },
                                 {
-                                    title: "总装机容量(MW)",
+                                    title: "总装机容量(MWh)",
                                     key: "capacity",
                                 },
                                 {
-                                    title: "电源侧/电网侧(MW)",
+                                    title: "电源侧/电网侧(MWh)",
                                     key: "supplyGridCapacity",
                                 },
                                 {
