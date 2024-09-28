@@ -21,6 +21,12 @@ import PlantOverview from "../../../components/PlantOverview";
 import AlarmAnysis from "../../../components/AlarmAnysis";
 import DeviceStatus from "../../../components/DeviceStatus";
 import { SearchInput } from "@/components";
+import {
+
+    getAlarmColor,
+    getAlarmLevelNumber,
+    getAlarmLevelText,
+} from "@/utils/utils";
 
 const zoomCenter = {
     Domestic: {
@@ -33,7 +39,7 @@ const zoomCenter = {
     },
 };
 
-const Business = ({}) => {
+const Business = ({ }) => {
     const areaRef = useRef();
     const [area, setArea] = useState();
     const plantNameRef = useRef();
@@ -218,7 +224,11 @@ const Business = ({}) => {
                                 data={
                                     dataSource &&
                                     Object?.keys(dataSource?.prior2Count || {})?.map(item => {
-                                        return [item, dataSource?.prior2Count?.[item || 0]];
+                                        return [
+                                            getAlarmLevelText(item),
+                                            dataSource?.prior2Count?.[item || 0],
+                                            getAlarmColor(getAlarmLevelNumber(item)),
+                                        ];
                                     })
                                 }
                             />
@@ -330,7 +340,7 @@ const Business = ({}) => {
                                             },
                                             {
                                                 title: "告警等级",
-                                                key: "priorZh",
+                                                key: "prior",
                                             },
                                             {
                                                 title: "告警描述",

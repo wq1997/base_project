@@ -26,7 +26,6 @@
     "jsencrypt": "^3.3.2",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
-    "react-scale-view": "^1.1.2",
     "umi": "^4.0.72"
   },
   "devDependencies": {

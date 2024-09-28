@@ -7,7 +7,6 @@ import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 import localeData from "dayjs/plugin/localeData";
 import "dayjs/locale/zh-cn";
-import { ScaleViewContainer } from "react-scale-view";
 dayjs.extend(weekday);
 dayjs.extend(localeData);
 dayjs.locale("zh-cn");
@@ -40,15 +39,6 @@ const App = () => {
             <GlobalWrapperCss>
                 <Outlet />
             </GlobalWrapperCss>
-            {/* <ScaleViewContainer
-                config={{
-                    width: 1920, // (必选)容器宽度；如 1920，
-                    height: 1080, // (必选)容器高度；如 1080，
-                    scaleType: "FULL_SCREEN",
-                }}
-            >
-                <Outlet />
-            </ScaleViewContainer> */}
         </ConfigProvider>
     );
 };

@@ -1,6 +1,8 @@
 import { useRef } from "react";
 import styles from "./index.less";
+import { Button, Space, Spin, Tooltip, Pagination } from "antd";
 import { useEffect, useState } from "react";
+import { toChineseNumber, getAlarmColor } from "@/utils/utils";
 const Table = ({ color = "white", columns, dataSource }) => {
     const [timer, setTimer] = useState(null);
     const tableRef = useRef(null);
@@ -72,8 +74,22 @@ const Table = ({ color = "white", columns, dataSource }) => {
                                             <div
                                                 className={styles.tableContentCol}
                                                 style={{ color }}
+                                            // style={{
+                                            //     color:
+                                            //         columnKey == "prior"
+                                            //             ? getAlarmColor(
+                                            //                 data[columnKey]
+                                            //             )
+                                            //             : color
+                                            // }}
                                             >
-                                                {data[columnKey]}
+                                                <Tooltip title={data[columnKey]}>
+                                                    {columnKey == "prior"
+                                                        ? toChineseNumber(
+                                                            data[columnKey]
+                                                        ) + "级"
+                                                        : data[columnKey]}
+                                                </Tooltip>
                                             </div>
                                         );
                                     })}

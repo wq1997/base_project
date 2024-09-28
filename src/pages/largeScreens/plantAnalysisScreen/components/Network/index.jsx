@@ -125,7 +125,15 @@ const Network = ({ onChangedType }) => {
 
             {/* 地图搜索 */}
             <div className={styles.search}>
-                <Form layout="inline">
+                <Form
+                    layout="inline"
+                    labelCol={{
+                        span: 9,
+                    }}
+                    wrapperCol={{
+                        span: 16,
+                    }}
+                >
                     <Form.Item label="项目类型">
                         <Select
                             className={styles.input}

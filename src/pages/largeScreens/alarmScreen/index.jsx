@@ -5,6 +5,11 @@ import AlarmAnysis from "../components/AlarmAnysis";
 import { getAlarmScreenData as getAlarmScreenDataServer } from "@/services/largeScreen";
 import { useState, useEffect } from "react";
 import DeviceStatus from "../components/DeviceStatus";
+import {
+    getAlarmColor,
+    getAlarmLevelNumber,
+    getAlarmLevelText,
+} from "@/utils/utils";
 
 const Index = () => {
     const [initData, setInitData] = useState();
@@ -32,7 +37,11 @@ const Index = () => {
                             data={
                                 initData &&
                                 Object?.keys(initData?.prior2Count || {})?.map(item => {
-                                    return [item, initData?.prior2Count?.[item || 0]];
+                                    return [
+                                        getAlarmLevelText(item),
+                                        initData?.prior2Count?.[item || 0],
+                                        getAlarmColor(getAlarmLevelNumber(item)),
+                                    ];
                                 })
                             }
                         />
