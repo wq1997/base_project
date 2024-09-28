@@ -4,6 +4,7 @@ import { Button, Space, Spin, Tooltip, Pagination } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { SearchInput } from "@/components";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
+import { toChineseNumber, getAlarmColor } from "@/utils/utils";
 import "./index.less";
 import Card from "../../components/Card";
 import { getAlarmScreenList as getAlarmScreenListServer } from "@/services/largeScreen";
@@ -33,7 +34,7 @@ const Index = ({ initData }) => {
         },
         {
             title: "告警等级",
-            dataIndex: "priorZh",
+            dataIndex: "prior",
         },
         {
             title: "设备名称",
@@ -126,7 +127,7 @@ const Index = ({ initData }) => {
         const { priors, plans } = initData;
         setAlarmLevelOptions(
             priors?.map(item => ({
-                name: item?._2,
+                name: toChineseNumber(item?._1) + "级",
                 code: item?._1,
             }))
         );
@@ -168,6 +169,7 @@ const Index = ({ initData }) => {
                                     deviceNameRef.current = value;
                                     setDeviceName(value);
                                 }}
+                                style={{ flex: 1 }}
                             />
                             <SearchInput
                                 label="电站名称"
@@ -200,6 +202,7 @@ const Index = ({ initData }) => {
                                     alarmDescRef.current = value;
                                     setAlarmDesc(value);
                                 }}
+                                style={{ flex: 1 }}
                             />
                             <Space>
                                 <div className={styles.btn} onClick={handleSearch}>
@@ -222,9 +225,23 @@ const Index = ({ initData }) => {
                                         listData?.map((value, index) => (
                                             <div className={styles.row}>
                                                 {columns?.map(column => (
-                                                    <div className={styles.value}>
+                                                    <div
+                                                        className={styles.value}
+                                                    // style={{
+                                                    //     color:
+                                                    //         column.dataIndex == "prior"
+                                                    //             ? getAlarmColor(
+                                                    //                   value[column.dataIndex]
+                                                    //               )
+                                                    //             : "#fff",
+                                                    // }}
+                                                    >
                                                         <Tooltip title={value[column.dataIndex]}>
-                                                            {value[column.dataIndex]}
+                                                            {column.dataIndex == "prior"
+                                                                ? toChineseNumber(
+                                                                    value[column.dataIndex]
+                                                                ) + "级"
+                                                                : value[column.dataIndex]}
                                                         </Tooltip>
                                                     </div>
                                                 ))}

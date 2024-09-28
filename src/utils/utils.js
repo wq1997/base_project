@@ -74,36 +74,107 @@ export const getUrlParams = url => {
     return obj;
 };
 
-export const cloneObject = (object) => JSON.parse(JSON.stringify(object));
+export const cloneObject = object => JSON.parse(JSON.stringify(object));
 
-export const translateNmberToTime = (value) => {
+export const translateNmberToTime = value => {
     if (Number(value) <= 9) return `0${value}`;
     return `${value}`;
-}
+};
 
-export const downloadFile = (data) => {
-    const link = document.createElement('a');
-    link.style.display = 'none'
+export const downloadFile = data => {
+    const link = document.createElement("a");
+    link.style.display = "none";
     const blob = new Blob([data.content]);
-    link.href = URL.createObjectURL(blob)
+    link.href = URL.createObjectURL(blob);
     function isIE() {
-        if (!!window.ActiveXObject || 'ActiveXObject' in window) {
-            return true
+        if (!!window.ActiveXObject || "ActiveXObject" in window) {
+            return true;
         } else {
-            return false
+            return false;
         }
     }
     if (data.fileName) {
-        link.download = data.fileName //下载的文件名
+        link.download = data.fileName; //下载的文件名
     } else {
         const fileName = "file.xlsx";
-        link.download = fileName
+        link.download = fileName;
     }
     if (isIE()) {
-        window.navigator.msSaveOrOpenBlob(blob, link.download)
+        window.navigator.msSaveOrOpenBlob(blob, link.download);
     } else {
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
-}
+};
+
+export const toChineseNumber = n => {
+    if (!Number.isInteger(n) && n < 0) {
+        throw Error("请输入自然数");
+    }
+    const digits = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九"];
+    const positions = [
+        "",
+        "十",
+        "百",
+        "千",
+        "万",
+        "十万",
+        "百万",
+        "千万",
+        "亿",
+        "十亿",
+        "百亿",
+        "千亿",
+    ];
+    const charArray = String(n).split("");
+    let result = "";
+    let prevIsZero = false;
+    //处理0  deal zero
+    for (let i = 0; i < charArray.length; i++) {
+        const ch = charArray[i];
+        if (ch !== "0" && !prevIsZero) {
+            result += digits[parseInt(ch)] + positions[charArray.length - i - 1];
+        } else if (ch === "0") {
+            prevIsZero = true;
+        } else if (ch !== "0" && prevIsZero) {
+            result += "零" + digits[parseInt(ch)] + positions[charArray.length - i - 1];
+        }
+    }
+    //处理十 deal ten
+    if (n < 100) {
+        result = result.replace("一十", "十");
+    }
+    return result;
+};
+
+export const getAlarmColor = level => {
+    return {
+        1: "#FF0000",
+        2: "#FF7D00",
+        3: "#FFCD00",
+        4: "#00FF19",
+    }[level];
+};
+
+export const getAlarmLevelText = text => {
+    return (
+        toChineseNumber(
+            {
+                严重: 1,
+                高级: 2,
+                中级: 3,
+                低级: 4,
+            }[text]
+        ) + "级"
+    );
+};
+
+export const getAlarmLevelNumber = text => {
+    return {
+        严重: 1,
+        高级: 2,
+        中级: 3,
+        低级: 4,
+    }[text];
+};

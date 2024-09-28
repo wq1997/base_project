@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Select, Radio, theme } from "antd";
+import { Select, Radio, theme, Tooltip } from "antd";
 import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts";
 import styles from "./index.less";
@@ -159,7 +159,11 @@ const Total = ({ data }) => {
                     <div className={styles.content}>
                         {allWorkorders.map(item => (
                             <div className={styles.order} style={{ background: token.color13 }}>
-                                <span className={styles.name}>{item.name}</span>
+                                <span className={styles.name}>
+                                    <Tooltip title={item.name}>
+                                        {item.name}
+                                    </Tooltip>
+                                </span>
                                 <span className={styles.value} style={{ color: item.color }}>
                                     {item.value}
                                 </span>
@@ -171,11 +175,15 @@ const Total = ({ data }) => {
                     className={classNames(styles.my, styles.workorders)}
                     style={{ background: token.color12 }}
                 >
-                    <div className={styles.title}>我发起的</div>
+                    <div className={styles.title}>我的发起</div>
                     <div className={styles.content}>
                         {myWorkorders.map(item => (
                             <div className={styles.order} style={{ background: token.color13 }}>
-                                <span className={styles.name}> {item.name}</span>
+                                <span className={styles.name}>
+                                    <Tooltip title={item.name}>
+                                        {item.name}
+                                    </Tooltip>
+                                </span>
                                 <span className={styles.value} style={{ color: item.color }}>
                                     {item.value}
                                 </span>
@@ -187,11 +195,15 @@ const Total = ({ data }) => {
                     className={classNames(styles.todoList, styles.workorders)}
                     style={{ background: token.color12 }}
                 >
-                    <div className={styles.title}>我待办的</div>
+                    <div className={styles.title}>我的待办</div>
                     <div className={styles.content}>
                         {todoList.map(item => (
                             <div className={styles.order} style={{ background: token.color13 }}>
-                                <span className={styles.name}>{item.name}</span>
+                                <span className={styles.name}>
+                                    <Tooltip title={item.name}>
+                                        {item.name}
+                                    </Tooltip>
+                                </span>
                                 <span className={styles.value} style={{ color: item.color }}>
                                     {item.value}
                                 </span>
