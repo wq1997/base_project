@@ -9,7 +9,7 @@
         "g1 g2 g4"
         "g3 g3 g3";
     .numbers {
-        height: calc(2 / 5 * 100%);
+        height: calc(2 / 5 * 100% - 5px);
         display: flex;
         .all {
            
@@ -24,7 +24,7 @@
         }
         .workorders {
             flex: 1;
-            width: calc(1 / 3 * 100%);
+            width: calc(1 / 3 * 100% - 5px);
             display: flex;
             flex-direction: column;
             border-radius: 16px;
@@ -54,6 +54,10 @@
                 align-items: center;
                 padding: 0 5px;
                 box-sizing: border-box;
+                min-height: 70px;
+                .name{
+                    text-align: center;
+                }
                 .value {
                     font-size: 30px;
                 }
