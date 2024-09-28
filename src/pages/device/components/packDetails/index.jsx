@@ -90,7 +90,7 @@ function Com(props) {
                     return (<div className={styles.onePack}>
                         <div className={styles.title1} style={{ color: token.color26 }}>
                             <Icon type='icon-xiangyou' style={{ cursor: 'pointer', marginRight: '6px' }}></Icon>
-                            <span style={{ marginRight: 5 }}>PACK{one.packNo + 1}</span>
+                            <span style={{ marginRight: 5 }}>Pack{one.packNo + 1}</span>
                             {index === 0 &&
                                 <Tooltip 
                                     title={`${t('红色表示：所有PACK中单体当前最高电压/温度；绿色表示：所有PACK中单体当前最低电压/温度')}`}

@@ -273,7 +273,7 @@ const RealtimeAlarm = () => {
     const contentStyle = useEmotionCss(()=>{
         return {
             '.ant-select-selector': {
-                color: `${locale==="zh-EN"?"black":token.color32} !important`
+                color: `${locale==="en-US"?"black":token.color32} !important`
             }
         }
     })
@@ -303,7 +303,7 @@ const RealtimeAlarm = () => {
                     }
                     <div className={styles.plantSelect}>
                         <Select
-                            style={{ width: 300 }}
+                            style={{ width: 300}}
                             onChange={(val) => {
                                 changePlant(val)
                             }}
