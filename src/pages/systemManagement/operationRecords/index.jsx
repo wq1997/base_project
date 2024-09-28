@@ -106,7 +106,6 @@ const RealtimeAlarm = () => {
             style={{ width: 280 }}
             onChange={changeTime}
             allowClear
-            placeholder={[t('开始') + t('时间'), t('结束1') + t('时间')]}
             showTime
           />
         </div>

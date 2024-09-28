@@ -35,7 +35,7 @@ export default {
           loginPath = "/login-gdgy";
       }
       if (window.location.pathname !== loginPath) {
-        yield changeBaseLanguage({ language: locale === "zh-EN" ? 3 : 1 });
+        yield changeBaseLanguage({ language: locale === "en-US" ? 3 : 1 });
       }
       yield put({
         type: 'updateState',

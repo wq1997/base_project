@@ -428,7 +428,7 @@ const MonitoringCurves = () => {
 
     return (
         <Space size={30} direction="vertical" style={{ width: '100%', height: '100%', padding: 30 }}>
-            <Flex justify="center" align="center" gap={10}>
+            <Flex justify="center" align="center" gap={5}>
                 <Form
                     form={form}
                     layout="inline"

@@ -13,8 +13,8 @@ dayjs.extend(weekday);
 dayjs.extend(localeData);
 
 const localeEnum = {
-    zh_CN,
-    en_US
+    "zh-CN":zh_CN,
+    "en-US": en_US
 }
 
 const App = () => {
