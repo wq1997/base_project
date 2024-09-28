@@ -277,7 +277,12 @@ const KnowledgeBase = () => {
                         connectDeviceTypeRef.current = value;
                         setConnectDeviceType(value);
                     }}
-                    options={options?.deviceTypes}
+                    options={options?.deviceTypes?.map(item =>{
+                        return {
+                            name: item,
+                            code: item
+                        }
+                    })}
                 />
                 <SearchInput
                     label="异常环节"
