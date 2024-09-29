@@ -105,13 +105,13 @@ const PersonnelTasks = ({ data }) => {
         let params = {};
         if (dateType === "YEAR") {
             params = {
-                regions: region,
+                regions: region?.length > 0 ? region : undefined,
                 year: dayjs(date).format("YYYY"),
             };
         }
         if (dateType === "MONTH") {
             params = {
-                regions: region,
+                regions: region?.length > 0 ? region : undefined,
                 year: dayjs(date).format("YYYY"),
                 month: dayjs(date).format("MM"),
             };

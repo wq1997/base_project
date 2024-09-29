@@ -303,7 +303,7 @@ const Account = () => {
         const phase = confirmStatusRef.current;
         const subPhase = splitStatusRef.current;
         const type = responseTypeRef.current;
-        const productTypeZh = responseTimeTypeRef.current;
+        const productType = responseTimeTypeRef.current;
         const implementManagerAccount = putEffectPersonRef.current;
         const operationsManagerAccount = operationPersonRef.current;
         const supportStandardInspection = supportStandardInspectionRef.current;
@@ -318,7 +318,7 @@ const Account = () => {
                 phase,
                 subPhase,
                 type,
-                productTypeZh,
+                productType,
                 implementManagerAccount,
                 operationsManagerAccount,
                 supportStandardInspection,
