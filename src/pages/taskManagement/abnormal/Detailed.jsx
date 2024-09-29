@@ -120,7 +120,7 @@ const Detailed = () => {
                 exceptionParts,
                 exceptionSupplierId,
                 collectingMaterials,
-                currentProcessorAccount,
+                actualProcessorAccount: currentProcessorAccount,
             },
         });
         if (res?.data?.status == "SUCCESS") {
@@ -151,6 +151,8 @@ const Detailed = () => {
         manufacturerRef.current = undefined;
         handlerPersonRef.current = undefined;
         codeRef.current = undefined;
+        collectingMaterialsRef.current = undefined;
+        setCollectingMaterials(undefined);
         setCode(undefined);
         setHandlerPerson(undefined);
         setManufacturer(undefined);

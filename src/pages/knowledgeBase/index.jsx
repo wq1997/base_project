@@ -74,9 +74,14 @@ const KnowledgeBase = () => {
         {
             title: "设备类型",
             dataIndex: "deviceTypes",
-            width: 100,
+            width: 150,
             render(_, row) {
-                return row?.deviceTypes?.join(',');
+                const nameList = row?.deviceTypes?.map(deviceType => {
+                    const currentDevice = row?.deviceTypeVos?.find(item => item?.code === deviceType);
+                    if(currentDevice) return currentDevice?.name;
+                    return "";
+                })
+                return nameList?.join(', ');
             }
         },
         {
