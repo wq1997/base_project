@@ -355,7 +355,7 @@ function Com(props) {
                 </div>
                 <div className={styles.buttons}>
                     <Button type="primary" className={styles.firstButton} onClick={queryData}>
-                        {getTranslation('app.Query')}
+                        {getTranslation('查询')}
                     </Button>
                     <Button type="primary" style={{ backgroundColor: token.defaultBg }}
                         onClick={

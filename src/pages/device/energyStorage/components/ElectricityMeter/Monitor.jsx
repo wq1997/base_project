@@ -35,7 +35,7 @@ function Com({ id }) {
 
     useEffect(() => {
         getEchartsData();
-    }, [token]);
+    }, [token,type]);
     useEffect(() => {
         getInitData()
     }, [id])
@@ -43,7 +43,7 @@ function Com({ id }) {
         let { data } = await getMeterMonitorInitData();
         setDataOption(data?.data);
         setType(data?.data[0]?.children[0]?.value);
-        setTitle(data?.data[0]?.children[0]?.label)
+        setTitle(data?.data[0]?.children[0]?.label);
     }
     const getEchartsData = async () => {
         let { data } = await obtainMeterParameterData({

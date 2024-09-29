@@ -112,7 +112,7 @@ const Login = () => {
             borderRadius: '24px',
           }}
         >
-          <Title level={2} style={{ marginBottom: 50, color: token.titleColor }}><FormattedMessage id="app.Welcometologin" /></Title>
+          <Title level={2} style={{ marginBottom: 50, color: token.titleColor }}><FormattedMessage id="欢迎登录!" /></Title>
           <Form
             onFinish={onFinish}
             autoComplete="off"

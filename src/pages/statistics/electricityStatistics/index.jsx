@@ -37,10 +37,10 @@ const Login = () => {
   }
   
 const PageTypeList = [
-  { label:getTranslation('app.Overview'), key: 'Overview', icon: AppstoreOutlined },
-  { label: getTranslation('device.Photovoltaic'), key: 'photovoltaic', icon: DesktopOutlined },
-  { label: getTranslation('device.EnergyStorage'), key: 'energyStorage', icon: DatabaseOutlined },
-  { label:getTranslation('device.ChargingPiles'), key: 'chargingStation', icon: WalletOutlined },
+  { label:getTranslation('总览'), key: 'Overview', icon: AppstoreOutlined },
+  { label: getTranslation('光伏'), key: 'photovoltaic', icon: DesktopOutlined },
+  { label: getTranslation('储能'), key: 'energyStorage', icon: DatabaseOutlined },
+  { label:getTranslation('充电桩'), key: 'chargingStation', icon: WalletOutlined },
 ];
   return (
     <div className={styles.content}>

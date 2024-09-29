@@ -206,7 +206,7 @@ const RealtimeAlarm = () => {
   const topData = [
     {
       icon: <HistoryOutlined />,
-      name: "严重告警历史总数",
+      name: "一级告警历史总数",
       color: '#03B4B4',
       key: 'historyCount',
       value: '',
@@ -214,7 +214,7 @@ const RealtimeAlarm = () => {
     },
     {
       icon: <ReconciliationOutlined />,
-      name: "今日处理严重告警数",
+      name: "今日处理一级告警数",
       color: '#ED750E',
       key: 'currentCount',
       value: '',
@@ -222,7 +222,7 @@ const RealtimeAlarm = () => {
     },
     {
       icon: <ScheduleOutlined />,
-      name: "近半年严重告警平均处理时长",
+      name: "近半年一级告警平均处理时长",
       color: '#5B8FF9',
       key: 'avgCost',
       value: '',

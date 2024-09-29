@@ -10,32 +10,32 @@ const { SubMenu } = Menu;
 
 const MenuList = [
     {
-        label: <FormattedMessage id='app.Overview' />,
+        label: <FormattedMessage id='总览' />,
         key: '/index/home',
         icon: <AppstoreOutlined />
     },
     {
-        label: <FormattedMessage id='app.Device' />,
+        label: <FormattedMessage id='设备' />,
         key: '/index/device',
         icon: <ToolOutlined />,
         children: [
             // { label: 'PCS', key: '/index/device/energyPcs', type: "PCS" },
             // { label: 'BMS', key: '/index/device/energyBms', type: "BMS" },
             // { label: '户外柜', key: '/index/device/energyOut', type: "OC" },
-            { label: <FormattedMessage id='device.EnergyStorage' />, key: '/index/device/energyStorage', type: "PV" },
-            { label: <FormattedMessage id='device.Photovoltaic' />, key: '/index/device/photovoltaic', type: "PV" },
-            { label: <FormattedMessage id='device.ChargingPiles' />, key: '/index/device/chargingStation', type: "C" },
+            { label: <FormattedMessage id='储能' />, key: '/index/device/energyStorage', type: "PV" },
+            { label: <FormattedMessage id='光伏' />, key: '/index/device/photovoltaic', type: "PV" },
+            { label: <FormattedMessage id='充电桩' />, key: '/index/device/chargingStation', type: "C" },
         ]
     },
     {
-        label: <FormattedMessage id='app.Statistics' />,
+        label: <FormattedMessage id='统计' />,
         key: '/index/statistics',
         icon: <LineChartOutlined />,
         children: [
-            { label: <FormattedMessage id='app.ElectricityStatistics' />, key: '/index/statistics/electricityStatistics', component: "@/pages/statistics/electricityStatistics" },
-            { label: <FormattedMessage id='app.EarningsStatistics' />, key: '/index/statistics/revenueStatistics', component: "@/pages/statistics/revenueStatistics" },
-            { label: <FormattedMessage id='app.DataComparison' />, key: '/index/statistics/dataComparison', component: "@/pages/statistics/dataComparison" },
-            { label: <FormattedMessage id='app.ReportExport' />, key: '/index/statistics/reportExport', component: "@/pages/statistics/reportExport" },
+            { label: <FormattedMessage id='电量统计' />, key: '/index/statistics/electricityStatistics', component: "@/pages/statistics/electricityStatistics" },
+            { label: <FormattedMessage id='收益统计' />, key: '/index/statistics/revenueStatistics', component: "@/pages/statistics/revenueStatistics" },
+            { label: <FormattedMessage id='数据对比' />, key: '/index/statistics/dataComparison', component: "@/pages/statistics/dataComparison" },
+            { label: <FormattedMessage id='报表导出' />, key: '/index/statistics/reportExport', component: "@/pages/statistics/reportExport" },
         ]
     },
     // {
@@ -48,33 +48,33 @@ const MenuList = [
     //     ]
     // },
     {
-        label: <FormattedMessage id='app.Alarm' />,
+        label: <FormattedMessage id='告警' />,
         key: '/index/alarm',
         icon: <AlertOutlined />,
         children: [
-            { label: <FormattedMessage id='app.RealTimeAlerts' />, key: '/index/alarm/realtimeAlarm', },
-            { label: <FormattedMessage id='app.HistoricalAlerts' />, key: '/index/alarm/historyAlarm', },
-            { label: <FormattedMessage id='app.AlarmRules' />, key: '/index/alarm/alarmRules', },
+            { label: <FormattedMessage id='实时告警' />, key: '/index/alarm/realtimeAlarm', },
+            { label: <FormattedMessage id='历史告警' />, key: '/index/alarm/historyAlarm', },
+            { label: <FormattedMessage id='告警规则' />, key: '/index/alarm/alarmRules', },
         ]
     },
     {
-        label: <FormattedMessage id='app.DepotSettings' />,
+        label: <FormattedMessage id='场站设置' />,
         key: '/index/depotSettings',
         icon: <ControlOutlined />,
         children: [
-            { label: <FormattedMessage id='app.PolicyConfiguration' />, key: '/index/depotSettings/policyConfiguration', component: "@/pages/depotSettings/policyConfiguration" },
-            { label: <FormattedMessage id='app.PowerStationConfiguration' />, key: '/index/depotSettings/powerStationConfig', component: "@/pages/depotSettings/powerStationConfig" },
+            { label: <FormattedMessage id='策略配置' />, key: '/index/depotSettings/policyConfiguration', component: "@/pages/depotSettings/policyConfiguration" },
+            { label: <FormattedMessage id='电站配置' />, key: '/index/depotSettings/powerStationConfig', component: "@/pages/depotSettings/powerStationConfig" },
             { label: <FormattedMessage id='运维管理' />, key: '/index/depotSettings/operationManage', component: "@/pages/depotSettings/operationManage" },
         ]
     },
     {
-        label: <FormattedMessage id='app.SystemAdministration' />,
+        label: <FormattedMessage id='系统管理' />,
         key: '/index/systemManagement',
         icon: <SettingOutlined />,
         children: [
             // { label: '策略配置', key: '/index/systemManagement/policyConfiguration', },
-            { label: <FormattedMessage id='app.UserManagement' />, key: '/index/systemManagement/user', },
-            { label: <FormattedMessage id='app.RecordsOfOperations' />, key: '/index/systemManagement/operationRecords', },
+            { label: <FormattedMessage id='用户管理' />, key: '/index/systemManagement/user', },
+            { label: <FormattedMessage id='操作记录' />, key: '/index/systemManagement/operationRecords', },
         ]
     },
 ]

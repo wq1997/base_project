@@ -58,12 +58,12 @@ function Com(props) {
                 containLabel: true
             },
             legend: {
-                data: [getTranslation('statistics.InternetPower'),
-                getTranslation('statistics.TheGridBuysElectricity'),
-                getTranslation('statistics.EnergyStorageCharge'),
-                getTranslation('statistics.EnergyStorageDischarge'),
-                getTranslation('statistics.PhotovoltaicPowerGeneration'),
-                getTranslation('statistics.TheAmountOfCharging'),
+                data: [getTranslation('上网电量'),
+                getTranslation('电网买电量'),
+                getTranslation('储能充电量'),
+                getTranslation('储能放电量'),
+                getTranslation('光伏发电量'),
+                getTranslation('充电桩充电量'),
                 ],
                 textStyle: {//图例文字的样式
                     color: token.titleColor,
@@ -89,7 +89,7 @@ function Com(props) {
             ],
             series: [
                 {
-                    name: getTranslation('statistics.InternetPower'),
+                    name: getTranslation('上网电量'),
                     type: 'bar',
                     itemStyle: {
                         normal: {
@@ -101,7 +101,7 @@ function Com(props) {
                     data: dataY.pvOutEnergy
                 },
                 {
-                    name: getTranslation('statistics.EnergyStorageCharge'),
+                    name: getTranslation('储能充电量'),
                     type: 'bar',
                     itemStyle: {
                         normal: {
@@ -113,7 +113,7 @@ function Com(props) {
                     data:dataY.energyInEnergy
                 },
                 {
-                    name: getTranslation('statistics.EnergyStorageDischarge'),
+                    name: getTranslation('储能放电量'),
                     type: 'bar',
                     itemStyle: {
                         normal: {
@@ -125,7 +125,7 @@ function Com(props) {
                     data:dataY.energyOutEnergy
                 },
                 {
-                    name: getTranslation('statistics.PhotovoltaicPowerGeneration'),
+                    name: getTranslation('光伏发电量'),
                     type: 'bar',
                     itemStyle: {
                         normal: {
@@ -137,7 +137,7 @@ function Com(props) {
                     data: dataY.pvInEnergy
                 },
                 {
-                    name: getTranslation('statistics.TheAmountOfCharging'),
+                    name: getTranslation('充电桩充电量'),
                     type: 'bar',
                     itemStyle: {
                         normal: {
@@ -266,10 +266,10 @@ function Com(props) {
 
                 <div className={styles.buttons}>
                     <Button type="primary" className={styles.firstButton} onClick={getData}>
-                        <FormattedMessage id='app.Query' />
+                        <FormattedMessage id='查询' />
                     </Button>
                     <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downLoadExcelModel} >
-                        <FormattedMessage id='app.Export' />excel
+                        <FormattedMessage id='导出' />excel
                     </Button>
                 </div>
 

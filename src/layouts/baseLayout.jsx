@@ -87,7 +87,7 @@ const BaseLayout = () => {
                         level={3}
                         className={styles.title}
                     >
-                        <FormattedMessage id="app.title" />
+                        <FormattedMessage id="工商业微网孪生平台" />
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         {
