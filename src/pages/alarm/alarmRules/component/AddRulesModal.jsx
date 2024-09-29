@@ -10,22 +10,22 @@ export const formList = [
     type: 1,
     required: true,
     data: [{
-      label: '低级',
+      label: '一级告警',
       value: 1,
       key: 1,
     },
     {
-      label: '普通',
+      label: '二级告警',
       value:2,
       key: 2,
     },
     {
-      label: '严重',
+      label: '三级告警',
       value: 3,
       key: 3,
     },
     {
-      label: '高级',
+      label: '四级告警',
       value: 4,
       key: 4,
     },
@@ -79,8 +79,6 @@ const App = (props) => {
   }
   useEffect(() => {
     form.setFieldsValue(props.formData)
-    console.log(props.formData,1111111111);
-
   }, [props.formData]);
   useEffect(() => {
     getInitSearchData();

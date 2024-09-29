@@ -194,8 +194,8 @@ function Overview(props) {
         let arrC = [];
         let arrD = [];
         let arrE = [];
-        data?.data?.map(it => {
-            arrA.push(dayjs(it?.date).format('MM-DD'));
+        data?.data?.map((it,i) => {
+            arrA.push(dayjs().subtract(data?.data.length-i,'day').format('MM-DD'));
             arrB.push(it?.dayChargeEnergy);
             arrC.push(it?.dayDischargeEnergy);
             arrD.push(it?.dayEarning);
@@ -248,7 +248,7 @@ function Overview(props) {
                                             <div className={styles.itemTitle} style={{ color: token.titleColor }}>{t(it.label)}</div>
                                         </Tooltip>
                                         <Tooltip title={energySummary?.[it?.name] + it.unit} >
-                                            <div className={styles.itemValue} style={{ color: it.color }}>{energySummary?.[it.name]} <span className={styles.itemUnit} style={{ color: token.titleColor }}>{it.unit}</span></div>
+                                            <div className={styles.itemValue} style={{ color: it.color }}>{energySummary?.[it.name]}<span className={styles.itemUnit} style={{ color: token.titleColor }}>{it.unit}</span></div>
                                         </Tooltip>
 
                                     </div>)
@@ -271,7 +271,7 @@ function Overview(props) {
                                             color: '#03B4B4'
                                         }}
                                     />
-                                    <span className={styles.label} style={{ color: token.titleColor }}>{t('当前总功率')}</span>:<span className={styles.value}>{running?.totalPower?.split(' ')[0]
+                                    <span className={styles.label} style={{ color: token.titleColor }}>{t('当前总功率')}</span>{':'}<span className={styles.value} style={{marginLeft:'8px'}}>{ running?.totalPower?.split(' ')[0]
                                         || 0}</span><span className={styles.unit} style={{ color: token.titleColor }}>{running?.totalPower?.split(' ')[1] || 'kW'}</span>
                                 </div>
                                 <div className={styles.realStaus} style={{ backgroundColor: token.lightTreeBgc }}>
@@ -303,7 +303,7 @@ function Overview(props) {
 
 
                                                 <div className={styles.valueProfit} style={{ color: it.color }}>
-                                                    {income?.[it.name]||'--'} <span style={{ color: token.titleColor }}>{it.unit}</span>
+                                                    {income?.[it.name]||'--'}<span style={{ color: token.titleColor }}>{it.unit}</span>
                                                 </div>
                                             </div>
                                         </>

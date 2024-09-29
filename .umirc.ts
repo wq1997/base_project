@@ -19,26 +19,36 @@ export default defineConfig({
   routes,
   npmClient: 'pnpm',
   plugins: ['@umijs/plugins/dist/dva', '@umijs/plugins/dist/locale'],
-  dva:{},
+  dva: {},
   locale: {
     default: "zh-CN"
   },
   outputPath: OutputPathName(UMI_ENV),
   define: {
-    "process.env.API_URL": apiUrl[UMI_ENV||'test'],
+    "process.env.API_URL": apiUrl[UMI_ENV || 'test'],
   },
   headScripts: [
-    { src: 'js/meta2d.js',  },
-    { src: 'js/lcjs.iife.js',  },
-    { src: 'js/marked.min.js',  },
-    { crossorigin: 'anonymous',integrity:'sha512-ppWbHq6q2f7HAwS481w6qikuC0XEeBnmkRg6KWnWg3zSIbJwWWBgsCDMAxzSB7SVqXzWwSYQ2s8TSJKjnaikMg==',src:'https://lib.baomitu.com/echarts/5.1.2/echarts.min.js'  },
-    { src: 'http://cdn.hcharts.cn/highcharts/highcharts.js',  },
-    { src: 'http://cdn.hcharts.cn/highcharts/highcharts-more.js',  },
+    { src: 'js/meta2d.js', },
+    { src: 'js/lcjs.iife.js', },
+    { src: 'js/marked.min.js', },
+    { crossorigin: 'anonymous', integrity: 'sha512-ppWbHq6q2f7HAwS481w6qikuC0XEeBnmkRg6KWnWg3zSIbJwWWBgsCDMAxzSB7SVqXzWwSYQ2s8TSJKjnaikMg==', src: 'https://lib.baomitu.com/echarts/5.1.2/echarts.min.js' },
+    { src: 'http://cdn.hcharts.cn/highcharts/highcharts.js', },
+    { src: 'http://cdn.hcharts.cn/highcharts/highcharts-more.js', },
   ],
+  codeSplitting: {
+    jsStrategy: 'granularChunks',
+  },
+  cssMinifier: 'esbuild',
+  cssMinifierOptions: {
+    minifyWhitespace: true,
+    minifySyntax: true,
+  },
+  hash: true,
+  mfsu: {},
   alias: {
-    '@/permissions': path.resolve(__dirname,'src/permissions'),
-    '@/hooks': path.resolve(__dirname,'src/hooks'),
-    '@/utils': path.resolve(__dirname,'src/utils'),
+    '@/permissions': path.resolve(__dirname, 'src/permissions'),
+    '@/hooks': path.resolve(__dirname, 'src/hooks'),
+    '@/utils': path.resolve(__dirname, 'src/utils'),
     '@/components': path.resolve(__dirname, 'src/components'),
   },
   chainWebpack: (config) => {
@@ -108,12 +118,12 @@ export default defineConfig({
         },
       },
     });
-    if (process.env.NODE_ENV === 'production') { 
+    if (process.env.NODE_ENV === 'production') {
       config.plugin('compression-webpack-plugin').use(
         new CompressionWebpackPlugin({
-          algorithm: 'gzip', 
+          algorithm: 'gzip',
           test: new RegExp('\\.(' + prodGzipList.join('|') + ')$'),
-          threshold: 10240, 
+          threshold: 10240,
           minRatio: 0.6,
           deleteOriginalAssets: false
         })

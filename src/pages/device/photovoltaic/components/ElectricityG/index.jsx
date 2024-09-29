@@ -42,8 +42,8 @@ function Com(props) {
         });
         let dataX=[];
         let dataY=[];
-        data.data?.map(it=>{
-            dataX.push(dayjs(it.date).format('YYYY-MM-DD'));
+        data.data?.map((it,i)=>{
+            dataX.push(dayjs().subtract(data?.data?.length-i, 'day').format('YYYY-MM-DD'));
             dataY.push(it.dayOutEnergy);
         });
         setOptions({

@@ -172,7 +172,7 @@ const Add = ({
                                 label="功率(kW)"
                                 name="pcsPower"
                             >
-                                <InputNumber min={0} placeholder='请输入' />
+                                <InputNumber placeholder='请输入' />
                             </Form.Item>
                         </Col>
                         <Col span={5}>

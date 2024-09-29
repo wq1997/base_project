@@ -6,7 +6,7 @@ import { apigetAlarmRulesByPlantId, getUpdateAlarmRule, getInsertAlarmRule, getD
 import { useSelector, useIntl } from "umi";
 import AddRulesModal from './component/AddRulesModal'
 import { formList } from './component/AddRulesModal'
-import  { ExclamationCircleFilled } from '@ant-design/icons';
+import { ExclamationCircleFilled } from '@ant-design/icons';
 
 
 function Com(props) {
@@ -39,32 +39,47 @@ function Com(props) {
             title: t('告警等级'),
             dataIndex: 'prior',
             key: 'prior',
-            align:'center',
-
-
+            align: 'center',
+            render: (val) => {
+                if (val == '一级告警') {
+                    return <div style={{ color: 'red' }}>
+                        {val}
+                    </div>
+                } else if (val == '二级告警') {
+                    return <div style={{ color: '#ED750E' }}>
+                        {val}
+                    </div>
+                } else if (val == '三级告警') {
+                    return <div style={{ color: 'orange' }}>
+                        {val}
+                    </div>
+                } else if (val == '四级告警') {
+                    return <div style={{ color: 'green' }}>
+                        {val}
+                    </div>
+                }
+            }
         },
         {
             title: t('推送方式'),
             dataIndex: 'pushType',
             key: 'pushType',
-            align:'center',
-
+            align: 'center',
         },
         {
             title: t('每小时推送上限'),
             dataIndex: 'initNum',
             key: 'initNum',
-            align:'center',
-
+            align: 'center',
         },
         {
             title: t('状态'),
             dataIndex: 'status',
             key: 'status',
             width: 200,
-            align:'center',
-            render:(text, record) => {
-               return text?t('启用'):t('禁用')
+            align: 'center',
+            render: (text, record) => {
+                return text ? t('启用') : t('禁用')
             }
 
         },
@@ -72,7 +87,7 @@ function Com(props) {
             title: t('接收人'),
             dataIndex: 'userName',
             key: 'userName',
-            align:'center',
+            align: 'center',
 
             // width: 200
         },
@@ -80,7 +95,7 @@ function Com(props) {
             title: t('操作'),
             dataIndex: 'operation',
             key: 'operation',
-            align:'center',
+            align: 'center',
             render: (text, record) => {
                 return (
                     <Space>
@@ -121,10 +136,10 @@ function Com(props) {
         setTitle('编辑告警规则');
         setIsOpen(!isOpen);
     }
-    const changeIsOpenDel=(record)=>{
+    const changeIsOpenDel = (record) => {
         setDelId(record.id);
         setIsOpenDel(!isOpenDel)
-      }
+    }
     const changeData = async (value) => {
         const { data } = await (title === '编辑告警规则' ?
             getUpdateAlarmRule({ ...value, plantId: currentPlantId || localStorage.getItem('plantId') }) :
@@ -144,7 +159,7 @@ function Com(props) {
         setIsOpenDel(!isOpenDel)
 
     }
-   
+
     return (
         <div className={styles.contents}>
             <CardModel
@@ -167,12 +182,12 @@ function Com(props) {
                 changeData={(value) => changeData(value)}
             />
             <Modal
-                title={[<><ExclamationCircleFilled style={{color:'#FAAD14',marginRight:'10px'}}/>系统提示</>]}
+                title={[<><ExclamationCircleFilled style={{ color: '#FAAD14', marginRight: '10px' }} />系统提示</>]}
                 open={isOpenDel}
                 onOk={del}
                 onCancel={changeIsOpenDel}
             >
-               {t('数据删除后将无法恢复，是否确认删除该条数据？')}
+                {t('数据删除后将无法恢复，是否确认删除该条数据？')}
             </Modal>
         </div>
     )

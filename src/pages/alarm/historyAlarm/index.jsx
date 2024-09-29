@@ -1,6 +1,7 @@
 import Table from '@/components/Table.jsx'
 import { alarmTableColums } from '@/utils/constants'
 import { getQueryString, downLoadExcelMode } from "@/utils/utils";
+import ReactECharts from "echarts-for-react";
 import { useEffect, useState } from 'react'
 import { useSelector, useIntl } from "umi";
 import styles from "./index.less";
@@ -13,7 +14,7 @@ import {
   ScheduleOutlined,
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
-import PieEcharts from '@/components/PieEcharts'
+var colorList = ['red', '#ED750E','orange',  'green'];
 const RealtimeAlarm = () => {
   const { RangePicker } = DatePicker;
   const [data, setData] = useState([]);
@@ -25,6 +26,61 @@ const RealtimeAlarm = () => {
   const { token } = theme.useToken();
   const [screenH, setScreenH] = useState('');
   const [scroolY, setScroolY] = useState(200);
+  const [options, setOptions] = useState({});
+
+  useEffect(() => {
+    getOptions();
+  }, [token, dataTotal]);
+  const getOptions = () => {
+    dataTotal?.priorStatistics?.map(it => {
+      it.label = {
+        color: token.titleColor,
+      }
+    });
+    setOptions({
+      title: {
+        text: sum(dataTotal?.priorStatistics),
+        x: 'center',
+        y: 'center',
+        textStyle: {
+          fontSize: '18px',
+          fontWeight: 500,
+          color: token.titleColor
+        },
+        subtextStyle: {
+          color: token.titleColor,
+          fontSize: '12px',
+        },
+      },
+      legend: {
+        show: true,
+        // icon:"circle",
+        top: "40%",
+        left: '70%',
+        width: 40,
+        padding: [0, 10],
+        itemGap: 10,
+        textStyle: {
+          color: token.titleColor,
+        },
+      },
+      series: [
+        {
+          radius: ['40%', '70%'],
+          center: ['50%', '50%'],
+          type: 'pie',
+          itemStyle: {
+            normal: {
+              color: function (params) {
+                return colorList[params.dataIndex]
+              }
+            }
+          },
+          data: dataTotal?.priorStatistics
+        }
+      ]
+    });
+  };
   const intl = useIntl();
   const t = (id) => {
     const msg = intl.formatMessage(
@@ -56,24 +112,24 @@ const RealtimeAlarm = () => {
   }, [screenH])
   const alarmLevel = [
     {
-      label: t('低级'),
+      label: t('一级告警'),
       value: '1',
-      key: '低级',
+      key: '一级',
     },
     {
-      label: t('普通'),
+      label: t('二级告警'),
       value: '2',
-      key: '普通',
+      key: '二级',
     },
     {
-      label: t('严重'),
+      label: t('三级告警'),
       value: '3',
-      key: '严重',
+      key: '三级',
     },
     {
-      label: t('高级'),
+      label: t('四级告警'),
       value: '4',
-      key: '高级',
+      key: '四级',
     },
   ];
   const typeOfstation = [
@@ -112,11 +168,11 @@ const RealtimeAlarm = () => {
     return state.device
   });
   const getTotalData = async () => {
-    const { data={} } = await getHistoryAlarmsStatistics({ plantId: currentPlantId || localStorage.getItem('plantId') });
+    const { data = {} } = await getHistoryAlarmsStatistics({ plantId: currentPlantId || localStorage.getItem('plantId') });
     setDatadataTotal(data?.data)
   };
   const getTableListData = async (page) => {
-    const { data={} } = await getHistoryAlarmsByOptionsWithPage({
+    const { data = {} } = await getHistoryAlarmsByOptionsWithPage({
       plantId: currentPlantId || localStorage.getItem('plantId'),
       currentPage: page || 1,
       pageSize: 10,
@@ -198,9 +254,7 @@ const RealtimeAlarm = () => {
               </div>
 
               <div className={styles.pieItem}>
-                <PieEcharts allData={{
-                  total: sum(dataTotal?.priorStatistics), subtext: t('总数'), data: dataTotal?.priorStatistics
-                }}></PieEcharts>
+                <ReactECharts option={options} style={{ height: '100%', }} />
                 <div className={styles.pieItem_bottom} style={{ color: token.smallTitleColor }}>{t('告警等级分布')}</div>
               </div>
               {/* <div className={styles.pieItem}>

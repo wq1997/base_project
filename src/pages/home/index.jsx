@@ -129,13 +129,13 @@ function OverView(props) {
         let pvInEnergy = [];
         let chargeInEnergy = [];
         let arrX = [];
-        energyData?.data?.map((it) => {
+        energyData?.data?.map((it,i) => {
             pvOutEnergy.push(it?.pvOutEnergy);
             energyInEnergy.push(it?.energyInEnergy);
             energyOutEnergy.push(it?.energyOutEnergy);
             pvInEnergy.push(it?.pvInEnergy);
             chargeInEnergy.push(it?.chargeInEnergy);
-            arrX.push(dayjs(it?.date).format('YYYY-MM-DD'))
+            arrX.push(dayjs().subtract(energyData?.data?.length-i, 'day').format('YYYY-MM-DD'))
         })
         setData(data?.data);
         setDateX(arrX);

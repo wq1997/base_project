@@ -305,12 +305,12 @@ function Com(props) {
         let pvEarning = [];
         let totalEarning = [];
         let { data } = await getEnergyFeeByTime(httpData);
-        data?.data.map((it) => {
+        data?.data.map((it,i) => {
             totalEarning.push(it.totalEarning);
             pvEarning.push(it.pvEarning);
             energyEarning.push(it.energyEarning);
             chargeEarning.push(it.chargeEarning);
-            it.date=dayjs(it?.date).format('YYYY-MM-DD')
+            it.date=dayjs().subtract(data?.data?.length-i, 'day').format('YYYY-MM-DD')
             arrX.push(it?.date);
         })
         setData(data.data);

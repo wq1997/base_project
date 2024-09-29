@@ -7,6 +7,8 @@ import { CardModel, Title } from "@/components";
 import dayjs from 'dayjs';
 import { useIntl } from "umi";
 import { data, inCome, energy } from "./data";
+import { formatTimeStamp } from "@/utils/utils";
+
 import { getExportReportList, getDtuReport, exportReport, updateReportTemplate } from "@/services/report";
 let dataMidst=JSON.parse(JSON.stringify(data));
 
@@ -143,7 +145,9 @@ function Com() {
   const changeDate = (val, str) => {
     setDateStr(str);
     setDate(dayjs(val).format());
-  }
+  };
+  console.log(allData?.plant?.installDate,dayjs(allData?.plant?.installDate).format('YYYY-MM-DD'));
+  
   return (
     <>
       <div className={styles.advancedAnalytics} style={{ color: token.titleColor, backgroundColor: token.titleCardBgc }}>
@@ -188,11 +192,11 @@ function Com() {
                   <Title title={dataMidst.baseData.title} />
                 </div>
                 {Object.keys(currentModel).length && <Descriptions
-                  items={dataMidst.baseData?.data.map(item => {
+                  items={dataMidst.baseData?.data?.map(item => {
                     if(item.value==='networkDate'||item.value==='installDate'){
                       return {
                         ...item,
-                        children:dayjs(allData?.plant?.[item?.value]).format('YYYY-MM-DD')
+                        children:formatTimeStamp(allData?.plant?.[item?.value])
                       }
                     }else{
                       return {

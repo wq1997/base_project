@@ -228,10 +228,10 @@ function Com(props) {
         let excel=[];
 
         let { data } = await getEnergyFeeByTime(httpData);
-        data?.data.map((it) => {
+        data?.data.map((it,i) => {
             arrIn.push(it.dayInEnergy);
             arrOut.push(it.dayOutEnergy);
-            it.date=dayjs(it?.date).format('YYYY-MM-DD')
+            it.date=dayjs().subtract(data?.data?.length-i, 'day').format('YYYY-MM-DD')
             arrX.push(it?.date);
             excel.push({
                 dayInEnergy:it.dayInEnergy,

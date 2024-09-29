@@ -11,6 +11,24 @@ function Com(props) {
     const { token } = theme.useToken();
     const [options, setOptions] = useState({});
     const getOptions = () => {
+        props?.allData?.data?.map(it=>{
+            it.label={
+                color:'fff',
+                normal:{
+                    padding: [100, 0],
+                    rich: {
+                        nameStyle: {
+                            fontSize: 12,
+                            align: 'right'
+                        },
+                        rate: {
+                            fontSize: 12,
+                            align: 'right'
+                        }
+                    }
+                }
+            }
+        });
         setOptions({
             title: {
                 text: props.allData?.total,
@@ -66,35 +84,19 @@ function Com(props) {
                         labelLine: {
                             normal: {
                                 show: true,
-                                length: 5,
-                                length2: 12,
+                                // length: 5,
+                                // length2: 12,
                                 lineStyle: {
-                                    color: token.titleColor
+                                    color:token.titleColor
                                 },
                                 align: 'left'
                             },
-                            color: token.titleColor,
+                            // color:'#fff',
                             emphasis: {
                                 show: false
                             }
                         },
-                        label:{
-                            color:token.titleColor,
-                            normal:{
-                                padding: [10, 0],
-                                rich: {
-                                    nameStyle: {
-                                        fontSize: 12,
-                                        align: 'right'
-                                    },
-                                    rate: {
-                                        fontSize: 12,
-                                        align: 'right'
-                                    }
-                                }
-                            }
-                        },
-                    data:props.allData?.data
+                        data:props.allData?.data
                   }
             ]
           });

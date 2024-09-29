@@ -105,13 +105,12 @@ function Com({ id }) {
         let { data } = await getPcsNowDataById({ id })
         setData(data?.data);
     }
-    // console.log("idid", id)
     const getPowerData = async () => {
         let { data } = await getPcsNowPowerById({ id });
         let dataX=[];
         let dataY=[];
         data?.data.map((it,index)=>{
-            dataX.push(dayjs(it.time).format('YYYY-MM-DD HH:mm:ss'));
+            dataX.push(dayjs(it.time).format('HH:mm:ss'));
             dataY.push(it.value);
         })
         setDataArr({dataY:[...dataY],dataX:[...dataX]});

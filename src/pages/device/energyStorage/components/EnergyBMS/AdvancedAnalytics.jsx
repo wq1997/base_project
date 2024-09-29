@@ -94,8 +94,8 @@ function Com(props) {
             dateList
         });
         let { tempInfo, volInfo } = data;
-        handelData(tempInfo, setOptionEchartVol, 1);
-        handelData(volInfo, setOptionEchartTem, 2);
+        handelData(tempInfo, setOptionEchartTem, 2);
+        handelData(volInfo, setOptionEchartVol, 1);
         setDiffData(data);
     }
     const getBottomChartData = async () => {
@@ -250,10 +250,10 @@ function Com(props) {
                       ${t('电压差')}：${diff || ""} <br/>
                       ${t("最大电压")}：${maxPackValue || ""} (${t(
                         "第"
-                    )}${maxPackNo || ""}${t("节")})<br/>
+                    )}${maxPackNo==0?'0':maxPackNo || ""}${t("节")})<br/>
                       ${t("最小电压")}：${minPackValue || ""} (${t(
                         "第"
-                    )}${minPackNo || ""}${t("节")})<br/>
+                    )}${minPackNo==0?'0':minPackNo || ""}${t("节")})<br/>
                       </div>
                     `);
                 } else {
@@ -264,10 +264,10 @@ function Com(props) {
                       ${t('温差')}：${diff || ""} <br/>
                       ${t("最高温度")}：${maxPackValue || ""} (${t(
                         "采样点"
-                    )}${maxPackNo || ""})<br/>
+                    )}${maxPackNo==0?'0':maxPackNo || ""})<br/>
                       ${t("最低温度")}：${minPackValue || ""} (${t(
                         "采样点"
-                    )}${minPackNo || ""})<br/>
+                    )}${minPackNo==0?'0':minPackNo || ""})<br/>
                       </div>
                     `);
                 }

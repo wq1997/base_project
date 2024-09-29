@@ -12,19 +12,14 @@ import { useSelector, useIntl } from "umi";
 const { SHOW_CHILD } = Cascader;
 function Com(props) {
   const { token } = theme.useToken();
-  const [option, setOption] = useState([]);
   const [way, setWay] = useState(1);
   const id = getQueryString('id') || 0;
   const [date, setDate] = useState(dayjs(new Date()));
   const [dateStr, setDateStr] = useState(dayjs(new Date()).format('YYYY-MM-DD'));
-  const [dateBottom, setDateBottom] = useState(dayjs(new Date()));
   const [packReq, setPackReq] = useState([]);
   const [packList, setPackList] = useState([]);
   const [dataOfEchart, setDataOfEchart] = useState([]);
-  const [cellReq, setCellReq] = useState(['0-0', '0-0-0']);
-  const [optionEchartTem, setOptionEchartTem] = useState({})
   const [optionEchart, setOptionEchart] = useState({})
-  const [cascaderValue, setCascaderValue] = useState([]);
 
   const intl = useIntl();
   const wayOption = [{
@@ -43,13 +38,9 @@ function Com(props) {
     );
     return msg
   }
-  const initOption = () => {
-    setOptionEchartTem(baseOption);
-  };
+ 
   useEffect(() => {
-    initOption();
     getInitData();
-    // getChartData();
   }, [token, id]);
 
   const getInitData = async () => {
@@ -78,7 +69,7 @@ function Com(props) {
             label: item?.dataTypeDesc
           }
         });
-        setCascaderValue([[currentValue, arr[index]?.children?.[0].id, subData.data?.[0]?.dataType]]);
+        setPackReq([[currentValue, arr[index]?.children?.[0].id, subData.data?.[0]?.dataType]]);
         let { data } = await getCompareData({
           dataParams: [{ devId:  arr[index]?.children?.[0].id, dataId: subData.data?.[0]?.dataType }],
           dateList: ["2024-05-08" || dateStr],
@@ -289,27 +280,7 @@ function Com(props) {
     setDateStr(str);
     setDate(val);
   }
-  const getToolTip = (params, data) => {
-    let text = '';
-    if (data.length == params.length) {
-      params?.forEach(({ seriesName, dataIndex, seriesIndex, color }) => {
-        console.log(params, data[seriesIndex].data[dataIndex], 100000);
-        return
-        text = text.concat(`
-                    <div>
-                      <span style="background:${color};width:10px;height:10px;border-radius:50%;display:inline-block"></span>
-                      ${data[seriesIndex].date}：${time} <br/>
-                      ${t('电压差')}：${diff || ""} <br/>
-                      ${t("最大电压")}：${maxPackValue || ""} (${t("第")}${maxPackNo || ""}${t("节")})<br/>
-                      ${t("最小电压")}：${minPackValue || ""} (${t("第")}${minPackNo || ""}${t("节")})<br/>
-                      </div>`);
 
-      })
-
-      return text
-    }
-
-  }
   const baseOption = {
     tooltip: {
       trigger: 'axis',
@@ -393,7 +364,7 @@ function Com(props) {
                   multiple={way === 1 ? true : false}
                   maxTagCount={1}
                   showCheckedStrategy={SHOW_CHILD}
-                  defaultValue={cascaderValue}
+                  value={packReq}
                   key={way}
                   allowClear={false}
                 >

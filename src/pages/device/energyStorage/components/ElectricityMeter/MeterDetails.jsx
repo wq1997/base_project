@@ -48,11 +48,7 @@ function Com({ id,gridPointId }) {
     lable:'日放电量',
     key:'EoDay',
     value:''
-   },  {
-    lable:'总充电电量',
-    key:'EiT1',
-    value:''
-   },  {
+   },   {
     lable:'正向总有功电量',
     key:'EiT2',
     value:''
@@ -272,18 +268,16 @@ function Com({ id,gridPointId }) {
     value:''
    },
 ]
-   console.log(data?.[0]?.['sc'],122112);
-   
     return (
         <div className={styles.detailsWrap} >
             <div className={styles.heapRealTimeData}>
                 <CardModel
                     title={t('电表数据')}
                     content={
-                        <div className={styles.content} >
+                        <div className={styles.content} style={{backgroundColor: token.lightTreeBgc,}}>
                             {data && modelData?.map((it, index) => {
                                 return (
-                                    <div className={styles.item} style={{ backgroundColor: token.lightTreeBgc,color:token.colorLittle}}>
+                                    <div className={styles.item} style={{ color:token.colorLittle}}>
                                         <span className={styles.itemKeys}>{t(it?.lable)}:</span>
                                         <span className={styles.itemValues}>{data?.[0]?.[it?.key]}</span>
                                     </div>

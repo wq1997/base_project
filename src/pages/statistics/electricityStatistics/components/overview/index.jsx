@@ -164,13 +164,13 @@ function Com(props) {
         let chargeInEnergy=[];
         let arrX=[];
         let {data}=await getEnergyFeeByTime(httpData);
-        data?.data.map((it)=>{
+        data?.data.map((it,i)=>{
             pvOutEnergy.push(it.pvOutEnergy);
             energyInEnergy.push(it.energyInEnergy);
             energyOutEnergy.push(it.energyOutEnergy);
             pvInEnergy.push(it.pvInEnergy);
             chargeInEnergy.push(it.chargeInEnergy);
-            it.date=dayjs(it?.date).format('YYYY-MM-DD')
+            it.date=dayjs().subtract( data?.data?.length-i, 'day').format('YYYY-MM-DD')
             arrX.push(it?.date);
             
         })
