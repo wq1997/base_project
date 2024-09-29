@@ -130,24 +130,38 @@ const Index = ({ zoomCenter, plants, panTo }) => {
         };
         window.markerClick = plantId => {
             const plant = plants?.find(item => item.id == plantId);
-            if (plant.haveCloud) {
-                getPlantAccessInfo(plantId);
-            } else {
-                const detailContent = `
-                    <div class=${styles.detail}>
-                        <div class=${styles.header}>
-                            项目信息
-                            <span class=${styles.close} onclick="window.close()">X</span>
-                        </div>
-                        <div class=${styles.infoContent}>
-                            <div>${window.getInfo(window.info?.slice(0, 13), plant)}</div>
-                            <div>${window.getInfo(window.info?.slice(13, 26), plant)}</div>
-                        </div>
-                    </div>
-                `;
-                _infoWindow.setContent(detailContent);
-                _infoWindow.open(map, [plant.longitude, plant.latitude]);
-            }
+            const detailContent = `
+            <div class=${styles.detail}>
+                <div class=${styles.header}>
+                    项目信息
+                    <span class=${styles.close} onclick="window.close()">X</span>
+                </div>
+                <div class=${styles.infoContent}>
+                    <div>${window.getInfo(window.info?.slice(0, 13), plant)}</div>
+                    <div>${window.getInfo(window.info?.slice(13, 26), plant)}</div>
+                </div>
+            </div>
+        `;
+            _infoWindow.setContent(detailContent);
+            _infoWindow.open(map, [plant.longitude, plant.latitude]);
+            // if (plant.haveCloud) {
+            //     getPlantAccessInfo(plantId);
+            // } else {
+            //     const detailContent = `
+            //         <div class=${styles.detail}>
+            //             <div class=${styles.header}>
+            //                 项目信息
+            //                 <span class=${styles.close} onclick="window.close()">X</span>
+            //             </div>
+            //             <div class=${styles.infoContent}>
+            //                 <div>${window.getInfo(window.info?.slice(0, 13), plant)}</div>
+            //                 <div>${window.getInfo(window.info?.slice(13, 26), plant)}</div>
+            //             </div>
+            //         </div>
+            //     `;
+            //     _infoWindow.setContent(detailContent);
+            //     _infoWindow.open(map, [plant.longitude, plant.latitude]);
+            // }
         };
         map.plugin(["AMap.MarkerCluster"], function () {
             const _cluster = new AMap.MarkerCluster(
@@ -188,7 +202,7 @@ const Index = ({ zoomCenter, plants, panTo }) => {
                         const plant = context?.data?.[0];
                         const content = `
                             <div class=${styles.markerWrapper}  onclick='window.markerClick(${plant?.id})' >
-                                <div class=${plant.haveCloud ? styles.cloudContent : styles.content} title=${plant.name}>
+                                <div class=${false ? styles.cloudContent : styles.content} title=${plant.name}>
                                     <div class=${styles.row}></div>
                                     <span class=${styles.plantName} >${plant.name}</span>
                                 </div>
