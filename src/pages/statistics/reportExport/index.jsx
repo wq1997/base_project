@@ -85,9 +85,31 @@ function Com() {
       type: way,
       date: currentDate,
     });
-
+    if (way==0) {
+      allData?.data?.reportData?.[0].map((item,i)=>{
+        item.date=dayjs().format('YYYY-MM-DD');
+      });
+      allData?.data?.reportData?.[1].map((item,i)=>{
+        item.date=dayjs().format('YYYY-MM-DD');
+      })   ;
+      allData?.data?.reportData?.[2].map((item,i)=>{
+        item.date=dayjs().format('YYYY-MM-DD');
+      })
+    }else{
+      allData?.data?.reportData?.[0].map((item,i)=>{
+        item.date=dayjs().subtract(allData?.data?.reportData?.[0].length-i, 'day').format('YYYY-MM-DD');
+      });
+      allData?.data?.reportData?.[1].map((item,i)=>{
+        item.date=dayjs().subtract(allData?.data?.reportData?.[1].length-i, 'day').format('YYYY-MM-DD');
+      })   ;
+      allData?.data?.reportData?.[2].map((item,i)=>{
+        item.date=dayjs().subtract(allData?.data?.reportData?.[2].length-i, 'day').format('YYYY-MM-DD');
+      })
+    }
+  
     setAllData(allData?.data);
   }
+  
   const delBaseData = (base, data) => {
     let arr = [];
     base.map(it => {
@@ -146,7 +168,6 @@ function Com() {
     setDateStr(str);
     setDate(dayjs(val).format());
   };
-  console.log(allData?.plant?.installDate,dayjs(allData?.plant?.installDate).format('YYYY-MM-DD'));
   
   return (
     <>

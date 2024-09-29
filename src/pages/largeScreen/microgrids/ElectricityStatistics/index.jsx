@@ -15,7 +15,7 @@ const ElectricityStatistics = ({plantId}) => {
 
         if(res?.data?.data){
             const data = res?.data?.data;
-            area = data?.map(item => dayjs(item.date).format('YYYY-MM-DD'));
+            area = data?.map((item,i) => dayjs().subtract(data?.length-i, 'day').format('YYYY-MM-DD'));
             data1 = data?.map(item => item?.energyCharge);
             data2 = data?.map(item => item?.energyDisCharge);
             data3 = data?.map(item => item?.pvGenerate);

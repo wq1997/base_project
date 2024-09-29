@@ -13,7 +13,7 @@ const IncomeStatistics = ({plantId}) => {
         let data2 = [];
         if(res?.data?.data){
             const data = res?.data?.data;
-            xAxisData = data?.map(item => dayjs(item.date).format('YYYY-MM-DD'));
+            xAxisData = data?.map((item,i) => dayjs().subtract(data?.length-i, 'day').format('YYYY-MM-DD'));
             data1 = data?.map(item => item?.energyProfit);
             data2 = data?.map(item => item?.pvProfit);
         }
