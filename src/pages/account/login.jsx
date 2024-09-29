@@ -15,11 +15,13 @@ const Login = () => {
 
     const onFinish = async values => {
         const res = await loginSever(values);
-        if (res?.data?.code == 0) {
-            setLocalStorage("Token", res?.data?.data);
-            history.push("/upload-files");
-        }else{
-            message.info(res?.data?.message)
+        if (res?.data) {
+            if (res?.data?.code == 0) {
+                setLocalStorage("Token", res?.data?.data);
+                history.push("/upload-files");
+            } else {
+                message.info(res?.data?.message);
+            }
         }
     };
 

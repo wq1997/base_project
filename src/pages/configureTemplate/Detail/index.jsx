@@ -16,7 +16,7 @@ const baseItems = [
     },
     {
         label: "取值维度",
-        key: "dimension",
+        key: "dimensionZh",
     },
     {
         label: "sheet名",
@@ -28,11 +28,11 @@ const baseItems = [
     },
     {
         label: "详细时间格式",
-        key: "timeFormat",
+        key: "timeFormatZh",
     },
     {
         label: "电流取值逻辑",
-        key: "currentStrategy",
+        key: "currentStrategyZh",
         span: 2,
     },
     {
@@ -49,7 +49,7 @@ const baseItems = [
     },
     {
         label: "单体电压单位",
-        key: "singleVoltageUnit",
+        key: "singleVoltageUnitZh",
     },
     {
         label: "单体电压开始列",

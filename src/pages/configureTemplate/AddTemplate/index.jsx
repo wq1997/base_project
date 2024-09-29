@@ -201,10 +201,6 @@ const Company = ({ editId, detailId, uploadOpen, onClose }) => {
                                 name="sheetName"
                                 rules={[
                                     {
-                                        required: true,
-                                        message: "请输入sheet名",
-                                    },
-                                    {
                                         pattern: ALL_SPACE_REG,
                                         message: "请输入sheet名",
                                     },
