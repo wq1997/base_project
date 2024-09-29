@@ -16,15 +16,21 @@ export default class Meta2d extends React.Component {
   componentDidMount() {
     meta2d = new window.Meta2d("meta2d");
     window.registerCommonDiagram();
-    this._fetch("/json/data1.json", function (text) {
-      var data = JSON.parse(text);
-      data.locked = 1;
-      meta2d.open(data);
-      meta2d.fitView(false);
-    })
+    this.state.them==='default'?
+      this._fetch("/json/data.json", function (text) {
+        var data = JSON.parse(text);
+        data.locked = 1;
+        meta2d.open(data);
+        meta2d.fitView(false);
+      }):
+      this._fetch("/json/data1.json", function (text) {
+        var data = JSON.parse(text);
+        data.locked = 1;
+        meta2d.open(data);
+        meta2d.fitView(false);
+      })
   }
   componentDidUpdate(props,state) {
-    console.log(getLocalStorage('theme'),this.state.them);
     
     if(getLocalStorage('theme') !== this.state.them||document.getElementById("meta2d")?.offsetWidth!==this.state.width){
       state.them=getLocalStorage('theme');

@@ -27,6 +27,7 @@ const RealtimeAlarm = () => {
   const [screenH, setScreenH] = useState('');
   const [scroolY, setScroolY] = useState(200);
   const [options, setOptions] = useState({});
+  const [size, setSize] = useState(10);
 
   useEffect(() => {
     getOptions();
@@ -154,7 +155,7 @@ const RealtimeAlarm = () => {
 
   useEffect(() => {
     getTableListData(current);
-  }, [current, level, type, time]);
+  }, [current, level, type, time,size]);
 
   useEffect(() => {
     getTotalData();
@@ -175,7 +176,7 @@ const RealtimeAlarm = () => {
     const { data = {} } = await getHistoryAlarmsByOptionsWithPage({
       plantId: currentPlantId || localStorage.getItem('plantId'),
       currentPage: page || 1,
-      pageSize: 10,
+      pageSize: size,
       prior: level,
       type,
       begin: time?.length ? time[0]?.format('YYYY-MM-DD HH:mm:ss') : null,
@@ -185,6 +186,9 @@ const RealtimeAlarm = () => {
   }
   const changPage = (page) => {
     setCurrent(page);
+  }
+  const onShowSizeChange=(current, size)=>{
+    setSize(size)
   }
   const changeLevel = (value) => {
     setLevel(value);
@@ -316,7 +320,7 @@ const RealtimeAlarm = () => {
           pagination={false}
           scroll={{ y: scroolY }}
         />
-        <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} total={data?.total} onChange={changPage} />
+        <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size={size} current={current} total={data?.total} onChange={changPage} onShowSizeChange	={onShowSizeChange	} />
 
       </div>
 
