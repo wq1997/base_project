@@ -83,10 +83,12 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
             setSpinning(false);
         }
         setSpinning(false);
-        if (res?.data?.code == 0) {
-            message.success("解析成功");
-        } else {
-            message.error(res?.data?.message);
+        if (res?.data) {
+            if (res?.data?.code == 0) {
+                message.success("解析成功");
+            } else {
+                message.error(res?.data?.message);
+            }
         }
         onCloseModal();
     };

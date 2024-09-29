@@ -57,7 +57,7 @@ const Account = () => {
         },
         {
             title: "操作",
-            width: 150,
+            width: 130,
             dataIndex: "operate",
             render: (_, { id, parseStatus }) => {
                 return (
@@ -70,15 +70,6 @@ const Account = () => {
                         >
                             编辑
                         </a>
-                        <Popconfirm
-                            title="操作确认"
-                            description="确定删除此电站？"
-                            onConfirm={() => deletePlant(id)}
-                            okText="确定"
-                            cancelText="取消"
-                        >
-                            <a style={{ color: "#ff4d4f" }}>删除</a>
-                        </Popconfirm>
                         <a onClick={() => setDetailId(id)}>详情</a>
                     </Space>
                 );
@@ -264,8 +255,12 @@ const Account = () => {
                             showUploadList={false}
                             onChange={info => {
                                 if (info.file.status === "done") {
-                                    message.success("上传成功");
-                                    getList();
+                                    if (info.file?.response?.code == 0) {
+                                        message.success("上传成功");
+                                        getList();
+                                    } else {
+                                        message.info(info.file?.response?.message);
+                                    }
                                 } else if (info.file.status === "error") {
                                     message.error("上传失败");
                                 }

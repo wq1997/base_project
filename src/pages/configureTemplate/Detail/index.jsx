@@ -83,7 +83,6 @@ const Company = ({ detailId, onClose }) => {
         const res = await getTemplateInfoServer(detailId);
         if (res?.data?.code == 0) {
             const info = res?.data?.data;
-            console.log(info);
             setItems(
                 baseItems?.map(item => {
                     const isPic = item?.key == "logo" || item?.key == "photo";

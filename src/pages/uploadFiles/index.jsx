@@ -47,6 +47,10 @@ const Account = () => {
             dataIndex: "testDate",
         },
         {
+            title: "模版文件",
+            dataIndex: "testTemplate",
+        },
+        {
             title: "设备位置",
             dataIndex: "devicePosition",
         },
@@ -110,8 +114,6 @@ const Account = () => {
     const getInitData = async () => {
         const res = await getUploadFilesInitDataServer();
         if (res?.data?.code == 0) {
-           
-        
         }
     };
 
@@ -162,7 +164,7 @@ const Account = () => {
         setDeviceBoxNo();
         uploadTimeRef.current = undefined;
         setUploadTime();
- 
+
         getList();
     };
 

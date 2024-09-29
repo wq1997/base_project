@@ -51,13 +51,17 @@ const Account = () => {
             dataIndex: "testDate",
         },
         {
-            title: "数据类型",
-            dataIndex: "dataTypeZh",
+            title: "模版文件",
+            dataIndex: "testTemplate",
         },
-        {
-            title: "设备类型",
-            dataIndex: "deviceTypeZh",
-        },
+        // {
+        //     title: "数据类型",
+        //     dataIndex: "dataTypeZh",
+        // },
+        // {
+        //     title: "设备类型",
+        //     dataIndex: "deviceTypeZh",
+        // },
         {
             title: "设备位置",
             dataIndex: "devicePosition",
@@ -66,10 +70,10 @@ const Account = () => {
             title: "设备箱号",
             dataIndex: "deviceBoxNo",
         },
-        {
-            title: "取值维度",
-            dataIndex: "dimensionZh",
-        },
+        // {
+        //     title: "取值维度",
+        //     dataIndex: "dimensionZh",
+        // },
         {
             title: "上传时间",
             dataIndex: "uploadTime",
@@ -225,7 +229,7 @@ const Account = () => {
                         }}
                     />
                 </div>
-                <SearchInput
+                {/* <SearchInput
                     label="数据类型"
                     value={dataType}
                     type="select"
@@ -238,7 +242,7 @@ const Account = () => {
                         dataTypeRef.current = value;
                         setDataType(value);
                     }}
-                />
+                /> */}
                 <SearchInput
                     label="设备箱号"
                     value={deviceBoxNo}
@@ -272,7 +276,7 @@ const Account = () => {
                         }
                     />
                 </div>
-                <SearchInput
+                {/* <SearchInput
                     label="设备类型"
                     type="select"
                     options={deviceTypeOptions}
@@ -299,7 +303,7 @@ const Account = () => {
                         dimensionRef.current = value;
                         setDimension(value);
                     }}
-                />
+                /> */}
                 <Button type="primary" onClick={() => getList()}>
                     搜索
                 </Button>

@@ -33,6 +33,9 @@ instance.interceptors.response.use(
     },
     error => {
         const { config, code, request, response, isAxiosError, toJSON } = error;
+        if (config?.url?.includes("upload")) {
+            return;
+        }
         if (response) {
             message.info(response?.data?.description);
             errorHandle(response?.status, response?.data?.message);
