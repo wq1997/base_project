@@ -91,7 +91,7 @@ function Com({ id }) {
     }
     return (
         <div className={styles.cellDetails}>
-            <div className={styles.searchHead}>
+            <div className={styles.searchHead} style={{color:token.titleColor}}>
                 <span >{t('数据项')}:</span>
                 {/* <Select
                     className={styles.margRL}

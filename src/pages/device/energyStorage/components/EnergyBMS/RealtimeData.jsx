@@ -213,7 +213,7 @@ function Com({ id }) {
     
     return (
         <div className={styles.detailsWrap} >
-              <div className={styles.title}>
+              <div className={styles.title} style={{color:token.titleColor}}>
                 <Select
                     mode="multiple"
                     style={{

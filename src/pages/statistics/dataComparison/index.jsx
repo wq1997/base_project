@@ -7,24 +7,19 @@ import ReactECharts from "echarts-for-react";
 import { CardModel } from "@/components";
 import { getDataComparisonInit, getCompareData } from '@/services/report'
 import { getDataParams } from '@/services/deviceTotal';
-
 import dayjs from 'dayjs';
 import { getQueryString, downLoadExcelMode } from "@/utils/utils";
-import { useSelector, useIntl } from "umi";
+import {  useIntl } from "umi";
 const { SHOW_CHILD } = Cascader;
 function Com(props) {
   const { token } = theme.useToken();
-  const [option, setOption] = useState([]);
   const [way, setWay] = useState(1);
   const id = getQueryString('id') || 0;
   const [date, setDate] = useState(dayjs(new Date()));
   const [dateStr, setDateStr] = useState(dayjs(new Date()).format('YYYY-MM-DD'));
-  const [dateBottom, setDateBottom] = useState(dayjs(new Date()));
   const [packReq, setPackReq] = useState([]);
   const [packList, setPackList] = useState([]);
   const [dataOfEchart, setDataOfEchart] = useState([]);
-  const [cellReq, setCellReq] = useState(['0-0', '0-0-0']);
-  const [optionEchartTem, setOptionEchartTem] = useState({})
   const [optionEchart, setOptionEchart] = useState({})
   const [cascaderValue, setCascaderValue] = useState([]);
 
@@ -46,13 +41,9 @@ function Com(props) {
     label: t('不同时间  相同数据项'),
     value: 2,
 },]
-  const initOption = () => {
-    setOptionEchartTem(baseOption);
-  };
+
   useEffect(() => {
-    initOption();
     getInitData();
-    // getChartData();
   }, [token, id]);
 
   const getInitData = async () => {
@@ -85,7 +76,7 @@ function Com(props) {
         setCascaderValue([[currentValue, `${arr[index]?.children?.[0].id},${arr[index]?.children?.[0].gridPoint}`, subData.data?.[0]?.dataType]]);
         let { data } = await getCompareData({
           dataParams: [{ devId: arr[index]?.children?.[0].id, dataId: subData.data?.[0]?.dataType, gridPoint:arr[index]?.children?.[0].id==0?gridPoint:undefined }],
-          dateList: ["2024-05-08" || dateStr],
+          dateList: [dateStr],
           compareType: way
         });
         setPackList(arr);
@@ -155,7 +146,6 @@ function Com(props) {
         return
       }
     } else {
-      console.log(packReq);
       if (packReq?.[1]?.split(',')?.[0] === 0) {
         dataTypeList = [{ devId: packReq?.[1]?.split(',')?.[0], gridPoint: packReq?.[1]?.split(',')?.[1], dataId: packReq?.[2] }];
       } else {
@@ -184,7 +174,7 @@ function Com(props) {
     dataOfEchart.map((it, i) => {
       if (way == 1) {
         sheetFilter.push(it.label);
-        sheetHeader.push(`${it.label}(${it.unit})`);
+        sheetHeader.push(`${it.label}`);
         sheetName = dayjs(it.value[0]?.time).format('YYYY-MM-DD');
         i == 0 ?
           it.value?.map((item, index) => {
@@ -251,7 +241,7 @@ function Com(props) {
         yAxis.push({
           type: 'value',
           position: index == 0 ? 'left' : 'right',
-          offset: index == 0 || index == 1 ? 0 : 100 * index,
+          offset: index == 0 || index == 1 ? 0 : 50 * index,
           alignTicks: true,
           name: one?.unit,
           // name: way==1? one?.label:dayjs(one.value[0]?.time).format('YYYY-MM-DD'),
@@ -297,10 +287,8 @@ function Com(props) {
   const changePack = (val, selectedOptions) => {
     loadData(selectedOptions[selectedOptions.length - 1]);
     setPackReq(val);
-    console.log(val, selectedOptions);
   }
   const changeWay = (val) => {
-    console.log(packList, 12121);
     setWay(val);
     setDate(dayjs(new Date()));
     setOptionEchart(baseOption);
@@ -312,27 +300,7 @@ function Com(props) {
     setDateStr(str);
     setDate(val);
   }
-  const getToolTip = (params, data) => {
-    let text = '';
-    if (data.length == params.length) {
-      params?.forEach(({ seriesName, dataIndex, seriesIndex, color }) => {
-        console.log(params, data[seriesIndex].data[dataIndex], 100000);
-        return
-        text = text.concat(`
-                    <div>
-                      <span style="background:${color};width:10px;height:10px;border-radius:50%;display:inline-block"></span>
-                      ${data[seriesIndex].date}：${time} <br/>
-                      ${t('电压差')}：${diff || ""} <br/>
-                      ${t("最大电压")}：${maxPackValue || ""} (${t("第")}${maxPackNo || ""}${t("节")})<br/>
-                      ${t("最小电压")}：${minPackValue || ""} (${t("第")}${minPackNo || ""}${t("节")})<br/>
-                      </div>`);
 
-      })
-
-      return text
-    }
-
-  }
   const baseOption = {
     tooltip: {
       trigger: 'axis',

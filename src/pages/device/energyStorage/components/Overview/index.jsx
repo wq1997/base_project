@@ -17,11 +17,6 @@ import {
     getEnergySummary,
     getRunMetrics,
     getChargeDischargeEnergySevenDaysByPlantId,
-    getChargeDischargeEnergySevenDaysDtuId,
-    getNowAlarmsByDtu,
-    getRunMetricsj,
-    getIncomeByDtuId,
-    getEnergySummaryByDtu,
     getNowAlarmsByEnergy,
     getIncomeByPlantId
 } from '@/services/deviceTotal'
@@ -195,7 +190,6 @@ function Overview(props) {
             arrD.push(it.dayEarning);
             arrE.push(it.efficiency*100)
         })
-        console.log(arrE,11111111);
         
         setDataX([...arrA]);
         setDataCharge(
@@ -215,21 +209,21 @@ function Overview(props) {
         gridTemplateRows: '1fr 1.375fr 1.375fr',
         gap: '8px 8px',
         gridTemplateAreas:
-            `"electric running profit"
-            "charge chargebit profitAll"
-            "chargAndDischarg alarm alarm"`
+            `"electric electric electric running"
+            "charge charge chargebit chargebit"
+            "chargAndDischarg alarm alarm alarm"`
     }
     let ContentStyle = useEmotionCss(({ token }) => {
         return {
             ...siderContentStyle,
             gridTemplateAreas:
-                `'electric running profit'' charge chargebit profitAll' '${pageType === 'ALL' ? 'alarm' : 'chargAndDischarg'} alarm alarm'`,
+                `'electric electric electric running'' charge charge chargebit chargebit' '${pageType === 'ALL' ? 'alarm' : 'chargAndDischarg'} alarm alarm alarm'`,
         }
 
     })
     return (
         <div className={styles.overview}>
-            <div className={styles.heard} style={{ backgroundColor: token.titleCardBgc }}>{title}</div>
+            <div className={styles.heard} style={{ backgroundColor: token.titleCardBgc,color:token.titleColor }}>{title}</div>
             <div className={classNames(styles.overContent, ContentStyle)} >
                 <div className={styles.electric}>
                     <CardModel
@@ -237,16 +231,19 @@ function Overview(props) {
                             t("电量")
                         }
                         content={
-                            <div className={styles.elewrap} style={{ backgroundColor: token.lightTreeLineBgc }}>
+                            <div className={styles.elewrap} style={{ }}>
                                 {eleData?.map(it => {
-                                    return (<div className={styles.item} style={{ backgroundColor: token.lightTreeBgc }}>
+                                    return (<div className={styles.item} style={{  }}>
+                                        <Tooltip title={energySummary[it?.name] + it.unit} >
+                                            <div className={styles.itemValue} style={{ color: it.color }}>{energySummary?.[it.name]?.split(' ')?.[0]}
+                                            {energySummary?.[it.name]?.split(' ')?.[1]=='%'&&<span className={styles.itemUnit} style={{ color: token.titleColor }}>{energySummary?.[it.name]?.split(' ')?.[1]}</span>}
+                                            </div>
+                                            {energySummary?.[it.name]?.split(' ')?.[1]!=='%'?<span className={styles.itemUnit} style={{ color: token.titleColor }}>{energySummary?.[it.name]?.split(' ')?.[1]}</span>:<span>{' '}</span>}
+
+                                        </Tooltip>
                                         <Tooltip title={it?.label} >
                                             <div className={styles.itemTitle} style={{ color: token.titleColor }}>{it.label}</div>
                                         </Tooltip>
-                                        <Tooltip title={energySummary[it?.name] + it.unit} >
-                                            <div className={styles.itemValue} style={{ color: it.color }}>{energySummary[it.name]}<span className={styles.itemUnit} style={{ color: token.titleColor }}>{it.unit}</span></div>
-                                        </Tooltip>
-
                                     </div>)
                                 })}
                             </div>
@@ -274,12 +271,11 @@ function Overview(props) {
                                     <div>{t('设备状态')}</div>
                                     <div>{t('正常')}<span className={styles.value} style={{ color: '#2BC50E' }}>{running?.onlineDevices}</span>{t('个')}</div>
                                     <div>{t('故障')}<span className={styles.value} style={{ color: '#D41818' }}>{running?.faultDevices}</span>{t('个')}</div>
-
                                 </div>
                             </div>
                         } />
                 </div>
-                <div className={styles.profit}>
+                {/* <div className={styles.profit}>
                     <CardModel
                         title={
                             t("收益")
@@ -308,7 +304,7 @@ function Overview(props) {
 
                             </div>
                         } />
-                </div>
+                </div> */}
                 <div className={styles.charge}>
                     <CardModel
                         title={
@@ -338,7 +334,7 @@ function Overview(props) {
                             </div>
                         } />
                 </div>
-                <div className={styles.profitAll}>
+                {/* <div className={styles.profitAll}>
                     <CardModel
                         title={
                             t("收益统计") + "("+currentPlant?.priceUnit+")"
@@ -348,7 +344,7 @@ function Overview(props) {
                                 <ProfitAll dataX={dataX} dataY={dayEarning} />
                             </div>
                         } />
-                </div>
+                </div> */}
                 {pageType !== 'ALL' && <div className={styles.chargAndDischarg}>
                     <CardModel
                         title={
@@ -367,7 +363,7 @@ function Overview(props) {
                         }
                         content={
                             <div className={styles.alarmWrap}>
-                                <Table className={styles.alarmTable} columns={clum} dataSource={alarms} size="middle" scroll={{ y: scroolY }} />
+                                <Table className={styles.alarmTable} columns={clum} dataSource={alarms} size="middle" pagination={{showSizeChanger:false}} scroll={{ y: scroolY }} />
                             </div>
                         } />
                 </div>

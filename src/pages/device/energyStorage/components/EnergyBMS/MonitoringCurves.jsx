@@ -224,7 +224,7 @@ function Com({ id }) {
     };
     return (
         <div className={styles.monitoringCurves}>
-            <div className={styles.searchHead}>
+            <div className={styles.searchHead} style={{color:token.titleColor}}>
                 <span className={styles.margRL}> {t('对比日期')}:</span>
                 <DatePicker
                     style={{ width: 240 }}

@@ -1039,5 +1039,11 @@ export default {
 "储能电站":"Energy storage power station",
 "光储充电站":" Light storage charging station",
 "温差压差":"Temperature difference and pressure difference",
+'第':'No.',
+'BMC数据':'BMC Data',
+'电芯实时数据':'Real-time data of battery cells',
+'电芯历史数据':'Battery cell historical data',
+'压差曲线':'Pressure difference curve',
+'温差曲线':'Temperature difference curve',
 
 }

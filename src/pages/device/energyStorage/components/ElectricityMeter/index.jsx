@@ -28,7 +28,7 @@ const ElectricityMeter = ({id}) => {
     return (
         <div >
             {/* <Tab activeKey={activeKey} TabItem={PageTypeList} onChange={onChangeTab}/> */}
-            <div className={styles.content} style={{backgroundColor: token.cardBgc,padding:'40px 30px',borderRadius: '0px 16px 0px 0px'}}>
+            <div className={styles.content} style={{backgroundColor: token.titleCardBgc,padding:'40px 30px',borderRadius: '0px 16px 0px 0px'}}>
                 {/* {activeKey==="RealtimeData"&&<RealtimeData id={id}/>} */}
                 {/* {activeKey==="HistoryData"&&<HistoryData id={id}/>} */}
                 <RealtimeData id={id}/>

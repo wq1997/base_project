@@ -196,11 +196,11 @@ function Com(props) {
                     <div>
                       <span style="background:${color};width:10px;height:10px;border-radius:50%;display:inline-block"></span>
                       ${data[seriesIndex].desc}：${time} <br/>
-                      ${t('电压差')}：${diff} <br/>
-                      ${t("最大电压")}：${maxPackValue} (${t(
+                      ${t('电压差')}：${diff||'-'} <br/>
+                      ${t("最大电压")}：${maxPackValue||'-'} (${t(
                         "第"
                     )}${maxPackNo}${t("节")})<br/>
-                      ${t("最小电压")}：${minPackValue} (${t(
+                      ${t("最小电压")}：${minPackValue||'-'} (${t(
                         "第"
                     )}${minPackNo}${t("节")})<br/>
                       </div>
@@ -210,13 +210,13 @@ function Com(props) {
                     <div>
                       <span style="background:${color};width:10px;height:10px;border-radius:50%;display:inline-block"></span>
                       ${data[seriesIndex].desc}：${time} <br/>
-                      ${t('温差')}：${diff} <br/>
-                      ${t("最高温度")}：${maxPackValue} (${t(
+                      ${t('温差')}：${diff||'-'} <br/>
+                      ${t("最高温度")}：${maxPackValue||'-'} (${t(
                         "采样点"
-                    )}${maxPackNo})<br/>
-                      ${t("最低温度")}：${minPackValue} (${t(
+                    )}${maxPackNo||'-'})<br/>
+                      ${t("最低温度")}：${minPackValue||'-'} (${t(
                         "采样点"
-                    )}${minPackNo})<br/>
+                    )}${minPackNo||'-'})<br/>
                       </div>
                     `);
                 }
@@ -285,7 +285,7 @@ function Com(props) {
     return (
         <>
             <div className={styles.advancedAnalytics}>
-                <div className={styles.searchHead}>
+                <div className={styles.searchHead} style={{color:token.titleColor}}>
                 <span >{t('设备')}:</span>
                     <Select
                         style={{

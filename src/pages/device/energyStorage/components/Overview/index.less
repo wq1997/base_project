@@ -15,41 +15,45 @@
     .overContent {
         .electric {
             grid-area: electric;
+       
             .elewrap {
                 width: 100%;
-                height: calc(100% -60px);
-                display: grid;
-                grid-template-columns: 1fr 1fr 1fr;
-                grid-template-rows: 1fr 1fr;
-                gap: 1px 1px;
-
+                height: 100%;
+                // grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+                // grid-template-rows: 1fr 1fr;
+                // gap: 1px 1px;
+                display: flex;
+            justify-content: center;
+            align-items: center;
                 .item {
                     padding: 20px 20px;
                     width: 100%;
+                    text-align: center;
                     overflow: hidden;
                     text-overflow: ellipsis !important;
                     white-space: nowrap;
 
                     .itemTitle {
-                        width: 100%;
+                        text-wrap: balance;
                         color: #666666;
-                        overflow: hidden;
-                        text-overflow: ellipsis !important;
-                        white-space: nowrap;
+                        margin-top: 20px;
+                        font-size: 16px;
+                        height: 44px;
+
                     }
 
                     .itemValue {
-                        height: calc(100% - 22px);
+                        // height: calc(100% - 22px);
                         overflow: hidden;
                         text-overflow: ellipsis !important;
                         white-space: nowrap;
 
-                        .itemUnit {
-                            font-size: 14px;
-                            height: 10%;
-                            line-height: 100%;
-
-                        }
+                    }
+                    
+                    .itemUnit {
+                        font-size: 14px;
+                        height: 10%;
+                        line-height: 100%;
                     }
                 }
 
