@@ -251,9 +251,9 @@ function Com(props) {
                     }
                 />
             </div>
-            {allData?.bmc && <div className={styles.Bms1} style={{ backgroundColor: token.titleCardBgc_2, color: token.color3 }}>
+            {allData?.bmc?.[0] && <div className={styles.Bms1} style={{ backgroundColor: token.titleCardBgc_2, color: token.color3 }}>
                 <CardModel
-                    title={t('BMS簇0信息')}
+                    title={allData?.bmc?.[1]?t('BMS簇0信息'):t('BMS信息')}
                     content={
                         <div className={styles.bmsContent}>
                             <div className={styles.bmsOne}>
@@ -326,7 +326,7 @@ function Com(props) {
                     }
                 />
             </div>}
-            {allData?.bmc && <div className={styles.Bms2} style={{ backgroundColor: token.titleCardBgc_2, color: token.color3 }}>
+            {allData?.bmc?.[1] && <div className={styles.Bms2} style={{ backgroundColor: token.titleCardBgc_2, color: token.color3 }}>
                 <CardModel
                     title={t('BMS簇1信息')}
                     content={

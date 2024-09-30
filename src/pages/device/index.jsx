@@ -337,7 +337,7 @@ const RealtimeAlarm = () => {
                     <Title title={t('设备列表')} />
                     <div className={styles.add}>
                         {(user?.roleId===2||user?.roleId===3)&&<div onClick={changIsOpen} className={styles.addBtn}
-                        style={{background:global.theme == 'default' ?' radial-gradient( 349% 93% at 51% 45%, #BFD4E3 0%, #7393AD 100%, #7393AD 100%)':'radial-gradient(153% 66% at 50% 50%, #111838 0%, #118786 100%)'}}
+                        style={{color:'#fff',background:global.theme == 'default' ?' radial-gradient( 349% 93% at 51% 45%, #BFD4E3 0%, #7393AD 100%, #7393AD 100%)':'radial-gradient(153% 66% at 50% 50%, #111838 0%, #118786 100%)'}}
                         >{t('新增设备')}</div>}
                     </div>
                     <div className={styles.cardContent} style={{backgroundColor:token.titleCardBgc,  height: 'calc(100% - 2.3438rem)'}}>

@@ -98,9 +98,9 @@ const App = ({ devId, dtuId, historyAllData }) => {
                     editable: true,
                     inputType: 'Select',
                     options: [
-                      { value: 3, label: intl.formatMessage({ id: '充电' }) },
-                      { value: 1, label: intl.formatMessage({ id: '放电' }) },
-                      { value: 2, label: intl.formatMessage({ id: '待机' }) },
+                      { value: '3', label: intl.formatMessage({ id: '充电' }) },
+                      { value: '1', label: intl.formatMessage({ id: '放电' }) },
+                      { value: '2', label: intl.formatMessage({ id: '待机' }) },
                     ]
                   },
                   {
