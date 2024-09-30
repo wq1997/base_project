@@ -100,7 +100,7 @@ function Com(props) {
         var option = {
             datas: []
         };
-        option.fileName = t('温差压差');
+        option.fileName = t('压差');
         diffData?.tempDiff?.map((item, index) => {
             let data = [];
             item?.data?.map((it, i) => {
@@ -113,8 +113,8 @@ function Com(props) {
             option.datas.push({
                 sheetData: data,
                 sheetName: item?.desc,
-                sheetFilter: ['time', 'volInfo', 'tempInfo'],
-                sheetHeader: [t("时间"), `${t('压差')}V`, `${t('温差')}℃`],
+                sheetFilter: ['time', 'volInfo',],
+                sheetHeader: [t("时间"), `${t('压差')}V`, ],
                 columnWidths: ['8', '4'],
             })
         })

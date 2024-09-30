@@ -128,11 +128,9 @@ function Com(props) {
       targetOption.children = data.data;
       setPackList([...packList]);
     } else {
-      console.log(selectedOptions.length, 12121212);
     };
   };
   const getChartData = async () => {
-    console.log(packReq,12121221);
     let dataTypeList = [];
     let dateList = [];
     if (way === 1) {

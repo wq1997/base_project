@@ -100,7 +100,7 @@ function Com({ id }) {
             label: '交流母线C相无功功率',
             value: '',
         }, {
-            key: 'reactivePower',
+            key: 'ratedOnlineCapacity',
             label: '额定在线容量',
             value: '',
         }, {

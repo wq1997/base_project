@@ -99,7 +99,7 @@ function Com(props) {
                         }
                     },
                     barWidth: '8%',
-                    data: dataY.pvOutEnergy
+                    data: dataY.energyOutEnergy
                 },
                 {
                     name: getTranslation('放电电量'),
@@ -124,31 +124,24 @@ function Com(props) {
             let httpData = {
                 time: mode === 'date' ?undefined:time.format('YYYY'),
                 type: mode === 'date' ? 0 : mode === 'month' ? 2 : 3,
-                plantId: currntGrid=='ALL'? +localStorage.getItem('plantId'):undefined,
-                gridPointId: currntGrid=='ALL'?undefined: currntGrid,
+                plantId: localStorage.getItem('plantId'),
                 startTime: mode === 'date' ?dayjs(startTime).format('YYYY-MM-DD'):undefined,
                 endTime: mode === 'date' ?dayjs(endTime).format('YYYY-MM-DD'):undefined,
             }
-            let pvOutEnergy = [];
             let energyInEnergy = [];
             let energyOutEnergy = [];
-            let pvInEnergy = [];
-            let chargeInEnergy = [];
             let arrX = [];
             let { data } = await getEnergyFeeByTime(httpData);
             data?.data?.map((it) => {
-                pvOutEnergy.push(it.pvOutEnergy);
-                energyInEnergy.push(it.energyInEnergy);
-                energyOutEnergy.push(it.energyOutEnergy);
-                pvInEnergy.push(it.pvInEnergy);
-                chargeInEnergy.push(it.chargeInEnergy);
+                energyInEnergy.push(it.charge);
+                energyOutEnergy.push(it.discharge);
                 it.date = dayjs(it?.date).format('YYYY-MM-DD')
                 arrX.push(it?.date);
     
             })
             setData(data.data);
             setDateX(arrX);
-            setDataY({ pvOutEnergy, energyInEnergy, energyOutEnergy, pvInEnergy, chargeInEnergy });
+            setDataY({  energyInEnergy, energyOutEnergy,  });
         }else{
             message.warning(getTranslation('时间段应在5至15天'));
             return
@@ -197,20 +190,20 @@ function Com(props) {
         },
         {
             title: `${getTranslation('充电电量')}(kWh)`,
-            dataIndex: 'pvOutEnergy',
-            key: 'pvOutEnergy',
+            dataIndex: 'charge',
+            key: 'charge',
             width: 100,
         },
         {
             title: `${getTranslation('放电电量')}(kWh)`,
-            dataIndex: 'energyInEnergy',
-            key: 'energyInEnergy',
+            dataIndex: 'discharge',
+            key: 'discharge',
             width: 100,
         },
         {
             title: getTranslation('充放电效率'),
-            dataIndex: 'energyOutEnergy',
-            key: 'energyOutEnergy',
+            dataIndex: 'efficiency',
+            key: 'efficiency',
             width: 100,
         },
     ];

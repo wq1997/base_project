@@ -101,21 +101,21 @@ function Com({ id }) {
             label: '放电可用电量',
             value: '',
         }, {
-            key: 'bmsChargeAvalilableEnergy',
+            key: 'chargeAvailableEnergy',
             label: '充电可用电能量',
             value: '',
         }, {
-            key: 'bmsDischargeAvalilableEnergy',
+            key: 'dischargeAvailableEnergy',
             label:'放电可用电能量',
             value: '',
         },
         {
-            key: 'bmsHistoryChargeEnergy',
+            key: 'bmsHisCharge',
             label:'堆历史充电电量',
             value: '',
         },
         {
-            key: 'bmsHistorydischargeEnergy',
+            key: 'bmsHisDis',
             label:'堆历史放电电量',
             value: '',
         }, {

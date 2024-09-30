@@ -193,8 +193,10 @@ function Overview(props) {
             arrB.push(it.dayChargeEnergy);
             arrC.push(it.dayDischargeEnergy);
             arrD.push(it.dayEarning);
-            arrE.push(it.efficiency)
+            arrE.push(it.efficiency*100)
         })
+        console.log(arrE,11111111);
+        
         setDataX([...arrA]);
         setDataCharge(
             {
@@ -242,7 +244,7 @@ function Overview(props) {
                                             <div className={styles.itemTitle} style={{ color: token.titleColor }}>{it.label}</div>
                                         </Tooltip>
                                         <Tooltip title={energySummary[it?.name] + it.unit} >
-                                            <div className={styles.itemValue} style={{ color: it.color }}>{energySummary[it.name]} <span className={styles.itemUnit} style={{ color: token.titleColor }}>{it.unit}</span></div>
+                                            <div className={styles.itemValue} style={{ color: it.color }}>{energySummary[it.name]}<span className={styles.itemUnit} style={{ color: token.titleColor }}>{it.unit}</span></div>
                                         </Tooltip>
 
                                     </div>)
@@ -297,7 +299,7 @@ function Overview(props) {
 
 
                                                 <div className={styles.valueProfit} style={{ color: it.color }}>
-                                                    {income[it.name]} <span style={{ color: token.titleColor }}>{it.unit}</span>
+                                                    {income[it.name]}<span style={{ color: token.titleColor }}>{it.unit}</span>
                                                 </div>
                                             </div>
                                         </>
@@ -321,7 +323,7 @@ function Overview(props) {
                 <div className={styles.chargebit}>
                     <CardModel
                         title={
-                            t("充放电效率")
+                            t("充放电效率")+'(%)'
                         }
                         content={
                             <div className={styles.chargebitWrap}>

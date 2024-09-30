@@ -102,24 +102,24 @@ function Com({ id }) {
                 },
                 {
                     label: '总有功功率',
-                    key: 'power'
+                    key: 'totalActivePower'
                 },
                 {
                     label: '总无功功率',
-                    key: 'reactivePower'
+                    key: 'totalReactivePower'
                 },
                 {
                     label: '电网频率',
                     key: 'totalFreq'
                 },
-                {
-                    label: '累计放电电量',
-                    key: 'totalDischargeEnergy'
-                },
-                {
-                    label: '累计充电电量',
-                    key: 'totalChargeEnergy'
-                },
+                // {
+                //     label: '累计放电电量',
+                //     key: 'totalDischargeEnergy'
+                // },
+                // {
+                //     label: '累计充电电量',
+                //     key: 'totalChargeEnergy'
+                // },
             ]
         },
         {
@@ -154,27 +154,27 @@ function Com({ id }) {
                 },
                 {
                     label: 'A相有功功率',
-                    key: 'phaseAActivePower'
+                    key: 'powerA'
                 },
                 {
                     label: 'B相有功功率',
-                    key: 'phaseBActivePower'
+                    key: 'powerB'
                 },
                 {
                     label: 'C相有功功率',
-                    key: 'phaseCActivePower'
+                    key: 'powerC'
                 },
                 {
                     label: 'A相无功功率',
-                    key: 'phaseAReactivePower'
+                    key: 'reactivePowerA'
                 },
                 {
                     label: 'B相无功功率',
-                    key: 'phaseBReactivePower'
+                    key: 'reactivePowerB'
                 },
                 {
                     label: 'C相无功功率',
-                    key: 'phaseCReactivePower'
+                    key: 'reactivePowerC'
                 },
                 {
                     label: 'A相功率因数',
@@ -246,27 +246,27 @@ function Com({ id }) {
                 },
                 {
                     label: 'A相有功功率',
-                    key: 'phaseAActivePower'
+                    key: 'powerA'
                 },
                 {
                     label: 'B相有功功率',
-                    key: 'phaseBActivePower'
+                    key: 'powerB'
                 },
                 {
                     label: 'C相有功功率',
-                    key: 'phaseCActivePower'
+                    key: 'powerC'
                 },
                 {
                     label: 'A相无功功率',
-                    key: 'phaseAReactivePower'
+                    key: 'reactivePowerA'
                 },
                 {
                     label: 'B相无功功率',
-                    key: 'phaseBReactivePower'
+                    key: 'reactivePowerB'
                 },
                 {
                     label: 'C相无功功率',
-                    key: 'phaseCReactivePower'
+                    key: 'reactivePowerC'
                 },
                 {
                     label: 'A相视在功率',
@@ -301,12 +301,16 @@ function Com({ id }) {
                     key: 'totalFactor'
                 },
                 {
+                    label: '总有功功率',
+                    key: 'power'
+                },
+                {
                     label: '总无功功率',
                     key: 'reactivePower'
                 },
                 {
                     label: '频率',
-                    key: 'freq'
+                    key: 'totalFreq'
                 },
             ]
         },

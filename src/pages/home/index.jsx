@@ -210,7 +210,7 @@ function OverView(props) {
     ];
     const pcsModel = [
         {
-            key: 'startState',
+            key: 'statusAll',
             label: '状态',
             unit: ''
         },
@@ -312,8 +312,8 @@ function OverView(props) {
                                                 }}
                                                 items={gridData.map(it => {
                                                     return {
-                                                        label: t(it.label) + `${it.unit}`,
-                                                        // label: t(it.label),
+                                                        label: t(it.label) ,
+                                                        // label: t(it.label),+ `${it.unit}`
                                                         key: it.key,
                                                         children: allData?.msc?.[0]?.[it.key]
                                                     }
@@ -346,7 +346,8 @@ function OverView(props) {
                                                                     }}
                                                                     items={pcsData.map(it => {
                                                                         return {
-                                                                            label: t(it.label) + `${it.unit} `,
+                                                                            label: t(it.label) ,
+                                                                            // + `${it.unit} `/
                                                                             key: it.key,
                                                                             children: onePcs?.pcs?.[it.key] || '--'
                                                                         }
@@ -364,7 +365,8 @@ function OverView(props) {
                                                                         title={"Module1#" + (i + 1)}
                                                                         items={pcsModel.map(it => {
                                                                             return {
-                                                                                label: t(it.label) + `${it.unit}`,
+                                                                                label: t(it.label) ,
+                                                                                // + `${it.unit}`
                                                                                 key: it.key,
                                                                                 children: item[it.key] || '--'
                                                                             }
