@@ -221,13 +221,13 @@ function OverView(props) {
 
         },
         {
-            key: 'soc',
+            key: 'bmsSoc',
             label: 'SOC',
             unit: '(%)'
 
         },
         {
-            key: 'soh',
+            key: 'bmsSoh',
             label: 'SOH',
             unit: '(%)'
 
