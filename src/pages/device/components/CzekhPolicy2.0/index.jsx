@@ -89,7 +89,7 @@ function Com({ id }) {
     }
 
     return (
-        <div className={styles.content} style={{ backgroundColor: token.darkbgc, padding: '2.6042rem 1.8229rem 0 1.8229rem', color: token.color2 }}>
+        <div className={styles.content} style={{ backgroundColor: token.titleCardBgc, padding: '2.6042rem 1.8229rem 0 1.8229rem', color: token.color2 }}>
             <Space style={{ width: '100%' }} size={30} direction="vertical" >
                 <div className={styles.mode}>
                     <Flex gap={18}>

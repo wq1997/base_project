@@ -18,7 +18,6 @@ function Com(props) {
                 <div className={styles.title} style={{ width: '100%',
                    background: `url(${path}) left center no-repeat`,
                     color: token.iconColor,
-
                 }} >
                     <span>{props.title}</span>
                 </div>

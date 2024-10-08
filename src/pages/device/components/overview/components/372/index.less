@@ -1,20 +1,20 @@
 .content {
     width: 100%;
     height: 100%;
-    min-height: 36.4583rem;
+    // min-height: 36.4583rem;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows:  3.6458rem   8.3333rem 1fr 1fr 1fr 1fr;
     grid-auto-columns: 1fr;
     gap: .5208rem .5208rem;
     grid-auto-flow: row;
-    grid-template-areas:
-        "title title title title"
-        "PcsData center center status"
-        'PcsData center center Bms1'
-        'TodayEntity center center Bms1'
-        'TodayEntity center center Bms2'
-        'TodayEntity center center Bms2';
+    // grid-template-areas:
+    //     "title title title title"
+    //     "PcsData center center status"
+    //     'PcsData center center Bms1'
+    //     'TodayEntity center center Bms1'
+    //     'TodayEntity center center Bms2'
+    //     'TodayEntity center center Bms2';
     >div {
         border-radius: .8333rem;
     }
@@ -259,13 +259,11 @@
         padding: .4167rem 1.0417rem;
         width: 100%;
         height: calc(100% - 0.8333rem);
-
         .bmsTitle {
             width: 100%;
             font-size: 1.0417rem;
             img {
                 margin-right: .2604rem;
-
             }
         }
 

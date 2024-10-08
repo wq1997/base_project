@@ -196,6 +196,29 @@ function Com(props) {
             { name: "交流母线频率", value: "-", key: "freq" },
         ],
     });
+    const [pcsData1, setPcsData1] = useState({
+        title: "PCS信息",
+        data: [
+            { name: "PCS支路1运行状态", value: "-", key: "statusAll" },
+            { name: "系统故障状态", value: "-", key: "faultState" },
+            { name: "系统告警状态", value: "-", key: "warnState" },
+            { name: "当天交流充电电量", value: "-", key: "todayChargeEnergy" },
+            { name: "当天交流放电电量", value: "-", key: "todayDischargeEnergy" },
+            { name: "总充电电量", value: "-", key: "totalChargeEnergy" },
+            { name: "总放电电量", value: "-", key: "totalDischargeEnergy" },
+            { name: "交流母线总有功功率", value: "-", key: "activePower" },
+            { name: "交流母线总无功功率", value: "-", key: "reactivePower" },
+            { name: "交流母线总视在功率", value: "-", key: "apparentPower" },
+            { name: "交流母线总功率因数", value: "-", key: "powerFactor" },
+            { name: "支路1功率", value: "-", key: "power" },
+            { name: "支路1电压", value: "-", key: "vol" },
+            { name: "支路1电流", value: "-", key: "cur" },
+            { name: "模块温度", value: "-", key: "moduleTemp" },
+            { name: "机柜温度", value: "-", key: "cabinetTemp" },
+            { name: "环境温度", value: "-", key: "envTemp" },
+            { name: "交流母线频率", value: "-", key: "freq" },
+        ],
+    });
     const [bms1Data, setBms1Data] = useState({
         title: "BMS簇0信息",
         data: [
@@ -314,6 +337,7 @@ function Com(props) {
     }, [locale])
     const getData = async () => {
         let { data } = await getBurDeviceDetailInfo2({ id });
+        if ( data.data.pcsBranch[1]|| data.data.bmc[1]) {
         data.data.pcsBranch[1].statusAll2 = data.data.pcsBranch[1]?.statusAll;
         data.data.pcsBranch[1].power2 = data.data.pcsBranch[1].power;
         data.data.pcsBranch[1].cur2 = data.data.pcsBranch[1].cur;
@@ -328,6 +352,8 @@ function Com(props) {
         data.data.bmc[1].BMC2bmuLowestHardwareVersion = data.data.bmc[1].bmuLowestHardwareVersion;
         data.data.bmc[1].BMC2softwareVersion = data.data.bmc[1].softwareVersion;
         data.data.bmc[1].BMC2hardwareVersion = data.data.bmc[1].hardwareVersion;
+        }
+        
         // data.data.bms[1].BMS2softwareVersion = data.data.bms[1].softwareVersion;
         // data.data.bms[1].BMS2hardwareVersion = data.data.bms[1].hardwareVersion;
         data.data.bmc[0].BMC1bmuHighestSoftwareVersion = data.data.bmc[0].bmuHighestSoftwareVersion;
@@ -344,6 +370,8 @@ function Com(props) {
         dealData(data?.data?.pcs, pcsData, setPcsData);
         dealData(data?.data?.pcsBranch[0], pcsData, setPcsData);
         dealData(data?.data?.pcsBranch[1], pcsData, setPcsData);
+        dealData(data?.data?.pcs, pcsData1, setPcsData1);
+        dealData(data?.data?.pcsBranch[0], pcsData1, setPcsData1);
         dealData(data?.data?.bmc[0], bms1Data, setBms1Data);
         dealData(data?.data?.bmc[1], bms2Data, setBms2Data);
         dealData(data?.data?.bmc[0], bmsData, setBmsData);
@@ -369,25 +397,31 @@ function Com(props) {
     }
     const dealData = (data, baseData, handlBase) => {
         baseData.data.map(it => {
-            data[it.key] ? it.value = data[it.key] : null;
-            if (baseData.title==='PCS信息') {
-            console.log(it.key,it.value, data[it.key],'aaa');
-                
-            }
+            data?.[it.key] ? it.value = data[it.key] : null;
+            // if (baseData.title==='PCS信息') {
+            // console.log(it.key,it.value, data[it.key],'aaa');
+            // }
+          
         });
+        console.log(!data?.data?.bmc[1]&&baseData.title=='BMS簇0信息',11111);
+        
+        if (!data?.data?.bmc[1]&&baseData.title=='BMS簇0信息') {
+            baseData.title='BMS信息'
+        }
         handlBase({ ...baseData });
     };
   
     return (
         <div className={styles.details}>
-            <DetalisCard data={pcsData} />
+            {data?.data?.pcsBranch[1]&&<DetalisCard data={pcsData} />}
+            {!data?.data?.pcsBranch[1]&&<DetalisCard data={pcsData1} />}
             <DetalisCard data={bms1Data} />
-            <DetalisCard data={bms2Data} />
+            {data?.data?.bmc[1]&& <DetalisCard data={bms2Data} />}
             <DetalisCard data={bmsData} />
             <DetalisCard data={meterData} />
             <DetalisCard data={energyData} table={{tableClum1,tableClum2,dataTable1}}/>
             <DetalisCard data={ic1Data} />
-            <DetalisCard data={ic2Data} />
+            {data?.data?.bmc[1]&&<DetalisCard data={ic2Data} />}
 
         </div>
     )

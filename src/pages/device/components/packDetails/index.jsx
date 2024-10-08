@@ -76,7 +76,7 @@ function Com(props) {
 
     return (
         <div className={styles.pack} style={{backgroundColor:token.titleCardBgc,overflow:'scroll'}}>
-          { getQueryString('type')=="14"&&<Select
+          { options.length>1&&<Select
                 className={styles.margRL}
                 style={{ width: '9.375rem',fontSize:'0.9375rem'}}
                 options={options}

@@ -208,7 +208,7 @@ const [option, setOption] = useState({})
                             <div className={styles.pcsOne} style={{ width: '66.7%' }}>
                                 <div className={styles.pcsOneTitle}>
                                     <span style={{ paddingLeft: '30px' }}></span>
-                                    <span>
+                                    <span style={{fontSize:'1.0417rem'}}>
                                         {t('电流/A')}
                                     </span>
                                 </div>

@@ -1885,5 +1885,12 @@ export default {
 '请选择设备':'Please select device',
 'BMS1功率':'BMS1 Power',
 'BMS2功率':'BMS2 Power',
-'语言切换':'Language switching'
+'语言切换':'Language switching',
+'保存':'Save',
+'充放电类型':'Charge/Discharge Type',
+'是必填的!!':'is required!!',
+'放电':'Discharge',
+'当前在编辑状态，不可操作':'Currently edited, inoperable',
+'请至少添加一条策略':'Please add at least one policy',
+'最多添加24条数据':'Add up to 24 pieces of data'
 } 

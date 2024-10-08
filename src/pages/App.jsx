@@ -7,7 +7,6 @@ import zh_CN from 'antd/locale/zh_CN';
 import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 import localeData from "dayjs/plugin/localeData";
-
 // import 'qweather-icons/font/qweather-icons.css';
 import 'dayjs/locale/zh-cn';
 import '@/utils/flexible.js'
@@ -33,15 +32,7 @@ const App = () => {
             theme={{
                 algorithm: theme === 'dark' ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
                 token: ThemeEnum[theme],
-                components: {
-                    Input: {
-                        autoComplete: 'off'
-                    },
-                    // Modal: {
-                    //     contentBg: '#1C244C',
-                    //     headerBg: '#1C244C'
-                    // },
-                }
+                components: ThemeEnum[theme].components
             }}
         >
             <Outlet />

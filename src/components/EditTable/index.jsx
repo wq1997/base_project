@@ -13,7 +13,7 @@ import {
   Row,
   message,
 } from 'antd';
-import { useIntl } from "umi";
+import { useIntl, useSelector } from "umi";
 import { cloneObject } from "@/utils/utils";
 import CustomDatePicker from '../CustomDatePicker';
 import moment from 'moment';
@@ -37,6 +37,7 @@ const EditRowTable = ({
   maxLength,
   ...rest
 }) => {
+  const { locale } = useSelector(state => state.global);
   const intl = useIntl();
   const { token } = theme.useToken();
   const [form] = Form.useForm();
@@ -280,7 +281,6 @@ const EditRowTable = ({
     },
   };
   const myColumns = defaultColumns.map((col) => {
-    console.log("col", col)
     if (!col.editable) {
       return col;
     }
@@ -304,11 +304,11 @@ const EditRowTable = ({
 
   useEffect(() => {
     getDefaultColoums();
-  }, [editingKey, dataSource, showClear, showEdit, showDelete])
+  }, [editingKey, dataSource, showClear, showEdit, showDelete, locale])
 
   useEffect(() => {
     getDefaultDataSource();
-  }, [data])
+  }, [data,token])
 
   return (
     <div className={styles.editTable}>

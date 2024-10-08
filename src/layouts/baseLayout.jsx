@@ -134,7 +134,7 @@ const BaseLayout = () => {
                                         :
                                         (global.locale === "zh-CN" ? cnDark : cnDefault)
                                 }
-                                onClick={() => changeLanguage(global.locale === "zh-CN" ? "zh-EN" : 'zh-CN')}
+                                onClick={() => changeLanguage(global.locale === "zh-CN" ? "en-US" : 'zh-CN')}
                             />
                         </Tooltip>
                         <Tooltip title={useLocale('主题切换')} placement="bottom" >

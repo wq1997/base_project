@@ -35,6 +35,15 @@ const theme = {
         color5:'#03B4B4',
         color6:'#E3E3E3',
         color7:'#00FFFB',
+        tableHeard:'#20284D',
+        components: {
+            Table: {
+                headerBg:'#20284D',
+            },
+            Input: {
+                autoComplete: 'off'
+            },
+        }
 
     },
     default: {
@@ -70,6 +79,15 @@ const theme = {
         color5:'#0DED1C',
         color6:'#999999',
         color7:'#03B4B4',
+        tableHeard:'#EDF1F4',
+        components: {
+            Table: {
+                headerBg:'#EDF1F4',
+            },
+            Input: {
+                autoComplete: 'off'
+            },
+        }
       }
 }
 export default theme;

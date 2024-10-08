@@ -36,7 +36,7 @@ function Com(props) {
     }, [global.theme]);
     useEffect(() => {
         getData();
-    }, [global.theme,global.locale])
+    }, [global.theme, global.locale])
     const intl = useIntl();
     const t = (id) => {
         const msg = intl.formatMessage(
@@ -192,11 +192,19 @@ function Com(props) {
             color: `${token.color4}`
         }
     })
+    const siderContentStyle = useEmotionCss(({ token }) => {
+        return {
+            gridTemplateAreas: allData?.bmc?.[1] ?
+                " 'title title title title''PcsData center center status''PcsData center center Bms1''TodayEntity center center Bms1''TodayEntity center center Bms2''TodayEntity center center Bms2'"
+                :
+                "'title title title title''PcsData center center status''PcsData center center Bms1''TodayEntity center center Bms1''TodayEntity center center Bms1''TodayEntity center center Bms1'"
 
+        }
+    });
     return (
-        <div className={styles.content} style={{ backgroundColor: token.titleCardBgc_2 }}>
-            <div className={styles.title} style={{ backgroundColor: token.darkbgc,color:token.color2}}>{decodeURI(getQueryString("title"))}
-                <div className={styles.sn}style={{color:token.color3}}><span>SN:</span><span>{props?.sn}</span></div>
+        <div className={classNames(styles.content, siderContentStyle)} style={{ backgroundColor: token.titleCardBgc_2 }}>
+            <div className={styles.title} style={{ backgroundColor: token.darkbgc, color: token.color2 }}>{decodeURI(getQueryString("title"))}
+                <div className={styles.sn} style={{ color: token.color3 }}><span>SN:</span><span>{props?.sn}</span></div>
             </div>
             <div className={styles.PcsData} style={{ backgroundColor: token.darkbgc, color: token.color1 }}>
                 <CardModel
@@ -206,7 +214,7 @@ function Com(props) {
                             <div className={styles.pcsOne} style={{ width: '50%' }}>
                                 <div className={styles.pcsOneTitle}>
                                     <span style={{ paddingLeft: '2.0833rem' }}></span>
-                                    <span>
+                                    <span style={{ fontSize: '1.0417rem' }}>
                                         {t('电流/A')}
                                     </span>
                                 </div>
@@ -228,7 +236,7 @@ function Com(props) {
                             <div className={styles.pcsOne} style={{ width: '50%' }}>
                                 <div className={styles.pcsOneTitle}>
                                     <span style={{ paddingLeft: '2.0833rem' }}></span>
-                                    <span>
+                                    <span style={{ fontSize: '1.0417rem' }}>
                                         {t('电压/V')}
                                     </span>
                                 </div>
@@ -253,9 +261,9 @@ function Com(props) {
             </div>
             {allData?.bmc?.[0] && <div className={styles.Bms1} style={{ backgroundColor: token.titleCardBgc_2, color: token.color3 }}>
                 <CardModel
-                    title={allData?.bmc?.[1]?t('BMS簇0信息'):t('BMS信息')}
+                    title={allData?.bmc?.[1] ? t('BMS簇0信息') : t('BMS信息')}
                     content={
-                        <div className={styles.bmsContent}>
+                        <div className={styles.bmsContent} style={{ backgroundColor: token.darkbgc, color: token.color3 }}>
                             <div className={styles.bmsOne}>
                                 <div className={styles.bmsTitle} style={{ color: token.color2 }}>
                                     <img src={high} />
