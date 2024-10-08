@@ -135,7 +135,7 @@ function Com({ id }) {
             label: '充电可用电能量',
             value: '',
         }, {
-            key: 'apparentPower',
+            key: 'bmcDischargeAvalilableEnergy',
             label: '放电可用电能量',
             value: '',
         },

@@ -241,7 +241,7 @@ function Com(props) {
         yAxis.push({
           type: 'value',
           position: index == 0 ? 'left' : 'right',
-          offset: index == 0 || index == 1 ? 0 : 50 * index,
+          offset: index == 0 || index == 1 ? 0 : 30 * index,
           alignTicks: true,
           name: one?.unit,
           // name: way==1? one?.label:dayjs(one.value[0]?.time).format('YYYY-MM-DD'),

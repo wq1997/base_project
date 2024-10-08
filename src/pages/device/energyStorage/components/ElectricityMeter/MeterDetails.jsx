@@ -177,6 +177,22 @@ function Com({ id }) {
                     key: 'reactivePowerC'
                 },
                 {
+                    label: 'A相视在功率',
+                    key: 'reactivePowerA'
+                },
+                {
+                    label: 'B相视在功率',
+                    key: 'reactivePowerB'
+                },
+                {
+                    label: 'C相视在功率',
+                    key: 'reactivePowerC'
+                },
+                {
+                    label: '总视在功率',
+                    key: 'apparentPower'
+                },
+                {
                     label: 'A相功率因数',
                     key: 'phaseAFactor'
                 },
@@ -204,14 +220,7 @@ function Com({ id }) {
                     label: '电网频率',
                     key: 'totalFreq'
                 },
-                {
-                    label: '累计放电电量',
-                    key: 'totalDischargeEnergy'
-                },
-                {
-                    label: '累计充电电量',
-                    key: 'totalChargeEnergy'
-                },
+           
             ]
         },
         {
@@ -386,11 +395,11 @@ function Com({ id }) {
                 },
                 {
                     label: '总有功功率',
-                    key: 'power'
+                    key: 'totalActivePower'
                 },
                 {
                     label: '总无功功率',
-                    key: 'reactivePower'
+                    key: 'totalReactivePower'
                 },
                 {
                     label: '电网频率',

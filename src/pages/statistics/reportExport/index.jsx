@@ -92,8 +92,8 @@ function Com() {
   const pRun = [
     {
       title: t('储能单元名称'),
-      dataIndex: 'date',
-      key: 'date',
+      dataIndex: 'devName',
+      key: 'pcsName',
       align:'center'
     
     },
@@ -123,8 +123,8 @@ function Com() {
   const bRun = [
     {
       title: t('储能单元名称'),
-      dataIndex: 'date',
-      key: 'date',
+      dataIndex: 'devName',
+      key: 'bmsName',
       align:'center'
     
     },

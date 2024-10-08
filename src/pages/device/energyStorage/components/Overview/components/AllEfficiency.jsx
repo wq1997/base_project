@@ -36,7 +36,7 @@ function Com(props) {
     data?.data?.map((item, index) => {
       let arry = [];
       item?.list?.map(it => {
-        arry.push([dayjs(it.date).format('MM-DD'),it.efficiency*100]);
+        arry.push([dayjs(it.date).format('MM-DD'),(it.efficiency*100).toFixed(2) ]);
       });
       titles.push(t(item.title));
       series.push({

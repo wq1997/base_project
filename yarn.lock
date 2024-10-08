@@ -1777,10 +1777,10 @@
   "resolved" "https://registry.npmjs.org/@fullcalendar/daygrid/-/daygrid-6.1.15.tgz"
   "version" "6.1.15"
 
-"@fullcalendar/interaction@^6.1.9":
-  "integrity" "sha512-ynOKjzuPwEAMgTQ6R/Z2zvzIIqG4p8/Qmnhi1q0vzPZZxSIYx3rlZuvpEK2WGBZZ1XEafDOP/LGfbWoNZe+qdg=="
-  "resolved" "https://registry.npmjs.org/@fullcalendar/interaction/-/interaction-6.1.11.tgz"
-  "version" "6.1.11"
+"@fullcalendar/interaction@^6.1.15":
+  "integrity" "sha512-DOTSkofizM7QItjgu7W68TvKKvN9PSEEvDJceyMbQDvlXHa7pm/WAVtAc6xSDZ9xmB1QramYoWGLHkCYbTW1rQ=="
+  "resolved" "https://registry.npmjs.org/@fullcalendar/interaction/-/interaction-6.1.15.tgz"
+  "version" "6.1.15"
 
 "@fullcalendar/list@^6.1.9":
   "integrity" "sha512-9Qx8uvik9pXD12u50FiHwNzlHv4wkhfsr+r03ycahW7vEeIAKCsIZGTkUfFP+96I5wHihrfLazu1cFQG4MPiuw=="
