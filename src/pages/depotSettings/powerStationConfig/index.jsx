@@ -145,7 +145,7 @@ function Com(props) {
                         <Button type="primary" onClick={() => edit(record)}>{t('编辑')}</Button>
                         <Button type="primary" danger onClick={() => changeIsOpenDel(record)}>{t('删除')}</Button>
                     </Space>
-                    :null
+                    :'无操作权限'
                 )
             }
         }

@@ -144,7 +144,6 @@ const OperationManage = () => {
                 title={<Title title={t("控制模式")} />}
                 onOk={async () => {
                     const values = await form1.validateFields();
-                    // console.log('控制模式', values);
                     let { data } = await sendOMCommands({
                         cmdTypeId: 7000,
                         gridPointId: gridId,
