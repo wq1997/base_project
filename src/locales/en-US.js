@@ -1049,4 +1049,6 @@ export default {
 '二级告警':'Level 2 Alarm',
 '三级告警':'Level 3 Alarm',
 '四级告警':'Level 4 Alarm',
+'表':'Meter No.'
+
 }

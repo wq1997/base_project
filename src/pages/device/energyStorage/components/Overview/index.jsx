@@ -45,7 +45,6 @@ function Overview(props) {
     const intl = useIntl();
     const pageType = getQueryString('pageType') || 'ALL';
     const id = getQueryString('id') || 0;
-    const title = decodeURI(getQueryString('title')) || '储能总览';
     const t = (id) => {
         const msg = intl.formatMessage(
             {
@@ -54,6 +53,7 @@ function Overview(props) {
         );
         return msg
     };
+    const title = decodeURI(getQueryString('title')) ||t('储能总览') ;
 
 
     const eleData = [
