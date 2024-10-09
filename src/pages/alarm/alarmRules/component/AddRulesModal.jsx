@@ -8,26 +8,27 @@ export const formList = [
     key: 'prior',
     type: 1,
     required: true,
-    data: [{
-      label: '低级',
-      value: 1,
-      key: 1,
-    },
-    {
-      label: '普通',
-      value: 2,
-      key: 2,
-    },
-    {
-      label: '严重',
-      value: 3,
-      key: 3,
-    },
-    {
-      label: '高级',
-      value: 4,
-      key: 4,
-    },
+    data: [  
+      {
+        label: t('一级告警'),
+        value: '1',
+        key: '一级告警',
+      },
+      {
+        label: t('二级告警'),
+        value: '2',
+        key: '二级告警',
+      },
+      {
+        label: t('三级告警'),
+        value: '3',
+        key: '三级告警',
+      },
+      {
+        label: t('四级告警'),
+        value: '4',
+        key: '四级告警',
+      },
     ]
   },
   {

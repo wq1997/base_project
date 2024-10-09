@@ -13,7 +13,6 @@ const RealtimeAlarm = () => {
   const [data, setData] = useState([]);
   const [current, setCurrent] = useState(1);
   const [currntGrid, setCurrntGrid] = useState();
-  const [grids, setGrids] = useState([]);
   const [scroolY, setScroolY] = useState(200);
   const [screenH, setScreenH] = useState('');
 

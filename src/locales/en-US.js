@@ -1045,5 +1045,8 @@ export default {
 '电芯历史数据':'Battery cell historical data',
 '压差曲线':'Pressure difference curve',
 '温差曲线':'Temperature difference curve',
-
+'一级告警':'Level 1 Alarm',
+'二级告警':'Level 2 Alarm',
+'三级告警':'Level 3 Alarm',
+'四级告警':'Level 4 Alarm',
 }

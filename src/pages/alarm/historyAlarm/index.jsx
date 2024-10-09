@@ -52,44 +52,26 @@ const RealtimeAlarm = () => {
   }, [screenH])
   const alarmLevel = [
     {
-      label: t('低级'),
+      label: t('一级告警'),
       value: '1',
-      key: '低级',
+      key: '一级告警',
     },
     {
-      label: t('普通'),
+      label: t('二级告警'),
       value: '2',
-      key: '普通',
+      key: '二级告警',
     },
     {
-      label: t('严重'),
+      label: t('三级告警'),
       value: '3',
-      key: '严重',
+      key: '三级告警',
     },
     {
-      label: t('高级'),
+      label: t('四级告警'),
       value: '4',
-      key: '高级',
+      key: '四级告警',
     },
   ];
-  const typeOfstation = [
-    {
-      label: t('储能'),
-      value: '1',
-      key: '储能',
-    },
-    {
-      label: t('光伏'),
-      value: '2',
-      key: '光伏',
-    },
-    {
-      label: t('充电桩'),
-      value: '3',
-      key: '充电桩',
-    },
-  ];
-
 
 
   useEffect(() => {

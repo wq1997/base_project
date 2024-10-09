@@ -79,8 +79,8 @@ function Com(props) {
                                     )
                                 })}
                             </div>
-                            <div className={styles.theFirstLine} style={{ borderBottom: `3px solid ${token.colorLittle}` }}></div>
-                            <div className={styles.theFirstContent}>
+                           {data?.[1]&& <div className={styles.theFirstLine} style={{ borderBottom: `3px solid ${token.colorLittle}` }}></div>}
+                         {   data?.[1]&&<div className={styles.theFirstContent}>
                                {[1, 2, 3, 4, 5, 6, 7, 8].map((it, index) => {
                                     return (
                                         <div className={styles.module}>
@@ -123,7 +123,7 @@ function Com(props) {
                                         </div>
                                     )
                                 })}
-                            </div>
+                            </div>}
                             {/* <div className={styles.theFirstLine} style={{ borderBottom: `3px solid ${token.colorLittle}` }}></div> */}
                             {/* <div className={styles.theFirstContent}> */}
                                 {
@@ -179,20 +179,20 @@ function Com(props) {
                                     <img src={Transformer} alt="" style={{ width: '40px', height: '60px' }} />
                                     <div style={{ width: 'calc(20px + 1.5px)', height: 'calc(50% - 28.5px)', borderRight: `3px solid ${token.colorLittle}`, borderBottom: `3px solid ${token.colorLittle}` }}></div>
                                 </div>
-                                <div style={{ width: "100%" }}>
+                           {data?.[1]&&<div style={{ width: "100%" }}>
                                     <div style={{ width: 'calc(1.5px + 100%)', height: '8vh', minHeight: '70px', borderRight: `3px solid ${token.colorLittle}` }}></div>
-                                </div>
+                                </div>}
                                 <div style={{ width: "100%" }}>
                                     {/* <div style={{ width: 'calc(21.5px + 100%)', height: '8vh', minHeight: '70px', borderRight: `3px solid ${token.colorLittle}` }}></div> */}
                                 </div>
 
                             </div>
                             <div style={{ display: 'flex', height: 'calc(8vh + 250px)', minHeight: '290px' }}>
-                                <div style={{ display: 'flex', flexDirection: 'column', width: "100%" }}>
+                               {data?.[1]&& <div style={{ display: 'flex', flexDirection: 'column', width: "100%" }}>
                                     <div style={{ width: 'calc(20px + 1.5px + 100%)', height: 'calc(50% - 30px)', borderRight: `3px solid ${token.colorLittle}` }}></div>
                                     <img src={Transformer} alt="" style={{ width: '40px', height: '60px', marginLeft: 'calc(100%)' }} />
                                     <div style={{ width: 'calc(20px + 1.5px + 100%)', height: 'calc(50% - 28.5px)', borderRight: `3px solid ${token.colorLittle}`, borderBottom: `3px solid ${token.colorLittle}` }}></div>
-                                </div>
+                                </div>}
                                 <div style={{ width: "100%" }}>
                                     {/* <div style={{ width: 'calc(21.5px + 100%)', height: 'calc(8vh + 220px)', minHeight: '290px', borderRight: `3px solid ${token.colorLittle}` }}></div> */}
                                 </div>
