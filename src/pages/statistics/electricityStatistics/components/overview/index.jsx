@@ -225,7 +225,7 @@ function Com(props) {
 
 
     return (
-        <div className={styles.content}>
+        <div className={styles.content} >
             <div className={styles.heard} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal }}>
                 {/* <div>
                     {getTranslation('并网点')}:

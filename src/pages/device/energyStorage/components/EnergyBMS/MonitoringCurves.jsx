@@ -205,7 +205,7 @@ function Com({ id }) {
             setOptionSelect([...data?.data]);
             setTitle(data?.data?.[0]?.dataTypeDesc);
             setType(data?.data?.[0]?.dataType);
-            getEchartsData();
+            // getEchartsData();
         }
 
     }

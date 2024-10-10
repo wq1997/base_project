@@ -935,7 +935,7 @@ export default {
 "光储充电站":"Photovoltaic, Energy Storage And Charging Pile Plant",
 "温差压差":"Temperature Difference And Pressure Difference",
 "电站管理":"Power Management",
-"":"",
+"功率":"Power",
 "":"",
 "":"",
 "":"",
