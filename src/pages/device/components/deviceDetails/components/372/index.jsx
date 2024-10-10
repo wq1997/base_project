@@ -270,6 +270,21 @@ function Com(props) {
             { name: "BMS簇2/BMU最低硬件版本", value: "-", key: "BMC2bmuLowestHardwareVersion" },
         ],
     })
+    const [bmsData1, setBmsData1] = useState({
+        title: "BMS版本信息",
+        data: [
+            { name: "BMS堆软件版本", value: "-", key: "softwareVersion" },
+            { name: "BMS堆硬件版本", value: "-", key: "hardwareVersion" },
+            // { name: "BMS堆2软件版本", value: "-", key: "BMS2softwareVersion" },
+            // { name: "BMS堆2硬件版本", value: "-", key: "BMS2hardwareVersion" },
+            { name: "BMS簇1/BCMU软件版本", value: "-", key: "BMC1softwareVersion" },
+            { name: "BMS簇1/BCMU硬件版本", value: "-", key: "BMC1hardwareVersion" },
+            { name: "BMS簇1/BMU最高软件版本", value: "-", key: "BMC1bmuHighestSoftwareVersion" },
+            { name: "BMS簇1/BMU最低软件版本", value: "-", key: "BMC1bmuLowestSoftwareVersion" },
+            { name: "BMS簇1/BMU最高硬件版本", value: "-", key: "BMC1bmuHighestHardwareVersion" },
+            { name: "BMS簇1/BMU最低硬件版本", value: "-", key: "BMC1bmuLowestHardwareVersion" },
+        ],
+    })
     const [meterData, setMeterData] = useState({
         title: "计量电表",
         data: [
@@ -377,6 +392,8 @@ function Com(props) {
         dealData(data?.data?.bmc[0], bmsData, setBmsData);
         dealData(data?.data?.bms[0], bmsData, setBmsData)
         dealData(data?.data?.bmc[1], bmsData, setBmsData);
+        dealData(data?.data?.bmc[0], bmsData1, setBmsData1);
+        dealData(data?.data?.bms[0], bmsData1, setBmsData1)
         dealData(data?.data?.meter, meterData, setMeterData);
         dealData(data?.data?.energy, energyData, setEnergyData);
         dealData(data?.data?.bmc[0], ic1Data, setlc1Data);
@@ -417,7 +434,7 @@ function Com(props) {
             {!data?.data?.pcsBranch[1]&&<DetalisCard data={pcsData1} />}
             <DetalisCard data={bms1Data} />
             {data?.data?.bmc[1]&& <DetalisCard data={bms2Data} />}
-            <DetalisCard data={bmsData} />
+            {data?.data?.bmc[1]?<DetalisCard data={bmsData} />:<DetalisCard data={bmsData1} />}
             <DetalisCard data={meterData} />
             <DetalisCard data={energyData} table={{tableClum1,tableClum2,dataTable1}}/>
             <DetalisCard data={ic1Data} />

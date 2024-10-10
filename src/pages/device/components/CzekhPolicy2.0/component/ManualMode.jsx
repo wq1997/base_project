@@ -67,7 +67,7 @@ function Com({ devId, dtuId, historyAllData, mode }) {
         setAllPolicy({ ...allPolicy, [name]: val, });
     }
     return (
-        <div className={styles.content} style={{ backgroundColor: token.darkbgc }}>
+        <div className={styles.content} style={{ backgroundColor: token.titleColor1 }}>
             <Space size={30} direction="vertical" >
                 <div className={styles.Pcs}> 
                     <Flex gap={18}>
