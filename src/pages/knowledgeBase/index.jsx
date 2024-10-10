@@ -391,6 +391,7 @@ const KnowledgeBase = () => {
                 onCancel={() => {
                     setDetailOpen(false);
                 }}
+                onOk={()=>{setDetailOpen(false);}}
                 width={800}
             >
                 <div style={{ marginTop: 20 }}>

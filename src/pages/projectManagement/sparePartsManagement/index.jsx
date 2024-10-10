@@ -684,6 +684,10 @@ const SparePartsManagement = () => {
                             dataIndex: "operatorName",
                         },
                         {
+                            title:"操作时间",
+                            dataIndex: "operateTime",
+                        },
+                        {
                             title: '操作备注',
                             dataIndex: 'remark',
                             key: 'remark',
@@ -707,6 +711,9 @@ const SparePartsManagement = () => {
                             }
                         },
                     ]}
+                    scroll={{
+                        x: 'max-content',
+                    }}
                     dataSource={outputDatasource}
                     pagination={outputPagination}
                     onChange={pagination => {
