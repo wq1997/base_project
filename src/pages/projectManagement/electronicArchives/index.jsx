@@ -619,6 +619,7 @@ const Account = () => {
             <Drawer
                 title="详情"
                 onClose={() => {
+                    setDetailRow(null);
                     setDetailOpen(false);
                 }}
                 open={detailOpen}

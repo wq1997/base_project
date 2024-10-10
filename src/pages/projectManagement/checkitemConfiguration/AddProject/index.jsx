@@ -54,7 +54,7 @@ const AddProject = ({ open, editData, onClose }) => {
 
     return (
         <Modal
-            title={<Title>新增巡检项</Title>}
+            title={<Title>{editData?"编辑巡检项":"新增巡检项"}</Title>}
             width={800}
             confirmLoading={true}
             open={open}

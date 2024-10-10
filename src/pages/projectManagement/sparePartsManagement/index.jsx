@@ -108,7 +108,7 @@ const SparePartsManagement = () => {
             dataIndex: 'remark',
             key: 'remark',
             ellipsis: true,
-            width: 400,
+            width: 200,
             render(value) {
                 return (
                     <Tooltip title={value}>
@@ -117,7 +117,7 @@ const SparePartsManagement = () => {
                                 overflow: 'hidden',
                                 whiteSpace: 'nowrap',
                                 textOverflow: 'ellipsis',
-                                width: 400,
+                                width: 200,
                             }}
                         >
                             {value}
@@ -160,7 +160,10 @@ const SparePartsManagement = () => {
                         <Button
                             type="link"
                             onClick={() => {
-                                useForm.setFieldsValue(row);
+                                useForm.setFieldsValue({
+                                    ...row,
+                                    remark: undefined
+                                });
                                 setCurrentRecord(row);
                                 setUseOpen(true);
                                 getOperateInitData();
@@ -472,7 +475,7 @@ const SparePartsManagement = () => {
                                                     spareStorageForm.setFieldsValue({
                                                         supplierId: cairiSupplier?.id
                                                     })
-                                                }else{
+                                                } else {
                                                     spareStorageForm.setFieldsValue({
                                                         supplierId: undefined
                                                     })
@@ -514,7 +517,7 @@ const SparePartsManagement = () => {
                                                     value: item?.id
                                                 }
                                             })}
-                                            disabled={attribute==="采日自研备件"}
+                                            disabled={attribute === "采日自研备件"}
                                         />
                                     </Form.Item>
                                     <Form.Item
@@ -599,7 +602,8 @@ const SparePartsManagement = () => {
                         id: currentRecord?.id,
                         count: values?.count,
                         outputProjectId: values?.outputProjectId,
-                        outputProjectName: project?.name
+                        outputProjectName: project?.name,
+                        remark: values?.remark
                     })
                     if (res?.data?.status === "SUCCESS") {
                         setUseOpen(false);
@@ -617,7 +621,7 @@ const SparePartsManagement = () => {
                     <Form.Item label="备件名称" name={"name"} rules={[{ ...FORM_REQUIRED_RULE }]}>
                         <Input placeholder="请选择备件" disabled />
                     </Form.Item>
-                    <Form.Item label="入库备件数量" name="stock">
+                    <Form.Item label="库存备件数量" name="stock">
                         <Input disabled />
                     </Form.Item>
                     <Form.Item label="备件领用数量" name={"count"} rules={[{ ...FORM_REQUIRED_RULE }]}>
@@ -680,8 +684,27 @@ const SparePartsManagement = () => {
                             dataIndex: "operatorName",
                         },
                         {
-                            title: "操作备注",
-                            dataIndex: "remark",
+                            title: '操作备注',
+                            dataIndex: 'remark',
+                            key: 'remark',
+                            ellipsis: true,
+                            width: 200,
+                            render(value) {
+                                return (
+                                    <Tooltip title={value}>
+                                        <div
+                                            style={{
+                                                overflow: 'hidden',
+                                                whiteSpace: 'nowrap',
+                                                textOverflow: 'ellipsis',
+                                                width: 150,
+                                            }}
+                                        >
+                                            {value}
+                                        </div>
+                                    </Tooltip>
+                                )
+                            }
                         },
                     ]}
                     dataSource={outputDatasource}

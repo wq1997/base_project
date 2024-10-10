@@ -163,6 +163,8 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                     };
                 }),
             });
+        }else{
+            form.resetFields();
         }
     }, [editCurrentStep, detailRow]);
 
@@ -594,6 +596,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                 }}
                                 options={initOption?.phases || []}
                                 onChange={value => {
+                                    form.setFieldsValue({subPhase: undefined})
                                     setPhase(value);
                                 }}
                             />
