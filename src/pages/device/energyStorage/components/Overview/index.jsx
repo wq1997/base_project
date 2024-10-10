@@ -27,7 +27,7 @@ import { useEmotionCss } from '@ant-design/use-emotion-css';
 import classNames from 'classnames';
 
 let clum = [...alarmTableColums];
-clum[7] = {};
+clum[5] = {};
 function Overview(props) {
     const [dataX, setDataX] = useState([]);
     const [dataCharge, setDataCharge] = useState({ dayChargeEnergy: [], dayDischargeEnergy: [] });

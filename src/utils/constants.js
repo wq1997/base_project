@@ -25,19 +25,19 @@ export const alarmTableColums = [
         key: 'priorName',
         render: (val,record) => {
             if (record.prior == 1) {
-                return <div style={{ color: 'red' }}>
+                return <div style={{ color: '#FF0707' }}>
                     {val}
                 </div>
             } else if (record.prior == 2) {
-                return <div style={{ color: '#ED750E' }}>
+                return <div style={{ color: '#FFF500' }}>
                 {val}
             </div>
             } else if (record.prior == 3) {
-                return <div style={{ color: 'orange' }}>
+                return <div style={{ color: '#FF8800' }}>
                 {val}
             </div>
             } else if (record.prior == 4) {
-                return <div style={{ color: 'green' }}>
+                return <div style={{ color: '#0AFF00' }}>
                 {val}
             </div>
             }

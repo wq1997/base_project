@@ -8,7 +8,7 @@ import { Pagination, theme,Select} from "antd"
 import { getNowAlarmsWithPage } from "@/services/alarm"
 
 let clum=[...alarmTableColums];
-clum[7]={};
+clum[5]={};
 const RealtimeAlarm = () => {
   const [data, setData] = useState([]);
   const [current, setCurrent] = useState(1);
@@ -76,7 +76,7 @@ const RealtimeAlarm = () => {
   }
 
   return (
-    <div style={{width:'100%',height:'calc(100% - 67px)',padding:'0 0 10px 0'}}>
+    <div style={{width:'100%',height:'calc(100% - 10px)',padding:'0 0 10px 0',backgroundColor: token.titleCardBgc, }}>
       {/* <div className={styles.grid} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal, }}>
             <Select
               style={{

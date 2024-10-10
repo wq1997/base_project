@@ -28,7 +28,7 @@ function Com(props) {
         setData(data?.data)
     }
     return (
-        <div className={styles.WiringDiagram}  >
+        <div className={styles.WiringDiagram} style={{backgroundColor: token.titleCardBgc,}} >
             <CardModel
                 title={t('接线图')}
                 content={
@@ -173,31 +173,31 @@ function Com(props) {
                             {/* </div> */}
                         </div>
                         <div className={styles.right} style={{ width: 'calc(20% - 62.5px)', marginLeft: '60px' }}>
-                            <div style={{ display: 'flex', height: '8vh', minHeight: '70px' }}>
+                            <div style={{ display: 'flex', height: '74px', minHeight: '74px' }}>
                                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                                     <div style={{ width: 'calc(20px + 1.5px)', height: 'calc(50% - 28.5px)', borderRight: `3px solid ${token.colorLittle}` }}></div>
                                     <img src={Transformer} alt="" style={{ width: '40px', height: '60px' }} />
                                     <div style={{ width: 'calc(20px + 1.5px)', height: 'calc(50% - 28.5px)', borderRight: `3px solid ${token.colorLittle}`, borderBottom: `3px solid ${token.colorLittle}` }}></div>
                                 </div>
                            {data?.[1]&&<div style={{ width: "100%" }}>
-                                    <div style={{ width: 'calc(1.5px + 100%)', height: '8vh', minHeight: '70px', borderRight: `3px solid ${token.colorLittle}` }}></div>
+                                    <div style={{ width: 'calc(1.5px + 100%)', height: '74px', minHeight: '74px', borderRight: `3px solid ${token.colorLittle}` }}></div>
                                 </div>}
                                 <div style={{ width: "100%" }}>
-                                    {/* <div style={{ width: 'calc(21.5px + 100%)', height: '8vh', minHeight: '70px', borderRight: `3px solid ${token.colorLittle}` }}></div> */}
+                                    {/* <div style={{ width: 'calc(21.5px + 100%)', height: '70px', minHeight: '70px', borderRight: `3px solid ${token.colorLittle}` }}></div> */}
                                 </div>
 
                             </div>
-                            <div style={{ display: 'flex', height: 'calc(8vh + 250px)', minHeight: '290px' }}>
+                            <div style={{ display: 'flex', height: 'calc(74px + 250px)',  }}>
                                {data?.[1]&& <div style={{ display: 'flex', flexDirection: 'column', width: "100%" }}>
                                     <div style={{ width: 'calc(20px + 1.5px + 100%)', height: 'calc(50% - 30px)', borderRight: `3px solid ${token.colorLittle}` }}></div>
                                     <img src={Transformer} alt="" style={{ width: '40px', height: '60px', marginLeft: 'calc(100%)' }} />
                                     <div style={{ width: 'calc(20px + 1.5px + 100%)', height: 'calc(50% - 28.5px)', borderRight: `3px solid ${token.colorLittle}`, borderBottom: `3px solid ${token.colorLittle}` }}></div>
                                 </div>}
                                 <div style={{ width: "100%" }}>
-                                    {/* <div style={{ width: 'calc(21.5px + 100%)', height: 'calc(8vh + 220px)', minHeight: '290px', borderRight: `3px solid ${token.colorLittle}` }}></div> */}
+                                    {/* <div style={{ width: 'calc(21.5px + 100%)', height: 'calc(70px + 220px)', minHeight: '290px', borderRight: `3px solid ${token.colorLittle}` }}></div> */}
                                 </div>
                             </div>
-                            {/* <div style={{ display: 'flex', height: 'calc(8vh + 220px)', minHeight: '290px' }}>
+                            {/* <div style={{ display: 'flex', height: 'calc(70px + 220px)', minHeight: '290px' }}>
                                 <div style={{ display: 'flex', flexDirection: 'column', width: "100%" }}>
                                     <div style={{ width: 'calc(20px + 1.5px + 100%)', height: 'calc(50% - 30px)', borderRight: `3px solid ${token.colorLittle}` }}></div>
                                     <img src={Transformer} alt="" style={{ width: '40px', height: '60px', marginLeft: '100%' }} />

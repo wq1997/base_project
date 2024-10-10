@@ -169,8 +169,8 @@ function Com(props) {
     const downLoadExcelModel = () => {
         let fileName = getTranslation('电量统计');
         let sheetData = data;
-        let sheetFilter = ['date', 'pvOutEnergy', 'energyInEnergy', 'energyOutEnergy', 'pvInEnergy', 'chargeInEnergy'];
-        let sheetHeader = [getTranslation("日期"), getTranslation("上网电量"), getTranslation("储能充电量"), getTranslation("光伏发电量"), getTranslation("充电桩充电量"),];
+        let sheetFilter = ['date', 'charge', 'discharge', 'efficiency',];
+        let sheetHeader = [getTranslation("日期"), getTranslation("充电电量"), getTranslation("放电电量"), getTranslation("充放电效率"), ];
         downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader, getTranslation('总览'))
     };
     const profitTable = [

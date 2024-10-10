@@ -42,9 +42,9 @@ function Com({ open,
             if (flag.findIndex(it=>it===false)!==-1) {
                 return message.warning(t('时段重叠,请修改'))
             };
-            if (!is24HoursInOneDay(values?.contentList)) {
-                return message.warning(t('时段不满24小时'))
-            };
+            // if (!is24HoursInOneDay(values?.contentList)) {
+            //     return message.warning(t('时段不满24小时'))
+            // };
             values.contentList.map(it=>{
                 it.startTime=dayjs(it.startTime).format('HH:mm:ss');
                 it.endTime=dayjs(it.endTime).format('HH:mm:ss')

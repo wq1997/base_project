@@ -15,7 +15,7 @@ const RealtimeAlarm = () => {
   const [time, setTime] = useState([null, null]);
   const { token } = theme.useToken();
   const [screenH, setScreenH] = useState('');
-  const [scroolY, setScroolY] = useState(200);
+  const [scroolY, setScroolY] = useState(500);
   const [grids, setGrids] = useState([]);
   const [currntGrid, setCurrntGrid] = useState();
 
@@ -43,11 +43,11 @@ const RealtimeAlarm = () => {
   }
   useEffect(() => {
     if (screenH < 1000) {
-      setScroolY(300);
-    } else if (screenH > 1000 && screenH < 1300) {
-      setScroolY(400);
-    } else if (screenH > 1300) {
       setScroolY(500);
+    } else if (screenH > 1000 && screenH < 1300) {
+      setScroolY(600);
+    } else if (screenH > 1300) {
+      setScroolY(700);
     }
   }, [screenH])
   const alarmLevel = [
