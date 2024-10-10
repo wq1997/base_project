@@ -127,29 +127,6 @@ const SparePartsManagement = () => {
             }
         },
         {
-            title: '入库备注',
-            dataIndex: 'operateRemark',
-            key: 'operateRemark',
-            ellipsis: true,
-            width: 400,
-            render(value) {
-                return (
-                    <Tooltip title={value}>
-                        <div
-                            style={{
-                                overflow: 'hidden',
-                                whiteSpace: 'nowrap',
-                                textOverflow: 'ellipsis',
-                                width: 400,
-                            }}
-                        >
-                            {value}
-                        </div>
-                    </Tooltip>
-                )
-            }
-        },
-        {
             title: "操作",
             dataIndex: "Action",
             fixed: "right",

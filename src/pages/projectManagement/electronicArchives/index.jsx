@@ -28,10 +28,10 @@ import {
     getBasProjectEditInitData as getBasProjectEditInitDataServe
 } from "@/services";
 import { getBaseUrl } from "@/services/request";
+import { jsonToUrlParams } from "@/utils/utils";
 import {
     FileMarkdownFilled,
 } from "@ant-design/icons";
-import { jsonToUrlParams } from "@/utils/utils";
 import dayjs from "dayjs";
 export const cycleList = [
     { name: "一月一次", code: 1 },
@@ -182,7 +182,7 @@ const Account = () => {
             title: "操作",
             dataIndex: "operate",
             fixed: "right",
-            width: 150,
+            width: 250,
             render: (_, row) => {
                 const edit = (key, row) => {
                     setCurrentStep(key);
@@ -219,6 +219,29 @@ const Account = () => {
                             >
                                 <a style={{ color: "#dc4446" }}>删除</a>
                             </Popconfirm>
+                        )}
+                        {row?.status === "ACTIVE" && (
+                            <a
+                                style={{color: '#ed750e'}}
+                                onClick={() => {
+                                    const id = row?.id;
+                                    if (id) {
+                                        window.open(
+                                            `${getBaseUrl()}/bas-project/download-inspection-code` +
+                                            jsonToUrlParams({
+                                                id,
+                                                access_token:
+                                                    localStorage.getItem(
+                                                        "Token"
+                                                    ),
+                                            }),
+                                            "_blank"
+                                        );
+                                    }
+                                }}
+                            >
+                                批量下载巡检码
+                            </a>
                         )}
                     </Space>
                 );
@@ -393,8 +416,8 @@ const Account = () => {
                         value={projectInitiationTime ? dayjs(projectInitiationTime) : undefined}
                         onChange={data => {
                             paginationRef.current = DEFAULT_PAGINATION;
-                            projectInitiationTimeRef.current = data?dayjs(data).format("YYYY-MM-DD"):undefined;
-                            setProjectInitiationTime(data?dayjs(data).format("YYYY-MM-DD"):undefined);
+                            projectInitiationTimeRef.current = data ? dayjs(data).format("YYYY-MM-DD") : undefined;
+                            setProjectInitiationTime(data ? dayjs(data).format("YYYY-MM-DD") : undefined);
                         }}
                         allowClear
                     />
@@ -694,7 +717,7 @@ const Account = () => {
                     <Descriptions.Item label="联系方式">{getSupplyInfo("汇流柜")?.contractNumber}</Descriptions.Item>
                 </Descriptions>
                 <Descriptions title="维护实施管理信息" column={2}>
-                    <Descriptions.Item label="实施计划时间">{detailRow?.detailRow?.implementPlanStartDate}~{detailRow?.implementPlanEndDate}</Descriptions.Item>
+                    <Descriptions.Item label="实施计划时间">{detailRow?.implementPlanStartDate}~{detailRow?.implementPlanEndDate}</Descriptions.Item>
                     <Descriptions.Item label="实施负责人">{detailRow?.creatorName}</Descriptions.Item>
                     <Descriptions.Item label="实施过程档案">
                         <Space direction="vertical">
@@ -891,7 +914,7 @@ const Account = () => {
                             {
                                 detailRow?.inspectionGroups?.map(item => {
                                     return (
-                                        <div style={{marginBottom: 10}}>
+                                        <div style={{ marginBottom: 10 }}>
                                             <div>{item?.name}</div>
                                             <div>
                                                 {item?.inspectionItemIds?.map((inspectionItem, index) => {
