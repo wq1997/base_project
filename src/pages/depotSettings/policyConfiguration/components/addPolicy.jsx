@@ -21,6 +21,8 @@ function Com({ open,
             if (dayjs(values.startDate).diff(dayjs(values.endDate))>0) {
                 return message.warning(t('结束日期大于等于开始日期'))
             }
+            values.startDate=dayjs(values.startDate).format('MM-DD');
+            values.endDate=dayjs(values.endDate).format('MM-DD');
             let flag = values?.contentList?.map((item, index) => {
                 let length = values?.contentList?.map((it,i) => {
                     if (index < values?.contentList.length - 1&&i>index) {
@@ -52,9 +54,8 @@ function Com({ open,
             if (title == '新增策略') {
                 setStrategyTableData(values);
             } else {
-                let arr = structuredClone(dataSource)
-                arr[index] = { ...values };
-                console.log(arr, 'arr');
+                let arr = structuredClone(dataSource);
+               arr[ arr.findIndex(it=>it.planNo==values.planNo)] = { ...values };
                 edit(arr);
             }
            console.log(is24HoursInOneDay(values?.contentList));

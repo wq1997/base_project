@@ -254,7 +254,7 @@ function OverView(props) {
                             }
                         </Select> */}
                     </div> : <div style={{ height: '32px' }}></div>}
-                    <Switch className={styles.right} checkedChildren={t("总览列表")} unCheckedChildren={t("接线图")} onChange={changeCheck} defaultChecked={checked} />
+                    <Switch className={styles.right} checkedChildren={t("总览")} unCheckedChildren={t("接线图")} onChange={changeCheck} defaultChecked={checked} />
                 </div>
                 {checked ? <div className={styles.contentWrap}>
                      <> <div className={styles.heard} style={{ color: token.colorNormal }}>

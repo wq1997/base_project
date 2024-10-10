@@ -396,7 +396,7 @@ export default {
 "全开":"All On",
 "全关":"All Off",
 "手动":"Manual",
-"自动":"automatic",
+"自动":"Automatic",
 "分闸":"Open",
 "合闸":"Close",
 "BMS复位":"BMS Reset",

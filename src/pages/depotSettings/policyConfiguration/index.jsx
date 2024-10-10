@@ -220,7 +220,14 @@ function Com(props) {
                   dataIndex: 'startDate',
                   key: 'startDate',
                   render: (text, record) => {
-                    return dayjs(record.startDate).format('MM-DD')
+                    console.log(typeof(record.startDate),111111);
+                    if(typeof(record.startDate)=='string'){
+                      return dayjs(record.startDate).format('MM-DD');
+                    }else{
+                    console.log(record.startDate,222222222222);
+                    return record.startDate;
+
+                    }
                   }
                 },
                 {
@@ -228,7 +235,9 @@ function Com(props) {
                   dataIndex: 'endDate',
                   key: 'endDate',
                   render: (text, record) => {
-                    return dayjs(record.endDate).format('MM-DD')
+                    if(typeof(record.startDate)=='string'){
+                      return dayjs(record.endDate).format('MM-DD');
+                    }
                   }
                 },
                 {
