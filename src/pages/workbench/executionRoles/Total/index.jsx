@@ -145,7 +145,7 @@ const Total = ({ data }) => {
                     <div className={styles.content}>
                         {myWorkorders.map(item => (
                             <div className={styles.order} style={{ background: token.color13 }}>
-                                <span style={{ marginBottom: 5 }}>{item.name}</span>
+                                <span>{item.name}</span>
                                 <a
                                     className={styles.value}
                                     style={{ color: item.color }}
