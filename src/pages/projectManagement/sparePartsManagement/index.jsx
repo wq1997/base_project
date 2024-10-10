@@ -663,8 +663,23 @@ const SparePartsManagement = () => {
                         {
                             title: "备件名称",
                             dataIndex: "name",
+                            width: 200,
                             render(_, row) {
-                                return row?.spareParts?.name
+                                const value = row?.spareParts?.name;
+                                return (
+                                    <Tooltip title={value}>
+                                        <div
+                                            style={{
+                                                overflow: 'hidden',
+                                                whiteSpace: 'nowrap',
+                                                textOverflow: 'ellipsis',
+                                                width: 150,
+                                            }}
+                                        >
+                                            {value}
+                                        </div>
+                                    </Tooltip>
+                                )
                             }
                         },
                         {

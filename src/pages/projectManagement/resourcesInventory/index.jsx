@@ -131,6 +131,13 @@ const ResourcesInventory = () => {
                         }
                     },
                     {
+                        title: "所属区域",
+                        dataIndex: "regionVos",
+                        render(_, row) {
+                            return row?.user?.regionVos?.map(item => item?.name)?.join(", ");
+                        }
+                    },
+                    {
                         title: "负责项目总数",
                         dataIndex: "projectTotalCount",
                         render(_, row) {
@@ -274,6 +281,10 @@ const ResourcesInventory = () => {
             <Modal
                 open={open}
                 width={1000}
+                onOk={() => {
+                    setModalType();
+                    setOpen(false);
+                }}
                 onCancel={() => {
                     setModalType();
                     setOpen(false);
