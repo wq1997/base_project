@@ -224,7 +224,6 @@ function Com(props) {
                     if(typeof(record.startDate)=='string'){
                       return dayjs(record.startDate).format('MM-DD');
                     }else{
-                    console.log(record.startDate,222222222222);
                     return record.startDate;
 
                     }
@@ -258,7 +257,7 @@ function Com(props) {
                       <Space>
                         <Button type="link" onClick={() => edit(record, index)}>{t('编辑')}</Button>
                         <Button type="link" onClick={() => edit(record, index)}>{t('详情')}</Button>
-                        <Popconfirm title="Are you sure delete this task?" onConfirm={() => del(record)} okText="Yes" cancelText="No">
+                        <Popconfirm title={t('是否确认删除该条策略?')} onConfirm={() => del(record)} okText={t('是')} cancelText={t('否')}>
                           <Button type="link" danger>{t('删除')}</Button>
                         </Popconfirm>
                       </Space>

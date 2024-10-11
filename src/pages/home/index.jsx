@@ -248,7 +248,7 @@ function OverView(props) {
                             defaultValue={grids?.[0]?.id}
                             onChange={changeGrid}
                         >
-                            {grids && grids.map(item => {
+                            {grids && grids.map(item => {    
                                 return (<Option key={item.id} value={item.id}>{item.gridPointName}</Option>);
                             })
                             }
