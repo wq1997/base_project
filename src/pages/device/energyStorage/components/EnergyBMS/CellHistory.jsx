@@ -172,7 +172,7 @@ function Com(props) {
         },
         legend: {
             icon: 'circle',
-            top: '5%',
+            // top: '5%',
             left: '5%',
             itemWidth: 6,
             itemGap: 20,

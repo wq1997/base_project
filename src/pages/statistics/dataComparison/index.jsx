@@ -146,10 +146,10 @@ function Com(props) {
         return
       }
     } else {
-      if (packReq?.[1]?.split(',')?.[0] === 0) {
-        dataTypeList = [{ devId: packReq?.[1]?.split(',')?.[0], gridPoint: packReq?.[1]?.split(',')?.[1], dataId: packReq?.[2] }];
+      if (packReq?.[1]?.split(',')?.[0] == 0) {
+        dataTypeList = [{ devId: +packReq?.[1]?.split(',')?.[0], gridPointId: +packReq?.[1]?.split(',')?.[1], dataId: packReq?.[2] }];
       } else {
-        dataTypeList = [{ devId: packReq?.[1]?.split(',')?.[0], dataId: packReq?.[2] }];
+        dataTypeList = [{ devId: +packReq?.[1]?.split(',')?.[0], dataId: +packReq?.[2] }];
       }
       dateList = dateStr;
       if (dateList.length > 3) {

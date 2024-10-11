@@ -294,7 +294,7 @@ function Com() {
         <div className={styles.echartPart}>
           <div className={styles.echartPartCardwrap}>
             <Row justify="center">
-              <Typography.Title level={3} style={{ marginTop: 0, marginBottom: 27 }}>{dayjs(new Date()).format('YYYY.MM.DD')}{" "}{t(wayLabel)}</Typography.Title>
+              <Typography.Title level={3} style={{ marginTop: 0, marginBottom: 27 }}>{dateStr}{" "}{t(wayLabel)}</Typography.Title>
             </Row>
             <div className={styles.content}>
               <div className={styles.contentItem}>
