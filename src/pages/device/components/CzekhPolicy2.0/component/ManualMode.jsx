@@ -30,10 +30,8 @@ function Com({ devId, dtuId, historyAllData, mode }) {
         pcsPower: 7001,
         pcsStartStop: 7002,
         bmsStartStop: 7003,
-        pcsPowerWaveRange: 7004,
+        pcsPowerWaveRange: 7011,
     }
-    console.log(devId,11111);
-    
     const intl = useIntl();
     const t = (id) => {
         const msg = intl.formatMessage(
@@ -73,9 +71,9 @@ function Com({ devId, dtuId, historyAllData, mode }) {
                     <Flex gap={18}>
                         <div className={styles.label}>{'PCS'}:</div>
                         <Flex gap={30}>
-                            <div className={styles.selectionBox} style={{backgroundColor: allPolicy.pcsStartStop == '0' ? token.colorPrimary : token.buttonBgc  }} onClick={() => showModal(devId.pcsDevId, 'pcsStartStop', 'pcsStartStop', '0', t('PCS开机'))} >{t('PCS开机')}</div>
-                            <div className={styles.selectionBox} style={{ backgroundColor: allPolicy.pcsStartStop == '1' ? token.colorPrimary : token.buttonBgc  }} onClick={() => showModal(devId.pcsDevId, 'pcsStartStop', 'pcsStartStop', '1', t('PCS关机'))} >{t('PCS关机')}</div>
-                            <div className={styles.selectionBox} style={{ backgroundColor: allPolicy.pcsStartStop == '2' ? token.colorPrimary : token.buttonBgc  }} onClick={() => showModal(devId.pcsDevId, 'pcsStartStop', 'pcsStartStop', '2', t('PCS复位'))} >{t('PCS复位')}</div>
+                            <div className={styles.selectionBox} style={{backgroundColor: allPolicy.pcsStartStop == '1' ? token.colorPrimary : token.buttonBgc  }} onClick={() => showModal(devId.pcsDevId, 'pcsStartStop', 'pcsStartStop', '1', t('PCS开机'))} >{t('PCS开机')}</div>
+                            <div className={styles.selectionBox} style={{ backgroundColor: allPolicy.pcsStartStop == '2' ? token.colorPrimary : token.buttonBgc  }} onClick={() => showModal(devId.pcsDevId, 'pcsStartStop', 'pcsStartStop', '2', t('PCS关机'))} >{t('PCS关机')}</div>
+                            <div className={styles.selectionBox} style={{ backgroundColor: allPolicy.pcsStartStop == '3' ? token.colorPrimary : token.buttonBgc  }} onClick={() => showModal(devId.pcsDevId, 'pcsStartStop', 'pcsStartStop', '3', t('PCS复位'))} >{t('PCS复位')}</div>
                         </Flex>
                     </Flex></div>
                 <div className={styles.Bms}>
