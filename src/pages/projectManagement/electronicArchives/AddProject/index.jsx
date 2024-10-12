@@ -1079,18 +1079,18 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                         </Col>
                                         <Col span={12}>
                                             <Form.Item
-                                                label="单电芯额定容量(kWh)"
+                                                label="单电芯额定容量(Ah)"
                                                 name="singleCellRatedCapacity"
                                                 rules={[
                                                     {
                                                         required: true,
-                                                        message: "请输入单电芯额定容量(kWh)",
+                                                        message: "请输入单电芯额定容量(Ah)",
                                                     },
                                                 ]}
                                             >
                                                 <InputNumber
                                                     style={{ width: "100%" }}
-                                                    placeholder="请输入单电芯额定容量(kWh)"
+                                                    placeholder="请输入单电芯额定容量(Ah)"
                                                 />
                                             </Form.Item>
                                         </Col>

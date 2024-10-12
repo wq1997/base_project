@@ -182,7 +182,7 @@ const Account = () => {
             title: "操作",
             dataIndex: "operate",
             fixed: "right",
-            width: 250,
+            width: 300,
             render: (_, row) => {
                 const edit = (key, row) => {
                     setCurrentStep(key);
