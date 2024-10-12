@@ -10,7 +10,8 @@ import {
     monitorCurve as monitorCurveServe,
     getAllRevenueExcel as getAllRevenueExcelServe,
     exportCurve as exportCurveServe,
-    getCurveType as getCurveTypeServe
+    getCurveType as getCurveTypeServe,
+    getCurveType2 as getCurveTypeServe2
 } from "@/services";
 import {
     getDtusOfPlant as getDtusOfPlantServe
@@ -31,8 +32,8 @@ const MonitoringCurves = () => {
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState(`${intl.formatMessage({ id: '监测曲线' })}`);
     const { locale } = useSelector(state => state.global);
-    const [dataProList, setDataProList] = useState([
-    ]);
+    const [dataProList, setDataProList] = useState([]);
+    const [initFlag, setInitFlag] = useState(0);
 
     const getParams = async (showMessage = true) => {
         let format = "YYYY-MM-DD";
@@ -44,16 +45,19 @@ const MonitoringCurves = () => {
             showMessage && message.error(intl.formatMessage({ id: '最多选择3个对比项' }));
             flag = true;
         }
-        if (!currentPlantDevice || currentPlantDevice?.length < 2) {
-            showMessage && message.error(intl.formatMessage({ id: '请选择电站下具体设备' }));
-            flag = true;
-        };
+        if(initFlag!=0){
+            if (!currentPlantDevice || currentPlantDevice?.length < 2) {
+                showMessage && message.error(intl.formatMessage({ id: '请选择电站下具体设备' }));
+                flag = true;
+            };
+        }
         if (flag) return Promise.reject("参数错误");
+        let dataTypeArr = [dataType];
         let params = {
             // plantId: currentPlantDevice?.[0],
             dtuId: currentPlantDevice?.[1],
-            dataType,
-            dateList: date
+            dataType: dataTypeArr,
+            dates: date
         }
         return params;
     }
@@ -64,7 +68,12 @@ const MonitoringCurves = () => {
         let { dataType, date } = values;
         let legendData = [], series = [], xData = [];
         date = date.map(item => dayjs(item).format(format));
-        xData = dataSource?.[0]?.timeList;
+        let xArr = [];
+        for (var key in dataSource?.[0]?.value) {
+            xArr.push(key);
+        }
+        // xData = dataSource?.[0]?.timeList;
+        xData = xArr;
 
         let yAxis = [
             {
@@ -85,111 +94,25 @@ const MonitoringCurves = () => {
             }
         ];
 
-        if (dataType === 100) {
-            const fieldList = [intl.formatMessage({ id: 'PCS功率' }), intl.formatMessage({ id: 'BMS功率' }), intl.formatMessage({ id: '电表功率' })];
-            date?.forEach(item => {
-                fieldList.forEach(field => {
-                    legendData.push(`${item} ${field}`);
-                })
+        dataSource?.forEach((item,) => {
+            legendData.push(item.label)
+        })
+        legendData.forEach((legend, index) => {
+            const currentDate = legend?.split(' ')?.[0];
+            const currentData = dataSource?.find(item => item.date === currentDate);
+            const data = [];
+            for (let key in currentData?.value) {
+                data.push(currentData?.value[key])
+            }
+            series.push({
+                name: legend,
+                type: 'line',
+                showSymbol: false,
+                data: data
             })
-            legendData.forEach((legend, index) => {
-                const currentDate = legend?.split(' ')?.[0];
-                const currentData = dataSource?.find(item => item.date === currentDate);
-                const filed = index % 3 === 0 ? "PCS" : (index % 3 === 1 ? "BMS" : "Meter");
-                const data = currentData?.energyData?.[filed];
-                series.push({
-                    name: legend,
-                    type: 'line',
-                    showSymbol: false,
-                    data: data?.map(item => item[1])
-                })
-            })
-        }
-        if (dataType === 101) {
-            const fieldList = [intl.formatMessage({ id: 'BMS1功率' }), intl.formatMessage({ id: 'BMS2功率' }), intl.formatMessage({ id: '电表功率' }), intl.formatMessage({ id: 'PCS功率' })];
-            date?.forEach(item => {
-                fieldList.forEach(field => {
-                    legendData.push(`${item} ${field}`);
-                })
-            })
-            legendData.forEach((legend, index) => {
-                const currentDate = legend?.split(' ')?.[0];
-                const currentData = dataSource?.find(item => item.date === currentDate);
-                const filed = index % 4 === 0 ? "BMS1" : (index % 4 === 1 ? "BMS2" : index % 4 === 2 ? "Meter" : 'PCS');
-                const data = currentData?.energyData?.[filed];
-                series.push({
-                    name: legend,
-                    type: 'line',
-                    showSymbol: false,
-                    data: data?.map(item => item[1])
-                })
-            })
-        }
-        if (dataType === 183) {
-            const fieldList = [intl.formatMessage({ id: '电池SOC' })];
-            date?.forEach(item => {
-                fieldList.forEach(field => {
-                    legendData.push(`${item} ${field}`);
-                })
-            })
-            legendData.forEach((legend, index) => {
-                const currentDate = legend?.split(' ')?.[0];
-                const currentData = dataSource?.find(item => item.date === currentDate);
-                const filed = "SOC";
-                const data = currentData?.energyData?.[filed];
-                series.push({
-                    name: legend,
-                    type: 'line',
-                    showSymbol: false,
-                    data: data?.map(item => item[1])
-                })
-            })
-        }
+        })
 
-        if (dataType === 181) {
-            const fieldList = [intl.formatMessage({ id: '电池电压' })];
-            date?.forEach(item => {
-                fieldList.forEach(field => {
-                    legendData.push(`${item} ${field}`);
-                })
-            })
-            legendData.forEach((legend, index) => {
-                const currentDate = legend?.split(' ')?.[0];
-                const currentData = dataSource?.find(item => item.date === currentDate);
-                const filed = "Vol";
-                const data = currentData?.energyData?.[filed];
-                series.push({
-                    name: legend,
-                    type: 'line',
-                    showSymbol: false,
-                    data: data?.map(item => item[1])
-                })
-            })
-        }
-
-        if (dataType === 182) {
-            const fieldList = [intl.formatMessage({ id: '电池电流' })];
-            date?.forEach(item => {
-                fieldList.forEach(field => {
-                    legendData.push(`${item} ${field}`);
-                })
-            })
-            legendData.forEach((legend, index) => {
-                const currentDate = legend?.split(' ')?.[0];
-                const currentData = dataSource?.find(item => item.date === currentDate);
-                const filed = "Cur";
-                const data = currentData?.energyData?.[filed];
-                series.push({
-                    name: legend,
-                    type: 'line',
-                    showSymbol: false,
-                    data: data?.map(item => item[1])
-                })
-            })
-        }
-
-        if (dataType === 414 || dataType === 4140 || dataType === 4141) {
-            const fieldList = [intl.formatMessage({ id: '最高电压' }), intl.formatMessage({ id: '最低电压' }), intl.formatMessage({ id: '压差' })];
+        if (dataType.includes("CELL_VOL_DIFF")) {
             yAxis[0].name = `${intl.formatMessage({ id: '最高电压' })}/${intl.formatMessage({ id: '最低电压' })}`;
             yAxis[0].nameTextStyle = {
                 color: 'white'
@@ -219,28 +142,8 @@ const MonitoringCurves = () => {
                 },
                 splitNumber: 5
             }
-            date?.forEach(item => {
-                fieldList.forEach(field => {
-                    legendData.push(`${item} ${field}`);
-                })
-            })
-            legendData.forEach((legend, index) => {
-                const currentDate = legend?.split(' ')?.[0];
-                const currentData = dataSource?.find(item => item.date === currentDate);
-                const filed = index % 3 === 0 ? "VolMax" : (index % 3 === 1 ? "VolMin" : "VolDiff");
-                const data = currentData?.energyData?.[filed];
-                series.push({
-                    yAxisIndex: index % 3 === 0 ? 0 : (index % 3 === 1 ? 0 : 1),
-                    name: legend,
-                    type: 'line',
-                    showSymbol: false,
-                    data: data?.map(item => item[1])
-                })
-            })
         }
-
-        if (dataType === 415 || dataType === 4150 || dataType === 4151) {
-            const fieldList = [intl.formatMessage({ id: '最高温度' }), intl.formatMessage({ id: '最低温度' }), intl.formatMessage({ id: '温差' })];
+        if (dataType.includes("CELL_TEMP_DIFF")) {
             yAxis[0].name = `${intl.formatMessage({ id: '最高温度' })}/${intl.formatMessage({ id: '最低温度' })}`;
             yAxis[0].nameTextStyle = {
                 color: 'white'
@@ -270,58 +173,8 @@ const MonitoringCurves = () => {
                 },
                 splitNumber: 5
             }
-
-            date?.forEach(item => {
-                fieldList.forEach(field => {
-                    legendData.push(`${item} ${field}`);
-                })
-            })
-            legendData.forEach((legend, index) => {
-                const currentDate = legend?.split(' ')?.[0];
-                const currentData = dataSource?.find(item => item.date === currentDate);
-                const filed = index % 3 === 0 ? "TempMax" : (index % 3 === 1 ? "TempMin" : "TempDiff");
-                const data = currentData?.energyData?.[filed];
-                series.push({
-                    yAxisIndex: index % 3 === 0 ? 0 : (index % 3 === 1 ? 0 : 1),
-                    name: legend,
-                    type: 'line',
-                    showSymbol: false,
-                    data: data?.map(item => item[1])
-                })
-            })
         }
-        
-        if (dataType === 1870 || dataType === 1930 || dataType === 1921 || dataType === 1920 || dataType === 1871 || dataType === 1931) {
-        const fieldList = [dataProList.find(it=>it.value===dataType).label];
-        date?.forEach(item => {
-            fieldList.forEach(field => {
-                legendData.push(`${item} ${field}`);
-            })
-        })
-            legendData.forEach((legend, index) => {
-                const currentDate = legend?.split(' ')?.[0];
-                const currentData = dataSource?.find(item => item.date === currentDate);
-                let filed = '';
-                if (dataType == 1931 || dataType == 1930) {
-                    filed = 'Cur';
-                } else if (dataType == 1921 || dataType == 1920) {
-                    filed = 'Vol';
-                } else if (dataType == 1871 || dataType == 1870) {
-                    filed = 'SOC';
-                }
-                const data = currentData?.energyData?.[filed];
-        console.log(filed,dataType,currentData,1111111111);
-
-                series.push({
-                    name: legend,
-                    type: 'line',
-                    showSymbol: false,
-                    data: data?.map(item => item[1])
-                })
-            })
-        }
-        console.log(series,1111111111);
-        
+        console.log(series, 1111111111);
 
         const option = {
             tooltip: {
@@ -383,19 +236,35 @@ const MonitoringCurves = () => {
                 const currentIndex = plantList?.findIndex(item => item.value === plantId);
                 plantList[currentIndex].children = data;
                 setPlantDeviceList([...plantList]);
-                const res = await getCurveTypeServe({ deviceType: data?.[0].type });
-                setDataProList(res?.data?.data);
-                const values = await form.validateFields();
-                let { dataType,  } = values;
+                const currentPlantDevice = await form.getFieldValue("currentPlantDevice");
+
+                if (currentPlantDevice?.length === 0) {
+                    const res = await getCurveTypeServe2({ dtuId: data?.[0].value, isCombo: true });
+                    setDataProList(res?.data?.data);
+                    const values = await form.validateFields();
+                    let { dataType, } = values;
                     const currentData = res?.data?.data?.find(data => data.value == dataType);
                     const name = `${currentData?.label}(${currentData?.unit})`;
                     if (currentData) setTitle(name);
-                const currentPlantDevice = await form.getFieldValue("currentPlantDevice");
-                if (currentPlantDevice?.length === 0) {
+
                     form.setFieldsValue({
                         currentPlantDevice: [plantId, data[0].value],
                         dataType: res?.data?.data?.[0]?.value
                     })
+                    setTimeout(async () => {
+                        const params = await getParams(false);
+                        getDataSource(params);
+                    }, 200)
+                }
+                else{
+                    const res = await getCurveTypeServe2({ dtuId: currentPlantDevice[1], isCombo: true });
+                    setDataProList(res?.data?.data);
+                    const values = await form.validateFields();
+                    let { dataType, } = values;
+                    const currentData = res?.data?.data?.find(data => data.value == dataType);
+                    const name = `${currentData?.label}(${currentData?.unit})`;
+                    if (currentData) setTitle(name);
+
                     setTimeout(async () => {
                         const params = await getParams(false);
                         getDataSource(params);
@@ -447,6 +316,13 @@ const MonitoringCurves = () => {
 
     useEffect(() => {
         initPlantDevice();
+        setInitFlag(1)
+            setTimeout(async () => {
+                const params = await getParams();
+                if (params) {
+                    getDataSource(params);
+                }
+            }, 200)
     }, [locale])
 
     return (
@@ -476,13 +352,13 @@ const MonitoringCurves = () => {
                                     let currentPlant = plantDeviceList.find(it => it.value == value[0]);
                                     let currentDevice = currentPlant.children.find(it => it.value == value[1]);
                                     if (currentDevice.type) {
-                                        const res = await getCurveTypeServe({ deviceType: currentDevice.type });
+                                        const res = await getCurveTypeServe2({ dtuId: currentDevice.value, isCombo: true });
                                         setDataProList(res?.data?.data);
                                         const values = await form.validateFields();
-                                        let { dataType,  } = values;
-                                            const currentData = res?.data?.data?.find(data => data.value == dataType);
-                                            const name = `${currentData?.label}(${currentData?.unit})`;
-                                            if (currentData) setTitle(name);
+                                        let { dataType, } = values;
+                                        const currentData = res?.data?.data?.find(data => data.value == dataType);
+                                        const name = `${currentData?.label}(${currentData?.unit})`;
+                                        if (currentData) setTitle(name);
                                     }
                                 }}
                                 style={{ width: '250px', height: 40 }}

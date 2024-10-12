@@ -99,9 +99,13 @@ export const showDataByTable = (payload) => {
 export const getCurveType = (payload) => {
     return axiosInstance.get(`/minsys/curve/getCurveType?deviceType=${payload.deviceType}`);
 }
+export const getCurveType2 = (payload) => {
+    return axiosInstance.get(`/minsys/monitor/type/list?dtuId=${payload.dtuId}&isCombo=${payload.isCombo}`);
+}
 
 export const monitorCurve = (payload) => {
-    return axiosInstance.post(`/minsys/curve/monitorCurve`, payload)
+    // return axiosInstance.post(`/minsys/curve/monitorCurve`, payload)
+    return axiosInstance.post(`/minsys/monitor`, payload)
 }
 
 export const getUserInfo = () => {
@@ -109,11 +113,18 @@ export const getUserInfo = () => {
 }
 
 export const getAnalyticsInitData = (payload) => {
-    return axiosInstance.get(`/minsys/analysis/getAnalyticsInitData`, { params: payload });
+    // return axiosInstance.get(`/minsys/analysis/getAnalyticsInitData`, { params: payload });
+    // return axiosInstance.get(`/minsys/monitor/cell/location/list?dtuId=${payload.dtuId}`);
+    return axiosInstance.get(`/minsys/monitor/cell/location/list`, { params: payload });
+}
+
+export const getCellInitData = (payload) => {
+    return axiosInstance.get(`/minsys/monitor/cell/type/list`);
 }
 
 export const analyticsData = (payload) => {
-    return axiosInstance.post(`/minsys/analysis/analyticsData`, payload)
+    // return axiosInstance.post(`/minsys/analysis/analyticsData`, payload)
+    return axiosInstance.post(`/minsys/monitor/cell`, payload)
 }
 
 export const get215HistoryAlarm = (payload) => {
@@ -125,11 +136,12 @@ export const get215NowAlarm = (payload) => {
 }
 
 export const exportCurve = (payload) => {
-    return axiosInstance.post(`/minsys/curve/exportCurve`, payload, {responseType: 'blob'})
+    return axiosInstance.post(`/minsys/monitor/export`, payload, {responseType: 'blob'})
 }
 
 export const exportAnalytics = (payload) => {
-    return axiosInstance.post(`/minsys/analysis/exportAnalytics`, payload, {responseType: 'blob'})
+    // return axiosInstance.post(`/minsys/analysis/exportAnalytics`, payload, {responseType: 'blob'})
+    return axiosInstance.post(`/minsys/monitor/cell/export`, payload, {responseType: 'blob'})
 }
 
 export const getSocialBenefit = (payload) => {

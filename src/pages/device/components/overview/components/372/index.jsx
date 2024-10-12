@@ -84,7 +84,9 @@ function Com(props) {
                             globalCoord: false // 缺省为 false
                         }
                     },
-                    data: [(data?.data?.bmc?.[0]?.soc + data?.data?.bmc?.[1]?.soc) / 200 || 0, (data?.data?.bmc?.[0]?.soc + data?.data?.bmc?.[1]?.soc) / 200 || 0,], // data个数代表波浪数
+                    data: data?.data?.bmc?.[1]?
+                        [(data?.data?.bmc?.[0]?.soc + data?.data?.bmc?.[1]?.soc) / 200 || 0, (data?.data?.bmc?.[0]?.soc + data?.data?.bmc?.[1]?.soc) / 200 || 0,]:
+                        [+data?.data?.bmc?.[0]?.soc/100  || 0, +data?.data?.bmc?.[0]?.soc/100  || 0,], // data个数代表波浪数
                     color: global.theme == 'default' ?
                         ['rgba(167, 227, 255,0.8)', 'rgba(167, 227, 255,0.6)', 'rgba(167, 227, 255,1)']
                         :
@@ -417,7 +419,7 @@ function Com(props) {
                     </div>
                     <div style={{ width: '80%', display: 'flex' }}>
                         <div className={styles.topOne}>
-                            <div style={{ color: "rgba(44,255,204,1)", textAlign: 'center', fontFamily: 'DingTalkJinBuTi' }}>{allData?.pcs?.online ? (allData?.pcs?.online == 1 ? t('在线') : t('离线')) : '-'}</div>
+                            <div style={{ color: "rgba(44,255,204,1)", textAlign: 'center', fontFamily: 'DingTalkJinBuTi' }}>{allData?.pcs?.online == 1 ? t('在线') : t('离线')}</div>
                             <div className={styles.label}>{t('PCS状态')}</div>
                             <div className={styles.bottomDes} style={{ background: `url(${path}) center center no-repeat`, }}></div>
                         </div>

@@ -24,7 +24,7 @@ export default {
         setLocale(locale, false);
         setLocalStorage('locale',locale);
         if (window.location.pathname !== "/login") {
-          yield changeBaseLanguage({ language: locale === "zh-EN" ? 3 : 1 });
+          yield changeBaseLanguage({ language: locale === "zh-CN" ? 1 : 3 });
         }
         yield put({
             type: 'updateState',

@@ -10,7 +10,8 @@ import {
     analyticsData as monitorCurveServe,
     exportAnalytics as exportAnalyticsServe,
     // getFetchPlantList2 as getFetchPlantListServe,
-    getAnalyticsInitData as getAnalyticsInitDataServe
+    getAnalyticsInitData as getAnalyticsInitDataServe,
+    getCellInitData as getCellInitData, getCurveType2 as getCurveTypeServe2
 } from "@/services";
 import {
     getDtusOfPlant as getDtusOfPlantServe
@@ -31,19 +32,9 @@ const HighAnysis = () => {
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState(`${intl.formatMessage({ id: '电芯详情' })}`);
     const {locale} = useSelector(state => state.global);
+    const [initFlag, setInitFlag] = useState(0);
 
-    const dataProList = [
-        {
-            value: 'vol',
-            label: intl.formatMessage({ id: '单体电压' }),
-            unit: 'V'
-        },
-        {
-            value: 'temp',
-            label: intl.formatMessage({ id: '单体温度' }),
-            unit: '℃'
-        },
-    ]
+    const [dataProList, setDataProList] = useState([]);
 
     const getParams = async (showMessage=true) => {
         let format = "YYYY-MM-DD";
@@ -59,19 +50,22 @@ const HighAnysis = () => {
             showMessage&&message.error(intl.formatMessage({ id: '请选择电芯' }));
             flag=true;
         }
-        if (!currentPlantDevice||currentPlantDevice?.length < 2) {
-            showMessage&&message.error(intl.formatMessage({ id: '请选择电站下具体设备' }));
-            flag=true;
-        };
+        if(initFlag!=0){
+            if (!currentPlantDevice||currentPlantDevice?.length < 2) {
+                showMessage&&message.error(intl.formatMessage({ id: '请选择电站下具体设备' }));
+                flag=true;
+            };
+        }
         if(flag) return Promise.reject("参数错误");
         let params = {
             // plantId: currentPlantDevice?.[0],
             dtuId: currentPlantDevice?.[1],
-            dataType,
-            dateList: date,
-            packCell:packCell?.length ==2?  packCell?.[1]:packCell?.[2]
+            dataType:[dataType],
+            dates: date,
+            cell:packCell?.length ==3?packCell?.[2]:packCell?.[1],
+            pack:packCell?.length ==3?packCell?.[1]:packCell?.[0],
+            cluster:packCell?.length ==3?packCell?.[0]:null
         }
-        
         return params;
     }
 
@@ -85,54 +79,38 @@ const HighAnysis = () => {
 
         let legendData = [], series = [], xData = [], min = 0, max = 100, splitNumber = 5;
         date = date.map(item => dayjs(item).format(format));
-        xData = dataSource?.[0]?.timeList;
+        // xData = dataSource?.[0]?.timeList;
+        let xArr = [];
+        for (var key in dataSource?.[0]?.value) {
+            xArr.push(key);
+        }
+        xData = xArr;
 
-        if (dataType === 'vol') {
-            const fieldList = [intl.formatMessage({ id: '电压' })];
+        dataSource?.forEach((item,) => {
+            legendData.push(item.label)
+        })
+        legendData.forEach((legend, index) => {
+            const currentDate = legend?.split(' ')?.[0];
+            const currentData = dataSource?.find(item => item.date === currentDate);
+            const data = [];
+            for (let key in currentData?.value) {
+                data.push(currentData?.value[key])
+            }
+            series.push({
+                name: legend,
+                type: 'line',
+                showSymbol: false,
+                data: data
+            })
+        })
 
-            date?.forEach(item => {
-                fieldList.forEach(field => {
-                    legendData.push(`${item} ${field}`);
-                })
-            })
-            legendData.forEach((legend, index) => {
-                const currentDate = legend?.split(' ')?.[0];
-                const currentData = dataSource?.find(item => item.date === currentDate);
-                const filed = "vol";
-                const data = currentData?.energyData?.[filed];
-                series.push({
-                    name: legend,
-                    type: 'line',
-                    showSymbol: false,
-                    data: data?.map(item => item[1])
-                })
-            })
+        if (dataType === 'CELL_VOL') {
             min = 2.5;
             max = 4;
             splitNumber = 10;
         }
 
-        if (dataType === 'temp') {
-            const fieldList = [intl.formatMessage({ id: '单体温度' }), intl.formatMessage({ id: '左侧熔断器温度' }), intl.formatMessage({ id: '右侧熔断器温度' }), intl.formatMessage({ id: '负极极柱温度' }), intl.formatMessage({ id: '正极极柱温度' })];
-
-            date?.forEach(item => {
-                fieldList.forEach(field => {
-                    legendData.push(`${item} ${field}`);
-                })
-            })
-            legendData.forEach((legend, index) => {
-                const currentDate = legend?.split(' ')?.[0];
-                const currentData = dataSource?.find(item => item.date === currentDate);
-                const filed = index % 4 === 0 ? "temp" : (index % 4 === 1 ? "tempLeft" : (index % 4 === 2 ? "tempRight" : index % 4 === 3 ? "tempNeg" : "tempPos"));
-                const data = currentData?.energyData?.[filed];
-                series.push({
-                    name: legend,
-                    type: 'line',
-                    showSymbol: false,
-                    data: data?.map(item => item[1])
-                })
-            })
-
+        if (dataType === 'MONOMER_TEMPERATURE_COMBOS') {
             min = 10;
             max = 40;
             splitNumber = 5;
@@ -217,41 +195,93 @@ const HighAnysis = () => {
                 plantList[currentIndex].children = data;
                 setPlantDeviceList([...plantList]);
                 console.log('执行了2');
+                const res = await getCellInitData();
+                setDataProList(res?.data?.data);
 
                 const currentPlantDevice = await form.getFieldValue("currentPlantDevice")
                 if (currentPlantDevice?.length === 0) {
                     console.log('执行了1');
                     let packCellList = [];
                     const packCellListRes = await getAnalyticsInitDataServe({ dtuId: data?.[0]?.value });
-                    if (packCellListRes?.data?.data?.packCellList) {
-                        const data = packCellListRes?.data?.data?.packCellList;
-                        packCellList = data;
+                    var tempData=[]
+                    if(packCellListRes?.data?.data?.clusters){
+                        var packData=[]
+                        packCellListRes?.data?.data?.packs?.forEach((item, index) => {
+                            packData.push({
+                                label:item.label,
+                                value:item.value,
+                                children:packCellListRes?.data?.data?.cells
+                            })
+                        })
+                        packCellListRes?.data?.data?.clusters?.forEach((clu, index) => {
+                            tempData.push({
+                                label:clu.label,
+                                value:clu.value,
+                                children:packData
+                            })
+                        })
+                        packCellList=tempData;
+                    }else{
+                        packCellListRes?.data?.data?.packs?.forEach((item, index) => {
+                            tempData.push({
+                                label:item.label,
+                                value:item.value,
+                                children:packCellListRes?.data?.data?.cells
+                            })
+                        })
+                        packCellList=tempData;
                     }
                     setPackCellList(packCellList);
                     form.setFieldsValue({
                         currentPlantDevice: [plantId, data?.[0]?.value],
-                        dataType: 'vol',
-                        packCell:packCellList?.[0]?.children?.[0]?.children?.[0]?.value ? 
-                        [packCellList?.[0]?.value, packCellList?.[0]?.children?.[0]?.value,packCellList?.[0]?.children?.[0]?.children?.[0]?.value]:
+                        dataType: res?.data?.data?.[0]?.value,
+                        packCell:packCellList?.[0]?.children?.[0]?.children?.[0]?.value!=undefined ?
+                        [packCellList?.[0]?.value, packCellList?.[0]?.children?.[0]?.value,packCellList?.[0]?.children?.[0]?.children?.[0]?.value]
+                            :
                         [packCellList?.[0]?.value, packCellList?.[0]?.children?.[0]?.value]
-                    })
+                    });
                     setTimeout(async()=>{
                         const params = await getParams(false);
                         getDataSource(params);
                     }, 200)
                 }else{
                     let packCellList = [];
-                    const packCellListRes = await getAnalyticsInitDataServe({ dtuId: data?.[0]?.value });
-                    if (packCellListRes?.data?.data?.packCellList) {
-                        const data = packCellListRes?.data?.data?.packCellList;
-                        packCellList = data;
+                    // const packCellListRes = await getAnalyticsInitDataServe({ dtuId: data?.[0]?.value });
+                    const packCellListRes = await getAnalyticsInitDataServe({ dtuId: currentPlantDevice[1] });
+                    var tempData=[]
+                    if(packCellListRes?.data?.data?.clusters){
+                        var packData=[]
+                        packCellListRes?.data?.data?.packs?.forEach((item, index) => {
+                            packData.push({
+                                label:item.label,
+                                value:item.value,
+                                children:packCellListRes?.data?.data?.cells
+                            })
+                        })
+                        packCellListRes?.data?.data?.clusters?.forEach((clu, index) => {
+                            tempData.push({
+                                label:clu.label,
+                                value:clu.value,
+                                children:packData
+                            })
+                        })
+                        packCellList=tempData;
+                    }else{
+                        packCellListRes?.data?.data?.packs?.forEach((item, index) => {
+                            tempData.push({
+                                label:item.label,
+                                value:item.value,
+                                children:packCellListRes?.data?.data?.cells
+                            })
+                        })
+                        packCellList=tempData;
                     }
                     setPackCellList(packCellList);
-                    form.setFieldsValue({
-                        packCell:packCellList?.[0]?.children?.[0]?.children?.[0]?.value ? 
-                        [packCellList?.[0]?.value, packCellList?.[0]?.children?.[0]?.value,packCellList?.[0]?.children?.[0]?.children?.[0]?.value]:
-                        [packCellList?.[0]?.value, packCellList?.[0]?.children?.[0]?.value]
-                    })
+                    // form.setFieldsValue({
+                    //     packCell:packCellList?.[0]?.children?.[0]?.children?.[0]?.value!=undefined ?
+                    //     [packCellList?.[0]?.value, packCellList?.[0]?.children?.[0]?.value,packCellList?.[0]?.children?.[0]?.children?.[0]?.value]:
+                    //     [packCellList?.[0]?.value, packCellList?.[0]?.children?.[0]?.value]
+                    // })
                     setTimeout(async()=>{
                         const params = await getParams(false);
                         getDataSource(params);
@@ -308,9 +338,17 @@ const HighAnysis = () => {
     }, [dataSource,token,locale]);
 
     useEffect(() => {
+
+        setInitFlag(1)
+        setTimeout(async () => {
+            const params = await getParams();
+            if (params) {
+                getDataSource(params);
+            }
+        }, 200)
         initPlantDevice();
     }, [locale])
-  
+
     return (
         <Space size={30} direction="vertical" style={{ width: '100%', height: '100%', padding: 30,backgroundColor: token.titleCardBgc }}>
             <Flex justify="center" align="center" gap={10}>
@@ -322,17 +360,46 @@ const HighAnysis = () => {
                         date: [dayjs(moment().format("YYYY-MM-DD"))]
                     }}
                     onValuesChange={async (value) => {
+                        const values = await form.validateFields();
+                        let { date, currentPlantDevice, dataType, packCell } = values;
                         if (value?.currentPlantDevice?.length === 2) {
                             let packCellList = [];
                             const packCellListRes = await getAnalyticsInitDataServe({ dtuId: value?.currentPlantDevice?.[1] });
-                            if (packCellListRes?.data?.data?.packCellList?.length > 0) {
-                                const data = packCellListRes?.data?.data?.packCellList;
-                                packCellList = data;
+                            if (packCellListRes?.data?.data?.packs?.length > 0) {
+                                var tempData=[]
+                                if(packCellListRes?.data?.data?.clusters){
+                                    var packData=[]
+                                    packCellListRes?.data?.data?.packs?.forEach((item, index) => {
+                                        packData.push({
+                                            label:item.label,
+                                            value:item.value,
+                                            children:packCellListRes?.data?.data?.cells
+                                        })
+                                    })
+                                    packCellListRes?.data?.data?.clusters?.forEach((clu, index) => {
+                                        tempData.push({
+                                            label:clu.label,
+                                            value:clu.value,
+                                            children:packData
+                                        })
+                                    })
+                                    packCellList=tempData;
+                                }else{
+                                    packCellListRes?.data?.data?.packs?.forEach((item, index) => {
+                                        tempData.push({
+                                            label:item.label,
+                                            value:item.value,
+                                            children:packCellListRes?.data?.data?.cells
+                                        })
+                                    })
+                                    packCellList=tempData;
+                                }
                                 setPackCellList(packCellList);
                                 form.setFieldsValue({
-                                    packCell: packCellList?.[0]?.children?.[0]?.children?.[0]?.value?
-                                    [packCellList?.[0]?.value, packCellList?.[0]?.children?.[0]?.value, packCellList?.[0]?.children?.[0]?.children?.[0]?.value]
-                                    :[packCellList?.[0]?.value, packCellList?.[0]?.children?.[0]?.value]
+                                    packCell: (packCellList?.[0]?.children?.[0]?.children?.[0]?.value!=undefined)?
+                                        [packCellList?.[0]?.value, packCellList?.[0]?.children?.[0]?.value, packCellList?.[0]?.children?.[0]?.children?.[0]?.value]
+                                        :
+                                        [packCellList?.[0]?.value, packCellList?.[0]?.children?.[0]?.value]
                                 })
                                 const params = await getParams();
                                 if (params) {
@@ -354,6 +421,8 @@ const HighAnysis = () => {
                                 options={plantDeviceList}
                                 onChange={async value => {
                                     if (value?.length === 1) {
+                                        const res = await getCellInitData();
+                                        setDataProList(res?.data?.data);
                                         getDtusOfPlant(plantDeviceList, value[0])
                                     }
                                 }}
