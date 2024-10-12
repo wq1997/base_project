@@ -106,11 +106,12 @@ function Com({ id,gridPointId }) {
     key:'ER4',
     value:''
    },
+//    {
+//     lable:'储能总充放电功率',
+//     key:'FA',
+//     value:''
+//    },  
    {
-    lable:'储能总充放电功率',
-    key:'FA',
-    value:''
-   },  {
     lable:'当月最大需量',
     key:'Dm',
     value:''

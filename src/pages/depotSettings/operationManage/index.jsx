@@ -119,10 +119,10 @@ const OperationManage = () => {
                             <Row justify="space-between" style={{ marginTop: 20 }}>
                                 <Space size={38}>
                                     <span>{t('通讯状态')}：{item.transformComState == 1 ? t('连接') : t('断开')}</span>
-                                    <span>{t('低压侧有功功率')}：{item.lowVolSidePower}</span>
-                                    <span>{t('高压侧有功功率')}：{item.highVolSidePower}</span>
-                                    <span>{t('低压侧频率')}：{item.lowVolSideFreq}</span>
-                                    <span>{t('高压侧频率')}：{item.highVolSideFreq}</span>
+                                    <span>{t('低压侧有功功率')}：{item.lowVolSidePower}kW</span>
+                                    <span>{t('高压侧有功功率')}：{item.highVolSidePower}kW</span>
+                                    <span>{t('低压侧频率')}：{item.lowVolSideFreq}Hz</span>
+                                    <span>{t('高压侧频率')}：{item.highVolSideFreq}Hz</span>
                                 </Space>
                                 <Space>
                                     <MyButton text="低压分闸" cmdKey='7' devId={item.devId} />

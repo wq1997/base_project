@@ -18,6 +18,7 @@ function Com(props) {
     const [date, setDate] = useState(dayjs(new Date()));
     const [type, setType] = useState(pcsDataType[0].value);
     const [title, setTitle] = useState('实时功率');
+    const [unit, setUnit] = useState('V')
     const [excelData, setExcelData] = useState([]);
     const [paramsData,setParamsData]=useState([]);
     const intl = useIntl();
@@ -36,6 +37,9 @@ function Com(props) {
     const changeType = (value, label) => {
         setType(value);
         setTitle(label?.children);
+        setUnit(paramsData.find(it => it.dataType == value)?.unit);
+        // setTitle(label?.children);
+
     }
 
     const initData=async()=>{
@@ -45,6 +49,8 @@ function Com(props) {
         });
         setParamsData(res?.data?.data);
         setType(res?.data?.data?.[0]?.dataType);
+        setTitle(res?.data?.data?.[0]?.dataTypeDesc);
+        setUnit(res?.data?.data?.[0]?.unit);
         
     };
     const queryData = async () => {
@@ -107,7 +113,7 @@ function Com(props) {
                 {
                     type: 'value',
                     axisLabel: {
-                        formatter: '{value} kW'
+                        formatter: `{value}`
                     },
 
                 }
@@ -184,9 +190,13 @@ function Com(props) {
     };
 
     useEffect(() => {
-        queryData();
-        initData();
+        initData().then(()=>{
+            queryData();
+        });
     }, [token]);
+    // useEffect(()=>{
+    //     queryData();
+    // },[title])
     return (
         <div className={styles.monitoringCurves}>
             <div className={styles.searchHead}>
@@ -196,7 +206,8 @@ function Com(props) {
                 <Select
                     className={styles.margR}
                     style={{ width: 240 }}
-                    defaultValue={pcsDataType[0]?.value}
+                    // defaultValue={pcsDataType[0]?.value}
+                    value={type}
                     onChange={changeType}
                 >
                     {paramsData && paramsData.map(item => {
@@ -213,7 +224,7 @@ function Com(props) {
             </div>
             <div className={styles.echartPart}>
                 <CardModel
-                    title={title}
+                    title={title+`(${unit})`}
                     content={
                         <div className={styles.echartPartCardwrap}>
                             <ReactECharts option={optionEchart} style={{ height: '100%' }} />

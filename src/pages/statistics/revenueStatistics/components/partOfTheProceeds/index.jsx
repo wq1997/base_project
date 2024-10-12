@@ -23,7 +23,7 @@ function Com({ typeNum, clum }) {
     const [scrollY, setScrollY] = useState('');
     useEffect(() => {
         const Y = document.getElementById('table')?.clientHeight;
-        if (Y) setScrollY(Y - 180); // 32为表头的高，应用时减去自己表格的表头高
+        if (Y) setScrollY(Y - 240); // 32为表头的高，应用时减去自己表格的表头高
     }, []);
     const getOptions = () => {
         setOptions({
@@ -110,7 +110,7 @@ function Com({ typeNum, clum }) {
         let { data } = await getEnergyFeeByTime(httpData);
         data?.data.map((it,i) => {
             dayEarning.push(it.dayEarning)
-            it.date=dayjs().subtract(data?.data?.length-i, 'day').format('YYYY-MM-DD')
+            it.date=dayjs(time).subtract(data?.data?.length-i, 'day').format('YYYY-MM-DD')
             arrX.push(it?.date);
         })
         setData(data.data);
@@ -128,11 +128,15 @@ function Com({ typeNum, clum }) {
         getData();
         getOptions();
     }
+  const disabledDate = (current) => { return current && current > dayjs().endOf('day') }
+
     return (
         <div className={styles.content}>
             <div className={styles.heard} style={{ backgroundColor: token.titleCardBgc }}>
                 <div className={styles.date}>
-                    <DatePicker picker={mode} defaultValue={time} onChange={val=>setTime(val)} style={{ marginRight: "20px" }} />
+                    <DatePicker picker={mode} defaultValue={time} onChange={val=>setTime(val)} 
+                    disabledDate={disabledDate}
+                    style={{ marginRight: "20px" }} />
                     <Radio.Group value={mode} onChange={handleModelChange}>
                         <Radio.Button value="date">日</Radio.Button>
                         <Radio.Button value="month">月</Radio.Button>

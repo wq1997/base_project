@@ -274,9 +274,9 @@ function OverView(props) {
             legend: {
                 data: [
                     t('储能'),
-                    t('电网'),
+                    // t('电网'),
                     t('光伏'),
-                    t('负载'),
+                    // t('负载'),
                 ],
                 textStyle: {//图例文字的样式
                     color: token.titleColor,

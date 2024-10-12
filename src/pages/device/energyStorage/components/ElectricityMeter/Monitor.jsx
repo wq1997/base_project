@@ -18,7 +18,9 @@ function Com({ id }) {
     const [dataOption, setDataOption] = useState([]);
     const [optionEchart, setOptionEchart] = useState({})
     const [goalId, setGoalId] = useState(id);
-    const [title, setTitle] = useState('当天充电电量')
+    const [title, setTitle] = useState('当天充电电量');
+    const [unit, setUnit] = useState('kW');
+    
     const [date, setDate] = useState(dayjs(new Date()));
     const intl = useIntl();
     const t = (id) => {
@@ -44,6 +46,7 @@ function Com({ id }) {
         setDataOption(data?.data);
         setType(data?.data[0]?.children[0]?.value);
         setTitle(data?.data[0]?.children[0]?.label);
+        setUnit(data?.data[0]?.children[0]?.unit)
     }
     const getEchartsData = async () => {
         let { data } = await obtainMeterParameterData({
@@ -97,7 +100,7 @@ function Com({ id }) {
                 {
                     type: 'value',
                     axisLabel: {
-                        formatter: '{value} kWh'
+                        formatter: '{value}'
                     },
 
                 }
@@ -169,6 +172,9 @@ function Com({ id }) {
     const changeCluster = (val,selectedOptions) => {
         setType(val[1])
         setTitle(selectedOptions[1]?.label);
+        setUnit(selectedOptions?.[1]?.unit)
+        console.log(val,selectedOptions,111111);
+        
     }
     return (
         <div className={styles.monitoringCurves}>
@@ -193,7 +199,7 @@ function Com({ id }) {
             </div>
             <div className={styles.echartPart}>
                 <CardModel
-                    title={t('监测曲线')}
+                    title={t('监测曲线')+`(${unit})`}
                     content={
                         <div className={styles.echartPartCardwrap}>
                             <ReactECharts option={optionEchart} style={{ height: '100%' }} />

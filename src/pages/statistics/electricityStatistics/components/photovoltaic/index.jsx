@@ -7,7 +7,7 @@ import ReactECharts from "echarts-for-react";
 // import Table from '@/components/Table.jsx'
 import { useSelector, FormattedMessage, useIntl } from "umi";
 import { getEnergyFeeByTime } from '@/services/report'
-import {  downLoadExcelMode } from "@/utils/utils";
+import { downLoadExcelMode } from "@/utils/utils";
 
 function Com(props) {
     const { token } = theme.useToken();
@@ -103,27 +103,27 @@ function Com(props) {
         });
     };
     const profitTable = [
-     {  
-        title:'',
-        children:[ {
-            title: '序号',
-            dataIndex: 'id',
-            key: 'id',
-            width: 100,
-            className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
-
-            render: (text, record, index) => index + 1,
-        },
-
         {
-            title: '日期',
-            dataIndex: 'date',
-            key: 'date',
-            width: 100,
-            className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+            title: '',
+            children: [{
+                title: '序号',
+                dataIndex: 'id',
+                key: 'id',
+                width: 100,
+                className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+
+                render: (text, record, index) => index + 1,
+            },
+
+            {
+                title: '日期',
+                dataIndex: 'date',
+                key: 'date',
+                width: 100,
+                className: currentTheme === 'default' ? 'lightTitleColorRight' : 'darkTitleColorRight',
+            },
+            ]
         },
-    ]
-    },
         {
             title: '发电量（kWh）',
             children: [
@@ -219,9 +219,9 @@ function Com(props) {
     const downLoadExcelModel = () => {
         let fileName = t('电量统计');
         let sheetData = excelData;
-        let sheetFilter = ['date', 'dayInEnergy', 'dayOutEnergy','efit',];
-        let sheetHeader = [t("日期"),t("发电量")+'(kWh)',t("上网电量")+'(kWh)', ];
-        downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader,t('光伏'))
+        let sheetFilter = ['date', 'dayInEnergy', 'dayOutEnergy', 'efit',];
+        let sheetHeader = [t("日期"), t("发电量") + '(kWh)', t("上网电量") + '(kWh)',];
+        downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader, t('光伏'))
     };
     const getData = async () => {
         let httpData = {
@@ -230,21 +230,21 @@ function Com(props) {
             plantId: localStorage.getItem('plantId'),
             valueType: 2
         };
-        
+
         let arrIn = [];
         let arrOut = [];
         let arrX = [];
-        let excel=[];
+        let excel = [];
         let { data } = await getEnergyFeeByTime(httpData);
-        data?.data.map((it,i) => {
+        data?.data.map((it, i) => {
             arrIn.push(it.dayInEnergy);
             arrOut.push(it.dayOutEnergy);
-            it.date=dayjs().subtract(data?.data?.length-i, 'day').format('YYYY-MM-DD')
+            it.date = dayjs(time).subtract(data?.data?.length - i, 'day').format('YYYY-MM-DD')
             arrX.push(it?.date);
             excel.push({
-                dayInEnergy:it.dayInEnergy,
-                dayOutEnergy:it.dayOutEnergy,
-                date:it.date
+                dayInEnergy: it.dayInEnergy,
+                dayOutEnergy: it.dayOutEnergy,
+                date: it.date
             })
         })
         setExcelData(excel);
@@ -270,12 +270,15 @@ function Com(props) {
             setFormat('YYYY');
         }
     };
+    const disabledDate = (current) => { return current && current > dayjs().endOf('day') }
 
     return (
         <div className={styles.content}>
             <div className={styles.heard} style={{ backgroundColor: token.titleCardBgc }}>
                 <div className={styles.date}>
-                    <DatePicker picker={mode}  onChange={(val)=>setTime(val)} defaultValue={time} format={format} style={{ marginRight: "20px" }} />
+                    <DatePicker picker={mode} onChange={(val) => setTime(val)} defaultValue={time} format={format}
+                        disabledDate={disabledDate}
+                        style={{ marginRight: "20px" }} />
                     <Radio.Group value={mode} onChange={handleModelChange}>
                         <Radio.Button value="date">日</Radio.Button>
                         <Radio.Button value="month">月</Radio.Button>

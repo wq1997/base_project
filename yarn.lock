@@ -1777,10 +1777,10 @@
   "resolved" "https://registry.npmjs.org/@fullcalendar/daygrid/-/daygrid-6.1.15.tgz"
   "version" "6.1.15"
 
-"@fullcalendar/interaction@^6.1.9":
-  "integrity" "sha512-ynOKjzuPwEAMgTQ6R/Z2zvzIIqG4p8/Qmnhi1q0vzPZZxSIYx3rlZuvpEK2WGBZZ1XEafDOP/LGfbWoNZe+qdg=="
-  "resolved" "https://registry.npmjs.org/@fullcalendar/interaction/-/interaction-6.1.11.tgz"
-  "version" "6.1.11"
+"@fullcalendar/interaction@^6.1.15":
+  "integrity" "sha512-DOTSkofizM7QItjgu7W68TvKKvN9PSEEvDJceyMbQDvlXHa7pm/WAVtAc6xSDZ9xmB1QramYoWGLHkCYbTW1rQ=="
+  "resolved" "https://registry.npmjs.org/@fullcalendar/interaction/-/interaction-6.1.15.tgz"
+  "version" "6.1.15"
 
 "@fullcalendar/list@^6.1.9":
   "integrity" "sha512-9Qx8uvik9pXD12u50FiHwNzlHv4wkhfsr+r03ycahW7vEeIAKCsIZGTkUfFP+96I5wHihrfLazu1cFQG4MPiuw=="
@@ -3341,11 +3341,6 @@
   "integrity" "sha512-kNOjDqAh7px0XWNI+4QbzoiR/nTkHAWNud2uvnJquD1/x5a7EQZMJT0AczqK0Qn67oY/TTQ1LbUKajZpp3I9tQ=="
   "resolved" "https://registry.npmjs.org/atomic-sleep/-/atomic-sleep-1.0.0.tgz"
   "version" "1.0.0"
-
-"autofit.js@^3.1.3":
-  "integrity" "sha512-+TWc28CqwXmEcyVRofESxPt9WisGENDcTFzeJsNPhkPDouWL98QzAZxrID8K32joBNrulN2N0OZiL6X9Kv3wxg=="
-  "resolved" "https://registry.npmjs.org/autofit.js/-/autofit.js-3.1.3.tgz"
-  "version" "3.1.3"
 
 "autoprefixer@^10.4.6":
   "integrity" "sha512-7vd3UC6xKp0HLfua5IjZlcXvGAGy7cBAXTg2lyQ/8WpNhd6SiZ8Be+xm3FyBSYJx5GKcpRCzBh7RH4/0dnY+uQ=="

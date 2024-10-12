@@ -120,7 +120,7 @@ function Com({ id }) {
                 {
                     type: 'value',
                     axisLabel: {
-                        formatter: `{value}${unit}`
+                        formatter: `{value}`
                     },
 
                 }
@@ -212,7 +212,6 @@ function Com({ id }) {
             plantId: localStorage.getItem('plantId'),
             devId: val
         });
-        console.log(res, val, '00000');
         setParamsData(res?.data?.data);
         setType(res?.data?.data?.[0]?.dataType);
         if (goal.type == '101') {
@@ -266,7 +265,7 @@ function Com({ id }) {
             </div>
             <div className={styles.echartPart}>
                 <CardModel
-                    title={t(title)}
+                    title={title+`(${unit})`}
                     content={
                         <div className={styles.echartPartCardwrap}>
                             <ReactECharts option={optionEchart} style={{ height: '100%' }} />

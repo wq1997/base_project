@@ -174,9 +174,9 @@ export const inCome = {
                 dataIndex: 'date',
                 key: 'date',
                 width: 100,
-                render: (val) => {
-                    return val ? dayjs(val).format('YYYY-MM-DD') : ''
-                }
+                // render: (val) => {
+                //     return val ? dayjs(val).format('YYYY-MM-DD') : ''
+                // }
             },]
         },
         {
@@ -281,9 +281,9 @@ export const inCome = {
                     dataIndex: 'date',
                     key: 'date',
                     width: 100,
-                    render: (val) => {
-                        return val ? dayjs(val).format('YYYY-MM-DD') : ''
-                    }
+                    // render: (val) => {
+                    //     return val ? dayjs(val).format('YYYY-MM-DD') : ''
+                    // }
 
                 },
                 {
@@ -338,9 +338,9 @@ export const inCome = {
                     dataIndex: 'date',
                     key: 'date',
                     width: 100,
-                    render: (val) => {
-                        return val ? dayjs(val).format('YYYY-MM-DD') : ''
-                    }
+                    // render: (val) => {
+                    //     return val ? dayjs(val).format('YYYY-MM-DD') : ''
+                    // }
                 },
                 {
                     title: '尖电',
@@ -397,9 +397,9 @@ export const energy = {
                 dataIndex: 'date',
                 key: 'date',
                 width: 100,
-                render: (val) => {
-                    return val ? dayjs(val).format('YYYY-MM-DD') : ''
-                }
+                // render: (val) => {
+                //     return val ? dayjs(val).format('YYYY-MM-DD') : ''
+                // }
             },
             ]
         },
@@ -500,9 +500,9 @@ export const energy = {
                 dataIndex: 'date',
                 key: 'date',
                 width: 100,
-                render: (val) => {
-                    return val ? dayjs(val).format('YYYY-MM-DD') : ''
-                }
+                // render: (val) => {
+                //     return val ? dayjs(val).format('YYYY-MM-DD') : ''
+                // }
             },
             ]
         },
@@ -593,9 +593,9 @@ export const energy = {
                 dataIndex: 'date',
                 key: 'date',
                 width: 100,
-                render: (val) => {
-                    return val ? dayjs(val).format('YYYY-MM-DD') : ''
-                }
+                // render: (val) => {
+                //     return val ? dayjs(val).format('YYYY-MM-DD') : ''
+                // }
             },
             ]
         },

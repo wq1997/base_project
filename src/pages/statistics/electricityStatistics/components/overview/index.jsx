@@ -170,7 +170,7 @@ function Com(props) {
             energyOutEnergy.push(it.energyOutEnergy);
             pvInEnergy.push(it.pvInEnergy);
             chargeInEnergy.push(it.chargeInEnergy);
-            it.date=dayjs().subtract( data?.data?.length-i, 'day').format('YYYY-MM-DD')
+            it.date=dayjs(time).subtract( data?.data?.length-i, 'day').format('YYYY-MM-DD')
             arrX.push(it?.date);
             
         })
@@ -252,11 +252,15 @@ function Com(props) {
             width: 100,
         },
     ];
+  const disabledDate = (current) => { return current && current > dayjs().endOf('day') }
+
     return (
         <div className={styles.content}>
             <div className={styles.heard} style={{ backgroundColor: token.titleCardBgc }}>
                 <div className={styles.date}>
-                    <DatePicker picker={mode} onChange={(val)=>setTime(val)}  defaultValue={time} format={format} style={{ marginRight: "20px" }}  />
+                    <DatePicker picker={mode} onChange={(val)=>setTime(val)}  defaultValue={time} format={format} style={{ marginRight: "20px" }} 
+                    disabledDate={disabledDate}
+            />
                     <Radio.Group value={mode} onChange={handleModelChange}>
                         <Radio.Button value="date">日</Radio.Button>
                         <Radio.Button value="month">月</Radio.Button>

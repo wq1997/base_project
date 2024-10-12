@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useSelector, useIntl } from "umi";
 import styles from "./index.less";
-import { Table, Select, Input, Button, theme, Space, message,Modal } from "antd"
+import { Table, Select, Input, Button, theme, Space, message,Modal,Popconfirm } from "antd"
 import { apiGetAllUserAndInfos } from "@/services/user"
 import AddUser from '../AddUserModal'
 import { apiSaveOrUpdateUser, apiDeleteUserById,apiResetPassword, apiUpdatePassword, apiListUserWithOptions } from '@/services/total'
@@ -80,7 +80,9 @@ const RealtimeAlarm = () => {
           <Space>
             <Button type="primary" onClick={() => edit(record)}>{t('编辑')}</Button>
             <Button type="primary" danger onClick={() => changeIsOpenDel(record)}>{t('删除')}</Button>
-            <Button type="primary" onClick={() => resetPwd(record)} style={{ backgroundColor: token.defaultBg }}>{t('重置密码')}</Button>
+            <Popconfirm title={t('是否确认重置密码?')} onConfirm={() => resetPwd(record)} okText={t('是')} cancelText={t('否')}>
+            <Button type="primary"  style={{ backgroundColor: token.defaultBg }}>{t('重置密码')}</Button>
+                        </Popconfirm>
           </Space>
         )
       }

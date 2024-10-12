@@ -68,7 +68,7 @@ function Com(props) {
             color: '#03B4B4',
             value: '',
             unit: '',
-            key:'date'
+            key:'runDate'
         },
         {
             icon: <DatabaseOutlined />,

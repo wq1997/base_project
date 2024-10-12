@@ -59,11 +59,13 @@ function Com() {
 
   useEffect(() => {
     getInitData();
-  }, [token, way, dataChoiceOpen,date]);
+  }, [token, way, dataChoiceOpen,date,currentFormat]);
   useEffect(() => {
   }, [way])
 
   const getInitData = async () => {
+    console.log(way,date,dateStr,currentFormat);
+    
     let { data: reqData } = await getExportReportList({
       plantId: localStorage.getItem('plantId'),
       type: way,
@@ -79,7 +81,7 @@ function Com() {
     dataMidst.runData.data = delBaseData(data.runData.data, obj);
     form.setFieldsValue({ ...obj });
     setCurrentModel({ ...obj });
-    let currentDate = dayjs(date).format(currentFormat);
+    let currentDate = dayjs(dateStr).format(currentFormat);
     let { data: allData } = await getDtuReport({
       plantId: localStorage.getItem('plantId'),
       type: way,
@@ -87,23 +89,26 @@ function Com() {
     });
     if (way==0) {
       allData?.data?.reportData?.[0].map((item,i)=>{
-        item.date=dayjs().format('YYYY-MM-DD');
+        item.date=dayjs(dateStr).format(currentFormat);
       });
       allData?.data?.reportData?.[1].map((item,i)=>{
-        item.date=dayjs().format('YYYY-MM-DD');
+        item.date=dayjs(dateStr).format(currentFormat);
       })   ;
       allData?.data?.reportData?.[2].map((item,i)=>{
-        item.date=dayjs().format('YYYY-MM-DD');
+        item.date=dayjs(dateStr).format(currentFormat);
       })
-    }else{
-      allData?.data?.reportData?.[0].map((item,i)=>{
-        item.date=dayjs().subtract(allData?.data?.reportData?.[0].length-i, 'day').format('YYYY-MM-DD');
+    }else if(way!==4){
+      
+      allData?.data?.reportData?.[0]?.map((item,i)=>{
+        item.date=dayjs(dateStr).subtract(allData?.data?.reportData?.[0].length-i, 'day').format(currentFormat);
+        console.log(item.date);
+        
       });
-      allData?.data?.reportData?.[1].map((item,i)=>{
-        item.date=dayjs().subtract(allData?.data?.reportData?.[1].length-i, 'day').format('YYYY-MM-DD');
+      allData?.data?.reportData?.[1]?.map((item,i)=>{
+        item.date=dayjs(dateStr).subtract(allData?.data?.reportData?.[1].length-i, 'day').format(currentFormat);
       })   ;
-      allData?.data?.reportData?.[2].map((item,i)=>{
-        item.date=dayjs().subtract(allData?.data?.reportData?.[2].length-i, 'day').format('YYYY-MM-DD');
+      allData?.data?.reportData?.[2]?.map((item,i)=>{
+        item.date=dayjs(dateStr).subtract(allData?.data?.reportData?.[2].length-i, 'day').format(currentFormat);
       })
     }
   
@@ -123,7 +128,7 @@ function Com() {
     let res = await exportReport({
       plantId: localStorage.getItem('plantId'),
       type: way,
-      date: dayjs(date).format(currentFormat),
+      date: dayjs(dateStr).format(currentFormat),
     });
     let blob = res?.data;
     let content = [];
@@ -153,7 +158,7 @@ function Com() {
       setPicker('date');
       setCurrentFormat('YYYY-MM-DD')
     } else if (val == 2) {
-      setCurrentFormat('YYYY-MM')
+      setCurrentFormat('YYYY-MM-DD')
       setPicker('month')
     } else if (val == 3) {
       setCurrentFormat('YYYY')
@@ -166,9 +171,9 @@ function Com() {
   }
   const changeDate = (val, str) => {
     setDateStr(str);
-    setDate(dayjs(val).format());
+    setDate(val);
   };
-  
+  const disabledDate = (current) => { return current && current > dayjs().endOf('day') }
   return (
     <>
       <div className={styles.advancedAnalytics} style={{ color: token.titleColor, backgroundColor: token.titleCardBgc }}>
@@ -192,6 +197,7 @@ function Com() {
             key={way + 1}
             allowClear={false}
             needConfirm
+            disabledDate={disabledDate}
           />
           <Space>
             <Button type="primary" className={styles.firstButton} onClick={() => setDataChoiceOpen(true)}>
@@ -205,7 +211,7 @@ function Com() {
         <div className={styles.echartPart}>
           <div className={styles.echartPartCardwrap}>
             <Row justify="center">
-              <Typography.Title level={3} style={{ marginTop: 0, marginBottom: 27 }}>{dayjs(new Date()).format('YYYY.MM.DD')}{t(wayLabel)}</Typography.Title>
+              <Typography.Title level={3} style={{ marginTop: 0, marginBottom: 27 }}>{dateStr}{" "}{t(wayLabel)}</Typography.Title>
             </Row>
             <div className={styles.content}>
               <div className={styles.contentItem}>
