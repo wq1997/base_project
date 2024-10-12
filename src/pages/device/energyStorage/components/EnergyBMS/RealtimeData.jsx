@@ -93,7 +93,7 @@ function Com({ id }) {
             value: '',
         }, 
         {
-            key: 'allowDischargeEnergy',
+            key: 'allowChargeEnergy',
             label: '充电可用电量',
             value: '',
         },{
@@ -188,11 +188,11 @@ function Com({ id }) {
             label:'系统负极最小绝缘电阻阻值',
             value: '',
         },
-        {
-            key: 'cabinetTemp',
-            label:'急停信号',
-            value: '',
-        },
+        // {
+        //     key: 'cabinetTemp',
+        //     label:'急停信号',
+        //     value: '',
+        // },
     ])
 
     const getData = async (id) => {

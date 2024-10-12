@@ -129,8 +129,8 @@ function Com(props) {
       }
     const changeData = async (value) => {
         const { data } = await (title === '编辑告警规则' ?
-            getUpdateAlarmRule({ ...value,  }) :
-            getInsertAlarmRule({ ...value,  }))
+            getUpdateAlarmRule({ ...value,plantId:localStorage.getItem('plantId')  }) :
+            getInsertAlarmRule({ ...value, plantId:localStorage.getItem('plantId')  }))
         if (data.data) {
             setFormData(value);
         } else {

@@ -93,12 +93,15 @@ const RealtimeAlarm = () => {
       // gridPoint:currntGrid
     });
     setData(data.data);
+
   }
   const changPage = (page) => {
     setCurrent(page);
   }
   const changeLevel = (value) => {
     setLevel(value);
+    setCurrent(1);
+
   }
 
   const changeTime = (value) => {

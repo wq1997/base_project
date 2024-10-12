@@ -97,7 +97,9 @@ const Login = () => {
       style={{
         width: '100%',
         height: '100vh',
-        background: 'black'
+        background: 'black',
+        minHeight:'880px',
+        minWidth:'1000px'
       }}
       className={styles.login}
     >

@@ -178,15 +178,15 @@ function Com({ id }) {
                 },
                 {
                     label: 'A相视在功率',
-                    key: 'reactivePowerA'
+                    key: 'apparentPowerA'
                 },
                 {
                     label: 'B相视在功率',
-                    key: 'reactivePowerB'
+                    key: 'apparentPowerB'
                 },
                 {
                     label: 'C相视在功率',
-                    key: 'reactivePowerC'
+                    key: 'apparentPowerC'
                 },
                 {
                     label: '总视在功率',

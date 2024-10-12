@@ -205,8 +205,8 @@ function Overview(props) {
         width: '100%',
         height: 'calc(100% - 76px)',
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr)) ',
-        gridTemplateRows: '1fr 1.375fr 1.375fr',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(90px, 1fr)) ',
+        // gridTemplateRows: '1fr 1.375fr 1.375fr',
         gap: '8px 8px',
         gridTemplateAreas:
             `"electric electric electric running"

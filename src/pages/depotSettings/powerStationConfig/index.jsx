@@ -18,7 +18,6 @@ function Com(props) {
     const [isOpenDel, setIsOpenDel] = useState(false);
     const [selectId, setSelectId] = useState();
     const [initSelectData, setInitSelectData] = useState();
-    const dateFormat = 'YYYY/MM/DD HH/hh/ss';
     const { user } = useSelector(function (state) {
         return state.user
     });
@@ -27,6 +26,92 @@ function Com(props) {
     }, [formData,])
     useEffect(() => {
         getInitData();
+        if (user.roleId!==3) {
+            setUserTable([
+                {
+                    title: t('电站名称'),
+                    dataIndex: 'name',
+                    key: 'name',
+                },
+                {
+                    title: t('所属用户'),
+                    dataIndex: 'userName',
+                    key: 'userName',
+                },
+                {
+                    title: t('电站类型'),
+                    dataIndex: 'typeName',
+                    key: 'typeName',
+                },
+                {
+                    title: t('建站日期'),
+                    dataIndex: 'installDate',
+                    key: 'installDate',
+                    width: 200,
+                    render: (val) => {
+                        return val ? dayjs(val).format('YYYY-MM-DD ') : ''
+                    }
+                },
+                {
+                    title: t('并网日期'),
+                    dataIndex: 'networkDate',
+                    key: 'networkDate',
+                    render: (val) => {
+                        return val ? dayjs(val).format('YYYY-MM-DD ') : ''
+                    }
+                },
+                {
+                    title: t('时区'),
+                    dataIndex: 'timeZone',
+                    key: 'timeZone',
+                    // width: 200
+                },
+                {
+                    title: t('货币'),
+                    dataIndex: 'priceUnit',
+                    key: 'priceUnit',
+                    // width: 200
+                },
+                {
+                    title: t('储能装机容量'),
+                    dataIndex: 'capacity',
+                    key: 'capacity',
+                    // width: 200
+                },
+                {
+                    title: t('光伏装机容量'),
+                    dataIndex: 'pvCapacity',
+                    key: 'pvCapacity',
+                    // width: 200
+                },
+                {
+                    title: t('充电桩装机容量'),
+                    dataIndex: 'chargePileCapacity',
+                    key: 'chargePileCapacity',
+                    // width: 200
+                },
+                {
+                    title: t('电芯安全运行温度'),
+                    dataIndex: 'cellTempRange',
+                    key: 'cellTempRange',
+                    // width: 200
+                    render: (text, record) => {
+                        return (
+                            <>
+                                <span>{record.cellTempMin}℃</span>~
+                                <span>{record.cellTempMax}℃</span>
+                            </>
+                        )
+                    }
+                },
+                {
+                    title: t('电站位置'),
+                    dataIndex: 'position',
+                    key: 'position',
+                    // width: 200
+                },
+            ])
+        }
     }, [locale])
 
     const { locale } = useSelector(state => state.global);
@@ -51,7 +136,7 @@ function Com(props) {
     const cancle = () => {
         setIsOpen(!isOpen);
     }
-    const userTable = [
+    const [userTable,setUserTable] = useState([
         {
             title: t('电站名称'),
             dataIndex: 'name',
@@ -134,22 +219,20 @@ function Com(props) {
             key: 'position',
             // width: 200
         },
-        {
+     {
             title: t('操作'),
             dataIndex: 'operation',
             key: 'operation',
             render: (text, record) => {
                 return (
-                user.roleId==3?
                 <Space>
                         <Button type="primary" onClick={() => edit(record)}>{t('编辑')}</Button>
                         <Button type="primary" danger onClick={() => changeIsOpenDel(record)}>{t('删除')}</Button>
                     </Space>
-                    :'无操作权限'
                 )
             }
         }
-    ];
+    ]);
     const { currentPlantId } = useSelector(function (state) {
         return state.device
     });
@@ -183,8 +266,8 @@ function Com(props) {
             ...record,
             userName: initSelectData?.userList.find(it => it.label === record.userName)?.value,
             typeName: initSelectData?.plantType.find(it => it.label === record.typeName)?.value,
-            priceUnit: initSelectData?.languageList.find(it => it.value == record.priceUnit)?.value || initSelectData.languageList[0].value,
-            timeZone: initSelectData?.timeZone.find(it => it.label === record.timeZone)?.value || initSelectData.timeZone[0].value,
+            priceUnit: initSelectData?.languageList.find(it => it.value == record.priceUnit)?.value || initSelectData?.languageList?.[0]?.value,
+            timeZone: initSelectData?.timeZone.find(it => it.label === record.timeZone)?.value || initSelectData?.timeZone?.[0]?.value,
             // timeZone:1,
             // priceUnit:1,
             networkDate: dayjs(record?.networkDate),

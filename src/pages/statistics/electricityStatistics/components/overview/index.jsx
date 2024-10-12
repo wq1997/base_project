@@ -170,7 +170,7 @@ function Com(props) {
         let fileName = getTranslation('电量统计');
         let sheetData = data;
         let sheetFilter = ['date', 'charge', 'discharge', 'efficiency',];
-        let sheetHeader = [getTranslation("日期"), getTranslation("充电电量"), getTranslation("放电电量"), getTranslation("充放电效率"), ];
+        let sheetHeader = [getTranslation("日期"),`${getTranslation('充电电量')}(kWh)`, `${getTranslation('放电电量')}(kWh)`,  `${getTranslation('充放电效率')}(%)`, ];
         downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader, getTranslation('总览'))
     };
     const profitTable = [
@@ -201,10 +201,13 @@ function Com(props) {
             width: 100,
         },
         {
-            title: getTranslation('充放电效率'),
+            title: `${getTranslation('充放电效率')}(%)`,
             dataIndex: 'efficiency',
             key: 'efficiency',
             width: 100,
+            render:(text,record)=>{
+                return record.efficiency*100
+            }
         },
     ];
     const changeGrid = (e) => {
