@@ -182,7 +182,7 @@ const Account = () => {
             title: "操作",
             dataIndex: "operate",
             fixed: "right",
-            width: 250,
+            width: 300,
             render: (_, row) => {
                 const edit = (key, row) => {
                     setCurrentStep(key);
@@ -718,7 +718,7 @@ const Account = () => {
                 </Descriptions>
                 <Descriptions title="维护实施管理信息" column={2}>
                     <Descriptions.Item label="实施计划时间">{detailRow?.implementPlanStartDate}~{detailRow?.implementPlanEndDate}</Descriptions.Item>
-                    <Descriptions.Item label="实施负责人">{detailRow?.creatorName}</Descriptions.Item>
+                    <Descriptions.Item label="实施负责人">{detailRow?.implementManagerName}</Descriptions.Item>
                     <Descriptions.Item label="实施过程档案">
                         <Space direction="vertical">
                             {detailRow?.shippingMaterial && (
