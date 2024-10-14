@@ -327,7 +327,6 @@ function Com(props) {
     xAxis: [
       {
         type: 'category',
-        name: t("时间"),
         splitNumber: 12,
         axisTick: {
           alignWithLabel: true

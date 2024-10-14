@@ -168,7 +168,10 @@ function Com(props) {
     };
     const downLoadExcelModel = () => {
         let fileName = getTranslation('电量统计');
-        let sheetData = data;
+        let sheetData = data.map(it=>{
+            it.efficiency=+it.efficiency*100
+            return it
+        });
         let sheetFilter = ['date', 'charge', 'discharge', 'efficiency',];
         let sheetHeader = [getTranslation("日期"),`${getTranslation('充电电量')}(kWh)`, `${getTranslation('放电电量')}(kWh)`,  `${getTranslation('充放电效率')}(%)`, ];
         downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader, getTranslation('总览'))
@@ -205,9 +208,7 @@ function Com(props) {
             dataIndex: 'efficiency',
             key: 'efficiency',
             width: 100,
-            render:(text,record)=>{
-                return record.efficiency*100
-            }
+           
         },
     ];
     const changeGrid = (e) => {

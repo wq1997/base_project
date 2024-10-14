@@ -44,11 +44,15 @@ function Com(props) {
                                                     <div>I(A)</div>
                                                     <div>U(V)</div>
                                                     <div>P(kW)</div>
+                                                    <div>State</div>
                                                 </div>
                                                 <div className={styles.bmsData}>
                                                     <div>I(A)</div>
                                                     <div>U(V)</div>
                                                     <div>P(kW)</div>
+                                                    <div>SOC(%)</div>
+                                                    <div>SOH(%)</div>
+
                                                 </div>
                                             </div>
                                             <div className={styles.centerModule}>
@@ -68,11 +72,16 @@ function Com(props) {
                                                     <div>{data?.[0]?.[index]?.pcsCur}</div>
                                                     <div>{data?.[0]?.[index]?.pcsVol}</div>
                                                     <div>{data?.[0]?.[index]?.pcsPower}</div>
+                                                    <div>{data?.[0]?.[index]?.pcsStatus}</div>
+
                                                 </div>
                                                 <div className={styles.bmsData}>
                                                 <div>{data?.[0]?.[index]?.bmsCur}</div>
                                                     <div>{data?.[0]?.[index]?.bmsVol}</div>
                                                     <div>{data?.[0]?.[index]?.bmsPower}</div>
+                                                    <div>{data?.[0]?.[index]?.bmsSoc}</div>
+                                                    <div>{data?.[0]?.[index]?.bmsSoh}</div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -89,11 +98,15 @@ function Com(props) {
                                                     <div>I(A)</div>
                                                     <div>U(V)</div>
                                                     <div>P(kW)</div>
+                                                    <div>State</div>
+
                                                 </div>
                                                 <div className={styles.bmsData}>
                                                     <div>I(A)</div>
                                                     <div>U(V)</div>
                                                     <div>P(kW)</div>
+                                                    <div>SOC(%)</div>
+                                                    <div>SOH(%)</div>
                                                 </div>
                                             </div>
                                             <div className={styles.centerModule}>
@@ -113,11 +126,15 @@ function Com(props) {
                                                     <div>{data?.[1]?.[index]?.pcsCur}</div>
                                                     <div>{data?.[1]?.[index]?.pcsVol}</div>
                                                     <div>{data?.[1]?.[index]?.pcsPower}</div>
+                                                    <div>{data?.[1]?.[index]?.pcsStatus}</div>
+
                                                 </div>
                                                 <div className={styles.bmsData}>
                                                 <div>{data?.[1]?.[index]?.bmsCur}</div>
                                                     <div>{data?.[1]?.[index]?.bmsVol}</div>
                                                     <div>{data?.[1]?.[index]?.bmsPower}</div>
+                                                    <div>{data?.[1]?.[index]?.bmsSoc}</div>
+                                                    <div>{data?.[1]?.[index]?.bmsSoh}</div>
                                                 </div>
                                             </div>
                                         </div>

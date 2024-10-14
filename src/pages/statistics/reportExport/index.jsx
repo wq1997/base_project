@@ -58,34 +58,35 @@ function Com() {
   ]
 
   const run = [
-
     {
       title: t('时间'),
       dataIndex: 'date',
       key: 'date',
-      align:'center'
+      align: 'center'
 
     },
     {
       title: `${t('充电电量')}（kWh）`,
       dataIndex: 'charge',
       key: 'charge',
-      align:'center'
+      align: 'center'
 
     },
     {
-      title:`${t('放电电量')}（kWh）`,
+      title: `${t('放电电量')}（kWh）`,
       dataIndex: 'discharge',
       key: 'discharge',
-      align:'center'
+      align: 'center'
 
     },
     {
       title: `${t('充放电效率')}（%）`,
       dataIndex: 'efficiency',
       key: 'efficiency',
-      align:'center'
-
+      align: 'center',
+      // render:(text,record)=>{
+      //   return record.efficiency*100;
+      // }
     },
   ]
 
@@ -94,28 +95,28 @@ function Com() {
       title: t('储能单元名称'),
       dataIndex: 'devName',
       key: 'pcsName',
-      align:'center'
-    
+      align: 'center'
+
     },
     {
       title: t('储能单元编号'),
       dataIndex: 'devNo',
       key: 'pcsNo',
-      align:'center'
+      align: 'center'
 
     },
     {
       title: `${t('充电电量')}（kWh）`,
       dataIndex: 'charge',
       key: 'pcsCharge',
-      align:'center'
+      align: 'center'
 
     },
     {
-      title:`${t('放电电量')}（kWh）`,
+      title: `${t('放电电量')}（kWh）`,
       dataIndex: 'discharge',
       key: 'pcsDischarge',
-      align:'center'
+      align: 'center'
 
     },
 
@@ -125,28 +126,28 @@ function Com() {
       title: t('储能单元名称'),
       dataIndex: 'devName',
       key: 'bmsName',
-      align:'center'
-    
+      align: 'center'
+
     },
     {
       title: t('储能单元编号'),
       dataIndex: 'devNo',
       key: 'bmsNo',
-      align:'center'
+      align: 'center'
 
     },
     {
       title: `${t('充电电量')}（kWh）`,
       dataIndex: 'charge',
       key: 'bmsCharge',
-      align:'center'
+      align: 'center'
 
     },
     {
-      title:`${t('放电电量')}（kWh）`,
+      title: `${t('放电电量')}（kWh）`,
       dataIndex: 'discharge',
       key: 'bmsDischarge',
-      align:'center'
+      align: 'center'
 
     },
 
@@ -155,7 +156,7 @@ function Com() {
     getInitData();
   }, [token, way, dataChoiceOpen, date,]);
   useEffect(() => {
-   
+
   }, [way])
 
   const getInitData = async () => {
@@ -178,19 +179,19 @@ function Com() {
     let arr = run?.filter(it => {
       if (obj?.[it?.key]) {
         return it
-      } 
+      }
     });
 
     setRunClum([...arr]);
     setPcsClum(pRun?.filter(it => {
       if (obj?.[it?.key]) {
         return it
-      } 
+      }
     }));
     setBmsClum(bRun?.filter(it => {
       if (obj?.[it?.key]) {
         return it
-      } 
+      }
     }))
     let currentDate = dayjs(date).format(currentFormat);
     let { data: allData } = await getDtuReport({
@@ -239,24 +240,33 @@ function Com() {
     setWayLabel(label?.label);
     if (val == 0) {
       setPicker('date');
-      setCurrentFormat('YYYY-MM-DD')
+      setCurrentFormat('YYYY-MM-DD');
+      setDateStr(dayjs(new Date()).format('YYYY-MM-DD'));
     } else if (val == 1) {
       setPicker('date');
-      setCurrentFormat('YYYY-MM-DD')
+      setCurrentFormat('YYYY-MM-DD');
+      setDateStr(dayjs(new Date()).format('YYYY-MM-DD'));
+
     } else if (val == 2) {
       setCurrentFormat('YYYY-MM')
+      setDateStr(dayjs(new Date()).format('YYYY-MM'));
+
       setPicker('month')
     } else if (val == 3) {
       setCurrentFormat('YYYY')
       setPicker('year')
-    }else{
+      setDateStr(dayjs(new Date()).format('YYYY'));
+
+    } else {
       setCurrentFormat('YYYY')
       setPicker('year')
+      setDateStr(dayjs(new Date()).format('YYYY'));
+
     }
   }
   const changeDate = (val, str) => {
     setDateStr(str);
-    setDate(dayjs(val));
+    setDate(val);
   }
   return (
     <>
@@ -294,7 +304,9 @@ function Com() {
         <div className={styles.echartPart}>
           <div className={styles.echartPartCardwrap}>
             <Row justify="center">
-              <Typography.Title level={3} style={{ marginTop: 0, marginBottom: 27 }}>{dateStr}{" "}{t(wayLabel)}</Typography.Title>
+              <Typography.Title level={3} style={{ marginTop: 0, marginBottom: 27 }}>
+                {way==1?`${dayjs(dateStr).subtract(7, 'day').format('YYYY-MM-DD')}~${dateStr}`:dateStr}{" "}{t(wayLabel)}
+              </Typography.Title>
             </Row>
             <div className={styles.content}>
               <div className={styles.contentItem}>
@@ -305,7 +317,7 @@ function Com() {
                   columns={runClum}
                   dataSource={allData?.runEnergy}
                   pagination={false}
-                  scroll={{y:300}}
+                  scroll={{ y: 300 }}
                 />
               </div>
               <div className={styles.contentItem}>
@@ -316,7 +328,7 @@ function Com() {
                   columns={pcsClum}
                   dataSource={allData?.pcsEnergy}
                   pagination={false}
-                  scroll={{y:300}}
+                  scroll={{ y: 300 }}
 
                 />
               </div>
@@ -328,12 +340,12 @@ function Com() {
                   columns={bmsClum}
                   dataSource={allData?.bmsEnergy}
                   pagination={false}
-                  scroll={{y:300}}
+                  scroll={{ y: 300 }}
 
                 />
 
               </div>
-         
+
             </div>
           </div>
         </div>
