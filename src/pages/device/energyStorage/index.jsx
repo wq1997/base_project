@@ -144,9 +144,6 @@ function Com(props) {
         
         let dtuId=dataList.find(it=>it.key===e.node.key)?.dtuId;
         let gridPointId=dataList.find(it=>it.key==e.node.key)?.gridPointId;
-
-        console.log(selectedKeys,e,gridPointId);
-
         setPageType(e.node.type);
         setPageKey(e.node.key);
         history.push(`${pathname}?PageKey=${e.node.key}&id=${e.node.id}&dtuId=${dtuId}&PageType=${e.node.type}&title=${e.node.title.props.children[2]}&gridPointId=${gridPointId}`);
