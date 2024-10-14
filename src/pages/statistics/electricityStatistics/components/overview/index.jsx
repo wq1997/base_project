@@ -169,7 +169,7 @@ function Com(props) {
     const downLoadExcelModel = () => {
         let fileName = getTranslation('电量统计');
         let sheetData = data.map(it=>{
-            it.efficiency=+it.efficiency*100
+            it.efficiency=+it.efficiency
             return it
         });
         let sheetFilter = ['date', 'charge', 'discharge', 'efficiency',];
@@ -196,7 +196,7 @@ function Com(props) {
             dataIndex: 'charge',
             key: 'charge',
             width: 100,
-        },
+        }, 
         {
             title: `${getTranslation('放电电量')}(kWh)`,
             dataIndex: 'discharge',

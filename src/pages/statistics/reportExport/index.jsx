@@ -305,7 +305,7 @@ function Com() {
           <div className={styles.echartPartCardwrap}>
             <Row justify="center">
               <Typography.Title level={3} style={{ marginTop: 0, marginBottom: 27 }}>
-                {way==1?`${dayjs(dateStr).subtract(7, 'day').format('YYYY-MM-DD')}~${dateStr}`:dateStr}{" "}{t(wayLabel)}
+                {way==1?`${dayjs(dateStr).subtract(6, 'day').format('YYYY-MM-DD')}~${dateStr}`:dateStr}{" "}{t(wayLabel)}
               </Typography.Title>
             </Row>
             <div className={styles.content}>
