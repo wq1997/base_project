@@ -718,7 +718,7 @@ const Account = () => {
                 </Descriptions>
                 <Descriptions title="维护实施管理信息" column={2}>
                     <Descriptions.Item label="实施计划时间">{detailRow?.implementPlanStartDate}~{detailRow?.implementPlanEndDate}</Descriptions.Item>
-                    <Descriptions.Item label="实施负责人">{detailRow?.creatorName}</Descriptions.Item>
+                    <Descriptions.Item label="实施负责人">{detailRow?.implementManagerName}</Descriptions.Item>
                     <Descriptions.Item label="实施过程档案">
                         <Space direction="vertical">
                             {detailRow?.shippingMaterial && (
