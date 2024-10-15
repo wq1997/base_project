@@ -99,7 +99,7 @@ function Com(props) {
                         }
                     },
                     barWidth: '8%',
-                    data: dataY.energyOutEnergy
+                    data: dataY.energyInEnergy
                 },
                 {
                     name: getTranslation('放电电量'),
@@ -111,7 +111,7 @@ function Com(props) {
                         }
                     },
                     barWidth: '8%',
-                    data: dataY.energyInEnergy
+                    data: dataY.energyOutEnergy
                 },
               
             ]
