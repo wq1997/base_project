@@ -92,7 +92,7 @@ function Com({ id }) {
     return (
         <div className={styles.cellDetails}>
             <div className={styles.searchHead} style={{color:token.titleColor}}>
-                <span >{t('数据项')}:</span>
+                <span   >{t('数据项')}:</span>
                 {/* <Select
                     className={styles.margRL}
                     style={{ width: 240 }}
@@ -106,6 +106,7 @@ function Com({ id }) {
                     }
                 </Select> */}
                 <Cascader
+                    className={styles.margRL}
                     value={value}
                     options={options}
                     loadData={loadData}

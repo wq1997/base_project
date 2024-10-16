@@ -48,7 +48,7 @@ const Login = () => {
       });
       if (res?.data?.data) {
         const data = res?.data.data;
-        setLocalStorage("Token", data.token);
+        setLocalStorage("Token", data?.token);
         // setLocalStorage("userName", data?.userName);
         // setLocalStorage("sceneType", data?.sceneType);
         message.success(t('登录成功'));

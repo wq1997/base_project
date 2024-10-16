@@ -173,7 +173,7 @@ function Com({ id }) {
                 {
                     type: 'value',
                     axisLabel: {
-                        formatter: `{value} ${unit}`
+                        formatter: `{value}`
                     },
 
                 }
@@ -200,12 +200,11 @@ function Com({ id }) {
         setCurrentTitle(label?.label);
     }
     const getInitData = async () => {
-        let { data } = await getDataParams({ devId: bmsIds  });
+        let { data } = await getDataParams({ devId: [bmsIds]  });
         if (data?.data) {
             setOptionSelect([...data?.data]);
             setTitle(data?.data?.[0]?.dataTypeDesc);
             setType(data?.data?.[0]?.dataType);
-            // getEchartsData();
         }
 
     }

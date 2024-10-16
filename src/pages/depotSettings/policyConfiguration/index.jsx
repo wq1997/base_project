@@ -119,7 +119,7 @@ function Com(props) {
               }}
             >
               <Button type="primary" htmlType="submit" onClick={saveAll}>
-                {t('保存全部')}
+                {t('下发命令')}
               </Button>
             </Form.Item>
           </div>

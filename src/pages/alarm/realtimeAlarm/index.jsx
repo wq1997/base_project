@@ -13,7 +13,7 @@ const RealtimeAlarm = () => {
   const [data, setData] = useState([]);
   const [current, setCurrent] = useState(1);
   const [currntGrid, setCurrntGrid] = useState();
-  const [scroolY, setScroolY] = useState(200);
+  const [scroolY, setScroolY] = useState(500);
   const [screenH, setScreenH] = useState('');
 
   const { token } = theme.useToken();

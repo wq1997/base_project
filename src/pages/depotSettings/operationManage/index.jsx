@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { FORM_REQUIRED_RULE, } from "@/utils/constants";
 import { useSelector, useIntl } from "umi";
 import { getEncrypt, } from "@/utils/utils";
-import { getOMCommands,  } from '@/services/policy'
+import { getOMCommands,sendOMCommands  } from '@/services/policy'
 
 const { Option } = Select;
 
@@ -215,7 +215,7 @@ const OperationManage = () => {
                     <Form.Item label={t("请输入密码")} name={"password"} rules={[FORM_REQUIRED_RULE]}>
                         <Input className="pwd" placeholder={t("请输入密码")}/>
                     </Form.Item>
-                    <span>{t('确定下发指令吗？')}</span>
+                    <span style={{marginLeft:'10px'}}>{t('确定下发指令吗？')}</span>
                 </Form>
             </Modal>
 
@@ -298,7 +298,7 @@ const OperationManage = () => {
                             width: '100%',
                         }} placeholder={t("请输入功率")} />
                     </Form.Item>}
-                    <span>{t('确定下发指令吗？')}</span>
+                    <span style={{marginLeft:'10px'}}>{t('确定下发指令吗？')}</span>
                 </Form>
             </Modal>
         </div>
