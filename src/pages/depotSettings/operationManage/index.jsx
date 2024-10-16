@@ -212,7 +212,7 @@ const OperationManage = () => {
                 <Form
                     form={form2}
                 >
-                    <Form.Item label={t("请输入密码")} name={"password"} rules={[FORM_REQUIRED_RULE]}>
+                    <Form.Item label={t("请输入密码")} name={"password"} rules={[FORM_REQUIRED_RULE]} style={{marginTop:'25px'}}>
                         <Input className="pwd" placeholder={t("请输入密码")}/>
                     </Form.Item>
                     <span style={{marginLeft:'10px'}}>{t('确定下发指令吗？')}</span>

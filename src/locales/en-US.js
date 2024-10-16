@@ -942,6 +942,8 @@ export default {
 '策略':'Strategy',
 '下载模板':'Download Template',
 '策略导入/导出':'Policy Import/Export',
+'策略模板':'Policy Template',
+
 "":"",
 "":"",
 "":"",

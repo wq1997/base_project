@@ -70,18 +70,21 @@ export const getOMCommands = (payload) => {
 }
 // 下发运维命令
 export const sendOMCommands = (payload) => {
-    return axiosInstance.post(`${path}/strategy/sendOMCommands`, payload);
+    return axiosInstance.post(`${path}/strategy/sendOMCommands`, payload,
+    );
 }
 
 // 下载策略模板
 export const downloadStrategyTemplate = (payload) => {
-    return axiosInstance.get(`${path}/strategy/downloadStrategyTemplate`);
+    return axiosInstance.get(`${path}/open/downloadTemplate`,{
+        responseType: 'blob'
+
+        });
 }
 
 // 导出策略
 export const exportStrategy = (payload) => {
     return axiosInstance.post(`${path}/strategy/exportStrategy`, payload,
-        {responseType: 'blob'}
     );
 
 }

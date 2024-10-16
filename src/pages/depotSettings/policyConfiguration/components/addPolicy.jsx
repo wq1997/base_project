@@ -224,7 +224,23 @@ function Com({ open,
         key: '1',
         label: (<span onClick={async () => {
             let data = await downloadStrategyTemplate();
-            console.log(data);
+            let blob = data?.data;
+            let content = [];
+            content.push(blob);
+            // new Blob 实例化文件流
+            const blobData = new Blob(content);
+            const url = window.URL.createObjectURL(blobData)
+            const link = document.createElement('a')
+            link.style.display = "none"
+            link.href = url
+            // fileName 文件名后缀记得添加
+            link.setAttribute('download', `${t('策略模板')}.xlsx`)
+            document.body.appendChild(link)
+            link.click()
+            //下载完成移除元素
+            document.body.removeChild(link)
+            //释放掉blob对象
+            window.URL.revokeObjectURL(url)
 
         }}>{t('下载模板')}</span>)
     },
