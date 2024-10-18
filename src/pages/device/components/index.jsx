@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { getQueryString } from "@/utils/utils";
-import { history, useLocation, useIntl,useSelector } from "umi";
+import { history, useLocation, useIntl, useSelector } from "umi";
 import styles from "./index.less";
 import DeviceDetails from './deviceDetails';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
@@ -11,7 +11,7 @@ import CzekhPolicy2 from './CzekhPolicy2.0/index'
 import { theme, Tabs } from "antd";
 import { useEffect } from 'react';
 import classNames from "classnames";
-import { getBurDtuDevInfo2,  } from '@/services/policy'
+import { getBurDtuDevInfo2, } from '@/services/policy'
 
 const defaultActiveKey = "OverView";
 
@@ -26,7 +26,7 @@ const Cabinet = () => {
         history.push(`${pathname}?activeKey=${key}&id=${id}&title=${getQueryString("title")}&sn=${getQueryString("sn")}&type=${getQueryString("type")}`);
     };
     const intl = useIntl();
-    const {locale} = useSelector(state => state.global);
+    const { locale } = useSelector(state => state.global);
 
     const t = (id) => {
         const msg = intl.formatMessage(
@@ -39,36 +39,41 @@ const Cabinet = () => {
     useEffect(() => {
         getInitData();
     }, [locale])
-    const getInitData =  async() => {
-        let { data } = await getBurDtuDevInfo2({ dtuId:  getQueryString("id") });
-        getQueryString("type")==16 ? 
-        setPageTypeList([
-            { label: t('总览'), key: 'OverView' },
-            { label: t('设备详情'), key: 'DeviceDetails' },
-            { label: t('pack详情'), key: 'PackDetails' },
-            { label: t('策略配置'), key: 'CzekhPolicy2' },
-        ]):(
-            data.data[0].devInfo?.pcsBranch?.length==2?setPageTypeList([
-            { label: t('总览'), key: 'OverView' },
-            { label: t('设备详情'), key: 'DeviceDetails' },
-            { label: t('pack详情'), key: 'PackDetails' },
-            { label: t('策略配置'), key: 'Policy' },
-        ]): setPageTypeList([
-            { label: t('总览'), key: 'OverView' },
-            { label: t('设备详情'), key: 'DeviceDetails' },
-            { label: t('pack详情'), key: 'PackDetails' },
-            { label: t('策略配置'), key: 'CzekhPolicy2' },
-        ]))
+    const getInitData = async () => {
+        let { data } = await getBurDtuDevInfo2({ dtuId: getQueryString("id") });
+        getQueryString("type") == 16 ?
+            (id == 22 ? setPageTypeList([
+                { label: t('总览'), key: 'OverView' },
+                { label: t('设备详情'), key: 'DeviceDetails' },
+                { label: t('pack详情'), key: 'PackDetails' },
+                { label: t('策略配置'), key: 'CzekhPolicy2' },
+            ]) : setPageTypeList([
+                { label: t('总览'), key: 'OverView' },
+                { label: t('设备详情'), key: 'DeviceDetails' },
+                { label: t('pack详情'), key: 'PackDetails' },
+                // { label: t('策略配置'), key: 'CzekhPolicy2' },
+            ])) : (
+                data.data[0].devInfo?.pcsBranch?.length == 2 ? setPageTypeList([
+                    { label: t('总览'), key: 'OverView' },
+                    { label: t('设备详情'), key: 'DeviceDetails' },
+                    { label: t('pack详情'), key: 'PackDetails' },
+                    { label: t('策略配置'), key: 'Policy' },
+                ]) : setPageTypeList([
+                    { label: t('总览'), key: 'OverView' },
+                    { label: t('设备详情'), key: 'DeviceDetails' },
+                    { label: t('pack详情'), key: 'PackDetails' },
+                    { label: t('策略配置'), key: 'CzekhPolicy2' },
+                ]))
     }
     const [PageTypeList, setPageTypeList] = useState([
-   
+
     ]);
     const deviceDetailStyle = useEmotionCss(() => {
         return {
             '.ant-tabs-tab': {
                 color: `#999999 !important`
             },
-            '.ant-tabs-tab-active':{
+            '.ant-tabs-tab-active': {
                 background: `${token.tabBgc} !important`,
                 color: `${token.tabActiveColor} !important`
 
@@ -76,9 +81,9 @@ const Cabinet = () => {
         }
     })
     return (
-        <div className={classNames(styles.deviceDetail, deviceDetailStyle)}  style={{ height: '100%', backgroundColor: token.overBgc, }}>
+        <div className={classNames(styles.deviceDetail, deviceDetailStyle)} style={{ height: '100%', backgroundColor: token.overBgc, }}>
             <Tabs className={styles.tab} activeKey={activeKey} items={PageTypeList} onChange={onChangeTab} />
-            <div className={styles.content} style={{  }}>
+            <div className={styles.content} style={{}}>
                 {activeKey === "OverView" && <OverView id={id} />}
                 {activeKey === "DeviceDetails" && <DeviceDetails />}
                 {activeKey === "PackDetails" && <PackDetails />}
