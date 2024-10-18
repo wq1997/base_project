@@ -124,7 +124,7 @@ export const getCellInitData = (payload) => {
 
 export const analyticsData = (payload) => {
     // return axiosInstance.post(`/minsys/analysis/analyticsData`, payload)
-    return axiosInstance.post(`/minsys/monitor/cell`, payload)
+    return axiosInstance.post(`/minsys/monitor`, payload)
 }
 
 export const get215HistoryAlarm = (payload) => {
@@ -141,7 +141,7 @@ export const exportCurve = (payload) => {
 
 export const exportAnalytics = (payload) => {
     // return axiosInstance.post(`/minsys/analysis/exportAnalytics`, payload, {responseType: 'blob'})
-    return axiosInstance.post(`/minsys/monitor/cell/export`, payload, {responseType: 'blob'})
+    return axiosInstance.post(`/minsys/monitor/export`, payload, {responseType: 'blob'})
 }
 
 export const getSocialBenefit = (payload) => {

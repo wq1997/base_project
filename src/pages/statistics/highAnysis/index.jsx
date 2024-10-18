@@ -91,7 +91,7 @@ const HighAnysis = () => {
         })
         legendData.forEach((legend, index) => {
             const currentDate = legend?.split(' ')?.[0];
-            const currentData = dataSource?.find(item => item.date === currentDate);
+            const currentData = dataSource?.find(item => item.date === currentDate&&item.dataType==dataSource[index].dataType);
             const data = [];
             for (let key in currentData?.value) {
                 data.push(currentData?.value[key])
@@ -240,6 +240,10 @@ const HighAnysis = () => {
                             :
                         [packCellList?.[0]?.value, packCellList?.[0]?.children?.[0]?.value]
                     });
+                    if(dataProList.length>0){
+                        let str=`${dataProList[0].label}(${dataProList[0].unit})`
+                        setTitle(str);
+                    }
                     setTimeout(async()=>{
                         const params = await getParams(false);
                         getDataSource(params);
@@ -323,6 +327,17 @@ const HighAnysis = () => {
         setLoading(true);
         try{
             const res = await monitorCurveServe(params);
+            const values = await form.validateFields();
+            let { date, currentPlantDevice, dataType } = values;
+            const response = await getCellInitData();
+            if (response?.data?.data) {
+                response?.data?.data.forEach((item, index) => {
+                    if(item.value==dataType){
+                        let str=`${item.label}(${item.unit})`
+                        setTitle(str);
+                    }
+                })
+            }
             if (res?.data?.data) {
                 setDataSource(res?.data?.data)
             } else {

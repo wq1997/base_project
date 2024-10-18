@@ -99,7 +99,7 @@ const MonitoringCurves = () => {
         })
         legendData.forEach((legend, index) => {
             const currentDate = legend?.split(' ')?.[0];
-            const currentData = dataSource?.find(item => item.date === currentDate);
+            const currentData = dataSource?.find(item => item.date === currentDate&&item.dataType==dataSource[index].dataType);
             const data = [];
             for (let key in currentData?.value) {
                 data.push(currentData?.value[key])
@@ -241,30 +241,24 @@ const MonitoringCurves = () => {
                 if (currentPlantDevice?.length === 0) {
                     const res = await getCurveTypeServe2({ dtuId: data?.[0].value, isCombo: true });
                     setDataProList(res?.data?.data);
-                    const values = await form.validateFields();
-                    let { dataType, } = values;
-                    const currentData = res?.data?.data?.find(data => data.value == dataType);
-                    const name = `${currentData?.label}(${currentData?.unit})`;
-                    if (currentData) setTitle(name);
+                    if(res?.data?.data?.length > 0) {
+                        console.log('123', res?.data?.data);
+                        let str=`${res?.data?.data[0].label}(${res?.data?.data[0].unit})`
+                        setTitle(str);
+                    }
 
                     form.setFieldsValue({
                         currentPlantDevice: [plantId, data[0].value],
                         dataType: res?.data?.data?.[0]?.value
                     })
+
                     setTimeout(async () => {
                         const params = await getParams(false);
                         getDataSource(params);
                     }, 200)
-                }
-                else{
+                }else{
                     const res = await getCurveTypeServe2({ dtuId: currentPlantDevice[1], isCombo: true });
                     setDataProList(res?.data?.data);
-                    const values = await form.validateFields();
-                    let { dataType, } = values;
-                    const currentData = res?.data?.data?.find(data => data.value == dataType);
-                    const name = `${currentData?.label}(${currentData?.unit})`;
-                    if (currentData) setTitle(name);
-
                     setTimeout(async () => {
                         const params = await getParams(false);
                         getDataSource(params);
@@ -295,6 +289,7 @@ const MonitoringCurves = () => {
             if (plantList?.length > 0) {
                 const findIndex = plantList.findIndex(item => !item.disabled);
                 getDtusOfPlant(plantList, plantList?.[findIndex]?.value)
+
             }
         }
     }
@@ -302,6 +297,19 @@ const MonitoringCurves = () => {
     const getDataSource = async (params) => {
         setLoading(true);
         const res = await monitorCurveServe(params);
+
+        const values = await form.validateFields();
+        let { date, currentPlantDevice, dataType } = values;
+        const response = await getCurveTypeServe2({ dtuId: currentPlantDevice[1], isCombo: true });
+        if (response?.data?.data) {
+            response?.data?.data.forEach((item, index) => {
+                if(item.value==dataType){
+                    let str=`${item.label}(${item.unit})`
+                    setTitle(str);
+                }
+            })
+        }
+
         if (res?.data?.data) {
             setDataSource(res?.data?.data)
         } else {
@@ -342,23 +350,46 @@ const MonitoringCurves = () => {
                                 changeOnSelect
                                 options={plantDeviceList}
                                 onChange={async value => {
+
                                     if (value?.length === 1) {
+                                        console.log(2)
                                         getDtusOfPlant(plantDeviceList, value[0]);
+
                                     } else if (value?.length === 2) {
-                                        form.setFieldsValue({
-                                            dataType: undefined
-                                        })
+                                        // form.setFieldsValue({
+                                        //     dataType: undefined
+                                        // })
+                                        console.log(3)
+                                        if(dataProList?.length>0){
+                                            setTimeout(async () => {
+                                                const params = await getParams();
+                                                if (params) {
+                                                    getDataSource(params);
+                                                }
+                                            }, 200)
+                                        }
                                     }
                                     let currentPlant = plantDeviceList.find(it => it.value == value[0]);
                                     let currentDevice = currentPlant.children.find(it => it.value == value[1]);
                                     if (currentDevice.type) {
                                         const res = await getCurveTypeServe2({ dtuId: currentDevice.value, isCombo: true });
                                         setDataProList(res?.data?.data);
+                                        if(res?.data?.data){
+                                            const currentPlantDevice = await form.getFieldValue("currentPlantDevice");
+                                            form.setFieldsValue({
+                                                dataType: res?.data?.data?.[0]?.value
+                                            })
+                                        }
+                                        console.log('789', dataProList);
+                                        if(dataProList.length>0){
+                                            let str=`${dataProList[0].label}(${dataProList[0].unit})`
+                                            setTitle(str);
+                                        }
                                         const values = await form.validateFields();
                                         let { dataType, } = values;
                                         const currentData = res?.data?.data?.find(data => data.value == dataType);
                                         const name = `${currentData?.label}(${currentData?.unit})`;
-                                        if (currentData) setTitle(name);
+
                                     }
                                 }}
                                 style={{ width: '250px', height: 40 }}
