@@ -35,11 +35,11 @@ const RealtimeAlarm = () => {
   }, [])
   useEffect(() => {
     if (screenH < 1000) {
-      setScroolY(300);
-    } else if (screenH > 1000 && screenH < 1300) {
-      setScroolY(400);
-    } else if (screenH > 1300) {
       setScroolY(500);
+    } else if (screenH > 1000 && screenH < 1300) {
+      setScroolY(600);
+    } else if (screenH > 1300) {
+      setScroolY(700);
     }
   }, [screenH])
   const handleWindowResize = () => {
@@ -63,7 +63,7 @@ const RealtimeAlarm = () => {
   const getData = async (page) => {
     const { data } = await getNowAlarmsWithPage({
       currentPage: page || 1,
-      pageSize: 20,
+      pageSize: 10,
       plantId:currentPlantId||localStorage.getItem('plantId'),
       // gridPoint:currntGrid
 

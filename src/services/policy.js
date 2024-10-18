@@ -76,9 +76,8 @@ export const sendOMCommands = (payload) => {
 
 // 下载策略模板
 export const downloadStrategyTemplate = (payload) => {
-    return axiosInstance.get(`${path}/open/downloadTemplate`,{
+    return axiosInstance.get(`${path}/strategy/downloadStrategyTemplate`,{
         responseType: 'blob'
-
         });
 }
 

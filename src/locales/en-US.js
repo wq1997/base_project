@@ -943,8 +943,10 @@ export default {
 '下载模板':'Download Template',
 '策略导入/导出':'Policy Import/Export',
 '策略模板':'Policy Template',
+'超级用户':'Superuser',
+"保存成功":"The save was successful",
+'下发命令':'Issue Command',    
 
-"":"",
 "":"",
 "":"",
 "":"",

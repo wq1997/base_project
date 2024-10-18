@@ -279,6 +279,12 @@ function Com({ open,
         label: (
             <Upload
                 action={`${getBaseUrl()}strategy/importStrategy`}
+                data={async () => {
+                    let modeType = await form.getFieldValue('controlMode');
+                    return {
+                        modeType
+                    }
+                }}
                 name='file'
                 headers={
                     {
@@ -389,7 +395,10 @@ function Com({ open,
                         </Col>
                         <Col span={12} >
                             <Form.Item label={t("模式")} labelCol={{ span: 5 }} name="controlMode" rules={[FORM_REQUIRED_RULE]}>
-                                <Select placeholder={t("请选择模式")} disabled={disabled} options={[{ value: 1, label: t('白天-黑夜') }, { value: 2, label: t('定时充放') },]} style={{ maxWidth: 320, width: '60%' }} />
+                                <Select placeholder={t("请选择模式")} onChange={(val) => {
+                                    form.setFieldValue('controlMode', val); console.log(form.getFieldValue('controlMode'), val);
+                                }
+                                } disabled={disabled} options={[{ value: 1, label: t('白天-黑夜') }, { value: 2, label: t('定时充放') },]} style={{ maxWidth: 320, width: '60%' }} />
                             </Form.Item>
                         </Col>
 

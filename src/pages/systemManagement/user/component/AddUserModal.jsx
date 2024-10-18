@@ -48,6 +48,11 @@ const App = (props) => {
         key: '普通用户',
       },
       {
+        label: t('超级用户'),
+        value: 2,
+        key: '超级用户',
+      },
+      {
         label: t('管理员'),
         value: 3,
         key: '管理员',

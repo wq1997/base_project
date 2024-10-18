@@ -66,7 +66,6 @@ function Com(props) {
         item.startDate = dayjs(item.startDate).format('MM-DD');
         item.endDate = dayjs(item.endDate).format('MM-DD');
       })
-      console.log(values, '请求');
       let { data } = await saveStrategy({...values,dtuId:localStorage.getItem('dtuId')});
       if (data?.data) {
         message.success(t('保存成功'));

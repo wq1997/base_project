@@ -29,12 +29,17 @@ const RealtimeAlarm = () => {
   }
   const alarmLevel = [{
     label: t('普通用户'),
-    value: '1',
+    value: 1,
     key: '普通用户',
   },
   {
+    label: t('超级用户'),
+    value: 2,
+    key: '超级用户',
+  },
+  {
     label: t('管理员'),
-    value: '3',
+    value: 3,
     key: '管理员',
   },
 
@@ -107,7 +112,7 @@ const RealtimeAlarm = () => {
       phone: '',
       mail: '',
       company: '',
-      roleId: '1',
+      roleId: 1,
     });
     setTitle('新增用户');
     setIsOpen(!isOpen);
