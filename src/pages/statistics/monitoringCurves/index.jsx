@@ -242,7 +242,6 @@ const MonitoringCurves = () => {
                     const res = await getCurveTypeServe2({ dtuId: data?.[0].value, isCombo: true });
                     setDataProList(res?.data?.data);
                     if(res?.data?.data?.length > 0) {
-                        console.log('123', res?.data?.data);
                         let str=`${res?.data?.data[0].label}(${res?.data?.data[0].unit})`
                         setTitle(str);
                     }
@@ -304,7 +303,12 @@ const MonitoringCurves = () => {
         if (response?.data?.data) {
             response?.data?.data.forEach((item, index) => {
                 if(item.value==dataType){
-                    let str=`${item.label}(${item.unit})`
+                    let str;
+                    if(item.value.includes("CELL_VOL_DIFF")){
+                        str=`${item.label}(m${item.unit})`
+                    }else{
+                        str=`${item.label}(${item.unit})`
+                    }
                     setTitle(str);
                 }
             })
@@ -352,14 +356,12 @@ const MonitoringCurves = () => {
                                 onChange={async value => {
 
                                     if (value?.length === 1) {
-                                        console.log(2)
                                         getDtusOfPlant(plantDeviceList, value[0]);
 
                                     } else if (value?.length === 2) {
                                         // form.setFieldsValue({
                                         //     dataType: undefined
                                         // })
-                                        console.log(3)
                                         if(dataProList?.length>0){
                                             setTimeout(async () => {
                                                 const params = await getParams();
@@ -380,7 +382,6 @@ const MonitoringCurves = () => {
                                                 dataType: res?.data?.data?.[0]?.value
                                             })
                                         }
-                                        console.log('789', dataProList);
                                         if(dataProList.length>0){
                                             let str=`${dataProList[0].label}(${dataProList[0].unit})`
                                             setTitle(str);
