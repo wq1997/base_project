@@ -15,8 +15,8 @@ function User(props) {
 
     return (
         <div className='content' style={{height:'calc(100% - 10px)',backgroundColor:token.titleCardBgc }}>
-            {user.roleId == 3 ?
-                <SuperAdmin /> :
+            {user.roleId !== 1 ?
+                <SuperAdmin roleId={user.roleId}/> :
                 <NorMalUser />
             }
         </div>

@@ -93,7 +93,7 @@ const RealtimeAlarm = () => {
             showTime
           />
         </div>
-        {user.roleId == 3 &&<div className={styles.dataItem}>
+        {user.roleId !== 1 &&<div className={styles.dataItem}>
           <Search placeholder={t('用户名')} onSearch={onSearch} enterButton />
         </div>}
       </div>

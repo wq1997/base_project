@@ -42,7 +42,16 @@ const App = (props) => {
       key: 'roleId',
       type: 2,
       required: true,
-      data: [{
+      data:  props.roleId == 2 ? [{
+        label: t('普通用户'),
+        value: 1,
+        key: '普通用户',
+      },{
+        label: t('超级用户'),
+        value: 2,
+        key: '超级用户',
+      },
+      ] : [{
         label: t('普通用户'),
         value: 1,
         key: '普通用户',
@@ -56,8 +65,8 @@ const App = (props) => {
         label: t('管理员'),
         value: 3,
         key: '管理员',
-      },
-      ],
+      },],
+
       rules:[]
 
     },
@@ -120,9 +129,9 @@ const App = (props) => {
 
       console.log('Success:', values.password);
       if (props.formData.f0102_Id) {
-        props.changeData({ f0102_Id: props.formData.f0102_Id, ...values,password:getEncrypt(localStorage.getItem('publicKey'), values.password), })
+        props.changeData({ f0102_Id: props.formData.f0102_Id, ...values, })
       } else {
-        props.changeData({...values,password:getEncrypt(localStorage.getItem('publicKey'), values.password),})
+        props.changeData({...values,})
       }
       props.onRef();
     } catch (errorInfo) {

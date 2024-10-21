@@ -26,7 +26,7 @@ function Com(props) {
     }, [formData,])
     useEffect(() => {
         getInitData();
-        if (user.roleId!==3) {
+        if (user.roleId==1) {
             setUserTable([
                 {
                     title: t('电站名称'),
@@ -306,7 +306,7 @@ function Com(props) {
                     t("电站配置")
                 }
                 filterPart={
-                        user.roleId == 3 ?<Button type='primary' onClick={changIsOpen}>{t('新增')}</Button>:null
+                        user.roleId !== 1 ?<Button type='primary' onClick={changIsOpen}>{t('新增')}</Button>:null
                 }
                 content={
                     <>
