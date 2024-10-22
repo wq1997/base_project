@@ -74,9 +74,14 @@ const KnowledgeBase = () => {
         {
             title: "设备类型",
             dataIndex: "deviceTypes",
-            width: 100,
+            width: 150,
             render(_, row) {
-                return row?.deviceTypes?.join(',');
+                const nameList = row?.deviceTypes?.map(deviceType => {
+                    const currentDevice = row?.deviceTypeVos?.find(item => item?.code === deviceType);
+                    if(currentDevice) return currentDevice?.name;
+                    return "";
+                })
+                return nameList?.join(', ');
             }
         },
         {
@@ -105,16 +110,22 @@ const KnowledgeBase = () => {
             render(_, row) {
                 return (
                     <Space>
-                        <Button
-                            type="link"
-                            style={{ color: token.colorPrimary }}
-                            onClick={() => {
-                                history.push(`/knowledgeBase/editOrCheck?openType=Edit&id=${row?.id}`)
-                            }}
-                        >
-                            编辑
-                        </Button>
-                        <Button type="link" style={{ color: '#FF4D4F' }} onClick={() => history.push(`/knowledgeBase/editOrCheck?openType=Check&id=${row?.id}`)}>审核</Button>
+                        {
+                            row?.supportSaveOrSubmit &&
+                            <Button
+                                type="link"
+                                style={{ color: token.colorPrimary }}
+                                onClick={() => {
+                                    history.push(`/knowledgeBase/editOrCheck?openType=Edit&id=${row?.id}`)
+                                }}
+                            >
+                                编辑
+                            </Button>
+                        }
+                        {
+                            row?.supportAudit &&
+                            <Button type="link" style={{ color: '#FF4D4F' }} onClick={() => history.push(`/knowledgeBase/editOrCheck?openType=Check&id=${row?.id}`)}>审核</Button>
+                        }
                         <Button
                             type="link"
                             style={{ color: '#13C0FF' }}
@@ -210,7 +221,13 @@ const KnowledgeBase = () => {
                 <div>
                     <span style={{ color: "#FFF" }}>发布时间：</span>
                     <DatePicker.RangePicker
-                        value={date ? [dayjs(date?.[0]), dayjs(date?.[1])] : undefined}
+                        value={
+                            date &&
+                            date.length > 0 &&
+                            date[0] &&
+                            date[1]
+                                ? [dayjs(date[0]), dayjs(date[1])]
+                                : []}
                         onChange={(value, date) => {
                             dateRef.current = date;
                             setDate(date);
@@ -318,7 +335,7 @@ const KnowledgeBase = () => {
                     selectedRowKeys,
                     onChange: onSelectChange,
                     getCheckboxProps: record => ({
-                        disabled: record.account === "admin",
+                        disabled: !record?.supportDelete,
                     }),
                 }}
                 onChange={pagination => {
@@ -379,6 +396,7 @@ const KnowledgeBase = () => {
                 onCancel={() => {
                     setDetailOpen(false);
                 }}
+                onOk={()=>{setDetailOpen(false);}}
                 width={800}
             >
                 <div style={{ marginTop: 20 }}>
@@ -408,7 +426,7 @@ const KnowledgeBase = () => {
                         currentRecord?.content &&
                         <div className={styles.knowledageShow}>
                             <div className={styles.knowledageShowTitle}>知识内容</div>
-                            <div dangerouslySetInnerHTML={{ __html: currentRecord?.content }} className={styles.knowledageShowContent}/>
+                            <div dangerouslySetInnerHTML={{ __html: currentRecord?.content }} className={styles.knowledageShowContent} />
                         </div>
                     }
                 </div>

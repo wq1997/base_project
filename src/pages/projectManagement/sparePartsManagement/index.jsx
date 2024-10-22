@@ -108,7 +108,7 @@ const SparePartsManagement = () => {
             dataIndex: 'remark',
             key: 'remark',
             ellipsis: true,
-            width: 400,
+            width: 200,
             render(value) {
                 return (
                     <Tooltip title={value}>
@@ -117,30 +117,7 @@ const SparePartsManagement = () => {
                                 overflow: 'hidden',
                                 whiteSpace: 'nowrap',
                                 textOverflow: 'ellipsis',
-                                width: 400,
-                            }}
-                        >
-                            {value}
-                        </div>
-                    </Tooltip>
-                )
-            }
-        },
-        {
-            title: '入库备注',
-            dataIndex: 'operateRemark',
-            key: 'operateRemark',
-            ellipsis: true,
-            width: 400,
-            render(value) {
-                return (
-                    <Tooltip title={value}>
-                        <div
-                            style={{
-                                overflow: 'hidden',
-                                whiteSpace: 'nowrap',
-                                textOverflow: 'ellipsis',
-                                width: 400,
+                                width: 200,
                             }}
                         >
                             {value}
@@ -160,7 +137,10 @@ const SparePartsManagement = () => {
                         <Button
                             type="link"
                             onClick={() => {
-                                useForm.setFieldsValue(row);
+                                useForm.setFieldsValue({
+                                    ...row,
+                                    remark: undefined
+                                });
                                 setCurrentRecord(row);
                                 setUseOpen(true);
                                 getOperateInitData();
@@ -444,9 +424,10 @@ const SparePartsManagement = () => {
                             <Radio value={"MAINT"}>维护已有备件</Radio>
                         </Radio.Group>
                     </Form.Item>
-                    <Form.Item noStyle dependencies={['storageMethod']}>
+                    <Form.Item noStyle dependencies={['storageMethod', 'attribute']}>
                         {({ getFieldsValue }) => {
                             const { storageMethod } = getFieldsValue(['storageMethod'])
+                            const { attribute } = getFieldsValue(['attribute'])
                             return (
                                 <>
                                     <Form.Item
@@ -465,6 +446,18 @@ const SparePartsManagement = () => {
                                                     value: item
                                                 }
                                             })}
+                                            onChange={value => {
+                                                if (value === "采日自研备件") {
+                                                    const cairiSupplier = initOptions?.suppliers?.find(item => item?.name?.indexOf(`上海采日能源科技`) > -1);
+                                                    spareStorageForm.setFieldsValue({
+                                                        supplierId: cairiSupplier?.id
+                                                    })
+                                                } else {
+                                                    spareStorageForm.setFieldsValue({
+                                                        supplierId: undefined
+                                                    })
+                                                }
+                                            }}
                                         />
                                     </Form.Item>
                                     <Form.Item
@@ -501,6 +494,7 @@ const SparePartsManagement = () => {
                                                     value: item?.id
                                                 }
                                             })}
+                                            disabled={attribute === "采日自研备件"}
                                         />
                                     </Form.Item>
                                     <Form.Item
@@ -585,7 +579,8 @@ const SparePartsManagement = () => {
                         id: currentRecord?.id,
                         count: values?.count,
                         outputProjectId: values?.outputProjectId,
-                        outputProjectName: project?.name
+                        outputProjectName: project?.name,
+                        remark: values?.remark
                     })
                     if (res?.data?.status === "SUCCESS") {
                         setUseOpen(false);
@@ -603,7 +598,7 @@ const SparePartsManagement = () => {
                     <Form.Item label="备件名称" name={"name"} rules={[{ ...FORM_REQUIRED_RULE }]}>
                         <Input placeholder="请选择备件" disabled />
                     </Form.Item>
-                    <Form.Item label="入库备件数量" name="stock">
+                    <Form.Item label="库存备件数量" name="stock">
                         <Input disabled />
                     </Form.Item>
                     <Form.Item label="备件领用数量" name={"count"} rules={[{ ...FORM_REQUIRED_RULE }]}>
@@ -645,8 +640,23 @@ const SparePartsManagement = () => {
                         {
                             title: "备件名称",
                             dataIndex: "name",
+                            width: 200,
                             render(_, row) {
-                                return row?.spareParts?.name
+                                const value = row?.spareParts?.name;
+                                return (
+                                    <Tooltip title={value}>
+                                        <div
+                                            style={{
+                                                overflow: 'hidden',
+                                                whiteSpace: 'nowrap',
+                                                textOverflow: 'ellipsis',
+                                                width: 150,
+                                            }}
+                                        >
+                                            {value}
+                                        </div>
+                                    </Tooltip>
+                                )
                             }
                         },
                         {
@@ -666,10 +676,36 @@ const SparePartsManagement = () => {
                             dataIndex: "operatorName",
                         },
                         {
-                            title: "操作备注",
-                            dataIndex: "remark",
+                            title:"操作时间",
+                            dataIndex: "operateTime",
+                        },
+                        {
+                            title: '操作备注',
+                            dataIndex: 'remark',
+                            key: 'remark',
+                            ellipsis: true,
+                            width: 200,
+                            render(value) {
+                                return (
+                                    <Tooltip title={value}>
+                                        <div
+                                            style={{
+                                                overflow: 'hidden',
+                                                whiteSpace: 'nowrap',
+                                                textOverflow: 'ellipsis',
+                                                width: 150,
+                                            }}
+                                        >
+                                            {value}
+                                        </div>
+                                    </Tooltip>
+                                )
+                            }
                         },
                     ]}
+                    scroll={{
+                        x: 'max-content',
+                    }}
                     dataSource={outputDatasource}
                     pagination={outputPagination}
                     onChange={pagination => {

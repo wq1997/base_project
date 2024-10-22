@@ -4,6 +4,7 @@ import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts";
 import styles from "./index.less";
 import classNames from "classnames";
+import { history, useDispatch, useSelector } from "umi";
 import { workbenchListTimeCompleteWorkOrderCount as workbenchListTimeCompleteWorkOrderCountServe } from "@/services";
 
 const Total = ({ data }) => {
@@ -11,17 +12,26 @@ const Total = ({ data }) => {
     const [type, setType] = useState("LAST_WEEK");
     const [dataSource, setDataSource] = useState([]);
     const [options, setOpitons] = useState({});
+    const { user } = useSelector(state => state.user);
 
     const allWorkorders = [
         {
             name: "在途异常工单",
             value: data?.inTransitWorkOrderSummery?.inTransitExceptionCount || 0,
             color: token.color16,
+            click: () =>
+                history.push(
+                    `/task-management/task-list?typeIn=${encodeURIComponent(["SYS_EXCEPTION", "MANUAL_EXCEPTION"])}`
+                ),
         },
         {
             name: "在途其他工单",
             value: data?.inTransitWorkOrderSummery?.inTransitOtherCount || 0,
             color: token.color17,
+            click: () =>
+                history.push(
+                    `/task-management/task-list?typeIn=${encodeURIComponent(["CYCLE_INSPECTION", "MANUAL_INSPECTION", "MANUAL_FB_INSPECTION", "MANUAL_OTHER", "IMPLEMENT"])}`
+                ),
         },
     ];
 
@@ -30,11 +40,19 @@ const Total = ({ data }) => {
             name: "发起工单数",
             value: data?.initiatedWorkOrderSummery?.initiatedCount || 0,
             color: token.color18,
+            click: () =>
+                history.push(
+                    `/task-management/task-list?initiatorAccount=${encodeURIComponent(user?.selfUser?.account)}`
+                ),
         },
         {
             name: "已执行总数",
             value: data?.initiatedWorkOrderSummery?.initiatedByMeAndCompletedCount || 0,
             color: token.color19,
+            click: () =>
+                history.push(
+                    `/task-management/task-list?initiatorAccount=${encodeURIComponent(user?.selfUser?.account)}&statusIn=${encodeURIComponent(["COMPLETED"])}`
+                ),
         },
     ];
 
@@ -43,11 +61,19 @@ const Total = ({ data }) => {
             name: "待执行工单总数",
             value: data?.todoWorkOrderSummery?.todoCount || 0,
             color: token.color20,
+            click: () =>
+                history.push(
+                    `/task-management/my-task?statusIn=${encodeURIComponent(["WAIT_COMPLETED"])}`
+                ),
         },
         {
             name: "待执行异常工单",
             value: data?.todoWorkOrderSummery?.todoExceptionCount || 0,
             color: token.color21,
+            click: () =>
+                history.push(
+                    `/task-management/my-task?typeIn=${encodeURIComponent(["SYS_EXCEPTION", "MANUAL_EXCEPTION"])}&statusIn=${encodeURIComponent(["WAIT_COMPLETED"])}`
+                ),
         },
     ];
 
@@ -159,14 +185,16 @@ const Total = ({ data }) => {
                     <div className={styles.content}>
                         {allWorkorders.map(item => (
                             <div className={styles.order} style={{ background: token.color13 }}>
-                                <span className={styles.name}>
-                                    <Tooltip title={item.name}>
-                                        {item.name}
-                                    </Tooltip>
+                                <span title={item.name} className={styles.name}>
+                                    {item.name}
                                 </span>
-                                <span className={styles.value} style={{ color: item.color }}>
+                                <a
+                                    className={styles.value}
+                                    style={{ color: item.color }}
+                                    onClick={item.click}
+                                >
                                     {item.value}
-                                </span>
+                                </a>
                             </div>
                         ))}
                     </div>
@@ -179,14 +207,16 @@ const Total = ({ data }) => {
                     <div className={styles.content}>
                         {myWorkorders.map(item => (
                             <div className={styles.order} style={{ background: token.color13 }}>
-                                <span className={styles.name}>
-                                    <Tooltip title={item.name}>
-                                        {item.name}
-                                    </Tooltip>
+                                <span title={item.name} className={styles.name}>
+                                    {item.name}
                                 </span>
-                                <span className={styles.value} style={{ color: item.color }}>
+                                <a
+                                    className={styles.value}
+                                    style={{ color: item.color }}
+                                    onClick={item.click}
+                                >
                                     {item.value}
-                                </span>
+                                </a>
                             </div>
                         ))}
                     </div>
@@ -199,14 +229,16 @@ const Total = ({ data }) => {
                     <div className={styles.content}>
                         {todoList.map(item => (
                             <div className={styles.order} style={{ background: token.color13 }}>
-                                <span className={styles.name}>
-                                    <Tooltip title={item.name}>
-                                        {item.name}
-                                    </Tooltip>
+                                <span title={item.name} className={styles.name}>
+                                    {item.name}
                                 </span>
-                                <span className={styles.value} style={{ color: item.color }}>
+                                <a
+                                    className={styles.value}
+                                    style={{ color: item.color }}
+                                    onClick={item.click}
+                                >
                                     {item.value}
-                                </span>
+                                </a>
                             </div>
                         ))}
                     </div>

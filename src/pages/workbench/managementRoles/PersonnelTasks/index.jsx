@@ -66,11 +66,11 @@ const PersonnelTasks = ({ data }) => {
                             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                                 {
                                     offset: 0,
-                                    color: "#0DB2FF",
+                                    color: "#FBD576",
                                 },
                                 {
                                     offset: 1,
-                                    color: "#00D5CF",
+                                    color: "#EF6E39",
                                 },
                             ]),
                         },
@@ -105,13 +105,13 @@ const PersonnelTasks = ({ data }) => {
         let params = {};
         if (dateType === "YEAR") {
             params = {
-                regions: region,
+                regions: region?.length > 0 ? region : undefined,
                 year: dayjs(date).format("YYYY"),
             };
         }
         if (dateType === "MONTH") {
             params = {
-                regions: region,
+                regions: region?.length > 0 ? region : undefined,
                 year: dayjs(date).format("YYYY"),
                 month: dayjs(date).format("MM"),
             };

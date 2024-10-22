@@ -24,13 +24,15 @@ import {
 } from "@ant-design/icons";
 import { history, useLocation, useSelector } from "umi";
 import { SearchInput } from "@/components";
-import AddProject from "./AddProject";
 import Detail from "./Detail";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
+import { getUrlParams, getQueryString } from "@/utils/utils";
 import {
     workOrderList as workOrderListServer,
     workOrderListInitData as workOrderListInitDataServer,
     deleteWorkOrder as deleteWorkOrderServer,
+    getMyTodoWorkOrderList as getMyTodoWorkOrderListServer,
+    getMyDoWorkOrderList as getMyDoWorkOrderListServer,
 } from "@/services/workOrder";
 import "./index.less";
 import dayjs from "dayjs";
@@ -38,9 +40,21 @@ import dayjs from "dayjs";
 let invalidReason = undefined;
 
 const Account = () => {
+    const defaultActiveKey = getQueryString("activeKey");
+    const [activeKey, setActiveKey] = useState(defaultActiveKey || "todo");
+    const tabItems = [
+        {
+            key: "todo",
+            label: "我的待办",
+        },
+        {
+            key: "do",
+            label: "我的已办",
+        },
+    ];
     const { token } = theme.useToken();
     const location = useLocation();
-    const initCode = location?.search.split("=")[1];
+    const params = getUrlParams(location?.search);
     const [canDelete, setCanDelete] = useState(true);
 
     const paginationRef = useRef(DEFAULT_PAGINATION);
@@ -51,21 +65,25 @@ const Account = () => {
     const [detailId, setDetailId] = useState();
     const [processId, setProcessId] = useState();
 
-    const workOrderCodeRef = useRef(initCode);
-    const [workOrderCode, setWorkOrderCode] = useState(initCode);
+    const workOrderCodeRef = useRef();
+    const [workOrderCode, setWorkOrderCode] = useState();
 
     const publishedTimeRef = useRef();
     const [publishedTime, setPublishedTime] = useState();
 
-    const dealStatusRef = useRef();
-    const [dealStatus, setDealStatus] = useState();
+    const dealStatusRef = useRef(params?.statusIn);
+    const [dealStatus, setDealStatus] = useState(params?.statusIn);
     const [dealStatusOptions, setDealStatusOptions] = useState();
 
     const workOrderNameRef = useRef();
     const [workOrderName, setWorkOrderName] = useState();
 
-    const workOrderTypeRef = useRef();
-    const [workOrderType, setWorkOrderType] = useState([]);
+    const workOrderTypeRef = useRef(
+        params?.typeIn ? decodeURIComponent(params?.typeIn).split(",") : []
+    );
+    const [workOrderType, setWorkOrderType] = useState(
+        params?.typeIn ? decodeURIComponent(params?.typeIn).split(",") : []
+    );
     const [workOrderTypeOptions, setWorkOrderTypeOptions] = useState();
 
     const planStartDateRef = useRef();
@@ -80,6 +98,10 @@ const Account = () => {
 
     const [userOptions, setUserOptions] = useState();
 
+    const areaRef = useRef();
+    const [area, setArea] = useState();
+    const [areaOptions, setAreaOptions] = useState();
+
     const ownerRef = useRef();
     const [owner, setOwner] = useState();
 
@@ -93,17 +115,31 @@ const Account = () => {
         {
             title: "工单编号",
             dataIndex: "code",
-            width: 200
+            width: 200,
         },
         {
             title: "工单名称",
             dataIndex: "title",
-            width: 300
+            width: 300,
         },
+        activeKey == "do"
+            ? {
+                  title: "处理状态",
+                  dataIndex: "statusZh",
+                  width: 100,
+                  render: (_, { status, statusZh }) => {
+                      return (
+                          <span style={{ color: status == "COMPLETED" ? "#1BE72B" : "" }}>
+                              {statusZh}
+                          </span>
+                      );
+                  },
+              }
+            : {},
         {
-            title: "工单类型",
-            dataIndex: "typeZh",
-            width: 200
+            title: "发布时间",
+            dataIndex: "publishedTime",
+            width: 200,
         },
         {
             title: "关联项目",
@@ -114,82 +150,72 @@ const Account = () => {
             },
         },
         {
-            title: "处理状态",
-            dataIndex: "statusZh",
-            width: 100,
-            render: (_, { status, statusZh }) => {
-                return (
-                    <span style={{ color: status == "COMPLETED" ? "#1BE72B" : "" }}>
-                        {statusZh}
-                    </span>
-                );
-            },
+            title: "工单类型",
+            dataIndex: "typeZh",
+            width: 180,
         },
         {
-            title: "发布时间",
-            dataIndex: "publishedTime",
-            width: 200
+            title: "所属区域",
+            dataIndex: "regionZh",
+            width: 150,
         },
         {
             title: "计划开始时间",
             dataIndex: "planStartDate",
-            width: 200
+            width: 200,
         },
         {
             title: "计划结束时间",
             dataIndex: "planEndDate",
-            width: 200
-        },
-        {
-            title: "工单接收人",
-            dataIndex: "ownerName",
-            width: 200
+            width: 200,
         },
         {
             title: "工单发起人",
             dataIndex: "initiatorName",
-            width: 200
+            width: 150,
         },
-        {
-            title: "当前处理人",
-            dataIndex: "currentProcessorName",
-            width: 200,
-            render: (_, { status, currentProcessorName }) => {
-                return status == "COMPLETED" ? "" : currentProcessorName;
-            },
-        },
-        {
-            title: "实际处理人",
-            dataIndex: "currentProcessorName",
-            width: 200,
-            render: (_, { status, currentProcessorName }) => {
-                return status == "COMPLETED" ? currentProcessorName : "";
-            },
-        },
+        ...(activeKey == "do"
+            ? [
+                  {
+                      title: "工单接收人",
+                      dataIndex: "ownerName",
+                      width: 150,
+                  },
+                  {
+                      title: "当前处理人",
+                      dataIndex: "currentProcessorName",
+                      width: 150,
+                      render: (_, { status, currentProcessorName }) => {
+                          return status == "COMPLETED" ? "" : currentProcessorName;
+                      },
+                  },
+                  {
+                      title: "实际处理人",
+                      dataIndex: "currentProcessorName",
+                      width: 150,
+                      render: (_, { status, currentProcessorName }) => {
+                          return status == "COMPLETED" ? currentProcessorName : "";
+                      },
+                  },
+              ]
+            : [{}]),
         {
             title: "操作",
             dataIndex: "operate",
             fixed: "right",
-            width: 200,
+            width: activeKey == "todo" ? 130 : 100,
             render: (_, { id, supportProcessing }) => {
                 return (
-                    <>
-                        <Button
-                            type="link"
-                            disabled={Boolean(!supportProcessing)}
-                            onClick={() => setProcessId(id)}
-                            style={{color: Boolean(!supportProcessing)?'grey': 'red'}}
-                        >
-                            去处理
-                        </Button>
-                        <Button
-                            type="link"
-                            style={{ color: token.colorPrimary }}
-                            onClick={() => setDetailId(id)}
-                        >
+                    <Space>
+                        <a style={{ color: token.colorPrimary }} onClick={() => setDetailId(id)}>
                             详情
-                        </Button>
-                    </>
+                        </a>
+                        {supportProcessing && (
+                            <a onClick={() => setProcessId(id)} style={{ color: "#dc4446" }}>
+                                去处理
+                            </a>
+                        )}
+                    </Space>
                 );
             },
         },
@@ -204,7 +230,7 @@ const Account = () => {
     const getInitData = async () => {
         const res = await workOrderListInitDataServer();
         if (res?.data?.status == "SUCCESS") {
-            const { statuses, types, projects, users } = res?.data?.data;
+            const { regions, statuses, types, projects, users } = res?.data?.data;
             setDealStatusOptions(statuses);
             setWorkOrderTypeOptions(types);
             setProjectOptions(
@@ -214,6 +240,7 @@ const Account = () => {
                 }))
             );
             setUserOptions(users);
+            setAreaOptions(regions);
         }
     };
 
@@ -228,9 +255,11 @@ const Account = () => {
         const planDateTo = planEndDateRef.current;
         const projectId = associatedProjectRef.current;
         const ownerAccount = ownerRef.current;
+        const region = areaRef.current;
         const initiatorAccount = initiatorRef.current;
         const currentProcessorAccount = currentProcessorRef.current;
-        const res = await workOrderListServer({
+        const fn = activeKey == "todo" ? getMyTodoWorkOrderListServer : getMyDoWorkOrderListServer;
+        const res = await fn({
             pageNum: current,
             pageSize,
             queryCmd: {
@@ -244,6 +273,7 @@ const Account = () => {
                 planDateTo,
                 projectId,
                 ownerAccount,
+                region,
                 initiatorAccount,
                 currentProcessorAccount,
             },
@@ -259,7 +289,7 @@ const Account = () => {
     };
 
     const handleReset = () => {
-        history.push("/project-management/task-list");
+        history.push(`/task-management/my-task?activeKey=${activeKey}`);
         paginationRef.current = DEFAULT_PAGINATION;
         workOrderCodeRef.current = undefined;
         setWorkOrderCode();
@@ -277,13 +307,14 @@ const Account = () => {
         setPlanEndDate();
         associatedProjectRef.current = undefined;
         setAssociatedProject();
+        areaRef.current = undefined;
+        setArea();
         ownerRef.current = undefined;
         setOwner();
         initiatorRef.current = undefined;
         setInitiator();
         currentProcessorRef.current = undefined;
         setCurrentProcessor();
-        getList();
     };
 
     const handleDelete = () => {
@@ -310,25 +341,28 @@ const Account = () => {
     useEffect(() => {
         getList();
         getInitData();
-    }, []);
-    2;
+    }, [activeKey]);
 
     return (
         <div className="electronic-archives">
-            <AddProject
-                open={addProjectOpen}
-                onClose={() => {
-                    setAddProjectOpen(false);
-                    getList();
-                }}
-            />
             <Detail
+                isTodo={activeKey == "todo"}
                 detailId={detailId}
                 processId={processId}
                 onClose={() => {
+                    setUserList([]);
                     setDetailId(null);
                     setProcessId(null);
                     getList();
+                }}
+            />
+            <Tabs
+                activeKey={activeKey}
+                items={tabItems}
+                onChange={value => {
+                    handleReset();
+                    setActiveKey(value);
+                    history.push(`/task-management/my-task?activeKey=${value}`);
                 }}
             />
             <Space className="search">
@@ -357,16 +391,18 @@ const Account = () => {
                         }}
                     />
                 </div>
-                <SearchInput
-                    label="处理状态"
-                    value={dealStatus}
-                    type="select"
-                    options={dealStatusOptions}
-                    onChange={value => {
-                        dealStatusRef.current = value;
-                        setDealStatus(value);
-                    }}
-                />
+                {activeKey == "do" && (
+                    <SearchInput
+                        label="处理状态"
+                        value={dealStatus}
+                        type="select"
+                        options={dealStatusOptions}
+                        onChange={value => {
+                            dealStatusRef.current = value;
+                            setDealStatus(value);
+                        }}
+                    />
+                )}
                 <SearchInput
                     label="工单名称"
                     value={workOrderName}
@@ -386,6 +422,16 @@ const Account = () => {
                         setWorkOrderType(value);
                     }}
                     style={{ width: 200 }}
+                />
+                <SearchInput
+                    label="关联项目"
+                    value={associatedProject}
+                    type="select"
+                    options={projectOptions}
+                    onChange={value => {
+                        associatedProjectRef.current = value;
+                        setAssociatedProject(value);
+                    }}
                 />
                 <div>
                     <span style={{ color: "#FFF" }}>计划开始时间：</span>
@@ -408,25 +454,27 @@ const Account = () => {
                     />
                 </div>
                 <SearchInput
-                    label="关联项目"
-                    value={associatedProject}
+                    label="工单所属区域"
+                    value={area}
                     type="select"
-                    options={projectOptions}
+                    options={areaOptions}
                     onChange={value => {
-                        associatedProjectRef.current = value;
-                        setAssociatedProject(value);
+                        areaRef.current = value;
+                        setArea(value);
                     }}
                 />
-                <SearchInput
-                    label="工单接收人"
-                    value={owner}
-                    type="select"
-                    options={userOptions}
-                    onChange={value => {
-                        ownerRef.current = value;
-                        setOwner(value);
-                    }}
-                />
+                {activeKey == "do" && (
+                    <SearchInput
+                        label="工单接收人"
+                        value={owner}
+                        type="select"
+                        options={userOptions}
+                        onChange={value => {
+                            ownerRef.current = value;
+                            setOwner(value);
+                        }}
+                    />
+                )}
                 <SearchInput
                     label="工单发起人"
                     value={initiator}
@@ -437,16 +485,18 @@ const Account = () => {
                         setInitiator(value);
                     }}
                 />
-                <SearchInput
-                    label="当前处理人"
-                    value={currentProcessor}
-                    type="select"
-                    options={userOptions}
-                    onChange={value => {
-                        currentProcessorRef.current = value;
-                        setCurrentProcessor(value);
-                    }}
-                />
+                {activeKey == "do" && (
+                    <SearchInput
+                        label="当前处理人"
+                        value={currentProcessor}
+                        type="select"
+                        options={userOptions}
+                        onChange={value => {
+                            currentProcessorRef.current = value;
+                            setCurrentProcessor(value);
+                        }}
+                    />
+                )}
                 <Button
                     type="primary"
                     onClick={() => {
@@ -456,7 +506,16 @@ const Account = () => {
                 >
                     搜索
                 </Button>
-                <Button type="primary" danger onClick={handleReset}>重置</Button>
+                <Button
+                    type="primary"
+                    danger
+                    onClick={() => {
+                        handleReset();
+                        getList();
+                    }}
+                >
+                    重置
+                </Button>
             </Space>
             <Table
                 rowKey="id"
@@ -479,10 +538,6 @@ const Account = () => {
                 }}
                 title={() => (
                     <Space className="table-title">
-                        <Button type="primary" onClick={() => setAddProjectOpen(true)}>
-                            手工新增工单
-                        </Button>
-
                         <Button type="primary" danger disabled={!canDelete} onClick={handleDelete}>
                             删除工单
                             {selectedRowKeys?.length ? (

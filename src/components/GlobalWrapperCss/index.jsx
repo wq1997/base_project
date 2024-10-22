@@ -43,6 +43,15 @@ const GlobalWrapperCss = props => {
             ".ant-table-wrapper .ant-table-thead >tr>th": {
                 background: token.color15,
             },
+            ".ant-select-outlined.ant-select-disabled .ant-select-selector": {
+                color: "white !important",
+            },
+            ".ant-select-multiple .ant-select-selection-overflow .ant-select-selection-item": {
+                color: "white !important",
+            },
+            "span[contenteditable]": {
+                backgroundColor: `${token.colorPrimary}!important`
+            }
         };
     });
     return <div className={globalStyle}>{props.children}</div>;

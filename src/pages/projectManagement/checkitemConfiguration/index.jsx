@@ -120,11 +120,49 @@ const Account = () => {
         {
             title: "巡检项名称",
             dataIndex: "name",
+            width: 250,
+            render(value) {
+                return (
+                    <Tooltip title={value}>
+                        <div
+                            style={{
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                                width: 200,
+                            }}
+                        >
+                            {value}
+                        </div>
+                    </Tooltip>
+                )
+            }
         },
-
+        {
+            title: "巡检项类型",
+            dataIndex: "typeZh",
+            width: 350,
+            render(value) {
+                return (
+                    <Tooltip title={value}>
+                        <div
+                            style={{
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                                width: 250,
+                            }}
+                        >
+                            {value}
+                        </div>
+                    </Tooltip>
+                )
+            }
+        },
         {
             title: "巡检项内容",
             dataIndex: "description",
+            width: 800,
             render: (_, { description }) => {
                 return description;
             },
@@ -132,6 +170,7 @@ const Account = () => {
         {
             title: "是否需要上传拍照信息",
             dataIndex: "needPhotoUpload",
+            width:200,
             render: (_, { needPhotoUpload }) => {
                 return (
                     <span style={{ color: needPhotoUpload ? "#1BE72B" : "#F50101" }}>
@@ -142,6 +181,7 @@ const Account = () => {
         },
         {
             title: "是否需要上传备注",
+            width:200,
             dataIndex: "needDesc",
             render: (_, { needRemark }) => {
                 return (
@@ -154,6 +194,8 @@ const Account = () => {
         {
             title: "操作",
             dataIndex: "operate",
+            fixed: "right",
+            width: 300,
             render: (_, row) => {
                 return (
                     <Space>
@@ -225,6 +267,7 @@ const Account = () => {
                 editData={editData}
                 open={addProjectOpen}
                 onClose={resFlag => {
+                    setEditData(null);
                     setAddProjectOpen(false);
                     getInviteList();
                 }}
@@ -275,6 +318,9 @@ const Account = () => {
                 onChange={pagination => {
                     paginationRef.current = pagination;
                     getInviteList();
+                }}
+                scroll={{
+                    x: 1500,
                 }}
                 title={() => (
                     <Space className="table-title">

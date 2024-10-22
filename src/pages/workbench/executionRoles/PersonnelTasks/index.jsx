@@ -43,7 +43,10 @@ const PersonnelTasks = ({ data }) => {
     ];
 
     const getDataSource = async () => {
-        const res = await workbenchGetProjectSummeryServe({ regions: region });
+        const res = await workbenchGetProjectSummeryServe({
+            regions: region,
+            needProjectDetail: true,
+        });
         if (res?.data?.status === "SUCCESS") {
             setDataSource(res?.data?.data);
         }

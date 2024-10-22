@@ -17,40 +17,56 @@ export default Routes = [
                         component: "@/pages/workbench/executionRoles",
                     },
                     {
-                        path: "/project-management/electronic-archives",
-                        component: "@/pages/projectManagement/electronicArchives",
+                        path: "/task-management/task-list",
+                        component: "@/pages/taskManagement/taskList",
                     },
                     {
-                        path: "/project-management/task-list",
-                        component: "@/pages/projectManagement/taskList",
+                        path: "/task-management/my-task",
+                        component: "@/pages/taskManagement/myTask",
+                    },
+                    {
+                        path: "/task-management/abnormal",
+                        component: "@/pages/taskManagement/abnormal",
+                    },
+                    {
+                        path: "/project-management/electronic-archives",
+                        component: "@/pages/projectManagement/electronicArchives",
                     },
                     {
                         path: "/project-management/workorder-details",
                         component: "@/pages/projectManagement/workorderDetails",
                     },
                     {
-                        path: '/project-management/spare-parts-management',
-                        component: '@/pages/projectManagement/sparePartsManagement',
+                        path: "/project-management/spare-parts-management",
+                        component: "@/pages/projectManagement/sparePartsManagement",
                     },
                     {
-                        path: '/project-management/abnormal',
-                        component: '@/pages/projectManagement/abnormal'
+                        path: "/project-management/alarmStatistics",
+                        component: "@/pages/projectManagement/alarmStatistics",
                     },
                     {
-                        path: '/project-management/alarmStatistics',
-                        component: '@/pages/projectManagement/alarmStatistics',
+                        path: "/project-management/resourcesInventory",
+                        component: "@/pages/projectManagement/resourcesInventory",
                     },
                     {
-                        path: '/project-management/resourcesInventory',
-                        component: '@/pages/projectManagement/resourcesInventory'
+                        path: "/project-management/checkitem-configuration",
+                        component: "@/pages/projectManagement/checkitemConfiguration",
                     },
                     {
-                        path: '/knowledgeBase/editOrCheck',
-                        component: '@/pages/knowledgeBase/editOrCheck'
+                        path: "/project-management/alarm-configuration",
+                        component: "@/pages/projectManagement/alarmConfiguration",
                     },
                     {
-                        path: '/knowledgeBase',
-                        component: '@/pages/knowledgeBase'
+                        path: "/maintenance-tools/project-operation-report",
+                        component: "@/pages/maintenanceTools/projectOperationReport",
+                    },
+                    {
+                        path: "/knowledgeBase/editOrCheck",
+                        component: "@/pages/knowledgeBase/editOrCheck",
+                    },
+                    {
+                        path: "/knowledgeBase",
+                        component: "@/pages/knowledgeBase",
                     },
                     {
                         path: "/system-configuration/account-management",
@@ -60,14 +76,6 @@ export default Routes = [
                         path: "/system-configuration/role-management",
                         component: "@/pages/systemConfiguration/roleManagement",
                     },
-                    {
-                        path: "/system-configuration/checkitem-configuration",
-                        component: "@/pages/systemConfiguration/checkitemConfiguration",
-                    },
-                    {
-                        path: '/system-configuration/alarm-configuration',
-                        component: '@/pages/systemConfiguration/alarmConfiguration'
-                    }
                 ],
             },
             { path: "/login", component: "@/pages/account/login" },

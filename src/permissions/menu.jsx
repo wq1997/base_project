@@ -2,7 +2,15 @@ import { Menu } from "antd";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useSelector } from "umi";
 import useIcon from "@/hooks/useIcon";
-import { FundFilled, FolderOpenFilled, AppstoreFilled, SettingFilled, DatabaseFilled } from "@ant-design/icons";
+import {
+    FundFilled,
+    FolderOpenFilled,
+    AppstoreFilled,
+    SettingFilled,
+    DatabaseFilled,
+    ToolFilled,
+    FileTextFilled,
+} from "@ant-design/icons";
 
 const { SubMenu } = Menu;
 
@@ -24,17 +32,41 @@ const MenuList = [
         label: "运维工作台",
         icon: <AppstoreFilled />,
         darkIcon: "icon-wuliaoxuqiu-copy",
-        permissions: 'menu:workbench',
+        permissions: "menu:workbench",
         children: [
             {
                 key: "/workbench/management-roles",
                 label: "管理角色",
-                permissions: 'menu:workbench4manager'
+                permissions: "menu:workbench4manager",
             },
             {
                 key: "/workbench/execution-roles",
                 label: "执行角色",
-                permissions: 'menu:workbench4executor'
+                permissions: "menu:workbench4executor",
+            },
+        ],
+    },
+    {
+        key: "/task-management",
+        label: "工单管理",
+        icon: <FileTextFilled />,
+        darkIcon: "icon-wuliaoxuqiu-copy",
+        permissions: "menu:work_order_manage_g",
+        children: [
+            {
+                key: "/task-management/task-list",
+                label: "工单列表",
+                permissions: "menu:work_order_manage",
+            },
+            {
+                key: "/task-management/my-task",
+                label: "我的工单",
+                permissions: "menu:my_work_order",
+            },
+            {
+                key: "/task-management/abnormal",
+                label: "异常复盘",
+                permissions: "menu:exception_manage",
             },
         ],
     },
@@ -43,71 +75,76 @@ const MenuList = [
         label: "项目管理",
         icon: <FolderOpenFilled />,
         darkIcon: "icon-wuliaoxuqiu-copy",
-        permissions: 'menu:project_manage',
+        permissions: "menu:project_manage",
         children: [
             {
                 key: "/project-management/electronic-archives",
                 label: "电子档案",
-                permissions: 'menu:archives_manage'
+                permissions: "menu:archives_manage",
+            },
+
+            {
+                key: "/project-management/spare-parts-management",
+                label: "备件管理",
+                permissions: "menu:spare_manage",
             },
             {
-                key: "/project-management/task-list",
-                label: "工单列表",
-                permissions: 'menu:work_order_manage'
+                key: "/project-management/alarmStatistics",
+                label: "告警管理",
             },
             {
-                key: '/project-management/spare-parts-management',
-                label: '备件管理',
-                permissions: 'menu:spare_manage'
+                key: "/project-management/alarm-configuration",
+                label: "项目告警配置",
             },
             {
-                key: '/project-management/abnormal',
-                label: '异常复盘',
-                permissions: 'menu:exception_manage'
+                key: "/project-management/resourcesInventory",
+                label: "人力资源复盘",
+                permissions: "menu:human_resources_manage",
             },
             {
-                key: '/project-management/alarmStatistics',
-                label: '告警管理'
+                key: "/project-management/checkitem-configuration",
+                label: "巡检项配置",
+                permissions: "menu:inspection_item_manage",
             },
-            {
-                key: '/project-management/resourcesInventory',
-                label: '人力资源复盘',
-                permissions: 'menu:human_resources_manage'
-            }
         ],
     },
     {
-        key: '/knowledgeBase',
-        label: '知识库',
+        key: "/knowledgeBase",
+        label: "知识库",
         icon: <DatabaseFilled />,
-        permissions: 'menu:knowledge_base_manage'
+        permissions: "menu:knowledge_base_manage",
     },
+    // {
+    //     key: "/maintenance-tools",
+    //     label: "运维工具",
+    //     icon: <ToolFilled />,
+    //     darkIcon: "icon-wuliaoxuqiu-copy",
+    //     permissions: "menu:sys_manage",
+    //     children: [
+    //         {
+    //             key: "/maintenance-tools/project-operation-report",
+    //             label: "项目运行报告",
+    //             permissions: "menu:user_manage",
+    //         },
+    //     ],
+    // },
     {
         key: "/system-configuration",
         label: "系统配置",
         icon: <SettingFilled />,
         darkIcon: "icon-wuliaoxuqiu-copy",
-        permissions: 'menu:sys_manage',
+        permissions: "menu:sys_manage",
         children: [
             {
                 key: "/system-configuration/account-management",
                 label: "账号管理",
-                permissions: 'menu:user_manage'
+                permissions: "menu:user_manage",
             },
             {
                 key: "/system-configuration/role-management",
                 label: "角色管理",
-                permissions: 'menu:role'
+                permissions: "menu:role",
             },
-            {
-                key: "/system-configuration/checkitem-configuration",
-                label: "巡检项配置",
-                permissions: 'menu:inspection_item_manage'
-            },
-            {
-                key: '/system-configuration/alarm-configuration',
-                label: '项目告警配置'
-            }
         ],
     },
 ];
@@ -119,23 +156,17 @@ const MyMenu = () => {
 
     const getMenu = menuList => {
         return menuList?.map(menu => {
-            if (!(user?.selfPermCodes?.includes(menu?.permissions) || !menu?.permissions)) return null;
+            if (!(user?.selfPermCodes?.includes(menu?.permissions) || !menu?.permissions))
+                return null;
             if (menu.children) {
                 return (
-                    <SubMenu
-                        key={menu.key}
-                        title={menu.label}
-                        icon={menu.icon}
-                    >
+                    <SubMenu key={menu.key} title={menu.label} icon={menu.icon}>
                         {getMenu(menu.children)}
                     </SubMenu>
                 );
             } else {
                 return (
-                    <Menu.Item
-                        key={menu.key}
-                        icon={menu.icon}
-                    >
+                    <Menu.Item key={menu.key} icon={menu.icon}>
                         <Link to={menu.key} target={menu?.target}>
                             {menu.label}
                         </Link>
@@ -175,11 +206,11 @@ const MyMenu = () => {
         getOpenKeys();
     }, [pathname]);
 
-    useEffect(()=>{
-        if(user){
+    useEffect(() => {
+        if (user) {
             getMenu();
         }
-    }, [user])
+    }, [user]);
     return (
         <Menu
             mode="inline"

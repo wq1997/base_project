@@ -64,7 +64,7 @@ const ResourcesInventory = () => {
         const res = await humanWorkOrderInvntoryDataServe(params);
         if (res?.data?.status === "SUCCESS") {
             setModalDataSource(res?.data?.data);
-        }else{
+        } else {
             setModalDataSource([]);
         }
     }
@@ -131,18 +131,26 @@ const ResourcesInventory = () => {
                         }
                     },
                     {
+                        title: "所属区域",
+                        dataIndex: "regionVos",
+                        render(_, row) {
+                            return row?.user?.regionVos?.map(item => item?.name)?.join(", ");
+                        }
+                    },
+                    {
                         title: "负责项目总数",
                         dataIndex: "projectTotalCount",
                         render(_, row) {
+                            const count = row?.projectSummery?.projectTotalCount;
                             return <span
-                                style={{ cursor: 'pointer' }}
+                                style={{ cursor: 'pointer', textDecoration: count > 0 && 'underline' }}
                                 onClick={async () => {
                                     await getProjectDetail({ userAccount: row?.user?.account, searchType: "TOTAL_PHASE" })
                                     setModalType("Project");
                                     setOpen(true)
                                 }}
                             >
-                                {row?.projectSummery?.projectTotalCount}
+                                {count}
                             </span>;
                         }
                     },
@@ -150,109 +158,117 @@ const ResourcesInventory = () => {
                         title: "实施阶段项目数",
                         dataIndex: "implementationPhaseProjectCount",
                         render(_, row) {
+                            const count = row?.projectSummery?.implementationPhaseProjectCount;
                             return <span
-                                style={{ cursor: 'pointer' }}
+                                style={{ cursor: 'pointer', textDecoration: count > 0 && 'underline' }}
                                 onClick={async () => {
                                     await getProjectDetail({ userAccount: row?.user?.account, searchType: "IMPLEMENTATION_PHASE" })
                                     setModalType("Project");
                                     setOpen(true)
-                                }}>{row?.projectSummery?.implementationPhaseProjectCount}</span>
+                                }}>{count}</span>
                         }
                     },
                     {
                         title: "售后质保项目数",
                         dataIndex: "warrantyPhaseProjectCount",
                         render(_, row) {
+                            const count = row?.projectSummery?.warrantyPhaseProjectCount;
                             return <span
-                                style={{ cursor: 'pointer' }}
+                                style={{ cursor: 'pointer', textDecoration: count > 0 && 'underline' }}
                                 onClick={async () => {
                                     await getProjectDetail({ userAccount: row?.user?.account, searchType: "WARRANTY_PHASE" })
                                     setModalType("Project");
                                     setOpen(true)
-                                }}>{row?.projectSummery?.warrantyPhaseProjectCount}</span>;
+                                }}>{count}</span>;
                         }
                     },
                     {
                         title: "售后过保项目数",
                         dataIndex: "warrantyExpiredPhaseProjectCount",
                         render(_, row) {
+                            const count = row?.projectSummery?.warrantyExpiredPhaseProjectCount;
                             return <span
-                                style={{ cursor: 'pointer' }}
+                                style={{ cursor: 'pointer', textDecoration: count > 0 && 'underline' }}
                                 onClick={async () => {
                                     await getProjectDetail({ userAccount: row?.user?.account, searchType: "WARRANTY_EXPIRED_PHASE" })
                                     setModalType("Project");
                                     setOpen(true)
-                                }}>{row?.projectSummery?.warrantyExpiredPhaseProjectCount}</span>;
+                                }}>{count}</span>;
                         }
                     },
                     {
                         title: "处理任务总数",
                         dataIndex: "processedWorkOrderTotalCount",
                         render(_, row) {
-                            return <span 
-                                style={{ cursor: 'pointer' }}
+                            const count = row?.workOrderSummery?.processedWorkOrderTotalCount;
+                            return <span
+                                style={{ cursor: 'pointer', textDecoration: count > 0 && 'underline' }}
                                 onClick={async () => {
                                     await getWorkOrderDetail({ userAccount: row?.user?.account, searchType: "TOTAL" })
                                     setModalType("WorkOrder");
                                     setOpen(true)
                                 }}
-                                >{row?.workOrderSummery?.processedWorkOrderTotalCount}</span>;
+                            >{count}</span>;
                         }
                     },
                     {
                         title: "处理实施工单数",
                         dataIndex: "processedImplementWorkOrderCount",
                         render(_, row) {
-                            return <span 
-                            style={{ cursor: 'WorkOrder' }}
-                            onClick={async() => {
-                                await getWorkOrderDetail({ userAccount: row?.user?.account, searchType: "PROCESSED_IMPLEMENT" })
-                                setModalType("Project");
-                                setOpen(true)
-                            }}
-                            >{row?.workOrderSummery?.processedImplementWorkOrderCount}</span>;
+                            const count = row?.workOrderSummery?.processedImplementWorkOrderCount;
+                            return <span
+                                style={{ cursor: 'pointer', textDecoration: count > 0 && 'underline' }}
+                                onClick={async () => {
+                                    await getWorkOrderDetail({ userAccount: row?.user?.account, searchType: "PROCESSED_IMPLEMENT" })
+                                    setModalType("WorkOrder");
+                                    setOpen(true)
+                                }}
+                            >{count}</span>;
                         }
                     },
                     {
                         title: "处理巡检工单数",
                         dataIndex: "processedInspectionWorkOrderCount",
                         render(_, row) {
-                            return <span 
-                            style={{ cursor: 'WorkOrder' }}
-                            onClick={async () => {
-                                await getWorkOrderDetail({ userAccount: row?.user?.account, searchType: "PROCESSED_INSPECTION" })
-                                setModalType("Project");
-                                setOpen(true)
-                            }}
-                            >{row?.workOrderSummery?.processedInspectionWorkOrderCount}</span>;
+                            const count = row?.workOrderSummery?.processedInspectionWorkOrderCount;
+                            return <span
+                                style={{ cursor: 'pointer', textDecoration: count > 0 && 'underline' }}
+                                onClick={async () => {
+                                    await getWorkOrderDetail({ userAccount: row?.user?.account, searchType: "PROCESSED_INSPECTION" })
+                                    setModalType("WorkOrder");
+                                    setOpen(true)
+                                }}
+                            >{count}</span>;
                         }
                     },
                     {
                         title: "处理异常工单数",
                         dataIndex: "processedExceptionWorkOrderCount",
                         render(_, row) {
-                            return <span 
-                                style={{ cursor: 'pointer' }}
-                                onClick={async() => {
+                            const count = row?.workOrderSummery?.processedExceptionWorkOrderCount;
+                            return <span
+                                style={{ cursor: 'pointer', textDecoration: count > 0 && 'underline' }}
+                                onClick={async () => {
                                     await getWorkOrderDetail({ userAccount: row?.user?.account, searchType: "PROCESSED_EXCEPTION" })
                                     setModalType("WorkOrder");
                                     setOpen(true)
                                 }}
-                                >{row?.workOrderSummery?.processedExceptionWorkOrderCount}</span>;
+                            >{count}</span>;
                         }
                     },
                     {
                         title: "待办工单数",
                         dataIndex: "todoWorkOrderCount",
                         render(_, row) {
-                            return <span 
-                                style={{ cursor: 'pointer' }}
+                            const count = row?.workOrderSummery?.todoWorkOrderCount;
+                            return <span
+                                style={{ cursor: 'pointer', textDecoration: count > 0 && 'underline' }}
                                 onClick={async () => {
                                     await getWorkOrderDetail({ userAccount: row?.user?.account, searchType: "TODO" })
                                     setModalType("WorkOrder");
                                     setOpen(true)
                                 }}
-                                >{row?.workOrderSummery?.todoWorkOrderCount}</span>;
+                            >{count}</span>;
                         }
                     },
                 ]}
@@ -265,6 +281,10 @@ const ResourcesInventory = () => {
             <Modal
                 open={open}
                 width={1000}
+                onOk={() => {
+                    setModalType();
+                    setOpen(false);
+                }}
                 onCancel={() => {
                     setModalType();
                     setOpen(false);
@@ -317,7 +337,7 @@ const ResourcesInventory = () => {
                                     title: "工单名称",
                                     dataIndex: "title",
                                     render(_, row) {
-                                        return row?.workOrder?.title
+                                        return row?.workOrder?.title;
                                     }
                                 },
                                 {

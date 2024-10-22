@@ -231,7 +231,7 @@ const AlarmConfiguration = () => {
 
     const props = {
         name: "file",
-        action: getBaseUrl() + "/attachment/upload-xxx",
+        action: getBaseUrl() + "/bas-alarm-type/import-data",
         accept: ".xlsx,.xls",
         headers: {
             Authorization: "Bearer " + localStorage.getItem("Token"),
