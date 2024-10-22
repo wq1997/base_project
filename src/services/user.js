@@ -27,9 +27,9 @@ export const updateAccount = payload => {
     return axiosInstance.post(url, payload);
 };
 
-export const unBindWx = ids => {
+export const unBindWx = payload => {
     const url = `${API_URL}/user/unbind`;
-    return axiosInstance.post(url, ids);
+    return axiosInstance.post(url, payload);
 };
 
 // 角色
