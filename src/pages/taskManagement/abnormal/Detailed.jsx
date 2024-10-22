@@ -12,6 +12,10 @@ import styles from "./index.less";
 import dayjs from "dayjs";
 import { jsonToUrlParams } from "@/utils/utils";
 import { getBaseUrl } from "@/services/request";
+import {
+    UpOutlined,
+    DownOutlined
+} from '@ant-design/icons';
 
 const Detailed = () => {
     const { token } = theme.useToken();
@@ -42,6 +46,7 @@ const Detailed = () => {
     const [currentRow, setCurrentRow] = useState({});
     const [fileOpen, setFileOpen] = useState(false);
     const [data, setData] = useState();
+    const [showCenterCotent, setShowCenterCotent] = useState(true);
 
     const getOptions = (type) => {
         const options = {
@@ -311,43 +316,54 @@ const Detailed = () => {
                     <div style={{ fontSize: 20, color: token.fontColor }}>异常统计</div>
                 </Row>
                 <div className={styles.centerContent}>
-                    <div className={styles.centerContent1}>
-                        <div className={styles.centerContent1Top}>
-                            <span style={{ color: 'white' }}>异常总数</span>
-                            <span style={{ color: '#0BAFAB', marginLeft: 30, fontSize: 36 }}>{data?.totalWorkOrderCount}</span>
-                        </div>
-                        <div className={styles.centerContent1Bottom}>
-                            <div className={styles.centerContent1BottomItem}>
-                                <div style={{ color: 'white' }}>
-                                    计划处理时间总计(天)
+                    {
+                        showCenterCotent &&
+                        <>
+                            <div className={styles.centerContent1}>
+                                <div className={styles.centerContent1Top}>
+                                    <span style={{ color: 'white' }}>异常总数</span>
+                                    <span style={{ color: '#0BAFAB', marginLeft: 30, fontSize: 36 }}>{data?.totalWorkOrderCount}</span>
                                 </div>
-                                <div style={{ color: '#60C453', fontSize: 36 }}>
-                                    {data?.totalProcessingDaysForPlan}
+                                <div className={styles.centerContent1Bottom}>
+                                    <div className={styles.centerContent1BottomItem}>
+                                        <div style={{ color: 'white' }}>
+                                            计划处理时间总计(天)
+                                        </div>
+                                        <div style={{ color: '#60C453', fontSize: 36 }}>
+                                            {data?.totalProcessingDaysForPlan}
+                                        </div>
+                                    </div>
+                                    <div className={styles.centerContent1BottomItem}>
+                                        <div style={{ color: 'white' }}>
+                                            实际处理时间总计(天)
+                                        </div>
+                                        <div style={{ color: '#4592E3', fontSize: 36 }}>
+                                            {data?.totalProcessingDaysForActual}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div className={styles.centerContent1BottomItem}>
-                                <div style={{ color: 'white' }}>
-                                    实际处理时间总计(天)
-                                </div>
-                                <div style={{ color: '#4592E3', fontSize: 36 }}>
-                                    {data?.totalProcessingDaysForActual}
-                                </div>
+                            <div className={styles.centerContent2}>
+                                <ReactECharts
+                                    option={getOptions("costType2Amount")}
+                                    style={{ width: '100%', height: "calc(100% - 50px)" }}
+                                />
+                                <div style={{ color: 'white', textAlign: 'center', marginTop: 10 }}>消缺总成本(元)</div>
                             </div>
-                        </div>
-                    </div>
-                    <div className={styles.centerContent2}>
-                        <ReactECharts
-                            option={getOptions("costType2Amount")}
-                            style={{ width: '100%', height: "calc(100% - 50px)" }}
-                        />
-                        <div style={{ color: 'white', textAlign: 'center', marginTop: 10 }}>消缺总成本(元)</div>
-                    </div>
-                    <div className={styles.centerContent3}>
-                        <ReactECharts
-                            option={getOptions("benefitType2Amount")}
-                            style={{ width: '100%', height: "calc(100% - 50px)" }}
-                        />
-                        <div style={{ color: 'white', textAlign: 'center', marginTop: 10 }}>消缺收益(元)</div>
+                            <div className={styles.centerContent3}>
+                                <ReactECharts
+                                    option={getOptions("benefitType2Amount")}
+                                    style={{ width: '100%', height: "calc(100% - 50px)" }}
+                                />
+                                <div style={{ color: 'white', textAlign: 'center', marginTop: 10 }}>消缺收益(元)</div>
+                            </div>
+                        </>
+                    }
+                    <div 
+                        className={styles.upDownIcon}
+                        onClick={()=>setShowCenterCotent(!showCenterCotent)}
+                    >
+                        {showCenterCotent?<UpOutlined />:<DownOutlined />}
                     </div>
                 </div>
             </div>

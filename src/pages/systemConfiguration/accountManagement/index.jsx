@@ -95,7 +95,7 @@ const Account = () => {
                             <Popconfirm
                                 title="系统提示"
                                 description="确定解绑此微信账号?"
-                                onConfirm={id => handleUnbind([id])}
+                                onConfirm={_ => handleUnbind([id])}
                                 okText="Yes"
                                 cancelText="No"
                             >
@@ -109,7 +109,7 @@ const Account = () => {
     ];
 
     const handleUnbind = async ids => {
-        const res = await unBindWxServer(ids);
+        const res = await unBindWxServer({ids});
         if (res?.data?.status == "SUCCESS") {
             message.success("操作成功");
             getList();
