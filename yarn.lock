@@ -1777,7 +1777,7 @@
   "resolved" "https://registry.npmjs.org/@fullcalendar/daygrid/-/daygrid-6.1.15.tgz"
   "version" "6.1.15"
 
-"@fullcalendar/interaction@^6.1.15":
+"@fullcalendar/interaction@^6.1.9":
   "integrity" "sha512-DOTSkofizM7QItjgu7W68TvKKvN9PSEEvDJceyMbQDvlXHa7pm/WAVtAc6xSDZ9xmB1QramYoWGLHkCYbTW1rQ=="
   "resolved" "https://registry.npmjs.org/@fullcalendar/interaction/-/interaction-6.1.15.tgz"
   "version" "6.1.15"
@@ -3102,6 +3102,11 @@
     "json-schema-traverse" "^1.0.0"
     "require-from-string" "^2.0.2"
     "uri-js" "^4.2.2"
+
+"amap-api-loader@^1.0.9":
+  "integrity" "sha512-/qUPCi4TWXVU6f2hHHq4iOTrmI1qelYg9CCDTs8UJ3erDMXmFVAVIHh55Em2dRT1n3yuAFI9dwH1JTpeJO4J/g=="
+  "resolved" "https://registry.npmjs.org/amap-api-loader/-/amap-api-loader-1.0.9.tgz"
+  "version" "1.0.9"
 
 "ansi-html-community@^0.0.8":
   "integrity" "sha512-1APHAyr3+PCamwNw3bXCPp4HFLONZt/yIH0sZp0/469KWNTEy+qN5jQ3GVX6DMZ1UXAi34yVwtTeaG/HpBuuzw=="
