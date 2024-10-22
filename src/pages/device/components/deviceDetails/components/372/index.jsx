@@ -220,7 +220,7 @@ function Com(props) {
         ],
     });
     const [bms1Data, setBms1Data] = useState({
-        title: "BMS簇0信息",
+        title: "BMS簇1信息",
         data: [
             { name: "BMS系统状态", value: "-", key: "bmcRunStatus" },
             { name: "电池充放电状态", value: "-", key: "batCdState" },
@@ -246,7 +246,7 @@ function Com(props) {
         ],
     })
     const [bms2Data, setBms2Data] = useState({
-        title: "BMS簇1信息",
+        title: "BMS簇2信息",
         data: JSON.parse(JSON.stringify(bms1Data.data)),
     })
     const [bmsData, setBmsData] = useState({
@@ -412,33 +412,33 @@ function Com(props) {
         arr.push(obj2);
         setDataTable1([...arr])
     }
-    const dealData = (data, baseData, handlBase) => {
+    const dealData = (targetData, baseData, handlBase) => {
         baseData.data.map(it => {
-            data?.[it.key] ? it.value = data[it.key] : null;
+            targetData?.[it.key] ? it.value = targetData[it.key] : null;
             // if (baseData.title==='PCS信息') {
             // console.log(it.key,it.value, data[it.key],'aaa');
             // }
           
         });
-        console.log(!data?.data?.bmc[1]&&baseData.title=='BMS簇0信息',11111);
-        
-        if (!data?.data?.bmc[1]&&baseData.title=='BMS簇0信息') {
-            baseData.title='BMS信息'
+        if (baseData.title==='BMS簇1信息') {
+            if (data?.bmc?.length==1) {
+                baseData.title='BMS信息'
+            }
         }
         handlBase({ ...baseData });
     };
+  console.log(data);
   
     return (
         <div className={styles.details}>
-            {data?.data?.pcsBranch[1]&&<DetalisCard data={pcsData} />}
-            {!data?.data?.pcsBranch[1]&&<DetalisCard data={pcsData1} />}
+            {data?.pcsBranch?.length==2?<DetalisCard data={pcsData} />:<DetalisCard data={pcsData1} />}
             <DetalisCard data={bms1Data} />
-            {data?.data?.bmc[1]&& <DetalisCard data={bms2Data} />}
-            {data?.data?.bmc[1]?<DetalisCard data={bmsData} />:<DetalisCard data={bmsData1} />}
+            {data?.bmc?.[1]&& <DetalisCard data={bms2Data} />}
+            {data?.bmc?.[1]?<DetalisCard data={bmsData} />:<DetalisCard data={bmsData1} />}
             <DetalisCard data={meterData} />
             <DetalisCard data={energyData} table={{tableClum1,tableClum2,dataTable1}}/>
             <DetalisCard data={ic1Data} />
-            {data?.data?.bmc[1]&&<DetalisCard data={ic2Data} />}
+            {data?.bmc?.[1]&&<DetalisCard data={ic2Data} />}
 
         </div>
     )
