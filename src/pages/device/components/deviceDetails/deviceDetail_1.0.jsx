@@ -14,6 +14,7 @@ function Com({deviceVersion}) {
     const { token } = theme.useToken();
     const id = getQueryString("id");
     const [showLoadMeterData, setShowLoadMeterData] = useState(false);
+    const [showUserMeterData, setShowUserMeterData] = useState(false);
     const { locale } = useSelector(state => state.global);
 
     const [pcsData, setPcsData] = useState({
@@ -118,7 +119,7 @@ function Com({deviceVersion}) {
     });
 
     const [measureMeterData, setMeasureMeterData] = useState({
-        title: '计量电表',
+        title: '储能计量电表',
         data: [
             { name: "总视在功率", value: "-", key: "totalApparentPower" },
             { name: "总有功功率", value: "-", key: "totalActivePower" },
@@ -146,6 +147,22 @@ function Com({deviceVersion}) {
             { name: "AB线电压", value: "-", key: "lineAbVol" },
             { name: "BC线电压", value: "-", key: "lineBcVol" },
             { name: "AC线电压", value: "-", key: "lineAcVol" },
+        ]
+    })
+
+    const [userMeterData, setUserMeterData] = useState({
+        title: '用户计量电表',
+        data: [
+            { name: "当前正向总有功电能", value: "-", key: "totalPosEnergy" },
+            { name: "当前反向总有功电能", value: "-", key: "totalNegEnergy" },
+            { name: "当前正向有功尖电能", value: "-", key: "tipPosEnergy" },
+            { name: "当前正向有功峰电能", value: "-", key: "peakPosEnergy" },
+            { name: "当前正向有功平电能", value: "-", key: "flatPosEnergy" },
+            { name: "当前正向有功谷电能", value: "-", key: "valleyPosEnergy" },
+            { name: "当前反向有功尖电能", value: "-", key: "tipNegEnergy" },
+            { name: "当前反向有功峰电能", value: "-", key: "peakNegEnergy" },
+            { name: "当前反向有功平电能", value: "-", key: "flatNegEnergy" },
+            { name: "当前反向有功谷电能", value: "-", key: "valleyNegEnergy" },
         ]
     })
 
@@ -218,6 +235,7 @@ function Com({deviceVersion}) {
         if(res?.data?.data){
             const data = res?.data?.data;
             setShowLoadMeterData(data?.hasOwnProperty("load-meter"));
+            setShowUserMeterData(data?.hasOwnProperty("energy-meter"));
             const newPcsData = cloneObject(pcsData); // PCS信息
             newPcsData.data = newPcsData.data?.map(item => {
                 const newItem = cloneObject(item);
@@ -232,10 +250,17 @@ function Com({deviceVersion}) {
                 return newItem;
             })
 
-            const newMeasureMeterData = cloneObject(measureMeterData); // 计量电表
+            const newMeasureMeterData = cloneObject(measureMeterData); // 储能计量电表
             newMeasureMeterData.data = newMeasureMeterData.data?.map(item => {
                 const newItem = cloneObject(item);
                 newItem.value = data?.tmeter?.[newItem.key]||"-";
+                return newItem;
+            })
+
+            const newUserMeterData = cloneObject(userMeterData); // 用户计量电表
+            newUserMeterData.data = newUserMeterData.data?.map(item => {
+                const newItem = cloneObject(item);
+                newItem.value = data?.['energy-meter']?.[newItem.key]||"-";
                 return newItem;
             })
 
@@ -264,6 +289,7 @@ function Com({deviceVersion}) {
             setPcsData(newPcsData);
             setBmsData(newBmsData);
             setMeasureMeterData(newMeasureMeterData);
+            setUserMeterData(newUserMeterData);
             setMeasureDataData(newMeasureDataData);
             setOtherData(newOtherData);
             setLoadMeterData(newLoadMeterData);
@@ -287,6 +313,7 @@ function Com({deviceVersion}) {
             <DetalisCard data={pcsData} />
             <DetalisCard data={bmsData} />
             <DetalisCard data={measureMeterData} />
+            {showUserMeterData&&<DetalisCard data={userMeterData} />}
             {showLoadMeterData&&<DetalisCard data={loadMeterData} />}
             <DetalisCard data={measureDataData} />
             <DetalisCard data={otherData} />

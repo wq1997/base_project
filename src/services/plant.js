@@ -45,3 +45,6 @@ export const getDeviceStats = (payload) => {
   return axiosInstance.get(`/energy/plant/getDeviceStats215?plantId=${payload.plantId}`);
 }
 
+export const getMeterList = (payload) => {
+  return axiosInstance.get(`/minsys/revenue/getMeterList?plantId=${payload.plantId}`);
+}

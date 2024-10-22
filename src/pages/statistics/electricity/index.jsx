@@ -1,5 +1,5 @@
 import { useIntl, useSelector } from "umi";
-import { Form, Cascader, DatePicker, Button, Flex, Radio, theme as antdTheme, Space, message, Empty, Spin, Tooltip, Table, Select } from "antd";
+import { Form, Cascader, DatePicker, Button, Flex, Radio, theme as antdTheme, Space, message, Spin, Tooltip, Table, Select } from "antd";
 import { Title } from "@/components";
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect } from "react";
@@ -13,7 +13,8 @@ import {
     showDataByTable as showDataByTableServe,
 } from "@/services";
 import {
-    getDtusOfPlant as getDtusOfPlantServe
+    getDtusOfPlant as getDtusOfPlantServe,
+    getMeterList as getMeterListServe
 } from "@/services/plant";
 import { downloadFile } from "@/utils/utils";
 import styles from "./index.less";
@@ -31,43 +32,51 @@ const Electricity = () => {
     const [loading, setLoading] = useState(false);
     const [plantList, setPlantList] = useState([]);
     const [deviceList, setDeviceList] = useState([]);
+    const [isJJT, setIsJJT] = useState(false);
+    const [params, setParams] = useState({});
     const global = useSelector(state => state.global);
     const { theme, locale } = global;
 
-    const getParams = async (showMessage = true) => {
+    const getParams = async () => {
         let format = "YYYY-MM-DD";
         const values = await form.validateFields();
-        const { timeType, plantId, deviceId } = values;
+        let { timeType, plantId, deviceId } = values;
         let params = {};
+        let dtuId = plantId === 1807 ? deviceId?.[1] : deviceId
+        let deviceType = Array.isArray(deviceId) && deviceId?.[0] === "JLDB" ? "meter" : "device";
         if (timeType === "year") {
             format = "YYYY";
             params = {
                 plantId,
-                dtuId: deviceId,
+                dtuId,
                 date: dayjs(values.yearTime).format(format),
-                dateType: timeType
+                dateType: timeType,
+                deviceType
             }
         }
         if (timeType == "day") {
             const dayLength = dayjs(dayjs(values.dayTime[1]).format(format)).diff(dayjs(values.dayTime[0]).format(format), 'days') + 1;
             if (dayLength < 5 || dayLength > 12) {
-                showMessage && message.error(intl.formatMessage({ id: '日期范围最少选择5天最多选择12天！' }));
+                message.error(intl.formatMessage({ id: '日期范围最少选择5天最多选择12天！' }));
                 return Promise.reject("参数错误");
             }
             params = {
                 plantId,
-                dtuId: deviceId,
+                dtuId,
                 startDate: dayjs(values.dayTime[0]).format(format),
                 endDate: dayjs(values.dayTime[1]).format(format),
-                dateType: timeType
+                dateType: timeType,
+                deviceType
             }
         }
+        setParams({
+            ...params,
+            deviceId
+        });
         return params;
     }
 
     const initOption = async () => {
-        const values = await form.validateFields();
-        const { timeType } = values;
         let lMax1 = Number(Math.max(...dataSource?.map(item => item.dayChargeEnergy) || []));
         let lMax2 = Number(Math.max(...dataSource?.map(item => item.dayDischargeEnergy)) || []);
         let lMax = lMax1 > lMax2 ? lMax1 : lMax2;
@@ -210,36 +219,107 @@ const Electricity = () => {
         setOption(option);
     }
 
-    const getDtusOfPlant = async (plantList, plantId) => {
+    const getDtusOfPlant = async (plantId, deviceId) => {
+        plantId = plantId || plantList?.[0]?.value;
         form.setFieldsValue({ deviceId: undefined });
-        const res = await getDtusOfPlantServe({ plantId });
-        if (res?.data?.data) {
-            let data = res?.data?.data;
-            if (data) {
-                try {
-                    data = JSON.parse(data);
-                } catch {
-                    data = [];
-                }
-                data = data?.length > 0 ? data?.map(item => {
-                    return {
-                        value: item.id,
-                        label: item.name || intl.formatMessage({ id: '设备无名称' })
+        setIsJJT(plantId === 1807);
+        let res = null;
+        if (plantId === 1807) {
+            let options = [
+                {
+                    value: "HWG",
+                    label: intl.formatMessage({ id: '户外柜' })
+                },
+                {
+                    value: "JLDB",
+                    label: intl.formatMessage({ id: '用户计量电表' })
+                },
+            ];
+            res = await getDtusOfPlantServe({ plantId })
+            if (res?.data?.data) {
+                let data = res?.data?.data;
+                if (data) {
+                    try {
+                        data = JSON.parse(data);
+                    } catch {
+                        data = [];
                     }
-                }) : [];
-                setPlantList(plantList);
-                setDeviceList(data);
-
-                // 如果是没选择 默认第一个
-                const { plantId: currentPlantId } = await form.getFieldsValue(["plantId"])
-                if (!currentPlantId) {
-                    form.setFieldsValue({ plantId, deviceId: data?.[0]?.value })
-                    setTimeout(async () => {
-                        const params = await getParams();
-                        getDataSource(params);
-                        getTableData();
-                    }, 200)
+                    options[0].children = data?.length > 0 ? data?.map(item => {
+                        return {
+                            value: item.id,
+                            label: item.name || intl.formatMessage({ id: '设备无名称' })
+                        }
+                    }) : [];
                 }
+            }
+            res = await getMeterListServe({ plantId });
+            if (res?.data?.data) {
+                options[1].children = res?.data?.data;
+            }
+            setDeviceList(options);
+            // 如果是没选择 默认第一个
+            if (!params?.plantId && !params?.deviceId) {
+                form.setFieldsValue({
+                    plantId: plantList?.[0]?.value,
+                    deviceId: data?.[0]?.value
+                })
+                setTimeout(async () => {
+                    await getDataSource();
+                    await getTableData();
+                }, 400)
+            }
+
+            if (plantId && deviceId) {
+                form.setFieldsValue({
+                    plantId,
+                    deviceId
+                })
+                setTimeout(async () => {
+                    await getDataSource();
+                    await getTableData();
+                }, 400)
+            }
+        } else {
+            res = await getDtusOfPlantServe({ plantId })
+            if (res?.data?.data) {
+                let data = res?.data?.data;
+                if (data) {
+                    try {
+                        data = JSON.parse(data);
+                    } catch {
+                        data = [];
+                    }
+                    data = data?.length > 0 ? data?.map(item => {
+                        return {
+                            value: item.id,
+                            label: item.name || intl.formatMessage({ id: '设备无名称' })
+                        }
+                    }) : [];
+                    setDeviceList(data);
+
+                    // 如果是没选择 默认第一个
+                    if (!params?.plantId && !params?.deviceId) {
+                        form.setFieldsValue({
+                            plantId: plantList?.[0]?.value,
+                            deviceId: data?.[0]?.value
+                        })
+                        setTimeout(async () => {
+                            await getDataSource();
+                            await getTableData();
+                        }, 400)
+                    }
+                }
+            }
+
+            if (plantId && deviceId) {
+                form.setFieldsValue({
+                    plantId,
+                    deviceId
+                })
+                setTimeout(async () => {
+                    await getDataSource();
+                    await getTableData();
+                }, 400)
             }
         }
     }
@@ -255,7 +335,7 @@ const Electricity = () => {
                 }
             })
             if (plantList?.length > 0) {
-                getDtusOfPlant(plantList, plantList?.[0]?.value)
+                setPlantList([...plantList]);
             }
         }
     }
@@ -269,28 +349,206 @@ const Electricity = () => {
         }
     }
 
-    const getDataSource = async (params) => {
-        setLoading(true);
+    const getDataSource = async () => {
+        const params = await getParams();
         const res = await getRevenueServe(params);
         if (res?.data?.data) {
             setDataSource(res?.data?.data)
         } else {
             setDataSource([]);
         }
-        setLoading(false);
     }
 
     useEffect(() => {
         initOption();
-        setTimeout(()=>{
-            getTableData();
-        }, 200)
-    }, [dataSource, theme, locale]);
+    }, [dataSource]);
 
     useEffect(() => {
+        // 根据电站列表获取设备
+        if (plantList?.length > 0) {
+            getDtusOfPlant()
+        }
+    }, [plantList])
+
+    useEffect(() => {
+        // 获取电站列表
         initPlantDevice();
     }, [])
 
+    useEffect(() => {
+        if (dataSource?.length > 0) {
+            initOption();
+        }
+        // 根据电站列表获取设备
+        if (plantList?.length > 0 && params?.plantId && params?.deviceId) {
+            getDtusOfPlant(params?.plantId, params?.deviceId);
+        }
+    }, [locale])
+
+    useEffect(() => {
+        if (dataSource?.length > 0) {
+            initOption();
+        }
+    }, [theme])
+
+    let columns = [];
+    if (Array.isArray(params.deviceId) && params.deviceId?.[0] === "JLDB") {
+        columns = [
+            {
+                title: intl.formatMessage({ id: '日期' }),
+                dataIndex: 'time',
+                key: 'time',
+                render: (data, record) => {
+                    return moment(data).format(record?.dateType === "year" ? "YYYY/MM" : "YYYY/MM/DD")
+                }
+            },
+            {
+                title: intl.formatMessage({ id: '设备名称' }),
+                dataIndex: 'dtuName',
+                key: 'dtuName',
+                width: '10%',
+                render(value) {
+                    return (
+                        <Tooltip title={value}>
+                            <div
+                                style={{
+                                    overflow: 'hidden',
+                                    whiteSpace: 'nowrap',
+                                    textOverflow: 'ellipsis',
+                                    width: '100%',
+                                }}
+                            >
+                                {value}
+                            </div>
+                        </Tooltip>
+                    )
+                }
+            },
+            {
+                title: `${intl.formatMessage({ id: '尖时段充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
+                dataIndex: 'kWh',
+                key: 'kWh',
+                render(_, record) {
+                    return `${record?.tipChargeEnergy}/${record?.tipDischargeEnergy}`
+                }
+            },
+            {
+                title: `${intl.formatMessage({ id: '峰时段充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
+                dataIndex: 'kWh',
+                key: 'kWh',
+                render(_, record) {
+                    return `${record?.peakChargeEnergy}/${record?.peakDischargeEnergy}`
+                }
+            },
+            {
+                title: `${intl.formatMessage({ id: '平时段充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
+                dataIndex: 'kWh',
+                key: 'kWh',
+                render(_, record) {
+                    return `${record?.flatChargeEnergy}/${record?.flatDischargeEnergy}`
+                }
+            },
+            {
+                title: `${intl.formatMessage({ id: '谷时段充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
+                dataIndex: 'kWh',
+                key: 'kWh',
+                render(_, record) {
+                    return `${record?.valleyChargeEnergy}/${record?.valleyDischargeEnergy}`
+                }
+            },
+            {
+                title: `${intl.formatMessage({ id: '总充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
+                dataIndex: 'kWh',
+                key: 'kWh',
+                render(_, record) {
+                    return `${record?.dayChargeEnergy}/${record?.dayDischargeEnergy}`
+                }
+            }
+        ]
+    } else {
+        columns = [
+            {
+                title: intl.formatMessage({ id: '日期' }),
+                dataIndex: 'time',
+                key: 'time',
+                render: (data, record) => {
+                    return moment(data).format(record?.dateType === "year" ? "YYYY/MM" : "YYYY/MM/DD")
+                }
+            },
+            {
+                title: intl.formatMessage({ id: '设备名称' }),
+                dataIndex: 'dtuName',
+                key: 'dtuName',
+                width: '10%',
+                render(value) {
+                    return (
+                        <Tooltip title={value}>
+                            <div
+                                style={{
+                                    overflow: 'hidden',
+                                    whiteSpace: 'nowrap',
+                                    textOverflow: 'ellipsis',
+                                    width: '100%',
+                                }}
+                            >
+                                {value}
+                            </div>
+                        </Tooltip>
+                    )
+                }
+            },
+            {
+                title: `${intl.formatMessage({ id: '尖时段充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
+                dataIndex: 'kWh',
+                key: 'kWh',
+                render(_, record) {
+                    return `${record?.tipChargeEnergy}/${record?.tipDischargeEnergy}`
+                }
+            },
+            {
+                title: `${intl.formatMessage({ id: '峰时段充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
+                dataIndex: 'kWh',
+                key: 'kWh',
+                render(_, record) {
+                    return `${record?.peakChargeEnergy}/${record?.peakDischargeEnergy}`
+                }
+            },
+            {
+                title: `${intl.formatMessage({ id: '平时段充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
+                dataIndex: 'kWh',
+                key: 'kWh',
+                render(_, record) {
+                    return `${record?.flatChargeEnergy}/${record?.flatDischargeEnergy}`
+                }
+            },
+            {
+                title: `${intl.formatMessage({ id: '谷时段充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
+                dataIndex: 'kWh',
+                key: 'kWh',
+                render(_, record) {
+                    return `${record?.valleyChargeEnergy}/${record?.valleyDischargeEnergy}`
+                }
+            },
+            {
+                title: `${intl.formatMessage({ id: '总充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
+                dataIndex: 'kWh',
+                key: 'kWh',
+                render(_, record) {
+                    return `${record?.dayChargeEnergy}/${record?.dayDischargeEnergy}`
+                }
+            },
+            {
+                title: `${intl.formatMessage({ id: '充放电效率' })}(%)`,
+                dataIndex: 'efficiency',
+                key: 'efficiency',
+            },
+            {
+                title: `${intl.formatMessage({ id: '收益' })}(${intl.formatMessage({ id: '元' })})`,
+                dataIndex: 'number',
+                key: 'number',
+            },
+        ]
+    }
     return (
         <div className={styles.content}>
             <Space size={10} direction="vertical" style={{ width: '100%', height: '100%', padding: 30 }}>
@@ -315,18 +573,27 @@ const Electricity = () => {
                                     options={plantList}
                                     onChange={async value => {
                                         if (value) {
-                                            getDtusOfPlant(plantList, value)
+                                            getDtusOfPlant(value)
                                         }
                                     }}
                                     style={{ width: '250px', height: 40 }}
                                 />
                             </Form.Item>
                             <Form.Item name={"deviceId"} label={intl.formatMessage({ id: '设备' })}>
-                                <Select
-                                    options={deviceList}
-                                    style={{ width: '250px', height: 40 }}
-                                    allowClear
-                                />
+                                {
+                                    isJJT ?
+                                        <Cascader
+                                            options={deviceList}
+                                            style={{ width: '250px', height: 40 }}
+                                            allowClear
+                                        />
+                                        :
+                                        <Select
+                                            options={deviceList}
+                                            style={{ width: '250px', height: 40 }}
+                                            allowClear
+                                        />
+                                }
                             </Form.Item>
                             <Form.Item noStyle dependencies={['timeType']}>
                                 {({ getFieldsValue }) => {
@@ -372,11 +639,8 @@ const Electricity = () => {
                     </Form>
                     <Button
                         onClick={async () => {
-                            const params = await getParams();
-                            if (params) {
-                                getDataSource(params);
-                                getTableData();
-                            }
+                            await getDataSource();
+                            await getTableData();
                         }}
                         type="primary"
                         style={{ padding: '0 20px', height: 40 }}
@@ -418,93 +682,7 @@ const Electricity = () => {
                             <Table
                                 pagination={false}
                                 dataSource={tableData}
-                                columns={[
-                                    {
-                                        title: intl.formatMessage({ id: '日期' }),
-                                        dataIndex: 'time',
-                                        key: 'time',
-                                        render: (data, record) => {
-                                            return moment(data).format(record?.dateType === "year" ? "YYYY/MM" : "YYYY/MM/DD")
-                                        }
-                                    },
-                                    {
-                                        title: intl.formatMessage({ id: '设备名称' }),
-                                        dataIndex: 'dtuName',
-                                        key: 'dtuName',
-                                        width: '10%',
-                                        render(value) {
-                                            return (
-                                                <Tooltip title={value}>
-                                                    <div
-                                                        style={{
-                                                            overflow: 'hidden',
-                                                            whiteSpace: 'nowrap',
-                                                            textOverflow: 'ellipsis',
-                                                            width: '100%',
-                                                        }}
-                                                    >
-                                                        {value}
-                                                    </div>
-                                                </Tooltip>
-                                            )
-                                        }
-                                    },
-                                    {
-                                        title: `${intl.formatMessage({ id: '尖时段充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
-                                        dataIndex: 'kWh',
-                                        key: 'kWh',
-                                        render(_, record) {
-                                            return `${record?.tipChargeEnergy}/${record?.tipDischargeEnergy}`
-                                        }
-                                    },
-                                    {
-                                        title: `${intl.formatMessage({ id: '峰时段充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
-                                        dataIndex: 'kWh',
-                                        key: 'kWh',
-                                        render(_, record) {
-                                            return `${record?.peakChargeEnergy}/${record?.peakDischargeEnergy}`
-                                        }
-                                    },
-                                    {
-                                        title: `${intl.formatMessage({ id: '平时段充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
-                                        dataIndex: 'kWh',
-                                        key: 'kWh',
-                                        render(_, record) {
-                                            return `${record?.flatChargeEnergy}/${record?.flatDischargeEnergy}`
-                                        }
-                                    },
-                                    {
-                                        title: `${intl.formatMessage({ id: '谷时段充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
-                                        dataIndex: 'kWh',
-                                        key: 'kWh',
-                                        render(_, record) {
-                                            return `${record?.valleyChargeEnergy}/${record?.valleyDischargeEnergy}`
-                                        }
-                                    },
-                                    // {
-                                    //     title: intl.formatMessage({id: 'sn号'}),
-                                    //     dataIndex: 'sn',
-                                    //     key: 'sn',
-                                    // },
-                                    {
-                                        title: `${intl.formatMessage({ id: '总充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
-                                        dataIndex: 'kWh',
-                                        key: 'kWh',
-                                        render(_, record) {
-                                            return `${record?.dayChargeEnergy}/${record?.dayDischargeEnergy}`
-                                        }
-                                    },
-                                    {
-                                        title: `${intl.formatMessage({ id: '充放电效率' })}(%)`,
-                                        dataIndex: 'efficiency',
-                                        key: 'efficiency',
-                                    },
-                                    {
-                                        title: `${intl.formatMessage({ id: '收益' })}(${intl.formatMessage({ id: '元' })})`,
-                                        dataIndex: 'number',
-                                        key: 'number',
-                                    },
-                                ]}
+                                columns={columns}
                                 scroll={{
                                     y: 'calc(50vh - 250px)'
                                 }}

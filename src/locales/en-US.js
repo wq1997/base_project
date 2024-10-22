@@ -2059,4 +2059,17 @@ export default {
     '二级': 'Level 2',
     '三级': 'Level 3',
     '四级': 'Level 4',
+    '当前正向总有功电能': 'Current Positive Total Active Energy',
+    '当前反向总有功电能': 'Current Reverse Total Active Energy',
+    '当前正向有功尖电能': 'Current Positive Active Peak Energy',
+    '当前正向有功峰电能': 'Current Positive Active Peak Energy',
+    '当前正向有功平电能': 'Current Positive Active Flat Energy',
+    '当前正向有功谷电能': 'Current Positive Active Valley Energy',
+    '当前反向有功尖电能': 'Current Reverse Active Peak Energy',
+    '当前反向有功峰电能': 'Current Reverse Active Peak Energy',
+    '当前反向有功平电能': 'Current Reverse Active Flat Energy',
+    '当前反向有功谷电能': 'Current Reverse Active Valley Energy',
+    '储能计量电表': 'Energy Storage Meter',
+    '用户计量电表': 'Customer Metering Meter',
+    '户外柜': 'Outdoor Cabinet'
 } 
