@@ -946,9 +946,9 @@ export default {
 '超级用户':'Superuser',
 "保存成功":"The save was successful",
 '下发命令':'Issue Command',    
-
-"":"",
-"":"",
+'是否确认重置密码?':'Do you confirm to reset your password?',
+"手机号":"Mobile Phone Number",
+"备注":"Remarks",
 "":"",
 "":"",
 "":"",

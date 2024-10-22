@@ -70,25 +70,25 @@ const App = (props) => {
       rules:[]
 
     },
-    {
-      label: '场站类型',
-      key: 'sceneType',
-      type: props.title === '新增用户' ? 2 : null,
-      required: true,
-      data: [{
-        label: '储能电站',
-        value: '1',
-        key: '储能电站',
-      },
-      {
-        label: '光储充电站',
-        value: '2',
-        key: '光储充电站',
-      },
-      ],
-      rules:[]
+    // {
+    //   label: '场站类型',
+    //   key: 'sceneType',
+    //   type: props.title === '新增用户' ? 2 : null,
+    //   required: true,
+    //   data: [{
+    //     label: '储能电站',
+    //     value: '1',
+    //     key: '储能电站',
+    //   },
+    //   {
+    //     label: '光储充电站',
+    //     value: '2',
+    //     key: '光储充电站',
+    //   },
+    //   ],
+    //   rules:[]
 
-    },
+    // },
     {
       label: '手机',
       key: 'phone',
