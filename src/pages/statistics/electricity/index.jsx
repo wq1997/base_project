@@ -586,6 +586,7 @@ const Electricity = () => {
                                             options={deviceList}
                                             style={{ width: '250px', height: 40 }}
                                             allowClear
+                                            changeOnSelect
                                         />
                                         :
                                         <Select
