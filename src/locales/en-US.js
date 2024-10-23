@@ -949,6 +949,9 @@ export default {
 '是否确认重置密码?':'Do you confirm to reset your password?',
 "手机号":"Mobile Phone Number",
 "备注":"Remarks",
+'时间段应在5至15天':'The time period should be between 5 and 15 days',
+'时间最多选7天':"Time' time up to 7 days",
+
 "":"",
 "":"",
 "":"",
