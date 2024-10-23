@@ -1777,7 +1777,7 @@
   "resolved" "https://registry.npmjs.org/@fullcalendar/daygrid/-/daygrid-6.1.15.tgz"
   "version" "6.1.15"
 
-"@fullcalendar/interaction@^6.1.9":
+"@fullcalendar/interaction@^6.1.15":
   "integrity" "sha512-DOTSkofizM7QItjgu7W68TvKKvN9PSEEvDJceyMbQDvlXHa7pm/WAVtAc6xSDZ9xmB1QramYoWGLHkCYbTW1rQ=="
   "resolved" "https://registry.npmjs.org/@fullcalendar/interaction/-/interaction-6.1.15.tgz"
   "version" "6.1.15"

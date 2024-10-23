@@ -64,8 +64,6 @@ function Com() {
   }, [way])
 
   const getInitData = async () => {
-    console.log(way,date,dateStr,currentFormat);
-    
     let { data: reqData } = await getExportReportList({
       plantId: localStorage.getItem('plantId'),
       type: way,
@@ -97,11 +95,9 @@ function Com() {
       allData?.data?.reportData?.[2].map((item,i)=>{
         item.date=dayjs(dateStr).format(currentFormat);
       })
-    }else if(way!==4){
-      
+    }else {
       allData?.data?.reportData?.[0]?.map((item,i)=>{
         item.date=dayjs(dateStr).subtract(allData?.data?.reportData?.[0].length-i, 'day').format(currentFormat);
-        console.log(item.date);
         
       });
       allData?.data?.reportData?.[1]?.map((item,i)=>{
@@ -166,8 +162,9 @@ function Com() {
     }else{
       setCurrentFormat('YYYY')
       setPicker('year')
-
     };
+    // setDate(new Date());
+    // setDateStr(dayjs(new Date()).format('YYYY-MM-DD'))
   }
   const changeDate = (val, str) => {
     setDateStr(str);
