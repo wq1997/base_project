@@ -14,7 +14,7 @@
         background: linear-gradient(180deg, #02232E 0%, #0B3745 100%);
         padding: 20px;
         margin-bottom: 18px;
-        height: 350px;
+        position: relative;
 
         .centerContent {
             margin-top: 10px;
@@ -53,20 +53,31 @@
                 }
             }
 
-            .centerContent2{
+            .centerContent2 {
                 flex: 1;
                 height: 300px;
             }
 
-            .centerContent3{
+            .centerContent3 {
                 flex: 1;
                 height: 300px;
+            }
+
+            .upDownIcon {
+                position: absolute;
+                left: 50%;
+                bottom: 0;
+                transform: translateX(-50%);
+                background: linear-gradient(180deg, #0EBCB6 0%, #0B3745 100%);
+                border-radius: 4px 4px 0px 0px;
+                padding: 5px 25px;
+                cursor: pointer;
             }
         }
     }
 }
 
-.images{
+.images {
     padding-top: 30px;
     display: flex;
     flex-wrap: wrap;
