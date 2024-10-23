@@ -251,33 +251,33 @@ const Electricity = () => {
                         }
                     }) : [];
                 }
-            }
-            res = await getMeterListServe({ plantId });
-            if (res?.data?.data) {
-                options[1].children = res?.data?.data;
-            }
-            setDeviceList(options);
-            // 如果是没选择 默认第一个
-            if (!params?.plantId && !params?.deviceId) {
-                form.setFieldsValue({
-                    plantId: plantList?.[0]?.value,
-                    deviceId: data?.[0]?.value
-                })
-                setTimeout(async () => {
-                    await getDataSource();
-                    await getTableData();
-                }, 400)
-            }
+                res = await getMeterListServe({ plantId });
+                if (res?.data?.data) {
+                    options[1].children = res?.data?.data;
+                }
+                setDeviceList(options);
+                // 如果是没选择 默认第一个
+                if (!params?.plantId && !params?.deviceId) {
+                    form.setFieldsValue({
+                        plantId: plantList?.[0]?.value,
+                        deviceId: [options?.[0].value]
+                    })
+                    setTimeout(async () => {
+                        await getDataSource();
+                        await getTableData();
+                    }, 400)
+                }
 
-            if (plantId && deviceId) {
-                form.setFieldsValue({
-                    plantId,
-                    deviceId
-                })
-                setTimeout(async () => {
-                    await getDataSource();
-                    await getTableData();
-                }, 400)
+                if (plantId && deviceId) {
+                    form.setFieldsValue({
+                        plantId,
+                        deviceId
+                    })
+                    setTimeout(async () => {
+                        await getDataSource();
+                        await getTableData();
+                    }, 400)
+                }
             }
         } else {
             res = await getDtusOfPlantServe({ plantId })
