@@ -327,12 +327,16 @@ const Account = () => {
             onOk: async () => {
                 const res = await deleteWorkOrderServer(selectedRowKeys);
                 if (res?.data?.status == "SUCCESS") {
-                    message.success(`删除成功`);
-                    setPagination({
-                        current: 1,
-                    });
+                    const { current } = paginationRef?.current;
+                    if (current != 1 && userList?.length == selectedRowKeys?.length) {
+                        paginationRef.current.current = current - 1;
+                        setPagination({
+                            current: current - 1,
+                        });
+                    }
                     setSelectedRowKeys([]);
                     getList();
+                    message.success(`删除成功`);
                 }
             },
         });

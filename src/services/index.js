@@ -26,12 +26,24 @@ export const getBasAlarmTypeIntData = payload => {
     return axiosInstance.get(`/bas-alarm-type/get-search-page-init-data`);
 };
 
+export const get215BasAlarmTypeIntData = payload => {
+    return axiosInstance.get(`/bas-alarm-type215/get-search-page-init-data`);
+};
+
 export const getBasAlarmList = payload => {
     return axiosInstance.post(`/bas-alarm-type/find-page`, payload);
 };
 
+export const get215BasAlarmList = payload => {
+    return axiosInstance.post(`/bas-alarm-type215/find-page`, payload);
+};
+
 export const updateAlarmType = payload => {
     return axiosInstance.post(`/bas-alarm-type/update`, payload);
+};
+
+export const update215AlarmType = payload => {
+    return axiosInstance.post(`/bas-alarm-type215/update`, payload);
 };
 
 export const downloadAlarmTypeTemplate = payload => {

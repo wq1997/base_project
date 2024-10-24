@@ -163,7 +163,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                     };
                 }),
             });
-        }else{
+        } else {
             form.resetFields();
         }
     }, [editCurrentStep, detailRow]);
@@ -183,10 +183,13 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                 "supportStandardInspection",
                 "type",
                 "productType",
+                "outdoorCabinetSpec",
                 "region",
             ]);
             res = await basProjectPart1SaveOrUpdateServe({
                 ...values,
+                outdoorCabinetSpec:
+                    values?.productType == "OUTDOOR_CABINET" ? values?.outdoorCabinetSpec : null,
                 approvalTime: dayjs(values?.approvalTime).format("YYYY-MM-DD"),
                 id: detailRow?.id || addId,
             });
@@ -555,28 +558,34 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                             <Input style={{ width: "100%" }} placeholder="请输入项目名称" />
                         </Form.Item>
                         <Form.Item
-                            label="充放功率(MW)"
+                            label="项目装机功率(MW)"
                             name="maxPowerMw"
                             rules={[
                                 {
                                     required: true,
-                                    message: "请输入充放功率",
+                                    message: "请输入项目装机功率",
                                 },
                             ]}
                         >
-                            <InputNumber style={{ width: "100%" }} placeholder="请输入充放功率" />
+                            <InputNumber
+                                style={{ width: "100%" }}
+                                placeholder="请输入项目装机功率"
+                            />
                         </Form.Item>
                         <Form.Item
-                            label="项目容量(MWh)"
+                            label="项目装机容量(MWh)"
                             name="capacityMwh"
                             rules={[
                                 {
                                     required: true,
-                                    message: "请输入项目容量",
+                                    message: "请输入项目装机容量",
                                 },
                             ]}
                         >
-                            <InputNumber style={{ width: "100%" }} placeholder="请输入项目容量" />
+                            <InputNumber
+                                style={{ width: "100%" }}
+                                placeholder="请输入项目装机容量"
+                            />
                         </Form.Item>
                         <Form.Item
                             label="项目阶段"
@@ -596,7 +605,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                 }}
                                 options={initOption?.phases || []}
                                 onChange={value => {
-                                    form.setFieldsValue({subPhase: undefined})
+                                    form.setFieldsValue({ subPhase: undefined });
                                     setPhase(value);
                                 }}
                             />
@@ -665,18 +674,34 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                 options={initOption?.productTypes || []}
                             />
                         </Form.Item>
-                        <Form.Item
-                            label="户外柜规格"
-                            name="outdoorCabinetSpec"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "请输入户外柜规格",
-                                },
-                            ]}
-                        >
-                            <Input style={{ width: "100%" }} placeholder="请输入户外柜规格" />
+                        <Form.Item dependencies={["productType"]} noStyle>
+                            {({ getFieldsValue }) => {
+                                const { productType } = getFieldsValue(["productType"]);
+                                return (
+                                    <Form.Item
+                                        label="户外柜规格"
+                                        name="outdoorCabinetSpec"
+                                        hidden={productType != "OUTDOOR_CABINET"}
+                                        rules={[
+                                            {
+                                                required: productType == "OUTDOOR_CABINET",
+                                                message: "请选择户外柜规格",
+                                            },
+                                        ]}
+                                    >
+                                        <Select
+                                            placeholder="请选择户外柜规格"
+                                            fieldNames={{
+                                                label: "name",
+                                                value: "code",
+                                            }}
+                                            options={initOption?.outdoorCabinetSpecs || []}
+                                        />
+                                    </Form.Item>
+                                );
+                            }}
                         </Form.Item>
+
                         <Form.Item
                             label="所属区域"
                             name="region"
@@ -960,7 +985,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                     <Row span={24}>
                                         <Col span={12}>
                                             <Form.Item
-                                                label="电池仓数量"
+                                                label="电池仓数量(个)"
                                                 name="batterySlotCount"
                                                 rules={[
                                                     {
@@ -998,7 +1023,29 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                     <Row span={24}>
                                         <Col span={12}>
                                             <Form.Item
-                                                label="PCS一体机数量"
+                                                label="PCS类型"
+                                                name="pcsType"
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message: "请选择PCS类型",
+                                                    },
+                                                ]}
+                                            >
+                                                <Select
+                                                    options={initOption?.pcsTypes?.map(item => {
+                                                        return {
+                                                            label: item,
+                                                            value: item,
+                                                        };
+                                                    })}
+                                                    placeholder="请选择PCS类型"
+                                                />
+                                            </Form.Item>
+                                        </Col>
+                                        <Col span={12}>
+                                            <Form.Item
+                                                label="PCS一体机数量(个)"
                                                 name="pcsCount"
                                                 rules={[
                                                     {
@@ -1014,6 +1061,9 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                 />
                                             </Form.Item>
                                         </Col>
+                                    </Row>
+
+                                    <Row span={24}>
                                         <Col span={12}>
                                             <Form.Item
                                                 label="电芯材料"
@@ -1038,9 +1088,6 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                 />
                                             </Form.Item>
                                         </Col>
-                                    </Row>
-
-                                    <Row span={24}>
                                         <Col span={12}>
                                             <Form.Item
                                                 label="电池堆成组方式"
@@ -1055,6 +1102,9 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                 <Input placeholder="请输入电池堆成组方式" />
                                             </Form.Item>
                                         </Col>
+                                    </Row>
+
+                                    <Row span={24}>
                                         <Col span={12}>
                                             <Form.Item
                                                 label="单台PCS最大功率(kW)"
@@ -1072,9 +1122,6 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                 />
                                             </Form.Item>
                                         </Col>
-                                    </Row>
-
-                                    <Row span={24}>
                                         <Col span={12}>
                                             <Form.Item
                                                 label="电池簇成组方式"
@@ -1087,6 +1134,23 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                 ]}
                                             >
                                                 <Input placeholder="请输入电池簇成组方式" />
+                                            </Form.Item>
+                                        </Col>
+                                    </Row>
+
+                                    <Row span={24}>
+                                        <Col span={12}>
+                                            <Form.Item
+                                                label="电池模组成组方式"
+                                                name="batteryModuleComposeMethod"
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message: "请输入电池模组成组方式",
+                                                    },
+                                                ]}
+                                            >
+                                                <Input placeholder="请输入电池模组成组方式" />
                                             </Form.Item>
                                         </Col>
                                         <Col span={12}>
@@ -1125,7 +1189,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                         </Col>
                                         <Col span={12}>
                                             <Form.Item
-                                                label="充放电转换效率"
+                                                label="充放电转换效率(%)"
                                                 name="chargeDischargeCe"
                                                 rules={[
                                                     {
@@ -1159,7 +1223,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                         </Col>
                                         <Col span={12}>
                                             <Form.Item
-                                                label="关联场站信息"
+                                                label="关联电站信息"
                                                 name="sePlants"
                                                 rules={[
                                                     {
@@ -1169,7 +1233,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                                 value?.length > 1
                                                             ) {
                                                                 return Promise.reject(
-                                                                    "只能关联一个场站"
+                                                                    "只能关联一个电站"
                                                                 );
                                                             }
                                                             return Promise.resolve();
@@ -1179,7 +1243,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                             >
                                                 <Select
                                                     mode="multiple"
-                                                    placeholder="请输入关联场站信息"
+                                                    placeholder="请输入关联电站信息"
                                                     options={initOption?.sePlans?.map(item => {
                                                         return {
                                                             label: item?.name,
@@ -2197,7 +2261,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                                         }}
                                                                         type="primary"
                                                                     >
-                                                                        + 添加巡视组
+                                                                        + 添加巡检组
                                                                     </Button>
                                                                 </>
                                                             );

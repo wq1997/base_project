@@ -93,9 +93,13 @@ const Account = () => {
                 const res = await deleteRoleServer(selectedRowKeys);
                 if (res?.data?.status == "SUCCESS") {
                     message.success(`删除成功`);
-                    setPagination({
-                        current: 1,
-                    });
+                    const { current } = paginationRef?.current;
+                    if (current != 1 && list?.length == selectedRowKeys?.length) {
+                        paginationRef.current.current = current - 1;
+                        setPagination({
+                            current: current - 1,
+                        });
+                    }
                     setSelectedRowKeys([]);
                     getList();
                 }
@@ -123,15 +127,22 @@ const Account = () => {
                     label="角色名称"
                     value={name}
                     onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
                         nameRef.current = value;
                         setName(value);
                     }}
                 />
-                <Button type="primary" onClick={getList}>
+                <Button
+                    type="primary"
+                    onClick={() => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        getList();
+                    }}
+                >
                     搜索
                 </Button>
-                <Button onClick={handleReset} type="primary" danger>重置</Button>
+                <Button onClick={handleReset} type="primary" danger>
+                    重置
+                </Button>
             </Space>
             <Table
                 rowKey="id"
@@ -150,12 +161,7 @@ const Account = () => {
                     getList();
                 }}
                 title={() => (
-                    <Space
-                        style={{
-                            display: "flex",
-                            justifyContent: "flex-end",
-                        }}
-                    >
+                    <Space>
                         <Button
                             type="primary"
                             icon={<PlusCircleFilled style={{ fontSize: 13 }} />}

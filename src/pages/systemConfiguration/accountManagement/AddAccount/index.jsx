@@ -17,6 +17,7 @@ import {
 import dayjs from "dayjs";
 import { Title } from "@/components";
 import { ExclamationCircleOutlined, CaretRightOutlined } from "@ant-design/icons";
+import { TELPHONE_REG, EMAIL_REG, ALL_SPACE_REG } from "@/utils/constants";
 import {
     getAccountUpdateIndexData as getAccountUpdateIndexDataServer,
     updateAccount as updateAccountServer,
@@ -90,6 +91,10 @@ const AddProject = ({ open, editId, onClose }) => {
                             required: true,
                             message: "请输入账号",
                         },
+                        {
+                            pattern: ALL_SPACE_REG,
+                            message: "请输入账号",
+                        },
                     ]}
                 >
                     <Input
@@ -107,6 +112,10 @@ const AddProject = ({ open, editId, onClose }) => {
                             required: true,
                             message: "请输入姓名",
                         },
+                        {
+                            pattern: ALL_SPACE_REG,
+                            message: "请输入姓名",
+                        },
                     ]}
                 >
                     <Input style={{ width: "100%" }} placeholder="请输入姓名" />
@@ -118,6 +127,10 @@ const AddProject = ({ open, editId, onClose }) => {
                     rules={[
                         {
                             required: !Boolean(editId),
+                            message: "请输入密码",
+                        },
+                        {
+                            pattern: ALL_SPACE_REG,
                             message: "请输入密码",
                         },
                     ]}
@@ -133,15 +146,16 @@ const AddProject = ({ open, editId, onClose }) => {
                             required: true,
                             message: "请输入关联手机号",
                         },
+                        {
+                            pattern: TELPHONE_REG,
+                            message: "手机号格式错误",
+                        },
                     ]}
                 >
                     <Input style={{ width: "100%" }} placeholder="请输入关联手机号" />
                 </Form.Item>
 
-                <Form.Item
-                    label="管辖区域"
-                    name="regions"
-                >
+                <Form.Item label="管辖区域" name="regions">
                     <Select
                         mode="multiple"
                         placeholder="请选择管辖区域"

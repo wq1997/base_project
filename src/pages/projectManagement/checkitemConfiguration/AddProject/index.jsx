@@ -1,16 +1,7 @@
 import React, { useState, useEffect } from "react";
-import {
-    Button,
-    Form,
-    Input,
-    Modal,
-    Radio,
-    Select,
-    Space,
-    message
-} from "antd";
+import { Button, Form, Input, Modal, Radio, Select, Space, message } from "antd";
 import { Title } from "@/components";
-import {  
+import {
     basInspectionItemSaveOrUpdateInitData as basInspectionItemSaveOrUpdateInitDataServe,
     basInspectionItemSaveOrUpdate as basInspectionItemSaveOrUpdateServe,
 } from "@/services";
@@ -20,41 +11,43 @@ const AddProject = ({ open, editData, onClose }) => {
     const [form] = Form.useForm();
     const [typeList, setTypeList] = useState([]);
     const onFinish = async values => {
-        const res = await basInspectionItemSaveOrUpdateServe({id: editData?.id, ...values});
-        if(res?.data?.status==="SUCCESS"){
+        const res = await basInspectionItemSaveOrUpdateServe({ id: editData?.id, ...values });
+        if (res?.data?.status === "SUCCESS") {
             message.success("提交成功");
             onClose();
-        }else{
+        } else {
             message.error("提交失败");
         }
     };
 
     const getBasInspectionItemSaveOrUpdateInitData = async () => {
         const res = await basInspectionItemSaveOrUpdateInitDataServe();
-        if(res?.data?.status==="SUCCESS"){
-            setTypeList(res?.data?.data?.types?.map(item => {
-                return {
-                    value: item?.code,
-                    label: item?.name
-                }
-            }))
+        if (res?.data?.status === "SUCCESS") {
+            setTypeList(
+                res?.data?.data?.types?.map(item => {
+                    return {
+                        value: item?.code,
+                        label: item?.name,
+                    };
+                })
+            );
         }
-    }
+    };
 
-    useEffect(() => { 
+    useEffect(() => {
         form.resetFields();
-        if(open){
-            getBasInspectionItemSaveOrUpdateInitData()
+        if (open) {
+            getBasInspectionItemSaveOrUpdateInitData();
         }
     }, [open]);
 
-    useEffect(()=>{
+    useEffect(() => {
         form.setFieldsValue(editData);
-    }, [JSON.stringify(editData||{})]);
+    }, [JSON.stringify(editData || {})]);
 
     return (
         <Modal
-            title={<Title>{editData?"编辑巡检项":"新增巡检项"}</Title>}
+            title={<Title>{editData ? "编辑巡检项" : "新增巡检项"}</Title>}
             width={800}
             confirmLoading={true}
             open={open}
@@ -96,7 +89,11 @@ const AddProject = ({ open, editData, onClose }) => {
                         },
                     ]}
                 >
-                    <Select options={typeList} style={{ width: "100%" }} placeholder="请选择巡检项类型" />
+                    <Select
+                        options={typeList}
+                        style={{ width: "100%" }}
+                        placeholder="请选择巡检项类型"
+                    />
                 </Form.Item>
 
                 <Form.Item
@@ -109,7 +106,7 @@ const AddProject = ({ open, editData, onClose }) => {
                         },
                     ]}
                 >
-                    <Input style={{ width: "100%" }} placeholder="请输入巡检项内容" />
+                    <Input.TextArea style={{ width: "100%",height:200 }} placeholder="请输入巡检项内容" />
                 </Form.Item>
 
                 <Form.Item
