@@ -666,6 +666,18 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                             />
                         </Form.Item>
                         <Form.Item
+                            label="户外柜规格"
+                            name="outdoorCabinetSpec"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "请输入户外柜规格",
+                                },
+                            ]}
+                        >
+                            <Input style={{ width: "100%" }} placeholder="请输入户外柜规格" />
+                        </Form.Item>
+                        <Form.Item
                             label="所属区域"
                             name="region"
                             rules={[
