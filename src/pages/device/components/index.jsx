@@ -42,16 +42,16 @@ const Cabinet = () => {
     const getInitData = async () => {
         let { data } = await getBurDtuDevInfo2({ dtuId: getQueryString("id") });
         getQueryString("type") == 16 ?
-            (id == 22 ? setPageTypeList([
-                { label: t('总览'), key: 'OverView' },
-                { label: t('设备详情'), key: 'DeviceDetails' },
-                { label: t('pack详情'), key: 'PackDetails' },
-                { label: t('策略配置'), key: 'CzekhPolicy2' },
-            ]) : setPageTypeList([
+            (id == 28 ? setPageTypeList([
                 { label: t('总览'), key: 'OverView' },
                 { label: t('设备详情'), key: 'DeviceDetails' },
                 { label: t('pack详情'), key: 'PackDetails' },
                 // { label: t('策略配置'), key: 'CzekhPolicy2' },
+            ]) : setPageTypeList([
+                { label: t('总览'), key: 'OverView' },
+                { label: t('设备详情'), key: 'DeviceDetails' },
+                { label: t('pack详情'), key: 'PackDetails' },
+                { label: t('策略配置'), key: 'CzekhPolicy2' },
             ])) : (
                 data.data[0].devInfo?.pcsBranch?.length == 2 ? setPageTypeList([
                     { label: t('总览'), key: 'OverView' },

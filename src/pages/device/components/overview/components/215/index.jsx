@@ -84,7 +84,7 @@ const [option, setOption] = useState({})
                             globalCoord: false // 缺省为 false
                         }
                     },
-                    data: [(data?.data?.bmc?.[0]?.soc + data?.data?.bmc?.[1]?.soc) / 200 || 0, (data?.data?.bmc?.[0]?.soc + data?.data?.bmc?.[1]?.soc) / 200 || 0,], // data个数代表波浪数
+                    data: [(data?.data?.bms?.soc ) / 100 || 0, ((data?.data?.bms?.soc ) / 100) || 0,], // data个数代表波浪数
                     color: global.theme == 'default' ?
                         ['rgba(167, 227, 255,0.8)', 'rgba(167, 227, 255,0.6)', 'rgba(167, 227, 255,1)']
                         :
