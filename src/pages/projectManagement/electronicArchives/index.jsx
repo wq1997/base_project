@@ -348,7 +348,7 @@ const Account = () => {
                 ...paginationRef.current,
                 total: parseInt(totalRecord),
             });
-       
+
             setUserList(recordList);
         }
     };
@@ -700,7 +700,7 @@ const Account = () => {
                         {detailRow?.warrantyPeriodStartDate}~{detailRow?.warrantyPeriodEndDate}
                     </Descriptions.Item>
                     <Descriptions.Item label="电站所属省">{detailRow?.province}</Descriptions.Item>
-                    <Descriptions.Item label="电站所区市">{detailRow?.city}</Descriptions.Item>
+                    <Descriptions.Item label="电站所属市">{detailRow?.city}</Descriptions.Item>
                     <Descriptions.Item label="电站所属区/镇">
                         {detailRow?.district}
                     </Descriptions.Item>

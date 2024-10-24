@@ -86,11 +86,9 @@ const AlarmConfiguration = () => {
         // },
         {
             title: "设备名称",
-            dataIndex: "refSeAlarmType",
+            dataIndex: "seDevName",
             width: 200,
-            render(_, record) {
-                return record?.refSeAlarmType?.dev?.devName;
-            },
+             
         },
         {
             title: "告警名称",
@@ -240,7 +238,7 @@ const AlarmConfiguration = () => {
             if (res?.file?.status === "done" && res?.file?.response?.status === "FAILED") {
                 message.error(res?.file?.response?.msg);
             }
-        }
+        },
     };
 
     return (
@@ -395,6 +393,8 @@ const AlarmConfiguration = () => {
                         isAlramRef.current = undefined;
                         isWorkOrdersRef.current = undefined;
                         lastModifiedPersonRef.current = undefined;
+                        deviceNameRef.current = undefined;
+                        setDeviceName(undefined);
                         setLastModifiedPerson(undefined);
                         setIsWorkOrders(undefined);
                         setIsAlram(undefined);
@@ -450,20 +450,20 @@ const AlarmConfiguration = () => {
                                     const lastUpdaterNameLike = lastModifiedPersonRef.current;
                                     window.open(
                                         getBaseUrl() +
-                                        "/bas-alarm-type/download-import-template" +
-                                        jsonToUrlParams({
-                                            basProjectId,
-                                            sePlantId,
-                                            seAlarmTypeDescLike,
-                                            seDevNameLike,
-                                            mmsEventDescLike,
-                                            mmsEventLevel,
-                                            mmsEventClassify,
-                                            alarm,
-                                            autoGenerateWorkOrder,
-                                            lastUpdaterNameLike,
-                                            access_token: localStorage.getItem("Token"),
-                                        })
+                                            "/bas-alarm-type/download-import-template" +
+                                            jsonToUrlParams({
+                                                basProjectId,
+                                                sePlantId,
+                                                seAlarmTypeDescLike,
+                                                seDevNameLike,
+                                                mmsEventDescLike,
+                                                mmsEventLevel,
+                                                mmsEventClassify,
+                                                alarm,
+                                                autoGenerateWorkOrder,
+                                                lastUpdaterNameLike,
+                                                access_token: localStorage.getItem("Token"),
+                                            })
                                     );
                                 } else {
                                     message.error("至少搜索一个项目");

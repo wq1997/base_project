@@ -194,8 +194,8 @@ const AlarmConfiguration = () => {
         const basProjectId = projectNameRef.current;
         const sePlantId = plantNameRef.current;
         const outdoorCabinetSpec = outdoorCabinetSpecRef.current;
-        const seAlarmTypeDescLike = alramNameRef.current;
-        const seDevNameLike = deviceNameRef.current;
+        const seZhDescLike = alramNameRef.current;
+        const seDeviceNameLike = deviceNameRef.current;
         const mmsEventDescLike = alarmTypesRef.current;
         const mmsEventLevel = alarmLevelRef.current;
         const mmsEventClassify = mmsAlarmTypeRef.current;
@@ -209,8 +209,8 @@ const AlarmConfiguration = () => {
                 // basProjectId,
                 // sePlantId,
                 outdoorCabinetSpec,
-                seAlarmTypeDescLike,
-                seDevNameLike,
+                seZhDescLike,
+                seDeviceNameLike,
                 mmsEventDescLike,
                 mmsEventLevel,
                 mmsEventClassify,
@@ -412,6 +412,10 @@ const AlarmConfiguration = () => {
                         isWorkOrdersRef.current = undefined;
                         lastModifiedPersonRef.current = undefined;
                         outdoorCabinetSpecRef.current = undefined;
+                        alarmTypesRef.current = undefined;
+                        deviceNameRef.current = undefined;
+                        setDeviceName(undefined);
+                        setAlarmTypes(undefined);
                         setLastModifiedPerson(undefined);
                         setIsWorkOrders(undefined);
                         setIsAlram(undefined);
@@ -455,37 +459,29 @@ const AlarmConfiguration = () => {
                             type="primary"
                             danger
                             onClick={async () => {
-                                if (projectName) {
-                                    const basProjectId = projectNameRef.current;
-                                    const sePlantId = plantNameRef.current;
-                                    const seAlarmTypeDescLike = alramNameRef.current;
-                                    const seDevNameLike = deviceNameRef.current;
-                                    const mmsEventDescLike = alarmTypesRef.current;
-                                    const mmsEventLevel = alarmLevelRef.current;
-                                    const mmsEventClassify = mmsAlarmTypeRef.current;
-                                    const alarm = isAlramRef.current;
-                                    const autoGenerateWorkOrder = isWorkOrdersRef.current;
-                                    const lastUpdaterNameLike = lastModifiedPersonRef.current;
-                                    window.open(
-                                        getBaseUrl() +
-                                            "/bas-alarm-type215/download-import-template" +
-                                            jsonToUrlParams({
-                                                basProjectId,
-                                                sePlantId,
-                                                seAlarmTypeDescLike,
-                                                seDevNameLike,
-                                                mmsEventDescLike,
-                                                mmsEventLevel,
-                                                mmsEventClassify,
-                                                alarm,
-                                                autoGenerateWorkOrder,
-                                                lastUpdaterNameLike,
-                                                access_token: localStorage.getItem("Token"),
-                                            })
-                                    );
-                                } else {
-                                    message.error("至少搜索一个项目");
-                                }
+                                const seZhDescLike = alramNameRef.current;
+                                const seDeviceName = deviceNameRef.current;
+                                const mmsEventDescLike = alarmTypesRef.current;
+                                const mmsEventLevel = alarmLevelRef.current;
+                                const mmsEventClassify = mmsAlarmTypeRef.current;
+                                const alarm = isAlramRef.current;
+                                const autoGenerateWorkOrder = isWorkOrdersRef.current;
+                                const lastUpdaterNameLike = lastModifiedPersonRef.current;
+                                window.open(
+                                    getBaseUrl() +
+                                        "/bas-alarm-type215/download-import-template" +
+                                        jsonToUrlParams({
+                                            seZhDescLike,
+                                            seDeviceName,
+                                            mmsEventDescLike,
+                                            mmsEventLevel,
+                                            mmsEventClassify,
+                                            alarm,
+                                            autoGenerateWorkOrder,
+                                            lastUpdaterNameLike,
+                                            access_token: localStorage.getItem("Token"),
+                                        })
+                                );
                             }}
                         >
                             批量导出
@@ -504,7 +500,7 @@ const AlarmConfiguration = () => {
                 onOk={async () => {
                     const values = await form.validateFields();
                     const res = await update215AlarmTypeServer({
-                        refSeAlarmTypeId: editData?.refSeAlarmTypeId,
+                        seId: editData?.seId,
                         mmsEventLevel: values?.mmsEventLevel,
                         mmsEventDesc: values?.mmsEventDesc,
                         mmsEventClassify: values?.mmsEventClassify,
@@ -528,7 +524,7 @@ const AlarmConfiguration = () => {
                     <Form.Item name="plantName" label="电站名称">
                         <Input disabled />
                     </Form.Item> */}
-                    <Form.Item name="devName" label="设备名称">
+                    <Form.Item name="seDeviceName" label="设备名称">
                         <Input disabled />
                     </Form.Item>
                     <Form.Item
@@ -545,10 +541,10 @@ const AlarmConfiguration = () => {
                             disabled
                         />
                     </Form.Item>
-                    <Form.Item name="seAlarmTypeDesc" label="告警名称">
+                    <Form.Item name="seZhDesc" label="告警名称">
                         <Input disabled />
                     </Form.Item>
-                    <Form.Item name="seAlarmTypeLevel" label="云平台告警等级">
+                    <Form.Item name="sePriority" label="云平台告警等级">
                         <Input disabled />
                     </Form.Item>
                     <Form.Item
