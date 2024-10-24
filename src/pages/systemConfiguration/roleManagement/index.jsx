@@ -3,6 +3,8 @@ import { Button, Space, Table, message, Modal } from "antd";
 import { PlusCircleFilled } from "@ant-design/icons";
 import { SearchInput } from "@/components";
 import AddRole from "./AddRole";
+import { history, useLocation, useSelector } from "umi";
+import { getUrlParams, hasPerm } from "@/utils/utils";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import "./index.less";
 import { getRoleList as getRoleListServer, deleteRole as deleteRoleServer } from "@/services/user";
@@ -10,6 +12,7 @@ import { getRoleList as getRoleListServer, deleteRole as deleteRoleServer } from
 const Account = () => {
     const nameRef = useRef();
     const [name, setName] = useState();
+    const { user } = useSelector(state => state.user);
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [list, setList] = useState([]);
@@ -36,16 +39,17 @@ const Account = () => {
             width: 200,
             render: (_, row) => {
                 return (
-                    <Button
-                        type="link"
-                        danger
-                        onClick={() => {
-                            setAddRoleOpen(true);
-                            setEditRow(row);
-                        }}
-                    >
-                        编辑
-                    </Button>
+                    hasPerm(user, "op:role_edit") && (
+                        <Button
+                            type="link"
+                            onClick={() => {
+                                setAddRoleOpen(true);
+                                setEditRow(row);
+                            }}
+                        >
+                            编辑
+                        </Button>
+                    )
                 );
             },
         },
@@ -162,21 +166,25 @@ const Account = () => {
                 }}
                 title={() => (
                     <Space>
-                        <Button
-                            type="primary"
-                            icon={<PlusCircleFilled style={{ fontSize: 13 }} />}
-                            onClick={() => setAddRoleOpen(true)}
-                        >
-                            新增角色
-                        </Button>
-                        <Button type="primary" danger onClick={handleDelete}>
-                            批量删除
-                            {selectedRowKeys?.length ? (
-                                <span>({selectedRowKeys?.length})</span>
-                            ) : (
-                                ""
-                            )}
-                        </Button>
+                        {hasPerm(user, "op:role_add") && (
+                            <Button
+                                type="primary"
+                                icon={<PlusCircleFilled style={{ fontSize: 13 }} />}
+                                onClick={() => setAddRoleOpen(true)}
+                            >
+                                新增角色
+                            </Button>
+                        )}
+                        {hasPerm(user, "op:role_delete") && (
+                            <Button type="primary" danger onClick={handleDelete}>
+                                批量删除
+                                {selectedRowKeys?.length ? (
+                                    <span>({selectedRowKeys?.length})</span>
+                                ) : (
+                                    ""
+                                )}
+                            </Button>
+                        )}
                     </Space>
                 )}
             ></Table>

@@ -12,12 +12,13 @@ import {
     Popconfirm,
 } from "antd";
 import { PlusCircleFilled } from "@ant-design/icons";
-import { history, useLocation } from "umi";
 import { SearchInput } from "@/components";
 import AddAccount from "./AddAccount";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import "./index.less";
 import dayjs from "dayjs";
+import { history, useLocation, useSelector } from "umi";
+import { getUrlParams, hasPerm } from "@/utils/utils";
 import {
     getAccountSearchIndexData as getAccountSearchIndexDataServer,
     getAccountList as getAccountListServer,
@@ -28,6 +29,7 @@ import {
 const Account = () => {
     const accountRef = useRef();
     const [account, setAccount] = useState();
+    const { user } = useSelector(state => state.user);
     const nameRef = useRef();
     const [name, setName] = useState();
     const roleCodeRef = useRef();
@@ -81,15 +83,18 @@ const Account = () => {
             render: (_, { id, wxOpenId }) => {
                 return (
                     <Space size="middle">
-                        <a
-                            onClick={() => {
-                                setAddAccountOpen(true);
-                                setEditId(id);
-                            }}
-                        >
-                            编辑
-                        </a>
-                        {wxOpenId && (
+                        {hasPerm(user, "op:user_edit") && (
+                            <a
+                                onClick={() => {
+                                    setAddAccountOpen(true);
+                                    setEditId(id);
+                                }}
+                            >
+                                编辑
+                            </a>
+                        )}
+
+                        {hasPerm(user, "op:user_edit") && wxOpenId && (
                             <Popconfirm
                                 title="系统提示"
                                 description="确定解绑此微信账号?"
@@ -275,21 +280,25 @@ const Account = () => {
                 }}
                 title={() => (
                     <Space>
-                        <Button
-                            type="primary"
-                            icon={<PlusCircleFilled style={{ fontSize: 13 }} />}
-                            onClick={() => setAddAccountOpen(true)}
-                        >
-                            新增账号
-                        </Button>
-                        <Button type="primary" danger onClick={handleDelete}>
-                            批量删除
-                            {selectedRowKeys?.length ? (
-                                <span>({selectedRowKeys?.length})</span>
-                            ) : (
-                                ""
-                            )}
-                        </Button>
+                        {hasPerm(user, "op:user_add") && (
+                            <Button
+                                type="primary"
+                                icon={<PlusCircleFilled style={{ fontSize: 13 }} />}
+                                onClick={() => setAddAccountOpen(true)}
+                            >
+                                新增账号
+                            </Button>
+                        )}
+                        {hasPerm(user, "op:user_delete") && (
+                            <Button type="primary" danger onClick={handleDelete}>
+                                批量删除
+                                {selectedRowKeys?.length ? (
+                                    <span>({selectedRowKeys?.length})</span>
+                                ) : (
+                                    ""
+                                )}
+                            </Button>
+                        )}
                     </Space>
                 )}
             ></Table>

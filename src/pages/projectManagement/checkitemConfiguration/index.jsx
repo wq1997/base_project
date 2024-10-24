@@ -12,11 +12,12 @@ import {
     Dropdown,
 } from "antd";
 import { ExclamationCircleOutlined, PlusCircleFilled } from "@ant-design/icons";
-import { history, useLocation } from "umi";
+import { history, useLocation, useSelector } from "umi";
 import { SearchInput } from "@/components";
 import AddProject from "./AddProject";
 import Detail from "./Detail";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
+import { getUrlParams, hasPerm } from "@/utils/utils";
 import "./index.less";
 import {
     getBasInspectionItem as getBasInspectionItemServe,
@@ -28,6 +29,7 @@ let invalidReason = undefined;
 const Account = () => {
     const [name, setName] = useState();
     const nameRef = useRef();
+    const { user } = useSelector(state => state.user);
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [editData, setEditData] = useState({});
@@ -196,16 +198,18 @@ const Account = () => {
             render: (_, row) => {
                 return (
                     <Space>
-                        <Button
-                            type="link"
-                            danger
-                            onClick={() => {
-                                setEditData(row);
-                                setAddProjectOpen(true);
-                            }}
-                        >
-                            编辑
-                        </Button>
+                        {hasPerm(user, "op:inspection_item_edit") && (
+                            <Button
+                                type="link"
+                                danger
+                                onClick={() => {
+                                    setEditData(row);
+                                    setAddProjectOpen(true);
+                                }}
+                            >
+                                编辑
+                            </Button>
+                        )}
                     </Space>
                 );
             },
@@ -305,54 +309,58 @@ const Account = () => {
                 }}
                 title={() => (
                     <Space className="table-title">
-                        <Button
-                            type="primary"
-                            icon={<PlusCircleFilled style={{ fontSize: 13 }} />}
-                            onClick={() => setAddProjectOpen(true)}
-                        >
-                            新增
-                        </Button>
-                        <Button
-                            type="primary"
-                            danger
-                            onClick={async () => {
-                                if (selectedRowKeys?.length > 0) {
-                                    Modal.confirm({
-                                        title: "系统提示",
-                                        content: "删除此条记录不可恢复，请确认后再删除！",
-                                        onOk: async () => {
-                                            const res = await basInspectionItemDeleteServe({
-                                                ids: selectedRowKeys,
-                                            });
-                                            if (res?.data?.status == "SUCCESS") {
-                                                const { current } = paginationRef?.current;
-                                                if (
-                                                    current != 1 &&
-                                                    userList?.length == selectedRowKeys?.length
-                                                ) {
-                                                    paginationRef.current.current = current - 1;
-                                                    setPagination({
-                                                        current: current - 1,
-                                                    });
+                        {hasPerm(user, "op:inspection_item_add") && (
+                            <Button
+                                type="primary"
+                                icon={<PlusCircleFilled style={{ fontSize: 13 }} />}
+                                onClick={() => setAddProjectOpen(true)}
+                            >
+                                新增
+                            </Button>
+                        )}
+                        {hasPerm(user, "op:inspection_item_delete") && (
+                            <Button
+                                type="primary"
+                                danger
+                                onClick={async () => {
+                                    if (selectedRowKeys?.length > 0) {
+                                        Modal.confirm({
+                                            title: "系统提示",
+                                            content: "删除此条记录不可恢复，请确认后再删除！",
+                                            onOk: async () => {
+                                                const res = await basInspectionItemDeleteServe({
+                                                    ids: selectedRowKeys,
+                                                });
+                                                if (res?.data?.status == "SUCCESS") {
+                                                    const { current } = paginationRef?.current;
+                                                    if (
+                                                        current != 1 &&
+                                                        userList?.length == selectedRowKeys?.length
+                                                    ) {
+                                                        paginationRef.current.current = current - 1;
+                                                        setPagination({
+                                                            current: current - 1,
+                                                        });
+                                                    }
+                                                    getInviteList();
+                                                    setSelectedRowKeys([]);
+                                                    message.success("删除成功");
                                                 }
-                                                getInviteList();
-                                                setSelectedRowKeys([]);
-                                                message.success("删除成功");
-                                            }
-                                        },
-                                    });
-                                } else {
-                                    message.error("请选择需要删除的巡检项配置");
-                                }
-                            }}
-                        >
-                            批量删除
-                            {selectedRowKeys?.length ? (
-                                <span>({selectedRowKeys?.length})</span>
-                            ) : (
-                                ""
-                            )}
-                        </Button>
+                                            },
+                                        });
+                                    } else {
+                                        message.error("请选择需要删除的巡检项配置");
+                                    }
+                                }}
+                            >
+                                批量删除
+                                {selectedRowKeys?.length ? (
+                                    <span>({selectedRowKeys?.length})</span>
+                                ) : (
+                                    ""
+                                )}
+                            </Button>
+                        )}
                     </Space>
                 )}
             ></Table>

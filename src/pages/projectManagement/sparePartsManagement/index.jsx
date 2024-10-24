@@ -16,6 +16,8 @@ import {
 } from "antd";
 import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE } from "@/utils/constants";
 import styles from "./index.less";
+import { useLocation, useSelector } from "umi";
+import { getUrlParams, hasPerm } from "@/utils/utils";
 import {
     sparePartsInitData as sparePartsInitDataServe,
     sparePartsFindPage as sparePartsFindPageServe,
@@ -31,6 +33,7 @@ const SparePartsManagement = () => {
     const [spareStorageForm] = Form.useForm();
     const [useForm] = Form.useForm();
     const { token } = theme.useToken();
+    const { user } = useSelector(state => state.user);
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const outputPaginationRef = useRef(DEFAULT_PAGINATION);
@@ -147,20 +150,22 @@ const SparePartsManagement = () => {
             render: (_, row) => {
                 return (
                     <Space>
-                        <Button
-                            type="link"
-                            onClick={() => {
-                                useForm.setFieldsValue({
-                                    ...row,
-                                    remark: undefined,
-                                });
-                                setCurrentRecord(row);
-                                setUseOpen(true);
-                                getOperateInitData();
-                            }}
-                        >
-                            备件领用
-                        </Button>
+                        {hasPerm(user, "op:spare_output") && (
+                            <Button
+                                type="link"
+                                onClick={() => {
+                                    useForm.setFieldsValue({
+                                        ...row,
+                                        remark: undefined,
+                                    });
+                                    setCurrentRecord(row);
+                                    setUseOpen(true);
+                                    getOperateInitData();
+                                }}
+                            >
+                                备件领用
+                            </Button>
+                        )}
                         <Button
                             type="link"
                             style={{ color: token.colorPrimary }}
@@ -362,39 +367,43 @@ const SparePartsManagement = () => {
                 }}
                 title={() => (
                     <Space className="table-title">
-                        <Button
-                            type="primary"
-                            onClick={() => {
-                                getOperateInitData();
-                                setSpareStorageOpen(true);
-                            }}
-                        >
-                            备件入库
-                        </Button>
-                        <Button
-                            type="primary"
-                            danger
-                            onClick={async () => {
-                                const res = await sparePartsDeleteServe({
-                                    ids: selectedRowKeys,
-                                });
-                                if (res?.data?.status === "SUCCESS") {
-                                    const { current } = paginationRef?.current;
-                                    if (
-                                        current != 1 &&
-                                        dataSource?.length == selectedRowKeys?.length
-                                    ) {
-                                        paginationRef.current.current = current - 1;
-                                        setPagination({
-                                            current: current - 1,
-                                        });
+                        {hasPerm(user, "op:spare_input") && (
+                            <Button
+                                type="primary"
+                                onClick={() => {
+                                    getOperateInitData();
+                                    setSpareStorageOpen(true);
+                                }}
+                            >
+                                备件入库
+                            </Button>
+                        )}
+                        {hasPerm(user, "op:spare_delete") && (
+                            <Button
+                                type="primary"
+                                danger
+                                onClick={async () => {
+                                    const res = await sparePartsDeleteServe({
+                                        ids: selectedRowKeys,
+                                    });
+                                    if (res?.data?.status === "SUCCESS") {
+                                        const { current } = paginationRef?.current;
+                                        if (
+                                            current != 1 &&
+                                            dataSource?.length == selectedRowKeys?.length
+                                        ) {
+                                            paginationRef.current.current = current - 1;
+                                            setPagination({
+                                                current: current - 1,
+                                            });
+                                        }
+                                        getDataSource();
                                     }
-                                    getDataSource();
-                                }
-                            }}
-                        >
-                            删除备件
-                        </Button>
+                                }}
+                            >
+                                删除备件
+                            </Button>
+                        )}
                     </Space>
                 )}
             />

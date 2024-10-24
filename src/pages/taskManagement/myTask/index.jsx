@@ -204,17 +204,18 @@ const Account = () => {
             dataIndex: "operate",
             fixed: "right",
             width: activeKey == "todo" ? 130 : 100,
-            render: (_, { id, supportProcessing }) => {
+            render: (_, { id, supportProcessing, type }) => {
                 return (
                     <Space>
                         <a style={{ color: token.colorPrimary }} onClick={() => setDetailId(id)}>
                             详情
                         </a>
-                        {supportProcessing && (
-                            <a onClick={() => setProcessId(id)} style={{ color: "#dc4446" }}>
-                                去处理
-                            </a>
-                        )}
+                        {supportProcessing &&
+                            !["CYCLE_INSPECTION", "MANUAL_INSPECTION"].includes(type) && (
+                                <a onClick={() => setProcessId(id)} style={{ color: "#dc4446" }}>
+                                    去处理
+                                </a>
+                            )}
                     </Space>
                 );
             },

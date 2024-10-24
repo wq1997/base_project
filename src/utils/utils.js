@@ -107,3 +107,7 @@ export const downloadFile = (data) => {
         document.body.removeChild(link)
     }
 }
+
+export const hasPerm = (user, code) => {
+    return user?.selfPermCodes?.includes(code);
+};

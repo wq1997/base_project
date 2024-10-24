@@ -1,9 +1,10 @@
-import { history } from "umi";
 import { Space, Button, Table, theme, DatePicker, Modal, Descriptions, message } from "antd";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import { SearchInput } from "@/components";
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./index.less";
+import { getUrlParams, hasPerm } from "@/utils/utils";
+import { history, useLocation, useSelector } from "umi";
 import {
     knowledgeInitData as knowledgeInitDataServe,
     knowledgeFindPage as knowledgeFindPageServe,
@@ -13,6 +14,7 @@ import dayjs from "dayjs";
 
 const KnowledgeBase = () => {
     const { token } = theme.useToken();
+    const { user } = useSelector(state => state.user);
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [name, setName] = useState();
@@ -112,7 +114,7 @@ const KnowledgeBase = () => {
             render(_, row) {
                 return (
                     <Space>
-                        {row?.supportSaveOrSubmit && (
+                        {hasPerm(user, "op:knowledge_base_edit") && row?.supportSaveOrSubmit && (
                             <Button
                                 type="link"
                                 style={{ color: token.colorPrimary }}
@@ -125,7 +127,7 @@ const KnowledgeBase = () => {
                                 编辑
                             </Button>
                         )}
-                        {row?.supportAudit && (
+                        {hasPerm(user, "op:knowledge_base_audit") && row?.supportAudit && (
                             <Button
                                 type="link"
                                 style={{ color: "#FF4D4F" }}
@@ -356,54 +358,58 @@ const KnowledgeBase = () => {
                 }}
                 title={() => (
                     <Space className="table-title">
-                        <Button
-                            type="primary"
-                            onClick={() => {
-                                history.push(`/knowledgeBase/editOrCheck?openType=Add`);
-                            }}
-                        >
-                            新增知识
-                        </Button>
-                        <Button
-                            type="primary"
-                            danger
-                            onClick={() => {
-                                if (selectedRowKeys?.length === 0) {
-                                    message.error("请先勾选需要删除的行!");
-                                    return;
-                                }
-                                Modal.confirm({
-                                    title: "系统提示",
-                                    content: "删除此条记录不可恢复，请确认后再删除！",
-                                    onOk: async () => {
-                                        const res = await knowledgeDeleteServe({
-                                            ids: selectedRowKeys,
-                                        });
-                                        if (res?.data?.status === "SUCCESS") {
-                                            const { current } = paginationRef?.current;
-                                            if (
-                                                current != 1 &&
-                                                dataSource?.length == selectedRowKeys?.length
-                                            ) {
-                                                paginationRef.current.current = current - 1;
-                                                setPagination({
-                                                    current: current - 1,
-                                                });
+                        {hasPerm(user, "op:knowledge_base_add") && (
+                            <Button
+                                type="primary"
+                                onClick={() => {
+                                    history.push(`/knowledgeBase/editOrCheck?openType=Add`);
+                                }}
+                            >
+                                新增知识
+                            </Button>
+                        )}
+                        {hasPerm(user, "op:knowledge_base_delete") && (
+                            <Button
+                                type="primary"
+                                danger
+                                onClick={() => {
+                                    if (selectedRowKeys?.length === 0) {
+                                        message.error("请先勾选需要删除的行!");
+                                        return;
+                                    }
+                                    Modal.confirm({
+                                        title: "系统提示",
+                                        content: "删除此条记录不可恢复，请确认后再删除！",
+                                        onOk: async () => {
+                                            const res = await knowledgeDeleteServe({
+                                                ids: selectedRowKeys,
+                                            });
+                                            if (res?.data?.status === "SUCCESS") {
+                                                const { current } = paginationRef?.current;
+                                                if (
+                                                    current != 1 &&
+                                                    dataSource?.length == selectedRowKeys?.length
+                                                ) {
+                                                    paginationRef.current.current = current - 1;
+                                                    setPagination({
+                                                        current: current - 1,
+                                                    });
+                                                }
+                                                getList();
+                                                setSelectedRowKeys([]);
                                             }
-                                            getList();
-                                            setSelectedRowKeys([]);
-                                        }
-                                    },
-                                });
-                            }}
-                        >
-                            删除知识
-                            {selectedRowKeys?.length ? (
-                                <span>({selectedRowKeys?.length})</span>
-                            ) : (
-                                ""
-                            )}
-                        </Button>
+                                        },
+                                    });
+                                }}
+                            >
+                                删除知识
+                                {selectedRowKeys?.length ? (
+                                    <span>({selectedRowKeys?.length})</span>
+                                ) : (
+                                    ""
+                                )}
+                            </Button>
+                        )}
                     </Space>
                 )}
             />

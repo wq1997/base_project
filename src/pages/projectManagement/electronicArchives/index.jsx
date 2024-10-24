@@ -13,7 +13,7 @@ import {
     Popconfirm,
     Descriptions,
 } from "antd";
-import { useLocation } from "umi";
+import { useLocation, useSelector } from "umi";
 import { SearchInput, EditTable } from "@/components";
 import AddProject from "./AddProject";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
@@ -28,7 +28,7 @@ import {
     getBasProjectEditInitData as getBasProjectEditInitDataServe,
 } from "@/services";
 import { getBaseUrl } from "@/services/request";
-import { jsonToUrlParams } from "@/utils/utils";
+import { jsonToUrlParams, hasPerm } from "@/utils/utils";
 import { FileMarkdownFilled } from "@ant-design/icons";
 import dayjs from "dayjs";
 export const cycleList = [
@@ -48,6 +48,7 @@ export const cycleList = [
 
 const Account = () => {
     const { token } = theme.useToken();
+    const { user } = useSelector(state => state.user);
     const [supplierForm] = Form.useForm();
     const location = useLocation();
     const initCode = location?.search.split("=")[1];
@@ -189,9 +190,11 @@ const Account = () => {
                 };
                 return (
                     <Space>
-                        <a style={{ color: "rgb(22, 118, 239)" }} onClick={() => edit(0, row)}>
-                            编辑
-                        </a>
+                        {hasPerm(user, "op:project_edit") && (
+                            <a style={{ color: "rgb(22, 118, 239)" }} onClick={() => edit(0, row)}>
+                                编辑
+                            </a>
+                        )}
                         <a
                             style={{ color: token.colorPrimary }}
                             onClick={() => {
@@ -201,7 +204,7 @@ const Account = () => {
                         >
                             详情
                         </a>
-                        {row?.supportRemove && (
+                        {hasPerm(user, "op:project_delete") && row?.supportRemove && (
                             <Popconfirm
                                 title="确定删除？"
                                 onConfirm={async () => {
@@ -537,34 +540,38 @@ const Account = () => {
                 }}
                 title={() => (
                     <Space className="table-title">
-                        <Button
-                            onClick={() => setAddProjectOpen(true)}
-                            style={{ background: "#1676EF" }}
-                        >
-                            新增项目
-                        </Button>
-                        <Button
-                            type="primary"
-                            onClick={async () => {
-                                const res = await basSupplierListServe();
-                                if (res?.data?.status == "SUCCESS") {
-                                    const data =
-                                        res?.data?.data?.map(item => {
-                                            return {
-                                                ...item,
-                                                supplyScope: item?.supplyScope?.join(","),
-                                            };
-                                        }) || [];
-                                    supplierForm.setFieldsValue({
-                                        supplierDataSource: data,
-                                    });
-                                    setSupplierDataSource(data);
-                                    setSupplierOpen(true);
-                                }
-                            }}
-                        >
-                            供应商维护
-                        </Button>
+                        {hasPerm(user, "op:project_add") && (
+                            <Button
+                                onClick={() => setAddProjectOpen(true)}
+                                style={{ background: "#1676EF" }}
+                            >
+                                新增项目
+                            </Button>
+                        )}
+                        {hasPerm(user, "op:supplier_manage") && (
+                            <Button
+                                type="primary"
+                                onClick={async () => {
+                                    const res = await basSupplierListServe();
+                                    if (res?.data?.status == "SUCCESS") {
+                                        const data =
+                                            res?.data?.data?.map(item => {
+                                                return {
+                                                    ...item,
+                                                    supplyScope: item?.supplyScope?.join(","),
+                                                };
+                                            }) || [];
+                                        supplierForm.setFieldsValue({
+                                            supplierDataSource: data,
+                                        });
+                                        setSupplierDataSource(data);
+                                        setSupplierOpen(true);
+                                    }
+                                }}
+                            >
+                                供应商维护
+                            </Button>
+                        )}
                     </Space>
                 )}
             ></Table>

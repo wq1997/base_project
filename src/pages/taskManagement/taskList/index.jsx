@@ -27,7 +27,7 @@ import { SearchInput } from "@/components";
 import AddProject from "./AddProject";
 import Detail from "./Detail";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
-import { getUrlParams } from "@/utils/utils";
+import { getUrlParams, hasPerm } from "@/utils/utils";
 import {
     workOrderList as workOrderListServer,
     workOrderListInitData as workOrderListInitDataServer,
@@ -42,6 +42,7 @@ const Account = () => {
     const { token } = theme.useToken();
     const location = useLocation();
     const params = getUrlParams(location?.search);
+    const { user } = useSelector(state => state.user);
     const [canDelete, setCanDelete] = useState(true);
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
@@ -184,7 +185,7 @@ const Account = () => {
             dataIndex: "operate",
             fixed: "right",
             width: 100,
-            render: (_, { id, supportProcessing }) => {
+            render: (_, { id }) => {
                 return (
                     <>
                         <a style={{ color: token.colorPrimary }} onClick={() => setDetailId(id)}>
@@ -502,18 +503,26 @@ const Account = () => {
                 }}
                 title={() => (
                     <Space className="table-title">
-                        <Button type="primary" onClick={() => setAddProjectOpen(true)}>
-                            手工新增工单
-                        </Button>
-
-                        <Button type="primary" danger disabled={!canDelete} onClick={handleDelete}>
-                            删除工单
-                            {selectedRowKeys?.length ? (
-                                <span>({selectedRowKeys?.length})</span>
-                            ) : (
-                                ""
-                            )}
-                        </Button>
+                        {hasPerm(user, "op:work_order_add") && (
+                            <Button type="primary" onClick={() => setAddProjectOpen(true)}>
+                                手工新增工单
+                            </Button>
+                        )}
+                        {hasPerm(user, "op:work_order_m_remove_edit") && (
+                            <Button
+                                type="primary"
+                                danger
+                                disabled={!canDelete}
+                                onClick={handleDelete}
+                            >
+                                删除工单
+                                {selectedRowKeys?.length ? (
+                                    <span>({selectedRowKeys?.length})</span>
+                                ) : (
+                                    ""
+                                )}
+                            </Button>
+                        )}
                     </Space>
                 )}
             ></Table>
