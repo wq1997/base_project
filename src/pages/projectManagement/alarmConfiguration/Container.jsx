@@ -88,7 +88,6 @@ const AlarmConfiguration = () => {
             title: "设备名称",
             dataIndex: "seDevName",
             width: 200,
-             
         },
         {
             title: "告警名称",
