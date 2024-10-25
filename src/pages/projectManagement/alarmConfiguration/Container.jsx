@@ -510,7 +510,7 @@ const AlarmConfiguration = () => {
                     <Form.Item name="plantName" label="电站名称">
                         <Input disabled />
                     </Form.Item>
-                    <Form.Item name="devName" label="设备名称">
+                    <Form.Item name="seDevName" label="设备名称">
                         <Input disabled />
                     </Form.Item>
                     <Form.Item name="seAlarmTypeDesc" label="告警名称">
