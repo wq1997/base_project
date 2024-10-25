@@ -63,7 +63,7 @@ const Index = ({ initData }) => {
         const [beginStartDate, beginEndDate] = startTimeRef.current || [];
         const res = await getAlarmScreenListServer({
             pageNum: current,
-            pageSize,
+            pageSize: 20,
             queryCmd: {
                 prior: signalName,
                 deviceNameLike,
@@ -148,7 +148,13 @@ const Index = ({ initData }) => {
                 title="告警列表"
                 content={
                     <div style={{ height: "100%", padding: "16px", boxSizing: "border-box" }}>
-                        <Space className={styles.searchBar}>
+                        <Space
+                            className={styles.searchBar}
+                            style={{
+                                flexWrap: "wrap",
+                            }}
+                            size={10}
+                        >
                             <SearchInput
                                 label="告警等级"
                                 value={alarmLevel}
@@ -253,8 +259,10 @@ const Index = ({ initData }) => {
                                 >
                                     <Pagination
                                         current={pagination?.current}
-                                        pageSize={pagination?.pageSize}
+                                        pageSize={20}
                                         total={pagination?.total}
+                                        showQuickJumper={false}
+                                        showSizeChanger={false}
                                         size="small"
                                         onChange={onChange}
                                     />

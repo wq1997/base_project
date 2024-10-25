@@ -144,21 +144,21 @@ export const basProjectPart4Submit = payload => {
 };
 
 export const alarmStatisticsChartsPageInitData = () => {
-    return axiosInstance.get(`/se-alarm/get-time-type-statistics-page-init-data`);
+    return axiosInstance.get(`/se-alm3-union-alm/get-time-type-statistics-page-init-data`);
 };
 
 export const alarmStatisticsCharts = payload => {
-    return axiosInstance.post(`/se-alarm/time-type-statistics`, payload);
+    return axiosInstance.post(`/se-alm3-union-alm/time-type-statistics`, payload);
 };
 
 export const alarmStatisticsTablePageInitData = payload => {
-    return axiosInstance.get(`/se-alarm/get-search-page-init-data`, {
+    return axiosInstance.get(`/se-alm3-union-alm/get-search-page-init-data`, {
         params: payload,
     });
 };
 
 export const alarmStatisticsTable = payload => {
-    return axiosInstance.post(`/se-alarm/find-page`, payload);
+    return axiosInstance.post(`/se-alm3-union-alm/find-page`, payload);
 };
 
 export const homeGetMainPageData = payload => {

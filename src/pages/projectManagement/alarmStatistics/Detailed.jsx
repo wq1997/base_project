@@ -93,9 +93,13 @@ const Detailed = () => {
     }, []);
 
     return (
-        <div className={styles.detailed}>
-            <div style={{ fontSize: 20, color: token.fontColor, marginBottom: 28 }}>查询条件</div>
-            <Space className={styles.search} size={20}>
+        <>
+            <Space
+                style={{
+                    flexWrap: "wrap",
+                }}
+                size={10}
+            >
                 <div>
                     <span style={{ color: "#FFF" }}>时间：</span>
                     <DatePicker.RangePicker
@@ -206,6 +210,10 @@ const Detailed = () => {
                             },
                         },
                         {
+                            title: "产品类型",
+                            dataIndex: "sourceTableZh",
+                        },
+                        {
                             title: "设备名称",
                             dataIndex: "deviceName",
                         },
@@ -288,6 +296,14 @@ const Detailed = () => {
                         <Descriptions.Item label="产品类型">
                             {currentRow?.project?.productTypeZh}
                         </Descriptions.Item>
+                        {currentRow?.project?.productType == "OUTDOOR_CABINET" && (
+                            <Descriptions.Item label="户外柜规格">
+                                {currentRow?.project?.outdoorCabinetSpecZh}
+                            </Descriptions.Item>
+                        )}
+                        <Descriptions.Item label="产品规格">
+                            {currentRow?.project?.productTypeZh}
+                        </Descriptions.Item>
                         <Descriptions.Item label="项目阶段">
                             {currentRow?.project?.phaseZh}
                         </Descriptions.Item>
@@ -303,7 +319,7 @@ const Detailed = () => {
                     </Descriptions>
                 </div>
             </Modal>
-        </div>
+        </>
     );
 };
 

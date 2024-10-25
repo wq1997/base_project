@@ -84,7 +84,7 @@ const ResourcesInventory = () => {
 
     return (
         <div className={styles.resourcesInventory}>
-            <Space className={styles.search} size={20}>
+            <Space className={styles.search} size={10}>
                 <SearchInput
                     label="人员名称"
                     value={name}

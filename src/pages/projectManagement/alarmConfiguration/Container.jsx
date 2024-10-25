@@ -21,7 +21,7 @@ import {
     downloadAlarmTypeTemplate as downloadAlarmTypeTemplateServe,
 } from "@/services";
 import { FORM_REQUIRED_RULE } from "@/utils/constants";
-import { jsonToUrlParams } from "@/utils/utils";
+import { jsonToUrlParams, getAlarmColor } from "@/utils/utils";
 import { getBaseUrl } from "@/services/request";
 import { InboxOutlined } from "@ant-design/icons";
 import styles from "./index.less";
@@ -98,6 +98,13 @@ const AlarmConfiguration = () => {
             title: "云平台告警等级",
             dataIndex: "seAlarmTypeLevel",
             width: 200,
+            render(_, record) {
+                return (
+                    <span style={{ color: getAlarmColor(record?.seAlarmTypeLevel) }}>
+                        {record?.seAlarmTypeLevelZh}
+                    </span>
+                );
+            },
         },
         {
             title: "运维告警描述",
@@ -241,8 +248,8 @@ const AlarmConfiguration = () => {
     };
 
     return (
-        <div className={styles.alarmConfiguration}>
-            <Space className={styles.search} size={20}>
+        <>
+            <Space className={styles.search} size={10}>
                 <SearchInput
                     label="项目名称"
                     type="select"
@@ -591,7 +598,7 @@ const AlarmConfiguration = () => {
                     <p className="ant-upload-text">仅支持.xlsx、.xls后缀名文件</p>
                 </Dragger>
             </Modal>
-        </div>
+        </>
     );
 };
 

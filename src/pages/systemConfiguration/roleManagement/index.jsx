@@ -126,7 +126,7 @@ const Account = () => {
                     getList();
                 }}
             />
-            <Space className="search">
+            <Space className="search" size={10}>
                 <SearchInput
                     label="角色名称"
                     value={name}

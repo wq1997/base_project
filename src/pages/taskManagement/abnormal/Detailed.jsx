@@ -12,10 +12,7 @@ import styles from "./index.less";
 import dayjs from "dayjs";
 import { jsonToUrlParams } from "@/utils/utils";
 import { getBaseUrl } from "@/services/request";
-import {
-    UpOutlined,
-    DownOutlined
-} from '@ant-design/icons';
+import { UpOutlined, DownOutlined } from "@ant-design/icons";
 
 const Detailed = () => {
     const { token } = theme.useToken();
@@ -48,14 +45,14 @@ const Detailed = () => {
     const [data, setData] = useState();
     const [showCenterCotent, setShowCenterCotent] = useState(true);
 
-    const getOptions = (type) => {
+    const getOptions = type => {
         const options = {
             color: ["#FFCF00", "#54E135", "#00E9EF", "#BE88F8", "#0BD1CB"],
             tooltip: {
                 trigger: "item",
             },
             legend: {
-                show: false
+                show: false,
             },
             series: [
                 {
@@ -65,8 +62,8 @@ const Detailed = () => {
                     data: Object.keys(data?.[type] || {})?.map(item => {
                         return {
                             name: item,
-                            value: data?.[type]?.[item]
-                        }
+                            value: data?.[type]?.[item],
+                        };
                     }),
                     label: {
                         normal: {
@@ -115,10 +112,14 @@ const Detailed = () => {
             pageSize,
             queryCmd: {
                 code,
-                publishedTimeFrom: planDate && planDate?.length >= 2 && dayjs(planDate?.[0]).format("YYYY-MM-DD"),
-                publishedTimeTo: planDate && planDate?.length >= 2 && dayjs(planDate?.[1]).format("YYYY-MM-DD"),
-                completedTimeFrom: overDate && overDate?.length >= 2 && dayjs(overDate?.[0]).format("YYYY-MM-DD"),
-                completedTimeTo: overDate && overDate?.length >= 2 && dayjs(overDate?.[1]).format("YYYY-MM-DD"),
+                publishedTimeFrom:
+                    planDate && planDate?.length >= 2 && dayjs(planDate?.[0]).format("YYYY-MM-DD"),
+                publishedTimeTo:
+                    planDate && planDate?.length >= 2 && dayjs(planDate?.[1]).format("YYYY-MM-DD"),
+                completedTimeFrom:
+                    overDate && overDate?.length >= 2 && dayjs(overDate?.[0]).format("YYYY-MM-DD"),
+                completedTimeTo:
+                    overDate && overDate?.length >= 2 && dayjs(overDate?.[1]).format("YYYY-MM-DD"),
                 titleLike,
                 projectId,
                 type,
@@ -138,14 +139,14 @@ const Detailed = () => {
             setData(res?.data?.data);
             setDataSource(recordList);
         }
-    }
+    };
 
     const getInitData = async () => {
         const res = await workOrderGetExceptionStatisticsPageInitDataServe();
         if (res?.data?.status == "SUCCESS") {
             setInitOption(res?.data?.data);
         }
-    }
+    };
 
     const onReset = () => {
         planDateRef.current = undefined;
@@ -167,17 +168,21 @@ const Detailed = () => {
         setOverDate(undefined);
         setPlanDate(undefined);
         getDataSource();
-    }
+    };
 
     useEffect(() => {
         getInitData();
         getDataSource();
-    }, [])
+    }, []);
 
     return (
         <div className={styles.detailed}>
-            <div style={{ fontSize: 20, color: token.fontColor, marginBottom: 28 }}>查询条件</div>
-            <Space className={styles.search} size={20}>
+            <Space
+                style={{
+                    flexWrap: "wrap",
+                }}
+                size={10}
+            >
                 <SearchInput
                     label="工单编号"
                     value={code}
@@ -190,7 +195,10 @@ const Detailed = () => {
                 <div>
                     <span style={{ color: "#FFF" }}>异常生成时间：</span>
                     <DatePicker.RangePicker
-                        value={planDate && planDate?.length >= 2 && [dayjs(planDate?.[0]), dayjs(planDate?.[1])]}
+                        value={
+                            planDate &&
+                            planDate?.length >= 2 && [dayjs(planDate?.[0]), dayjs(planDate?.[1])]
+                        }
                         onChange={value => {
                             paginationRef.current = DEFAULT_PAGINATION;
                             planDateRef.current = value;
@@ -201,7 +209,10 @@ const Detailed = () => {
                 <div>
                     <span style={{ color: "#FFF" }}>异常完结时间：</span>
                     <DatePicker.RangePicker
-                        value={overDate && overDate?.length >= 2 && [dayjs(overDate?.[0]), dayjs(overDate?.[1])]}
+                        value={
+                            overDate &&
+                            overDate?.length >= 2 && [dayjs(overDate?.[0]), dayjs(overDate?.[1])]
+                        }
                         onChange={value => {
                             paginationRef.current = DEFAULT_PAGINATION;
                             overDateRef.current = value;
@@ -230,8 +241,8 @@ const Detailed = () => {
                     options={initOption?.projects?.map(item => {
                         return {
                             name: item?.name,
-                            code: item?.id
-                        }
+                            code: item?.id,
+                        };
                     })}
                 />
                 <SearchInput
@@ -257,8 +268,8 @@ const Detailed = () => {
                     options={initOption?.exceptionPartsList?.map(item => {
                         return {
                             name: item,
-                            code: item
-                        }
+                            code: item,
+                        };
                     })}
                 />
                 <SearchInput
@@ -273,8 +284,8 @@ const Detailed = () => {
                     options={initOption?.suppliers?.map(item => {
                         return {
                             name: item?.name,
-                            code: item?.id
-                        }
+                            code: item?.id,
+                        };
                     })}
                 />
                 <SearchInput
@@ -287,8 +298,8 @@ const Detailed = () => {
                         setCollectingMaterials(value);
                     }}
                     options={[
-                        { name: '是', code: true },
-                        { name: '否', code: false }
+                        { name: "是", code: true },
+                        { name: "否", code: false },
                     ]}
                 />
                 <SearchInput
@@ -302,12 +313,10 @@ const Detailed = () => {
                     }}
                     options={initOption?.users}
                 />
-                <Button type="primary" onClick={getDataSource}>搜索</Button>
-                <Button
-                    type="primary"
-                    danger
-                    onClick={onReset}
-                >
+                <Button type="primary" onClick={getDataSource}>
+                    搜索
+                </Button>
+                <Button type="primary" danger onClick={onReset}>
                     重置
                 </Button>
             </Space>
@@ -316,28 +325,27 @@ const Detailed = () => {
                     <div style={{ fontSize: 20, color: token.fontColor }}>异常统计</div>
                 </Row>
                 <div className={styles.centerContent}>
-                    {
-                        showCenterCotent &&
+                    {showCenterCotent && (
                         <>
                             <div className={styles.centerContent1}>
                                 <div className={styles.centerContent1Top}>
-                                    <span style={{ color: 'white' }}>异常总数</span>
-                                    <span style={{ color: '#0BAFAB', marginLeft: 30, fontSize: 36 }}>{data?.totalWorkOrderCount}</span>
+                                    <span style={{ color: "white" }}>异常总数</span>
+                                    <span
+                                        style={{ color: "#0BAFAB", marginLeft: 30, fontSize: 36 }}
+                                    >
+                                        {data?.totalWorkOrderCount}
+                                    </span>
                                 </div>
                                 <div className={styles.centerContent1Bottom}>
                                     <div className={styles.centerContent1BottomItem}>
-                                        <div style={{ color: 'white' }}>
-                                            计划处理时间总计(天)
-                                        </div>
-                                        <div style={{ color: '#60C453', fontSize: 36 }}>
+                                        <div style={{ color: "white" }}>计划处理时间总计(天)</div>
+                                        <div style={{ color: "#60C453", fontSize: 36 }}>
                                             {data?.totalProcessingDaysForPlan}
                                         </div>
                                     </div>
                                     <div className={styles.centerContent1BottomItem}>
-                                        <div style={{ color: 'white' }}>
-                                            实际处理时间总计(天)
-                                        </div>
-                                        <div style={{ color: '#4592E3', fontSize: 36 }}>
+                                        <div style={{ color: "white" }}>实际处理时间总计(天)</div>
+                                        <div style={{ color: "#4592E3", fontSize: 36 }}>
                                             {data?.totalProcessingDaysForActual}
                                         </div>
                                     </div>
@@ -346,24 +354,28 @@ const Detailed = () => {
                             <div className={styles.centerContent2}>
                                 <ReactECharts
                                     option={getOptions("costType2Amount")}
-                                    style={{ width: '100%', height: "calc(100% - 50px)" }}
+                                    style={{ width: "100%", height: "calc(100% - 50px)" }}
                                 />
-                                <div style={{ color: 'white', textAlign: 'center', marginTop: 10 }}>消缺总成本(元)</div>
+                                <div style={{ color: "white", textAlign: "center", marginTop: 10 }}>
+                                    消缺总成本(元)
+                                </div>
                             </div>
                             <div className={styles.centerContent3}>
                                 <ReactECharts
                                     option={getOptions("benefitType2Amount")}
-                                    style={{ width: '100%', height: "calc(100% - 50px)" }}
+                                    style={{ width: "100%", height: "calc(100% - 50px)" }}
                                 />
-                                <div style={{ color: 'white', textAlign: 'center', marginTop: 10 }}>消缺收益(元)</div>
+                                <div style={{ color: "white", textAlign: "center", marginTop: 10 }}>
+                                    消缺收益(元)
+                                </div>
                             </div>
                         </>
-                    }
-                    <div 
+                    )}
+                    <div
                         className={styles.upDownIcon}
-                        onClick={()=>setShowCenterCotent(!showCenterCotent)}
+                        onClick={() => setShowCenterCotent(!showCenterCotent)}
                     >
-                        {showCenterCotent?<UpOutlined />:<DownOutlined />}
+                        {showCenterCotent ? <UpOutlined /> : <DownOutlined />}
                     </div>
                 </div>
             </div>
@@ -372,8 +384,8 @@ const Detailed = () => {
                 dataSource={dataSource}
                 columns={[
                     {
-                        title: '工单编号',
-                        dataIndex: 'code',
+                        title: "工单编号",
+                        dataIndex: "code",
                         width: 200,
                     },
                     {
@@ -396,8 +408,8 @@ const Detailed = () => {
                         dataIndex: "projectId",
                         width: 200,
                         render(value) {
-                            return initOption?.projects?.find(item => item?.id === value)?.name
-                        }
+                            return initOption?.projects?.find(item => item?.id === value)?.name;
+                        },
                     },
                     {
                         title: "异常部件",
@@ -425,14 +437,20 @@ const Detailed = () => {
                         width: 200,
                     },
                     {
-                        title: <span style={{ color: '#F88716' }}>消缺总成本(元)</span>,
+                        title: <span style={{ color: "#F88716" }}>消缺总成本(元)</span>,
                         dataIndex: "exceptionProcessingCost",
                         width: 200,
                         render(_, { exceptionProcessingCost }) {
                             return (
-                                <span style={{ color: '#F88716' }}>{(exceptionProcessingCost?.travelCost || 0) + (exceptionProcessingCost?.consumablesCost || 0) + (exceptionProcessingCost?.sparePartCost || 0) + (exceptionProcessingCost?.ownerFineCost || 0) + (exceptionProcessingCost?.laborCost || 0)}</span>
-                            )
-                        }
+                                <span style={{ color: "#F88716" }}>
+                                    {(exceptionProcessingCost?.travelCost || 0) +
+                                        (exceptionProcessingCost?.consumablesCost || 0) +
+                                        (exceptionProcessingCost?.sparePartCost || 0) +
+                                        (exceptionProcessingCost?.ownerFineCost || 0) +
+                                        (exceptionProcessingCost?.laborCost || 0)}
+                                </span>
+                            );
+                        },
                     },
                     {
                         title: "差旅成本(元)",
@@ -440,7 +458,7 @@ const Detailed = () => {
                         width: 200,
                         render(_, { exceptionProcessingCost }) {
                             return exceptionProcessingCost?.travelCost;
-                        }
+                        },
                     },
                     {
                         title: "耗材成本(元)",
@@ -448,7 +466,7 @@ const Detailed = () => {
                         width: 200,
                         render(_, { exceptionProcessingCost }) {
                             return exceptionProcessingCost?.consumablesCost;
-                        }
+                        },
                     },
                     {
                         title: "备件成本(元)",
@@ -456,7 +474,7 @@ const Detailed = () => {
                         width: 200,
                         render(_, { exceptionProcessingCost }) {
                             return exceptionProcessingCost?.sparePartCost;
-                        }
+                        },
                     },
                     {
                         title: "业主罚款(元)",
@@ -464,7 +482,7 @@ const Detailed = () => {
                         width: 200,
                         render(_, { exceptionProcessingCost }) {
                             return exceptionProcessingCost?.ownerFineCost;
-                        }
+                        },
                     },
                     {
                         title: "人员成本(元)",
@@ -472,17 +490,21 @@ const Detailed = () => {
                         width: 200,
                         render(_, { exceptionProcessingCost }) {
                             return exceptionProcessingCost?.laborCost;
-                        }
+                        },
                     },
                     {
-                        title: <span style={{ color: '#F88716' }}>消缺收益(元)</span>,
+                        title: <span style={{ color: "#F88716" }}>消缺收益(元)</span>,
                         dataIndex: "exceptionProcessingBenefit",
                         width: 200,
                         render(_, { exceptionProcessingBenefit }) {
                             return (
-                                <span style={{ color: '#F88716' }}>{(exceptionProcessingBenefit?.supplierFineBenefit || 0) + (exceptionProcessingBenefit?.warrantyExpiredPayBenefit || 0)}</span>
-                            )
-                        }
+                                <span style={{ color: "#F88716" }}>
+                                    {(exceptionProcessingBenefit?.supplierFineBenefit || 0) +
+                                        (exceptionProcessingBenefit?.warrantyExpiredPayBenefit ||
+                                            0)}
+                                </span>
+                            );
+                        },
                     },
                     {
                         title: "供应商罚款收益(元)",
@@ -490,7 +512,7 @@ const Detailed = () => {
                         width: 200,
                         render(_, { exceptionProcessingBenefit }) {
                             return exceptionProcessingBenefit?.supplierFineBenefit;
-                        }
+                        },
                     },
                     {
                         title: "质保外维修收益(元)",
@@ -498,19 +520,23 @@ const Detailed = () => {
                         width: 200,
                         render(_, { exceptionProcessingBenefit }) {
                             return exceptionProcessingBenefit?.warrantyExpiredPayBenefit;
-                        }
+                        },
                     },
                     {
-                        title: '异常处理人',
-                        dataIndex: 'currentProcessorName',
-                        width: 200
+                        title: "异常处理人",
+                        dataIndex: "currentProcessorName",
+                        width: 200,
                     },
                     {
-                        title: '消缺总结',
-                        dataIndex: 'exceptionProcessingResult',
+                        title: "消缺总结",
+                        dataIndex: "exceptionProcessingResult",
                         width: 400,
-                        render: (exceptionProcessingResult) => (
-                            <Tooltip placement="topLeft" title={exceptionProcessingResult} overlayStyle={{ maxWidth: 550 }}>
+                        render: exceptionProcessingResult => (
+                            <Tooltip
+                                placement="topLeft"
+                                title={exceptionProcessingResult}
+                                overlayStyle={{ maxWidth: 550 }}
+                            >
                                 {exceptionProcessingResult}
                             </Tooltip>
                         ),
@@ -518,7 +544,7 @@ const Detailed = () => {
                     {
                         title: "操作",
                         dataIndex: "Action",
-                        fixed: 'right',
+                        fixed: "right",
                         width: 200,
                         render: (_, row) => {
                             return (
@@ -527,7 +553,7 @@ const Detailed = () => {
                                         type="link"
                                         style={{ color: token.colorPrimary }}
                                         onClick={() => {
-                                            setCurrentRow(row)
+                                            setCurrentRow(row);
                                             setFileOpen(true);
                                         }}
                                     >
@@ -536,10 +562,12 @@ const Detailed = () => {
                                     <Button
                                         type="link"
                                         style={{
-                                            color: token.colorPrimary
+                                            color: token.colorPrimary,
                                         }}
                                         onClick={() => {
-                                            history.push(`/task-management/task-list?code=${row?.code}`)
+                                            history.push(
+                                                `/task-management/task-list?code=${row?.code}`
+                                            );
                                         }}
                                     >
                                         详情
@@ -554,7 +582,7 @@ const Detailed = () => {
                     paginationRef.current = pagination;
                 }}
                 scroll={{
-                    x: 1500
+                    x: 1500,
                 }}
             />
             <Modal
@@ -565,23 +593,24 @@ const Detailed = () => {
                 onOk={() => setFileOpen(false)}
             >
                 <div className={styles.images}>
-                    {
-                        currentRow?.exceptionProcessingAttachments?.map(item => {
-                            return (
-                                <Image
-                                    width={200}
-                                    src={`${getBaseUrl()}/attachment/download/${item?.id}` + jsonToUrlParams({
+                    {currentRow?.exceptionProcessingAttachments?.map(item => {
+                        return (
+                            <Image
+                                width={200}
+                                src={
+                                    `${getBaseUrl()}/attachment/download/${item?.id}` +
+                                    jsonToUrlParams({
                                         id: item?.id,
-                                        access_token: localStorage.getItem("Token")
-                                    })}
-                                />
-                            )
-                        })
-                    }
+                                        access_token: localStorage.getItem("Token"),
+                                    })
+                                }
+                            />
+                        );
+                    })}
                 </div>
             </Modal>
         </div>
-    )
-}
+    );
+};
 
 export default Detailed;

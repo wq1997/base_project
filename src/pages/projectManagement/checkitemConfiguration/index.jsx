@@ -262,7 +262,7 @@ const Account = () => {
                     setDetailRow(null);
                 }}
             />
-            <Space className="search">
+            <Space className="search" size={10}>
                 <SearchInput
                     label="巡检项名称"
                     value={name}

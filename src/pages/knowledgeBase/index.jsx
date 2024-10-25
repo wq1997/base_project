@@ -231,7 +231,7 @@ const KnowledgeBase = () => {
 
     return (
         <div className={styles.knowledgeBase}>
-            <Space className={styles.search} size={20}>
+            <Space className={styles.search} size={10}>
                 <div>
                     <span style={{ color: "#FFF" }}>发布时间：</span>
                     <DatePicker.RangePicker

@@ -342,7 +342,12 @@ const Account = () => {
                     getList();
                 }}
             />
-            <Space className="search">
+            <Space
+                style={{
+                    flexWrap: "wrap",
+                }}
+                size={10}
+            >
                 <div>
                     <span style={{ color: "#FFF" }}>发布时间：</span>
                     <DatePicker.RangePicker

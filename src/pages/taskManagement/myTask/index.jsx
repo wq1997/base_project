@@ -370,7 +370,12 @@ const Account = () => {
                     history.push(`/task-management/my-task?activeKey=${value}`);
                 }}
             />
-            <Space className="search">
+            <Space
+                style={{
+                    flexWrap: "wrap",
+                }}
+                size={10}
+            >
                 <SearchInput
                     label="工单编号"
                     value={workOrderCode}

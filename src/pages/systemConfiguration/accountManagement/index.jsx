@@ -212,7 +212,7 @@ const Account = () => {
                     getList();
                 }}
             />
-            <Space className="search">
+            <Space className="search" size={10}>
                 <SearchInput
                     label="账号"
                     value={account}

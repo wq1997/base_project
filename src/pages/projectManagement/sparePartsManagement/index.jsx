@@ -265,7 +265,12 @@ const SparePartsManagement = () => {
 
     return (
         <div className={styles.sparePartsManagement}>
-            <Space className={styles.search}>
+            <Space
+                style={{
+                    flexWrap: "wrap",
+                }}
+                size={10}
+            >
                 <SearchInput
                     label="备件名称"
                     value={name}

@@ -74,40 +74,49 @@ export const getUrlParams = url => {
     return obj;
 };
 
-export const cloneObject = (object) => JSON.parse(JSON.stringify(object));
+export const cloneObject = object => JSON.parse(JSON.stringify(object));
 
-export const translateNmberToTime = (value) => {
+export const translateNmberToTime = value => {
     if (Number(value) <= 9) return `0${value}`;
     return `${value}`;
-}
+};
 
-export const downloadFile = (data) => {
-    const link = document.createElement('a');
-    link.style.display = 'none'
+export const downloadFile = data => {
+    const link = document.createElement("a");
+    link.style.display = "none";
     const blob = new Blob([data.content]);
-    link.href = URL.createObjectURL(blob)
+    link.href = URL.createObjectURL(blob);
     function isIE() {
-        if (!!window.ActiveXObject || 'ActiveXObject' in window) {
-            return true
+        if (!!window.ActiveXObject || "ActiveXObject" in window) {
+            return true;
         } else {
-            return false
+            return false;
         }
     }
     if (data.fileName) {
-        link.download = data.fileName //下载的文件名
+        link.download = data.fileName; //下载的文件名
     } else {
         const fileName = "file.xlsx";
-        link.download = fileName
+        link.download = fileName;
     }
     if (isIE()) {
-        window.navigator.msSaveOrOpenBlob(blob, link.download)
+        window.navigator.msSaveOrOpenBlob(blob, link.download);
     } else {
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
-}
+};
 
 export const hasPerm = (user, code) => {
     return user?.selfPermCodes?.includes(code);
+};
+
+export const getAlarmColor = level => {
+    return {
+        1: "#FF0000",
+        2: "#FF7D00",
+        3: "#FFCD00",
+        4: "#00FF19",
+    }[level];
 };

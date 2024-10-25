@@ -20,7 +20,7 @@ const Index = () => {
         },
     ];
     return (
-        <div className={styles.abnormal}>
+        <div className={styles.alarmConfiguration}>
             <Tabs
                 activeKey={activeKey}
                 items={tabItems}

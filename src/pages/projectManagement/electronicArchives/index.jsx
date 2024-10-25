@@ -399,7 +399,12 @@ const Account = () => {
                 }}
                 editCurrentStep={currentStep}
             />
-            <Space className="search">
+            <Space
+                style={{
+                    flexWrap: "wrap",
+                }}
+                size={10}
+            >
                 <SearchInput
                     label="项目名称"
                     value={code}
@@ -724,7 +729,7 @@ const Account = () => {
                     <Descriptions.Item label="单电芯额定容量(kWh)">
                         {detailRow?.singleCellRatedCapacity}
                     </Descriptions.Item>
-                    <Descriptions.Item label="PCS类型">{detailRow?.pcsTypeZh}</Descriptions.Item>
+                    <Descriptions.Item label="PCS类型">{detailRow?.pcsType}</Descriptions.Item>
                     <Descriptions.Item label="PCS一体机数量(个)">
                         {detailRow?.pcsCount}
                     </Descriptions.Item>
