@@ -10,6 +10,7 @@ import {
     Input,
     Radio,
     theme,
+    Popconfirm,
     Tabs,
 } from "antd";
 import {
@@ -184,14 +185,37 @@ const Account = () => {
             title: "操作",
             dataIndex: "operate",
             fixed: "right",
-            width: 100,
-            render: (_, { id }) => {
+            width: 120,
+            render: (_, { id, supportRemove }) => {
                 return (
-                    <>
+                    <Space>
                         <a style={{ color: token.colorPrimary }} onClick={() => setDetailId(id)}>
                             详情
                         </a>
-                    </>
+                        {supportRemove && (
+                            <Popconfirm
+                                title="确定删除？"
+                                onConfirm={async () => {
+                                    const res = await deleteWorkOrderServer([id]);
+                                    if (res?.data?.status === "SUCCESS") {
+                                        const { current } = paginationRef?.current;
+                                        if (current != 1 && userList?.length == 1) {
+                                            paginationRef.current.current = current - 1;
+                                            setPagination({
+                                                current: current - 1,
+                                            });
+                                        }
+                                        message.success("删除成功！");
+                                        getList();
+                                    }
+                                }}
+                                okText="确定"
+                                cancelText="取消"
+                            >
+                                <a style={{ color: "#dc4446" }}>删除</a>
+                            </Popconfirm>
+                        )}
+                    </Space>
                 );
             },
         },
@@ -492,13 +516,6 @@ const Account = () => {
                 dataSource={userList}
                 columns={columns}
                 pagination={pagination}
-                rowSelection={{
-                    selectedRowKeys,
-                    onChange: onSelectChange,
-                    getCheckboxProps: record => ({
-                        disabled: record.account === "admin",
-                    }),
-                }}
                 scroll={{
                     x: 1500,
                 }}
@@ -511,21 +528,6 @@ const Account = () => {
                         {hasPerm(user, "op:work_order_add") && (
                             <Button type="primary" onClick={() => setAddProjectOpen(true)}>
                                 手工新增工单
-                            </Button>
-                        )}
-                        {hasPerm(user, "op:work_order_m_remove_edit") && (
-                            <Button
-                                type="primary"
-                                danger
-                                disabled={!canDelete}
-                                onClick={handleDelete}
-                            >
-                                删除工单
-                                {selectedRowKeys?.length ? (
-                                    <span>({selectedRowKeys?.length})</span>
-                                ) : (
-                                    ""
-                                )}
                             </Button>
                         )}
                     </Space>

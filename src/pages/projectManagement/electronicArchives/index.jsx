@@ -190,11 +190,6 @@ const Account = () => {
                 };
                 return (
                     <Space>
-                        {hasPerm(user, "op:project_edit") && (
-                            <a style={{ color: "rgb(22, 118, 239)" }} onClick={() => edit(0, row)}>
-                                编辑
-                            </a>
-                        )}
                         <a
                             style={{ color: token.colorPrimary }}
                             onClick={() => {
@@ -204,7 +199,12 @@ const Account = () => {
                         >
                             详情
                         </a>
-                        {hasPerm(user, "op:project_delete") && row?.supportRemove && (
+                        {hasPerm(user, "op:project_edit") && (
+                            <a style={{ color: "rgb(22, 118, 239)" }} onClick={() => edit(0, row)}>
+                                编辑
+                            </a>
+                        )}
+                        {row?.supportRemove && (
                             <Popconfirm
                                 title="确定删除？"
                                 onConfirm={async () => {

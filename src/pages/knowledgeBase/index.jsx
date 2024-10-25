@@ -110,7 +110,7 @@ const KnowledgeBase = () => {
             title: "操作",
             dataIndex: "Action",
             fixed: "right",
-            width: 250,
+            width: 180,
             render(_, row) {
                 return (
                     <Space>
@@ -128,7 +128,7 @@ const KnowledgeBase = () => {
                             </Button>
                         )}
                         {hasPerm(user, "op:knowledge_base_audit") && row?.supportAudit && (
-                            <Button
+                            <a
                                 type="link"
                                 style={{ color: "#FF4D4F" }}
                                 onClick={() =>
@@ -138,9 +138,9 @@ const KnowledgeBase = () => {
                                 }
                             >
                                 审核
-                            </Button>
+                            </a>
                         )}
-                        <Button
+                        <a
                             type="link"
                             style={{ color: "#13C0FF" }}
                             onClick={() => {
@@ -149,7 +149,7 @@ const KnowledgeBase = () => {
                             }}
                         >
                             详情
-                        </Button>
+                        </a>
                     </Space>
                 );
             },

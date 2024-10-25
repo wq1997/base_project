@@ -8,6 +8,7 @@ import {
     DatePicker,
     Tooltip,
     Input,
+    Popconfirm,
     Radio,
     theme,
     Tabs,
@@ -203,8 +204,8 @@ const Account = () => {
             title: "操作",
             dataIndex: "operate",
             fixed: "right",
-            width: activeKey == "todo" ? 130 : 100,
-            render: (_, { id, supportProcessing, type }) => {
+            width: activeKey == "todo" ? 200 : 100,
+            render: (_, { id, supportProcessing, supportRemove, type }) => {
                 return (
                     <Space>
                         <a style={{ color: token.colorPrimary }} onClick={() => setDetailId(id)}>
@@ -216,6 +217,29 @@ const Account = () => {
                                     去处理
                                 </a>
                             )}
+                        {supportRemove && (
+                            <Popconfirm
+                                title="确定删除？"
+                                onConfirm={async () => {
+                                    const res = await deleteWorkOrderServer([id]);
+                                    if (res?.data?.status === "SUCCESS") {
+                                        const { current } = paginationRef?.current;
+                                        if (current != 1 && userList?.length == 1) {
+                                            paginationRef.current.current = current - 1;
+                                            setPagination({
+                                                current: current - 1,
+                                            });
+                                        }
+                                        message.success("删除成功！");
+                                        getList();
+                                    }
+                                }}
+                                okText="确定"
+                                cancelText="取消"
+                            >
+                                <a style={{ color: "#dc4446" }}>删除</a>
+                            </Popconfirm>
+                        )}
                     </Space>
                 );
             },
@@ -373,6 +397,7 @@ const Account = () => {
             <Space
                 style={{
                     flexWrap: "wrap",
+                    marginBottom: 20,
                 }}
                 size={10}
             >
@@ -532,13 +557,6 @@ const Account = () => {
                 dataSource={userList}
                 columns={columns}
                 pagination={pagination}
-                rowSelection={{
-                    selectedRowKeys,
-                    onChange: onSelectChange,
-                    getCheckboxProps: record => ({
-                        disabled: record.account === "admin",
-                    }),
-                }}
                 scroll={{
                     x: 1500,
                 }}
@@ -546,18 +564,6 @@ const Account = () => {
                     paginationRef.current = pagination;
                     getList();
                 }}
-                title={() => (
-                    <Space className="table-title">
-                        <Button type="primary" danger disabled={!canDelete} onClick={handleDelete}>
-                            删除工单
-                            {selectedRowKeys?.length ? (
-                                <span>({selectedRowKeys?.length})</span>
-                            ) : (
-                                ""
-                            )}
-                        </Button>
-                    </Space>
-                )}
             ></Table>
         </div>
     );
