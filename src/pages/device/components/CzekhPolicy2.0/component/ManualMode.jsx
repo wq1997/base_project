@@ -6,7 +6,7 @@ import { theme, message, Space, Flex, InputNumber, Modal, Form, Input, } from "a
 import { useSelector, useIntl } from "umi";
 import { sendBurCmd2 } from '@/services/policy'
 import { Title } from "@/components";
-import { getEncrypt, } from "@/utils/utils";
+import { getEncrypt, getQueryString} from "@/utils/utils";
 import { FORM_REQUIRED_RULE, } from "@/utils/constants";
 import {
     getPublicKey as getPublicKeySever,
@@ -30,7 +30,7 @@ function Com({ devId, dtuId, historyAllData, mode }) {
         pcsPower: 7001,
         pcsStartStop: 7002,
         bmsStartStop: 7003,
-        pcsPowerWaveRange: 7011,
+        pcsPowerWaveRange: getQueryString('type')==16?7004:7011,
     }
     const intl = useIntl();
     const t = (id) => {
