@@ -21,7 +21,7 @@ function Com({ id }) {
     const { token } = theme.useToken();
     const [devId, setDevId] = useState({});
     const [initAllData, setInitAllData] = useState([]);
-    const [historyAllData, setHistoryAllData] = useState({});
+    const [historyAllData, setHistoryAllData] = useState();
     const [form1] = Form.useForm(); // 控制模式
     const [type, setType] = useState(0)
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -71,10 +71,10 @@ function Com({ id }) {
         setInitAllData(data?.data);
         setDevId({
             pcsDevId: data?.data[0].devInfo?.pcs,
-            pcs1DevId: data.data[0].devInfo?.pcsBranch[0],
-            pcs2DevId: data.data[0].devInfo?.pcsBranch[1],
-            bms1DevId: data.data[0].devInfo?.bms[0],
-            bms2DevId: data.data[0].devInfo?.bms[1],
+            pcs1DevId: data.data[0].devInfo?.pcsBranch?.[0],
+            pcs2DevId: data.data[0].devInfo?.pcsBranch?.[1],
+            bms1DevId: data.data[0].devInfo?.bms?.[0],
+            bms2DevId: data.data[0].devInfo?.bms?.[1],
         });
     }
     const getHistory = async () => {
@@ -100,7 +100,7 @@ function Com({ id }) {
                         </Flex>
                     </Flex>
                 </div>
-                {mode == 1 ? <AutoMode devId={devId} dtuId={id} historyAllData={historyAllData} /> : <ManualMode devId={devId} dtuId={id} historyAllData={historyAllData} />}
+                {historyAllData&&(mode == 1 ? <AutoMode devId={devId} dtuId={id} historyAllData={historyAllData} /> : <ManualMode devId={devId} dtuId={id} historyAllData={historyAllData} />)}
             </Space>
             <Modal
                 open={isModalOpen}

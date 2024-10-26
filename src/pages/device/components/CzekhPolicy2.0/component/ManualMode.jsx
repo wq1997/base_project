@@ -42,6 +42,12 @@ function Com({ devId, dtuId, historyAllData, mode }) {
         return msg
     }
     useEffect(() => {
+        setAllPolicy({
+            pcsPower:  historyAllData?.pcsPower || 0,
+            pcsStartStop:'',
+            bmsStartStop:'',
+            pcsPowerWaveRange: historyAllData?.pcsPowerWaveRange || 0
+        })
     }, [])
     const changeType = () => {
         setAllPolicy({ ...allPolicy, [type]: value, })

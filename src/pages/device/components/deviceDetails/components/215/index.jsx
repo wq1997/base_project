@@ -182,6 +182,7 @@ function Com(props) {
             { name: "总功率因数", value: "-", key: "totalFactor" },
             { name: "输入功率", value: "-", key: "inputPower" },
             { name: "输入电流", value: "-", key: "inputCur" },
+            { name: "输入电压", value: "-", key: "inputVol" },
             { name: "A相输出有功功率", value: "-", key: "phaseAActivePower" },
             { name: "B相输出有功功率", value: "-", key: "phaseBActivePower" },
             { name: "C相输出有功功率", value: "-", key: "phaseCActivePower" },
@@ -364,8 +365,8 @@ function Com(props) {
             <DetalisCard data={meterData} />
             <DetalisCard data={energyData} table={{tableClum1,tableClum2,dataTable1}}/>
             <DetalisCard data={ic1Data} />
-            <DetalisCard data={Dcdc1} />
-            <DetalisCard data={Dcdc2} />
+            {props.id!==22&&<DetalisCard data={Dcdc1} />}
+            {props.id!==22&&<DetalisCard data={Dcdc2} />}
 
         </div>
     )

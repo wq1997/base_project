@@ -95,6 +95,10 @@ const App = ({ devId, dtuId, historyAllData }) => {
                   {
                     title: intl.formatMessage({ id: '充放电类型' }),
                     dataIndex: 'action',
+                    render:(text,record)=>{
+                      console.log(record,1212);
+                      
+                    },
                     editable: true,
                     inputType: 'Select',
                     options: [
