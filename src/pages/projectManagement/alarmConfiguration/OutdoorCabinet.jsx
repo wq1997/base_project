@@ -252,6 +252,14 @@ const AlarmConfiguration = () => {
         onChange(res) {
             if (res?.file?.status === "done" && res?.file?.response?.status === "FAILED") {
                 message.error(res?.file?.response?.msg);
+                window.open(
+                    `${getBaseUrl()}/attachment/download-temp-file` +
+                    jsonToUrlParams({
+                        tempFileKey: res?.file?.response?.data,
+                        access_token: localStorage.getItem("Token"),
+                    }),
+                    "_blank"
+                );
             }
         },
     };
@@ -477,18 +485,18 @@ const AlarmConfiguration = () => {
                                 const lastUpdaterNameLike = lastModifiedPersonRef.current;
                                 window.open(
                                     getBaseUrl() +
-                                        "/bas-alarm-type215/download-import-template" +
-                                        jsonToUrlParams({
-                                            seZhDescLike,
-                                            seDeviceName,
-                                            mmsEventDescLike,
-                                            mmsEventLevel,
-                                            mmsEventClassify,
-                                            alarm,
-                                            autoGenerateWorkOrder,
-                                            lastUpdaterNameLike,
-                                            access_token: localStorage.getItem("Token"),
-                                        })
+                                    "/bas-alarm-type215/download-import-template" +
+                                    jsonToUrlParams({
+                                        seZhDescLike,
+                                        seDeviceName,
+                                        mmsEventDescLike,
+                                        mmsEventLevel,
+                                        mmsEventClassify,
+                                        alarm,
+                                        autoGenerateWorkOrder,
+                                        lastUpdaterNameLike,
+                                        access_token: localStorage.getItem("Token"),
+                                    })
                                 );
                             }}
                         >

@@ -243,6 +243,14 @@ const AlarmConfiguration = () => {
         onChange(res) {
             if (res?.file?.status === "done" && res?.file?.response?.status === "FAILED") {
                 message.error(res?.file?.response?.msg);
+                window.open(
+                    `${getBaseUrl()}/attachment/download-temp-file` +
+                    jsonToUrlParams({
+                        tempFileKey: res?.file?.response?.data,
+                        access_token: localStorage.getItem("Token"),
+                    }),
+                    "_blank"
+                );
             }
         },
     };
@@ -456,20 +464,20 @@ const AlarmConfiguration = () => {
                                     const lastUpdaterNameLike = lastModifiedPersonRef.current;
                                     window.open(
                                         getBaseUrl() +
-                                            "/bas-alarm-type/download-import-template" +
-                                            jsonToUrlParams({
-                                                basProjectId,
-                                                sePlantId,
-                                                seAlarmTypeDescLike,
-                                                seDevNameLike,
-                                                mmsEventDescLike,
-                                                mmsEventLevel,
-                                                mmsEventClassify,
-                                                alarm,
-                                                autoGenerateWorkOrder,
-                                                lastUpdaterNameLike,
-                                                access_token: localStorage.getItem("Token"),
-                                            })
+                                        "/bas-alarm-type/download-import-template" +
+                                        jsonToUrlParams({
+                                            basProjectId,
+                                            sePlantId,
+                                            seAlarmTypeDescLike,
+                                            seDevNameLike,
+                                            mmsEventDescLike,
+                                            mmsEventLevel,
+                                            mmsEventClassify,
+                                            alarm,
+                                            autoGenerateWorkOrder,
+                                            lastUpdaterNameLike,
+                                            access_token: localStorage.getItem("Token"),
+                                        })
                                     );
                                 } else {
                                     message.error("至少搜索一个项目");
