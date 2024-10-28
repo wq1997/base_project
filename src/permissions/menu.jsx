@@ -31,6 +31,7 @@ const MenuList = [
             { label: '电芯详情', key: '/index/statistics/highAnysis', },
             { label: '电量统计', key: '/index/statistics/electricity', },
             { label: '收益统计', key: '/index/statistics/revenue', },
+            { label: '报表导出', key: '/index/statistics/reportExport' }
         ]
     },
     {

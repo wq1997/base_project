@@ -23,6 +23,7 @@ export default [
             { name: '高级分析', path: '/index/statistics/highAnysis', component: "@/pages/statistics/highAnysis"},
             { name: '历史告警', path: '/index/statistics/revenue', component: "@/pages/statistics/revenue" },
             { name: '监测曲线', path: '/index/statistics/monitoringCurves', component: "@/pages/statistics/monitoringCurves" },
+            { name: '报表导出', path: '/index/statistics/reportExport', component: "@/pages/statistics/reportExport" },
         ]
     },
     {

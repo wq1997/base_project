@@ -26,6 +26,7 @@ const EditRowTable = ({
   data = [],
   columns,
   showAdd,
+  showAddBtn=true,
   showEdit,
   showClear,
   showDelete,
@@ -322,13 +323,16 @@ const EditRowTable = ({
               onChangeTabs && onChangeTabs(value);
             }}
           />
-          <Button
-            style={{ background: 'linear-gradient(90deg, #0787DB 0%, #034FB4 100%)', border: 'none', color: 'white' }}
-            onClick={add}
-            disabled={!showAdd}
-          >
-            {intl.formatMessage({ id: '新增' })}
-          </Button>
+          {
+            showAddBtn &&
+            <Button
+              style={{ background: 'linear-gradient(90deg, #0787DB 0%, #034FB4 100%)', border: 'none', color: 'white' }}
+              onClick={add}
+              disabled={!showAdd}
+            >
+              {intl.formatMessage({ id: '新增' })}
+            </Button>
+          }
         </Row>
         <Form
           form={form}
