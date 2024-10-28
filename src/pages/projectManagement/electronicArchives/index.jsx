@@ -229,7 +229,7 @@ const Account = () => {
                                 <a style={{ color: "#dc4446" }}>删除</a>
                             </Popconfirm>
                         )}
-                        {row?.status === "ACTIVE" && (
+                        {row?.status === "ACTIVE" && row?.supportStandardInspection &&(
                             <a
                                 style={{ color: "#ed750e" }}
                                 onClick={() => {
