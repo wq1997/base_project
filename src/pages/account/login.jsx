@@ -1,6 +1,6 @@
-import { Form, Input, message, Checkbox, Radio, Button, Typography, theme, Divider } from "antd";
+import { Form, Input, message, Checkbox, Radio, Button, Typography, theme, Divider, Popover, Flex, QRCode } from "antd";
 import { FORM_REQUIRED_RULE, PASSWORD_RGE, SYSTEM_NAME } from "@/utils/constants";
-import { UserOutlined, LockOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { UserOutlined, LockOutlined, ExclamationCircleOutlined, DownloadOutlined } from '@ant-design/icons';
 import {
   getPublicKey as getPublicKeySever,
   login as loginSever,
@@ -20,7 +20,7 @@ const Login = () => {
   const [codeImgUrl, setCodeImgUrl] = useState(`${getBaseUrl()}/user/getKaptchaImage`);
   const [showImg, setShowImg] = useState(false);
   const [language, setLanguage] = useState(locale == 'zh-CN' ? 1 : 3);
-  
+
   const intl = useIntl();
   const t = (id) => {
     const msg = intl.formatMessage(
@@ -84,9 +84,35 @@ const Login = () => {
       }}
       className={styles.login}
     >
-      <Title className={styles.Title} level={1} >
+      {/* <Title className={styles.Title} level={1} >
         <FormattedMessage id="app.title1" />
-      </Title>
+      </Title> */}
+      <Popover
+        placement="bottomRight"
+        content={
+          <Flex>
+            <div className={styles.downloadItem}>
+              <QRCode value={"https://apps.apple.com/us/app/sermatec-cloud/id1503982938"} />
+              <div>{t("Apple Store下载APP")}</div>
+            </div>
+            <Divider type="vertical" style={{height: 150, width: 2, marginTop: 5}}/>
+            <div className={styles.downloadItem}>
+              <QRCode value={"https://domestic-power.sermatec-cloud.com/download/Sermatec.apk"} />
+              <div>{t("扫码获取APK文件")}</div>
+            </div>
+            <Divider type="vertical" style={{height: 150, width: 2, marginTop: 5}}/>
+            <div className={styles.downloadItem}>
+              <QRCode value={"https://play.google.com/store/apps/details?id=com.sermatec.inverter"} />
+              <div>{t("谷歌下载APP")}</div>
+            </div>
+          </Flex>
+        }
+      >
+        <div className={styles.download}>
+          <DownloadOutlined />
+          <span>{intl.formatMessage({ id: 'APP下载' })}</span>
+        </div>
+      </Popover>
       <div
         style={{
           width: 450,
@@ -102,9 +128,8 @@ const Login = () => {
             position: 'absolute',
             top: '50%',
             left: '50%',
-            transform: 'translate(-50%,-50%)',
+            transform: 'translate(-70%,-50%)',
             padding: '40px 60px 70px 60px',
-
           }}
         >
           <Divider style={{ fontSize: '32px', marginBottom: 0, color: '#fff' }}>欢迎登录</Divider>

@@ -2071,5 +2071,8 @@ export default {
     '当前反向有功谷电能': 'Current Reverse Active Valley Energy',
     '储能计量电表': 'Energy Storage Meter',
     '用户计量电表': 'Customer Metering Meter',
-    '户外柜': 'Outdoor Cabinet'
+    '户外柜': 'Outdoor Cabinet',
+    'Apple Store下载APP': 'Apple Store Download',
+    '扫码获取APK文件': 'APK file',
+    '谷歌下载APP': 'Google Download',
 } 

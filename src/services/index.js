@@ -175,3 +175,11 @@ export const btachSendPCSPower = (payload) => {
 export const changeBaseLanguage = (payload) => {
     return axiosInstance.post(`/user/changeLanguage?language=${payload?.language}`, payload);
 }
+
+export const getDateConfig = (id) => {
+    return axiosInstance.get(`/minsys/energyEarning/getDateConfig/${id}`)
+}
+
+export const postDateConfig = (payload) => {
+    return axiosInstance.post(`/minsys/energyEarning/updateDateConfig`, payload)
+}

@@ -1,6 +1,6 @@
-import { Form, Input, message, Checkbox, Radio, Button, Typography, theme, Divider } from "antd";
+import { Form, Input, message, Checkbox, Radio, Button, Typography, theme, Divider, Popover, Flex, QRCode } from "antd";
 import { FORM_REQUIRED_RULE, PASSWORD_RGE, SYSTEM_NAME } from "@/utils/constants";
-import { UserOutlined, LockOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { UserOutlined, LockOutlined, ExclamationCircleOutlined, DownloadOutlined } from '@ant-design/icons';
 import {
   getPublicKey as getPublicKeySever,
   login as loginSever,
@@ -86,6 +86,32 @@ const Login = () => {
       <Title className={styles.Title} level={1} >
         <FormattedMessage id="app.title_gdgy" />
       </Title>
+      <Popover
+        placement="bottomRight"
+        content={
+          <Flex>
+            <div className={styles.downloadItem}>
+              <QRCode value={"https://apps.apple.com/us/app/sermatec-cloud/id1503982938"} />
+              <div>{t("Apple Store下载APP")}</div>
+            </div>
+            <Divider type="vertical" style={{height: 150, width: 2, marginTop: 5}}/>
+            <div className={styles.downloadItem}>
+              <QRCode value={"https://domestic-power.sermatec-cloud.com/download/Sermatec.apk"} />
+              <div>{t("扫码获取APK文件")}</div>
+            </div>
+            <Divider type="vertical" style={{height: 150, width: 2, marginTop: 5}}/>
+            <div className={styles.downloadItem}>
+              <QRCode value={"https://play.google.com/store/apps/details?id=com.sermatec.inverter"} />
+              <div>{t("谷歌下载APP")}</div>
+            </div>
+          </Flex>
+        }
+      >
+        <div className={styles.download}>
+          <DownloadOutlined />
+          <span>{intl.formatMessage({ id: 'APP下载' })}</span>
+        </div>
+      </Popover>
       <div className={styles.form}>
         <div
           className={styles.formCard}

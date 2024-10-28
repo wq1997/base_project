@@ -1,6 +1,17 @@
 .login {
     position: relative;
 
+    .download{
+        position: absolute;
+        right: 60px;
+        top: 60px;
+        cursor: pointer;
+        font-size: 20px;
+        span{
+            margin-left: 5px;
+        }
+    }
+
     input:-webkit-autofill {
         -webkit-animation: autofill-fix 1s infinite !important;
         -webkit-text-fill-color: white !important;
@@ -68,6 +79,13 @@
             color: #73787F !important;
         }
     }
+}
+
+.downloadItem{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 @media screen and (min-width: 2000px) {
