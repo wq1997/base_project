@@ -52,7 +52,7 @@ const Index = ({ info }) => {
                                                             }
                                                         )}`}
                                                     >
-                                                        item?.fileName
+                                                        {item?.fileName}
                                                     </a>
                                                 );
                                             })}
