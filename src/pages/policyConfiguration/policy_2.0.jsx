@@ -152,7 +152,11 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                 antiRefluxTriggerValue: data?.antiRefluxTriggerValue,
                 pcsPowerWaveRange: data?.pcsPowerWaveRange,
                 runModePCS: data?.pcsStatus,
-                runModeBMS: data?.bmsStatus
+                runModeBMS: data?.bmsStatus,
+                switchOnOffGrid: data?.switchOnOffGrid,
+                antiReflux: data?.antiReflux,
+                overload: data?.overload,
+                expansion: data?.expansion
             }
             monthList?.forEach((item, index) => {
                 params[item.value] = data?.policySelectList?.[index]
