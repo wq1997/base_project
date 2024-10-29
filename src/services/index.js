@@ -183,3 +183,15 @@ export const getDateConfig = (id) => {
 export const postDateConfig = (payload) => {
     return axiosInstance.post(`/minsys/energyEarning/updateDateConfig`, payload)
 }
+
+export const postReportExportData = (payload) => {
+    return axiosInstance.post(`/minsys/energyEarning/statistics/fee`, payload);
+}
+
+export const getPlantBaseInfo = (id) => {
+    return axiosInstance.get(`/minsys/energyEarning/plant/detail/${id}`)
+}
+
+export const minsysEnergyEarningReport = (payload) => {
+    return axiosInstance.post(`/minsys/energyEarning/export/report`, payload, {responseType: 'blob'})
+}

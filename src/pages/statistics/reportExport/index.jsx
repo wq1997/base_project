@@ -7,9 +7,13 @@ import { useEffect, useState } from "react";
 import {
     getFetchPlantList2 as getFetchPlantListServe,
     getDateConfig as getDateConfigServe,
-    postDateConfig as postDateConfigServe
+    postDateConfig as postDateConfigServe,
+    postReportExportData as postReportExportDataServe,
+    getPlantBaseInfo as getPlantBaseInfoServe,
+    minsysEnergyEarningReport as minsysEnergyEarningReportServe
 } from "@/services";
 import { Title, EditTable } from "@/components";
+import { downloadFile } from "@/utils/utils";
 
 const ReportExport = () => {
     const intl = useIntl();
@@ -18,12 +22,15 @@ const ReportExport = () => {
     const [dataChangeForm] = Form.useForm();
     const { token } = antdTheme.useToken();
     const [plantList, setPlantList] = useState([]);
-    const [dataSource, setDataSource] = useState([]);
+    const [electricDataSource, setElectricDataSource] = useState([]);
+    const [incomeDataSource, setIncomeDataSource] = useState([]);
+    const [electricFeeDataSource, setElectricFeeDataSource] = useState([]);
     const [open, setOpen] = useState(false);
     const [initFeeConfig, setInitConfig] = useState([]);
     const [params, setParams] = useState();
     const [showData, setShowData] = useState([]);
     const [showElectricFeeTable, setShowElectricFeeTable] = useState(false);
+    const [plantInfo, setPlantInfo] = useState({});
 
     const getPlantList = async () => {
         const res = await getFetchPlantListServe();
@@ -44,8 +51,120 @@ const ReportExport = () => {
         }
     }
 
+    const getPlantBaseInfo = async () => {
+        const res = await getPlantBaseInfoServe(params?.plantId);
+        if (res?.data?.code === "ok") {
+            setPlantInfo(res?.data?.data);
+        }
+    }
+
+    const getTableDataSource = async () => {
+        const res = await postReportExportDataServe({
+            plantId: params?.plantId,
+            startDate: params?.startDate,
+            endDate: params?.endDate,
+            dateType: params?.dateType,
+            deviceType: params?.plantId===1807?"meter":"device"
+        })
+        if (res?.data?.code === "ok") {
+            const data = res?.data?.data;
+            let electricFeeDataSource = [];
+            setElectricDataSource(data);
+            setIncomeDataSource(data);
+            data?.forEach(item => {
+                const detail = item?.detail || [];
+                detail.forEach(data => {
+                    [
+                        `${intl.formatMessage({ id: '电量' })}(kWh)`,
+                        `${intl.formatMessage({ id: '收益' })}(${intl.formatMessage({ id: '元' })})`
+                    ].forEach((typeName, index) => {
+                        if (index === 0) {
+                            electricFeeDataSource.push({
+                                displayTime: data?.displayTime,
+                                name: data?.name,
+                                sn: data?.sn,
+                                typeName,
+                                dayCharge: data?.dayChargeEnergy,
+                                tipCharge: data?.tipChargeEnergy,
+                                peakCharge: data?.peakChargeEnergy,
+                                flatCharge: data?.flatChargeEnergy,
+                                valleyCharge: data?.valleyChargeEnergy,
+                                dayDischarge: data?.dayDischargeEnergy,
+                                tipDischarge: data?.tipDischargeEnergy,
+                                peakDischarge: data?.peakDischargeEnergy,
+                                flatDischarge: data?.flatDischargeEnergy,
+                                valleyDischarge: data?.valleyDischargeEnergy
+                            })
+                        }
+                        if (index === 1) {
+                            electricFeeDataSource.push({
+                                displayTime: data?.displayTime,
+                                name: data?.name,
+                                sn: data?.sn,
+                                typeName,
+                                dayCharge: data?.dayChargeEarning,
+                                tipCharge: data?.tipChargeEarning,
+                                peakCharge: data?.peakChargeEarning,
+                                flatCharge: data?.flatChargeEarning,
+                                valleyCharge: data?.valleyChargeEarning,
+                                dayDischarge: data?.dayDischargeEarning,
+                                tipDischarge: data?.tipDischargeEarning,
+                                peakDischarge: data?.peakDischargeEarning,
+                                flatDischarge: data?.flatDischargeEarning,
+                                valleyDischarge: data?.valleyDischargeEarning
+                            })
+                        }
+                    })
+                });
+                [
+                    `${intl.formatMessage({ id: '电量' })}(kWh)`,
+                    `${intl.formatMessage({ id: '收益' })}(${intl.formatMessage({ id: '元' })})`
+                ].forEach((typeName, index) => {
+                    if (index === 0) {
+                        electricFeeDataSource.push({
+                            displayTime: item?.displayTime,
+                            name: intl.formatMessage({ id: '合计' }),
+                            sn: '',
+                            typeName,
+                            dayCharge: item?.dayChargeEnergy,
+                            tipCharge: item?.tipChargeEnergy,
+                            peakCharge: item?.peakChargeEnergy,
+                            flatCharge: item?.flatChargeEnergy,
+                            valleyCharge: item?.valleyChargeEnergy,
+                            dayDischarge: item?.dayDischargeEnergy,
+                            tipDischarge: item?.tipDischargeEnergy,
+                            peakDischarge: item?.peakDischargeEnergy,
+                            flatDischarge: item?.flatDischargeEnergy,
+                            valleyDischarge: item?.valleyDischargeEnergy
+                        })
+                    }
+                    if (index === 1) {
+                        electricFeeDataSource.push({
+                            displayTime: item?.displayTime,
+                            name: '',
+                            sn: '',
+                            typeName,
+                            dayCharge: item?.dayChargeEarning,
+                            tipCharge: item?.tipChargeEarning,
+                            peakCharge: item?.peakChargeEarning,
+                            flatCharge: item?.flatChargeEarning,
+                            valleyCharge: item?.valleyChargeEarning,
+                            dayDischarge: item?.dayDischargeEarning,
+                            tipDischarge: item?.tipDischargeEarning,
+                            peakDischarge: item?.peakDischargeEarning,
+                            flatDischarge: item?.flatDischargeEarning,
+                            valleyDischarge: item?.valleyDischargeEarning
+                        })
+                    }
+                });
+            })
+            setElectricFeeDataSource(electricFeeDataSource);
+        }
+    }
+
     const getDataSource = async () => {
-        console.log(params);
+        getPlantBaseInfo();
+        getTableDataSource();
     }
 
     const getShowData = async () => {
@@ -65,7 +184,7 @@ const ReportExport = () => {
                     detailReport.push(item);
                 }
             })
-            if (params?.plantId === 3286) {
+            if (params?.plantId === 1807) {
                 const feeConfigData = [
                     {
                         targetSoc1: `${intl.formatMessage({ id: '电价' })}(${intl.formatMessage({ id: '元' })})`,
@@ -93,15 +212,50 @@ const ReportExport = () => {
 
     const getParams = async () => {
         const params = await form.validateFields();
-        setParams(params);
+        let { plantId, reportType, date } = params;
+        let requestParams = {};
+        if (Array.isArray(date)) date = date?.[0];
+        if (reportType === "day") {
+            requestParams.plantId = plantId;
+            requestParams.startDate = dayjs(date).format("YYYY-MM-DD");
+            requestParams.endDate = dayjs(date).format("YYYY-MM-DD");
+            requestParams.dateType = reportType;
+        }
+        if (reportType === "week") {
+            requestParams.plantId = plantId;
+            requestParams.startDate = dayjs(date).add(-6, 'days').format("YYYY-MM-DD");
+            requestParams.endDate = dayjs(date).format("YYYY-MM-DD");
+            requestParams.dateType = "day";
+        }
+        if (reportType === "month") {
+            requestParams.plantId = plantId;
+            requestParams.startDate = dayjs(date).format("YYYY-MM");
+            requestParams.endDate = dayjs(date).format("YYYY-MM");
+            requestParams.dateType = "month";
+        }
+        if (reportType === "year") {
+            requestParams.plantId = plantId;
+            requestParams.startDate = `${dayjs(date).format("YYYY")}-01`;
+            requestParams.endDate = `${dayjs(date).format("YYYY")}-12`;
+            requestParams.dateType = "month";
+        }
+        if (reportType === "all") {
+            requestParams.plantId = plantId;
+            requestParams.startDate = dayjs(date).format("YYYY");
+            requestParams.endDate = dayjs(date).format("YYYY");
+            requestParams.dateType = "year";
+        }
+        setParams({
+            ...params,
+            ...requestParams
+        });
     }
 
     useEffect(() => {
         if (params) {
             setShowElectricFeeTable(
-                params?.plantId === 3286
+                params?.plantId === 1807
                 && params?.reportType === "month"
-                && moment(params?.date).isBefore(moment())
             );
             getDataSource();
             getShowData();
@@ -123,7 +277,7 @@ const ReportExport = () => {
                     form={form}
                     layout="inline"
                     onValuesChange={(changeValue, values) => {
-                        setParams({ ...values });
+                        getParams();
                     }}
                     initialValues={{
                         reportType: 'day',
@@ -181,7 +335,19 @@ const ReportExport = () => {
                 <Button
                     type="primary"
                     onClick={async () => {
-
+                        const res = await minsysEnergyEarningReportServe({
+                            plantId: params?.plantId,
+                            startDate: params?.startDate,
+                            endDate: params?.endDate,
+                            dateType: params?.dateType,
+                            deviceType: params?.plantId===1807?"meter":"device"
+                        });
+                        if (res?.data) {
+                            downloadFile({
+                                fileName: `${intl.formatMessage({ id: '报表导出' })}.xlsx`,
+                                content: res?.data
+                            })
+                        }
                     }}
                     style={{ backgroundColor: token.defaultBg, padding: '0 20px', height: 40 }}
                 >
@@ -191,12 +357,12 @@ const ReportExport = () => {
             <Flex vertical gap={10}>
                 <Title title={intl.formatMessage({ id: "电站基础信息" })} />
                 <Descriptions>
-                    {showData.includes("name") && <Descriptions.Item label={intl.formatMessage({ id: '电站名称' })}>111</Descriptions.Item>}
-                    {showData.includes("installTime") && <Descriptions.Item label={intl.formatMessage({ id: '建站日期' })}>111</Descriptions.Item>}
-                    {showData.includes("timeZone") && <Descriptions.Item label={intl.formatMessage({ id: '所属时区' })}>111</Descriptions.Item>}
-                    {showData.includes("priceUnit") && <Descriptions.Item label={intl.formatMessage({ id: '所属货币' })}>111</Descriptions.Item>}
-                    {showData.includes("address") && <Descriptions.Item label={intl.formatMessage({ id: '电站位置' })}>111</Descriptions.Item>}
-                    {showData.includes("dtuCount") && <Descriptions.Item label={intl.formatMessage({ id: '设备总数' })}>111</Descriptions.Item>}
+                    {showData.includes("name") && <Descriptions.Item label={intl.formatMessage({ id: '电站名称' })}>{plantInfo?.name}</Descriptions.Item>}
+                    {showData.includes("installTime") && <Descriptions.Item label={intl.formatMessage({ id: '建站日期' })}>{plantInfo?.installTime}</Descriptions.Item>}
+                    {showData.includes("timeZone") && <Descriptions.Item label={intl.formatMessage({ id: '所属时区' })}>{plantInfo?.timeZone}</Descriptions.Item>}
+                    {showData.includes("priceUnit") && <Descriptions.Item label={intl.formatMessage({ id: '所属货币' })}>{plantInfo?.priceUnit}</Descriptions.Item>}
+                    {showData.includes("address") && <Descriptions.Item label={intl.formatMessage({ id: '电站位置' })}>{plantInfo?.address}</Descriptions.Item>}
+                    {showData.includes("dtuCount") && <Descriptions.Item label={intl.formatMessage({ id: '设备总数' })}>{plantInfo?.dtuCount}</Descriptions.Item>}
                 </Descriptions>
             </Flex>
             <Flex vertical gap={40}>
@@ -206,12 +372,12 @@ const ReportExport = () => {
                         <Title title={intl.formatMessage({ id: "电量明细" })} />
                         <Table
                             pagination={false}
-                            dataSource={dataSource}
+                            dataSource={electricDataSource}
                             columns={[
                                 {
                                     title: intl.formatMessage({ id: '日期' }),
-                                    dataIndex: 'date',
-                                    key: 'date',
+                                    dataIndex: 'displayTime',
+                                    key: 'displayTime',
                                 },
                                 {
                                     title: `${intl.formatMessage({ id: '尖时段充' })}/${intl.formatMessage({ id: '放电量' })}(kWh)`,
@@ -273,25 +439,25 @@ const ReportExport = () => {
                 {
                     showData.includes("earningTable") &&
                     <Flex vertical gap={10}>
-                        <Title title={intl.formatMessage({ id: "电量明细" })} />
+                        <Title title={intl.formatMessage({ id: "收益明细" })} />
                         <Table
                             pagination={false}
-                            dataSource={dataSource}
+                            dataSource={incomeDataSource}
                             columns={[
                                 {
                                     title: intl.formatMessage({ id: '日期' }),
-                                    dataIndex: 'date',
-                                    key: 'date',
+                                    dataIndex: 'displayTime',
+                                    key: 'displayTime',
                                 },
                                 {
                                     title: `${intl.formatMessage({ id: '充电成本' })}(${intl.formatMessage({ id: '元' })})`,
-                                    dataIndex: 'kWh',
-                                    key: 'kWh',
+                                    dataIndex: 'inFee',
+                                    key: 'inFee',
                                 },
                                 {
                                     title: `${intl.formatMessage({ id: '放电收入' })}(${intl.formatMessage({ id: '元' })})`,
-                                    dataIndex: 'kWh',
-                                    key: 'kWh',
+                                    dataIndex: 'outFee',
+                                    key: 'outFee',
                                 },
                                 {
                                     title: `${intl.formatMessage({ id: '收益' })}(${intl.formatMessage({ id: '元' })})`,
@@ -312,11 +478,11 @@ const ReportExport = () => {
                         <Table
                             bordered
                             pagination={false}
-                            dataSource={dataSource}
+                            dataSource={electricFeeDataSource}
                             columns={[
                                 {
                                     title: intl.formatMessage({ id: '时间' }),
-                                    dataIndex: '1',
+                                    dataIndex: 'displayTime',
                                     onCell(_, index) {
                                         return {
                                             rowSpan: index % 2 === 0 ? 2 : 0
@@ -325,50 +491,50 @@ const ReportExport = () => {
                                 },
                                 {
                                     title: intl.formatMessage({ id: '电表名称' }),
-                                    dataIndex: '2',
+                                    dataIndex: 'name',
                                     onCell(row, index) {
                                         return {
-                                            rowSpan: row[2] === "合计" ? 2 : (index % 2 === 0 ? 2 : 0),
-                                            colSpan: row[2] === "合计" ? 2 : (index % 2 === 0 ? 1 : 0),
+                                            rowSpan: row["name"] === intl.formatMessage({ id: '合计' }) ? 2 : (index % 2 === 0 ? 2 : 0),
+                                            colSpan: row["name"] === intl.formatMessage({ id: '合计' }) ? 2 : (index % 2 === 0 ? 1 : 0),
                                         }
                                     }
                                 },
                                 {
                                     title: intl.formatMessage({ id: '电表编码' }),
-                                    dataIndex: '3',
+                                    dataIndex: 'sn',
                                     onCell(row, index) {
                                         return {
-                                            rowSpan: row[2] === "合计" ? 0 : (index % 2 === 0 ? 2 : 0),
-                                            colSpan: row[2] === "合计" ? 0 : (index % 2 === 0 ? 1 : 0)
+                                            rowSpan: row["name"] === intl.formatMessage({ id: '合计' }) ? 0 : (index % 2 === 0 ? 2 : 0),
+                                            colSpan: row["name"] === intl.formatMessage({ id: '合计' }) ? 0 : (index % 2 === 0 ? 1 : 0)
                                         }
                                     }
                                 },
                                 {
                                     title: '',
-                                    dataIndex: '4',
+                                    dataIndex: 'typeName',
                                 },
                                 {
                                     title: `${intl.formatMessage({ id: '正向有功' })}(${intl.formatMessage({ id: '充电' })})`,
                                     children: [
                                         {
                                             title: intl.formatMessage({ id: '正向有功总' }),
-                                            dataIndex: '5',
+                                            dataIndex: 'dayCharge',
                                         },
                                         {
                                             title: intl.formatMessage({ id: '尖期' }),
-                                            dataIndex: '6',
+                                            dataIndex: 'tipCharge',
                                         },
                                         {
                                             title: intl.formatMessage({ id: '峰期' }),
-                                            dataIndex: '7',
+                                            dataIndex: 'peakCharge',
                                         },
                                         {
                                             title: intl.formatMessage({ id: '平期' }),
-                                            dataIndex: '8',
+                                            dataIndex: 'flatCharge',
                                         },
                                         {
                                             title: intl.formatMessage({ id: '谷期' }),
-                                            dataIndex: '9',
+                                            dataIndex: 'valleyCharge',
                                         }
                                     ]
                                 },
@@ -377,23 +543,23 @@ const ReportExport = () => {
                                     children: [
                                         {
                                             title: intl.formatMessage({ id: '反向有功总' }),
-                                            dataIndex: '51',
+                                            dataIndex: 'dayDischarge',
                                         },
                                         {
                                             title: intl.formatMessage({ id: '尖期' }),
-                                            dataIndex: '62',
+                                            dataIndex: 'tipDischarge',
                                         },
                                         {
                                             title: intl.formatMessage({ id: '峰期' }),
-                                            dataIndex: '72',
+                                            dataIndex: 'peakDischarge',
                                         },
                                         {
                                             title: intl.formatMessage({ id: '平期' }),
-                                            dataIndex: '822',
+                                            dataIndex: 'flatDischarge',
                                         },
                                         {
                                             title: intl.formatMessage({ id: '谷期' }),
-                                            dataIndex: '92',
+                                            dataIndex: 'valleyDischarge',
                                         }
                                     ]
                                 }
