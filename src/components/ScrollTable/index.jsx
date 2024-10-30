@@ -67,13 +67,15 @@ const Table = ({ color = "white", columns, dataSource }) => {
                             >
                                 {columns
                                     ?.map(item => item.key)
-                                    ?.map(columnKey => {
+                                    ?.map((columnKey, index) => {
                                         return (
                                             <div
                                                 className={styles.tableContentCol}
                                                 style={{ color }}
                                             >
-                                                {data[columnKey]}
+                                                {columns?.[index]?.render
+                                                    ? columns?.[index]?.render(index, data)
+                                                    : data[columnKey]}
                                             </div>
                                         );
                                     })}

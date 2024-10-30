@@ -4,6 +4,7 @@ import { Button, Space, Spin, Tooltip, Pagination } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { SearchInput } from "@/components";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
+import { getLargeScreenAlarmColor } from "@/utils/utils";
 import "./index.less";
 import Card from "../../components/Card";
 import { getAlarmScreenList as getAlarmScreenListServer } from "@/services/largeScreen";
@@ -34,6 +35,15 @@ const Index = ({ initData }) => {
         {
             title: "告警等级",
             dataIndex: "priorZh",
+            render: (index, row) => (
+                <span
+                    style={{
+                        color: getLargeScreenAlarmColor(row?.prior),
+                    }}
+                >
+                    {row?.priorZh}
+                </span>
+            ),
         },
         {
             title: "设备名称",
@@ -47,10 +57,6 @@ const Index = ({ initData }) => {
             title: "开始时间",
             dataIndex: "begin",
         },
-        // {
-        //     title: "结束时间",
-        //     dataIndex: "end",
-        // },
     ];
 
     const getList = async () => {
@@ -227,10 +233,12 @@ const Index = ({ initData }) => {
                                     {listData?.length ? (
                                         listData?.map((value, index) => (
                                             <div className={styles.row}>
-                                                {columns?.map(column => (
+                                                {columns?.map((column, index) => (
                                                     <div className={styles.value}>
                                                         <Tooltip title={value[column.dataIndex]}>
-                                                            {value[column.dataIndex]}
+                                                            {column?.render
+                                                                ? column?.render(index, value)
+                                                                : value[column.dataIndex]}
                                                         </Tooltip>
                                                     </div>
                                                 ))}

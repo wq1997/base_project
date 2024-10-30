@@ -120,3 +120,12 @@ export const getAlarmColor = level => {
         4: "#00FF19",
     }[level];
 };
+
+export const getLargeScreenAlarmColor = level => {
+    return {
+        1: "#FD7068",
+        2: "#FFA47B",
+        3: "#FFEF8A",
+        4: "#8AFFDD",
+    }[level];
+};
