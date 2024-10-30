@@ -2099,4 +2099,9 @@ export default {
     '放电收入': 'Discharge Revenue',
     '报表导出': 'Export Report',
     '合计': 'Total',
+    '明细报表': 'Detailed Report',
+    '尖时段': 'Tip',
+    '峰时段': 'Peak',
+    '平时段': 'Flat',
+    '谷时段': 'Valley',
 } 
