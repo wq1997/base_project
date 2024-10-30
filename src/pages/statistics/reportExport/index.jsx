@@ -1,4 +1,4 @@
-import { Form, Flex, Select, Modal, theme as antdTheme, Button, Descriptions, Table, DatePicker, Checkbox } from "antd";
+import { Form, Flex, Select, Modal, theme as antdTheme, Button, Descriptions, Table, DatePicker, Checkbox, message } from "antd";
 import { useIntl, useSelector } from "umi";
 import dayjs from "dayjs";
 import moment from "moment";
@@ -10,7 +10,8 @@ import {
     postDateConfig as postDateConfigServe,
     postReportExportData as postReportExportDataServe,
     getPlantBaseInfo as getPlantBaseInfoServe,
-    minsysEnergyEarningReport as minsysEnergyEarningReportServe
+    minsysEnergyEarningReport as minsysEnergyEarningReportServe,
+    energyEarningExistFee as energyEarningExistFeeServe
 } from "@/services";
 import { Title, EditTable } from "@/components";
 import { downloadFile } from "@/utils/utils";
@@ -336,18 +337,23 @@ const ReportExport = () => {
                 <Button
                     type="primary"
                     onClick={async () => {
-                        const res = await minsysEnergyEarningReportServe({
-                            plantId: params?.plantId,
-                            startDate: params?.startDate,
-                            endDate: params?.endDate,
-                            dateType: params?.dateType,
-                            deviceType: params?.plantId===1807?"meter":"device"
-                        });
-                        if (res?.data) {
-                            downloadFile({
-                                fileName: `${intl.formatMessage({ id: '报表导出' })}.xlsx`,
-                                content: res?.data
-                            })
+                        const canDownloadRes = await energyEarningExistFeeServe(params?.plantId);
+                        if(canDownloadRes?.data?.data){
+                            const res = await minsysEnergyEarningReportServe({
+                                plantId: params?.plantId,
+                                startDate: params?.startDate,
+                                endDate: params?.endDate,
+                                dateType: params?.dateType,
+                                deviceType: params?.plantId===1807?"meter":"device"
+                            });
+                            if (res?.data) {
+                                downloadFile({
+                                    fileName: `${intl.formatMessage({ id: '报表导出' })}.xlsx`,
+                                    content: res?.data
+                                })
+                            }
+                        }else{
+                            message.error(intl.formatMessage({id: '请在数据选择内配置电价以进行电费结算!'}))
                         }
                     }}
                     style={{ backgroundColor: token.defaultBg, padding: '0 20px', height: 40 }}

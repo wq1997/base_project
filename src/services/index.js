@@ -195,3 +195,7 @@ export const getPlantBaseInfo = (id) => {
 export const minsysEnergyEarningReport = (payload) => {
     return axiosInstance.post(`/minsys/energyEarning/export/report`, payload, {responseType: 'blob'})
 }
+
+export const energyEarningExistFee = (id) => {
+    return axiosInstance.get(`/minsys/energyEarning/exist/fee/${id}`)
+}
