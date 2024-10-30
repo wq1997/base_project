@@ -3,9 +3,9 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import useIcon from "@/hooks/useIcon";
 import { history, useLocation, useIntl } from "umi";
-import { Table,theme } from 'antd';
+import { Table, theme } from 'antd';
 
-function Com({ data,table }) {
+function Com({ data, table }) {
     const [height, setHeight] = useState('0fr');
     const { token } = theme.useToken();
 
@@ -20,9 +20,9 @@ function Com({ data,table }) {
         return msg
     }
     return (
-        <div className='card_main' style={{background:token.detailsCardbgc,padding:'0.8333rem 1.0417rem',marginBottom:'0.4167rem',borderRadius:'0.4167rem'}}>
-            <div className='card_title' style={{ fontSize: '1.0417rem', marginBottom: '1.0417rem',color:token.iconColor }}>
-                <Icon type='icon-xiangyou' style={{ cursor: 'pointer',marginRight:'0.3125rem' }}></Icon>
+        <div className='card_main' style={{ background: token.detailsCardbgc, padding: '0.8333rem 1.0417rem', marginBottom: '0.4167rem', borderRadius: '0.4167rem' }}>
+            <div className='card_title' style={{ fontSize: '1.0417rem', marginBottom: '1.0417rem', color: token.iconColor }}>
+                <Icon type='icon-xiangyou' style={{ cursor: 'pointer', marginRight: '0.3125rem' }}></Icon>
                 {t(data.title)}
             </div>
             <div className='card_contain' style={{
@@ -38,19 +38,19 @@ function Com({ data,table }) {
                 {data.data.map(it => {
                     return (
                         <>
-                            <div style={{ marginBottom: '0.833rem', marginTop: '0.8333rem',color:token.color1}}>
+                           {it?.value&& <div style={{ marginBottom: '0.833rem', marginTop: '0.8333rem', color: token.color1 }}>
                                 {t(it.name)}{" "}:{" "}{t(it.value)}
-                            </div>
+                            </div>}
                         </>
                     )
                 })}
             </div>
-            {table&&<div style={{
+            {table && <div style={{
                 padding: '0 1.0417rem',
 
             }}>
-                <Table pagination={false} columns={table.tableClum1} dataSource={table.dataTable1}/>
-            <Table pagination={false} columns={table.tableClum2} dataSource={table.dataTable1} style={{marginBottom:'1.6667rem'}}/> </div>  }
+                <Table pagination={false} columns={table.tableClum1} dataSource={table.dataTable1} />
+                <Table pagination={false} columns={table.tableClum2} dataSource={table.dataTable1} style={{ marginBottom: '1.6667rem' }} /> </div>}
         </div>
     )
 }

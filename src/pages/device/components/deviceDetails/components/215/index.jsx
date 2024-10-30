@@ -227,6 +227,12 @@ function Com(props) {
             { name: "BCMU最高硬件版本", value: "-", key: "bcmuHighestHardwareVersion" },
             { name: "BCMU最低软件版本", value: "-", key: "bcmuLowestSoftwareVersion" },
             { name: "BCMU最低硬件版本", value: "-", key: "bcmuLowestHardwareVersion" },
+            { name: "BCMU硬件版本", value: "-", key: "bcmuHardwareVersion" },
+            { name: "BCMU软件版本", value: "-", key: "bcmuSoftwareVersion" },
+            { name: "BMU最高软件版本", value: "-", key: "bmuHighestSoftwareVersion" },
+            { name: "BMU最高硬件版本", value: "-", key: "bmuHighestHardwareVersion" },
+            { name: "BMU最低软件版本", value: "-", key: "bmuLowestSoftwareVersion" },
+            { name: "BMU最低硬件版本", value: "-", key: "bmuLowestHardwareVersion" },
             
         ],
     })
@@ -351,9 +357,21 @@ function Com(props) {
         setDataTable1([...arr])
     }
     const dealData = (data, baseData, handlBase) => {
-        baseData.data.map(it => {
-            data[it.key] ? it.value = data[it.key] : null
-        });
+        if (baseData.title=='BMS版本信息') {
+            baseData.data.map(it => {
+                data[it.key] ? it.value = data[it.key] :it.value =undefined
+            });
+            console.log(baseData,11111);
+            
+        }else{
+            baseData.data.map(it => {
+                data[it.key] ? it.value = data[it.key] : null
+            });
+        }
+      
+        if(props.id==22){
+            data.lcExhaustTemp==undefined
+        }
         handlBase({ ...baseData });
     };
   
