@@ -225,7 +225,7 @@ const RealtimeAlarm = () => {
               setDeviceId(undefined);
               setLevel(undefined);
             }}
-            style={{ width: '250px', marginRight: 30 }}
+            style={{ width: '250px', marginRight: 16 }}
             placeholder={`${t('请选择电站')}`}
             value={plantId}
           />
@@ -234,7 +234,7 @@ const RealtimeAlarm = () => {
             onChange={async value => {
               setDeviceId(value);
             }}
-            style={{ width: '250px', marginRight: 30 }}
+            style={{ width: '250px', marginRight: 16 }}
             placeholder={`${t('请选择设备')}`}
             value={deviceId}
             allowClear

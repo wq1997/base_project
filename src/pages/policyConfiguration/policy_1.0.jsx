@@ -321,7 +321,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                             <Switch disabled={!canIssue || !isLive} defaultValue={false} />
                                         </Form.Item>
                                     </Col>
-                                    <Col span={6}>
+                                    <Col span={7}>
                                         <Form.Item label={intl.formatMessage({ id: '变压器容量' })} style={{ margin: 0 }}>
                                             <Space direction="horizontal">
                                                 <Form.Item style={{ margin: 0 }} name="capValue" rules={[{ ...FORM_REQUIRED_RULE }]}>

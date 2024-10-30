@@ -256,6 +256,7 @@ const ReportExport = () => {
             setShowElectricFeeTable(
                 params?.plantId === 1807
                 && params?.reportType === "month"
+                && moment(dayjs(params?.date).format("YYYY-MM")).isBefore(moment().format("YYYY-MM"))
             );
             getDataSource();
             getShowData();
@@ -521,7 +522,7 @@ const ReportExport = () => {
                                             dataIndex: 'dayCharge',
                                         },
                                         {
-                                            title: intl.formatMessage({ id: '尖期' }),
+                                            title: intl.formatMessage({ id: '尖峰' }),
                                             dataIndex: 'tipCharge',
                                         },
                                         {
@@ -546,7 +547,7 @@ const ReportExport = () => {
                                             dataIndex: 'dayDischarge',
                                         },
                                         {
-                                            title: intl.formatMessage({ id: '尖期' }),
+                                            title: intl.formatMessage({ id: '尖峰' }),
                                             dataIndex: 'tipDischarge',
                                         },
                                         {

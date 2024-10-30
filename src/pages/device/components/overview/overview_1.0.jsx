@@ -334,7 +334,7 @@ const OverView = ({ deviceVersion, sn }) => {
                                         <div className={styles.item}>
                                             <div className={styles.label}>{intl.formatMessage({ id: item.title })}</div>
                                             <div className={styles.data}>
-                                                <div style={{ color: item.color }} className={styles.dataCount}>{item.data} %</div>
+                                                <div style={{ color: item.color }} className={styles.dataCount}>{item.data}%</div>
                                                 <img src={theme === "dark" ? `${PUBLIC_FILE_PATH}/system_efficiency_dark.svg` : `${PUBLIC_FILE_PATH}/system_efficiency_white.svg`} className={styles.img2} />
                                             </div>
                                         </div>
