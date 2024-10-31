@@ -1,7 +1,7 @@
 export default {
     app: {
         title: 'Sermatec Energy Storage Management System',
-        title1: 'SMT-ESS-CUBE215 Energy storage management system',
+        title1: 'Energy storage management system',
         title_gdgy: 'Energy storage management system',
         Query: "Query",
         Export: 'Export',
