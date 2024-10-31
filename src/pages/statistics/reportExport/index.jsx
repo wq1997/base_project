@@ -65,7 +65,7 @@ const ReportExport = () => {
             startDate: params?.startDate,
             endDate: params?.endDate,
             dateType: params?.dateType,
-            deviceType: params?.plantId===1807?"meter":"device"
+            deviceType: params?.plantId === 1807 ? "meter" : "device"
         })
         if (res?.data?.code === "ok") {
             const data = res?.data?.data;
@@ -337,23 +337,18 @@ const ReportExport = () => {
                 <Button
                     type="primary"
                     onClick={async () => {
-                        const canDownloadRes = await energyEarningExistFeeServe(params?.plantId);
-                        if(canDownloadRes?.data?.data){
-                            const res = await minsysEnergyEarningReportServe({
-                                plantId: params?.plantId,
-                                startDate: params?.startDate,
-                                endDate: params?.endDate,
-                                dateType: params?.dateType,
-                                deviceType: params?.plantId===1807?"meter":"device"
-                            });
-                            if (res?.data) {
-                                downloadFile({
-                                    fileName: `${intl.formatMessage({ id: '报表导出' })}.xlsx`,
-                                    content: res?.data
-                                })
-                            }
-                        }else{
-                            message.error(intl.formatMessage({id: '请在数据选择内配置电价以进行电费结算!'}))
+                        const res = await minsysEnergyEarningReportServe({
+                            plantId: params?.plantId,
+                            startDate: params?.startDate,
+                            endDate: params?.endDate,
+                            dateType: params?.dateType,
+                            deviceType: params?.plantId === 1807 ? "meter" : "device"
+                        });
+                        if (res?.data) {
+                            downloadFile({
+                                fileName: `${intl.formatMessage({ id: '报表导出' })}.xlsx`,
+                                content: res?.data
+                            })
                         }
                     }}
                     style={{ backgroundColor: token.defaultBg, padding: '0 20px', height: 40 }}
