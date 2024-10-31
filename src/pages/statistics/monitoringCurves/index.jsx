@@ -296,7 +296,7 @@ const MonitoringCurves = () => {
                     0: "TempMax",
                     1: "TempMin",
                     2: 'TempDiff',
-                }[index]
+                }[index%3]
                 const data = currentData?.energyData?.[filed];
                 series.push({
                     yAxisIndex: index % 3 === 0 ? 0 : (index % 3 === 1 ? 0 : 1),
@@ -368,8 +368,6 @@ const MonitoringCurves = () => {
 
                 const currentPlantDevice = await form.getFieldValue("currentPlantDevice")
                 if (currentPlantDevice?.length === 0) {
-                    // const res = await getCurveTypeServe();
-                    // console.log("CCCCCC", res);
                     form.setFieldsValue({
                         currentPlantDevice: [plantId, data[0].value],
                         dataType: 100
