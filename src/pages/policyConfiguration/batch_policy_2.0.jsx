@@ -1,7 +1,7 @@
 import { Form, theme, Space, Row, Modal, Col, Switch, Input, Radio, InputNumber, Button, message } from "antd";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { Title, EditTable } from "@/components";
-import { useIntl } from "umi";
+import { useIntl, useSelector } from "umi";
 import ButtonGroup from "./component/ButtonGroup";
 import { useState, useEffect } from "react";
 import { getQueryString, translateNmberToTime } from "@/utils/utils";
@@ -40,6 +40,7 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
     const [durationList, setDurationList] = useState([]);
     const [durationListDataSource, setDurationListDataSource] = useState({});
     const [isLive, setIsLive] = useState(true);
+    const { locale } = useSelector(state => state.global);
     const canIssue = true || mode === 0;
 
     const strategyList = [
@@ -90,84 +91,100 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
     })
 
     const getAliveStatus = async () => {
-        const res = await isLiveServe({ dtuIds: deviceList });
-        setIsLive(res?.data);
+        // const res = await isLiveServe({ dtuId: deviceList?.[0] });
+        // setIsLive(res?.data);
+        setIsLive(true);
     }
 
     const getInitData = async () => {
-        if (deviceList?.length <= 0) return;
-        const policyDurationList1 = durationListDataSource?.[0]?.map(item => {
-            return {
-                ...item,
-                action: {
-                    3: intl.formatMessage({ id: '充电' }),
-                    1: intl.formatMessage({ id: '放电' }),
-                    2: intl.formatMessage({ id: '待机' })
-                }[item.action],
-                timeType: {
-                    0: intl.formatMessage({ id: '尖' }),
-                    1: intl.formatMessage({ id: '峰' }),
-                    2: intl.formatMessage({ id: '平' }),
-                    3: intl.formatMessage({ id: '谷' })
-                }[item.timeType],
-                timeStramp: `${item.startHour}:${item.startMin}~${item.endHour}:${item.endMin}`
+        const res = await getBurCmdHistory2Serve({ dtuId: deviceList?.[0], type: deviceVersion });
+        if (res?.data?.data) {
+            const data = res?.data?.data;
+            const policyDurationList1 = data?.policyDurationList1?.map(item => {
+                return {
+                    ...item,
+                    action: {
+                        3: intl.formatMessage({ id: '充电' }),
+                        1: intl.formatMessage({ id: '放电' }),
+                        2: intl.formatMessage({ id: '待机' })
+                    }[item.action],
+                    timeType: {
+                        0: intl.formatMessage({ id: '尖' }),
+                        1: intl.formatMessage({ id: '峰' }),
+                        2: intl.formatMessage({ id: '平' }),
+                        3: intl.formatMessage({ id: '谷' })
+                    }[item.timeType],
+                    timeStramp: `${translateNmberToTime(item.startHour)}:${translateNmberToTime(item.startMin)}~${translateNmberToTime(item.endHour)}:${translateNmberToTime(item.endMin)}`
+                }
+            })
+            const policyDurationList2 = data?.policyDurationList2?.map(item => {
+                return {
+                    ...item,
+                    action: {
+                        3: intl.formatMessage({ id: '充电' }),
+                        1: intl.formatMessage({ id: '放电' }),
+                        2: intl.formatMessage({ id: '待机' })
+                    }[item.action],
+                    timeType: {
+                        0: intl.formatMessage({ id: '尖' }),
+                        1: intl.formatMessage({ id: '峰' }),
+                        2: intl.formatMessage({ id: '平' }),
+                        3: intl.formatMessage({ id: '谷' })
+                    }[item.timeType],
+                    timeStramp: `${translateNmberToTime(item.startHour)}:${translateNmberToTime(item.startMin)}~${translateNmberToTime(item.endHour)}:${translateNmberToTime(item.endMin)}`
+                }
+            })
+            let durationList = (tabValue === 0 ? policyDurationList1 : policyDurationList2) || [];
+            const params = {
+                mode: data?.mode,
+                enable: data?.enable,
+                tranCap: data?.tranCap,
+                tranCapPercent: data?.tranCapPercent,
+                durationList,
+                pcsPower: data?.pcsPower,
+                tempStart: data?.tempStart,
+                tempStop: data?.tempStop,
+                humStart: data?.humStart,
+                humStop: data?.humStop,
+                coolingPoint: data?.coolingPoint,
+                heatPoint: data?.heatPoint,
+                coolingDiffPoint: data?.coolingDiffPoint,
+                heatDiffPoint: data?.heatDiffPoint,
+                antiRefluxTriggerValue: data?.antiRefluxTriggerValue,
+                pcsPowerWaveRange: data?.pcsPowerWaveRange,
+                runModePCS: data?.pcsStatus,
+                runModeBMS: data?.bmsStatus,
+                switchOnOffGrid: data?.switchOnOffGrid,
+                antiReflux: data?.antiReflux,
+                overload: data?.overload,
+                expansion: data?.expansion
             }
-        })
-        const policyDurationList2 = durationListDataSource?.[1]?.map(item => {
-            return {
-                ...item,
-                action: {
-                    3: intl.formatMessage({ id: '充电' }),
-                    1: intl.formatMessage({ id: '放电' }),
-                    2: intl.formatMessage({ id: '待机' })
-                }[item.action],
-                timeType: {
-                    0: intl.formatMessage({ id: '尖' }),
-                    1: intl.formatMessage({ id: '峰' }),
-                    2: intl.formatMessage({ id: '平' }),
-                    3: intl.formatMessage({ id: '谷' })
-                }[item.timeType],
-                timeStramp: `${item.startHour}:${item.startMin}~${item.endHour}:${item.endMin}`
-            }
-        })
-        let durationList = (tabValue === 0 ? policyDurationList1 : policyDurationList2) || [];
-        const params = {
-            // mode: data?.mode,
-            // enable: data?.enable,
-            // tranCap: data?.tranCap,
-            // tranCapPercent: data?.tranCapPercent,
-            durationList,
-            // pcsPower: data?.pcsPower,
-            // tempStart: data?.tempStart,
-            // tempStop: data?.tempStop,
-            // humStart: data?.humStart,
-            // humStop: data?.humStop,
-            // coolingPoint: data?.coolingPoint,
-            // heatPoint: data?.heatPoint,
-            // coolingDiffPoint: data?.coolingDiffPoint,
-            // heatDiffPoint: data?.heatDiffPoint,
-            // antiRefluxTriggerValue: data?.antiRefluxTriggerValue,
-            // pcsPowerWaveRange: data?.pcsPowerWaveRange,
-            // runModePCS: data?.pcsStatus,
-            // runModeBMS: data?.bmsStatus
+            monthList?.forEach((item, index) => {
+                params[item.value] = data?.policySelectList?.[index]
+            });
+            form.setFieldsValue(params);
+            setDurationList([...durationList]);
+            setMode(data?.mode);
+            setRunModePCS(data?.pcsStatus);
+            setRunModeBMS(data?.bmsStatus)
         }
-        // monthList?.forEach((item, index) => {
-        //     params[item.value] = data?.policySelectList?.[index]
-        // });
-        form.setFieldsValue(params);
-        setDurationList([...durationList]);
-        // setMode(data?.mode);
-        // setRunModePCS(data?.pcsStatus);
-        // setRunModeBMS(data?.bmsStatus)
     }
 
     useEffect(() => {
-        getInitData();
-    }, [tabValue])
+        if (deviceList?.length === 1) {
+            getInitData();
+        }
+    }, [tabValue, locale, deviceList])
 
     useEffect(() => {
-        // getAliveStatus();
-    }, [])
+        if (deviceList?.length === 1) {
+            getAliveStatus();
+        } else {
+            form.resetFields();
+            setTabValue(0);
+            setDurationList([]);
+        }
+    }, [deviceList])
 
     return (
         <div
