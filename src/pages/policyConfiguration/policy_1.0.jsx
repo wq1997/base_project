@@ -42,7 +42,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
     const [durationList, setDurationList] = useState([]);
     const [isLive, setIsLive] = useState(false);
     const { locale } = useSelector(state => state.global);
-    const canIssue = mode === 1;
+    const canIssue = true || mode === 1;
 
     const strategyList = [
         { label: intl.formatMessage({ id: '策略1' }), value: 0 },
@@ -66,7 +66,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
 
     const areaStyle = useEmotionCss(() => {
         return {
-            background: token.bgcColorB_l,
+            // background: token.bgcColorB_l,
             padding: '30px 30px',
         }
     })
@@ -92,8 +92,9 @@ const PolicyConfiguration = ({ deviceVersion }) => {
     })
 
     const getAliveStatus = async () => {
-        const res = await isLiveServe({ dtuId: id });
-        setIsLive(res?.data);
+        // const res = await isLiveServe({ dtuId: id });
+        // setIsLive(res?.data);
+        setIsLive(true);
     }
 
     const getInitData = async () => {
@@ -173,12 +174,19 @@ const PolicyConfiguration = ({ deviceVersion }) => {
     }, [])
 
     return (
-        <>
+        <div
+            style={{
+                width: '100%',
+                height: 'auto',
+                minHeight: '100%',
+                background: token.bgcColorB_l
+            }}
+        >
             <Form
                 form={form}
                 colon={false}
             >
-                <Space style={{ width: '100%', height: 'auto', minHeight: '100%', background: token.color18 }} direction="vertical" size={12}>
+                <Space style={{ width: '100%', height: 'auto', minHeight: '100%' }} direction="vertical" size={12}>
                     <div className={areaStyle}>
                         <div
                             style={{
@@ -228,10 +236,10 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                 <Row justify="space-between" align="middle">
                                     <Title title={intl.formatMessage({ id: '设备命令' })} />
                                 </Row>
-                                <Space style={{ width: '100%', padding: '0 20px' }} direction="vertical" size={30}>
+                                <Space style={{ width: '100%' }} direction="vertical" size={30}>
                                     <Row>
-                                        <Space size={20}>
-                                            <Form.Item label={intl.formatMessage({ id: 'PCS/BMS设置' })} name="runModePCS" style={{ margin: 0 }}>
+                                        <Col span={12}>
+                                            <Form.Item label={intl.formatMessage({ id: 'PCS设置' })} name="runModePCS" style={{ margin: 0 }}>
                                                 <ButtonGroup
                                                     value={runModePCS}
                                                     mode={'controlled'}
@@ -249,7 +257,9 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                                     }}
                                                 />
                                             </Form.Item>
-                                            <Form.Item name="runModeBMS" style={{ margin: 0 }}>
+                                        </Col>
+                                        <Col span={12}>
+                                            <Form.Item label={intl.formatMessage({ id: 'BMS设置' })} name="runModeBMS" style={{ margin: 0 }}>
                                                 <ButtonGroup
                                                     value={runModeBMS}
                                                     mode={'controlled'}
@@ -265,212 +275,214 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                                     }}
                                                 />
                                             </Form.Item>
-                                        </Space>
+                                        </Col>
                                     </Row>
                                     <Row>
-                                        <Col span={12}>
-                                            <Row gutter={24}>
-                                                <Col>
-                                                    <Form.Item label={`${intl.formatMessage({ id: 'PCS功率' })}(kW)`} name="pcsPower" rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
-                                                        <Input disabled={!canIssue || !isLive} placeholder={intl.formatMessage({ id: '请输入PCS功率' })} style={{ width: 300 }} />
-                                                    </Form.Item>
-                                                </Col>
-                                                <Col>
-                                                    <div
-                                                        className={(canIssue && isLive) ? distributeStyle : disabledDistributeStyle}
-                                                        onClick={async () => {
-                                                            if (canIssue && isLive) {
-                                                                await form.validateFields(['pcsPower']);
-                                                                setCheckModalOpen(true);
-                                                                setCheckModalType('pcsPower');
-                                                            }
-                                                        }}
-                                                    >
-                                                        {intl.formatMessage({ id: '下发' })}
-                                                    </div>
-                                                </Col>
-                                            </Row>
+                                        <Col style={{ marginRight: 20 }}>
+                                            <Form.Item label={`${intl.formatMessage({ id: 'PCS功率' })}(kW)`} name="pcsPower" rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
+                                                <Input disabled={!canIssue || !isLive} placeholder={intl.formatMessage({ id: '请输入PCS功率' })} style={{ width: 300 }} />
+                                            </Form.Item>
                                         </Col>
+                                        {
+                                            mode === 1 &&
+                                            <Col>
+                                                <div
+                                                    className={(canIssue && isLive) ? distributeStyle : disabledDistributeStyle}
+                                                    onClick={async () => {
+                                                        if (canIssue && isLive) {
+                                                            await form.validateFields(['pcsPower']);
+                                                            setCheckModalOpen(true);
+                                                            setCheckModalType('pcsPower');
+                                                        }
+                                                    }}
+                                                >
+                                                    {intl.formatMessage({ id: '下发' })}
+                                                </div>
+                                            </Col>
+                                        }
                                     </Row>
                                 </Space>
                             </Space>
                         </Space>
                     </div>
                     {
-                        !ignoreId.includes(id) &&
-                        <div className={areaStyle}>
-                            <Space style={{ width: '100%' }} direction="vertical" size={30}>
-                                <Row justify="space-between">
-                                    <Title title={intl.formatMessage({ id: '参数设置' })} />
-                                    <div
-                                        className={(canIssue && isLive) ? distributeStyle : disabledDistributeStyle}
-                                        onClick={async () => {
-                                            if (canIssue && isLive) {
-                                                await form.validateFields(['enable', 'cap', 'capValue']);
-                                                setCheckModalOpen(true);
-                                                setCheckModalType('sendParamSetting');
-                                            }
-                                        }}
-                                    >
-                                        {intl.formatMessage({ id: '下发' })}
-                                    </div>
-                                </Row>
-                                <Row>
-                                    <Col span={3}>
-                                        <Form.Item label={intl.formatMessage({ id: '扩容' })} name="enable" valuePropName="checked" style={{ margin: 0 }}>
-                                            <Switch disabled={!canIssue || !isLive} defaultValue={false} />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col span={7}>
-                                        <Form.Item label={intl.formatMessage({ id: '变压器容量' })} style={{ margin: 0 }}>
-                                            <Space direction="horizontal">
-                                                <Form.Item style={{ margin: 0 }} name="capValue" rules={[{ ...FORM_REQUIRED_RULE }]}>
-                                                    <InputNumber disabled={!canIssue || !isLive} style={{ width: 300 }} placeholder="kW" />
-                                                </Form.Item>
-                                            </Space>
-                                        </Form.Item>
-                                    </Col>
-                                    <Col span={8}>
-                                        <Form.Item label={intl.formatMessage({ id: '变压器容量保护比例' })} style={{ margin: 0 }}>
-                                            <Space direction="horizontal">
-                                                <Form.Item style={{ margin: 0 }} name="cap" rules={[{ ...FORM_REQUIRED_RULE }]}>
-                                                    <InputNumber disabled={!canIssue || !isLive} style={{ width: 300 }} placeholder="%" />
-                                                </Form.Item>
-                                            </Space>
-                                        </Form.Item>
-                                    </Col>
-                                </Row>
-                            </Space>
-                        </div>
-                    }
-                    <div className={areaStyle}>
-                        <Space style={{ width: '100%' }} direction="vertical" size={30}>
-                            <Row justify="space-between">
-                                <Title title={intl.formatMessage({ id: '策略配置' })} />
-                                <div
-                                    className={(canIssue && isLive) ? distributeStyle : disabledDistributeStyle}
-                                    onClick={async () => {
-                                        if (canIssue && isLive) {
-                                            const { durationList } = await form.getFieldsValue("durationList");
-                                            if (durationList && durationList?.length > 0) {
-                                                setCheckModalOpen(true);
-                                                setCheckModalType('sendStrategySetting');
-                                            } else {
-                                                message.error(intl.formatMessage({ id: '请至少添加一条策略' }))
-                                            }
-                                        }
-                                    }}
-                                >
-                                    {intl.formatMessage({ id: '下发' })}
-                                </div>
-                            </Row>
-                            <Form.Item name="durationList" validateTrigger={false} rules={[{ ...FORM_REQUIRED_RULE }]}>
-                                <EditTable.EditRowTable
-                                    showAdd={canIssue && isLive}
-                                    showClear={canIssue && isLive}
-                                    showEdit={canIssue && isLive}
-                                    showDelete={canIssue && isLive}
-                                    data={durationList}
-                                    columns={[
-                                        {
-                                            title: intl.formatMessage({ id: '时段' }),
-                                            dataIndex: 'timeType',
-                                            editable: true,
-                                            inputType: 'Select',
-                                            options: [
-                                                { value: intl.formatMessage({ id: '尖' }), label: intl.formatMessage({ id: '尖' }) },
-                                                { value: intl.formatMessage({ id: '峰' }), label: intl.formatMessage({ id: '峰' }) },
-                                                { value: intl.formatMessage({ id: '平' }), label: intl.formatMessage({ id: '平' }) },
-                                                { value: intl.formatMessage({ id: '谷' }), label: intl.formatMessage({ id: '谷' }) }
-                                            ]
-                                        },
-                                        {
-                                            title: intl.formatMessage({ id: '类型' }),
-                                            dataIndex: 'action',
-                                            editable: true,
-                                            inputType: 'Select',
-                                            options: [
-                                                { value: intl.formatMessage({ id: '充电' }), label: intl.formatMessage({ id: '充电' }) },
-                                                { value: intl.formatMessage({ id: '放电' }), label: intl.formatMessage({ id: '放电' }) },
-                                                { value: intl.formatMessage({ id: '待机' }), label: intl.formatMessage({ id: '待机' }) },
-                                            ]
-                                        },
-                                        {
-                                            title: intl.formatMessage({ id: 'SOC(%)' }),
-                                            dataIndex: 'targetSoc',
-                                            editable: true,
-                                            inputType: 'InputNumber',
-                                        },
-                                        {
-                                            title: `${intl.formatMessage({ id: '功率' })}(kW)`,
-                                            dataIndex: 'pcsPower',
-                                            editable: true,
-                                            inputType: 'InputNumber',
-                                        },
-                                        {
-                                            title: `${intl.formatMessage({ id: '电价' })}(${intl.formatMessage({ id: '元' })})`,
-                                            dataIndex: 'elePrice',
-                                            editable: true,
-                                            inputType: 'InputNumber',
-                                            max: 65.53
-                                        },
-                                        {
-                                            title: `${intl.formatMessage({ id: '开始时间' })}~${intl.formatMessage({ id: '结束时间' })}`,
-                                            dataIndex: 'timeStramp',
-                                            editable: true,
-                                            inputType: 'CustomDatePicker',
-                                        }
-                                    ]}
-                                    strategyList={strategyList}
-                                    correlationList={['timeType', 'elePrice']}
-                                    maxLength={10}
-                                    tabValue={tabValue}
-                                    onChangeTabs={value => {
-                                        setTabValue(value);
-                                    }}
-                                />
-                            </Form.Item>
-                        </Space>
-                    </div>
-
-                    <div className={areaStyle}>
-                        <Space style={{ width: '100%' }} direction="vertical" size={20}>
-                            <Row justify="space-between" align="middle">
-                                <Title title={intl.formatMessage({ id: '策略选择' })} />
-                                <div
-                                    className={(canIssue && isLive) ? distributeStyle : disabledDistributeStyle}
-                                    onClick={async () => {
-                                        if (canIssue && isLive) {
-                                            await form.validateFields(monthList.map(month => month.value));
-                                            setCheckModalOpen(true);
-                                            setCheckModalType('sendStrategySelect');
-                                        }
-                                    }}
-                                >
-                                    {intl.formatMessage({ id: '下发' })}
-                                </div>
-                            </Row>
-                            <Row>
-                                {
-                                    monthList.map(month => {
-                                        return (
-                                            <Col span={24 / monthList.length}>
-                                                <div style={{ marginBottom: 10 }}>{month.label}</div>
-                                                <Form.Item name={month.value} layout="vertical" rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
-                                                    <Radio.Group disabled={!canIssue || !isLive}>
-                                                        <Space direction="vertical">
-                                                            {strategyList?.map(strategy => <Radio value={strategy.value}>{strategy.label}</Radio>)}
-                                                        </Space>
-                                                    </Radio.Group>
+                        mode === 0 &&
+                        <>
+                            {
+                                !ignoreId.includes(id) &&
+                                <div className={areaStyle}>
+                                    <Space style={{ width: '100%' }} direction="vertical" size={30}>
+                                        <Row justify="space-between">
+                                            <Title title={intl.formatMessage({ id: '参数设置' })} />
+                                            <div
+                                                className={(canIssue && isLive) ? distributeStyle : disabledDistributeStyle}
+                                                onClick={async () => {
+                                                    if (canIssue && isLive) {
+                                                        await form.validateFields(['enable', 'cap', 'capValue']);
+                                                        setCheckModalOpen(true);
+                                                        setCheckModalType('sendParamSetting');
+                                                    }
+                                                }}
+                                            >
+                                                {intl.formatMessage({ id: '下发' })}
+                                            </div>
+                                        </Row>
+                                        <Row>
+                                            <Col span={3}>
+                                                <Form.Item label={intl.formatMessage({ id: '扩容' })} name="enable" valuePropName="checked" style={{ margin: 0 }}>
+                                                    <Switch disabled={!canIssue || !isLive} defaultValue={false} />
                                                 </Form.Item>
                                             </Col>
-                                        )
-                                    })
-                                }
-                            </Row>
-                        </Space>
-                    </div>
-
+                                            <Col span={7}>
+                                                <Form.Item label={intl.formatMessage({ id: '变压器容量' })} style={{ margin: 0 }}>
+                                                    <Space direction="horizontal">
+                                                        <Form.Item style={{ margin: 0 }} name="capValue" rules={[{ ...FORM_REQUIRED_RULE }]}>
+                                                            <InputNumber disabled={!canIssue || !isLive} style={{ width: 300 }} placeholder="kW" />
+                                                        </Form.Item>
+                                                    </Space>
+                                                </Form.Item>
+                                            </Col>
+                                            <Col span={8}>
+                                                <Form.Item label={intl.formatMessage({ id: '变压器容量保护比例' })} style={{ margin: 0 }}>
+                                                    <Space direction="horizontal">
+                                                        <Form.Item style={{ margin: 0 }} name="cap" rules={[{ ...FORM_REQUIRED_RULE }]}>
+                                                            <InputNumber disabled={!canIssue || !isLive} style={{ width: 300 }} placeholder="%" />
+                                                        </Form.Item>
+                                                    </Space>
+                                                </Form.Item>
+                                            </Col>
+                                        </Row>
+                                    </Space>
+                                </div>
+                            }
+                            <div className={areaStyle}>
+                                <Space style={{ width: '100%' }} direction="vertical" size={30}>
+                                    <Row justify="space-between">
+                                        <Title title={intl.formatMessage({ id: '策略配置' })} />
+                                        <div
+                                            className={(canIssue && isLive) ? distributeStyle : disabledDistributeStyle}
+                                            onClick={async () => {
+                                                if (canIssue && isLive) {
+                                                    const { durationList } = await form.getFieldsValue("durationList");
+                                                    if (durationList && durationList?.length > 0) {
+                                                        setCheckModalOpen(true);
+                                                        setCheckModalType('sendStrategySetting');
+                                                    } else {
+                                                        message.error(intl.formatMessage({ id: '请至少添加一条策略' }))
+                                                    }
+                                                }
+                                            }}
+                                        >
+                                            {intl.formatMessage({ id: '下发' })}
+                                        </div>
+                                    </Row>
+                                    <Form.Item name="durationList" validateTrigger={false} rules={[{ ...FORM_REQUIRED_RULE }]}>
+                                        <EditTable.EditRowTable
+                                            showAdd={canIssue && isLive}
+                                            showClear={canIssue && isLive}
+                                            showEdit={canIssue && isLive}
+                                            showDelete={canIssue && isLive}
+                                            data={durationList}
+                                            columns={[
+                                                {
+                                                    title: intl.formatMessage({ id: '时段' }),
+                                                    dataIndex: 'timeType',
+                                                    editable: true,
+                                                    inputType: 'Select',
+                                                    options: [
+                                                        { value: intl.formatMessage({ id: '尖' }), label: intl.formatMessage({ id: '尖' }) },
+                                                        { value: intl.formatMessage({ id: '峰' }), label: intl.formatMessage({ id: '峰' }) },
+                                                        { value: intl.formatMessage({ id: '平' }), label: intl.formatMessage({ id: '平' }) },
+                                                        { value: intl.formatMessage({ id: '谷' }), label: intl.formatMessage({ id: '谷' }) }
+                                                    ]
+                                                },
+                                                {
+                                                    title: intl.formatMessage({ id: '类型' }),
+                                                    dataIndex: 'action',
+                                                    editable: true,
+                                                    inputType: 'Select',
+                                                    options: [
+                                                        { value: intl.formatMessage({ id: '充电' }), label: intl.formatMessage({ id: '充电' }) },
+                                                        { value: intl.formatMessage({ id: '放电' }), label: intl.formatMessage({ id: '放电' }) },
+                                                        { value: intl.formatMessage({ id: '待机' }), label: intl.formatMessage({ id: '待机' }) },
+                                                    ]
+                                                },
+                                                {
+                                                    title: intl.formatMessage({ id: 'SOC(%)' }),
+                                                    dataIndex: 'targetSoc',
+                                                    editable: true,
+                                                    inputType: 'InputNumber',
+                                                },
+                                                {
+                                                    title: `${intl.formatMessage({ id: '功率' })}(kW)`,
+                                                    dataIndex: 'pcsPower',
+                                                    editable: true,
+                                                    inputType: 'InputNumber',
+                                                },
+                                                {
+                                                    title: `${intl.formatMessage({ id: '电价' })}(${intl.formatMessage({ id: '元' })})`,
+                                                    dataIndex: 'elePrice',
+                                                    editable: true,
+                                                    inputType: 'InputNumber',
+                                                    max: 65.53
+                                                },
+                                                {
+                                                    title: `${intl.formatMessage({ id: '开始时间' })}~${intl.formatMessage({ id: '结束时间' })}`,
+                                                    dataIndex: 'timeStramp',
+                                                    editable: true,
+                                                    inputType: 'CustomDatePicker',
+                                                }
+                                            ]}
+                                            strategyList={strategyList}
+                                            correlationList={['timeType', 'elePrice']}
+                                            maxLength={10}
+                                            tabValue={tabValue}
+                                            onChangeTabs={value => {
+                                                setTabValue(value);
+                                            }}
+                                        />
+                                    </Form.Item>
+                                </Space>
+                            </div>
+                            <div className={areaStyle}>
+                                <Space style={{ width: '100%' }} direction="vertical" size={20}>
+                                    <Row justify="space-between" align="middle">
+                                        <Title title={intl.formatMessage({ id: '策略选择' })} />
+                                        <div
+                                            className={(canIssue && isLive) ? distributeStyle : disabledDistributeStyle}
+                                            onClick={async () => {
+                                                if (canIssue && isLive) {
+                                                    await form.validateFields(monthList.map(month => month.value));
+                                                    setCheckModalOpen(true);
+                                                    setCheckModalType('sendStrategySelect');
+                                                }
+                                            }}
+                                        >
+                                            {intl.formatMessage({ id: '下发' })}
+                                        </div>
+                                    </Row>
+                                    <Row>
+                                        {
+                                            monthList.map(month => {
+                                                return (
+                                                    <Col span={24 / monthList.length}>
+                                                        <div style={{ marginBottom: 10 }}>{month.label}</div>
+                                                        <Form.Item name={month.value} layout="vertical" rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
+                                                            <Radio.Group disabled={!canIssue || !isLive}>
+                                                                <Space direction="vertical">
+                                                                    {strategyList?.map(strategy => <Radio value={strategy.value}>{strategy.label}</Radio>)}
+                                                                </Space>
+                                                            </Radio.Group>
+                                                        </Form.Item>
+                                                    </Col>
+                                                )
+                                            })
+                                        }
+                                    </Row>
+                                </Space>
+                            </div>
+                        </>
+                    }
                     <div className={areaStyle}>
                         <Space style={{ width: '100%' }} direction="vertical" size={20}>
                             <Row justify="space-between" align="middle">
@@ -488,25 +500,25 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                     {intl.formatMessage({ id: '下发' })}
                                 </div>
                             </Row>
-                            <Row gutter={50}>
-                                <Col span={6}>
+                            <Row gutter={[30, 30]}>
+                                <Col span={12}>
                                     <Form.Item name="tempStart" label={intl.formatMessage({ id: '除湿机温度启动值(℃)' })} rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
-                                        <InputNumber disabled={!isLive} style={{ width: "100%" }} placeholder={intl.formatMessage({ id: '请输入除湿机温度启动值' })} />
+                                        <InputNumber disabled={!isLive} style={{ width: 400 }} placeholder={intl.formatMessage({ id: '请输入除湿机温度启动值' })} />
                                     </Form.Item>
                                 </Col>
-                                <Col span={6}>
+                                <Col span={12}>
                                     <Form.Item name="tempStop" label={intl.formatMessage({ id: '除湿机温度停止值(℃)' })} rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
-                                        <InputNumber disabled={!isLive} style={{ width: "100%" }} placeholder={intl.formatMessage({ id: '请输入除湿机温度停止值' })} />
+                                        <InputNumber disabled={!isLive} style={{ width: 400 }} placeholder={intl.formatMessage({ id: '请输入除湿机温度停止值' })} />
                                     </Form.Item>
                                 </Col>
-                                <Col span={6}>
+                                <Col span={12}>
                                     <Form.Item name="humStart" label={intl.formatMessage({ id: '除湿机湿度启动值(%rh)' })} rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
-                                        <InputNumber disabled={!isLive} style={{ width: "100%" }} placeholder={intl.formatMessage({ id: '请输入除湿机湿度启动值' })} />
+                                        <InputNumber disabled={!isLive} style={{ width: 400 }} placeholder={intl.formatMessage({ id: '请输入除湿机湿度启动值' })} />
                                     </Form.Item>
                                 </Col>
-                                <Col span={6}>
+                                <Col span={12}>
                                     <Form.Item name="humStop" label={intl.formatMessage({ id: '除湿机湿度停止值(%rh)' })} rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
-                                        <InputNumber disabled={!isLive} style={{ width: "100%" }} placeholder={intl.formatMessage({ id: '请输入除湿机湿度停止值' })} />
+                                        <InputNumber disabled={!isLive} style={{ width: 400 }} placeholder={intl.formatMessage({ id: '请输入除湿机湿度停止值' })} />
                                     </Form.Item>
                                 </Col>
                             </Row>
@@ -530,25 +542,25 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                     {intl.formatMessage({ id: '下发' })}
                                 </div>
                             </Row>
-                            <Row gutter={50}>
-                                <Col span={6}>
+                            <Row gutter={[30, 30]}>
+                                <Col span={12}>
                                     <Form.Item name="coolingPoint" label={intl.formatMessage({ id: '液冷制冷点(℃)' })} rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
-                                        <InputNumber disabled={!isLive} style={{ width: "100%" }} placeholder={intl.formatMessage({ id: '请输入液冷制冷点' })} />
+                                        <InputNumber disabled={!isLive} style={{ width: 400 }} placeholder={intl.formatMessage({ id: '请输入液冷制冷点' })} />
                                     </Form.Item>
                                 </Col>
-                                <Col span={6}>
+                                <Col span={12}>
                                     <Form.Item name="heatPoint" label={intl.formatMessage({ id: '液冷加热点(℃)' })} rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
-                                        <InputNumber disabled={!isLive} style={{ width: "100%" }} placeholder={intl.formatMessage({ id: '请输入液冷加热点' })} />
+                                        <InputNumber disabled={!isLive} style={{ width: 400 }} placeholder={intl.formatMessage({ id: '请输入液冷加热点' })} />
                                     </Form.Item>
                                 </Col>
-                                <Col span={6}>
+                                <Col span={12}>
                                     <Form.Item name="coolingDiffPoint" label={intl.formatMessage({ id: '液冷制冷回差(℃)' })} rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
-                                        <InputNumber disabled={!isLive} style={{ width: "100%" }} placeholder={intl.formatMessage({ id: '请输入液冷制冷回差' })} />
+                                        <InputNumber disabled={!isLive} style={{ width: 400 }} placeholder={intl.formatMessage({ id: '请输入液冷制冷回差' })} />
                                     </Form.Item>
                                 </Col>
-                                <Col span={6}>
+                                <Col span={12}>
                                     <Form.Item name="heatDiffPoint" label={intl.formatMessage({ id: '液冷加热回差(℃)' })} rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
-                                        <InputNumber disabled={!isLive} style={{ width: "100%" }} placeholder={intl.formatMessage({ id: '请输入液冷加热回差' })} />
+                                        <InputNumber disabled={!isLive} style={{ width: 400 }} placeholder={intl.formatMessage({ id: '请输入液冷加热回差' })} />
                                     </Form.Item>
                                 </Col>
                             </Row>
@@ -698,7 +710,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                     </div>
                 </div>
             </Modal>
-        </>
+        </div>
     )
 }
 

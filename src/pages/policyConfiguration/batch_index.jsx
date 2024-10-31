@@ -19,15 +19,15 @@ const PolicyConfiguration = ({deviceList}) => {
     })
 
     return (
-        <Space 
+        <div 
             style={{ 
                 width: '100%', 
-                height: 'auto', 
-                minHeight: '100%', 
-                background: token.color18
+                height: '100%', 
+                background: token.color18,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 12
             }} 
-            direction="vertical" 
-            size={12}
         >
             <div className={areaStyle}>
                 <Row>
@@ -58,11 +58,11 @@ const PolicyConfiguration = ({deviceList}) => {
                     </Space>
                 </Row>
             </div>
-            <div>
+            <div style={{flex: 1}}>
                 {deviceVersion===7&&<PolicyConfiguration_one deviceVersion={deviceVersion} deviceList={selectDeviceList} />}
                 {deviceVersion===15&&<PolicyConfiguration_two deviceVersion={deviceVersion} deviceList={selectDeviceList} />}
             </div>
-        </Space>
+        </div>
     )
 }
 

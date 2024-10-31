@@ -77,7 +77,7 @@ const ReportExport = () => {
                 detail.forEach(data => {
                     [
                         `${intl.formatMessage({ id: '电量' })}(kWh)`,
-                        `${intl.formatMessage({ id: '收益' })}(${intl.formatMessage({ id: '元' })})`
+                        `${intl.formatMessage({ id: '电费' })}(${intl.formatMessage({ id: '元' })})`
                     ].forEach((typeName, index) => {
                         if (index === 0) {
                             electricFeeDataSource.push({
@@ -94,7 +94,8 @@ const ReportExport = () => {
                                 tipDischarge: data?.tipDischargeEnergy,
                                 peakDischarge: data?.peakDischargeEnergy,
                                 flatDischarge: data?.flatDischargeEnergy,
-                                valleyDischarge: data?.valleyDischargeEnergy
+                                valleyDischarge: data?.valleyDischargeEnergy,
+                                chargePayable: data?.chargePayable
                             })
                         }
                         if (index === 1) {
@@ -112,14 +113,15 @@ const ReportExport = () => {
                                 tipDischarge: data?.tipDischargeEarning,
                                 peakDischarge: data?.peakDischargeEarning,
                                 flatDischarge: data?.flatDischargeEarning,
-                                valleyDischarge: data?.valleyDischargeEarning
+                                valleyDischarge: data?.valleyDischargeEarning,
+                                chargePayable: data?.chargePayable
                             })
                         }
                     })
                 });
                 [
                     `${intl.formatMessage({ id: '电量' })}(kWh)`,
-                    `${intl.formatMessage({ id: '收益' })}(${intl.formatMessage({ id: '元' })})`
+                    `${intl.formatMessage({ id: '电费' })}(${intl.formatMessage({ id: '元' })})`
                 ].forEach((typeName, index) => {
                     if (index === 0) {
                         electricFeeDataSource.push({
@@ -136,7 +138,8 @@ const ReportExport = () => {
                             tipDischarge: item?.tipDischargeEnergy,
                             peakDischarge: item?.peakDischargeEnergy,
                             flatDischarge: item?.flatDischargeEnergy,
-                            valleyDischarge: item?.valleyDischargeEnergy
+                            valleyDischarge: item?.valleyDischargeEnergy,
+                            chargePayable: item?.chargePayable
                         })
                     }
                     if (index === 1) {
@@ -154,7 +157,8 @@ const ReportExport = () => {
                             tipDischarge: item?.tipDischargeEarning,
                             peakDischarge: item?.peakDischargeEarning,
                             flatDischarge: item?.flatDischargeEarning,
-                            valleyDischarge: item?.valleyDischargeEarning
+                            valleyDischarge: item?.valleyDischargeEarning,
+                            chargePayable: item?.chargePayable
                         })
                     }
                 });
@@ -257,7 +261,6 @@ const ReportExport = () => {
             setShowElectricFeeTable(
                 params?.plantId === 1807
                 && params?.reportType === "month"
-                && moment(dayjs(params?.date).format("YYYY-MM")).isBefore(moment().format("YYYY-MM"))
             );
             getDataSource();
             getShowData();
@@ -306,7 +309,7 @@ const ReportExport = () => {
                             {({ getFieldsValue }) => {
                                 const { reportType } = getFieldsValue(["reportType"]);
                                 return (
-                                    <Form.Item name={"date"} label={intl.formatMessage({ id: '对比日期' })}>
+                                    <Form.Item name={"date"} label={intl.formatMessage({ id: '日期' })}>
                                         <DatePicker
                                             picker={
                                                 {
@@ -564,6 +567,15 @@ const ReportExport = () => {
                                             dataIndex: 'valleyDischarge',
                                         }
                                     ]
+                                },
+                                {
+                                    title: `${intl.formatMessage({ id: '应缴电费' })}(${intl.formatMessage({ id: '元' })})`,
+                                    dataIndex: 'chargePayable',
+                                    onCell(_, index) {
+                                        return {
+                                            rowSpan: index % 2 === 0 ? 2 : 0
+                                        }
+                                    }
                                 }
                             ]}
                             scroll={{

@@ -2105,4 +2105,6 @@ export default {
     '平时段': 'Flat',
     '谷时段': 'Valley',
     '请在数据选择内配置电价以进行电费结算!': 'Please configure the electricity price in the data selection for electricity billing!',
+    '电费': 'Electricity Fee',
+    '应缴电费': 'Payable Electricity Fee',
 } 

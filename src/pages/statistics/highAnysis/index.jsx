@@ -126,7 +126,7 @@ const HighAnysis = () => {
                     2: 'tempRight',
                     3: 'tempNeg',
                     4: 'tempPos'
-                }[index]
+                }[index%5]
                 const data = currentData?.energyData?.[filed];
                 series.push({
                     name: legend,
@@ -140,7 +140,6 @@ const HighAnysis = () => {
             max = 45;
             splitNumber = 5;
         }
-
         const option = {
             tooltip: {
                 trigger: 'axis',

@@ -4,7 +4,9 @@ import PolicyConfiguration_two from "./policy_2.0";
 
 const PolicyConfiguration = ({deviceVersion}) => {
     return (
-        <div>
+        <div 
+            style={{height: '100%'}}
+        >
             {deviceVersion===7&&<PolicyConfiguration_one deviceVersion={deviceVersion} />}
             {deviceVersion===15&&<PolicyConfiguration_two deviceVersion={deviceVersion} />}
         </div>
