@@ -303,12 +303,7 @@ const MonitoringCurves = () => {
         if (response?.data?.data) {
             response?.data?.data.forEach((item, index) => {
                 if(item.value==dataType){
-                    let str;
-                    if(item.value.includes("CELL_VOL_DIFF")){
-                        str=`${item.label}(m${item.unit})`
-                    }else{
-                        str=`${item.label}(${item.unit})`
-                    }
+                    let str=`${item.label}(${item.unit})`
                     setTitle(str);
                 }
             })
