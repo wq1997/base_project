@@ -92,7 +92,7 @@ function Com({ id }) {
     return (
         <div className={styles.cellDetails}>
             <div className={styles.searchHead} style={{color:token.titleColor}}>
-                <span >{t('数据项')}:</span>
+                <span   >{t('数据项')}:</span>
                 {/* <Select
                     className={styles.margRL}
                     style={{ width: 240 }}
@@ -106,6 +106,7 @@ function Com({ id }) {
                     }
                 </Select> */}
                 <Cascader
+                    className={styles.margRL}
                     value={value}
                     options={options}
                     loadData={loadData}
@@ -121,7 +122,7 @@ function Com({ id }) {
                 {data?.map(one => {
                     return (
                         <div className={styles.packSingle}>
-                            <div className={styles.packTitle}>Pack{one.packNo + 1}</div>
+                            <div className={styles.packTitle} style={{ color: token.colorLittle }}>Pack{one.packNo + 1}</div>
                             <div className={styles.packContent} style={{ backgroundColor: token.cellBgc }}>
                                 <div className={styles.packCell}>
                                     {one?.packData.map((it, index) => {
@@ -134,8 +135,8 @@ function Com({ id }) {
                                 </div>
                                 <div className={styles.packFoot}>
                                     <div className={styles.single}>
-                                        <div className={styles.circle} style={{ backgroundColor: token.colorPrimary }}></div>
-                                        <div className={styles.footTitle} >{t('Pack极柱温度')}</div>
+                                        <div className={styles.circle} style={{ backgroundColor: token.colorPrimary, color: token.colorLittle }}></div>
+                                        <div className={styles.footTitle} style={{ color: token.colorLittle }}>{t('Pack极柱温度')}</div>
                                         <div className={styles.singelAttribute} style={{ color: token.colorLittle }}>
                                             {t('负极')}:{one.extraPackData.positivePoles}
                                         </div>
@@ -145,7 +146,7 @@ function Com({ id }) {
                                     </div>
                                     <div className={styles.single}>
                                         <div className={styles.circle} style={{ backgroundColor: token.colorPrimary }}></div>
-                                        <div className={styles.footTitle} >{t('Pack熔断器温度')}</div>
+                                        <div className={styles.footTitle} style={{ color: token.colorLittle }}>{t('Pack熔断器温度')}</div>
                                         <div className={styles.singelAttribute} style={{ color: token.colorLittle }}>
                                             {t('左侧熔断器')}:{one.extraPackData.fuseLeft}
                                         </div>

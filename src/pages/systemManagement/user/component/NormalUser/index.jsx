@@ -48,7 +48,7 @@ function Com(props) {
     const formList = [
         {
             label: '用户名',
-            key: 'name',
+            key: 'userName',
             type: 1,
             required: true
         },

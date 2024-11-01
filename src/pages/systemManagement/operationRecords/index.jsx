@@ -93,7 +93,7 @@ const RealtimeAlarm = () => {
             showTime
           />
         </div>
-        {user.roleId == 3 &&<div className={styles.dataItem}>
+        {user.roleId !== 1 &&<div className={styles.dataItem}>
           <Search placeholder={t('用户名')} onSearch={onSearch} enterButton />
         </div>}
       </div>
@@ -103,7 +103,7 @@ const RealtimeAlarm = () => {
           data={data?.records}
           pagination={false}
         />
-        <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} total={data?.total} onChange={changPage} />
+        <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} showSizeChanger={false} total={data?.total} onChange={changPage} />
       </div>
 
     </div>

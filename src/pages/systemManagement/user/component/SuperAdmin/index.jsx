@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useSelector, useIntl } from "umi";
 import styles from "./index.less";
-import { Table, Select, Input, Button, theme, Space, message,Modal } from "antd"
+import { Table, Select, Input, Button, theme, Space, message, Modal,Popconfirm } from "antd"
 import { apiGetAllUserAndInfos } from "@/services/user"
 import AddUser from '../AddUserModal'
-import { apiSaveOrUpdateUser, apiDeleteUserById,apiResetPassword, apiUpdatePassword, apiListUserWithOptions } from '@/services/total'
-import  { ExclamationCircleFilled } from '@ant-design/icons';
-import { render } from 'react-dom';
-const RealtimeAlarm = () => {
+import { apiSaveOrUpdateUser, apiDeleteUserById, apiResetPassword, apiUpdatePassword, apiListUserWithOptions } from '@/services/total'
+import { ExclamationCircleFilled } from '@ant-design/icons';
+import { getEncrypt,  } from "@/utils/utils";
+
+const RealtimeAlarm = (props) => {
   const { Search } = Input;
   const [data, setData] = useState([]);
   const [level, setLevel] = useState();
@@ -27,18 +28,33 @@ const RealtimeAlarm = () => {
     );
     return msg
   }
-  const alarmLevel = [{
+
+  let alarmLevel =props.roleId == 2 ? [{
     label: t('普通用户'),
-    value: '1',
+    value: 1,
+    key: '普通用户',
+  },{
+    label: t('超级用户'),
+    value: 2,
+    key: '超级用户',
+  },
+  ] : [{
+    label: t('普通用户'),
+    value: 1,
     key: '普通用户',
   },
   {
-    label: t('管理员'),
-    value: '3',
-    key: '管理员',
+    label: t('超级用户'),
+    value: 2,
+    key: '超级用户',
   },
+  {
+    label: t('管理员'),
+    value: 3,
+    key: '管理员',
+  },]
+  
 
-  ]
   const userTable = [
     {
       title: t('用户名'),
@@ -81,7 +97,9 @@ const RealtimeAlarm = () => {
           <Space>
             <Button type="primary" onClick={() => edit(record)}>{t('编辑')}</Button>
             <Button type="primary" danger onClick={() => changeIsOpenDel(record)}>{t('删除')}</Button>
-            <Button type="primary" onClick={() => resetPwd(record)} style={{ backgroundColor: token.defaultBg }}>{t('重置密码')}</Button>
+            <Popconfirm title={t('是否确认重置密码?')} onConfirm={() => resetPwd(record)} okText={t('是')} cancelText={t('否')}>
+            <Button type="primary"  style={{ backgroundColor: token.defaultBg }}>{t('重置密码')}</Button>
+                        </Popconfirm>
           </Space>
         )
       }
@@ -89,8 +107,8 @@ const RealtimeAlarm = () => {
   ];
   useEffect(() => {
     searchData();
-  }, [level, textLike,formData,delId]);
-  
+  }, [level, textLike, formData, delId]);
+
 
   const searchData = async () => {
     const { data } = await apiListUserWithOptions({
@@ -107,12 +125,12 @@ const RealtimeAlarm = () => {
       phone: '',
       mail: '',
       company: '',
-      roleId: '1',
+      roleId: 1,
     });
     setTitle('新增用户');
     setIsOpen(!isOpen);
   }
-  const changeIsOpenDel=(record)=>{
+  const changeIsOpenDel = (record) => {
     setDelId(record.f0102_Id);
     setIsOpenDel(!isOpenDel)
   }
@@ -141,15 +159,18 @@ const RealtimeAlarm = () => {
     searchData();
 
   }
-  const resetPwd = async(record) => {
-    let {data}=await apiResetPassword({userId:record.f0102_Id});
+  const resetPwd = async (record) => {
+    let { data } = await apiResetPassword({ userId: record.f0102_Id });
     if (data.data) {
       message.success(t('密码重置成功'))
 
     }
   }
   const changeData = async (value) => {
-    const { data } = await apiSaveOrUpdateUser(value)
+    const { data } = await apiSaveOrUpdateUser({
+      ...value,
+      password:getEncrypt(localStorage.getItem('publicKey'), value.password),
+    })
     if (data.data) {
       setFormData(value);
     } else {
@@ -182,14 +203,15 @@ const RealtimeAlarm = () => {
           scroll={{ x: 'max-content' }}
         />
       </div>
-      <AddUser isOpen={isOpen} title={title} formData={formData} onRef={cancle} changeData={(value) => changeData(value)} />
-      <Modal 
-      title={[<><ExclamationCircleFilled style={{color:'#FAAD14',marginRight:'10px'}}/>系统提示</>]}
-      open={isOpenDel} 
-      onOk={del}  
-      onCancel={changeIsOpenDel}
+      <AddUser isOpen={isOpen} title={title} formData={formData} onRef={cancle} changeData={(value) => changeData(value)} roleId={props.roleId} />
+      <Modal
+        title={[<><ExclamationCircleFilled style={{ color: '#FAAD14', marginRight: '10px' }} />{t("系统提示")}</>]}
+        open={isOpenDel}
+        onOk={del}
+        onCancel={changeIsOpenDel}
+      
       >
-       {t("数据删除后将无法恢复，是否确认删除该条数据？")}
+        {t("数据删除后将无法恢复，是否确认删除该条数据？")}
       </Modal>
     </div>
   )

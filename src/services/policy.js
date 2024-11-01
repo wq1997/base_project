@@ -70,5 +70,25 @@ export const getOMCommands = (payload) => {
 }
 // 下发运维命令
 export const sendOMCommands = (payload) => {
-    return axiosInstance.post(`${path}/strategy/sendOMCommands`, payload);
+    return axiosInstance.post(`${path}/strategy/sendOMCommands`, payload,
+    );
+}
+
+// 下载策略模板
+export const downloadStrategyTemplate = (payload) => {
+    return axiosInstance.get(`${path}/strategy/downloadStrategyTemplate`,{
+        responseType: 'blob'
+        });
+}
+
+// 导出策略
+export const exportStrategy = (payload) => {
+    return axiosInstance.post(`${path}/strategy/exportStrategy`, payload,
+    );
+
+}
+
+// 导入策略
+export const importStrategy = (payload) => {
+    return axiosInstance.post(`${path}/strategy/importStrategy`, payload);
 }

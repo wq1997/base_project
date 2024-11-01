@@ -116,7 +116,7 @@ function Com(props) {
                 sheetData: data,
                 sheetName: item?.desc,
                 sheetFilter: ['time',  'tempInfo'],
-                sheetHeader: [t("时间"), `${t('温差')}℃`],
+                sheetHeader: [t("时间"), `${t('温差')}(℃)`],
                 columnWidths: ['8', '4'],
             })
         })
@@ -149,8 +149,6 @@ function Com(props) {
                 },
                 data: seriesData
             })
-            console.log(series?.map(item => item.name), 111111);
-
         });
         setHandel({
             ...baseOption,
@@ -242,7 +240,7 @@ function Com(props) {
         },
         legend: {
             icon: 'circle',
-            top: '5%',
+            // top: '5%',
             left: '5%',
             itemWidth: 6,
             itemGap: 20,

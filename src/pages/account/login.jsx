@@ -48,7 +48,7 @@ const Login = () => {
       });
       if (res?.data?.data) {
         const data = res?.data.data;
-        setLocalStorage("Token", data.token);
+        setLocalStorage("Token", data?.token);
         // setLocalStorage("userName", data?.userName);
         // setLocalStorage("sceneType", data?.sceneType);
         message.success(t('登录成功'));
@@ -97,7 +97,9 @@ const Login = () => {
       style={{
         width: '100%',
         height: '100vh',
-        background: 'black'
+        background: 'black',
+        minHeight:'880px',
+        minWidth:'1000px'
       }}
       className={styles.login}
     >

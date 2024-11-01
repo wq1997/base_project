@@ -5,7 +5,6 @@ import styles from "./index.less";
 import Tab from '../../../components/Tab';
 import RealtimeData from './RealtimeData';
 import MonitoringCurves from "./MonitoringCurves";
-import AdvancedAnalytics from "./AdvancedAnalytics";
 import VolDiff from "./VolDiff";
 import TemDiff from "./TemDiff";
 import CellHistory from "./CellHistory";
@@ -27,7 +26,7 @@ const Cabinet = () => {
     const id = getQueryString("id");
     const onChangeTab = key => {
         setActiveKey(key);
-        history.push(`${pathname}`);
+        history.push(`${pathname}?PageKey=${getQueryString("PageKey")}&activeKey=${key}`);
     };
     const intl = useIntl();
     const t = (id) => {

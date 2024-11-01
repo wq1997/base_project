@@ -66,7 +66,6 @@ function Com(props) {
         item.startDate = dayjs(item.startDate).format('MM-DD');
         item.endDate = dayjs(item.endDate).format('MM-DD');
       })
-      console.log(values, '请求');
       let { data } = await saveStrategy({...values,dtuId:localStorage.getItem('dtuId')});
       if (data?.data) {
         message.success(t('保存成功'));
@@ -119,7 +118,7 @@ function Com(props) {
               }}
             >
               <Button type="primary" htmlType="submit" onClick={saveAll}>
-                {t('保存全部')}
+                {t('下发命令')}
               </Button>
             </Form.Item>
           </div>
@@ -220,7 +219,13 @@ function Com(props) {
                   dataIndex: 'startDate',
                   key: 'startDate',
                   render: (text, record) => {
-                    return dayjs(record.startDate).format('MM-DD')
+                    console.log(typeof(record.startDate),111111);
+                    if(typeof(record.startDate)=='string'){
+                      return dayjs(record.startDate).format('MM-DD');
+                    }else{
+                    return record.startDate;
+
+                    }
                   }
                 },
                 {
@@ -228,7 +233,9 @@ function Com(props) {
                   dataIndex: 'endDate',
                   key: 'endDate',
                   render: (text, record) => {
-                    return dayjs(record.endDate).format('MM-DD')
+                    if(typeof(record.startDate)=='string'){
+                      return dayjs(record.endDate).format('MM-DD');
+                    }
                   }
                 },
                 {
@@ -249,7 +256,7 @@ function Com(props) {
                       <Space>
                         <Button type="link" onClick={() => edit(record, index)}>{t('编辑')}</Button>
                         <Button type="link" onClick={() => edit(record, index)}>{t('详情')}</Button>
-                        <Popconfirm title="Are you sure delete this task?" onConfirm={() => del(record)} okText="Yes" cancelText="No">
+                        <Popconfirm title={t('是否确认删除该条策略?')} onConfirm={() => del(record)} okText={t('是')} cancelText={t('否')}>
                           <Button type="link" danger>{t('删除')}</Button>
                         </Popconfirm>
                       </Space>

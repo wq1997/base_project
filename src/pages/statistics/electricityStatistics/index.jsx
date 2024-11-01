@@ -9,7 +9,7 @@ import {
   DatabaseOutlined,
   WalletOutlined,
 } from '@ant-design/icons';
-import { Tabs } from "antd"
+import { theme } from "antd"
 import Overview from './components/overview'
 import Photovoltaic from './components/photovoltaic'
 import EnergyStorage from './components/energyStorage'
@@ -20,6 +20,8 @@ const defaultPageType = "Overview";
 
 const Login = () => {
   const location = useLocation();
+const { token } = theme.useToken();
+
   const { pathname } = location;
   const [activeKey, setActiveKey] = useState(getQueryString("activeKey") || defaultPageType);
   const onChangeTab = key => {
@@ -43,7 +45,7 @@ const PageTypeList = [
   { label:getTranslation('device.ChargingPiles'), key: 'chargingStation', icon: WalletOutlined },
 ];
   return (
-    <div className={styles.content}>
+    <div className={styles.content} style={{ backgroundColor: token.titleCardBgc,}}>
       <Overview />
       {/* <Tabs 
         activeKey={activeKey}

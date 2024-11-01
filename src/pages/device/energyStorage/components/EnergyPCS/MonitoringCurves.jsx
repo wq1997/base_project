@@ -44,7 +44,7 @@ function Com(props) {
     }
    
     const handleChange = (val, res) => {
-        setPcsIds(val);
+        setPcsIds([val]);
     };
 
     useEffect(() => {
@@ -199,7 +199,7 @@ function Com(props) {
                 {
                     type: 'value',
                     axisLabel: {
-                        formatter: `{value} ${unit}`
+                        formatter: `{value} `
                     },
 
                 }
@@ -208,7 +208,6 @@ function Com(props) {
                 ...ser
             ]
         });
-        console.log(data,dataX,1212);
     }
     const downLoadFoodModel = () => {
         let fileName = title;

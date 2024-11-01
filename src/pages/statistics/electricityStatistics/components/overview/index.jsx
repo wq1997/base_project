@@ -99,7 +99,7 @@ function Com(props) {
                         }
                     },
                     barWidth: '8%',
-                    data: dataY.energyOutEnergy
+                    data: dataY.energyInEnergy
                 },
                 {
                     name: getTranslation('放电电量'),
@@ -111,7 +111,7 @@ function Com(props) {
                         }
                     },
                     barWidth: '8%',
-                    data: dataY.energyInEnergy
+                    data: dataY.energyOutEnergy
                 },
               
             ]
@@ -168,9 +168,12 @@ function Com(props) {
     };
     const downLoadExcelModel = () => {
         let fileName = getTranslation('电量统计');
-        let sheetData = data;
-        let sheetFilter = ['date', 'pvOutEnergy', 'energyInEnergy', 'energyOutEnergy', 'pvInEnergy', 'chargeInEnergy'];
-        let sheetHeader = [getTranslation("日期"), getTranslation("上网电量"), getTranslation("储能充电量"), getTranslation("光伏发电量"), getTranslation("充电桩充电量"),];
+        let sheetData = data.map(it=>{
+            it.efficiency=+it.efficiency
+            return it
+        });
+        let sheetFilter = ['date', 'charge', 'discharge', 'efficiency',];
+        let sheetHeader = [getTranslation("日期"),`${getTranslation('充电电量')}(kWh)`, `${getTranslation('放电电量')}(kWh)`,  `${getTranslation('充放电效率')}(%)`, ];
         downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader, getTranslation('总览'))
     };
     const profitTable = [
@@ -193,7 +196,7 @@ function Com(props) {
             dataIndex: 'charge',
             key: 'charge',
             width: 100,
-        },
+        }, 
         {
             title: `${getTranslation('放电电量')}(kWh)`,
             dataIndex: 'discharge',
@@ -201,10 +204,11 @@ function Com(props) {
             width: 100,
         },
         {
-            title: getTranslation('充放电效率'),
+            title: `${getTranslation('充放电效率')}(%)`,
             dataIndex: 'efficiency',
             key: 'efficiency',
             width: 100,
+           
         },
     ];
     const changeGrid = (e) => {
@@ -225,7 +229,7 @@ function Com(props) {
 
 
     return (
-        <div className={styles.content}>
+        <div className={styles.content} >
             <div className={styles.heard} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal }}>
                 {/* <div>
                     {getTranslation('并网点')}:

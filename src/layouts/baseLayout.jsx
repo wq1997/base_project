@@ -1,6 +1,6 @@
 import { Outlet, useDispatch, useSelector, FormattedMessage, } from 'umi'
 import React, { useState } from 'react';
-import { theme, Layout, Dropdown, Button } from 'antd';
+import { theme, Layout, Dropdown, Button,Space } from 'antd';
 import MyMenu from "@/permissions/menu";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import styles from "./baseLayout.less";
@@ -133,7 +133,22 @@ const BaseLayout = () => {
                             menu={{
                                 items: [
                                     {
-                                        label: useLocale('退出登录'),
+                                        label: ( <Space
+                                            size={10}
+                                            align="baseline"
+                                            style={{width: '100%', height: '100%'}}
+                                            onClick={() => {
+                                                
+                                            }}
+                                          >
+                                            {/* <UserOutlined 
+                                              style={{
+                                                fontSize: 15,
+                                              }}
+                                            /> */}
+                                            <span>{useLocale('退出登录')}</span>
+                                          </Space>
+                                        ),
                                         key: 'logout',
                                         icon: <LogoutOutlined />,
                                     },

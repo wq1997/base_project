@@ -8,12 +8,12 @@ import { Pagination, theme,Select} from "antd"
 import { getNowAlarmsWithPage } from "@/services/alarm"
 
 let clum=[...alarmTableColums];
-clum[7]={};
+clum[5]={};
 const RealtimeAlarm = () => {
   const [data, setData] = useState([]);
   const [current, setCurrent] = useState(1);
   const [currntGrid, setCurrntGrid] = useState();
-  const [scroolY, setScroolY] = useState(200);
+  const [scroolY, setScroolY] = useState(500);
   const [screenH, setScreenH] = useState('');
 
   const { token } = theme.useToken();
@@ -35,11 +35,11 @@ const RealtimeAlarm = () => {
   }, [])
   useEffect(() => {
     if (screenH < 1000) {
-      setScroolY(300);
-    } else if (screenH > 1000 && screenH < 1300) {
-      setScroolY(400);
-    } else if (screenH > 1300) {
       setScroolY(500);
+    } else if (screenH > 1000 && screenH < 1300) {
+      setScroolY(600);
+    } else if (screenH > 1300) {
+      setScroolY(700);
     }
   }, [screenH])
   const handleWindowResize = () => {
@@ -63,7 +63,7 @@ const RealtimeAlarm = () => {
   const getData = async (page) => {
     const { data } = await getNowAlarmsWithPage({
       currentPage: page || 1,
-      pageSize: 20,
+      pageSize: 10,
       plantId:currentPlantId||localStorage.getItem('plantId'),
       // gridPoint:currntGrid
 
@@ -76,7 +76,7 @@ const RealtimeAlarm = () => {
   }
 
   return (
-    <div style={{width:'100%',height:'calc(100% - 67px)',padding:'0 0 10px 0'}}>
+    <div style={{width:'100%',height:'calc(100% - 10px)',padding:'0 0 10px 0',backgroundColor: token.titleCardBgc, }}>
       {/* <div className={styles.grid} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal, }}>
             <Select
               style={{

@@ -248,13 +248,13 @@ function OverView(props) {
                             defaultValue={grids?.[0]?.id}
                             onChange={changeGrid}
                         >
-                            {grids && grids.map(item => {
+                            {grids && grids.map(item => {    
                                 return (<Option key={item.id} value={item.id}>{item.gridPointName}</Option>);
                             })
                             }
                         </Select> */}
                     </div> : <div style={{ height: '32px' }}></div>}
-                    <Switch className={styles.right} checkedChildren={t("总览列表")} unCheckedChildren={t("接线图")} onChange={changeCheck} defaultChecked={checked} />
+                    <Switch className={styles.right} checkedChildren={t("总览")} unCheckedChildren={t("接线图")} onChange={changeCheck} defaultChecked={checked} />
                 </div>
                 {checked ? <div className={styles.contentWrap}>
                      <> <div className={styles.heard} style={{ color: token.colorNormal }}>

@@ -20,7 +20,7 @@ const Cabinet = (props) => {
     const id = getQueryString("id");
     const onChangeTab = key => {
         setActiveKey(key);
-        history.push(`${pathname}?PageKey=${getQueryString("PageKey")}&pageType=${pageType}&activeKey=${key}&id=${id}`);
+        history.push(`${pathname}?PageKey=${getQueryString("PageKey")}&activeKey=${key}`);
     };
     const intl = useIntl();
     const t = (id) => {
