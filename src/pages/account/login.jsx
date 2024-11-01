@@ -93,7 +93,7 @@ const Login = () => {
       }}
       className={styles.login}
     >
-      <Title className={styles.Title} level={1} ><FormattedMessage id="app.title" /></Title>
+      <Title className={styles.Title} level={1} ><FormattedMessage id="采日能源储能管理系统" /></Title>
       <div
         style={{
           width: '23.437rem',

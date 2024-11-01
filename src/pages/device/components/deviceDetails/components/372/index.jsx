@@ -390,8 +390,8 @@ function Com(props) {
         dealData(data?.data?.bmc[0], bms1Data, setBms1Data);
         dealData(data?.data?.bmc[1], bms2Data, setBms2Data);
         dealData(data?.data?.bmc[0], bmsData, setBmsData);
-        dealData(data?.data?.bms[0], bmsData, setBmsData)
         dealData(data?.data?.bmc[1], bmsData, setBmsData);
+        dealData(data?.data?.bms[0], bmsData, setBmsData);
         dealData(data?.data?.bmc[0], bmsData1, setBmsData1);
         dealData(data?.data?.bms[0], bmsData1, setBmsData1)
         dealData(data?.data?.meter, meterData, setMeterData);
