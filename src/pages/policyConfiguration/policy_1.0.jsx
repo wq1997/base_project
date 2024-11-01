@@ -251,9 +251,11 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                                         { label: intl.formatMessage({ id: 'PCS复位' }), value: 3 },
                                                     ]}
                                                     onControlledChange={async value => {
-                                                        setNextRunModePCS(value);
-                                                        setCheckModalOpen(true);
-                                                        setCheckModalType('runModePCS');
+                                                        if(mode===1){
+                                                            setNextRunModePCS(value);
+                                                            setCheckModalOpen(true);
+                                                            setCheckModalType('runModePCS');
+                                                        }
                                                     }}
                                                 />
                                             </Form.Item>
@@ -269,9 +271,11 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                                         { label: intl.formatMessage({ id: 'BMS关机' }), value: 2 },
                                                     ]}
                                                     onControlledChange={async value => {
-                                                        setNextRunModeBMS(value);
-                                                        setCheckModalOpen(true);
-                                                        setCheckModalType('runModeBMS');
+                                                        if(mode===1){
+                                                            setNextRunModeBMS(value);
+                                                            setCheckModalOpen(true);
+                                                            setCheckModalType('runModeBMS');
+                                                        }
                                                     }}
                                                 />
                                             </Form.Item>

@@ -257,9 +257,11 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                                     { label: intl.formatMessage({ id: 'PCS复位' }), value: 2 }
                                                 ]}
                                                 onControlledChange={async value => {
-                                                    setNextRunModePCS(value);
-                                                    setCheckModalOpen(true);
-                                                    setCheckModalType('runModePCS');
+                                                    if(mode===0){
+                                                        setNextRunModePCS(value);
+                                                        setCheckModalOpen(true);
+                                                        setCheckModalType('runModePCS');
+                                                    }
                                                 }}
                                             />
                                         </Form.Item>
@@ -276,9 +278,11 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                                     { label: intl.formatMessage({ id: 'BMS复位' }), value: 2 }
                                                 ]}
                                                 onControlledChange={async value => {
-                                                    setNextRunModeBMS(value);
-                                                    setCheckModalOpen(true);
-                                                    setCheckModalType('runModeBMS');
+                                                    if(mode===0){
+                                                        setNextRunModeBMS(value);
+                                                        setCheckModalOpen(true);
+                                                        setCheckModalType('runModeBMS');
+                                                    }
                                                 }}
                                             />
                                         </Form.Item>
