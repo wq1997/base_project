@@ -34,6 +34,7 @@ export default [
             // { name: '收益统计', path: '/index/statistics/revenueStatistics', component: "@/pages/statistics/revenueStatistics" },
             { name: '数据对比', path: '/index/statistics/dataComparison', component: "@/pages/statistics/dataComparison" },
             { name: '报表导出', path: '/index/statistics/reportExport', component: "@/pages/statistics/reportExport" },
+            { name: '源数据导出', path: '/index/statistics/sourceDataExport', component: "@/pages/statistics/sourceDataExport" },
         ]
     },
     {

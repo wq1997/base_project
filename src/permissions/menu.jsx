@@ -37,6 +37,7 @@ const MenuList = [
             // { label: <FormattedMessage id='app.EarningsStatistics' />, key: '/index/statistics/revenueStatistics', component: "@/pages/statistics/revenueStatistics" },
             { label: <FormattedMessage id='数据对比' />, key: '/index/statistics/dataComparison', component: "@/pages/statistics/dataComparison" },
             { label: <FormattedMessage id='报表导出' />, key: '/index/statistics/reportExport', component: "@/pages/statistics/reportExport" },
+            { label: <FormattedMessage id='源数据导出' />, key: '/index/statistics/sourceDataExport', component: "@/pages/statistics/sourceDataExport" },
         ]
     },
     {

@@ -1049,6 +1049,22 @@ export default {
 '二级告警':'Level 2 Alarm',
 '三级告警':'Level 3 Alarm',
 '四级告警':'Level 4 Alarm',
-'表':'Meter No.'
+'表':'Meter No.',
+    '查询日期':'Query date',
+    '时间间隔':'Time interval',
+    '全选':'Select all',
+    '源数据导出':'Source data export',
+    '5':'Five',
+    '10':'Ten',
+    '15':'Fifteen',
+    '20':'Twenty',
+    '25':'Twenty-five',
+    '30':'Thirty',
+    '35':'Thirty-five',
+    '40':'Forty',
+    '45':'Forty-five',
+    '50':'Fifty',
+    '55':'Fifty-five',
+    '1':'One',
 
 }

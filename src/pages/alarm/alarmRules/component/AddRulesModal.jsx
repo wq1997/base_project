@@ -10,22 +10,22 @@ export const formList = [
     required: true,
     data: [  
       {
-        label: t('一级告警'),
+        label: '一级告警',
         value: '1',
         key: '一级告警',
       },
       {
-        label: t('二级告警'),
+        label: '二级告警',
         value: '2',
         key: '二级告警',
       },
       {
-        label: t('三级告警'),
+        label: '三级告警',
         value: '3',
         key: '三级告警',
       },
       {
-        label: t('四级告警'),
+        label: '四级告警',
         value: '4',
         key: '四级告警',
       },
