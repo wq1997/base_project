@@ -108,10 +108,10 @@ const EditRowTable = ({
   const handleClear = (key) => {
     const index = dataSource.findIndex((item) => item?.key === key);
     let newData = cloneObject(dataSource);
-    newData[index] = {};
+    newData[index] = {key};
     setDataSource(newData);
     onChange(newData);
-    setEditingKey(-1);
+    setEditingKey(key);
   };
 
   const handleDelete = (key) => {
