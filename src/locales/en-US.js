@@ -2108,4 +2108,5 @@ export default {
     '电费': 'Electricity Fee',
     '应缴电费': 'Payable Electricity Fee',
     '关机': 'Shutdown',
+    '一级告警': 'Level 1 Alarm',
 } 

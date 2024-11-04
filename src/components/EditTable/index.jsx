@@ -109,6 +109,7 @@ const EditRowTable = ({
     const index = dataSource.findIndex((item) => item?.key === key);
     let newData = cloneObject(dataSource);
     newData[index] = {key};
+    form.setFieldsValue(newData);
     setDataSource(newData);
     onChange(newData);
     setEditingKey(key);
@@ -119,6 +120,7 @@ const EditRowTable = ({
     let newData = cloneObject(dataSource);
     newData[index] = null;
     newData = newData?.filter(item => item);
+    form.setFieldsValue(newData);
     setDataSource(newData);
     onChange(newData);
     setEditingKey(-1);
@@ -146,11 +148,13 @@ const EditRowTable = ({
           ...item,
           ...object,
         });
+        form.setFieldsValue(newData);
         setDataSource(newData);
         onChange(newData);
         setEditingKey('');
       } else {
         newData.push(row);
+        form.setFieldsValue(newData);
         setDataSource(newData);
         onChange(newData);
         setEditingKey('');

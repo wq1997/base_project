@@ -13,7 +13,7 @@ const DeviceRunDesc = ({dataSource}) => {
             {/* 告警 */}
             <div className={styles.ball2}>
                 <div className={styles.data2} style={{color: '#FF0000'}}>{dataSource?.nowAlarmCount||0}</div>
-                <div className={styles.font} style={{color: token.color6}}>{intl.formatMessage({id: '告警'})}</div>
+                <div className={styles.font} style={{color: token.color6}}>{intl.formatMessage({id: '一级告警'})}</div>
                 <img src={`${PUBLIC_FILE_PATH}/ball.gif`} />
             </div>
             
