@@ -103,7 +103,7 @@ const Login = () => {
               </div>
               <Divider type="vertical" style={{height: 150, width: 2, marginTop: 5}}/>
               <div className={styles.downloadItem}>
-                <QRCode value={"https://domestic-power.sermatec-cloud.com/download/Sermatec.apk"} />
+                <QRCode value={"https://abroad-power.sermatec-cloud.com/download/Sermatec.apk"} />
                 <div>{t("扫码获取APK文件")}</div>
               </div>
               <Divider type="vertical" style={{height: 150, width: 2, marginTop: 5}}/>
