@@ -26,31 +26,32 @@
             height: 100%;
 
         }
-    }  
-}
-
-.content{
-    .contentItem{
-        margin-bottom: 30px;
-        ::-webkit-scrollbar{
-
-            display: none;
-            
-            }
     }
-}
+    .content{
+        .contentItem{
+            margin-bottom: 30px;
+            ::-webkit-scrollbar{
 
-.dataChoiceModal{
-    :global{
-        .ant-form-item .ant-form-item-control-input{
-            min-height: unset;
+                display: none;
+
+            }
         }
     }
+
+    .dataChoiceModal{
+        :global{
+            .ant-form-item .ant-form-item-control-input{
+                min-height: unset;
+            }
+        }
+    }
+    .ant-modal-content{
+        padding: 50px 60px !important;
+    }
+    ::-webkit-scrollbar {
+        display: none; /* Chrome Safari */
+    }
 }
-.ant-modal-content{
-    padding: 50px 60px !important;
-}
-::-webkit-scrollbar {
-    display: none; /* Chrome Safari */
-  }
+
+
   

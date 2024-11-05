@@ -208,6 +208,7 @@ function Com(props) {
 
 
     });
+    console.log("fileName:",fileName,"sheetData:",sheetData,"sheetFilter:",sheetFilter,"sheetHeader:",sheetHeader,"sheetName:",sheetName)
     downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader, sheetName);
   }
   const handelData = (data, setHandel) => {

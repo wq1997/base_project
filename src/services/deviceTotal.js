@@ -195,3 +195,6 @@ export const getOfChildDevices = (payload) => {
     return axiosInstance.get(`/getOfChildDevices?associateId=${payload.associateId}&type=4`);
 }
 
+
+
+

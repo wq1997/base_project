@@ -50,3 +50,18 @@ export const getDataParams = (payload) => {
 export const getCompareData = (payload) => {
     return axiosInstance.post(`${path}/dc/getCompareData`, payload);
 }
+
+
+// 源数据导出
+// 获取设备数据导出页面初始化数据
+export const getDataExportPageInitVo = (payload) => {
+    return axiosInstance.get(`${path}/getDataExportPageInitVo?plantId=${payload.plantId}`);
+}
+
+export const getBigDataParamsByDevType = (payload) => {
+    return axiosInstance.get(`${path}/getBigDataParamsByDevType?type=${payload.type}`);
+}
+
+export const getExportData = (payload) => {
+    return axiosInstance.post(`${path}/getExportData`,payload);
+}

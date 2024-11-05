@@ -1,12 +1,17 @@
 // 函数组件
 // 快捷键Ctrl+Win+i 添加注释
 import React, {useState, useEffect, useCallback, useMemo, useRef} from 'react';
-import {theme, Select, DatePicker, Button, Cascader, message, Space, Radio, Checkbox,Table } from "antd";
+import {theme, Select, DatePicker, Button, Cascader, message, Space, Radio, Checkbox, Table,Popover} from "antd";
+import classNames from 'classnames';
+
 const {RangePicker} = DatePicker;
 import styles from './index.less'
-import ReactECharts from "echarts-for-react";
 import {CardModel} from "@/components";
-import {getDataComparisonInit, getCompareData} from '@/services/report'
+import {
+    getDataExportPageInitVo,
+    getBigDataParamsByDevType,
+    getExportData
+} from '@/services/report'
 import {getDataParams} from '@/services/deviceTotal';
 import dayjs from 'dayjs';
 import {getQueryString, downLoadExcelMode} from "@/utils/utils";
@@ -21,84 +26,12 @@ function Com(props) {
     const [dateEnd, setDateEnd] = useState(dayjs(new Date()));
     const [dateStartStr, setDateStartStr] = useState(dayjs(new Date()).subtract(6, 'day').format('YYYY-MM-DD'));
     const [dateEndStr, setDateEndStr] = useState(dayjs(new Date()).format('YYYY-MM-DD'));
-    const [radioTimeValue, setRadioTimeValue] = useState("5");
-    const [radioDevTypeValue, setRadioDevTypeValue] = useState(1);
-    const [queryParam,setQueryParams] = useState({})
-    const timeOptions = [
-        {value: '5', label: '5', unit: 'min'},
-        {value: '10', label: '10', unit: 'min'},
-        {value: '15', label: '15', unit: 'min'},
-        {value: '20', label: '20', unit: 'min'},
-        {value: '25', label: '25', unit: 'min'},
-        {value: '30', label: '30', unit: 'min'},
-        {value: '35', label: '35', unit: 'min'},
-        {value: '40', label: '40', unit: 'min'},
-        {value: '45', label: '45', unit: 'min'},
-        {value: '50', label: '50', unit: 'min'},
-        {value: '55', label: '55', unit: 'min'},
-        {value: '1', label: '1', unit: 'h'},
-    ];
-    const devTypeOptions = [
-        {value: 1, label: 'PCS'},
-        {value: 2, label: 'PCS Module'},
-        {value: 3, label: 'BMS'},
-        {value: 4, label: 'Metering meter'}
-    ];
+    const [radioTimeValue, setRadioTimeValue] = useState("");
+    const [radioDevTypeValue, setRadioDevTypeValue] = useState("");
+    const [timeOptions, setTimeOptions] = useState([]);
+    const [devTypeOptions, setDevTypeOptions] = useState([]);
     const [tableLoading, setTableLoading] = useState(false);
-
-    const devAllOptions = {
-        "1": {
-            devName: ['PCS1'],
-            dataLabel:["PCS总有功功率","交流母线A相电流","交流母线B相电流","交流母线C相电流","交流母线AB相电压","交流母线BC相电压","交流母线CA相电压"],
-            dataUnit:["kW","A","A","A","V","V","V"],
-            dataItem: [
-                {label: 'PCS总有功功率', unit: 'kW'},
-                {label: '交流母线A相电流', unit: 'A'},
-                {label: '交流母线B相电流', unit: 'A'},
-                {label: '交流母线C相电流', unit: 'A'},
-                {label: '交流母线AB相电压', unit: 'V'},
-                {label: '交流母线BC相电压', unit: 'V'},
-                {label: '交流母线CA相电压', unit: 'V'},
-            ]
-        },
-        "2": {
-            devName: ['PCS1_1', 'PCS1_2', 'PCS1_3'],
-            dataLabel:["直流功率","直流电流","直流输入电压"],
-            dataUnit:["kW","A","V"],
-            dataItem: [
-                {label: '直流功率', unit: 'kW'},
-                {label: '直流电流', unit: 'A'},
-                {label: '直流输入电压', unit: 'V'}
-            ]
-        },
-        "3": {
-            devName: ['BMS1_1', 'BMS1_2', 'BMS1_3'],
-            dataLabel:["电压","电流","功率","SOC","单体最高电压","单体最低电压","单体最高温度","单体最低温度","堆单体压差","堆单体温差"],
-            dataUnit:["V","A","kW","%","V","V","℃","℃","v","℃"],
-            dataItem: [
-                {label: '电压', unit: 'V'},
-                {label: '电流', unit: 'A'},
-                {label: '功率', unit: 'kW'},
-                {label: 'SOC', unit: '%'},
-                {label: '单体最高电压', unit: 'V'},
-                {label: '单体最低电压', unit: 'V'},
-                {label: '单体最高温度', unit: '℃'},
-                {label: '单体最低温度', unit: '℃'},
-                {label: '堆单体压差', unit: 'V'},
-                {label: '堆单体温差', unit: '℃'}
-            ]
-        },
-        "4": {
-            devName: ['PCS1_METER1'],
-            dataLabel:["总有功功率","当前正向总有功电能","当前反向总有功电能"],
-            dataUnit:["kW","kWh","kWh"],
-            dataItem: [
-                {label: '总有功功率', unit: 'kW'},
-                {label: '当前正向总有功电能', unit: 'kWh'},
-                {label: '当前反向总有功电能', unit: 'kWh'}
-            ]
-        }
-    };
+    const [devAllOptions, setDevAllOptions] = useState([]);
     const CheckboxGroup = Checkbox.Group;
     const [devNameList, setDevNameList] = useState([]);
     const [devDataList, setDevDataList] = useState([]);
@@ -109,49 +42,15 @@ function Com(props) {
         checkDevDataAll: devAllOptions[radioDevTypeValue]?.dataLabel?.length === devDataList.length,
         devDataIndeterminate: devDataList.length > 0 && devDataList.length < devAllOptions[radioDevTypeValue]?.dataLabel?.length,
     }
-
-    const dafaultCol=[
-        {
-            title: '日期',
-            width: 100,
-            dataIndex: 'name',
-            key: 'name',
-            fixed: 'left',
-            sorter: true,
-        },
-        {
-            title: '设备名称',
-            width: 120,
-            dataIndex: 'age',
-            key: 'age',
-            fixed: 'left',
-            sorter: true,
-        },
-        {
-            title: '数据项',
-            dataIndex: 'address',
-            key: '1',
-            width: 150,
-            fixed: 'left',
-            sorter: true,
-        },
-    ];
-    const [columns,setColumns] = useState([]);
+    const [columns, setColumns] = useState([]);
     const [tableParams, setTableParams] = useState({
         pagination: {
             current: 1,
             pageSize: 10,
         },
     });
-    const [dataSource,setDataSource] =useState(Array.from({
-        length: 100,
-    }).map((_, i) => ({
-        key: i,
-        name: `Edward King ${i}`,
-        age: 32+i,
-        address: `London, Park Lane no. ${i}`,
-    }))) ;
-
+    const [dataSource, setDataSource] = useState([]);
+    const isDarkTheme = token.colorBgContainer != '#FFFFFF';
     const intl = useIntl();
     const t = (id) => {
         const msg = intl.formatMessage(
@@ -166,25 +65,119 @@ function Com(props) {
         setCol();
     }, [token, id]);
 
-    const onCheckBoxChange = (list,flag) => {
-        if(flag==1){
+    const defaultCol = [
+        {
+            title: t('日期'),
+            width: 100,
+            dataIndex: 'name',
+            key: 'name',
+            fixed: 'left',
+            sorter: true,
+        },
+        {
+            title: t('设备名称'),
+            width: 120,
+            dataIndex: 'age',
+            key: 'age',
+            fixed: 'left',
+            sorter: true,
+        },
+        {
+            title: t('数据项'),
+            dataIndex: 'address',
+            key: '1',
+            width: 150,
+            fixed: 'left',
+            sorter: true,
+        },
+    ];
+
+    const getInitData = async () => {
+        let {data} = await getDataExportPageInitVo({plantId: localStorage.getItem('plantId')});
+
+        if (data?.code === 200) {
+            let {deviceType2Devices, timeLongs} = data.data;
+            setTimeOptions(timeLongs);
+            setRadioTimeValue(timeLongs[0]?.code);
+
+            const devTypeArr = [];
+            const devAllOptObj = {};
+            const promises = [];
+
+            for (let key in deviceType2Devices) {
+                const deviceType = deviceType2Devices[key][0]?.type;
+                devTypeArr.push({value: deviceType, label: key});
+
+                if (!devAllOptObj[deviceType]) {
+                    devAllOptObj[deviceType] = {
+                        devName: [],
+                        dataLabel: []
+                    };
+                }
+
+                const promise = getBigDataParamsByDevType({type: deviceType})
+                    .then(res => {
+                        res?.data?.data?.forEach(item => {
+                            devAllOptObj[deviceType].dataLabel.push({
+                                label: item.dataTypeDesc,
+                                value: item.dataType,
+                                id: item.id,
+                                deviceType: item.deviceType,
+                                devType: item.devType,
+                            });
+                        });
+                    });
+                promises.push(promise);
+            }
+
+            await Promise.all(promises);
+
+            for (let key in deviceType2Devices) {
+                const deviceType = deviceType2Devices[key][0]?.type;
+
+                deviceType2Devices[key]?.forEach(item => {
+                    devAllOptObj[deviceType]?.devName.push({
+                        label: item.name,
+                        value: item.id,
+                        type: item.type,
+                        associateId: item.associateId,
+                        containerId: item.containerId,
+                        gridPoint: item.gridPoint,
+                        dtuId: item.dtuId,
+                    });
+                });
+            }
+
+            setDevTypeOptions(devTypeArr);
+            setRadioDevTypeValue(devTypeArr[0]?.value);
+            setDevAllOptions(devAllOptObj);
+        }
+    };
+
+    const onCheckBoxChange = (list, flag) => {
+        if (flag == 1) {
             setDevNameList(list);
-        }else{
+        } else {
             setDevDataList(list);
         }
 
     };
-    const onCheckAllChange = (e,flag) => {
-        if(flag==1){
-            setDevNameList(e.target.checked ? devAllOptions[radioDevTypeValue]?.devName : []);
-        }else{
-            setDevDataList(e.target.checked ? devAllOptions[radioDevTypeValue]?.dataLabel : []);
+    const onCheckAllChange = (e, flag) => {
+        let arr = [];
+        if (flag == 1) {
+            devAllOptions[radioDevTypeValue]?.devName?.forEach(item => {
+                arr.push(item?.value);
+            })
+            setDevNameList(e.target.checked ? arr : []);
+        } else {
+            devAllOptions[radioDevTypeValue]?.dataLabel?.forEach(item => {
+                arr.push(item?.value);
+            })
+            setDevDataList(e.target.checked ? arr : []);
         }
     };
 
-
     const onRadioChange = (e, flag) => {
-        console.log('radio checked', e.target.value, flag);
         if (flag == 1) {
             setRadioTimeValue(e.target.value);
         } else {
@@ -198,14 +191,7 @@ function Com(props) {
         }
     };
 
-
-    const getInitData = async () => {
-        let {data} = await getDataComparisonInit({plantId: localStorage.getItem('plantId')});
-        let {BMS, PCS, PCSModule, others} = data?.data;
-
-    };
     const changeDate = (val, str) => {
-        console.log("str",str, "val",val)
         setDateStart(val?.[0]);
         setDateEnd(val?.[1]);
         setDateStartStr(str?.[0]);
@@ -213,73 +199,47 @@ function Com(props) {
     }
 
     const downloadExcel = () => {
-        let fileName = t('数据对比');
-        let sheetFilter = ['time'];
-        let sheetHeader = [t('时间')];
-        let sheetData = [];
-        let sheetName = '';
-        dataOfEchart.map((it, i) => {
-            if (way == 1) {
-                sheetFilter.push(it.label);
-                sheetHeader.push(`${it.label}`);
-                sheetName = dayjs(it.value[0]?.time).format('YYYY-MM-DD');
-                i == 0 ?
-                    it.value?.map((item, index) => {
-                        sheetData.push({
-                            [it.label]: item.value,
-                            time: dayjs(item.time).format('HH:mm')
-                        })
-                    }) : it.value?.map((item, index) => {
-                        sheetData[index] = {
-                            ...sheetData[index],
-                            [it.label]: item.value,
-                        }
-                    });
-            } else {
-                sheetFilter.push(dayjs(it.value[0]?.time).format('YYYY-MM-DD'));
-                sheetHeader.push(`${dayjs(it.value[0]?.time).format('YYYY-MM-DD')}(${it.unit})`);
-                sheetName = it.label.split('/');
-                i == 0 ?
-                    it.value?.map((item, index) => {
-                        sheetData.push({
-                            [dayjs(it?.value[0]?.time).format('YYYY-MM-DD')]: item?.value,
-                            time: dayjs(item?.time).format('HH:mm')
-                        })
-                    }) : it.value?.map((item, index) => {
-                        sheetData[index] = {
-                            ...sheetData[index],
-                            [dayjs(it?.value[0]?.time).format('YYYY-MM-DD')]: item?.value,
-                        }
-                    });
-            }
-
-
-        });
+        let fileName = t('源数据导出');
+        let sheetFilter = [];
+        let sheetHeader = [];
+        let sheetData = dataSource;
+        let sheetName = `${dateStartStr} ${t("至")} ${dateEndStr}`;
+        columns.forEach((item, index) => {
+            sheetHeader.push(item.title);
+            sheetFilter.push(item.dataIndex)
+        })
         downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader, sheetName);
     }
-
-
-    const getQueryParam=()=>{
-        // console.log('setDateStart:',dateStart,"setDateEnd",dateEnd)
-        // console.log("dateStartStr",dateStartStr,"dateEndStr",dateEndStr,'radioTimeValue:',radioTimeValue)
-        // console.log('radioDevTypeValue:',radioDevTypeValue)
-        // console.log('devNameList:',devNameList)
-        // console.log('devDataList:',devDataList)
-        // setQueryParams();
-    }
+    const getQueryParam = () => {
+        let arr = [];
+        devNameList?.forEach(devName => {
+            devDataList?.forEach(devData => {
+                arr.push({
+                    devId: devName,
+                    dataId: devData,
+                });
+            });
+        });
+        return {
+            startDate: dateStartStr,
+            endDate: dateEndStr,
+            timeLong: radioTimeValue,
+            dataParams: arr,
+        };
+    };
     const handleTableChange = (pagination, filters, sorter, extra) => {
         setTableParams({
             pagination,
             sortOrder: Array.isArray(sorter) ? undefined : sorter.order,
         });
-       console.log("pagination:",pagination)
-        console.log("sorter:",sorter)
-        console.log("tableParams:",tableParams)
+        // console.log("pagination:", pagination)
+        // console.log("sorter:", sorter)
+        // console.log("tableParams:", tableParams)
         // if (pagination.pageSize !== tableParams.pagination?.pageSize) {
         //     setDataSource([]);
         // }
     };
-    const setCol= ()=>{
+    const setCol = () => {
         const generateTimeArray = (interval) => {
             const newArr = [];
             let currentTime = 0; // 当前时间，以分钟为单位
@@ -299,42 +259,131 @@ function Com(props) {
             return newArr;
         };
 
-        const interval = parseInt(radioTimeValue, 10);
-        const timeCol=generateTimeArray(interval);
-        setColumns(prevColumns => [...dafaultCol,...timeCol]);
+        const interval = parseInt(5, 10);
+        const timeCol = generateTimeArray(interval);
+        setColumns(prevColumns => [...defaultCol, ...timeCol]);
     }
-
-    const getTableData=async ()=>{
-        // const differenceInDays = dateEnd.diff(dateStart, 'day');
-        // if (differenceInDays > 6) {
-        //     message.error(intl.formatMessage({ id: '日期范围不能超过7天' }));
-        //     return;
-        // }
-        // if(devNameList?.length<=0){
-        //     message.error(intl.formatMessage({ id: '请选择设备名称' }));
-        //     return;
-        // }
-        // if(devDataList?.length<=0){
-        //     message.error(intl.formatMessage({ id: '请选择数据项' }));
-        // }
-
-
-        await setCol();
-        console.log("columns:",columns)
+    const extractTime = (timeString) => {
+        const parts = timeString.split(' ');
+        return parts[1].substring(0, 5);
     }
+    const getTableData = async () => {
+        const differenceInDays = dateEnd.diff(dateStart, 'day');
+        if (differenceInDays > 6) {
+            message.error(t("日期范围不能超过7天"));
+            return;
+        }
+        if (devNameList?.length <= 0) {
+            message.error(`${t("请选择")} ${t("设备名称")}`);
+            return;
+        }
+        if (devDataList?.length <= 0) {
+            message.error(`${t("请选择")} ${t("数据项")}`);
+            return;
+        }
+        setTableLoading(true);
+        const arr = devNameList.flatMap(devName =>
+            devDataList.map(devData => ({
+                devId: devName,
+                dataId: devData,
+            }))
+        );
 
+        const param = {
+            startDate: dateStartStr,
+            endDate: dateEndStr,
+            timeLong: radioTimeValue,
+            dataParams: arr,
+        };
+
+        let res = await getExportData(param);
+        let newTableCol = [];
+        let newTableArr = [];
+        const headers = res?.data?.data?.headers || [];
+        const records = res?.data?.data?.records || [];
+
+        const timeKeys = records[0]?.timeValues?.map((twoItem, index) =>
+            extractTime(dayjs(twoItem.time).format('YYYY-MM-DD HH:mm:ss'))
+        );
+
+        headers.forEach((item, index) => {
+            if (index === 0) {
+                newTableCol.push({
+                    title: item,
+                    width: 150,
+                    dataIndex: 'date',
+                    key: 'date',
+                    fixed: 'left',
+                    // sorter: true,
+                    sorter: (a, b) => new Date(a.date) - new Date(b.date),
+                });
+            } else if (index === 1) {
+                newTableCol.push({
+                    title: item,
+                    width: 110,
+                    dataIndex: 'deviceName',
+                    key: 'deviceName',
+                    fixed: 'left',
+                    sorter: (a, b) => a.deviceName.length - b.deviceName.length,
+                });
+            } else if (index === 2) {
+                newTableCol.push({
+                    title: item,
+                    width: 250,
+                    dataIndex: 'dataName',
+                    key: 'dataName',
+                    fixed: 'left',
+                    sorter: (a, b) => a.dataName.length - b.dataName.length,
+                });
+            } else {
+                newTableCol.push({
+                    title: item,
+                    width: 100,
+                    dataIndex: timeKeys[index - 3],
+                    key: timeKeys[index - 3],
+                });
+            }
+        });
+
+        records.forEach(oneItem => {
+            const timeArr = {};
+            oneItem?.timeValues?.forEach(twoItem => {
+                const time = extractTime(dayjs(twoItem.time).format('YYYY-MM-DD HH:mm:ss'));
+                timeArr[time] = twoItem.value;
+            });
+            newTableArr.push({
+                date: oneItem.date,
+                deviceName: oneItem.deviceName,
+                dataName: oneItem.dataName,
+                ...timeArr
+            });
+        });
+
+        setColumns(newTableCol);
+        setDataSource(newTableArr);
+        setTableLoading(false);
+    };
+    const content = (
+        <p>{t("日期范围不能超过7天")}</p>
+    );
     return (
         <div style={{height: '100%', width: '100%', paddingBottom: '10px'}}>
             <CardModel
                 title={t('源数据导出')}
                 content={
-                    <div className={styles.advancedAnalytics} style={{color: token.titleColor}}>
+                    <div style={{color: token.titleColor}} className={classNames(styles.advancedAnalytics, {
+                        [styles.darkTheme]: isDarkTheme,
+                    })}>
                         <div className={styles.searchHead}>
                             <span>{t('查询日期')}:</span>
                             <Space direction="vertical" size={12}>
-                                <RangePicker onChange={(val, str) => changeDate(val, str)} defaultValue={[dateStart,dateEnd]}/>
+                                <Popover content={content}>
+                                    <RangePicker onChange={(val, str) => changeDate(val, str)}
+                                                 defaultValue={[dateStart, dateEnd]}/>
+                                </Popover>
                             </Space>
-                            <Button type="primary" className={styles.firstButton} onClick={getTableData}>{t('查询')}</Button>
+                            <Button type="primary" className={styles.firstButton}
+                                    onClick={getTableData}>{t('查询')}</Button>
                             <Button type="primary" style={{backgroundColor: token.defaultBg}}
                                     onClick={downloadExcel}>{t('导出')}{" "}Excel</Button>
                         </div>
@@ -344,7 +393,7 @@ function Com(props) {
                                 {
                                     timeOptions?.map(item => {
                                         return (
-                                            <Radio value={item.value}>{t(item.label)} {item.unit}</Radio>
+                                            <Radio value={item.code}>{item.name}</Radio>
                                         )
                                     })
                                 }
@@ -368,12 +417,16 @@ function Com(props) {
                                 <span>
                                     <div>
                                       <Checkbox indeterminate={devAllCheck.devNameIndeterminate}
-                                                onChange={e=>{onCheckAllChange(e,1)}}
+                                                onChange={e => {
+                                                    onCheckAllChange(e, 1)
+                                                }}
                                                 checked={devAllCheck.checkDevNameAll}>{t("全选")}</Checkbox>
                                     </div>
                                     <div>
                                       <CheckboxGroup options={devAllOptions[radioDevTypeValue].devName}
-                                                     value={devNameList} onChange={list=>{onCheckBoxChange(list,1)}}/>
+                                                     value={devNameList} onChange={list => {
+                                          onCheckBoxChange(list, 1)
+                                      }}/>
                                     </div>
                                 </span>
                             }
@@ -387,12 +440,16 @@ function Com(props) {
                                 <span>
                                     <div>
                                       <Checkbox indeterminate={devAllCheck.devDataIndeterminate}
-                                                onChange={e=>{onCheckAllChange(e,2)}}
+                                                onChange={e => {
+                                                    onCheckAllChange(e, 2)
+                                                }}
                                                 checked={devAllCheck.checkDevDataAll}>{t("全选")}</Checkbox>
                                     </div>
                                     <div>
                                       <CheckboxGroup options={devAllOptions[radioDevTypeValue]?.dataLabel}
-                                                     value={devDataList} onChange={list=>{onCheckBoxChange(list,2)}}/>
+                                                     value={devDataList} onChange={list => {
+                                          onCheckBoxChange(list, 2)
+                                      }}/>
                                     </div>
                                 </span>
                             }
