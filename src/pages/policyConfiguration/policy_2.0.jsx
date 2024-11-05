@@ -732,7 +732,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                         // 设备命令-PCS功率
                         if (checkModalType === "pcsPower") {
                             values = await form.validateFields(['pcsPower']);
-                            res = await sendPCSPowerServe({ power: values?.pcsPower, dtuId: id, type: deviceVersion });
+                            res = await sendPCSPowerServe({ pcsPower: values?.pcsPower, dtuId: id, type: deviceVersion });
                         }
                         // 参数设置
                         if (checkModalType === "sendParamSetting") {
