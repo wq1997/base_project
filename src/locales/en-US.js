@@ -1892,5 +1892,14 @@ export default {
 '放电':'Discharge',
 '当前在编辑状态，不可操作':'Currently edited, inoperable',
 '请至少添加一条策略':'Please add at least one policy',
-'最多添加24条数据':'Add up to 24 pieces of data'
+'最多添加24条数据':'Add up to 24 pieces of data',
+'是否允许从电网充电':'Charging from the grid',
+'请选择是否允许从电网充电':'Please select whether to allow charging from the grid',
+'禁止充电':'No Charging',
+'允许充电':'Allow Charging',
+'请输入最小SOC':'Please enter minimum SOC',
+'请输入最大SOC':'Please enter maximum SOC',
+'半自动':'Semi-automatic',
+'确认删除':'Confirm Deletion',
+
 } 

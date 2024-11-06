@@ -99,7 +99,7 @@ const MonitoringCurves = () => {
         })
         legendData.forEach((legend, index) => {
             const currentDate = legend?.split(' ')?.[0];
-            const currentData = dataSource?.find(item => item.date === currentDate&&item.dataType==dataSource[index].dataType);
+            const currentData = dataSource?.find(item => item.date === currentDate&&item.dataType==dataSource[index].dataType&&item?.label==legend);
             const data = [];
             for (let key in currentData?.value) {
                 data.push(currentData?.value[key])
@@ -174,8 +174,6 @@ const MonitoringCurves = () => {
                 splitNumber: 5
             }
         }
-        console.log(series, 1111111111);
-
         const option = {
             tooltip: {
                 trigger: 'axis',

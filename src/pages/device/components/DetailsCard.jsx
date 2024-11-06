@@ -28,7 +28,7 @@ function Com({ data, table }) {
             <div className='card_contain' style={{
                 display: 'grid',
                 gridTemplateColumns: '1fr 1fr 1fr 1fr ',
-                marginBottom: '0.8333rem',
+                marginBottom: '0.8333rem', 
                 padding: '0 1.0417rem',
                 gridTemplateRows: height,
                 transition: 'all .3s',

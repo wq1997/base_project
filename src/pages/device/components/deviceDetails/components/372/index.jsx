@@ -227,6 +227,7 @@ function Com(props) {
             { name: "电池禁止放电标志", value: "-", key: "batFDFlag" },
             { name: "电池禁止充电标志", value: "-", key: "batFCFlag" },
             { name: "接触器状态", value: "-", key: "contactState" },
+            { name: "SOE", value: "-", key: "soe" },
             { name: "SOC", value: "-", key: "soc" },
             { name: "SOH", value: "-", key: "soh" },
             { name: "电压", value: "-", key: "vol" },
@@ -377,8 +378,8 @@ function Com(props) {
         data.data.bmc[0].BMC1bmuLowestHardwareVersion = data.data.bmc[0].bmuLowestHardwareVersion;
         data.data.bmc[0].BMC1softwareVersion = data.data.bmc[0].softwareVersion;
         data.data.bmc[0].BMC1hardwareVersion = data.data.bmc[0].hardwareVersion;
-        data.data.bms[0].BMS1softwareVersion = data.data.bms[0].softwareVersion;
-        data.data.bms[0].BMS1hardwareVersion = data.data.bms[0].hardwareVersion;
+        data.data.bms[0].softwareVersion = data.data.bms[0].softwareVersion;
+        data.data.bms[0].hardwareVersion = data.data.bms[0].hardwareVersion;
         // setBms2Data({...bms2Data,data:[...bms1Data.data],})
         // ic2Data.data=[...ic1Data.data]
         setData(data?.data);
@@ -390,7 +391,6 @@ function Com(props) {
         dealData(data?.data?.bmc[0], bms1Data, setBms1Data);
         dealData(data?.data?.bmc[1], bms2Data, setBms2Data);
         dealData(data?.data?.bmc[0], bmsData, setBmsData);
-        dealData(data?.data?.bms[0], bmsData, setBmsData)
         dealData(data?.data?.bmc[1], bmsData, setBmsData);
         dealData(data?.data?.bmc[0], bmsData1, setBmsData1);
         dealData(data?.data?.bms[0], bmsData1, setBmsData1)

@@ -8,6 +8,8 @@ import PackDetails from "./packDetails";
 import OverView from "./overview";
 import Policy from "../../policyConfiguration/index";
 import CzekhPolicy2 from './CzekhPolicy2.0/index'
+import CzekhPolicy1 from './CzekhPolicy1.0/index'
+
 import { theme, Tabs } from "antd";
 import { useEffect } from 'react';
 import classNames from "classnames";
@@ -39,6 +41,10 @@ const Cabinet = () => {
     useEffect(() => {
         getInitData();
     }, [locale])
+    // 保加利亚一期 ：1
+    // 捷克二期：22
+    // 捷克一期：32
+    // 道通:28
     const getInitData = async () => {
         let { data } = await getBurDtuDevInfo2({ dtuId: getQueryString("id") });
         getQueryString("type") == 16 ?
@@ -53,12 +59,21 @@ const Cabinet = () => {
                 { label: t('pack详情'), key: 'PackDetails' },
                 { label: t('策略配置'), key: 'CzekhPolicy2' },
             ])) : (
-                data.data[0].devInfo?.pcsBranch?.length == 2 ? setPageTypeList([
-                    { label: t('总览'), key: 'OverView' },
-                    { label: t('设备详情'), key: 'DeviceDetails' },
-                    { label: t('pack详情'), key: 'PackDetails' },
-                    { label: t('策略配置'), key: 'Policy' },
-                ]) : setPageTypeList([
+                data.data[0].devInfo?.pcsBranch?.length == 2 ? (
+                    id == 32 ? 
+                    setPageTypeList([
+                        { label: t('总览'), key: 'OverView' },
+                        { label: t('设备详情'), key: 'DeviceDetails' },
+                        { label: t('pack详情'), key: 'PackDetails' },
+                        { label: t('策略配置'), key: 'CzekhPolicy1' },
+                    ]) :
+                    setPageTypeList([
+                            { label: t('总览'), key: 'OverView' },
+                            { label: t('设备详情'), key: 'DeviceDetails' },
+                            { label: t('pack详情'), key: 'PackDetails' },
+                            { label: t('策略配置'), key: 'Policy' },
+                        ])
+                ) : setPageTypeList([
                     { label: t('总览'), key: 'OverView' },
                     { label: t('设备详情'), key: 'DeviceDetails' },
                     { label: t('pack详情'), key: 'PackDetails' },
@@ -89,6 +104,7 @@ const Cabinet = () => {
                 {activeKey === "PackDetails" && <PackDetails />}
                 {activeKey === "Policy" && <Policy id={id} />}
                 {activeKey === "CzekhPolicy2" && <CzekhPolicy2 id={id} />}
+                {activeKey === "CzekhPolicy1" && <CzekhPolicy1 id={id} />}
 
             </div>
         </div>

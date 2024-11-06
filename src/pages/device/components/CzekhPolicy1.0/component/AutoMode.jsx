@@ -38,7 +38,7 @@ const App = ({ devId, dtuId, historyAllData }) => {
     // form.setFieldsValue({
     //   durationList:historyAllData?.policyDurationList1
     // })
-    historyAllData?.policyDurationList1.map(it => {
+    historyAllData?.policyDurationList1?.map(it => {
       let startHour = it.startHour < 10 ? `0${it.startHour}` : `${it.startHour}`
       let startMin = it.startMin < 10 ? `0${it.startMin}` : `${it.startMin}`
       let endHour = it.endHour < 10 ? `0${it.endHour}` : `${it.endHour}`
@@ -52,8 +52,9 @@ const App = ({ devId, dtuId, historyAllData }) => {
         it.action = '充电'
       }
     });
-    setDurationList(historyAllData?.policyDurationList1)
+    setDurationList(historyAllData?.policyDurationList1||[])
   }
+console.log(durationList,111);
 
   return (
     <div className={styles.manual}>
@@ -84,6 +85,7 @@ const App = ({ devId, dtuId, historyAllData }) => {
               mode: 'Custom'
             }}
           >
+
             <Form.Item name="durationList" validateTrigger={false} rules={[{ ...FORM_REQUIRED_RULE }]}>
               <EditTable.EditRowTable
                 showAdd={true}

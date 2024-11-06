@@ -263,9 +263,7 @@ const RealtimeAlarm = () => {
         localStorage.setItem("currentPlant", val);
     }
 
-    if (tableColum.length === 7 && user?.roleId == 1) {
-        tableColum[5] = {};
-    }
+   
     const detailCard = useEmotionCss(() => {
         return {
             ".ant-select-selection-item":{

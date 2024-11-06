@@ -69,8 +69,8 @@ const Table = ({
             render: (text, record) => {
                 return (
                     <Space>
-                        <div type="link" style={{ color: '#FF0000', cursor: 'pointer' }} onClick={() => edit(record)}>{t('编辑')}</div>
-                        <div type="link" style={{ color: '#06FF00', cursor: 'pointer' }} onClick={() => changeIsOpenDel(record)}>{t('删除')}</div>
+                        <div type="link" style={{ color: token.colorPrimary, cursor: 'pointer' }} onClick={() => edit(record)}>{t('编辑')}</div>
+                        <div type="link" style={{ color: 'rgb(255,0,0)', cursor: 'pointer' }} onClick={() => changeIsOpenDel(record)}>{t('删除')}</div>
                     </Space>
                 )
             }
