@@ -6,7 +6,7 @@ const { SubMenu } = Menu;
 
 const MenuList = [
     {
-        label: 'app.Plant',
+        label: '电站统计',
         key: '/index/plant',
         icon: <LineChartOutlined />,
         permissions: '3',
@@ -33,22 +33,22 @@ const MenuList = [
         ]
     },
     {
-        label: 'app.Alarm',
+        label: '告警中心',
         key: '/index/alarm',
         icon: <AlertOutlined />,
         children: [
-            { label: 'app.RealTimeAlerts', key: '/index/alarm/realtimeAlarm', },
-            { label: 'app.HistoricalAlerts', key: '/index/alarm/historyAlarm', },
+            { label: '实时告警', key: '/index/alarm/realtimeAlarm', },
+            { label: '历史告警', key: '/index/alarm/historyAlarm', },
         ]
     },
 
     {
-        label: 'app.SystemAdministration',
+        label: '系统管理',
         key: '/index/systemManagement',
         icon: <SettingOutlined />,
         children: [
-            { label: 'app.UserManagement', key: '/index/systemManagement/user', },
-            { label: 'app.RecordsOfOperations', key: '/index/systemManagement/operationRecords', },
+            { label: '用户中心', key: '/index/systemManagement/user', },
+            { label: '操作记录', key: '/index/systemManagement/operationRecords', },
         ]
     },
 ]
