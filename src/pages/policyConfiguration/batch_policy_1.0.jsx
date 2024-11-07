@@ -41,6 +41,7 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
     const [durationListDataSource, setDurationListDataSource] = useState({});
     const [isLive, setIsLive] = useState(true);
     const { locale } = useSelector(state => state.global);
+    const [initParams, setInitParams] = useState({});
     const canIssue = true || mode === 1;
 
     const strategyList = [
@@ -156,14 +157,20 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
             monthList?.forEach((item, index) => {
                 params[item.value] = data?.policySelectList?.[index]
             });
-            form.setFieldsValue(params);
-            setDurationList(durationList)
             setMode(data?.mode);
-            setRunModePCS(data?.pcsStatus);
-            setRunModeBMS(data?.bmsStatus)
+            setInitParams(params);
         }
     }
 
+    useEffect(() => {
+        form.setFieldsValue({
+            ...initParams,
+            mode
+        });
+        setDurationList(initParams?.durationList);
+        setRunModePCS(initParams?.pcsStatus);
+        setRunModeBMS(initParams?.bmsStatus)
+    }, [mode]);
 
     useEffect(() => {
         if (deviceList?.length === 1) {
@@ -225,7 +232,7 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
                                                 <ButtonGroup
                                                     value={runModePCS}
                                                     mode={'controlled'}
-                                                    disabled={!canIssue || !isLive}
+                                                    disabled={mode === 0 || !canIssue || !isLive}
                                                     options={[
                                                         { label: intl.formatMessage({ id: 'PCS关机' }), value: 0 },
                                                         { label: intl.formatMessage({ id: 'PCS开机' }), value: 1 },
@@ -233,11 +240,9 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
                                                         { label: intl.formatMessage({ id: 'PCS复位' }), value: 3 },
                                                     ]}
                                                     onControlledChange={async value => {
-                                                        if(mode===1){
-                                                            setNextRunModePCS(value);
-                                                            setCheckModalOpen(true);
-                                                            setCheckModalType('runModePCS');
-                                                        }
+                                                        setNextRunModePCS(value);
+                                                        setCheckModalOpen(true);
+                                                        setCheckModalType('runModePCS');
                                                     }}
                                                 />
                                             </Form.Item>
@@ -247,17 +252,15 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
                                                 <ButtonGroup
                                                     value={runModeBMS}
                                                     mode={'controlled'}
-                                                    disabled={!canIssue || !isLive}
+                                                    disabled={mode === 0 || !canIssue || !isLive}
                                                     options={[
                                                         { label: intl.formatMessage({ id: 'BMS开机' }), value: 1 },
                                                         { label: intl.formatMessage({ id: 'BMS关机' }), value: 2 },
                                                     ]}
                                                     onControlledChange={async value => {
-                                                        if(mode===1){
-                                                            setNextRunModeBMS(value);
-                                                            setCheckModalOpen(true);
-                                                            setCheckModalType('runModeBMS');
-                                                        }
+                                                        setNextRunModeBMS(value);
+                                                        setCheckModalOpen(true);
+                                                        setCheckModalType('runModeBMS');
                                                     }}
                                                 />
                                             </Form.Item>
@@ -317,22 +320,32 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
                                                 <Switch disabled={!canIssue || !isLive} defaultValue={false} />
                                             </Form.Item>
                                         </Col>
-                                        <Col span={7}>
-                                            <Form.Item label={intl.formatMessage({ id: '变压器容量' })} style={{ margin: 0 }}>
-                                                <Space direction="horizontal">
-                                                    <Form.Item style={{ margin: 0 }} name="capValue" rules={[{ ...FORM_REQUIRED_RULE }]}>
-                                                        <InputNumber disabled={!canIssue || !isLive} style={{ width: 300 }} placeholder="kW" />
-                                                    </Form.Item>
-                                                </Space>
-                                            </Form.Item>
-                                        </Col>
-                                        <Col span={8}>
-                                            <Form.Item label={intl.formatMessage({ id: '变压器容量保护比例' })} style={{ margin: 0 }}>
-                                                <Space direction="horizontal">
-                                                    <Form.Item style={{ margin: 0 }} name="cap" rules={[{ ...FORM_REQUIRED_RULE }]}>
-                                                        <InputNumber disabled={!canIssue || !isLive} style={{ width: 300 }} placeholder="%" />
-                                                    </Form.Item>
-                                                </Space>
+                                        <Col span={21}>
+                                            <Form.Item
+                                                noStyle
+                                                dependencies={['enable']}
+                                            >
+                                                {({ getFieldsValue }) => {
+                                                    let disabled = false
+                                                    const { enable } = getFieldsValue(['enable']);
+                                                    if (mode === 0 && !enable) {
+                                                        disabled = true;
+                                                    }
+                                                    return (
+                                                        <Row>
+                                                            <Col span={12}>
+                                                                <Form.Item label={`${intl.formatMessage({ id: '变压器容量' })}(kW)`} name="capValue" rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
+                                                                    <InputNumber disabled={disabled || !canIssue || !isLive} style={{ width: 300 }} placeholder="kW" />
+                                                                </Form.Item>
+                                                            </Col>
+                                                            <Col span={12}>
+                                                                <Form.Item label={`${intl.formatMessage({ id: '变压器容量保护比例' })}(%)`} name="cap" rules={[{ ...FORM_REQUIRED_RULE }]} style={{ margin: 0 }}>
+                                                                    <InputNumber disabled={disabled || !canIssue || !isLive} style={{ width: 300 }} placeholder="%" />
+                                                                </Form.Item>
+                                                            </Col>
+                                                        </Row>
+                                                    )
+                                                }}
                                             </Form.Item>
                                         </Col>
                                     </Row>

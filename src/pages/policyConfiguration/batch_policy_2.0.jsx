@@ -41,6 +41,7 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
     const [durationListDataSource, setDurationListDataSource] = useState({});
     const [isLive, setIsLive] = useState(true);
     const { locale } = useSelector(state => state.global);
+    const [initParams, setInitParams] = useState({});
     const canIssue = true || mode === 0;
 
     const strategyList = [
@@ -157,18 +158,27 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
                 switchOnOffGrid: data?.switchOnOffGrid,
                 antiReflux: data?.antiReflux,
                 overload: data?.overload,
-                expansion: data?.expansion
+                expansion: data?.expansion,
+                pcsStatus: data?.pcsStatus,
+                bmsStatus: data?.bmsStatus
             }
             monthList?.forEach((item, index) => {
                 params[item.value] = data?.policySelectList?.[index]
             });
-            form.setFieldsValue(params);
-            setDurationList([...durationList]);
             setMode(data?.mode);
-            setRunModePCS(data?.pcsStatus);
-            setRunModeBMS(data?.bmsStatus)
+            setInitParams(params);
         }
     }
+
+    useEffect(() => {
+        form.setFieldsValue({
+            ...initParams,
+            mode
+        });
+        setDurationList(initParams?.durationList);
+        setRunModePCS(initParams?.pcsStatus);
+        setRunModeBMS(initParams?.bmsStatus)
+    }, [mode]);
 
     useEffect(() => {
         if (deviceList?.length === 1) {
@@ -233,18 +243,16 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
                                                 <ButtonGroup
                                                     value={runModePCS}
                                                     mode={'controlled'}
-                                                    disabled={!canIssue || !isLive}
+                                                    disabled={mode === 1 || !canIssue || !isLive}
                                                     options={[
                                                         { label: intl.formatMessage({ id: 'PCS关机' }), value: 0 },
                                                         { label: intl.formatMessage({ id: 'PCS开机' }), value: 1 },
                                                         { label: intl.formatMessage({ id: 'PCS复位' }), value: 2 }
                                                     ]}
                                                     onControlledChange={async value => {
-                                                        if(mode===0){
-                                                            setNextRunModePCS(value);
-                                                            setCheckModalOpen(true);
-                                                            setCheckModalType('runModePCS');
-                                                        }
+                                                        setNextRunModePCS(value);
+                                                        setCheckModalOpen(true);
+                                                        setCheckModalType('runModePCS');
                                                     }}
                                                 />
                                             </Form.Item>
@@ -252,18 +260,16 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
                                                 <ButtonGroup
                                                     value={runModeBMS}
                                                     mode={'controlled'}
-                                                    disabled={!canIssue || !isLive}
+                                                    disabled={mode === 1 || !canIssue || !isLive}
                                                     options={[
                                                         { label: intl.formatMessage({ id: 'BMS关机' }), value: 0 },
                                                         { label: intl.formatMessage({ id: 'BMS开机' }), value: 1 },
                                                         { label: intl.formatMessage({ id: 'BMS复位' }), value: 2 }
                                                     ]}
                                                     onControlledChange={async value => {
-                                                        if(mode===0){
-                                                            setNextRunModeBMS(value);
-                                                            setCheckModalOpen(true);
-                                                            setCheckModalType('runModeBMS');
-                                                        }
+                                                        setNextRunModeBMS(value);
+                                                        setCheckModalOpen(true);
+                                                        setCheckModalType('runModeBMS');
                                                     }}
                                                 />
                                             </Form.Item>
@@ -317,138 +323,170 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
                                             {intl.formatMessage({ id: '下发' })}
                                         </div>
                                     </Row>
-                                    <Space style={{ width: '100%' }} direction="vertical" size={30}>
-                                        <Row>
-                                            <Col span={6}>
-                                                <Form.Item label={intl.formatMessage({ id: '并离网' })} name="switchOnOffGrid" style={{ margin: 0 }}>
-                                                    <Switch disabled={!isLive} checkedChildren={intl.formatMessage({ id: '离网' })} unCheckedChildren={intl.formatMessage({ id: '并网' })} />
-                                                </Form.Item>
-                                            </Col>
+                                    <Row>
+                                        <Col span={3}>
+                                            <Form.Item label={intl.formatMessage({ id: '并离网' })} name="switchOnOffGrid" style={{ margin: 0 }}>
+                                                <Switch
+                                                    disabled={!isLive}
+                                                    checkedChildren={intl.formatMessage({ id: '并网' })}
+                                                    unCheckedChildren={intl.formatMessage({ id: '离网' })}
+                                                    onChange={value => {
+                                                        if (!value) {
+                                                            form.setFieldsValue({
+                                                                antiReflux: false,
+                                                                overload: false,
+                                                                expansion: false
+                                                            })
+                                                        }
+                                                    }}
+                                                />
+                                            </Form.Item>
+                                        </Col>
+                                        <Form.Item
+                                            noStyle
+                                            dependencies={['switchOnOffGrid']}
+                                        >
+                                            {({ getFieldsValue }) => {
+                                                let disabled = false
+                                                const { switchOnOffGrid } = getFieldsValue('switchOnOffGrid');
+                                                if (mode === 1 && !switchOnOffGrid) {
+                                                    disabled = true;
+                                                }
+                                                return (
+                                                    <>
+                                                        <Col span={3}>
+                                                            <Form.Item label={intl.formatMessage({ id: '防逆流' })} name="antiReflux" style={{ margin: 0 }}>
+                                                                <Switch disabled={disabled || !isLive} />
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Col span={3}>
+                                                            <Form.Item label={intl.formatMessage({ id: '防过载' })} name="overload" style={{ margin: 0 }}>
+                                                                <Switch
+                                                                    disabled={disabled || !isLive}
+                                                                    onChange={value => {
+                                                                        if (!value) form.setFieldsValue({ expansion: false })
+                                                                    }}
+                                                                />
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Form.Item
+                                                            noStyle
+                                                            dependencies={['overload']}
+                                                        >
+                                                            {({ getFieldsValue }) => {
+                                                                let disabled = false
+                                                                const { overload } = getFieldsValue('overload');
+                                                                if (mode === 1 && !overload) {
+                                                                    disabled = true;
+                                                                }
+                                                                return (
+                                                                    <Col span={3}>
+                                                                        <Form.Item label={intl.formatMessage({ id: '扩容' })} name="expansion" style={{ margin: 0 }}>
+                                                                            <Switch disabled={disabled || !isLive} />
+                                                                        </Form.Item>
+                                                                    </Col>
+                                                                )
+                                                            }}
+                                                        </Form.Item>
+                                                    </>
+                                                )
+                                            }}
+                                        </Form.Item>
+                                    </Row>
+                                    <Row gutter={[0, 30]}>
+                                        <Col span={12}>
+                                            <Form.Item
+                                                noStyle
+                                                dependencies={['switchOnOffGrid', 'antiReflux']}
+                                            >
+                                                {({ getFieldsValue }) => {
+                                                    let disabled = false
+                                                    const { switchOnOffGrid, antiReflux } = getFieldsValue(['switchOnOffGrid', 'antiReflux']);
+                                                    if (mode === 1 && (!switchOnOffGrid || !antiReflux)) {
+                                                        disabled = true;
+                                                    }
+                                                    return (
+                                                        <Col span={8}>
+                                                            <Form.Item label={`${intl.formatMessage({ id: '防逆流触发值' })}(kW)`} name="antiRefluxTriggerValue" style={{ margin: 0 }}>
+                                                                <InputNumber disabled={disabled || !isLive} placeholder={intl.formatMessage({ id: '请输入防逆流触发值' })} style={{ width: 400 }} />
+                                                            </Form.Item>
+                                                        </Col>
+                                                    )
+                                                }}
+                                            </Form.Item>
+                                        </Col>
+                                        <Col span={12}>
                                             <Form.Item
                                                 noStyle
                                                 dependencies={['switchOnOffGrid']}
                                             >
                                                 {({ getFieldsValue }) => {
                                                     let disabled = false
-                                                    const { switchOnOffGrid } = getFieldsValue('switchOnOffGrid');
-                                                    if (mode === 1 && switchOnOffGrid) {
+                                                    const { switchOnOffGrid } = getFieldsValue(['switchOnOffGrid']);
+                                                    if (mode === 1 && !switchOnOffGrid) {
                                                         disabled = true;
                                                     }
                                                     return (
-                                                        <>
-                                                            <Col span={6}>
-                                                                <Form.Item label={intl.formatMessage({ id: '防逆流' })} name="antiReflux" style={{ margin: 0 }}>
-                                                                    <Switch disabled={disabled || !isLive} />
-                                                                </Form.Item>
-                                                            </Col>
-                                                            <Col span={6}>
-                                                                <Form.Item label={intl.formatMessage({ id: '防过载' })} name="overload" style={{ margin: 0 }}>
-                                                                    <Switch disabled={disabled || !isLive} />
-                                                                </Form.Item>
-                                                            </Col>
-                                                            <Form.Item
-                                                                noStyle
-                                                                dependencies={['overload']}
-                                                            >
-                                                                {({ getFieldsValue }) => {
-                                                                    let disabled = false
-                                                                    const { overload } = getFieldsValue('overload');
-                                                                    if (mode === 1 && !overload) {
-                                                                        disabled = true;
-                                                                    }
-                                                                    return (
-                                                                        <Col span={6}>
-                                                                            <Form.Item label={intl.formatMessage({ id: '扩容' })} name="expansion" style={{ margin: 0 }}>
-                                                                                <Switch disabled={disabled || !isLive} />
-                                                                            </Form.Item>
-                                                                        </Col>
-                                                                    )
-                                                                }}
+                                                        <Col span={12}>
+                                                            <Form.Item label={`${intl.formatMessage({ id: '功率波动范围' })}(kW)`} name="pcsPowerWaveRange" style={{ margin: 0 }}>
+                                                                <InputNumber disabled={disabled || !canIssue || !isLive} placeholder={intl.formatMessage({ id: '请输入功率波动范围' })} style={{ width: 400 }} />
                                                             </Form.Item>
-                                                        </>
+                                                        </Col>
                                                     )
                                                 }}
                                             </Form.Item>
-                                        </Row>
-                                        <Row gutter={[0, 30]}>
-                                            <Col span={12}>
-                                                <Form.Item
-                                                    noStyle
-                                                    dependencies={['antiReflux']}
-                                                >
-                                                    {({ getFieldsValue }) => {
-                                                        let disabled = false
-                                                        const { antiReflux } = getFieldsValue('antiReflux');
-                                                        if (mode === 1 && antiReflux) {
-                                                            disabled = true;
-                                                        }
-                                                        return (
-                                                            <Col span={8}>
-                                                                <Form.Item label={`${intl.formatMessage({ id: '防逆流触发值' })}(kW)`} name="antiRefluxTriggerValue" style={{ margin: 0 }}>
-                                                                    <InputNumber disabled={!disabled || !isLive} placeholder={intl.formatMessage({ id: '请输入防逆流触发值' })} style={{ width: 400 }} />
-                                                                </Form.Item>
-                                                            </Col>
-                                                        )
-                                                    }}
-                                                </Form.Item>
-                                            </Col>
-                                            <Col span={12}>
-                                                <Form.Item label={`${intl.formatMessage({ id: '功率波动范围' })}(kW)`} name="pcsPowerWaveRange" style={{ margin: 0 }}>
-                                                    <InputNumber disabled={!canIssue || !isLive} placeholder={intl.formatMessage({ id: '请输入功率波动范围' })} style={{ width: 400 }} />
-                                                </Form.Item>
-                                            </Col>
-                                            <Col span={12}>
-                                                <Form.Item
-                                                    noStyle
-                                                    dependencies={['expansion']}
-                                                >
-                                                    {({ getFieldsValue }) => {
-                                                        let disabled = false
-                                                        const { expansion } = getFieldsValue('expansion');
-                                                        if (mode === 1 && !expansion) {
-                                                            disabled = true;
-                                                        }
-                                                        return (
-                                                            <Col span={8}>
-                                                                <Form.Item label={intl.formatMessage({ id: '变压器容量' })} style={{ margin: 0 }}>
-                                                                    <Space direction="horizontal">
-                                                                        <Form.Item style={{ margin: 0 }} name="tranCap">
-                                                                            <InputNumber disabled={disabled || !isLive} style={{ width: 400 }} placeholder="kW" />
-                                                                        </Form.Item>
-                                                                    </Space>
-                                                                </Form.Item>
-                                                            </Col>
-                                                        )
-                                                    }}
-                                                </Form.Item>
-                                            </Col>
-                                            <Col>
-                                                <Form.Item
-                                                    noStyle
-                                                    dependencies={['expansion']}
-                                                >
-                                                    {({ getFieldsValue }) => {
-                                                        let disabled = false
-                                                        const { expansion } = getFieldsValue('expansion');
-                                                        if (mode === 1 && !expansion) {
-                                                            disabled = true;
-                                                        }
-                                                        return (
-                                                            <Col span={8}>
-                                                                <Form.Item label={intl.formatMessage({ id: '变压器容量保护比例' })} style={{ margin: 0 }}>
-                                                                    <Space direction="horizontal">
-                                                                        <Form.Item style={{ margin: 0 }} name="tranCapPercent">
-                                                                            <InputNumber disabled={disabled || !isLive} style={{ width: 400 }} placeholder="%" min={0} max={100} />
-                                                                        </Form.Item>
-                                                                    </Space>
-                                                                </Form.Item>
-                                                            </Col>
-                                                        )
-                                                    }}
-                                                </Form.Item>
-                                            </Col>
-                                        </Row>
-                                    </Space>
+                                        </Col>
+                                        <Col span={12}>
+                                            <Form.Item
+                                                noStyle
+                                                dependencies={['switchOnOffGrid', 'overload']}
+                                            >
+                                                {({ getFieldsValue }) => {
+                                                    let disabled = false
+                                                    const { switchOnOffGrid, overload } = getFieldsValue(['switchOnOffGrid', 'overload']);
+                                                    if (mode === 1 && (!switchOnOffGrid || !overload)) {
+                                                        disabled = true;
+                                                    }
+                                                    return (
+                                                        <Col span={8}>
+                                                            <Form.Item label={intl.formatMessage({ id: '变压器容量' })} style={{ margin: 0 }}>
+                                                                <Space direction="horizontal">
+                                                                    <Form.Item style={{ margin: 0 }} name="tranCap">
+                                                                        <InputNumber disabled={disabled || !isLive} style={{ width: 400 }} placeholder="kW" />
+                                                                    </Form.Item>
+                                                                </Space>
+                                                            </Form.Item>
+                                                        </Col>
+                                                    )
+                                                }}
+                                            </Form.Item>
+                                        </Col>
+                                        <Col span={12}>
+                                            <Form.Item
+                                                noStyle
+                                                dependencies={['switchOnOffGrid', 'overload']}
+                                            >
+                                                {({ getFieldsValue }) => {
+                                                    let disabled = false
+                                                    const { switchOnOffGrid, overload } = getFieldsValue(['switchOnOffGrid', 'overload']);
+                                                    if (mode === 1 && (!switchOnOffGrid || !overload)) {
+                                                        disabled = true;
+                                                    }
+                                                    return (
+                                                        <Col span={8}>
+                                                            <Form.Item label={intl.formatMessage({ id: '变压器容量保护比例' })} style={{ margin: 0 }}>
+                                                                <Space direction="horizontal">
+                                                                    <Form.Item style={{ margin: 0 }} name="tranCapPercent">
+                                                                        <InputNumber disabled={disabled || !isLive} style={{ width: 400 }} placeholder="%" min={0} max={100} />
+                                                                    </Form.Item>
+                                                                </Space>
+                                                            </Form.Item>
+                                                        </Col>
+                                                    )
+                                                }}
+                                            </Form.Item>
+                                        </Col>
+                                    </Row>
                                 </Space>
                             </div>
                             <div className={areaStyle}>
@@ -579,7 +617,6 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
                             </div>
                         </>
                     }
-
                     <div className={areaStyle}>
                         <Space style={{ width: '100%' }} direction="vertical" size={20}>
                             <Row justify="space-between" align="middle">
