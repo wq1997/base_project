@@ -155,7 +155,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                 pcsPowerWaveRange: data?.pcsPowerWaveRange,
                 runModePCS: data?.pcsStatus,
                 runModeBMS: data?.bmsStatus,
-                switchOnOffGrid: data?.switchOnOffGrid,
+                switchOnOffGrid: data?.switchOnOffGrid===0,
                 antiReflux: data?.antiReflux,
                 overload: data?.overload,
                 expansion: data?.expansion,
@@ -782,7 +782,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                                 expansion: values?.expansion ? 1 : 0,
                                 overload: values?.overload ? 1 : 0,
                                 antiReflux: values?.antiReflux ? 1 : 0,
-                                switchOnOffGrid: values?.switchOnOffGrid ? 1 : 0,
+                                switchOnOffGrid: values?.switchOnOffGrid ? 0 : 1,
                                 dtuId: id,
                                 type: deviceVersion
                             });
