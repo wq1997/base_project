@@ -158,7 +158,7 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
                 params[item.value] = data?.policySelectList?.[index]
             });
             setMode(data?.mode);
-            setInitParams(params);
+            setInitParams({...params});
         }
     }
 
@@ -170,7 +170,7 @@ const PolicyConfiguration = ({ deviceVersion, deviceList }) => {
         setDurationList(initParams?.durationList);
         setRunModePCS(initParams?.pcsStatus);
         setRunModeBMS(initParams?.bmsStatus)
-    }, [mode]);
+    }, [initParams, mode]);
 
     useEffect(() => {
         if (deviceList?.length === 1) {
