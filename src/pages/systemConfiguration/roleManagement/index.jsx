@@ -36,19 +36,18 @@ const Account = () => {
         {
             title: "操作",
             dataIndex: "operate",
-            width: 200,
+            width: 120,
             render: (_, row) => {
                 return (
                     hasPerm(user, "op:role_edit") && (
-                        <Button
-                            type="link"
+                        <a
                             onClick={() => {
                                 setAddRoleOpen(true);
                                 setEditRow(row);
                             }}
                         >
                             编辑
-                        </Button>
+                        </a>
                     )
                 );
             },

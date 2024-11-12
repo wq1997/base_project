@@ -23,18 +23,14 @@ const Index = ({ info }) => {
                     <div style={{ marginLeft: 10 }}>
                         <div>
                             <Badge status="success" style={{ marginRight: "10px" }} />
-                            <span>
-                                巡检组{groupIndex}：{group.name}
-                            </span>
+                            <span>巡检组：{group.name}</span>
                         </div>
                         {group?.items?.map((item, itemIndex) => {
                             return (
                                 <div style={{ margin: "10px 15px", fontSize: 13 }}>
                                     <div>
                                         <Badge status="success" style={{ marginRight: "10px" }} />
-                                        <span>
-                                            巡检项：{itemIndex}：{item.name}
-                                        </span>
+                                        <span>巡检项：{item.name}</span>
                                     </div>
                                     <div style={{ margin: "10px 15px" }}>
                                         巡检结果：

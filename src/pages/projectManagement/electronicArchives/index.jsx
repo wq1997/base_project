@@ -91,6 +91,9 @@ const Account = () => {
     const [userList, setUserList] = useState([]);
     const [detailOpen, setDetailOpen] = useState(false);
     const [searchInitOption, setSearchInitOption] = useState({});
+    const [statusList, setStatusList] = useState([]);
+    const statusRef = useRef();
+    const [status, setStatus] = useState();
 
     const columns = [
         {
@@ -229,7 +232,7 @@ const Account = () => {
                                 <a style={{ color: "#dc4446" }}>删除</a>
                             </Popconfirm>
                         )}
-                        {row?.status === "ACTIVE" && row?.supportStandardInspection &&(
+                        {row?.status === "ACTIVE" && row?.supportStandardInspection && (
                             <a
                                 style={{ color: "#ed750e" }}
                                 onClick={() => {
@@ -258,7 +261,7 @@ const Account = () => {
     const getSearchInitData = async () => {
         const res = await getBasProjectInitDataServe();
         if (res?.data?.status == "SUCCESS") {
-            const { regions, phases, types, productTypes, users } = res?.data?.data || {};
+            const { regions, phases, types, productTypes, users, status } = res?.data?.data || {};
             setInitSearchOption(res?.data?.data || {});
             setPhaseList(phases);
             setProjectTypeList(types);
@@ -266,6 +269,7 @@ const Account = () => {
             setPutEffectPersonList(users);
             setOperationPersonList(users);
             setAreaOptions(regions);
+            setStatusList(status);
         }
     };
 
@@ -328,6 +332,7 @@ const Account = () => {
         const implementManagerAccount = putEffectPersonRef.current;
         const operationsManagerAccount = operationPersonRef.current;
         const supportStandardInspection = supportStandardInspectionRef.current;
+        const status = statusRef?.current;
         const res = await getBaseProjectListServe({
             pageNum: current,
             pageSize,
@@ -343,6 +348,7 @@ const Account = () => {
                 implementManagerAccount,
                 operationsManagerAccount,
                 supportStandardInspection,
+                status,
             },
         });
         if (res?.data?.status == "SUCCESS") {
@@ -508,6 +514,17 @@ const Account = () => {
                         paginationRef.current = DEFAULT_PAGINATION;
                         operationPersonRef.current = value;
                         setOperationPerson(value);
+                    }}
+                />
+                <SearchInput
+                    label="状态"
+                    type="select"
+                    options={statusList}
+                    value={status}
+                    onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        statusRef.current = value;
+                        setStatus(value);
                     }}
                 />
                 <div>

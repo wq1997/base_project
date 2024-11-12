@@ -139,12 +139,12 @@ const AddProject = ({ open, editId, onClose }) => {
                 </Form.Item>
 
                 <Form.Item
-                    label="关联手机号"
+                    label="手机号"
                     name="phoneNo"
                     rules={[
                         {
                             required: true,
-                            message: "请输入关联手机号",
+                            message: "请输入手机号",
                         },
                         {
                             pattern: TELPHONE_REG,
@@ -152,7 +152,20 @@ const AddProject = ({ open, editId, onClose }) => {
                         },
                     ]}
                 >
-                    <Input style={{ width: "100%" }} placeholder="请输入关联手机号" />
+                    <Input style={{ width: "100%" }} placeholder="请输入手机号" />
+                </Form.Item>
+
+                <Form.Item
+                    label="邮箱"
+                    name="email"
+                    rules={[
+                        {
+                            pattern: EMAIL_REG,
+                            message: "邮箱格式错误",
+                        },
+                    ]}
+                >
+                    <Input style={{ width: "100%" }} placeholder="请输入邮箱" />
                 </Form.Item>
 
                 <Form.Item label="管辖区域" name="regions">

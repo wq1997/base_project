@@ -10,6 +10,7 @@ import {
     Radio,
     message,
     Upload,
+    Tooltip,
 } from "antd";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import React, { useState, useEffect, useRef } from "react";
@@ -79,17 +80,15 @@ const AlarmConfiguration = () => {
                 return record?.refSeAlarmType?.plant?.name;
             },
         },
-        // {
-        //     title: "并网点名称",
-        //     dataIndex: "3",
-        //     width: 200
-        // },
         {
             title: "设备名称",
             dataIndex: "seDevName",
             width: 200,
         },
         {
+            // title: () => {
+            //     return <Tooltip title="告警名称">告警名称</Tooltip>;
+            // },
             title: "告警名称",
             dataIndex: "seAlarmTypeDesc",
             width: 200,
@@ -245,10 +244,10 @@ const AlarmConfiguration = () => {
                 message.error(res?.file?.response?.msg);
                 window.open(
                     `${getBaseUrl()}/attachment/download-temp-file` +
-                    jsonToUrlParams({
-                        tempFileKey: res?.file?.response?.data,
-                        access_token: localStorage.getItem("Token"),
-                    }),
+                        jsonToUrlParams({
+                            tempFileKey: res?.file?.response?.data,
+                            access_token: localStorage.getItem("Token"),
+                        }),
                     "_blank"
                 );
             }
@@ -464,20 +463,20 @@ const AlarmConfiguration = () => {
                                     const lastUpdaterNameLike = lastModifiedPersonRef.current;
                                     window.open(
                                         getBaseUrl() +
-                                        "/bas-alarm-type/download-import-template" +
-                                        jsonToUrlParams({
-                                            basProjectId,
-                                            sePlantId,
-                                            seAlarmTypeDescLike,
-                                            seDevNameLike,
-                                            mmsEventDescLike,
-                                            mmsEventLevel,
-                                            mmsEventClassify,
-                                            alarm,
-                                            autoGenerateWorkOrder,
-                                            lastUpdaterNameLike,
-                                            access_token: localStorage.getItem("Token"),
-                                        })
+                                            "/bas-alarm-type/download-import-template" +
+                                            jsonToUrlParams({
+                                                basProjectId,
+                                                sePlantId,
+                                                seAlarmTypeDescLike,
+                                                seDevNameLike,
+                                                mmsEventDescLike,
+                                                mmsEventLevel,
+                                                mmsEventClassify,
+                                                alarm,
+                                                autoGenerateWorkOrder,
+                                                lastUpdaterNameLike,
+                                                access_token: localStorage.getItem("Token"),
+                                            })
                                     );
                                 } else {
                                     message.error("至少搜索一个项目");

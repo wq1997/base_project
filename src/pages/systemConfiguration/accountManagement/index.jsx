@@ -55,8 +55,12 @@ const Account = () => {
             dataIndex: "name",
         },
         {
-            title: "关联手机号",
+            title: "手机号",
             dataIndex: "phoneNo",
+        },
+        {
+            title: "邮箱",
+            dataIndex: "email",
         },
         {
             title: "管辖区域",
@@ -79,10 +83,11 @@ const Account = () => {
         {
             title: "操作",
             dataIndex: "operate",
-            width: 180,
+            width: 120,
+            fixed: "right",
             render: (_, { id, wxOpenId }) => {
                 return (
-                    <Space size="middle">
+                    <Space>
                         {hasPerm(user, "op:user_edit") && (
                             <a
                                 onClick={() => {
@@ -277,6 +282,9 @@ const Account = () => {
                 onChange={pagination => {
                     paginationRef.current = pagination;
                     getList();
+                }}
+                scroll={{
+                    x: 1500,
                 }}
                 title={() => (
                     <Space>
