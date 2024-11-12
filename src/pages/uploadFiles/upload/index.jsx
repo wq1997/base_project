@@ -85,7 +85,7 @@ const Company = ({ detailId, uploadOpen, onClose }) => {
         setSpinning(false);
         if (res?.data) {
             if (res?.data?.code == 0) {
-                message.success("解析成功");
+                message.success(res?.data?.message);
             } else {
                 message.error(res?.data?.message);
             }
