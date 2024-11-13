@@ -22,6 +22,7 @@ import { useEmotionCss } from '@ant-design/use-emotion-css';
 import Table from "./components/table";
 import Map from './components/map';
 import dayjs from 'dayjs';
+import {getUrlParams, setLocalStorage} from "@/utils/utils";
 const { Option } = Select;
 
 const RealtimeAlarm = () => {
@@ -119,6 +120,11 @@ const RealtimeAlarm = () => {
     ])
 
     useEffect(() => {
+        const params = getUrlParams(window.location.search);
+        if(params?.token){
+            setLocalStorage('Token',params.token);
+            history.push('/index/device');
+        }
         getAllPlant();
     }, [locale])
 
