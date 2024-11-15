@@ -17,6 +17,7 @@ import AddAccount from "./AddAccount";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import "./index.less";
 import dayjs from "dayjs";
+import SendEmail from "./SendEmail";
 import { history, useLocation, useSelector } from "umi";
 import { getUrlParams, hasPerm } from "@/utils/utils";
 import {
@@ -44,6 +45,7 @@ const Account = () => {
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [addAccountOpen, setAddAccountOpen] = useState(false);
     const [editId, setEditId] = useState();
+    const [showSendEmail, setShowSendEmail] = useState(false);
 
     const columns = [
         {
@@ -217,6 +219,12 @@ const Account = () => {
                     getList();
                 }}
             />
+            <SendEmail
+                showSendEmail={showSendEmail}
+                onClose={() => {
+                    setShowSendEmail(false);
+                }}
+            />
             <Space className="search" size={10}>
                 <SearchInput
                     label="账号"
@@ -305,6 +313,15 @@ const Account = () => {
                                 ) : (
                                     ""
                                 )}
+                            </Button>
+                        )}
+                        {hasPerm(user, "op:global_mail_conf") && (
+                            <Button
+                                style={{ background: "rgb(22, 118, 239)" }}
+                                type="primary"
+                                onClick={() => setShowSendEmail(true)}
+                            >
+                                待办发送邮箱维护
                             </Button>
                         )}
                     </Space>

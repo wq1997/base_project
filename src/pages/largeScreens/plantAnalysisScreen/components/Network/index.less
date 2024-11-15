@@ -118,15 +118,14 @@
 
     .networkBottom {
         .content;
-        width: calc(100% - 20px);
+        width: 100%;
         height: 31%;
         position: absolute;
         bottom: 0px;
     }
 
     .search {
-        width: 50%;
-        min-width: 800px;
+        max-width: 1200px;
         margin: 0 auto;
         position: absolute;
         top: 100px;
@@ -144,6 +143,11 @@
             .ant-form-item {
                 height: 32px;
                 flex: 1;
+                .ant-form-item-label{
+                    label{
+                        white-space: nowrap;
+                    }
+                }
             }
             .ant-form-item .ant-form-item-label > label {
                 color: white;

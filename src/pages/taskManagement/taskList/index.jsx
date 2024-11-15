@@ -56,8 +56,10 @@ const Account = () => {
     const workOrderCodeRef = useRef(params?.code);
     const [workOrderCode, setWorkOrderCode] = useState(params?.code);
 
-    const publishedTimeRef = useRef();
-    const [publishedTime, setPublishedTime] = useState();
+    const publishedTimeRef = useRef(params?.time ? [params?.time, params?.time] : null);
+    const [publishedTime, setPublishedTime] = useState(
+        params?.time ? [params?.time, params?.time] : null
+    );
 
     const dealStatusRef = useRef(params?.statusIn);
     const [dealStatus, setDealStatus] = useState(params?.statusIn);
@@ -80,8 +82,8 @@ const Account = () => {
     const planEndDateRef = useRef();
     const [planEndDate, setPlanEndDate] = useState();
 
-    const associatedProjectRef = useRef();
-    const [associatedProject, setAssociatedProject] = useState();
+    const associatedProjectRef = useRef(params?.projectId);
+    const [associatedProject, setAssociatedProject] = useState(params?.projectId);
     const [projectOptions, setProjectOptions] = useState();
 
     const [userOptions, setUserOptions] = useState();

@@ -114,20 +114,20 @@ const MenuList = [
         icon: <DatabaseFilled />,
         permissions: "menu:knowledge_base_manage",
     },
-    // {
-    //     key: "/maintenance-tools",
-    //     label: "运维工具",
-    //     icon: <ToolFilled />,
-    //     darkIcon: "icon-wuliaoxuqiu-copy",
-    //     permissions: "menu:sys_manage",
-    //     children: [
-    //         {
-    //             key: "/maintenance-tools/project-operation-report",
-    //             label: "项目运行报告",
-    //             permissions: "menu:user_manage",
-    //         },
-    //     ],
-    // },
+    {
+        key: "/maintenance-tools",
+        label: "运维工具",
+        icon: <ToolFilled />,
+        darkIcon: "icon-wuliaoxuqiu-copy",
+        permissions: "menu:om_tool",
+        children: [
+            {
+                key: "/maintenance-tools/project-operation-report",
+                label: "项目运行报告",
+                permissions: "menu:user_manage",
+            },
+        ],
+    },
     {
         key: "/system-configuration",
         label: "系统配置",

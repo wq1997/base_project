@@ -86,10 +86,9 @@ const AlarmConfiguration = () => {
             width: 200,
         },
         {
-            // title: () => {
-            //     return <Tooltip title="告警名称">告警名称</Tooltip>;
-            // },
-            title: "告警名称",
+            title: () => {
+                return <Tooltip title="对应云平台告警描述">告警名称</Tooltip>;
+            },
             dataIndex: "seAlarmTypeDesc",
             width: 200,
         },
@@ -106,7 +105,13 @@ const AlarmConfiguration = () => {
             },
         },
         {
-            title: "运维告警描述",
+            title: () => {
+                return (
+                    <Tooltip title="针对项目告警所展示的辅助描述说明，可通过项目告警配置进行自定义调整">
+                        运维告警描述
+                    </Tooltip>
+                );
+            },
             dataIndex: "mmsEventDesc",
             width: 200,
         },
@@ -116,12 +121,48 @@ const AlarmConfiguration = () => {
             width: 200,
         },
         {
-            title: "运维告警等级",
+            title: () => {
+                return (
+                    <Tooltip
+                        title={() => {
+                            return (
+                                <div>
+                                    <div>运维告警等级：分四级；</div>
+                                    <div>
+                                        1.
+                                        严重告警(或一级告警):这通常表示系统出现了非常严重的故障，可能影响到整个系统的运行和用户的正常使用。这种告警需要立即处理。
+                                    </div>
+                                    <div>
+                                        2.
+                                        重要告警(或二级告警)这表示系统中出现了重要的故障，可能影响到部分功能的正常运行。这种告需要尽快处理。
+                                    </div>
+                                    <div>
+                                        3.
+                                        一般告警(或三级告警):这表示系统中出现了一些问题，但这些问题不会直接影响到用户的正常使用。这种告警可以在常规维护期间处理。
+                                    </div>
+                                    <div>
+                                        4.
+                                        提示告警(或四级告警):这通常是一些建议性的信息，比如系统即将进行维护，或者某些功能即将被弃用等。这种告警可以视情况进行处理。
+                                    </div>
+                                </div>
+                            );
+                        }}
+                    >
+                        运维告警等级
+                    </Tooltip>
+                );
+            },
             dataIndex: "mmsEventLevel",
             width: 200,
         },
         {
-            title: "是否告警",
+            title: () => {
+                return (
+                    <Tooltip title="若选择是，则会在项目告警明细及运维大屏展示此条告警；若选择否，则不会展示此告警数据">
+                        是否告警
+                    </Tooltip>
+                );
+            },
             dataIndex: "alarm",
             width: 200,
             render: (_, { alarm }) => {
@@ -133,7 +174,13 @@ const AlarmConfiguration = () => {
             },
         },
         {
-            title: "是否自动生成工单",
+            title: () => {
+                return (
+                    <Tooltip title="若选择是，则发生此告警时会同步生成一条异常工单，若选择否则不会生成">
+                        是否自动生成工单
+                    </Tooltip>
+                );
+            },
             dataIndex: "11",
             width: 200,
             render: (_, { autoGenerateWorkOrder }) => {

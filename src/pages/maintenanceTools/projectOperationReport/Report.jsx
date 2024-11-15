@@ -1,190 +1,437 @@
-import { Space, Select, theme, DatePicker } from "antd";
-import ReactECharts from "echarts-for-react";
-import { useState, useEffect } from "react";
-import dayjs from "dayjs";
+import React, { useState, useEffect, useRef } from "react";
 import {
-    alarmStatisticsChartsPageInitData as alarmStatisticsChartsPageInitDataServer,
-    alarmStatisticsCharts as alarmStatisticsChartsServer,
-} from "@/services";
+    Button,
+    Space,
+    Table,
+    message,
+    Modal,
+    DatePicker,
+    Tooltip,
+    Input,
+    Radio,
+    Popconfirm,
+} from "antd";
+import { PlusCircleFilled } from "@ant-design/icons";
 import { SearchInput } from "@/components";
+import { DEFAULT_PAGINATION } from "@/utils/constants";
+import "./index.less";
+import { getBaseUrl } from "@/services/request";
+import { jsonToUrlParams, toChineseNumber } from "@/utils/utils";
+import dayjs from "dayjs";
+import { history, useLocation, useSelector } from "umi";
+import { getUrlParams, hasPerm } from "@/utils/utils";
+import {
+    getProjectRunDayReportList as getProjectRunDayReportListServer,
+    addDownloadTask as addDownloadTaskServer,
+} from "@/services";
 
-const Statistics = () => {
-    const [options, setOptions] = useState({});
-    const { token } = theme.useToken();
-    const [type, setType] = useState("YEAR");
-    const [date, setDate] = useState(dayjs().format("YYYY"));
-    const [initOption, setInitOption] = useState({});
-    const [projectId, setProjectId] = useState();
+const momentList = [
+    { time: "04:00", moment: 4 },
+    { time: "08:00", moment: 8 },
+    { time: "12:00", moment: 12 },
+    { time: "16:00", moment: 16 },
+    { time: "20:00", moment: 20 },
+    { time: "24:00", moment: 24 },
+];
 
-    const getOptions = async () => {
-        if (JSON.stringify(initOption) === "{}") return;
-        let params = {},
-            xAxisData = [],
-            legendData = [],
-            seriesData = [];
-        if (type === "YEAR") {
-            params = {
-                projectId: projectId,
-                year: date,
-            };
-        }
-        if (type === "MONTH") {
-            params = {
-                projectId: projectId,
-                year: dayjs(date).format("YYYY"),
-                month: dayjs(date).format("MM"),
-            };
-        }
-        const res = await alarmStatisticsChartsServer(params);
-        if (res?.data?.status === "SUCCESS") {
-            const items = res?.data?.data?.items;
-            xAxisData = items?.map(item => item?.monthOrDay);
-            items?.forEach(item => {
-                if (item?.typeCount?.length > 0) {
-                    item?.typeCount?.forEach(subItem => {
-                        legendData.push(subItem?._1 || "");
-                    });
-                }
-            });
-            legendData = Array.from(new Set(legendData));
+const Account = () => {
+    const projectNameRef = useRef();
+    const [projectName, setProjectName] = useState();
+    const { user } = useSelector(state => state.user);
+    const plantNameRef = useRef();
+    const [plantName, setPlantName] = useState();
+    const timeRef = useRef();
+    const [time, setTime] = useState();
+    const paginationRef = useRef(DEFAULT_PAGINATION);
+    const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
+    const [userList, setUserList] = useState([]);
+    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+    const [downloadCheckRecordName, setDownloadCheckRecordName] = useState(null);
+    const [downloadCheckRecordId, setDownloadCheckRecordId] = useState(null);
 
-            legendData?.forEach(name => {
-                seriesData.push({
-                    name,
-                    type: "bar",
-                    stack: "总量",
-                    barWidth: 40,
-                    data: items?.map(item => {
-                        const count = item?.typeCount?.find(subItem => subItem?._1 === name);
-                        return count?._2 || 0;
-                    }),
-                });
-            });
-        }
+    const columns = [
+        {
+            title: "监测时间",
+            dataIndex: "detectionDate",
+        },
+        {
+            title: "项目名称",
+            dataIndex: "projectName",
+        },
+        {
+            title: "电站名称",
+            dataIndex: "plantName",
+        },
+        {
+            title: "当日充放效率(%)",
+            dataIndex: "dayChargeDischargeEfficiency",
+        },
+        {
+            title: "当日收益(元)",
+            dataIndex: "dayEarnings",
+        },
+        {
+            title: "当日充电量(kWh)",
+            dataIndex: "dayChargeEnergy",
+        },
+        {
+            title: "当日放电量(kWh)",
+            dataIndex: "dayDischargeEnergy",
+        },
+        {
+            title: () => {
+                return (
+                    <Tooltip title="当日最后一次放电完成时，所有主体最低电压与所有主体最高电压的差值">
+                        当日最大压差(V)
+                    </Tooltip>
+                );
+            },
+            dataIndex: "dayMaxVoltageDifference",
+        },
+        {
+            title: () => {
+                return (
+                    <Tooltip title="当日最后一次放电完成时，所有主体最低温度与所有主体最高温度的差值">
+                        当日最大温差(°C)
+                    </Tooltip>
+                );
+            },
+            dataIndex: "dayMaxTemperatureDifference",
+        },
+        {
+            title: "当日告警数",
+            dataIndex: "dayAlarmCount",
+            render: (_, { dayAlarmCount, detectionDate, projectId }) => {
+                return (
+                    <span
+                        onClick={() => {
+                            history.push(
+                                `/project-management/alarmStatistics?activeKey=detailed&time=${detectionDate}&projectId=${projectId}`
+                            );
+                        }}
+                        style={{ cursor: "pointer" }}
+                    >
+                        {dayAlarmCount}
+                    </span>
+                );
+            },
+        },
+        {
+            title: "当日工单数",
+            dataIndex: "dayWorkOrderCount",
+            render: (_, { dayWorkOrderCount, detectionDate, projectId }) => {
+                return (
+                    <span
+                        onClick={() => {
+                            history.push(
+                                `/task-management/task-list?time=${detectionDate}&projectId=${projectId}`
+                            );
+                        }}
+                        style={{ cursor: "pointer" }}
+                    >
+                        {dayWorkOrderCount}
+                    </span>
+                );
+            },
+        },
+        {
+            title: "当日异常工单数",
+            dataIndex: "dayExceptionWorkOrderCount",
+            render: (_, { dayExceptionWorkOrderCount, detectionDate, projectId }) => {
+                return (
+                    <span
+                        onClick={() => {
+                            history.push(
+                                `/task-management/task-list?time=${detectionDate}&projectId=${projectId}&typeIn=${encodeURIComponent(["SYS_EXCEPTION", "MANUAL_EXCEPTION"])}`
+                            );
+                        }}
+                        style={{ cursor: "pointer" }}
+                    >
+                        {dayExceptionWorkOrderCount}
+                    </span>
+                );
+            },
+        },
+        {
+            title: "操作",
+            dataIndex: "operate",
+            width: 150,
+            fixed: "right",
+            render: (_, { id, projectName }) => {
+                return (
+                    <Space style={{ display: "flex", flexDirection: "column" }}>
+                        {hasPerm(user, "op:project_run_day_report_export") && (
+                            <a
+                                style={{ color: "#0EBCB6" }}
+                                onClick={() => {
+                                    setDownloadCheckRecordId(id);
+                                    setDownloadCheckRecordName(projectName);
+                                }}
+                            >
+                                导出云平台巡检记录
+                            </a>
+                        )}
+                        {hasPerm(user, "op:project_run_day_report_task_list") && (
+                            <a
+                                style={{ color: "#EE7612" }}
+                                onClick={async () => {
+                                    const res = await addDownloadTaskServer(id);
+                                    message.info(res?.data?.msg);
+                                }}
+                            >
+                                导出当日充放原数据
+                            </a>
+                        )}
+                    </Space>
+                );
+            },
+        },
+    ];
 
-        setOptions({
-            tooltip: {},
-            color: ["#47CCFF", "#EF6E39", "#00D5CF"],
-            legend: {
-                data: legendData,
-                textStyle: {
-                    fontSize: 14,
-                    color: "#FFF",
-                },
+    const onSelectChange = (newSelectedRowKeys, newSelectedRows) => {
+        setSelectedRowKeys(newSelectedRowKeys);
+    };
+
+    const getList = async () => {
+        const { current, pageSize } = paginationRef.current;
+        const projectName = projectNameRef.current;
+        const plantName = plantNameRef.current;
+        const [detectionDateFrom, detectionDateTo] = timeRef.current || [];
+        const res = await getProjectRunDayReportListServer({
+            pageNum: current,
+            pageSize,
+            queryCmd: {
+                projectName,
+                plantName,
+                detectionDateFrom,
+                detectionDateTo,
             },
-            grid: {
-                left: 50,
-                right: 50,
-            },
-            xAxis: {
-                type: "category",
-                axisLabel: {
-                    color: "#FFFFFF",
-                },
-                axisLine: {
-                    show: false,
-                },
-                axisTick: {
-                    show: false,
-                },
-                data: xAxisData,
-            },
-            yAxis: {
-                type: "value",
-                axisLabel: {
-                    color: "#FFFFFF",
-                },
-                axisLine: {
-                    lineStyle: {
-                        color: "rgba(0,0,0,0.15)",
-                    },
-                    width: 2,
-                },
-                axisTick: {
-                    show: false,
-                },
-                splitLine: {
-                    lineStyle: {
-                        color: "rgba(255,255,255,0.15)",
-                    },
-                },
-            },
-            series: seriesData,
         });
-    };
-
-    const getInitData = async () => {
-        const res = await alarmStatisticsChartsPageInitDataServer();
-        if (res?.data?.status === "SUCCESS") {
-            setInitOption(res?.data?.data);
+        if (res?.data?.status == "SUCCESS") {
+            const { totalRecord, recordList } = res?.data?.data;
+            setPagination({
+                ...paginationRef.current,
+                total: parseInt(totalRecord),
+            });
+            setUserList(recordList);
         }
     };
 
-    useEffect(() => {
-        getOptions();
-    }, [initOption, projectId, type, date]);
+    const handleReset = () => {
+        paginationRef.current = DEFAULT_PAGINATION;
+        projectNameRef.current = undefined;
+        setProjectName();
+        plantNameRef.current = undefined;
+        setPlantName();
+        timeRef.current = undefined;
+        setTime();
+        getList();
+    };
 
     useEffect(() => {
-        getInitData();
+        getList();
     }, []);
 
     return (
-        <Space
-            direction="vertical"
-            style={{
-                width: "100%",
-            }}
-        >
-            <Space>
+        <div className="electronic-archives">
+            <Space className="search" size={10}>
                 <SearchInput
-                    label="项目"
-                    value={projectId}
-                    type="select"
+                    label="项目名称"
+                    value={projectName}
                     onChange={value => {
-                        setProjectId(value);
+                        projectNameRef.current = value;
+                        setProjectName(value);
                     }}
-                    options={initOption?.projects?.map(item => ({
-                        name: item.name,
-                        code: item.id,
-                    }))}
                 />
-                <span style={{ color: token.fontColor }}>时间维度：</span>
-                <Select
-                    value={type}
-                    options={[
-                        { value: "YEAR", label: "年" },
-                        { value: "MONTH", label: "月" },
-                    ]}
-                    style={{ width: 200 }}
-                    placeholder="请选择时间维度"
+                <SearchInput
+                    label="电站名称"
+                    value={plantName}
                     onChange={value => {
-                        if (value === "YEAR") {
-                            setDate(dayjs(date).format("YYYY"));
-                        } else if (value === "MONTH") {
-                            setDate(`${dayjs(date).format("YYYY")}-${dayjs().format("MM")}`);
+                        plantNameRef.current = value;
+                        setPlantName(value);
+                    }}
+                />
+                <div>
+                    <span style={{ marginRight: 5 }}>日报生成时间</span>
+                    <DatePicker.RangePicker
+                        value={
+                            time && time.length > 0 && time[0] && time[1]
+                                ? [dayjs(time[0]), dayjs(time[1])]
+                                : []
                         }
-                        setType(value);
+                        onChange={(date, dateStr) => {
+                            timeRef.current = dateStr;
+                            setTime(dateStr);
+                        }}
+                    />
+                </div>
+
+                <Button
+                    type="primary"
+                    onClick={() => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        getList();
                     }}
-                />
-                <DatePicker
-                    value={dayjs(date)}
-                    picker={type.toLocaleLowerCase()}
-                    onChange={value => {
-                        if (type === "YEAR") {
-                            setDate(dayjs(value).format("YYYY"));
-                        } else if (type === "MONTH") {
-                            setDate(dayjs(value).format("YYYY-MM"));
-                        }
-                    }}
-                />
+                >
+                    搜索
+                </Button>
+                <Button onClick={handleReset} type="primary" danger>
+                    重置
+                </Button>
             </Space>
-            <ReactECharts
-                option={options}
-                style={{ width: "100%", height: "calc(100vh - 250px)" }}
-                notMerge={true}
-            />
-        </Space>
+            <Table
+                rowKey="id"
+                dataSource={userList}
+                columns={columns}
+                pagination={pagination}
+                rowSelection={{
+                    selectedRowKeys,
+                    onChange: onSelectChange,
+                    getCheckboxProps: record => ({
+                        disabled: record.account === "admin",
+                    }),
+                }}
+                onChange={pagination => {
+                    paginationRef.current = pagination;
+                    getList();
+                }}
+                scroll={{
+                    x: 2000,
+                }}
+                title={() => (
+                    <Space>
+                        {hasPerm(user, "op:project_run_day_report_export") && (
+                            <>
+                                <Button
+                                    type="primary"
+                                    onClick={async () => {
+                                        if (projectName) {
+                                            const projectName = projectNameRef.current;
+                                            const plantName = plantNameRef.current;
+                                            const detectionDate = timeRef.current;
+                                            window.open(
+                                                getBaseUrl() +
+                                                    "/project_run_day_report/export-find" +
+                                                    jsonToUrlParams({
+                                                        projectName,
+                                                        plantName,
+                                                        detectionDate,
+                                                        access_token: localStorage.getItem("Token"),
+                                                    })
+                                            );
+                                        } else {
+                                            message.error("至少搜索一个项目");
+                                        }
+                                    }}
+                                >
+                                    导出查询数据
+                                </Button>
+                                <Button
+                                    style={{ background: "rgb(22, 118, 239)" }}
+                                    type="primary"
+                                    danger
+                                    onClick={async () => {
+                                        if (!selectedRowKeys?.length)
+                                            return message.info("请勾选需要导出的数据");
+                                        window.open(
+                                            getBaseUrl() +
+                                                "/project_run_day_report/export-multiple-check-records" +
+                                                jsonToUrlParams({
+                                                    toolRunDayReportIdList: selectedRowKeys,
+                                                    access_token: localStorage.getItem("Token"),
+                                                })
+                                        );
+                                    }}
+                                >
+                                    批量导出云平台巡检数据
+                                    {selectedRowKeys?.length ? (
+                                        <span>({selectedRowKeys?.length})</span>
+                                    ) : (
+                                        ""
+                                    )}
+                                </Button>
+                            </>
+                        )}
+                    </Space>
+                )}
+            ></Table>
+            <Modal
+                title="巡检记录导出"
+                destroyOnClose={true}
+                open={Boolean(downloadCheckRecordId)}
+                width={500}
+                onCancel={() => {
+                    setDownloadCheckRecordId(null);
+                    setDownloadCheckRecordName(null);
+                }}
+                footer={null}
+            >
+                <div
+                    style={{
+                        margin: 10,
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}
+                >
+                    {momentList?.map((item, index) => {
+                        return (
+                            <div
+                                style={{
+                                    marginBottom: 10,
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                }}
+                            >
+                                <span>时刻{toChineseNumber(index + 1)}：</span>
+                                <span style={{ marginRight: 20 }}>
+                                    <span style={{ marginRight: 10 }}>
+                                        {downloadCheckRecordName}
+                                    </span>
+                                    {item.time}
+                                </span>
+                                <Button
+                                    onClick={() => {
+                                        window.open(
+                                            getBaseUrl() +
+                                                "/project_run_day_report/export-check-record" +
+                                                jsonToUrlParams({
+                                                    id: downloadCheckRecordId,
+                                                    moment: item.moment,
+                                                    access_token: localStorage.getItem("Token"),
+                                                })
+                                        );
+                                    }}
+                                >
+                                    导出
+                                </Button>
+                            </div>
+                        );
+                    })}
+                    <Button
+                        style={{ marginTop: 5 }}
+                        onClick={() => {
+                            momentList?.forEach(item => {
+                                window.open(
+                                    getBaseUrl() +
+                                        "/project_run_day_report/export-check-record" +
+                                        jsonToUrlParams({
+                                            id: downloadCheckRecordId,
+                                            moment: item.moment,
+                                            access_token: localStorage.getItem("Token"),
+                                        })
+                                );
+                            });
+                        }}
+                    >
+                        导出全部文件
+                    </Button>
+                </div>
+            </Modal>
+        </div>
     );
 };
 
-export default Statistics;
+export default Account;

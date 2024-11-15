@@ -162,85 +162,115 @@ export const alarmStatisticsTable = payload => {
 };
 
 export const homeGetMainPageData = payload => {
-    return axiosInstance.get(`/home/get-main-page-data`)
-}
+    return axiosInstance.get(`/home/get-main-page-data`);
+};
 
 export const sparePartsInitData = () => {
     return axiosInstance.get(`/spare-parts/get-search-page-init-data`);
-}
+};
 
-export const sparePartsFindPage = (payload) => {
+export const sparePartsFindPage = payload => {
     return axiosInstance.post(`/spare-parts/find-page`, payload);
-}
+};
 
-export const newAddSpareParts = (payload) => {
-    return axiosInstance.post(`/spare-parts/new-add`, payload)
-}
+export const newAddSpareParts = payload => {
+    return axiosInstance.post(`/spare-parts/new-add`, payload);
+};
 
-export const sparePartsOutput = (payload) => {
+export const sparePartsOutput = payload => {
     return axiosInstance.post(`/spare-parts/output`, payload);
-}
+};
 
 export const operatorInitData = () => {
     return axiosInstance.get(`/spare-parts/get-operate-page-init-data`);
-}
+};
 
-export const sparePartsInput = (payload) => {
+export const sparePartsInput = payload => {
     return axiosInstance.post(`/spare-parts/input`, payload);
-}
+};
 
-export const sparePartsFindInOutPage = (payload) => {
+export const sparePartsFindInOutPage = payload => {
     return axiosInstance.post(`/spare-parts/find-in-out-page`, payload);
-}
+};
 
-export const sparePartsDelete = (payload) => {
+export const sparePartsDelete = payload => {
     return axiosInstance.post(`/spare-parts/delete`, payload);
-}
+};
 
 export const getHumanResourceInventoryPageInitData = () => {
-    return axiosInstance.get(`/work-order/get-human-resource-inventory-page-init-data`)
-}
+    return axiosInstance.get(`/work-order/get-human-resource-inventory-page-init-data`);
+};
 
 export const findHumanResourceInventory = payload => {
-    return axiosInstance.post(`/work-order/find-human-resource-inventory-data-page`, payload)
-}
+    return axiosInstance.post(`/work-order/find-human-resource-inventory-data-page`, payload);
+};
 
-export const humanProjectInvntoryData = (payload) => {
-    return axiosInstance.get(`/work-order/get-human-project-inventory-data`, {params: payload})
-}
+export const humanProjectInvntoryData = payload => {
+    return axiosInstance.get(`/work-order/get-human-project-inventory-data`, { params: payload });
+};
 
-export const humanWorkOrderInvntoryData = (payload) => {
-    return axiosInstance.get(`/work-order/get-human-work-order-inventory-data`, {params: payload})
-}
+export const humanWorkOrderInvntoryData = payload => {
+    return axiosInstance.get(`/work-order/get-human-work-order-inventory-data`, {
+        params: payload,
+    });
+};
 
 export const knowledgeInitData = () => {
     return axiosInstance.get(`/knowledge-base/get-search-page-init-data`);
-}
+};
 
-export const knowledgeFindPage = (payload) => {
+export const knowledgeFindPage = payload => {
     return axiosInstance.post(`/knowledge-base/find-page`, payload);
-}
+};
 
-export const knowledgeEditInitData = (payload) => {
-    return axiosInstance.get(`/knowledge-base/get-edit-page-init-data`, {params: payload})
-}
+export const knowledgeEditInitData = payload => {
+    return axiosInstance.get(`/knowledge-base/get-edit-page-init-data`, { params: payload });
+};
 
-export const knowledgeSaveOrUpdate = (payload) => {
+export const knowledgeSaveOrUpdate = payload => {
     return axiosInstance.post(`/knowledge-base/save-or-update`, payload);
-}
+};
 
-export const knowledgeAudit = (payload) => {
+export const knowledgeAudit = payload => {
     return axiosInstance.post(`/knowledge-base/audit`, payload);
-}
+};
 
-export const knowledgeDelete = (payload) => {
-    return axiosInstance.post(`/knowledge-base/delete`, payload)
-}
+export const knowledgeDelete = payload => {
+    return axiosInstance.post(`/knowledge-base/delete`, payload);
+};
 
-export const knowledgeSubmit = (payload) => {
+export const knowledgeSubmit = payload => {
     return axiosInstance.post(`/knowledge-base/submit`, payload);
-}
+};
 
 export const uploadEditorImage = payload => {
     return axiosInstance.post(`/attachment/upload-xxx`, payload);
+};
+
+export const getProjectRunDayReportList = payload => {
+    return axiosInstance.post(`/project_run_day_report/find-page`, payload);
+};
+
+export const getProjectRunReportList = payload => {
+    return axiosInstance.post(`/project_run_total/find-page`, payload);
+};
+
+export const getDownloadTaskList = payload => {
+    return axiosInstance.post(`/export-task/find-page`, payload);
+};
+
+export const addDownloadTask = id => {
+    return axiosInstance.get(`/project_run_day_report/export-charge-discharge-data?id=${id}`);
+};
+
+export const getEmailConfigData = payload => {
+    return axiosInstance.get(`/mail-config/get-global`, payload);
+};
+
+export const saveEmailConfigData = payload => {
+    return axiosInstance.post(`/mail-config/save-or-update`, payload);
+};
+
+export const sendTestEmail = payload => {
+    return axiosInstance.post(`/mail-config/test-send`, payload);
 };
