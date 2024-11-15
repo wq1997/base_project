@@ -23,7 +23,7 @@ import {
     ExclamationCircleOutlined,
     PlusCircleFilled,
 } from "@ant-design/icons";
-import { history, useLocation, useSelector } from "umi";
+import { history, useLocation, useSelector, useDispatch } from "umi";
 import { SearchInput } from "@/components";
 import Detail from "./Detail";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
@@ -41,6 +41,7 @@ import dayjs from "dayjs";
 let invalidReason = undefined;
 
 const Account = () => {
+    const dispatch = useDispatch();
     const defaultActiveKey = getQueryString("activeKey");
     const [activeKey, setActiveKey] = useState(defaultActiveKey || "todo");
     const tabItems = [
@@ -378,11 +379,14 @@ const Account = () => {
                 isTodo={activeKey == "todo"}
                 detailId={detailId}
                 processId={processId}
-                onClose={() => {
+                onClose={async () => {
                     setUserList([]);
                     setDetailId(null);
                     setProcessId(null);
                     getList();
+                    dispatch({
+                        type: "user/queryUser",
+                    });
                 }}
             />
             <Tabs

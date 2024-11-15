@@ -22,12 +22,14 @@ import {
     updateWorkOrderInitData as updateWorkOrderInitDataServer,
     updateWorkOrder as updateWorkOrderServer,
 } from "@/services/workOrder";
+import { useDispatch } from "umi"
 import "./index.less";
 
 dayjs.extend(isSameOrAfter);
 
 const AddProject = ({ open, onClose }) => {
     const [form] = Form.useForm();
+    const dispatch = useDispatch()
     const [responseTypeList, setResponseTypeList] = useState();
     const [responseTimeTypeList, setResponseTimeTypeList] = useState();
 
@@ -76,6 +78,9 @@ const AddProject = ({ open, onClose }) => {
         if (res?.data?.status == "SUCCESS") {
             message.success("新增成功");
             onClose();
+            dispatch({
+                type: "user/queryUser",
+            });
         } else {
             message.info(res?.data?.msg);
         }
