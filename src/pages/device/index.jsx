@@ -26,9 +26,15 @@ import BatchPolicyConfiguration from "../policyConfiguration/batch_index";
 import dayjs from 'dayjs';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { PUBLIC_FILE_PATH } from "@/utils/constants";
+import {
+    getQueryString,
+    setLocalStorage
+} from "@/utils/utils";
 const { Option } = Select;
 
 const RealtimeAlarm = () => {
+    const jumpTokenString = getQueryString("token");
+    const jumpPlantId = getQueryString("plantId");
     const [data, setData] = useState([]);
     const [dataTotal, setDatadataTotal] = useState([]);
     const [dataEle, setDataEle] = useState([]);
@@ -205,6 +211,7 @@ const RealtimeAlarm = () => {
         }
     }
     const getAllPlant = async () => {
+        if(jumpTokenString) setLocalStorage("Token", jumpTokenString);
         const res = await getFetchPlantListServe();
         const data = res?.data;
         if (data?.data) {
@@ -220,7 +227,7 @@ const RealtimeAlarm = () => {
                 })
             })
             let initPlantId = arr[0].value;
-            let localStoragePlantId = parseInt(localStorage.getItem("currentPlant") || 0);
+            let localStoragePlantId = parseInt(jumpPlantId) || parseInt(localStorage.getItem("currentPlant") || 0);
             if (arr?.map(item => item.key)?.includes(localStoragePlantId)) {
                 initPlantId = localStoragePlantId;
             }
