@@ -5,17 +5,21 @@ import { EMAIL_REG, ALL_SPACE_REG } from "@/utils/constants";
 import { sendTestEmail as sendTestEmailServer } from "@/services";
 import "./index.less";
 
-const AddProject = ({ showTestEmail, onClose }) => {
+const AddProject = ({ showTestEmail, emailData, onClose }) => {
     const [form] = Form.useForm();
+    const [loading, setLoading] = useState(false);
 
     const onFinish = async values => {
-        const res = await sendTestEmailServer(values);
+        setLoading(true);
+        const res = await sendTestEmailServer({
+            sendCmd: values,
+            mailConfig: emailData,
+        });
+        setLoading(false);
         if (res?.data?.status == "SUCCESS") {
-            message.success("保存成功");
             onClose();
-        } else {
-            message.info(res?.data?.msg);
         }
+        message.info(res?.data?.msg);
     };
 
     useEffect(() => {
@@ -93,7 +97,7 @@ const AddProject = ({ showTestEmail, onClose }) => {
                         ]}
                     >
                         <Input.TextArea
-                            minLength={500}
+                            maxLength={500}
                             rows={3}
                             style={{ width: "100%" }}
                             placeholder="请输入正文"
@@ -113,7 +117,7 @@ const AddProject = ({ showTestEmail, onClose }) => {
                             }}
                         >
                             <Button onClick={() => onClose(false)}>取消</Button>
-                            <Button type="primary" htmlType="submit">
+                            <Button type="primary" htmlType="submit" loading={loading}>
                                 确定
                             </Button>
                         </Space>

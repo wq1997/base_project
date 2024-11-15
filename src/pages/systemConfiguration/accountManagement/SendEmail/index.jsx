@@ -1,50 +1,43 @@
 import React, { useState, useEffect } from "react";
-import {
-    message,
-    Button,
-    Form,
-    Input,
-    Modal,
-    Steps,
-    DatePicker,
-    Space,
-    Select,
-    Row,
-    Col,
-    Radio,
-    Collapse,
-} from "antd";
-import dayjs from "dayjs";
-import { Title } from "@/components";
-import { ExclamationCircleOutlined, CaretRightOutlined } from "@ant-design/icons";
-import { TELPHONE_REG, EMAIL_REG, ALL_SPACE_REG } from "@/utils/constants";
+import { message, Button, Form, Input, Modal, Space, InputNumber } from "antd";
+
+import { EMAIL_REG, ALL_SPACE_REG } from "@/utils/constants";
 import {
     getEmailConfigData as getEmailConfigDataServer,
     saveEmailConfigData as saveEmailConfigDataServer,
-    sendTestEmail as sendTestEmailServer,
+    deleteEmail as deleteEmailServer,
 } from "@/services";
 import TesEmail from "./TesEmail";
 import "./index.less";
 
-const { Panel } = Collapse;
-
 const AddProject = ({ showSendEmail, onClose }) => {
     const [form] = Form.useForm();
     const [showTestEmail, setShowTestEmail] = useState(false);
-    const [regionsOptions, setRegionOptions] = useState([]);
+    const [emailData, setEmailData] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const getInitData = async () => {
         const res = await getEmailConfigDataServer();
-        // if (res?.data?.status == "SUCCESS") {
-        //     const { editUser, roles, regions } = res?.data?.data;
-        //     setRoleOptions(roles);
-        //     setRegionOptions(regions);
-        //     form.setFieldsValue(editUser);
-        // }
+        if (res?.data?.status == "SUCCESS") {
+            const data = res?.data?.data;
+            setEmailData(data);
+            form.setFieldsValue(data);
+        }
+    };
+
+    const deleteEmail = async () => {
+        const res = await deleteEmailServer();
+        if (res?.data?.status == "SUCCESS") {
+            form.resetFields();
+            setEmailData(null);
+        }
+        message.info(res?.data?.msg);
     };
 
     const onFinish = async values => {
+        setLoading(true);
         const res = await saveEmailConfigDataServer(values);
+        setLoading(false);
         if (res?.data?.status == "SUCCESS") {
             message.success("保存成功");
             onClose();
@@ -65,7 +58,8 @@ const AddProject = ({ showSendEmail, onClose }) => {
         <>
             <TesEmail
                 showTestEmail={showTestEmail}
-                onCancel={() => {
+                emailData={emailData}
+                onClose={() => {
                     setShowTestEmail(false);
                 }}
             />
@@ -75,7 +69,9 @@ const AddProject = ({ showSendEmail, onClose }) => {
                 confirmLoading={true}
                 open={showSendEmail}
                 footer={null}
-                onCancel={() => onClose()}
+                onCancel={() => {
+                    onClose();
+                }}
             >
                 <Form
                     name="basic"
@@ -88,6 +84,12 @@ const AddProject = ({ showSendEmail, onClose }) => {
                     form={form}
                     onFinish={onFinish}
                     autoComplete="off"
+                    onFieldsChange={(changedFields, allFields) => {
+                        setEmailData({
+                            ...emailData,
+                            [changedFields[0]?.name]: changedFields[0]?.value,
+                        });
+                    }}
                 >
                     <Form.Item
                         label="邮箱地址"
@@ -154,7 +156,7 @@ const AddProject = ({ showSendEmail, onClose }) => {
                             },
                         ]}
                     >
-                        <Input style={{ width: "100%" }} placeholder="请输入发信服务器端口" />
+                        <InputNumber style={{ width: "100%" }} placeholder="请输入发信服务器端口" />
                     </Form.Item>
 
                     <Form.Item
@@ -188,12 +190,12 @@ const AddProject = ({ showSendEmail, onClose }) => {
                             },
                         ]}
                     >
-                        <Input style={{ width: "100%" }} placeholder="请输入收信服务器端口" />
+                        <InputNumber style={{ width: "100%" }} placeholder="请输入收信服务器端口" />
                     </Form.Item>
 
                     <Form.Item
                         wrapperCol={{
-                            offset: 11,
+                            offset: 8,
                             span: 5,
                         }}
                     >
@@ -205,13 +207,13 @@ const AddProject = ({ showSendEmail, onClose }) => {
                             }}
                         >
                             <Button onClick={() => onClose(false)}>取消</Button>
-                            <Button type="primary" htmlType="submit">
+                            <Button type="primary" htmlType="submit" loading={loading}>
                                 确定
                             </Button>
                             <Button
+                                loading={loading}
                                 style={{ background: "rgb(22, 118, 239)" }}
                                 onClick={() => {
-                                    console.log(form.getFieldsValue());
                                     form.validateFields()
                                         .then(res => {
                                             setShowTestEmail(true);
@@ -222,6 +224,9 @@ const AddProject = ({ showSendEmail, onClose }) => {
                                 }}
                             >
                                 发送测试邮件
+                            </Button>
+                            <Button type="primary" danger onClick={deleteEmail} loading={loading}>
+                                删除
                             </Button>
                         </Space>
                     </Form.Item>

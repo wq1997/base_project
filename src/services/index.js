@@ -274,3 +274,7 @@ export const saveEmailConfigData = payload => {
 export const sendTestEmail = payload => {
     return axiosInstance.post(`/mail-config/test-send`, payload);
 };
+
+export const deleteEmail = () => {
+    return axiosInstance.post(`/mail-config/delete`);
+};
