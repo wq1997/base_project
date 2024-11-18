@@ -123,6 +123,8 @@ const RealtimeAlarm = () => {
         const params = getUrlParams(window.location.search);
         if(params?.token){
             setLocalStorage('Token',params.token);
+            setLocalStorage("currentPlant", params.plantId);
+            changePlant(params.plantId);
             history.push('/index/device');
         }
         getAllPlant();
