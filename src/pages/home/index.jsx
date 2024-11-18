@@ -57,6 +57,7 @@ function OverView(props) {
         const params = getUrlParams(window.location.search);
         if(params.token){
             setLocalStorage('Token',params.token);
+            setLocalStorage('plantId',params.plantId);
             history.push('/index/home')
         }
         getOverviewData();
