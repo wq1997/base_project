@@ -4,11 +4,12 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import styles from './index.less'
 import { CardModel } from "@/components";
 import useIcon from "@/hooks/useIcon";
-import { useSelector, useIntl } from "umi";
+import { useSelector, useIntl,history } from "umi";
 import { theme, Switch, Select, Descriptions } from "antd";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { getOverviewLiveData } from '@/services/plant'
 import LinePicture from './components/LinePicture'
+import {getUrlParams, setLocalStorage} from "@/utils/utils";
 function OverView(props) {
     const { token } = theme.useToken();
     const Icon = useIcon();
@@ -53,6 +54,12 @@ function OverView(props) {
     useEffect(() => {
     }, [token,])
     useEffect(() => {
+        const params = getUrlParams(window.location.search);
+        if(params.token){
+            setLocalStorage('Token',params.token);
+            setLocalStorage('plantId',params.plantId);
+            history.push('/index/home')
+        }
         getOverviewData();
     }, [token, ])
     const changeCheck = (checked) => {
