@@ -163,6 +163,7 @@ function Com(props) {
                 title={
                     t("下属用户")
                 }
+                backgroundColor={token.bgcColorl_B}
                 content={
                     <Table
                         columns={userTable}

@@ -46,7 +46,11 @@ const PolicyConfiguration = ({ deviceVersion }) => {
 
     const strategyList = [
         { label: intl.formatMessage({ id: '策略1' }), value: 0 },
-        { label: intl.formatMessage({ id: '策略2' }), value: 1 }
+        { label: intl.formatMessage({ id: '策略2' }), value: 1 },
+        { label: intl.formatMessage({ id: '策略3' }), value: 2 },
+        { label: intl.formatMessage({ id: '策略4' }), value: 3 },
+        { label: intl.formatMessage({ id: '策略5' }), value: 4 },
+        { label: intl.formatMessage({ id: '策略6' }), value: 5 },
     ]
 
     const monthList = [
@@ -97,45 +101,75 @@ const PolicyConfiguration = ({ deviceVersion }) => {
         setIsLive(true);
     }
 
+    const tranlateStrategyListParamsToDataSource = (policyDurationList) => {
+        if (policyDurationList?.length > 0) {
+            return policyDurationList?.map(item => {
+                return {
+                    ...item,
+                    action: {
+                        3: intl.formatMessage({ id: '充电' }),
+                        1: intl.formatMessage({ id: '放电' }),
+                        2: intl.formatMessage({ id: '待机' })
+                    }[item.action],
+                    timeType: {
+                        0: intl.formatMessage({ id: '尖' }),
+                        1: intl.formatMessage({ id: '峰' }),
+                        2: intl.formatMessage({ id: '平' }),
+                        3: intl.formatMessage({ id: '谷' })
+                    }[item.timeType],
+                    timeStramp: `${translateNmberToTime(item.startHour)}:${translateNmberToTime(item.startMin)}~${translateNmberToTime(item.endHour)}:${translateNmberToTime(item.endMin)}`
+                }
+            })
+        }
+        return [];
+    }
+
+    const getStrategyListParams = (durationList) => {
+        const dataSource = durationList.map(value => {
+            const timeStramp = value.timeStramp;
+            const timeStrampList = timeStramp.split("~");
+            const time1 = timeStrampList[0].split(":");
+            const time2 = timeStrampList[1].split(":");
+            return {
+                ...value,
+                action: {
+                    [intl.formatMessage({ id: '充电' })]: 3,
+                    [intl.formatMessage({ id: '放电' })]: 1,
+                    [intl.formatMessage({ id: '待机' })]: 2,
+                }[value.action],
+                timeType: {
+                    [intl.formatMessage({ id: '尖' })]: 0,
+                    [intl.formatMessage({ id: '峰' })]: 1,
+                    [intl.formatMessage({ id: '平' })]: 2,
+                    [intl.formatMessage({ id: '谷' })]: 3
+                }[value.timeType],
+                startHour: time1[0],
+                startMin: time1[1],
+                endHour: time2[0],
+                endMin: time2[1],
+            }
+        });
+        return dataSource;
+    }
+
     const getInitData = async () => {
         const res = await getBurCmdHistory2Serve({ dtuId: id, type: deviceVersion });
         if (res?.data?.data) {
             const data = res?.data?.data;
-            const policyDurationList1 = data?.policyDurationList1?.map(item => {
-                return {
-                    ...item,
-                    action: {
-                        3: intl.formatMessage({ id: '充电' }),
-                        1: intl.formatMessage({ id: '放电' }),
-                        2: intl.formatMessage({ id: '待机' })
-                    }[item.action],
-                    timeType: {
-                        0: intl.formatMessage({ id: '尖' }),
-                        1: intl.formatMessage({ id: '峰' }),
-                        2: intl.formatMessage({ id: '平' }),
-                        3: intl.formatMessage({ id: '谷' })
-                    }[item.timeType],
-                    timeStramp: `${translateNmberToTime(item.startHour)}:${translateNmberToTime(item.startMin)}~${translateNmberToTime(item.endHour)}:${translateNmberToTime(item.endMin)}`
-                }
-            })
-            const policyDurationList2 = data?.policyDurationList2?.map(item => {
-                return {
-                    ...item,
-                    action: {
-                        3: intl.formatMessage({ id: '充电' }),
-                        1: intl.formatMessage({ id: '放电' }),
-                        2: intl.formatMessage({ id: '待机' })
-                    }[item.action],
-                    timeType: {
-                        0: intl.formatMessage({ id: '尖' }),
-                        1: intl.formatMessage({ id: '峰' }),
-                        2: intl.formatMessage({ id: '平' }),
-                        3: intl.formatMessage({ id: '谷' })
-                    }[item.timeType],
-                    timeStramp: `${translateNmberToTime(item.startHour)}:${translateNmberToTime(item.startMin)}~${translateNmberToTime(item.endHour)}:${translateNmberToTime(item.endMin)}`
-                }
-            })
-            let durationList = (tabValue === 0 ? policyDurationList1 : policyDurationList2) || [];
+            const policyDurationList1 = tranlateStrategyListParamsToDataSource(data?.policyDurationList1);
+            const policyDurationList2 = tranlateStrategyListParamsToDataSource(data?.policyDurationList2);
+            const policyDurationList3 = tranlateStrategyListParamsToDataSource(data?.policyDurationList3);
+            const policyDurationList4 = tranlateStrategyListParamsToDataSource(data?.policyDurationList4);
+            const policyDurationList5 = tranlateStrategyListParamsToDataSource(data?.policyDurationList5);
+            const policyDurationList6 = tranlateStrategyListParamsToDataSource(data?.policyDurationList6);
+            let durationList = {
+                0: policyDurationList1,
+                1: policyDurationList2,
+                2: policyDurationList3,
+                3: policyDurationList4,
+                4: policyDurationList5,
+                5: policyDurationList6
+            }[tabValue];
             const params = {
                 mode: data?.mode,
                 enable: data?.enable,
@@ -155,7 +189,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                 pcsPowerWaveRange: data?.pcsPowerWaveRange,
                 runModePCS: data?.pcsStatus,
                 runModeBMS: data?.bmsStatus,
-                switchOnOffGrid: data?.switchOnOffGrid===0,
+                switchOnOffGrid: data?.switchOnOffGrid === 0,
                 antiReflux: data?.antiReflux,
                 overload: data?.overload,
                 expansion: data?.expansion,
@@ -166,7 +200,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                 params[item.value] = data?.policySelectList?.[index]
             });
             setMode(data?.mode);
-            setInitParams({...params});
+            setInitParams({ ...params });
         }
     }
 
@@ -790,41 +824,13 @@ const PolicyConfiguration = ({ deviceVersion }) => {
                         // 策略配置
                         if (checkModalType === "sendStrategySetting") {
                             values = await form.validateFields(['durationList']);
-                            const durationList = values?.durationList.map(value => {
-                                const timeStramp = value.timeStramp;
-                                const timeStrampList = timeStramp.split("~");
-                                const time1 = timeStrampList[0].split(":");
-                                const time2 = timeStrampList[1].split(":");
-                                return {
-                                    ...value,
-                                    action: {
-                                        [intl.formatMessage({ id: '充电' })]: 3,
-                                        [intl.formatMessage({ id: '放电' })]: 1,
-                                        [intl.formatMessage({ id: '待机' })]: 2,
-                                    }[value.action],
-                                    timeType: {
-                                        [intl.formatMessage({ id: '尖' })]: 0,
-                                        [intl.formatMessage({ id: '峰' })]: 1,
-                                        [intl.formatMessage({ id: '平' })]: 2,
-                                        [intl.formatMessage({ id: '谷' })]: 3
-                                    }[value.timeType],
-                                    startHour: time1[0],
-                                    startMin: time1[1],
-                                    endHour: time2[0],
-                                    endMin: time2[1],
-                                }
-                            })
+                            const durationList = getStrategyListParams(values?.durationList);
                             let params = {
                                 strategyType: tabValue,
                                 dtuId: id,
                                 type: deviceVersion
                             }
-                            if (tabValue === 0) {
-                                params.policyDurationList1 = durationList;
-                            }
-                            if (tabValue === 1) {
-                                params.policyDurationList2 = durationList;
-                            }
+                            params[`policyDurationList${tabValue + 1}`] = durationList;
                             res = await sendStrategySettingServe(params)
                         }
                         // 策略选择
