@@ -134,7 +134,7 @@ const PolicyConfiguration = ({ deviceVersion }) => {
             return {
                 ...value,
                 action: {
-                    [intl.formatMessage({ id: '充电' })]: 3,
+                    [intl.formatMessage({ id: '充电' })]: 0,
                     [intl.formatMessage({ id: '放电' })]: 1,
                     [intl.formatMessage({ id: '待机' })]: 2,
                 }[value.action],
