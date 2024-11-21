@@ -28,7 +28,7 @@ const OperationManage = () => {
     const [devId, setDevId] = useState();
     const [keyObj, setKeyObj] = useState();
     const [valueObj, setValueObj] = useState();
-    const [dtuId, setDtuId] = useState();
+    const [dtuId, setDtuId] = useState(localStorage.getItem('dtuId'));
 
     const intl = useIntl();
     const t = (id) => {
@@ -49,6 +49,8 @@ const OperationManage = () => {
             setKeyObj(keyObj);
             setValueObj(valueObj);
             onClick && onClick();
+            console.log(devId,11111111);
+            
         }
         return (
             <div
@@ -78,10 +80,10 @@ const OperationManage = () => {
             <div style={{ backgroundColor: token.titleCardBgc, padding: '24px 37px', boxSizing: 'border-box' }}>
                 <Row justify="space-between" style={{ marginTop: 20 }}>
                     <Space size={38}>
-                        <MyButton text="开机" keyObj='pcsStartStop' valueObj={1} cmdKey='7002' devId={item.devId} color={{background:token.barColor[0],color:'#fff'}}/>
-                        <MyButton text="关机" keyObj='pcsStartStop' valueObj={2} cmdKey='7002' devId={item.devId} color={{background:token.barColor[0],color:'#fff'}}/>
-                        <MyButton text="复位" keyObj='pcsStartStop' valueObj={3} cmdKey='7002'devId={item.devId} color={{background:token.barColor[0],color:'#fff'}}/>
-                        <MyButton text="BMS开机" keyObj='pcsStartStop' valueObj={4}  cmdKey='7016' devId={item.devId} color={{background:token.barColor[5],color:'#fff'}}/>
+                        <MyButton text="开机" keyObj='pcsStartStop' valueObj={1} cmdKey='7002' devId={item.id} color={{background:token.barColor[0],color:'#fff'}}/>
+                        <MyButton text="关机" keyObj='pcsStartStop' valueObj={2} cmdKey='7002' devId={item.id} color={{background:token.barColor[0],color:'#fff'}}/>
+                        <MyButton text="复位" keyObj='pcsStartStop' valueObj={3} cmdKey='7002'devId={item.id} color={{background:token.barColor[0],color:'#fff'}}/>
+                        <MyButton text="BMS开机" keyObj='pcsStartStop' valueObj={4}  cmdKey='7016' devId={item.id} color={{background:token.barColor[5],color:'#fff'}}/>
                         <MyButton text="分闸" keyObj='mcsSwitchOnOff' valueObj={1}  cmdKey='7015'  devId={item.mcsDevId}  color={{background:token.barColor[6],color:'#fff'}}/>
                         <MyButton text="合闸" keyObj='mcsSwitchOnOff' valueObj={0}  cmdKey='7015' devId={item.mcsDevId}  color={{background:token.barColor[6],color:'#fff'}}/>
                         <MyButton text="功率设置"  keyObj='pcsPower' cmdKey='7019' devId={item.devId}/>
@@ -99,8 +101,8 @@ const OperationManage = () => {
                                         <Space size={40} direction="vertical" style={{ width: '100%', marginTop:'20px'}}>
                                             <Row justify="space-between">
                                                 <Space size={32}>
-                                                    <MyButton text="开机" keyObj='pcsStartStop' valueObj={1}  cmdKey='7004' devId={it.devId} />
-                                                    <MyButton text="关机" keyObj='pcsStartStop' valueObj={2}  cmdKey='7004'devId={it.devId} />
+                                                    <MyButton text="开机" keyObj='pcsStartStop' valueObj={1}  cmdKey='7004' devId={it.id} />
+                                                    <MyButton text="关机" keyObj='pcsStartStop' valueObj={2}  cmdKey='7004'devId={it.id} />
                                                     <MyButton text="BMS开机"keyObj='bmsStartStop' valueObj={1}  cmdKey='7003' devId={it.bmsDevId} />
                                                     <MyButton text="BMS关机" keyObj='bmsStartStop' valueObj={2}  cmdKey='7003' devId={it.bmsDevId} />
                                                     <MyButton text="功率设置" keyObj='pcsPower'   cmdKey='7001' devId={it.devId} />
