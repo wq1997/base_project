@@ -58,7 +58,7 @@ const RealtimeAlarm = () => {
   ]
   const { user } = useSelector(function (state) {
     return state.user
-});
+  });
   useEffect(() => {
     getData(current);
   }, [current, startTime, endTime, pageSize, locale]);
@@ -68,7 +68,7 @@ const RealtimeAlarm = () => {
       pageSize,
       begin: startTime ? startTime : null,
       end: endTime ? endTime : null,
-      userName:username,
+      userName: username,
       ip: Ip,
     });
     setData(data?.data);
@@ -99,7 +99,7 @@ const RealtimeAlarm = () => {
 
   };
   return (
-    <div className={styles.content} style={{height:'100%'}}>
+    <div className={styles.content} style={{ height: '100%' }}>
       <div className={styles.title}>
         <div className={styles.level}>
           <RangePicker
@@ -112,23 +112,30 @@ const RealtimeAlarm = () => {
         <div className={styles.dataItem}>
           <Input placeholder={t('IP')} value={Ip} onChange={changeIp} allowClear />
         </div>
-        {user?.roleId!=1&&<div className={styles.dataItem}>
+        {user?.roleId != 1 && <div className={styles.dataItem}>
           <Input placeholder={t('用户名')} value={username} onChange={onSearch} allowClear />
         </div>}
-        <div style={{marginLeft: 20, display: 'flex', gap:10}}>
-          <Button type="primary" onClick={()=>getData(current)}>{t('查询')}</Button>
+        <div style={{ marginLeft: 20, display: 'flex', gap: 10 }}>
+          <Button type="primary" onClick={() => getData(current)}>{t('查询')}</Button>
           <Button type="primary" onClick={downLoadFoodModel} style={{ backgroundColor: token.defaultBg }} >
             {t('导出')} Excel
           </Button>
         </div>
       </div>
-      <div className={styles.tablePart} style={{height: "calc(100% - 102px)" }}>
+      <div className={styles.tablePart} style={{ height: "calc(100% - 102px)" }}>
         <Table
           columns={clums}
           data={data?.list}
           pagination={false}
         />
-        <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} total={data?.total} onChange={changPage} />
+        <Pagination
+          style={{ marginTop: '20px', textAlign: 'right' }}
+          size="default"
+          showSizeChanger={false}
+          current={current}
+          total={data?.total}
+          onChange={changPage}
+        />
       </div>
 
     </div>
