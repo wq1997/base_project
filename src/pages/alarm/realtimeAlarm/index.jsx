@@ -25,6 +25,7 @@ const RealtimeAlarm = () => {
   const [deviceList, setDeviceList] = useState([]);
   const [plantId, setPlantId] = useState(null);
   const [deviceId, setDeviceId] = useState(null);
+  const [loading, setLoading] = useState(false);
   const { locale } = useSelector(state => state.global);
 
   const intl = useIntl();
@@ -127,14 +128,19 @@ const RealtimeAlarm = () => {
   }, [locale]);
 
   const getData = async (page) => {
-    const { data } = await get215NowAlarmServe({
-      currentPage: page || 1,
-      pageSize: 10,
-      prior: level,
-      plantId,
-      dtuId: deviceId,
-    });
-    setData(data.data);
+    setLoading(true)
+    try{
+      const { data } = await get215NowAlarmServe({
+        currentPage: page || 1,
+        pageSize: 10,
+        prior: level,
+        plantId,
+        dtuId: deviceId,
+      });
+      setData(data.data);
+    }finally{
+      setLoading(false);
+    }
   }
   const changPage = (page) => {
     setCurrent(page);
@@ -213,10 +219,19 @@ const RealtimeAlarm = () => {
           columns={alarmTableColums}
           data={data?.list}
           pagination={false}
+          loading={loading}
         />
         {
           data?.list?.length > 0 &&
-          <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} total={data?.total} pageSize={data?.pageSize} onChange={changPage} />
+          <Pagination 
+            style={{ marginTop: '20px', textAlign: 'right' }} 
+            size="default" 
+            showSizeChanger={false}
+            current={current} 
+            total={data?.total} 
+            pageSize={data?.pageSize} 
+            onChange={changPage} 
+          />
         }
       </div>
     </div>

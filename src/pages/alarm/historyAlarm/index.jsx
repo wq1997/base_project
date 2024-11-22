@@ -28,6 +28,7 @@ const RealtimeAlarm = () => {
   const [deviceList, setDeviceList] = useState([]);
   const [plantId, setPlantId] = useState(null);
   const [deviceId, setDeviceId] = useState(null);
+  const [loading, setLoading] = useState(false);
   const { locale } = useSelector(state => state.global);
 
   const intl = useIntl();
@@ -167,16 +168,21 @@ const RealtimeAlarm = () => {
   };
 
   const getTableListData = async (page) => {
-    const { data } = await get215HistoryAlarmServe({
-      currentPage: page || 1,
-      pageSize,
-      prior: level,
-      begin: time?.length ? time[0]?.format('YYYY-MM-DD HH:mm:ss') : null,
-      end: time?.length ? time[1]?.format('YYYY-MM-DD HH:mm:ss') : null,
-      plantId,
-      dtuId: deviceId,
-    }) || {};
-    setData(data?.data);
+    setLoading(true);
+    try{
+      const { data } = await get215HistoryAlarmServe({
+        currentPage: page || 1,
+        pageSize,
+        prior: level,
+        begin: time?.length ? time[0]?.format('YYYY-MM-DD HH:mm:ss') : null,
+        end: time?.length ? time[1]?.format('YYYY-MM-DD HH:mm:ss') : null,
+        plantId,
+        dtuId: deviceId,
+      }) || {};
+      setData(data?.data);
+    }finally{
+      setLoading(false);
+    }
   }
   const changPage = (page, pageSize) => {
     setCurrent(page);
@@ -276,10 +282,18 @@ const RealtimeAlarm = () => {
           data={data?.list}
           pagination={false}
           scroll={{ y: "calc(100vh - 350px)" }}
+          loading={loading}
         />
         {
           data?.list?.length > 0 &&
-          <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} total={data?.total} pageSizeOptions={[10, 20, 30]} onChange={changPage} />
+          <Pagination 
+            style={{ marginTop: '20px', textAlign: 'right' }} 
+            size="default" 
+            showSizeChanger={false}
+            current={current} 
+            total={data?.total} 
+            onChange={changPage} 
+          />
         }
       </div>
     </div>
