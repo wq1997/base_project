@@ -33,6 +33,12 @@ const App = (props) => {
       disabled: props.title == '编辑用户' ? true : false,
     },
     {
+      label: '昵称',
+      key: 'nickName',
+      type: 1,
+      required: true,
+    },
+    {
       label: '密码',
       key: 'password',
       type: 1,

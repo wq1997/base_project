@@ -37,6 +37,11 @@ const RealtimeAlarm = () => {
       key: 'name',
     },
     {
+      title: t('昵称'),
+      dataIndex: 'nickName',
+      key: 'nickName',
+    },
+    {
       title: t('子用户'),
       dataIndex: 'childrenNames',
       key: 'childrenNames',

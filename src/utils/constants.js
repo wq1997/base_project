@@ -95,6 +95,11 @@ export const optionType = [
             key: 'name',
         },
         {
+            title: <FormattedMessage id='昵称' />,
+            dataIndex: 'nickName',
+            key: 'nickName',
+        },
+        {
             title: <FormattedMessage id='角色' />,
             dataIndex: 'roleId',
             key: 'roleId',

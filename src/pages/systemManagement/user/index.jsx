@@ -8,6 +8,7 @@ function User(props) {
     const { user } = useSelector(function (state) {
         return state.user
     });
+    
     useEffect(() => {
     }, [])
 
