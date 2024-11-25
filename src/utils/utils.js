@@ -129,9 +129,9 @@ export const getLargeScreenAlarmColor = level => {
         4: "#8AFFDD",
     }[level];
 };
-
+ 
 export const toChineseNumber = n => {
-    if (!Number.isInteger(n) && n < 0) {
+    if (!Number.isInteger(n) && n < 0) {  
         throw Error("请输入自然数");
     }
     const digits = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九"];

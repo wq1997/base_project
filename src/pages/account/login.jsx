@@ -11,13 +11,16 @@ const { Title } = Typography;
 const Login = () => {
     const { token } = theme.useToken();
     const dispatch = useDispatch();
+    const [loading, setLoading] = useState(false);
     const [publicKey, setPublicKey] = useState("");
 
     const onFinish = async values => {
+        setLoading(true);
         const res = await loginSever({
             ...values,
             password: values.password,
         });
+        setLoading(false);
         if (res?.data?.status == "SUCCESS") {
             setLocalStorage("Token", res?.data?.data);
             dispatch({
@@ -29,8 +32,6 @@ const Login = () => {
                 },
             });
             history.push("/workbench/management-roles");
-        } else {
-            message.error(res?.data?.msg);
         }
     };
 
@@ -48,8 +49,8 @@ const Login = () => {
                 height: "100vh",
                 background: "black",
                 position: "relative",
-                width:'100%',
-                height:'100%',
+                width: "100%",
+                height: "100%",
             }}
             className={styles.login}
         >
@@ -108,6 +109,7 @@ const Login = () => {
                     <Form.Item>
                         <Button
                             type="primary"
+                            loading={loading}
                             htmlType="submit"
                             style={{ width: "100%", height: 40 }}
                         >

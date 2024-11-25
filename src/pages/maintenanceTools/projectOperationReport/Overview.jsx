@@ -20,7 +20,10 @@ import { jsonToUrlParams, getAlarmColor } from "@/utils/utils";
 import dayjs from "dayjs";
 import { history, useLocation, useSelector } from "umi";
 import { getUrlParams, hasPerm } from "@/utils/utils";
-import { getProjectRunReportList as getProjectRunReportListServer } from "@/services";
+import {
+    getProjectRunReportList as getProjectRunReportListServer,
+    getProjectRunDayReportInitData as getProjectRunDayReportInitDataServer,
+} from "@/services";
 
 const Account = () => {
     const projectNameRef = useRef();
@@ -31,6 +34,7 @@ const Account = () => {
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [userList, setUserList] = useState([]);
+    const [initData, setInitData] = useState();
 
     const columns = [
         {
@@ -71,6 +75,13 @@ const Account = () => {
         },
     ];
 
+    const getInitData = async () => {
+        const res = await getProjectRunDayReportInitDataServer();
+        if (res?.data?.status == "SUCCESS") {
+            setInitData(res?.data?.data);
+        }
+    };
+
     const getList = async () => {
         const { current, pageSize } = paginationRef.current;
         const projectName = projectNameRef.current;
@@ -106,6 +117,7 @@ const Account = () => {
 
     useEffect(() => {
         getList();
+        getInitData();
     }, []);
 
     return (
@@ -113,21 +125,38 @@ const Account = () => {
             <Space className="search" size={10}>
                 <SearchInput
                     label="项目名称"
+                    showSearch={true}
+                    type="select"
                     value={projectName}
+                    options={initData?.projectNameList?.map(item => {
+                        return {
+                            code: item,
+                            name: item,
+                        };
+                    })}
                     onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
                         projectNameRef.current = value;
                         setProjectName(value);
                     }}
                 />
                 <SearchInput
                     label="电站名称"
+                    showSearch={true}
+                    type="select"
                     value={plantName}
+                    options={initData?.plantNameList?.map(item => {
+                        return {
+                            code: item,
+                            name: item,
+                        };
+                    })}
                     onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
                         plantNameRef.current = value;
                         setPlantName(value);
                     }}
                 />
-
                 <Button
                     type="primary"
                     onClick={() => {
@@ -159,21 +188,17 @@ const Account = () => {
                             <Button
                                 type="primary"
                                 onClick={async () => {
-                                    if (projectName) {
-                                        const projectName = projectNameRef.current;
-                                        const plantName = plantNameRef.current;
-                                        window.open(
-                                            getBaseUrl() +
-                                                "/project_run_total/export-find" +
-                                                jsonToUrlParams({
-                                                    projectName,
-                                                    plantName,
-                                                    access_token: localStorage.getItem("Token"),
-                                                })
-                                        );
-                                    } else {
-                                        message.error("至少搜索一个项目");
-                                    }
+                                    const projectName = projectNameRef.current;
+                                    const plantName = plantNameRef.current;
+                                    window.open(
+                                        getBaseUrl() +
+                                            "/project_run_total/export-find" +
+                                            jsonToUrlParams({
+                                                projectName,
+                                                plantName,
+                                                access_token: localStorage.getItem("Token"),
+                                            })
+                                    );
                                 }}
                             >
                                 导出查询数据
