@@ -999,5 +999,19 @@ export default {
     '全选': 'Select all',
     '源数据导出': 'Source data export',
     '日期范围不能超过7天': 'The date range cannot exceed 7 days',
-
+    '储能电站监控大屏':'Energy storage power station monitoring screen',
+    '历史电量':'Historical electricity consumption',
+    '告警统计':'Alarm statistics ',
+    '功率曲线':'Power curve',
+    '效率排行':'Efficiency ranking',
+    '电站列表':'List of power stations',
+    '社会贡献':'Social contribution',
+    '告警总数':'Total number of alarms',
+    '查看详情':'View details',
+    '吨':'Ton',
+    '棵':'The tree',
+    '节约标准煤':'Save standard coal',
+    'CO2减排量':'CO2 emission reduction',
+    '等效植树量':'Equivalent tree planting amount',
+    '日放电量':'Daily discharge capacity'
 }

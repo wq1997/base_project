@@ -75,8 +75,9 @@ const Login = () => {
     localStorage.setItem('plantId',data?.data?.[0]?.plantId);
     const {data:dtu}=await getDtu({plantId:data?.data?.[0]?.plantId});
     localStorage.setItem('dtuId',dtu?.data?.id);
-    
-    history.push("/index/home");
+
+    history.push("/bigScreen");
+    // history.push("/index/home");
 
 }
   const getPublicKey = async () => {

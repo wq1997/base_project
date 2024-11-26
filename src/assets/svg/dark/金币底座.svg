@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="91px" height="84px" viewBox="0 0 91 84" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>金币底座</title>
+    <defs>
+        <linearGradient x1="50%" y1="-3.53671051%" x2="50%" y2="83.6922893%" id="linearGradient-1">
+            <stop stop-color="#162437" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#0BCECE" offset="100%"></stop>
+        </linearGradient>
+        <radialGradient cx="50%" cy="50%" fx="50%" fy="50%" r="50%" gradientTransform="translate(0.500000,0.500000),scale(0.186667,1.000000),rotate(90.000000),scale(1.000000,5.846814),translate(-0.500000,-0.500000)" id="radialGradient-2">
+            <stop stop-color="#162437" offset="0%"></stop>
+            <stop stop-color="#0BCECE" offset="100%"></stop>
+        </radialGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-3">
+            <stop stop-color="#121938" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#0EFFFF" offset="100%"></stop>
+        </linearGradient>
+        <radialGradient cx="50%" cy="50%" fx="50%" fy="50%" r="50%" gradientTransform="translate(0.500000,0.500000),scale(0.195122,1.000000),rotate(90.000000),scale(1.000000,5.846814),translate(-0.500000,-0.500000)" id="radialGradient-4">
+            <stop stop-color="#02FFFF" offset="0%"></stop>
+            <stop stop-color="#0BCECE" offset="100%"></stop>
+        </radialGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-5">
+            <stop stop-color="#121938" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#0C7676" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-6">
+            <stop stop-color="#121938" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#00FFFF" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="35.3617626%" x2="50%" y2="100%" id="linearGradient-7">
+            <stop stop-color="#121938" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#00FFFF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="储能电站监控大屏-深色-国内" transform="translate(-117.000000, -581.000000)">
+            <g id="金币底座" transform="translate(118.000000, 582.000000)">
+                <path d="M73,48 L64.883,70.059 L64.8858739,70.0944466 C64.8858739,72.2234115 55.9866864,73.9545136 44.9204021,73.9991182 L44.0445276,73.9991182 C32.9782433,73.9545136 24.0790558,72.2234115 24.0790558,70.0944466 C24.0790558,70.0573213 24.0817619,70.020317 24.0871385,69.9834406 L16,48 L73,48 Z" id="形状结合" fill="url(#linearGradient-1)" opacity="0.780110677"></path>
+                <ellipse id="椭圆形备份-28" stroke="url(#linearGradient-3)" stroke-width="0.3" fill="url(#radialGradient-2)" opacity="0.445614769" cx="44.5" cy="70" rx="37.5" ry="7"></ellipse>
+                <ellipse id="椭圆形备份-28" fill="url(#radialGradient-4)" cx="44.5" cy="70" rx="20.5" ry="4"></ellipse>
+                <ellipse id="椭圆形备份-28" stroke="url(#linearGradient-5)" stroke-width="0.3" cx="44.5" cy="71.5" rx="44.5" ry="10.5"></ellipse>
+                <ellipse id="椭圆形备份-28" stroke="url(#linearGradient-6)" stroke-width="0.3" cx="43" cy="24" rx="38" ry="7"></ellipse>
+                <ellipse id="椭圆形备份-28" stroke="url(#linearGradient-7)" stroke-width="0.3" opacity="0.595447359" cx="43.5" cy="7" rx="26.5" ry="7"></ellipse>
+                <ellipse id="椭圆形备份-33" stroke="url(#linearGradient-7)" stroke-width="0.3" opacity="0.595447359" cx="43.5" cy="44" rx="26.5" ry="7"></ellipse>
+            </g>
+        </g>
+    </g>
+</svg>

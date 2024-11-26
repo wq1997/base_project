@@ -28,7 +28,10 @@ const theme = {
         colorLight:'#fff',
         colorNormal:'#fff',
         colorLittle:'#fff',
-
+        colorLargeScreen:'#00FFFF',
+        bigScreenBgc:'#000000',
+        alarmColor:'#00FFFF',
+        bigColor1:'#fff'
     },
     default: {
         colorPrimary:'#03B4B4',
@@ -57,7 +60,10 @@ const theme = {
         colorLight:'#999999',
         colorNormal:'#000000',
         colorLittle:'#333333',
-
+        colorLargeScreen:'#566282',
+        bigScreenBgc:'#F7F7F7',
+        alarmColor:'#6887A1',
+        bigColor1:'#666'
     }
 }
 export default theme;
