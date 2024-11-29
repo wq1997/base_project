@@ -393,14 +393,14 @@ const Account = () => {
                                     onClick={async () => {
                                         if (!selectedRowKeys?.length)
                                             return message.info("请勾选需要导出的数据");
-                                        window.open(
+                                        const url =
                                             getBaseUrl() +
-                                                "/project_run_day_report/export-multiple-check-records" +
-                                                jsonToUrlParams({
-                                                    toolRunDayReportIdList: selectedRowKeys,
-                                                    access_token: localStorage.getItem("Token"),
-                                                })
-                                        );
+                                            "/project_run_day_report/export-multiple-check-records" +
+                                            jsonToUrlParams({
+                                                toolRunDayReportIdList: selectedRowKeys,
+                                                access_token: localStorage.getItem("Token"),
+                                            });
+                                        window.open(url);
                                     }}
                                 >
                                     批量导出云平台巡检数据
@@ -454,15 +454,15 @@ const Account = () => {
                                 </span>
                                 <Button
                                     onClick={() => {
-                                        window.open(
+                                        const url =
                                             getBaseUrl() +
-                                                "/project_run_day_report/export-check-record" +
-                                                jsonToUrlParams({
-                                                    id: downloadCheckRecordId,
-                                                    moment: item.moment,
-                                                    access_token: localStorage.getItem("Token"),
-                                                })
-                                        );
+                                            "/project_run_day_report/export-check-record" +
+                                            jsonToUrlParams({
+                                                id: downloadCheckRecordId,
+                                                moment: item.moment,
+                                                access_token: localStorage.getItem("Token"),
+                                            });
+                                        window.open(url);
                                     }}
                                 >
                                     导出
@@ -473,14 +473,15 @@ const Account = () => {
                     <Button
                         style={{ marginTop: 5 }}
                         onClick={() => {
-                            window.open(
+                            const url =
                                 getBaseUrl() +
-                                    "/project_run_day_report/export-multiple-check-records" +
-                                    jsonToUrlParams({
-                                        toolRunDayReportIdList: [downloadCheckRecordId],
-                                        access_token: localStorage.getItem("Token"),
-                                    })
-                            );
+                                "/project_run_day_report/export-multiple-check-records" +
+                                jsonToUrlParams({
+                                    toolRunDayReportIdList: [downloadCheckRecordId],
+                                    access_token: localStorage.getItem("Token"),
+                                });
+                            console.log("url", url);
+                            window.open(url);
                         }}
                     >
                         导出全部文件
