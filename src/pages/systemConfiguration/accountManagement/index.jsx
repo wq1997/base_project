@@ -11,25 +11,26 @@ import {
     Radio,
     Popconfirm,
 } from "antd";
-import {
-    PlusCircleFilled,
-} from "@ant-design/icons";
-import { history, useLocation } from "umi";
+import { PlusCircleFilled } from "@ant-design/icons";
 import { SearchInput } from "@/components";
 import AddAccount from "./AddAccount";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import "./index.less";
 import dayjs from "dayjs";
+import SendEmail from "./SendEmail";
+import { history, useLocation, useSelector } from "umi";
+import { getUrlParams, hasPerm } from "@/utils/utils";
 import {
     getAccountSearchIndexData as getAccountSearchIndexDataServer,
     getAccountList as getAccountListServer,
     unBindWx as unBindWxServer,
-    deleteUser as deleteRoleServer
+    deleteUser as deleteRoleServer,
 } from "@/services/user";
 
 const Account = () => {
     const accountRef = useRef();
     const [account, setAccount] = useState();
+    const { user } = useSelector(state => state.user);
     const nameRef = useRef();
     const [name, setName] = useState();
     const roleCodeRef = useRef();
@@ -44,6 +45,7 @@ const Account = () => {
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [addAccountOpen, setAddAccountOpen] = useState(false);
     const [editId, setEditId] = useState();
+    const [showSendEmail, setShowSendEmail] = useState(false);
 
     const columns = [
         {
@@ -55,8 +57,12 @@ const Account = () => {
             dataIndex: "name",
         },
         {
-            title: "关联手机号",
+            title: "手机号",
             dataIndex: "phoneNo",
+        },
+        {
+            title: "邮箱",
+            dataIndex: "email",
         },
         {
             title: "管辖区域",
@@ -79,19 +85,23 @@ const Account = () => {
         {
             title: "操作",
             dataIndex: "operate",
-            width: 180,
+            width: 120,
+            fixed: "right",
             render: (_, { id, wxOpenId }) => {
                 return (
-                    <Space size="middle">
-                        <a
-                            onClick={() => {
-                                setAddAccountOpen(true);
-                                setEditId(id);
-                            }}
-                        >
-                            编辑
-                        </a>
-                        {wxOpenId && (
+                    <Space>
+                        {hasPerm(user, "op:user_edit") && (
+                            <a
+                                onClick={() => {
+                                    setAddAccountOpen(true);
+                                    setEditId(id);
+                                }}
+                            >
+                                编辑
+                            </a>
+                        )}
+
+                        {hasPerm(user, "op:user_edit") && wxOpenId && (
                             <Popconfirm
                                 title="系统提示"
                                 description="确定解绑此微信账号?"
@@ -109,7 +119,7 @@ const Account = () => {
     ];
 
     const handleUnbind = async ids => {
-        const res = await unBindWxServer({ids});
+        const res = await unBindWxServer({ ids });
         if (res?.data?.status == "SUCCESS") {
             message.success("操作成功");
             getList();
@@ -179,9 +189,13 @@ const Account = () => {
                 const res = await deleteRoleServer(selectedRowKeys);
                 if (res?.data?.status == "SUCCESS") {
                     message.success(`删除成功`);
-                    setPagination({
-                        current: 1,
-                    });
+                    const { current } = paginationRef?.current;
+                    if (current != 1 && userList?.length == selectedRowKeys?.length) {
+                        paginationRef.current.current = current - 1;
+                        setPagination({
+                            current: current - 1,
+                        });
+                    }
                     setSelectedRowKeys([]);
                     getList();
                 }
@@ -205,7 +219,13 @@ const Account = () => {
                     getList();
                 }}
             />
-            <Space className="search">
+            <SendEmail
+                showSendEmail={showSendEmail}
+                onClose={() => {
+                    setShowSendEmail(false);
+                }}
+            />
+            <Space className="search" size={10}>
                 <SearchInput
                     label="账号"
                     value={account}
@@ -242,10 +262,18 @@ const Account = () => {
                         setRegion(value);
                     }}
                 />
-                <Button type="primary" onClick={getList}>
+                <Button
+                    type="primary"
+                    onClick={() => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        getList();
+                    }}
+                >
                     搜索
                 </Button>
-                <Button onClick={handleReset} type="primary" danger>重置</Button>
+                <Button onClick={handleReset} type="primary" danger>
+                    重置
+                </Button>
             </Space>
             <Table
                 rowKey="id"
@@ -263,28 +291,39 @@ const Account = () => {
                     paginationRef.current = pagination;
                     getList();
                 }}
+                scroll={{
+                    x: 1500,
+                }}
                 title={() => (
-                    <Space
-                        style={{
-                            display: "flex",
-                            justifyContent: "flex-end",
-                        }}
-                    >
-                        <Button
-                            type="primary"
-                            icon={<PlusCircleFilled style={{ fontSize: 13 }} />}
-                            onClick={() => setAddAccountOpen(true)}
-                        >
-                            新增账号
-                        </Button>
-                        <Button type="primary" danger onClick={handleDelete}>
-                            批量删除
-                            {selectedRowKeys?.length ? (
-                                <span>({selectedRowKeys?.length})</span>
-                            ) : (
-                                ""
-                            )}
-                        </Button>
+                    <Space>
+                        {hasPerm(user, "op:user_add") && (
+                            <Button
+                                type="primary"
+                                icon={<PlusCircleFilled style={{ fontSize: 13 }} />}
+                                onClick={() => setAddAccountOpen(true)}
+                            >
+                                新增账号
+                            </Button>
+                        )}
+                        {hasPerm(user, "op:user_delete") && (
+                            <Button type="primary" danger onClick={handleDelete}>
+                                批量删除
+                                {selectedRowKeys?.length ? (
+                                    <span>({selectedRowKeys?.length})</span>
+                                ) : (
+                                    ""
+                                )}
+                            </Button>
+                        )}
+                        {hasPerm(user, "op:global_mail_conf") && (
+                            <Button
+                                style={{ background: "rgb(22, 118, 239)" }}
+                                type="primary"
+                                onClick={() => setShowSendEmail(true)}
+                            >
+                                待办发送邮箱维护
+                            </Button>
+                        )}
                     </Space>
                 )}
             ></Table>

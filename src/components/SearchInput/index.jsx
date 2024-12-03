@@ -13,6 +13,7 @@ const SearchInput = ({
     labelInValue = false,
     allowClear = true,
     style = {},
+    showSearch = false,
     onChange = () => {},
 }) => {
     const { token } = theme.useToken();
@@ -22,7 +23,7 @@ const SearchInput = ({
             {type == "input" && (
                 <Input
                     value={value}
-                    style={{ width: inputWidth, ...style }}
+                    style={{ ...style }}
                     placeholder={placeholder || `请输入${label}`}
                     onChange={e => onChange(e.target.value)}
                     className={styles.input}
@@ -34,6 +35,7 @@ const SearchInput = ({
                     className={styles.input}
                     labelInValue={labelInValue}
                     mode={mode}
+                    showSearch={showSearch}
                     value={value}
                     defaultValue={value}
                     placeholder={placeholder || `请选择${label}`}
@@ -42,7 +44,7 @@ const SearchInput = ({
                         value: "code",
                     }}
                     allowClear={allowClear}
-                    style={{ width: inputWidth, flex: 1, ...style }}
+                    style={{ ...style }}
                     options={options}
                     onChange={value => onChange(value)}
                 />
@@ -51,7 +53,7 @@ const SearchInput = ({
                 <DatePicker
                     className={styles.input}
                     placeholder={placeholder || `请选择${label}`}
-                    style={{ width: inputWidth, flex: 1, ...style }}
+                    style={{ ...style }}
                     onChange={(date, dateStr) => {
                         onChange(dateStr);
                     }}
@@ -63,7 +65,7 @@ const SearchInput = ({
                 <DatePicker.RangePicker
                     className={styles.input}
                     placeholder={placeholder}
-                    style={{ width: inputWidth, flex: 1, ...style }}
+                    style={{ ...style }}
                     onChange={(date, dateStr) => {
                         onChange(dateStr?.includes("") ? [] : dateStr);
                     }}

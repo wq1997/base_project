@@ -3,6 +3,8 @@ import { Button, Space, Table, message, Modal } from "antd";
 import { PlusCircleFilled } from "@ant-design/icons";
 import { SearchInput } from "@/components";
 import AddRole from "./AddRole";
+import { history, useLocation, useSelector } from "umi";
+import { getUrlParams, hasPerm } from "@/utils/utils";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import "./index.less";
 import { getRoleList as getRoleListServer, deleteRole as deleteRoleServer } from "@/services/user";
@@ -10,6 +12,7 @@ import { getRoleList as getRoleListServer, deleteRole as deleteRoleServer } from
 const Account = () => {
     const nameRef = useRef();
     const [name, setName] = useState();
+    const { user } = useSelector(state => state.user);
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [list, setList] = useState([]);
@@ -33,19 +36,19 @@ const Account = () => {
         {
             title: "操作",
             dataIndex: "operate",
-            width: 200,
+            width: 120,
             render: (_, row) => {
                 return (
-                    <Button
-                        type="link"
-                        danger
-                        onClick={() => {
-                            setAddRoleOpen(true);
-                            setEditRow(row);
-                        }}
-                    >
-                        编辑
-                    </Button>
+                    hasPerm(user, "op:role_edit") && (
+                        <a
+                            onClick={() => {
+                                setAddRoleOpen(true);
+                                setEditRow(row);
+                            }}
+                        >
+                            编辑
+                        </a>
+                    )
                 );
             },
         },
@@ -93,9 +96,13 @@ const Account = () => {
                 const res = await deleteRoleServer(selectedRowKeys);
                 if (res?.data?.status == "SUCCESS") {
                     message.success(`删除成功`);
-                    setPagination({
-                        current: 1,
-                    });
+                    const { current } = paginationRef?.current;
+                    if (current != 1 && list?.length == selectedRowKeys?.length) {
+                        paginationRef.current.current = current - 1;
+                        setPagination({
+                            current: current - 1,
+                        });
+                    }
                     setSelectedRowKeys([]);
                     getList();
                 }
@@ -118,20 +125,27 @@ const Account = () => {
                     getList();
                 }}
             />
-            <Space className="search">
+            <Space className="search" size={10}>
                 <SearchInput
                     label="角色名称"
                     value={name}
                     onChange={value => {
-                        paginationRef.current = DEFAULT_PAGINATION;
                         nameRef.current = value;
                         setName(value);
                     }}
                 />
-                <Button type="primary" onClick={getList}>
+                <Button
+                    type="primary"
+                    onClick={() => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        getList();
+                    }}
+                >
                     搜索
                 </Button>
-                <Button onClick={handleReset} type="primary" danger>重置</Button>
+                <Button onClick={handleReset} type="primary" danger>
+                    重置
+                </Button>
             </Space>
             <Table
                 rowKey="id"
@@ -150,27 +164,26 @@ const Account = () => {
                     getList();
                 }}
                 title={() => (
-                    <Space
-                        style={{
-                            display: "flex",
-                            justifyContent: "flex-end",
-                        }}
-                    >
-                        <Button
-                            type="primary"
-                            icon={<PlusCircleFilled style={{ fontSize: 13 }} />}
-                            onClick={() => setAddRoleOpen(true)}
-                        >
-                            新增角色
-                        </Button>
-                        <Button type="primary" danger onClick={handleDelete}>
-                            批量删除
-                            {selectedRowKeys?.length ? (
-                                <span>({selectedRowKeys?.length})</span>
-                            ) : (
-                                ""
-                            )}
-                        </Button>
+                    <Space>
+                        {hasPerm(user, "op:role_add") && (
+                            <Button
+                                type="primary"
+                                icon={<PlusCircleFilled style={{ fontSize: 13 }} />}
+                                onClick={() => setAddRoleOpen(true)}
+                            >
+                                新增角色
+                            </Button>
+                        )}
+                        {hasPerm(user, "op:role_delete") && (
+                            <Button type="primary" danger onClick={handleDelete}>
+                                批量删除
+                                {selectedRowKeys?.length ? (
+                                    <span>({selectedRowKeys?.length})</span>
+                                ) : (
+                                    ""
+                                )}
+                            </Button>
+                        )}
                     </Space>
                 )}
             ></Table>

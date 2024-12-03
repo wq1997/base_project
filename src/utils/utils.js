@@ -108,8 +108,35 @@ export const downloadFile = data => {
     }
 };
 
+<<<<<<< HEAD
 export const toChineseNumber = n => {
     if (!Number.isInteger(n) && n < 0) {
+=======
+export const hasPerm = (user, code) => {
+    return user?.selfPermCodes?.includes(code);
+};
+
+export const getAlarmColor = level => {
+    return {
+        1: "#FF0000",
+        2: "#FF7D00",
+        3: "#FFCD00",
+        4: "#00FF19",
+    }[level];
+};
+
+export const getLargeScreenAlarmColor = level => {
+    return {
+        1: "#FD7068",
+        2: "#FFA47B",
+        3: "#FFEF8A",
+        4: "#8AFFDD",
+    }[level];
+};
+ 
+export const toChineseNumber = n => {
+    if (!Number.isInteger(n) && n < 0) {  
+>>>>>>> dev-run-maintenance
         throw Error("请输入自然数");
     }
     const digits = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九"];
@@ -146,6 +173,7 @@ export const toChineseNumber = n => {
         result = result.replace("一十", "十");
     }
     return result;
+<<<<<<< HEAD
 };
 
 export const getAlarmColor = level => {
@@ -178,3 +206,6 @@ export const getAlarmLevelNumber = text => {
         低级: 4,
     }[text];
 };
+=======
+};
+>>>>>>> dev-run-maintenance

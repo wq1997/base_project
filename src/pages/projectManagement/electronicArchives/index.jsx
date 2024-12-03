@@ -11,9 +11,9 @@ import {
     Radio,
     Drawer,
     Popconfirm,
-    Descriptions
+    Descriptions,
 } from "antd";
-import { useLocation } from "umi";
+import { useLocation, useSelector } from "umi";
 import { SearchInput, EditTable } from "@/components";
 import AddProject from "./AddProject";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
@@ -25,13 +25,11 @@ import {
     basSupplierList as basSupplierListServe,
     basSupplierModifyAll as basSupplierModifyAllServe,
     basProjectDelete as basProjectDeleteServe,
-    getBasProjectEditInitData as getBasProjectEditInitDataServe
+    getBasProjectEditInitData as getBasProjectEditInitDataServe,
 } from "@/services";
 import { getBaseUrl } from "@/services/request";
-import { jsonToUrlParams } from "@/utils/utils";
-import {
-    FileMarkdownFilled,
-} from "@ant-design/icons";
+import { jsonToUrlParams, hasPerm } from "@/utils/utils";
+import { FileMarkdownFilled } from "@ant-design/icons";
 import dayjs from "dayjs";
 export const cycleList = [
     { name: "一月一次", code: 1 },
@@ -46,10 +44,11 @@ export const cycleList = [
     { name: "十月一次", code: 10 },
     { name: "十一月一次", code: 11 },
     { name: "十二月一次", code: 12 },
-]
+];
 
 const Account = () => {
     const { token } = theme.useToken();
+    const { user } = useSelector(state => state.user);
     const [supplierForm] = Form.useForm();
     const location = useLocation();
     const initCode = location?.search.split("=")[1];
@@ -92,6 +91,9 @@ const Account = () => {
     const [userList, setUserList] = useState([]);
     const [detailOpen, setDetailOpen] = useState(false);
     const [searchInitOption, setSearchInitOption] = useState({});
+    const [statusList, setStatusList] = useState([]);
+    const statusRef = useRef();
+    const [status, setStatus] = useState();
 
     const columns = [
         {
@@ -182,7 +184,7 @@ const Account = () => {
             title: "操作",
             dataIndex: "operate",
             fixed: "right",
-            width: 300,
+            width: 260,
             render: (_, row) => {
                 const edit = (key, row) => {
                     setCurrentStep(key);
@@ -191,17 +193,20 @@ const Account = () => {
                 };
                 return (
                     <Space>
-                        <a style={{ color: "rgb(22, 118, 239)" }} onClick={() => edit(0, row)}>
-                            编辑
-                        </a>
                         <a
                             style={{ color: token.colorPrimary }}
                             onClick={() => {
                                 setDetailOpen(true);
                                 setDetailRow(row);
-                            }}>
+                            }}
+                        >
                             详情
                         </a>
+                        {hasPerm(user, "op:project_edit") && (
+                            <a style={{ color: "rgb(22, 118, 239)" }} onClick={() => edit(0, row)}>
+                                编辑
+                            </a>
+                        )}
                         {row?.supportRemove && (
                             <Popconfirm
                                 title="确定删除？"
@@ -210,6 +215,13 @@ const Account = () => {
                                         ids: [row?.id],
                                     });
                                     if (res?.data?.status === "SUCCESS") {
+                                        const { current } = paginationRef?.current;
+                                        if (current != 1 && userList?.length == 1) {
+                                            paginationRef.current.current = current - 1;
+                                            setPagination({
+                                                current: current - 1,
+                                            });
+                                        }
                                         message.success("删除成功！");
                                         getInviteList();
                                     }
@@ -220,21 +232,18 @@ const Account = () => {
                                 <a style={{ color: "#dc4446" }}>删除</a>
                             </Popconfirm>
                         )}
-                        {row?.status === "ACTIVE" && (
+                        {row?.status === "ACTIVE" && row?.supportStandardInspection && (
                             <a
-                                style={{color: '#ed750e'}}
+                                style={{ color: "#ed750e" }}
                                 onClick={() => {
                                     const id = row?.id;
                                     if (id) {
                                         window.open(
                                             `${getBaseUrl()}/bas-project/download-inspection-code` +
-                                            jsonToUrlParams({
-                                                id,
-                                                access_token:
-                                                    localStorage.getItem(
-                                                        "Token"
-                                                    ),
-                                            }),
+                                                jsonToUrlParams({
+                                                    id,
+                                                    access_token: localStorage.getItem("Token"),
+                                                }),
                                             "_blank"
                                         );
                                     }
@@ -252,7 +261,7 @@ const Account = () => {
     const getSearchInitData = async () => {
         const res = await getBasProjectInitDataServe();
         if (res?.data?.status == "SUCCESS") {
-            const { regions, phases, types, productTypes, users } = res?.data?.data || {};
+            const { regions, phases, types, productTypes, users, status } = res?.data?.data || {};
             setInitSearchOption(res?.data?.data || {});
             setPhaseList(phases);
             setProjectTypeList(types);
@@ -260,6 +269,7 @@ const Account = () => {
             setPutEffectPersonList(users);
             setOperationPersonList(users);
             setAreaOptions(regions);
+            setStatusList(status);
         }
     };
 
@@ -281,42 +291,34 @@ const Account = () => {
         }
     };
 
-    const getSupplyInfo = (type) => {
+    const getSupplyInfo = type => {
         const currentSupplier = detailRow?.suppliers?.find(item => item.supplyType === type);
         const currentSupplierId = currentSupplier?.supplierId;
-        const name = searchInitOption?.supplierType2Suppliers?.[type]?.find(item => item?.id === currentSupplierId)?.name;
+        const name = searchInitOption?.supplierType2Suppliers?.[type]?.find(
+            item => item?.id === currentSupplierId
+        )?.name;
         return {
             name,
-            contractNumber: currentSupplier?.contractNumber
+            contractNumber: currentSupplier?.contractNumber,
         };
-    }
+    };
 
-    const getinspectionItemName = (id) => {
-        const inspectionItemType2Items =
-            searchInitOption?.inspectionItemType2Items;
-        let inspectionItemType2ItemsOptions =
-            [];
-        const keysList = Object.keys(
-            inspectionItemType2Items || {}
-        );
+    const getinspectionItemName = id => {
+        const inspectionItemType2Items = searchInitOption?.inspectionItemType2Items;
+        let inspectionItemType2ItemsOptions = [];
+        const keysList = Object.keys(inspectionItemType2Items || {});
         keysList?.forEach(key => {
-            const list =
-                inspectionItemType2Items[
-                    key
-                ]?.map(item => {
-                    return {
-                        label: item?.name,
-                        value: item?.id,
-                    };
-                });
-            inspectionItemType2ItemsOptions =
-                inspectionItemType2ItemsOptions.concat(
-                    list
-                );
+            const list = inspectionItemType2Items[key]?.map(item => {
+                return {
+                    label: item?.name,
+                    value: item?.id,
+                };
+            });
+            inspectionItemType2ItemsOptions = inspectionItemType2ItemsOptions.concat(list);
         });
         const inspectionItem = inspectionItemType2ItemsOptions.find(item => item.value === id);
         return inspectionItem?.label;
-    }
+    };
 
     const getInviteList = async () => {
         const { current, pageSize } = paginationRef.current;
@@ -330,6 +332,7 @@ const Account = () => {
         const implementManagerAccount = putEffectPersonRef.current;
         const operationsManagerAccount = operationPersonRef.current;
         const supportStandardInspection = supportStandardInspectionRef.current;
+        const status = statusRef?.current;
         const res = await getBaseProjectListServe({
             pageNum: current,
             pageSize,
@@ -345,6 +348,7 @@ const Account = () => {
                 implementManagerAccount,
                 operationsManagerAccount,
                 supportStandardInspection,
+                status,
             },
         });
         if (res?.data?.status == "SUCCESS") {
@@ -353,6 +357,7 @@ const Account = () => {
                 ...paginationRef.current,
                 total: parseInt(totalRecord),
             });
+
             setUserList(recordList);
         }
     };
@@ -400,7 +405,12 @@ const Account = () => {
                 }}
                 editCurrentStep={currentStep}
             />
-            <Space className="search">
+            <Space
+                style={{
+                    flexWrap: "wrap",
+                }}
+                size={10}
+            >
                 <SearchInput
                     label="项目名称"
                     value={code}
@@ -416,8 +426,12 @@ const Account = () => {
                         value={projectInitiationTime ? dayjs(projectInitiationTime) : undefined}
                         onChange={data => {
                             paginationRef.current = DEFAULT_PAGINATION;
-                            projectInitiationTimeRef.current = data ? dayjs(data).format("YYYY-MM-DD") : undefined;
-                            setProjectInitiationTime(data ? dayjs(data).format("YYYY-MM-DD") : undefined);
+                            projectInitiationTimeRef.current = data
+                                ? dayjs(data).format("YYYY-MM-DD")
+                                : undefined;
+                            setProjectInitiationTime(
+                                data ? dayjs(data).format("YYYY-MM-DD") : undefined
+                            );
                         }}
                         allowClear
                     />
@@ -502,6 +516,17 @@ const Account = () => {
                         setOperationPerson(value);
                     }}
                 />
+                <SearchInput
+                    label="状态"
+                    type="select"
+                    options={statusList}
+                    value={status}
+                    onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        statusRef.current = value;
+                        setStatus(value);
+                    }}
+                />
                 <div>
                     <span style={{ color: "#FFF" }}>是否支持标准巡检：</span>
                     <Radio.Group
@@ -537,34 +562,38 @@ const Account = () => {
                 }}
                 title={() => (
                     <Space className="table-title">
-                        <Button
-                            onClick={() => setAddProjectOpen(true)}
-                            style={{ background: "#1676EF" }}
-                        >
-                            新增项目
-                        </Button>
-                        <Button
-                            type="primary"
-                            onClick={async () => {
-                                const res = await basSupplierListServe();
-                                if (res?.data?.status == "SUCCESS") {
-                                    const data =
-                                        res?.data?.data?.map(item => {
-                                            return {
-                                                ...item,
-                                                supplyScope: item?.supplyScope?.join(","),
-                                            };
-                                        }) || [];
-                                    supplierForm.setFieldsValue({
-                                        supplierDataSource: data,
-                                    });
-                                    setSupplierDataSource(data);
-                                    setSupplierOpen(true);
-                                }
-                            }}
-                        >
-                            供应商维护
-                        </Button>
+                        {hasPerm(user, "op:project_add") && (
+                            <Button
+                                onClick={() => setAddProjectOpen(true)}
+                                style={{ background: "#1676EF" }}
+                            >
+                                新增项目
+                            </Button>
+                        )}
+                        {hasPerm(user, "op:supplier_manage") && (
+                            <Button
+                                type="primary"
+                                onClick={async () => {
+                                    const res = await basSupplierListServe();
+                                    if (res?.data?.status == "SUCCESS") {
+                                        const data =
+                                            res?.data?.data?.map(item => {
+                                                return {
+                                                    ...item,
+                                                    supplyScope: item?.supplyScope?.join(","),
+                                                };
+                                            }) || [];
+                                        supplierForm.setFieldsValue({
+                                            supplierDataSource: data,
+                                        });
+                                        setSupplierDataSource(data);
+                                        setSupplierOpen(true);
+                                    }
+                                }}
+                            >
+                                供应商维护
+                            </Button>
+                        )}
                     </Space>
                 )}
             ></Table>
@@ -649,76 +678,181 @@ const Account = () => {
                 width={1000}
             >
                 <Descriptions title="基础项目资料">
-                    <Descriptions.Item label="立项时间">{detailRow?.approvalTime}</Descriptions.Item>
-                    <Descriptions.Item label="项目名称">{detailRow?.name}</Descriptions.Item>
-                    <Descriptions.Item label="充放功率(MW)">{detailRow?.maxPowerMw}</Descriptions.Item>
-                    <Descriptions.Item label="项目容量(MWh)">{detailRow?.capacityMwh}</Descriptions.Item>
+                    <Descriptions.Item label="项目名称" span={3}>
+                        {detailRow?.name}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="立项时间">
+                        {detailRow?.approvalTime}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="项目装机功率(MW)">
+                        {detailRow?.maxPowerMw}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="项目装机容量(MWh)">
+                        {detailRow?.capacityMwh}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="所属区域">{detailRow?.regionZh}</Descriptions.Item>
+                    <Descriptions.Item label="项目类型">{detailRow?.typeZh}</Descriptions.Item>
                     <Descriptions.Item label="项目阶段">{detailRow?.phaseZh}</Descriptions.Item>
                     <Descriptions.Item label="项目进度">{detailRow?.subPhaseZh}</Descriptions.Item>
-                    <Descriptions.Item label="项目类型">{detailRow?.typeZh}</Descriptions.Item>
-                    <Descriptions.Item label="产品类型">{detailRow?.productTypeZh}</Descriptions.Item>
-                    <Descriptions.Item label="所属区域">{detailRow?.regionZh}</Descriptions.Item>
                     <Descriptions.Item label="是否支持标准巡检">
                         {detailRow?.supportStandardInspection ? "是" : "否"}
                     </Descriptions.Item>
+                    <Descriptions.Item label="产品类型">
+                        {detailRow?.productTypeZh}
+                    </Descriptions.Item>
+                    {detailRow?.productType == "OUTDOOR_CABINET" && (
+                        <Descriptions.Item label="户外柜规格">
+                            {detailRow?.outdoorCabinetSpecZh}
+                        </Descriptions.Item>
+                    )}
                 </Descriptions>
                 <Descriptions title="电站详细信息">
-                    <Descriptions.Item label="业主名称">{detailRow?.ownerName}</Descriptions.Item>
-                    <Descriptions.Item label="项目地址">{detailRow?.address}</Descriptions.Item>
                     <Descriptions.Item label="电站名称">{detailRow?.plantName}</Descriptions.Item>
-                    <Descriptions.Item label="电站联系人">{detailRow?.plantContacts}</Descriptions.Item>
-                    <Descriptions.Item label="电站联系方式">{detailRow?.plantContractNumber}</Descriptions.Item>
+                    <Descriptions.Item label="电站联系人">
+                        {detailRow?.plantContacts}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="电站联系方式">
+                        {detailRow?.plantContractNumber}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="项目地址" span={3}>
+                        {detailRow?.address}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="业主名称">{detailRow?.ownerName}</Descriptions.Item>
                     <Descriptions.Item label="总包单位名称">{detailRow?.epcName}</Descriptions.Item>
-                    <Descriptions.Item label="我方供货范围">{detailRow?.ourScopeOfSupply}</Descriptions.Item>
-                    <Descriptions.Item label="质保期起止时间">{detailRow?.warrantyPeriodStartDate}~{detailRow?.warrantyPeriodEndDate}</Descriptions.Item>
-                    <Descriptions.Item label="电站内储能单元分组情况">{detailRow?.esuGroupDesc}</Descriptions.Item>
+                    <Descriptions.Item label="我方供货范围">
+                        {detailRow?.ourScopeOfSupply}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="电站内储能单元分组情况" span={3}>
+                        {detailRow?.esuGroupDesc}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="质保期起止时间">
+                        {detailRow?.warrantyPeriodStartDate}~{detailRow?.warrantyPeriodEndDate}
+                    </Descriptions.Item>
                     <Descriptions.Item label="电站所属省">{detailRow?.province}</Descriptions.Item>
-                    <Descriptions.Item label="电站所屈市">{detailRow?.city}</Descriptions.Item>
-                    <Descriptions.Item label="电站所属区/镇">{detailRow?.district}</Descriptions.Item>
+                    <Descriptions.Item label="电站所属市">{detailRow?.city}</Descriptions.Item>
+                    <Descriptions.Item label="电站所属区/镇">
+                        {detailRow?.district}
+                    </Descriptions.Item>
                     <Descriptions.Item label="经度">{detailRow?.longitude}</Descriptions.Item>
                     <Descriptions.Item label="纬度">{detailRow?.latitude}</Descriptions.Item>
                 </Descriptions>
                 <Descriptions title="设备配置信息">
-                    <Descriptions.Item label="电池仓数量">{detailRow?.batterySlotCount}</Descriptions.Item>
-                    <Descriptions.Item label="单台电池仓容量(kWh)">{detailRow?.singleBatterySlotCapacity}</Descriptions.Item>
-                    <Descriptions.Item label="PCS一体机数量">{detailRow?.pcsCount}</Descriptions.Item>
-                    <Descriptions.Item label="电芯材料">{detailRow?.cellMaterialZh}</Descriptions.Item>
-                    <Descriptions.Item label="电池堆成组方式">{detailRow?.batteryStackComposeMethod}</Descriptions.Item>
-                    <Descriptions.Item label="单台PCS最大功率(kW)">{detailRow?.singlePcsMaxPower}</Descriptions.Item>
-                    <Descriptions.Item label="池簇成组方式">{detailRow?.batteryClusterComposeMethod}</Descriptions.Item>
-                    <Descriptions.Item label="单电芯额定容量(kWh)">{detailRow?.singleCellRatedCapacity}</Descriptions.Item>
-                    <Descriptions.Item label="消防介质">{detailRow?.firefightingMedium}</Descriptions.Item>
-                    <Descriptions.Item label="充放电转换效率">{detailRow?.chargeDischargeCe}</Descriptions.Item>
-                    <Descriptions.Item label="额定充放电倍率(C)">{detailRow?.ratedChargingDischargingRate}</Descriptions.Item>
-                    <Descriptions.Item label="关联场站信息">{detailRow?.sePlants?.map(item => item?.name)?.join(',')}</Descriptions.Item>
+                    <Descriptions.Item label="电池仓数量(个)">
+                        {detailRow?.batterySlotCount}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="单台电池仓容量(kWh)">
+                        {detailRow?.singleBatterySlotCapacity}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="单电芯额定容量(kWh)">
+                        {detailRow?.singleCellRatedCapacity}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="PCS类型">{detailRow?.pcsType}</Descriptions.Item>
+                    <Descriptions.Item label="PCS一体机数量(个)">
+                        {detailRow?.pcsCount}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="单台PCS最大功率(kW)">
+                        {detailRow?.singlePcsMaxPower}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="电芯材料">
+                        {detailRow?.cellMaterialZh}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="充放电转换效率(%)">
+                        {detailRow?.chargeDischargeCe}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="额定充放电倍率(C)">
+                        {detailRow?.ratedChargingDischargingRate}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="电池堆成组方式">
+                        {detailRow?.batteryStackComposeMethod}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="电池簇成组方式">
+                        {detailRow?.batteryClusterComposeMethod}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="电池模组成组方式">
+                        {detailRow?.batteryModuleComposeMethod}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="消防介质">
+                        {detailRow?.firefightingMedium}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="关联电站信息">
+                        {detailRow?.sePlants?.map(item => item?.name)?.join(",")}
+                    </Descriptions.Item>
                 </Descriptions>
                 <Descriptions title="厂商信息" column={2}>
-                    <Descriptions.Item label="BMS产商">{getSupplyInfo("BMS")?.name}</Descriptions.Item>
-                    <Descriptions.Item label="联系方式">{getSupplyInfo("BMS")?.contractNumber}</Descriptions.Item>
-                    <Descriptions.Item label="PCS产商">{getSupplyInfo("PCS")?.name}</Descriptions.Item>
-                    <Descriptions.Item label="联系方式">{getSupplyInfo("PCS")?.contractNumber}</Descriptions.Item>
-                    <Descriptions.Item label="变压器产商">{getSupplyInfo("变压器")?.name}</Descriptions.Item>
-                    <Descriptions.Item label="联系方式">{getSupplyInfo("变压器")?.contractNumber}</Descriptions.Item>
-                    <Descriptions.Item label="液冷系统厂商">{getSupplyInfo("液冷系统")?.name}</Descriptions.Item>
-                    <Descriptions.Item label="联系方式">{getSupplyInfo("液冷系统")?.contractNumber}</Descriptions.Item>
-                    <Descriptions.Item label="空调厂商">{getSupplyInfo("空调")?.name}</Descriptions.Item>
-                    <Descriptions.Item label="联系方式">{getSupplyInfo("空调")?.contractNumber}</Descriptions.Item>
-                    <Descriptions.Item label="PACK组装厂厂商">{getSupplyInfo("PACK组装")?.name}</Descriptions.Item>
-                    <Descriptions.Item label="联系方式">{getSupplyInfo("PACK组装")?.contractNumber}</Descriptions.Item>
-                    <Descriptions.Item label="电芯厂商">{getSupplyInfo("电芯")?.name}</Descriptions.Item>
-                    <Descriptions.Item label="联系方式">{getSupplyInfo("电芯")?.contractNumber}</Descriptions.Item>
-                    <Descriptions.Item label="电池仓箱体厂商">{getSupplyInfo("电池仓箱体")?.name}</Descriptions.Item>
-                    <Descriptions.Item label="联系方式">{getSupplyInfo("电池仓箱体")?.contractNumber}</Descriptions.Item>
-                    <Descriptions.Item label="消防厂商">{getSupplyInfo("消防")?.name}</Descriptions.Item>
-                    <Descriptions.Item label="联系方式">{getSupplyInfo("消防")?.contractNumber}</Descriptions.Item>
-                    <Descriptions.Item label="EMS厂商">{getSupplyInfo("EMS")?.name}</Descriptions.Item>
-                    <Descriptions.Item label="联系方式">{getSupplyInfo("EMS")?.contractNumber}</Descriptions.Item>
-                    <Descriptions.Item label="汇流柜厂商">{getSupplyInfo("汇流柜")?.name}</Descriptions.Item>
-                    <Descriptions.Item label="联系方式">{getSupplyInfo("汇流柜")?.contractNumber}</Descriptions.Item>
+                    <Descriptions.Item label="BMS产商">
+                        {getSupplyInfo("BMS")?.name}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="联系方式">
+                        {getSupplyInfo("BMS")?.contractNumber}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="PCS产商">
+                        {getSupplyInfo("PCS")?.name}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="联系方式">
+                        {getSupplyInfo("PCS")?.contractNumber}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="变压器产商">
+                        {getSupplyInfo("变压器")?.name}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="联系方式">
+                        {getSupplyInfo("变压器")?.contractNumber}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="液冷系统厂商">
+                        {getSupplyInfo("液冷系统")?.name}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="联系方式">
+                        {getSupplyInfo("液冷系统")?.contractNumber}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="空调厂商">
+                        {getSupplyInfo("空调")?.name}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="联系方式">
+                        {getSupplyInfo("空调")?.contractNumber}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="PACK组装厂厂商">
+                        {getSupplyInfo("PACK组装")?.name}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="联系方式">
+                        {getSupplyInfo("PACK组装")?.contractNumber}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="电芯厂商">
+                        {getSupplyInfo("电芯")?.name}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="联系方式">
+                        {getSupplyInfo("电芯")?.contractNumber}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="电池仓箱体厂商">
+                        {getSupplyInfo("电池仓箱体")?.name}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="联系方式">
+                        {getSupplyInfo("电池仓箱体")?.contractNumber}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="消防厂商">
+                        {getSupplyInfo("消防")?.name}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="联系方式">
+                        {getSupplyInfo("消防")?.contractNumber}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="EMS厂商">
+                        {getSupplyInfo("EMS")?.name}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="联系方式">
+                        {getSupplyInfo("EMS")?.contractNumber}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="汇流柜厂商">
+                        {getSupplyInfo("汇流柜")?.name}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="联系方式">
+                        {getSupplyInfo("汇流柜")?.contractNumber}
+                    </Descriptions.Item>
                 </Descriptions>
                 <Descriptions title="维护实施管理信息" column={2}>
-                    <Descriptions.Item label="实施计划时间">{detailRow?.implementPlanStartDate}~{detailRow?.implementPlanEndDate}</Descriptions.Item>
-                    <Descriptions.Item label="实施负责人">{detailRow?.implementManagerName}</Descriptions.Item>
+                    <Descriptions.Item label="实施计划时间">
+                        {detailRow?.implementPlanStartDate}~{detailRow?.implementPlanEndDate}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="实施负责人">
+                        {detailRow?.implementManagerName}
+                    </Descriptions.Item>
                     <Descriptions.Item label="实施过程档案">
                         <Space direction="vertical">
                             {detailRow?.shippingMaterial && (
@@ -726,8 +860,7 @@ const Account = () => {
                                     <div className={styles.cardItemRow1}>
                                         <div className={styles.cardItemRow1Time}>
                                             发货阶段(
-                                            {detailRow?.shippingMaterial?.operationTime}
-                                            )
+                                            {detailRow?.shippingMaterial?.operationTime})
                                         </div>
                                         <div>
                                             实际操作人(
@@ -735,49 +868,41 @@ const Account = () => {
                                         </div>
                                     </div>
                                     <div className={styles.cardItemRow2}>
-                                        <div className={styles.cardItemRow2Label}>
-                                            签收货单
-                                        </div>
-                                        {detailRow?.shippingMaterial?.goodsReceivedNote
-                                            ?.id && (
-                                                <div className={styles.cardItemRow2Content}>
-                                                    <FileMarkdownFilled
-                                                        style={{
-                                                            color: "#0EBCB6",
-                                                            fontSize: 30,
-                                                            cursor: "pointer",
-                                                        }}
-                                                        onClick={() => {
-                                                            window.open(
-                                                                `${getBaseUrl()}/attachment/download/${detailRow?.shippingMaterial?.goodsReceivedNote?.id}` +
+                                        <div className={styles.cardItemRow2Label}>签收货单</div>
+                                        {detailRow?.shippingMaterial?.goodsReceivedNote?.id && (
+                                            <div className={styles.cardItemRow2Content}>
+                                                <FileMarkdownFilled
+                                                    style={{
+                                                        color: "#0EBCB6",
+                                                        fontSize: 30,
+                                                        cursor: "pointer",
+                                                    }}
+                                                    onClick={() => {
+                                                        window.open(
+                                                            `${getBaseUrl()}/attachment/download/${detailRow?.shippingMaterial?.goodsReceivedNote?.id}` +
                                                                 jsonToUrlParams({
-                                                                    id: detailRow
-                                                                        ?.shippingMaterial
-                                                                        ?.goodsReceivedNote
-                                                                        ?.id,
+                                                                    id: detailRow?.shippingMaterial
+                                                                        ?.goodsReceivedNote?.id,
                                                                     access_token:
                                                                         localStorage.getItem(
                                                                             "Token"
                                                                         ),
                                                                 }),
-                                                                "_blank"
-                                                            );
-                                                        }}
-                                                    />
-                                                    <div>
-                                                        {
-                                                            detailRow?.shippingMaterial
-                                                                ?.goodsReceivedNote
-                                                                ?.fileName
-                                                        }
-                                                    </div>
+                                                            "_blank"
+                                                        );
+                                                    }}
+                                                />
+                                                <div>
+                                                    {
+                                                        detailRow?.shippingMaterial
+                                                            ?.goodsReceivedNote?.fileName
+                                                    }
                                                 </div>
-                                            )}
+                                            </div>
+                                        )}
                                     </div>
                                     <div className={styles.cardItemRow3}>
-                                        <div className={styles.cardItemRow3Label}>
-                                            备注：
-                                        </div>
+                                        <div className={styles.cardItemRow3Label}>备注：</div>
                                         <div>{detailRow?.shippingMaterial?.remark}</div>
                                     </div>
                                 </div>
@@ -795,48 +920,41 @@ const Account = () => {
                                         </div>
                                     </div>
                                     <div className={styles.cardItemRow2}>
-                                        <div className={styles.cardItemRow2Label}>
-                                            验收报告
-                                        </div>
-                                        {detailRow?.testingMaterial?.acceptanceReport
-                                            ?.id && (
-                                                <div className={styles.cardItemRow2Content}>
-                                                    <FileMarkdownFilled
-                                                        style={{
-                                                            color: "#0EBCB6",
-                                                            fontSize: 30,
-                                                            cursor: "pointer",
-                                                        }}
-                                                        onClick={() => {
-                                                            window.open(
-                                                                `${getBaseUrl()}/attachment/download/${detailRow?.testingMaterial?.acceptanceReport?.id}` +
+                                        <div className={styles.cardItemRow2Label}>验收报告</div>
+                                        {detailRow?.testingMaterial?.acceptanceReport?.id && (
+                                            <div className={styles.cardItemRow2Content}>
+                                                <FileMarkdownFilled
+                                                    style={{
+                                                        color: "#0EBCB6",
+                                                        fontSize: 30,
+                                                        cursor: "pointer",
+                                                    }}
+                                                    onClick={() => {
+                                                        window.open(
+                                                            `${getBaseUrl()}/attachment/download/${detailRow?.testingMaterial?.acceptanceReport?.id}` +
                                                                 jsonToUrlParams({
-                                                                    id: detailRow
-                                                                        ?.testingMaterial
-                                                                        ?.acceptanceReport
-                                                                        ?.id,
+                                                                    id: detailRow?.testingMaterial
+                                                                        ?.acceptanceReport?.id,
                                                                     access_token:
                                                                         localStorage.getItem(
                                                                             "Token"
                                                                         ),
                                                                 }),
-                                                                "_blank"
-                                                            );
-                                                        }}
-                                                    />
-                                                    <div>
-                                                        {
-                                                            detailRow?.testingMaterial
-                                                                ?.acceptanceReport?.fileName
-                                                        }
-                                                    </div>
+                                                            "_blank"
+                                                        );
+                                                    }}
+                                                />
+                                                <div>
+                                                    {
+                                                        detailRow?.testingMaterial?.acceptanceReport
+                                                            ?.fileName
+                                                    }
                                                 </div>
-                                            )}
+                                            </div>
+                                        )}
                                     </div>
                                     <div className={styles.cardItemRow3}>
-                                        <div className={styles.cardItemRow3Label}>
-                                            备注：
-                                        </div>
+                                        <div className={styles.cardItemRow3Label}>备注：</div>
                                         <div>{detailRow?.testingMaterial?.remark}</div>
                                     </div>
                                 </div>
@@ -846,8 +964,7 @@ const Account = () => {
                                     <div className={styles.cardItemRow1}>
                                         <div className={styles.cardItemRow1Time}>
                                             试运行阶段(
-                                            {detailRow?.trialRunMaterial?.operationTime}
-                                            )
+                                            {detailRow?.trialRunMaterial?.operationTime})
                                         </div>
                                         <div>
                                             实际操作人(
@@ -855,24 +972,21 @@ const Account = () => {
                                         </div>
                                     </div>
                                     <div className={styles.cardItemRow2}>
-                                        <div className={styles.cardItemRow2Label}>
-                                            客户验收单
-                                        </div>
-                                        {detailRow?.trialRunMaterial
-                                            ?.customerAcceptanceForm?.id && (
-                                                <div className={styles.cardItemRow2Content}>
-                                                    <FileMarkdownFilled
-                                                        style={{
-                                                            color: "#0EBCB6",
-                                                            fontSize: 30,
-                                                            cursor: "pointer",
-                                                        }}
-                                                        onClick={() => {
-                                                            window.open(
-                                                                `${getBaseUrl()}/attachment/download/${detailRow?.trialRunMaterial?.customerAcceptanceForm?.id}` +
+                                        <div className={styles.cardItemRow2Label}>客户验收单</div>
+                                        {detailRow?.trialRunMaterial?.customerAcceptanceForm
+                                            ?.id && (
+                                            <div className={styles.cardItemRow2Content}>
+                                                <FileMarkdownFilled
+                                                    style={{
+                                                        color: "#0EBCB6",
+                                                        fontSize: 30,
+                                                        cursor: "pointer",
+                                                    }}
+                                                    onClick={() => {
+                                                        window.open(
+                                                            `${getBaseUrl()}/attachment/download/${detailRow?.trialRunMaterial?.customerAcceptanceForm?.id}` +
                                                                 jsonToUrlParams({
-                                                                    id: detailRow
-                                                                        ?.trialRunMaterial
+                                                                    id: detailRow?.trialRunMaterial
                                                                         ?.customerAcceptanceForm
                                                                         ?.id,
                                                                     access_token:
@@ -880,24 +994,21 @@ const Account = () => {
                                                                             "Token"
                                                                         ),
                                                                 }),
-                                                                "_blank"
-                                                            );
-                                                        }}
-                                                    />
-                                                    <div>
-                                                        {
-                                                            detailRow?.trialRunMaterial
-                                                                ?.customerAcceptanceForm
-                                                                ?.fileName
-                                                        }
-                                                    </div>
+                                                            "_blank"
+                                                        );
+                                                    }}
+                                                />
+                                                <div>
+                                                    {
+                                                        detailRow?.trialRunMaterial
+                                                            ?.customerAcceptanceForm?.fileName
+                                                    }
                                                 </div>
-                                            )}
+                                            </div>
+                                        )}
                                     </div>
                                     <div className={styles.cardItemRow3}>
-                                        <div className={styles.cardItemRow3Label}>
-                                            备注：
-                                        </div>
+                                        <div className={styles.cardItemRow3Label}>备注：</div>
                                         <div>{detailRow?.trialRunMaterial?.remark}</div>
                                     </div>
                                 </div>
@@ -906,27 +1017,36 @@ const Account = () => {
                     </Descriptions.Item>
                 </Descriptions>
                 <Descriptions title="运维管理信息">
-                    <Descriptions.Item label="运维负责人">{detailRow?.operationsManagerName}</Descriptions.Item>
-                    <Descriptions.Item label="首次巡检时间">{detailRow?.firstInspectionDate}</Descriptions.Item>
-                    <Descriptions.Item label="巡检周期">{cycleList?.find(item => item?.code === detailRow?.inspectionCycle)?.name}</Descriptions.Item>
+                    <Descriptions.Item label="运维负责人">
+                        {detailRow?.operationsManagerName}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="首次巡检时间">
+                        {detailRow?.firstInspectionDate}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="巡检周期">
+                        {cycleList?.find(item => item?.code === detailRow?.inspectionCycle)?.name}
+                    </Descriptions.Item>
                     <Descriptions.Item label="巡检组管理">
                         <div>
-                            {
-                                detailRow?.inspectionGroups?.map(item => {
-                                    return (
-                                        <div style={{ marginBottom: 10 }}>
-                                            <div>{item?.name}</div>
-                                            <div>
-                                                {item?.inspectionItemIds?.map((inspectionItem, index) => {
+                            {detailRow?.inspectionGroups?.map(item => {
+                                return (
+                                    <div style={{ marginBottom: 10 }}>
+                                        <div>{item?.name}</div>
+                                        <div>
+                                            {item?.inspectionItemIds?.map(
+                                                (inspectionItem, index) => {
                                                     return (
-                                                        <div>巡检事项{index}: {getinspectionItemName(inspectionItem)} </div>
-                                                    )
-                                                })}
-                                            </div>
+                                                        <div>
+                                                            巡检事项{index}:{" "}
+                                                            {getinspectionItemName(inspectionItem)}{" "}
+                                                        </div>
+                                                    );
+                                                }
+                                            )}
                                         </div>
-                                    )
-                                })
-                            }
+                                    </div>
+                                );
+                            })}
                         </div>
                     </Descriptions.Item>
                 </Descriptions>

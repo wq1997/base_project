@@ -21,12 +21,16 @@ import PlantOverview from "../../../components/PlantOverview";
 import AlarmAnysis from "../../../components/AlarmAnysis";
 import DeviceStatus from "../../../components/DeviceStatus";
 import { SearchInput } from "@/components";
+<<<<<<< HEAD
 import {
 
     getAlarmColor,
     getAlarmLevelNumber,
     getAlarmLevelText,
 } from "@/utils/utils";
+=======
+import { getLargeScreenAlarmColor } from "@/utils/utils";
+>>>>>>> dev-run-maintenance
 
 const zoomCenter = {
     Domestic: {
@@ -340,7 +344,22 @@ const Business = ({ }) => {
                                             },
                                             {
                                                 title: "告警等级",
+<<<<<<< HEAD
                                                 key: "prior",
+=======
+                                                key: "priorZh",
+                                                render: (index, row) => (
+                                                    <span
+                                                        style={{
+                                                            color: getLargeScreenAlarmColor(
+                                                                row?.prior
+                                                            ),
+                                                        }}
+                                                    >
+                                                        {row?.priorZh}
+                                                    </span>
+                                                ),
+>>>>>>> dev-run-maintenance
                                             },
                                             {
                                                 title: "告警描述",

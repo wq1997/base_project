@@ -1,4 +1,4 @@
-import { Menu } from "antd";
+import { Menu, Badge } from "antd";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useSelector } from "umi";
 import useIcon from "@/hooks/useIcon";
@@ -114,20 +114,20 @@ const MenuList = [
         icon: <DatabaseFilled />,
         permissions: "menu:knowledge_base_manage",
     },
-    // {
-    //     key: "/maintenance-tools",
-    //     label: "运维工具",
-    //     icon: <ToolFilled />,
-    //     darkIcon: "icon-wuliaoxuqiu-copy",
-    //     permissions: "menu:sys_manage",
-    //     children: [
-    //         {
-    //             key: "/maintenance-tools/project-operation-report",
-    //             label: "项目运行报告",
-    //             permissions: "menu:user_manage",
-    //         },
-    //     ],
-    // },
+    {
+        key: "/maintenance-tools",
+        label: "运维工具",
+        icon: <ToolFilled />,
+        darkIcon: "icon-wuliaoxuqiu-copy",
+        permissions: "menu:om_tool",
+        children: [
+            {
+                key: "/maintenance-tools/project-operation-report",
+                label: "项目运行报告",
+                permissions: "menu:user_manage",
+            },
+        ],
+    },
     {
         key: "/system-configuration",
         label: "系统配置",
@@ -168,7 +168,29 @@ const MyMenu = () => {
                 return (
                     <Menu.Item key={menu.key} icon={menu.icon}>
                         <Link to={menu.key} target={menu?.target}>
-                            {menu.label}
+                            <span>
+                                <span>{menu.label}</span>
+                                {[
+                                    "/workbench/management-roles",
+                                    "/workbench/execution-roles",
+                                ]?.includes(menu.key) &&
+                                    Boolean(user?.todoWorkOrderCount) && (
+                                        <span
+                                            style={{
+                                                background: "#ff4d4f",
+                                                fontSize: 13,
+                                                color: "#fff",
+                                                padding: "1px 6px",
+                                                borderRadius: 8,
+                                                position: "relative",
+                                                top: -6,
+                                                left: 3,
+                                            }}
+                                        >
+                                            {user?.todoWorkOrderCount}
+                                        </span>
+                                    )}
+                            </span>
                         </Link>
                     </Menu.Item>
                 );
@@ -208,6 +230,7 @@ const MyMenu = () => {
 
     useEffect(() => {
         if (user) {
+            console.log('user',user)
             getMenu();
         }
     }, [user]);

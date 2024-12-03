@@ -17,10 +17,9 @@ export const TELPHONE_NUMBER_REG = /^1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[
 export const TELPHONE_REG = new RegExp(
     /^1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[0-35-9])\d{8}$/
 );
-export const EMAIL_REG = {
-    reg: /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(.[a-zA-Z0-9_-]+)+$/,
-    desc: "邮箱格式有误",
-};
+export const EMAIL_REG = new RegExp(
+    /^[0-9A-Za-z_]+([-+.][0-9A-Za-z_]+)*@[0-9A-Za-z_]+([-.][0-9A-Za-z_]+)*\.[0-9A-Za-z_]+([-.][0-9A-Za-z_]+)*$/
+);
 export const ALL_SPACE_REG = new RegExp(/\S/);
 export const PASSWORD_REG = {
     reg: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9a-zA-Z-`=\[\];',.~!@#$%^&*()_+|{}:"?]{8,16}$/,

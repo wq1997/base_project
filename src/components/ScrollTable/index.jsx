@@ -69,7 +69,7 @@ const Table = ({ color = "white", columns, dataSource }) => {
                             >
                                 {columns
                                     ?.map(item => item.key)
-                                    ?.map(columnKey => {
+                                    ?.map((columnKey, index) => {
                                         return (
                                             <div
                                                 className={styles.tableContentCol}
@@ -83,6 +83,7 @@ const Table = ({ color = "white", columns, dataSource }) => {
                                             //             : color
                                             // }}
                                             >
+<<<<<<< HEAD
                                                 <Tooltip title={data[columnKey]}>
                                                     {columnKey == "prior"
                                                         ? toChineseNumber(
@@ -90,6 +91,11 @@ const Table = ({ color = "white", columns, dataSource }) => {
                                                         ) + "级"
                                                         : data[columnKey]}
                                                 </Tooltip>
+=======
+                                                {columns?.[index]?.render
+                                                    ? columns?.[index]?.render(index, data)
+                                                    : data[columnKey]}
+>>>>>>> dev-run-maintenance
                                             </div>
                                         );
                                     })}

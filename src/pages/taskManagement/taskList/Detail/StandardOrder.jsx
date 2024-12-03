@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Badge, Descriptions, Input, Space } from "antd";
+import { Badge, Descriptions, Image, Space } from "antd";
 import { jsonToUrlParams } from "@/utils/utils";
 import { DOWNLOAD_URL } from "@/utils/constants";
 
@@ -23,40 +23,47 @@ const Index = ({ info }) => {
                     <div style={{ marginLeft: 10 }}>
                         <div>
                             <Badge status="success" style={{ marginRight: "10px" }} />
-                            <span>
-                                巡检组{groupIndex}：{group.name}
-                            </span>
+                            <span>巡检组：{group.name}</span>
                         </div>
                         {group?.items?.map((item, itemIndex) => {
                             return (
                                 <div style={{ margin: "10px 15px", fontSize: 13 }}>
                                     <div>
                                         <Badge status="success" style={{ marginRight: "10px" }} />
-                                        <span>
-                                            巡检项：{itemIndex}：{item.name}
-                                        </span>
+                                        <span>巡检项：{item.name}</span>
                                     </div>
-                                    <div style={{ margin: "10px 15px" }}>
-                                        巡检结果：
-                                        <span style={{ marginRight: 10 }}>
-                                            {getResult(group.name, item.id)?.remark}
-                                        </span>
-                                        <Space>
-                                            {getResult(group.name, item.id)?.photos?.map(item => {
-                                                return (
-                                                    <a
-                                                        href={`${DOWNLOAD_URL}/${item?.id}${jsonToUrlParams(
-                                                            {
-                                                                access_token:
-                                                                    localStorage.getItem("Token"),
-                                                            }
-                                                        )}`}
-                                                    >
-                                                        item?.fileName
-                                                    </a>
-                                                );
-                                            })}
-                                        </Space>
+                                    <div style={{ margin: "10px 15px", display: "flex" }}>
+                                        <div>巡检结果：</div>
+                                        <div>
+                                            <div style={{ marginRight: 10, marginBottom: 5 }}>
+                                                {getResult(group.name, item.id)?.remark}
+                                            </div>
+                                            <div>
+                                                <Space>
+                                                    {getResult(group.name, item.id)?.photos?.map(
+                                                        item => {
+                                                            return (
+                                                                // <a
+                                                                //     href={`${DOWNLOAD_URL}/${item?.id}${jsonToUrlParams(
+                                                                //         {
+                                                                //             access_token:
+                                                                //                 localStorage.getItem("Token"),
+                                                                //         }
+                                                                //     )}`}
+                                                                // >
+                                                                //     {item?.fileName}
+                                                                // </a>
+                                                                <Image
+                                                                    src={`${DOWNLOAD_URL}/${item?.id}`}
+                                                                    width={100}
+                                                                    height={80}
+                                                                />
+                                                            );
+                                                        }
+                                                    )}
+                                                </Space>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             );

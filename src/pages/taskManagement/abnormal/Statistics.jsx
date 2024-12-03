@@ -13,27 +13,30 @@ const Statistics = () => {
     const { token } = theme.useToken();
     const [type, setType] = useState("YEAR");
     const [date, setDate] = useState(dayjs().format("YYYY"));
-    const [initOption, setInitOption] = useState({})
+    const [initOption, setInitOption] = useState({});
     const [productType, setProductType] = useState();
     const [groupType, setGroupType] = useState();
 
     const getOptions = async () => {
         if (JSON.stringify(initOption) === "{}") return;
-        let params = {}, xAxisData = [], legendData = [], seriesData = [];
+        let params = {},
+            xAxisData = [],
+            legendData = [],
+            seriesData = [];
         if (type === "YEAR") {
             params = {
                 productType: productType,
                 groupType: groupType || initOption?.groupTypes?.[0]?.code,
-                year: date
-            }
+                year: date,
+            };
         }
         if (type === "MONTH") {
             params = {
                 productType: productType,
                 groupType: groupType || initOption?.groupTypes?.[0]?.code,
                 year: dayjs(date).format("YYYY"),
-                month: dayjs(date).format("MM")
-            }
+                month: dayjs(date).format("MM"),
+            };
         }
         const res = await getWorkOrderTimeExceptionTypeStatisticsServe(params);
         if (res?.data?.status === "SUCCESS") {
@@ -42,83 +45,85 @@ const Statistics = () => {
             items?.forEach(item => {
                 if (item?.exceptionPartsOrSupplierCount?.length > 0) {
                     item?.exceptionPartsOrSupplierCount?.forEach(subItem => {
-                        legendData.push(subItem?._1||"");
-                    })
+                        legendData.push(subItem?._1 || "");
+                    });
                 }
-            })
+            });
             legendData = Array.from(new Set(legendData));
 
             legendData?.forEach(name => {
                 seriesData.push({
                     name,
-                    type: 'bar',
-                    stack: '总量',
+                    type: "bar",
+                    stack: "总量",
                     barWidth: 40,
                     data: items?.map(item => {
-                        const count = item?.exceptionPartsOrSupplierCount?.find(subItem => subItem?._1 === name);
+                        const count = item?.exceptionPartsOrSupplierCount?.find(
+                            subItem => subItem?._1 === name
+                        );
                         return count?._2 || 0;
                     }),
-                })
-            })
+                });
+            });
         }
-        
+
         setOptions({
             tooltip: {},
-            color: ['#47CCFF', '#EF6E39', '#00D5CF'],
+            color: ["#47CCFF", "#EF6E39", "#00D5CF"],
             legend: {
                 data: legendData,
                 textStyle: {
                     fontSize: 14,
-                    color: '#FFF',
+                    color: "#FFF",
                 },
             },
             grid: {
                 left: 50,
-                right: 50
+                right: 50,
             },
             xAxis: {
-                type: 'category',
+                type: "category",
                 axisLabel: {
-                    color: '#FFFFFF'
+                    color: "#FFFFFF",
                 },
                 axisLine: {
-                    show: false
+                    show: false,
                 },
                 axisTick: {
                     show: false,
                 },
-                data: xAxisData
+                data: xAxisData,
             },
             yAxis: {
-                type: 'value',
+                type: "value",
                 axisLabel: {
-                    color: '#FFFFFF'
+                    color: "#FFFFFF",
                 },
                 axisLine: {
                     lineStyle: {
-                        color: 'rgba(0,0,0,0.15)'
+                        color: "rgba(0,0,0,0.15)",
                     },
-                    width: 2
+                    width: 2,
                 },
                 axisTick: {
                     show: false,
                 },
                 splitLine: {
                     lineStyle: {
-                        color: 'rgba(255,255,255,0.15)'
-                    }
+                        color: "rgba(255,255,255,0.15)",
+                    },
                 },
             },
-            series: seriesData
-        })
-    }
+            series: seriesData,
+        });
+    };
 
     const getInitData = async () => {
         const res = await workOrderGetTimeExceptionPartsOrSupplierStatisticsPageInitDataServe();
         if (res?.data?.status === "SUCCESS") {
-            setInitOption(res?.data?.data)
+            setInitOption(res?.data?.data);
         }
-    }
+    };
 
     useEffect(() => {
         getOptions();
@@ -126,16 +131,16 @@ const Statistics = () => {
 
     useEffect(() => {
         getInitData();
-    }, [])
+    }, []);
 
     return (
-        <Space
-            direction="vertical"
-            style={{
-                width: '100%'
-            }}
-        >
-            <Space>
+        <>
+            <Space
+                style={{
+                    flexWrap: "wrap",
+                }}
+                size={10}
+            >
                 <SearchInput
                     label="产品类型"
                     value={productType}
@@ -158,14 +163,14 @@ const Statistics = () => {
                 <Select
                     value={type}
                     options={[
-                        { value: 'YEAR', label: '年' },
-                        { value: "MONTH", label: '月' }
+                        { value: "YEAR", label: "年" },
+                        { value: "MONTH", label: "月" },
                     ]}
                     style={{ width: 200 }}
                     placeholder="请选择时间维度"
-                    onChange={(value) => {
+                    onChange={value => {
                         if (value === "YEAR") {
-                            setDate(dayjs(date).format("YYYY"))
+                            setDate(dayjs(date).format("YYYY"));
                         } else if (value === "MONTH") {
                             setDate(`${dayjs(date).format("YYYY")}-${dayjs().format("MM")}`);
                         }
@@ -175,9 +180,9 @@ const Statistics = () => {
                 <DatePicker
                     value={dayjs(date)}
                     picker={type.toLocaleLowerCase()}
-                    onChange={(value) => {
+                    onChange={value => {
                         if (type === "YEAR") {
-                            setDate(dayjs(value).format("YYYY"))
+                            setDate(dayjs(value).format("YYYY"));
                         } else if (type === "MONTH") {
                             setDate(dayjs(value).format("YYYY-MM"));
                         }
@@ -186,11 +191,11 @@ const Statistics = () => {
             </Space>
             <ReactECharts
                 option={options}
-                style={{ width: "100%", height: 'calc(100vh - 250px)' }}
+                style={{ width: "100%", height: "calc(100vh - 250px)" }}
                 notMerge={true}
             />
-        </Space>
-    )
-}
+        </>
+    );
+};
 
 export default Statistics;

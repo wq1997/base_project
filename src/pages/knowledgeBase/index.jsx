@@ -1,9 +1,10 @@
-import { history } from "umi";
 import { Space, Button, Table, theme, DatePicker, Modal, Descriptions, message } from "antd";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import { SearchInput } from "@/components";
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./index.less";
+import { getUrlParams, hasPerm } from "@/utils/utils";
+import { history, useLocation, useSelector } from "umi";
 import {
     knowledgeInitData as knowledgeInitDataServe,
     knowledgeFindPage as knowledgeFindPageServe,
@@ -13,6 +14,7 @@ import dayjs from "dayjs";
 
 const KnowledgeBase = () => {
     const { token } = theme.useToken();
+    const { user } = useSelector(state => state.user);
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [name, setName] = useState();
@@ -41,7 +43,7 @@ const KnowledgeBase = () => {
         {
             title: "知识状态",
             dataIndex: "statusZh",
-            width: 100
+            width: 100,
         },
         {
             title: "知识名称",
@@ -64,7 +66,7 @@ const KnowledgeBase = () => {
             width: 300,
             render(_, row) {
                 return row?.project?.name;
-            }
+            },
         },
         {
             title: "撰写人",
@@ -77,20 +79,22 @@ const KnowledgeBase = () => {
             width: 150,
             render(_, row) {
                 const nameList = row?.deviceTypes?.map(deviceType => {
-                    const currentDevice = row?.deviceTypeVos?.find(item => item?.code === deviceType);
-                    if(currentDevice) return currentDevice?.name;
+                    const currentDevice = row?.deviceTypeVos?.find(
+                        item => item?.code === deviceType
+                    );
+                    if (currentDevice) return currentDevice?.name;
                     return "";
-                })
-                return nameList?.join(', ');
-            }
+                });
+                return nameList?.join(", ");
+            },
         },
         {
             title: "异常环节",
             dataIndex: "exceptionRefs",
             width: 200,
             render(_, row) {
-                return row?.exceptionRefs?.map(item => item?.name)?.join(',');
-            }
+                return row?.exceptionRefs?.map(item => item?.name)?.join(",");
+            },
         },
         {
             title: "审批人",
@@ -105,44 +109,54 @@ const KnowledgeBase = () => {
         {
             title: "操作",
             dataIndex: "Action",
-            fixed: 'right',
-            width: 250,
+            fixed: "right",
+            width: 180,
             render(_, row) {
                 return (
                     <Space>
-                        {
-                            row?.supportSaveOrSubmit &&
+                        {hasPerm(user, "op:knowledge_base_edit") && row?.supportSaveOrSubmit && (
                             <Button
                                 type="link"
                                 style={{ color: token.colorPrimary }}
                                 onClick={() => {
-                                    history.push(`/knowledgeBase/editOrCheck?openType=Edit&id=${row?.id}`)
+                                    history.push(
+                                        `/knowledgeBase/editOrCheck?openType=Edit&id=${row?.id}`
+                                    );
                                 }}
                             >
                                 编辑
                             </Button>
-                        }
-                        {
-                            row?.supportAudit &&
-                            <Button type="link" style={{ color: '#FF4D4F' }} onClick={() => history.push(`/knowledgeBase/editOrCheck?openType=Check&id=${row?.id}`)}>审核</Button>
-                        }
-                        <Button
+                        )}
+                        {hasPerm(user, "op:knowledge_base_audit") && row?.supportAudit && (
+                            <a
+                                type="link"
+                                style={{ color: "#FF4D4F" }}
+                                onClick={() =>
+                                    history.push(
+                                        `/knowledgeBase/editOrCheck?openType=Check&id=${row?.id}`
+                                    )
+                                }
+                            >
+                                审核
+                            </a>
+                        )}
+                        <a
                             type="link"
-                            style={{ color: '#13C0FF' }}
+                            style={{ color: "#13C0FF" }}
                             onClick={() => {
                                 setDetailOpen(true);
                                 setCurrentRecord(row);
                             }}
                         >
                             详情
-                        </Button>
+                        </a>
                     </Space>
-                )
-            }
+                );
+            },
         },
     ];
 
-    const onSelectChange = (newSelectedRowKeys) => {
+    const onSelectChange = newSelectedRowKeys => {
         setSelectedRowKeys(newSelectedRowKeys);
     };
 
@@ -170,7 +184,7 @@ const KnowledgeBase = () => {
                 creatorNameLike,
                 deviceType,
                 exceptionRefId,
-                status
+                status,
             },
         });
         if (res?.data?.status === "SUCCESS") {
@@ -181,14 +195,14 @@ const KnowledgeBase = () => {
             });
             setDataSource(recordList);
         }
-    }
+    };
 
     const getInitData = async () => {
         const res = await knowledgeInitDataServe();
         if (res?.data?.status === "SUCCESS") {
             setOptions(res?.data?.data);
         }
-    }
+    };
 
     const onReset = () => {
         dateRef.current = undefined;
@@ -208,26 +222,24 @@ const KnowledgeBase = () => {
         setName(undefined);
         setDate(undefined);
         getList();
-    }
+    };
 
     useEffect(() => {
         getInitData();
         getList();
-    }, [])
+    }, []);
 
     return (
         <div className={styles.knowledgeBase}>
-            <Space className={styles.search} size={20}>
+            <Space className={styles.search} size={10}>
                 <div>
                     <span style={{ color: "#FFF" }}>发布时间：</span>
                     <DatePicker.RangePicker
                         value={
-                            date &&
-                            date.length > 0 &&
-                            date[0] &&
-                            date[1]
+                            date && date.length > 0 && date[0] && date[1]
                                 ? [dayjs(date[0]), dayjs(date[1])]
-                                : []}
+                                : []
+                        }
                         onChange={(value, date) => {
                             dateRef.current = date;
                             setDate(date);
@@ -256,8 +268,8 @@ const KnowledgeBase = () => {
                     options={options?.types?.map(item => {
                         return {
                             name: item,
-                            code: item
-                        }
+                            code: item,
+                        };
                     })}
                 />
                 <SearchInput
@@ -272,8 +284,8 @@ const KnowledgeBase = () => {
                     options={options?.projects?.map(item => {
                         return {
                             name: item?.name,
-                            code: item?.id
-                        }
+                            code: item?.id,
+                        };
                     })}
                 />
                 <SearchInput
@@ -323,8 +335,12 @@ const KnowledgeBase = () => {
                     }}
                     options={options?.statuses}
                 />
-                <Button type="primary" onClick={getList}>搜索</Button>
-                <Button type="primary" danger onClick={onReset}>重置</Button>
+                <Button type="primary" onClick={getList}>
+                    搜索
+                </Button>
+                <Button type="primary" danger onClick={onReset}>
+                    重置
+                </Button>
             </Space>
             <Table
                 rowKey="id"
@@ -343,49 +359,62 @@ const KnowledgeBase = () => {
                     getList();
                 }}
                 scroll={{
-                    x: 1500
+                    x: 1500,
                 }}
                 title={() => (
                     <Space className="table-title">
-                        <Button
-                            type="primary"
-                            onClick={() => {
-                                history.push(`/knowledgeBase/editOrCheck?openType=Add`)
-                            }}
-                        >
-                            新增知识
-                        </Button>
-                        <Button
-                            type="primary"
-                            danger
-                            onClick={() => {
-                                if (selectedRowKeys?.length === 0) {
-                                    message.error("请先勾选需要删除的行!")
-                                    return;
-                                };
-                                Modal.confirm({
-                                    title: "系统提示",
-                                    content:
-                                        "删除此条记录不可恢复，请确认后再删除！",
-                                    onOk: async () => {
-                                        const res = await knowledgeDeleteServe({
-                                            ids: selectedRowKeys
-                                        })
-                                        if (res?.data?.status === "SUCCESS") {
-                                            getList();
-                                            setSelectedRowKeys([]);
-                                        }
-                                    },
-                                });
-                            }}
-                        >
-                            删除知识
-                            {selectedRowKeys?.length ? (
-                                <span>({selectedRowKeys?.length})</span>
-                            ) : (
-                                ""
-                            )}
-                        </Button>
+                        {hasPerm(user, "op:knowledge_base_add") && (
+                            <Button
+                                type="primary"
+                                onClick={() => {
+                                    history.push(`/knowledgeBase/editOrCheck?openType=Add`);
+                                }}
+                            >
+                                新增知识
+                            </Button>
+                        )}
+                        {hasPerm(user, "op:knowledge_base_delete") && (
+                            <Button
+                                type="primary"
+                                danger
+                                onClick={() => {
+                                    if (selectedRowKeys?.length === 0) {
+                                        message.error("请先勾选需要删除的行!");
+                                        return;
+                                    }
+                                    Modal.confirm({
+                                        title: "系统提示",
+                                        content: "删除此条记录不可恢复，请确认后再删除！",
+                                        onOk: async () => {
+                                            const res = await knowledgeDeleteServe({
+                                                ids: selectedRowKeys,
+                                            });
+                                            if (res?.data?.status === "SUCCESS") {
+                                                const { current } = paginationRef?.current;
+                                                if (
+                                                    current != 1 &&
+                                                    dataSource?.length == selectedRowKeys?.length
+                                                ) {
+                                                    paginationRef.current.current = current - 1;
+                                                    setPagination({
+                                                        current: current - 1,
+                                                    });
+                                                }
+                                                getList();
+                                                setSelectedRowKeys([]);
+                                            }
+                                        },
+                                    });
+                                }}
+                            >
+                                删除知识
+                                {selectedRowKeys?.length ? (
+                                    <span>({selectedRowKeys?.length})</span>
+                                ) : (
+                                    ""
+                                )}
+                            </Button>
+                        )}
                     </Space>
                 )}
             />
@@ -396,43 +425,52 @@ const KnowledgeBase = () => {
                 onCancel={() => {
                     setDetailOpen(false);
                 }}
-                onOk={()=>{setDetailOpen(false);}}
+                onOk={() => {
+                    setDetailOpen(false);
+                }}
                 width={800}
             >
                 <div style={{ marginTop: 20 }}>
                     <Descriptions column={1}>
-                        {
-                            currentRecord?.type &&
-                            <Descriptions.Item label="知识类型">{currentRecord?.type}</Descriptions.Item>
-                        }
-                        {
-                            currentRecord?.title &&
-                            <Descriptions.Item label="知识标题">{currentRecord?.title}</Descriptions.Item>
-                        }
-                        {
-                            currentRecord?.project?.name &&
-                            <Descriptions.Item label="关联项目">{currentRecord?.project?.name}</Descriptions.Item>
-                        }
-                        {
-                            currentRecord?.deviceTypes?.length > 0 &&
-                            <Descriptions.Item label="关联设备类型">{currentRecord?.deviceTypes?.join(',')}</Descriptions.Item>
-                        }
-                        {
-                            currentRecord?.exceptionRefs?.length > 0 &&
-                            <Descriptions.Item label="异常环节">{currentRecord?.exceptionRefs?.map(item => item?.name)?.join(',')}</Descriptions.Item>
-                        }
+                        {currentRecord?.type && (
+                            <Descriptions.Item label="知识类型">
+                                {currentRecord?.type}
+                            </Descriptions.Item>
+                        )}
+                        {currentRecord?.title && (
+                            <Descriptions.Item label="知识标题">
+                                {currentRecord?.title}
+                            </Descriptions.Item>
+                        )}
+                        {currentRecord?.project?.name && (
+                            <Descriptions.Item label="关联项目">
+                                {currentRecord?.project?.name}
+                            </Descriptions.Item>
+                        )}
+                        {currentRecord?.deviceTypes?.length > 0 && (
+                            <Descriptions.Item label="关联设备类型">
+                                {currentRecord?.deviceTypes?.join(",")}
+                            </Descriptions.Item>
+                        )}
+                        {currentRecord?.exceptionRefs?.length > 0 && (
+                            <Descriptions.Item label="异常环节">
+                                {currentRecord?.exceptionRefs?.map(item => item?.name)?.join(",")}
+                            </Descriptions.Item>
+                        )}
                     </Descriptions>
-                    {
-                        currentRecord?.content &&
+                    {currentRecord?.content && (
                         <div className={styles.knowledageShow}>
                             <div className={styles.knowledageShowTitle}>知识内容</div>
-                            <div dangerouslySetInnerHTML={{ __html: currentRecord?.content }} className={styles.knowledageShowContent} />
+                            <div
+                                dangerouslySetInnerHTML={{ __html: currentRecord?.content }}
+                                className={styles.knowledageShowContent}
+                            />
                         </div>
-                    }
+                    )}
                 </div>
             </Modal>
         </div>
-    )
-}
+    );
+};
 
 export default KnowledgeBase;

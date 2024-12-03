@@ -129,13 +129,12 @@ const Statistics = () => {
     }, []);
 
     return (
-        <Space
-            direction="vertical"
-            style={{
-                width: "100%",
-            }}
-        >
-            <Space>
+        <>
+            <Space
+                style={{
+                    flexWrap: "wrap",
+                }}
+            >
                 <SearchInput
                     label="项目"
                     value={projectId}
@@ -183,7 +182,7 @@ const Statistics = () => {
                 style={{ width: "100%", height: "calc(100vh - 250px)" }}
                 notMerge={true}
             />
-        </Space>
+        </>
     );
 };
 

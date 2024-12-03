@@ -1,8 +1,23 @@
 import React, { useState, useEffect, useRef } from "react";
 import { SearchInput } from "@/components";
-import { Space, Button, Table, theme, Modal, Form, Radio, Select, Input, InputNumber, Drawer, Tooltip } from "antd";
+import {
+    Space,
+    Button,
+    Table,
+    theme,
+    Modal,
+    Form,
+    Radio,
+    Select,
+    Input,
+    InputNumber,
+    Drawer,
+    Tooltip,
+} from "antd";
 import { DEFAULT_PAGINATION, FORM_REQUIRED_RULE } from "@/utils/constants";
 import styles from "./index.less";
+import { useLocation, useSelector } from "umi";
+import { getUrlParams, hasPerm } from "@/utils/utils";
 import {
     sparePartsInitData as sparePartsInitDataServe,
     sparePartsFindPage as sparePartsFindPageServe,
@@ -11,13 +26,14 @@ import {
     sparePartsInput as sparePartsInputServe,
     sparePartsOutput as sparePartsOutputServe,
     sparePartsFindInOutPage as sparePartsFindInOutPageServe,
-    sparePartsDelete as sparePartsDeleteServe
+    sparePartsDelete as sparePartsDeleteServe,
 } from "@/services";
 
 const SparePartsManagement = () => {
     const [spareStorageForm] = Form.useForm();
     const [useForm] = Form.useForm();
     const { token } = theme.useToken();
+    const { user } = useSelector(state => state.user);
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const outputPaginationRef = useRef(DEFAULT_PAGINATION);
@@ -48,9 +64,9 @@ const SparePartsManagement = () => {
 
     const columns = [
         {
-            title: '备件名称',
-            dataIndex: 'name',
-            key: 'name',
+            title: "备件名称",
+            dataIndex: "name",
+            key: "name",
             ellipsis: true,
             width: 200,
             render(value) {
@@ -58,17 +74,17 @@ const SparePartsManagement = () => {
                     <Tooltip title={value}>
                         <div
                             style={{
-                                overflow: 'hidden',
-                                whiteSpace: 'nowrap',
-                                textOverflow: 'ellipsis',
+                                overflow: "hidden",
+                                whiteSpace: "nowrap",
+                                textOverflow: "ellipsis",
                                 width: 200,
                             }}
                         >
                             {value}
                         </div>
                     </Tooltip>
-                )
-            }
+                );
+            },
         },
         {
             title: "备件编号",
@@ -104,9 +120,9 @@ const SparePartsManagement = () => {
             width: 200,
         },
         {
-            title: '备件备注',
-            dataIndex: 'remark',
-            key: 'remark',
+            title: "备件备注",
+            dataIndex: "remark",
+            key: "remark",
             ellipsis: true,
             width: 200,
             render(value) {
@@ -114,17 +130,17 @@ const SparePartsManagement = () => {
                     <Tooltip title={value}>
                         <div
                             style={{
-                                overflow: 'hidden',
-                                whiteSpace: 'nowrap',
-                                textOverflow: 'ellipsis',
+                                overflow: "hidden",
+                                whiteSpace: "nowrap",
+                                textOverflow: "ellipsis",
                                 width: 200,
                             }}
                         >
                             {value}
                         </div>
                     </Tooltip>
-                )
-            }
+                );
+            },
         },
         {
             title: "操作",
@@ -134,25 +150,28 @@ const SparePartsManagement = () => {
             render: (_, row) => {
                 return (
                     <Space>
-                        <Button
-                            type="link"
-                            onClick={() => {
-                                useForm.setFieldsValue({
-                                    ...row,
-                                    remark: undefined
-                                });
-                                setCurrentRecord(row);
-                                setUseOpen(true);
-                                getOperateInitData();
-                            }}>
-                            备件领用
-                        </Button>
+                        {hasPerm(user, "op:spare_output") && (
+                            <Button
+                                type="link"
+                                onClick={() => {
+                                    useForm.setFieldsValue({
+                                        ...row,
+                                        remark: undefined,
+                                    });
+                                    setCurrentRecord(row);
+                                    setUseOpen(true);
+                                    getOperateInitData();
+                                }}
+                            >
+                                备件领用
+                            </Button>
+                        )}
                         <Button
                             type="link"
                             style={{ color: token.colorPrimary }}
                             onClick={() => {
                                 getOutputDataSource(row?.code);
-                                setRecordOpen(true)
+                                setRecordOpen(true);
                             }}
                         >
                             查看出入库记录
@@ -161,21 +180,21 @@ const SparePartsManagement = () => {
                 );
             },
         },
-    ]
+    ];
 
     const getSparePartsInitData = async () => {
         const res = await sparePartsInitDataServe();
         if (res?.data?.status === "SUCCESS") {
             setInitOptions(res?.data?.data);
         }
-    }
+    };
 
     const getOperateInitData = async () => {
         const res = await operatorInitDataServe();
         if (res?.data?.status === "SUCCESS") {
             setOperateInitData(res?.data?.data);
         }
-    }
+    };
 
     const getDataSource = async () => {
         const { current, pageSize } = paginationRef.current;
@@ -192,10 +211,9 @@ const SparePartsManagement = () => {
                 type,
                 warehouse,
                 attribute,
-                supplierId
-            }
-        }
-        );
+                supplierId,
+            },
+        });
         if (res?.data?.status === "SUCCESS") {
             const { totalRecord, recordList } = res?.data?.data;
             setPagination({
@@ -204,18 +222,17 @@ const SparePartsManagement = () => {
             });
             setDataSource(recordList);
         }
-    }
+    };
 
-    const getOutputDataSource = async (code) => {
+    const getOutputDataSource = async code => {
         const { current, pageSize } = outputPaginationRef.current;
         const res = await sparePartsFindInOutPageServe({
             pageNum: current,
             pageSize,
             queryCmd: {
-                code
-            }
-        }
-        );
+                code,
+            },
+        });
         if (res?.data?.status === "SUCCESS") {
             const { totalRecord, recordList } = res?.data?.data;
             setOutputPagination({
@@ -224,7 +241,7 @@ const SparePartsManagement = () => {
             });
             setOutputDatasource(recordList);
         }
-    }
+    };
 
     const onReset = () => {
         nameRef.current = undefined;
@@ -238,17 +255,22 @@ const SparePartsManagement = () => {
         setType(undefined);
         setName(undefined);
         getDataSource();
-    }
+    };
 
     useEffect(() => {
         getSparePartsInitData();
         getOperateInitData();
         getDataSource();
-    }, [])
+    }, []);
 
     return (
         <div className={styles.sparePartsManagement}>
-            <Space className={styles.search}>
+            <Space
+                style={{
+                    flexWrap: "wrap",
+                }}
+                size={10}
+            >
                 <SearchInput
                     label="备件名称"
                     value={name}
@@ -270,8 +292,8 @@ const SparePartsManagement = () => {
                     options={initOptions?.types?.map(item => {
                         return {
                             name: item,
-                            code: item
-                        }
+                            code: item,
+                        };
                     })}
                 />
                 <SearchInput
@@ -286,8 +308,8 @@ const SparePartsManagement = () => {
                     options={initOptions?.warehouses?.map(item => {
                         return {
                             name: item,
-                            code: item
-                        }
+                            code: item,
+                        };
                     })}
                 />
                 <SearchInput
@@ -302,8 +324,8 @@ const SparePartsManagement = () => {
                     options={initOptions?.attributes?.map(item => {
                         return {
                             name: item,
-                            code: item
-                        }
+                            code: item,
+                        };
                     })}
                 />
                 <SearchInput
@@ -318,12 +340,16 @@ const SparePartsManagement = () => {
                     options={initOptions?.suppliers?.map(item => {
                         return {
                             name: item?.name,
-                            code: item?.id
-                        }
+                            code: item?.id,
+                        };
                     })}
                 />
-                <Button type="primary" onClick={getDataSource}>搜索</Button>
-                <Button type="primary" danger onClick={onReset}>重置</Button>
+                <Button type="primary" onClick={getDataSource}>
+                    搜索
+                </Button>
+                <Button type="primary" danger onClick={onReset}>
+                    重置
+                </Button>
             </Space>
             <Table
                 rowKey="id"
@@ -342,33 +368,47 @@ const SparePartsManagement = () => {
                 }}
                 onChange={pagination => {
                     paginationRef.current = pagination;
-                    getInviteList();
+                    getDataSource();
                 }}
                 title={() => (
                     <Space className="table-title">
-                        <Button
-                            type="primary"
-                            onClick={() => {
-                                getOperateInitData();
-                                setSpareStorageOpen(true);
-                            }}
-                        >
-                            备件入库
-                        </Button>
-                        <Button
-                            type="primary"
-                            danger
-                            onClick={async () => {
-                                const res = await sparePartsDeleteServe({
-                                    ids: selectedRowKeys
-                                })
-                                if (res?.data?.status === "SUCCESS") {
-                                    getDataSource();
-                                }
-                            }}
-                        >
-                            删除备件
-                        </Button>
+                        {hasPerm(user, "op:spare_input") && (
+                            <Button
+                                type="primary"
+                                onClick={() => {
+                                    getOperateInitData();
+                                    setSpareStorageOpen(true);
+                                }}
+                            >
+                                备件入库
+                            </Button>
+                        )}
+                        {hasPerm(user, "op:spare_delete") && (
+                            <Button
+                                type="primary"
+                                danger
+                                onClick={async () => {
+                                    const res = await sparePartsDeleteServe({
+                                        ids: selectedRowKeys,
+                                    });
+                                    if (res?.data?.status === "SUCCESS") {
+                                        const { current } = paginationRef?.current;
+                                        if (
+                                            current != 1 &&
+                                            dataSource?.length == selectedRowKeys?.length
+                                        ) {
+                                            paginationRef.current.current = current - 1;
+                                            setPagination({
+                                                current: current - 1,
+                                            });
+                                        }
+                                        getDataSource();
+                                    }
+                                }}
+                            >
+                                删除备件
+                            </Button>
+                        )}
                     </Space>
                 )}
             />
@@ -393,7 +433,7 @@ const SparePartsManagement = () => {
                         const res = await sparePartsInputServe({
                             id: values?.name,
                             count: values?.stock,
-                            remark: values?.operateRemark
+                            remark: values?.operateRemark,
                         });
                         if (res?.data?.status === "SUCCESS") {
                             setSpareStorageOpen(false);
@@ -406,34 +446,41 @@ const SparePartsManagement = () => {
                 <Form
                     form={spareStorageForm}
                     initialValues={{
-                        storageMethod: 'ADD'
+                        storageMethod: "ADD",
                     }}
                     labelCol={{
-                        span: 6
+                        span: 6,
                     }}
-                    onValuesChange={async (value) => {
+                    onValuesChange={async value => {
                         if ("storageMethod" in value) {
                             await spareStorageForm.resetFields();
-                            spareStorageForm.setFieldsValue(value)
-                        };
+                            spareStorageForm.setFieldsValue(value);
+                        }
                     }}
                 >
-                    <Form.Item label="入库方式" name="storageMethod" rules={[{ ...FORM_REQUIRED_RULE }]}>
+                    <Form.Item
+                        label="入库方式"
+                        name="storageMethod"
+                        rules={[{ ...FORM_REQUIRED_RULE }]}
+                    >
                         <Radio.Group>
                             <Radio value={"ADD"}>新增备件</Radio>
                             <Radio value={"MAINT"}>维护已有备件</Radio>
                         </Radio.Group>
                     </Form.Item>
-                    <Form.Item noStyle dependencies={['storageMethod', 'attribute']}>
+                    <Form.Item noStyle dependencies={["storageMethod", "attribute"]}>
                         {({ getFieldsValue }) => {
-                            const { storageMethod } = getFieldsValue(['storageMethod'])
-                            const { attribute } = getFieldsValue(['attribute'])
+                            const { storageMethod } = getFieldsValue(["storageMethod"]);
+                            const { attribute } = getFieldsValue(["attribute"]);
                             return (
                                 <>
                                     <Form.Item
                                         hidden={storageMethod !== "ADD"}
                                         rules={[
-                                            { required: storageMethod === "ADD", message: "请输入必填字段" }
+                                            {
+                                                required: storageMethod === "ADD",
+                                                message: "请输入必填字段",
+                                            },
                                         ]}
                                         label="备件属性"
                                         name={"attribute"}
@@ -443,19 +490,25 @@ const SparePartsManagement = () => {
                                             options={initOptions?.attributes?.map(item => {
                                                 return {
                                                     label: item,
-                                                    value: item
-                                                }
+                                                    value: item,
+                                                };
                                             })}
                                             onChange={value => {
                                                 if (value === "采日自研备件") {
-                                                    const cairiSupplier = initOptions?.suppliers?.find(item => item?.name?.indexOf(`上海采日能源科技`) > -1);
+                                                    const cairiSupplier =
+                                                        initOptions?.suppliers?.find(
+                                                            item =>
+                                                                item?.name?.indexOf(
+                                                                    `上海采日能源科技`
+                                                                ) > -1
+                                                        );
                                                     spareStorageForm.setFieldsValue({
-                                                        supplierId: cairiSupplier?.id
-                                                    })
+                                                        supplierId: cairiSupplier?.id,
+                                                    });
                                                 } else {
                                                     spareStorageForm.setFieldsValue({
-                                                        supplierId: undefined
-                                                    })
+                                                        supplierId: undefined,
+                                                    });
                                                 }
                                             }}
                                         />
@@ -463,7 +516,10 @@ const SparePartsManagement = () => {
                                     <Form.Item
                                         hidden={storageMethod !== "ADD"}
                                         rules={[
-                                            { required: storageMethod === "ADD", message: "请输入必填字段" }
+                                            {
+                                                required: storageMethod === "ADD",
+                                                message: "请输入必填字段",
+                                            },
                                         ]}
                                         label="备件类型"
                                         name={"type"}
@@ -473,15 +529,18 @@ const SparePartsManagement = () => {
                                             options={initOptions?.types?.map(item => {
                                                 return {
                                                     label: item,
-                                                    value: item
-                                                }
+                                                    value: item,
+                                                };
                                             })}
                                         />
                                     </Form.Item>
                                     <Form.Item
                                         hidden={storageMethod !== "ADD"}
                                         rules={[
-                                            { required: storageMethod === "ADD", message: "请输入必填字段" }
+                                            {
+                                                required: storageMethod === "ADD",
+                                                message: "请输入必填字段",
+                                            },
                                         ]}
                                         label="所属供应商"
                                         name={"supplierId"}
@@ -491,8 +550,8 @@ const SparePartsManagement = () => {
                                             options={initOptions?.suppliers?.map(item => {
                                                 return {
                                                     label: item?.name,
-                                                    value: item?.id
-                                                }
+                                                    value: item?.id,
+                                                };
                                             })}
                                             disabled={attribute === "采日自研备件"}
                                         />
@@ -500,7 +559,10 @@ const SparePartsManagement = () => {
                                     <Form.Item
                                         hidden={storageMethod !== "ADD"}
                                         rules={[
-                                            { required: storageMethod === "ADD", message: "请输入必填字段" }
+                                            {
+                                                required: storageMethod === "ADD",
+                                                message: "请输入必填字段",
+                                            },
                                         ]}
                                         label="所属仓库"
                                         name={"warehouse"}
@@ -510,40 +572,40 @@ const SparePartsManagement = () => {
                                             options={initOptions?.warehouses?.map(item => {
                                                 return {
                                                     label: item,
-                                                    value: item
-                                                }
+                                                    value: item,
+                                                };
                                             })}
                                         />
                                     </Form.Item>
                                     <Form.Item
-                                        rules={[
-                                            { required: true, message: "请输入必填字段" }
-                                        ]}
+                                        rules={[{ required: true, message: "请输入必填字段" }]}
                                         label="备件名称"
                                         name={"name"}
                                     >
-                                        {
-                                            storageMethod === "ADD" ?
-                                                <Input placeholder="请输入备件名称" /> :
-                                                <Select
-                                                    placeholder="请选择备件"
-                                                    options={operateInitData?.spareParts?.map(item => {
-                                                        return {
-                                                            label: item?.name,
-                                                            value: item?.id
-                                                        }
-                                                    })}
-                                                />
-                                        }
+                                        {storageMethod === "ADD" ? (
+                                            <Input placeholder="请输入备件名称" />
+                                        ) : (
+                                            <Select
+                                                placeholder="请选择备件"
+                                                options={operateInitData?.spareParts?.map(item => {
+                                                    return {
+                                                        label: item?.name,
+                                                        value: item?.id,
+                                                    };
+                                                })}
+                                            />
+                                        )}
                                     </Form.Item>
                                     <Form.Item
-                                        rules={[
-                                            { required: true, message: "请输入必填字段" }
-                                        ]}
+                                        rules={[{ required: true, message: "请输入必填字段" }]}
                                         label="备件数量"
                                         name={"stock"}
                                     >
-                                        <InputNumber placeholder="请输入备件数量" min={0} style={{ width: '100%' }} />
+                                        <InputNumber
+                                            placeholder="请输入备件数量"
+                                            min={0}
+                                            style={{ width: "100%" }}
+                                        />
                                     </Form.Item>
                                     <Form.Item
                                         label="备件备注"
@@ -552,14 +614,11 @@ const SparePartsManagement = () => {
                                     >
                                         <Input.TextArea placeholder="请输入备件备注" />
                                     </Form.Item>
-                                    <Form.Item
-                                        label="入库备注"
-                                        name={"operateRemark"}
-                                    >
+                                    <Form.Item label="入库备注" name={"operateRemark"}>
                                         <Input.TextArea placeholder="请输入入库备注" />
                                     </Form.Item>
                                 </>
-                            )
+                            );
                         }}
                     </Form.Item>
                 </Form>
@@ -574,14 +633,16 @@ const SparePartsManagement = () => {
                 }}
                 onOk={async () => {
                     const values = await useForm.getFieldsValue();
-                    const project = operateInitData?.projects?.find(item => item?.id === values?.outputProjectId);
+                    const project = operateInitData?.projects?.find(
+                        item => item?.id === values?.outputProjectId
+                    );
                     const res = await sparePartsOutputServe({
                         id: currentRecord?.id,
                         count: values?.count,
                         outputProjectId: values?.outputProjectId,
                         outputProjectName: project?.name,
-                        remark: values?.remark
-                    })
+                        remark: values?.remark,
+                    });
                     if (res?.data?.status === "SUCCESS") {
                         setUseOpen(false);
                         getDataSource();
@@ -592,7 +653,7 @@ const SparePartsManagement = () => {
                 <Form
                     form={useForm}
                     labelCol={{
-                        span: 6
+                        span: 6,
                     }}
                 >
                     <Form.Item label="备件名称" name={"name"} rules={[{ ...FORM_REQUIRED_RULE }]}>
@@ -601,24 +662,34 @@ const SparePartsManagement = () => {
                     <Form.Item label="库存备件数量" name="stock">
                         <Input disabled />
                     </Form.Item>
-                    <Form.Item label="备件领用数量" name={"count"} rules={[{ ...FORM_REQUIRED_RULE }]}>
-                        <InputNumber placeholder="请输入备件领用数量" min={0} max={currentRecord?.stock} style={{ width: '100%' }} />
+                    <Form.Item
+                        label="备件领用数量"
+                        name={"count"}
+                        rules={[{ ...FORM_REQUIRED_RULE }]}
+                    >
+                        <InputNumber
+                            placeholder="请输入备件领用数量"
+                            min={0}
+                            max={currentRecord?.stock}
+                            style={{ width: "100%" }}
+                        />
                     </Form.Item>
-                    <Form.Item label="领用项目" name={"outputProjectId"} rules={[{ ...FORM_REQUIRED_RULE }]}>
+                    <Form.Item
+                        label="领用项目"
+                        name={"outputProjectId"}
+                        rules={[{ ...FORM_REQUIRED_RULE }]}
+                    >
                         <Select
                             placeholder="请选择领用项目"
                             options={operateInitData?.projects?.map(item => {
                                 return {
                                     label: item?.name,
                                     value: item?.id,
-                                }
+                                };
                             })}
                         />
                     </Form.Item>
-                    <Form.Item
-                        label="领用备注"
-                        name={"remark"}
-                    >
+                    <Form.Item label="领用备注" name={"remark"}>
                         <Input.TextArea placeholder="请输入领用备注" />
                     </Form.Item>
                 </Form>
@@ -647,17 +718,17 @@ const SparePartsManagement = () => {
                                     <Tooltip title={value}>
                                         <div
                                             style={{
-                                                overflow: 'hidden',
-                                                whiteSpace: 'nowrap',
-                                                textOverflow: 'ellipsis',
+                                                overflow: "hidden",
+                                                whiteSpace: "nowrap",
+                                                textOverflow: "ellipsis",
                                                 width: 150,
                                             }}
                                         >
                                             {value}
                                         </div>
                                     </Tooltip>
-                                )
-                            }
+                                );
+                            },
                         },
                         {
                             title: "操作类型",
@@ -676,13 +747,13 @@ const SparePartsManagement = () => {
                             dataIndex: "operatorName",
                         },
                         {
-                            title:"操作时间",
+                            title: "操作时间",
                             dataIndex: "operateTime",
                         },
                         {
-                            title: '操作备注',
-                            dataIndex: 'remark',
-                            key: 'remark',
+                            title: "操作备注",
+                            dataIndex: "remark",
+                            key: "remark",
                             ellipsis: true,
                             width: 200,
                             render(value) {
@@ -690,21 +761,21 @@ const SparePartsManagement = () => {
                                     <Tooltip title={value}>
                                         <div
                                             style={{
-                                                overflow: 'hidden',
-                                                whiteSpace: 'nowrap',
-                                                textOverflow: 'ellipsis',
+                                                overflow: "hidden",
+                                                whiteSpace: "nowrap",
+                                                textOverflow: "ellipsis",
                                                 width: 150,
                                             }}
                                         >
                                             {value}
                                         </div>
                                     </Tooltip>
-                                )
-                            }
+                                );
+                            },
                         },
                     ]}
                     scroll={{
-                        x: 'max-content',
+                        x: "max-content",
                     }}
                     dataSource={outputDatasource}
                     pagination={outputPagination}
@@ -715,7 +786,7 @@ const SparePartsManagement = () => {
                 />
             </Drawer>
         </div>
-    )
-}
+    );
+};
 
 export default SparePartsManagement;

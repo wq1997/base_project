@@ -10,6 +10,7 @@ import {
     Input,
     Radio,
     theme,
+    Popconfirm,
     Tabs,
 } from "antd";
 import {
@@ -27,7 +28,7 @@ import { SearchInput } from "@/components";
 import AddProject from "./AddProject";
 import Detail from "./Detail";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
-import { getUrlParams } from "@/utils/utils";
+import { getUrlParams, hasPerm } from "@/utils/utils";
 import {
     workOrderList as workOrderListServer,
     workOrderListInitData as workOrderListInitDataServer,
@@ -42,6 +43,7 @@ const Account = () => {
     const { token } = theme.useToken();
     const location = useLocation();
     const params = getUrlParams(location?.search);
+    const { user } = useSelector(state => state.user);
     const [canDelete, setCanDelete] = useState(true);
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
@@ -54,8 +56,10 @@ const Account = () => {
     const workOrderCodeRef = useRef(params?.code);
     const [workOrderCode, setWorkOrderCode] = useState(params?.code);
 
-    const publishedTimeRef = useRef();
-    const [publishedTime, setPublishedTime] = useState();
+    const publishedTimeRef = useRef(params?.time ? [params?.time, params?.time] : null);
+    const [publishedTime, setPublishedTime] = useState(
+        params?.time ? [params?.time, params?.time] : null
+    );
 
     const dealStatusRef = useRef(params?.statusIn);
     const [dealStatus, setDealStatus] = useState(params?.statusIn);
@@ -78,8 +82,8 @@ const Account = () => {
     const planEndDateRef = useRef();
     const [planEndDate, setPlanEndDate] = useState();
 
-    const associatedProjectRef = useRef();
-    const [associatedProject, setAssociatedProject] = useState();
+    const associatedProjectRef = useRef(params?.projectId);
+    const [associatedProject, setAssociatedProject] = useState(params?.projectId);
     const [projectOptions, setProjectOptions] = useState();
 
     const [userOptions, setUserOptions] = useState();
@@ -183,14 +187,37 @@ const Account = () => {
             title: "操作",
             dataIndex: "operate",
             fixed: "right",
-            width: 100,
-            render: (_, { id, supportProcessing }) => {
+            width: 120,
+            render: (_, { id, supportRemove }) => {
                 return (
-                    <>
+                    <Space>
                         <a style={{ color: token.colorPrimary }} onClick={() => setDetailId(id)}>
                             详情
                         </a>
-                    </>
+                        {supportRemove && (
+                            <Popconfirm
+                                title="确定删除？"
+                                onConfirm={async () => {
+                                    const res = await deleteWorkOrderServer([id]);
+                                    if (res?.data?.status === "SUCCESS") {
+                                        const { current } = paginationRef?.current;
+                                        if (current != 1 && userList?.length == 1) {
+                                            paginationRef.current.current = current - 1;
+                                            setPagination({
+                                                current: current - 1,
+                                            });
+                                        }
+                                        message.success("删除成功！");
+                                        getList();
+                                    }
+                                }}
+                                okText="确定"
+                                cancelText="取消"
+                            >
+                                <a style={{ color: "#dc4446" }}>删除</a>
+                            </Popconfirm>
+                        )}
+                    </Space>
                 );
             },
         },
@@ -302,12 +329,16 @@ const Account = () => {
             onOk: async () => {
                 const res = await deleteWorkOrderServer(selectedRowKeys);
                 if (res?.data?.status == "SUCCESS") {
-                    message.success(`删除成功`);
-                    setPagination({
-                        current: 1,
-                    });
+                    const { current } = paginationRef?.current;
+                    if (current != 1 && userList?.length == selectedRowKeys?.length) {
+                        paginationRef.current.current = current - 1;
+                        setPagination({
+                            current: current - 1,
+                        });
+                    }
                     setSelectedRowKeys([]);
                     getList();
+                    message.success(`删除成功`);
                 }
             },
         });
@@ -337,7 +368,12 @@ const Account = () => {
                     getList();
                 }}
             />
-            <Space className="search">
+            <Space
+                style={{
+                    flexWrap: "wrap",
+                }}
+                size={10}
+            >
                 <div>
                     <span style={{ color: "#FFF" }}>发布时间：</span>
                     <DatePicker.RangePicker
@@ -482,13 +518,6 @@ const Account = () => {
                 dataSource={userList}
                 columns={columns}
                 pagination={pagination}
-                rowSelection={{
-                    selectedRowKeys,
-                    onChange: onSelectChange,
-                    getCheckboxProps: record => ({
-                        disabled: record.account === "admin",
-                    }),
-                }}
                 scroll={{
                     x: 1500,
                 }}
@@ -498,18 +527,11 @@ const Account = () => {
                 }}
                 title={() => (
                     <Space className="table-title">
-                        <Button type="primary" onClick={() => setAddProjectOpen(true)}>
-                            手工新增工单
-                        </Button>
-
-                        <Button type="primary" danger disabled={!canDelete} onClick={handleDelete}>
-                            删除工单
-                            {selectedRowKeys?.length ? (
-                                <span>({selectedRowKeys?.length})</span>
-                            ) : (
-                                ""
-                            )}
-                        </Button>
+                        {hasPerm(user, "op:work_order_add") && (
+                            <Button type="primary" onClick={() => setAddProjectOpen(true)}>
+                                手工新增工单
+                            </Button>
+                        )}
                     </Space>
                 )}
             ></Table>

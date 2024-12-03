@@ -5,6 +5,7 @@ import {
     updateRole as updateRoleServer,
     getRolePerms as getRolePermsServer,
 } from "@/services/user";
+import { TELPHONE_REG, EMAIL_REG, ALL_SPACE_REG } from "@/utils/constants";
 import "./index.less";
 
 const Index = ({ open, editRow, onClose }) => {
@@ -38,6 +39,7 @@ const Index = ({ open, editRow, onClose }) => {
         if (open) {
             getRolePerms();
         } else {
+            setCheckedKeys([]);
             form.resetFields();
         }
     }, [open]);
@@ -79,6 +81,10 @@ const Index = ({ open, editRow, onClose }) => {
                             required: true,
                             message: "请输入角色名称",
                         },
+                        {
+                            pattern: ALL_SPACE_REG,
+                            message: "请输入角色名称",
+                        },
                     ]}
                 >
                     <Input style={{ width: "100%" }} placeholder="请输入角色名称" />
@@ -101,6 +107,10 @@ const Index = ({ open, editRow, onClose }) => {
                     rules={[
                         {
                             required: true,
+                            message: "请输入角色说明",
+                        },
+                        {
+                            pattern: ALL_SPACE_REG,
                             message: "请输入角色说明",
                         },
                     ]}

@@ -1,7 +1,8 @@
-import { history } from "umi";
+import { history, useLocation, useSelector } from "umi";
 import { Space, Button, Table, theme, DatePicker, Modal, Descriptions } from "antd";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
 import { SearchInput } from "@/components";
+import { jsonToUrlParams, getAlarmColor, getUrlParams } from "@/utils/utils";
 import React, { useState, useEffect, useRef } from "react";
 import {
     alarmStatisticsTablePageInitData as alarmStatisticsTablePageInitDataServer,
@@ -11,12 +12,16 @@ import styles from "./index.less";
 import dayjs from "dayjs";
 
 const Detailed = () => {
+    const location = useLocation();
+    const params = getUrlParams(location?.search);
     const { token } = theme.useToken();
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
-    const [planDate, setPlanDate] = useState();
-    const planDateRef = useRef();
+    const [planDate, setPlanDate] = useState(params?.time ? [params?.time, params?.time] : null);
+    const planDateRef = useRef(params?.time ? [params?.time, params?.time] : null);
     const [name, setName] = useState();
+    const projectRef = useRef(params?.projectId);
+    const [project, setProject] = useState(params?.projectId);
     const nameRef = useRef();
     const [deviceName, setDeviceName] = useState();
     const deviceNameRef = useRef();
@@ -34,6 +39,7 @@ const Detailed = () => {
     const getDataSource = async () => {
         const { current, pageSize } = paginationRef.current;
         const planDate = planDateRef.current;
+        const projectId = projectRef.current;
         const plantId = nameRef.current;
         const deviceName = deviceNameRef.current;
         const descLike = alarmNameRef.current;
@@ -48,6 +54,7 @@ const Detailed = () => {
                 beginEndDate:
                     planDate && planDate?.length >= 2 && dayjs(planDate?.[1]).format("YYYY-MM-DD"),
                 plantId,
+                projectId,
                 deviceName,
                 descLike,
                 mmsEventClassify,
@@ -73,6 +80,7 @@ const Detailed = () => {
 
     const onReset = () => {
         planDateRef.current = undefined;
+        projectRef.current = undefined;
         nameRef.current = undefined;
         deviceNameRef.current = undefined;
         alarmTypeRef.current = undefined;
@@ -81,6 +89,7 @@ const Detailed = () => {
         setAlarmType(undefined);
         setDeviceName(undefined);
         setName(undefined);
+        setProject(undefined);
         setPlanDate(undefined);
         setAlarmName(undefined);
         setAlarmLevel(undefined);
@@ -93,9 +102,13 @@ const Detailed = () => {
     }, []);
 
     return (
-        <div className={styles.detailed}>
-            <div style={{ fontSize: 20, color: token.fontColor, marginBottom: 28 }}>查询条件</div>
-            <Space className={styles.search} size={20}>
+        <>
+            <Space
+                style={{
+                    flexWrap: "wrap",
+                }}
+                size={10}
+            >
                 <div>
                     <span style={{ color: "#FFF" }}>时间：</span>
                     <DatePicker.RangePicker
@@ -110,6 +123,20 @@ const Detailed = () => {
                         }}
                     />
                 </div>
+                <SearchInput
+                    label="项目名称"
+                    type="select"
+                    value={project}
+                    options={initOption?.projects?.map(item => ({
+                        name: item.name,
+                        code: item.id,
+                    }))}
+                    onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
+                        projectRef.current = value;
+                        setProject(value);
+                    }}
+                />
                 <SearchInput
                     label="电站名称"
                     type="select"
@@ -206,6 +233,10 @@ const Detailed = () => {
                             },
                         },
                         {
+                            title: "产品类型",
+                            dataIndex: "sourceTableZh",
+                        },
+                        {
                             title: "设备名称",
                             dataIndex: "deviceName",
                         },
@@ -288,6 +319,14 @@ const Detailed = () => {
                         <Descriptions.Item label="产品类型">
                             {currentRow?.project?.productTypeZh}
                         </Descriptions.Item>
+                        {currentRow?.project?.productType == "OUTDOOR_CABINET" && (
+                            <Descriptions.Item label="户外柜规格">
+                                {currentRow?.project?.outdoorCabinetSpecZh}
+                            </Descriptions.Item>
+                        )}
+                        <Descriptions.Item label="产品规格">
+                            {currentRow?.project?.productTypeZh}
+                        </Descriptions.Item>
                         <Descriptions.Item label="项目阶段">
                             {currentRow?.project?.phaseZh}
                         </Descriptions.Item>
@@ -303,7 +342,7 @@ const Detailed = () => {
                     </Descriptions>
                 </div>
             </Modal>
-        </div>
+        </>
     );
 };
 

@@ -8,6 +8,7 @@ import {
     DatePicker,
     Tooltip,
     Input,
+    Popconfirm,
     Radio,
     theme,
     Tabs,
@@ -22,7 +23,7 @@ import {
     ExclamationCircleOutlined,
     PlusCircleFilled,
 } from "@ant-design/icons";
-import { history, useLocation, useSelector } from "umi";
+import { history, useLocation, useSelector, useDispatch } from "umi";
 import { SearchInput } from "@/components";
 import Detail from "./Detail";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
@@ -40,6 +41,7 @@ import dayjs from "dayjs";
 let invalidReason = undefined;
 
 const Account = () => {
+    const dispatch = useDispatch();
     const defaultActiveKey = getQueryString("activeKey");
     const [activeKey, setActiveKey] = useState(defaultActiveKey || "todo");
     const tabItems = [
@@ -203,17 +205,41 @@ const Account = () => {
             title: "操作",
             dataIndex: "operate",
             fixed: "right",
-            width: activeKey == "todo" ? 130 : 100,
-            render: (_, { id, supportProcessing }) => {
+            width: activeKey == "todo" ? 200 : 100,
+            render: (_, { id, supportProcessing, supportRemove, type }) => {
                 return (
                     <Space>
                         <a style={{ color: token.colorPrimary }} onClick={() => setDetailId(id)}>
                             详情
                         </a>
-                        {supportProcessing && (
-                            <a onClick={() => setProcessId(id)} style={{ color: "#dc4446" }}>
-                                去处理
-                            </a>
+                        {supportProcessing &&
+                            !["CYCLE_INSPECTION", "MANUAL_INSPECTION"].includes(type) && (
+                                <a onClick={() => setProcessId(id)} style={{ color: "#dc4446" }}>
+                                    去处理
+                                </a>
+                            )}
+                        {supportRemove && (
+                            <Popconfirm
+                                title="确定删除？"
+                                onConfirm={async () => {
+                                    const res = await deleteWorkOrderServer([id]);
+                                    if (res?.data?.status === "SUCCESS") {
+                                        const { current } = paginationRef?.current;
+                                        if (current != 1 && userList?.length == 1) {
+                                            paginationRef.current.current = current - 1;
+                                            setPagination({
+                                                current: current - 1,
+                                            });
+                                        }
+                                        message.success("删除成功！");
+                                        getList();
+                                    }
+                                }}
+                                okText="确定"
+                                cancelText="取消"
+                            >
+                                <a style={{ color: "#dc4446" }}>删除</a>
+                            </Popconfirm>
                         )}
                     </Space>
                 );
@@ -327,12 +353,16 @@ const Account = () => {
             onOk: async () => {
                 const res = await deleteWorkOrderServer(selectedRowKeys);
                 if (res?.data?.status == "SUCCESS") {
-                    message.success(`删除成功`);
-                    setPagination({
-                        current: 1,
-                    });
+                    const { current } = paginationRef?.current;
+                    if (current != 1 && userList?.length == selectedRowKeys?.length) {
+                        paginationRef.current.current = current - 1;
+                        setPagination({
+                            current: current - 1,
+                        });
+                    }
                     setSelectedRowKeys([]);
                     getList();
+                    message.success(`删除成功`);
                 }
             },
         });
@@ -349,11 +379,14 @@ const Account = () => {
                 isTodo={activeKey == "todo"}
                 detailId={detailId}
                 processId={processId}
-                onClose={() => {
+                onClose={async () => {
                     setUserList([]);
                     setDetailId(null);
                     setProcessId(null);
                     getList();
+                    dispatch({
+                        type: "user/queryUser",
+                    });
                 }}
             />
             <Tabs
@@ -365,7 +398,13 @@ const Account = () => {
                     history.push(`/task-management/my-task?activeKey=${value}`);
                 }}
             />
-            <Space className="search">
+            <Space
+                style={{
+                    flexWrap: "wrap",
+                    marginBottom: 20,
+                }}
+                size={10}
+            >
                 <SearchInput
                     label="工单编号"
                     value={workOrderCode}
@@ -522,13 +561,6 @@ const Account = () => {
                 dataSource={userList}
                 columns={columns}
                 pagination={pagination}
-                rowSelection={{
-                    selectedRowKeys,
-                    onChange: onSelectChange,
-                    getCheckboxProps: record => ({
-                        disabled: record.account === "admin",
-                    }),
-                }}
                 scroll={{
                     x: 1500,
                 }}
@@ -536,18 +568,6 @@ const Account = () => {
                     paginationRef.current = pagination;
                     getList();
                 }}
-                title={() => (
-                    <Space className="table-title">
-                        <Button type="primary" danger disabled={!canDelete} onClick={handleDelete}>
-                            删除工单
-                            {selectedRowKeys?.length ? (
-                                <span>({selectedRowKeys?.length})</span>
-                            ) : (
-                                ""
-                            )}
-                        </Button>
-                    </Space>
-                )}
             ></Table>
         </div>
     );

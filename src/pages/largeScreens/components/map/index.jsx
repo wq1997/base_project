@@ -49,17 +49,31 @@ const Index = ({ zoomCenter, plants, panTo }) => {
     const getPlantAccessInfo = async plantId => {
         let res = await getPlantAccessInfoServer(plantId);
         if (res?.data?.status == "SUCCESS") {
-            const jumpRes = await jumpLoginServer(res?.data?.data);
-            if (jumpRes?.data?.data?.token) {
+            const loginParams = res?.data?.data;
+            const urlMaps = {
+                3: {
+                    loginUrl: "https://api.sermatec-cloud.com/user/loginWithCode",
+                    targetUrl: "https://www.sermatec-cloud.com/containerIndex",
+                },
+                21: {
+                    loginUrl: "https://api.sermatec-cloud.com/user/loginWithCode",
+                    targetUrl: "https://domestic-power.sermatec-cloud.com/index/device",
+                },
+            };
+            const loginRes = await jumpLoginServer({
+                ...loginParams,
+                url: urlMaps[loginParams?.clientType]?.loginUrl,
+            });
+            if (loginRes?.data?.data?.token) {
                 window.open(
-                    `https://www.sermatec-cloud.com/containerIndex?token=${jumpRes?.data?.data?.token}`,
+                    `${urlMaps[loginParams?.clientType]?.targetUrl}?plantId=${plantId}&token=${loginRes?.data?.data?.token}`,
                     "_blank"
                 );
             } else {
                 message.info("token失效，暂不可跳转");
             }
         } else {
-            message.info("获取电站信息出错，暂不可跳转");
+            message.info("获取电站信息失败，暂不可跳转");
         }
     };
 

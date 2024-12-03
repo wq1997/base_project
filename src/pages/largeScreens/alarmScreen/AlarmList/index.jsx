@@ -4,7 +4,11 @@ import { Button, Space, Spin, Tooltip, Pagination } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { SearchInput } from "@/components";
 import { DEFAULT_PAGINATION } from "@/utils/constants";
+<<<<<<< HEAD
 import { toChineseNumber, getAlarmColor } from "@/utils/utils";
+=======
+import { getLargeScreenAlarmColor } from "@/utils/utils";
+>>>>>>> dev-run-maintenance
 import "./index.less";
 import Card from "../../components/Card";
 import { getAlarmScreenList as getAlarmScreenListServer } from "@/services/largeScreen";
@@ -34,7 +38,20 @@ const Index = ({ initData }) => {
         },
         {
             title: "告警等级",
+<<<<<<< HEAD
             dataIndex: "prior",
+=======
+            dataIndex: "priorZh",
+            render: (index, row) => (
+                <span
+                    style={{
+                        color: getLargeScreenAlarmColor(row?.prior),
+                    }}
+                >
+                    {row?.priorZh}
+                </span>
+            ),
+>>>>>>> dev-run-maintenance
         },
         {
             title: "设备名称",
@@ -48,10 +65,6 @@ const Index = ({ initData }) => {
             title: "开始时间",
             dataIndex: "begin",
         },
-        // {
-        //     title: "结束时间",
-        //     dataIndex: "end",
-        // },
     ];
 
     const getList = async () => {
@@ -64,7 +77,7 @@ const Index = ({ initData }) => {
         const [beginStartDate, beginEndDate] = startTimeRef.current || [];
         const res = await getAlarmScreenListServer({
             pageNum: current,
-            pageSize,
+            pageSize: 20,
             queryCmd: {
                 prior: signalName,
                 deviceNameLike,
@@ -149,7 +162,13 @@ const Index = ({ initData }) => {
                 title="告警列表"
                 content={
                     <div style={{ height: "100%", padding: "16px", boxSizing: "border-box" }}>
-                        <Space className={styles.searchBar}>
+                        <Space
+                            className={styles.searchBar}
+                            style={{
+                                flexWrap: "wrap",
+                            }}
+                            size={10}
+                        >
                             <SearchInput
                                 label="告警等级"
                                 value={alarmLevel}
@@ -224,6 +243,7 @@ const Index = ({ initData }) => {
                                     {listData?.length ? (
                                         listData?.map((value, index) => (
                                             <div className={styles.row}>
+<<<<<<< HEAD
                                                 {columns?.map(column => (
                                                     <div
                                                         className={styles.value}
@@ -241,6 +261,13 @@ const Index = ({ initData }) => {
                                                                 ? toChineseNumber(
                                                                     value[column.dataIndex]
                                                                 ) + "级"
+=======
+                                                {columns?.map((column, index) => (
+                                                    <div className={styles.value}>
+                                                        <Tooltip title={value[column.dataIndex]}>
+                                                            {column?.render
+                                                                ? column?.render(index, value)
+>>>>>>> dev-run-maintenance
                                                                 : value[column.dataIndex]}
                                                         </Tooltip>
                                                     </div>
@@ -270,8 +297,10 @@ const Index = ({ initData }) => {
                                 >
                                     <Pagination
                                         current={pagination?.current}
-                                        pageSize={pagination?.pageSize}
+                                        pageSize={20}
                                         total={pagination?.total}
+                                        showQuickJumper={false}
+                                        showSizeChanger={false}
                                         size="small"
                                         onChange={onChange}
                                     />
