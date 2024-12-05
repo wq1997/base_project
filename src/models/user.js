@@ -18,6 +18,7 @@ export default {
                         user: res?.data?.data,
                     },
                 });
+                return res?.data?.data;
             }
         },
 

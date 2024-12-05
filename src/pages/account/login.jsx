@@ -28,7 +28,7 @@ const Login = () => {
                     },
                 },
             });
-            history.push("/workbench/management-roles");
+            history.push("/auth");
         } else {
             message.error(res?.data?.msg);
         }
