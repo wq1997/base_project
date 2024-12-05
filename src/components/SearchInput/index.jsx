@@ -13,6 +13,7 @@ const SearchInput = ({
     labelInValue = false,
     allowClear = true,
     style = {},
+    showSearch = false,
     onChange = () => {},
 }) => {
     const { token } = theme.useToken();
@@ -34,6 +35,7 @@ const SearchInput = ({
                     className={styles.input}
                     labelInValue={labelInValue}
                     mode={mode}
+                    showSearch={showSearch}
                     value={value}
                     defaultValue={value}
                     placeholder={placeholder || `请选择${label}`}

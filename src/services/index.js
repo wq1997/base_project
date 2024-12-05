@@ -247,6 +247,10 @@ export const uploadEditorImage = payload => {
     return axiosInstance.post(`/attachment/upload-xxx`, payload);
 };
 
+export const getProjectRunDayReportInitData = () => {
+    return axiosInstance.get(`/project_run_day_report/get-find-page-init-data`);
+};
+
 export const getProjectRunDayReportList = payload => {
     return axiosInstance.post(`/project_run_day_report/find-page`, payload);
 };

@@ -18,12 +18,17 @@ import "./index.less";
 import { getBaseUrl } from "@/services/request";
 import { jsonToUrlParams, toChineseNumber } from "@/utils/utils";
 import dayjs from "dayjs";
+import moment from "moment";
 import { history, useLocation, useSelector } from "umi";
 import { getUrlParams, hasPerm } from "@/utils/utils";
 import {
     getProjectRunDayReportList as getProjectRunDayReportListServer,
     addDownloadTask as addDownloadTaskServer,
+    getProjectRunDayReportInitData as getProjectRunDayReportInitDataServer,
 } from "@/services";
+
+const defaultStartDate = dayjs(moment().subtract(30, "day").format("YYYY-MM-DD"));
+const defaultEndDate = dayjs(moment().subtract(0, "day").format("YYYY-MM-DD"));
 
 const momentList = [
     { time: "04:00", moment: 4 },
@@ -40,14 +45,15 @@ const Account = () => {
     const { user } = useSelector(state => state.user);
     const plantNameRef = useRef();
     const [plantName, setPlantName] = useState();
-    const timeRef = useRef();
-    const [time, setTime] = useState();
+    const timeRef = useRef([defaultStartDate, defaultEndDate]);
+    const [time, setTime] = useState([defaultStartDate, defaultEndDate]);
     const paginationRef = useRef(DEFAULT_PAGINATION);
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [userList, setUserList] = useState([]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [downloadCheckRecordName, setDownloadCheckRecordName] = useState(null);
     const [downloadCheckRecordId, setDownloadCheckRecordId] = useState(null);
+    const [initData, setInitData] = useState();
 
     const columns = [
         {
@@ -192,6 +198,13 @@ const Account = () => {
         setSelectedRowKeys(newSelectedRowKeys);
     };
 
+    const getInitData = async () => {
+        const res = await getProjectRunDayReportInitDataServer();
+        if (res?.data?.status == "SUCCESS") {
+            setInitData(res?.data?.data);
+        }
+    };
+
     const getList = async () => {
         const { current, pageSize } = paginationRef.current;
         const projectName = projectNameRef.current;
@@ -203,8 +216,8 @@ const Account = () => {
             queryCmd: {
                 projectName,
                 plantName,
-                detectionDateFrom,
-                detectionDateTo,
+                detectionDateFrom: dayjs(detectionDateFrom).format("YYYY-MM-DD"),
+                detectionDateTo: dayjs(detectionDateTo).format("YYYY-MM-DD"),
             },
         });
         if (res?.data?.status == "SUCCESS") {
@@ -229,6 +242,7 @@ const Account = () => {
     };
 
     useEffect(() => {
+        getInitData();
         getList();
     }, []);
 
@@ -237,16 +251,34 @@ const Account = () => {
             <Space className="search" size={10}>
                 <SearchInput
                     label="项目名称"
+                    showSearch={true}
+                    type="select"
                     value={projectName}
+                    options={initData?.projectNameList?.map(item => {
+                        return {
+                            code: item,
+                            name: item,
+                        };
+                    })}
                     onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
                         projectNameRef.current = value;
                         setProjectName(value);
                     }}
                 />
                 <SearchInput
                     label="电站名称"
+                    showSearch={true}
+                    type="select"
                     value={plantName}
+                    options={initData?.plantNameList?.map(item => {
+                        return {
+                            code: item,
+                            name: item,
+                        };
+                    })}
                     onChange={value => {
+                        paginationRef.current = DEFAULT_PAGINATION;
                         plantNameRef.current = value;
                         setPlantName(value);
                     }}
@@ -254,6 +286,28 @@ const Account = () => {
                 <div>
                     <span style={{ marginRight: 5 }}>日报生成时间</span>
                     <DatePicker.RangePicker
+                        disabledDate={(current, { from, type }) => {
+                            const getYearMonth = date => date.year() * 12 + date.month();
+                            if (from) {
+                                const minDate = from.add(-30, "days");
+                                const maxDate = from.add(30, "days");
+                                switch (type) {
+                                    case "year":
+                                        return (
+                                            current.year() < minDate.year() ||
+                                            current.year() > maxDate.year()
+                                        );
+                                    case "month":
+                                        return (
+                                            getYearMonth(current) < getYearMonth(minDate) ||
+                                            getYearMonth(current) > getYearMonth(maxDate)
+                                        );
+                                    default:
+                                        return Math.abs(current.diff(from, "days")) >= 31;
+                                }
+                            }
+                            return false;
+                        }}
                         value={
                             time && time.length > 0 && time[0] && time[1]
                                 ? [dayjs(time[0]), dayjs(time[1])]
@@ -308,17 +362,23 @@ const Account = () => {
                                         if (projectName) {
                                             const projectName = projectNameRef.current;
                                             const plantName = plantNameRef.current;
-                                            const detectionDate = timeRef.current;
-                                            window.open(
+                                            const [detectionDateFrom, detectionDateTo] =
+                                                timeRef.current || [];
+                                            const url =
                                                 getBaseUrl() +
-                                                    "/project_run_day_report/export-find" +
-                                                    jsonToUrlParams({
-                                                        projectName,
-                                                        plantName,
-                                                        detectionDate,
-                                                        access_token: localStorage.getItem("Token"),
-                                                    })
-                                            );
+                                                "/project_run_day_report/export-find" +
+                                                jsonToUrlParams({
+                                                    projectName,
+                                                    plantName,
+                                                    detectionDateFrom:
+                                                        dayjs(detectionDateFrom).format(
+                                                            "YYYY-MM-DD"
+                                                        ),
+                                                    detectionDateTo:
+                                                        dayjs(detectionDateTo).format("YYYY-MM-DD"),
+                                                    access_token: localStorage.getItem("Token"),
+                                                });
+                                            window.open(url);
                                         } else {
                                             message.error("至少搜索一个项目");
                                         }
@@ -333,14 +393,14 @@ const Account = () => {
                                     onClick={async () => {
                                         if (!selectedRowKeys?.length)
                                             return message.info("请勾选需要导出的数据");
-                                        window.open(
+                                        const url =
                                             getBaseUrl() +
-                                                "/project_run_day_report/export-multiple-check-records" +
-                                                jsonToUrlParams({
-                                                    toolRunDayReportIdList: selectedRowKeys,
-                                                    access_token: localStorage.getItem("Token"),
-                                                })
-                                        );
+                                            "/project_run_day_report/export-multiple-check-records" +
+                                            jsonToUrlParams({
+                                                toolRunDayReportIdList: selectedRowKeys,
+                                                access_token: localStorage.getItem("Token"),
+                                            });
+                                        window.open(url);
                                     }}
                                 >
                                     批量导出云平台巡检数据
@@ -394,15 +454,15 @@ const Account = () => {
                                 </span>
                                 <Button
                                     onClick={() => {
-                                        window.open(
+                                        const url =
                                             getBaseUrl() +
-                                                "/project_run_day_report/export-check-record" +
-                                                jsonToUrlParams({
-                                                    id: downloadCheckRecordId,
-                                                    moment: item.moment,
-                                                    access_token: localStorage.getItem("Token"),
-                                                })
-                                        );
+                                            "/project_run_day_report/export-check-record" +
+                                            jsonToUrlParams({
+                                                id: downloadCheckRecordId,
+                                                moment: item.moment,
+                                                access_token: localStorage.getItem("Token"),
+                                            });
+                                        window.open(url);
                                     }}
                                 >
                                     导出
@@ -413,17 +473,15 @@ const Account = () => {
                     <Button
                         style={{ marginTop: 5 }}
                         onClick={() => {
-                            momentList?.forEach(item => {
-                                window.open(
-                                    getBaseUrl() +
-                                        "/project_run_day_report/export-check-record" +
-                                        jsonToUrlParams({
-                                            id: downloadCheckRecordId,
-                                            moment: item.moment,
-                                            access_token: localStorage.getItem("Token"),
-                                        })
-                                );
-                            });
+                            const url =
+                                getBaseUrl() +
+                                "/project_run_day_report/export-multiple-check-records" +
+                                jsonToUrlParams({
+                                    toolRunDayReportIdList: [downloadCheckRecordId],
+                                    access_token: localStorage.getItem("Token"),
+                                });
+                            console.log("url", url);
+                            window.open(url);
                         }}
                     >
                         导出全部文件
