@@ -5,11 +5,18 @@ import {
     Form,
     Input,
     Modal,
+    Steps,
+    DatePicker,
     Space,
     Select,
+    Row,
+    Col,
+    Radio,
     Collapse,
 } from "antd";
+import dayjs from "dayjs";
 import { Title } from "@/components";
+import { ExclamationCircleOutlined, CaretRightOutlined } from "@ant-design/icons";
 import { TELPHONE_REG, EMAIL_REG, ALL_SPACE_REG } from "@/utils/constants";
 import {
     getAccountUpdateIndexData as getAccountUpdateIndexDataServer,
@@ -211,7 +218,6 @@ const AddProject = ({ open, editId, onClose }) => {
                             value: "username",
                         }}
                         options={seAccountOptions}
-                        allowClear
                     />
                 </Form.Item>
 
