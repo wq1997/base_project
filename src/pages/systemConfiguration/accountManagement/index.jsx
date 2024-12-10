@@ -45,7 +45,6 @@ const Account = () => {
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [addAccountOpen, setAddAccountOpen] = useState(false);
     const [editId, setEditId] = useState();
-    const [editAccount, setEditAccount] = useState();
     const [showSendEmail, setShowSendEmail] = useState(false);
 
     const columns = [
@@ -96,7 +95,6 @@ const Account = () => {
                                 onClick={() => {
                                     setAddAccountOpen(true);
                                     setEditId(id);
-                                    setEditAccount(account)
                                 }}
                             >
                                 编辑
@@ -215,11 +213,9 @@ const Account = () => {
             <AddAccount
                 open={addAccountOpen}
                 editId={editId}
-                editAccount={editAccount}
                 onClose={() => {
                     setAddAccountOpen(false);
                     setEditId();
-                    setEditAccount();
                     getList();
                 }}
             />

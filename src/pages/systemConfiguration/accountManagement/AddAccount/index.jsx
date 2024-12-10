@@ -5,30 +5,22 @@ import {
     Form,
     Input,
     Modal,
-    Steps,
-    DatePicker,
     Space,
     Select,
-    Row,
-    Col,
-    Radio,
     Collapse,
 } from "antd";
-import dayjs from "dayjs";
 import { Title } from "@/components";
-import { ExclamationCircleOutlined, CaretRightOutlined } from "@ant-design/icons";
 import { TELPHONE_REG, EMAIL_REG, ALL_SPACE_REG } from "@/utils/constants";
 import {
     getAccountUpdateIndexData as getAccountUpdateIndexDataServer,
     updateAccount as updateAccountServer,
-    getSeAccount as getSeAccountServe,
-    bindSeAccount as bindSeAccountServe
+    getSeAccount as getSeAccountServe
 } from "@/services/user";
 import "./index.less";
 
 const { Panel } = Collapse;
 
-const AddProject = ({ open, editId, editAccount, onClose }) => {
+const AddProject = ({ open, editId, onClose }) => {
     const [form] = Form.useForm();
     const [roleOptions, setRoleOptions] = useState([]);
     const [regionsOptions, setRegionOptions] = useState([]);
@@ -53,12 +45,6 @@ const AddProject = ({ open, editId, editAccount, onClose }) => {
             ...values,
             id: editId || undefined,
         });
-        if (values?.refSeAccount) {
-            await bindSeAccountServe({
-                account: editAccount,
-                seAccount: values?.refSeAccount
-            });
-        }
         if (res?.data?.status == "SUCCESS") {
             message.success("操作成功");
             onClose();
@@ -217,7 +203,6 @@ const AddProject = ({ open, editId, editAccount, onClose }) => {
                 <Form.Item
                     label="绑定云平台账号"
                     name={"refSeAccount"}
-                    hidden={!editId}
                 >
                     <Select
                         placeholder="请选择绑定云平台账号"
@@ -226,6 +211,7 @@ const AddProject = ({ open, editId, editAccount, onClose }) => {
                             value: "username",
                         }}
                         options={seAccountOptions}
+                        allowClear
                     />
                 </Form.Item>
 
