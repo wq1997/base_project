@@ -55,8 +55,6 @@ const AddProject = ({ open, editId, onClose }) => {
         if (res?.data?.status == "SUCCESS") {
             message.success("操作成功");
             onClose();
-        } else {
-            message.info(res?.data?.msg);
         }
     };
 
@@ -212,6 +210,7 @@ const AddProject = ({ open, editId, onClose }) => {
                     name={"refSeAccount"}
                 >
                     <Select
+                        allowClear
                         placeholder="请选择绑定云平台账号"
                         fieldNames={{
                             label: "displayName",

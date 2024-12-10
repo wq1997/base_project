@@ -25,6 +25,7 @@ import {
     getAccountList as getAccountListServer,
     unBindWx as unBindWxServer,
     deleteUser as deleteRoleServer,
+    getSeAccount as getSeAccountServe
 } from "@/services/user";
 
 const Account = () => {
@@ -46,6 +47,7 @@ const Account = () => {
     const [addAccountOpen, setAddAccountOpen] = useState(false);
     const [editId, setEditId] = useState();
     const [showSendEmail, setShowSendEmail] = useState(false);
+    const [seAccountOptions, setSeAccountOptions] = useState([]);
 
     const columns = [
         {
@@ -81,6 +83,12 @@ const Account = () => {
         {
             title: "备注",
             dataIndex: "remark",
+        },
+        {
+            title: '绑定云平台账号',
+            render(_, { refSeAccount }){
+                return seAccountOptions?.find(item => item?.username===refSeAccount)?.displayName;
+            }
         },
         {
             title: "操作",
@@ -203,9 +211,17 @@ const Account = () => {
         });
     };
 
+    const getSeAccount = async () => {
+        const seAccountRes = await getSeAccountServe();
+        if (seAccountRes?.data?.status == "SUCCESS") {
+            setSeAccountOptions(seAccountRes?.data?.data);
+        }
+    }
+
     useEffect(() => {
         getList();
         getSearchInitData();
+        getSeAccount();
     }, []);
 
     return (
