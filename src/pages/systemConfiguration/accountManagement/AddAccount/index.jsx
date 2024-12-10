@@ -21,15 +21,18 @@ import { TELPHONE_REG, EMAIL_REG, ALL_SPACE_REG } from "@/utils/constants";
 import {
     getAccountUpdateIndexData as getAccountUpdateIndexDataServer,
     updateAccount as updateAccountServer,
+    getSeAccount as getSeAccountServe,
+    bindSeAccount as bindSeAccountServe
 } from "@/services/user";
 import "./index.less";
 
 const { Panel } = Collapse;
 
-const AddProject = ({ open, editId, onClose }) => {
+const AddProject = ({ open, editId, editAccount, onClose }) => {
     const [form] = Form.useForm();
     const [roleOptions, setRoleOptions] = useState([]);
     const [regionsOptions, setRegionOptions] = useState([]);
+    const [seAccountOptions, setSeAccountOptions] = useState([]);
 
     const getInitData = async () => {
         const res = await getAccountUpdateIndexDataServer(editId || "");
@@ -39,6 +42,10 @@ const AddProject = ({ open, editId, onClose }) => {
             setRegionOptions(regions);
             form.setFieldsValue(editUser);
         }
+        const seAccountRes = await getSeAccountServe();
+        if (seAccountRes?.data?.status == "SUCCESS") {
+            setSeAccountOptions(seAccountRes?.data?.data);
+        }
     };
 
     const onFinish = async values => {
@@ -46,6 +53,12 @@ const AddProject = ({ open, editId, onClose }) => {
             ...values,
             id: editId || undefined,
         });
+        if (values?.refSeAccount) {
+            await bindSeAccountServe({
+                account: editAccount,
+                seAccount: values?.refSeAccount
+            });
+        }
         if (res?.data?.status == "SUCCESS") {
             message.success("操作成功");
             onClose();
@@ -198,6 +211,21 @@ const AddProject = ({ open, editId, onClose }) => {
                             value: "code",
                         }}
                         options={roleOptions}
+                    />
+                </Form.Item>
+
+                <Form.Item
+                    label="绑定云平台账号"
+                    name={"refSeAccount"}
+                    hidden={!editId}
+                >
+                    <Select
+                        placeholder="请选择绑定云平台账号"
+                        fieldNames={{
+                            label: "displayName",
+                            value: "username",
+                        }}
+                        options={seAccountOptions}
                     />
                 </Form.Item>
 

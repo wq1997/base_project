@@ -57,3 +57,11 @@ export const deleteUser = ids => {
     const url = `${API_URL}/user/delete`;
     return axiosInstance.post(url, ids);
 };
+
+export const getSeAccount = () => {
+    return axiosInstance.post(`${API_URL}/user/list-psmp-users`)
+}
+
+export const bindSeAccount = (payload) => {
+    return axiosInstance.post(`${API_URL}/user/bind-se-account?account=${payload.account}&seAccount=${payload.seAccount}`, payload)
+}

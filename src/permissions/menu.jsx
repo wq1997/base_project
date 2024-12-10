@@ -26,6 +26,7 @@ const MenuList = [
         icon: <FundFilled />,
         darkIcon: "icon-wuliaoxuqiu-copy",
         target: "_blank",
+        permissions: "largeScreen",
     },
     {
         key: "/workbench",

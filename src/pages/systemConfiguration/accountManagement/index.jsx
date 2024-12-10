@@ -45,6 +45,7 @@ const Account = () => {
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [addAccountOpen, setAddAccountOpen] = useState(false);
     const [editId, setEditId] = useState();
+    const [editAccount, setEditAccount] = useState();
     const [showSendEmail, setShowSendEmail] = useState(false);
 
     const columns = [
@@ -87,7 +88,7 @@ const Account = () => {
             dataIndex: "operate",
             width: 120,
             fixed: "right",
-            render: (_, { id, wxOpenId }) => {
+            render: (_, { id, account, wxOpenId }) => {
                 return (
                     <Space>
                         {hasPerm(user, "op:user_edit") && (
@@ -95,6 +96,7 @@ const Account = () => {
                                 onClick={() => {
                                     setAddAccountOpen(true);
                                     setEditId(id);
+                                    setEditAccount(account)
                                 }}
                             >
                                 编辑
@@ -213,9 +215,11 @@ const Account = () => {
             <AddAccount
                 open={addAccountOpen}
                 editId={editId}
+                editAccount={editAccount}
                 onClose={() => {
                     setAddAccountOpen(false);
                     setEditId();
+                    setEditAccount();
                     getList();
                 }}
             />
