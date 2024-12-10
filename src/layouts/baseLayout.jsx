@@ -10,6 +10,8 @@ import useLocale from "@/hooks/useLocale"
 import languageChineseSvg from "../assets/svg/language-chinese.svg";
 import languageEnglishSvg from "../assets/svg/language-english.svg";
 import mySvg from "../assets/svg/my.svg";
+import bigScreen from "../assets/svg/bigScreen.svg";
+
 import {
     UserSwitchOutlined,
     LogoutOutlined,
@@ -97,6 +99,16 @@ const BaseLayout = () => {
                         <FormattedMessage id="采日能源储能管理系统" />
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
+                    {
+                          
+                                <img
+                                    // type='icon-jiankongdaping'
+                                    src={bigScreen}
+                                    style={{ cursor: 'pointer', fontSize: "30px",margin: '0px 40px', }}
+                                    onClick={() => history.push('/bigScreen')}
+                                />
+                               
+                        }
                         {
                             global.theme === "default" ?
                                 <Icon

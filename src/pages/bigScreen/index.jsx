@@ -1,8 +1,8 @@
 import React, {useState, useEffect, useMemo, useRef} from 'react';
 import styles from "./index.less";
-import {useSelector, useIntl, history} from "umi";
+import {useSelector, useIntl, history,useDispatch} from "umi";
 import * as echarts from "echarts";
-import {theme, Space, Table, Carousel} from "antd"
+import {theme, Space, Table, Carousel, Dropdown, } from "antd"
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import pic1 from '@/assets/svg/default/闪电.svg'
@@ -24,8 +24,19 @@ import {
     apiGetPlantAlarmDistribution, apiGetPlantEnergy, apiGetPlantEnergyByDay,
     apiGetPlantList, apiGetPlantPowerCurves
 } from "@/services/bigScreen";
+import {
+    LogoutOutlined,
+} from '@ant-design/icons';
+import languageChineseSvg from "@/assets/svg/language-chinese.svg";
+import languageEnglishSvg from "@/assets/svg/language-english.svg";
+import mySvg from "@/assets/svg/my.svg";
+import useIcon from '@/hooks/useIcon';
+import useLocale from "@/hooks/useLocale"
+import { setLocalStorage, removeLocalStorage } from "@/utils/utils";
+import { updateLanguage } from "@/services/user";
 
 function Com(props) {
+    const dispatch = useDispatch();
     const {token} = theme.useToken();
     const intl = useIntl();
     const t = (id) => intl.formatMessage({id});
@@ -43,13 +54,14 @@ function Com(props) {
     const [historyDataX, setHistoryDataX] = useState([]);
     const [historyDataCharge, setHistoryDataCharge] = useState([]);
     const [historyDataDisCharge, setHistoryDataDisCharge] = useState([]);
+    const Icon = useIcon();
 
     const columns = [
         {
             title: t('电站名称'),
             dataIndex: 'name',
             key: 'name',
-            width: '25%'
+            width: '10%'
         },
         {
             title: t('所属用户'),
@@ -67,13 +79,13 @@ function Com(props) {
             title: t('建站日期'),
             dataIndex: 'installDateVo',
             key: 'installDateVo',
-            width: '10%'
+            width: '15%'
         },
         {
             title: t('装机容量'),
             dataIndex: 'capacity',
             key: 'capacity',
-            width: '10%'
+            width: '15%'
         },
         {
             title: t('电站位置'),
@@ -86,7 +98,7 @@ function Com(props) {
             key: 'action',
             width: '10%',
             render: (_, record) => (
-                <Space size="middle">
+                <Space size="middle" style={{cursor:'pointer'}}>
                     <span onClick={() => plantClick(record)} style={{color: '#03B4B4'}}>{t('查看详情')}</span>
                 </Space>
             ),
@@ -162,17 +174,17 @@ function Com(props) {
         };
 
         if (powerCurveRes?.data?.code == 200){
-            let tempX=[],tempY=[],dataY=[],legend=[];
+            let tempX=[],tempY=[],legend=[];
             powerCurveRes?.data?.data.forEach((item, index) => {
+                let dataY=[];
                 if(index==0){
-                    item.value?.forEach(it=> {
+                    item?.value?.forEach(it=> {
                         it.time=dayjs(it.time).format('HH:mm');
                         tempX.push(it.time);
                         dataY.push(it.value)
                     })
-                }
-                if(index>0){
-                    item.value?.forEach(it=> {
+                }else{
+                    item?.value?.forEach(it=> {
                         dataY.push(it.value)
                     })
                 }
@@ -216,10 +228,113 @@ function Com(props) {
         getPlantList(user.roleId);
     }, [token])
 
+    const changeTheme = (theme) => {
+        setLocalStorage("theme", theme);
+        dispatch({
+            type: 'global/changeTheme',
+            payload: {
+                theme
+            }
+        })
+    }
+    const changeLanguage = async (locale) => {
+        let flag = false;
+        if (locale === 'zh-CN') {
+            let { data } = await updateLanguage({ language: 1 });
+            flag = data;
+        } else if (locale === 'en-US') {
+            let { data } = await updateLanguage({ language: 3 });
+            flag = data;
+        }
+        if (flag) {
+            window.location.reload();
+            setLocalStorage('locale', locale);
+        }
+
+    }
     return (
         <div className={styles.largeScreen}
              style={{backgroundColor: token.bigScreenBgc, color: token.colorLargeScreen}}>
-            <div className={global.theme == 'default' ? styles.title_default : styles.title_dark}>{t('储能电站监控大屏')}</div>
+            <div className={global.theme == 'default' ? styles.title_default : styles.title_dark}>{t('储能电站监控大屏')}
+            <div style={{ display: 'flex', alignItems: 'center', position:'absolute',right:'20px',bottom:'30px'}}>
+                        {
+                            global.theme === "default" ?
+                                <Icon
+                                    type='icon-shense'
+                                    // src={themeDefaultSvg}
+                                    style={{ cursor: 'pointer', fontSize: "30px" }}
+                                    onClick={() => changeTheme('dark')}
+                                />
+                                :
+                                <Icon
+                                    // src={themeDarkSvg}
+                                    type='icon-qianse'
+                                    style={{ cursor: 'pointer', fontSize: "30px", }}
+                                    onClick={() => changeTheme('default')}
+                                />
+                        }
+                        {
+                            global.locale === "zh-CN" ?
+                                <img
+                                    src={languageEnglishSvg}
+                                    style={{ cursor: 'pointer', margin: '0px 40px' }}
+                                    onClick={() => changeLanguage('en-US')}
+                                />
+                                :
+                                <img
+                                    src={languageChineseSvg}
+                                    style={{ cursor: 'pointer', margin: '0px 40px' }}
+                                    onClick={() => changeLanguage('zh-CN')}
+                                />
+                        }
+                        <Dropdown
+                            placement="bottom"
+                            menu={{
+                                items: [
+                                    {
+                                        label: ( <Space
+                                            size={10}
+                                            align="baseline"
+                                            style={{width: '100%', height: '100%'}}
+                                            onClick={() => {
+                                                
+                                            }}
+                                          >
+                                            {/* <UserOutlined 
+                                              style={{
+                                                fontSize: 15,
+                                              }}
+                                            /> */}
+                                            <span>{useLocale('退出登录')}</span>
+                                          </Space>
+                                        ),
+                                        key: 'logout',
+                                        icon: <LogoutOutlined />,
+                                    },
+                                    // {
+                                    //     label: useLocale('切换电站'),
+                                    //     key: 'changeAccount',
+                                    //     icon: <UserSwitchOutlined />,
+                                    // },
+                                ],
+                                onClick({ key }) {
+                                    if (key === "logout") {
+                                        removeLocalStorage("Token");
+                                        history.push('/login');
+                                    }
+                                    if (key === "changeAccount") {
+                                        history.push('/largeScreen');
+                                    }
+                                }
+                            }}
+                        >
+                            <img
+                                src={mySvg}
+                                style={{ cursor: 'pointer' }}
+                            />
+                        </Dropdown>
+                    </div>
+            </div>
             <div className={styles.container}
                  style={{backgroundColor: token.bigScreenBgc, color: token.colorLargeScreen}}>
                 <div className={styles.real}
@@ -266,10 +381,10 @@ function Com(props) {
                     <HistoryCurve dataX={historyDataX} charge={historyDataCharge} disCharge={historyDataDisCharge}/>
                 </div>
                 <div className={styles.mv} style={{backgroundColor: token.titleCardBgc, color: token.colorLargeScreen}}>
-                    <div>
-                        <Carousel arrows>
-                            <div>
-                                <img src={pic4}/>
+                    <div >
+                        <Carousel  autoplay arrows={true}  adaptiveHeight={false} draggable={true} style={{display:'flex',alignItems:'center'}}>
+                            <div >
+                                <img src={pic4} />
                             </div>
                             <div>
                                 <img src={pic5}/>
@@ -309,7 +424,7 @@ function Com(props) {
                                 }}/>
                             </div>
                         </div>
-                    </div>
+                    </div> 
                     <div className={styles.gaojing} style={{color:token.colorLight}}>
                         <div className={styles.gaojing_item}>
                             <div>
@@ -394,7 +509,8 @@ function Com(props) {
                                 hideOnSinglePage: true
                             }}
                             showHeader={false}
-                            columns={columns} dataSource={tableData}/>
+                            columns={columns} dataSource={tableData}
+                            />
                     </div>
                 </div>
                 <div className={styles.contribute}

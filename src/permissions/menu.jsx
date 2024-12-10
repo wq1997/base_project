@@ -20,7 +20,7 @@ const MenuList = [
         icon: <ToolOutlined/> ,
         children: [
             // { label: '储能' , key: '/index/device/energyStorage', type: "PV" },
-            { label: '总览' , key: '/index/device/energyStorage/components/Overview', type: "PV" },
+            // { label: '总览' , key: '/index/device/energyStorage/components/Overview', type: "PV" },
             { label: 'PCS' , key: '/index/device/energyStorage/components/EnergyPCS', type: "PV" },
             { label: 'BMS' , key: '/index/device/energyStorage/components/EnergyBMS', type: "PV" },
             { label: '辅助设备' , key: '/index/device/energyStorage/components/ElectricityMeter', type: "PV" },

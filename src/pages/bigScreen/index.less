@@ -2,12 +2,13 @@
   width: 100%;
   height: calc(100vh - 35px);
   min-width: 1270px;
-  min-height: 900px;
+  min-height: 875px;
   padding-bottom: 15px;
+  padding-top: 20px;
 
-  > div:nth-child(1) {
+  >div:nth-child(1) {
     //width: 100%;
-    margin-top: 20px;
+    // margin-top: 20px;
     line-height: 96px;
     font-family: DingTalk, DingTalk;
     text-align: center;
@@ -18,63 +19,66 @@
     background-position: center;
   }
 
-  > div:nth-child(2) {
-    height: calc(100% - 120px);
+  >div:nth-child(2) {
+    height: calc(100% - 110px);
   }
 
   .title_default {
     background-image: url("@/assets/svg/default/大标题浅色.svg");
     margin: 0 20px 10px 20px;
+    position: relative;
   }
 
   .title_dark {
     background-image: url("@/assets/svg/dark/大标题深色.svg");
     margin: 0 20px 10px 20px;
+    position: relative;
+
   }
 
   .container {
-    margin: 0 20px 20px 20px;
+    margin: 0 20px 0px 20px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     gap: 8px 8px;
     grid-auto-flow: row;
     grid-template-areas:
-    "real real real real history history history history history history history history history mv mv mv mv mv mv mv"
-    "real real real real history history history history history history history history history mv mv mv mv mv mv mv"
-    "real real real real history history history history history history history history history mv mv mv mv mv mv mv"
-    "real real real real history history history history history history history history history mv mv mv mv mv mv mv"
-    "real real real real history history history history history history history history history mv mv mv mv mv mv mv"
-    "real real real real history history history history history history history history history mv mv mv mv mv mv mv"
-    "real real real real history history history history history history history history history mv mv mv mv mv mv mv"
-    "alarm alarm alarm alarm curve curve curve curve curve curve curve curve curve curve curve rank rank rank rank rank"
-    "alarm alarm alarm alarm curve curve curve curve curve curve curve curve curve curve curve rank rank rank rank rank"
-    "alarm alarm alarm alarm curve curve curve curve curve curve curve curve curve curve curve rank rank rank rank rank"
-    "alarm alarm alarm alarm curve curve curve curve curve curve curve curve curve curve curve rank rank rank rank rank"
-    "alarm alarm alarm alarm curve curve curve curve curve curve curve curve curve curve curve rank rank rank rank rank"
-    "alarm alarm alarm alarm curve curve curve curve curve curve curve curve curve curve curve rank rank rank rank rank"
-    "alarm alarm alarm alarm curve curve curve curve curve curve curve curve curve curve curve rank rank rank rank rank"
-    "plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL contribute contribute contribute contribute contribute"
-    "plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL contribute contribute contribute contribute contribute"
-    "plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL contribute contribute contribute contribute contribute"
-    "plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL contribute contribute contribute contribute contribute"
-    "plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL contribute contribute contribute contribute contribute"
-    "plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL contribute contribute contribute contribute contribute";
+      "real real real real history history history history history history history history history history history mv mv mv mv mv"
+      "real real real real history history history history history history history history history history history mv mv mv mv mv"
+      "real real real real history history history history history history history history history history history mv mv mv mv mv"
+      "real real real real history history history history history history history history history history history mv mv mv mv mv"
+      "real real real real history history history history history history history history history history history mv mv mv mv mv"
+      "real real real real history history history history history history history history history history history mv mv mv mv mv"
+      "real real real real history history history history history history history history history history history mv mv mv mv mv"
+      "alarm alarm alarm alarm curve curve curve curve curve curve curve curve curve curve curve rank rank rank rank rank"
+      "alarm alarm alarm alarm curve curve curve curve curve curve curve curve curve curve curve rank rank rank rank rank"
+      "alarm alarm alarm alarm curve curve curve curve curve curve curve curve curve curve curve rank rank rank rank rank"
+      "alarm alarm alarm alarm curve curve curve curve curve curve curve curve curve curve curve rank rank rank rank rank"
+      "alarm alarm alarm alarm curve curve curve curve curve curve curve curve curve curve curve rank rank rank rank rank"
+      "alarm alarm alarm alarm curve curve curve curve curve curve curve curve curve curve curve rank rank rank rank rank"
+      "alarm alarm alarm alarm curve curve curve curve curve curve curve curve curve curve curve rank rank rank rank rank"
+      "plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL contribute contribute contribute contribute contribute"
+      "plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL contribute contribute contribute contribute contribute"
+      "plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL contribute contribute contribute contribute contribute"
+      "plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL contribute contribute contribute contribute contribute"
+      "plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL contribute contribute contribute contribute contribute"
+      "plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL plantL contribute contribute contribute contribute contribute";
   }
 
   .real {
     grid-area: real;
     //border: 1px solid #ccc;
     border-radius: 5px;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.5);
+    // box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.5);
 
-    > div:nth-child(2) {
+    >div:nth-child(2) {
       height: calc(100% - 28px);
       display: grid;
-      grid-template-rows:1fr 1fr 1fr;
-      grid-template-columns:1fr;
+      grid-template-rows: 1fr 1fr 1fr;
+      grid-template-columns: 1fr;
 
-      > div:nth-child(1) {
+      >div:nth-child(1) {
         width: 100%;
         height: 100%;
         display: flex;
@@ -82,20 +86,21 @@
         text-align: center;
         align-items: center;
 
-        > div {
-          > div:nth-child(1) {
+        >div {
+          >div:nth-child(1) {
             font-size: 18px;
             font-weight: bold;
             font-family: DingTalk, DingTalk;
           }
 
-          > div:nth-child(2), > div:nth-child(3) {
+          >div:nth-child(2),
+          >div:nth-child(3) {
             font-size: 14px;
           }
         }
       }
 
-      > div:nth-child(3) {
+      >div:nth-child(3) {
         width: 100%;
         height: 100%;
         display: flex;
@@ -103,14 +108,15 @@
         text-align: center;
         align-items: center;
 
-        > div {
-          > div:nth-child(1) {
+        >div {
+          >div:nth-child(1) {
             font-size: 18px;
             font-weight: bold;
             font-family: DingTalk, DingTalk;
           }
 
-          > div:nth-child(2), > div:nth-child(3) {
+          >div:nth-child(2),
+          >div:nth-child(3) {
             font-size: 14px;
           }
         }
@@ -118,8 +124,8 @@
       }
     }
 
-    > div:nth-child(2) {
-      > div:nth-child(2) {
+    >div:nth-child(2) {
+      >div:nth-child(2) {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -163,27 +169,35 @@
     }
 
     @keyframes bounce {
-      0%, 100% {
-        transform: translateX(-50%) translateY(0); /* 保持水平居中，并设置垂直动画 */
+
+      0%,
+      100% {
+        transform: translateX(-50%) translateY(0);
+        /* 保持水平居中，并设置垂直动画 */
       }
+
       50% {
-        transform: translateX(-50%) translateY(-10px); /* 只改变垂直方向 */
+        transform: translateX(-50%) translateY(-10px);
+        /* 只改变垂直方向 */
       }
     }
   }
 
   .history {
     grid-area: history;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.5);
+    // box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.5);
     border-radius: 5px;
   }
 
   .mv {
     grid-area: mv;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
 
-    > div {
+    >div {
       width: 100%;
-      height: 100%;
+      // height: 100%;
       overflow: hidden;
     }
 
@@ -200,7 +214,7 @@
 
   .alarm {
     grid-area: alarm;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.5);
+    // box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.5);
     border-radius: 5px;
   }
 
@@ -209,7 +223,7 @@
     display: flex;
     justify-content: space-around;
 
-    > div {
+    >div {
       width: 80px;
 
     }
@@ -219,14 +233,15 @@
       align-items: center;
       margin-bottom: 5px;
 
-      > span:nth-child(1) {
+      >span:nth-child(1) {
         display: inline-block;
         width: 10px;
         height: 10px;
         border-radius: 90PX;
         margin-right: 3px;
       }
-      >span:nth-child(2){
+
+      >span:nth-child(2) {
         width: 100%;
         white-space: nowrap;
         overflow: hidden;
@@ -238,22 +253,22 @@
 
   .curve {
     grid-area: curve;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.5);
+    // box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.5);
     border-radius: 5px;
   }
 
   .rank {
     grid-area: rank;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.5);
+    // box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.5);
     border-radius: 5px;
   }
 
   .contribute {
     grid-area: contribute;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.5);
+    // box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.5);
     border-radius: 5px;
 
-    > div:nth-child(2) {
+    >div:nth-child(2) {
       height: calc(100% - 28px);
       display: flex;
       justify-content: space-around;
@@ -263,7 +278,7 @@
 
   .plantL {
     grid-area: plantL;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.5);
+    // box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.5);
     border-radius: 5px;
 
     .plantL_table_one {
@@ -278,95 +293,103 @@
       width: 100%;
       height: calc(100% - 80px);
       overflow-y: scroll;
-    }
+     
+  }
+}
+
+.lTitle_default {
+  font-size: 14px;
+  line-height: 28px;
+  font-size: 14px;
+  font-weight: 600;
+  padding-left: 20px;
+  background-image: url("../../assets/svg/default/标题浅色.svg");
+  //background-size: cover;
+  background-repeat: no-repeat;
+  background-position: left;
+  background-size: auto 28px;
+}
+
+.lTitle_dark {
+  font-size: 14px;
+  line-height: 28px;
+  font-size: 14px;
+  padding-left: 20px;
+  background-image: url("../../assets/svg/dark/标题深色.svg");
+  background-repeat: no-repeat;
+  background-position: left;
+  background-size: auto 28px;
+}
+
+.gj {
+  text-align: center;
+
+  >div:nth-child(1) {
+    font-size: 1.1rem;
+    font-weight: bold;
+    font-family: DingTalk, DingTalk;
   }
 
-  .lTitle_default {
-    font-size: 14px;
-    line-height: 28px;
-    font-size: 14px;
-    font-weight: 600;
-    padding-left: 20px;
-    background-image: url("../../assets/svg/default/标题浅色.svg");
-    //background-size: cover;
-    background-repeat: no-repeat;
-    background-position: left;
-    background-size: auto 28px;
+  >div:nth-child(2) {
+    font-size: 0.6rem;
   }
+}
 
-  .lTitle_dark {
-    font-size: 14px;
-    line-height: 28px;
-    font-size: 14px;
-    padding-left: 20px;
-    background-image: url("../../assets/svg/dark/标题深色.svg");
-    background-repeat: no-repeat;
-    background-position: left;
-    background-size: auto 28px;
-  }
+.she_hui_default {
+  width: 100px;
+  height: 32px;
+  margin: 0 auto;
+  background-image: url("../../assets/svg/default/社会贡献.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
 
-  .gj {
-    text-align: center;
+.she_hui_dark {
+  width: 100px;
+  height: 32px;
+  margin: 0 auto;
+  background-image: url("../../assets/svg/dark/社会贡献.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
 
-    > div:nth-child(1) {
-      font-size: 1.1rem;
+.socie {
+  text-align: center;
+
+  >div:nth-child(1) {
+    >span:nth-child(1) {
+      font-size: 18px;
       font-weight: bold;
       font-family: DingTalk, DingTalk;
     }
 
-    > div:nth-child(2) {
-      font-size: 0.6rem;
-    }
-  }
-
-  .she_hui_default {
-    width: 100px;
-    height: 32px;
-    margin: 0 auto;
-    background-image: url("../../assets/svg/default/社会贡献.svg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-
-  .she_hui_dark {
-    width: 100px;
-    height: 32px;
-    margin: 0 auto;
-    background-image: url("../../assets/svg/dark/社会贡献.svg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-
-  .socie {
-    text-align: center;
-
-    > div:nth-child(1) {
-      > span:nth-child(1) {
-        font-size: 18px;
-        font-weight: bold;
-        font-family: DingTalk, DingTalk;
-      }
-
-      > span:nth-child(2) {
-        font-size: 14px;
-      }
-    }
-
-    > div:nth-child(2) {
+    >span:nth-child(2) {
       font-size: 14px;
     }
   }
-.totalGJ{
-  max-width: 100%;
-  white-space: nowrap; /* 不换行 */
-  overflow: hidden; /* 超出部分隐藏 */
-  text-overflow: ellipsis; /* 超出部分显示省略号 */
-}
-  :global {
-    .ant-table-wrapper {
-      max-height: calc(100% - 28px);
-    }
+
+  >div:nth-child(2) {
+    font-size: 14px;
   }
+}
+
+.totalGJ {
+  max-width: 100%;
+  white-space: nowrap;
+  /* 不换行 */
+  overflow: hidden;
+  /* 超出部分隐藏 */
+  text-overflow: ellipsis;
+  /* 超出部分显示省略号 */
+}
+
+:global {
+  .ant-table-wrapper {
+    max-height: calc(100% - 28px);
+  }
+}
+
+
 }

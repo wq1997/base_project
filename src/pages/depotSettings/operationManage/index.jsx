@@ -86,7 +86,7 @@ const OperationManage = () => {
                         <MyButton text="BMS开机" keyObj='pcsStartStop' valueObj={4}  cmdKey='7016' devId={item.id} color={{background:token.barColor[5],color:'#fff'}}/>
                         <MyButton text="分闸" keyObj='mcsSwitchOnOff' valueObj={1}  cmdKey='7015'  devId={item.mcsDevId}  color={{background:token.barColor[6],color:'#fff'}}/>
                         <MyButton text="合闸" keyObj='mcsSwitchOnOff' valueObj={0}  cmdKey='7015' devId={item.mcsDevId}  color={{background:token.barColor[6],color:'#fff'}}/>
-                        <MyButton text="功率设置"  keyObj='pcsPower' cmdKey='7019' devId={item.devId}/>
+                        <MyButton text="功率设置"  keyObj='pcsPower' cmdKey='7019' devId={item.id}/>
                         <span>{item.pcsStatus}</span>
                         <span>{item.power}</span>
                         <span>{item.g3CircuitBreakerState}</span>
@@ -105,7 +105,7 @@ const OperationManage = () => {
                                                     <MyButton text="关机" keyObj='pcsStartStop' valueObj={2}  cmdKey='7004'devId={it.id} />
                                                     <MyButton text="BMS开机"keyObj='bmsStartStop' valueObj={1}  cmdKey='7003' devId={it.bmsDevId} />
                                                     <MyButton text="BMS关机" keyObj='bmsStartStop' valueObj={2}  cmdKey='7003' devId={it.bmsDevId} />
-                                                    <MyButton text="功率设置" keyObj='pcsPower'   cmdKey='7001' devId={it.devId} />
+                                                    <MyButton text="功率设置" keyObj='pcsPower'   cmdKey='7001' devId={it.id} />
                                                     <span>{t('状态')}：{it?.bmcStatus}</span>
                                                     <span>{t('功率')}：{it?.bmcPower}</span>
                                                 </Space>

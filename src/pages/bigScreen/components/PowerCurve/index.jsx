@@ -26,6 +26,9 @@ function Com({ dataX, dataY ,legend}) {
             legend: {
                 data:legend,
                 right: '1%',
+                textStyle: {
+                    color:token.smallTitleColor,
+                }
             },
             grid: {
                 left: '3%',

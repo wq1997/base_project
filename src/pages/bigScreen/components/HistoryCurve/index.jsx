@@ -67,6 +67,9 @@ function Com({ dataX, charge,disCharge }) {
             legend: {
                 selectedMode: false,
                 right: '1%',
+                textStyle: {
+                    color:token.smallTitleColor,
+                }
             },
             tooltip: {
                 trigger: 'axis',
