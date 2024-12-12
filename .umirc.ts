@@ -25,6 +25,7 @@ export default defineConfig({
     outputPath: OutputPathName(UMI_ENV),
     define: {
         "process.env.API_URL": apiUrl[UMI_ENV || "test"],
+        "process.env.URL_ENV": UMI_ENV,
     },
     alias: {
         "@/permissions": path.resolve(__dirname, "src/permissions"),
@@ -36,9 +37,9 @@ export default defineConfig({
         "https://webapi.amap.com/maps?v=2.0&key=703e127456c7052706f27a37144c9c4d&plugin=AMap.MarkerCluster",
     ],
     codeSplitting: {
-        jsStrategy: 'granularChunks',
+        jsStrategy: "granularChunks",
     },
-    cssMinifier: 'esbuild',
+    cssMinifier: "esbuild",
     cssMinifierOptions: {
         minifyWhitespace: true,
         minifySyntax: true,

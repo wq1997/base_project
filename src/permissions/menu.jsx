@@ -15,14 +15,9 @@ import {
 const { SubMenu } = Menu;
 
 const MenuList = [
-    // {
-    //     key: "/overview-screen",
-    //     label: "采日运维大屏",
-    //     icon: <FundFilled />
-    // },
     {
-        key: "/screen-plant-analysis",
-        label: "电站运维大屏",
+        key: "/plant-monitoring-screen",
+        label: "电站监控大屏",
         icon: <FundFilled />,
         darkIcon: "icon-wuliaoxuqiu-copy",
         target: "_blank",
@@ -166,7 +161,21 @@ const MyMenu = () => {
                     </SubMenu>
                 );
             } else {
-                return (
+                return menu?.key == "/plant-monitoring-screen" ? (
+                    <Menu.Item
+                        key={menu.key}
+                        icon={menu.icon}
+                        onClick={() => {
+                            const url = {
+                                test: "http://47.110.124.86:7888",
+                                prod: "https://spsmp.sermatec-cloud.com",
+                            }[process.env.URL_ENV];
+                            window.open(`${url}/auth?token=${user?.psmpToken}`, "_blank");
+                        }}
+                    >
+                        <span>{menu.label}</span>
+                    </Menu.Item>
+                ) : (
                     <Menu.Item key={menu.key} icon={menu.icon}>
                         <Link to={menu.key} target={menu?.target}>
                             <span>
@@ -231,7 +240,7 @@ const MyMenu = () => {
 
     useEffect(() => {
         if (user) {
-            console.log('user',user)
+            console.log("user", user);
             getMenu();
         }
     }, [user]);
