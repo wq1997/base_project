@@ -57,7 +57,7 @@ const AlarmConfiguration = () => {
     const isWorkOrdersRef = useRef();
     const [lastModifiedPerson, setLastModifiedPerson] = useState();
     const lastModifiedPersonRef = useRef();
-    const [dataSource, setDataSource] = useState([{ 1: "XX" }]);
+    const [dataSource, setDataSource] = useState([]);
     const [open, setOpen] = useState(false);
     const [uploadOpen, setUploadOpen] = useState(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);

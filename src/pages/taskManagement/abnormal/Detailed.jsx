@@ -580,6 +580,7 @@ const Detailed = () => {
                 pagination={pagination}
                 onChange={pagination => {
                     paginationRef.current = pagination;
+                    getDataSource();
                 }}
                 scroll={{
                     x: 1500,
