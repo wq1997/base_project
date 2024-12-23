@@ -51,7 +51,7 @@ const Index = ({ open, editRow, onClose }) => {
 
     return (
         <Modal
-            title={<Title>新增角色</Title>}
+            title={<Title>{editRow?.id ? "编辑" : "新增"}角色</Title>}
             width={800}
             confirmLoading={true}
             open={open}
