@@ -2,13 +2,13 @@
   "private": true,
   "author": "wangqing <2957009914@qq.com>",
   "scripts": {
-    "dev": "umi dev",
+    "dev": "cross-env UMI_ENV=test umi dev",
     "build": "umi build",
     "build:test": "cross-env UMI_ENV=test umi build",
     "build:prod": "cross-env UMI_ENV=prod umi build",
     "postinstall": "umi setup",
     "setup": "umi setup",
-    "start": "npm run dev"
+    "start": "cross-env UMI_ENV=test umi dev"
   },
   "dependencies": {
     "@ant-design/icons": "^5.1.4",
