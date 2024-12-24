@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './index.less'
 import { theme } from "antd";
 import {  useSelector,  } from 'umi'
-import title_bg_default from '../../../../../../../public/images/title_bg_default.svg'
-import title_bg from '../../../../../../../public/images/titleDes.svg'
+import title_bg_default from '../../../../../../../public/images/title_default.svg'
+import title_bg from '../../../../../../../public/images/title_dark.svg'
 function Com(props) {
     const { token } = theme.useToken();
     const [path,setPath] =useState(title_bg_default);

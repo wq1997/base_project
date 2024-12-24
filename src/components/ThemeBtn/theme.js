@@ -36,6 +36,8 @@ const theme = {
         color6:'#E3E3E3',
         color7:'#00FFFB',
         tableHeard:'#20284D',
+        echartsFontColor: "#FFFFFF",
+        echartsSplitColor: "#ffffff26",
         components: {
             Table: {
                 headerBg:'#20284D',
@@ -80,6 +82,8 @@ const theme = {
         color6:'#999999',
         color7:'#03B4B4',
         tableHeard:'#EDF1F4',
+        echartsFontColor: "#999999",
+        echartsSplitColor: "#99999940",
         components: {
             Table: {
                 headerBg:'#EDF1F4',

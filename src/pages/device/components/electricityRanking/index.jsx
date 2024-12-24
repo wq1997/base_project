@@ -1,20 +1,20 @@
 import ReactECharts from "echarts-for-react";
 import { useState, useEffect, useRef } from "react";
 import * as echarts from "echarts";
-import { useIntl,useSelector } from "umi";
+import { useIntl, useSelector } from "umi";
 import {
     getRevenue as getRevenueServe,
 } from "@/services";
 import moment from "moment";
-import { theme,  } from "antd";
+import { theme, } from "antd";
 
 const ElectricityRanking = ({ currentPlantId }) => {
     const intl = useIntl();
     const [options, setOptions] = useState({});
-    const {locale} = useSelector(state => state.global);
+    const { locale } = useSelector(state => state.global);
 
-    const getOptions = async() => {
-        if(!currentPlantId) return;
+    const getOptions = async () => {
+        if (!currentPlantId) return;
         let data_1 = [], data_2 = [];
         const data1 = moment().subtract(4, 'days').format("YYYY-MM-DD");
         const data2 = moment().subtract(3, 'days').format("YYYY-MM-DD");
@@ -36,20 +36,20 @@ const ElectricityRanking = ({ currentPlantId }) => {
             tooltip: {
                 trigger: 'axis',
                 axisPointer: { // 坐标轴指示器，坐标轴触发有效
-                  type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+                    type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
                 }
             },
             legend: {
                 textStyle: {
                     color: token.tableColor
                 },
-                right: 0
+                right: 10
             },
-            grid:{
-                top: 35,
-                left: 40,
-                right: 0,
-                bottom: 30
+            grid: {
+                left: 70,
+                right: 30,
+                top: 45,
+                bottom: 40
             },
             xAxis: {
                 data: xData,
@@ -60,10 +60,10 @@ const ElectricityRanking = ({ currentPlantId }) => {
                     show: false
                 },
                 axisLabel: {
-                    interval:0,
+                    interval: 0,
                     textStyle: {
-                        color: token.tableColor,
-                        fontSize:10,
+                        color: token.echartsFontColor,
+                        fontSize: 10,
                     },
                     margin: 20, //刻度标签与轴线之间的距离。
                 },
@@ -71,9 +71,8 @@ const ElectricityRanking = ({ currentPlantId }) => {
             yAxis: {
                 splitLine: {
                     show: true,
-                    lineStyle:{
-                      color: token.tableColor,
-                      type: 'dashed'
+                    lineStyle: {
+                        color: token.echartsSplitColor,
                     }
                 },
                 axisTick: {
@@ -84,45 +83,45 @@ const ElectricityRanking = ({ currentPlantId }) => {
                 },
                 axisLabel: {
                     textStyle: {
-                        color: token.tableColor,
-                        fontSize:10,
+                        color: token.echartsFontColor,
+                        fontSize: 10,
                     },
                 }
             },
             series: [
                 {
-                    name: intl.formatMessage({id: '充电量'}),
+                    name: intl.formatMessage({ id: '充电量' }),
                     type: 'bar',
                     barWidth: '15%',
                     itemStyle: {
-                      normal: {
-                          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                              offset: 0,
-                              color: '#82FFF7'
-                          }, {
-                              offset: 1,
-                              color: '#00F9BD'
-                          }]),
-                          barBorderRadius: 2,
-                      },
+                        normal: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                offset: 0,
+                                color: '#82FFF7'
+                            }, {
+                                offset: 1,
+                                color: '#00F9BD'
+                            }]),
+                            barBorderRadius: 2,
+                        },
                     },
                     data: data_1
                 },
                 {
-                    name: intl.formatMessage({id: '放电量'}),
+                    name: intl.formatMessage({ id: '放电量' }),
                     type: 'bar',
                     barWidth: '15%',
                     itemStyle: {
-                      normal: {
-                          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                              offset: 0,
-                              color: '#00E7C8'
-                          }, {
-                              offset: 1,
-                              color: '#0038C6'
-                          }]),
-                          barBorderRadius: 2,
-                      },
+                        normal: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                offset: 0,
+                                color: '#00E7C8'
+                            }, {
+                                offset: 1,
+                                color: '#0038C6'
+                            }]),
+                            barBorderRadius: 2,
+                        },
                     },
                     data: data_2
                 }
@@ -133,12 +132,12 @@ const ElectricityRanking = ({ currentPlantId }) => {
 
     useEffect(() => {
         getOptions();
-    }, [currentPlantId,token,locale]);
+    }, [currentPlantId, token, locale]);
 
     return (
-        <ReactECharts 
-            option={options} 
-            style={{width: '100%', height: '100%'}} 
+        <ReactECharts
+            option={options}
+            style={{ width: '100%', height: '100%' }}
         />
     )
 }

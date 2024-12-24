@@ -2,13 +2,13 @@ import { FormattedMessage } from 'umi'
 import { Pagination, Select, Space, theme, Button, Modal } from "antd"
 
 export const DEFAULT_PAGINATION = { current: 1, pageSize: 10, total: 0, showQuickJumper: true };
-export const FORM_REQUIRED_RULE = { required: true, message: <FormattedMessage id='请输入必填字段'/> };
+export const FORM_REQUIRED_RULE = { required: true, message: <FormattedMessage id='请输入必填字段' /> };
 export const FORM_FORBIDDEN_SPACE = { pattern: /^[^\s]*$/, message: '禁止输入空格' };
 export const FORM_ONLY_NUMBER = { pattern: /^[1-9]\d*$/, message: '只能输入数字' };
 export const TELPHONE_NUMBER_REG = /^1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[0-35-9])\d{8}$/;
 export const ICON_PATH = "//at.alicdn.com/t/c/font_4191866_6iautgu0c8r.js";
 export const PUBLIC_FILE_PATH = 'https://energy.sermatec-cloud.com/static/';
-export const SYSTEM_NAME = '采日能源储能管理系统'
+export const SYSTEM_NAME = '储能管理系统'
 export const MAP_KEY = '2dca0cb2ced6ced6030c26376186faee';
 export const WETHER_API = 'https://devapi.qweather.com/v7/weather/3d?';
 export const AIR_API = 'https://devapi.qweather.com/v7/air/now?';
@@ -91,24 +91,24 @@ export const pcsDataType = [
 
 export const alarmLevel = [
     {
-        label: <FormattedMessage id='严重' />,
+        label: <FormattedMessage id='1级' />,
         value: '1',
-        key: '严重',
+        key: '1级',
     },
     {
-        label: <FormattedMessage id='高级' />,
+        label: <FormattedMessage id='2级' />,
         value: '2',
-        key: '高级',
+        key: '2级',
     },
     {
-        label: <FormattedMessage id='中级' />,
+        label: <FormattedMessage id='3级' />,
         value: '3',
-        key: '中级',
+        key: '3级',
     },
     {
-        label: <FormattedMessage id='低级' />,
+        label: <FormattedMessage id='4级' />,
         value: '4',
-        key: '低级',
+        key: '4级',
     }
 ];
 export const optionType = [
@@ -120,44 +120,46 @@ export const optionType = [
     //     label: <FormattedMessage id='232户外柜' />,
     //     value: 13,
     // },
-     {
+    {
         label: <FormattedMessage id='372户外柜' />,
         value: 14,
     }]
 
-    export const userTable = [
-        {
-            title: <FormattedMessage id='用户名' />,
-            dataIndex: 'name',
-            key: 'name',
-        },
-        {
-            title: <FormattedMessage id='角色' />,
-            dataIndex: 'roleId',
-            key: 'roleId',
-            render:(val)=>{
-              return  val==1 ? <FormattedMessage id='普通用户' />:val==2?<FormattedMessage id='管理员' />:<FormattedMessage id='超级管理员' />
-            }
-        },
-        {
-            title: <FormattedMessage id='手机' />,
-            dataIndex: 'phone',
-            key: 'phone',
-        },
-        {
-            title: <FormattedMessage id='邮箱' />,
-            dataIndex: 'mail',
-            key: 'mail',
-        },
-        {
-            title: <FormattedMessage id='所属上级' />,
-            dataIndex: 'parentName',
-            key: 'parentName',
-        },
-        {
-            title: <FormattedMessage id='备注' />,
-            dataIndex: 'desc',
-            key: 'desc',
-        },
-       
-    ]
+export const userTable = [
+    {
+        title: <FormattedMessage id='用户名' />,
+        dataIndex: 'name',
+        key: 'name',
+    },
+    {
+        title: <FormattedMessage id='角色' />,
+        dataIndex: 'roleId',
+        key: 'roleId',
+        render: (val) => {
+            return val == 1 ? <FormattedMessage id='普通用户' /> : val == 2 ? <FormattedMessage id='管理员' /> : <FormattedMessage id='超级管理员' />
+        }
+    },
+    {
+        title: <FormattedMessage id='手机' />,
+        dataIndex: 'phone',
+        key: 'phone',
+    },
+    {
+        title: <FormattedMessage id='邮箱' />,
+        dataIndex: 'mail',
+        key: 'mail',
+    },
+    {
+        title: <FormattedMessage id='所属上级' />,
+        dataIndex: 'parentName',
+        key: 'parentName',
+    },
+    {
+        title: <FormattedMessage id='备注' />,
+        dataIndex: 'desc',
+        key: 'desc',
+    },
+
+]
+
+export const SCREEN_INTERVAL_TIME = 10 * 1000;

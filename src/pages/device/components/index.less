@@ -4,3 +4,23 @@
     height: calc(100% - 2.6042rem);
     overflow-y: scroll;
 }
+
+.realPower {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    gap: 8px;
+    position: relative;
+    .search{
+        position: absolute;
+        right: 0;
+        top: 5px;
+        display: flex;
+        align-items: center;
+    }
+    .echarts {
+        width: 100%;
+        height: calc(100% - 10px);
+    }
+}

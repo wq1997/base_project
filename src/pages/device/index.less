@@ -1,177 +1,137 @@
-.content{
+.content {
     background-color: #000000;
     width: calc(100%);
     height: calc(100%);
-    // position: absolute;
-    // top: 0px;
-    // left: 0px;
     display: flex;
     gap: 8px;
 
-    .left{
-        width: calc(70% - .2083rem);
-        height: 100%;
+    .left {
+        flex: 2;
         display: flex;
         flex-direction: column;
-        gap: .4167rem;
+        gap: 8px;
+        width: 0;
 
-        .plantSelect{
-            position: absolute;
-            top: .520833rem /* 10/19.2 */;
-            left: .520833rem;
-            :global{
-                .ant-select-selector{
-                    border: 1px solid #00FFFB;
-                }
-            }
-        }
+        .left1 {
+            flex: 4;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
 
-        .leftItem1{
-            height: calc(80% - .2083rem);
-
-            .mapRight{
-                height: calc(75% - .2604rem);
-                position: absolute;
-                right: 0;
-                top: 0;
+            .left1Content {
+                flex: 1;
                 display: flex;
-                flex-direction: column;
-                gap: .5208rem;
+                flex-wrap: wrap;
+                gap: 8px;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
 
-                .mapRightItem{
-                    width: 13.0208rem;
-                    background-color: #111838;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    height: calc(33.333333333333%);
-                    border-radius: .4167rem;
-                    .mapRightItemTop{
+                .topItem {
+                    width: calc(50% - 4px);
+
+                    .topVaue {
+                        font-family: DingTalk;
                         display: flex;
                         align-items: baseline;
-                        .mapRightItemTopValue{
-                            max-width: 7.8125rem;
-                            font-family: DingTalkJinBuTi;
-                            font-size: 1.5625rem;
-                            margin-bottom: .5208rem;
-                            white-space: nowrap; 
+                        justify-content: center;
+
+                        .topVaueContent {
+                            font-size: 16px;
+                            display: inline-block;
+                            max-width: calc(100% - 20px);
+                            white-space: nowrap;
                             overflow: hidden;
                             text-overflow: ellipsis;
                         }
                     }
 
-                    .mapRightItemBottom{
-                        text-align: center;
-                    }
-                }
-            }
-
-            .mapBottom{
-                width: 100%;
-                height: calc(25% - .2604rem);
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                display: flex;
-                justify-content: space-between;
-                .mapBottomItem{
-                    width: calc(33% - .2604rem);
-                    height: 100%;
-                    background-color: #0B3858;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    border-radius: .4167rem;
-
-                    .mapBottomItemData{
-                        font-family: DingTalkJinBuTi;
-                        font-size: 1.5625rem;
-                        margin-bottom: .5208rem;
+                    .topItemTitle {
+                        width: 100%;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                     }
                 }
             }
         }
 
-        .leftItem2{
-            height: calc(35% - .2083rem);
-            position: relative;
-            margin-bottom: .4167rem;
-            .add{
+        .left2 {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+
+            .cardContent {
+                flex: 1;
                 display: flex;
-                position: absolute;
-                gap: .5208rem;
-                right: .5208rem;
-                top: .2604rem;
-                .addBtn{
-                    // background: radial-gradient(153% 66% at 50% 50%, #111838 0%, #118786 100%);
-                    font-size: .8333rem;
-                    border-radius: .1042rem;
-                    // border: 1px solid #00FFFC;
-                    padding: .2604rem 1.0417rem;
-                    box-sizing: border-box;
-                    cursor: pointer;
-                }
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+        .left3 {
+            flex: 4;
+            display: flex;
+            flex-direction: column;
+
+            .cardContent {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
         }
     }
 
-    .leftItem{
-        width: 100%;
-        background: #111838;
-        // border: 1px solid #111838;
-        position: relative;
-    }
-
-    .rightItem{
-        width: 100%;
-        background: #111838;
-        // border: 1px solid #111838;
-    }
-
-    .right{
-        width: calc(30% - .2083rem);
-        height: 100%;
+    .right {
+        flex: 8;
         display: flex;
         flex-direction: column;
-        
         gap: 8px;
+        width: 0;
 
-        .rightItem1{
-            height: calc(20% - .3125rem);
-        }
-        
-        .rightItem2{
-            height: calc(50% - .3125rem);
-        }
-
-        .rightItem3{
-            height: calc(30% - .3125rem);
-        }
-    }
-
-    .cardContent{
-        padding: .5208rem;
-        box-sizing: border-box;
-        width: 100%;
-        height: calc(100% - 2.0833rem);
-    }
-    .realEle{
-        padding: 10px;
-        box-sizing: border-box;
-        width: 100%;
-        height: calc(100% - 2.0833rem);
-        display: grid;
-        grid-template-columns: 1fr 1fr ;
-        grid-template-rows: 1fr 1fr 1fr;
-        .topItem{
+        .right1 {
+            flex: 3.5;
             display: flex;
-            align-items: center;
-            justify-content: center;
             flex-direction: column;
-            .topVaue{
-                margin-bottom: .5208rem;
-                font-size: 1.0417rem;
+
+            .cardContent {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+        .right2 {
+            flex: 3.5;
+            display: flex;
+            flex-direction: column;
+
+            .cardContent {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+        .right3 {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            gap: 4px;
+            .add{
+                position: absolute;
+                top: 5px;
+                right: 5px;;
+            }
+            .cardContent {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
         }
     }

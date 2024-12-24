@@ -1,25 +1,24 @@
 // 函数组件
 // 快捷键Ctrl+Win+i 添加注释
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './index.less'
-import { Pagination, Select, Space, theme, Button, DatePicker } from "antd"
-import { history, useLocation, useIntl, useSelector } from "umi";
+import { theme } from "antd"
+import { useIntl, useSelector } from "umi";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import CardModel from "../CardModel/index";
 import high from '@/assets/imges/high.svg'
 import low from '@/assets/imges/low.svg'
-import OutDoor from '@/assets/svg/outDoor.svg'
-import OutDoorDefault from '@/assets/svg/outDoorDefault.svg'
 import leftDes from '@/assets/svg/leftDes.svg'
 import leftDesDefault from '@/assets/svg/leftDesDefault.svg'
 import useIcon from "@/hooks/useIcon";
 import { getBurOverview2 } from '@/services/deviceTotal'
 import { getQueryString } from "@/utils/utils";
 import ReactECharts from "echarts-for-react";
-import * as echarts from "echarts";
 import "echarts-liquidfill/src/liquidFill.js";
 import bottomDefault from '../../../../../../../public/images/bottomDesDefault.svg'
 import bottomDark from '../../../../../../../public/images/bottomDesDark.svg'
+import OutDoor372Default from "../../../../../../../public/images/OutDoor372Default.svg";
+import OutDoor372Dark from "../../../../../../../public/images/OutDoor372Dark.svg";
 import classNames from "classnames";
 
 function Com(props) {
@@ -164,29 +163,29 @@ function Com(props) {
     const todayData = [
         {
             key: 'dayChargeEnergy',
-            color: '#25FF00',
-            label: '日充电电量'
+            // color: '#25FF00',
+            label: '今日充电量'
         },
         {
             key: 'dayDischargeEnergy',
-            color: '#FF6300',
-            label: '日放电电量'
+            // color: '#FF6300',
+            label: '今日放电量'
         }, {
             key: 'monChargeEnergy',
-            color: token.color4,
-            label: '月充电电量'
+            // color: token.color4,
+            label: '本月充电量'
         }, {
             key: 'monDischargeEnergy',
-            color: token.color4,
-            label: '月放电电量'
+            // color: token.color4,
+            label: '本月放电量'
         }, {
             key: 'totalCEnergy',
-            color: token.color4,
-            label: '总充电电量'
+            // color: token.color4,
+            label: '累计充电量'
         }, {
             key: 'totalDEnergy',
-            color: token.color4,
-            label: '总放电电量'
+            // color: token.color4,
+            label: '累计放电量'
         },
     ];
     const value = useEmotionCss(() => {
@@ -444,7 +443,7 @@ function Com(props) {
                     </div>
                 </div>
                 <div className={styles.bottomPic}>
-                    <img src={global.theme == 'default' ? OutDoorDefault : OutDoor} alt="" />
+                    <img src={global.theme == 'default' ? OutDoor372Default : OutDoor372Dark} alt="" />
                 </div>
             </div>
             <div className={styles.TodayEntity} style={{ backgroundColor: token.darkbgc, color: token.color1 }}>
@@ -457,7 +456,7 @@ function Com(props) {
                                     <div className={styles.value} style={{ color: it.color, fontSize: '1.1458rem' }}>
                                         {allData?.energy?.[it?.key] || '0'}
                                     </div>
-                                    <div className={styles.label} style={{ background: `url(${pathLeft}) left center no-repeat`, }}>
+                                    <div className={styles.label}>
                                         {t(it.label)}
                                     </div>
                                 </div>

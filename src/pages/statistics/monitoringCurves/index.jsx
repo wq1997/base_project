@@ -444,7 +444,7 @@ const MonitoringCurves = () => {
             </Flex>
             <Spin spinning={loading}>
                 <Space direction="vertical" style={{ width: '100%' }}>
-                    <Title title={title} />
+                    <Title title={title} showVerticalLine={false}/>
                     <div style={{ width: '100%', height: 'calc(100vh - 250px)' }}>
                         {
                             dataSource?.length > 0 &&

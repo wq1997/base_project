@@ -49,4 +49,6 @@ export const getDeviceStats = (payload) => {
 }
 
 
-
+export const getRevenue = (payload) => {
+  return axiosInstance.post(`/minsys/monitor`, payload);
+}

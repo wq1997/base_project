@@ -363,8 +363,6 @@ function Com(props) {
             baseData.data.map(it => {
                 data[it.key] ? it.value = data[it.key] :it.value =undefined
             });
-            console.log(baseData,11111);
-            
         }else{
             baseData.data.map(it => {
                 data[it.key] ? it.value = data[it.key] : null
@@ -376,7 +374,7 @@ function Com(props) {
         }
         handlBase({ ...baseData });
     };
-  
+
     return (
         <div className={styles.details}>
             <DetalisCard data={pcsData} />

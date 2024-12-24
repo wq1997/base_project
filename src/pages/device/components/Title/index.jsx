@@ -3,8 +3,8 @@ import { theme, } from "antd";
 import React, { useState, useEffect,  } from 'react';
 import {  useSelector,  } from 'umi'
 
-import title_bg_default from '../../../../../public/images/title_bg_default.svg'
-import title_bg from '../../../../../public/images/title_bg.svg'
+import title_bg_default from '../../../../../public/images/title_default.svg'
+import title_bg from '../../../../../public/images/title_dark.svg'
 const Title = ({ title }) => {
     const { token } = theme.useToken();
     const [path,setPath] =useState(title_bg_default);

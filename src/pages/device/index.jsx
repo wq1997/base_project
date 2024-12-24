@@ -22,7 +22,9 @@ import { useEmotionCss } from '@ant-design/use-emotion-css';
 import Table from "./components/table";
 import Map from './components/map';
 import dayjs from 'dayjs';
-import {getUrlParams, setLocalStorage} from "@/utils/utils";
+import { getUrlParams, setLocalStorage } from "@/utils/utils";
+import RealPower from './components/RealPower';
+import AlarmStatics from './components/AlarmStatics';
 const { Option } = Select;
 
 const RealtimeAlarm = () => {
@@ -37,10 +39,9 @@ const RealtimeAlarm = () => {
     const [initSelectData, setInitSelectData] = useState();
     const [record, setRecord] = useState([]);
     const [currentPlantId, setCurrentPlantId] = useState();
-    
+
     const { token } = theme.useToken();
     const intl = useIntl();
-    const [mapPanTo, setPanTo] = useState();
     const t = (id) => {
         const msg = intl.formatMessage(
             {
@@ -52,32 +53,32 @@ const RealtimeAlarm = () => {
     const { user, } = useSelector(function (state) {
         return state.user
     });
-    const {locale} = useSelector(state => state.global);
+    const { locale } = useSelector(state => state.global);
 
     const eleData = [
         {
-            label: t('日充电量'),
+            label: t('今日充电量'),
             name: 'dailyCharge',
             value: '',
             unit: 'kWh',
             color: '#FF9D4F'
         },
         {
-            label: t('日放电量'),
+            label: t('今日放电量'),
             name: 'dailyDisCharge',
             value: '',
             unit: 'kWh',
             color: '#FF9D4F'
         },
         {
-            label: t('月充电量'),
+            label: t('本月充电量'),
             name: 'monthCharge',
             value: '',
             unit: 'kWh',
             color: '#03B4B4'
         },
         {
-            label: t('月放电量'),
+            label: t('本月放电量'),
             name: 'monthDisCharge',
             value: '',
             unit: 'kWh',
@@ -100,29 +101,10 @@ const RealtimeAlarm = () => {
 
     ];
 
-
-    const [incomeData, setIncomeData] = useState([
-        {
-            label: t('日收益'),
-            value: 0,
-            color: '#20C2FF'
-        },
-        {
-            label: t('月收益'),
-            value: 0,
-            color: '#20C2FF'
-        },
-        {
-            label: t('累计收益'),
-            value: 0,
-            color: '#20C2FF'
-        }
-    ])
-
     useEffect(() => {
         const params = getUrlParams(window.location.search);
-        if(params?.token){
-            setLocalStorage('Token',params.token);
+        if (params?.token) {
+            setLocalStorage('Token', params.token);
             setLocalStorage("currentPlant", params.plantId);
             changePlant(params.plantId);
             history.push('/index/device');
@@ -138,65 +120,6 @@ const RealtimeAlarm = () => {
         setIsOpen(!isOpen);
     }
 
-    const tableColum = [
-        {
-            title: t('设备编码'),
-            dataIndex: 'sn',
-            key: 'sn',
-        },
-        {
-            title: t('设备名称'),
-            dataIndex: 'name',
-            key: 'name',
-        },
-        {
-            title: t('设备类型'),
-            dataIndex: 'version',
-            key: 'version',
-        },
-        {
-            title: t('设备状态'),
-            dataIndex: 'online',
-            key: 'online',
-        },
-        {
-            title: t('安装位置'),
-            dataIndex: 'address',
-            key: 'address',
-        },
-        {
-            title: t('操作'),
-            dataIndex: 'operation',
-            key: 'operation',
-            render: (text, record) => {
-                return (
-                    <Space>
-                        <div type="link" style={{ color: token.colorPrimary, cursor: 'pointer' }} onClick={() => edit(record)}>{t('编辑')}</div>
-                        <Button type="link" danger onClick={() => changeIsOpenDel(record)}>{t('删除')}</Button>
-                    </Space>
-                )
-            }
-        },
-        {
-            title: t('详情'),
-            dataIndex: 'details',
-            key: 'details',
-            render: (text, record) => {
-                return (
-                    <div
-                        type="link"
-                        style={{ color: token.colorPrimary, cursor: 'pointer' }}
-                        onClick={() => {
-                            history.push(`/device?activeKey=OverView&id=${record.id}&title=${record.name || ""}&type=${record.deviceTypeId || ""}`)
-                        }}
-                    >
-                        {t('详情')}
-                    </div>
-                )
-            }
-        },
-    ]
-
     const edit = (record) => {
         setFormData({
             ...record,
@@ -211,7 +134,7 @@ const RealtimeAlarm = () => {
             type: '',
             sn: '',
             plantId: '',
-            address: currentPlant?.position||"",
+            address: currentPlant?.position || "",
         });
         setRecord({})
         setTitle('新增设备');
@@ -238,7 +161,7 @@ const RealtimeAlarm = () => {
     const getAllPlant = async () => {
         const res = await getFetchPlantListServe();
         const data = res?.data;
-        if(data?.data?.plantList){
+        if (data?.data?.plantList) {
             let arr = [];
             data.data?.plantList.map(it => {
                 arr.push({
@@ -254,7 +177,7 @@ const RealtimeAlarm = () => {
     }
 
     const changePlant = async (val) => {
-        if(!val) return;
+        if (!val) return;
         let { data } = await getDtusOfPlant({
             plantId: val
         });
@@ -263,90 +186,94 @@ const RealtimeAlarm = () => {
         setCurrentPlantId(val);
         let res1 = await getBurEnergyStats2({ plantId: val });
         let res2 = await getDeviceStats({ plantId: val });
-        // let res3 = await getSocialBenefitServe({ plantId: val });
 
         setDataEle(res1?.data?.data);
         setDatadataTotal(res2?.data?.data);
-        // setSocialBenefit(res3?.data?.data);
         localStorage.setItem("currentPlant", val);
     }
 
-   
-    const detailCard = useEmotionCss(() => {
-        return {
-            ".ant-select-selection-item":{
-                color:locale==="zh-CN"?`${token.titleColor}`:"#000000"
-            }
-
-        }})
-    const getAllRevenue = async () => {
-        const res = await getAllRevenueServe({ plantId: currentPlantId });
-        if (res?.data?.data) {
-            const data = res?.data?.data;
-            const newIncomeData = JSON.parse(JSON.stringify(incomeData));
-            newIncomeData[0].value = data?.dayEarning || 0;
-            newIncomeData[1].value = data?.monthEarning || 0;
-            // newIncomeData[2].value = data?.yearEarning || 0;
-            newIncomeData[2].value = data?.allEarning || 0;
-            setIncomeData(newIncomeData);
-        }
-    }
-
-    const currentPlant = dataOption?.find(plant => (plant?.value===(currentPlantId||dataOption[0]?.value)))
-    useEffect(() => {
-        if (currentPlant){
-            getAllRevenue();
-            setPanTo([currentPlant?.longitude||108.9, currentPlant?.latitude||34.2]);
-        }
-    }, [currentPlantId,locale]);
     return (
         <div
             className={styles.content}
-            style={{backgroundColor:token.layoutContentBgc}}
+            style={{ backgroundColor: token.layoutContentBgc }}
         >
             <div className={styles.left}>
-                <div className={classNames(styles.leftItem, styles.leftItem1)}>
-                    {
-                        currentPlant&&
-                        <Map
-                            plants={[
-                                {
-                                    ...currentPlant,
-                                    longitude: currentPlant?.longitude||0, 
-                                    latitude: currentPlant?.latitude||0,
-                                    plantName: currentPlant?.name,
-                                    installDate: dayjs(currentPlant?.installDate).format('YYYY-MM-DD'),
-                                    dtuSize:data?.length
-                                }
-                            ]}
-                            showInfo={true} 
-                            panTo={mapPanTo}
-                        />
+                <Select
+                    style={{ width: '100%' }}
+                    onChange={(val) => {
+                        changePlant(val)
+                    }}
+                    value={currentPlantId}
+                >
+                    {dataOption && dataOption?.map(item => {
+                        return (<Option key={item.value} value={item.value}>{item.label}</Option>);
+                    })
                     }
-                    <div className={classNames(styles.plantSelect, detailCard)} >
-                        <Select
-                            style={{ width: '15.625rem' }}
-                            onChange={(val) => {
-                                changePlant(val)
-                            }}
-                            value={currentPlantId}
-                        >
-                            {dataOption && dataOption?.map(item => {
-                                return (<Option key={item.value} value={item.value}>{item.label}</Option>);
-                            })
-                            }
-                        </Select>
+                </Select>
+                <div className={styles.left1} style={{ backgroundColor: token.titleCardBgc }}>
+                    <Title title={`${t('实时电量')}(${t('kWh')})`} />
+                    <div className={styles.left1Content}>
+                        {eleData.map(it => {
+                            return (
+                                <div className={styles.topItem} style={{ color: token.color7, }}>
+                                    <div className={styles.topVaue} style={{ fontWeight: 400, }} >
+                                        <span className={styles.topVaueContent} title={dataEle[it.name]}>{dataEle[it.name]}</span>
+                                        <span style={{ marginLeft: '2px', height: '10%', lineHeight: '150%' }}>{it.unit}</span>
+                                    </div>
+                                    <div className={styles.topItemTitle} title={it.label}>
+                                        <span style={{ color: token.smallTitleColor }}>{it.label}</span>
+                                    </div>
+                                </div>
+                            )
+                        })}
                     </div>
-           
                 </div>
-                <div className={classNames(styles.rightItem, styles.leftItem2)} style={{backgroundColor: token.titleCardBgc}}>
+                <div className={styles.left2} style={{ backgroundColor: token.titleCardBgc }}>
+                    <Title title={t('设备运行情况')} />
+                    <div className={styles.cardContent}>
+                        <DeviceRunDesc
+                            dataSource={dataTotal}
+                        />
+                    </div>
+                </div>
+                <div className={styles.left3} style={{ backgroundColor: token.titleCardBgc }}>
+                    <Title title={t('告警统计')} />
+                    <div className={styles.cardContent}>
+                        <AlarmStatics plantId={currentPlantId}/>
+                    </div>
+                </div>
+            </div>
+            <div className={styles.right}>
+                <div className={styles.right1} style={{ backgroundColor: token.titleCardBgc }}>
+                    <div></div>
+                    <div className={styles.cardContent}>
+                        <RealPower
+                            plantId={currentPlantId}
+                        />
+                    </div>
+                </div>
+                <div className={styles.right2} style={{ backgroundColor: token.titleCardBgc }}>
+                    <Title title={`${t('历史电量')}(${t('kWh')})`} />
+                    <div className={styles.cardContent}>
+                        <ElectricityRanking
+                            currentPlantId={currentPlantId || dataOption[0]?.value}
+                        />
+                    </div>
+                </div>
+                <div className={styles.right3} style={{ backgroundColor: token.titleCardBgc }}>
                     <Title title={t('设备列表')} />
                     <div className={styles.add}>
-                        {(user?.roleId===2||user?.roleId===3)&&<div onClick={changIsOpen} className={styles.addBtn}
-                        style={{color:'#fff',background:global.theme == 'default' ?' radial-gradient( 349% 93% at 51% 45%, #BFD4E3 0%, #7393AD 100%, #7393AD 100%)':'radial-gradient(153% 66% at 50% 50%, #111838 0%, #118786 100%)'}}
-                        >{t('新增设备')}</div>}
+                        {(user?.roleId === 2 || user?.roleId === 3) &&
+                            <div className={styles.addBtn}>
+                                <Button
+                                    onClick={changIsOpen}
+                                    type="primary"
+                                >
+                                    {t('新增设备')}
+                                </Button>
+                            </div>}
                     </div>
-                    <div className={styles.cardContent} style={{backgroundColor:token.titleCardBgc,  height: 'calc(100% - 2.3438rem)'}}>
+                    <div className={styles.cardContent} style={{ backgroundColor: token.titleCardBgc }}>
                         <Table
                             dataSource={data}
                             changeIsOpenDel={changeIsOpenDel}
@@ -354,44 +281,6 @@ const RealtimeAlarm = () => {
                         />
                     </div>
                 </div>
-            </div>
-            <div className={styles.right}>
-                <div className={classNames(styles.rightItem, styles.rightItem1)} style={{backgroundColor: token.titleCardBgc}}>
-                    <Title title={t('设备运行情况')} />
-
-                    <div className={styles.cardContent}>
-                        <DeviceRunDesc
-                            dataSource={dataTotal}
-                        />
-                    </div>
-                </div>
-                <div className={classNames(styles.rightItem, styles.rightItem2)}style={{backgroundColor: token.titleCardBgc}}>
-                    <Title title={`${t('实时电量')}(${t('kWh')})`} />
-                    <div className={styles.realEle}>
-                    {eleData.map(it => {
-                                    return (
-                                        <div className={styles.topItem} style={{ color:token.color7,  }}>
-                                            <div className={styles.topVaue} style={{  fontWeight: 400, }} >
-                                                {dataEle[it.name]}
-                                                <span style={{ fontSize: '0.8333rem', fontWeight: 400, marginLeft: '0.5208rem', height: '10%', lineHeight: '150%' }}>{it.unit}</span>
-                                            </div>
-                                            <div className={styles.topItemTitle}>
-                                                <span style={{ color: token.smallTitleColor, fontWeight: 500, marginLeft: '.1563rem',fontSize:'0.7292rem'}}>{it.label}</span>
-                                            </div>
-                                        </div>
-                                    )
-                                })}
-                    </div>
-                </div>
-                <div className={classNames(styles.rightItem, styles.rightItem3)}style={{backgroundColor: token.titleCardBgc}}>
-                    <Title title={`${t('历史电量')}(${t('kWh')})`} />
-                    <div className={styles.cardContent}>
-                        <ElectricityRanking
-                            currentPlantId={currentPlantId||dataOption[0]?.value}
-                        />
-                    </div>
-                </div>
-           
             </div>
             <Add isOpen={isOpen} title={title} formData={formData} onRef={cancle}
                 changeData={(value) => changeData(value)}
@@ -406,7 +295,7 @@ const RealtimeAlarm = () => {
             >
                 {t('数据删除后将无法恢复，是否确认删除该条数据？')}
             </Modal>
-           
+
         </div>
     )
 }

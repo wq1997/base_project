@@ -25,11 +25,11 @@ export const getDtuOverViews = (payload) => {
 }
 
 export const getAllRevenueExcel = (payload) => {
-    return axiosInstance.post(`/minsys/revenue/exportRevenue`, payload, {responseType: 'blob'})
+    return axiosInstance.post(`/minsys/revenue/exportRevenue`, payload, { responseType: 'blob' })
 }
 
 export const getAllElectricExcel = (payload) => {
-    return axiosInstance.post(`/minsys/revenue/exportElectricity`, payload, {responseType: 'blob'})
+    return axiosInstance.post(`/minsys/revenue/exportElectricity`, payload, { responseType: 'blob' })
 }
 
 export const getDtuDetailInfo = (payload) => {
@@ -136,12 +136,12 @@ export const get215NowAlarm = (payload) => {
 }
 
 export const exportCurve = (payload) => {
-    return axiosInstance.post(`/minsys/monitor/export`, payload, {responseType: 'blob'})
+    return axiosInstance.post(`/minsys/monitor/export`, payload, { responseType: 'blob' })
 }
 
 export const exportAnalytics = (payload) => {
     // return axiosInstance.post(`/minsys/analysis/exportAnalytics`, payload, {responseType: 'blob'})
-    return axiosInstance.post(`/minsys/monitor/export`, payload, {responseType: 'blob'})
+    return axiosInstance.post(`/minsys/monitor/export`, payload, { responseType: 'blob' })
 }
 
 export const getSocialBenefit = (payload) => {
@@ -186,4 +186,8 @@ export const btachSendPCSPower = (payload) => {
 
 export const changeBaseLanguage = (payload) => {
     return axiosInstance.post(`/user/changeLanguage?language=${payload?.language}`, payload);
+}
+
+export const getAlarmStatics = (payload) => {
+    return axiosInstance.get(`/energy/alarm/prior/count`, { params: payload })
 }

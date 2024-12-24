@@ -1,58 +1,69 @@
 @import './font.less'; // 全局字体样式
 
-body{
-    margin: 0;
-    padding: 0;
-    color: #FFFFFF;
-    font-family: PingFangRegular;
+body {
+  margin: 0;
+  padding: 0;
+  color: #FFFFFF;
+  font-family: PingFangRegular;
 }
 
-.ant-menu{
-    background-color: unset;
-    border-inline-end:none !important;
+#root {
+  min-width: 1200px;
+  min-height: 700px;
+  width: 100vw;
+  height: 100vh;
 }
 
-.ant-menu-light.ant-menu-inline .ant-menu-sub.ant-menu-inline, :where(.css-dev-only-do-not-override-1sn0ohr).ant-menu-light>.ant-menu.ant-menu-inline .ant-menu-sub.ant-menu-inline{
-    background-color: unset;
+.ant-menu {
+  background-color: unset;
+  border-inline-end: none !important;
 }
 
-.ant-btn-default:not(:disabled):not(.ant-btn-disabled):hover{
-    color: unset;
+.ant-menu-light.ant-menu-inline .ant-menu-sub.ant-menu-inline,
+:where(.css-dev-only-do-not-override-1sn0ohr).ant-menu-light>.ant-menu.ant-menu-inline .ant-menu-sub.ant-menu-inline {
+  background-color: unset;
 }
 
-.ant-tabs-nav{
+.ant-btn-default:not(:disabled):not(.ant-btn-disabled):hover {
+  color: unset;
+}
+
+.ant-tabs-nav {
   margin-bottom: 0px !important;
 }
 
-.ant-tabs-nav::before{
+.ant-tabs-nav::before {
   border-bottom: 0px solid #303030 !important;
 
-  }
-  
-  .ant-tabs-tab{
-         border: 0px solid #303030  !important;
-         border-radius: .4167rem .4167rem 0px 0px !important;
-         padding: .3646rem 1.8229rem !important;
-         color: #FFFFFF !important;
-         font-size: 1.0417rem !important;
-  }
-  .ant-tabs-tab-active{
-    background-color: #111838 !important;
-  }
-  .ant-tabs-nav-wrap{
-    flex-direction: row-reverse !important;
-    padding-right: 1.5625rem !important;
- }
- 
- .pwd{
-	 text-security:disc !important;
-	 -webkit-text-security:disc !important;
 }
 
-.ant-divider::before{
+.ant-tabs-tab {
+  border: 0px solid #303030 !important;
+  border-radius: .4167rem .4167rem 0px 0px !important;
+  padding: .3646rem 1.8229rem !important;
+  color: #FFFFFF !important;
+  font-size: 1.0417rem !important;
+}
+
+.ant-tabs-tab-active {
+  background-color: #111838 !important;
+}
+
+.ant-tabs-nav-wrap {
+  flex-direction: row-reverse !important;
+  padding-right: 1.5625rem !important;
+}
+
+.pwd {
+  text-security: disc !important;
+  -webkit-text-security: disc !important;
+}
+
+.ant-divider::before {
   border-color: #fff !important;
 }
-.ant-divider::after{
+
+.ant-divider::after {
   border-color: #fff !important;
 }
 
@@ -76,12 +87,12 @@ body{
   border-radius: 1.6667rem;
 }
 
-.ant-row{
+.ant-row {
   display: flex;
   align-items: center;
 }
 
-.ant-table-wrapper .ant-table-thead >tr>th:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan])::before{
+.ant-table-wrapper .ant-table-thead>tr>th:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan])::before {
   height: 0 !important;
 }
 
@@ -94,6 +105,7 @@ body{
 .amap-logo {
   display: none !important; //去掉高德地图logo
 }
+
 .amap-copyright {
   opacity: 0; //去掉高德的版本号
 }
@@ -102,49 +114,51 @@ body{
   display: none !important;
 }
 
-.ant-table-placeholder{
+.ant-table-placeholder {
   display: none;
 }
 
-.ant-select-selector{
+.ant-select-selector {
   background: none !important;
 }
 
-.ant-input-number{
+.ant-input-number {
   background-color: transparent !important;
 }
 
-.ant-input-outlined{
+.ant-input-outlined {
   background: none !important;
 }
 
-.ant-picker{
+.ant-picker {
   background: none;
 }
 
-.ant-input{
+.ant-input {
   background: none;
 }
 
-.ant-radio-wrapper .ant-radio-inner{
+.ant-radio-wrapper .ant-radio-inner {
   background: none;
 }
 
-.ant-btn-default{
+.ant-btn-default {
   background-color: unset;
 }
 
-.ant-table{
+.ant-table {
   background: transparent !important;
 }
 
-.ant-radio-wrapper .ant-radio-disabled .ant-radio-inner::after{
+.ant-radio-wrapper .ant-radio-disabled .ant-radio-inner::after {
   background-color: #0787DB;
 }
-.ant-input-number-input-wrap{
+
+.ant-input-number-input-wrap {
   height: 100% !important;
- 
+
 }
-.ant-input-number .ant-input-number-input{
+
+.ant-input-number .ant-input-number-input {
   height: 100% !important;
 }

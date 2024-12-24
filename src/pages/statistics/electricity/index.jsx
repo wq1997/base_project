@@ -1,4 +1,4 @@
-import { useIntl,useSelector } from "umi";
+import { useIntl, useSelector } from "umi";
 import { Form, Cascader, DatePicker, Button, Flex, Radio, theme, Space, message, Empty, Spin, Tooltip, Table, Select } from "antd";
 import { Title } from "@/components";
 import ReactECharts from "echarts-for-react";
@@ -35,7 +35,7 @@ const Electricity = () => {
     const [loading, setLoading] = useState(false);
     const [plantList, setPlantList] = useState([]);
     const [deviceList, setDeviceList] = useState([]);
-    const {locale} = useSelector(state => state.global);
+    const { locale } = useSelector(state => state.global);
 
     const getParams = async (showMessage = true) => {
         let format = "YYYY-MM-DD";
@@ -118,11 +118,11 @@ const Electricity = () => {
                 {
                     name: `${intl.formatMessage({ id: '电量' })}(kWh)`,
                     nameTextStyle: {
-                        color:  token.color2
+                        color: token.color2
                     },
                     axisLabel: {
                         formatter: '{value}',
-                        color:  token.color2,
+                        color: token.color2,
                         fontSize: 14
                     },
                     axisLine: {
@@ -145,7 +145,7 @@ const Electricity = () => {
                     },
                     axisLabel: {
                         formatter: '{value}',
-                        color:token.color2,
+                        color: token.color2,
                         fontSize: 14
                     },
                     axisLine: {
@@ -154,7 +154,7 @@ const Electricity = () => {
                     splitLine: {
                         show: true,
                         lineStyle: {
-                            color:token.color2
+                            color: token.color2
                         }
                     },
                     min: 0,
@@ -284,7 +284,7 @@ const Electricity = () => {
 
     useEffect(() => {
         initOption();
-    }, [dataSource,token,locale]);
+    }, [dataSource, token, locale]);
 
     useEffect(() => {
         initPlantDevice();
@@ -292,7 +292,7 @@ const Electricity = () => {
 
     return (
         <div className={styles.content} style={{ backgroundColor: token.titleCardBgc }}>
-            <Space size={10} direction="vertical" style={{ width: '100%', height: '100%', padding: '30px 30px 50px 30px',}}>
+            <Space size={10} direction="vertical" style={{ width: '100%', height: '100%', padding: '30px 30px 50px 30px', }}>
                 <Flex justify="center" align="center" gap={10}>
                     <Form
                         form={form}
@@ -398,7 +398,10 @@ const Electricity = () => {
                         {intl.formatMessage({ id: '导出' })} Excel
                     </Button>
                 </Flex>
-                <Title title={`${intl.formatMessage({ id: '电量统计' })}`} />
+                <Title
+                    title={`${intl.formatMessage({ id: '电量统计' })}`}
+                    showVerticalLine={false}
+                />
                 <Spin spinning={loading}>
                     <Space direction="vertical" style={{ width: '100%' }}>
                         <div style={{ width: '100%', height: "calc(50vh - 150px)" }}>
@@ -409,7 +412,10 @@ const Electricity = () => {
                         </div>
                     </Space>
                 </Spin>
-                <Title title={`${intl.formatMessage({ id: '电量明细' })}`} />
+                <Title
+                    title={`${intl.formatMessage({ id: '电量明细' })}`}
+                    showVerticalLine={false}
+                />
                 <Spin spinning={loading}>
                     <Space direction="vertical" style={{ width: '100%' }}>
                         <div style={{ width: '100%', height: "calc(50vh - 200px)" }}>
@@ -476,7 +482,7 @@ const Electricity = () => {
                                         dataIndex: 'efficiency',
                                         key: 'efficiency',
                                     },
-                                    
+
                                 ]}
                                 scroll={{
                                     y: 'calc(50vh - 250px)'
