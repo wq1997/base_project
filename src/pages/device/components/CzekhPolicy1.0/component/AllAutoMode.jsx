@@ -189,7 +189,7 @@ const App = ({ devId, dtuId, historyAllData }) => {
         key: 1,
         align: 'center',
         render: (val,records) => {
-            return <Form.Item name={records.time}   rules={[
+            return <Form.Item name={records.time} style={{marginBottom:0}}  rules={[
                 {
                     required: true,
                     message:t('请选择是否允许从电网充电')
@@ -247,8 +247,8 @@ const App = ({ devId, dtuId, historyAllData }) => {
                         <Form.Item
                             label="SOC（%）"
                             style={{
-                                marginBottom: 0,
-                                lineHeight: '56px'
+                                marginBottom: '20px',
+                                // lineHeight: '56px'
                             }}
                         >
                             <Form.Item

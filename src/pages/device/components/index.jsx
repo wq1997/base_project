@@ -43,7 +43,7 @@ const Cabinet = () => {
     }, [locale])
     // 保加利亚一期 ：1
     // 捷克二期：22
-    // 捷克一期：32
+    // 捷克一期：55
     // 道通:28
     const getInitData = async () => {
         let { data } = await getBurDtuDevInfo2({ dtuId: getQueryString("id") });
@@ -60,7 +60,7 @@ const Cabinet = () => {
                 { label: t('策略配置'), key: 'CzekhPolicy2' },
             ])) : (
                 data.data[0].devInfo?.pcsBranch?.length == 2 ? (
-                    id == 32 ?
+                    id == 55 ?
                         setPageTypeList([
                             { label: t('总览'), key: 'OverView' },
                             { label: t('设备详情'), key: 'DeviceDetails' },
