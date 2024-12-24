@@ -1909,4 +1909,8 @@ export default {
 '2级': 'Level 2',
 '3级': 'Level 3',
 '4级': 'Level 4',
+'功率数据': 'Power data',
+'BMS簇N': "BMS Cluster {value}",
+'BMS充放电状态': 'BMS status',
+'计量电表': 'Meter',
 } 

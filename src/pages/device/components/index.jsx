@@ -60,14 +60,14 @@ const Cabinet = () => {
                 { label: t('策略配置'), key: 'CzekhPolicy2' },
             ])) : (
                 data.data[0].devInfo?.pcsBranch?.length == 2 ? (
-                    id == 32 ? 
-                    setPageTypeList([
-                        { label: t('总览'), key: 'OverView' },
-                        { label: t('设备详情'), key: 'DeviceDetails' },
-                        { label: t('pack详情'), key: 'PackDetails' },
-                        { label: t('策略配置'), key: 'CzekhPolicy1' },
-                    ]) :
-                    setPageTypeList([
+                    id == 32 ?
+                        setPageTypeList([
+                            { label: t('总览'), key: 'OverView' },
+                            { label: t('设备详情'), key: 'DeviceDetails' },
+                            { label: t('pack详情'), key: 'PackDetails' },
+                            { label: t('策略配置'), key: 'CzekhPolicy1' },
+                        ]) :
+                        setPageTypeList([
                             { label: t('总览'), key: 'OverView' },
                             { label: t('设备详情'), key: 'DeviceDetails' },
                             { label: t('pack详情'), key: 'PackDetails' },
@@ -96,8 +96,20 @@ const Cabinet = () => {
         }
     })
     return (
-        <div className={classNames(styles.deviceDetail, deviceDetailStyle)} style={{ height: '100%', backgroundColor: token.overBgc, }}>
-            <Tabs className={styles.tab} activeKey={activeKey} items={PageTypeList} onChange={onChangeTab} />
+        <div
+            className={classNames(styles.deviceDetail, deviceDetailStyle)}
+            style={{ height: '100%' }}
+        >
+            <div
+                style={{ backgroundColor: token.titleCardBgc_2 }}
+            >
+                <Tabs
+                    className={styles.tab}
+                    activeKey={activeKey}
+                    items={PageTypeList}
+                    onChange={onChangeTab}
+                />
+            </div>
             <div className={styles.content} style={{}}>
                 {activeKey === "OverView" && <OverView id={id} />}
                 {activeKey === "DeviceDetails" && <DeviceDetails />}
