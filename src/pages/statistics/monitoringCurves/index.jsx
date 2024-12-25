@@ -444,8 +444,8 @@ const MonitoringCurves = () => {
             </Flex>
             <Spin spinning={loading}>
                 <Space direction="vertical" style={{ width: '100%' }}>
-                    <Title title={title} showVerticalLine={false}/>
-                    <div style={{ width: '100%', height: 'calc(100vh - 250px)' }}>
+                    {/* <Title title={title} showVerticalLine={false}/> */}
+                    <div style={{ width: '100%', height: 'calc(100vh - 200px)' }}>
                         {
                             dataSource?.length > 0 &&
                             <ReactECharts option={option} notMerge style={{ width: '100%', height: '100%' }} />

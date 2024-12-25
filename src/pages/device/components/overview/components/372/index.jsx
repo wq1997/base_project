@@ -120,11 +120,12 @@ function Com(props) {
         let arr = [];
         status.map((it, index) => {
             if (index === 0) {
-                it.value = data.data?.bmsStatus[0]
-            } else if (index === 1) {
-                it.value = data.data?.pcsStatus
-            } else if (index === 2) {
+                it.title = t('计量电表');
                 it.value = data.data?.meterStatus
+            } else if (index === 1) {
+                it.value = data.data?.bmsStatus?.[0]
+            } else if (index === 2) {
+                it.value = data.data?.pcsStatus
             }
             arr.push(it);
         })

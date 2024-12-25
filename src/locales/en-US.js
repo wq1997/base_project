@@ -1913,4 +1913,6 @@ export default {
 'BMS簇N': "BMS Cluster {value}",
 'BMS充放电状态': 'BMS status',
 '计量电表': 'Meter',
+'请选择电芯': 'Please select battery cell',
+'请选择pack': 'Please select pack',
 } 

@@ -1,22 +1,48 @@
 .content {
     width: 100%;
     height: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows:    3.6458rem  8.3333rem 1fr 1fr 1fr 1fr;
-    grid-auto-columns: 1fr;
-    gap: .8333rem .8333rem;
-    grid-auto-flow: row;
-    grid-template-areas:
-    "title title title title"
-    "PcsData center center status"
-    'PcsData center center Bms1'
-    'TodayEntity center center Bms1'
-    'TodayEntity center center Bms1'
-    'TodayEntity center center Bms1';
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 
-    >div {
-        border-radius: .8333rem;
+    .bottom {
+        flex: 1;
+        display: flex;
+        gap: 8px;
+
+        .left {
+            flex: 2.5;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+
+            .leftItem {
+                flex: 1;
+            }
+        }
+
+        .center {
+            flex: 5;
+        }
+
+        .right {
+            flex: 2.5;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+
+            .right1 {
+                flex: 3;
+            }
+
+            .right2 {
+                flex: 3;
+            }
+
+            .right3 {
+                flex: 4;
+            }
+        }
     }
 }
 
@@ -26,157 +52,149 @@
     justify-content: center;
     align-items: center;
     position: relative;
-    font-size: 1.6667rem;
+    font-size: 30px;
+    padding: 20px 0;
 
     .sn {
         position: absolute;
         bottom: .5208rem;
         right: 3%;
-        font-size: 1.25rem;
+        font-size: 20px;
+
         span {
             margin-right: .7813rem;
         }
     }
 }
 
-.PcsData {
-    grid-area: PcsData;
+.pcsWrap {
+    width: 100%;
+    height: calc(100% - 0.8333rem);
+    display: flex;
+    border-radius: .8333rem;
 
-    .pcsWrap {
-        width: 100%;
-        height:calc(100% - 0.8333rem);
-        display: flex;
-        border-radius: .8333rem;
+    .pcsOne {
+        width: 50%;
 
-        .pcsOne {
-            width: 50%;
+        .pcsOneTitle {
+            height: 2.6042rem;
+            line-height: 2.6042rem;
+            display: flex;
+            justify-content: space-around;
+        }
 
-            .pcsOneTitle {
-                height: 2.6042rem;
-                line-height: 2.6042rem;
+        .pcsOneBody {
+            height: calc(100% - 2.6042rem);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+
+            .oneData {
                 display: flex;
                 justify-content: space-around;
-            }
 
-            .pcsOneBody {
-                height: calc(100% - 2.6042rem);
-                display: flex;
-                flex-direction: column;
-                justify-content: space-around;
-                .oneData {
-                    display: flex;
-                    justify-content: space-around;
-                    .key{
-                        font-size: 1.0417rem;
-                    }
-                    .value{
-                      
-                        font-size: 1.0417rem;
-                    }
+                .key {
+                    font-size: 1.0417rem;
+                }
+
+                .value {
+
+                    font-size: 1.0417rem;
                 }
             }
         }
     }
-
 }
 
-.Bms1 {
-    grid-area: Bms1;
+.valueOne {
+    .left {
+        min-width: 5.2083rem;
+        font-size: .7292rem;
 
-    .valueOne {
-        .left {
-            min-width: 5.2083rem;
-            font-size: .7292rem;
-
-            .key{
-                min-width: 5.7292rem;
-            }
-            .value{
-                text-align: left;
-                width: 45%;
-                font-size: 1.0417rem;
-                font-family: DingTalkJinBuTi;
-            }
+        .key {
+            min-width: 5.7292rem;
         }
 
-        .right {
-            min-width: 5.2083rem;
+        .value {
             text-align: left;
-            font-size: .7292rem;
-
-            .key{
-                min-width: 5.2083rem;
-                text-align: center;
-            }
-            .value{
-                text-align: left;
-                width:60%;
-              
-                font-size: 1.0417rem;
-                font-family: DingTalkJinBuTi;
-            }
-          
+            width: 45%;
+            font-size: 1.0417rem;
+            font-family: DingTalkJinBuTi;
         }
     }
 
+    .right {
+        min-width: 5.2083rem;
+        text-align: left;
+        font-size: .7292rem;
 
+        .key {
+            min-width: 5.2083rem;
+            text-align: center;
+        }
+
+        .value {
+            text-align: left;
+            width: 60%;
+
+            font-size: 1.0417rem;
+            font-family: DingTalkJinBuTi;
+        }
+
+    }
 }
 
 
 
-.TodayEntity {
-    grid-area: TodayEntity;
+.entityWrap {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
 
-    .entityWrap {
-        width: 100%;
-        height: 100%;
-       display: grid;
-       grid-template-columns: 1fr 1fr;
-       grid-template-rows: 1fr 1fr 1fr;
-       .oneCard{
+    .oneCard {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        .label{
+
+        .label {
             font-size: .7292rem;
         }
+
         .value {
             font-family: DingTalkJinBuTi;
         }
-       }
     }
 }
 
 
 
-.status {
-    grid-area: status;
-    .statusWrap {
+.statusWrap {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: calc(100% - 0.8333rem);
+    padding-top: 1.1458rem;
+
+
+    .statusOne {
         display: flex;
         justify-content: space-around;
-        align-items: center;
-        height:calc(100% - 0.8333rem);
-        padding-top: 1.1458rem;
+        background-color: rgba(33, 42, 82, 1);
+        width: 30%;
+        border-radius: .2083rem;
 
+        .title {
+            font-size: .8333rem !important;
+        }
 
-        .statusOne {
-            display: flex;
-            justify-content: space-around;
-            background-color: rgba(33, 42, 82, 1);
-            width: 30%;
-            height: 40%;
-            border-radius: .2083rem;
-             .title {
-                font-size: .8333rem!important;
-            }
-    
-            .value {
-                font-size: .8333rem  !important;
-    
-            }
+        .value {
+            font-size: .8333rem !important;
 
         }
+
     }
 }
 
@@ -185,31 +203,23 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
+    padding-top: 20px;
 
     .bmsOne {
-        padding:1.3021rem 1.0417rem;
+        padding: 0  1.0417rem;
         width: 100%;
-        height:calc(100% - 0.8333rem);
 
         .bmsTitle {
             width: 100%;
             font-size: 1.0417rem;
-            margin: 1.0417rem 0;
-            img {
-                margin-right: .2604rem;
-            }
         }
+
         .bmsBody {
             display: flex;
             justify-content: space-around;
             align-items: center;
-            height: calc(100% - 3.125rem);
             font-size: .9375rem;
-            img {
-                height: 20%;
-                min-height: 40px;
-            }
 
             .value {
                 width: 100%;
@@ -219,11 +229,14 @@
                 flex-direction: column;
 
                 .valueOne {
-                 width: 100%;
-                display: flex;
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+
                     div {
                         width: 100%;
                         display: flex;
+                        flex-direction: row;
                         justify-content: space-around;
                     }
                 }
@@ -232,96 +245,80 @@
     }
 }
 
-.center{
+.centerContent {
     grid-area: center;
     padding: 1.0417rem 1.5625rem;
     display: grid;
     grid-template-rows: 5.2083rem 1fr;
-    .topData{
+    height: 100%;
+
+    .topData {
         display: flex;
-        .topOne{
+
+        .topOne {
             width: 25%;
             height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: space-around;
             padding-top: .7813rem;
-           font-size: .8333rem;
-           .bottomDes{
-            width:'100%';
-            height:0.834rem;
-            // background:no-repeat center url('../../../../../../assets/svg/bottomDes.svg')
-           }
-           .label{
-            text-align: center;
-            font-size: .7292rem;
-           }
-           .value{
-            font-size: 1.4583rem;
-            text-align: center;
-            font-family: DingTalkJinBuTi;
-           }
+            font-size: .8333rem;
+
+            .topOneLabel {
+                font-size: 1.0417rem;
+                text-align: center;
+                font-family: DingTalkJinBuTi;
+                height: calc(100% - 1.0417rem);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+            }
+
+            .bottomDes {
+                width: '100%';
+                height: 0.834rem;
+            }
+
+            .label {
+                text-align: center;
+                font-size: .7292rem;
+            }
+
+            .value {
+                font-size: 1.4583rem;
+                text-align: center;
+                font-family: DingTalkJinBuTi;
+            }
         }
     }
-    .bottomPic{
+
+    .bottomPic {
         width: 100%;
         height: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
-        img{
+
+        img {
             height: 25rem;
         }
     }
 }
-@media screen and (min-width: 2000px) {
-    .title {
-        font-size: 36px;
 
-        .sn {
-            font-size: 24px;
-        }
+.powerData {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    .powerDataItemValue {
+        text-align: center;
+        font-size: 1.3021rem;
+        font-family: DingTalkJinBuTi;
     }
 
-    .pcsOneTitle {
-        font-size: 20px;
-    }
-
-    .pcsOneBody {
-        font-size: 20px;
-    }
-
-    .Box {
-        .boxTitle {
-            font-size: 18px;
-        }
-
-        .value {
-            font-size: 46px;
-
-            .unit {
-                font-size: 18px;
-            }
-        }
-    }
-
-    .bmsTitle {
-        font-size: 20px;
-    }
-
-    .bmsBody {
-        font-size: 18px;
-    }
-
-    .statusOne {
-        .title {
-            font-size: 20px !important;
-        }
-
-        .value {
-            font-size: 20px !important;
-
-        }
+    .powerDataItemLabel {
+        font-size: .7292rem;
     }
 }
-
