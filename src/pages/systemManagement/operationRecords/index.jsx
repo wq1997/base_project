@@ -123,7 +123,7 @@ const RealtimeAlarm = () => {
           data={data?.list}
           pagination={false}
         />
-        <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} total={data?.total} onChange={changPage} />
+        <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" showSizeChanger={false} current={current} total={data?.total} onChange={changPage} />
       </div>
 
     </div>
