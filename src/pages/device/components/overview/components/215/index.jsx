@@ -13,6 +13,8 @@ import ReactECharts from "echarts-for-react";
 import "echarts-liquidfill/src/liquidFill.js";
 import OutDoor215Default from "../../../../../../../public/images/OutDoor215Default.svg";
 import OutDoor215Dark from "../../../../../../../public/images/OutDoor215Dark.svg";
+import CYOutDoor215Default from "../../../../../../../public/images/CYOutDoor215Default.svg";
+import CYOutDoor215Dark from "../../../../../../../public/images/CYOutDoor215Dark.svg";
 import classNames from "classnames";
 
 function Com(props) {
@@ -20,6 +22,7 @@ function Com(props) {
     const { token } = theme.useToken();
     const Icon = useIcon();
     const id = getQueryString("id");
+    const plantId = getQueryString("plantId");
     const global = useSelector(state => state.global);
 
     useEffect(() => {
@@ -291,7 +294,13 @@ function Com(props) {
                             </div>
                         </div>
                         <div className={styles.bottomPic}>
-                            <img src={global.theme == 'default' ? OutDoor215Default : OutDoor215Dark} alt="" />
+                            <img
+                                src={global.theme == 'default' ?
+                                    (plantId==40?CYOutDoor215Default:OutDoor215Default) :
+                                    (plantId==40?CYOutDoor215Dark:OutDoor215Dark)
+                                }
+                                alt=""
+                            />
                         </div>
                     </div>
                 </div>

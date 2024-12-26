@@ -65,16 +65,10 @@ const BaseLayout = () => {
             },
             '.ant-menu-sub': {
                 backgroundColor: `${token.titleCardBgc} !important`,
-                margin: '0 1.0417rem',
-                borderRadius: '0.283rem !important',
-                fontSize: '0.833rem !important',
-                fontFamily: 'PingFangRegular !important',
             },
             '.ant-menu-item-icon': {
-                fontSize: '0.9375rem !important',
-                fontFamily: 'PingFangRegular !important',
+                fontSize: '18px !important',
             }
-
         }
     });
 
@@ -93,7 +87,7 @@ const BaseLayout = () => {
                     >
                         <FormattedMessage id="储能管理系统" />
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '25px'}}>
                         <Dropdown
                             placement="bottom"
                             menu={{
@@ -113,19 +107,20 @@ const BaseLayout = () => {
                                 }
                             }}
                         >
-                            <QuestionCircleOutlined style={{ cursor: 'pointer', fontSize: '1.8229rem', color: token.iconColor }} />
+                            <QuestionCircleOutlined style={{ cursor: 'pointer', fontSize: '40px', color: token.iconColor }} />
                         </Dropdown>
                         <HomeOutlined
-                            style={{ cursor: 'pointer', fontSize: '1.8229rem', color: token.iconColor,
-                                margin: '0px 2.0833rem'
-
+                            style={{ 
+                                cursor: 'pointer', 
+                                color: token.iconColor,
+                                fontSize: '40px'
                              }}
                             onClick={() => history.push('/index/device')}
                         />
                         <Tooltip title={useLocale('语言切换')} placement="bottom">
                             <img
                                 style={{
-                                    width: '2.0833rem',
+                                    width: '45px',
                                     cursor: 'pointer'
                                 }}
                                 src={
@@ -141,9 +136,8 @@ const BaseLayout = () => {
                             <SkinOutlined
                                 style={{
                                     cursor: "pointer",
-                                    fontSize: '1.8229rem',
-                                    color: token.iconColor,
-                                    margin: '0px 2.0833rem'
+                                    fontSize: '40px',
+                                    color: token.iconColor
                                 }}
                                 onClick={() => changeTheme(global.theme === "default" ? "dark" : "default")}
                             />
@@ -169,14 +163,14 @@ const BaseLayout = () => {
                                 }
                             }}
                         >
-                           <UserOutlined style={{ cursor: 'pointer', fontSize:' 1.8229rem', color: token.iconColor }} />
+                           <UserOutlined style={{ cursor: 'pointer', fontSize:'40px', color: token.iconColor }} />
                         </Dropdown>
                     </div>
                 </Header>
                 <Layout hasSider>
                     {pathname.split('/')[1] === 'index' && <Sider className={siderContentStyle}
                         style={{ background: token.titleCardBgc }}
-                        width={'12.5rem'}>
+                        width={200}>
                         <div className={styles.siderContent}>
                             <MyMenu />
                         </div>

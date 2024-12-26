@@ -88,7 +88,7 @@ const MyMenu = () => {
                             </div>
                         }
                         icon={menu.icon}
-                        style={{ fontSize: '0.9375rem' }}
+                        style={{ fontSize: '18px' }}
                     >
                         {getMenu(menu.children)}
                     </SubMenu>
@@ -99,7 +99,7 @@ const MyMenu = () => {
                         <Menu.Item 
                             key={menu.key} 
                             icon={menu.icon}
-                            style={{ fontSize: menu.icon ? '.9375rem' : '0.8333rem' }}
+                            style={{ fontSize: menu.icon ? '18px' : '18px' }}
                             title={menu.label}
                         >
                             <div 

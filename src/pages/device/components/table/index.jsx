@@ -86,7 +86,7 @@ const Table = ({
                         type="link"
                         style={{ color: token.colorPrimary, cursor: 'pointer' }}
                         onClick={() => {
-                            history.push(`/device?activeKey=OverView&id=${record.id}&title=${record.name || ""}&type=${record.deviceTypeId || ""}`)
+                            history.push(`/device?activeKey=OverView&id=${record.id}&title=${record.name || ""}&type=${record.deviceTypeId || ""}&plantId=${record?.plantId}`)
                         }}
                     >
                         {t('详情')}
@@ -96,9 +96,10 @@ const Table = ({
         },
     ]
 
-    useEffect(() => {
+    useEffect(() => {   
         setListData(dataSource);
     }, [dataSource]);
+
     return (
         <div className={styles.table} >
             <div className={styles.row} style={{ background:token.tableTitle,color:token.tableColor }}>

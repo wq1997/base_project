@@ -61,42 +61,42 @@ const RealtimeAlarm = () => {
             name: 'dailyCharge',
             value: '',
             unit: 'kWh',
-            color: '#FF9D4F'
+            // color: '#FF9D4F'
         },
         {
             label: t('今日放电量'),
             name: 'dailyDisCharge',
             value: '',
             unit: 'kWh',
-            color: '#FF9D4F'
+            // color: '#FF9D4F'
         },
         {
             label: t('本月充电量'),
             name: 'monthCharge',
             value: '',
             unit: 'kWh',
-            color: '#03B4B4'
+            // color: '#03B4B4'
         },
         {
             label: t('本月放电量'),
             name: 'monthDisCharge',
             value: '',
             unit: 'kWh',
-            color: '#03B4B4'
+            // color: '#03B4B4'
         },
         {
             label: t('累计充电量'),
             name: 'totalCharge',
             value: '',
             unit: 'kWh',
-            color: '#DE83C4'
+            // color: '#DE83C4'
         },
         {
             label: t('累计放电量'),
             name: 'totalDisCharge',
             value: '',
             unit: 'kWh',
-            color: '#DE83C4'
+            // color: '#DE83C4'
         },
 
     ];
@@ -172,7 +172,16 @@ const RealtimeAlarm = () => {
                 })
             })
             setDataOption([...arr]);
-            changePlant(arr[0].value);
+
+            let plantId = "";
+            const plantIdList = arr.map(item => item.value);
+            const localPlantId = parseInt(localStorage.getItem("currentPlant"));
+            if(plantIdList.includes(localPlantId)){
+                plantId = localPlantId;
+            }else{
+                plantId = plantIdList?.[0];
+            }
+            changePlant(plantId);
         }
     }
 
@@ -215,10 +224,9 @@ const RealtimeAlarm = () => {
                     <div className={styles.left1Content}>
                         {eleData.map(it => {
                             return (
-                                <div className={styles.topItem} style={{ color: token.color7, }}>
+                                <div className={styles.topItem}>
                                     <div className={styles.topVaue} style={{ fontWeight: 400, }} >
                                         <span className={styles.topVaueContent} title={dataEle[it.name]}>{dataEle[it.name]}</span>
-                                        <span style={{ marginLeft: '2px', height: '10%', lineHeight: '150%' }}>{it.unit}</span>
                                     </div>
                                     <div className={styles.topItemTitle} title={it.label}>
                                         <span style={{ color: token.smallTitleColor }}>{it.label}</span>
