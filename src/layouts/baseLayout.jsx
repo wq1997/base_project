@@ -82,7 +82,7 @@ const BaseLayout = () => {
                         style={{
                             color: token.titleColor
                         }}
-                        level={3}
+                        level={2}
                         className={styles.title}
                     >
                         <FormattedMessage id="储能管理系统" />

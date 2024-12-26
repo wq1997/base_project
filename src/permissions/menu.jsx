@@ -1,6 +1,6 @@
 import { Menu, Tooltip } from 'antd';
 import { Link, useLocation, useSelector, FormattedMessage, useIntl } from 'umi';
-import { ToolOutlined, AlertOutlined, LineChartOutlined, BarChartOutlined, SettingOutlined } from '@ant-design/icons';
+import { WindowsOutlined, AlertOutlined, LineChartOutlined, BarChartOutlined, SettingOutlined } from '@ant-design/icons';
 
 const { SubMenu } = Menu;
 
@@ -14,7 +14,7 @@ const MenuList = [
     {
         label: '电站概览',
         key: '/index/device',
-        icon: <ToolOutlined />,
+        icon: <WindowsOutlined />,
     },
     // {
     //     label: <FormattedMessage id='app.PolicyConfiguration' />,

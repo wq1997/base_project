@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { Button, theme, Space, message, Modal, Table, Select, Input } from "antd";
+import { Button, theme, Space, message, Modal, Table, Select, Input, Flex } from "antd";
 import styles from './index.less'
 import { apigetPlantList, apiInsertPlant, apiUpdatePlant, apideletePlantById, getInsertPlantInitData } from '@/services/plant'
 import { useSelector, useIntl } from "umi";
@@ -72,7 +72,7 @@ function Com(props) {
             title: t('设备总数'),
             dataIndex: 'dtuSize',
             key: 'dtuSize',
-        },    {
+        }, {
             title: t('设备在线'),
             dataIndex: 'onlines',
             key: 'onlines',
@@ -81,7 +81,7 @@ function Com(props) {
             title: t('建站日期'),
             dataIndex: 'installDate',
             key: 'installDate',
-            render:(val)=>{
+            render: (val) => {
                 return dayjs(val).format('YYYY-MM-DD')
             }
         },
@@ -111,11 +111,11 @@ function Com(props) {
             title: t('告警类型'),
             dataIndex: 'alarms',
             key: 'alarms',
-            render(value){
-                const valueList = value?value?.split(","):[];
+            render(value) {
+                const valueList = value ? value?.split(",") : [];
                 const labelList = valueList?.map((item, index) => {
-                    const level = alarmLevel?.filter(level => level.value===item);
-                    return t(level?.[0]?.label?.props?.id)+(index===valueList?.length-1?"":', ');
+                    const level = alarmLevel?.filter(level => level.value === item);
+                    return t(level?.[0]?.label?.props?.id) + (index === valueList?.length - 1 ? "" : ', ');
                 })
                 return labelList;
             }
@@ -145,11 +145,11 @@ function Com(props) {
     });
     const getAllUser = async () => {
         const { data } = await fetchAllUsersList();
-        let arr=[];
-        data.data?.map(it=>{
+        let arr = [];
+        data.data?.map(it => {
             arr.push({
-                label:it.name,
-                value:it.f0102_Id
+                label: it.name,
+                value: it.f0102_Id
             })
         })
         setAllUser(arr)
@@ -169,10 +169,10 @@ function Com(props) {
             typeName: '',
             longitude: '',
             latitude: '',
-            installDate:  dayjs(new Date()),
+            installDate: dayjs(new Date()),
             // networkDate: new Date(),
             timeZone: '',
-            priceUnit:''
+            priceUnit: ''
         });
         setSelectPlantId(undefined);
         setTitle('新增电站');
@@ -196,7 +196,7 @@ function Com(props) {
         setSelectPlantId(record.plantId)
     }
     const changeData = async (value) => {
-        const { data } = await apiUpdatePlant({ ...value, plantId: selectPlantId,deviceTypeId:14 }) 
+        const { data } = await apiUpdatePlant({ ...value, plantId: selectPlantId, deviceTypeId: 14 })
         if (data.data) {
             getData();
         } else {
@@ -224,19 +224,20 @@ function Com(props) {
                         style={{
                             width: 180,
                         }}
-                        placeholder={t('选择用户') }
-                          options={allUser}
-                          onChange={onSelect}
-                          allowClear
+                        placeholder={t('选择用户')}
+                        options={allUser}
+                        onChange={onSelect}
+                        allowClear
                     />
                 </div>
-                {/* <Search style={{width: 180,}} placeholder={t("电站名筛选")} onSearch={onSearch}  /> */}
-                    <Input style={{width: 180,marginRight:'1.0417rem'}} onChange={onSearch} placeholder={t("电站名筛选")} />
-                    <Button type='primary' onClick={getData}>{t('查询')}</Button>
-                <div className={styles.dataItem}>
+                <Input style={{ width: 180, marginRight: '1.0417rem' }} onChange={onSearch} placeholder={t("电站名筛选")} />
+                <Button type='primary' onClick={getData}>{t('查询')}</Button>
+            </div>
+            <Flex justify="end">
+                <div style={{ margin: '0 30px 10px 0' }}>
                     <Button type='primary' onClick={changIsOpen} >{t('新增')}</Button>
                 </div>
-            </div>
+            </Flex>
             <div className={styles.tablePart}>
                 <Table
                     style={{ backgroundColor: token.titleCardBgc }}
@@ -254,7 +255,7 @@ function Com(props) {
                 onOk={del}
                 onCancel={changeIsOpenDel}
             >
-               {t('数据删除后将无法恢复，是否确认删除该条数据？')} 
+                {t('数据删除后将无法恢复，是否确认删除该条数据？')}
             </Modal>
         </div>
     )
