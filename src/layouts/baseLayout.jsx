@@ -107,20 +107,20 @@ const BaseLayout = () => {
                                 }
                             }}
                         >
-                            <QuestionCircleOutlined style={{ cursor: 'pointer', fontSize: '40px', color: token.iconColor }} />
+                            <QuestionCircleOutlined style={{ cursor: 'pointer', fontSize: '30px', color: token.iconColor }} />
                         </Dropdown>
                         <HomeOutlined
                             style={{ 
                                 cursor: 'pointer', 
                                 color: token.iconColor,
-                                fontSize: '40px'
+                                fontSize: '30px'
                              }}
                             onClick={() => history.push('/index/device')}
                         />
                         <Tooltip title={useLocale('语言切换')} placement="bottom">
                             <img
                                 style={{
-                                    width: '45px',
+                                    width: '35px',
                                     cursor: 'pointer'
                                 }}
                                 src={
@@ -136,7 +136,7 @@ const BaseLayout = () => {
                             <SkinOutlined
                                 style={{
                                     cursor: "pointer",
-                                    fontSize: '40px',
+                                    fontSize: '30px',
                                     color: token.iconColor
                                 }}
                                 onClick={() => changeTheme(global.theme === "default" ? "dark" : "default")}
@@ -163,7 +163,7 @@ const BaseLayout = () => {
                                 }
                             }}
                         >
-                           <UserOutlined style={{ cursor: 'pointer', fontSize:'40px', color: token.iconColor }} />
+                           <UserOutlined style={{ cursor: 'pointer', fontSize:'30px', color: token.iconColor }} />
                         </Dropdown>
                     </div>
                 </Header>
