@@ -1921,4 +1921,6 @@ export default {
     '请输入系统名称': "Please enter system name",
     "点击上传": 'Click to upload',
     "上海采日能源储能管理系统": 'SERMATEC Energy storage Management System',
+    '温差': 'Differential temperature',
+    '压差': 'Differential voltage',
 } 

@@ -25,7 +25,6 @@ const RealtimeAlarm = () => {
   const [pageSize, setPageSize] = useState(10);
   const [time, setTime] = useState([null, null]);
   const { token } = theme.useToken();
-  const [sn, setSn] = useState();
   const [plantList, setPlantList] = useState([]);
   const [deviceList, setDeviceList] = useState([]);
   const [plantId, setPlantId] = useState(null);
@@ -39,20 +38,6 @@ const RealtimeAlarm = () => {
       },
     );
     return msg
-  }
-
-  const getPlanList = async () => {
-    const res = await getFetchPlantListServe();
-    if (res?.data?.data) {
-      const data = res?.data?.data;
-      const plantList = data?.plantList?.map((item, index) => {
-        return {
-          value: item.plantId,
-          label: item.name
-        }
-      })
-      setPlantList(plantList);
-    }
   }
 
   const getDtusOfPlant = async (plantList, plantId) => {
@@ -88,11 +73,15 @@ const RealtimeAlarm = () => {
         }
       })
       setPlantList(plantList);
+      if (!plantId) {
+        setPlantId(plantList?.[0]?.value);
+        getData(1, plantList?.[0]?.value);
+      }
     }
   }
 
   useEffect(() => {
-    getTableListData(current);
+    getData(current);
   }, [current, type, time, pageSize,locale]);
 
   useEffect(() => {
@@ -113,14 +102,14 @@ const RealtimeAlarm = () => {
     downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader, sheetName)
   };
 
-  const getTableListData = async (page) => {
+  const getData = async (page, paramsPlantId = plantId) => {
     const { data } = await getHistoryAlarmsByOptionsWithPage({
       currentPage: page || 1,
       pageSize,
       prior: level,
       begin: time?.length ? time[0]?.format('YYYY-MM-DD HH:mm:ss') : null,
       end: time?.length ? time[1]?.format('YYYY-MM-DD HH:mm:ss') : null,
-      plantId,
+      plantId: paramsPlantId,
       dtuId: deviceId,
     }) || {};
     setData(data.data);
@@ -128,24 +117,6 @@ const RealtimeAlarm = () => {
   const changPage = (page, pageSize) => {
     setCurrent(page);
     setPageSize(pageSize);
-  }
-  const changeLevel = (value) => {
-    setLevel(value);
-  }
-
-  const changePlant = (value) => {
-    setPlantId(value);
-  }
-
-  const changeTime = (value) => {
-    setTime(value);
-  }
-  const upData = () => {
-    getTableListData();
-  }
-
-  const changeSn = (e) => {
-    setSn(e.target.value);
   }
 
   return (
@@ -179,7 +150,7 @@ const RealtimeAlarm = () => {
           <div className={styles.level}>
             <Select
               style={{ width: 180 }}
-              onChange={changeLevel}
+              onChange={(value) => setLevel(value)}
               options={plantId ? alarmLevel?.filter(level => {
                 let value = level?.value;
                 const plant = plantList?.find(plant => plant?.value === plantId);
@@ -198,10 +169,10 @@ const RealtimeAlarm = () => {
                 defaultValue: [dayjs('00:00:00', 'HH:mm:ss'), dayjs('11:59:59', 'HH:mm:ss')],
               }}
               format="YYYY-MM-DD HH:mm:ss"
-              onChange={changeTime}
+              onChange={(value) => setTime(value)}
             />
           </div>
-          <Button type='primary' onClick={upData}>{t('查询')}</Button>
+          <Button type='primary' onClick={()=>getData()}>{t('查询')}</Button>
           <div className={styles.buttons}>
             <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downLoadFoodModel} >
               {t('导出')} Excel
@@ -216,7 +187,7 @@ const RealtimeAlarm = () => {
         />
         {
           data?.list?.length > 0 &&
-          <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" current={current} total={data?.total} pageSizeOptions={[10, 20, 30]} onChange={changPage} />
+          <Pagination style={{ marginTop: '20px', textAlign: 'right' }} size="default" showSizeChanger={false} current={current} total={data?.total} pageSizeOptions={[10, 20, 30]} onChange={changPage} />
         }
       </div>
     </div>

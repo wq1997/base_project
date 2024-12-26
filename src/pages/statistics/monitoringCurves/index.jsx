@@ -41,11 +41,14 @@ const MonitoringCurves = () => {
         let { date, currentPlantDevice, dataType } = values;
         date = date?.map(item => dayjs(item).format(format));
         let flag = false;
+        if(!dataType){
+            flag = true;
+        }
         if (date?.length > 3) {
             showMessage && message.error(intl.formatMessage({ id: '最多选择3个对比项' }));
             flag = true;
         }
-        if(initFlag!=0){
+        if (initFlag != 0) {
             if (!currentPlantDevice || currentPlantDevice?.length < 2) {
                 showMessage && message.error(intl.formatMessage({ id: '请选择电站下具体设备' }));
                 flag = true;
@@ -76,7 +79,7 @@ const MonitoringCurves = () => {
 
         let yAxis = [
             {
-                name: dataSource?.[0]?.unit, 
+                name: dataSource?.[0]?.unit,
                 nameTextStyle: {
                     color: token.echartsFontColor
                 },
@@ -102,7 +105,7 @@ const MonitoringCurves = () => {
         })
         legendData.forEach((legend, index) => {
             const currentDate = legend?.split(' ')?.[0];
-            const currentData = dataSource?.find(item => item.date === currentDate&&item.dataType==dataSource[index].dataType&&item?.label==legend);
+            const currentData = dataSource?.find(item => item.date === currentDate && item.dataType == dataSource[index].dataType && item?.label == legend);
             const data = [];
             for (let key in currentData?.value) {
                 data.push(currentData?.value[key])
@@ -116,12 +119,10 @@ const MonitoringCurves = () => {
         })
 
         if (dataType.includes("CELL_VOL_DIFF")) {
-            yAxis[0].name = `${intl.formatMessage({ id: '最高电压' })}/${intl.formatMessage({ id: '最低电压' })}`;
             yAxis[0].splitNumber = 5;
             yAxis[0].nameGap = 20;
 
             yAxis[1] = {
-                name: intl.formatMessage({ id: '压差' }),
                 nameTextStyle: {
                     color: token.echartsFontColor
                 },
@@ -129,7 +130,7 @@ const MonitoringCurves = () => {
                 axisLabel: {
                     formatter: '{value}',
                     color: token.echartsFontColor,
-                    fontSize: 14
+                    fontSize: 12
                 },
                 axisLine: {
                     show: false
@@ -142,14 +143,25 @@ const MonitoringCurves = () => {
                 },
                 splitNumber: 5
             }
+            dataSource.forEach(data => {
+                yAxis[0].name = `${intl.formatMessage({ id: '电压' })}(${data.unit})`;
+                yAxis[1].name = `${intl.formatMessage({ id: '压差' })}(${data.unit})`,
+
+                    series.push({
+                        yAxisIndex: data?.dataType === intl.formatMessage({ id: '压差' }) ? 1 : 0,
+                        name: data?.label,
+                        type: 'line',
+                        showSymbol: false,
+                        data: Object.values(data?.value)
+                    })
+                xData = Object.keys(data?.value)
+            })
         }
         if (dataType.includes("CELL_TEMP_DIFF")) {
-            yAxis[0].name = `${intl.formatMessage({ id: '最高温度' })}/${intl.formatMessage({ id: '最低温度' })}`;
             yAxis[0].splitNumber = 5;
             yAxis[0].nameGap = 20;
 
             yAxis[1] = {
-                name: intl.formatMessage({ id: '温差' }),
                 nameGap: 20,
                 nameTextStyle: {
                     color: token.echartsFontColor
@@ -157,7 +169,7 @@ const MonitoringCurves = () => {
                 axisLabel: {
                     formatter: '{value}',
                     color: token.echartsFontColor,
-                    fontSize: 14
+                    fontSize: 12
                 },
                 axisLine: {
                     show: false
@@ -170,6 +182,19 @@ const MonitoringCurves = () => {
                 },
                 splitNumber: 5
             }
+            dataSource.forEach(data => {
+                yAxis[0].name = `${intl.formatMessage({ id: '温度' })}(${data.unit})`;
+                yAxis[1].name = `${intl.formatMessage({ id: '温差' })}(${data.unit})`,
+
+                series.push({
+                    yAxisIndex: data?.dataType === intl.formatMessage({ id: '温差' }) ? 1 : 0,
+                    name: data?.label,
+                    type: 'line',
+                    showSymbol: false,
+                    data: Object.values(data?.value)
+                })
+                xData = Object.keys(data?.value)
+            })
         }
         const option = {
             tooltip: {
@@ -236,8 +261,8 @@ const MonitoringCurves = () => {
                 if (currentPlantDevice?.length === 0) {
                     const res = await getCurveTypeServe2({ dtuId: data?.[0].value, isCombo: true });
                     setDataProList(res?.data?.data);
-                    if(res?.data?.data?.length > 0) {
-                        let str=`${res?.data?.data[0].label}(${res?.data?.data[0].unit})`
+                    if (res?.data?.data?.length > 0) {
+                        let str = `${res?.data?.data[0].label}(${res?.data?.data[0].unit})`
                         setTitle(str);
                     }
 
@@ -250,7 +275,7 @@ const MonitoringCurves = () => {
                         const params = await getParams(false);
                         getDataSource(params);
                     }, 200)
-                }else{
+                } else {
                     const res = await getCurveTypeServe2({ dtuId: currentPlantDevice[1], isCombo: true });
                     setDataProList(res?.data?.data);
                     setTimeout(async () => {
@@ -297,8 +322,8 @@ const MonitoringCurves = () => {
         const response = await getCurveTypeServe2({ dtuId: currentPlantDevice[1], isCombo: true });
         if (response?.data?.data) {
             response?.data?.data.forEach((item, index) => {
-                if(item.value==dataType){
-                    let str=`${item.label}(${item.unit})`
+                if (item.value == dataType) {
+                    let str = `${item.label}(${item.unit})`
                     setTitle(str);
                 }
             })
@@ -319,12 +344,12 @@ const MonitoringCurves = () => {
     useEffect(() => {
         initPlantDevice();
         setInitFlag(1)
-            setTimeout(async () => {
-                const params = await getParams();
-                if (params) {
-                    getDataSource(params);
-                }
-            }, 200)
+        setTimeout(async () => {
+            const params = await getParams();
+            if (params) {
+                getDataSource(params);
+            }
+        }, 200)
     }, [locale])
 
     return (
@@ -352,7 +377,7 @@ const MonitoringCurves = () => {
                                         // form.setFieldsValue({
                                         //     dataType: undefined
                                         // })
-                                        if(dataProList?.length>0){
+                                        if (dataProList?.length > 0) {
                                             setTimeout(async () => {
                                                 const params = await getParams();
                                                 if (params) {
@@ -366,14 +391,14 @@ const MonitoringCurves = () => {
                                     if (currentDevice.type) {
                                         const res = await getCurveTypeServe2({ dtuId: currentDevice.value, isCombo: true });
                                         setDataProList(res?.data?.data);
-                                        if(res?.data?.data){
+                                        if (res?.data?.data) {
                                             const currentPlantDevice = await form.getFieldValue("currentPlantDevice");
                                             form.setFieldsValue({
                                                 dataType: res?.data?.data?.[0]?.value
                                             })
                                         }
-                                        if(dataProList.length>0){
-                                            let str=`${dataProList[0].label}(${dataProList[0].unit})`
+                                        if (dataProList.length > 0) {
+                                            let str = `${dataProList[0].label}(${dataProList[0].unit})`
                                             setTitle(str);
                                         }
                                         const values = await form.validateFields();

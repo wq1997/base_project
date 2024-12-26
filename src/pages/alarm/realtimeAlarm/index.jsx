@@ -1,6 +1,6 @@
 import Table from '@/components/Table.jsx'
 import { useEffect, useState } from 'react'
-import { FormattedMessage, useIntl,useSelector } from "umi";
+import { FormattedMessage, useIntl, useSelector } from "umi";
 import styles from "./index.less";
 import { Pagination, theme, Select, Cascader, Button, DatePicker } from "antd"
 import { alarmLevel } from "@/utils/constants"
@@ -12,7 +12,7 @@ import {
   getDtusOfPlant as getDtusOfPlantServe
 } from "@/services/plant";
 import {
-  getNowAlarmsWithPage 
+  getNowAlarmsWithPage
 } from "@/services/alarm"
 const alarmTableColums = [
   {
@@ -54,7 +54,6 @@ const RealtimeAlarm = () => {
   const [current, setCurrent] = useState(1);
   const { token } = theme.useToken();
   const [level, setLevel] = useState();
-  const [sn, setSn] = useState();
   const [plantList, setPlantList] = useState([]);
   const [deviceList, setDeviceList] = useState([]);
   const [plantId, setPlantId] = useState(null);
@@ -104,7 +103,27 @@ const RealtimeAlarm = () => {
         }
       })
       setPlantList(plantList);
+      if (!plantId) {
+        setPlantId(plantList?.[0]?.value);
+        getData(1, plantList?.[0]?.value);
+      }
     }
+  }
+
+  const getData = async (page, paramsPlantId = plantId) => {
+    const { data } = await getNowAlarmsWithPage({
+      currentPage: page || 1,
+      pageSize: 10,
+      prior: level,
+      plantId: paramsPlantId,
+      dtuId: deviceId,
+    });
+    setData(data.data);
+  }
+
+  const changPage = (page) => {
+    setCurrent(page);
+    getData(page);
   }
 
   useEffect(() => {
@@ -112,36 +131,8 @@ const RealtimeAlarm = () => {
     getData();
   }, [locale]);
 
-  const getData = async (page) => {
-    const { data } = await getNowAlarmsWithPage({
-      currentPage: page || 1,
-      pageSize: 10,
-      prior: level,
-      plantId,
-      dtuId: deviceId,
-    });
-    setData(data.data);
-  }
-  const changPage = (page) => {
-    setCurrent(page);
-    getData(page);
-  }
-  const changeLevel = (value) => {
-    setLevel(value);
-  }
-
-  const changePlant = (value) => {
-    setPlantId(value);
-  }
-
-  const changeSn = (e) => {
-    setSn(e.target.value);
-  }
-  const upData = () => {
-    getData();
-  }
   return (
-    <div style={{ width: '100%', height: '100%', paddingBottom: '10px',backgroundColor: token.titleCardBgc  }}>
+    <div style={{ width: '100%', height: '100%', paddingBottom: '10px', backgroundColor: token.titleCardBgc }}>
       <div className={styles.alarmWrap} style={{ padding: '35px 35px' }}>
         <div className={styles.title}>
           <Select
@@ -171,7 +162,7 @@ const RealtimeAlarm = () => {
           <div className={styles.level}>
             <Select
               style={{ width: 180 }}
-              onChange={changeLevel}
+              onChange={(value) => setLevel(value)}
               options={plantId ? alarmLevel?.filter(level => {
                 let value = level?.value;
                 const plant = plantList?.find(plant => plant?.value === plantId);
@@ -183,7 +174,7 @@ const RealtimeAlarm = () => {
               value={level}
             />
           </div>
-          <Button type='primary' onClick={upData}>{t('查询')}</Button>
+          <Button type='primary' onClick={() => getData()}>{t('查询')}</Button>
         </div>
         <Table
           columns={alarmTableColums}
