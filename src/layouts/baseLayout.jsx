@@ -22,6 +22,7 @@ import {
 } from '@ant-design/icons';
 import { history, useIntl } from "umi";
 import UserModal from './UserModal';
+import { useEffect } from 'react';
 
 const { Header, Sider, Content } = Layout;
 
@@ -29,6 +30,7 @@ const BaseLayout = () => {
     const dispatch = useDispatch();
     const { token } = antdTheme.useToken();
     const global = useSelector(state => state.global);
+    const { user } = useSelector(state => state.user);
     const [userModalOpen, setUserModalOpen] = useState(false);
     const location = useLocation();
     const { pathname } = location;
@@ -74,7 +76,11 @@ const BaseLayout = () => {
             }
         }
     });
-    
+
+    useEffect(() => {
+        dispatch({ type: 'user/getUserInfo' });
+    }, []);
+
     return (
         <div className={styles.baseLayout}>
             <Layout className={styles.layout}>
@@ -82,9 +88,9 @@ const BaseLayout = () => {
                     style={{ background: token.titleCardBgc }}
                 >
                     <Flex align="center" gap={10}>
-                        <img src={global.theme==="dark"?LogoDark:LogoDefault} style={{height: '20px'}}/>
+                        <img src={user?.systemLogo ? user?.systemLogo : (global.theme === "dark" ? LogoDark : LogoDefault)} style={{ height: '20px' }} />
                         <div className={styles.title}>
-                            <FormattedMessage id="上海采日能源储能管理系统" />
+                            {user?.systemName || <FormattedMessage id="上海采日能源储能管理系统" />}
                         </div>
                     </Flex>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '25px' }}>

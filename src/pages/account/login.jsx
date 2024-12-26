@@ -5,22 +5,18 @@ import {
   getPublicKey as getPublicKeySever,
   login as loginSever,
 } from "@/services/user";
-import { getEncrypt, setLocalStorage, getLocalStorage } from "@/utils/utils";
+import { getEncrypt, setLocalStorage } from "@/utils/utils";
 import styles from "./index.less";
-import { history, useDispatch, FormattedMessage, useIntl, useSelector } from "umi";
+import { history, useDispatch, useIntl } from "umi";
 import { useEffect, useState } from "react";
 import { getBaseUrl } from '@/services/request';
 import img from '../../../src/assets/imges/bgimg.png'
-const { Title } = Typography;
 
 const Login = () => {
-  const { token } = theme.useToken();
   const dispatch = useDispatch();
   const [codeImgUrl, setCodeImgUrl] = useState(`${getBaseUrl()}/user/getKaptchaImage`);
   const [showImg, setShowImg] = useState(false);
   const [language, setLanguage] = useState(localStorage.getItem('locale') == 'zh-CN' ? 1 : 3);
-
-  const global = useSelector(state => state.global);
 
   const intl = useIntl();
   const t = (id) => {
@@ -51,16 +47,9 @@ const Login = () => {
         const data = res?.data.data;
         setLocalStorage("Token", data?.token);
         setLocalStorage("userName", data?.userName);
+        dispatch({type: 'user/getUserInfo'});
         message.success(t('登录成功'));
         history.push("/index/device");
-        dispatch({
-          type: 'user/updateState',
-          payload: {
-            user: {
-              ...res.data.data
-            }
-          }
-        })
       } else {
         message.error(res.data.msg);
         if (res?.data.code === '407') {

@@ -1,5 +1,4 @@
 import Table from '@/components/Table.jsx'
-import { alarmTableColums } from '@/utils/constants'
 import { useEffect, useState } from 'react'
 import { useSelector, useIntl } from "umi";
 import styles from "./index.less";
@@ -8,7 +7,6 @@ import { apiListLogWithPage } from "@/services/total"
 import { downLoadExcelMode } from "@/utils/utils";
 
 const RealtimeAlarm = () => {
-  const { Search } = Input;
   const [data, setData] = useState([]);
   const [current, setCurrent] = useState(1);
   const [startTime, setStartTime] = useState();
@@ -16,7 +14,7 @@ const RealtimeAlarm = () => {
   const [username, setUserName] = useState();
   const [pageSize, setPageSize] = useState(10);
   const [Ip, setIp] = useState('');
-  const {locale} = useSelector(state => state.global);
+  const { locale } = useSelector(state => state.global);
 
   const { token } = theme.useToken();
   const { RangePicker } = DatePicker;
@@ -51,19 +49,16 @@ const RealtimeAlarm = () => {
       key: 'time',
     },
   ]
-  const { user } = useSelector(function (state) {
-    return state.user
-});
   useEffect(() => {
     getData(current);
-  }, [current,  pageSize,locale]);
+  }, [current, pageSize, locale]);
   const getData = async (page) => {
     const { data } = await apiListLogWithPage({
       pageNum: page,
       pageSize,
       begin: startTime ? startTime : null,
       end: endTime ? endTime : null,
-      userName:username,
+      userName: username,
       ip: Ip,
     });
     setData(data?.data);
@@ -86,21 +81,21 @@ const RealtimeAlarm = () => {
   const downLoadFoodModel = () => {  // 菜品模板下载
     let fileName = t('操作记录');
     let sheetName = t('操作记录');
-    let sheetFilter = ['username',  'describe', 'ip', 'time'];
-    let sheetHeader = [t('用户名'),  t('动作'), 'IP', t('操作时间')];
+    let sheetFilter = ['username', 'describe', 'ip', 'time'];
+    let sheetHeader = [t('用户名'), t('动作'), 'IP', t('操作时间')];
     let exportData = data.list;
 
     downLoadExcelMode(fileName, exportData, sheetFilter, sheetHeader, sheetName);
 
   };
   return (
-    <div className={styles.content} style={{height:'100%'}}>
+    <div className={styles.content} style={{ height: '100%' }}>
       <div className={styles.title} style={{ backgroundColor: token.titleCardBgc }}>
         <div className={styles.level}>
           <RangePicker
             style={{ width: 280 }}
             onChange={changeTime}
-            allowClear  
+            allowClear
             placeholder={[t('开始') + t('时间'), t('结束') + t('时间')]}
             showTime
           />
@@ -109,15 +104,14 @@ const RealtimeAlarm = () => {
           <Input placeholder={t('IP')} onChange={changeIp} enterButton />
         </div>
         <div className={styles.dataItem}>
-          {/* <Search placeholder={t('用户名')} onSearch={onSearch} enterButton /> */}
-           <Input style={{width: 180,marginRight:'1.0417rem'}} onChange={onSearch} placeholder={t("用户名")} />
-                    <Button type='primary' onClick={()=>getData(current)}>{t('查询')}</Button>
+          <Input style={{ width: 180, marginRight: '1.0417rem' }} onChange={onSearch} placeholder={t("用户名")} />
+          <Button type='primary' onClick={() => getData(current)}>{t('查询')}</Button>
         </div>
         <Button type="primary" onClick={downLoadFoodModel} style={{ backgroundColor: token.defaultBg, marginLeft: '30px' }} >
           {t('导出')} Excel
         </Button>
       </div>
-      <div className={styles.tablePart} style={{backgroundColor: token.titleCardBgc, height: "calc(100% - 102px)" }}>
+      <div className={styles.tablePart} style={{ backgroundColor: token.titleCardBgc, height: "calc(100% - 102px)" }}>
         <Table
           columns={clums}
           data={data?.list}

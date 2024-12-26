@@ -258,7 +258,7 @@ const RealtimeAlarm = () => {
                     <Title title={`${t('历史电量')}(${t('kWh')})`} />
                     <div className={styles.cardContent}>
                         <ElectricityRanking
-                            currentPlantId={currentPlantId || dataOption[0]?.value}
+                            currentPlantId={currentPlantId}
                         />
                     </div>
                 </div>

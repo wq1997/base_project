@@ -1,4 +1,4 @@
-import { logout as logoutServe, login } from "@/services/user"
+import { getUserInfo as getUserInfoServe } from "@/services/user"
 import { history } from "umi";
 import { removeLocalStorage } from "@/utils/utils";
 
@@ -6,8 +6,8 @@ export default {
   namespace: 'user',
 
   state: {
-    user: [],
-    publicKey:'',
+    user: {},
+    publicKey: '',
   },
 
   effects: {
@@ -22,12 +22,22 @@ export default {
       // localStorage.setItem("publicKey", publicKey);
       sessionStorage.setItem("counterData", JSON.stringify(data));
     },
-
+    *getUserInfo({ payload }, { put, select }) {
+      const res = yield getUserInfoServe();
+      if (res?.data?.code === "ok") {
+        yield put({
+          type: 'updateState',
+          payload: {
+            user: res?.data?.data
+          }
+        })
+      }
+    }
   },
 
   reducers: {
     updateState(state, { payload }) {
-      return {  
+      return {
         ...state,
         ...payload,
       };

@@ -3,7 +3,7 @@ import { UploadOutlined } from "@ant-design/icons";
 import { useSelector, useIntl, useDispatch } from "umi";
 import { useEffect, useState } from "react";
 import { getBaseUrl } from "@/services/request";
-import { updateUserAndInfos as updateUserInfoServe } from "@/services/user";
+import { saveSystemInfo as saveSystemInfoServe } from "@/services/user";
 
 const UserModal = ({ open, onClose }) => {
     const intl = useIntl();
@@ -27,15 +27,11 @@ const UserModal = ({ open, onClose }) => {
             open={open}
             onOk={async () => {
                 const values = await form.validateFields();
-                const res = await updateUserInfoServe({
-                    userHeadUrl: userInfo?.userHeadUrl,
-                    systemLogoUrl: userInfo?.systemLogoUrl,
+                const res = await saveSystemInfoServe({
+                    systemLogo: userInfo?.systemLogo,
                     systemName: values?.systemName,
-                    mail: values?.email,
-                    name: values?.name,
-                    phone: values?.phone,
                 });
-                if (res?.data?.status === "SUCCESS") {
+                if (res?.data?.code === "ok") {
                     onClose();
                     form.resetFields();
                     setUserInfo(null);
@@ -52,10 +48,10 @@ const UserModal = ({ open, onClose }) => {
         >
             <div style={{ padding: "20px 0 0 0" }}>
                 <Form form={form}>
-                    <Form.Item label={intl.formatMessage({id: "系统Logo"})} name="systemLogoUrl">
+                    <Form.Item label={intl.formatMessage({id: "系统Logo"})} name="systemLogo">
                         <Upload
                             accept=".jpg,.jpeg,.png"
-                            action={`${getBaseUrl()}/attachment/upload`}
+                            action={`${getBaseUrl()}user/standardUser/uploadSystemLogo`}
                             maxCount={1}
                             showUploadList={true}
                             headers={{
@@ -63,28 +59,28 @@ const UserModal = ({ open, onClose }) => {
                             }}
                             onChange={file => {
                                 if (file?.fileList?.length > 0) {
-                                    if (file?.file?.response?.status === "SUCCESS") {
+                                    if (file?.file?.response?.code === "ok") {
                                         const data = file?.file?.response?.data;
                                         setUserInfo({
                                             ...userInfo,
-                                            systemLogoUrl: `${getBaseUrl()}/attachment/download/${data?.id}?${data?.fileName}`,
+                                            systemLogo: data,
                                         });
                                     }
                                 } else {
                                     setUserInfo({
                                         ...userInfo,
-                                        systemLogoUrl: "",
+                                        systemLogo: "",
                                     });
                                 }
                             }}
                             defaultFileList={
-                                userInfo?.systemLogoUrl
+                                userInfo?.systemLogo
                                     ? [
                                           {
-                                              uid: userInfo?.systemLogoUrl,
-                                              url: userInfo?.systemLogoUrl,
+                                              uid: userInfo?.systemLogo,
+                                              url: userInfo?.systemLogo,
                                               status: "done",
-                                              name: userInfo?.systemLogoUrl?.split("?")?.[1],
+                                              name: userInfo?.systemLogo,
                                           },
                                       ]
                                     : []
