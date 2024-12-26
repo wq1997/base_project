@@ -72,11 +72,14 @@ const MonitoringCurves = () => {
         for (var key in dataSource?.[0]?.value) {
             xArr.push(key);
         }
-        // xData = dataSource?.[0]?.timeList;
         xData = xArr;
 
         let yAxis = [
             {
+                name: dataSource?.[0]?.unit, 
+                nameTextStyle: {
+                    color: token.echartsFontColor
+                },
                 axisLabel: {
                     formatter: '{value}',
                     color: token.echartsFontColor,
@@ -114,9 +117,6 @@ const MonitoringCurves = () => {
 
         if (dataType.includes("CELL_VOL_DIFF")) {
             yAxis[0].name = `${intl.formatMessage({ id: '最高电压' })}/${intl.formatMessage({ id: '最低电压' })}`;
-            yAxis[0].nameTextStyle = {
-                color: token.echartsFontColor
-            };
             yAxis[0].splitNumber = 5;
             yAxis[0].nameGap = 20;
 
@@ -145,9 +145,6 @@ const MonitoringCurves = () => {
         }
         if (dataType.includes("CELL_TEMP_DIFF")) {
             yAxis[0].name = `${intl.formatMessage({ id: '最高温度' })}/${intl.formatMessage({ id: '最低温度' })}`;
-            yAxis[0].nameTextStyle = {
-                color: token.echartsFontColor
-            };
             yAxis[0].splitNumber = 5;
             yAxis[0].nameGap = 20;
 

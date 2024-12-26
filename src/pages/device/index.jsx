@@ -123,12 +123,13 @@ const RealtimeAlarm = () => {
         setIsOpen(!isOpen);
     }
     const changIsOpen = () => {
+        const currentPlant = data?.find(item => item.plantId == currentPlantId);
         setFormData({
             name: '',
             type: '',
             sn: '',
             plantId: '',
-            address: currentPlant?.position || "",
+            address: currentPlant?.address || "",
         });
         setRecord({})
         setTitle('新增设备');
@@ -152,6 +153,7 @@ const RealtimeAlarm = () => {
             message.error(data.msg)
         }
     }
+    
     const getAllPlant = async () => {
         const res = await getFetchPlantListServe();
         const data = res?.data;

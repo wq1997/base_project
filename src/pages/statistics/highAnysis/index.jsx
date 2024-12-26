@@ -163,6 +163,10 @@ const HighAnysis = () => {
                 },
             }],
             yAxis: [{
+                name: dataSource?.[0]?.unit, 
+                nameTextStyle: {
+                    color: token.echartsFontColor
+                },
                 axisLabel: {
                     formatter: '{value}',
                     color: token.echartsFontColor,
