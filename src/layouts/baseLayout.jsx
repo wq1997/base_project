@@ -1,6 +1,6 @@
 import { Outlet, useDispatch, useSelector, FormattedMessage, useLocation } from 'umi'
-import React, { useEffect } from 'react';
-import { theme, Layout, Dropdown, Button, Tooltip } from 'antd';
+import React, { useState } from 'react';
+import { theme as antdTheme, Layout, Dropdown, Button, Tooltip, Space, Flex } from 'antd';
 import MyMenu from "@/permissions/menu";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import styles from "./baseLayout.less";
@@ -10,6 +10,8 @@ import cnDefault from "@/assets/imges/cnDefault.svg";
 import cnDark from "@/assets/imges/cnDark.svg";
 import enDefault from "@/assets/imges/enDefault.svg";
 import enDark from "@/assets/imges/enDark.svg";
+import LogoDark from "../../public/images/logo-light.png";
+import LogoDefault from "../../public/images/logo-dark.png";
 import {
     FilePdfOutlined,
     LogoutOutlined,
@@ -17,19 +19,20 @@ import {
     QuestionCircleOutlined,
     HomeOutlined,
     UserOutlined,
-    DribbbleOutlined,
 } from '@ant-design/icons';
 import { history, useIntl } from "umi";
+import UserModal from './UserModal';
 
 const { Header, Sider, Content } = Layout;
 
 const BaseLayout = () => {
     const dispatch = useDispatch();
-    const { token } = theme.useToken();
+    const { token } = antdTheme.useToken();
     const global = useSelector(state => state.global);
+    const [userModalOpen, setUserModalOpen] = useState(false);
     const location = useLocation();
     const { pathname } = location;
-   
+
     const changeLanguage = (locale) => {
         setLocalStorage('locale', locale)
         dispatch({
@@ -71,23 +74,20 @@ const BaseLayout = () => {
             }
         }
     });
-
+    
     return (
         <div className={styles.baseLayout}>
             <Layout className={styles.layout}>
                 <Header className={styles.header}
                     style={{ background: token.titleCardBgc }}
                 >
-                    <div
-                        style={{
-                            color: token.titleColor
-                        }}
-                        level={2}
-                        className={styles.title}
-                    >
-                        <FormattedMessage id="储能管理系统" />
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '25px'}}>
+                    <Flex align="center" gap={10}>
+                        <img src={global.theme==="dark"?LogoDark:LogoDefault} style={{height: '20px'}}/>
+                        <div className={styles.title}>
+                            <FormattedMessage id="上海采日能源储能管理系统" />
+                        </div>
+                    </Flex>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '25px' }}>
                         <Dropdown
                             placement="bottom"
                             menu={{
@@ -107,20 +107,20 @@ const BaseLayout = () => {
                                 }
                             }}
                         >
-                            <QuestionCircleOutlined style={{ cursor: 'pointer', fontSize: '30px', color: token.iconColor }} />
+                            <QuestionCircleOutlined style={{ cursor: 'pointer', fontSize: '25px', color: token.iconColor }} />
                         </Dropdown>
                         <HomeOutlined
-                            style={{ 
-                                cursor: 'pointer', 
+                            style={{
+                                cursor: 'pointer',
                                 color: token.iconColor,
-                                fontSize: '30px'
-                             }}
+                                fontSize: '25px'
+                            }}
                             onClick={() => history.push('/index/device')}
                         />
                         <Tooltip title={useLocale('语言切换')} placement="bottom">
                             <img
                                 style={{
-                                    width: '35px',
+                                    width: '27px',
                                     cursor: 'pointer'
                                 }}
                                 src={
@@ -136,7 +136,7 @@ const BaseLayout = () => {
                             <SkinOutlined
                                 style={{
                                     cursor: "pointer",
-                                    fontSize: '30px',
+                                    fontSize: '25px',
                                     color: token.iconColor
                                 }}
                                 onClick={() => changeTheme(global.theme === "default" ? "dark" : "default")}
@@ -147,23 +147,28 @@ const BaseLayout = () => {
                             menu={{
                                 items: [
                                     {
+                                        label: useLocale('个人中心'),
+                                        key: 'userInfo',
+                                        icon: <UserOutlined />,
+                                    },
+                                    {
                                         label: useLocale('退出登录'),
                                         key: 'logout',
                                         icon: <LogoutOutlined />,
                                     },
                                 ],
                                 onClick({ key }) {
+                                    if (key === "userInfo") {
+                                        setUserModalOpen(true);
+                                    }
                                     if (key === "logout") {
                                         removeLocalStorage("Token");
                                         history.push('/login');
                                     }
-                                    if (key === "changeAccount") {
-
-                                    }
                                 }
                             }}
                         >
-                           <UserOutlined style={{ cursor: 'pointer', fontSize:'30px', color: token.iconColor }} />
+                            <UserOutlined style={{ cursor: 'pointer', fontSize: '25px', color: token.iconColor }} />
                         </Dropdown>
                     </div>
                 </Header>
@@ -176,13 +181,14 @@ const BaseLayout = () => {
                         </div>
                     </Sider>}
                     <Content className={styles.content}
-                        style={{backgroundColor:token.layoutContentBgc,}}>
+                        style={{ backgroundColor: token.layoutContentBgc, }}>
                         <div className={styles.inContent}>
                             <Outlet />
                         </div>
                     </Content>
                 </Layout>
             </Layout>
+            <UserModal open={userModalOpen} onClose={() => setUserModalOpen(false)} />
         </div>
     )
 }

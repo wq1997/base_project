@@ -39,9 +39,9 @@ const HighAnysis = () => {
         let { date, currentPlantDevice, dataType, packCell } = values;
         date = date?.map(item => dayjs(item).format(format));
         let flag = false;
-        if (!currentPlantDevice||currentPlantDevice?.length < 2) {
-            showMessage&&message.error(intl.formatMessage({ id: '请选择电站下具体设备' }));
-            flag=true;
+        if (!currentPlantDevice || currentPlantDevice?.length < 2) {
+            showMessage && message.error(intl.formatMessage({ id: '请选择电站下具体设备' }));
+            flag = true;
         };
         if (dataType === "FUSE_TEMPERATURE_COMBOS" || dataType === "POLE_TEMPERATURE_COMBOS") {
             if (packCellList?.[0]?.children?.length > 0 && packCell?.length < 2) {
@@ -137,7 +137,7 @@ const HighAnysis = () => {
             legend: {
                 data: legendData,
                 textStyle: {
-                    color: token.color2
+                    color: token.echartsFontColor
                 }
             },
             grid: {
@@ -151,12 +151,12 @@ const HighAnysis = () => {
                 data: xData,
                 axisLine: {
                     lineStyle: {
-                        color: 'rgba(255,255,255,0.12)'
+                        color: token.echartsSplitColor
                     }
                 },
                 axisLabel: {
                     margin: 10,
-                    color: token.color2,
+                    color: token.echartsFontColor,
                     textStyle: {
                         fontSize: 14
                     },
@@ -165,7 +165,7 @@ const HighAnysis = () => {
             yAxis: [{
                 axisLabel: {
                     formatter: '{value}',
-                    color: token.color2,
+                    color: token.echartsFontColor,
                     fontSize: 14
                 },
                 axisLine: {
@@ -174,7 +174,7 @@ const HighAnysis = () => {
                 splitLine: {
                     show: true,
                     lineStyle: {
-                        color: token.color2
+                        color: token.echartsSplitColor
                     }
                 },
                 min,

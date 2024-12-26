@@ -10,7 +10,7 @@ const AlarmStatics = ({ plantId }) => {
     const [options, setOptions] = useState({});
     const [data, setData] = useState([]);
 
-    const labelColor = theme == "dark" ? "#fff" : "#999";
+    const labelColor = theme == "dark" ? "#fff" : "#000";
     const getOptions = data => {
         setOptions({
             tooltip: {
@@ -60,7 +60,7 @@ const AlarmStatics = ({ plantId }) => {
 
     useEffect(() => {
         getOptions(data);
-    }, [data, locale]);
+    }, [data, locale, theme]);
 
     useEffect(() => {
         if(plantId) getData();

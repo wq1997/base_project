@@ -1,5 +1,4 @@
 import { FormattedMessage } from 'umi'
-import { Pagination, Select, Space, theme, Button, Modal } from "antd"
 
 export const DEFAULT_PAGINATION = { current: 1, pageSize: 10, total: 0, showQuickJumper: true };
 export const FORM_REQUIRED_RULE = { required: true, message: <FormattedMessage id='请输入必填字段' /> };

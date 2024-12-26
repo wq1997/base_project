@@ -2,9 +2,8 @@
 import { useEffect, useState } from 'react'
 import { useSelector, useIntl, history } from "umi";
 import styles from "./index.less";
-import { Select, Space, theme, Button, Modal, message, Tooltip, Drawer } from "antd"
+import { Select, theme, Button, Modal, message } from "antd"
 import { deleteDtu, updateDtus } from "@/services/deviceTotal"
-import { getAllRevenue as getAllRevenueServe } from "@/services";
 import { getBurEnergyStats2, getDeviceStats, getDtusOfPlant } from "@/services/plant"
 import {
     getFetchPlantList as getFetchPlantListServe,
@@ -13,15 +12,10 @@ import {
     ExclamationCircleFilled
 } from '@ant-design/icons';
 import Add from './components/addDevices'
-import classNames from 'classnames';
 import Title from './components/Title';
 import DeviceRunDesc from './components/deviceRunDesc';
-import IncomeRanking from './components/incomeRanking';
 import ElectricityRanking from './components/electricityRanking';
-import { useEmotionCss } from '@ant-design/use-emotion-css';
 import Table from "./components/table";
-import Map from './components/map';
-import dayjs from 'dayjs';
 import { getUrlParams, setLocalStorage } from "@/utils/utils";
 import RealPower from './components/RealPower';
 import AlarmStatics from './components/AlarmStatics';

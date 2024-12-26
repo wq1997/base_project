@@ -79,7 +79,7 @@ const MonitoringCurves = () => {
             {
                 axisLabel: {
                     formatter: '{value}',
-                    color: token.color2,
+                    color: token.echartsFontColor,
                     fontSize: 14
                 },
                 axisLine: {
@@ -88,7 +88,7 @@ const MonitoringCurves = () => {
                 splitLine: {
                     show: true,
                     lineStyle: {
-                        color: token.color2
+                        color: token.echartsSplitColor
                     }
                 },
             }
@@ -115,7 +115,7 @@ const MonitoringCurves = () => {
         if (dataType.includes("CELL_VOL_DIFF")) {
             yAxis[0].name = `${intl.formatMessage({ id: '最高电压' })}/${intl.formatMessage({ id: '最低电压' })}`;
             yAxis[0].nameTextStyle = {
-                color: 'white'
+                color: token.echartsFontColor
             };
             yAxis[0].splitNumber = 5;
             yAxis[0].nameGap = 20;
@@ -123,12 +123,12 @@ const MonitoringCurves = () => {
             yAxis[1] = {
                 name: intl.formatMessage({ id: '压差' }),
                 nameTextStyle: {
-                    color: token.color2
+                    color: token.echartsFontColor
                 },
                 nameGap: 20,
                 axisLabel: {
                     formatter: '{value}',
-                    color: token.color2,
+                    color: token.echartsFontColor,
                     fontSize: 14
                 },
                 axisLine: {
@@ -137,7 +137,7 @@ const MonitoringCurves = () => {
                 splitLine: {
                     show: true,
                     lineStyle: {
-                        color: token.color2
+                        color: token.echartsSplitColor
                     }
                 },
                 splitNumber: 5
@@ -146,7 +146,7 @@ const MonitoringCurves = () => {
         if (dataType.includes("CELL_TEMP_DIFF")) {
             yAxis[0].name = `${intl.formatMessage({ id: '最高温度' })}/${intl.formatMessage({ id: '最低温度' })}`;
             yAxis[0].nameTextStyle = {
-                color: 'white'
+                color: token.echartsFontColor
             };
             yAxis[0].splitNumber = 5;
             yAxis[0].nameGap = 20;
@@ -155,11 +155,11 @@ const MonitoringCurves = () => {
                 name: intl.formatMessage({ id: '温差' }),
                 nameGap: 20,
                 nameTextStyle: {
-                    color: token.color2
+                    color: token.echartsFontColor
                 },
                 axisLabel: {
                     formatter: '{value}',
-                    color: token.color2,
+                    color: token.echartsFontColor,
                     fontSize: 14
                 },
                 axisLine: {
@@ -168,7 +168,7 @@ const MonitoringCurves = () => {
                 splitLine: {
                     show: true,
                     lineStyle: {
-                        color: token.color2
+                        color: token.echartsSplitColor
                     }
                 },
                 splitNumber: 5
@@ -184,7 +184,7 @@ const MonitoringCurves = () => {
             legend: {
                 data: legendData,
                 textStyle: {
-                    color: token.color2
+                    color: token.echartsFontColor
                 }
             },
             grid: {
@@ -202,7 +202,7 @@ const MonitoringCurves = () => {
                     }
                 },
                 axisLabel: {
-                    color: token.color2,
+                    color: token.echartsFontColor,
                     textStyle: {
                         fontSize: 14
                     },

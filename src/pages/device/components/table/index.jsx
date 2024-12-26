@@ -104,7 +104,7 @@ const Table = ({
         <div className={styles.table} >
             <div className={styles.row} style={{ background:token.tableTitle,color:token.tableColor }}>
                 {columns?.filter(item => item)?.map(column => (
-                    <div className={styles.rowItem} style={{ width: column?.width, ...column?.style }}>{column?.title}</div>
+                    <div className={styles.rowItem} style={{ width: column?.width, ...column?.style }} title={column?.title}>{column?.title}</div>
                 ))}
             </div>
             <div className={styles.valueWrapper}>
