@@ -41,7 +41,7 @@ const MonitoringCurves = () => {
         let { date, currentPlantDevice, dataType } = values;
         date = date?.map(item => dayjs(item).format(format));
         let flag = false;
-        if(!dataType){
+        if (!dataType) {
             flag = true;
         }
         if (date?.length > 3) {
@@ -119,6 +119,7 @@ const MonitoringCurves = () => {
         })
 
         if (dataType.includes("CELL_VOL_DIFF")) {
+            series = [];
             yAxis[0].splitNumber = 5;
             yAxis[0].nameGap = 20;
 
@@ -158,6 +159,7 @@ const MonitoringCurves = () => {
             })
         }
         if (dataType.includes("CELL_TEMP_DIFF")) {
+            series = [];
             yAxis[0].splitNumber = 5;
             yAxis[0].nameGap = 20;
 
@@ -186,13 +188,13 @@ const MonitoringCurves = () => {
                 yAxis[0].name = `${intl.formatMessage({ id: '温度' })}(${data.unit})`;
                 yAxis[1].name = `${intl.formatMessage({ id: '温差' })}(${data.unit})`,
 
-                series.push({
-                    yAxisIndex: data?.dataType === intl.formatMessage({ id: '温差' }) ? 1 : 0,
-                    name: data?.label,
-                    type: 'line',
-                    showSymbol: false,
-                    data: Object.values(data?.value)
-                })
+                    series.push({
+                        yAxisIndex: data?.dataType === intl.formatMessage({ id: '温差' }) ? 1 : 0,
+                        name: data?.label,
+                        type: 'line',
+                        showSymbol: false,
+                        data: Object.values(data?.value)
+                    })
                 xData = Object.keys(data?.value)
             })
         }
