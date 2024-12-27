@@ -45,6 +45,7 @@ const UserModal = ({ open, onClose }) => {
             }}
             width={800}
             centered
+            destroyOnClose
         >
             <div style={{ padding: "20px 0 0 0" }}>
                 <Form form={form}>
