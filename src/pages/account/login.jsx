@@ -32,8 +32,6 @@ const Login = () => {
                 },
             });
             history.push("/auth");
-        } else {
-            message.error(res?.data?.msg);
         }
     };
 

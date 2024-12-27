@@ -510,6 +510,7 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
             }
             if (type === "submit") onClose();
         }
+        setCurrentStep(0);
     };
 
     useEffect(() => {

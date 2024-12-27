@@ -91,6 +91,7 @@ const MenuList = [
             {
                 key: "/project-management/alarm-configuration",
                 label: "项目告警配置",
+                permissions: "menu:alarm_type_manage",
             },
             {
                 key: "/project-management/resourcesInventory",

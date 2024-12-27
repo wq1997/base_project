@@ -31,7 +31,7 @@ instance.interceptors.response.use(
         if (response.status === 200) {
             if (response?.data?.status === "FAILED") {
                 message.error(response?.data?.msg);
-                return;
+                return Promise.reject(response);
             }
             return Promise.resolve(response);
         } else {
