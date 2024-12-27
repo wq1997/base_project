@@ -87,6 +87,7 @@ const MenuList = [
             {
                 key: "/project-management/alarmStatistics",
                 label: "告警管理",
+                permissions: "menu:alarm_management"
             },
             {
                 key: "/project-management/alarm-configuration",
