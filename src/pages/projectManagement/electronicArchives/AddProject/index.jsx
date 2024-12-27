@@ -98,9 +98,9 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                 warrantyPeriodDate:
                     detailRow?.warrantyPeriodStartDate && detailRow?.warrantyPeriodEndDate
                         ? [
-                              dayjs(detailRow?.warrantyPeriodStartDate),
-                              dayjs(detailRow?.warrantyPeriodEndDate),
-                          ]
+                            dayjs(detailRow?.warrantyPeriodStartDate),
+                            dayjs(detailRow?.warrantyPeriodEndDate),
+                        ]
                         : undefined,
                 sePlants: detailRow?.sePlants?.map?.(item => {
                     return JSON.stringify({
@@ -177,9 +177,9 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                 implementationPlanTime:
                     detailRow?.implementPlanStartDate && detailRow?.implementPlanEndDate
                         ? [
-                              dayjs(detailRow?.implementPlanStartDate),
-                              dayjs(detailRow?.implementPlanEndDate),
-                          ]
+                            dayjs(detailRow?.implementPlanStartDate),
+                            dayjs(detailRow?.implementPlanEndDate),
+                        ]
                         : undefined,
                 firstInspectionDate: detailRow?.firstInspectionDate
                     ? dayjs(detailRow?.firstInspectionDate)
@@ -508,9 +508,11 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                     setCurrentStep(currentStep + 1);
                 }
             }
-            if (type === "submit") onClose();
+            if (type === "submit") {
+                setCurrentStep(0);
+                onClose();
+            }
         }
-        setCurrentStep(0);
     };
 
     useEffect(() => {
@@ -1823,235 +1825,235 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                             {(detailRow?.shippingMaterial ||
                                 detailRow?.testingMaterial ||
                                 detailRow?.trialRunMaterial) && (
-                                <div className={styles.steps3}>
-                                    <Form.Item label="实施过程档案">
-                                        <Space direction="vertical">
-                                            {detailRow?.shippingMaterial && (
-                                                <div className={styles.cardItem}>
-                                                    <div className={styles.cardItemRow1}>
-                                                        <div className={styles.cardItemRow1Time}>
-                                                            发货阶段(
-                                                            {
-                                                                detailRow?.shippingMaterial
-                                                                    ?.operationTime
-                                                            }
-                                                            )
-                                                        </div>
-                                                        <div>
-                                                            实际操作人(
-                                                            {
-                                                                detailRow?.shippingMaterial
-                                                                    ?.operatorName
-                                                            }
-                                                            )
-                                                        </div>
-                                                    </div>
-                                                    <div className={styles.cardItemRow2}>
-                                                        <div className={styles.cardItemRow2Label}>
-                                                            签收货单
-                                                        </div>
-                                                        {detailRow?.shippingMaterial
-                                                            ?.goodsReceivedNote?.id && (
-                                                            <div
-                                                                className={
-                                                                    styles.cardItemRow2Content
+                                    <div className={styles.steps3}>
+                                        <Form.Item label="实施过程档案">
+                                            <Space direction="vertical">
+                                                {detailRow?.shippingMaterial && (
+                                                    <div className={styles.cardItem}>
+                                                        <div className={styles.cardItemRow1}>
+                                                            <div className={styles.cardItemRow1Time}>
+                                                                发货阶段(
+                                                                {
+                                                                    detailRow?.shippingMaterial
+                                                                        ?.operationTime
                                                                 }
-                                                            >
-                                                                <FileMarkdownFilled
-                                                                    style={{
-                                                                        color: "#0EBCB6",
-                                                                        fontSize: 30,
-                                                                        cursor: "pointer",
-                                                                    }}
-                                                                    onClick={() => {
-                                                                        window.open(
-                                                                            `${getBaseUrl()}/attachment/download/${detailRow?.shippingMaterial?.goodsReceivedNote?.id}` +
-                                                                                jsonToUrlParams({
-                                                                                    id: detailRow
-                                                                                        ?.shippingMaterial
-                                                                                        ?.goodsReceivedNote
-                                                                                        ?.id,
-                                                                                    access_token:
-                                                                                        localStorage.getItem(
-                                                                                            "Token"
-                                                                                        ),
-                                                                                }),
-                                                                            "_blank"
-                                                                        );
-                                                                    }}
-                                                                />
-                                                                <div>
-                                                                    {
-                                                                        detailRow?.shippingMaterial
-                                                                            ?.goodsReceivedNote
-                                                                            ?.fileName
-                                                                    }
-                                                                </div>
+                                                                )
                                                             </div>
-                                                        )}
-                                                    </div>
-                                                    <div className={styles.cardItemRow3}>
-                                                        <div className={styles.cardItemRow3Label}>
-                                                            备注：
-                                                        </div>
-                                                        <div>
-                                                            {detailRow?.shippingMaterial?.remark}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )}
-                                            {detailRow?.testingMaterial && (
-                                                <div className={styles.cardItem}>
-                                                    <div className={styles.cardItemRow1}>
-                                                        <div className={styles.cardItemRow1Time}>
-                                                            调试阶段(
-                                                            {
-                                                                detailRow?.testingMaterial
-                                                                    ?.operationTime
-                                                            }
-                                                            )
-                                                        </div>
-                                                        <div>
-                                                            实际操作人(
-                                                            {
-                                                                detailRow?.testingMaterial
-                                                                    ?.operatorName
-                                                            }
-                                                            )
-                                                        </div>
-                                                    </div>
-                                                    <div className={styles.cardItemRow2}>
-                                                        <div className={styles.cardItemRow2Label}>
-                                                            验收报告
-                                                        </div>
-                                                        {detailRow?.testingMaterial
-                                                            ?.acceptanceReport?.id && (
-                                                            <div
-                                                                className={
-                                                                    styles.cardItemRow2Content
+                                                            <div>
+                                                                实际操作人(
+                                                                {
+                                                                    detailRow?.shippingMaterial
+                                                                        ?.operatorName
                                                                 }
-                                                            >
-                                                                <FileMarkdownFilled
-                                                                    style={{
-                                                                        color: "#0EBCB6",
-                                                                        fontSize: 30,
-                                                                        cursor: "pointer",
-                                                                    }}
-                                                                    onClick={() => {
-                                                                        window.open(
-                                                                            `${getBaseUrl()}/attachment/download/${detailRow?.testingMaterial?.acceptanceReport?.id}` +
-                                                                                jsonToUrlParams({
-                                                                                    id: detailRow
-                                                                                        ?.testingMaterial
-                                                                                        ?.acceptanceReport
-                                                                                        ?.id,
-                                                                                    access_token:
-                                                                                        localStorage.getItem(
-                                                                                            "Token"
-                                                                                        ),
-                                                                                }),
-                                                                            "_blank"
-                                                                        );
-                                                                    }}
-                                                                />
-                                                                <div>
-                                                                    {
-                                                                        detailRow?.testingMaterial
-                                                                            ?.acceptanceReport
-                                                                            ?.fileName
-                                                                    }
-                                                                </div>
+                                                                )
                                                             </div>
-                                                        )}
+                                                        </div>
+                                                        <div className={styles.cardItemRow2}>
+                                                            <div className={styles.cardItemRow2Label}>
+                                                                签收货单
+                                                            </div>
+                                                            {detailRow?.shippingMaterial
+                                                                ?.goodsReceivedNote?.id && (
+                                                                    <div
+                                                                        className={
+                                                                            styles.cardItemRow2Content
+                                                                        }
+                                                                    >
+                                                                        <FileMarkdownFilled
+                                                                            style={{
+                                                                                color: "#0EBCB6",
+                                                                                fontSize: 30,
+                                                                                cursor: "pointer",
+                                                                            }}
+                                                                            onClick={() => {
+                                                                                window.open(
+                                                                                    `${getBaseUrl()}/attachment/download/${detailRow?.shippingMaterial?.goodsReceivedNote?.id}` +
+                                                                                    jsonToUrlParams({
+                                                                                        id: detailRow
+                                                                                            ?.shippingMaterial
+                                                                                            ?.goodsReceivedNote
+                                                                                            ?.id,
+                                                                                        access_token:
+                                                                                            localStorage.getItem(
+                                                                                                "Token"
+                                                                                            ),
+                                                                                    }),
+                                                                                    "_blank"
+                                                                                );
+                                                                            }}
+                                                                        />
+                                                                        <div>
+                                                                            {
+                                                                                detailRow?.shippingMaterial
+                                                                                    ?.goodsReceivedNote
+                                                                                    ?.fileName
+                                                                            }
+                                                                        </div>
+                                                                    </div>
+                                                                )}
+                                                        </div>
+                                                        <div className={styles.cardItemRow3}>
+                                                            <div className={styles.cardItemRow3Label}>
+                                                                备注：
+                                                            </div>
+                                                            <div>
+                                                                {detailRow?.shippingMaterial?.remark}
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div className={styles.cardItemRow3}>
-                                                        <div className={styles.cardItemRow3Label}>
-                                                            备注：
-                                                        </div>
-                                                        <div>
-                                                            {detailRow?.testingMaterial?.remark}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )}
-                                            {detailRow?.trialRunMaterial && (
-                                                <div className={styles.cardItem}>
-                                                    <div className={styles.cardItemRow1}>
-                                                        <div className={styles.cardItemRow1Time}>
-                                                            试运行阶段(
-                                                            {
-                                                                detailRow?.trialRunMaterial
-                                                                    ?.operationTime
-                                                            }
-                                                            )
-                                                        </div>
-                                                        <div>
-                                                            实际操作人(
-                                                            {
-                                                                detailRow?.trialRunMaterial
-                                                                    ?.operatorName
-                                                            }
-                                                            )
-                                                        </div>
-                                                    </div>
-                                                    <div className={styles.cardItemRow2}>
-                                                        <div className={styles.cardItemRow2Label}>
-                                                            客户验收单
-                                                        </div>
-                                                        {detailRow?.trialRunMaterial
-                                                            ?.customerAcceptanceForm?.id && (
-                                                            <div
-                                                                className={
-                                                                    styles.cardItemRow2Content
+                                                )}
+                                                {detailRow?.testingMaterial && (
+                                                    <div className={styles.cardItem}>
+                                                        <div className={styles.cardItemRow1}>
+                                                            <div className={styles.cardItemRow1Time}>
+                                                                调试阶段(
+                                                                {
+                                                                    detailRow?.testingMaterial
+                                                                        ?.operationTime
                                                                 }
-                                                            >
-                                                                <FileMarkdownFilled
-                                                                    style={{
-                                                                        color: "#0EBCB6",
-                                                                        fontSize: 30,
-                                                                        cursor: "pointer",
-                                                                    }}
-                                                                    onClick={() => {
-                                                                        window.open(
-                                                                            `${getBaseUrl()}/attachment/download/${detailRow?.trialRunMaterial?.customerAcceptanceForm?.id}` +
-                                                                                jsonToUrlParams({
-                                                                                    id: detailRow
-                                                                                        ?.trialRunMaterial
-                                                                                        ?.customerAcceptanceForm
-                                                                                        ?.id,
-                                                                                    access_token:
-                                                                                        localStorage.getItem(
-                                                                                            "Token"
-                                                                                        ),
-                                                                                }),
-                                                                            "_blank"
-                                                                        );
-                                                                    }}
-                                                                />
-                                                                <div>
-                                                                    {
-                                                                        detailRow?.trialRunMaterial
-                                                                            ?.customerAcceptanceForm
-                                                                            ?.fileName
-                                                                    }
-                                                                </div>
+                                                                )
                                                             </div>
-                                                        )}
-                                                    </div>
-                                                    <div className={styles.cardItemRow3}>
-                                                        <div className={styles.cardItemRow3Label}>
-                                                            备注：
+                                                            <div>
+                                                                实际操作人(
+                                                                {
+                                                                    detailRow?.testingMaterial
+                                                                        ?.operatorName
+                                                                }
+                                                                )
+                                                            </div>
                                                         </div>
-                                                        <div>
-                                                            {detailRow?.trialRunMaterial?.remark}
+                                                        <div className={styles.cardItemRow2}>
+                                                            <div className={styles.cardItemRow2Label}>
+                                                                验收报告
+                                                            </div>
+                                                            {detailRow?.testingMaterial
+                                                                ?.acceptanceReport?.id && (
+                                                                    <div
+                                                                        className={
+                                                                            styles.cardItemRow2Content
+                                                                        }
+                                                                    >
+                                                                        <FileMarkdownFilled
+                                                                            style={{
+                                                                                color: "#0EBCB6",
+                                                                                fontSize: 30,
+                                                                                cursor: "pointer",
+                                                                            }}
+                                                                            onClick={() => {
+                                                                                window.open(
+                                                                                    `${getBaseUrl()}/attachment/download/${detailRow?.testingMaterial?.acceptanceReport?.id}` +
+                                                                                    jsonToUrlParams({
+                                                                                        id: detailRow
+                                                                                            ?.testingMaterial
+                                                                                            ?.acceptanceReport
+                                                                                            ?.id,
+                                                                                        access_token:
+                                                                                            localStorage.getItem(
+                                                                                                "Token"
+                                                                                            ),
+                                                                                    }),
+                                                                                    "_blank"
+                                                                                );
+                                                                            }}
+                                                                        />
+                                                                        <div>
+                                                                            {
+                                                                                detailRow?.testingMaterial
+                                                                                    ?.acceptanceReport
+                                                                                    ?.fileName
+                                                                            }
+                                                                        </div>
+                                                                    </div>
+                                                                )}
+                                                        </div>
+                                                        <div className={styles.cardItemRow3}>
+                                                            <div className={styles.cardItemRow3Label}>
+                                                                备注：
+                                                            </div>
+                                                            <div>
+                                                                {detailRow?.testingMaterial?.remark}
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            )}
-                                        </Space>
-                                    </Form.Item>
-                                </div>
-                            )}
+                                                )}
+                                                {detailRow?.trialRunMaterial && (
+                                                    <div className={styles.cardItem}>
+                                                        <div className={styles.cardItemRow1}>
+                                                            <div className={styles.cardItemRow1Time}>
+                                                                试运行阶段(
+                                                                {
+                                                                    detailRow?.trialRunMaterial
+                                                                        ?.operationTime
+                                                                }
+                                                                )
+                                                            </div>
+                                                            <div>
+                                                                实际操作人(
+                                                                {
+                                                                    detailRow?.trialRunMaterial
+                                                                        ?.operatorName
+                                                                }
+                                                                )
+                                                            </div>
+                                                        </div>
+                                                        <div className={styles.cardItemRow2}>
+                                                            <div className={styles.cardItemRow2Label}>
+                                                                客户验收单
+                                                            </div>
+                                                            {detailRow?.trialRunMaterial
+                                                                ?.customerAcceptanceForm?.id && (
+                                                                    <div
+                                                                        className={
+                                                                            styles.cardItemRow2Content
+                                                                        }
+                                                                    >
+                                                                        <FileMarkdownFilled
+                                                                            style={{
+                                                                                color: "#0EBCB6",
+                                                                                fontSize: 30,
+                                                                                cursor: "pointer",
+                                                                            }}
+                                                                            onClick={() => {
+                                                                                window.open(
+                                                                                    `${getBaseUrl()}/attachment/download/${detailRow?.trialRunMaterial?.customerAcceptanceForm?.id}` +
+                                                                                    jsonToUrlParams({
+                                                                                        id: detailRow
+                                                                                            ?.trialRunMaterial
+                                                                                            ?.customerAcceptanceForm
+                                                                                            ?.id,
+                                                                                        access_token:
+                                                                                            localStorage.getItem(
+                                                                                                "Token"
+                                                                                            ),
+                                                                                    }),
+                                                                                    "_blank"
+                                                                                );
+                                                                            }}
+                                                                        />
+                                                                        <div>
+                                                                            {
+                                                                                detailRow?.trialRunMaterial
+                                                                                    ?.customerAcceptanceForm
+                                                                                    ?.fileName
+                                                                            }
+                                                                        </div>
+                                                                    </div>
+                                                                )}
+                                                        </div>
+                                                        <div className={styles.cardItemRow3}>
+                                                            <div className={styles.cardItemRow3Label}>
+                                                                备注：
+                                                            </div>
+                                                            <div>
+                                                                {detailRow?.trialRunMaterial?.remark}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </Space>
+                                        </Form.Item>
+                                    </div>
+                                )}
                         </>
                     )}
 
@@ -2146,15 +2148,15 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                                         if (id) {
                                                                             window.open(
                                                                                 `${getBaseUrl()}/bas-project/download-inspection-code` +
-                                                                                    jsonToUrlParams(
-                                                                                        {
-                                                                                            id,
-                                                                                            access_token:
-                                                                                                localStorage.getItem(
-                                                                                                    "Token"
-                                                                                                ),
-                                                                                        }
-                                                                                    ),
+                                                                                jsonToUrlParams(
+                                                                                    {
+                                                                                        id,
+                                                                                        access_token:
+                                                                                            localStorage.getItem(
+                                                                                                "Token"
+                                                                                            ),
+                                                                                    }
+                                                                                ),
                                                                                 "_blank"
                                                                             );
                                                                         }
@@ -2265,11 +2267,11 @@ const AddProject = ({ detailRow, open, onClose, editCurrentStep }) => {
                                                                                                             inspectionGroupsValues?.inspectionGroups;
                                                                                                         const currentCopyData =
                                                                                                             inspectionGroupsData?.[
-                                                                                                                currentCopyIndex
+                                                                                                            currentCopyIndex
                                                                                                             ];
                                                                                                         inspectionGroupsData.splice(
                                                                                                             currentCopyIndex +
-                                                                                                                1,
+                                                                                                            1,
                                                                                                             0,
                                                                                                             currentCopyData
                                                                                                         );

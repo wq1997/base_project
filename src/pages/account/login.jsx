@@ -16,22 +16,25 @@ const Login = () => {
 
     const onFinish = async values => {
         setLoading(true);
-        const res = await loginSever({
-            ...values,
-            password: values.password,
-        });
-        setLoading(false);
-        if (res?.data?.status == "SUCCESS") {
-            setLocalStorage("Token", res?.data?.data);
-            dispatch({
-                type: "user/updateState",
-                payload: {
-                    user: {
-                        username: res?.data?.nickName,
-                    },
-                },
+        try {
+            const res = await loginSever({
+                ...values,
+                password: values.password,
             });
-            history.push("/auth");
+            if (res?.data?.status == "SUCCESS") {
+                setLocalStorage("Token", res?.data?.data);
+                dispatch({
+                    type: "user/updateState",
+                    payload: {
+                        user: {
+                            username: res?.data?.nickName,
+                        },
+                    },
+                });
+                history.push("/auth");
+            }
+        } finally {
+            setLoading(false);
         }
     };
 
