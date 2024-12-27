@@ -270,9 +270,11 @@
 
     >div:nth-child(2) {
       height: calc(100% - 28px);
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      // display: flex;
+      // justify-content: space-around;
+      // align-items: center;
     }
   }
 
@@ -293,103 +295,115 @@
       width: 100%;
       height: calc(100% - 80px);
       overflow-y: scroll;
-     
-  }
-}
 
-.lTitle_default {
-  font-size: 14px;
-  line-height: 28px;
-  font-size: 14px;
-  font-weight: 600;
-  padding-left: 20px;
-  background-image: url("../../assets/svg/default/标题浅色.svg");
-  //background-size: cover;
-  background-repeat: no-repeat;
-  background-position: left;
-  background-size: auto 28px;
-}
-
-.lTitle_dark {
-  font-size: 14px;
-  line-height: 28px;
-  font-size: 14px;
-  padding-left: 20px;
-  background-image: url("../../assets/svg/dark/标题深色.svg");
-  background-repeat: no-repeat;
-  background-position: left;
-  background-size: auto 28px;
-}
-
-.gj {
-  text-align: center;
-
-  >div:nth-child(1) {
-    font-size: 1.1rem;
-    font-weight: bold;
-    font-family: DingTalk, DingTalk;
+    }
   }
 
-  >div:nth-child(2) {
-    font-size: 0.6rem;
+  .lTitle_default {
+    font-size: 14px;
+    line-height: 28px;
+    font-size: 14px;
+    font-weight: 600;
+    padding-left: 20px;
+    background-image: url("../../assets/svg/default/标题浅色.svg");
+    //background-size: cover;
+    background-repeat: no-repeat;
+    background-position: left;
+    background-size: auto 28px;
   }
-}
 
-.she_hui_default {
-  width: 100px;
-  height: 32px;
-  margin: 0 auto;
-  background-image: url("../../assets/svg/default/社会贡献.svg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-}
+  .lTitle_dark {
+    font-size: 14px;
+    line-height: 28px;
+    font-size: 14px;
+    padding-left: 20px;
+    background-image: url("../../assets/svg/dark/标题深色.svg");
+    background-repeat: no-repeat;
+    background-position: left;
+    background-size: auto 28px;
+  }
 
-.she_hui_dark {
-  width: 100px;
-  height: 32px;
-  margin: 0 auto;
-  background-image: url("../../assets/svg/dark/社会贡献.svg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-}
+  .gj {
+    text-align: center;
 
-.socie {
-  text-align: center;
-
-  >div:nth-child(1) {
-    >span:nth-child(1) {
-      font-size: 18px;
+    >div:nth-child(1) {
+      font-size: 1.1rem;
       font-weight: bold;
       font-family: DingTalk, DingTalk;
     }
 
-    >span:nth-child(2) {
-      font-size: 14px;
+    >div:nth-child(2) {
+      font-size: 0.6rem;
     }
   }
 
-  >div:nth-child(2) {
-    font-size: 14px;
+  .she_hui_default {
+    width: 100px;
+    height: 32px;
+    margin: 0 auto;
+    background-image: url("../../assets/svg/default/社会贡献.svg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
   }
-}
 
-.totalGJ {
-  max-width: 100%;
-  white-space: nowrap;
-  /* 不换行 */
-  overflow: hidden;
-  /* 超出部分隐藏 */
-  text-overflow: ellipsis;
-  /* 超出部分显示省略号 */
-}
-
-:global {
-  .ant-table-wrapper {
-    max-height: calc(100% - 28px);
+  .she_hui_dark {
+    width: 100px;
+    height: 32px;
+    margin: 0 auto;
+    background-image: url("../../assets/svg/dark/社会贡献.svg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
   }
-}
+
+  .socie {
+    text-align: center;
+    flex-direction: column  ;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    >div:nth-child(1) {
+      >span:nth-child(1) {
+        font-size: 18px;
+        font-weight: bold;
+        font-family: DingTalk, DingTalk;
+      }
+
+      >span:nth-child(2) {
+        font-size: 14px;
+      }
+    }
+
+    >div:nth-child(2) {
+      font-size: 14px;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      overflow: hidden;
+      
+    }
+  }
+
+  .totalGJ {
+    max-width: 100%;
+    white-space: nowrap;
+    /* 不换行 */
+    overflow: hidden;
+    /* 超出部分隐藏 */
+    text-overflow: ellipsis;
+    /* 超出部分显示省略号 */
+  }
+
+  :global {
+    .ant-table-wrapper {
+      max-height: calc(100% - 28px);
+    }
+
+    .slick-list {
+      width: 100%;
+    }
+  }
 
 
 }

@@ -3,6 +3,7 @@ import { CardModel } from "@/components";
 import { Button, theme, Space, message, Modal, Table } from "antd";
 import styles from './index.less'
 import { apigetPlantList, apiInsertPlant, apiUpdatePlant, apideletePlantById, getInsertPlantInitData } from '@/services/plant'
+import { apiGetAllPlant } from '@/services/bigScreen'
 import { useSelector, useIntl } from "umi";
 import AddPlantModal, { formList } from './component/AddPlantModal'
 import { ExclamationCircleFilled } from '@ant-design/icons';
@@ -237,7 +238,7 @@ function Com(props) {
         return state.device
     });
     const getData = async () => {
-        const { data } = await apigetPlantList();
+        const { data } =  user.roleId === 3?await apiGetAllPlant(): await apigetPlantList();
         setData(data.data);
     }
     const changIsOpen = () => {

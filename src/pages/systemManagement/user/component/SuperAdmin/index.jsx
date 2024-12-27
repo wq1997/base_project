@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useSelector, useIntl } from "umi";
 import styles from "./index.less";
-import { Table, Select, Input, Button, theme, Space, message, Modal,Popconfirm } from "antd"
+import { Table, Select, Input, Button, theme, Space, message, Modal, Popconfirm } from "antd"
 import { apiGetAllUserAndInfos } from "@/services/user"
 import AddUser from '../AddUserModal'
 import { apiSaveOrUpdateUser, apiDeleteUserById, apiResetPassword, apiUpdatePassword, apiListUserWithOptions } from '@/services/total'
 import { ExclamationCircleFilled } from '@ant-design/icons';
-import { getEncrypt,  } from "@/utils/utils";
+import { getEncrypt, } from "@/utils/utils";
 
 const RealtimeAlarm = (props) => {
   const { Search } = Input;
@@ -29,11 +29,11 @@ const RealtimeAlarm = (props) => {
     return msg
   }
 
-  let alarmLevel =props.roleId == 2 ? [{
+  let alarmLevel = props.roleId == 2 ? [{
     label: t('普通用户'),
     value: 1,
     key: '普通用户',
-  },{
+  }, {
     label: t('超级用户'),
     value: 2,
     key: '超级用户',
@@ -53,7 +53,7 @@ const RealtimeAlarm = (props) => {
     value: 3,
     key: '管理员',
   },]
-  
+
 
   const userTable = [
     {
@@ -98,8 +98,8 @@ const RealtimeAlarm = (props) => {
             <Button type="primary" onClick={() => edit(record)}>{t('编辑')}</Button>
             <Button type="primary" danger onClick={() => changeIsOpenDel(record)}>{t('删除')}</Button>
             <Popconfirm title={t('是否确认重置密码?')} onConfirm={() => resetPwd(record)} okText={t('是')} cancelText={t('否')}>
-            <Button type="primary"  style={{ backgroundColor: token.defaultBg }}>{t('重置密码')}</Button>
-                        </Popconfirm>
+              <Button type="primary" style={{ backgroundColor: token.defaultBg }}>{t('重置密码')}</Button>
+            </Popconfirm>
           </Space>
         )
       }
@@ -126,6 +126,7 @@ const RealtimeAlarm = (props) => {
       mail: '',
       company: '',
       roleId: 1,
+      email:[]
     });
     setTitle('新增用户');
     setIsOpen(!isOpen);
@@ -145,6 +146,12 @@ const RealtimeAlarm = (props) => {
 
   };
   const edit = (record) => {
+    let arr=[];
+    record?.mail?.split(',').map((it,i)=>{
+      i!==0?arr.push({email:it}):null;
+    });
+    record.mail=record?.mail?.split(',')?.[0];
+    record.email=arr;
     setFormData(record);
     setTitle('编辑用户');
     setIsOpen(!isOpen);
@@ -167,9 +174,14 @@ const RealtimeAlarm = (props) => {
     }
   }
   const changeData = async (value) => {
+    let str = value?.mail;
+    value?.email?.map(it => {
+      str = str + `,${it.email}`
+    })
     const { data } = await apiSaveOrUpdateUser({
       ...value,
-      password:getEncrypt(localStorage.getItem('publicKey'), value.password),
+      mail: str,
+      password: getEncrypt(localStorage.getItem('publicKey'), value.password),
     })
     if (data.data) {
       setFormData(value);
@@ -209,7 +221,7 @@ const RealtimeAlarm = (props) => {
         open={isOpenDel}
         onOk={del}
         onCancel={changeIsOpenDel}
-      
+
       >
         {t("数据删除后将无法恢复，是否确认删除该条数据？")}
       </Modal>

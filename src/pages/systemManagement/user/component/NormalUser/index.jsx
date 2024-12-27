@@ -97,7 +97,7 @@ function Com(props) {
         {
             label: '描述',
             key: 'desc',
-            type: 1,
+            type: 1,   
             required: false
         },
     ]

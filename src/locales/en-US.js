@@ -1013,5 +1013,7 @@ export default {
     '节约标准煤':'Save standard coal',
     'CO2减排量':'CO2 emission reduction',
     '等效植树量':'Equivalent tree planting amount',
-    '日放电量':'Daily discharge capacity'
+    '日放电量':'Daily discharge capacity',
+    '新增邮箱':'Add New Email'
+
 }

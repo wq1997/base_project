@@ -381,8 +381,7 @@ function Com(props) {
                     <HistoryCurve dataX={historyDataX} charge={historyDataCharge} disCharge={historyDataDisCharge}/>
                 </div>
                 <div className={styles.mv} style={{backgroundColor: token.titleCardBgc, color: token.colorLargeScreen}}>
-                    <div >
-                        <Carousel  autoplay arrows={true}  adaptiveHeight={false} draggable={true} style={{display:'flex',alignItems:'center'}}>
+                        <Carousel  autoplay arrows={true}  adaptiveHeight={false} draggable={true} style={{display:'flex',alignItems:'center',height:"100%"}}>
                             <div >
                                 <img src={pic4} />
                             </div>
@@ -393,7 +392,6 @@ function Com(props) {
                                 <img src={pic6}/>
                             </div>
                         </Carousel>
-                    </div>
                 </div>
                 <div className={styles.alarm}
                      style={{backgroundColor: token.titleCardBgc, color: token.colorLargeScreen}}>
@@ -513,7 +511,7 @@ function Com(props) {
                             />
                     </div>
                 </div>
-                <div className={styles.contribute}
+                <div className={styles.contribute   }
                      style={{backgroundColor: token.titleCardBgc, color: token.colorLargeScreen}}>
                     <div className={global.theme == 'default' ? styles.lTitle_default : styles.lTitle_dark}>{t('社会贡献')}
                     </div>
@@ -524,7 +522,7 @@ function Com(props) {
                                 <span style={{color:token.bigColor1}}>{t('吨')}</span>
                             </div>
                             <div>{t('节约标准煤')}</div>
-                            <div
+                            <div 
                                 className={global.theme == 'default' ? styles.she_hui_default : styles.she_hui_dark}></div>
                         </div>
                         <div className={styles.socie}>

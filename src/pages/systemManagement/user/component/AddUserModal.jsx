@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef, } from 'react';
-import { Button, Modal, Form, Input, Select, message } from 'antd';
+import { Button, Modal, Form, Input, Select, Card, Space } from 'antd';
 import { useSelector, useIntl } from "umi";
-import { getEncrypt,  } from "@/utils/utils";
-import { PASSWORD_RGE,  } from "@/utils/constants";
-
+import { getEncrypt, } from "@/utils/utils";
+import { PASSWORD_RGE, } from "@/utils/constants";
+import { CloseOutlined } from '@ant-design/icons';
 const App = (props) => {
   const intl = useIntl();
   const t = (id) => {
@@ -25,16 +25,16 @@ const App = (props) => {
       key: 'name',
       type: 1,
       required: true,
-      rules:[]
+      rules: []
     },
     {
       label: '密码',
       key: 'password',
       type: 1,
       required: true,
-      rules:  [{
-        pattern:PASSWORD_RGE,
-        message:t('密码长度为8-16位，至少2种字符，请重新输入')
+      rules: [{
+        pattern: PASSWORD_RGE,
+        message: t('密码长度为8-16位，至少2种字符，请重新输入')
       }]
     },
     {
@@ -42,11 +42,11 @@ const App = (props) => {
       key: 'roleId',
       type: 2,
       required: true,
-      data:  props.roleId == 2 ? [{
+      data: props.roleId == 2 ? [{
         label: t('普通用户'),
         value: 1,
         key: '普通用户',
-      },{
+      }, {
         label: t('超级用户'),
         value: 2,
         key: '超级用户',
@@ -67,50 +67,31 @@ const App = (props) => {
         key: '管理员',
       },],
 
-      rules:[]
+      rules: []
 
     },
-    // {
-    //   label: '场站类型',
-    //   key: 'sceneType',
-    //   type: props.title === '新增用户' ? 2 : null,
-    //   required: true,
-    //   data: [{
-    //     label: '储能电站',
-    //     value: '1',
-    //     key: '储能电站',
-    //   },
-    //   {
-    //     label: '光储充电站',
-    //     value: '2',
-    //     key: '光储充电站',
-    //   },
-    //   ],
-    //   rules:[]
-
-    // },
     {
       label: '手机',
       key: 'phone',
       type: 1,
       required: false,
-      rules:[]
+      rules: []
 
     },
-    {
-      label: '邮箱',
-      key: 'mail',
-      type: 1,
-      required: false,
-      rules:[]
+    // {
+    //   label: '邮箱',
+    //   key: 'mail',
+    //   type: 1,
+    //   required: false,
+    //   rules: []
 
-    },
+    // },
     {
       label: '公司',
       key: 'company',
       type: 1,
       required: false,
-      rules:[]
+      rules: []
 
     },
     {
@@ -118,20 +99,18 @@ const App = (props) => {
       key: 'desc',
       type: 1,
       required: false,
-      rules:[]
+      rules: []
 
     },
   ]
   const onFinish = async () => {
-    // const values = formRef.current?.getFieldsValue();
     try {
       const values = await form.validateFields();
-
-      console.log('Success:', values.password);
+      console.log('Success:', values);
       if (props.formData.f0102_Id) {
         props.changeData({ f0102_Id: props.formData.f0102_Id, ...values, })
       } else {
-        props.changeData({...values,})
+        props.changeData({ ...values, })
       }
       props.onRef();
     } catch (errorInfo) {
@@ -150,6 +129,7 @@ const App = (props) => {
           htmlType: 'submit',
           form: 'wrap',
         }}
+        width={700}
       >
         <Form
           form={form}
@@ -166,8 +146,8 @@ const App = (props) => {
             if (it.type === 1) {
               return (
                 <>
-                  <Form.Item label={t(it.label)} name={it.key} rules={[...it.rules,{required:it.required}]}>
-                    <Input />
+                  <Form.Item label={t(it.label)} name={it.key} rules={[...it.rules, { required: it.required }]}>
+                    <Input type={it.key == 'email' ? 'email' : 'text'} />
                   </Form.Item>
                 </>
               )
@@ -185,6 +165,41 @@ const App = (props) => {
 
           })
           }
+          <Form.Item label={t('邮箱')} name={'mail'} rules={[{ required: true }]}>
+            <Input type={'email'} />
+          </Form.Item>
+
+          {/* Nest Form.List */}
+          <Form.Item label={' '}>
+            <Form.List name={['email']}>
+              {(subFields, subOpt) => (
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    rowGap: 16,
+                    
+                  }}
+                >
+                  {subFields.map((subField) => (
+                    <Space key={subField.key}>
+                      <Form.Item noStyle name={[subField.name, 'email']}  rules={[{ required: true }]}>
+                        <Input style={{width:400}} type='email' placeholder={t('邮箱')} />
+                      </Form.Item>
+                      <CloseOutlined
+                        onClick={() => {
+                          subOpt.remove(subField.name);
+                        }}
+                      />
+                    </Space>
+                  ))}
+                  <Button type="dashed" onClick={() => subOpt.add()} block>
+                    + {t('新增邮箱')}
+                  </Button>
+                </div>
+              )}
+            </Form.List>
+          </Form.Item>
         </Form>
       </Modal>
     </>
