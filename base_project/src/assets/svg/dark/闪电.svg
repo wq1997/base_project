@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="42px" height="56px" viewBox="0 0 42 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>闪电</title>
+    <defs>
+        <linearGradient x1="46.9900822%" y1="9.64083534e-12%" x2="46.9900822%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#19BEBE" offset="0%"></stop>
+            <stop stop-color="#087272" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="46.9900822%" y1="9.64083534e-12%" x2="46.9900822%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#087272" offset="0%"></stop>
+            <stop stop-color="#19BEBE" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="46.9900822%" y1="9.64083534e-12%" x2="46.9900822%" y2="100%" id="linearGradient-3">
+            <stop stop-color="#087272" offset="0%"></stop>
+            <stop stop-color="#19BEBE" offset="100%"></stop>
+        </linearGradient>
+        <radialGradient cx="45.387936%" cy="42.5358099%" fx="45.387936%" fy="42.5358099%" r="69.3182279%" gradientTransform="translate(0.453879,0.425358),scale(1.000000,0.711538),rotate(102.987381),scale(1.000000,0.698737),translate(-0.453879,-0.425358)" id="radialGradient-4">
+            <stop stop-color="#276367" stop-opacity="0.654774913" offset="0%"></stop>
+            <stop stop-color="#06DEDE" offset="100%"></stop>
+        </radialGradient>
+        <linearGradient x1="-1.60045876%" y1="89.5061728%" x2="110.142522%" y2="25.2483478%" id="linearGradient-5">
+            <stop stop-color="#00FCFF" offset="0%"></stop>
+            <stop stop-color="#141B38" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="68.9349112%" y1="1.03262344e-13%" x2="27.1457207%" y2="66.1907976%" id="linearGradient-6">
+            <stop stop-color="#00FCFF" offset="0%"></stop>
+            <stop stop-color="#141B38" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="17.5540123%" y1="100%" x2="82.4459877%" y2="5.99520433e-13%" id="linearGradient-7">
+            <stop stop-color="#0993A3" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#00FCFF" offset="53.2807037%"></stop>
+            <stop stop-color="#141B38" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="储能电站监控大屏-深色-国外" transform="translate(-145.000000, -239.000000)">
+            <g id="编组-13" transform="translate(118.000000, 235.000000)">
+                <g id="闪电" transform="translate(27.000000, 4.000000)">
+                    <polygon id="路径-28" fill="url(#linearGradient-1)" points="11 3 15.2967601 -1.45559134e-16 33 0 29.2137267 3"></polygon>
+                    <polygon id="路径-29" fill="url(#linearGradient-2)" points="33 0 22.9887849 16.256336 19 19 29.1023821 2.82294738"></polygon>
+                    <polygon id="路径-30" fill="url(#linearGradient-3)" points="19 19 37 19.0250274 41.0440953 16 22.9887849 16.256336"></polygon>
+                    <polygon id="路径-31" fill="#0C9191" points="41.0440953 16 37 19 8 55"></polygon>
+                    <polygon id="路径-25" fill="url(#radialGradient-4)" points="10.5528294 3 29.0586151 3 19.087466 19.0250274 37 19.0250274 7.79316064 55 15.6363286 28.8045481 9.39391863e-14 28.8045481"></polygon>
+                    <polyline id="路径-26" stroke="url(#linearGradient-5)" stroke-width="0.5" points="29.0198377 3 19 19 37 19"></polyline>
+                    <polyline id="路径-27" stroke="url(#linearGradient-6)" stroke-width="0.5" opacity="0.600074405" points="0 29 16 29 8 55"></polyline>
+                    <line x1="37" y1="19" x2="8" y2="55" id="路径-32备份" stroke="url(#linearGradient-7)" stroke-width="0.5"></line>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

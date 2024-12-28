@@ -1,0 +1,104 @@
+@import './font.less'; // 全局字体样式
+html,
+body,
+#root {
+    margin: 0;
+    padding: 0;
+    font-family: PingFangRegular;
+}
+
+.ant-menu{
+    background-color: unset;
+}
+
+.ant-menu-light.ant-menu-inline .ant-menu-sub.ant-menu-inline, :where(.css-dev-only-do-not-override-1sn0ohr).ant-menu-light>.ant-menu.ant-menu-inline .ant-menu-sub.ant-menu-inline{
+    background-color: unset !important;
+}
+
+.ant-btn-default:not(:disabled):not(.ant-btn-disabled):hover{
+    color: unset;
+}
+
+th.lightTitleColorRight{
+    background: #F1F2F8 !important;
+    color: #333333 !important;
+
+}
+th.darkTitleColorRight{
+    background:  #20284D !important;
+    color: #fff !important;
+
+}
+th.lightTitleColorLeft{
+    background: #F1F2F8 !important;
+    color: #333333 !important;
+}
+th.darkTitleColorLeft{
+    background:  #20284D !important;
+    color: #fff !important;
+}
+.ant-tree-node-selected{
+    color: rgb(3, 180, 180) !important;
+}
+.ant-tabs-nav::before{
+    border-bottom: 0px solid #303030  !important;
+}
+.ant-tabs-nav{
+    margin: 0 0 0 0 !important;
+}
+.ant-menu-light{
+    border-inline-end: 0px solid rgba(5, 5, 5, 0.06) !important;
+}
+.fc-scroller-liquid-absolute{
+    overflow: hidden !important;
+}
+.ant-modal-content{
+    padding: 20px 24px !important;
+}
+
+.ant-descriptions-item-label{
+    font-size: 16px !important;
+    font-family: 'PingFangRegular';
+    // color: #000 !important;
+}
+.ant-descriptions-item-content{
+    font-size: 16px !important;
+    font-family: 'PingFangRegular';
+
+
+}
+.ant-descriptions-title{
+  font-family: 'DingTalk';
+  
+}
+.pwd{
+	text-security:disc !important;
+	 -webkit-text-security:disc !important;
+}
+.editable-row .ant-form-item-explain {
+    position: absolute;
+    top: 100%;
+    font-size: 12px;
+  }
+  .ant-form-item-label {
+    display: flex;
+    justify-content: flex-end;
+    line-height: 16px;  //这个数值视具体情况而定
+    label {            //这是关键
+      white-space: normal;
+      text-align: right;
+    //   color: #8a8a8a;
+      padding-right: 10px;
+      font-size: 14px;
+      &:after {          
+        content: none !important;      //解决上面的样式label后面会有空格
+      }
+    }
+  }
+
+//.ant-table-wrapper .ant-table-cell-fix-left, .ant-table-wrapper .ant-table-cell-fix-right {
+//  background: #111838;
+//}
+//.ant-table-wrapper .ant-table-thead >tr>th, .ant-table-wrapper .ant-table-thead >tr>td {
+//  background: #1a2140;
+//}

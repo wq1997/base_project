@@ -1,0 +1,375 @@
+
+// 函数组件
+// 快捷键Ctrl+Win+i 添加注释
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import styles from './index.less'
+import { theme, } from "antd";
+import { CardModel } from "@/components";
+import { useSelector, FormattedMessage, useIntl } from "umi";
+import { Tooltip, Table } from 'antd';
+import useIcon from "@/hooks/useIcon";
+import LineEcharts from '@/components/LineEcharts'
+import Charge from './components/Charge';
+import ProfitAll from './components/ProfitAll'
+import ChargAndDischarg from './components/ChargAndDischarg'
+import AllEfficiency from './components/AllEfficiency'
+import {
+    getEnergySummary,
+    getRunMetrics,
+    getChargeDischargeEnergySevenDaysByPlantId,
+    getNowAlarmsByEnergy,
+    getIncomeByPlantId
+} from '@/services/deviceTotal'
+import dayjs from 'dayjs';
+import { getQueryString } from "@/utils/utils";
+import { alarmTableColums } from '@/utils/constants'
+import { useEmotionCss } from '@ant-design/use-emotion-css';
+import classNames from 'classnames';
+
+let clum = [...alarmTableColums];
+clum[5] = {};
+function Overview(props) {
+    const [dataX, setDataX] = useState([]);
+    const [dataCharge, setDataCharge] = useState({ dayChargeEnergy: [], dayDischargeEnergy: [] });
+    const [dataEfficiency, setDataEfficiency] = useState([]);
+    const [dayEarning, setDayEarning] = useState([]);
+    const [energySummary, setEnergySummaryg] = useState({});
+    const [income, setIncome] = useState({});
+    const [alarms, setAlarms] = useState([]);
+    const [running, setRunning] = useState([]);
+    const [screenH, setScreenH] = useState('');
+    const [scroolY, setScroolY] = useState(200);
+    let currentPlant = JSON.parse(localStorage.getItem('current'));
+    const { token } = theme.useToken();
+    const Icon = useIcon();
+    const intl = useIntl();
+    const pageType = getQueryString('pageType') || 'ALL';
+    const id = getQueryString('id') || 0;
+    const t = (id) => {
+        const msg = intl.formatMessage(
+            {
+                id,
+            },
+        );
+        return msg
+    };
+    const title = decodeURI(getQueryString('title')) ||t('储能总览') ;
+
+
+    const eleData = [
+        {
+            label: t('今日充电量'),
+            name: 'dayChargeEnergy',
+            value: '',
+            unit: 'kWh',
+            color: '#03B4B4'
+        },
+        {
+            label: t('今日放电量'),
+            name: 'dayDischargeEnergy',
+            value: '',
+            unit: 'kWh',
+            color: '#FF9D4F'
+        },
+        {
+            label: t('累计充电量'),
+            name: 'totalChargeEnergy',
+            value: '',
+            unit: 'kWh',
+            color: '#71B4F2'
+        },
+        {
+            label: t('累计放电量'),
+            name: 'totalDischargeEnergy',
+            value: '',
+            unit: 'kWh',
+            color: '#EEC830'
+        },
+        {
+            label: t('今日充放电效率'),
+            name: 'dayEfficiency',
+            value: '',
+            unit: '%',
+            color: '#03B4B4'
+        },
+        {
+            label: t('累计充放电效率'),
+            name: 'totalEfficiency',
+            value: '',
+            unit: '%',
+            color: '#DE83C4'
+        },
+    ];
+    const profitData = [
+        {
+            label: t('日收益'),
+            name: 'todayIncome',
+            unit: currentPlant?.priceUnit,
+            color: '#03B4B4',
+            icon: 'icon-qian'
+        },
+        {
+            label: t('周收益'),
+            name: 'weekIncome',                                                                                                                        
+            unit: currentPlant?.priceUnit,
+            color: '#FF9D4F',
+            icon: 'icon-qian1'
+
+        },
+        {
+            label: t('月收益'),
+            name: 'monthIncome',
+            unit: currentPlant?.priceUnit,
+            color: '#EEC830',
+            icon: 'icon-fenxiangzhuanshouyi'
+
+        },
+        {
+            label: t('累计收益'),
+            name: 'totalIncome',
+            unit: currentPlant?.priceUnit,
+            color: '#71B4F2',
+            icon: 'icon-qushi'
+
+        },
+
+    ];
+    useEffect(() => {
+        setScreenH(document.documentElement.clientHeight || document.body.clientHeight)
+        window.addEventListener("resize", handleWindowResize)
+        return () => {
+            window.removeEventListener("resize", handleWindowResize)
+        }
+    }, [])
+
+    const handleWindowResize = () => {
+        setScreenH(document.documentElement.clientHeight || document.body.clientHeight)
+    }
+    useEffect(() => {
+        if (screenH < 1000) {
+            setScroolY(60);
+        } else if (screenH > 1000 && screenH < 1500) {
+            setScroolY(130);
+        }
+    }, [screenH])
+
+    useEffect(() => {
+        getEnergy();
+        getRun();
+        getAllElecty();
+        getIncome();
+        getAlarms();
+    }, [pageType, id]);
+    const getEnergy = async () => {
+        let { data } =  await getEnergySummary({ plantId: localStorage.getItem('plantId') }) 
+        setEnergySummaryg(data.data);
+    }
+    const getRun = async () => {
+        let { data } =  await getRunMetrics({ plantId: localStorage.getItem('plantId') })
+        setRunning(data.data);
+    }
+    const getIncome = async () => {
+        let { data } =await getIncomeByPlantId({ plantId: localStorage.getItem('plantId') }) 
+        setIncome(data.data);
+    }
+    const getAlarms = async () => {
+        let { data } = await getNowAlarmsByEnergy({ plantId: localStorage.getItem('plantId') }) 
+        setAlarms(data.data);
+    }
+    const getAllElecty = async () => {
+        let { data } = await getChargeDischargeEnergySevenDaysByPlantId({ plantId: localStorage.getItem('plantId') }) 
+        let arrA = [];
+        let arrB = [];
+        let arrC = [];
+        let arrD = [];
+        let arrE = [];
+        data?.data?.map(it => {
+            arrA.push(dayjs(it.date).format('MM-DD'));
+            arrB.push(it.dayChargeEnergy);
+            arrC.push(it.dayDischargeEnergy);
+            arrD.push(it.dayEarning);
+            arrE.push(it.efficiency*100)
+        })
+        
+        setDataX([...arrA]);
+        setDataCharge(
+            {
+                dayChargeEnergy: [...arrB],
+                dayDischargeEnergy: [...arrC]
+            }
+        );
+        setDayEarning([...arrD]);
+        setDataEfficiency([...arrE]);
+    }
+    let siderContentStyle = {
+        width: '100%',
+        height: 'calc(100% - 76px)',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(90px, 1fr)) ',
+        // gridTemplateRows: '1fr 1.375fr 1.375fr',
+        gap: '8px 8px',
+        gridTemplateAreas:
+            `"electric electric electric running"
+            "charge charge chargebit chargebit"
+            "chargAndDischarg alarm alarm alarm"`
+    }
+    let ContentStyle = useEmotionCss(({ token }) => {
+        return {
+            ...siderContentStyle,
+            gridTemplateAreas:
+                `'electric electric electric running'' charge charge chargebit chargebit' '${pageType === 'ALL' ? 'alarm' : 'chargAndDischarg'} alarm alarm alarm'`,
+        }
+
+    })
+    return (
+        <div className={styles.overview}>
+            <div className={styles.heard} style={{ backgroundColor: token.titleCardBgc,color:token.titleColor }}>{title}</div>
+            <div className={classNames(styles.overContent, ContentStyle)} >
+                <div className={styles.electric}>
+                    <CardModel
+                        title={
+                            t("电量")
+                        }
+                        content={
+                            <div className={styles.elewrap} style={{ }}>
+                                {eleData?.map(it => {
+                                    return (<div className={styles.item} style={{  }}>
+                                        <Tooltip title={energySummary[it?.name] + it.unit} >
+                                            <div className={styles.itemValue} style={{ color: it.color }}>{energySummary?.[it.name]?.split(' ')?.[0]}
+                                            {energySummary?.[it.name]?.split(' ')?.[1]=='%'&&<span className={styles.itemUnit} style={{ color: token.titleColor }}>{energySummary?.[it.name]?.split(' ')?.[1]}</span>}
+                                            </div>
+                                            {energySummary?.[it.name]?.split(' ')?.[1]!=='%'?<span className={styles.itemUnit} style={{ color: token.titleColor }}>{energySummary?.[it.name]?.split(' ')?.[1]}</span>:<span>{' '}</span>}
+
+                                        </Tooltip>
+                                        <Tooltip title={it?.label} >
+                                            <div className={styles.itemTitle} style={{ color: token.titleColor }}>{it.label}</div>
+                                        </Tooltip>
+                                    </div>)
+                                })}
+                            </div>
+                        } />
+                </div>
+                <div className={styles.running}>
+                    <CardModel
+                        title={
+                            t("运行指标")
+                        }
+                        content={
+                            <div className={styles.runningWrap}>
+                                <div className={styles.realPower} style={{ backgroundColor: token.lightTreeBgc }}>
+                                    <Icon
+                                        type="icon-gongyezujian-yibiaopan"
+                                        style={{
+                                            fontSize: 20,
+                                            color: '#03B4B4'
+                                        }}
+                                    />
+                                    <span className={styles.label} style={{ color: token.titleColor }}>{t('当前总功率')}</span>:<span className={styles.value}>{running?.totalPower?.split(' ')[0]
+                                        || 0}</span><span className={styles.unit} style={{ color: token.titleColor }}>{running?.totalPower?.split(' ')[1] || 'kW'}</span>
+                                </div>
+                                <div className={styles.realStaus} style={{ backgroundColor: token.lightTreeBgc,color:token.titleColor }}>
+                                    <div>{t('设备状态')}</div>
+                                    <div>{t('正常')}<span className={styles.value} style={{ color: '#2BC50E' }}>{running?.onlineDevices}</span>{t('个')}</div>
+                                    <div>{t('故障')}<span className={styles.value} style={{ color: '#D41818' }}>{running?.faultDevices}</span>{t('个')}</div>
+                                </div>
+                            </div>
+                        } />
+                </div>
+                {/* <div className={styles.profit}>
+                    <CardModel
+                        title={
+                            t("收益")
+                        }
+                        content={
+                            <div className={styles.profitWrap}>
+                                {profitData.map(it => {
+                                    return (
+                                        <>
+                                            <div className={styles.itemProfit} style={{ backgroundColor: token.lightTreeBgc,color:token.titleColor }}>
+                                                <Tooltip title={it.label} >
+                                                    <div className={styles.titleProfit}>
+                                                        <Icon type={it.icon} style={{ color: it.color }}></Icon>
+                                                        {it.label}
+                                                    </div>
+                                                </Tooltip>
+
+
+                                                <div className={styles.valueProfit} style={{ color: it.color }}>
+                                                    {income[it.name]}<span style={{ color: token.titleColor }}>{it.unit}</span>
+                                                </div>
+                                            </div>
+                                        </>
+                                    )
+                                })}
+
+                            </div>
+                        } />
+                </div> */}
+                <div className={styles.charge}>
+                    <CardModel
+                        title={
+                            t("充放电量") + "(kWh)"
+                        }
+                        content={
+                            <div className={styles.chargeWrap}>
+                                <Charge dataX={dataX} dataY={dataCharge} />
+                            </div>
+                        } />
+                </div>
+                <div className={styles.chargebit}>
+                    <CardModel
+                        title={
+                            t("充放电效率")+'(%)'
+                        }
+                        content={
+                            <div className={styles.chargebitWrap}>
+                                {pageType === 'ALL' ?
+                                    <AllEfficiency />
+                                    :
+                                    <LineEcharts name={t('充放电效率')} style={{ height: '100%' }}
+                                        xData={dataX}
+                                        yData={dataEfficiency}
+                                        barMaxWidth={'20%'}
+                                    />}
+                            </div>
+                        } />
+                </div>
+                {/* <div className={styles.profitAll}>
+                    <CardModel
+                        title={
+                            t("收益统计") + "("+currentPlant?.priceUnit+")"
+                        }
+                        content={
+                            <div className={styles.profitAllWrap}>
+                                <ProfitAll dataX={dataX} dataY={dayEarning} />
+                            </div>
+                        } />
+                </div> */}
+                {pageType !== 'ALL' && <div className={styles.chargAndDischarg}>
+                    <CardModel
+                        title={
+                            t("充放电功率") + '(kW)'
+                        }
+                        content={
+                            <div className={styles.chargAndDischargWrap}>
+                                <ChargAndDischarg />
+                            </div>
+                        } />
+                </div>}
+                <div className={styles.alarm}>
+                    <CardModel
+                        title={
+                            t("告警")
+                        }
+                        content={
+                            <div className={styles.alarmWrap}>
+                                <Table className={styles.alarmTable} columns={clum} dataSource={alarms} size="middle" pagination={{showSizeChanger:false}} scroll={{ y: scroolY }} />
+                            </div>
+                        } />
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default Overview;
