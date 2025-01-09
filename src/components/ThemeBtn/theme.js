@@ -20,7 +20,7 @@ const theme = {
         tableHead:'#20284D',//滚动表头颜色
         barColor:['#03B4B4','#A3BCE7','#FCF1AF','#77E2AA','#FFCE8F','#59C0E9'],
         treeBgb:'#03081D',
-        lightTreeBgc:'#212849 ',
+        lightTreeBgc:'#212849',
         lightTreeLineBgc:'#333F62',
         chartLineColor:['#03B4B4','#ED750E','#A97DFF','#4D4DF4','#EE3059','#2DD51E','#F4D81B','#4D4DF4'],
         deleteBtnColor: '#F03535',
@@ -31,7 +31,15 @@ const theme = {
         colorLargeScreen:'#00FFFF',
         bigScreenBgc:'#000000',
         alarmColor:'#00FFFF',
-        bigColor1:'#fff'
+        bigColor1:'#fff',
+        color1:'#090F2C',
+        color2:'#FFCE8F',
+        color3:'#333333',
+        calendarBorderColor: '#333',
+        microgridsLine:'#03B4B4',
+        color4:'#090F2C',
+        color5:'#000000',
+        color6:'#fff'
     },
     default: {
         colorPrimary:'#03B4B4',
@@ -52,18 +60,26 @@ const theme = {
         tableHead:'#E4E7F1',
         barColor:['#03B4B4','#A3BCE7','#FCF1AF','#77E2AA','#FFCE8F','#59C0E9','#6A7DEE','#71B4F2'],
         treeBgb:'#E9EBF3',
-        lightTreeBgc:'#F2F4F9',
+        lightTreeBgc:'#F8F9FD',
         lightTreeLineBgc:'#E6E9F2',
         chartLineColor:['#03B4B4','#ED750E','#A97DFF','#4D4DF4','#EE3059','#2DD51E','#F4D81B','#4D4DF4'],
         deleteBtnColor: '#F03535',
-        cellBgc:'#F5F8FE',
+        cellBgc:'#E9EEF3',
         colorLight:'#999999',
         colorNormal:'#000000',
         colorLittle:'#333333',
         colorLargeScreen:'#566282',
         bigScreenBgc:'#F7F7F7',
         alarmColor:'#6887A1',
-        bigColor1:'#666'
+        bigColor1:'#666',
+        color1:'#ffffff',
+        color2:'#0BB0F3',
+        color3:'#ffffff',
+        calendarBorderColor: '#d9d9d9',
+        microgridsLine:'#666',
+        color4:'#e9eef3',
+        color5:'#f5f5f5',
+        color6:'#172a86'
     }
 }
 export default theme;

@@ -204,7 +204,7 @@ function Com({ open,
     const Style = useEmotionCss(({ token }) => {
         return {
             '.ant-modal-title': {
-                fontFamily: 'PingFangRegular !important',
+                // fontFamily: 'PingFangRegular !important',
                 borderLeft: `5px solid ${token.colorPrimary}`,
                 paddingLeft: '8px',
                 fontSize: '18px'

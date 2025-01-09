@@ -6,6 +6,7 @@ import { PASSWORD_RGE, } from "@/utils/constants";
 import { CloseOutlined } from '@ant-design/icons';
 const App = (props) => {
   const intl = useIntl();
+  const [formList,setFormList] = useState([]);
   const t = (id) => {
     const msg = intl.formatMessage(
       {
@@ -16,10 +17,17 @@ const App = (props) => {
   }
   useEffect(() => {
     form.setFieldsValue(props.formData)
-  }, [props.formData])
+  }, [props.formData]);
+  useEffect(() => {
+    if(props?.formData?.roleId==4){
+      setFormList(tempFormList.filter(item => item.key != "roleId"));
+    }else{
+      setFormList(tempFormList);
+    }
+  }, [props.formData,props.title]);
   const formRef = useRef();
   const [form] = Form.useForm();
-  const formList = [
+  const tempFormList = [
     {
       label: '用户名',
       key: 'name',
@@ -42,30 +50,35 @@ const App = (props) => {
       key: 'roleId',
       type: 2,
       required: true,
-      data: props.roleId == 2 ? [{
-        label: t('普通用户'),
-        value: 1,
-        key: '普通用户',
-      }, {
-        label: t('超级用户'),
-        value: 2,
-        key: '超级用户',
-      },
-      ] : [{
-        label: t('普通用户'),
-        value: 1,
-        key: '普通用户',
-      },
-      {
-        label: t('超级用户'),
-        value: 2,
-        key: '超级用户',
-      },
-      {
-        label: t('管理员'),
-        value: 3,
-        key: '管理员',
-      },],
+      data: (props.roleId == 3) ? [
+        {
+          label: t('普通用户'),
+          value: 1,
+          key: '普通用户',
+        },
+        {
+          label: t('超级用户'),
+          value: 2,
+          key: '超级用户',
+        }
+      ] : (props.roleId == 4) ? [
+        {
+          label: t('普通用户'),
+          value: 1,
+          key: '普通用户',
+        },
+        {
+          label: t('超级用户'),
+          value: 2,
+          key: '超级用户',
+        },
+        {
+          label: t('管理员'),
+          value: 3,
+          key: '管理员',
+        }
+      ] : [],
+
 
       rules: []
 
@@ -145,21 +158,21 @@ const App = (props) => {
           {formList.map(it => {
             if (it.type === 1) {
               return (
-                <>
+                <div key={it.key}>
                   <Form.Item label={t(it.label)} name={it.key} rules={[...it.rules, { required: it.required }]}>
                     <Input type={it.key == 'email' ? 'email' : 'text'} />
                   </Form.Item>
-                </>
+                </div>
               )
             } else if (it.type === 2) {
               return (
-                <>
+                <div key={it.key}>
                   <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.required }]}>
                     <Select
                       options={it.data}
                     />
                   </Form.Item>
-                </>
+                </div>
               )
             }
 

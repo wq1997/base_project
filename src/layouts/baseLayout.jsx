@@ -61,10 +61,10 @@ const BaseLayout = () => {
                 display: 'none'
             },
             '.ant-menu-item': {
-                fontFamily: 'PingFangRegular !important',
+                // fontFamily: 'PingFangRegular !important',
             },
             '.ant-menu-submenu-title': {
-                fontFamily: 'PingFangRegular !important',
+                // fontFamily: 'PingFangRegular !important',
 
             },
             '.ant-menu-sub': {
@@ -72,11 +72,11 @@ const BaseLayout = () => {
                 margin: '0 20px',
                 borderRadius: '4px !important',
                 fontSize: '16px !important',
-                fontFamily: 'PingFangRegular !important',
+                // fontFamily: 'PingFangRegular !important',
             },
             '.ant-menu-item-icon': {
                 fontSize: '18px !important',
-                fontFamily: 'PingFangRegular !important',
+                // fontFamily: 'PingFangRegular !important',
             }
 
         }
@@ -86,12 +86,11 @@ const BaseLayout = () => {
         <div className={styles.baseLayout}>
             <Layout className={styles.layout}>
                 <Header className={styles.header}
-                    style={{ background: token.bgcColorB_l }}
+                    style={{ background: token.color4 }}
                 >
                     <div
                         style={{
-                            color: token.titleColor,
-                            fontFamily: 'DingTalk'
+                            color: token.color6,
                         }}
                         level={3}
                         className={styles.title}
@@ -104,7 +103,7 @@ const BaseLayout = () => {
                                 <img
                                     // type='icon-jiankongdaping'
                                     src={bigScreen}
-                                    style={{ cursor: 'pointer', fontSize: "30px",margin: '0px 40px', }}
+                                    style={{ cursor: 'pointer', fontSize: "30px",margin: '0px 15px',width:'20px' }}
                                     onClick={() => history.push('/bigScreen')}
                                 />
                                
@@ -115,28 +114,28 @@ const BaseLayout = () => {
 
                                     type='icon-shense'
                                     // src={themeDefaultSvg}
-                                    style={{ cursor: 'pointer', fontSize: "30px" }}
+                                    style={{ cursor: 'pointer', fontSize: "20px" ,width:'20px'}}
                                     onClick={() => changeTheme('dark')}
                                 />
                                 :
                                 <Icon
                                     // src={themeDarkSvg}
                                     type='icon-qianse'
-                                    style={{ cursor: 'pointer', fontSize: "30px", }}
+                                    style={{ cursor: 'pointer', fontSize: "20px",width:'20px' }}
                                     onClick={() => changeTheme('default')}
                                 />
                         }
                         {
                             global.locale === "zh-CN" ?
                                 <img
-                                    src={languageEnglishSvg}
-                                    style={{ cursor: 'pointer', margin: '0px 40px' }}
+                                    src={languageChineseSvg}
+                                    style={{ cursor: 'pointer', margin: '0px 15px',width:'20px' }}
                                     onClick={() => changeLanguage('en-US')}
                                 />
                                 :
                                 <img
-                                    src={languageChineseSvg}
-                                    style={{ cursor: 'pointer', margin: '0px 40px' }}
+                                    src={languageEnglishSvg}
+                                    style={{ cursor: 'pointer', margin: '0px 15px' ,width:'20px' }}
                                     onClick={() => changeLanguage('zh-CN')}
                                 />
                         }
@@ -183,15 +182,15 @@ const BaseLayout = () => {
                         >
                             <img
                                 src={mySvg}
-                                style={{ cursor: 'pointer' }}
+                                style={{ cursor: 'pointer' ,width:'20px' }}
                             />
                         </Dropdown>
                     </div>
                 </Header>
                 <Layout hasSider>
-                    <div style={{ height: '100%', position: 'relative', background: token.bgcColorB_l, }}>
+                    <div style={{ height: '100%', position: 'relative', background: token.color1,color:token.colorLittle }}>
                         <Sider className={siderContentStyle}
-                            style={{ background: token.bgcColorB_l, height: 'calc(100% - 94px)' }}
+                            style={{ background: token.color1, height: 'calc(100% - 94px)' }}
                             width={240}
                             trigger={null} collapsible collapsed={collapsed}>
                             <div className={styles.siderContent}>
@@ -214,7 +213,7 @@ const BaseLayout = () => {
                         />
                     </div>
                     <Content className={styles.content}
-                        style={{ background: token.bgcColorl_B }}>
+                        style={{ background: token.color5 }}>
                         <div className={styles.inContent}>
                             <Outlet />
                         </div>

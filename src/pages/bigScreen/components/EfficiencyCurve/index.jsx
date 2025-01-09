@@ -7,6 +7,7 @@ import ReactECharts from "echarts-for-react";
 
 function Com({ dataX, dataY }) {
     const { token } = theme.useToken();
+    const global = useSelector(state => state.global);
     const [options, setOptions] = useState({});
     const intl = useIntl();
     const t = (id) => {
@@ -51,7 +52,20 @@ function Com({ dataX, dataY }) {
                     formatter: function (value) {
                         return value + '%';
                     }
-                }
+                },
+                // axisLine: {
+                //     show: true,
+                //     lineStyle: {
+                //         color: theme=='dark'?'rgba(4, 255, 255, 0.65)':'#333',
+                //         width: 0.5 // 坐标轴线的宽度
+                //     }
+                // },
+                splitLine: {
+                    // show: false, // 隐藏X轴的网格线
+                    lineStyle: {
+                        color: global.theme=='dark'?'#666':'#ddd',
+                    }
+                },
             },
             yAxis: {
                 type: 'category',
@@ -67,7 +81,7 @@ function Com({ dataX, dataY }) {
                         color: new echarts.graphic.LinearGradient(
                             0, 0, 1, 0,
                             [
-                                {offset: 0, color: '#FFFFFF'},
+                                {offset: 0, color: `${global.theme=='default'?'#FFFFFF':'rgba(16,24,57,0.5)'}`},
                                 {offset: 1, color: '#03B4B4'}
                             ]
                         )

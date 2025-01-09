@@ -20,7 +20,7 @@ export default [
             { name: '总览', path: '/index/device/energyStorage/components/Overview', component: "@/pages/device/energyStorage/components/Overview" },
             { name: 'PCS', path: '/index/device/energyStorage/components/EnergyPCS', component: "@/pages/device/energyStorage/components/EnergyPCS" },
             { name: 'BMS', path: '/index/device/energyStorage/components/EnergyBMS', component: "@/pages/device/energyStorage/components/EnergyBMS" },
-            { name: '辅助设备', path: '/index/device/energyStorage/components/ElectricityMeter', component: "@/pages/device/energyStorage/components/ElectricityMeter" },
+            { name: '电表', path: '/index/device/energyStorage/components/ElectricityMeter', component: "@/pages/device/energyStorage/components/ElectricityMeter" },
 
             // { name: '光伏', path: '/index/device/photovoltaic', component: "@/pages/device/photovoltaic" },
             // { name: '充电桩', path: '/index/device/chargingStation', component: "@/pages/device/chargingStation" },

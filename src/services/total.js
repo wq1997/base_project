@@ -37,6 +37,10 @@ export const apiUpdatePassword = (payload) => {
 export const apiListUserWithOptions = (payload) => {
   return axiosInstance.post(`${path}/listUserWithOptions`, payload);
 }
+// 分页查询用户列表(管理员)
+export const apiListUserWithOptionsAll = (payload) => {
+  return axiosInstance.post(`${path}/listUserWithOptionsAll`, payload);
+}
 
 // 重置密码
 export const apiResetPassword = (payload) => {

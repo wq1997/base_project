@@ -276,6 +276,7 @@ function Com(props) {
         yAxis: [
             {
                 type: 'value',
+                // name:`${t('温差')}(℃)`
             }
         ],
         series: []
@@ -346,7 +347,7 @@ function Com(props) {
                 </div>
                 <div className={styles.echartPartOne}>
                     <CardModel
-                        title={t('温差') + '(℃)'}
+                        // title={t('温差') + '(℃)'}
                         content={
                             <div className={styles.echartPartCardwrap}>
                                 <ReactECharts layUpdate={false} notMerge={true} option={optionEchartTem} style={{ height: '100%' }} />

@@ -4,6 +4,10 @@ import styles from './index.less'
 import { useSelector, useIntl } from "umi";
 import Cell1 from '@/assets/svg/cell1.svg'
 import Cell2 from '@/assets/svg/cell2.svg'
+import normalLight from '@/assets/svg/normal-light.svg'
+import normalCell from '@/assets/svg/normalCell.svg'
+import normalLightRev from '@/assets/svg/normal-light-rev.svg'
+import normalCellRev from '@/assets/svg/normalCellRev.svg'
 import CellDark1 from '@/assets/svg/cellDark1.svg'
 import CellDark2 from '@/assets/svg/cellDark2.svg'
 import cellTem from '@/assets/svg/cellTem.svg'
@@ -89,6 +93,21 @@ function Com({ id }) {
         setValue([arr[0].value, res?.data?.[0]?.id]);
         setOptions([...arr]);
     }
+    const getImg = (tem) => {
+        if (global.theme === 'default') {
+            if (tem == 1) {
+                return normalLightRev
+            } else {
+                return normalLight
+            }
+        } else {
+            if (tem == 1) {
+                return normalCellRev
+            } else {
+                return normalCell
+            }
+        }
+    }
     return (
         <div className={styles.cellDetails}>
             <div className={styles.searchHead} style={{color:token.titleColor}}>
@@ -126,7 +145,7 @@ function Com({ id }) {
                             <div className={styles.packContent} style={{ backgroundColor: token.cellBgc }}>
                                 <div className={styles.packCell}>
                                     {one?.packData.map((it, index) => {
-                                        return <div className={styles.cellSingel} style={{ backgroundImage: (global.theme === "default" ? `url(${(index + 1) % 2 === 0 ? Cell2 : Cell1})` : `url(${(index + 1) % 2 === 0 ? CellDark2 : CellDark1})`), backgroundSize: '100% 100%' }}>
+                                        return <div className={styles.cellSingel} style={{ backgroundImage: (`url(${(index + 1) % 2 === 0 ?getImg(1):getImg(2)})`), backgroundSize: '100% 100%' }}>
                                             {Object.keys(it).length == 2 ? <img src={cellTem} alt="" /> : null}
                                             {it.tmp && <div className={styles.cellTmp} style={{ color: "#03B4B4" }}>{it.tmp}℃</div>}
                                             <div className={styles.cellVol} style={{ color: "#999999" }}>{it.vol}v</div>
@@ -138,20 +157,20 @@ function Com({ id }) {
                                         <div className={styles.circle} style={{ backgroundColor: token.colorPrimary, color: token.colorLittle }}></div>
                                         <div className={styles.footTitle} style={{ color: token.colorLittle }}>{t('Pack极柱温度')}</div>
                                         <div className={styles.singelAttribute} style={{ color: token.colorLittle }}>
-                                            {t('负极')}:{one.extraPackData.positivePoles}
+                                            {t('负极')}：{one.extraPackData.positivePoles}℃
                                         </div>
                                         <div className={styles.singelAttribute} style={{ color: token.colorLittle }}>
-                                            {t('正极')}:{one.extraPackData.negativePoles}
+                                            {t('正极')}：{one.extraPackData.negativePoles}℃
                                         </div>
                                     </div>
                                     <div className={styles.single}>
                                         <div className={styles.circle} style={{ backgroundColor: token.colorPrimary }}></div>
                                         <div className={styles.footTitle} style={{ color: token.colorLittle }}>{t('Pack熔断器温度')}</div>
                                         <div className={styles.singelAttribute} style={{ color: token.colorLittle }}>
-                                            {t('左侧熔断器')}:{one.extraPackData.fuseLeft}
+                                            {t('左侧熔断器')}：{one.extraPackData.fuseLeft}℃
                                         </div>
                                         <div className={styles.singelAttribute} style={{ color: token.colorLittle }}>
-                                            {t('右侧熔断器')}:{one.extraPackData.fuseRight}
+                                            {t('右侧熔断器')}：{one.extraPackData.fuseRight}℃
                                         </div>
 
                                     </div>

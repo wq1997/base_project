@@ -7,6 +7,7 @@ import ReactECharts from "echarts-for-react";
 
 function Com({ dataX, dataY ,legend}) {
     const { token } = theme.useToken();
+    const global = useSelector(state => state.global);
     const [options, setOptions] = useState({});
     const intl = useIntl();
     const t = (id) => {
@@ -41,11 +42,22 @@ function Com({ dataX, dataY ,legend}) {
             xAxis: {
                 type: 'category',
                 boundaryGap: false,
-                data:dataX
+                data:dataX,
+                splitLine: {
+                    show: false,
+                    lineStyle: {
+                        color: global.theme=='dark'?'#666':'#ddd',
+                    }
+                },
             },
             yAxis: {
                 type: 'value',
-                name:`${t('功率')}(kW)`
+                name:`${t('功率')}(kW)`,
+                splitLine: {
+                    lineStyle: {
+                        color: global.theme=='dark'?'#666':'#ddd',
+                    }
+                },
             },
             dataZoom: [{
                 type: 'inside',

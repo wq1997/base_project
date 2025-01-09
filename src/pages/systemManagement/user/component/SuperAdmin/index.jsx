@@ -4,7 +4,14 @@ import styles from "./index.less";
 import { Table, Select, Input, Button, theme, Space, message, Modal, Popconfirm } from "antd"
 import { apiGetAllUserAndInfos } from "@/services/user"
 import AddUser from '../AddUserModal'
-import { apiSaveOrUpdateUser, apiDeleteUserById, apiResetPassword, apiUpdatePassword, apiListUserWithOptions } from '@/services/total'
+import {
+  apiSaveOrUpdateUser,
+  apiDeleteUserById,
+  apiResetPassword,
+  apiUpdatePassword,
+  apiListUserWithOptions,
+  apiListUserWithOptionsAll
+} from '@/services/total'
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import { getEncrypt, } from "@/utils/utils";
 
@@ -19,6 +26,7 @@ const RealtimeAlarm = (props) => {
   const [title, setTitle] = useState('新增用户');
   const [formData, setFormData] = useState();
   const [delId, setDelId] = useState();
+  const {user} = useSelector(state => state.user);
   const intl = useIntl();
   const t = (id) => {
     const msg = intl.formatMessage(
@@ -29,30 +37,34 @@ const RealtimeAlarm = (props) => {
     return msg
   }
 
-  let alarmLevel = props.roleId == 2 ? [{
-    label: t('普通用户'),
-    value: 1,
-    key: '普通用户',
-  }, {
-    label: t('超级用户'),
-    value: 2,
-    key: '超级用户',
-  },
-  ] : [{
-    label: t('普通用户'),
-    value: 1,
-    key: '普通用户',
-  },
-  {
-    label: t('超级用户'),
-    value: 2,
-    key: '超级用户',
-  },
-  {
-    label: t('管理员'),
-    value: 3,
-    key: '管理员',
-  },]
+  let alarmLevel = (props.roleId == 3) ? [
+    {
+      label: t('普通用户'),
+      value: 1,
+      key: '普通用户',
+    },
+    {
+      label: t('超级用户'),
+      value: 2,
+      key: '超级用户',
+    }
+  ] : (props.roleId == 4) ? [
+    {
+      label: t('普通用户'),
+      value: 1,
+      key: '普通用户',
+    },
+    {
+      label: t('超级用户'),
+      value: 2,
+      key: '超级用户',
+    },
+    {
+      label: t('管理员'),
+      value: 3,
+      key: '管理员',
+    }
+  ] : [];
 
 
   const userTable = [
@@ -92,6 +104,7 @@ const RealtimeAlarm = (props) => {
       title: t('操作'),
       dataIndex: 'operation',
       key: 'operation',
+      fixed: 'right',
       render: (text, record) => {
         return (
           <Space>
@@ -111,11 +124,19 @@ const RealtimeAlarm = (props) => {
 
 
   const searchData = async () => {
-    const { data } = await apiListUserWithOptions({
-      name: textLike,
-      roleId: level
-    });
-    setData(data.data);
+    if(props.roleId==4){
+      const { data } = await apiListUserWithOptionsAll({
+        name: textLike,
+        roleId: level
+      });
+      setData(data.data);
+    }else{
+      const { data } = await apiListUserWithOptions({
+        name: textLike,
+        roleId: level
+      });
+      setData(data.data);
+    }
   }
   const changIsOpen = () => {
     setFormData({
@@ -205,7 +226,7 @@ const RealtimeAlarm = (props) => {
           <Search style={{ width: 280 }} placeholder={t("用户名")} onSearch={onSearch} enterButton allowClear />
         </div>
         <div className={styles.dataItem}>
-          <Button type='primary' onClick={changIsOpen} >{t('新增')}</Button>
+          {(props.roleId == 3||props.roleId == 4)&&<Button type='primary' onClick={changIsOpen} >{t('新增')}</Button>}
         </div>
       </div>
       <div className={styles.tablePart} style={{ backgroundColor: token.titleCardBgc }}>

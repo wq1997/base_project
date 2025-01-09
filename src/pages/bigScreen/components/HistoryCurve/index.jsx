@@ -7,6 +7,7 @@ import ReactECharts from "echarts-for-react";
 
 function Com({ dataX, charge,disCharge }) {
     const { token } = theme.useToken();
+    const global = useSelector(state => state.global);
     const [options, setOptions] = useState({});
     const intl = useIntl();
     const t = (id) => {
@@ -80,7 +81,12 @@ function Com({ dataX, charge,disCharge }) {
             grid,
             yAxis: {
                 type: 'value',
-                name:`${t('电量')}(kWh)`
+                name:`${t('电量')}(kWh)`,
+                splitLine: {
+                    lineStyle: {
+                        color: global.theme=='dark'?'#666':'#ddd',
+                    }
+                },
             },
             xAxis: {
                 type: 'category',

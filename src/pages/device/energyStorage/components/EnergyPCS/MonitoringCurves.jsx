@@ -73,6 +73,7 @@ function Com(props) {
             ],
             yAxis: [
                 {
+                    name:currentTitle ? currentTitle : title,
                     type: 'value',
                     axisLabel: {
                         formatter: '{value} '
@@ -87,9 +88,11 @@ function Com(props) {
     }, [token,pcsIds ]);
     useEffect(() => {
         queryData();
+        console.log(11,title,currentTitle)
     }, [title]);
     useEffect(()=>{
         init();
+        console.log(22,title,currentTitle)
     },[])
     const init=async()=>{
         let { data:res = {} } = await getPcsDevList({
@@ -175,6 +178,7 @@ function Com(props) {
                 }
             },
             legend: {
+                show:false,
                 textStyle: {
                     color: token.smallTitleColor,
                 },
@@ -197,6 +201,7 @@ function Com(props) {
             ],
             yAxis: [
                 {
+                    name:(currentTitle&&currentTitle!="") ? currentTitle : title,
                     type: 'value',
                     axisLabel: {
                         formatter: `{value} `
@@ -270,7 +275,7 @@ function Com(props) {
             </div>
             <div className={styles.echartPart}>
                 <CardModel
-                    title={title}
+                    // title={title}
                     content={
                         <div className={styles.echartPartCardwrap}>
                             <ReactECharts option={optionEchart} style={{ height: '100%' }} />

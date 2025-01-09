@@ -18,7 +18,7 @@ const RealtimeAlarm = () => {
   const [scroolY, setScroolY] = useState(500);
   const [grids, setGrids] = useState([]);
   const [currntGrid, setCurrntGrid] = useState();
-
+  const global = useSelector(state => state.global);
   const intl = useIntl();
   const t = (id) => {
     const msg = intl.formatMessage(
@@ -126,7 +126,7 @@ const RealtimeAlarm = () => {
   }
 
   return (
-    <div className={styles.wrap}>
+    <div className={`${styles.wrap} ${global.theme=='default'?'mDefault':'mDark'}`}>
       <div className={styles.content} style={{ backgroundColor: token.titleCardBgc }}>
         <div className={styles.title}>
           {/* <div className={styles.grid} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal,marginRight:'35px' }}>

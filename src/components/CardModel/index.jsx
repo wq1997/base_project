@@ -20,7 +20,7 @@ function Com(props) {
                 </div>
             </div>
             {
-                props.content&&<div className={styles.content}>
+                props.content&&<div className={props.special?styles.content1:styles.content}>
                 {props.content}
             </div>
             }

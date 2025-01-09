@@ -3,7 +3,7 @@ import { CardModel } from "@/components";
 import { Button, theme, Space, message, Modal, Table } from "antd";
 import styles from './index.less'
 import { apigetAlarmRulesByPlantId, getUpdateAlarmRule, getInsertAlarmRule, getDeleteAlarmRuleById } from '@/services/alarm'
-import { useSelector, useIntl } from "umi";
+import {useSelector, useIntl, FormattedMessage} from "umi";
 import AddRulesModal from './component/AddRulesModal'
 import { formList } from './component/AddRulesModal'
 import  { ExclamationCircleFilled } from '@ant-design/icons';
@@ -18,7 +18,7 @@ function Com(props) {
     const [isOpen, setIsOpen] = useState(false);
     const [isOpenDel, setIsOpenDel] = useState(false);
     const [delId, setDelId] = useState();
-
+    const global = useSelector(state => state.global);
     useEffect(() => {
         getData();
     }, [formData])
@@ -40,22 +40,38 @@ function Com(props) {
             dataIndex: 'prior',
             key: 'prior',
             align:'center',
+            render: (val,record) => {
+                if (record.prior?.includes('1')) {
+                    return <div style={{ color: '#FF0000' }}>
+                        {val}
+                    </div>
+                } else if (record.prior?.includes('2')) {
+                    return <div style={{ color: '#FF7D00' }}>
+                        {val}
+                    </div>
+                } else if (record.prior?.includes('3')) {
+                    return <div style={{ color: '#FFCD00' }}>
+                        {val}
+                    </div>
+                } else if (record.prior?.includes('4')) {
+                    return <div style={{ color: '#00FF19' }}>
+                        {val}
+                    </div>
+                }
 
-
+            }
         },
         {
             title: t('推送方式'),
             dataIndex: 'pushType',
             key: 'pushType',
             align:'center',
-
         },
         {
             title: t('每小时推送上限'),
             dataIndex: 'initNum',
             key: 'initNum',
             align:'center',
-
         },
         {
             title: t('状态'),
@@ -148,7 +164,7 @@ function Com(props) {
     }
    
     return (
-        <div className={styles.contents}>
+        <div className={`${styles.contents} ${global.theme=='default'?'mDefault':'mDark'}`}>
             <CardModel
                 title={
                     t("告警规则")

@@ -1014,6 +1014,14 @@ export default {
     'CO2减排量':'CO2 emission reduction',
     '等效植树量':'Equivalent tree planting amount',
     '日放电量':'Daily discharge capacity',
-    '新增邮箱':'Add New Email'
-
+    '新增邮箱':'Add New Email',
+    "储能装机容量(kW/kWh)": "Energy Storage Installed Capacity(kW/kWh)",
+    '报表模板':'Report Template',
+    '运行报表':'Run Report',
+    '设备报表':'Equipment Report',
+    '电站概览':'Power Station Overview',
+    '单体电压':'Single Cell Voltage',
+    '单体温度':'Single Cell Temperature',
+    '熔断器温度':'Fuse Temperature',
+    '极柱温度':'Pole Temperature',
 }

@@ -44,4 +44,13 @@ export const getCircuitDiagram = (payload) => {
   return axiosInstance.get(`${path}/getCircuitDiagram?plantId	=${payload.plantId}`);
 }
 
+// 获取所有用户（管理员）
+export const getAllUser = () => {
+    return axiosInstance.get(`${path}/getAllUser`);
+}
+// 获取所有用户
+export const getSubordinateUser = () => {
+    return axiosInstance.get(`${path}/getSubordinateUser`);
+}
+
 

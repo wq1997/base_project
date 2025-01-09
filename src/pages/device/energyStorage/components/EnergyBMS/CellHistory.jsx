@@ -1,17 +1,19 @@
 // 函数组件
 // 快捷键Ctrl+Win+i 添加注释
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { theme, Select, DatePicker, Button, Cascader, message } from "antd";
+import React, {useState, useEffect, useCallback, useMemo, useRef} from 'react';
+import {theme, Select, DatePicker, Button, Cascader, message} from "antd";
 import styles from './index.less'
 import ReactECharts from "echarts-for-react";
-import { CardModel } from "@/components";
-import { getBmsAnalyticsInitData, analyticsBmsDiffData, analyticsBmsData, getBmsDevList } from '@/services/deviceTotal'
+import {CardModel} from "@/components";
+import {getBmsAnalyticsInitData, analyticsBmsDiffData, analyticsBmsData, getBmsDevList} from '@/services/deviceTotal'
 import dayjs from 'dayjs';
-import { getQueryString, downLoadExcelMode } from "@/utils/utils";
-import { useSelector, useIntl } from "umi";
-const { SHOW_CHILD } = Cascader;
+import {getQueryString, downLoadExcelMode} from "@/utils/utils";
+import {useSelector, useIntl} from "umi";
+
+const {SHOW_CHILD} = Cascader;
+
 function Com(props) {
-    const { token } = theme.useToken();
+    const {token} = theme.useToken();
     const [option, setOption] = useState([]);
     const [dateBottom, setDateBottom] = useState(dayjs(new Date()));
     const [packList, setPackList] = useState([]);
@@ -24,9 +26,8 @@ function Com(props) {
     const [packValueBottom, setPackValueBottom] = useState();
     const [optionBms, setOptionBms] = useState([]);
     const [bmsIds, setBmsIds] = useState([]);
-
+    const [flag,setFlag] = useState(0);
     const intl = useIntl();
-
     const t = (id) => {
         const msg = intl.formatMessage(
             {
@@ -36,13 +37,22 @@ function Com(props) {
         return msg
     }
 
+    const [options, setOptions] = useState([
+        {label:t('单体电压'),value:0},
+        {label:t('单体温度'),value:1},
+        {label:t('熔断器温度'),value:2},
+        {label:t('极柱温度'),value:3},
+    ]);
+    const [value, setValue] = useState(0);
+
+
 
 
     useEffect(() => {
         dataInit();
     }, []);
     const dataInit = async () => {
-        let { data = {} } = await getBmsDevList({
+        let {data = {}} = await getBmsDevList({
             plantId: localStorage.getItem('plantId')
         });
         setOptionBms(data?.data);
@@ -60,7 +70,7 @@ function Com(props) {
 
     }, [packValueBottom, cellReq]);
     const getInitData = async () => {
-        let { data } = await getBmsAnalyticsInitData({ id: bmsIds[0] });
+        let {data} = await getBmsAnalyticsInitData({id: bmsIds[0]});
         setPackList(data?.data?.clusterPackList);
         setCellList(data?.data?.cellList);
         setPackValueBottom(data?.data?.clusterPackList?.[0]?.value);
@@ -68,9 +78,10 @@ function Com(props) {
         getBottomChartData();
         setVAndTExcelTitle(`${data?.data?.clusterPackList?.[0]?.label}/${data?.data?.cellList?.[0]?.label}`)
     }
- 
+
     const getBottomChartData = async () => {
-        let { data } = await analyticsBmsData({
+        setFlag(value);
+        let {data} = await analyticsBmsData({
             packValue: packValueBottom,
             cellValue: cellReq,
             date: dateBottom.format('YYYY-MM-DD')
@@ -89,25 +100,64 @@ function Com(props) {
         });
         setVAndTExcelData([...excelArr]);
         let ser = [];
-        ser.push(dealTemp(data.data?.temp, t("采样点温度"), 0));
-        ser.push(dealTemp(data.data?.leftTemp, t("左侧熔断器温度"), 1));
-        ser.push(dealTemp(data.data?.rightTemp, t("右侧熔断器温度"), 2));
-        ser.push(dealTemp(data.data?.negativeTemp, t("负极极柱温度"), 3));
-        ser.push(dealTemp(data.data?.positiveTemp, t("正极极柱温度"), 4));
+        if(value==1){
+            ser.push(dealTemp(data.data?.temp, t("单体温度"), 0));
+        }else if(value==2){
+            ser.push(dealTemp(data.data?.leftTemp, t("左侧熔断器温度"), 1));
+            ser.push(dealTemp(data.data?.rightTemp, t("右侧熔断器温度"), 2));
+        }else if(value==3){
+            ser.push(dealTemp(data.data?.negativeTemp, t("负极极柱温度"), 3));
+            ser.push(dealTemp(data.data?.positiveTemp, t("正极极柱温度"), 4));
+        }
+        // ser.push(dealTemp(data.data?.temp, t("单体温度"), 0));
+        // ser.push(dealTemp(data.data?.leftTemp, t("左侧熔断器温度"), 1));
+        // ser.push(dealTemp(data.data?.rightTemp, t("右侧熔断器温度"), 2));
+        // ser.push(dealTemp(data.data?.negativeTemp, t("负极极柱温度"), 3));
+        // ser.push(dealTemp(data.data?.positiveTemp, t("正极极柱温度"), 4));
+        let yAxis= [
+            {
+                name:`${value==0?t('V') :t('℃')}`,
+                type: 'value',
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        color: [token.microgridsLine], // 网格线颜色
+                        width: 0.3, // 网格线宽度
+                        type: 'solid' // 网格线类型
+                    }
+                },
+            }
+        ];
         setOptionEchartTemBot({
             ...baseOption,
+            yAxis:yAxis,
             series: [...ser]
         })
-        dealDataBot(data.data?.vol, setOptionEchartVolBot, t("电压"));
+        dealDataBot(data.data?.vol, setOptionEchartVolBot, t("单体电压"));
 
+        getOption();
     }
     const dealDataBot = (data, setHandel, title) => {
         let arr = [];
         data?.map((it, index) => {
             arr.push([dayjs(it.time).format('HH:mm:ss'), it.value]);
         });
+        let yAxis= [
+                {
+                    name:`${value==0?t('V') :t('℃')}`,
+                    type: 'value',
+                    splitLine: {
+                        show: true,
+                        lineStyle: {
+                            color: [token.microgridsLine], // 网格线颜色
+                            width: 0.3, // 网格线宽度
+                            type: 'solid' // 网格线类型
+                        }
+                    },
+                }
+            ];
         setHandel({
-            ...baseOption, series: [...(option?.series || []), {
+            ...baseOption,yAxis:yAxis, series: [...(option?.series || []), {
                 name: title,
                 type: 'line',
                 symbolSize: 8,
@@ -155,8 +205,8 @@ function Com(props) {
         let sheetHeader = [t("时间"), `${t('电压')}(V)`, `${t('采样点温度')}(℃)`, `${t('左侧熔断器温度')}(℃)`, `${t('右侧熔断器温度')}(℃)`, `${t('负极极柱温度')}(℃)`, `${t('正极极柱温度')}(℃)`];
         downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader, sheetName)
     };
-   
-  
+
+
     const baseOption = {
         tooltip: {
             trigger: 'axis',
@@ -173,7 +223,6 @@ function Com(props) {
         legend: {
             icon: 'circle',
             // top: '5%',
-            left: '5%',
             itemWidth: 6,
             itemGap: 20,
             textStyle: {
@@ -191,14 +240,22 @@ function Com(props) {
                 axisLabel: {
                     // interval: 0,
                 },
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        color: [token.microgridsLine], // 网格线颜色
+                        width: 0.3, // 网格线宽度
+                        type: 'solid' // 网格线类型
+                    }
+                },
             }
         ],
-        dataZoom: [{ type: "inside" }],
+        dataZoom: [{type: "inside"}],
         toolbox: {
             show: true,
             right: 25,
             feature: {
-                magicType: { type: ["line", "bar"], title: "", default: "line" },
+                magicType: {type: ["line", "bar"], title: "", default: "line"},
                 dataZoom: {
                     yAxisIndex: "none",
                 },
@@ -208,15 +265,43 @@ function Com(props) {
         yAxis: [
             {
                 type: 'value',
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        color: [token.microgridsLine], // 网格线颜色
+                        width: 1, // 网格线宽度
+                        type: 'solid' // 网格线类型
+                    }
+                },
             }
         ],
         series: []
-    }
+    };
+    const onChange = (value, selectedOptions) => {
+        setValue(value);
+    };
+    const getOption=()=>{
+        if(flag==0){
+            return optionEchartVolBot;
+        }else{
+            return optionEchartTemBot;
+        }
+    };
     return (
         <>
             <div className={styles.advancedAnalytics}>
-                <div className={styles.searchHead} style={{color:token.titleColor}}>
-                <span >{t('设备')}:</span>
+                <div className={styles.searchHead} style={{color: token.titleColor}}>
+                    <span>{t('数据项')}:</span>
+                    <Select
+                        className={styles.margRL}
+                        style={{width: 240}}
+                        onChange={onChange}
+                        options={options}
+                        value={value}
+                    >
+
+                    </Select>
+                    <span>{t('设备')}:</span>
                     <Select
                         style={{
                             width: '10.4167rem',
@@ -234,60 +319,80 @@ function Com(props) {
                             })
                         }
                     />
-                    <span >{t('电池PACK')}:</span>
+                    <span>{t('电池PACK')}:</span>
                     <Select
                         className={styles.margRL}
-                        style={{ width: 240 }}
-                        onChange={(val, arr) => { setPackValueBottom(val); setVAndTExcelTitle(`${arr.label}/${cellList.find(it => it.value == cellReq)?.label}`); console.log(`${arr.label}/${cellList.find(it => it.value == cellReq)?.label}`); }}
+                        style={{width: 240}}
+                        onChange={(val, arr) => {
+                            setPackValueBottom(val);
+                            setVAndTExcelTitle(`${arr.label}/${cellList.find(it => it.value == cellReq)?.label}`);
+                            console.log(`${arr.label}/${cellList.find(it => it.value == cellReq)?.label}`);
+                        }}
                         options={packList}
                         defaultValue={[packList?.[0]?.value]}
                         key={packList?.[0]?.value}
                     >
                     </Select>
-                    <span >{t('电芯')}:</span>
-                    <Select
-                        className={styles.margRL}
-                        style={{ width: 240 }}
-                        onChange={(val, arr) => { setCellReq(val); setVAndTExcelTitle(`${packList.find(it => it.value == packValueBottom)?.label}/${arr.label}`); console.log(val, arr); }}
-                        options={cellList}
-                        defaultValue={
-                            cellList?.[0]?.value
-                        }
-                        key={cellList?.[0]?.value}
-
-                    >
-                    </Select>
-                    <span >{t('对比日期')}:</span>
+                    {
+                        (value==0||value==1)&&
+                        <>
+                            <span>{t('电芯')}:</span>
+                            <Select
+                                className={styles.margRL}
+                                style={{width: 240}}
+                                onChange={(val, arr) => {
+                                    setCellReq(val);
+                                    setVAndTExcelTitle(`${packList.find(it => it.value == packValueBottom)?.label}/${arr.label}`);
+                                    console.log(val, arr);
+                                }}
+                                options={cellList}
+                                defaultValue={
+                                    cellList?.[0]?.value
+                                }
+                                key={cellList?.[0]?.value}
+                            >
+                            </Select>
+                        </>
+                    }
+                    <span>{t('对比日期')}:</span>
                     <DatePicker
                         className={styles.margRL}
-                        style={{ width: 240 }}
-                        onChange={(val, str) => { setDateBottom(val); }}
+                        style={{width: 240}}
+                        onChange={(val, str) => {
+                            setDateBottom(val);
+                        }}
                         defaultValue={dateBottom}
                     />
                     <Button type="primary" className={styles.firstButton} onClick={getBottomChartData}>
                         {t('查询')}
                     </Button>
-                    <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downLoadVAndT}>
-                        {t('导出')}{" "}Excel
+                    <Button type="primary" style={{backgroundColor: token.defaultBg}} onClick={downLoadVAndT}>
+                    {t('导出')}{" "}Excel
                     </Button>
                 </div>
                 <div className={styles.echartPart}>
-                    <CardModel
-                        title={t('电压') + '(V)'}
-                        content={
-                            <div className={styles.echartPartCardwrap}>
-                                <ReactECharts layUpdate={false} notMerge={true} option={optionEchartVolBot} style={{ height: '100%' }} />
-                            </div>
-                        }
-                    />
-                    <CardModel
-                        title={t('温度') + '(℃)'}
-                        content={
-                            <div className={styles.echartPartCardwrap}>
-                                <ReactECharts layUpdate={false} notMerge={true} option={optionEchartTemBot} style={{ height: '100%' }} />
-                            </div>
-                        }
-                    />
+                    {/*<CardModel*/}
+                    {/*    title={t('电压') + '(V)'}*/}
+                    {/*    content={*/}
+                    {/*        <div className={styles.echartPartCardwrap}>*/}
+                    {/*            <ReactECharts layUpdate={false} notMerge={true} option={optionEchartVolBot}*/}
+                    {/*                          style={{height: '100%'}}/>*/}
+                    {/*        </div>*/}
+                    {/*    }*/}
+                    {/*/>*/}
+                    <div className={styles.echartPartCardwrap}>
+                        <ReactECharts layUpdate={false} notMerge={true} option={getOption()}
+                                      style={{height: '100%'}}/>
+                    </div>
+                    {/*<CardModel*/}
+                    {/*    title={t('温度') + '(℃)'}*/}
+                    {/*    content={*/}
+                    {/*        <div className={styles.echartPartCardwrap}>*/}
+                    {/*            <ReactECharts layUpdate={false} notMerge={true} option={optionEchartTemBot}*/}
+                    {/*                          style={{height: '100%'}}/>*/}
+                    {/*        </div>*/}
+                    {/*    }*/}
+                    {/*/>*/}
 
                 </div>
             </div>

@@ -65,6 +65,7 @@ function Com({ id }) {
             ],
             yAxis: [
                 {
+                    name:currentTitle ? currentTitle : title,
                     type: 'value',
                     axisLabel: {
                         formatter: '{value} '
@@ -149,6 +150,7 @@ function Com({ id }) {
                 }
             },
             legend: {
+                show:false,
                 textStyle: {
                     color: token.smallTitleColor,
                 },
@@ -171,6 +173,7 @@ function Com({ id }) {
             ],
             yAxis: [
                 {
+                    name:currentTitle ? currentTitle : title,
                     type: 'value',
                     axisLabel: {
                         formatter: `{value}`
@@ -272,7 +275,7 @@ function Com({ id }) {
             </div>
             <div className={styles.echartPart}>
                 <CardModel
-                    title={title ? t(title) : ''}
+                    // title={title ? t(title) : ''}
                     content={
                         <div className={styles.echartPartCardwrap}>
                             <ReactECharts option={optionEchart} style={{ height: '100%' }} />

@@ -112,7 +112,7 @@ function Com(props) {
 
     const getPlantList = async (roleId) => {
         let plantListRes, alarmRes,powerCurveRes,realRes,historyRes;
-        if (roleId == 3) {
+        if (roleId == 4) {
             plantListRes = await apiGetAllPlant();
             alarmRes = await apiGetAllPlantAlarmDistribution();
             powerCurveRes=await apiGetAllPlantPowerCurves();
@@ -200,17 +200,23 @@ function Com(props) {
             setPowerCurveLegend(legend);
         };
 
-        if (realRes?.data?.code == 200){
-            let data=realRes?.data?.data;
-            let tempX=[],tempY=[];
+        if (realRes?.data?.code === 200) {
+            let data = realRes?.data?.data;
+            let tempX = [], tempY = [];
             setRealData(data);
-            data.efficiencyRanking?.forEach((item, index) => {
-                tempX.push(item?.plantName);
-                tempY.push(item?.efficiency);
-            })
+
+            let reversedData = [...(data?.efficiencyRanking ?? [])].reverse();
+            reversedData?.forEach((item, index) => {
+                const plantName = item?.plantName;
+                const efficiency = item?.efficiency;
+
+                tempX.push(plantName);
+                tempY.push(efficiency);
+            });
+
             setEfficiencyX(tempX);
             setEfficiencyY(tempY);
-        };
+        }
 
         if (historyRes?.data?.code == 200){
             let tempX=[],tempCharge=[],tempDisCharge=[];
@@ -253,7 +259,7 @@ function Com(props) {
 
     }
     return (
-        <div className={styles.largeScreen}
+        <div className={`${styles.largeScreen} ${global.theme=='default'?'mDefault':'mDark'}`}
              style={{backgroundColor: token.bigScreenBgc, color: token.colorLargeScreen}}>
             <div className={global.theme == 'default' ? styles.title_default : styles.title_dark}>{t('储能电站监控大屏')}
             <div style={{ display: 'flex', alignItems: 'center', position:'absolute',right:'20px',bottom:'30px'}}>
@@ -494,7 +500,8 @@ function Com(props) {
                     </div>
                     <EfficiencyCurve dataX={efficiencyX} dataY={efficiencyY}/>
                 </div>
-                <div className={styles.plantL}
+                {/*<div className={styles.plantL}*/}
+                <div className={`${styles.plantL} ${global.theme == 'default' ? styles.scrollDef:styles.scrollDark}`}
                      style={{backgroundColor: token.titleCardBgc, color: token.colorLargeScreen}}>
                     <div className={global.theme == 'default' ? styles.lTitle_default : styles.lTitle_dark}>{t('电站列表')}
                     </div>
@@ -519,29 +526,29 @@ function Com(props) {
                         <div className={styles.socie}>
                             <div>
                                 <span>{realData?.socialEffectVo?.coal}</span>
-                                <span style={{color:token.bigColor1}}>{t('吨')}</span>
+                                <span style={{color:token.bigColor1,fontFamily:'DingTalkJinBuTi'}}>{t('吨')}</span>
                             </div>
                             <div>{t('节约标准煤')}</div>
                             <div 
-                                className={global.theme == 'default' ? styles.she_hui_default : styles.she_hui_dark}></div>
+                                className={global.theme == 'default' ? styles.mei_default : styles.mei_dark}></div>
                         </div>
                         <div className={styles.socie}>
                             <div>
                                 <span>{realData?.socialEffectVo?.co2}</span>
-                                <span style={{color:token.bigColor1}}>{t('吨')}</span>
+                                <span style={{color:token.bigColor1,fontFamily:'DingTalkJinBuTi'}}>{t('吨')}</span>
                             </div>
                             <div>{t('CO2减排量')}</div>
                             <div
-                                className={global.theme == 'default' ? styles.she_hui_default : styles.she_hui_dark}></div>
+                                className={global.theme == 'default' ? styles.tan_default : styles.tan_dark}></div>
                         </div>
                         <div className={styles.socie}>
                             <div>
                                 <span>{realData?.socialEffectVo?.tree}</span>
-                                <span style={{color:token.bigColor1}}>{t('棵')}</span>
+                                <span style={{color:token.bigColor1,fontFamily:'DingTalkJinBuTi'}}>{t('棵')}</span>
                             </div>
                             <div>{t('等效植树量')}</div>
                             <div
-                                className={global.theme == 'default' ? styles.she_hui_default : styles.she_hui_dark}></div>
+                                className={global.theme == 'default' ? styles.shu_default : styles.shu_dark}></div>
                         </div>
                     </div>
                 </div>

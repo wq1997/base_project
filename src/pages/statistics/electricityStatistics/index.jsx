@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { getLocalStorage, getQueryString } from "@/utils/utils";
-import { history, useLocation,useIntl } from "umi";
+import {history, useLocation, useIntl, useSelector} from "umi";
 
 import {
   AppstoreOutlined,
@@ -21,7 +21,7 @@ const defaultPageType = "Overview";
 const Login = () => {
   const location = useLocation();
 const { token } = theme.useToken();
-
+  const global = useSelector(state => state.global);
   const { pathname } = location;
   const [activeKey, setActiveKey] = useState(getQueryString("activeKey") || defaultPageType);
   const onChangeTab = key => {
@@ -45,7 +45,7 @@ const PageTypeList = [
   { label:getTranslation('device.ChargingPiles'), key: 'chargingStation', icon: WalletOutlined },
 ];
   return (
-    <div className={styles.content} style={{ backgroundColor: token.titleCardBgc,}}>
+    <div className={`${styles.content} ${global.theme=='default'?'mDefault':'mDark'}`} style={{ backgroundColor: token.titleCardBgc,}}>
       <Overview />
       {/* <Tabs 
         activeKey={activeKey}

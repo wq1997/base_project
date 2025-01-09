@@ -8,6 +8,7 @@ import Iconify from './icon/iconify-icon'
 import SvgIcon from './icon/svg-icon'
 import IconButton from './icon/icon-button'
 import ScorllTable from './ScorllTable'
+import GlobalWrapperCss from "./GlobalWrapperCss";
 
 export {
     ThemeBtn,
@@ -19,5 +20,6 @@ export {
     Iconify,
     SvgIcon,
     IconButton,
-    ScorllTable
+    ScorllTable,
+    GlobalWrapperCss
 }

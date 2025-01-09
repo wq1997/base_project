@@ -9,3 +9,6 @@
 .swc
 /test-dist
 /prod-dist
+/.idea/vcs.xml
+/.idea/modules.xml
+/.idea/.gitignore

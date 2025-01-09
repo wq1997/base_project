@@ -38,13 +38,13 @@ const Cabinet = () => {
       return msg
     }
     const PageTypeList = [
-        {label:t('BMS数据'),key:'RealtimeData'},
-        {label:t('BMC数据'),key:'BmcDetails'},
+        {label:t('BMS详情'),key:'RealtimeData'},
+        {label:t('BMC详情'),key:'BmcDetails'},
+        {label:t('PACK详情'),key:'CellDetails'},
+        {label:t('电芯详情'),key:'CellHistory'},
         {label:t('监测曲线'),key:'MonitoringCurves'},
-        {label:t('电芯实时数据'),key:'CellDetails'},
-        {label:t('电芯历史数据'),key:'CellHistory'},
-        {label:t('压差曲线'),key:'VolDiff'},
         {label:t('温差曲线'),key:'TemDiff'},
+        {label:t('压差曲线'),key:'VolDiff'},
 
     ];
     return (

@@ -6,6 +6,7 @@ import { useSelector, } from "umi";
 import {  theme, } from 'antd';
 
 function User(props) {
+    const global = useSelector(state => state.global);
     const { user } = useSelector(function (state) {
         return state.user
     });
@@ -14,10 +15,10 @@ function User(props) {
     const { token } = theme.useToken();
 
     return (
-        <div className='content' style={{height:'calc(100% - 10px)',backgroundColor:token.titleCardBgc }}>
-            {user.roleId !== 1 ?
-                <SuperAdmin roleId={user.roleId}/> :
-                <NorMalUser />
+        <div className={`${global.theme=='default'?'mDefault content':'mDark content'}`} style={{height:'calc(100% - 10px)',backgroundColor:token.titleCardBgc }}>
+            {(user.roleId == 1||user.roleId == 2 )?
+                <NorMalUser /> :
+                <SuperAdmin roleId={user.roleId}/>
             }
         </div>
     )

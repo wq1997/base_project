@@ -5,10 +5,12 @@ import { FORM_REQUIRED_RULE, } from "@/utils/constants";
 import { useSelector, useIntl } from "umi";
 import { getEncrypt, } from "@/utils/utils";
 import { getOMCommands,sendOMCommands  } from '@/services/policy'
+import styles from './index.less'
 
 const { Option } = Select;
 
 const OperationManage = () => {
+    const global = useSelector(state => state.global);
     const { token } = theme.useToken();
     const [form1] = Form.useForm(); // 控制模式
     const [form2] = Form.useForm(); // PCS总开机 / PCS总关机
@@ -29,6 +31,9 @@ const OperationManage = () => {
     const [keyObj, setKeyObj] = useState();
     const [valueObj, setValueObj] = useState();
     const [dtuId, setDtuId] = useState(localStorage.getItem('dtuId'));
+    const { user } = useSelector(function (state) {
+        return state.user
+    });
 
     const intl = useIntl();
     const t = (id) => {
@@ -53,12 +58,14 @@ const OperationManage = () => {
             
         }
         return (
-            <div
-                style={{ width: 132, height: 48, borderRadius: 4, background: color?.background||'#D1D9EF', color: color?.color||'#6978A1', fontSize: 18, lineHeight: '48px', textAlign: 'center', cursor: 'pointer' }}
+            <Button
+                // style={{ width: 132, height: 48, borderRadius: 4, background: color?.background||'#D1D9EF', color: color?.color||'#6978A1', fontSize: 18, lineHeight: '48px', textAlign: 'center', cursor: 'pointer' }}
+                style={{ height: 32, borderRadius: 4, background: color?.background||'#E9EEF3', color: color?.color||'#333', fontSize: 14,}}
                 onClick={onBtnClick}
+                disabled={user.roleId==1}
             >
                 {t(text)}
-            </div>
+            </Button>
         )
     }
     useEffect(() => {
@@ -77,15 +84,15 @@ const OperationManage = () => {
     };
     const getChildren = (item) => {
         return (<>
-            <div style={{ backgroundColor: token.titleCardBgc, padding: '24px 37px', boxSizing: 'border-box' }}>
-                <Row justify="space-between" style={{ marginTop: 20 }}>
+            <div className={styles.control} style={{ backgroundColor: token.titleCardBgc, padding: '20px 16px', boxSizing: 'border-box',borderRadius:'4px' }}>
+                <Row justify="space-between" /*style={{ marginTop: 20 }}*/>
                     <Space size={38}>
                         <MyButton text="开机" keyObj='pcsStartStop' valueObj={1} cmdKey='7002' devId={item.id} color={{background:token.barColor[0],color:'#fff'}}/>
                         <MyButton text="关机" keyObj='pcsStartStop' valueObj={2} cmdKey='7002' devId={item.id} color={{background:token.barColor[0],color:'#fff'}}/>
                         <MyButton text="复位" keyObj='pcsStartStop' valueObj={3} cmdKey='7002'devId={item.id} color={{background:token.barColor[0],color:'#fff'}}/>
-                        <MyButton text="BMS开机" keyObj='pcsStartStop' valueObj={4}  cmdKey='7016' devId={item.id} color={{background:token.barColor[5],color:'#fff'}}/>
-                        <MyButton text="分闸" keyObj='mcsSwitchOnOff' valueObj={1}  cmdKey='7015'  devId={item.mcsDevId}  color={{background:token.barColor[6],color:'#fff'}}/>
-                        <MyButton text="合闸" keyObj='mcsSwitchOnOff' valueObj={0}  cmdKey='7015' devId={item.mcsDevId}  color={{background:token.barColor[6],color:'#fff'}}/>
+                        <MyButton text="BMS开机" keyObj='pcsStartStop' valueObj={4}  cmdKey='7016' devId={item.id} color={{background:token.color2,color:'#fff'}}/>
+                        <MyButton text="分闸" keyObj='mcsSwitchOnOff' valueObj={1}  cmdKey='7015'  devId={item.mcsDevId}  color={{background:token.barColor[6],color:token.color3}}/>
+                        <MyButton text="合闸" keyObj='mcsSwitchOnOff' valueObj={0}  cmdKey='7015' devId={item.mcsDevId}  color={{background:token.barColor[6],color:token.color3}}/>
                         <MyButton text="功率设置"  keyObj='pcsPower' cmdKey='7019' devId={item.id}/>
                         <span>{item.pcsStatus}</span>
                         <span>{item.power}</span>
@@ -96,7 +103,7 @@ const OperationManage = () => {
             {
                             item?.branchList?.map((it, index) => {
                                 return (
-                                    <div style={{ backgroundColor: token.titleCardBgc, padding: '20px 37px', boxSizing: 'border-box' }}>
+                                    <div key={it.id} style={{ backgroundColor: token.titleCardBgc, padding: '0px 16px 20px 16px', boxSizing: 'border-box' }}>
                                         <Title title={it.name} />
                                         <Space size={40} direction="vertical" style={{ width: '100%', marginTop:'20px'}}>
                                             <Row justify="space-between">
@@ -118,15 +125,15 @@ const OperationManage = () => {
         </>)
     }
     return (
-        <div style={{ color: token.titleColor }}>
-            <Space size={8} direction="vertical" style={{ width: '100%' }}>
-                <div style={{ backgroundColor: token.titleCardBgc, height: 100, padding: '24px 37px', boxSizing: 'border-box' }}>
+        <div style={{ color: token.titleColor,height:'calc(100% - 10px)', backgroundColor: token.titleCardBgc ,borderRadius:'4px' }} className={`${styles.mCbtn} ${global.theme=='default'?styles.tabDf:styles.tabDark}`}>
+            <Space size={8} direction="vertical" style={{ width: '100%' }} className={styles.mCbtn}>
+                <div style={{ backgroundColor: token.titleCardBgc, height: '52px', padding: '10px 16px', boxSizing: 'border-box',borderRadius:'4px' }}>
                     <Space size={44}>
                         <Space size={33}>
-                            <Button type="primary" size="large" onClick={() => setControlModeOpen(true)}>{t('控制模式')}</Button>
-                            <Button type="primary" size="large" onClick={() => setPowerSettingOpen(true)}>{t('总功率设置')}</Button>
-                            <Button type="primary" size="large" onClick={() => setPowerOnOpen(true)}>{t('PCS总开机')}</Button>
-                            <Button type="primary" size="large" onClick={() => setPowerOffOpen(true)}>{t('PCS总关机')}</Button>
+                            <Button disabled={user.roleId==1} type="primary" size="large" onClick={() => setControlModeOpen(true)}>{t('控制模式')}</Button>
+                            <Button disabled={user.roleId==1} type="primary" size="large" onClick={() => setPowerSettingOpen(true)}>{t('总功率设置')}</Button>
+                            <Button disabled={user.roleId==1} type="primary" size="large" onClick={() => setPowerOnOpen(true)}>{t('PCS总开机')}</Button>
+                            <Button disabled={user.roleId==1} type="primary" size="large" onClick={() => setPowerOffOpen(true)}>{t('PCS总关机')}</Button>
                         </Space>
                     </Space>
                 </div>

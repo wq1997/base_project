@@ -276,6 +276,7 @@ function Com(props) {
         yAxis: [
             {
                 type: 'value',
+                // name:`${t('压差')}(V)`
             }
         ],
         series: []
@@ -346,7 +347,7 @@ function Com(props) {
                 </div>
                 <div className={styles.echartPartOne}>
                     <CardModel
-                        title={t('压差') + '(V)'}
+                        // title={t('压差') + '(V)'}
                         content={
                             <div className={styles.echartPartCardwrap}>
                                 <ReactECharts layUpdate={false} notMerge={true} option={optionEchartVol} style={{ height: '100%' }} />

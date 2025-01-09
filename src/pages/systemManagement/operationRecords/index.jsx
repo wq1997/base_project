@@ -8,6 +8,7 @@ import { apiListLogWithPage } from "@/services/total"
 import dayjs from 'dayjs';
 
 const RealtimeAlarm = () => {
+  const global = useSelector(state => state.global);
   const { Search } = Input;
   const [data, setData] = useState([]);
   const [current, setCurrent] = useState(1);
@@ -82,7 +83,7 @@ const RealtimeAlarm = () => {
     setUserName(value);
   }
   return (
-    <div className={styles.content} style={{height:'calc(100% - 10px)', backgroundColor: token.titleCardBgc }}>
+    <div className={`${styles.content} ${global.theme=='default'?'mDefault':'mDark'}`} style={{height:'calc(100% - 10px)', backgroundColor: token.titleCardBgc }}>
       <div className={styles.title} style={{ backgroundColor: token.titleCardBgc }}>
         <div className={styles.level}>
           <RangePicker

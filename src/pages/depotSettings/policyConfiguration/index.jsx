@@ -8,6 +8,7 @@ import { useSelector, useIntl } from "umi";
 import { getStrategyInfo, saveStrategy } from '@/services/policy'
 const { Option } = Select;
 function Com(props) {
+    const global = useSelector(state => state.global);
   const [seletOption, setSelectOption] = useState([]);
   const [gridId, setGridId] = useState();
   const [currentGrid, setCurrentGrid] = useState();
@@ -18,6 +19,9 @@ function Com(props) {
   const [editPlanOpen, setEditPlanOpen] = useState(false); // 策略详情
   const [currentIndex, setCurrentIndex] = useState(); // 策略Id
   const [detailsData, setDetailsData] = useState(); // 策略详情
+  const { user } = useSelector(function (state) {
+    return state.user
+  });
 
   useEffect(() => {
     getDetails();
@@ -83,7 +87,7 @@ function Com(props) {
 
 
   return (
-    <div style={{ width: '100%', height: '100%' }}>
+    <div style={{ width: '100%', height: '100%' }} className={`${global.theme=='default'?'mDefault':'mDark'}`}>
       <Form
         form={form}
         name="policy"
@@ -117,7 +121,7 @@ function Com(props) {
                 span: 12,
               }}
             >
-              <Button type="primary" htmlType="submit" onClick={saveAll}>
+              <Button disabled={user.roleId==1} type="primary" htmlType="submit" onClick={saveAll}>
                 {t('下发命令')}
               </Button>
             </Form.Item>

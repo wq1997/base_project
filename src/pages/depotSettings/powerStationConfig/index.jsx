@@ -2,7 +2,14 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { CardModel } from "@/components";
 import { Button, theme, Space, message, Modal, Table } from "antd";
 import styles from './index.less'
-import { apigetPlantList, apiInsertPlant, apiUpdatePlant, apideletePlantById, getInsertPlantInitData } from '@/services/plant'
+import {
+    apigetPlantList,
+    apiInsertPlant,
+    apiUpdatePlant,
+    apideletePlantById,
+    getInsertPlantInitData,
+    getAllUser, getSubordinateUser
+} from '@/services/plant'
 import { apiGetAllPlant } from '@/services/bigScreen'
 import { useSelector, useIntl } from "umi";
 import AddPlantModal, { formList } from './component/AddPlantModal'
@@ -13,12 +20,14 @@ import { timeZoneList } from '@/utils/constants'
 function Com(props) {
     const [data, setData] = useState([]);
     const { token } = theme.useToken();
+    const global = useSelector(state => state.global);
     const [title, setTitle] = useState('新增电站');
     const [formData, setFormData] = useState();
     const [isOpen, setIsOpen] = useState(false);
     const [isOpenDel, setIsOpenDel] = useState(false);
     const [selectId, setSelectId] = useState();
     const [initSelectData, setInitSelectData] = useState();
+    const [record, setRecord] = useState({});
     const { user } = useSelector(function (state) {
         return state.user
     });
@@ -119,12 +128,20 @@ function Com(props) {
     const intl = useIntl();
 
     const getInitData = async () => {
+        let userRes=user.roleId === 4?await getAllUser(): await getSubordinateUser();
+        let userList=userRes?.data?.data?.map(item=>{
+            return {
+                label:item?.name,
+                value:item?.f0102_Id
+            }
+        });
+
         let { data } = await getInsertPlantInitData();
         let str = locale === 'zh-CN' ? 'desc' : 'enDesc'
         data?.data?.languageList?.map(it => {
             it.label = `${it[str]}--${it.value}`
         });
-        setInitSelectData({ ...data.data, timeZone: timeZoneList });
+        setInitSelectData({ ...data.data, timeZone: timeZoneList,userList:userList });
     }
     const t = (id) => {
         const msg = intl.formatMessage(
@@ -137,108 +154,111 @@ function Com(props) {
     const cancle = () => {
         setIsOpen(!isOpen);
     }
-    const [userTable,setUserTable] = useState([
-        {
-            title: t('电站名称'),
-            dataIndex: 'name',
-            key: 'name',
-        },
-        {
-            title: t('所属用户'),
-            dataIndex: 'userName',
-            key: 'userName',
-        },
-        {
-            title: t('电站类型'),
-            dataIndex: 'typeName',
-            key: 'typeName',
-        },
-        {
-            title: t('建站日期'),
-            dataIndex: 'installDate',
-            key: 'installDate',
-            width: 200,
-            render: (val) => {
-                return val ? dayjs(val).format('YYYY-MM-DD ') : ''
+    const [userTable, setUserTable] = useState(() => {
+        const columns = [
+            {
+                title: t('电站名称'),
+                dataIndex: 'name',
+                key: 'name',
+            },
+            {
+                title: t('所属用户'),
+                dataIndex: 'userName',
+                key: 'userName',
+            },
+            {
+                title: t('电站类型'),
+                dataIndex: 'typeName',
+                key: 'typeName',
+            },
+            {
+                title: t('建站日期'),
+                dataIndex: 'installDate',
+                key: 'installDate',
+                width: 200,
+                render: (val) => {
+                    return val ? dayjs(val).format('YYYY-MM-DD ') : '';
+                }
+            },
+            {
+                title: t('并网日期'),
+                dataIndex: 'networkDate',
+                key: 'networkDate',
+                render: (val) => {
+                    return val ? dayjs(val).format('YYYY-MM-DD ') : '';
+                }
+            },
+            {
+                title: t('时区'),
+                dataIndex: 'timeZone',
+                key: 'timeZone',
+            },
+            {
+                title: t('货币'),
+                dataIndex: 'priceUnit',
+                key: 'priceUnit',
+            },
+            {
+                title: t('储能装机容量'),
+                dataIndex: 'capacity',
+                key: 'capacity',
+            },
+            {
+                title: t('光伏装机容量'),
+                dataIndex: 'pvCapacity',
+                key: 'pvCapacity',
+            },
+            {
+                title: t('充电桩装机容量'),
+                dataIndex: 'chargePileCapacity',
+                key: 'chargePileCapacity',
+            },
+            {
+                title: t('电芯安全运行温度'),
+                dataIndex: 'cellTempRange',
+                key: 'cellTempRange',
+                render: (text, record) => {
+                    return (
+                        <>
+                            <span>{record.cellTempMin}℃</span>~
+                            <span>{record.cellTempMax}℃</span>
+                        </>
+                    );
+                }
+            },
+            {
+                title: t('电站位置'),
+                dataIndex: 'position',
+                key: 'position',
             }
-        },
-        {
-            title: t('并网日期'),
-            dataIndex: 'networkDate',
-            key: 'networkDate',
-            render: (val) => {
-                return val ? dayjs(val).format('YYYY-MM-DD ') : ''
-            }
-        },
-        {
-            title: t('时区'),
-            dataIndex: 'timeZone',
-            key: 'timeZone',
-            // width: 200
-        },
-        {
-            title: t('货币'),
-            dataIndex: 'priceUnit',
-            key: 'priceUnit',
-            // width: 200
-        },
-        {
-            title: t('储能装机容量'),
-            dataIndex: 'capacity',
-            key: 'capacity',
-            // width: 200
-        },
-        {
-            title: t('光伏装机容量'),
-            dataIndex: 'pvCapacity',
-            key: 'pvCapacity',
-            // width: 200
-        },
-        {
-            title: t('充电桩装机容量'),
-            dataIndex: 'chargePileCapacity',
-            key: 'chargePileCapacity',
-            // width: 200
-        },
-        {
-            title: t('电芯安全运行温度'),
-            dataIndex: 'cellTempRange',
-            key: 'cellTempRange',
-            // width: 200
-            render: (text, record) => {
-                return (
-                    <>
-                        <span>{record.cellTempMin}℃</span>~
-                        <span>{record.cellTempMax}℃</span>
-                    </>
-                )
-            }
-        },
-        {
-            title: t('电站位置'),
-            dataIndex: 'position',
-            key: 'position',
-            // width: 200
-        },
-     {
-            title: t('操作'),
-            dataIndex: 'operation',
-            key: 'operation',
-            render: (text, record) => {
-                return (
-                <Space>
-                        <Button type="primary" onClick={() => edit(record)}>{t('编辑')}</Button>
-                        <Button type="primary" danger onClick={() => changeIsOpenDel(record)}>{t('删除')}</Button>
-                    </Space>
-                )
-            }
+        ];
+
+        if (user.roleId==3|| user.roleId==4) {
+            columns.push({
+                title: t('操作'),
+                dataIndex: 'operation',
+                key: 'operation',
+                fixed: 'right',
+                width: 100,
+                render: (text, record) => {
+                    return (
+                        <Space>
+                            <Button type="primary" onClick={() => edit(record)}>{t('编辑')}</Button>
+                            <Button type="primary" danger onClick={() => changeIsOpenDel(record)}>{t('删除')}</Button>
+                        </Space>
+                    );
+                }
+            });
         }
-    ]);
+
+        return columns;
+    });
+
     const { currentPlantId } = useSelector(function (state) {
         return state.device
     });
     const getData = async () => {
-        const { data } =  user.roleId === 3?await apiGetAllPlant(): await apigetPlantList();
+        const { data } =  user.roleId === 4?await apiGetAllPlant(): await apigetPlantList();
         setData(data.data);
     }
     const changIsOpen = () => {
@@ -262,7 +282,7 @@ function Com(props) {
         setTitle('新增电站');
         setIsOpen(!isOpen);
     }
-    const edit = (record) => {
+    useEffect(() => {
         setFormData({
             ...record,
             userName: initSelectData?.userList.find(it => it.label === record.userName)?.value,
@@ -274,6 +294,10 @@ function Com(props) {
             networkDate: dayjs(record?.networkDate),
             installDate: dayjs(record?.installDate)
         });
+    }, [initSelectData,record]);
+    const edit = (record) => {
+        setRecord(record);
+
         setTitle('编辑电站');
         setSelectId(record.plantId)
         setIsOpen(!isOpen);
@@ -301,13 +325,13 @@ function Com(props) {
     }
 
     return (
-        <div className={styles.contents}style={{height:'calc(100% - 10px)', backgroundColor: token.titleCardBgc }}>
+        <div className={`${global.theme=='dark'?styles.darkTheme:null} ${global.theme=='default'?'mDefault':'mDark'}`} style={{height:'calc(100% - 10px)', backgroundColor: token.titleCardBgc }}>
             <CardModel
                 title={
                     t("电站配置")
                 }
                 filterPart={
-                        user.roleId !== 1 ?<Button type='primary' onClick={changIsOpen}>{t('新增')}</Button>:null
+                        user.roleId == 1 ||user.roleId == 2?null:<Button type='primary' onClick={changIsOpen}>{t('新增')}</Button>
                 }
                 content={
                     <>

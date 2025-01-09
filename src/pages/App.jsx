@@ -1,6 +1,6 @@
 import { ConfigProvider,theme as antdTheme } from "antd";
 import { Outlet, useSelector, useLocation, history,setLocale } from "umi";
-import { ThemeEnum } from "@/components";
+import { ThemeEnum, GlobalWrapperCss } from "@/components";
 import en_US from 'antd/locale/en_US';
 import zh_CN from 'antd/locale/zh_CN';
 import dayjs from "dayjs";
@@ -40,10 +40,15 @@ const App = () => {
                         contentBg: theme === 'dark'?'#1C244C':'#fff',
                         headerBg: theme === 'dark'?'#1C244C':'#fff'
                     },
+                    // Cascader: {
+                    //     colorBorder: theme === 'dark'?'red':'red',
+                    // }
                 }
             }}
         >
-            <Outlet/>
+            <GlobalWrapperCss>
+                <Outlet/>
+            </GlobalWrapperCss>
         </ConfigProvider>
     )
 }

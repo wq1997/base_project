@@ -4,7 +4,7 @@ body,
 #root {
     margin: 0;
     padding: 0;
-    font-family: PingFangRegular;
+    //font-family: PingFangRegular;
 }
 
 .ant-menu{
@@ -57,18 +57,18 @@ th.darkTitleColorLeft{
 }
 
 .ant-descriptions-item-label{
-    font-size: 16px !important;
-    font-family: 'PingFangRegular';
+    font-size: 14px !important;
+    //font-family: 'PingFangRegular';
     // color: #000 !important;
 }
 .ant-descriptions-item-content{
-    font-size: 16px !important;
-    font-family: 'PingFangRegular';
+    font-size: 14px !important;
+    //font-family: 'PingFangRegular';
 
 
 }
 .ant-descriptions-title{
-  font-family: 'DingTalk';
+  //font-family: 'DingTalk';
   
 }
 .pwd{
@@ -87,7 +87,6 @@ th.darkTitleColorLeft{
     label {            //这是关键
       white-space: normal;
       text-align: right;
-    //   color: #8a8a8a;
       padding-right: 10px;
       font-size: 14px;
       &:after {          
@@ -95,10 +94,57 @@ th.darkTitleColorLeft{
       }
     }
   }
+/* 整个滚动条 */
+::-webkit-scrollbar {
+  /* 对应纵向滚动条的宽度 */
+  width: 8px;
+  /* 对应横向滚动条的宽度 */
+  height: 8px;
+}
 
-//.ant-table-wrapper .ant-table-cell-fix-left, .ant-table-wrapper .ant-table-cell-fix-right {
-//  background: #111838;
-//}
-//.ant-table-wrapper .ant-table-thead >tr>th, .ant-table-wrapper .ant-table-thead >tr>td {
-//  background: #1a2140;
-//}
+/* 滚动条上的滚动滑块 */
+::-webkit-scrollbar-thumb {
+  background-color: #c1bfbf;
+  border-radius: 32px;
+}
+
+/* 滚动条轨道 */
+::-webkit-scrollbar-track {
+  background-color: white;
+  border-radius: 32px;
+}
+.mDefault{
+  .ant-table-wrapper .ant-table-thead >tr>th,.ant-table-wrapper .ant-table-thead >tr>td {
+    font-family: PingFangSC, PingFang SC;
+    font-weight: 400;
+    font-size: 14px;
+    color: #2B314B;
+  }
+  .ant-table-wrapper .ant-table-thead >tr>th, .ant-table-wrapper .ant-table-thead >tr>td{
+    background: #F8F9FD;
+  }
+  .ant-table-wrapper .ant-table{
+    color: #2B314B;
+  }
+}
+.mDark{
+  .ant-table-wrapper .ant-table-cell-fix-left, .ant-table-wrapper .ant-table-cell-fix-right {
+    background: #111838;
+  }
+
+  .ant-table-wrapper .ant-table-thead > tr > th, .ant-table-wrapper .ant-table-thead > tr > td {
+    background: #1a2140;
+  }
+  .ant-table-wrapper .ant-table-thead >tr>th,.ant-table-wrapper .ant-table-thead >tr>td {
+    font-family: PingFangSC, PingFang SC;
+    font-weight: 400;
+    font-size: 14px;
+    color: #fff;
+  }
+  .ant-table-wrapper .ant-table-thead >tr>th, .ant-table-wrapper .ant-table-thead >tr>td{
+    background: #192147;
+  }
+  .ant-table-wrapper .ant-table{
+    color: #fff;
+  }
+}

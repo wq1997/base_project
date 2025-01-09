@@ -6,7 +6,7 @@ import classNames from 'classnames';
 
 const {RangePicker} = DatePicker;
 import styles from './index.less'
-import {CardModel} from "@/components";
+import {CardModel, Title} from "@/components";
 import {
     getDataExportPageInitVo,
     getBigDataParamsByDevType,
@@ -15,11 +15,12 @@ import {
 import {getDataParams} from '@/services/deviceTotal';
 import dayjs from 'dayjs';
 import {getQueryString, downLoadExcelMode} from "@/utils/utils";
-import {useIntl} from "umi";
+import {useIntl, useSelector} from "umi";
 
 const {SHOW_CHILD} = Cascader;
 
 function Com(props) {
+    const global = useSelector(state => state.global);
     const {token} = theme.useToken();
     const id = getQueryString('id') || 0;
     const [dateStart, setDateStart] = useState(dayjs(new Date()).subtract(6, 'day'));
@@ -367,13 +368,16 @@ function Com(props) {
         <p>{t("日期范围不能超过7天")}</p>
     );
     return (
-        <div style={{height: '100%', width: '100%', paddingBottom: '10px'}}>
+        <div style={{height: '100%', width: '100%'}} className={`${global.theme=='default'?'mDefault':'mDark'}`}>
             <CardModel
-                title={t('源数据导出')}
+                special={true}
                 content={
                     <div style={{color: token.titleColor}} className={classNames(styles.advancedAnalytics, {
                         [styles.darkTheme]: isDarkTheme,
                     })}>
+                        {/*<div style={{marginBottom: 10}}>*/}
+                        {/*    <Title title={t('源数据导出')}/>*/}
+                        {/*</div>*/}
                         <div className={styles.searchHead}>
                             <span>{t('查询日期')}:</span>
                             <Space direction="vertical" size={12}>

@@ -5,13 +5,15 @@ import { theme, Select, DatePicker, Button, message, Row, Typography, Descriptio
 import styles from './index.less'
 import { CardModel, Title } from "@/components";
 import dayjs from 'dayjs';
-import { useIntl } from "umi";
+import {useIntl, useSelector} from "umi";
 import { data, inCome, energy } from "./data";
 import { getExportReportList, getDtuReport, exportReport, updateReportTemplate } from "@/services/report";
+import SourceDataExport from "@/pages/statistics/sourceDataExport/index.jsx";
 
 function Com() {
   const [form] = Form.useForm();
   const { token } = theme.useToken();
+  const [model, setModel] = useState(0);
   const [way, setWay] = useState(0);
   const [wayLabel, setWayLabel] = useState('日统计报表');
   const [picker, setPicker] = useState('date');
@@ -25,7 +27,7 @@ function Com() {
   const [runClum, setRunClum] = useState([]);
   const [pcsClum, setPcsClum] = useState([]);
   const [bmsClum, setBmsClum] = useState([]);
-
+  const global = useSelector(state => state.global);
   const intl = useIntl();
   const t = (id) => {
     const msg = intl.formatMessage(
@@ -35,14 +37,23 @@ function Com() {
     );
     return msg
   }
+  const modelOption = [{
+    label: t('运行报表'),
+    value: 0,
+  },
+    {
+      label: t('设备报表'),
+      value: 1,
+    }
+  ];
   const wayOption = [{
     label: t('日统计报表'),
     value: 0,
   },
-  {
-    label: t('周统计报表'),
-    value: 1,
-  },
+  // {
+  //   label: t('周统计报表'),
+  //   value: 1,
+  // },
   {
     label: t('月统计报表'),
     value: 2,
@@ -268,139 +279,179 @@ function Com() {
     setDateStr(str);
     setDate(val);
   }
+  // useEffect(() => {
+  //
+  // }, [model])
+  const changeModel=(val,label)=>{
+    setModel(val);
+  };
   return (
     <>
-      <div className={styles.advancedAnalytics} style={{ color: token.titleColor, backgroundColor: token.titleCardBgc }}>
+      <div className={`${styles.advancedAnalytics} ${global.theme=='default'?'mDefault':'mDark'}`}
+           style={{color: token.titleColor, backgroundColor: token.titleCardBgc}}>
         <div className={styles.searchHead}>
-          <span >{t('报表类型')}:</span>
+          <span>{t('报表模板')}:</span>
           <Select
-            className={styles.margRL}
-            style={{ width: 180 }}
-            onChange={changeWay}
-            options={wayOption}
-            defaultValue={wayOption[0].value}
+              className={styles.margRL}
+              style={{width: 180}}
+              onChange={changeModel}
+              options={modelOption}
+              defaultValue={modelOption[0].value}
           >
           </Select>
-          <span >{t('对比日期')}:</span>
-          <DatePicker className={styles.margRL}
-            style={{ width: 240 }}
-            picker={picker}
-            maxTagCount={1}
-            onChange={(val, str) => changeDate(val, str)}
-            defaultValue={date}
-            key={way + 1}
-            allowClear={false}
-            needConfirm
-          />
-          <Space>
-            <Button type="primary" className={styles.firstButton} onClick={() => setDataChoiceOpen(true)}>
-              {t('数据选择')}
-            </Button>
-            <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={exportData}>
-              {t('导出')}{" "}Excel
-            </Button>
-          </Space>
+          {
+              model == 0 &&
+              <>
+                <span>{t('报表类型')}:</span>
+                <Select
+                    className={styles.margRL}
+                    style={{width: 180}}
+                    onChange={changeWay}
+                    options={wayOption}
+                    defaultValue={wayOption[0].value}
+                >
+                </Select>
+                <span>{t('对比日期')}:</span>
+                <DatePicker className={styles.margRL}
+                            style={{width: 240}}
+                            picker={picker}
+                            maxTagCount={1}
+                            onChange={(val, str) => changeDate(val, str)}
+                            defaultValue={date}
+                            key={way + 1}
+                            allowClear={false}
+                            needConfirm
+                />
+                <Space>
+                  <Button type="primary" className={styles.firstButton} onClick={() => setDataChoiceOpen(true)}>
+                    {t('数据选择')}
+                  </Button>
+                  <Button type="primary" style={{backgroundColor: token.defaultBg}} onClick={exportData}>
+                    {t('导出')}{" "}Excel
+                  </Button>
+                </Space>
+              </>
+          }
         </div>
-        <div className={styles.echartPart}>
-          <div className={styles.echartPartCardwrap}>
-            <Row justify="center">
-              <Typography.Title level={3} style={{ marginTop: 0, marginBottom: 27 }}>
-                {way==1?`${dayjs(dateStr).subtract(6, 'day').format('YYYY-MM-DD')}~${dateStr}`:dateStr}{" "}{t(wayLabel)}
-              </Typography.Title>
-            </Row>
-            <div className={styles.content}>
-              <div className={styles.contentItem}>
-                <div style={{ marginBottom: 10 }}>
-                  <Title title={t('运行数据')} />
+        {
+            model == 0 &&
+            <>
+              <div className={styles.advancedAnalytics1}
+                   style={{color: token.titleColor, backgroundColor: token.titleCardBgc}}>
+
+                <div className={styles.echartPart}>
+                  <div className={styles.echartPartCardwrap}>
+                    <Row justify="center">
+                      <Typography.Title level={3} style={{marginTop: 0, marginBottom: 27,color: token.titleColor}}>
+                        {way == 1 ? `${dayjs(dateStr).subtract(6, 'day').format('YYYY-MM-DD')}~${dateStr}` : dateStr}{" "}{t(wayLabel)}
+                      </Typography.Title>
+                    </Row>
+                    <div className={styles.content}>
+                      <div className={styles.contentItem}>
+                        <div style={{marginBottom: 10}}>
+                          <Title title={t('运行数据')}/>
+                        </div>
+                        <Table
+                            columns={runClum}
+                            dataSource={allData?.runEnergy}
+                            pagination={false}
+                            scroll={{y: 300}}
+                        />
+                      </div>
+                      <div className={styles.contentItem}>
+                        <div style={{marginBottom: 10}}>
+                          <Title title={t('PCS运行指标')}/>
+                        </div>
+                        <Table
+                            columns={pcsClum}
+                            dataSource={allData?.pcsEnergy}
+                            pagination={false}
+                            scroll={{y: 300}}
+
+                        />
+                      </div>
+                      <div className={styles.contentItem}>
+                        <div style={{marginBottom: 10}}>
+                          <Title title={t('BMS运行指标')}/>
+                        </div>
+                        <Table
+                            columns={bmsClum}
+                            dataSource={allData?.bmsEnergy}
+                            pagination={false}
+                            scroll={{y: 300}}
+
+                        />
+
+                      </div>
+
+                    </div>
+                  </div>
                 </div>
-                <Table
-                  columns={runClum}
-                  dataSource={allData?.runEnergy}
-                  pagination={false}
-                  scroll={{ y: 300 }}
-                />
               </div>
-              <div className={styles.contentItem}>
-                <div style={{ marginBottom: 10 }}>
-                  <Title title={t('PCS运行指标')} />
-                </div>
-                <Table
-                  columns={pcsClum}
-                  dataSource={allData?.pcsEnergy}
-                  pagination={false}
-                  scroll={{ y: 300 }}
-
-                />
-              </div>
-              <div className={styles.contentItem}>
-                <div style={{ marginBottom: 10 }}>
-                  <Title title={t('BMS运行指标')} />
-                </div>
-                <Table
-                  columns={bmsClum}
-                  dataSource={allData?.bmsEnergy}
-                  pagination={false}
-                  scroll={{ y: 300 }}
-
-                />
-
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-      <Modal
-        open={dataChoiceOpen}
-        title={null}
-        onOk={async () => {
-          const values = await form.validateFields();
-          Object.keys(values).map(it => {
-            if (!values[it]) {
-              delete values[it]
-            }
-          })
-          let { data } = await updateReportTemplate({
-            plantId: localStorage.getItem('plantId'),
-            type: way,
-            fields: Object.keys(values)
-          });
-          // setCurrentModel(Object.keys(values));
-          setDataChoiceOpen(false);
-          message.success("提交成功");
-        }}
-        onCancel={() => {
-          setDataChoiceOpen(false);
-        }}
-        width={1168}
-        style={{}}
-        className={styles.dataChoiceModal}
-      >
-        <Form
-          form={form}
-        >
-          {modelData?.map(item => {
-            return (
-              <div style={{ marginBottom: 30 }}>
-                <div style={{ marginBottom: 10 }}><Title title={item?.label} /></div>
-                <Descriptions
-                  colon={false}
-                  items={item?.children?.map(it => {
-                    return {
-                      label: (
-                        <Form.Item name={it.value} valuePropName='checked' style={{ margin: 0 }}>
-                          <Checkbox />
-                        </Form.Item>
-                      ),
-                      children: it.label
-                    }
+              <Modal
+                  open={dataChoiceOpen}
+                  title={null}
+                  onOk={async () => {
+                    const values = await form.validateFields();
+                    Object.keys(values).map(it => {
+                      if (!values[it]) {
+                        delete values[it]
+                      }
+                    })
+                    let {data} = await updateReportTemplate({
+                      plantId: localStorage.getItem('plantId'),
+                      type: way,
+                      fields: Object.keys(values)
+                    });
+                    // setCurrentModel(Object.keys(values));
+                    setDataChoiceOpen(false);
+                    message.success("提交成功");
+                  }}
+                  onCancel={() => {
+                    setDataChoiceOpen(false);
+                  }}
+                  width={1168}
+                  style={{}}
+                  className={styles.dataChoiceModal}
+              >
+                <Form
+                    form={form}
+                >
+                  {modelData?.map(item => {
+                    return (
+                        <div style={{marginBottom: 30}}>
+                          <div style={{marginBottom: 10}}><Title title={item?.label}/></div>
+                          <Descriptions
+                              colon={false}
+                              items={item?.children?.map(it => {
+                                return {
+                                  label: (
+                                      <Form.Item name={it.value} valuePropName='checked' style={{margin: 0}}>
+                                        <Checkbox/>
+                                      </Form.Item>
+                                  ),
+                                  children: it.label
+                                }
+                              })}
+                          />
+                        </div>
+                    )
                   })}
-                />
+                </Form>
+              </Modal>
+            </>
+        }
+        {
+            model == 1 &&
+            <>
+              <div className={styles.advancedAnalytics1}
+                   style={{color: token.titleColor, backgroundColor: token.titleCardBgc}}>
+                <SourceDataExport model={model}/>
               </div>
-            )
-          })}
-        </Form>
-      </Modal>
+            </>
+        }
+      </div>
+
     </>
 
   )

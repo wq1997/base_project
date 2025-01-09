@@ -1,10 +1,12 @@
 .advancedAnalytics {
   width: 100%;
   height: calc(100% - 10px);
+  padding:0 30px;
   :global{
     .ant-table-body{
       max-height: 40vh !important;
     }
+
   }
 
   .searchHead {
@@ -13,7 +15,7 @@
     //align-items: center;
     //justify-content: center;
     margin-bottom: 30px;
-    padding-left: 20px;
+    //padding-left: 20px;
 
     > span:nth-child(1) {
       display: inline-block;
@@ -43,12 +45,13 @@
 .darkTheme {
   :global {
     .ant-table-wrapper .ant-table-cell-fix-left, .ant-table-wrapper .ant-table-cell-fix-right {
-      background: #111838;
+      background: #111838 !important;
     }
 
     .ant-table-wrapper .ant-table-thead > tr > th, .ant-table-wrapper .ant-table-thead > tr > td {
-      background: #1a2140;
+      background: #1a2140 !important;
     }
+
   }
 
 }

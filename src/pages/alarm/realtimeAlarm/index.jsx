@@ -15,7 +15,7 @@ const RealtimeAlarm = () => {
   const [currntGrid, setCurrntGrid] = useState();
   const [scroolY, setScroolY] = useState(500);
   const [screenH, setScreenH] = useState('');
-
+  const global = useSelector(state => state.global);
   const { token } = theme.useToken();
   const intl = useIntl();
   const t = (id) => {
@@ -100,7 +100,7 @@ const RealtimeAlarm = () => {
           t('实时告警')
         }
         content={
-          <div className={styles.alarmWrap} style={{height:'calc(100% - 87px)'}}>
+          <div className={`${styles.alarmWrap} ${global.theme=='default'?'mDefault':'mDark'}`} style={{height:'calc(100% - 87px)'}}>
             <Table
               columns={clum}
               data={data?.records}

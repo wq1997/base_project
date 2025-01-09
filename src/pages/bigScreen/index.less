@@ -6,11 +6,11 @@
   padding-bottom: 15px;
   padding-top: 20px;
 
-  >div:nth-child(1) {
+  > div:nth-child(1) {
     //width: 100%;
     // margin-top: 20px;
     line-height: 96px;
-    font-family: DingTalk, DingTalk;
+    font-family: DingTalkJinBuTi;
     text-align: center;
     font-size: 32px;
 
@@ -19,7 +19,7 @@
     background-position: center;
   }
 
-  >div:nth-child(2) {
+  > div:nth-child(2) {
     height: calc(100% - 110px);
   }
 
@@ -27,13 +27,14 @@
     background-image: url("@/assets/svg/default/大标题浅色.svg");
     margin: 0 20px 10px 20px;
     position: relative;
+    border-radius: 10px;
   }
 
   .title_dark {
-    background-image: url("@/assets/svg/dark/大标题深色.svg");
+    background-image: url("@/assets/svg/default/大标题深色.svg");
     margin: 0 20px 10px 20px;
     position: relative;
-
+    border-radius: 10px;
   }
 
   .container {
@@ -72,13 +73,13 @@
     border-radius: 5px;
     // box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.5);
 
-    >div:nth-child(2) {
+    > div:nth-child(2) {
       height: calc(100% - 28px);
       display: grid;
       grid-template-rows: 1fr 1fr 1fr;
       grid-template-columns: 1fr;
 
-      >div:nth-child(1) {
+      > div:nth-child(1) {
         width: 100%;
         height: 100%;
         display: flex;
@@ -86,21 +87,21 @@
         text-align: center;
         align-items: center;
 
-        >div {
-          >div:nth-child(1) {
+        > div {
+          > div:nth-child(1) {
             font-size: 18px;
             font-weight: bold;
-            font-family: DingTalk, DingTalk;
+            font-family: DingTalkJinBuTi;
           }
 
-          >div:nth-child(2),
-          >div:nth-child(3) {
+          > div:nth-child(2),
+          > div:nth-child(3) {
             font-size: 14px;
           }
         }
       }
 
-      >div:nth-child(3) {
+      > div:nth-child(3) {
         width: 100%;
         height: 100%;
         display: flex;
@@ -108,15 +109,15 @@
         text-align: center;
         align-items: center;
 
-        >div {
-          >div:nth-child(1) {
+        > div {
+          > div:nth-child(1) {
             font-size: 18px;
             font-weight: bold;
-            font-family: DingTalk, DingTalk;
+            font-family: DingTalkJinBuTi;
           }
 
-          >div:nth-child(2),
-          >div:nth-child(3) {
+          > div:nth-child(2),
+          > div:nth-child(3) {
             font-size: 14px;
           }
         }
@@ -124,8 +125,8 @@
       }
     }
 
-    >div:nth-child(2) {
-      >div:nth-child(2) {
+    > div:nth-child(2) {
+      > div:nth-child(2) {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -195,7 +196,7 @@
     align-items: center;
     border-radius: 5px;
 
-    >div {
+    > div {
       width: 100%;
       // height: 100%;
       overflow: hidden;
@@ -223,7 +224,7 @@
     display: flex;
     justify-content: space-around;
 
-    >div {
+    > div {
       width: 80px;
 
     }
@@ -233,7 +234,7 @@
       align-items: center;
       margin-bottom: 5px;
 
-      >span:nth-child(1) {
+      > span:nth-child(1) {
         display: inline-block;
         width: 10px;
         height: 10px;
@@ -241,7 +242,7 @@
         margin-right: 3px;
       }
 
-      >span:nth-child(2) {
+      > span:nth-child(2) {
         width: 100%;
         white-space: nowrap;
         overflow: hidden;
@@ -268,7 +269,7 @@
     // box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.5);
     border-radius: 5px;
 
-    >div:nth-child(2) {
+    > div:nth-child(2) {
       height: calc(100% - 28px);
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
@@ -293,12 +294,113 @@
 
     .plantL_table_two {
       width: 100%;
-      height: calc(100% - 80px);
+      height: calc(100% - 95px);
       overflow-y: scroll;
 
     }
-  }
+    //.scrollDef {
+    //  ::-webkit-scrollbar {
+    //    width: 8px;
+    //  }
+    //
+    //  ::-webkit-scrollbar-track {
+    //    background-color: #f1f1f1;
+    //    border-radius: 10px;
+    //    width: 10px;
+    //  }
+    //
+    //  ::-webkit-scrollbar-thumb {
+    //    background-color: #737171;
+    //    border-radius: 10px;
+    //    border: 3px solid #f1f1f1;
+    //  }
+    //
+    //  ::-webkit-scrollbar-thumb:hover {
+    //    background-color: #555;
+    //  }
+    //
+    //  /* 在 Firefox */
+    //
+    //  scrollbar {
+    //    width: 8px;
+    //  }
+    //
+    //  scrollbar-track {
+    //    background-color: #f1f1f1;
+    //  }
+    //
+    //  scrollbar-thumb {
+    //    background-color: #888;
+    //  }
+    //
+    //  scrollbar-thumb:hover {
+    //    background-color: #555;
+    //  }
 
+    //}
+
+  }
+  .scrollDef {
+    ::-webkit-scrollbar {
+      width: 16px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background-color: #ECECEC;
+      width: 16px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: #DEDEDE;
+      border-radius: 7px;
+    }
+
+
+    scrollbar {
+      width: 16px;
+    }
+
+    scrollbar-track {
+      background-color: #ECECEC;
+      width: 16px;
+    }
+
+    scrollbar-thumb {
+      background-color: #DEDEDE;
+      border-radius: 7px;
+    }
+
+  }
+  .scrollDark {
+    ::-webkit-scrollbar {
+      width: 16px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background-color: #192147;
+      width: 16px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: #313A66;
+      border-radius: 7px;
+    }
+
+
+    scrollbar {
+      width: 16px;
+    }
+
+    scrollbar-track {
+      background-color: #192147;
+      width: 16px;
+    }
+
+    scrollbar-thumb {
+      background-color: #313A66;
+      border-radius: 7px;
+    }
+  }
   .lTitle_default {
     font-size: 14px;
     line-height: 28px;
@@ -326,32 +428,72 @@
   .gj {
     text-align: center;
 
-    >div:nth-child(1) {
+    > div:nth-child(1) {
       font-size: 1.1rem;
       font-weight: bold;
-      font-family: DingTalk, DingTalk;
+      font-family: DingTalkJinBuTi;
     }
 
-    >div:nth-child(2) {
+    > div:nth-child(2) {
       font-size: 0.6rem;
     }
   }
 
-  .she_hui_default {
-    width: 100px;
-    height: 32px;
+  .mei_default {
+    width: 45px;
+    height: 50px;
     margin: 0 auto;
-    background-image: url("../../assets/svg/default/社会贡献.svg");
-    background-size: cover;
+    background-image: url("../../assets/svg/default/节约标准煤浅色.svg");
+    background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
   }
 
-  .she_hui_dark {
-    width: 100px;
-    height: 32px;
+  .mei_dark {
+    width: 45px;
+    height: 50px;
     margin: 0 auto;
-    background-image: url("../../assets/svg/dark/社会贡献.svg");
+    background-image: url("../../assets/svg/default/节约标准煤深色.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .tan_default {
+    width: 45px;
+    height: 50px;
+    margin: 0 auto;
+    background-image: url("../../assets/svg/default/二氧化碳减排量浅色.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .tan_dark {
+    width: 45px;
+    height: 50px;
+    margin: 0 auto;
+    background-image: url("../../assets/svg/default/二氧化碳减排量深色.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .shu_default {
+    width: 45px;
+    height: 50px;
+    margin: 0 auto;
+    background-image: url("../../assets/svg/default/植树量浅色.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .shu_dark {
+    width: 45px;
+    height: 50px;
+    margin: 0 auto;
+    background-image: url("../../assets/svg/default/植树量深色.svg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -359,29 +501,30 @@
 
   .socie {
     text-align: center;
-    flex-direction: column  ;
+    flex-direction: column;
     display: flex;
     align-items: center;
     justify-content: center;
-    >div:nth-child(1) {
-      >span:nth-child(1) {
+
+    > div:nth-child(1) {
+      > span:nth-child(1) {
         font-size: 18px;
         font-weight: bold;
-        font-family: DingTalk, DingTalk;
+        font-family: DingTalkJinBuTi;
       }
 
-      >span:nth-child(2) {
+      > span:nth-child(2) {
         font-size: 14px;
       }
     }
 
-    >div:nth-child(2) {
+    > div:nth-child(2) {
       font-size: 14px;
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 3;
       overflow: hidden;
-      
+
     }
   }
 
