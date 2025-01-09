@@ -378,7 +378,7 @@ function Com(props) {
                         {/*<div style={{marginBottom: 10}}>*/}
                         {/*    <Title title={t('源数据导出')}/>*/}
                         {/*</div>*/}
-                        <div className={styles.searchHead}>
+                        <div className={styles.searchHead1}>
                             <span>{t('查询日期')}:</span>
                             <Space direction="vertical" size={12}>
                                 <Popover content={content}>
@@ -391,7 +391,7 @@ function Com(props) {
                             <Button type="primary" style={{backgroundColor: token.defaultBg}}
                                     onClick={downloadExcel}>{t('导出')}{" "}Excel</Button>
                         </div>
-                        <div className={styles.searchHead}>
+                        <div className={styles.searchHead1}>
                             <span>{t('时间间隔')}:</span>
                             <Radio.Group onChange={(e) => onRadioChange(e, 1)} value={radioTimeValue}>
                                 {
@@ -403,7 +403,7 @@ function Com(props) {
                                 }
                             </Radio.Group>
                         </div>
-                        <div className={styles.searchHead}>
+                        <div className={styles.searchHead1}>
                             <span>{t('设备类型')}:</span>
                             <Radio.Group onChange={(e) => onRadioChange(e, 2)} value={radioDevTypeValue}>
                                 {devTypeOptions?.map(item => {
@@ -413,7 +413,7 @@ function Com(props) {
                                 })}
                             </Radio.Group>
                         </div>
-                        <div className={styles.searchHead}>
+                        <div className={styles.searchHead1}>
                             <span>{t('设备名称')}:</span>
                             {
                                 devAllOptions[radioDevTypeValue]
@@ -436,7 +436,7 @@ function Com(props) {
                             }
 
                         </div>
-                        <div className={styles.searchHead}>
+                        <div className={styles.searchHead1}>
                             <span>{t('数据项')}:</span>
                             {
                                 devAllOptions[radioDevTypeValue]
