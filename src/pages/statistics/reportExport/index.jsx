@@ -50,10 +50,10 @@ function Com() {
     label: t('日统计报表'),
     value: 0,
   },
-  // {
-  //   label: t('周统计报表'),
-  //   value: 1,
-  // },
+  {
+    label: t('周统计报表'),
+    value: 1,
+  },
   {
     label: t('月统计报表'),
     value: 2,
