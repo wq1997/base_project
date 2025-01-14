@@ -276,36 +276,41 @@ function OverView(props) {
                         <div className={styles.headLeftPart} style={{ backgroundColor: token.titleCardBgc, }}>
                             <div className={styles.line}>
                                 <span className={styles.label}>{t('总充电')}</span>
-                                <span className={styles.value} style={{ color: 'rgb(14, 116, 225)',fontFamily:'DingTalkJinBuTi' }}>{allData?.totalCEnergy?.split(' ')?.[0]}<span className={styles.unit} style={{ color: token.colorLittle }}>{` ${allData?.totalCEnergy?.split(' ')?.[1]}`}</span></span>
-                                <Icon className={styles.icon} type='icon-zongchongdian' />
+                                <span className={styles.value} style={{ color: token.color7,fontFamily:'DingTalkJinBuTi' }}>{allData?.totalCEnergy?.split(' ')?.[0]}<span className={styles.unit} style={{ color: token.colorLittle }}>{` ${allData?.totalCEnergy?.split(' ')?.[1]}`}</span></span>
+                                {/*<Icon className={styles.icon} type='icon-zongchongdian' />*/}
                             </div>
                             <div className={styles.line}>
                                 <span className={styles.label}>{t('总放电')}</span>
-                                <span className={styles.value} style={{ color: 'rgb(245, 221, 59)',fontFamily:'DingTalkJinBuTi' }}>{allData?.totalDEnergy?.split(' ')?.[0]}<span className={styles.unit} style={{ color: token.colorLittle }}>{` ${allData?.totalDEnergy?.split(' ')?.[1]}`}</span></span>
-                                <Icon className={styles.icon} type='icon-zongfangdian' />
+                                <span className={styles.value} style={{ color: token.color7,fontFamily:'DingTalkJinBuTi' }}>{allData?.totalDEnergy?.split(' ')?.[0]}<span className={styles.unit} style={{ color: token.colorLittle }}>{` ${allData?.totalDEnergy?.split(' ')?.[1]}`}</span></span>
+                                {/*<Icon className={styles.icon} type='icon-zongfangdian' />*/}
                             </div>
                         </div>
                         <div className={styles.headLeftPart} style={{ backgroundColor: token.titleCardBgc, }}>
                             <div className={styles.line}>
                                 <span className={styles.label}>{t('日充电')}</span>
-                                <span className={styles.value} style={{ color: 'rgb(11, 194, 213)',fontFamily:'DingTalkJinBuTi' }}>{allData?.dayChargeEnergy?.split(' ')?.[0]}<span className={styles.unit} style={{ color: token.colorLittle }}>{` ${allData?.dayChargeEnergy?.split(' ')?.[1]}`}</span></span>
-                                <Icon className={styles.icon} type='icon-richongdian' />
+                                <span className={styles.value} style={{ color: token.color7,fontFamily:'DingTalkJinBuTi' }}>{allData?.dayChargeEnergy?.split(' ')?.[0]}<span className={styles.unit} style={{ color: token.colorLittle }}>{` ${allData?.dayChargeEnergy?.split(' ')?.[1]}`}</span></span>
+                                {/*<Icon className={styles.icon} type='icon-richongdian' />*/}
                             </div>
                             <div className={styles.line}>
                                 <span className={styles.label}>{t('日放电')}</span>
-                                <span className={styles.value} style={{ color: 'rgb(254, 135, 51)',fontFamily:'DingTalkJinBuTi' }}>{allData?.dayDischargeEnergy?.split(' ')?.[0]}<span className={styles.unit} style={{ color: token.colorLittle }}>{` ${allData?.dayDischargeEnergy?.split(' ')?.[1]}`}</span></span>
-                                <Icon className={styles.icon} type='icon-rifangdian' />
+                                <span className={styles.value} style={{ color: token.color7,fontFamily:'DingTalkJinBuTi' }}>{allData?.dayDischargeEnergy?.split(' ')?.[0]}<span className={styles.unit} style={{ color: token.colorLittle }}>{` ${allData?.dayDischargeEnergy?.split(' ')?.[1]}`}</span></span>
+                                {/*<Icon className={styles.icon} type='icon-rifangdian' />*/}
                             </div>
                         </div>
                         {power.map(it => {
                             return (
                                 <div className={styles.headrightPart} style={{ backgroundColor: token.titleCardBgc, }}>
-                                    <div className={styles.value} style={{ color: it.color,fontFamily:'DingTalkJinBuTi' }}>
-                                        {it.value}
-                                        <span className={styles.unit} style={{ color: token.colorLittle,fontFamily:'DingTalkJinBuTi' }}> {it.unit}</span>
-                                        <div className={styles.label} style={{ color: token.colorLittle }}>{t(it.label)}</div>
+                                    <div className={styles.value}
+                                         style={{color: token.color7}}>
+                                        <span className={styles.label} style={{color: token.colorLittle}}>{t(it.label)}</span>
+                                        <span  style={{ fontFamily:'DingTalkJinBuTi' }}>{it.value}</span>
+                                        <span className={styles.unit} style={{
+                                            color: token.colorLittle,
+                                            fontFamily: 'DingTalkJinBuTi'
+                                        }}> {it.unit}</span>
+
                                     </div>
-                                    <Icon className={styles.icon} style={{ color: it.color }} type={it.icon} />
+                                    {/*<Icon className={styles.icon} style={{ color: it.color }} type={it.icon} />*/}
                                 </div>
                             )
                         })}

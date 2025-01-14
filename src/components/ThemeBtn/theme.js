@@ -39,7 +39,8 @@ const theme = {
         microgridsLine:'#03B4B4',
         color4:'#090F2C',
         color5:'#000000',
-        color6:'#fff'
+        color6:'#fff',
+        color7:'#fff'
     },
     default: {
         colorPrimary:'#03B4B4',
@@ -79,7 +80,8 @@ const theme = {
         microgridsLine:'#666',
         color4:'#e9eef3',
         color5:'#f5f5f5',
-        color6:'#172a86'
+        color6:'#172a86',
+        color7:'#3B628A'
     }
 }
 export default theme;
