@@ -261,7 +261,7 @@ function Com(props) {
                                 {todayData.map(it => {
                                     return <>
                                         <div className={styles.oneCard}>
-                                            <div className={styles.value} style={{ color: it.color, fontSize: '1.1458rem' }}>
+                                            <div className={styles.value} style={{  fontSize: '1.1458rem' }}>
                                                 {allData?.energy?.[it?.key] || '0'}
                                             </div>
                                             <div className={styles.label}>
@@ -289,7 +289,7 @@ function Com(props) {
                                     <div className={styles.label}>{t('PCS状态')}</div>
                                 </div>
                                 <div className={styles.topOne}>
-                                    <div style={{ color: token.color4 }} className={styles.topOneLabel}>{allData?.batCdState}</div>
+                                    <div style={{ color: token.color4 }} className={styles.topOneLabel}>{allData?.batCdState||'-'}</div>
                                     <div className={styles.label}>{t('BMS充放电状态')}</div>
                                 </div>
                                 <div className={styles.topOne}>
@@ -328,7 +328,7 @@ function Com(props) {
                                     </div>
                                     <div className={styles.powerDataItem}>
                                         <div className={styles.powerDataItemValue} style={{ color: token.color4 }}>{allData?.pcs?.activePower || '0'}</div>
-                                        <div className={styles.powerDataItemLabel}>{t('PCS功率')}/kW</div>
+                                        <div className={styles.powerDataItemLabel} >{t('PCS功率')}/kW</div>
                                     </div>
                                     <div className={styles.powerDataItem}>
                                         <div className={styles.powerDataItemValue} style={{ color: token.color4 }}>{parseFloat((allData?.bmc?.[0]?.power + allData?.bmc?.[1]?.power).toFixed(2)) || '0'}</div>

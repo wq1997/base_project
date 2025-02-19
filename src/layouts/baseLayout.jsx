@@ -188,7 +188,7 @@ const BaseLayout = () => {
                     </Sider>}
                     <Content className={styles.content}
                         style={{ backgroundColor: token.layoutContentBgc, }}>
-                        <div className={styles.inContent}>
+                        <div className={styles.inContent} style={{ backgroundColor: token.titleCardBgc }}>
                             <Outlet />
                         </div>
                     </Content>

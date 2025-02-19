@@ -5,6 +5,7 @@ const theme = {
     dark: {
         colorPrimary: '#03B4B4',
         colorPrimaryR:'rgba(3,180,180,1)',
+        fontColor: "white",
         titleColor:'#FFFFFF',
         smallTitleColor:'#D8D8D8',
         defaultBg:'#ED750E',//默认类型按钮背景色
@@ -51,6 +52,7 @@ const theme = {
     default: {
         colorPrimary:'#03B4B4',
         colorPrimaryR:'rgba(3,180,180,1)',
+        fontColor: "#333",
         titleColor:'#0D2E4A',
         smallTitleColor:'#333333',
         defaultBg:'#ED750E',

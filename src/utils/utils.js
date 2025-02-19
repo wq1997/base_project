@@ -7,6 +7,7 @@ export const getLocalStorage = key => localStorage.getItem(key);
 export const MAP_KEY = 'b6b9b071ea496e3aa5c1e2e068275f42';
 export const removeLocalStorage = key => localStorage.removeItem(key);
 export const downLoadUrl=`${getBaseUrl().split("api/")[0] }download/`;
+export const FORM_FORBIDDEN_SPACE = { pattern: /^[^\s]*$/, message: "禁止输入空格" };
 import JSEncrypt from 'jsencrypt'
 
 export const getEncrypt=(key,data) =>{

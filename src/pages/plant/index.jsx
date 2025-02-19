@@ -130,6 +130,7 @@ function Com(props) {
             title: t('操作'),
             dataIndex: 'operation',
             key: 'operation',
+            fixed: 'right',
             render: (text, record) => {
                 return (
                     <Space>
@@ -199,6 +200,7 @@ function Com(props) {
         const { data } = await apiUpdatePlant({ ...value, plantId: selectPlantId, deviceTypeId: 14 })
         if (data.data) {
             getData();
+            message.success(data.code)
         } else {
             message.error(data.msg)
         }

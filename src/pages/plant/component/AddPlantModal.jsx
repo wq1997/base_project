@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, } from 'react';
 import { DatePicker,Row,Col, Modal, Form, Input, Select, Switch, InputNumber } from 'antd';
 import { useSelector, useIntl } from "umi";
-import { alarmLevel } from '@/utils/constants'
+import { alarmLevel,FORM_FORBIDDEN_SPACE,ALL_SPACE_REG } from '@/utils/constants'
 import dayjs from 'dayjs';
 
 const App = (props) => {
@@ -11,7 +11,9 @@ const App = (props) => {
       key: 'name',
       type: 3,
       required: true,
-      disabled:props.title=='编辑电站'?true:false
+      disabled:props.title=='编辑电站'?true:false,
+      rules:[{...ALL_SPACE_REG}]
+
     },
     {
       label: '所属用户',
@@ -44,14 +46,14 @@ const App = (props) => {
     {
       label: '经度',
       key: 'longitude',
-      type: 3,
+      type: 2,
       required: true,
     },
     {
       label: '纬度',
       key: 'latitude',
-      type: 3,
-      required: true
+      type: 2,
+      required: true,
     },
     {
       label: '告警类型',
@@ -65,6 +67,7 @@ const App = (props) => {
       key: 'position',
       type: 3,
       required: false,
+      rules:[{...ALL_SPACE_REG}]
     },
   ]
   const intl = useIntl();
@@ -98,8 +101,8 @@ const App = (props) => {
         props.changeData({  ...values,
           userId:[values.userName],
           type:values.typeName,
-          installDate:dayjs(values.installDate).format('YYYY-MM-DD HH:mm:ss'),
-          networkDate:dayjs(values.networkDate).format('YYYY-MM-DD HH:mm:ss'),
+          installDate:dayjs(values.installDate).format('YYYY-MM-DD'),
+          networkDate:dayjs(values.networkDate).format('YYYY-MM-DD'),
           alarms:values?.alarms?.join(",")
         }),
       props.onRef();
@@ -128,7 +131,7 @@ const App = (props) => {
           ref={formRef}
           labelCol={{ flex: '130px' }}
           labelAlign="right"
-          labelWrap
+          // labelWrap
           colon={false}
         >
           <Row gutter={[20, 0]}>
@@ -137,7 +140,7 @@ const App = (props) => {
               return (
                 <>
                  <Col className="gutter-row" span={20}>
-                 <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.required }]} >
+                 <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.disabled?false:it.required }]} >
                     <Select
                       // defaultValue={it.data[0].value}
                       disabled={it.disabled||false}
@@ -159,7 +162,7 @@ const App = (props) => {
             } else if (it.type === 3) {
               return (
                 <Col className="gutter-row" span={20}>
-                  <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.required }]} >
+                  <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.disabled?false:it.required },...it?.rules]} >
                     <Input  
                       disabled={it.disabled||false}
                       />
@@ -170,7 +173,7 @@ const App = (props) => {
               return (
                 <Col className="gutter-row" span={20}>
                   <Form.Item label={t(it.label)} name={it.key} rules={[{ required: it.required }]} >
-                    <DatePicker showTime style={{ width: '100%' }}/>
+                    <DatePicker  style={{ width: '100%' }}/>
                   </Form.Item>
                 </Col>
               )

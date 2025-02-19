@@ -1927,5 +1927,9 @@ export default {
 '上海采日能源储能管理系统': '上海采日能源储能管理系统',
 '温差': '温差',
 '压差': '压差',
+'APP下载':'APP下载',
+'Apple Store下载APP':'Apple Store下载APP',
+'扫码获取APK文件':'扫码获取APK文件',
+'谷歌下载APP':'谷歌下载APP',
 }
 

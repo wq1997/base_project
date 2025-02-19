@@ -1923,4 +1923,8 @@ export default {
     "上海采日能源储能管理系统": 'SERMATEC Energy storage Management System',
     '温差': 'Differential temperature',
     '压差': 'Differential voltage',
+    'APP下载': 'APP Download',
+    'Apple Store下载APP': 'Download the app from the Apple Store',
+    '扫码获取APK文件': 'Scan code to get APK file',
+    '谷歌下载APP': 'Google Download App',
 } 
