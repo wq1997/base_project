@@ -25,7 +25,7 @@ export const getDtuReport = (payload) => {
 }
 // 报表导出
 export const exportReport = (payload) => {
-    return axiosInstance.get(`${path}/report/exportReport?plantId=${payload.plantId}&date=${payload.date}&type=${payload.type}`, {
+    return axiosInstance.post(`${path}/report/exportReport`, payload,{
         responseType: 'blob'
     });
 }

@@ -5,7 +5,7 @@
   grid-auto-columns: 1fr;
   grid-auto-rows: 1fr 1fr;
   grid-template-rows: auto 1fr;
-  gap: 8px 8px;
+  gap: 0px 8px;
   padding-bottom: 10px;
   height: 100%;
   font-size: 14px;
@@ -13,12 +13,14 @@
 
 .title {
   grid-area: 1 / 1 / 2 / 2;
-  padding: 20px 20px;
+  padding: 0px 20px;
   display: flex;
   align-items: center;
   font-size: 14px;
   position: relative;
   border-radius: 8px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 
   .right {
     position: absolute;
@@ -33,13 +35,21 @@
   grid-auto-rows: 1fr 1fr; 
   grid-template-rows: 200px auto; 
   gap: 8px 8px; 
-  
+
+  .heardAll{
+    height: 100%;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+  }
   .heard {
+    width: 100%;
+    height: 90%;
     grid-area: 1 / 1 / 2 / 2;
     border-radius: 8px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    gap: 8px 8px;
+    gap: 8px 2px;
 
     .headLeftPart {
       display: grid;

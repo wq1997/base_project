@@ -58,7 +58,7 @@ function Com(props) {
     form6.setFieldValue('endDate', dayjs(val.endDate));
     form6.setFieldValue('contentList', arr);
     setCurrentIndex(index)
-    setTitle('编辑策略');
+    setTitle(t('编辑策略'));
     setEditPlanOpen(true);
   }
 

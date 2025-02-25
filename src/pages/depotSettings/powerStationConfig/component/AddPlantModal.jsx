@@ -54,7 +54,7 @@ const App = (props) => {
       required: true
     },
     {
-      label: '储能装机容量(kW/kWh)',
+      label: '储能装机容量',
       key: 'capacity',
       type: 2,
       required: true,

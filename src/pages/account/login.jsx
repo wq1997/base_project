@@ -11,6 +11,7 @@ import { history, useDispatch, FormattedMessage,useIntl,useSelector} from "umi";
 import { useEffect, useState } from "react";
 import { getBaseUrl } from '@/services/request'
 import img from '../../../src/assets/imges/login.png'
+import img_bg from '../../../src/assets/imges/login_bg.jpg'
 import img_title from '../../../src/assets/imges/login_title.png'
 import { apigetPlantList,getDtu  } from '@/services/plant'
 
@@ -104,9 +105,9 @@ const Login = () => {
       }}
       className={styles.login}
     >
-      <img src={img} style={{ width: '100%', height: '100%', objectFit: 'cover', verticalAlign: 'middle' }} />
-      <img src={img_title} style={{ height: '30px', position: 'absolute', top: '80px', left: '80px' }} alt="" />
-      <Title level={1} style={{ position: 'absolute', top: '80px', left: '80px', color: '#273667', fontFamily: 'DingTalkJinBuTi', fontSize: '64px' }}><FormattedMessage id="采日能源储能管理系统" /></Title>
+      <img src={img_bg} style={{ width: '100%', height: '100%', objectFit: 'cover', verticalAlign: 'middle' }} />
+      {/*<img src={img_title} style={{ height: '30px', position: 'absolute', top: '80px', left: '80px' }} alt="" />*/}
+      {/*<Title level={1} style={{ position: 'absolute', top: '80px', left: '80px', color: '#273667', fontFamily: 'DingTalkJinBuTi', fontSize: '64px' }}><FormattedMessage id="采日能源储能管理系统" /></Title>*/}
 
       <div
         style={{
@@ -123,23 +124,24 @@ const Login = () => {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%,-50%)',
-            background: token.cardBgc,
-            padding: '90px 50px 40px 50px',
-            borderRadius: '24px',
+            // background: token.cardBgc,
+              background:'#fff',
+            padding: '30px',
+            borderRadius: '8px',
           }}
         >
-          <Title level={2} style={{ marginBottom: 50, color: token.titleColor }}><FormattedMessage id="欢迎登录!" /></Title>
+          <Title level={2} style={{ marginBottom: 30, color: token.color9 }}><FormattedMessage id="欢迎登录" /></Title>
           <Form
             onFinish={onFinish}
             autoComplete="off"
             style={{
-              width: 350
+              width: 400
             }}
           >
             <Form.Item
               name="userName"
               rules={[{ ...FORM_REQUIRED_RULE }]}
-              style={{ marginBottom: 40 }}
+              style={{ marginBottom: 30 }}
             >
               <Input
                 prefix={<UserOutlined style={{ fontSize: 15, color: '#73787F' }} />}
@@ -150,7 +152,7 @@ const Login = () => {
             <Form.Item
               name="password"
               rules={[{ ...FORM_REQUIRED_RULE },{...PASSWORD_RGE}]}
-              style={{ marginBottom: 40 }}
+              style={{ marginBottom: 30 }}
             >
               <Input.Password
                 prefix={<LockOutlined style={{ fontSize: 15, color: '#73787F' }} />}

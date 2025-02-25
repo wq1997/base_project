@@ -1,460 +1,645 @@
 // 函数组件
 // 快捷键Ctrl+Win+i 添加注释
-import React, { useState, useEffect, } from 'react';
-import { theme, Select, DatePicker, Button, message, Row, Typography, Descriptions, Space, Modal, Form, Checkbox, Table, } from "antd";
+import React, {useState, useEffect,} from 'react';
+import {
+    theme,
+    Select,
+    DatePicker,
+    Button,
+    message,
+    Row,
+    Typography,
+    Descriptions,
+    Space,
+    Modal,
+    Form,
+    Checkbox,
+    Table,
+    Popover
+} from "antd";
 import styles from './index.less'
-import { CardModel, Title } from "@/components";
-import dayjs from 'dayjs';
+import {CardModel, Title} from "@/components";
+import dayjs, {Dayjs} from 'dayjs';
 import {useIntl, useSelector} from "umi";
-import { data, inCome, energy } from "./data";
-import { getExportReportList, getDtuReport, exportReport, updateReportTemplate } from "@/services/report";
+import {data, inCome, energy} from "./data";
+import {getExportReportList, getDtuReport, exportReport, updateReportTemplate} from "@/services/report";
 import SourceDataExport from "@/pages/statistics/sourceDataExport/index.jsx";
 
+const {RangePicker} = DatePicker;
+
 function Com() {
-  const [form] = Form.useForm();
-  const { token } = theme.useToken();
-  const [model, setModel] = useState(0);
-  const [way, setWay] = useState(0);
-  const [wayLabel, setWayLabel] = useState('日统计报表');
-  const [picker, setPicker] = useState('date');
-  const [date, setDate] = useState(dayjs(new Date()));
-  const [dateStr, setDateStr] = useState(dayjs(new Date()).format('YYYY-MM-DD'));
-  const [dataChoiceOpen, setDataChoiceOpen] = useState(false); //数据选择弹框
-  const [modelData, setModelData] = useState([]);
-  const [allData, setAllData] = useState({});
-  const [currentModel, setCurrentModel] = useState([]);
-  const [currentFormat, setCurrentFormat] = useState('YYYY-MM-DD');
-  const [runClum, setRunClum] = useState([]);
-  const [pcsClum, setPcsClum] = useState([]);
-  const [bmsClum, setBmsClum] = useState([]);
-  const global = useSelector(state => state.global);
-  const intl = useIntl();
-  const t = (id) => {
-    const msg = intl.formatMessage(
-      {
-        id,
-      },
-    );
-    return msg
-  }
-  const modelOption = [{
-    label: t('运行报表'),
-    value: 0,
-  },
-    {
-      label: t('设备报表'),
-      value: 1,
+    const [form] = Form.useForm();
+    const {token} = theme.useToken();
+    const [model, setModel] = useState(0);
+    const [way, setWay] = useState(0);
+    const [wayLabel, setWayLabel] = useState('日统计报表');
+    const [picker, setPicker] = useState('date');
+    const [date, setDate] = useState(dayjs(new Date()));
+    const [dateStr, setDateStr] = useState(dayjs(new Date()).format('YYYY-MM-DD'));
+    const [dateNew, setDateNew] = useState([dayjs(new Date()),dayjs(new Date())]);
+    const [dateStrNew, setDateStrNew] = useState([dayjs(new Date()).format('YYYY-MM-DD'),dayjs(new Date()).format('YYYY-MM-DD')]);
+    const [dataChoiceOpen, setDataChoiceOpen] = useState(false); //数据选择弹框
+    const [modelData, setModelData] = useState([]);
+    const [allData, setAllData] = useState({});
+    const [currentModel, setCurrentModel] = useState([]);
+    const [currentFormat, setCurrentFormat] = useState('YYYY-MM-DD');
+    const [runClum, setRunClum] = useState([]);
+    const [pcsClum, setPcsClum] = useState([]);
+    const [bmsClum, setBmsClum] = useState([]);
+    const global = useSelector(state => state.global);
+    const intl = useIntl();
+    const t = (id) => {
+        const msg = intl.formatMessage(
+            {
+                id,
+            },
+        );
+        return msg
     }
-  ];
-  const wayOption = [{
-    label: t('日统计报表'),
-    value: 0,
-  },
-  {
-    label: t('周统计报表'),
-    value: 1,
-  },
-  {
-    label: t('月统计报表'),
-    value: 2,
-  },
-  {
-    label: t('年统计报表'),
-    value: 3,
-  },
-  {
-    label: t('总报表'),
-    value: 4,
-  },
-  ]
 
-  const run = [
-    {
-      title: t('时间'),
-      dataIndex: 'date',
-      key: 'date',
-      align: 'center'
-
-    },
-    {
-      title: `${t('充电电量')}（kWh）`,
-      dataIndex: 'charge',
-      key: 'charge',
-      align: 'center'
-
-    },
-    {
-      title: `${t('放电电量')}（kWh）`,
-      dataIndex: 'discharge',
-      key: 'discharge',
-      align: 'center'
-
-    },
-    {
-      title: `${t('充放电效率')}（%）`,
-      dataIndex: 'efficiency',
-      key: 'efficiency',
-      align: 'center',
-      // render:(text,record)=>{
-      //   return record.efficiency*100;
-      // }
-    },
-  ]
-
-  const pRun = [
-    {
-      title: t('储能单元名称'),
-      dataIndex: 'devName',
-      key: 'pcsName',
-      align: 'center'
-
-    },
-    {
-      title: t('储能单元编号'),
-      dataIndex: 'devNo',
-      key: 'pcsNo',
-      align: 'center'
-
-    },
-    {
-      title: `${t('充电电量')}（kWh）`,
-      dataIndex: 'charge',
-      key: 'pcsCharge',
-      align: 'center'
-
-    },
-    {
-      title: `${t('放电电量')}（kWh）`,
-      dataIndex: 'discharge',
-      key: 'pcsDischarge',
-      align: 'center'
-
-    },
-
-  ];
-  const bRun = [
-    {
-      title: t('储能单元名称'),
-      dataIndex: 'devName',
-      key: 'bmsName',
-      align: 'center'
-
-    },
-    {
-      title: t('储能单元编号'),
-      dataIndex: 'devNo',
-      key: 'bmsNo',
-      align: 'center'
-
-    },
-    {
-      title: `${t('充电电量')}（kWh）`,
-      dataIndex: 'charge',
-      key: 'bmsCharge',
-      align: 'center'
-
-    },
-    {
-      title: `${t('放电电量')}（kWh）`,
-      dataIndex: 'discharge',
-      key: 'bmsDischarge',
-      align: 'center'
-
-    },
-
-  ]
-  useEffect(() => {
-    getInitData();
-  }, [token, way, dataChoiceOpen, date,]);
-  useEffect(() => {
-
-  }, [way])
-
-  const getInitData = async () => {
-    let { data: reqData } = await getExportReportList({
-      plantId: localStorage.getItem('plantId'),
-      type: way,
-    });
-    setModelData(reqData?.data);
-    let obj = {};
-    reqData?.data?.map(it => {
-      it?.children?.map(item => {
-        obj[item.value] = item.state;
-      })
-    });
-
-    data.baseData.data = delBaseData(data.baseData.data, obj);
-    data.runData.data = delBaseData(data.runData.data, obj);
-    form.setFieldsValue({ ...obj });
-    setCurrentModel({ ...obj });
-    let arr = run?.filter(it => {
-      if (obj?.[it?.key]) {
-        return it
-      }
-    });
-
-    setRunClum([...arr]);
-    setPcsClum(pRun?.filter(it => {
-      if (obj?.[it?.key]) {
-        return it
-      }
-    }));
-    setBmsClum(bRun?.filter(it => {
-      if (obj?.[it?.key]) {
-        return it
-      }
-    }))
-    let currentDate = dayjs(date).format(currentFormat);
-    let { data: allData } = await getDtuReport({
-      plantId: localStorage.getItem('plantId'),
-      type: way,
-      date: currentDate,
-    });
-
-    setAllData(allData?.data);
-  }
-  const delBaseData = (base, data) => {
-    let arr = [];
-    base.map(it => {
-      if (data?.[it?.value]) {
-        arr.push(it)
-      }
-    });
-    return arr
-  }
-  const exportData = async () => {
-    let res = await exportReport({
-      plantId: localStorage.getItem('plantId'),
-      type: way,
-      date: dayjs(date).format(currentFormat),
-    });
-    let blob = res?.data;
-    let content = [];
-    content.push(blob);
-    // new Blob 实例化文件流
-    const blobData = new Blob(content);
-    const url = window.URL.createObjectURL(blobData)
-    const link = document.createElement('a')
-    link.style.display = "none"
-    link.href = url
-    // fileName 文件名后缀记得添加
-    link.setAttribute('download', `${t(wayLabel)}.xls`)
-    document.body.appendChild(link)
-    link.click()
-    //下载完成移除元素
-    document.body.removeChild(link)
-    //释放掉blob对象
-    window.URL.revokeObjectURL(url)
-  }
-  const changeWay = (val, label) => {
-    setWay(val);
-    setWayLabel(label?.label);
-    if (val == 0) {
-      setPicker('date');
-      setCurrentFormat('YYYY-MM-DD');
-      setDateStr(dayjs(new Date()).format('YYYY-MM-DD'));
-    } else if (val == 1) {
-      setPicker('date');
-      setCurrentFormat('YYYY-MM-DD');
-      setDateStr(dayjs(new Date()).format('YYYY-MM-DD'));
-
-    } else if (val == 2) {
-      setCurrentFormat('YYYY-MM')
-      setDateStr(dayjs(new Date()).format('YYYY-MM'));
-
-      setPicker('month')
-    } else if (val == 3) {
-      setCurrentFormat('YYYY')
-      setPicker('year')
-      setDateStr(dayjs(new Date()).format('YYYY'));
-
-    } else {
-      setCurrentFormat('YYYY')
-      setPicker('year')
-      setDateStr(dayjs(new Date()).format('YYYY'));
-
-    }
-  }
-  const changeDate = (val, str) => {
-    setDateStr(str);
-    setDate(val);
-  }
-  // useEffect(() => {
-  //
-  // }, [model])
-  const changeModel=(val,label)=>{
-    setModel(val);
-  };
-  return (
-    <>
-      <div className={`${styles.advancedAnalytics} ${global.theme=='default'?'mDefault':'mDark'}`}
-           style={{color: token.titleColor, backgroundColor: token.titleCardBgc}}>
-        <div className={styles.searchHead}>
-          <span>{t('报表模板')}:</span>
-          <Select
-              className={styles.margRL}
-              style={{width: 180}}
-              onChange={changeModel}
-              options={modelOption}
-              defaultValue={modelOption[0].value}
-          >
-          </Select>
-          {
-              model == 0 &&
-              <>
-                <span>{t('报表类型')}:</span>
-                <Select
-                    className={styles.margRL}
-                    style={{width: 180}}
-                    onChange={changeWay}
-                    options={wayOption}
-                    defaultValue={wayOption[0].value}
-                >
-                </Select>
-                <span>{t('对比日期')}:</span>
-                <DatePicker className={styles.margRL}
-                            style={{width: 240}}
-                            picker={picker}
-                            maxTagCount={1}
-                            onChange={(val, str) => changeDate(val, str)}
-                            defaultValue={date}
-                            key={way + 1}
-                            allowClear={false}
-                            needConfirm
-                />
-                <Space>
-                  <Button type="primary" className={styles.firstButton} onClick={() => setDataChoiceOpen(true)}>
-                    {t('数据选择')}
-                  </Button>
-                  <Button type="primary" style={{backgroundColor: token.defaultBg}} onClick={exportData}>
-                    {t('导出')}{" "}Excel
-                  </Button>
-                </Space>
-              </>
-          }
-        </div>
+    const modelOption = [
         {
-            model == 0 &&
-            <>
-              <div className={styles.advancedAnalytics1}
-                   style={{color: token.titleColor, backgroundColor: token.titleCardBgc}}>
+            label: t('运行报表'),
+            value: 0,
+        },
+        {
+            label: t('设备报表'),
+            value: 1,
+        }
+    ];
+    const wayOption = [
+        {
+            label: t('日统计报表'),
+            value: 0,
+        },
+        {
+            label: t('周统计报表'),
+            value: 1,
+        },
+        {
+            label: t('月统计报表'),
+            value: 2,
+        },
+        {
+            label: t('年统计报表'),
+            value: 3,
+        },
+        {
+            label: t('总报表'),
+            value: 4,
+        },
+    ]
 
-                <div className={styles.echartPart}>
-                  <div className={styles.echartPartCardwrap}>
-                    <Row justify="center">
-                      <Typography.Title level={3} style={{marginTop: 0, marginBottom: 27,color: token.titleColor}}>
-                        {way == 1 ? `${dayjs(dateStr).subtract(6, 'day').format('YYYY-MM-DD')}~${dateStr}` : dateStr}{" "}{t(wayLabel)}
-                      </Typography.Title>
-                    </Row>
-                    <div className={styles.content}>
-                      <div className={styles.contentItem}>
-                        <div style={{marginBottom: 10}}>
-                          <Title title={t('运行数据')}/>
-                        </div>
-                        <Table
-                            columns={runClum}
-                            dataSource={allData?.runEnergy}
-                            pagination={false}
-                            scroll={{y: 300}}
-                        />
-                      </div>
-                      <div className={styles.contentItem}>
-                        <div style={{marginBottom: 10}}>
-                          <Title title={t('PCS运行指标')}/>
-                        </div>
-                        <Table
-                            columns={pcsClum}
-                            dataSource={allData?.pcsEnergy}
-                            pagination={false}
-                            scroll={{y: 300}}
+    const commonColumns = [
+        {
+            title: `${t('充电电量')}（kWh）`,
+            dataIndex: 'charge',
+            key: 'charge',
+            align: 'center'
+        },
+        {
+            title: `${t('放电电量')}（kWh）`,
+            dataIndex: 'discharge',
+            key: 'discharge',
+            align: 'center'
+        },
+        {
+            title: `${t('充放电效率')}（%）`,
+            dataIndex: 'efficiency',
+            key: 'efficiency',
+            align: 'center',
+            // render: (text, record) => {
+            //   return record.efficiency * 100;
+            // }
+        }
+    ];
 
-                        />
-                      </div>
-                      <div className={styles.contentItem}>
-                        <div style={{marginBottom: 10}}>
-                          <Title title={t('BMS运行指标')}/>
-                        </div>
-                        <Table
-                            columns={bmsClum}
-                            dataSource={allData?.bmsEnergy}
-                            pagination={false}
-                            scroll={{y: 300}}
+    const run = way !== 4 ? [
+        {
+            title: t('时间'),
+            dataIndex: 'date',
+            key: 'date',
+            align: 'center'
+        },
+        ...commonColumns
+    ] : commonColumns;
 
-                        />
 
-                      </div>
+    const pRun = [
+        {
+            title: t('储能单元名称'),
+            dataIndex: 'devName',
+            key: 'pcsName',
+            align: 'center'
 
-                    </div>
-                  </div>
+        },
+        {
+            title: t('储能单元编号'),
+            dataIndex: 'devNo',
+            key: 'pcsNo',
+            align: 'center'
+
+        },
+        {
+            title: `${t('充电电量')}（kWh）`,
+            dataIndex: 'charge',
+            key: 'pcsCharge',
+            align: 'center'
+
+        },
+        {
+            title: `${t('放电电量')}（kWh）`,
+            dataIndex: 'discharge',
+            key: 'pcsDischarge',
+            align: 'center'
+
+        },
+
+    ];
+    const bRun = [
+        {
+            title: t('储能单元名称'),
+            dataIndex: 'devName',
+            key: 'bmsName',
+            align: 'center'
+
+        },
+        {
+            title: t('储能单元编号'),
+            dataIndex: 'devNo',
+            key: 'bmsNo',
+            align: 'center'
+
+        },
+        {
+            title: `${t('充电电量')}（kWh）`,
+            dataIndex: 'charge',
+            key: 'bmsCharge',
+            align: 'center'
+
+        },
+        {
+            title: `${t('放电电量')}（kWh）`,
+            dataIndex: 'discharge',
+            key: 'bmsDischarge',
+            align: 'center'
+
+        },
+
+    ]
+    useEffect(() => {
+        // getInitData();
+    }, [token, way, dataChoiceOpen, date,]);
+    useEffect(() => {
+
+    }, [way])
+
+    const getInitData = async () => {
+        let {data: reqData} = await getExportReportList({
+            plantId: localStorage.getItem('plantId'),
+            type: way,
+        });
+        setModelData(reqData?.data);
+        let obj = {};
+        reqData?.data?.map(it => {
+            it?.children?.map(item => {
+                obj[item.value] = item.state;
+            })
+        });
+
+        data.baseData.data = delBaseData(data.baseData.data, obj);
+        data.runData.data = delBaseData(data.runData.data, obj);
+        form.setFieldsValue({...obj});
+        setCurrentModel({...obj});
+        let arr = run?.filter(it => {
+            if (obj?.[it?.key]) {
+                return it
+            }
+        });
+
+        setRunClum([...arr]);
+        setPcsClum(pRun?.filter(it => {
+            if (obj?.[it?.key]) {
+                return it
+            }
+        }));
+        setBmsClum(bRun?.filter(it => {
+            if (obj?.[it?.key]) {
+                return it
+            }
+        }))
+        let currentDate = dayjs(date).format(currentFormat);//------------------------------------------------------------------------------------------
+        let {data: allData} = await getDtuReport({
+            plantId: localStorage.getItem('plantId'),
+            type: way,
+            date: currentDate,
+        });
+
+        setAllData(allData?.data);
+    }
+    const delBaseData = (base, data) => {
+        let arr = [];
+        base.map(it => {
+            if (data?.[it?.value]) {
+                arr.push(it)
+            }
+        });
+        return arr
+    }
+    const exportData = async () => {
+        let currentDateStart = dayjs(dateNew[0]);
+        let currentDateEnd = dayjs(dateNew[1]);
+        if(way==0){
+            currentDateStart=currentDateStart.format('YYYY-MM-DD');
+            currentDateEnd=currentDateEnd.format('YYYY-MM-DD');
+        }else if(way==1){
+            currentDateEnd = dayjs(date).format('YYYY-MM-DD');
+            currentDateStart=dayjs(currentDateEnd).subtract(6, 'day').format('YYYY-MM-DD');
+        }else if(way==2){
+            let firstDayOfMonthStart = dayjs(currentDateStart).startOf('month');
+            let lastDayOfMonthEnd = dayjs(currentDateEnd).endOf('month');
+            currentDateStart=firstDayOfMonthStart.format('YYYY-MM-DD');
+            currentDateEnd=lastDayOfMonthEnd.format('YYYY-MM-DD');
+        }else if(way==3){
+            let firstDayOfYearStart = dayjs(currentDateStart).startOf('year');
+            let lastDayOfYearEnd = dayjs(currentDateEnd).endOf('year');
+            currentDateStart=firstDayOfYearStart.format('YYYY-MM-DD');
+            currentDateEnd=lastDayOfYearEnd.format('YYYY-MM-DD');
+        }else if(way==4){
+            currentDateStart='';
+            currentDateEnd='';
+        }
+
+        let res = await exportReport({
+            plantId: localStorage.getItem('plantId'),
+            type: way,
+            startTime:currentDateStart,
+            endTime:currentDateEnd
+        });
+        let blob = res?.data;
+        let content = [];
+        content.push(blob);
+        // new Blob 实例化文件流
+        const blobData = new Blob(content);
+        const url = window.URL.createObjectURL(blobData)
+        const link = document.createElement('a')
+        link.style.display = "none"
+        link.href = url
+        // fileName 文件名后缀记得添加
+        link.setAttribute('download', `${t(wayLabel)}.xls`)
+        document.body.appendChild(link)
+        link.click()
+        //下载完成移除元素
+        document.body.removeChild(link)
+        //释放掉blob对象
+        window.URL.revokeObjectURL(url)
+    }
+    const changeWay = (val, label) => {
+        setWay(val);
+        setWayLabel(label?.label);
+        if (val == 0) {
+            setPicker('date');
+            setCurrentFormat('YYYY-MM-DD');
+            setDateStr(dayjs(date).format('YYYY-MM-DD'));//------------------------------------------------------------------
+            setDateStrNew([dayjs(dateNew[0]).format('YYYY-MM-DD'),dayjs(dateNew[1]).format('YYYY-MM-DD')])
+        } else if (val == 1) {
+            setPicker('date');
+            setCurrentFormat('YYYY-MM-DD');
+            setDateStr(dayjs(date).format('YYYY-MM-DD'));//------------------------------------------------------------------
+            setDateStrNew([dayjs(dateNew[0]).format('YYYY-MM-DD'),dayjs(dateNew[1]).format('YYYY-MM-DD')])
+        } else if (val == 2) {
+            setCurrentFormat('YYYY-MM')
+            setDateStr(dayjs(date).format('YYYY-MM'));//------------------------------------------------------------------
+            setDateStrNew([dayjs(dateNew[0]).format('YYYY-MM'),dayjs(dateNew[1]).format('YYYY-MM')])
+            setPicker('month')
+        } else if (val == 3) {
+            setCurrentFormat('YYYY')
+            setPicker('year')
+            setDateStr(dayjs(date).format('YYYY'));//------------------------------------------------------------------
+            setDateStrNew([dayjs(dateNew[0]).format('YYYY'),dayjs(dateNew[1]).format('YYYY')])
+        } else {
+            setCurrentFormat('YYYY')
+            setPicker('year')
+            setDateStr(dayjs(date).format('YYYY'));//------------------------------------------------------------------
+            setDateStrNew([dayjs(dateNew[0]).format('YYYY'),dayjs(dateNew[0]).format('YYYY')])
+        }
+    }
+    const changeDate = (val, str) => {
+        setDateStr(str);
+        setDate(val);
+    }
+    const content = way==0 ? (
+        <p>{t("日期范围不能超过31天")}</p>
+    ) : way==2 ? (
+        <p>{t("日期范围不能超过12个月")}</p>
+    ) : way==3 ? (
+        <p>{t("日期范围不能超过5年")}</p>
+    ) : '';
+
+    const changeDate1 = (val, str) => {
+        if(way==0){
+            const diffInDays = val[1].diff(val[0], 'day');
+            if(diffInDays>30){
+                message.warning(t("日期范围不能超过31天，请重新选择"));
+                return;
+            }
+            setDateStr(str[0]);
+            setDate(val[0]);
+            setDateStrNew(str);
+            setDateNew(val);
+        }else if(way==1){
+            setDateStr(str);
+            setDate(val);
+            setDateStrNew([str,str]);
+            setDateNew([val,val]);
+        }else if(way==2){
+            const diffInMonths = val[1].diff(val[0], 'month');
+            if(diffInMonths>11){
+                message.warning(t("日期范围不能超过12个月，请重新选择"));
+                return;
+            }
+            setDateStr(str[0]);
+            setDate(val[0]);
+            setDateStrNew(str);
+            setDateNew(val);
+        }else if(way==3){
+            const diffInYears = val[1].diff(val[0], 'year');
+            if(diffInYears>4){
+                message.warning(t("日期范围不能超过5年，请重新选择"));
+                return;
+            }
+            setDateStr(str[0]);
+            setDate(val[0]);
+            setDateStrNew(str);
+            setDateNew(val);
+        }
+
+    }
+    const getInitData1 = async () => {
+        let {data: reqData} = await getExportReportList({
+            plantId: localStorage.getItem('plantId'),
+            type: way,
+        });
+        setModelData(reqData?.data);
+        let obj = {};
+        reqData?.data?.map(it => {
+            it?.children?.map(item => {
+                obj[item.value] = item.state;
+            })
+        });
+
+        data.baseData.data = delBaseData(data.baseData.data, obj);
+        data.runData.data = delBaseData(data.runData.data, obj);
+        form.setFieldsValue({...obj});
+        setCurrentModel({...obj});
+        let arr = run?.filter(it => {
+            if (obj?.[it?.key]) {
+                return it
+            }
+        });
+
+        setRunClum([...arr]);
+        setPcsClum(pRun?.filter(it => {
+            if (obj?.[it?.key]) {
+                return it
+            }
+        }));
+        setBmsClum(bRun?.filter(it => {
+            if (obj?.[it?.key]) {
+                return it
+            }
+        }))
+
+        let currentDateStart = dayjs(dateNew[0]);
+        let currentDateEnd = dayjs(dateNew[1]);
+        if(way==0){
+            currentDateStart=currentDateStart.format('YYYY-MM-DD');
+            currentDateEnd=currentDateEnd.format('YYYY-MM-DD');
+        }else if(way==1){
+            currentDateEnd = dayjs(date).format('YYYY-MM-DD');
+            currentDateStart=dayjs(currentDateEnd).subtract(6, 'day').format('YYYY-MM-DD');
+        }else if(way==2){
+            let firstDayOfMonthStart = dayjs(currentDateStart).startOf('month');
+            let lastDayOfMonthEnd = dayjs(currentDateEnd).endOf('month');
+            currentDateStart=firstDayOfMonthStart.format('YYYY-MM-DD');
+            currentDateEnd=lastDayOfMonthEnd.format('YYYY-MM-DD');
+        }else if(way==3){
+            let firstDayOfYearStart = dayjs(currentDateStart).startOf('year');
+            let lastDayOfYearEnd = dayjs(currentDateEnd).endOf('year');
+            currentDateStart=firstDayOfYearStart.format('YYYY-MM-DD');
+            currentDateEnd=lastDayOfYearEnd.format('YYYY-MM-DD');
+        }else if(way==4){
+            currentDateStart='';
+            currentDateEnd='';
+        }
+
+        let {data: allData} = await getDtuReport({
+            plantId: localStorage.getItem('plantId'),
+            type: way,
+            // date: currentDate,
+            startTime:currentDateStart,
+            endTime:currentDateEnd
+        });
+
+        setAllData(allData?.data);
+    }
+    useEffect(() => {
+        getInitData1();
+    }, [token, way, dataChoiceOpen, dateNew,date]);
+    const changeModel = (val, label) => {
+        setModel(val);
+    };
+    return (
+        <>
+            <div className={`${styles.advancedAnalytics} ${global.theme == 'default' ? 'mDefault' : 'mDark'}`}
+                 style={{color: token.titleColor, backgroundColor: token.titleCardBgc}}>
+                <div className={styles.searchHead}>
+                    <span>{t('报表模板')}:</span>
+                    <Select
+                        className={styles.margRL}
+                        style={{width: 180}}
+                        onChange={changeModel}
+                        options={modelOption}
+                        defaultValue={modelOption[0].value}
+                    >
+                    </Select>
+                    {
+                        model == 0 &&
+                        <>
+                            <span>{t('报表类型')}:</span>
+                            <Select
+                                className={styles.margRL}
+                                style={{width: 180}}
+                                onChange={changeWay}
+                                options={wayOption}
+                                defaultValue={wayOption[0].value}
+                            >
+                            </Select>
+                            <span>{t('日期')}:</span>
+                            {
+                                way==1&&
+                                <DatePicker className={styles.margRL}
+                                            style={{width: 240}}
+                                            picker={'date'}
+                                            maxTagCount={1}
+                                            onChange={(val, str) => changeDate1(val, str)}
+                                            defaultValue={date}
+                                            key={way + 1}
+                                            allowClear={false}
+                                />
+                            }
+                            {
+                                way!=1&&
+                                <Popover content={content}>
+                                    <RangePicker className={styles.margRL}
+                                        picker={picker}
+                                        defaultValue={dateNew}
+                                        format={currentFormat}
+                                        allowClear={false}
+                                        onChange={(val, str) => changeDate1(val, str)}
+                                    />
+                                </Popover>
+                            }
+
+                            <Space>
+                                <Button type="primary" className={styles.firstButton}
+                                        onClick={() => setDataChoiceOpen(true)}>
+                                    {t('数据选择')}
+                                </Button>
+                                <Button type="primary" style={{backgroundColor: token.defaultBg}} onClick={exportData}>
+                                    {t('导出')}{" "}Excel
+                                </Button>
+                            </Space>
+                        </>
+                    }
                 </div>
-              </div>
-              <Modal
-                  open={dataChoiceOpen}
-                  title={null}
-                  onOk={async () => {
-                    const values = await form.validateFields();
-                    Object.keys(values).map(it => {
-                      if (!values[it]) {
-                        delete values[it]
-                      }
-                    })
-                    let {data} = await updateReportTemplate({
-                      plantId: localStorage.getItem('plantId'),
-                      type: way,
-                      fields: Object.keys(values)
-                    });
-                    // setCurrentModel(Object.keys(values));
-                    setDataChoiceOpen(false);
-                    message.success("提交成功");
-                  }}
-                  onCancel={() => {
-                    setDataChoiceOpen(false);
-                  }}
-                  width={1168}
-                  style={{}}
-                  className={styles.dataChoiceModal}
-              >
-                <Form
-                    form={form}
-                >
-                  {modelData?.map(item => {
-                    return (
-                        <div style={{marginBottom: 30}}>
-                          <div style={{marginBottom: 10}}><Title title={item?.label}/></div>
-                          <Descriptions
-                              colon={false}
-                              items={item?.children?.map(it => {
-                                return {
-                                  label: (
-                                      <Form.Item name={it.value} valuePropName='checked' style={{margin: 0}}>
-                                        <Checkbox/>
-                                      </Form.Item>
-                                  ),
-                                  children: it.label
-                                }
-                              })}
-                          />
+                {
+                    model == 0 &&
+                    <>
+                        <div className={styles.advancedAnalytics1}
+                             style={{color: token.titleColor, backgroundColor: token.titleCardBgc}}>
+
+                            <div className={styles.echartPart}>
+                                <div className={styles.echartPartCardwrap}>
+                                    <Row justify="center">
+                                        <Typography.Title level={3} style={{
+                                            marginTop: 0,
+                                            marginBottom: 27,
+                                            color: token.titleColor
+                                        }}>
+                                            {way==4?'':way == 1 ? `${dayjs(dateStr).subtract(6, 'day').format('YYYY-MM-DD')}~${dateStr}` : (dateStrNew[0]==dateStrNew[1]?dateStrNew[0]:`${dateStrNew[0]}~${dateStrNew[1]}`)}{" "}{t(wayLabel)}
+                                        </Typography.Title>
+                                    </Row>
+                                    <div className={styles.content}>
+                                        <div className={styles.contentItem}>
+                                            <div style={{marginBottom: 10}}>
+                                                <Title title={t('运行数据')}/>
+                                            </div>
+                                            <Table
+                                                columns={runClum}
+                                                dataSource={allData?.runEnergy}
+                                                pagination={false}
+                                                scroll={{y: 300}}
+                                            />
+                                        </div>
+                                        <div className={styles.contentItem}>
+                                            <div style={{marginBottom: 10}}>
+                                                <Title title={t('PCS运行指标')}/>
+                                            </div>
+                                            <Table
+                                                columns={pcsClum}
+                                                dataSource={allData?.pcsEnergy}
+                                                pagination={false}
+                                                scroll={{y: 300}}
+
+                                            />
+                                        </div>
+                                        <div className={styles.contentItem}>
+                                            <div style={{marginBottom: 10}}>
+                                                <Title title={t('BMS运行指标')}/>
+                                            </div>
+                                            <Table
+                                                columns={bmsClum}
+                                                dataSource={allData?.bmsEnergy}
+                                                pagination={false}
+                                                scroll={{y: 300}}
+
+                                            />
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    )
-                  })}
-                </Form>
-              </Modal>
-            </>
-        }
-        {
-            model == 1 &&
-            <>
-              <div className={styles.advancedAnalytics1}
-                   style={{color: token.titleColor, backgroundColor: token.titleCardBgc}}>
-                <SourceDataExport model={model}/>
-              </div>
-            </>
-        }
-      </div>
+                        <Modal
+                            open={dataChoiceOpen}
+                            title={null}
+                            onOk={async () => {
+                                const values = await form.validateFields();
+                                Object.keys(values).map(it => {
+                                    if (!values[it]) {
+                                        delete values[it]
+                                    }
+                                })
+                                let {data} = await updateReportTemplate({
+                                    plantId: localStorage.getItem('plantId'),
+                                    type: way,
+                                    fields: Object.keys(values)
+                                });
+                                // setCurrentModel(Object.keys(values));
+                                setDataChoiceOpen(false);
+                                message.success("提交成功");
+                            }}
+                            onCancel={() => {
+                                setDataChoiceOpen(false);
+                            }}
+                            width={1168}
+                            style={{}}
+                            className={styles.dataChoiceModal}
+                        >
+                            <Form
+                                form={form}
+                            >
+                                {modelData?.map(item => {
+                                    return (
+                                        <div style={{marginBottom: 30}}>
+                                            <div style={{marginBottom: 10}}><Title title={item?.label}/></div>
+                                            <Descriptions
+                                                colon={false}
+                                                items={item?.children?.map(it => {
+                                                    return {
+                                                        label: (
+                                                            <Form.Item name={it.value} valuePropName='checked'
+                                                                       style={{margin: 0}}>
+                                                                <Checkbox/>
+                                                            </Form.Item>
+                                                        ),
+                                                        children: it.label
+                                                    }
+                                                })}
+                                            />
+                                        </div>
+                                    )
+                                })}
+                            </Form>
+                        </Modal>
+                    </>
+                }
+                {
+                    model == 1 &&
+                    <>
+                        <div className={styles.advancedAnalytics1}
+                             style={{color: token.titleColor, backgroundColor: token.titleCardBgc}}>
+                            <SourceDataExport model={model}/>
+                        </div>
+                    </>
+                }
+            </div>
 
-    </>
+        </>
 
-  )
+    )
 }
 
 export default Com

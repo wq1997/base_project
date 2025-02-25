@@ -14,6 +14,7 @@ import { getQueryString, downLoadExcelMode } from "@/utils/utils";
 
 function Com({ id }) {
     const { token } = theme.useToken();
+    const global = useSelector(state => state.global);
     const [type, setType] = useState();
     const [optionEchart, setOptionEchart] = useState({})
     const [goalId, setGoalId] = useState(id);
@@ -70,7 +71,11 @@ function Com({ id }) {
                     axisLabel: {
                         formatter: '{value} '
                     },
-
+                    splitLine: {
+                        lineStyle: {
+                            color: global.theme=='dark'?'#666':'#ddd',
+                        }
+                    },
                 }
             ],
             series: [
@@ -80,15 +85,15 @@ function Com({ id }) {
     }, [bmsIds, token]);
     useEffect(() => {
         getEchartsData();
-    }, [title])
+    }, [title,global.theme])
 
     const getEchartsData = async () => {
-        if (!dateStr) {
+        if (!dateStr||dateStr?.length<=0) {
             message.warning(t('请选择日期'));
             return
         }
-        if (dateStr?.length > 7) {
-            message.warning(t('时间最多选7天'));
+        if (dateStr?.length > 3) {
+            message.warning(t('日期最多选3天'));
             return
         }
         currentTitle ? setTitle(currentTitle) : null;
@@ -178,7 +183,11 @@ function Com({ id }) {
                     axisLabel: {
                         formatter: `{value}`
                     },
-
+                    splitLine: {
+                        lineStyle: {
+                            color: global.theme=='dark'?'#666':'#ddd',
+                        }
+                    },
                 }
             ],
             series: [
@@ -226,15 +235,9 @@ function Com({ id }) {
     };
     return (
         <div className={styles.monitoringCurves}>
-            <div className={styles.searchHead} style={{color:token.titleColor}}>
-                <span className={styles.margRL}> {t('对比日期')}:</span>
-                <DatePicker
-                    style={{ width: 240 }}
-                    maxTagCount={1}
-                    multiple
-                    onChange={(val, str) => onChange(val, str)}
-                    defaultValue={date} />
-                      <span className={styles.margRL}>{t('设备')}:</span>
+            <div className={styles.searchHead} style={{color: token.titleColor}}>
+
+                <span className={styles.margRL}>{t('设备')}:</span>
                 <Select
                     style={{
                         width: '10.4167rem',
@@ -254,7 +257,7 @@ function Com({ id }) {
                 <span className={styles.margRL}>{t('数据项')}:</span>
                 {type && <Select
                     className={styles.margR}
-                    style={{ width: 240 }}
+                    style={{width: 240}}
                     onChange={changeDataType}
                     options={optionsSelect.map(it => {
                         return {
@@ -265,20 +268,28 @@ function Com({ id }) {
                     value={type}
                 >
                 </Select>}
+                <span className={styles.margRL}> {t('日期')}:</span>
+                <DatePicker
+                    needConfirm
+                    style={{width: 240}}
+                    maxTagCount={1}
+                    multiple
+                    onChange={(val, str) => onChange(val, str)}
+                    defaultValue={date}/>
 
                 <Button type="primary" className={styles.firstButton} onClick={() => getEchartsData(goalId)}>
                     {t('查询')}
                 </Button>
-                <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downLoadFoodModel} >
-                {t('导出')}{" "}Excel
+                <Button type="primary" style={{backgroundColor: token.defaultBg}} onClick={downLoadFoodModel}>
+                    {t('导出')}{" "}Excel
                 </Button>
             </div>
-            <div className={styles.echartPart}>
+            <div className={styles.echartPart} style={{height: "90%"}}>
                 <CardModel
                     // title={title ? t(title) : ''}
                     content={
                         <div className={styles.echartPartCardwrap}>
-                            <ReactECharts option={optionEchart} style={{ height: '100%' }} />
+                            <ReactECharts option={optionEchart} style={{ height: '100%' }}  notMerge lazyUpdate={false}/>
                         </div>
                     }
                 />

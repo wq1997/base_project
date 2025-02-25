@@ -1,7 +1,7 @@
 // 函数组件
 // 快捷键Ctrl+Win+i 添加注释
 import React, {useState, useEffect, useCallback, useMemo, useRef} from 'react';
-import {theme, Select, DatePicker, Button, Cascader, message} from "antd";
+import {theme, Select, DatePicker, Button, Cascader, message,Tooltip} from "antd";
 import styles from './index.less'
 import ReactECharts from "echarts-for-react";
 import {CardModel} from "@/components";
@@ -16,6 +16,7 @@ function Com(props) {
     const {token} = theme.useToken();
     const [option, setOption] = useState([]);
     const [dateBottom, setDateBottom] = useState(dayjs(new Date()));
+    const [dateBottomStr, setDateBottomStr] = useState([dayjs(new Date()).format('YYYY-MM-DD')]);
     const [packList, setPackList] = useState([]);
     const [cellList, setCellList] = useState([]);
     const [cellReq, setCellReq] = useState([]);
@@ -46,8 +47,6 @@ function Com(props) {
     const [value, setValue] = useState(0);
 
 
-
-
     useEffect(() => {
         dataInit();
     }, []);
@@ -67,7 +66,6 @@ function Com(props) {
     }, [token, bmsIds]);
     useEffect(() => {
         getBottomChartData();
-
     }, [packValueBottom, cellReq]);
     const getInitData = async () => {
         let {data} = await getBmsAnalyticsInitData({id: bmsIds[0]});
@@ -75,11 +73,202 @@ function Com(props) {
         setCellList(data?.data?.cellList);
         setPackValueBottom(data?.data?.clusterPackList?.[0]?.value);
         setCellReq(data?.data?.cellList?.[0]?.value)
-        getBottomChartData();
+        // getBottomChartData();
         setVAndTExcelTitle(`${data?.data?.clusterPackList?.[0]?.label}/${data?.data?.cellList?.[0]?.label}`)
     }
-
     const getBottomChartData = async () => {
+        if(dateBottomStr?.length>3){
+            message.warning(t('日期最多选3天'));
+            return
+        }
+        setFlag(value);
+        let response = await analyticsBmsData({
+            type:value+1,
+            packValue: packValueBottom,
+            cellValue: cellReq,
+            date: dateBottomStr
+        });
+        let excelArr = [];
+        let ser = [];
+        let tempData=[],left=[],right=[];
+        if(response?.data?.code==200){
+            if(value==2||value==3){
+                left=response?.data?.data?.map(item=>({
+                    label:item?.label,
+                    value:item?.value?.one,
+                    unit:item?.unit
+                }));
+                right=response?.data?.data?.map(item=>({
+                    label:item?.label,
+                    value:item?.value?.two,
+                    unit:item?.unit
+                }));
+                if (left && left[0]?.value) {
+                    left[0]?.value.forEach((item, index) => {
+                        let newObj = { time: dayjs(item.time).format('HH:mm'),label: value==2?t("左侧熔断器温度"):t("负极极柱温度")};
+                        left.forEach(dateItem => {
+                            newObj[dateItem.label] = dateItem.value[index].value;
+                        });
+                        excelArr.push(newObj);
+                    });
+                }
+                if (right && right[0]?.value) {
+                    right[0]?.value.forEach((item, index) => {
+                        let newObj = { time: dayjs(item.time).format('HH:mm'),label: value==2?t("右侧熔断器温度"):t("正极极柱温度")  };
+                        right.forEach(dateItem => {
+                            newObj[dateItem.label] = dateItem.value[index].value;
+                        });
+                        excelArr.push(newObj);
+                    });
+                }
+                setVAndTExcelData([...excelArr]);
+            }
+            else{
+                tempData=response?.data?.data?.map(item=>({
+                    label:item?.label,
+                    value:item?.value,
+                    unit:item?.unit
+                }));
+
+                if (tempData && tempData[0]?.value) {
+                    tempData[0]?.value.forEach((item, index) => {
+                        let newObj = { time: dayjs(item.time).format('HH:mm') };
+
+                        tempData.forEach(dateItem => {
+                            if (dateItem.value && dateItem.value[index]) {
+                                newObj[dateItem.label] = dateItem.value[index].value;
+                            } else {
+                                newObj[dateItem.label] = null;
+                            }
+                        });
+
+                        excelArr.push(newObj);
+                    });
+                }
+                setVAndTExcelData([...excelArr]);
+            }
+            if(value==0){
+                let newSeries = [];
+                let yAxis = [];
+                tempData?.forEach((item, i) => {
+                    const result = dealDataBot2(item?.value, setOptionEchartVolBot, `${item.label}/${t("单体电压")}`, item.unit);
+
+                    newSeries.push({
+                        name: result.title,
+                        type: 'line',
+                        symbolSize: 8,
+                        itemStyle: {
+                            normal: {
+                                color: token.chartLineColor[i],
+                                lineStyle: {
+                                    color: token.chartLineColor[i],
+                                    width: 2
+                                },
+                            }
+                        },
+                        data: result.data
+                    });
+
+                    yAxis.push({
+                        name: result.unit,
+                        type: 'value',
+                        splitLine: {
+                            show: true,
+                            lineStyle: {
+                                color: [token.microgridsLine],
+                                width: 0.3,
+                                type: 'solid'
+                            }
+                        },
+                    });
+                });
+                setOptionEchartVolBot({
+                    ...baseOption,
+                    yAxis: yAxis,
+                    series: newSeries,
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        },
+                        formatter: function (params) {
+                            let result = `${params[0].axisValue}<br/>`;
+                            params.forEach(item => {
+                                result += `${item.marker} ${item.seriesName}: ${item.data[1]} V<br/>`;
+                            });
+                            return result;
+                        },
+                    },
+                });
+            }else if(value==1){
+                tempData?.forEach((item,i)=>{
+                    ser.push(dealTemp(item.value, `${item.label}/${t("单体温度")}`, i))
+                })
+            }else if(value==2){
+                left?.forEach((item,i)=>{
+                    ser.push(dealTemp(item.value, `${item.label}/${t("左侧熔断器温度")}`, i));
+                    ser.push(dealTemp(right[i]?.value, `${item.label}/${t("右侧熔断器温度")}`, i));
+                })
+            }else if(value==3){
+                left?.forEach((item,i)=>{
+                    ser.push(dealTemp(item.value, `${item.label}/${t("负极极柱温度")}`, i));
+                    ser.push(dealTemp(right[i]?.value, `${item.label}/${t("正极极柱温度")}`, i));
+                })
+            }
+
+            let yAxis= [
+                {
+                    name:`${value==0?t('V') :t('℃')}`,
+                    type: 'value',
+                    splitLine: {
+                        show: true,
+                        lineStyle: {
+                            color: [token.microgridsLine],
+                            width: 0.3,
+                            type: 'solid'
+                        }
+                    },
+                }
+            ];
+            setOptionEchartTemBot({
+                ...baseOption,
+                yAxis:yAxis,
+                series: [...ser],
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    },
+                    formatter: function (params) {
+                        let result = `${params[0].axisValue}<br/>`;
+                        params.forEach(item => {
+                            result += `${item.marker} ${item.seriesName}: ${item.data[1]} ℃<br/>`;
+                        });
+                        return result;
+                    },
+                },
+            })
+
+        }
+        getOption();
+    }
+    const dealDataBot2 = (data, setHandel, title, unit) => {
+        let arr = [];
+        data?.map((it) => {
+            arr.push([dayjs(it.time).format('HH:mm:ss'), it.value]);
+        });
+        return {
+            title: title,
+            data: arr,
+            unit: unit
+        };
+    };
+    const getBottomChartData2 = async () => {
+        console.log('dateBottomStr',dateBottomStr,'dateBottom',dateBottom)
+        // if(dateBottomStr?.length>3){
+        //     message.warning(t('日期最多选3天'));
+        //     return
+        // }
         setFlag(value);
         let {data} = await analyticsBmsData({
             packValue: packValueBottom,
@@ -173,7 +362,6 @@ function Com(props) {
                 data: arr
             },]
         });
-
     };
     const dealTemp = (data, title, i) => {
         let arr = [];
@@ -200,20 +388,35 @@ function Com(props) {
     const downLoadVAndT = () => {
         let fileName = vAndTExcelTitle;
         let sheetData = vAndTExcelData;
-        let sheetName = dateBottom.format('YYYY-MM-DD');
-        let sheetFilter = ['time', 'volInfo', 'tempInfo', 'leftTemp', 'rightTemp', 'negativeTemp', 'positiveTemp'];
-        let sheetHeader = [t("时间"), `${t('电压')}(V)`, `${t('采样点温度')}(℃)`, `${t('左侧熔断器温度')}(℃)`, `${t('右侧熔断器温度')}(℃)`, `${t('负极极柱温度')}(℃)`, `${t('正极极柱温度')}(℃)`];
+        let sheetName;
+
+        let sheetFilter = ['time'];
+        let sheetHeader = [t("时间")];
+
+        if(value==0){
+            sheetName = t("单体电压")+'(V)';
+        }else if(value==1){
+            sheetName = t("单体温度")+'(℃)';
+        }else if(value==2){
+            sheetName = t("熔断器温度")+'(℃)';
+            sheetHeader.push(t('数据项'));
+            sheetFilter.push('label');
+        }else{
+            sheetName = t("极柱温度")+'(℃)';
+            sheetHeader.push(t('数据项'));
+            sheetFilter.push('label');
+        }
+        dateBottomStr?.map((it,i)=>{
+        sheetHeader.push(it);
+        sheetFilter.push(it)
+        })
+        // console.log('sheetData',sheetData)
+        // console.log('sheetFilter',sheetFilter)
+        // return
         downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader, sheetName)
     };
 
-
     const baseOption = {
-        tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-                type: 'shadow'
-            },
-        },
         grid: {
             left: '3%',
             right: '5%',
@@ -294,7 +497,7 @@ function Com(props) {
                     <span>{t('数据项')}:</span>
                     <Select
                         className={styles.margRL}
-                        style={{width: 240}}
+                        style={{width: "10%"}}
                         onChange={onChange}
                         options={options}
                         value={value}
@@ -304,7 +507,7 @@ function Com(props) {
                     <span>{t('设备')}:</span>
                     <Select
                         style={{
-                            width: '10.4167rem',
+                            width: "10%",
                         }}
                         className={styles.margRL}
                         placeholder="Please select"
@@ -322,7 +525,7 @@ function Com(props) {
                     <span>{t('电池PACK')}:</span>
                     <Select
                         className={styles.margRL}
-                        style={{width: 240}}
+                        style={{width: "10%"}}
                         onChange={(val, arr) => {
                             setPackValueBottom(val);
                             setVAndTExcelTitle(`${arr.label}/${cellList.find(it => it.value == cellReq)?.label}`);
@@ -339,7 +542,7 @@ function Com(props) {
                             <span>{t('电芯')}:</span>
                             <Select
                                 className={styles.margRL}
-                                style={{width: 240}}
+                                style={{width: "10%"}}
                                 onChange={(val, arr) => {
                                     setCellReq(val);
                                     setVAndTExcelTitle(`${packList.find(it => it.value == packValueBottom)?.label}/${arr.label}`);
@@ -354,15 +557,21 @@ function Com(props) {
                             </Select>
                         </>
                     }
-                    <span>{t('对比日期')}:</span>
-                    <DatePicker
-                        className={styles.margRL}
-                        style={{width: 240}}
-                        onChange={(val, str) => {
-                            setDateBottom(val);
-                        }}
-                        defaultValue={dateBottom}
-                    />
+                    <span>{t('日期')}:</span>
+                    {/*<Tooltip title={t("最多选择3个日期")}>*/}
+                        <DatePicker
+                            needConfirm
+                            multiple
+                            className={styles.margRL}
+                            style={{ width: 250 }}
+                            onChange={(val, str) => {
+                                setDateBottom(val);
+                                setDateBottomStr(str);
+                            }}
+                            defaultValue={dateBottom}
+                        />
+                    {/*</Tooltip>*/}
+
                     <Button type="primary" className={styles.firstButton} onClick={getBottomChartData}>
                         {t('查询')}
                     </Button>

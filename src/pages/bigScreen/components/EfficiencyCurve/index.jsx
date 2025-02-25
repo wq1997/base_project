@@ -49,6 +49,7 @@ function Com({ dataX, dataY }) {
                 type: 'value',
                 boundaryGap: [0, 0.01],
                 axisLabel: {
+                    color: global.theme=='dark'?'#aaaaaa':'#333',
                     formatter: function (value) {
                         return value + '%';
                     }
@@ -63,13 +64,21 @@ function Com({ dataX, dataY }) {
                 splitLine: {
                     // show: false, // 隐藏X轴的网格线
                     lineStyle: {
-                        color: global.theme=='dark'?'#666':'#ddd',
+                        color: global.theme=='dark'?'#333':'#ddd',
                     }
                 },
             },
             yAxis: {
                 type: 'category',
-                data: dataX
+                data: dataX,
+                axisLabel: {
+                    color: global.theme=='dark'?'#aaaaaa':'#333',
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: global.theme == 'dark' ? '#333':'#ddd',
+                    }
+                },
             },
             series: [
                 {

@@ -9,9 +9,10 @@ import { getDataComparisonInit, getCompareData } from '@/services/report'
 import { getDataParams } from '@/services/deviceTotal';
 import dayjs from 'dayjs';
 import { getQueryString, downLoadExcelMode } from "@/utils/utils";
-import {  useIntl } from "umi";
+import {useIntl, useSelector} from "umi";
 const { SHOW_CHILD } = Cascader;
 function Com(props) {
+  const global = useSelector(state => state.global);
   const { token } = theme.useToken();
   const [way, setWay] = useState(1);
   const id = getQueryString('id') || 0;
@@ -250,6 +251,11 @@ function Com(props) {
             show: true,
             formatter: `{value}`
           },
+          splitLine: {
+            lineStyle: {
+              color: global.theme=='dark'?'#666':'#ddd',
+            }
+          },
           axisLine: {
             show: true,
             lineStyle: {
@@ -390,7 +396,7 @@ function Com(props) {
                 </Cascader>
               }
 
-              <span >{t('对比日期')}:</span>
+              <span >{t('日期')}:</span>
               <DatePicker className={styles.margRL}
                 style={{ width: 240 }}
                 multiple={way === 1 ? false : true}

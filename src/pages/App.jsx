@@ -34,7 +34,26 @@ const App = () => {
                 token: ThemeEnum[theme],
                 components: {
                     Input: {
-                        autoComplete: 'off'
+                        autoComplete: 'off',
+                        colorBorder: theme === 'dark'?'#333':'#d9d9d9',
+                        colorTextPlaceholder:theme === 'dark'?'rgba(255, 255, 255, 0.45)':'#d9d9d9',
+                    },
+                    InputNumber: {
+                        colorBorder: theme === 'dark'?'#333':'#d9d9d9',
+                    },
+                    Select: {
+                        colorBorder: theme === 'dark'?'#333':'#d9d9d9',
+                        colorTextPlaceholder:theme === 'dark'?'rgba(255, 255, 255, 0.45)':'#d9d9d9',
+                    },
+                    DatePicker: {
+                        colorBorder: theme === 'dark'?'#333':'#d9d9d9',
+                    },
+                    Radio: {
+                        colorBorder: theme === 'dark'?'#333':'#d9d9d9',
+                    },
+                    Button: {
+                        defaultBorderColor: theme === 'dark'?'#333':'#d9d9d9',
+                        borderColorDisabled: theme === 'dark'?'#333':'#d9d9d9',
                     },
                     Modal: {
                         contentBg: theme === 'dark'?'#1C244C':'#fff',

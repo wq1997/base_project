@@ -1,17 +1,18 @@
 // 函数组件
 // 快捷键Ctrl+Win+i 添加注释
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import React, {useState, useEffect, useCallback, useMemo, useRef} from 'react';
 import styles from './index.less'
-import { CardModel } from "@/components";
+import {CardModel} from "@/components";
 import useIcon from "@/hooks/useIcon";
-import { useSelector, useIntl,history } from "umi";
-import { theme, Switch, Select, Descriptions } from "antd";
-import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { getOverviewLiveData } from '@/services/plant'
+import {useSelector, useIntl, history} from "umi";
+import {theme, Switch, Select, Descriptions} from "antd";
+import {useEmotionCss} from '@ant-design/use-emotion-css';
+import {getOverviewLiveData} from '@/services/plant'
 import LinePicture from './components/LinePicture'
 import {getUrlParams, setLocalStorage} from "@/utils/utils";
+
 function OverView(props) {
-    const { token } = theme.useToken();
+    const {token} = theme.useToken();
     const Icon = useIcon();
     const [allData, setAllData] = useState({});
     const [checked, setChecked] = useState(true);
@@ -55,17 +56,20 @@ function OverView(props) {
     }, [token,])
     useEffect(() => {
         const params = getUrlParams(window.location.search);
-        if(params.token){
-            setLocalStorage('Token',params.token);
-            setLocalStorage('plantId',params.plantId);
+        if (params.token) {
+            setLocalStorage('Token', params.token);
+            setLocalStorage('plantId', params.plantId);
             history.push('/index/home')
         }
         getOverviewData();
-    }, [token, ])
-    const changeCheck = (checked) => {
-        setChecked(checked)
+    }, [token,])
+    // const changeCheck = (checked) => {
+    //     setChecked(checked)
+    // }
+    const changeCheck = () => {
+        setChecked(!checked)
     }
-    const contentStyle = useEmotionCss(({ token }) => {
+    const contentStyle = useEmotionCss(({token}) => {
         return {
             '.ant-descriptions-item-label': {
                 color: `${token.colorLittle} !important`,
@@ -76,13 +80,13 @@ function OverView(props) {
             '.ant-descriptions-title': {
                 color: `${token.colorLittle} !important`,
                 fontFamily: `DingTalkJinBuTi !important`,
-                fontWeight:'500 !important',
+                fontWeight: '500 !important',
             }
         }
     });
 
     const getOverviewData = async () => {
-        let { data } = await getOverviewLiveData({
+        let {data} = await getOverviewLiveData({
             plantId: localStorage.getItem('plantId')
         });
         setAllData(data?.data);
@@ -164,22 +168,22 @@ function OverView(props) {
         {
             key: 'activePower',
             label: '有功功率',
-            unit:  '(kW)'
+            unit: '(kW)'
         },
         {
             key: 'totalDischargeEnergy',
             label: '总放电电量',
-            unit:  '(kWh)'
+            unit: '(kWh)'
         },
         {
             key: 'totalChargeEnergy',
             label: '总充电电量',
-            unit:  '(kWh)'
+            unit: '(kWh)'
         },
         {
             key: 'todayDischargeEnergy',
             label: '日放电电量',
-            unit:  '(kWh)'
+            unit: '(kWh)'
         },
         {
             key: 'todayChargeEnergy',
@@ -250,9 +254,9 @@ function OverView(props) {
     ]
     return (
         <>
-            <div className={styles.container} style={{ color: token.colorLittle }}>
-                <div className={styles.title} style={{ backgroundColor: token.titleCardBgc, color: token.colorLittle }}>
-                    {checked ? <div style={{ height: '32px' }}>
+            <div className={styles.container} style={{color: token.colorLittle}}>
+                <div className={styles.title} style={{backgroundColor: token.titleCardBgc, color: token.colorLittle}}>
+                    {checked ? <div style={{height: '32px'}}>
                         {/* {t('并网点')}:
                         <Select
                             style={{
@@ -268,55 +272,88 @@ function OverView(props) {
                             })
                             }
                         </Select> */}
-                    </div> : <div style={{ height: '32px' }}></div>}
-                    <Switch className={styles.right} checkedChildren={t("总览")} unCheckedChildren={t("接线图")} onChange={changeCheck} defaultChecked={checked} />
+                    </div> : <div style={{height: '32px'}}></div>}
+                    <span className={styles.right}>
+                        {
+                            checked &&
+                            <span style={{cursor: 'pointer'}} onClick={changeCheck}>{t('接线图') + ` >`}</span>
+                        }
+                        {
+                            !checked &&
+                            <span style={{cursor: 'pointer'}} onClick={changeCheck}>{`< ` + t('电站概览')}</span>
+                        }
+                    </span>
+                    {/*<Switch className={styles.right} checkedChildren={t("总览")} unCheckedChildren={t("接线图")} onChange={changeCheck} defaultChecked={checked} />*/}
                 </div>
                 {checked ? <div className={styles.contentWrap}>
-                     <> <div className={styles.heard} style={{ color: token.colorLittle }}>
-                        <div className={styles.headLeftPart} style={{ backgroundColor: token.titleCardBgc, }}>
-                            <div className={styles.line}>
-                                <span className={styles.label}>{t('总充电')}</span>
-                                <span className={styles.value} style={{ color: token.color7,fontFamily:'DingTalkJinBuTi' }}>{allData?.totalCEnergy?.split(' ')?.[0]}<span className={styles.unit} style={{ color: token.colorLittle }}>{` ${allData?.totalCEnergy?.split(' ')?.[1]}`}</span></span>
-                                {/*<Icon className={styles.icon} type='icon-zongchongdian' />*/}
-                            </div>
-                            <div className={styles.line}>
-                                <span className={styles.label}>{t('总放电')}</span>
-                                <span className={styles.value} style={{ color: token.color7,fontFamily:'DingTalkJinBuTi' }}>{allData?.totalDEnergy?.split(' ')?.[0]}<span className={styles.unit} style={{ color: token.colorLittle }}>{` ${allData?.totalDEnergy?.split(' ')?.[1]}`}</span></span>
-                                {/*<Icon className={styles.icon} type='icon-zongfangdian' />*/}
-                            </div>
-                        </div>
-                        <div className={styles.headLeftPart} style={{ backgroundColor: token.titleCardBgc, }}>
-                            <div className={styles.line}>
-                                <span className={styles.label}>{t('日充电')}</span>
-                                <span className={styles.value} style={{ color: token.color7,fontFamily:'DingTalkJinBuTi' }}>{allData?.dayChargeEnergy?.split(' ')?.[0]}<span className={styles.unit} style={{ color: token.colorLittle }}>{` ${allData?.dayChargeEnergy?.split(' ')?.[1]}`}</span></span>
-                                {/*<Icon className={styles.icon} type='icon-richongdian' />*/}
-                            </div>
-                            <div className={styles.line}>
-                                <span className={styles.label}>{t('日放电')}</span>
-                                <span className={styles.value} style={{ color: token.color7,fontFamily:'DingTalkJinBuTi' }}>{allData?.dayDischargeEnergy?.split(' ')?.[0]}<span className={styles.unit} style={{ color: token.colorLittle }}>{` ${allData?.dayDischargeEnergy?.split(' ')?.[1]}`}</span></span>
-                                {/*<Icon className={styles.icon} type='icon-rifangdian' />*/}
-                            </div>
-                        </div>
-                        {power.map(it => {
-                            return (
-                                <div className={styles.headrightPart} style={{ backgroundColor: token.titleCardBgc, }}>
-                                    <div className={styles.value}
-                                         style={{color: token.color7}}>
-                                        <span className={styles.label} style={{color: token.colorLittle}}>{t(it.label)}</span>
-                                        <span  style={{ fontFamily:'DingTalkJinBuTi' }}>{it.value}</span>
-                                        <span className={styles.unit} style={{
-                                            color: token.colorLittle,
+                    <>
+                        <div className={styles.heardAll} style={{backgroundColor: token.titleCardBgc,}}>
+                            <div className={styles.heard} style={{color: token.colorLittle}} style={{backgroundColor: token.color5,}}>
+                                <div className={styles.headLeftPart} style={{backgroundColor: token.titleCardBgc,}}>
+                                    <div className={styles.line}>
+                                        <span className={styles.label}>{t('总充电')}</span>
+                                        <span className={styles.value} style={{
+                                            color: token.color7,
                                             fontFamily: 'DingTalkJinBuTi'
-                                        }}> {it.unit}</span>
-
+                                        }}>{allData?.totalCEnergy?.split(' ')?.[0]}<span className={styles.unit}
+                                                                                         style={{color: token.colorLittle}}>{` ${allData?.totalCEnergy?.split(' ')?.[1]}`}</span></span>
+                                        {/*<Icon className={styles.icon} type='icon-zongchongdian' />*/}
                                     </div>
-                                    {/*<Icon className={styles.icon} style={{ color: it.color }} type={it.icon} />*/}
+                                    <div className={styles.line}>
+                                        <span className={styles.label}>{t('总放电')}</span>
+                                        <span className={styles.value} style={{
+                                            color: token.color7,
+                                            fontFamily: 'DingTalkJinBuTi'
+                                        }}>{allData?.totalDEnergy?.split(' ')?.[0]}<span className={styles.unit}
+                                                                                         style={{color: token.colorLittle}}>{` ${allData?.totalDEnergy?.split(' ')?.[1]}`}</span></span>
+                                        {/*<Icon className={styles.icon} type='icon-zongfangdian' />*/}
+                                    </div>
                                 </div>
-                            )
-                        })}
-                    </div>
+                                <div className={styles.headLeftPart} style={{backgroundColor: token.titleCardBgc,}}>
+                                    <div className={styles.line}>
+                                        <span className={styles.label}>{t('日充电')}</span>
+                                        <span className={styles.value} style={{
+                                            color: token.color7,
+                                            fontFamily: 'DingTalkJinBuTi'
+                                        }}>{allData?.dayChargeEnergy?.split(' ')?.[0]}<span className={styles.unit}
+                                                                                            style={{color: token.colorLittle}}>{` ${allData?.dayChargeEnergy?.split(' ')?.[1]}`}</span></span>
+                                        {/*<Icon className={styles.icon} type='icon-richongdian' />*/}
+                                    </div>
+                                    <div className={styles.line}>
+                                        <span className={styles.label}>{t('日放电')}</span>
+                                        <span className={styles.value} style={{
+                                            color: token.color7,
+                                            fontFamily: 'DingTalkJinBuTi'
+                                        }}>{allData?.dayDischargeEnergy?.split(' ')?.[0]}<span className={styles.unit}
+                                                                                               style={{color: token.colorLittle}}>{` ${allData?.dayDischargeEnergy?.split(' ')?.[1]}`}</span></span>
+                                        {/*<Icon className={styles.icon} type='icon-rifangdian' />*/}
+                                    </div>
+                                </div>
+                                {power.map(it => {
+                                    return (
+                                        <div className={styles.headrightPart}
+                                             style={{backgroundColor: token.titleCardBgc,}}>
+                                            <div className={styles.value}
+                                                 style={{color: token.color7}}>
+                                            <span className={styles.label}
+                                                  style={{color: token.colorLittle}}>{t(it.label)}</span>
+                                                <span style={{fontFamily: 'DingTalkJinBuTi'}}>{it.value}</span>
+                                                <span className={styles.unit} style={{
+                                                    color: token.colorLittle,
+                                                    fontFamily: 'DingTalkJinBuTi'
+                                                }}> {it.unit}</span>
+
+                                            </div>
+                                            {/*<Icon className={styles.icon} style={{ color: it.color }} type={it.icon} />*/}
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div>
+
                         <div className={styles.oneGrid}>
-                            <div className={styles.cneterPart} style={{ backgroundColor: token.titleCardBgc, color: token.colorLittle }}>
+                            <div className={styles.cneterPart}
+                                 style={{backgroundColor: token.titleCardBgc, color: token.colorLittle}}>
                                 <CardModel
                                     title='1#Transformer'
                                     content={
@@ -332,7 +369,7 @@ function OverView(props) {
                                                 }}
                                                 items={gridData.map(it => {
                                                     return {
-                                                        label: t(it.label) ,
+                                                        label: t(it.label),
                                                         // label: t(it.label),+ `${it.unit}`
                                                         key: it.key,
                                                         children: allData?.msc?.[0]?.[it.key]
@@ -348,13 +385,17 @@ function OverView(props) {
                             {
                                 allData?.msc?.map((onePcs, i) => {
                                     return (
-                                        <div className={styles.onePcs}>
-                                            <div className={styles.bottomPart} style={{ backgroundColor: token.titleCardBgc, color: token.colorLittle }}>
+                                        <div className={styles.onePcs} style={{backgroundColor: token.titleCardBgc}}>
+                                            <div className={styles.bottomPart} style={{
+                                                backgroundColor: token.titleCardBgc,
+                                                color: token.colorLittle
+                                            }}>
                                                 <CardModel
                                                     title={'PCS' + (i + 1)}
                                                     content={
                                                         <>
-                                                            <div className={styles.totalPcs} style={{ backgroundColor: token.lightTreeBgc }}>
+                                                            <div className={styles.totalPcs}
+                                                                 style={{backgroundColor: token.lightTreeBgc}}>
                                                                 <Descriptions
                                                                     column={{
                                                                         xs: 1,
@@ -366,7 +407,7 @@ function OverView(props) {
                                                                     }}
                                                                     items={pcsData.map(it => {
                                                                         return {
-                                                                            label: t(it.label) ,
+                                                                            label: t(it.label),
                                                                             // + `${it.unit} `/
                                                                             key: it.key,
                                                                             children: onePcs?.pcs?.[it.key] || '--'
@@ -380,18 +421,22 @@ function OverView(props) {
                                                                 {onePcs?.pcs?.branch?.map((item, i) => {
                                                                     return <Descriptions
                                                                         className={contentStyle}
-                                                                        style={{ backgroundColor: token.lightTreeBgc, padding: '16px 12px 8px 12px', borderRadius: '8px' }}
+                                                                        style={{
+                                                                            backgroundColor: token.lightTreeBgc,
+                                                                            padding: '16px 12px 8px 12px',
+                                                                            borderRadius: '8px'
+                                                                        }}
                                                                         column={1}
                                                                         title={"Module1#" + (i + 1)}
                                                                         items={pcsModel.map(it => {
                                                                             return {
-                                                                                label: t(it.label) ,
+                                                                                label: t(it.label),
                                                                                 // + `${it.unit}`
                                                                                 key: it.key,
                                                                                 children: item[it.key] || '--'
                                                                             }
                                                                         })
-                                                                        } />
+                                                                        }/>
                                                                 })}
                                                             </div>
 
@@ -406,8 +451,8 @@ function OverView(props) {
 
                         </div>
 
-                    </> 
-                </div> :<LinePicture />}
+                    </>
+                </div> : <LinePicture/>}
 
             </div>
         </>

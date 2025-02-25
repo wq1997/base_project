@@ -29,7 +29,7 @@ function Com({ dataX, charge,disCharge }) {
         name:t('充电量'),
         type: 'bar',
         stack: 'total',
-        barWidth: '60%',
+        barWidth: '20%',
         label: {
             show: false,
         },
@@ -84,13 +84,27 @@ function Com({ dataX, charge,disCharge }) {
                 name:`${t('电量')}(kWh)`,
                 splitLine: {
                     lineStyle: {
-                        color: global.theme=='dark'?'#666':'#ddd',
+                        color: global.theme=='dark'?'#333':'#ddd',
                     }
+                },
+                axisLabel: {
+                    color: global.theme=='dark'?'#aaaaaa':'#333',
+                },
+                nameTextStyle: {
+                    color: token.smallTitleColor,
                 },
             },
             xAxis: {
                 type: 'category',
-                data: dataX
+                data: dataX,
+                axisLabel: {
+                    color: global.theme=='dark'?'#aaaaaa':'#333',
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: global.theme == 'dark' ? '#333':'#ddd',
+                    }
+                },
             },
             series
         });

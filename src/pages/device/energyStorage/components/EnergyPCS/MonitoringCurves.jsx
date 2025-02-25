@@ -14,6 +14,7 @@ import { useSelector, useIntl } from "umi";
 const { Option } = Select;
 function Com(props) {
     const { token } = theme.useToken();
+    const global = useSelector(state => state.global);
     const [optionEchart, setOptionEchart] = useState({})
     const [date, setDate] = useState([dayjs(new Date()).format('YYYY-MM-DD')]);
     const [dateObj, setDateObj] = useState([dayjs(new Date())]);
@@ -35,6 +36,7 @@ function Com(props) {
         return msg
     }
     function onChange(date, val) {
+        console.log(11,date,val)
         setDate(val);
         setDateObj(date)
     }
@@ -49,50 +51,59 @@ function Com(props) {
 
     useEffect(() => {
         getInitData();
-        setOptionEchart({
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    type: 'shadow'
-                }
-            },
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                containLabel: true
-            },
-            xAxis: [
-                {
-                    type: 'category',
-                    data: [],
-                    axisTick: {
-                        alignWithLabel: true
-                    }
-                }
-            ],
-            yAxis: [
-                {
-                    name:currentTitle ? currentTitle : title,
-                    type: 'value',
-                    axisLabel: {
-                        formatter: '{value} '
-                    },
-
-                }
-            ],
-            series: [
-
-            ]
-        });
+        // setOptionEchart({
+        //     tooltip: {
+        //         trigger: 'axis',
+        //         axisPointer: {
+        //             type: 'shadow'
+        //         }
+        //     },
+        //     grid: {
+        //         left: '3%',
+        //         right: '4%',
+        //         bottom: '3%',
+        //         containLabel: true
+        //     },
+        //     xAxis: [
+        //         {
+        //             type: 'category',
+        //             data: [],
+        //             axisTick: {
+        //                 alignWithLabel: true
+        //             },
+        //             splitLine: {
+        //                 lineStyle: {
+        //                     color: global.theme=='dark'?'#666':'#ddd',
+        //                 }
+        //             },
+        //         }
+        //     ],
+        //     yAxis: [
+        //         {
+        //             name:currentTitle ? currentTitle : title,
+        //             type: 'value',
+        //             axisLabel: {
+        //                 formatter: '{value} '
+        //             },
+        //             splitLine: {
+        //                 lineStyle: {
+        //                     color: global.theme=='dark'?'#666':'#ddd',
+        //                 }
+        //             },
+        //         }
+        //     ],
+        //     series: [
+        //
+        //     ]
+        // });
     }, [token,pcsIds ]);
     useEffect(() => {
         queryData();
-        console.log(11,title,currentTitle)
+        // console.log(11,title,currentTitle)
     }, [title]);
     useEffect(()=>{
         init();
-        console.log(22,title,currentTitle)
+        // console.log(22,title,currentTitle)
     },[])
     const init=async()=>{
         let { data:res = {} } = await getPcsDevList({
@@ -111,12 +122,13 @@ function Com(props) {
         }
     }
     const queryData = async () => {
-        if (!dateObj) {
+        console.log('dateObj',dateObj)
+        if (!dateObj||dateObj?.length<=0) {
             message.warning(t('请选择日期'));
             return
         }
-        if (dateObj?.length > 7) {
-            message.warning(t('时间最多选7天'));
+        if (dateObj?.length > 3) {
+            message.warning(t('日期最多选3天'));
             return
         }
         currentTitle ? setTitle(currentTitle) : null;
@@ -166,7 +178,7 @@ function Com(props) {
                         }
                     }
                 },
-                data: [...data]
+                data: data
             },)
         });
         setExcelData([...excelData]);
@@ -196,6 +208,11 @@ function Com(props) {
                     axisTick: {
                         alignWithLabel: true
                     },
+                    splitLine: {
+                        lineStyle: {
+                            color: global.theme=='dark'?'#666':'#ddd',
+                        }
+                    },
                     data: dataX
                 }
             ],
@@ -206,12 +223,15 @@ function Com(props) {
                     axisLabel: {
                         formatter: `{value} `
                     },
+                    splitLine: {
+                        lineStyle: {
+                            color: global.theme=='dark'?'#666':'#ddd',
+                        }
+                    },
 
                 }
             ],
-            series: [
-                ...ser
-            ]
+            series: ser
         });
     }
     const downLoadFoodModel = () => {
@@ -223,23 +243,17 @@ function Com(props) {
             sheetHeader.push(it);
             sheetFilter.push(i)
         })
+        console.log('sheetFilter',sheetFilter)
+        console.log('sheetData',sheetData)
         downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader,)
     };
     return (
         <div className={styles.monitoringCurves}>
-            <div className={styles.searchHead} style={{color:token.titleColor}}>
-                <span className={styles.margRL}> {t('对比日期')}:</span>
-                <DatePicker
-                    onChange={onChange}
-                    defaultValue={dateObj}
-                    multiple
-                    maxTagCount={1}
-                    style={{ width: 240 }}
-                />
+            <div className={styles.searchHead} style={{color: token.titleColor}}>
                 <span className={styles.margRL}>{t('设备')}:</span>
                 <Select
                     style={{
-                        width: '10.4167rem',
+                        width: "10%",maxWidth:150
                     }}
                     placeholder="Please select"
                     value={pcsIds}
@@ -255,8 +269,7 @@ function Com(props) {
                 />
                 <span className={styles.margRL}>{t('数据项')}:</span>
                 {optionsSelect.length && <Select
-                    className={styles.margR}
-                    style={{ width: 240 }}
+                    style={{width: "20%",maxWidth:240}}
                     value={type}
                     onChange={changeType}
 
@@ -266,19 +279,29 @@ function Com(props) {
                     })
                     }
                 </Select>}
+                <span className={styles.margRL}> {t('日期')}:</span>
+                <DatePicker
+                    needConfirm
+                    onChange={onChange}
+                    defaultValue={dateObj}
+                    multiple
+                    maxTagCount={1}
+                    style={{width: "15%",maxWidth:240,marginRight:'20px'}}
+                />
                 <Button type="primary" className={styles.firstButton} onClick={queryData}>
                     {t('查询')}
                 </Button>
-                <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downLoadFoodModel}>
-                {t('导出')}{" "}Excel
+                <Button type="primary" style={{backgroundColor: token.defaultBg}} onClick={downLoadFoodModel}>
+                    {t('导出')}{" "}Excel
                 </Button>
             </div>
-            <div className={styles.echartPart}>
+            <div className={styles.echartPart} style={{height: "90%"}}>
                 <CardModel
                     // title={title}
+
                     content={
                         <div className={styles.echartPartCardwrap}>
-                            <ReactECharts option={optionEchart} style={{ height: '100%' }} />
+                            <ReactECharts option={optionEchart} style={{ height: '100%' }} notMerge lazyUpdate={false} />
                         </div>
                     }
                 />

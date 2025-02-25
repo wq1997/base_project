@@ -48,11 +48,11 @@ function Com(props) {
                     dataIndex: 'userName',
                     key: 'userName',
                 },
-                {
-                    title: t('电站类型'),
-                    dataIndex: 'typeName',
-                    key: 'typeName',
-                },
+                // {
+                //     title: t('电站类型'),
+                //     dataIndex: 'typeName',
+                //     key: 'typeName',
+                // },
                 {
                     title: t('建站日期'),
                     dataIndex: 'installDate',
@@ -88,18 +88,18 @@ function Com(props) {
                     key: 'capacity',
                     // width: 200
                 },
-                {
-                    title: t('光伏装机容量'),
-                    dataIndex: 'pvCapacity',
-                    key: 'pvCapacity',
-                    // width: 200
-                },
-                {
-                    title: t('充电桩装机容量'),
-                    dataIndex: 'chargePileCapacity',
-                    key: 'chargePileCapacity',
-                    // width: 200
-                },
+                // {
+                //     title: t('光伏装机容量'),
+                //     dataIndex: 'pvCapacity',
+                //     key: 'pvCapacity',
+                //     // width: 200
+                // },
+                // {
+                //     title: t('充电桩装机容量'),
+                //     dataIndex: 'chargePileCapacity',
+                //     key: 'chargePileCapacity',
+                //     // width: 200
+                // },
                 {
                     title: t('电芯安全运行温度'),
                     dataIndex: 'cellTempRange',
@@ -166,11 +166,11 @@ function Com(props) {
                 dataIndex: 'userName',
                 key: 'userName',
             },
-            {
-                title: t('电站类型'),
-                dataIndex: 'typeName',
-                key: 'typeName',
-            },
+            // {
+            //     title: t('电站类型'),
+            //     dataIndex: 'typeName',
+            //     key: 'typeName',
+            // },
             {
                 title: t('建站日期'),
                 dataIndex: 'installDate',
@@ -203,16 +203,16 @@ function Com(props) {
                 dataIndex: 'capacity',
                 key: 'capacity',
             },
-            {
-                title: t('光伏装机容量'),
-                dataIndex: 'pvCapacity',
-                key: 'pvCapacity',
-            },
-            {
-                title: t('充电桩装机容量'),
-                dataIndex: 'chargePileCapacity',
-                key: 'chargePileCapacity',
-            },
+            // {
+            //     title: t('光伏装机容量'),
+            //     dataIndex: 'pvCapacity',
+            //     key: 'pvCapacity',
+            // },
+            // {
+            //     title: t('充电桩装机容量'),
+            //     dataIndex: 'chargePileCapacity',
+            //     key: 'chargePileCapacity',
+            // },
             {
                 title: t('电芯安全运行温度'),
                 dataIndex: 'cellTempRange',

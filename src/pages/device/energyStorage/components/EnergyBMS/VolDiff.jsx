@@ -7,9 +7,10 @@ import ReactECharts from "echarts-for-react";
 import { CardModel } from "@/components";
 import { getBmsAnalyticsInitData, analyticsBmsDiffData, analyticsBmsData, getBmsDevList } from '@/services/deviceTotal'
 import dayjs from 'dayjs';
-import {  useIntl } from "umi";
+import {useIntl, useSelector} from "umi";
 function Com(props) {
     const { token } = theme.useToken();
+    const global = useSelector(state => state.global);
     const [way, setWay] = useState(1);
     const [date, setDate] = useState(dayjs(new Date()));
     const [dateStr, setDateStr] = useState(dayjs(new Date()).format('YYYY-MM-DD'));
@@ -277,6 +278,11 @@ function Com(props) {
             {
                 type: 'value',
                 // name:`${t('压差')}(V)`
+                splitLine: {
+                    lineStyle: {
+                        color: global.theme=='dark'?'#666':'#ddd',
+                    }
+                },
             }
         ],
         series: []
@@ -284,8 +290,18 @@ function Com(props) {
     return (
         <>
             <div className={styles.advancedAnalytics}>
-                <div className={styles.searchHead} style={{color:token.titleColor}}>
-                <span >{t('设备')}:</span>
+                <div className={styles.searchHead} style={{color: token.titleColor}}>
+                    <span>{t('对比方式')}:</span>
+                    <Select
+                        className={styles.margRL}
+                        style={{width: 180}}
+                        onChange={(val) => changeWay(val)}
+                        options={wayOption}
+                        defaultValue={wayOption[0].value}
+
+                    >
+                    </Select>
+                    <span>{t('设备')}:</span>
                     <Select
                         style={{
                             width: '10.4167rem',
@@ -303,20 +319,11 @@ function Com(props) {
                             })
                         }
                     />
-                    <span >{t('对比方式')}:</span>
-                    <Select
-                        className={styles.margRL}
-                        style={{ width: 180 }}
-                        onChange={(val) => changeWay(val)}
-                        options={wayOption}
-                        defaultValue={wayOption[0].value}
 
-                    >
-                    </Select>
-                    <span >{t('电池pack')}:</span>
+                    <span>{t('电池pack')}:</span>
                     <Select
                         className={styles.margRL}
-                        style={{ width: 240 }}
+                        style={{width: 240}}
                         onChange={changePack}
                         options={packList}
                         mode={way === 1 ? 'multiple' : null}
@@ -326,22 +333,22 @@ function Com(props) {
                         allowClear={false}
                     >
                     </Select>
-                    <span >{t('对比日期')}:</span>
+                    <span>{t('日期')}:</span>
                     <DatePicker className={styles.margRL}
-                        style={{ width: 240 }}
-                        multiple={way === 1 ? false : true}
-                        maxTagCount={1}
-                        onChange={(val, str) => changeDate(val, str)}
-                        defaultValue={date}
-                        key={way + 1}
-                        allowClear={false}
-                        needConfirm
+                                style={{width: 240}}
+                                multiple={way === 1 ? false : true}
+                                maxTagCount={1}
+                                onChange={(val, str) => changeDate(val, str)}
+                                defaultValue={date}
+                                key={way + 1}
+                                allowClear={false}
+                                needConfirm
 
                     />
                     <Button type="primary" className={styles.firstButton} onClick={getChartData}>
                         {t('查询')}
                     </Button>
-                    <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downLoadVAndTDiff}>
+                    <Button type="primary" style={{backgroundColor: token.defaultBg}} onClick={downLoadVAndTDiff}>
                         {t('导出')}{" "}Excel
                     </Button>
                 </div>
@@ -350,7 +357,7 @@ function Com(props) {
                         // title={t('压差') + '(V)'}
                         content={
                             <div className={styles.echartPartCardwrap}>
-                                <ReactECharts layUpdate={false} notMerge={true} option={optionEchartVol} style={{ height: '100%' }} />
+                                <ReactECharts layUpdate={false} notMerge={true} option={optionEchartVol} style={{height: '100%' }} />
                             </div>
                         }
                     />

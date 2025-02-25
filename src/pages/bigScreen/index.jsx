@@ -283,13 +283,13 @@ function Com(props) {
                             global.locale === "zh-CN" ?
                                 <img
                                     src={languageEnglishSvg}
-                                    style={{ cursor: 'pointer', margin: '0px 40px' }}
+                                    style={{ cursor: 'pointer', margin: '0px 40px',width:'30px',height:'30px' }}
                                     onClick={() => changeLanguage('en-US')}
                                 />
                                 :
                                 <img
                                     src={languageChineseSvg}
-                                    style={{ cursor: 'pointer', margin: '0px 40px' }}
+                                    style={{ cursor: 'pointer', margin: '0px 40px',width:'30px',height:'30px'  }}
                                     onClick={() => changeLanguage('zh-CN')}
                                 />
                         }
@@ -336,7 +336,7 @@ function Com(props) {
                         >
                             <img
                                 src={mySvg}
-                                style={{ cursor: 'pointer' }}
+                                style={{ cursor: 'pointer' ,width:'30px',height:'30px'}}
                             />
                         </Dropdown>
                     </div>
@@ -351,12 +351,12 @@ function Com(props) {
                         <div>
                             <div>
                                 <div style={{color:'#03B4B4'}}>{realData?.dayChargeEnergy?.split(' ')[0]}</div>
-                                <div style={{color:token.colorBorder}}>{realData?.dayChargeEnergy?.split(' ')[1]}</div>
+                                <div style={{color:token.bigColor1}}>{realData?.dayChargeEnergy?.split(' ')[1]}</div>
                                 <div style={{color:token.colorLight}}>{t('日充电量')}</div>
                             </div>
                             <div>
                                 <div>{realData?.totalChargeEnergy?.split(' ')[0]}</div>
-                                <div style={{color:token.colorBorder}}>{realData?.totalChargeEnergy?.split(' ')[1]}</div>
+                                <div style={{color:token.bigColor1}}>{realData?.totalChargeEnergy?.split(' ')[1]}</div>
                                 <div style={{color:token.colorLight}}>{t('累计充电量')}</div>
                             </div>
                         </div>
@@ -369,12 +369,12 @@ function Com(props) {
                         <div>
                             <div>
                                 <div style={{color:'#03B4B4'}}>{realData?.dayDischargeEnergy?.split(' ')[0]}</div>
-                                <div style={{color:token.colorBorder}}>{realData?.dayDischargeEnergy?.split(' ')[1]}</div>
+                                <div style={{color:token.bigColor1}}>{realData?.dayDischargeEnergy?.split(' ')[1]}</div>
                                 <div style={{color:token.colorLight}}>{t('日放电量')}</div>
                             </div>
                             <div>
                                 <div>{realData?.totalDischargeEnergy?.split(' ')[0]}</div>
-                                <div style={{color:token.colorBorder}}>{realData?.totalDischargeEnergy?.split(' ')[1]}</div>
+                                <div style={{color:token.bigColor1}}>{realData?.totalDischargeEnergy?.split(' ')[1]}</div>
                                 <div style={{color:token.colorLight}}>{t('累计放电量')}</div>
                             </div>
                         </div>

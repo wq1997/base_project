@@ -18,7 +18,7 @@ const theme = {
         cardShadow:'0px 2px 4px 0px rgba(6,7,16,0.5)',
         titleCardBgc:'#111838',//CardModle的背景色
         tableHead:'#20284D',//滚动表头颜色
-        barColor:['#03B4B4','#A3BCE7','#FCF1AF','#77E2AA','#FFCE8F','#59C0E9'],
+        barColor:['#03B4B4','#A3BCE7','#FCF1AF','#77E2AA','#FFCE8F','#59C0E9','#697DEE'],
         treeBgb:'#03081D',
         lightTreeBgc:'#212849',
         lightTreeLineBgc:'#333F62',
@@ -40,7 +40,9 @@ const theme = {
         color4:'#090F2C',
         color5:'#000000',
         color6:'#fff',
-        color7:'#fff'
+        color7:'#fff',
+        color8:'rgba(255, 255, 255, 0.45)',
+        color9:'#03B4B4'
     },
     default: {
         colorPrimary:'#03B4B4',
@@ -81,7 +83,9 @@ const theme = {
         color4:'#e9eef3',
         color5:'#f5f5f5',
         color6:'#172a86',
-        color7:'#3B628A'
+        color7:'#3B628A',
+        color8:'#d9d9d9',
+        color9:'#03B4B4'
     }
 }
 export default theme;

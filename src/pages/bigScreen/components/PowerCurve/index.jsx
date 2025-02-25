@@ -46,17 +46,31 @@ function Com({ dataX, dataY ,legend}) {
                 splitLine: {
                     show: false,
                     lineStyle: {
-                        color: global.theme=='dark'?'#666':'#ddd',
+                        color: global.theme=='dark'?'#333':'#ddd',
+                    }
+                },
+                axisLabel: {
+                    color: global.theme=='dark'?'#aaaaaa':'#333',
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: global.theme == 'dark' ? '#333':'#ddd',
                     }
                 },
             },
             yAxis: {
                 type: 'value',
                 name:`${t('功率')}(kW)`,
+                nameTextStyle: {
+                    color: token.smallTitleColor,
+                },
                 splitLine: {
                     lineStyle: {
-                        color: global.theme=='dark'?'#666':'#ddd',
+                        color: global.theme=='dark'?'#333':'#ddd',
                     }
+                },
+                axisLabel: {
+                    color: global.theme=='dark'?'#aaaaaa':'#333',
                 },
             },
             dataZoom: [{

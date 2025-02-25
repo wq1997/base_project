@@ -60,7 +60,7 @@ const OperationManage = () => {
         return (
             <Button
                 // style={{ width: 132, height: 48, borderRadius: 4, background: color?.background||'#D1D9EF', color: color?.color||'#6978A1', fontSize: 18, lineHeight: '48px', textAlign: 'center', cursor: 'pointer' }}
-                style={{ height: 32, borderRadius: 4, background: color?.background||'#E9EEF3', color: color?.color||'#333', fontSize: 14,}}
+                style={{ height: 32, borderRadius: 4, background: color?.background||(global.theme=='default'?'#E9EEF3':'#20284D'), color: color?.color||(global.theme=='default'?'#333':'#fff'), fontSize: 14,}}
                 onClick={onBtnClick}
                 disabled={user.roleId==1}
             >
@@ -90,9 +90,9 @@ const OperationManage = () => {
                         <MyButton text="开机" keyObj='pcsStartStop' valueObj={1} cmdKey='7002' devId={item.id} color={{background:token.barColor[0],color:'#fff'}}/>
                         <MyButton text="关机" keyObj='pcsStartStop' valueObj={2} cmdKey='7002' devId={item.id} color={{background:token.barColor[0],color:'#fff'}}/>
                         <MyButton text="复位" keyObj='pcsStartStop' valueObj={3} cmdKey='7002'devId={item.id} color={{background:token.barColor[0],color:'#fff'}}/>
-                        <MyButton text="BMS开机" keyObj='pcsStartStop' valueObj={4}  cmdKey='7016' devId={item.id} color={{background:token.color2,color:'#fff'}}/>
-                        <MyButton text="分闸" keyObj='mcsSwitchOnOff' valueObj={1}  cmdKey='7015'  devId={item.mcsDevId}  color={{background:token.barColor[6],color:token.color3}}/>
-                        <MyButton text="合闸" keyObj='mcsSwitchOnOff' valueObj={0}  cmdKey='7015' devId={item.mcsDevId}  color={{background:token.barColor[6],color:token.color3}}/>
+                        <MyButton text="BMS开机" keyObj='pcsStartStop' valueObj={4}  cmdKey='7016' devId={item.id} color={{background:"#0BB0F3",color:'#fff'}}/>
+                        <MyButton text="分闸" keyObj='mcsSwitchOnOff' valueObj={1}  cmdKey='7015'  devId={item.mcsDevId}  color={{background:token.barColor[6],color:'#fff'}}/>
+                        <MyButton text="合闸" keyObj='mcsSwitchOnOff' valueObj={0}  cmdKey='7015' devId={item.mcsDevId}  color={{background:token.barColor[6],color:'#fff'}}/>
                         <MyButton text="功率设置"  keyObj='pcsPower' cmdKey='7019' devId={item.id}/>
                         <span>{item.pcsStatus}</span>
                         <span>{item.power}</span>
