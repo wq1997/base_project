@@ -87,13 +87,7 @@ function Com({ dataX, dataY }) {
                     barWidth: '24px',
                     itemStyle: {
                         barBorderRadius:[0, 50, 50, 0],
-                        color: new echarts.graphic.LinearGradient(
-                            0, 0, 1, 0,
-                            [
-                                {offset: 0, color: `${global.theme=='default'?'#FFFFFF':'rgba(16,24,57,0.5)'}`},
-                                {offset: 1, color: '#03B4B4'}
-                            ]
-                        )
+                        color: '#03B4B4'
                     },
                     data: dataY
                 }

@@ -1032,5 +1032,10 @@ export default {
     '日期范围不能超过5年':'The date range cannot exceed 5 years',
     '日期范围不能超过31天，请重新选择':'The date range cannot exceed 31 days, please select again',
     '日期范围不能超过12个月，请重新选择':'The date range cannot exceed 12 months, please select again',
-    '日期范围不能超过5年，请重新选择':'The date range cannot exceed 5 years, please select again'
+    '日期范围不能超过5年，请重新选择':'The date range cannot exceed 5 years, please select again',
+    '1级告警':'Level 1',
+    '2级告警':'Level 2',
+    '3级告警':'Level 3',
+    '4级告警':'Level 4',
+    '设备实时告警数(台)':'Real time alarm number of devices (units)',
 }
