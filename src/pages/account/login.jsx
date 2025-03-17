@@ -194,6 +194,15 @@ const Login = () => {
           </Form>
         </div>
       </div>
+      <span className={styles.bottom}>
+        <a
+          style={{ textDecoration: 'none', color: 'inherit' }}
+          href="https://beian.miit.gov.cn/"
+          target="_blank"
+        >
+          {t('沪ICP备17053140号')}
+        </a>
+      </span>
     </div>
   )
 }
