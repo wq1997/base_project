@@ -1,6 +1,6 @@
 import { Outlet, useDispatch, useSelector, FormattedMessage, } from 'umi'
 import React, { useState } from 'react';
-import { theme, Layout, Dropdown, Button,Space } from 'antd';
+import { theme, Layout, Dropdown, Button, Space } from 'antd';
 import MyMenu from "@/permissions/menu";
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import styles from "./baseLayout.less";
@@ -98,15 +98,15 @@ const BaseLayout = () => {
                         <FormattedMessage id="采日能源储能管理系统" />
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                    {
-                          
-                                <img
-                                    // type='icon-jiankongdaping'
-                                    src={bigScreen}
-                                    style={{ cursor: 'pointer', fontSize: "30px",margin: '0px 15px',width:'20px' }}
-                                    onClick={() => history.push('/bigScreen')}
-                                />
-                               
+                        {
+
+                            <img
+                                // type='icon-jiankongdaping'
+                                src={bigScreen}
+                                style={{ cursor: 'pointer', fontSize: "30px", margin: '0px 15px', width: '20px' }}
+                                onClick={() => history.push('/bigScreen')}
+                            />
+
                         }
                         {
                             global.theme === "default" ?
@@ -114,14 +114,14 @@ const BaseLayout = () => {
 
                                     type='icon-shense'
                                     // src={themeDefaultSvg}
-                                    style={{ cursor: 'pointer', fontSize: "20px" ,width:'20px'}}
+                                    style={{ cursor: 'pointer', fontSize: "20px", width: '20px' }}
                                     onClick={() => changeTheme('dark')}
                                 />
                                 :
                                 <Icon
                                     // src={themeDarkSvg}
                                     type='icon-qianse'
-                                    style={{ cursor: 'pointer', fontSize: "20px",width:'20px' }}
+                                    style={{ cursor: 'pointer', fontSize: "20px", width: '20px' }}
                                     onClick={() => changeTheme('default')}
                                 />
                         }
@@ -129,13 +129,13 @@ const BaseLayout = () => {
                             global.locale === "zh-CN" ?
                                 <img
                                     src={languageChineseSvg}
-                                    style={{ cursor: 'pointer', margin: '0px 15px',width:'20px' }}
+                                    style={{ cursor: 'pointer', margin: '0px 15px', width: '20px' }}
                                     onClick={() => changeLanguage('en-US')}
                                 />
                                 :
                                 <img
                                     src={languageEnglishSvg}
-                                    style={{ cursor: 'pointer', margin: '0px 15px' ,width:'20px' }}
+                                    style={{ cursor: 'pointer', margin: '0px 15px', width: '20px' }}
                                     onClick={() => changeLanguage('zh-CN')}
                                 />
                         }
@@ -144,21 +144,21 @@ const BaseLayout = () => {
                             menu={{
                                 items: [
                                     {
-                                        label: ( <Space
+                                        label: (<Space
                                             size={10}
                                             align="baseline"
-                                            style={{width: '100%', height: '100%'}}
+                                            style={{ width: '100%', height: '100%' }}
                                             onClick={() => {
-                                                
+
                                             }}
-                                          >
+                                        >
                                             {/* <UserOutlined 
                                               style={{
                                                 fontSize: 15,
                                               }}
                                             /> */}
                                             <span>{useLocale('退出登录')}</span>
-                                          </Space>
+                                        </Space>
                                         ),
                                         key: 'logout',
                                         icon: <LogoutOutlined />,
@@ -182,21 +182,27 @@ const BaseLayout = () => {
                         >
                             <img
                                 src={mySvg}
-                                style={{ cursor: 'pointer' ,width:'20px' }}
+                                style={{ cursor: 'pointer', width: '20px' }}
                             />
                         </Dropdown>
                     </div>
                 </Header>
-                <Layout hasSider>
-                    <div style={{ height: '100%', position: 'relative', background: token.color1,color:token.colorLittle }}>
-                        <Sider className={siderContentStyle}
-                            style={{ background: token.color1, height: 'calc(100% - 94px)' }}
-                            width={240}
-                            trigger={null} collapsible collapsed={collapsed}>
-                            <div className={styles.siderContent}>
-                                <MyMenu />
-                            </div>
-
+                <Layout
+                    hasSider
+                    className={styles.siderContent}
+                >
+                    <div style={{ height: '100%', position: 'relative', background: token.color1, color: token.colorLittle }}>
+                        <Sider
+                            className={siderContentStyle}
+                            style={{
+                                background: token.color1,
+                                height: 'calc(100% - 94px)'
+                            }}
+                            trigger={null}
+                            collapsible
+                            collapsed={collapsed}
+                        >
+                            <MyMenu />
                         </Sider>
                         <Button
                             type="text"

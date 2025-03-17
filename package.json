@@ -38,7 +38,8 @@
     "qweather-icons": "^1.6.0",
     "react-amap": "^1.2.8",
     "styled-components": "^6.1.6",
-    "umi": "^4.0.72"
+    "umi": "^4.0.72",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@types/react": "^18.2.14",
