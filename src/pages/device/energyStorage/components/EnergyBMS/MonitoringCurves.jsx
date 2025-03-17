@@ -51,8 +51,8 @@ function Com({ id }) {
             },
             grid: {
                 left: '3%',
-                right: '4%',
-                bottom: '3%',
+                right: '2%',
+                bottom: '1%',
                 containLabel: true
             },
             xAxis: [
@@ -163,8 +163,8 @@ function Com({ id }) {
             },
             grid: {
                 left: '3%',
-                right: '4%',
-                bottom: '3%',
+                right: '2%',
+                bottom: '1%',
                 containLabel: true
             },
             xAxis: [
@@ -284,15 +284,11 @@ function Com({ id }) {
                     {t('导出')}{" "}Excel
                 </Button>
             </div>
-            <div className={styles.echartPart} style={{height: "90%"}}>
-                <CardModel
-                    // title={title ? t(title) : ''}
-                    content={
+            <div className={styles.echartPart} style={{height: "calc(100% - 32px)"}}>
+
                         <div className={styles.echartPartCardwrap}>
                             <ReactECharts option={optionEchart} style={{ height: '100%' }}  notMerge lazyUpdate={false}/>
                         </div>
-                    }
-                />
             </div>
         </div>
     )

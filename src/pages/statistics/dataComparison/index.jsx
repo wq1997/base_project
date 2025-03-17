@@ -1,7 +1,7 @@
 // 函数组件
 // 快捷键Ctrl+Win+i 添加注释
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { theme, Select, DatePicker, Button, Cascader, message } from "antd";
+import { theme, Select, DatePicker, Button, Cascader, message,Flex  } from "antd";
 import styles from './index.less'
 import ReactECharts from "echarts-for-react";
 import { CardModel } from "@/components";
@@ -365,11 +365,11 @@ function Com(props) {
   return (
     <div style={{ height: '100%', width: '100%', paddingBottom: '10px' }}>
       <CardModel
-        title={t('数据对比')}
         content={
           <div className={styles.advancedAnalytics} style={{ color: token.titleColor }}>
             <div className={styles.searchHead}>
-              <span >{t('对比方式')}:</span>
+            <Flex wrap align='center'>
+            <span >{t('对比方式')}:</span>
               <Select
                 className={styles.margRL}
                 style={{ width: 180 }}
@@ -413,6 +413,7 @@ function Com(props) {
               <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downloadExcel}>
               {t('导出')}{" "}Excel
               </Button>
+              </Flex> 
             </div>
             <div className={styles.echartPart}>
               <div className={styles.echartPartCardwrap}>

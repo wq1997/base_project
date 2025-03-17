@@ -94,7 +94,7 @@ function Com(props) {
         className={styles.contents}
       >
         <Space className={styles.hearder} direction="vertical" style={{ width: '100%', backgroundColor: token.titleCardBgc, padding: '20px 25px 0 0px', borderRadius: '8px' }}>
-          <div style={{ display: 'flex', justifyContent: 'end', marginRight: '40px' }}>
+          <div style={{ display: 'flex', justifyContent: 'end', marginRight: '60px' }}>
             {/* <Form.Item
               name="gridPointId"
               label={t("并网点")}
@@ -131,10 +131,10 @@ function Com(props) {
           <div className={styles.headBottom}>
             <Form.Item
               name="transCap"
-              label={t("变压器容量")}
+              label={t("变压器容量")+'（kVA）'}
               style={{ width: '100%' }}
-              labelCol={{ span: 6 }}
-              wrapperCol={{ span: 18 }}
+              labelCol={{ span: 14 }}
+              wrapperCol={{ span: 10 }}
               rules={[
               ]}
             >
@@ -142,17 +142,17 @@ function Com(props) {
             </Form.Item>
             <Form.Item
               name="transProtectPercent"
-              label={t("变压器容量保护比例")}
-              labelCol={{ span: 10 }}
-              wrapperCol={{ span: 14 }}
+              label={t("变压器容量保护比例")+'（%）'}
+              labelCol={{ span: 18 }}
+              wrapperCol={{ span: 6 }}
             >
               <Input disabled={true} />
             </Form.Item>
             <Form.Item
               name="powerMode"
               label={t("功率下发模式")}
-              labelCol={{ span: 10 }}
-              wrapperCol={{ span: 14 }}
+              labelCol={{ span: 14 }}
+              wrapperCol={{ span: 10 }}
             >
               <Select
                 options={[
@@ -164,8 +164,8 @@ function Com(props) {
             <Form.Item
               name="loopInterval"
               label={t("策略运行周期") + '（ms）'}
-              labelCol={{ span: 10 }}
-              wrapperCol={{ span: 14 }}
+              labelCol={{ span: 14 }}
+              wrapperCol={{ span: 10 }}
             >
               <Input />
             </Form.Item>

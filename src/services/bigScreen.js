@@ -18,12 +18,12 @@ export const apiGetAllPlantAlarmDistribution = ()=>{
 }
 
 // 获取电站功率曲线
-export const apiGetPlantPowerCurves = ()=>{
-    return axiosInstance.get("/largeScreen/getPlantPowerCurves");
+export const apiGetPlantPowerCurves = (payload)=>{
+    return axiosInstance.get(`/largeScreen/getPlantPowerCurves?date=${payload?.date}`);
 }
 // 获取电站功率曲线(管理员)
-export const apiGetAllPlantPowerCurves = ()=>{
-    return axiosInstance.get("/largeScreen/getAllPlantPowerCurves");
+export const apiGetAllPlantPowerCurves = (payload)=>{
+    return axiosInstance.get(`/largeScreen/getAllPlantPowerCurves?date=${payload?.date}`);
 }
 
 // 获取每天的充放电量

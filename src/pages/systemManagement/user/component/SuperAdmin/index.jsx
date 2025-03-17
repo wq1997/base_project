@@ -215,7 +215,7 @@ const RealtimeAlarm = (props) => {
       <div className={styles.title} style={{ backgroundColor: token.titleCardBgc }}>
         <Select
           style={{
-            width: 120,
+            width: 280,
           }}
           placeholder={t('选择') + t('角色')}
           options={alarmLevel}

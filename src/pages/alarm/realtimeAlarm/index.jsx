@@ -96,9 +96,6 @@ const RealtimeAlarm = () => {
             </Select>
           </div> */}
       <CardModel
-        title={
-          t('实时告警')
-        }
         content={
           <div className={`${styles.alarmWrap} ${global.theme=='default'?'mDefault':'mDark'}`} style={{height:'calc(100% - 87px)'}}>
             <Table

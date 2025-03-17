@@ -8,7 +8,7 @@ import * as echarts from "echarts";
 import { CardModel } from "@/components";
 import { pcsDataType } from '@/utils/constants';
 import { getQueryString, downLoadExcelMode } from "@/utils/utils";
-import { getMonCurHistoryData, getDataParams,getPcsDevList} from '@/services/deviceTotal';
+import { getMonCurHistoryData, getDataParams, getPcsDevList } from '@/services/deviceTotal';
 import dayjs from 'dayjs';
 import { useSelector, useIntl } from "umi";
 const { Option } = Select;
@@ -36,7 +36,7 @@ function Com(props) {
         return msg
     }
     function onChange(date, val) {
-        console.log(11,date,val)
+        console.log(11, date, val)
         setDate(val);
         setDateObj(date)
     }
@@ -44,7 +44,7 @@ function Com(props) {
         setType(value);
         setCurrentTitle(label?.children);
     }
-   
+
     const handleChange = (val, res) => {
         setPcsIds([val]);
     };
@@ -96,24 +96,24 @@ function Com(props) {
         //
         //     ]
         // });
-    }, [token,pcsIds ]);
+    }, [token, pcsIds]);
     useEffect(() => {
         queryData();
         // console.log(11,title,currentTitle)
     }, [title]);
-    useEffect(()=>{
+    useEffect(() => {
         init();
         // console.log(22,title,currentTitle)
-    },[])
-    const init=async()=>{
-        let { data:res = {} } = await getPcsDevList({
+    }, [])
+    const init = async () => {
+        let { data: res = {} } = await getPcsDevList({
             plantId: localStorage.getItem('plantId')
         });
         setOption(res?.data);
         setPcsIds([res?.data?.[0]?.id]);
     }
     const getInitData = async () => {
-        let { data } = await getDataParams({ devId: pcsIds  });
+        let { data } = await getDataParams({ devId: pcsIds });
         if (data?.data) {
             setOptionSelect([...data?.data]);
             setTitle(data?.data?.[0]?.dataTypeDesc);
@@ -122,8 +122,8 @@ function Com(props) {
         }
     }
     const queryData = async () => {
-        console.log('dateObj',dateObj)
-        if (!dateObj||dateObj?.length<=0) {
+        console.log('dateObj', dateObj)
+        if (!dateObj || dateObj?.length <= 0) {
             message.warning(t('请选择日期'));
             return
         }
@@ -133,7 +133,7 @@ function Com(props) {
         }
         currentTitle ? setTitle(currentTitle) : null;
         let { data } = await getMonCurHistoryData({
-            devId: pcsIds[0] ,
+            devId: pcsIds[0],
             dataId: type,
             dateList: date
         });
@@ -148,7 +148,7 @@ function Com(props) {
             let data = [];
             it?.value?.map((item, index) => {
                 data.push([dayjs(item.time).format('HH:mm'), item.value]);
-                it?.value.length !== 0 &&dataX.length!==it?.value.length? dataX.push(dayjs(item.time).format('HH:mm')) : null;
+                it?.value.length !== 0 && dataX.length !== it?.value.length ? dataX.push(dayjs(item.time).format('HH:mm')) : null;
                 excelData[index] = {
                     ...excelData[index],
                     time: dayjs(item.time).format('HH:mm'),
@@ -190,7 +190,7 @@ function Com(props) {
                 }
             },
             legend: {
-                show:false,
+                show: false,
                 textStyle: {
                     color: token.smallTitleColor,
                 },
@@ -198,8 +198,8 @@ function Com(props) {
             },
             grid: {
                 left: '3%',
-                right: '4%',
-                bottom: '3%',
+                right: '2%',
+                bottom: '1%',
                 containLabel: true
             },
             xAxis: [
@@ -210,7 +210,7 @@ function Com(props) {
                     },
                     splitLine: {
                         lineStyle: {
-                            color: global.theme=='dark'?'#666':'#ddd',
+                            color: global.theme == 'dark' ? '#666' : '#ddd',
                         }
                     },
                     data: dataX
@@ -218,14 +218,14 @@ function Com(props) {
             ],
             yAxis: [
                 {
-                    name:(currentTitle&&currentTitle!="") ? currentTitle : title,
+                    name: (currentTitle && currentTitle != "") ? currentTitle : title,
                     type: 'value',
                     axisLabel: {
                         formatter: `{value} `
                     },
                     splitLine: {
                         lineStyle: {
-                            color: global.theme=='dark'?'#666':'#ddd',
+                            color: global.theme == 'dark' ? '#666' : '#ddd',
                         }
                     },
 
@@ -238,22 +238,22 @@ function Com(props) {
         let fileName = title;
         let sheetData = excelData;
         let sheetFilter = ['time',];
-        let sheetHeader = [t("时间"), ];
-        date?.map((it,i)=>{
+        let sheetHeader = [t("时间"),];
+        date?.map((it, i) => {
             sheetHeader.push(it);
             sheetFilter.push(i)
         })
-        console.log('sheetFilter',sheetFilter)
-        console.log('sheetData',sheetData)
+        console.log('sheetFilter', sheetFilter)
+        console.log('sheetData', sheetData)
         downLoadExcelMode(fileName, sheetData, sheetFilter, sheetHeader,)
     };
     return (
         <div className={styles.monitoringCurves}>
-            <div className={styles.searchHead} style={{color: token.titleColor}}>
+            <div className={styles.searchHead} style={{ color: token.titleColor }}>
                 <span className={styles.margRL}>{t('设备')}:</span>
                 <Select
                     style={{
-                        width: "10%",maxWidth:150
+                        width: "10%", maxWidth: 150
                     }}
                     placeholder="Please select"
                     value={pcsIds}
@@ -269,7 +269,7 @@ function Com(props) {
                 />
                 <span className={styles.margRL}>{t('数据项')}:</span>
                 {optionsSelect.length && <Select
-                    style={{width: "20%",maxWidth:240}}
+                    style={{ width: "20%", maxWidth: 240 }}
                     value={type}
                     onChange={changeType}
 
@@ -286,25 +286,19 @@ function Com(props) {
                     defaultValue={dateObj}
                     multiple
                     maxTagCount={1}
-                    style={{width: "15%",maxWidth:240,marginRight:'20px'}}
+                    style={{ width: "15%", maxWidth: 240, marginRight: '20px' }}
                 />
                 <Button type="primary" className={styles.firstButton} onClick={queryData}>
                     {t('查询')}
                 </Button>
-                <Button type="primary" style={{backgroundColor: token.defaultBg}} onClick={downLoadFoodModel}>
+                <Button type="primary" style={{ backgroundColor: token.defaultBg }} onClick={downLoadFoodModel}>
                     {t('导出')}{" "}Excel
                 </Button>
             </div>
-            <div className={styles.echartPart} style={{height: "90%"}}>
-                <CardModel
-                    // title={title}
-
-                    content={
-                        <div className={styles.echartPartCardwrap}>
-                            <ReactECharts option={optionEchart} style={{ height: '100%' }} notMerge lazyUpdate={false} />
-                        </div>
-                    }
-                />
+            <div className={styles.echartPart} style={{ height: "90%" }}>
+                <div className={styles.echartPartCardwrap}>
+                    <ReactECharts option={optionEchart} style={{ height: '100%' }} notMerge lazyUpdate={false} />
+                </div>
             </div>
         </div>
     )
