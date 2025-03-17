@@ -1037,5 +1037,5 @@ export default {
     '2级告警':'Level 2',
     '3级告警':'Level 3',
     '4级告警':'Level 4',
-    '设备实时告警数(台)':'Real time alarm number of devices (units)',
+    '设备实时告警数(台)':'Real Time Alarm Number Of Devices (Units)',
 }

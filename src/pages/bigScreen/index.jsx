@@ -62,12 +62,12 @@ function Com(props) {
             key: 'name',
             width: '10%'
         },
-        {
-            title: t('所属用户'),
-            dataIndex: 'userName',
-            key: 'userName',
-            width: '10%'
-        },
+        // {
+        //     title: t('所属用户'),
+        //     dataIndex: 'userName',
+        //     key: 'userName',
+        //     width: '10%'
+        // },
         {
             title: t('电站类型'),
             dataIndex: 'typeName',
@@ -406,10 +406,9 @@ function Com(props) {
                         {[{ label: '1级告警', type: 1 }, { label: '2级告警', type: 2 }, { label: '3级告警', type: 3 }, { label: '4级告警', type: 4 }].map(it => {
                             return <div className={styles.alarmItem} style={{ backgroundImage: `url(${FILE_URL}/${global.theme === "default" ? `${it.type}级告警_浅色.svg` : `${it.type}级告警_深色.svg`})  `, backgroundSize: '85%', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', }}>
                                 <div style={{width:'60%'}}>
-                                    <div style={{fontSize:'18px',fontWeight:'bold',textAlign:'center',paddingLeft:'40%',fontFamily:' DingTalkJinBuTi'}}>{(alarmData && alarmData?.find(item => item.type == it.type)?.value)||0}</div>
+                                    <div style={{fontSize:'18px',fontWeight:'bold',textAlign:'center',paddingLeft:'40%',fontFamily:'DingTalkJinBuTi'}}>{(alarmData && alarmData?.find(item => item.type == it.type)?.value)||0}</div>
                                     <Tooltip placement="top" title={t(it.label)} ><div style={{fontSize:'14px',textAlign:'center',paddingLeft:'40%'}}> {t(it.label)}</div></Tooltip>
                                 </div>
-
                             </div>
                         })}
                     </div>
