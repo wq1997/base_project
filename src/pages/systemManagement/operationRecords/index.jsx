@@ -95,7 +95,7 @@ const RealtimeAlarm = () => {
           />
         </div>
         {user.roleId !== 1 &&<div className={styles.dataItem}>
-          <Search placeholder={t('用户名')} onSearch={onSearch} enterButton />
+          <Search style={{ width: 280 }} placeholder={t('用户名')} onSearch={onSearch} enterButton />
         </div>}
       </div>
       <div className={styles.tablePart} style={{ backgroundColor: token.titleCardBgc }}>

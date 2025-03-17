@@ -327,9 +327,6 @@ function Com(props) {
     return (
         <div className={`${global.theme=='dark'?styles.darkTheme:null} ${global.theme=='default'?'mDefault':'mDark'}`} style={{height:'calc(100% - 10px)', backgroundColor: token.titleCardBgc }}>
             <CardModel
-                title={
-                    t("电站配置")
-                }
                 filterPart={
                         user.roleId == 1 ||user.roleId == 2?null:<Button type='primary' onClick={changIsOpen}>{t('新增')}</Button>
                 }

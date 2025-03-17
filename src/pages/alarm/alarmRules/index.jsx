@@ -166,9 +166,6 @@ function Com(props) {
     return (
         <div className={`${styles.contents} ${global.theme=='default'?'mDefault':'mDark'}`}>
             <CardModel
-                title={
-                    t("告警规则")
-                }
                 filterPart={
                     <Button type='primary' onClick={changIsOpen}>{t('新增')}</Button>
                 }

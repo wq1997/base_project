@@ -132,9 +132,6 @@ function Com(props) {
     return (
         <div className='content' style={{ backgroundColor: token.titleCardBgc, height: '100%' }}>
             <CardModel
-                title={
-                    t("编辑用户信息")
-                }
                 content={
                     <Form
                         form={form}

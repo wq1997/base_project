@@ -235,8 +235,8 @@ function Com(props) {
         },
         grid: {
             left: '3%',
-            right: '5%',
-            bottom: '3%',
+            right: '3%',
+            bottom: '1%',
             containLabel: true
         },
         legend: {
@@ -353,15 +353,10 @@ function Com(props) {
                     </Button>
                 </div>
                 <div className={styles.echartPartOne}>
-                    <CardModel
-                        // title={t('温差') + '(℃)'}
-                        content={
+                  
                             <div className={styles.echartPartCardwrap}>
                                 <ReactECharts layUpdate={false} notMerge={true} option={optionEchartTem} style={{height: '100%' }} />
                             </div>
-                        }
-                    />
-
                 </div>
             </div>
        

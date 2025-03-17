@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import styles from "./index.less";
 import { useSelector, useIntl, history, useDispatch } from "umi";
-import { theme, Space, Table, Carousel, Dropdown,Tooltip  } from "antd"
+import { theme, Space, Table, Carousel, Dropdown, Tooltip,DatePicker} from "antd"
 import dayjs from 'dayjs';
 import pic1 from '@/assets/svg/default/闪电.svg'
 import pic2 from '@/assets/svg/default/闪电底座.svg'
@@ -44,6 +44,7 @@ function Com(props) {
     const [tableData, setTableData] = useState([]);
     const [alarmData, setAlarmData] = useState([]);
     const [powerCurveData, setPowerCurveData] = useState([]);
+    const [date, setDate] = useState(dayjs().format('YYYY-MM-DD'));
     const [powerCurveDataX, setPowerCurveDataX] = useState([]);
     const [powerCurveDataY, setPowerCurveDataY] = useState([]);
     const [powerCurveLegend, setPowerCurveLegend] = useState([]);
@@ -114,13 +115,17 @@ function Com(props) {
         if (roleId == 4) {
             plantListRes = await apiGetAllPlant();
             alarmRes = await apiGetAllPlantAlarmDistribution();
-            powerCurveRes = await apiGetAllPlantPowerCurves();
+            powerCurveRes = await apiGetAllPlantPowerCurves({
+                date
+            });
             realRes = await apiGetAllPlantEnergy();
             historyRes = await apiGetAllPlantEnergyByDay();
         } else {
             plantListRes = await apiGetPlantList();
             alarmRes = await apiGetPlantAlarmDistribution();
-            powerCurveRes = await apiGetPlantPowerCurves();
+            powerCurveRes = await apiGetPlantPowerCurves({
+                date
+            });
             realRes = await apiGetPlantEnergy();
             historyRes = await apiGetPlantEnergyByDay();
         }
@@ -232,7 +237,44 @@ function Com(props) {
     useEffect(() => {
         getPlantList(user.roleId);
     }, [token])
-
+const getPowerCurve = async (date) => {
+    let powerCurveRes;
+    if (user.roleId == 4) {
+        powerCurveRes = await apiGetAllPlantPowerCurves({
+            date
+        });
+    } else {
+        powerCurveRes = await apiGetPlantPowerCurves({
+            date
+        });
+    }
+    if (powerCurveRes?.data?.code == 200) {
+        let tempX = [], tempY = [], legend = [];
+        powerCurveRes?.data?.data.forEach((item, index) => {
+            let dataY = [];
+            if (index == 0) {
+                item?.value?.forEach(it => {
+                    it.time = dayjs(it.time).format('HH:mm');
+                    tempX.push(it.time);
+                    dataY.push(it.value)
+                })
+            } else {
+                item?.value?.forEach(it => {
+                    dataY.push(it.value)
+                })
+            }
+            legend.push(item.label);
+            tempY.push({
+                name: item.label,
+                type: 'line',
+                data: dataY,
+            },)
+        })
+        setPowerCurveDataX(tempX);
+        setPowerCurveDataY(tempY);
+        setPowerCurveLegend(legend);
+    };
+}
     const changeTheme = (theme) => {
         setLocalStorage("theme", theme);
         dispatch({
@@ -405,9 +447,9 @@ function Com(props) {
                     <div className={styles.alarmBody}>
                         {[{ label: '1级告警', type: 1 }, { label: '2级告警', type: 2 }, { label: '3级告警', type: 3 }, { label: '4级告警', type: 4 }].map(it => {
                             return <div className={styles.alarmItem} style={{ backgroundImage: `url(${FILE_URL}/${global.theme === "default" ? `${it.type}级告警_浅色.svg` : `${it.type}级告警_深色.svg`})  `, backgroundSize: '85%', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', }}>
-                                <div style={{width:'60%'}}>
-                                    <div style={{fontSize:'18px',fontWeight:'bold',textAlign:'center',paddingLeft:'40%',fontFamily:'DingTalkJinBuTi'}}>{(alarmData && alarmData?.find(item => item.type == it.type)?.value)||0}</div>
-                                    <Tooltip placement="top" title={t(it.label)} ><div style={{fontSize:'14px',textAlign:'center',paddingLeft:'40%'}}> {t(it.label)}</div></Tooltip>
+                                <div style={{ width: '60%' }}>
+                                    <div style={{ fontSize: '18px', fontWeight: 'bold', textAlign: 'center', paddingLeft: '40%', fontFamily: 'DingTalkJinBuTi' }}>{(alarmData && alarmData?.find(item => item.type == it.type)?.value) || 0}</div>
+                                    <Tooltip placement="top" title={t(it.label)} ><div style={{ fontSize: '14px', textAlign: 'center', paddingLeft: '40%' }}> {t(it.label)}</div></Tooltip>
                                 </div>
                             </div>
                         })}
@@ -499,7 +541,8 @@ function Com(props) {
                 </div>
                 <div className={styles.curve}
                     style={{ backgroundColor: token.titleCardBgc, color: token.colorLargeScreen }}>
-                    <div className={global.theme == 'default' ? styles.lTitle_default : styles.lTitle_dark}>{t('功率曲线')}
+                    <div className={global.theme == 'default' ? styles.lTitle_default : styles.lTitle_dark} style={{display:'flex',justifyContent:'space-between',paddingRight:'10px'}}>{t('功率曲线')}
+                    <DatePicker size='small' value={dayjs(date)} onChange={(date,dateString)=> {setDate(dateString);getPowerCurve(dateString)}} />
                     </div>
                     <PowerCurve dataX={powerCurveDataX} dataY={powerCurveDataY} legend={powerCurveLegend} />
                 </div>
