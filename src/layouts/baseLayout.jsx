@@ -198,6 +198,7 @@ const BaseLayout = () => {
                                 background: token.color1,
                                 height: 'calc(100% - 94px)'
                             }}
+                            width={collapsed ? "50px" : "unset !important"}
                             trigger={null}
                             collapsible
                             collapsed={collapsed}
