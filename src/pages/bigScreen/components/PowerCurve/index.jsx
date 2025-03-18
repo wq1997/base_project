@@ -26,13 +26,13 @@ function Com({ dataX, dataY ,legend}) {
             },
             legend: {
                 data:legend,
-                right: '1%',
+                right: '50%',
                 textStyle: {
                     color:token.smallTitleColor,
                 }
             },
             grid: {
-                left: '3%',
+                left: '5%',
                 right: '4%',
                 bottom: '3%',
                 containLabel: true

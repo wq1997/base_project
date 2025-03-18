@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import styles from "./index.less";
 import { useSelector, useIntl, history, useDispatch } from "umi";
-import { theme, Space, Table, Carousel, Dropdown, Tooltip,DatePicker} from "antd"
+import { theme, Space, Table, Carousel, Dropdown, Tooltip, DatePicker } from "antd"
 import dayjs from 'dayjs';
 import pic1 from '@/assets/svg/default/闪电.svg'
 import pic2 from '@/assets/svg/default/闪电底座.svg'
@@ -31,7 +31,6 @@ import useIcon from '@/hooks/useIcon';
 import useLocale from "@/hooks/useLocale"
 import { setLocalStorage, removeLocalStorage, } from "@/utils/utils";
 import { FILE_URL } from "@/utils/constants";
-
 import { updateLanguage } from "@/services/user";
 
 function Com(props) {
@@ -105,7 +104,6 @@ function Com(props) {
         },
     ];
     const plantClick = (record) => {
-        console.log(1, record)
         localStorage.setItem('plantId', record.plantId);
         history.push("/index/home");
     }
@@ -237,44 +235,44 @@ function Com(props) {
     useEffect(() => {
         getPlantList(user.roleId);
     }, [token])
-const getPowerCurve = async (date) => {
-    let powerCurveRes;
-    if (user.roleId == 4) {
-        powerCurveRes = await apiGetAllPlantPowerCurves({
-            date
-        });
-    } else {
-        powerCurveRes = await apiGetPlantPowerCurves({
-            date
-        });
+    const getPowerCurve = async (date) => {
+        let powerCurveRes;
+        if (user.roleId == 4) {
+            powerCurveRes = await apiGetAllPlantPowerCurves({
+                date
+            });
+        } else {
+            powerCurveRes = await apiGetPlantPowerCurves({
+                date
+            });
+        }
+        if (powerCurveRes?.data?.code == 200) {
+            let tempX = [], tempY = [], legend = [];
+            powerCurveRes?.data?.data.forEach((item, index) => {
+                let dataY = [];
+                if (index == 0) {
+                    item?.value?.forEach(it => {
+                        it.time = dayjs(it.time).format('HH:mm');
+                        tempX.push(it.time);
+                        dataY.push(it.value)
+                    })
+                } else {
+                    item?.value?.forEach(it => {
+                        dataY.push(it.value)
+                    })
+                }
+                legend.push(item.label);
+                tempY.push({
+                    name: item.label,
+                    type: 'line',
+                    data: dataY,
+                },)
+            })
+            setPowerCurveDataX(tempX);
+            setPowerCurveDataY(tempY);
+            setPowerCurveLegend(legend);
+        };
     }
-    if (powerCurveRes?.data?.code == 200) {
-        let tempX = [], tempY = [], legend = [];
-        powerCurveRes?.data?.data.forEach((item, index) => {
-            let dataY = [];
-            if (index == 0) {
-                item?.value?.forEach(it => {
-                    it.time = dayjs(it.time).format('HH:mm');
-                    tempX.push(it.time);
-                    dataY.push(it.value)
-                })
-            } else {
-                item?.value?.forEach(it => {
-                    dataY.push(it.value)
-                })
-            }
-            legend.push(item.label);
-            tempY.push({
-                name: item.label,
-                type: 'line',
-                data: dataY,
-            },)
-        })
-        setPowerCurveDataX(tempX);
-        setPowerCurveDataY(tempY);
-        setPowerCurveLegend(legend);
-    };
-}
     const changeTheme = (theme) => {
         setLocalStorage("theme", theme);
         dispatch({
@@ -541,8 +539,8 @@ const getPowerCurve = async (date) => {
                 </div>
                 <div className={styles.curve}
                     style={{ backgroundColor: token.titleCardBgc, color: token.colorLargeScreen }}>
-                    <div className={global.theme == 'default' ? styles.lTitle_default : styles.lTitle_dark} style={{display:'flex',justifyContent:'space-between',paddingRight:'10px'}}>{t('功率曲线')}
-                    <DatePicker size='small' value={dayjs(date)} onChange={(date,dateString)=> {setDate(dateString);getPowerCurve(dateString)}} />
+                    <div className={global.theme == 'default' ? styles.lTitle_default : styles.lTitle_dark} style={{ display: 'flex', justifyContent: 'space-between', paddingRight: '10px' }}>{t('功率曲线')}
+                        <DatePicker size='small' style={{marginTop:"10px"}} value={dayjs(date)} onChange={(date, dateString) => { setDate(dateString); getPowerCurve(dateString) }} />
                     </div>
                     <PowerCurve dataX={powerCurveDataX} dataY={powerCurveDataY} legend={powerCurveLegend} />
                 </div>

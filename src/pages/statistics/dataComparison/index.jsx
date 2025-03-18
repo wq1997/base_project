@@ -363,9 +363,7 @@ function Com(props) {
     series: []
   }
   return (
-    <div style={{ height: '100%', width: '100%', paddingBottom: '10px' }}>
-      <CardModel
-        content={
+    <div style={{ height: 'calc(100% - 10px)', width: '100%', backgroundColor: token.titleCardBgc,padding:'15px 20px' }}>
           <div className={styles.advancedAnalytics} style={{ color: token.titleColor }}>
             <div className={styles.searchHead}>
             <Flex wrap align='center'>
@@ -421,9 +419,6 @@ function Com(props) {
               </div>
             </div>
           </div>
-        }
-
-      />
     </div>
 
   )

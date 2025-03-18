@@ -315,7 +315,7 @@ function Com(props) {
                         onChange={changeRangeDate}
                         value={[ startTime,endTime]}
                         format={format}
-                        style={{ marginRight: "20px" }} />
+                        />
                 </div>
 
                 <div className={styles.buttons}>

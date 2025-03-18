@@ -3,31 +3,31 @@ import { CardModel } from "@/components";
 import { theme, Cascader } from "antd";
 import styles from './index.less'
 import { useSelector, useIntl } from "umi";
-import {  getDevLiveDataList, getBmsDevList, getOfChildDevices } from '@/services/deviceTotal'
+import { getDevLiveDataList, getBmsDevList, getOfChildDevices } from '@/services/deviceTotal'
 function Com({ id }) {
     const [dataBmc, setDataBmc] = useState([]);
     const { token } = theme.useToken();
     const [options, setOptions] = useState([]);
-    const [value,setValue]=useState([]);
+    const [value, setValue] = useState([]);
     const onChange = (value, selectedOptions) => {
         console.log(value, selectedOptions);
         setValue(value);
 
     };
-    const loadData = async(selectedOptions) => {
+    const loadData = async (selectedOptions) => {
         const targetOption = selectedOptions[selectedOptions.length - 1];
-        const {data={}}=await getOfChildDevices({associateId:targetOption.id});
+        const { data = {} } = await getOfChildDevices({ associateId: targetOption.id });
         // load options lazily
         setTimeout(() => {
-            let arr=[];
-            data?.data?.map(it=>{
+            let arr = [];
+            data?.data?.map(it => {
                 arr?.push({
-                    label:it.name,
+                    label: it.name,
                     value: it.id,
                 })
             })
             targetOption.children = [
-                ...arr 
+                ...arr
             ];
             setOptions([...options]);
         }, 200);
@@ -126,12 +126,12 @@ function Com({ id }) {
             key: 'dischargeVolLimit',
             label: '放电电压限值',
             value: '',
-        }, 
+        },
         {
             key: 'allowChargeEnergy',
             label: '充电可用电量',
             value: '',
-        },{
+        }, {
             key: 'allowDischargeEnergy',
             label: '放电可用电量',
             value: '',
@@ -286,10 +286,10 @@ function Com({ id }) {
     ])
     useEffect(() => {
         getBmcData();
-    }, [id,value])
-  
+    }, [id, value])
+
     const getOption = async () => {
-        let { data= { } } = await getBmsDevList({
+        let { data = {} } = await getBmsDevList({
             plantId: localStorage.getItem('plantId')
         })
         let arr = [];
@@ -299,28 +299,29 @@ function Com({ id }) {
                 label: it.name,
                 value: it.associateId,
                 isLeaf: false,
-                disableCheckbox:true
+                disableCheckbox: true
             })
         });
-        const {data:res={}}=await getOfChildDevices({associateId:arr[0].id});
-        let newArr=[]
-        res?.data?.map(it=>{
+        const { data: res = {} } = await getOfChildDevices({ associateId: arr[0].id });
+        let newArr = []
+        res?.data?.map(it => {
             newArr?.push({
-                label:it.name,
+                label: it.name,
                 value: it.id,
             })
         });
-        arr[0].children=[...newArr];
-        setValue([[arr[0].value,res?.data?.[0]?.id]]);
+        arr[0].children = [...newArr];
+        setValue([[arr[0].value, res?.data?.[0]?.id]]);
         setOptions([...arr]);
     }
-   
+    const global = useSelector(state => state.global);
+
     const getBmcData = async () => {
-        let httpArr=[]
-        value.map(it=>{
+        let httpArr = []
+        value.map(it => {
             httpArr.push(it?.[1])
         })
-        let { data } = await getDevLiveDataList({ devIds:httpArr });
+        let { data } = await getDevLiveDataList({ devIds: httpArr });
         setDataBmc(data?.data);
     }
 
@@ -332,34 +333,34 @@ function Com({ id }) {
                     options={options}
                     loadData={loadData}
                     onChange={onChange}
-                    changeOnSelect ={false}
+                    changeOnSelect={false}
                     multiple={true}
                     showCheckedStrategy={Cascader.SHOW_CHILD}
                     maxTagCount={1}
-                    style={{width:'12.5rem'}}
+                    style={{ width: '12.5rem' }}
                     allowClear={false}
-                    />
+                />
 
             </div>
             <div className={styles.clusterRealTimeData}>
-            {dataBmc?.map(one=>{
-                return<CardModel
-                title={one.name}
-                content={
-                    <div className={styles.content} style={{ backgroundColor: token.lightTreeBgc }}>
-                        {BmcRealData?.map((it, index) => {
-                            return (
-                                <div className={styles.item} style={{ color: token.titleColor }}>
-                                    <span className={styles.itemKeys}>{t(it.label)}:</span>
-                                    <span className={styles.itemValues}>{one?.[it.key]}</span>
-                                </div>
-                            )
-                        })}
-                    </div>
-                }
-            />
-            })}
-                
+                {dataBmc?.map(one => {
+                    return <CardModel
+                        title={one.name}
+                        content={
+                            <div className={styles.content} style={{ backgroundColor: token.lightTreeBgc, gridTemplateColumns: global.locale === "zh-CN" ? 'repeat(4,1fr)' : 'repeat(3,1fr)' }}>
+                                {BmcRealData?.map((it, index) => {
+                                    return (
+                                        <div className={styles.item} style={{ color: token.titleColor }}>
+                                            <span className={styles.itemKeys}>{t(it.label)}:</span>
+                                            <span className={styles.itemValues}>{one?.[it.key]}</span>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        }
+                    />
+                })}
+
 
             </div>
 

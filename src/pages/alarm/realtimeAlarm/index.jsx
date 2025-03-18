@@ -8,7 +8,7 @@ import { Pagination, theme,Select} from "antd"
 import { getNowAlarmsWithPage } from "@/services/alarm"
 
 let clum=[...alarmTableColums];
-clum[5]={};
+clum[6]={};
 const RealtimeAlarm = () => {
   const [data, setData] = useState([]);
   const [current, setCurrent] = useState(1);

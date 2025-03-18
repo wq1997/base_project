@@ -285,10 +285,10 @@ function Com(props) {
     useEffect(() => {
         setFormData({
             ...record,
-            userName: initSelectData?.userList.find(it => it.label === record.userName)?.value,
-            typeName: initSelectData?.plantType.find(it => it.label === record.typeName)?.value,
-            priceUnit: initSelectData?.languageList.find(it => it.value == record.priceUnit)?.value || initSelectData?.languageList?.[0]?.value,
-            timeZone: initSelectData?.timeZone.find(it => it.label === record.timeZone)?.value || initSelectData?.timeZone?.[0]?.value,
+            userName: initSelectData?.userList?.find(it => it.label === record.userName)?.value,
+            typeName: initSelectData?.plantType?.find(it => it.label === record.typeName)?.value,
+            priceUnit: initSelectData?.languageList?.find(it => it.value == record.priceUnit)?.value || initSelectData?.languageList?.[0]?.value,
+            timeZone: initSelectData?.timeZone?.find(it => it.label === record.timeZone)?.value || initSelectData?.timeZone?.[0]?.value,
             // timeZone:1,
             // priceUnit:1,
             networkDate: dayjs(record?.networkDate),

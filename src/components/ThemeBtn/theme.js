@@ -42,7 +42,13 @@ const theme = {
         color6:'#fff',
         color7:'#fff',
         color8:'rgba(255, 255, 255, 0.45)',
-        color9:'#03B4B4'
+        color9:'#03B4B4',
+        packDetailsBg: 'rgba(11, 18, 47, 1)',
+        packDetailsTipsBg: 'rgba(45, 54, 65, 1)',
+        packDetailsBlockBg: 'rgba(24, 31, 63, 1)',
+        packDetailsLowCellBlockBg: 'rgba(19, 107, 149, 1)',
+        packDetailsMiddleCellBlockBg: 'rgba(17, 22, 47, 1)',
+        packDetailsTopCellBlockBg: 'rgba(160, 30, 30, 1)',
     },
     default: {
         colorPrimary:'#03B4B4',
@@ -85,7 +91,14 @@ const theme = {
         color6:'#172a86',
         color7:'#3B628A',
         color8:'#d9d9d9',
-        color9:'#03B4B4'
+        color9:'#03B4B4',
+        packDetailsBg: '#fff',
+        packDetailsTipsBg: '#fff',
+        packDetailsBlockBg: 'rgba(246, 247, 251, 1)',
+        packDetailsLowCellBlockBg: 'rgba(194, 235, 255, 1)',
+        packDetailsMiddleCellBlockBg: 'rgba(229, 232, 240, 1)',
+        packDetailsTopCellBlockBg: 'rgba(255, 205, 205, 1)',  
+        tableFixedRightBgColor: "#f5f8fa", 
     }
 }
 export default theme;

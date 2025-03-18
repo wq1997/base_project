@@ -501,7 +501,6 @@ function Com() {
                                 </Popover>
                             }
 
-                            <Space>
                                 <Button type="primary" className={styles.firstButton}
                                         onClick={() => setDataChoiceOpen(true)}>
                                     {t('数据选择')}
@@ -509,7 +508,6 @@ function Com() {
                                 <Button type="primary" style={{backgroundColor: token.defaultBg}} onClick={exportData}>
                                     {t('导出')}{" "}Excel
                                 </Button>
-                            </Space>
                         </>
                     }
                 </div>

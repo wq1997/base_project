@@ -93,8 +93,8 @@ function Com(props) {
         name="policy"
         className={styles.contents}
       >
-        <Space className={styles.hearder} direction="vertical" style={{ width: '100%', backgroundColor: token.titleCardBgc, padding: '20px 25px 0 0px', borderRadius: '8px' }}>
-          <div style={{ display: 'flex', justifyContent: 'end', marginRight: '60px' }}>
+        <Space className={styles.hearder} direction="vertical" style={{ width: '100%', backgroundColor: token.titleCardBgc, padding: '15px 20px', borderRadius: '8px' }}>
+          <div style={{ display: 'flex', justifyContent: 'end', marginRight: '70px' }}>
             {/* <Form.Item
               name="gridPointId"
               label={t("并网点")}

@@ -440,7 +440,6 @@ function Com({ id }) {
                                 defaultValue={0}
                                 onChange={(val,)=>{
                                     one.fun(val);
-                                    console.log(val,1122,data?.[one?.key]?.[one.index]);
                                 }}
                             />
                         </div>

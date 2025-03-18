@@ -128,7 +128,7 @@ const RealtimeAlarm = () => {
   return (
     <div className={`${styles.wrap} ${global.theme=='default'?'mDefault':'mDark'}`}>
       <div className={styles.content} style={{ backgroundColor: token.titleCardBgc }}>
-        <div className={styles.title}>
+        <div className={styles.title} style={{ color: token.titleColor }}>
           {/* <div className={styles.grid} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal,marginRight:'35px' }}>
             <Select
               style={{
@@ -146,18 +146,21 @@ const RealtimeAlarm = () => {
               }
             </Select>
           </div> */}
-          <div className={styles.level} style={{marginRight:'35px'}}>
+          <div className={styles.level} >
+          <span>{t('告警等级')}:</span>
             <Select
-              style={{ width: 150 }}
+              style={{ width: 150,margin: '0 10px 0 10px'}}
               onChange={changeLevel}
               options={alarmLevel}
               allowClear
               placeholder={t('告警等级')}
+              
             />
           </div>
-          
           <div className={styles.date}>
+          <span>{t('日期')}:</span>
             <RangePicker
+            style={{margin: '0 20px 0 10px'}}
               showTime={{
                 hideDisabledOptions: true,
                 defaultValue: [dayjs('00:00:00', 'HH:mm:ss'), dayjs('11:59:59', 'HH:mm:ss')],

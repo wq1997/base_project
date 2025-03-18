@@ -160,7 +160,7 @@ export const analyticsBmsData = (payload) => {
 
 // 获取电芯实时数据
 export const fetchCellNowData = (payload) => {
-    return axiosInstance.get(`${path}/fetchCellNowData?id=${payload.id}`);
+    return axiosInstance.get(`${path}/fetchCellNowData?id=${payload.id}&enableCellTemp=${payload.enableCellTemp}`);
 }
 
 // 电表检测曲线初始化列表

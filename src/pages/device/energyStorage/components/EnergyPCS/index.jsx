@@ -36,7 +36,7 @@ const PageTypeList = [
     {label:t('监测曲线'),key:'MonitoringCurvesPcs'},
 ];
     return (
-        <div style={{height: 'calc(100% - 56px)'}}>
+        <div style={{height: 'calc(100% - 46px)'}}>
             <Tab activeKey={activeKey} TabItem={PageTypeList} onChange={onChangeTab}/>
             <div className={styles.contentPcs} style={{backgroundColor: token.titleCardBgc,padding:'15px 20px',borderRadius: '0px 16px 0px 0px'}}>
                 {activeKey==="MonitoringCurvesPcs"&&<MonitoringCurves id={props.id}/>}

@@ -21,6 +21,21 @@ export const alarmTableColums = [
     //     key: 'type',
     // },
     {
+        title: <FormattedMessage id='电站名称' />,
+        dataIndex: 'plantName',
+        key: 'plantName',
+    },
+    {
+        title: <FormattedMessage id='设备编码' />,
+        dataIndex: 'sn',
+        key: 'sn',
+    },
+    {
+        title: <FormattedMessage id='设备名称' />,
+        dataIndex: 'deviceName',
+        key: 'deviceName',
+    },
+    {
         title: <FormattedMessage id='告警等级' />,
         dataIndex: 'priorName',
         key: 'priorName',
@@ -50,21 +65,13 @@ export const alarmTableColums = [
         dataIndex: 'desc',
         key: 'desc',
     },
-    {
-        title: <FormattedMessage id='设备名称' />,
-        dataIndex: 'deviceName',
-        key: 'deviceName',
-    },
+  
     // {
     //     title: <FormattedMessage id='并网点'/>,
     //     dataIndex: 'name',
     //     key: 'name',
     // },
-    {
-        title: <FormattedMessage id='电站名称' />,
-        dataIndex: 'plantName',
-        key: 'plantName',
-    },
+  
 
     {
         title: <FormattedMessage id='开始时间' />,

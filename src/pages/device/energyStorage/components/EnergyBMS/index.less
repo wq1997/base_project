@@ -1,5 +1,5 @@
 .content {
-    height: calc(100% - 50px);
+    height: calc(100% - 46px);
     overflow: scroll;
 
     &::-webkit-scrollbar {
@@ -66,7 +66,7 @@
         //justify-content: center;
         align-items: center;
         .margRL{
-            margin: 0 10px 0 40px;
+            margin: 0 10px 0 10px;
         }
         .firstButton{
             margin: 0 20px;
@@ -91,7 +91,7 @@
             margin: 0 20px 0 10px;
         }
         .firstButton{
-            margin: 0 20px;
+            margin: 0 20px 0 0
         }
     }
     .echartPart{
@@ -121,6 +121,7 @@
     width: 100%;
     height: calc(100% - 10px) ;
     font-family: none;
+   
     .searchHead{
         width: 100%;
         display: flex;
@@ -131,12 +132,38 @@
         .margRL{
             margin: 0 40px 0 10px;
         }
+        
+    }
+    .total {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 20px;
+
+        .item {
+            height: 70px;
+            flex: 1;
+            background-color: rgba(24, 31, 63, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            >span {
+                display: inline-block;
+
+                &.label {
+                    margin-top: 5px;
+                }
+            }
+
+        }
     }
     .cellContent{
         width: 100%;
-        height: calc(100% - 100px);
+        // height: calc(100% - 100px);
         display: grid;
-        grid-template-columns:repeat(auto-fill,100%);
+        // grid-template-columns:repeat(auto-fill,100%);
         gap: 8px;
         .packSingle{
             width: 100%;
@@ -145,7 +172,7 @@
             }
             .packContent{
                 width: 100%;
-                height: calc(100% - 30px) ;
+                // height: calc(100% - 30px) ;
                 padding: 16px 10px 64px;
                 position: relative;
                 display: flex;
@@ -159,21 +186,16 @@
 
                     // gap: 35px;
                     .cellSingel{
-                        position: relative;
-                        img{
-                            position: absolute;
-                            bottom: calc(18% + 3px) ;
-                            left: 23%;
-                        }
-                        .cellVol{
-                            margin-top: 12%;
-                            text-align: center;
-                            padding-left: 8px;
-                        }
+                        display: flex;
+                        flex-direction: column;
+                        padding: 10px;
+                        // .cellVol{
+                        //     margin-top: 12%;
+                        //     text-align: center;
+                        //     padding-left: 8px;
+                        // }
                         .cellTmp{
-                            position: absolute;
-                            bottom: 15% ;
-                            right: 25%;
+                            text-align: right;
                         }
                     }
                 }
@@ -211,27 +233,39 @@
         }
     }
     @media screen and (min-width: 2000px) {
-        .cellSingel {
-            height: 80px;
-            font-size: 20px;
-        }
+        // .cellSingel {
+        //     height: 80px;
+        //     font-size: 20px;
+        // }
 
     }
 
     @media screen and (min-width: 1000px) and (max-width: 2000px) {
-        .cellSingel {
-            height: 50px;
-            font-size: 16px;
+        // .cellSingel {
+        //     height: 50px;
+        //     font-size: 16px;
 
-        }
+        // }
     }
 
     @media screen and (max-width: 1000px) {
-        .cellSingel {
-            height: 50px;
-            font-size: 14px;
+        // .cellSingel {
+        //     height: 50px;
+        //     font-size: 14px;
 
-        }
+        // }
 
+    }
+}
+
+.area {
+    display: flex;
+    align-items: center;
+
+    >div {
+        width: 20px;
+        height: 12px;
+        border-radius: 2;
+        margin: 0 5px;
     }
 }
