@@ -587,7 +587,7 @@ function Com() {
                                 });
                                 // setCurrentModel(Object.keys(values));
                                 setDataChoiceOpen(false);
-                                message.success("提交成功");
+                                message.success(t("提交成功"));
                             }}
                             onCancel={() => {
                                 setDataChoiceOpen(false);

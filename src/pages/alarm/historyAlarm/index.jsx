@@ -2,7 +2,7 @@ import Table from '@/components/Table.jsx'
 import { alarmTableColums } from '@/utils/constants'
 import { getQueryString, downLoadExcelMode } from "@/utils/utils";
 import { useEffect, useState } from 'react'
-import { useSelector, useIntl } from "umi";
+import { useSelector, useIntl, } from "umi";
 import styles from "./index.less";
 import { Pagination, Select, Input, theme, Button, DatePicker } from "antd"
 import { getHistoryAlarmsByOptionsWithPage, getHistoryAlarmsStatistics } from "@/services/alarm"
@@ -16,7 +16,6 @@ const RealtimeAlarm = () => {
   const { token } = theme.useToken();
   const [screenH, setScreenH] = useState('');
   const [scroolY, setScroolY] = useState(500);
-  const [grids, setGrids] = useState([]);
   const [currntGrid, setCurrntGrid] = useState();
   const global = useSelector(state => state.global);
   const intl = useIntl();
@@ -52,22 +51,22 @@ const RealtimeAlarm = () => {
   }, [screenH])
   const alarmLevel = [
     {
-      label: t('一级告警'),
+      label: t('1级'),
       value: '1',
       key: '一级告警',
     },
     {
-      label: t('二级告警'),
+      label: t('2级'),
       value: '2',
       key: '二级告警',
     },
     {
-      label: t('三级告警'),
+      label: t('3级'),
       value: '3',
       key: '三级告警',
     },
     {
-      label: t('四级告警'),
+      label: t('4级'),
       value: '4',
       key: '四级告警',
     },
@@ -93,7 +92,6 @@ const RealtimeAlarm = () => {
       // gridPoint:currntGrid
     });
     setData(data.data);
-
   }
   const changPage = (page) => {
     setCurrent(page);
@@ -101,7 +99,6 @@ const RealtimeAlarm = () => {
   const changeLevel = (value) => {
     setLevel(value);
     setCurrent(1);
-
   }
 
   const changeTime = (value) => {

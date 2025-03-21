@@ -135,7 +135,6 @@ function Com(props) {
             gridPointId:record?.gridPointId
             // status: '启用' ? true : false,
         });
-        console.log(record?.id,1212);
         setTitle('编辑告警规则');
         setIsOpen(!isOpen);
     }
@@ -187,7 +186,7 @@ function Com(props) {
                 onOk={del}
                 onCancel={changeIsOpenDel}
             >
-               {t('数据删除后将无法恢复，是否确认删除该条数据？')}
+               {t('数据删除后将无法恢复，是否确认删除该条数据?')}
             </Modal>
         </div>
     )

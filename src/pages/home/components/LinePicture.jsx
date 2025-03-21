@@ -33,7 +33,7 @@ function Com(props) {
                 title={t('接线图')}
                 content={
                     <div className={styles.wrap} style={{ borderTop: `3px solid ${token.colorLittle}` }}>
-                        <div className={styles.left} style={{ width: '80%' }}>
+                        <div className={styles.left} style={{ width: '90%' }}>
                             <div className={styles.theFirstLine} style={{ borderBottom: `3px solid ${token.colorLittle}` }}></div>
                             <div className={styles.theFirstContent}>
                                 {[1, 2, 3, 4, 5, 6, 7, 8].map((it, index) => {
@@ -67,7 +67,7 @@ function Com(props) {
 
                                                 </div>
                                             </div>
-                                            <div className={styles.dataRight} style={{marginLeft:'0.1563rem',width:'2.0833rem',}}>
+                                            <div className={styles.dataRight} style={{marginLeft:'18px',width:'2.0833rem',}}>
                                                 <div className={styles.pcsData}>
                                                     <div>{data?.[0]?.[index]?.pcsCur}</div>
                                                     <div>{data?.[0]?.[index]?.pcsVol}</div>
@@ -121,7 +121,7 @@ function Com(props) {
 
                                                 </div>
                                             </div>
-                                            <div className={styles.dataRight} style={{marginLeft:'0.1563rem',width:'2.0833rem',}}>
+                                            <div className={styles.dataRight} style={{marginLeft:'18px',width:'2.0833rem',}}>
                                                 <div className={styles.pcsData} >
                                                     <div>{data?.[1]?.[index]?.pcsCur}</div>
                                                     <div>{data?.[1]?.[index]?.pcsVol}</div>

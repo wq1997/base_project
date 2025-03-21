@@ -77,7 +77,7 @@ function Com(props) {
             })
         },
         {
-            label: '手机',
+            label: '手机号',
             key: 'phone',
             type: 1,
             required: false

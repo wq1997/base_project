@@ -440,10 +440,10 @@ function Com(props) {
                 </div>
                 <div className={styles.alarm}
                     style={{ backgroundColor: token.titleCardBgc, color: token.colorLargeScreen }}>
-                    <div className={global.theme == 'default' ? styles.lTitle_default : styles.lTitle_dark}>{t('设备实时告警数(台)')}
+                    <div className={global.theme == 'default' ? styles.lTitle_default : styles.lTitle_dark}>{t('实时告警数')}
                     </div>
                     <div className={styles.alarmBody}>
-                        {[{ label: '1级告警', type: 1 }, { label: '2级告警', type: 2 }, { label: '3级告警', type: 3 }, { label: '4级告警', type: 4 }].map(it => {
+                        {[{ label: '1级', type: 1 }, { label: '2级', type: 2 }, { label: '3级', type: 3 }, { label: '4级', type: 4 }].map(it => {
                             return <div className={styles.alarmItem} style={{ backgroundImage: `url(${FILE_URL}/${global.theme === "default" ? `${it.type}级告警_浅色.svg` : `${it.type}级告警_深色.svg`})  `, backgroundSize: '85%', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', }}>
                                 <div style={{ width: '60%' }}>
                                     <div style={{ fontSize: '18px', fontWeight: 'bold', textAlign: 'center', paddingLeft: '40%', fontFamily: 'DingTalkJinBuTi' }}>{(alarmData && alarmData?.find(item => item.type == it.type)?.value) || 0}</div>
@@ -540,7 +540,7 @@ function Com(props) {
                 <div className={styles.curve}
                     style={{ backgroundColor: token.titleCardBgc, color: token.colorLargeScreen }}>
                     <div className={global.theme == 'default' ? styles.lTitle_default : styles.lTitle_dark} style={{ display: 'flex', justifyContent: 'space-between', paddingRight: '10px' }}>{t('功率曲线')}
-                        <DatePicker size='small' style={{marginTop:"10px"}} value={dayjs(date)} onChange={(date, dateString) => { setDate(dateString); getPowerCurve(dateString) }} />
+                        <DatePicker size='small' allowClear={false}  style={{marginTop:"10px"}} value={dayjs(date)} onChange={(date, dateString) => { setDate(dateString); getPowerCurve(dateString) }} />
                     </div>
                     <PowerCurve dataX={powerCurveDataX} dataY={powerCurveDataY} legend={powerCurveLegend} />
                 </div>

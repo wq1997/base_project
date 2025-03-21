@@ -135,14 +135,16 @@ const App = (props) => {
   const onFinish = async () => {
     try {
       const values = await form.validateFields();
-      // console.log('values',values,props.formData);
+      console.log('values',values,);
       // return;
       props.changeData({
         ...values,
-        createUserId: values.userName,
-        type: values.typeName,
+        createUserId: values.userName?.value||props?.formData?.userName,
+        type: values.typeName?.value||props?.formData?.type,
+        timeZone:values.timeZone?.value||props?.formData?.timeZone,
         installDate: values.installDate.format('YYYY-MM-DD'),
-        networkDate: values.networkDate.format('YYYY-MM-DD')
+        networkDate: values.networkDate.format('YYYY-MM-DD'),
+        priceUnit:values.priceUnit?.value||props?.formData?.priceUnit,
       })
       props.onRef();
     } catch (errorInfo) {
@@ -203,8 +205,8 @@ const App = (props) => {
                         <Select
                             labelInValue
                             onChange={(val) => onChange(val, it)}
-                            defaultValue={it?.data?.[0]?.value}
-                          key={it?.data?.[0]?.key}
+                            // defaultValue={it?.data?.[0]?.value}
+                          // key={it?.data?.[0]?.key}
                         >
                           {it?.data && it?.data.map(item => {
                             return (<Option key={item.key} value={item.value}>{item.label}</Option>);

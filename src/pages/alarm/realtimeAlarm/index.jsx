@@ -1,14 +1,76 @@
 import Table from '@/components/Table.jsx'
 import { alarmTableColums } from '@/utils/constants'
 import { useEffect, useState } from 'react'
-import { useSelector, useIntl} from "umi";
+import { useSelector, useIntl, FormattedMessage } from "umi";
 import { CardModel } from "@/components";
 import styles from "./index.less";
-import { Pagination, theme,Select} from "antd"
+import { Pagination, theme, Select } from "antd"
 import { getNowAlarmsWithPage } from "@/services/alarm"
+import dayjs from 'dayjs';
 
-let clum=[...alarmTableColums];
-clum[6]={};
+const clum = [
+  {
+    title: <FormattedMessage id='电站名称' />,
+    dataIndex: 'plantName',
+    key: 'plantName',
+    width: '16.67%'
+  },
+  {
+    title: <FormattedMessage id='设备编码' />,
+    dataIndex: 'sn',
+    key: 'sn',
+    width: '16.67%'
+
+  },
+  {
+    title: <FormattedMessage id='设备名称' />,
+    dataIndex: 'deviceName',
+    key: 'deviceName',
+    width: '16.67%'
+
+  },
+  {
+    title: <FormattedMessage id='告警等级' />,
+    dataIndex: 'priorName',
+    key: 'priorName',
+    width: '16.67%',
+    render: (val, record) => {
+      if (record?.prior == 1) {
+        return <div style={{ color: '#FF0000' }}>
+          {val}
+        </div>
+      } else if (record?.prior == 2) {
+        return <div style={{ color: '#FF7D00' }}>
+          {val}
+        </div>
+      } else if (record.prior == 3) {
+        return <div style={{ color: '#FFCD00' }}>
+          {val}
+        </div>
+      } else if (record.prior == 4) {
+        return <div style={{ color: '#00FF19' }}>
+          {val}
+        </div>
+      }
+    }
+  },
+  {
+    title: <FormattedMessage id='告警描述' />,
+    dataIndex: 'desc',
+    key: 'desc',
+    width: '16.67%',
+
+  },
+  {
+    title: <FormattedMessage id='开始时间' />,
+    dataIndex: 'begin',
+    key: 'begin',
+    width: '16.67%',
+    render: (val) => {
+      return val ? dayjs(val).format('YYYY-MM-DD HH:mm:ss') : ''
+    }
+  },
+];
 const RealtimeAlarm = () => {
   const [data, setData] = useState([]);
   const [current, setCurrent] = useState(1);
@@ -19,12 +81,12 @@ const RealtimeAlarm = () => {
   const { token } = theme.useToken();
   const intl = useIntl();
   const t = (id) => {
-      const msg = intl.formatMessage(
-          {
-              id,
-          },
-      );
-      return msg
+    const msg = intl.formatMessage(
+      {
+        id,
+      },
+    );
+    return msg
   }
   useEffect(() => {
     setScreenH(document.documentElement.clientHeight || document.body.clientHeight)
@@ -61,14 +123,14 @@ const RealtimeAlarm = () => {
     return state.device
   });
   const getData = async (page) => {
-    const { data } = await getNowAlarmsWithPage({
+    const res = await getNowAlarmsWithPage({
       currentPage: page || 1,
       pageSize: 10,
-      plantId:currentPlantId||localStorage.getItem('plantId'),
-      // gridPoint:currntGrid
-
+      plantId: currentPlantId || localStorage.getItem('plantId'),
     });
-    setData(data.data);
+    if (res?.data?.data) {
+      setData(res?.data?.data);
+    }
   }
   const changPage = (page) => {
     setCurrent(page);
@@ -76,7 +138,7 @@ const RealtimeAlarm = () => {
   }
 
   return (
-    <div style={{width:'100%',height:'calc(100% - 10px)',padding:'0 0 10px 0',backgroundColor: token.titleCardBgc, }}>
+    <div style={{ width: '100%', height: 'calc(100% - 10px)', padding: '0 0 10px 0', backgroundColor: token.titleCardBgc, }}>
       {/* <div className={styles.grid} style={{ backgroundColor: token.titleCardBgc, color: token.colorNormal, }}>
             <Select
               style={{
@@ -97,7 +159,7 @@ const RealtimeAlarm = () => {
           </div> */}
       <CardModel
         content={
-          <div className={`${styles.alarmWrap} ${global.theme=='default'?'mDefault':'mDark'}`} style={{height:'calc(100% - 87px)'}}>
+          <div className={`${styles.alarmWrap} ${global.theme == 'default' ? 'mDefault' : 'mDark'}`} style={{ height: 'calc(100% - 87px)' }}>
             <Table
               columns={clum}
               data={data?.records}

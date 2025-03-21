@@ -48,7 +48,7 @@ function Com(props) {
         value: 1,
     },
     {
-        label: t('不同时间  相同数据项'),
+        label: t('不同时间 相同数据项'),
         value: 2,
     },]
 
@@ -392,7 +392,7 @@ function Com(props) {
     return (
         <>
             <div className={styles.advancedAnalytics}>
-                <div style={{marginBottom:'.5208rem',paddingLeft:'1.0417rem'}}>   
+                <div style={{marginBottom:'.5208rem',}}>   
                     <span className={styles.margRL}>{t('设备')}:</span>
                     <Select
                         style={{

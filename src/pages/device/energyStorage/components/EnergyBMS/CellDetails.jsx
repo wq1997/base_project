@@ -79,13 +79,13 @@ function Com({ id }) {
             label: t("当前最高电压"),
             key: "maxVol",
             unit: "V",
-            color: 'rgba(252, 207, 0, 1)'
+            color: '#FC7200'
         },
         {
             label: t("当前最低电压"),
             key: "minVol",
             unit: "V",
-            color: 'rgba(3, 255, 23, 1)'
+            color: 'rgba(0, 218, 44, 1)'
         },
         {
             label: t("最大压差"),
@@ -261,14 +261,14 @@ function Com({ id }) {
                 {data?.map(one => {
                     return (
                         <div className={styles.packSingle}>
-                            <div className={styles.packTitle} style={{ color: token.colorLittle }}>Pack{one.packNo + 1}</div>
+                            <div className={styles.packTitle} style={{ color: token.colorLittle }}>PACK{one.packNo + 1}</div>
                             <div className={styles.packContent} style={{ backgroundColor: token.packDetailsBlockBg }}>
                                 <div className={styles.packCell}>
                                     {one?.packData.map((it, index) => {
                                         return <div className={styles.cellSingel}
                                          style={{ 
                                             // backgroundImage: (`url(${(index + 1) % 2 === 0 ? getImg(1) : getImg(2)})`), backgroundSize: '100% 100%'
-                                            backgroundColor: getCellBg(it.tmp) 
+                                            backgroundColor: getCellBg(it?.tmp) 
                                             }}>
                                             {/* {Object.keys(it).length == 2 ? <img src={cellTem} alt="" /> : null} */}
                                             {it.tmp && <div className={styles.cellTmp} style={{ color: token.colorLittle }}>{it.tmp}℃</div>}
@@ -276,7 +276,7 @@ function Com({ id }) {
                                                     style={{
                                                         color:
                                                             it?.vol == calculateValues(data)?.maxVol
-                                                                ? "rgba(255, 160, 0, 1)"
+                                                                ? "#FC7200"
                                                                 : it?.vol == calculateValues(data)?.minVol
                                                                     ? "rgba(0, 218, 44, 1)"
                                                                     : token.colorLittle,

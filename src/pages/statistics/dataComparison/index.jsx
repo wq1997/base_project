@@ -39,7 +39,7 @@ function Com(props) {
     value: 1,
 },
 {
-    label: t('不同时间  相同数据项'),
+    label: t('不同时间 相同数据项'),
     value: 2,
 },]
 

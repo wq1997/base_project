@@ -120,19 +120,19 @@ const RealtimeAlarm = (props) => {
   ];
   useEffect(() => {
     searchData();
-  }, [level, textLike, formData, delId]);
+  }, [ formData, delId]);
 
 
-  const searchData = async () => {
+  const searchData = async (value, _e, info) => {
     if(props.roleId==4){
       const { data } = await apiListUserWithOptionsAll({
-        name: textLike,
-        roleId: level
+        name: value,
+        roleId: level 
       });
       setData(data.data);
     }else{
       const { data } = await apiListUserWithOptions({
-        name: textLike,
+        name: value,
         roleId: level
       });
       setData(data.data);
@@ -223,7 +223,7 @@ const RealtimeAlarm = (props) => {
           allowClear
         />
         <div className={styles.level}>
-          <Search style={{ width: 280 }} placeholder={t("用户名")} onSearch={onSearch} enterButton allowClear />
+          <Search style={{ width: 280 }} placeholder={t("用户名")} onSearch={searchData} enterButton allowClear />
         </div>
         <div className={styles.dataItem}>
           {(props.roleId == 3||props.roleId == 4)&&<Button type='primary' onClick={changIsOpen} >{t('新增')}</Button>}

@@ -61,7 +61,7 @@ function Com({ id }) {
             value: '',
         }, {
             key: 'phaseBActivePower',
-            label: t('交流母线B相有功功率'),
+            label: '交流母线B相有功功率',
             value: '',
         }, {
             key: 'phaseCActivePower',

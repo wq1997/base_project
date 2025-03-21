@@ -84,7 +84,7 @@ const App = (props) => {
 
     },
     {
-      label: '手机',
+      label: '手机号',
       key: 'phone',
       type: 1,
       required: false,
@@ -178,7 +178,7 @@ const App = (props) => {
 
           })
           }
-          <Form.Item label={t('邮箱')} name={'mail'} rules={[{ required: true }]}>
+          <Form.Item label={t('邮箱')} name={'mail'} rules={[{ required: true}]}>
             <Input type={'email'} />
           </Form.Item>
 
@@ -196,7 +196,7 @@ const App = (props) => {
                 >
                   {subFields.map((subField) => (
                     <Space key={subField.key}>
-                      <Form.Item noStyle name={[subField.name, 'email']}  rules={[{ required: true }]}>
+                      <Form.Item noStyle name={[subField.name, 'email']}  rules={[{ required: true,message: t('请输入邮箱')}]}>
                         <Input style={{width:400}} type='email' placeholder={t('邮箱')} />
                       </Form.Item>
                       <CloseOutlined

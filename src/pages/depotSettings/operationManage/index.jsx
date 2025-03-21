@@ -224,7 +224,7 @@ const OperationManage = () => {
                     <Form.Item label={t("请输入密码")} name={"password"} rules={[FORM_REQUIRED_RULE]} style={{marginTop:'25px'}}>
                         <Input className="pwd" placeholder={t("请输入密码")}/>
                     </Form.Item>
-                    <span style={{marginLeft:'10px'}}>{t('确定下发指令吗？')}</span>
+                    <span style={{marginLeft:'10px'}}>{t('确定下发该指令吗?')}</span>
                 </Form>
             </Modal>
 
@@ -307,7 +307,7 @@ const OperationManage = () => {
                             width: '100%',
                         }} placeholder={t("请输入功率")} />
                     </Form.Item>}
-                    <span style={{marginLeft:'10px'}}>{t('确定下发指令吗？')}</span>
+                    <span style={{marginLeft:'10px'}}>{t('确定下发该指令吗?')}</span>
                 </Form>
             </Modal>
         </div>

@@ -36,7 +36,7 @@ function Com(props) {
         value: 1,
     },
     {
-        label: t('不同时间  相同数据项'),
+        label: t('不同时间 相同数据项'),
         value: 2,
     },]
 
@@ -264,7 +264,7 @@ function Com(props) {
         ],
         dataZoom: [{ type: "inside" }],
         toolbox: {
-            show: true,
+            show: false,
             right: 25,
             feature: {
                 magicType: { type: ["line", "bar"], title: "", default: "line" },
@@ -320,7 +320,7 @@ function Com(props) {
                         }
                     />
 
-                    <span>{t('电池pack')}:</span>
+                    <span>{t('电池PACK')}:</span>
                     <Select
                         className={styles.margRL}
                         style={{width: 240}}

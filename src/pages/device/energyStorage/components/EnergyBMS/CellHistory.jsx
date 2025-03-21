@@ -469,7 +469,7 @@ function Com(props) {
             {
                 type: 'value',
                 splitLine: {
-                    show: true,
+                    show: false,
                     lineStyle: {
                         color: [token.microgridsLine], // 网格线颜色
                         width: 1, // 网格线宽度

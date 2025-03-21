@@ -236,8 +236,7 @@ function Com({ id }) {
     return (
         <div className={styles.monitoringCurves}>
             <div className={styles.searchHead} style={{color: token.titleColor}}>
-
-                <span className={styles.margRL}>{t('设备')}:</span>
+                <span className={styles.margR}>{t('设备')}:</span>
                 <Select
                     style={{
                         width: '10.4167rem',

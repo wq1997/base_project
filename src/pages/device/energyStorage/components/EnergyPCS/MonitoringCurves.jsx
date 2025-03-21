@@ -250,7 +250,7 @@ function Com(props) {
     return (
         <div className={styles.monitoringCurves}>
             <div className={styles.searchHead} style={{ color: token.titleColor }}>
-                <span className={styles.margRL}>{t('设备')}:</span>
+                <span className={styles.margR}>{t('设备')}:</span>
                 <Select
                     style={{
                         width: "10%", maxWidth: 150
@@ -272,13 +272,13 @@ function Com(props) {
                     style={{ width: "20%", maxWidth: 240 }}
                     value={type}
                     onChange={changeType}
-
                 >
                     {optionsSelect?.map(item => {
                         return (<Option key={item.dataType} value={item.dataType}>{item.dataTypeDesc}</Option>);
                     })
                     }
                 </Select>}
+
                 <span className={styles.margRL}> {t('日期')}:</span>
                 <DatePicker
                     needConfirm

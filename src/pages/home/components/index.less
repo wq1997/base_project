@@ -1,33 +1,37 @@
-.WiringDiagram{
+.WiringDiagram {
     width: 100%;
     height: 100%;
 }
 
-.wrap{
+.wrap {
     margin-top: 20px;
-    padding: 0 32px 0 32px;
+    padding: 0 32px 0 0px;
     width: 100%;
     display: flex;
-    .theFirstLine{
-        height:74px;
+
+    .theFirstLine {
+        height: 74px;
         min-height: 74px;
         width: 100%;
         margin-left: 60px;
     }
-    .theFirstContent{
+
+    .theFirstContent {
         width: 100%;
-        display:  grid;
+        display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-        gap: 8px 8px; 
+        gap: 8px 25px;
         // margin-bottom: 60px;
     }
-    .module{
-        display:  flex;
-        .dataLeft{
+
+    .module {
+        display: flex;
+
+        .dataLeft {
             width: 40px;
             margin-right: 10px;
 
-            .pcsData{
+            .pcsData {
                 height: 75px;
                 margin: 50px 0px 50px 0;
                 display: flex;
@@ -36,7 +40,8 @@
                 align-items: center;
 
             }
-            .bmsData{
+
+            .bmsData {
                 height: 75px;
                 display: flex;
                 flex-direction: column;
@@ -44,8 +49,9 @@
                 align-items: center;
             }
         }
-        .centerModule{
-            .onePcs{
+
+        .centerModule {
+            .onePcs {
                 width: 55px;
                 height: 70px;
                 border-radius: 2px;
@@ -54,39 +60,44 @@
                 justify-content: center;
                 align-items: center;
             }
-            .oneBms{
+
+            .oneBms {
                 width: 55px;
-                height:  75px;
+                height: 75px;
                 border-radius: 2px;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
             }
-            .line{
+
+            .line {
                 height: 50px;
                 width: calc(21px + 1.5px);
             }
         }
-       .dataRight{
-        width: 40px;
-        .pcsData{
-            height: 75px;
-            margin: 50px 5px 50px 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+
+        .dataRight {
+            width: 40px;
+
+            .pcsData {
+                height: 75px;
+                margin: 50px 5px 50px 0;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .bmsData {
+                height: 75px;
+                margin-right: 5px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
         }
-        .bmsData{
-            height:  75px;
-            margin-right: 5px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-       }
     }
-   
+
 }

@@ -24,21 +24,27 @@ export const alarmTableColums = [
         title: <FormattedMessage id='电站名称' />,
         dataIndex: 'plantName',
         key: 'plantName',
+        width:'14.29%'
     },
     {
         title: <FormattedMessage id='设备编码' />,
         dataIndex: 'sn',
         key: 'sn',
+        width:'14.29%'
+
     },
     {
         title: <FormattedMessage id='设备名称' />,
         dataIndex: 'deviceName',
         key: 'deviceName',
+        width:'14.29%'
+
     },
     {
         title: <FormattedMessage id='告警等级' />,
         dataIndex: 'priorName',
         key: 'priorName',
+        width:'14.29%',
         render: (val,record) => {
             if (record.prior == 1) {
                 return <div style={{ color: '#FF0000' }}>
@@ -64,6 +70,9 @@ export const alarmTableColums = [
         title: <FormattedMessage id='告警描述' />,
         dataIndex: 'desc',
         key: 'desc',
+        width:'14.29%',
+
+
     },
   
     // {
@@ -77,6 +86,8 @@ export const alarmTableColums = [
         title: <FormattedMessage id='开始时间' />,
         dataIndex: 'begin',
         key: 'begin',
+        width:'14.29%',
+
         render: (val) => {
             return val ? dayjs(val).format('YYYY-MM-DD HH:mm:ss') : ''
         }
@@ -85,6 +96,7 @@ export const alarmTableColums = [
         title: <FormattedMessage id='结束时间' />,
         dataIndex: 'end',
         key: 'end',
+        width:'14.29%',
         render: (val) => {
             return val ? dayjs(val).format('YYYY-MM-DD HH:mm:ss') : ''
         }

@@ -288,7 +288,7 @@ function OverView(props) {
                 {checked ? <div className={styles.contentWrap}>
                     <>
                         <div className={styles.heardAll} style={{backgroundColor: token.titleCardBgc,}}>
-                            <div className={styles.heard} style={{color: token.colorLittle}} style={{backgroundColor: token.color5,}}>
+                            <div className={styles.heard} style={{color: token.colorLittle}} >
                                 <div className={styles.headLeftPart} style={{backgroundColor: token.titleCardBgc,}}>
                                     <div className={styles.line}>
                                         <span className={styles.label}>{t('总充电')}</span>

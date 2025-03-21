@@ -297,7 +297,6 @@ function Com(props) {
     }, [initSelectData,record]);
     const edit = (record) => {
         setRecord(record);
-
         setTitle('编辑电站');
         setSelectId(record.plantId)
         setIsOpen(!isOpen);
@@ -311,6 +310,7 @@ function Com(props) {
             apiUpdatePlant({ ...value, plantId: selectId }) :
             apiInsertPlant({ ...value, }))
         if (data.data) {
+            message.success(data.msg)
              getData();
         } else {
             message.error(data.msg)
@@ -349,7 +349,7 @@ function Com(props) {
                 onOk={del}
                 onCancel={changeIsOpenDel}
             >
-                {t('数据删除后将无法恢复，是否确认删除该条数据？')}
+                {t('数据删除后将无法恢复，是否确认删除该条数据?')}
             </Modal>
         </div>
     )

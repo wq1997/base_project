@@ -86,7 +86,7 @@ const BaseLayout = () => {
         <div className={styles.baseLayout}>
             <Layout className={styles.layout}>
                 <Header className={styles.header}
-                    style={{ background: token.color4 }}
+                    style={{ background: token.color4,}}
                 >
                     <div
                         style={{
@@ -97,13 +97,13 @@ const BaseLayout = () => {
                     >
                         <FormattedMessage id="采日能源储能管理系统" />
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center',fontSize:"30px"  }}>
                         {
 
                             <img
                                 // type='icon-jiankongdaping'
                                 src={bigScreen}
-                                style={{ cursor: 'pointer', fontSize: "30px", margin: '0px 15px', width: '20px' }}
+                                style={{ cursor: 'pointer', fontSize: "30px", margin: '0px 15px', height: '26px' }}
                                 onClick={() => history.push('/bigScreen')}
                             />
 
@@ -111,17 +111,17 @@ const BaseLayout = () => {
                         {
                             global.theme === "default" ?
                                 <Icon
-
+ 
                                     type='icon-shense'
                                     // src={themeDefaultSvg}
-                                    style={{ cursor: 'pointer', fontSize: "20px", width: '20px' }}
+                                    style={{ cursor: 'pointer',margin: '0px 15px', fontSize: '26px',height: '32px' }}
                                     onClick={() => changeTheme('dark')}
                                 />
                                 :
                                 <Icon
                                     // src={themeDarkSvg}
                                     type='icon-qianse'
-                                    style={{ cursor: 'pointer', fontSize: "20px", width: '20px' }}
+                                    style={{ cursor: 'pointer',margin: '0px 15px', fontSize: '26px', height: '32px' }}
                                     onClick={() => changeTheme('default')}
                                 />
                         }
@@ -129,13 +129,13 @@ const BaseLayout = () => {
                             global.locale === "zh-CN" ?
                                 <img
                                     src={languageChineseSvg}
-                                    style={{ cursor: 'pointer', margin: '0px 15px', width: '20px' }}
+                                    style={{ cursor: 'pointer', margin: '0px 15px', height: '26px' }}
                                     onClick={() => changeLanguage('en-US')}
                                 />
                                 :
                                 <img
                                     src={languageEnglishSvg}
-                                    style={{ cursor: 'pointer', margin: '0px 15px', width: '20px' }}
+                                    style={{ cursor: 'pointer', margin: '0px 15px', height: '26px' }}
                                     onClick={() => changeLanguage('zh-CN')}
                                 />
                         }
@@ -182,7 +182,7 @@ const BaseLayout = () => {
                         >
                             <img
                                 src={mySvg}
-                                style={{ cursor: 'pointer', width: '20px' }}
+                                style={{ cursor: 'pointer', height: '26px',margin: '0px 15px', }}
                             />
                         </Dropdown>
                     </div>
