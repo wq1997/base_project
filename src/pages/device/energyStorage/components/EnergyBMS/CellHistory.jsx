@@ -455,7 +455,7 @@ function Com(props) {
         ],
         dataZoom: [{type: "inside"}],
         toolbox: {
-            show: true,
+            show: false,
             right: 25,
             feature: {
                 magicType: {type: ["line", "bar"], title: "", default: "line"},
@@ -469,7 +469,7 @@ function Com(props) {
             {
                 type: 'value',
                 splitLine: {
-                    show: false,
+                    show: true,
                     lineStyle: {
                         color: [token.microgridsLine], // 网格线颜色
                         width: 1, // 网格线宽度

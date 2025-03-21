@@ -345,7 +345,7 @@ function Com(props) {
     ],
     dataZoom: [{ type: "inside" }],
     toolbox: {
-      show: true,
+      show: false,
       right: 25,
       feature: {
         magicType: { type: ["line", "bar"], title: "", default: "line" },
